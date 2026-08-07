@@ -1,0 +1,47 @@
+{
+  "tenseLinguisticGroups": {
+    "verbo": {
+      "left": [
+        {
+          "heading": { "labelEs": "CNV optativa" },
+          "hoverTitle": { "labelEs": "Andrews Lecciones 5 y 9: modo optativo de la cláusula nuclear verbal." },
+          "tenses": ["optativo"]
+        },
+        {
+          "heading": { "labelEs": "CNV indicativa · imperfectivo no pasado" },
+          "hoverTitle": { "labelEs": "Andrews Lecciones 5 y 7: tiempos indicativos sobre tronco imperfectivo." },
+          "tenses": ["presente", "presente-habitual"]
+        },
+        {
+          "heading": { "labelEs": "CNV indicativa · imperfectivo pasado" },
+          "hoverTitle": { "labelEs": "Andrews Lecciones 5 y 7: imperfecto indicativo en la posición tiempo." },
+          "tenses": ["imperfecto"]
+        },
+        {
+          "heading": {
+            "labelEs": "CNV indicativa · imperfectivo proyectivo"
+          },
+          "hoverTitle": { "labelEs": "Andrews Lecciones 5 y 7: futuro indicativo sobre tronco imperfectivo." },
+          "tenses": ["futuro"]
+        }
+      ],
+      "right": [
+        {
+          "heading": {
+            "labelEs": "CNV indicativa · perfectivo pasado"
+          },
+          "hoverTitle": { "labelEs": "Andrews Lecciones 5 y 7: pretérito y pasado remoto sobre tronco perfectivo." },
+          "tenses": ["preterito", "pasado-remoto"]
+        }
+      ]
+    },
+    "sustantivo": {
+      "left": [],
+      "right": []
+    },
+    "particula": {
+      "left": [],
+      "right": []
+    }
+  }
+}

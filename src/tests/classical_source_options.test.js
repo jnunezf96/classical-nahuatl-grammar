@@ -1,0 +1,119 @@
+"use strict";
+
+const fs = require("fs");
+const path = require("path");
+const { createSuite } = require("./runner");
+
+function run(ctx = {}) {
+    const s = createSuite("classical_source_options");
+    const root = path.resolve(__dirname, "..", "..");
+    const runtimeManifest = fs.readFileSync(path.join(root, "src", "runtime", "create_runtime.mjs"), "utf8");
+    const shell = fs.readFileSync(path.join(root, "src", "ui", "shell", "classical_shell.mjs"), "utf8");
+    const composer = fs.readFileSync(path.join(root, "src", "ui", "composer", "composer.mjs"), "utf8");
+    const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
+    const inventoryRuntime = ctx;
+
+    s.eq(
+        "canonical VNC source inventory is loaded and valid",
+        {
+            loadedByRuntime: runtimeManifest.includes("src/core/classical/source_stem_inventory.mjs"),
+            audit: (() => {
+                const audit = inventoryRuntime.auditClassicalNahuatlCanonicalSourceStemInventory();
+                return {
+                    kind: audit.kind,
+                    version: audit.version,
+                    invalidRecordCount: audit.invalidRecordCount,
+                    duplicateCount: audit.duplicateCount,
+                    quantityConflictPresent: audit.quantityConflictPresent,
+                    canonicalQuantityPresent: audit.canonicalQuantityPresent,
+                    ok: audit.ok,
+                };
+            })(),
+            examples: inventoryRuntime.getClassicalNahuatlCanonicalSourceStemInventory("vnc")
+                .filter((record) => ["nemi", "cual-ā-ni"].includes(record.stem))
+                .map((record) => `${record.valenceDisplay}|${record.stem}`),
+        },
+        {
+            loadedByRuntime: true,
+            audit: {
+                kind: "classical-nahuatl-canonical-source-stem-inventory-audit",
+                version: 1,
+                invalidRecordCount: 0,
+                duplicateCount: 0,
+                quantityConflictPresent: false,
+                canonicalQuantityPresent: true,
+                ok: true,
+            },
+            examples: ["intransitive|cual-ā-ni", "intransitive|nemi"],
+        }
+    );
+
+    s.eq(
+        "Lesson 24 synonymy remains a read-only lexical Source fact rather than a selectable operation",
+        inventoryRuntime.getClassicalNahuatlCanonicalSourceStemInventory("vnc")
+            .filter(record => record.lexicalAlternativeGroupId)
+            .map(record => ({
+                stem: record.stem,
+                group: record.lexicalAlternativeGroupId,
+                relation: record.lexicalAlternativeRelation,
+                readOnly: record.lexicalFactsReadOnly,
+                selectableOperation: record.userSelectableOperation,
+                grammarAuthority: record.grammarAuthority,
+            })),
+        [
+            {
+                stem: "tep-ē-hua",
+                group: "cn-l24-2463-tep-e-hua-hui",
+                relation: "lexical-source-alternative",
+                readOnly: true,
+                selectableOperation: false,
+                grammarAuthority: false,
+            },
+            {
+                stem: "tep-ē-hui",
+                group: "cn-l24-2463-tep-e-hua-hui",
+                relation: "lexical-source-alternative",
+                readOnly: true,
+                selectableOperation: false,
+                grammarAuthority: false,
+            },
+            {
+                stem: "tōy-ā-hua",
+                group: "cn-l24-2463-toy-a-hua-hui",
+                relation: "lexical-source-alternative",
+                readOnly: true,
+                selectableOperation: false,
+                grammarAuthority: false,
+            },
+            {
+                stem: "tōy-ā-hui",
+                group: "cn-l24-2463-toy-a-hua-hui",
+                relation: "lexical-source-alternative",
+                readOnly: true,
+                selectableOperation: false,
+                grammarAuthority: false,
+            },
+        ]
+    );
+
+    s.ok(
+        "Source shell keeps the picker, two genuine source choices, and read-only morph analysis",
+        shell.includes('id="classical-vnc-source-stem"')
+            && shell.includes('data-classical-source-parts-kind="whole-stem"')
+            && shell.includes('data-classical-source-parts-kind="embed-matrix"')
+            && shell.includes('id="classical-source-internal-morphs"')
+    );
+
+    s.ok(
+        "Source choices are wired and receive distinct compact layouts",
+        composer.includes("populateClassicalVncSourceStemPicker")
+            && composer.includes("applyClassicalVncSourceStemSelection")
+            && css.includes('[data-classical-source-parts-mode="whole-stem"] .classical-source-parts__grid')
+            && css.includes('[data-classical-source-parts-mode="embed-matrix"] .classical-source-parts__grid')
+            && css.includes('[data-classical-source-parts-mode="embed-matrix"] .classical-source-parts__field--whole')
+    );
+
+    return s;
+}
+
+module.exports = { run };

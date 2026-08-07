@@ -1,0 +1,32 @@
+{
+  "tenseSuffixRules": {
+    "imperfecto": { "": "ya", "t": "yat" },
+    "preterito": { "t": "ket" },
+    "perfecto": { "": "tuk", "t": "tiwit" },
+    "pluscuamperfecto": { "": "tuya", "t": "tuyat" },
+    "condicional-perfecto": { "": "tuskia", "t": "tuskiat" },
+    "pasado-remoto": { "": "ca", "t": "cat" },
+    "futuro": { "": "s", "t": "sket" },
+    "condicional": { "": "skia", "t": "skiat" },
+    "presente-desiderativo": { "": "sneki", "t": "snekit" },
+    "presente-habitual": { "": "ni", "t": "nit" },
+    "optativo": { "": "", "t": "kan" },
+    "sustantivo-verbal": { "": "lis", "t": "lis" },
+    "agentivo": { "": "", "t": "met", "p": "wan" }
+  },
+  "pretUniversalClassByTense": {
+    "preterito-universal-1": "A",
+    "preterito-universal-2": "B",
+    "preterito-universal-3": "D",
+    "preterito-universal-4": "C"
+  },
+  "preteritoClassTenses": [
+    "preterito",
+    "preterito-clase",
+    "pasado-remoto",
+    "perfecto",
+    "pluscuamperfecto",
+    "condicional-perfecto"
+  ],
+  "nonspecificIDropVerbs": ["itki"]
+}

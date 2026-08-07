@@ -1,0 +1,139 @@
+{
+  "specificValencePrefixes": ["nēch", "mitz", "qui", "tēch", "amēch", "quim"],
+  "nonspecificValencePrefixes": ["tla", "tē", "mo", "ne"],
+  "nonspecificValenceAffixes": ["tla", "tē", "mo", "ne"],
+  "objectPrefixes": [
+    { "value": "nēch" },
+    { "value": "mitz" },
+    { "value": "qui", "labelSuffix": "c/qu~qui" },
+    { "value": "tēch" },
+    { "value": "amēch" },
+    { "value": "quim", "labelSuffix": "quim~quin" },
+    { "value": "ne", "labelEs": "línea secundaria reflexiva/recíproca (ne)" },
+    { "value": "mo", "labelEs": "reflexivo/recíproco de línea principal" },
+    { "value": "tla", "labelEs": "objeto no humano no específico" },
+    { "value": "tē", "labelEs": "objeto humano no específico" }
+  ],
+  "subjectCombinations": [
+    { "id": "ni", "personSubKey": "1sg", "subjectPrefix": "ni", "subjectSuffix": "" },
+    { "id": "ti", "personSubKey": "2sg", "subjectPrefix": "ti", "subjectSuffix": "" },
+    { "id": "third-person", "personSubKey": "3sg", "subjectPrefix": "", "subjectSuffix": "" },
+    { "id": "1-pl", "personSubKey": "1pl", "subjectPrefix": "ti", "subjectSuffix": "h" },
+    { "id": "2-pl", "personSubKey": "2pl", "subjectPrefix": "am", "subjectSuffix": "h" },
+    { "id": "3-pl", "personSubKey": "3pl", "subjectPrefix": "", "subjectSuffix": "h" }
+  ],
+  "subjectPersonGroups": [
+    {
+      "id": "first",
+      "labelKey": "first",
+      "singular": { "personSubKey": "1sg", "subjectPrefix": "ni", "subjectSuffix": "" },
+      "plural": { "personSubKey": "1pl", "subjectPrefix": "ti", "subjectSuffix": "h" }
+    },
+    {
+      "id": "second",
+      "labelKey": "second",
+      "singular": { "personSubKey": "2sg", "subjectPrefix": "ti", "subjectSuffix": "" },
+      "plural": { "personSubKey": "2pl", "subjectPrefix": "am", "subjectSuffix": "h" }
+    },
+    {
+      "id": "third",
+      "labelKey": "third",
+      "singular": { "personSubKey": "3sg", "subjectPrefix": "", "subjectSuffix": "" },
+      "plural": { "personSubKey": "3pl", "subjectPrefix": "", "subjectSuffix": "h" }
+    }
+  ],
+  "possessivePrefixes": [
+    {
+      "id": "none",
+      "label": "forma absoluta",
+      "labelEs": "forma absoluta",
+      "value": "",
+      "number": "none"
+    },
+    {
+      "id": "1s",
+      "personSubKey": "1sg",
+      "value": "no",
+      "number": "singular"
+    },
+    {
+      "id": "2s",
+      "personSubKey": "2sg",
+      "value": "mo",
+      "number": "singular"
+    },
+    {
+      "id": "3s",
+      "personSubKey": "3sg",
+      "value": "ī",
+      "number": "singular"
+    },
+    {
+      "id": "1p",
+      "personSubKey": "1pl",
+      "value": "to",
+      "number": "plural"
+    },
+    {
+      "id": "2p",
+      "personSubKey": "2pl",
+      "value": "amo",
+      "number": "plural"
+    },
+    {
+      "id": "3p",
+      "personSubKey": "3pl",
+      "value": "in",
+      "number": "plural"
+    }
+  ],
+  "possessorLabels": {
+    "no": { "labelEs": "de mí" },
+    "mo": { "labelEs": "de ti" },
+    "ī": { "labelEs": "de él/ella/eso" },
+    "to": { "labelEs": "de nosotros" },
+    "amo": { "labelEs": "de ustedes" },
+    "in": { "labelEs": "de ellos" }
+  },
+  "possessiveToObjectPrefix": {
+    "no": "nēch",
+    "mo": "mitz",
+    "ī": "qui",
+    "to": "tēch",
+    "amo": "amēch",
+    "in": "quim"
+  },
+  "passiveImpersonalSubjectMap": {
+    "nēch": { "pers1": "ni", "pers2": "" },
+    "mitz": { "pers1": "ti", "pers2": "" },
+    "qui": { "pers1": "", "pers2": "" },
+    "tēch": { "pers1": "ti", "pers2": "h" },
+    "amēch": { "pers1": "am", "pers2": "h" },
+    "quim": { "pers1": "", "pers2": "h" }
+  },
+  "sustantivoVerbalTransitivePrefixes": ["tla", "tē", "mo"],
+  "invalidCombinationKeys": [
+    "ni||h",
+    "ni|qui|h",
+    "ni|mitz|h",
+    "ni|tēch|h",
+    "ni|mo|h",
+    "ni|tē|h",
+    "ni|tla|h",
+    "ni|amēch|h",
+    "ni|tēch|",
+    "ni|quim|h",
+    "am||",
+    "ti|amēch|",
+    "am|mitz|h",
+    "am|mo|",
+    "am|tē|",
+    "am|tla|",
+    "am|tēch|",
+    "am|nēch|",
+    "am|quim|",
+    "am|mitz|",
+    "am|qui|",
+    "ti|nēch|h"
+  ]
+}

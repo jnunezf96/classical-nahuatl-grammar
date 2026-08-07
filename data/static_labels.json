@@ -1,0 +1,611 @@
+{
+  "uiLabels": {
+    "app-title": {
+      "labelEs": "Gramática Andrews"
+    },
+    "panel-stack-tab-inputs": {
+      "labelEs": "Fuente"
+    },
+    "panel-stack-tab-formula": {
+      "labelEs": "Autoridad"
+    },
+    "panel-stack-tab-output": {
+      "labelEs": "Resultado"
+    },
+    "tense-tabs-mode-verb": {
+      "labelEs": "CNV · cláusula verbal"
+    },
+    "tense-tabs-mode-noun": {
+      "labelEs": "CNN · cláusula nominal"
+    },
+    "tense-tabs-mode-adjective": {
+      "labelEs": "Uso adjetival"
+    },
+    "tense-tabs-mode-adverb": {
+      "labelEs": "Uso adverbial"
+    },
+    "tense-tabs-mode-particle": {
+      "labelEs": "Partícula"
+    },
+    "mode-system-european": {
+      "labelEs": "Ruta funcional"
+    },
+    "calc-mode-operator-label": {
+      "labelEs": "Clase formal"
+    },
+    "mode-system-function": {
+      "labelEs": "Ruta funcional"
+    },
+    "mode-system-unit": {
+      "labelEs": "Clase formal"
+    },
+    "tense-tabs-function-verbal": {
+      "labelEs": "CNV · cláusula verbal"
+    },
+    "tense-tabs-function-nominal": {
+      "labelEs": "CNN · cláusula nominal"
+    },
+    "tense-tabs-function-adjectival": {
+      "labelEs": "Uso adjetival"
+    },
+    "tense-tabs-function-adverbial": {
+      "labelEs": "Uso adverbial"
+    },
+    "tense-tabs-unit-cnv": {
+      "labelEs": "CNV · cláusula verbal"
+    },
+    "tense-tabs-unit-cnn": {
+      "labelEs": "CNN · cláusula nominal"
+    },
+    "tense-tabs-unit-particle": {
+      "labelEs": "Partícula"
+    },
+    "tense-tabs-mode-active": {
+      "labelEs": "activo"
+    },
+    "tense-tabs-mode-nonactive": {
+      "labelEs": "no activo"
+    },
+    "verb-source-scope-label": {
+      "labelEs": "Voz"
+    },
+    "verb-source-scope-active": {
+      "labelEs": "Activo"
+    },
+    "verb-source-scope-nonactive": {
+      "labelEs": "No activo"
+    },
+    "verb-source-scope-both": {
+      "labelEs": "Todos"
+    },
+    "ui-density-label": {
+      "labelEs": "Vista"
+    },
+    "ui-density-simple": {
+      "labelEs": "Básico"
+    },
+    "ui-density-advanced": {
+      "labelEs": "Avanzado"
+    },
+    "language-profile-label": {
+      "labelEs": "Lengua"
+    },
+    "language-profile-classical": {
+      "labelEs": "Classical Nahuatl"
+    },
+    "input-mode-composer": {
+      "labelEs": "Selecciones"
+    },
+    "input-mode-regex": {
+      "labelEs": "Patrón"
+    },
+    "composer-entry-board-label": {
+      "labelEs": "Tipo de cláusula"
+    },
+    "composer-transitivity-label": {
+      "labelEs": "Valencia verbal"
+    },
+    "composer-verbalization-label": {
+      "labelEs": "Verbalización"
+    },
+    "composer-hint-regex-dev": {
+      "labelEs": "Patrón: escribe el patrón directamente en la pantalla."
+    },
+    "composer-hint-define-roots": {
+      "labelEs": "Define raíz matriz y raíz incorporada para construir la forma."
+    },
+    "calc-status-enter-verb": {
+      "labelEs": "Ingresa un verbo para generar."
+    },
+    "calc-status-no-results": {
+      "labelEs": "Sin resultados para esta combinación."
+    },
+    "calc-status-incompatible": {
+      "labelEs": "Revisa la combinación: hay formas incompatibles."
+    },
+    "calc-status-mode-prefix": {
+      "labelEs": "Clase formal"
+    },
+    "calc-status-output-updated": {
+      "labelEs": "salida actualizada."
+    }
+  },
+  "numberLabels": {
+    "singular": {
+      "es": "singular",
+      "na": "isel"
+    },
+    "plural": {
+      "es": "plural",
+      "na": "imiaka"
+    }
+  },
+  "personGroupLabels": {
+    "first": {
+      "labelEs": "1a persona"
+    },
+    "second": {
+      "labelEs": "2a persona"
+    },
+    "third": {
+      "labelEs": "3a persona"
+    }
+  },
+  "personSubLabels": {
+    "1sg": {
+      "labelEs": "yo"
+    },
+    "2sg": {
+      "labelEs": "tú"
+    },
+    "3sg": {
+      "labelEs": "él/ella/eso"
+    },
+    "1pl": {
+      "labelEs": "nosotros"
+    },
+    "2pl": {
+      "labelEs": "ustedes"
+    },
+    "3pl": {
+      "labelEs": "ellos/ellas"
+    }
+  },
+  "valenceCategoryLabels": {
+    "specific": {
+      "labelEs": "valencia específica"
+    },
+    "nonspecific": {
+      "labelEs": "valencia no específica"
+    }
+  },
+  "objectLabels": {
+    "intransitive": {
+      "labelEs": "intransitivo"
+    }
+  },
+  "objectRoleLabels": {
+    "direct": {
+      "labelEs": "a"
+    },
+    "indirect": {
+      "labelEs": "a"
+    },
+    "benefactive": {
+      "labelEs": "para"
+    },
+    "mainline": {
+      "labelEs": "línea principal"
+    },
+    "shuntline": {
+      "labelEs": "línea secundaria"
+    },
+    "shuntline2": {
+      "labelEs": "línea secundaria 2"
+    }
+  },
+  "verbBlockLabels": {
+    "transitive": {
+      "labelEs": "CNV transitiva"
+    },
+    "intransitive": {
+      "labelEs": "CNV intransitiva"
+    },
+    "passive": {
+      "labelEs": "CNV pasiva"
+    },
+    "impersonal": {
+      "labelEs": "CNV impersonal"
+    },
+    "eventImpersonal": {
+      "labelEs": "Evento impersonal"
+    },
+    "patient": {
+      "labelEs": "Paciente"
+    },
+    "patientivo-pasivo": {
+      "labelEs": "patientivo · pasivo"
+    },
+    "patientivo-impersonal": {
+      "labelEs": "patientivo · impersonal"
+    },
+    "patientivo-perfectivo": {
+      "labelEs": "patientivo · perfectivo"
+    },
+    "patientivo-imperfectivo": {
+      "labelEs": "patientivo · imperfectivo"
+    },
+    "patientivo-tronco": {
+      "labelEs": "patientivo · tronco verbal"
+    },
+    "patientivo-tronco-noun": {
+      "labelEs": "patientivo · sustantivo de tronco verbal"
+    }
+  },
+  "nonactiveGenericLabels": {
+    "default": {
+      "labelEs": "impersonal"
+    },
+    "ta": {
+      "labelEs": "impersonal"
+    },
+    "te": {
+      "labelEs": "impersonal"
+    },
+    "mu": {
+      "labelEs": "impersonal"
+    }
+  },
+  "nonactivePersonSubLabels": {
+    "nech": {
+      "labelEs": "a mí"
+    },
+    "metz": {
+      "labelEs": "a ti"
+    },
+    "ki": {
+      "labelEs": "a él/ella/eso"
+    },
+    "tech": {
+      "labelEs": "a nosotros"
+    },
+    "metzin": {
+      "labelEs": "a ustedes"
+    },
+    "kin": {
+      "labelEs": "a ellos/ellas"
+    },
+    "mu": {
+      "labelEs": "a sí mismo"
+    },
+    "ta": {
+      "labelEs": "a algo"
+    },
+    "te": {
+      "labelEs": "a alguien"
+    }
+  },
+  "nonactivePersonCategoryLabels": {
+    "default": {
+      "labelEs": "Paciente"
+    }
+  },
+  "toggleLabels": {
+    "all": {
+      "labelEs": "todos"
+    },
+    "subject": {
+      "labelEs": "sujeto"
+    },
+    "object": {
+      "labelEs": "objeto"
+    },
+    "possessor": {
+      "labelEs": "poseedor"
+    },
+    "ownership": {
+      "labelEs": "posesion"
+    },
+    "possessorObject": {
+      "labelEs": "poseedor / objeto"
+    },
+    "intransitive": {
+      "labelEs": "intransitivo"
+    }
+  },
+  "patientivoOwnershipLabels": {
+    "w": {
+      "labelEs": "adventicio"
+    },
+    "yu": {
+      "labelEs": "organico"
+    },
+    "zero": {
+      "labelEs": "cero"
+    }
+  },
+  "placeholderLabels": {
+    "conjugations": {
+      "labelEs": "Ingresa un verbo para ver las conjugaciones."
+    }
+  },
+  "nonactivePrefixLabel": {
+    "labelEs": "no activo"
+  },
+  "nonactiveSuffixLabels": {
+    "lu": {
+      "labelEs": "-lu"
+    },
+    "u": {
+      "labelEs": "-u"
+    },
+    "wa": {
+      "labelEs": "-wa"
+    },
+    "luwa": {
+      "labelEs": "-luwa"
+    },
+    "uwa": {
+      "labelEs": "-uwa"
+    },
+    "walu": {
+      "labelEs": "-walu"
+    }
+  },
+  "nonactiveSuffixDescriptions": {
+    "lu": {
+      "labelEs": "derivación no activa regular"
+    },
+    "u": {
+      "labelEs": "no activa breve; base recortada"
+    },
+    "wa": {
+      "labelEs": "no activa con cierre en -wa"
+    },
+    "luwa": {
+      "labelEs": "no activa con doble sufijación"
+    },
+    "uwa": {
+      "labelEs": "no activa con alternancia u‑wa"
+    },
+    "walu": {
+      "labelEs": "no activa con alternancia wa‑lu"
+    }
+  },
+  "tenseLabels": {
+    "presente": {
+      "labelEs": "presente"
+    },
+    "optativo": {
+      "labelEs": "optativo no pasado"
+    },
+    "sustantivo-verbal": {
+      "labelEs": "sustantivo verbal"
+    },
+    "potencial": {
+      "labelEs": "potencial"
+    },
+    "potencial-habitual": {
+      "labelEs": "potencial habitual"
+    },
+    "adjetivo-preterito": {
+      "labelEs": "pretérito"
+    },
+    "adjetivo-perfecto": {
+      "labelEs": "perfecto"
+    },
+    "adjetivo-preterito-tik": {
+      "labelEs": "pretérito -tik"
+    },
+    "adjetivo-perfecto-tik": {
+      "labelEs": "perfecto -tik"
+    },
+    "adjetivo-preterito-naj": {
+      "labelEs": "pretérito -naj"
+    },
+    "adjetivo-perfecto-naj": {
+      "labelEs": "perfecto -naj"
+    },
+    "adjetivo-patientivo-no-activo": {
+      "labelEs": "no activo -ti"
+    },
+    "adjetivo-patientivo-perfectivo": {
+      "labelEs": "perfectivo -ti"
+    },
+    "pasado-remoto-adverbio-activo": {
+      "labelEs": "pretérito agentivo"
+    },
+    "agentivo": {
+      "labelEs": "agentivo"
+    },
+    "agentivo-presente": {
+      "labelEs": "agentivo presente"
+    },
+    "agentivo-preterito": {
+      "labelEs": "agentivo pretérito"
+    },
+    "agentivo-futuro": {
+      "labelEs": "agentivo futuro"
+    },
+    "patientivo": {
+      "labelEs": "patientivo"
+    },
+    "instrumentivo": {
+      "labelEs": "instrumentivo"
+    },
+    "predicado-nominal": {
+      "labelEs": "predicado nominal"
+    },
+    "calificativo-instrumentivo": {
+      "labelEs": "calificativo/instrumentivo"
+    },
+    "locativo-temporal": {
+      "labelEs": "locativo/temporal"
+    },
+    "presente-habitual": {
+      "labelEs": "presente habitual"
+    },
+    "presente-desiderativo": {
+      "labelEs": "presente desiderativo"
+    },
+    "imperfecto": {
+      "labelEs": "pretérito imperfecto"
+    },
+    "preterito": {
+      "labelEs": "pretérito perfecto simple"
+    },
+    "pasado-remoto": {
+      "labelEs": "pasado remoto"
+    },
+    "perfecto": {
+      "labelEs": "pretérito perfecto compuesto"
+    },
+    "pluscuamperfecto": {
+      "labelEs": "pretérito pluscuamperfecto"
+    },
+    "condicional-perfecto": {
+      "labelEs": "pretérito condicional perfecto"
+    },
+    "futuro": {
+      "labelEs": "futuro imperfecto"
+    },
+    "condicional": {
+      "labelEs": "pretérito condicional imperfecto"
+    }
+  },
+  "tenseDescriptions": {
+    "presente": {
+      "labelEs": "acciones actuales o en progreso"
+    },
+    "optativo": {
+      "labelEs": "modo optativo: deseo, mandato, exhortación o petición"
+    },
+    "presente-habitual": {
+      "labelEs": "acción repetida o costumbre"
+    },
+    "presente-desiderativo": {
+      "labelEs": "deseo, intención o propósito"
+    },
+    "imperfecto": {
+      "labelEs": "pasado en desarrollo o continuo"
+    },
+    "preterito": {
+      "labelEs": "pasado puntual con cierre perfectivo"
+    },
+    "pasado-remoto": {
+      "labelEs": "pasado distante con cierre perfectivo"
+    },
+    "perfecto": {
+      "labelEs": "pasado con resultado vigente"
+    },
+    "pluscuamperfecto": {
+      "labelEs": "pasado anterior a otro pasado"
+    },
+    "condicional-perfecto": {
+      "labelEs": "pasado hipotético o no realizado"
+    },
+    "futuro": {
+      "labelEs": "evento proyectado o esperado"
+    },
+    "condicional": {
+      "labelEs": "posibilidad, duda o cortesía"
+    },
+    "sustantivo-verbal": {
+      "labelEs": "acción tratada como sustantivo (sustantivo derivado del verbo con -lis)"
+    },
+    "potencial": {
+      "labelEs": "adjetivo activo como conjugación verbal en futuro imperfectivo"
+    },
+    "potencial-habitual": {
+      "labelEs": "adjetivo no activo como conjugación verbal en presente habitual"
+    },
+    "adjetivo-preterito": {
+      "labelEs": "adjetivo como conjugación verbal en pretérito perfecto simple"
+    },
+    "adjetivo-perfecto": {
+      "labelEs": "adjetivo como conjugación verbal en pretérito perfecto compuesto"
+    },
+    "adjetivo-preterito-tik": {
+      "labelEs": "adjetivo activo en pretérito con sufijo -tik"
+    },
+    "adjetivo-perfecto-tik": {
+      "labelEs": "adjetivo activo en perfecto con sufijo -tik"
+    },
+    "adjetivo-preterito-naj": {
+      "labelEs": "adjetivo activo en pretérito con sufijo -naj; usa base de tronco verbal, salvo finales en -ya/-tiya que usan la base de pretérito (excepto -wiya)"
+    },
+    "adjetivo-perfecto-naj": {
+      "labelEs": "adjetivo activo en perfecto con sufijo -naj; usa base de tronco verbal, salvo finales en -ya/-tiya que usan la base de pretérito (excepto -wiya)"
+    },
+    "adjetivo-patientivo-no-activo": {
+      "labelEs": "adjetivo derivado del patientivo no activo con sufijo -ti"
+    },
+    "adjetivo-patientivo-perfectivo": {
+      "labelEs": "adjetivo derivado del patientivo perfectivo con sufijo -ti"
+    },
+    "pasado-remoto-adverbio-activo": {
+      "labelEs": "adverbio de manera en que alguien hace algo derivado del pretérito agentivo"
+    },
+    "agentivo": {
+      "labelEs": "persona o entidad que realiza la acción (sustantivo derivado del presente habitual -ni)"
+    },
+    "agentivo-presente": {
+      "labelEs": "persona o entidad caracterizada por el predicado presente; absolutivo solamente"
+    },
+    "agentivo-preterito": {
+      "labelEs": "persona o entidad caracterizada por el predicado pretérito; restringido absolutivo y general posesivo con -ka"
+    },
+    "agentivo-futuro": {
+      "labelEs": "persona o entidad caracterizada por el predicado futuro; restringido absolutivo y general posesivo con -ka"
+    },
+    "patientivo": {
+      "labelEs": "persona o entidad que existe cuando ocurre un evento (sustantivo derivado de base no activa/perfectiva/imperfectiva/tronco verbal)"
+    },
+    "instrumentivo": {
+      "labelEs": "medio o herramienta de la acción (sustantivo derivado de base no activa + presente habitual -ni, o de base activa + imperfecto -ya)"
+    },
+    "predicado-nominal": {
+      "labelEs": "NNC derivada desde un predicado CNV; conserva la marca de tiempo fuente dentro del tronco nominal"
+    },
+    "calificativo-instrumentivo": {
+      "labelEs": "cualidad derivada del pasado (sustantivo derivado del pasado remoto -ka + -yut/posesivo)"
+    },
+    "locativo-temporal": {
+      "labelEs": "lugar o tiempo donde ocurre la acción (sustantivo derivado del imperfecto -ya + -n en base activa/no activa)"
+    }
+  },
+  "preteritoClassDetailByKey": {
+    "A": {
+      "label": {
+        "labelEs": "Clase A: -ki / -Ø"
+      },
+      "description": {
+        "labelEs": "pérdida de vocal final en perfectivo"
+      }
+    },
+    "B": {
+      "label": {
+        "labelEs": "Clase B: +k"
+      },
+      "description": {
+        "labelEs": "conserva vocal y añade -k"
+      }
+    },
+    "C": {
+      "label": {
+        "labelEs": "Clase C: -j"
+      },
+      "description": {
+        "labelEs": "alterna la raíz a -j"
+      }
+    },
+    "D": {
+      "label": {
+        "labelEs": "Clase D: +j"
+      },
+      "description": {
+        "labelEs": "añade -j al perfectivo"
+      }
+    }
+  }
+}

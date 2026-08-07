@@ -1,0 +1,2933 @@
+"use strict";
+
+/**
+ * Tests for lesson and appendix registry metadata.
+ * These registries are user-facing curriculum contracts, not grammar engines.
+ */
+
+const fs = require("fs");
+const path = require("path");
+const vm = require("vm");
+const { createSuite } = require("./runner");
+
+const ROOT = path.resolve(__dirname, "../..");
+
+function loadRegistryConst(relPath, constName) {
+    const absPath = path.join(ROOT, relPath);
+    let source = fs.readFileSync(absPath, "utf8");
+    source = source
+        .replace(/export\s+const\s+/g, "const ")
+        .replace(/export\s+function\s+/g, "function ");
+    const context = {};
+    vm.createContext(context);
+    vm.runInContext(
+        `${source}\nglobalThis.__REGISTRY_VALUE__ = ${constName};`,
+        context,
+        { filename: absPath }
+    );
+    return context.__REGISTRY_VALUE__;
+}
+
+function statusCounts(lessons) {
+    return lessons.reduce((acc, lesson) => {
+        acc[lesson.status] = (acc[lesson.status] || 0) + 1;
+        return acc;
+    }, {});
+}
+
+function byId(items) {
+    return items.reduce((acc, item) => {
+        acc[item.id] = item;
+        return acc;
+    }, {});
+}
+
+function run(ctx = {}) {
+    const s = createSuite("registry");
+
+    const lessonRegistry = loadRegistryConst("src/lessons/registry.mjs", "LESSON_REGISTRY");
+    const trajectoryRedirectActions = loadRegistryConst("src/lessons/registry.mjs", "ANDREWS_TRAJECTORY_REDIRECT_ACTIONS");
+    const trajectoryGroups = loadRegistryConst("src/lessons/registry.mjs", "ANDREWS_TRAJECTORY_GROUPS");
+    const planPursuitAimStatuses = loadRegistryConst("src/lessons/registry.mjs", "ANDREWS_PLAN_PURSUIT_AIM_STATUSES");
+    const planPursuitArrowResults = loadRegistryConst("src/lessons/registry.mjs", "ANDREWS_PLAN_PURSUIT_ARROW_RESULTS");
+    const appendixRegistry = loadRegistryConst("src/appendices/registry.mjs", "APPENDIX_REGISTRY");
+    const curriculumGroups = ctx.CURRICULUM_BOOK_GROUPS;
+    const curriculumArchitectureNote = ctx.CURRICULUM_ARCHITECTURE_NOTE;
+    const getCurriculumMissingCategory = ctx.getCurriculumMissingCategory;
+    const curriculumSource = fs.readFileSync(path.join(ROOT, "src/ui/curriculum/curriculum.mjs"), "utf8");
+
+    s.ok("lesson registry has one canonical ESM payload", Array.isArray(lessonRegistry) && lessonRegistry.length > 0);
+    s.ok("Andrews trajectory redirect actions load from canonical ESM", Array.isArray(trajectoryRedirectActions));
+    s.ok("Andrews trajectory groups load from canonical ESM", Array.isArray(trajectoryGroups));
+    s.ok("Plan/Pursue aim statuses load from canonical ESM", Array.isArray(planPursuitAimStatuses));
+    s.ok("Plan/Pursue arrow results load from canonical ESM", Array.isArray(planPursuitArrowResults));
+    s.ok("appendix registry has one canonical ESM payload", Array.isArray(appendixRegistry) && appendixRegistry.length > 0);
+    s.eq("Andrews redirect actions are the fixed governance vocabulary", trajectoryRedirectActions, [
+        "keep",
+        "rename-visible-ui",
+        "reframe-metadata",
+        "diagnostic-only",
+        "block-generation",
+        "refactor-engine",
+        "source-gated",
+    ]);
+    s.eq(
+        "Andrews trajectory groups cover the curriculum blocks",
+        trajectoryGroups.map((group) => [group.label, group.range, group.validationRefs.includes("src/tests/registry.test.js")]),
+        [
+            ["Lecciones 1-4", [1, 4], true],
+            ["Lecciones 5-11", [5, 11], true],
+            ["Lecciones 12-19", [12, 19], true],
+            ["Lecciones 20-27", [20, 27], true],
+            ["Lecciones 28-34", [28, 34], true],
+            ["Lecciones 35-43", [35, 43], true],
+            ["Lecciones 44-50", [44, 50], true],
+            ["Lecciones 51-58", [51, 58], true],
+        ]
+    );
+    s.eq("Plan/Pursue aim statuses are the fixed step vocabulary", planPursuitAimStatuses, [
+        "queued",
+        "shooting",
+        "blocked",
+        "closest-pass",
+    ]);
+    s.eq("Plan/Pursue arrow results are the fixed shot vocabulary", planPursuitArrowResults, [
+        "hit",
+        "miss",
+    ]);
+    const trajectoryDoc = fs.readFileSync(path.join(ROOT, "docs/ANDREWS_TRAJECTORY.md"), "utf8");
+    s.ok(
+        "Andrews trajectory ledger documents direction and redirection",
+        /Directing Rule/.test(trajectoryDoc)
+            && /Supreme Goal/.test(trajectoryDoc)
+            && /grammar GIS/.test(trajectoryDoc)
+            && /Patch Judgment Gate/.test(trajectoryDoc)
+            && /which Andrews waypoint it advances/.test(trajectoryDoc)
+            && /which LCM boundary it preserves/.test(trajectoryDoc)
+            && /Classical visible spelling realizes Andrews transcription directly and contextually/.test(trajectoryDoc)
+            && /Redirecting Rule/.test(trajectoryDoc)
+            && /Plan\/Pursue Rule/.test(trajectoryDoc)
+            && /Correctness Before Existence Rule/.test(trajectoryDoc)
+            && /Andrews Formula Authority Rule/.test(trajectoryDoc)
+            && /Formula slots describe the canonical typed result/.test(trajectoryDoc)
+            && /Preterit indicative remains separate from preterit-derived routes/.test(trajectoryDoc)
+            && /A full\s+paradigm repeats that same scalar evaluator/.test(trajectoryDoc)
+            && /Lessons 1-4/.test(trajectoryDoc)
+            && /Lessons 51-58/.test(trajectoryDoc)
+            && /Retired conflict/.test(trajectoryDoc)
+    );
+    s.ok(
+        "curriculum map is labeled as an index, not a lesson-per-engine plan",
+        /no es un motor por leccion/.test(curriculumArchitectureNote)
+            && /categorias, metadatos, diagnosticos o controles compartidos/.test(curriculumArchitectureNote)
+            && curriculumSource.includes('book-map__architecture-note')
+            && curriculumSource.includes("getCurriculumMissingCategory(item)")
+            && curriculumSource.includes("row.dataset.category = categoryLabel")
+            && curriculumSource.includes("row.dataset.target = target")
+            && curriculumSource.includes('book-map__missing-category')
+            && curriculumSource.includes('Categoria compartida:')
+            && curriculumSource.includes("Categoria/metadata; destino tecnico:")
+            && curriculumSource.includes('book-map__next-label", "Categorias"')
+    );
+    const curriculumRows = curriculumGroups.flatMap((group) => group.missing || []);
+    s.eq(
+        "all current curriculum rows carry explicit grammar categories",
+        curriculumRows
+            .filter((row) => !row.category)
+            .map((row) => `${row.lessons}:${row.label}`),
+        []
+    );
+    s.eq(
+        "curriculum row display uses explicit reusable grammar categories",
+        [
+            getCurriculumMissingCategory(curriculumRows.find((row) => row.lessons === "12-15")),
+            getCurriculumMissingCategory(curriculumRows.find((row) => row.lessons === "8")),
+            getCurriculumMissingCategory(curriculumRows.find((row) => row.lessons === "27")),
+            getCurriculumMissingCategory(curriculumRows.find((row) => row.label === "registro de nounstems relacionales")),
+            getCurriculumMissingCategory(curriculumRows.find((row) => row.lessons === "E")),
+        ],
+        ["NNC", "oracion", "frecuentativo", "relacional", "calendario"]
+    );
+
+    s.eq(
+        "lesson registry has ids 1-58",
+        lessonRegistry.map((lesson) => lesson.id),
+        Array.from({ length: 58 }, (_, index) => index + 1)
+    );
+    s.eq(
+        "appendix registry has ids A-G",
+        appendixRegistry.map((appendix) => appendix.id),
+        ["A", "B", "C", "D", "E", "F", "G"]
+    );
+
+    s.eq("lesson registry status counts reflect audited motor scope", statusCounts(lessonRegistry), {
+        implemented: 9,
+        "partially-implemented": 49,
+    });
+
+    const lessons = byId(lessonRegistry);
+    const allowedTrajectoryActions = new Set(trajectoryRedirectActions);
+    const allowedAimStatuses = new Set(planPursuitAimStatuses);
+    const allowedArrowResults = new Set(planPursuitArrowResults);
+    const expectedTrajectoryKeys = [
+        "aimStatus",
+        "canvasRefs",
+        "closestPass",
+        "directive",
+        "evidenceStatus",
+        "firedArrows",
+        "hitCount",
+        "implementationState",
+        "missCount",
+        "orthographyStatus",
+        "plannedArrows",
+        "redirectAction",
+        "remainingGap",
+        "sourceGatedRoute",
+        "stepNumber",
+        "validationRefs",
+    ];
+    s.eq(
+        "every lesson carries an Andrews trajectory contract",
+        lessonRegistry
+            .filter((lesson) => {
+                const trajectory = lesson.trajectory || {};
+                const keys = Object.keys(trajectory).sort();
+                return JSON.stringify(keys) !== JSON.stringify(expectedTrajectoryKeys)
+                    || !Array.isArray(trajectory.canvasRefs)
+                    || !trajectory.canvasRefs.some((ref) => new RegExp(`^Andrews Lesson ${lesson.id}(\\b|\\.)`).test(ref))
+                    || typeof trajectory.directive !== "string"
+                    || !/Andrews/.test(trajectory.directive)
+                    || !allowedTrajectoryActions.has(trajectory.redirectAction)
+                    || trajectory.stepNumber !== lesson.id
+                    || !allowedAimStatuses.has(trajectory.aimStatus)
+                    || !Array.isArray(trajectory.plannedArrows)
+                    || !trajectory.plannedArrows.length
+                    || !Array.isArray(trajectory.firedArrows)
+                    || !trajectory.firedArrows.every((arrow) => allowedArrowResults.has(arrow.result))
+                    || trajectory.hitCount !== trajectory.firedArrows.filter((arrow) => arrow.result === "hit").length
+                    || trajectory.missCount !== trajectory.firedArrows.filter((arrow) => arrow.result === "miss").length
+                    || typeof trajectory.remainingGap !== "string"
+                    || typeof trajectory.closestPass !== "boolean"
+                    || !Array.isArray(trajectory.validationRefs)
+                    || trajectory.validationRefs.length === 0;
+            })
+            .map((lesson) => lesson.id),
+        []
+    );
+    s.eq(
+        "every lesson trajectory exposes a source-gated route with formula and structure",
+        lessonRegistry
+            .filter((lesson) => {
+                const route = lesson.trajectory?.sourceGatedRoute || {};
+                return route.kind !== "andrews-lesson-source-gated-route-contract"
+                    || route.id !== `lesson-${lesson.id}-source-gated-route`
+                    || !route.routeFamily
+                    || !route.routeKind
+                    || !Array.isArray(route.andrewsRefs)
+                    || !route.andrewsRefs.length
+                    || !route.formulaTransition
+                    || !route.formulaTemplate
+                    || !route.structuralInfo
+                    || typeof route.structuralInfo !== "object"
+                    || route.structuralInfo.lesson !== lesson.id
+                    || route.structuralInfo.logicPathType !== "source-gated derivational route"
+                    || route.structuralInfo.uiHost !== "tense-tabs-column"
+                    || route.sourceGate?.gated !== true
+                    || !route.sourceGate?.status
+                    || !Array.isArray(route.sourceGate?.requirementIds)
+                    || !route.sourceGate.requirementIds.length
+                    || route.puzzleStackTemplate?.model !== "entrada-formula-salida"
+                    || !Array.isArray(route.puzzleStackTemplate?.steps)
+                    || route.puzzleStackTemplate.steps[0]?.stage !== "#1 entrada"
+                    || route.puzzleStackTemplate.steps.at(-1)?.stage !== "#3 salida"
+                    || !Array.isArray(route.subsectionRoutes)
+                    || route.subsectionRouteCount !== route.subsectionRoutes.length
+                    || route.internalRouteCount !== route.subsectionRoutes.reduce((count, sectionRoute) => count + sectionRoute.internalRouteCount, 0)
+                    || !route.subsectionRoutes.length
+                    || route.subsectionRoutes.some((sectionRoute) => (
+                        sectionRoute.kind !== "andrews-subsection-source-gated-route-contract"
+                        || sectionRoute.parentRouteId !== route.id
+                        || !sectionRoute.formulaTransition
+                        || !sectionRoute.formulaTemplate
+                        || sectionRoute.structuralInfo?.routeScope !== "andrews-section"
+                        || sectionRoute.structuralInfo?.logicPathType !== "source-gated derivational route"
+                        || sectionRoute.structuralInfo?.uiHost !== "tense-tabs-column"
+                        || sectionRoute.sourceGate?.gated !== true
+                        || sectionRoute.puzzleStackTemplate?.model !== "entrada-formula-salida"
+                        || !Array.isArray(sectionRoute.puzzleStackTemplate?.steps)
+                        || sectionRoute.puzzleStackTemplate.steps[0]?.stage !== "#1 entrada"
+                        || sectionRoute.puzzleStackTemplate.steps.at(-1)?.stage !== "#3 salida"
+                        || !Array.isArray(sectionRoute.internalRoutes)
+                        || sectionRoute.internalRouteCount !== sectionRoute.internalRoutes.length
+                        || sectionRoute.internalRoutes.some((internalRoute) => (
+                            internalRoute.kind !== "andrews-internal-subsection-source-gated-route-contract"
+                            || internalRoute.parentRouteId !== sectionRoute.id
+                            || !internalRoute.formulaTransition
+                            || !internalRoute.formulaTemplate
+                            || internalRoute.structuralInfo?.routeScope !== "andrews-internal-subsection"
+                            || internalRoute.structuralInfo?.logicPathType !== "source-gated derivational route"
+                            || internalRoute.structuralInfo?.derivationStatus === "generic-andrews-internal-route"
+                            || !internalRoute.structuralInfo?.sourcePathFormula
+                            || internalRoute.structuralInfo?.uiHost !== "tense-tabs-column"
+                            || internalRoute.sourceGate?.gated !== true
+                            || internalRoute.puzzleStackTemplate?.model !== "entrada-formula-salida"
+                            || !Array.isArray(internalRoute.puzzleStackTemplate?.steps)
+                            || internalRoute.puzzleStackTemplate.steps[0]?.stage !== "#1 entrada"
+                            || internalRoute.puzzleStackTemplate.steps.at(-1)?.stage !== "#3 salida"
+                        ))
+                    ));
+            })
+            .map((lesson) => lesson.id),
+        []
+    );
+    s.eq(
+        "source-gated trajectory routes preserve key Andrews formula transitions",
+        {
+            lesson2: lessons[2].trajectory.sourceGatedRoute.formulaTransition,
+            lesson4: lessons[4].trajectory.sourceGatedRoute.formulaTemplate,
+            lesson12: lessons[12].trajectory.sourceGatedRoute.formulaTemplate,
+            lesson46: lessons[46].trajectory.sourceGatedRoute.formulaTemplate,
+            lesson46SectionCount: lessons[46].trajectory.sourceGatedRoute.subsectionRouteCount,
+            lesson46SectionRefs: lessons[46].trajectory.sourceGatedRoute.subsectionRoutes.slice(0, 3).map((route) => route.andrewsRefs[0]),
+            lesson46LogicPathType: lessons[46].trajectory.sourceGatedRoute.structuralInfo.logicPathType,
+            lesson46InternalRefs: lessons[46].trajectory.sourceGatedRoute.subsectionRoutes
+                .find((route) => route.structuralInfo.section === "46.3")
+                .internalRoutes
+                .map((route) => route.andrewsRefs[0]),
+            lesson4631a: (() => {
+                const route = lessons[46].trajectory.sourceGatedRoute.subsectionRoutes
+                    .find((sectionRoute) => sectionRoute.structuralInfo.section === "46.3")
+                    .internalRoutes
+                    .find((internalRoute) => internalRoute.structuralInfo.internalSubsection === "46.3.1.a");
+                return {
+                    routeFamily: route.routeFamily,
+                    routeKind: route.routeKind,
+                    formulaTransition: route.formulaTransition,
+                    formulaTemplate: route.formulaTemplate,
+                    operation: route.operation,
+                    logicPathType: route.structuralInfo.logicPathType,
+                    sourceLayer: route.structuralInfo.sourceLayer,
+                    preteritAgentiveLayer: route.structuralInfo.preteritAgentiveLayer,
+                    relationalMatrix: route.structuralInfo.relationalMatrix,
+                    connectorLayer: route.structuralInfo.connectorLayer,
+                    exampleSource: route.structuralInfo.exampleSource,
+                    exampleTargetFormula: route.structuralInfo.exampleTargetFormula,
+                    exampleSurface: route.structuralInfo.exampleSurface,
+                    requirementIds: route.sourceGate.requirementIds,
+                    puzzleStackProfileKind: route.puzzleStackTemplate.profileKind,
+                    puzzleStackSteps: route.puzzleStackTemplate.steps.map((step) => [
+                        step.stage,
+                        step.piece,
+                        step.label,
+                        step.formula,
+                    ]),
+                    puzzleStackActionModel: route.puzzleStackTemplate.actionModel,
+                    puzzleStackActions: route.puzzleStackTemplate.actions.map((action) => [
+                        action.stage,
+                        action.inputFormula,
+                        action.selectablePiece,
+                        action.operation,
+                        action.outputFormula,
+                        action.sourceEvidence,
+                        action.routeBoundary,
+                        action.absolutiveAllomorph?.connectorFamily || "",
+                        Array.isArray(action.absolutiveAllomorph?.appliesAfter)
+                            ? action.absolutiveAllomorph.appliesAfter.join("/")
+                            : "",
+                        action.absolutiveAllomorph?.selector || "",
+                        action.absolutiveAllomorph?.previousNonZeroSegment || "",
+                        action.absolutiveAllomorph?.realizedConnector || "",
+                    ]),
+                    puzzleStackBuildModel: route.puzzleStackTemplate.buildModel,
+                    puzzleStackEntradaPolicy: route.puzzleStackTemplate.conjugatorEntradas.activeSlotPolicy,
+                    puzzleStackConjugatorRuns: route.puzzleStackTemplate.conjugatorEntradas.runs.map((run) => [
+                        run.id,
+                        run.activeEntrada,
+                        run.internalPath,
+                        run.contributes,
+                        run.attachTo,
+                        run.output,
+                    ]),
+                };
+            })(),
+            lesson54: lessons[54].trajectory.sourceGatedRoute.formulaTransition,
+            lesson1PuzzleStackProfile: lessons[1].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson2PuzzleStackProfile: lessons[2].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson3PuzzleStackProfile: lessons[3].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson4PuzzleStackProfile: lessons[4].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson5PuzzleStackProfile: lessons[5].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson6PuzzleStackProfile: lessons[6].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson7PuzzleStackProfile: lessons[7].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson8PuzzleStackProfile: lessons[8].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson9PuzzleStackProfile: lessons[9].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson10PuzzleStackProfile: lessons[10].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson11PuzzleStackProfile: lessons[11].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson12PuzzleStackProfile: lessons[12].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson13PuzzleStackProfile: lessons[13].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson14PuzzleStackProfile: lessons[14].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson15PuzzleStackProfile: lessons[15].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson16PuzzleStackProfile: lessons[16].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson17PuzzleStackProfile: lessons[17].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson18PuzzleStackProfile: lessons[18].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson19PuzzleStackProfile: lessons[19].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson20PuzzleStackProfile: lessons[20].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson21PuzzleStackProfile: lessons[21].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson22PuzzleStackProfile: lessons[22].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson24PuzzleStackProfile: lessons[24].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson26PuzzleStackProfile: lessons[26].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson27PuzzleStackProfile: lessons[27].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson35PuzzleStackProfile: lessons[35].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson36PuzzleStackProfile: lessons[36].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson37PuzzleStackProfile: lessons[37].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson39PuzzleStackProfile: lessons[39].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson46PuzzleStackProfile: lessons[46].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson51PuzzleStackProfile: lessons[51].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson54PuzzleStackProfile: lessons[54].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson55PuzzleStackProfile: lessons[55].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            lesson56PuzzleStackProfile: lessons[56].trajectory.sourceGatedRoute.puzzleStackTemplate.profileKind,
+            routeCount: lessonRegistry.filter((lesson) => lesson.trajectory.sourceGatedRoute?.sourceGate?.gated === true).length,
+            subsectionRouteCount: lessonRegistry.reduce((count, lesson) => count + lesson.trajectory.sourceGatedRoute.subsectionRouteCount, 0),
+            internalRouteCount: lessonRegistry.reduce((count, lesson) => count + lesson.trajectory.sourceGatedRoute.internalRouteCount, 0),
+            genericInternalRouteCount: lessonRegistry.reduce((count, lesson) => count + lesson.trajectory.sourceGatedRoute.subsectionRoutes.reduce((sectionCount, sectionRoute) => (
+                sectionCount + sectionRoute.internalRoutes.filter((route) => route.structuralInfo.derivationStatus === "generic-andrews-internal-route").length
+            ), 0), 0),
+            entrySpecificInternalRouteCount: lessonRegistry.reduce((count, lesson) => count + lesson.trajectory.sourceGatedRoute.subsectionRoutes.reduce((sectionCount, sectionRoute) => (
+                sectionCount + sectionRoute.internalRoutes.filter((route) => route.structuralInfo.derivationStatus === "entry-specific-andrews-internal-route").length
+            ), 0), 0),
+            sourcePathFormulaMissingCount: lessonRegistry.reduce((count, lesson) => count + lesson.trajectory.sourceGatedRoute.subsectionRoutes.reduce((sectionCount, sectionRoute) => (
+                sectionCount + sectionRoute.internalRoutes.filter((route) => !route.structuralInfo.sourcePathFormula).length
+            ), 0), 0),
+            puzzleStackMissingCount: lessonRegistry.reduce((count, lesson) => {
+                const route = lesson.trajectory.sourceGatedRoute;
+                return count
+                    + (route.puzzleStackTemplate?.model === "entrada-formula-salida" ? 0 : 1)
+                    + route.subsectionRoutes.filter((sectionRoute) => sectionRoute.puzzleStackTemplate?.model !== "entrada-formula-salida").length
+                    + route.subsectionRoutes.reduce((sectionCount, sectionRoute) => (
+                        sectionCount + sectionRoute.internalRoutes.filter((internalRoute) => internalRoute.puzzleStackTemplate?.model !== "entrada-formula-salida").length
+                    ), 0);
+            }, 0),
+            puzzleStackFallbackCount: lessonRegistry.reduce((count, lesson) => {
+                const route = lesson.trajectory.sourceGatedRoute;
+                return count
+                    + (route.puzzleStackTemplate?.profileKind === "source-gated-scaffold" ? 1 : 0)
+                    + route.subsectionRoutes.filter((sectionRoute) => sectionRoute.puzzleStackTemplate?.profileKind === "source-gated-scaffold").length
+                    + route.subsectionRoutes.reduce((sectionCount, sectionRoute) => (
+                        sectionCount + sectionRoute.internalRoutes.filter((internalRoute) => internalRoute.puzzleStackTemplate?.profileKind === "source-gated-scaffold").length
+                    ), 0);
+            }, 0),
+            puzzleStackProfileCounts: (() => {
+                const counts = lessonRegistry.reduce((acc, lesson) => {
+                    const route = lesson.trajectory.sourceGatedRoute;
+                    [
+                        route,
+                        ...route.subsectionRoutes,
+                        ...route.subsectionRoutes.flatMap((sectionRoute) => sectionRoute.internalRoutes),
+                    ].forEach((candidateRoute) => {
+                        const profileKind = candidateRoute.puzzleStackTemplate?.profileKind || "missing";
+                        acc[profileKind] = (acc[profileKind] || 0) + 1;
+                    });
+                    return acc;
+                }, {});
+                return Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
+            })(),
+        },
+        {
+            lesson2: "ANDREWS_TRANSCRIPTION->CLASSICAL_VISIBLE_SPELLING",
+            lesson4: "SOURCE_SLOTS -> #pers1-pers2(STEM)tense-num1-num2# OR #pers1-pers2(STEM)num1-num2#",
+            lesson12: "#pers1-pers2(STEM)num1-num2#",
+            lesson46: "SOURCE+RELATIONAL_MATRIX -> CNN(OPTION_TWO_RELATIONAL_NNC)",
+            lesson46SectionCount: 15,
+            lesson46SectionRefs: ["Andrews Lesson 46.1", "Andrews Lesson 46.2", "Andrews Lesson 46.3"],
+            lesson46LogicPathType: "source-gated derivational route",
+            lesson46InternalRefs: [
+                "Andrews Lesson 46.3.1",
+                "Andrews Lesson 46.3.1.a",
+                "Andrews Lesson 46.3.1.b",
+                "Andrews Lesson 46.3.2",
+                "Andrews Lesson 46.3.2.a",
+                "Andrews Lesson 46.3.2.b",
+            ],
+            lesson4631a: {
+                routeFamily: "relational-nnc",
+                routeKind: "preterit-agentive-embedded-source-locative",
+                formulaTransition: "CNV->CNN",
+                formulaTemplate: "(SOURCE-0-ka-n)-0-",
+                operation: "preterit-agentive-general-use-plus-locative-n-plus-zero-connector",
+                logicPathType: "source-gated derivational route",
+                sourceLayer: "embedded source action",
+                preteritAgentiveLayer: "-0-ka",
+                relationalMatrix: "(-n)-tli-",
+                connectorLayer: "-0-",
+                exampleSource: "(mich-namaka)",
+                exampleTargetFormula: "(mich-namaka-0-ka-n)-0-",
+                exampleSurface: "michnamakakan",
+                requirementIds: [
+                    "embedded-source-formula",
+                    "preterit-agentive-source",
+                    "locative-matrix-source",
+                    "andrews-section-source",
+                    "andrews-internal-subsection-source",
+                ],
+                puzzleStackProfileKind: "exact-46-3-1-a-preterit-agentive-locative",
+                puzzleStackSteps: [
+                    ["#1 entrada", "source", "embedded source", "(mich-namaka)"],
+                    ["#2 formula", "-0", "VNC preterit", "(mich-namaka-0)"],
+                    ["#2 formula", "-ka < absolutive t/ti", "VNC-NNC conversion", "(mich-namaka-0-ka)"],
+                    ["#2 formula", "-n < absolutive t/ti", "relational NNC", "(mich-namaka-0-ka-n)"],
+                    ["#2 formula", "-0-", "NNC connector", "(mich-namaka-0-ka-n)-0-"],
+                    ["#3 salida", "surface", "realization", "michnamakakan"],
+                ],
+                puzzleStackActionModel: "ordered-selectable-piece-transform",
+                puzzleStackActions: [
+                    ["#2 formula", "(mich-namaka)", "-0", "build the preterit predicate layer", "(mich-namaka-0)", "typed-classical-source-frame", "preterit-predicate", "", "", "", "", ""],
+                    ["#2 formula", "(mich-namaka-0)", "-ka < absolutive t/ti", "convert to the general-use preterit-agentive nounstem", "(mich-namaka-0-ka)", "Andrews 35.5 general-use preterit-agentive", "preterit-agentive-general-use-stem", "t/ti", "consonant/vowel", "previous-non-zero-segment", "ka", "t"],
+                    ["#2 formula", "(mich-namaka-0-ka)", "-n < absolutive t/ti", "add the locative relational matrix", "(mich-namaka-0-ka-n)", "Andrews 46.3.1.a immediate-source gate", "locative-compound-nounstem", "t/ti", "consonant/vowel", "previous-non-zero-segment", "n", "ti"],
+                    ["#2 formula", "(mich-namaka-0-ka-n)", "-0-", "select the frequent adverbialized CNN branch", "(mich-namaka-0-ka-n)-0-", "Andrews 46.3.1.a adverbialized branch", "adverbialized-nominal-nuclear-clause", "", "", "", "", ""],
+                    ["#3 salida", "(mich-namaka-0-ka-n)-0-", "surface", "realize formula boundaries in Classical Nahuatl spelling", "michnamakakan", "typed-classical-realization-frame", "surface-output", "", "", "", "", ""],
+                ],
+                puzzleStackBuildModel: "single-entrada-conjugator-orchestration",
+                puzzleStackEntradaPolicy: "one-source-at-a-time",
+                puzzleStackConjugatorRuns: [
+                    [
+                        "predicate-preterit-core",
+                        "(mich-namaka)",
+                        [
+                            "#pers1-pers2(mich-namaka)tense+num1-num2#",
+                            "(mich-namaka-0)",
+                        ],
+                        "main-stack",
+                        "",
+                        "(mich-namaka-0)",
+                    ],
+                    [
+                        "processed-layer-ka",
+                        "(ka)",
+                        ["(ka)", "absolutive t/ti after previous non-zero ka -> t", "-ka"],
+                        "processed-layer",
+                        "(mich-namaka-0)",
+                        "(mich-namaka-0-ka)",
+                    ],
+                    [
+                        "processed-layer-n",
+                        "(n)",
+                        ["(n)", "absolutive t/ti after previous non-zero n -> ti", "-n"],
+                        "processed-layer",
+                        "(mich-namaka-0-ka)",
+                        "(mich-namaka-0-ka-n)",
+                    ],
+                    [
+                        "zero-connector",
+                        "Ø",
+                        ["Ø", "-0-"],
+                        "connector-layer",
+                        "(mich-namaka-0-ka-n)",
+                        "(mich-namaka-0-ka-n)-0-",
+                    ],
+                    [
+                        "final-relational-nnc-generation",
+                        "(mich-namaka)",
+                        [
+                            "sourceVerb: namaka",
+                            "incorporatedNounStem: mich",
+                            "(mich-namaka-0-ka-n)-0-",
+                            "michnamakakan",
+                        ],
+                        "salida",
+                        "(mich-namaka-0-ka-n)-0-",
+                        "michnamakakan",
+                    ],
+                ],
+            },
+            lesson54: "CNN->CNV",
+            lesson1PuzzleStackProfile: "exact-grammar-concept-route",
+            lesson2PuzzleStackProfile: "exact-contextual-classical-realization-route",
+            lesson3PuzzleStackProfile: "exact-particle-boundary-route",
+            lesson4PuzzleStackProfile: "exact-nuclear-clause-shell",
+            lesson5PuzzleStackProfile: "exact-intransitive-cnv-shell",
+            lesson6PuzzleStackProfile: "exact-transitive-cnv-shell",
+            lesson7PuzzleStackProfile: "exact-verbstem-class-route",
+            lesson8PuzzleStackProfile: "exact-expanded-cnv-sentence-route",
+            lesson9PuzzleStackProfile: "exact-optative-sentence-route",
+            lesson10PuzzleStackProfile: "exact-admonitive-sentence-route",
+            lesson11PuzzleStackProfile: "exact-irregular-cnv-route",
+            lesson12PuzzleStackProfile: "exact-absolutive-cnn-shell",
+            lesson13PuzzleStackProfile: "exact-possessive-cnn-shell",
+            lesson14PuzzleStackProfile: "exact-nounstem-class-route",
+            lesson15PuzzleStackProfile: "exact-possessive-source-route",
+            lesson16PuzzleStackProfile: "exact-pronominal-cnn-route",
+            lesson17PuzzleStackProfile: "exact-supplementation-relation-route",
+            lesson18PuzzleStackProfile: "exact-supplementation-relation-route",
+            lesson19PuzzleStackProfile: "exact-supplementation-relation-route",
+            lesson20PuzzleStackProfile: "exact-nonactive-verbstem-route",
+            lesson21PuzzleStackProfile: "exact-passive-voice-route",
+            lesson22PuzzleStackProfile: "exact-impersonal-voice-route",
+            lesson24PuzzleStackProfile: "exact-causative-route",
+            lesson26PuzzleStackProfile: "exact-applicative-route",
+            lesson27PuzzleStackProfile: "exact-frequentative-route",
+            lesson35PuzzleStackProfile: "exact-preterit-agentive-nominalization",
+            lesson36PuzzleStackProfile: "exact-nominalized-vnc-route",
+            lesson37PuzzleStackProfile: "exact-deverbal-nounstem-route",
+            lesson39PuzzleStackProfile: "exact-patientive-nominalization",
+            lesson46PuzzleStackProfile: "exact-relational-function-route",
+            lesson51PuzzleStackProfile: "exact-complement-clause-route",
+            lesson54PuzzleStackProfile: "exact-denominal-part-one-route",
+            lesson55PuzzleStackProfile: "exact-denominal-part-two-route",
+            lesson56PuzzleStackProfile: "exact-personal-name-nnc-route",
+            routeCount: 58,
+            subsectionRouteCount: 507,
+            internalRouteCount: 921,
+            genericInternalRouteCount: 0,
+            entrySpecificInternalRouteCount: 0,
+            sourcePathFormulaMissingCount: 0,
+            puzzleStackMissingCount: 0,
+            puzzleStackFallbackCount: 0,
+            puzzleStackProfileCounts: {
+                "exact-46-3-1-a-preterit-agentive-locative": 1,
+                "exact-absolutive-cnn-shell": 17,
+                "exact-active-action-nominalization": 8,
+                "exact-active-voice-route": 14,
+                "exact-adjectival-function-route": 55,
+                "exact-adjunction-clause-route": 29,
+                "exact-admonitive-sentence-route": 6,
+                "exact-adverbial-function-route": 22,
+                "exact-affective-nnc-route": 12,
+                "exact-applicative-route": 27,
+                "exact-causative-route": 56,
+                "exact-cnv-tense-source-route": 24,
+                "exact-comparison-route": 10,
+                "exact-complement-clause-route": 20,
+                "exact-conjunction-clause-route": 18,
+                "exact-contextual-classical-realization-route": 17,
+                "exact-contextual-time-valence-supplementation-composition": 9,
+                "exact-denominal-part-one-route": 7,
+                "exact-denominal-part-two-route": 8,
+                "exact-destockal-denominal-route": 16,
+                "exact-deverbal-nounstem-route": 15,
+                "exact-diagnostic-adjectival-frame-route": 8,
+                "exact-diagnostic-adverbial-frame-route": 1,
+                "exact-diagnostic-classified-route": 32,
+                "exact-diagnostic-clause-relation-route": 18,
+                "exact-diagnostic-cnn-route": 57,
+                "exact-diagnostic-cnv-cnn-route": 16,
+                "exact-diagnostic-cnv-route": 42,
+                "exact-diagnostic-concept-frame-route": 6,
+                "exact-diagnostic-derived-route": 4,
+                "exact-diagnostic-formula-slot-route": 3,
+                "exact-diagnostic-grammar-frame-route": 39,
+                "exact-diagnostic-modification-route": 4,
+                "exact-diagnostic-orthography-route": 3,
+                "exact-diagnostic-particle-boundary-route": 2,
+                "exact-diagnostic-phonology-route": 15,
+                "exact-diagnostic-sentence-route": 6,
+                "exact-diagnostic-stem-route": 5,
+                "exact-diagnostic-target-route": 12,
+            "exact-diagnostic-text-route": 93,
+                "exact-expanded-cnv-sentence-route": 7,
+                "exact-formation-procedure-route": 7,
+                "exact-formula-subposition-route": 23,
+                "exact-frequentative-route": 9,
+                "exact-grammar-concept-route": 13,
+                "exact-honorific-pejorative-route": 11,
+                "exact-impersonal-voice-route": 19,
+                "exact-instrumental-construction-supplementation-composition": 10,
+                "exact-intransitive-cnv-shell": 27,
+                "exact-irregular-cnv-route": 7,
+                "exact-matrix-source-route": 17,
+                "exact-nominal-compound-route": 33,
+                "exact-nominal-state-slot-route": 5,
+                "exact-nominalized-vnc-route": 13,
+                "exact-nonactive-verbstem-route": 15,
+                "exact-nounstem-class-route": 9,
+                "exact-nuclear-clause-shell": 7,
+                "exact-numeral-nnc-route": 21,
+                "exact-optative-sentence-route": 21,
+                "exact-particle-boundary-route": 7,
+                "exact-passive-voice-route": 18,
+                "exact-patientive-nominalization": 25,
+                "exact-personal-name-nnc-route": 6,
+                "exact-place-gentilic-route": 24,
+                "exact-possessive-cnn-shell": 20,
+                "exact-possessive-source-route": 6,
+                "exact-prefix-slot-route": 9,
+                "exact-preterit-agentive-nominalization": 23,
+                "exact-pronominal-cnn-route": 35,
+                "exact-purposive-directional-route": 8,
+                "exact-relational-function-route": 41,
+                "exact-relational-nnc-route": 9,
+                "exact-root-to-stem-route": 7,
+                "exact-stem-classification-route": 26,
+                "exact-subject-slot-route": 11,
+                "exact-suffix-slot-route": 4,
+                "exact-supplementation-relation-route": 36,
+                "exact-tense-slot-route": 14,
+                "exact-transitive-cnv-shell": 44,
+                "exact-verbal-embed-compound-route": 71,
+                "exact-verbstem-class-route": 11,
+            },
+        }
+    );
+    s.eq(
+        "lesson trajectory keeps every Andrews lesson as one ordered step",
+        lessonRegistry.map((lesson) => lesson.trajectory.stepNumber),
+        Array.from({ length: 58 }, (_, index) => index + 1)
+    );
+    s.eq(
+        "implemented lessons are audited and kept by the Andrews trajectory",
+        lessonRegistry
+            .filter((lesson) => lesson.status === "implemented")
+            .map((lesson) => [
+                lesson.id,
+                lesson.trajectory.implementationState,
+                lesson.trajectory.redirectAction,
+                lesson.trajectory.aimStatus,
+                lesson.trajectory.closestPass,
+                lesson.trajectory.remainingGap,
+                lesson.trajectory.hitCount,
+                lesson.trajectory.missCount,
+                lesson.trajectory.validationRefs.some((ref) => /^src\/tests\/|^scripts\//.test(ref)),
+            ]),
+        [
+            [1, "implemented-audited", "keep", "closest-pass", true, "none", 2, 0, true],
+            [5, "implemented-audited", "keep", "closest-pass", true, "none", 3, 0, true],
+            [6, "implemented-audited", "keep", "closest-pass", true, "none", 3, 0, true],
+            [7, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+            [20, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+            [53, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+            [56, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+            [57, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+            [58, "implemented-audited", "keep", "closest-pass", true, "none", 1, 0, true],
+        ]
+    );
+    s.eq(
+        "closest-pass lessons only contain validated hit arrows",
+        lessonRegistry
+            .filter((lesson) => lesson.trajectory.closestPass)
+            .filter((lesson) => {
+                const firedArrows = lesson.trajectory.firedArrows;
+                return lesson.trajectory.remainingGap !== "none"
+                    || !firedArrows.length
+                    || firedArrows.some((arrow) => {
+                        return arrow.result !== "hit"
+                            || !Array.isArray(arrow.andrewsRefs)
+                            || !arrow.andrewsRefs.length
+                            || !Array.isArray(arrow.feedbackRefs)
+                            || !arrow.feedbackRefs.length;
+                    });
+            })
+            .map((lesson) => lesson.id),
+        []
+    );
+    s.eq(
+        "partial lessons stay in shooting state with visible gaps",
+        lessonRegistry
+            .filter((lesson) => lesson.status === "partially-implemented")
+            .filter((lesson) => lesson.trajectory.aimStatus !== "shooting" || lesson.trajectory.closestPass || lesson.trajectory.remainingGap === "none")
+            .map((lesson) => lesson.id),
+        []
+    );
+    s.eq(
+        "foundation lessons are seeded with direct redirect decisions",
+        [1, 2, 3, 4].map((lessonId) => [
+            lessonId,
+            lessons[lessonId].trajectory.canvasRefs[0],
+            lessons[lessonId].trajectory.redirectAction,
+            lessons[lessonId].trajectory.orthographyStatus,
+        ]),
+        [
+            [1, "Andrews Lesson 1", "keep", "not-surface-bearing"],
+            [2, "Andrews Lesson 2.1-2.16", "source-gated", "contextual-classical-realization-required"],
+            [3, "Andrews Lesson 3", "diagnostic-only", "orthography-adapted-seed-only"],
+            [4, "Andrews Lesson 4.1-4.6", "reframe-metadata", "not-surface-bearing"],
+        ]
+    );
+    function carriesPlanPursueCorrectnessProbe(text) {
+        return /Correcci[oó]n antes de existencia/.test(text)
+            && /ruta de entrada a salida/.test(text)
+            && /comportamiento/.test(text)
+            && /existencia/.test(text)
+            && /sonda de fallo/.test(text);
+    }
+    s.eq(
+        "early Plan/Pursue shots require correctness before existence probes",
+        [1, 2, 3, 4, 5].map((lessonId) => {
+            const trajectory = lessons[lessonId].trajectory;
+            return [
+                lessonId,
+                trajectory.plannedArrows.every((arrow) => carriesPlanPursueCorrectnessProbe(arrow.aim)),
+                trajectory.firedArrows.every((arrow) => carriesPlanPursueCorrectnessProbe(arrow.correction)),
+            ];
+        }),
+        [
+            [1, true, true],
+            [2, true, true],
+            [3, true, true],
+            [4, true, true],
+            [5, true, true],
+        ]
+    );
+    s.eq(
+        "not-mapped lessons are redirected away from generation",
+        lessonRegistry
+            .filter((lesson) => lesson.status === "not-mapped")
+            .map((lesson) => [
+                lesson.id,
+                lesson.trajectory.implementationState,
+                lesson.trajectory.redirectAction,
+                lesson.trajectory.aimStatus,
+                lesson.trajectory.closestPass,
+                lesson.trajectory.firedArrows.length,
+            ]),
+        []
+    );
+    [2, 3, 4, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19].forEach((lessonId) => {
+        s.eq(`lesson ${lessonId} is partial Andrews coverage`, lessons[lessonId].status, "partially-implemented");
+    });
+    s.eq("lesson 1 concept glossary layer is implemented as diagnostic UI", lessons[1].status, "implemented");
+    s.ok("lesson 1 notes visible concept glossary without generation", /glosario visible de Lección 1/.test(lessons[1].notes) && /no se licencia generación/.test(lessons[1].notes));
+    s.ok("lesson 2 notes Classical orthography gap", /ortografía de Andrews\/clásica/.test(lessons[2].notes));
+    s.eq(
+        "lesson 2 trajectory records the active Plan/Pursue shot",
+        {
+            plannedArrowIds: lessons[2].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[2].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[2].trajectory.remainingGap,
+            closestPass: lessons[2].trajectory.closestPass,
+        },
+        {
+            plannedArrowIds: [
+                "lesson-2-subsection-coverage-audit",
+                "lesson-2-formula-orthography-authority-audit",
+            ],
+            firedArrowIds: [
+                ["lesson-2-subsection-coverage-audit", "hit"],
+                ["lesson-2-formula-orthography-authority-audit", "hit"],
+            ],
+            remainingGap: "Siguen bloqueadas, solo diagnósticas o pendientes de evidencia ortografica y fuente Andrews concreta: longitud vocálica, acento/prosodia, consonantes largas, alternancia glotal y elecciones ortográficas sensibles a evidencia.",
+            closestPass: false,
+        }
+    );
+    s.eq(
+        "lesson 3 trajectory records the active Plan/Pursue shot",
+        {
+            plannedArrowIds: lessons[3].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[3].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[3].trajectory.remainingGap,
+            closestPass: lessons[3].trajectory.closestPass,
+        },
+        {
+            plannedArrowIds: [
+                "lesson-3-pdf-example-transfer-audit",
+                "lesson-3-formula-boundary-audit",
+            ],
+            firedArrowIds: [
+                ["lesson-3-pdf-example-transfer-audit", "hit"],
+                ["lesson-3-formula-boundary-audit", "hit"],
+            ],
+            remainingGap: "Siguen pendientes de evidencia: inventario local confirmado de partículas Classical Nahuatl, evidencia de colocación y generación; modo Partícula permanece solo diagnóstico.",
+            closestPass: false,
+        }
+    );
+    s.ok("lesson 3 notes particle inventory gap", /metadatos de colocación de partículas/.test(lessons[3].notes));
+    s.eq(
+        "lesson 4 trajectory records the active Plan/Pursue shot",
+        {
+            plannedArrowIds: lessons[4].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[4].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[4].trajectory.remainingGap,
+            closestPass: lessons[4].trajectory.closestPass,
+        },
+        {
+            plannedArrowIds: [
+                "lesson-4-subsection-coverage-audit",
+                "lesson-4-formula-authority-audit",
+            ],
+            firedArrowIds: [
+                ["lesson-4-subsection-coverage-audit", "hit"],
+                ["lesson-4-formula-authority-audit", "hit"],
+            ],
+            remainingGap: "Siguen parciales o pendientes de evidencia: sintaxis oracional, registro de datos de fórmula, contexto de referencia de tercera persona y paradigmas detallados de rellenador de cláusula verbal/nominal.",
+            closestPass: false,
+        }
+    );
+    s.ok("lesson 4 notes nuclear-clause shell gap", /envoltura de cláusula nuclear/.test(lessons[4].notes));
+    s.eq(
+        "lesson 5 trajectory records the intransitive CNV closest-pass shot",
+        {
+            canvasRefs: lessons[5].trajectory.canvasRefs,
+            redirectAction: lessons[5].trajectory.redirectAction,
+            evidenceStatus: lessons[5].trajectory.evidenceStatus,
+            orthographyStatus: lessons[5].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[5].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[5].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[5].trajectory.remainingGap,
+            closestPass: lessons[5].trajectory.closestPass,
+        },
+        {
+            canvasRefs: ["Andrews Lesson 5.1-5.5"],
+            redirectAction: "keep",
+            evidenceStatus: "direct-source-with-classical-realization",
+            orthographyStatus: "classical-contextual-generation-for-lesson-6-object-dyads",
+            plannedArrowIds: [
+                "lesson-5-intransitive-vnc-audit",
+                "lesson-5-optative-formula-authority-audit",
+                "lesson-5-tense-morph-formula-authority-audit",
+            ],
+            firedArrowIds: [
+                ["lesson-5-intransitive-vnc-audit", "hit"],
+                ["lesson-5-optative-formula-authority-audit", "hit"],
+                ["lesson-5-tense-morph-formula-authority-audit", "hit"],
+            ],
+            remainingGap: "none",
+            closestPass: true,
+        }
+    );
+    s.eq(
+        "lesson 6 trajectory records the transitive CNV closest-pass shot",
+        {
+            canvasRefs: lessons[6].trajectory.canvasRefs,
+            redirectAction: lessons[6].trajectory.redirectAction,
+            evidenceStatus: lessons[6].trajectory.evidenceStatus,
+            orthographyStatus: lessons[6].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[6].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[6].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[6].trajectory.remainingGap,
+            closestPass: lessons[6].trajectory.closestPass,
+        },
+        {
+            canvasRefs: ["Andrews Lesson 6.1-6.7"],
+            redirectAction: "keep",
+            evidenceStatus: "direct-source-with-classical-realization",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: [
+                "lesson-6-transitive-vnc-audit",
+                "lesson-6-valence-formula-authority-audit",
+                "lesson-6-shuntline-ne-direct-generation-audit",
+            ],
+            firedArrowIds: [
+                ["lesson-6-transitive-vnc-audit", "hit"],
+                ["lesson-6-valence-formula-authority-audit", "hit"],
+                ["lesson-6-shuntline-ne-direct-generation-audit", "hit"],
+            ],
+            remainingGap: "none",
+            closestPass: true,
+        }
+    );
+    s.eq(
+        "lesson 7 trajectory records the verbstem-class closest-pass shot",
+        {
+            canvasRefs: lessons[7].trajectory.canvasRefs,
+            redirectAction: lessons[7].trajectory.redirectAction,
+            evidenceStatus: lessons[7].trajectory.evidenceStatus,
+            orthographyStatus: lessons[7].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[7].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[7].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            remainingGap: lessons[7].trajectory.remainingGap,
+            closestPass: lessons[7].trajectory.closestPass,
+        },
+        {
+            canvasRefs: ["Andrews Lesson 7.1-7.10"],
+            redirectAction: "keep",
+            evidenceStatus: "direct-source-with-classical-realization",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-7-verbstem-class-audit"],
+            firedArrowIds: [["lesson-7-verbstem-class-audit", "hit"]],
+            remainingGap: "none",
+            closestPass: true,
+        }
+    );
+    s.eq(
+        "lesson 8 trajectory records the expanded-CNV sentence-layer partial shot",
+        {
+            canvasRefs: lessons[8].trajectory.canvasRefs,
+            redirectAction: lessons[8].trajectory.redirectAction,
+            evidenceStatus: lessons[8].trajectory.evidenceStatus,
+            orthographyStatus: lessons[8].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[8].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[8].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[8].trajectory.aimStatus,
+            closestPass: lessons[8].trajectory.closestPass,
+            remainingGapMentionsSentenceGeneration: /generación oracional/.test(lessons[8].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 8.1-8.6"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-8-expanded-vnc-basic-sentence-audit"],
+            firedArrowIds: [["lesson-8-expanded-vnc-basic-sentence-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSentenceGeneration: true,
+        }
+    );
+    s.eq(
+        "lesson 9 trajectory records the optative sentence-layer partial shot",
+        {
+            canvasRefs: lessons[9].trajectory.canvasRefs,
+            redirectAction: lessons[9].trajectory.redirectAction,
+            evidenceStatus: lessons[9].trajectory.evidenceStatus,
+            orthographyStatus: lessons[9].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[9].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[9].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[9].trajectory.aimStatus,
+            closestPass: lessons[9].trajectory.closestPass,
+            remainingGapMentionsOptative: /optativ/.test(lessons[9].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 9.1-9.9"],
+            redirectAction: "reframe-metadata",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-9-optative-sentence-audit"],
+            firedArrowIds: [["lesson-9-optative-sentence-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsOptative: true,
+        }
+    );
+    s.eq(
+        "lesson 10 trajectory records the admonitive sentence-layer partial shot",
+        {
+            canvasRefs: lessons[10].trajectory.canvasRefs,
+            redirectAction: lessons[10].trajectory.redirectAction,
+            evidenceStatus: lessons[10].trajectory.evidenceStatus,
+            orthographyStatus: lessons[10].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[10].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[10].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[10].trajectory.aimStatus,
+            closestPass: lessons[10].trajectory.closestPass,
+            remainingGapMentionsAdmonitive: /admonitiv/.test(lessons[10].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 10.1-10.5"],
+            redirectAction: "reframe-metadata",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-10-admonitive-sentence-audit"],
+            firedArrowIds: [["lesson-10-admonitive-sentence-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsAdmonitive: true,
+        }
+    );
+    s.eq(
+        "lesson 11 trajectory records the irregular VNC partial shot",
+        {
+            canvasRefs: lessons[11].trajectory.canvasRefs,
+            redirectAction: lessons[11].trajectory.redirectAction,
+            evidenceStatus: lessons[11].trajectory.evidenceStatus,
+            orthographyStatus: lessons[11].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[11].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[11].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[11].trajectory.aimStatus,
+            closestPass: lessons[11].trajectory.closestPass,
+            remainingGapMentionsIrregulars: /irregular/.test(lessons[11].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 11.1-11.6"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-11-irregular-vnc-audit"],
+            firedArrowIds: [["lesson-11-irregular-vnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsIrregulars: true,
+        }
+    );
+    s.eq(
+        "lesson 12 trajectory records the absolutive NNC partial shot",
+        {
+            canvasRefs: lessons[12].trajectory.canvasRefs,
+            redirectAction: lessons[12].trajectory.redirectAction,
+            evidenceStatus: lessons[12].trajectory.evidenceStatus,
+            orthographyStatus: lessons[12].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[12].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[12].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[12].trajectory.aimStatus,
+            closestPass: lessons[12].trajectory.closestPass,
+            remainingGapMentionsFormulaSlots: /posiciones de fórmula/.test(lessons[12].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 12.1-12.7"],
+            redirectAction: "reframe-metadata",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-12-absolutive-nnc-audit"],
+            firedArrowIds: [["lesson-12-absolutive-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsFormulaSlots: true,
+        }
+    );
+    s.eq(
+        "lesson 13 trajectory records the possessive NNC partial shot",
+        {
+            canvasRefs: lessons[13].trajectory.canvasRefs,
+            redirectAction: lessons[13].trajectory.redirectAction,
+            evidenceStatus: lessons[13].trajectory.evidenceStatus,
+            orthographyStatus: lessons[13].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[13].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[13].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[13].trajectory.aimStatus,
+            closestPass: lessons[13].trajectory.closestPass,
+            remainingGapMentionsPossessive: /estado posesivo/.test(lessons[13].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 13.1-13.6"],
+            redirectAction: "reframe-metadata",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-13-possessive-nnc-audit"],
+            firedArrowIds: [["lesson-13-possessive-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPossessive: true,
+        }
+    );
+    s.eq(
+        "lesson 14 trajectory records the nounstem-class partial shot",
+        {
+            canvasRefs: lessons[14].trajectory.canvasRefs,
+            redirectAction: lessons[14].trajectory.redirectAction,
+            evidenceStatus: lessons[14].trajectory.evidenceStatus,
+            orthographyStatus: lessons[14].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[14].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[14].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[14].trajectory.aimStatus,
+            closestPass: lessons[14].trajectory.closestPass,
+            remainingGapMentionsClass: /compatibilidad activa de clase/.test(lessons[14].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 14.1-14.8"],
+            redirectAction: "reframe-metadata",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-14-nounstem-class-audit"],
+            firedArrowIds: [["lesson-14-nounstem-class-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsClass: true,
+        }
+    );
+    s.eq(
+        "lesson 15 trajectory records the further-NNC partial shot",
+        {
+            canvasRefs: lessons[15].trajectory.canvasRefs,
+            redirectAction: lessons[15].trajectory.redirectAction,
+            evidenceStatus: lessons[15].trajectory.evidenceStatus,
+            orthographyStatus: lessons[15].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[15].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[15].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[15].trajectory.aimStatus,
+            closestPass: lessons[15].trajectory.closestPass,
+            remainingGapMentionsNaturalPossession: /posesión natural/.test(lessons[15].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 15.1-15.3"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-15-further-nnc-audit"],
+            firedArrowIds: [["lesson-15-further-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsNaturalPossession: true,
+        }
+    );
+    s.eq(
+        "lesson 16 trajectory records the pronominal-NNC partial shot",
+        {
+            canvasRefs: lessons[16].trajectory.canvasRefs,
+            redirectAction: lessons[16].trajectory.redirectAction,
+            evidenceStatus: lessons[16].trajectory.evidenceStatus,
+            orthographyStatus: lessons[16].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[16].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[16].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[16].trajectory.aimStatus,
+            closestPass: lessons[16].trajectory.closestPass,
+            remainingGapMentionsPronominal: /cláusula nominal pronominal/.test(lessons[16].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 16.1-16.9"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-16-pronominal-nnc-audit"],
+            firedArrowIds: [["lesson-16-pronominal-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPronominal: true,
+        }
+    );
+    s.eq(
+        "lesson 17 trajectory records the supplementation partial shot",
+        {
+            canvasRefs: lessons[17].trajectory.canvasRefs,
+            redirectAction: lessons[17].trajectory.redirectAction,
+            evidenceStatus: lessons[17].trajectory.evidenceStatus,
+            orthographyStatus: lessons[17].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[17].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[17].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[17].trajectory.aimStatus,
+            closestPass: lessons[17].trajectory.closestPass,
+            remainingGapMentionsSupplementationAst: /AST de suplementación/.test(lessons[17].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 17.1-17.6"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-17-supplementation-audit"],
+            firedArrowIds: [["lesson-17-supplementation-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSupplementationAst: true,
+        }
+    );
+    s.eq(
+        "lesson 18 trajectory records the supplementation part-two partial shot",
+        {
+            canvasRefs: lessons[18].trajectory.canvasRefs,
+            redirectAction: lessons[18].trajectory.redirectAction,
+            evidenceStatus: lessons[18].trajectory.evidenceStatus,
+            orthographyStatus: lessons[18].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[18].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[18].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[18].trajectory.aimStatus,
+            closestPass: lessons[18].trajectory.closestPass,
+            remainingGapMentionsVocative: /vocativa/.test(lessons[18].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 18.1-18.12"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-18-supplementation-part-two-audit"],
+            firedArrowIds: [["lesson-18-supplementation-part-two-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsVocative: true,
+        }
+    );
+    s.eq(
+        "lesson 19 trajectory records the supplementation part-three partial shot",
+        {
+            canvasRefs: lessons[19].trajectory.canvasRefs,
+            redirectAction: lessons[19].trajectory.redirectAction,
+            evidenceStatus: lessons[19].trajectory.evidenceStatus,
+            orthographyStatus: lessons[19].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[19].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[19].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[19].trajectory.aimStatus,
+            closestPass: lessons[19].trajectory.closestPass,
+            remainingGapMentionsIncludedReferent: /referente incluido/.test(lessons[19].trajectory.remainingGap),
+        },
+        {
+            canvasRefs: ["Andrews Lesson 19.1-19.6"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-19-supplementation-part-three-audit"],
+            firedArrowIds: [["lesson-19-supplementation-part-three-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsIncludedReferent: true,
+        }
+    );
+    s.eq(
+        "lesson 20 trajectory records the nonactive closest-pass shot",
+        {
+            canvasRefs: lessons[20].trajectory.canvasRefs,
+            redirectAction: lessons[20].trajectory.redirectAction,
+            evidenceStatus: lessons[20].trajectory.evidenceStatus,
+            orthographyStatus: lessons[20].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[20].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[20].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[20].trajectory.aimStatus,
+            closestPass: lessons[20].trajectory.closestPass,
+            remainingGap: lessons[20].trajectory.remainingGap,
+        },
+        {
+            canvasRefs: ["Andrews Lesson 20.1-20.8"],
+            redirectAction: "keep",
+            evidenceStatus: "direct-source-with-classical-realization",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-20-nonactive-verbstem-audit"],
+            firedArrowIds: [["lesson-20-nonactive-verbstem-audit", "hit"]],
+            aimStatus: "closest-pass",
+            closestPass: true,
+            remainingGap: "none",
+        }
+    );
+    s.eq(
+        "lesson 21 trajectory records the passive-voice partial shot",
+        {
+            status: lessons[21].status,
+            canvasRefs: lessons[21].trajectory.canvasRefs,
+            redirectAction: lessons[21].trajectory.redirectAction,
+            evidenceStatus: lessons[21].trajectory.evidenceStatus,
+            orthographyStatus: lessons[21].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[21].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[21].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[21].trajectory.aimStatus,
+            closestPass: lessons[21].trajectory.closestPass,
+            remainingGapMentionsPassiveImpersonal: /pasiva\/impersonal/.test(lessons[21].trajectory.remainingGap),
+            remainingGapMentionsNonspecific: /no específico/.test(lessons[21].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 21.1-21.4"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-21-passive-voice-audit"],
+            firedArrowIds: [["lesson-21-passive-voice-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPassiveImpersonal: true,
+            remainingGapMentionsNonspecific: true,
+        }
+    );
+    s.eq(
+        "lesson 22 trajectory records the impersonal-voice partial shot",
+        {
+            status: lessons[22].status,
+            canvasRefs: lessons[22].trajectory.canvasRefs,
+            redirectAction: lessons[22].trajectory.redirectAction,
+            evidenceStatus: lessons[22].trajectory.evidenceStatus,
+            orthographyStatus: lessons[22].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[22].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[22].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[22].trajectory.aimStatus,
+            closestPass: lessons[22].trajectory.closestPass,
+            remainingGapMentionsPassiveImpersonal: /pasiva\/impersonal/.test(lessons[22].trajectory.remainingGap),
+            remainingGapMentionsTa: /te\/ta/.test(lessons[22].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 22.1-22.6"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-22-impersonal-voice-audit"],
+            firedArrowIds: [["lesson-22-impersonal-voice-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPassiveImpersonal: true,
+            remainingGapMentionsTa: true,
+        }
+    );
+    s.eq(
+        "lesson 23 trajectory records the verb-object partial shot",
+        {
+            status: lessons[23].status,
+            canvasRefs: lessons[23].trajectory.canvasRefs,
+            redirectAction: lessons[23].trajectory.redirectAction,
+            evidenceStatus: lessons[23].trajectory.evidenceStatus,
+            orthographyStatus: lessons[23].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[23].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[23].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[23].trajectory.aimStatus,
+            closestPass: lessons[23].trajectory.closestPass,
+            remainingGapMentionsMainline: /línea principal\/línea desviada/.test(lessons[23].trajectory.remainingGap),
+            remainingGapMentionsAppendixC: /Apéndice C/.test(lessons[23].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 23.1-23.5"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-23-verb-objects-audit"],
+            firedArrowIds: [["lesson-23-verb-objects-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsMainline: true,
+            remainingGapMentionsAppendixC: true,
+        }
+    );
+    s.eq(
+        "lesson 24 trajectory records the first-type causative partial shot",
+        {
+            status: lessons[24].status,
+            canvasRefs: lessons[24].trajectory.canvasRefs,
+            redirectAction: lessons[24].trajectory.redirectAction,
+            evidenceStatus: lessons[24].trajectory.evidenceStatus,
+            orthographyStatus: lessons[24].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[24].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[24].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[24].trajectory.aimStatus,
+            closestPass: lessons[24].trajectory.closestPass,
+            remainingGapMentionsDestockal: /desacerval/.test(lessons[24].trajectory.remainingGap),
+            remainingGapMentionsSourceCnv: /cláusula verbal a objeto/.test(lessons[24].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 24.1-24.9"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-24-first-type-causative-audit"],
+            firedArrowIds: [["lesson-24-first-type-causative-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsDestockal: true,
+            remainingGapMentionsSourceCnv: true,
+        }
+    );
+    s.eq(
+        "lesson 25 trajectory records the second-type causative partial shot",
+        {
+            status: lessons[25].status,
+            canvasRefs: lessons[25].trajectory.canvasRefs,
+            redirectAction: lessons[25].trajectory.redirectAction,
+            evidenceStatus: lessons[25].trajectory.evidenceStatus,
+            orthographyStatus: lessons[25].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[25].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[25].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[25].trajectory.aimStatus,
+            closestPass: lessons[25].trajectory.closestPass,
+            remainingGapMentionsObjectDepth: /uno\/dos\/tres/.test(lessons[25].trajectory.remainingGap),
+            remainingGapMentionsSilentObject: /objeto silencioso/.test(lessons[25].trajectory.remainingGap),
+            remainingGapMentionsPassiveImpersonal: /pasivos\/impersonales/.test(lessons[25].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 25.1-25.16"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-25-second-type-causative-audit"],
+            firedArrowIds: [["lesson-25-second-type-causative-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsObjectDepth: true,
+            remainingGapMentionsSilentObject: true,
+            remainingGapMentionsPassiveImpersonal: true,
+        }
+    );
+    s.eq(
+        "lesson 26 trajectory records the applicative partial shot",
+        {
+            status: lessons[26].status,
+            canvasRefs: lessons[26].trajectory.canvasRefs,
+            redirectAction: lessons[26].trajectory.redirectAction,
+            evidenceStatus: lessons[26].trajectory.evidenceStatus,
+            orthographyStatus: lessons[26].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[26].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[26].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[26].trajectory.aimStatus,
+            closestPass: lessons[26].trajectory.closestPass,
+            remainingGapMentionsObjectDepth: /uno\/dos\/tres/.test(lessons[26].trajectory.remainingGap),
+            remainingGapMentionsAppendixC: /Apéndice C/.test(lessons[26].trajectory.remainingGap),
+            remainingGapMentionsObjectUnit: /objeto-más-sufijo/.test(lessons[26].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 26.1-26.23"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-26-applicative-audit"],
+            firedArrowIds: [["lesson-26-applicative-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsObjectDepth: true,
+            remainingGapMentionsAppendixC: true,
+            remainingGapMentionsObjectUnit: true,
+        }
+    );
+    s.eq(
+        "lesson 27 trajectory records the frequentative partial shot",
+        {
+            status: lessons[27].status,
+            canvasRefs: lessons[27].trajectory.canvasRefs,
+            redirectAction: lessons[27].trajectory.redirectAction,
+            evidenceStatus: lessons[27].trajectory.evidenceStatus,
+            orthographyStatus: lessons[27].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[27].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[27].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[27].trajectory.aimStatus,
+            closestPass: lessons[27].trajectory.closestPass,
+            remainingGapMentionsObjectPronoun: /pronombre objeto/.test(lessons[27].trajectory.remainingGap),
+            remainingGapMentionsDestockal: /desacerval/.test(lessons[27].trajectory.remainingGap),
+            remainingGapMentionsGenericRedup: /reduplicación genérica/.test(lessons[27].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 27.1-27.6"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-27-frequentative-audit"],
+            firedArrowIds: [["lesson-27-frequentative-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsObjectPronoun: true,
+            remainingGapMentionsDestockal: true,
+            remainingGapMentionsGenericRedup: true,
+        }
+    );
+    s.eq(
+        "lesson 28 trajectory records the compound verbal-embed partial shot",
+        {
+            status: lessons[28].status,
+            canvasRefs: lessons[28].trajectory.canvasRefs,
+            redirectAction: lessons[28].trajectory.redirectAction,
+            evidenceStatus: lessons[28].trajectory.evidenceStatus,
+            orthographyStatus: lessons[28].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[28].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[28].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[28].trajectory.aimStatus,
+            closestPass: lessons[28].trajectory.closestPass,
+            remainingGapMentionsConnectiveT: /conectivo -t/.test(lessons[28].trajectory.remainingGap),
+            remainingGapMentionsSharedObject: /objeto compartido/.test(lessons[28].trajectory.remainingGap),
+            remainingGapMentionsFutureEmbed: /incrustación futura/.test(lessons[28].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 28.1-28.12"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-28-verbal-embed-compound-audit"],
+            firedArrowIds: [["lesson-28-verbal-embed-compound-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsConnectiveT: true,
+            remainingGapMentionsSharedObject: true,
+            remainingGapMentionsFutureEmbed: true,
+        }
+    );
+    s.eq(
+        "lesson 29 trajectory records the purposive VNC partial shot",
+        {
+            status: lessons[29].status,
+            canvasRefs: lessons[29].trajectory.canvasRefs,
+            redirectAction: lessons[29].trajectory.redirectAction,
+            evidenceStatus: lessons[29].trajectory.evidenceStatus,
+            orthographyStatus: lessons[29].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[29].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[29].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[29].trajectory.aimStatus,
+            closestPass: lessons[29].trajectory.closestPass,
+            remainingGapMentionsSilentFuture: /futuro silencioso/.test(lessons[29].trajectory.remainingGap),
+            remainingGapMentionsIrregularPlural: /plural irregular n/.test(lessons[29].trajectory.remainingGap),
+            remainingGapMentionsExternalDirectionals: /wal\/on/.test(lessons[29].trajectory.remainingGap),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 29.1-29.7"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-29-purposive-vnc-audit"],
+            firedArrowIds: [["lesson-29-purposive-vnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSilentFuture: true,
+            remainingGapMentionsIrregularPlural: true,
+            remainingGapMentionsExternalDirectionals: true,
+        }
+    );
+    s.eq(
+        "lesson 30 trajectory records the compound nominal-embed partial shot",
+        {
+            status: lessons[30].status,
+            canvasRefs: lessons[30].trajectory.canvasRefs,
+            redirectAction: lessons[30].trajectory.redirectAction,
+            evidenceStatus: lessons[30].trajectory.evidenceStatus,
+            orthographyStatus: lessons[30].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[30].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[30].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[30].trajectory.aimStatus,
+            closestPass: lessons[30].trajectory.closestPass,
+            remainingGapMentionsValenceLowering: /reducción de valencia/.test(lessons[30].trajectory.remainingGap),
+            remainingGapMentionsTlaFusion: /fusión ta/.test(lessons[30].trajectory.remainingGap),
+            remainingGapMentionsComplements: /complementos incorporados/.test(lessons[30].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 30\.1-30\.18/.test(lessons[30].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 30.1-30.18"],
+            redirectAction: "refactor-engine",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-30-nominal-embed-compound-audit"],
+            firedArrowIds: [["lesson-30-nominal-embed-compound-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsValenceLowering: true,
+            remainingGapMentionsTlaFusion: true,
+            remainingGapMentionsComplements: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 31 trajectory records the compound nounstem partial shot",
+        {
+            status: lessons[31].status,
+            canvasRefs: lessons[31].trajectory.canvasRefs,
+            redirectAction: lessons[31].trajectory.redirectAction,
+            evidenceStatus: lessons[31].trajectory.evidenceStatus,
+            orthographyStatus: lessons[31].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[31].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[31].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[31].trajectory.aimStatus,
+            closestPass: lessons[31].trajectory.closestPass,
+            remainingGapMentionsPossessorOrientation: /orientación de poseedor/.test(lessons[31].trajectory.remainingGap),
+            remainingGapMentionsConjunctive: /compuestos conjuntivos/.test(lessons[31].trajectory.remainingGap),
+            remainingGapMentionsDistributive: /distributivos\/varietales/.test(lessons[31].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 31\.1-31\.13/.test(lessons[31].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 31.1-31.13"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-31-compound-nounstem-audit"],
+            firedArrowIds: [["lesson-31-compound-nounstem-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPossessorOrientation: true,
+            remainingGapMentionsConjunctive: true,
+            remainingGapMentionsDistributive: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 32 trajectory records the affective NNC partial shot",
+        {
+            status: lessons[32].status,
+            canvasRefs: lessons[32].trajectory.canvasRefs,
+            redirectAction: lessons[32].trajectory.redirectAction,
+            evidenceStatus: lessons[32].trajectory.evidenceStatus,
+            orthographyStatus: lessons[32].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[32].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[32].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[32].trajectory.aimStatus,
+            closestPass: lessons[32].trajectory.closestPass,
+            remainingGapMentionsAffectiveMatrix: /matriz afectiva/.test(lessons[32].trajectory.remainingGap),
+            remainingGapMentionsFlawedSubject: /sujeto defectuoso/.test(lessons[32].trajectory.remainingGap),
+            remainingGapMentionsPilAmbiguity: /ambigüedad pil niño\/noble/.test(lessons[32].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 32\.1-32\.8/.test(lessons[32].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 32.1-32.8"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-32-affective-nnc-audit"],
+            firedArrowIds: [["lesson-32-affective-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsAffectiveMatrix: true,
+            remainingGapMentionsFlawedSubject: true,
+            remainingGapMentionsPilAmbiguity: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 33 trajectory records the honorific/pejorative VNC partial shot",
+        {
+            status: lessons[33].status,
+            canvasRefs: lessons[33].trajectory.canvasRefs,
+            redirectAction: lessons[33].trajectory.redirectAction,
+            evidenceStatus: lessons[33].trajectory.evidenceStatus,
+            orthographyStatus: lessons[33].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[33].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[33].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[33].trajectory.aimStatus,
+            closestPass: lessons[33].trajectory.closestPass,
+            remainingGapMentionsReverential: /generación reverencial/.test(lessons[33].trajectory.remainingGap),
+            remainingGapMentionsTzinoa: /tzin-u-a/.test(lessons[33].trajectory.remainingGap),
+            remainingGapMentionsPulua: /pul-u-a/.test(lessons[33].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 33\.1-33\.10/.test(lessons[33].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 33.1-33.10"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-33-honorific-pejorative-vnc-audit"],
+            firedArrowIds: [["lesson-33-honorific-pejorative-vnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsReverential: true,
+            remainingGapMentionsTzinoa: true,
+            remainingGapMentionsPulua: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 34 trajectory records the cardinal-numeral NNC partial shot",
+        {
+            status: lessons[34].status,
+            canvasRefs: lessons[34].trajectory.canvasRefs,
+            redirectAction: lessons[34].trajectory.redirectAction,
+            evidenceStatus: lessons[34].trajectory.evidenceStatus,
+            orthographyStatus: lessons[34].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[34].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[34].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[34].trajectory.aimStatus,
+            closestPass: lessons[34].trajectory.closestPass,
+            remainingGapMentionsGrossCount: /conteo grueso/.test(lessons[34].trajectory.remainingGap),
+            remainingGapMentionsClassifiers: /conjuntos clasificadores/.test(lessons[34].trajectory.remainingGap),
+            remainingGapMentionsMeasures: /cláusulas nominales de medida/.test(lessons[34].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 34\.1-34\.16/.test(lessons[34].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 34.1-34.16"],
+            redirectAction: "block-generation",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-34-cardinal-numeral-nnc-audit"],
+            firedArrowIds: [["lesson-34-cardinal-numeral-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsGrossCount: true,
+            remainingGapMentionsClassifiers: true,
+            remainingGapMentionsMeasures: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 35 trajectory records the preterit-agentive nominalization partial shot",
+        {
+            status: lessons[35].status,
+            canvasRefs: lessons[35].trajectory.canvasRefs,
+            redirectAction: lessons[35].trajectory.redirectAction,
+            evidenceStatus: lessons[35].trajectory.evidenceStatus,
+            orthographyStatus: lessons[35].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[35].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[35].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[35].trajectory.aimStatus,
+            closestPass: lessons[35].trajectory.closestPass,
+            remainingGapMentionsNumberPosition: /alternancias de posición de número/.test(lessons[35].trajectory.remainingGap),
+            remainingGapMentionsOwnerhood: /subclases de posesión/.test(lessons[35].trajectory.remainingGap),
+            remainingGapMentionsAdverbial: /matrices adverbiales/.test(lessons[35].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 35\.1-35\.12/.test(lessons[35].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 35.1-35.12"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-35-preterit-agentive-audit"],
+            firedArrowIds: [["lesson-35-preterit-agentive-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsNumberPosition: true,
+            remainingGapMentionsOwnerhood: true,
+            remainingGapMentionsAdverbial: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 36 trajectory records the nominalized VNC partial shot",
+        {
+            status: lessons[36].status,
+            canvasRefs: lessons[36].trajectory.canvasRefs,
+            redirectAction: lessons[36].trajectory.redirectAction,
+            evidenceStatus: lessons[36].trajectory.evidenceStatus,
+            orthographyStatus: lessons[36].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[36].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[36].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[36].trajectory.aimStatus,
+            closestPass: lessons[36].trajectory.closestPass,
+            remainingGapMentionsCustomary: /agentivos completos de presente habitual/.test(lessons[36].trajectory.remainingGap),
+            remainingGapMentionsInstrumentive: /instrumentivo/.test(lessons[36].trajectory.remainingGap),
+            remainingGapMentionsActionNnc: /acción pasiva y activa/.test(lessons[36].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 36\.1-36\.12/.test(lessons[36].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 36.1-36.12"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-36-nominalized-vnc-audit"],
+            firedArrowIds: [["lesson-36-nominalized-vnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsCustomary: true,
+            remainingGapMentionsInstrumentive: true,
+            remainingGapMentionsActionNnc: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 37 trajectory records the deverbal nounstem partial shot",
+        {
+            status: lessons[37].status,
+            canvasRefs: lessons[37].trajectory.canvasRefs,
+            redirectAction: lessons[37].trajectory.redirectAction,
+            evidenceStatus: lessons[37].trajectory.evidenceStatus,
+            orthographyStatus: lessons[37].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[37].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[37].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[37].trajectory.aimStatus,
+            closestPass: lessons[37].trajectory.closestPass,
+            remainingGapMentionsActiveAction: /acción activa z\/liz/.test(lessons[37].trajectory.remainingGap),
+            remainingGapMentionsPotentialPatient: /paciente potencial/.test(lessons[37].trajectory.remainingGap),
+            remainingGapMentionsPassivePatientive: /fuente patientiva pasiva/.test(lessons[37].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 37\.1-37\.9/.test(lessons[37].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 37.1-37.9"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-37-deverbal-nounstem-audit"],
+            firedArrowIds: [["lesson-37-deverbal-nounstem-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsActiveAction: true,
+            remainingGapMentionsPotentialPatient: true,
+            remainingGapMentionsPassivePatientive: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 38 trajectory records the impersonal patientive partial shot",
+        {
+            status: lessons[38].status,
+            canvasRefs: lessons[38].trajectory.canvasRefs,
+            redirectAction: lessons[38].trajectory.redirectAction,
+            evidenceStatus: lessons[38].trajectory.evidenceStatus,
+            orthographyStatus: lessons[38].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[38].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[38].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[38].trajectory.aimStatus,
+            closestPass: lessons[38].trajectory.closestPass,
+            remainingGapMentionsRootPlusYa: /raíz-más-ya/.test(lessons[38].trajectory.remainingGap),
+            remainingGapMentionsHumanContrast: /contraste humano\/no humano/.test(lessons[38].trajectory.remainingGap),
+            remainingGapMentionsCompoundPatientive: /patientivo compuesto/.test(lessons[38].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 38\.1-38\.2/.test(lessons[38].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 38.1-38.2"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-38-impersonal-patientive-audit"],
+            firedArrowIds: [["lesson-38-impersonal-patientive-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsRootPlusYa: true,
+            remainingGapMentionsHumanContrast: true,
+            remainingGapMentionsCompoundPatientive: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 39 trajectory records the patientive operations partial shot",
+        {
+            status: lessons[39].status,
+            canvasRefs: lessons[39].trajectory.canvasRefs,
+            redirectAction: lessons[39].trajectory.redirectAction,
+            evidenceStatus: lessons[39].trajectory.evidenceStatus,
+            orthographyStatus: lessons[39].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[39].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[39].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[39].trajectory.aimStatus,
+            closestPass: lessons[39].trajectory.closestPass,
+            remainingGapMentionsOrganicPossession: /posesión orgánica/.test(lessons[39].trajectory.remainingGap),
+            remainingGapMentionsRootStock: /raíz\/acervo/.test(lessons[39].trajectory.remainingGap),
+            remainingGapMentionsValence: /violación de valencia/.test(lessons[39].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 39\.1-39\.9/.test(lessons[39].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 39.1-39.9"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-39-patientive-operations-audit"],
+            firedArrowIds: [["lesson-39-patientive-operations-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsOrganicPossession: true,
+            remainingGapMentionsRootStock: true,
+            remainingGapMentionsValence: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 40 trajectory records the adjectival NNC partial shot",
+        {
+            status: lessons[40].status,
+            canvasRefs: lessons[40].trajectory.canvasRefs,
+            redirectAction: lessons[40].trajectory.redirectAction,
+            evidenceStatus: lessons[40].trajectory.evidenceStatus,
+            orthographyStatus: lessons[40].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[40].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[40].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[40].trajectory.aimStatus,
+            closestPass: lessons[40].trajectory.closestPass,
+            remainingGapMentionsExceptional: /cláusulas nominales adjetivales excepcionales/.test(lessons[40].trajectory.remainingGap),
+            remainingGapMentionsSynonyms: /conjuntos sinónimos de fuente/.test(lessons[40].trajectory.remainingGap),
+            remainingGapMentionsPredicateAdjectiveSentence: /oración predicado-adjetivo/.test(lessons[40].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 40\.1-40\.12/.test(lessons[40].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 40.1-40.12"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-40-adjectival-nnc-audit"],
+            firedArrowIds: [["lesson-40-adjectival-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsExceptional: true,
+            remainingGapMentionsSynonyms: true,
+            remainingGapMentionsPredicateAdjectiveSentence: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 41 trajectory records the adjectival NNC part-two partial shot",
+        {
+            status: lessons[41].status,
+            canvasRefs: lessons[41].trajectory.canvasRefs,
+            redirectAction: lessons[41].trajectory.redirectAction,
+            evidenceStatus: lessons[41].trajectory.evidenceStatus,
+            orthographyStatus: lessons[41].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[41].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[41].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[41].trajectory.aimStatus,
+            closestPass: lessons[41].trajectory.closestPass,
+            remainingGapMentionsAffective: /matrices pah\/cal\/tzon\/afectivas/.test(lessons[41].trajectory.remainingGap),
+            remainingGapMentionsCompoundSource: /fuente de tronco verbal compuesto/.test(lessons[41].trajectory.remainingGap),
+            remainingGapMentionsEmbeddedAdjectival: /troncos nominales adjetivales incrustados/.test(lessons[41].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 41\.1-41\.4/.test(lessons[41].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 41.1-41.4"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-41-adjectival-nnc-audit"],
+            firedArrowIds: [["lesson-41-adjectival-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsAffective: true,
+            remainingGapMentionsCompoundSource: true,
+            remainingGapMentionsEmbeddedAdjectival: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 42 trajectory records the adjectival-modification partial shot",
+        {
+            status: lessons[42].status,
+            canvasRefs: lessons[42].trajectory.canvasRefs,
+            redirectAction: lessons[42].trajectory.redirectAction,
+            evidenceStatus: lessons[42].trajectory.evidenceStatus,
+            orthographyStatus: lessons[42].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[42].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[42].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[42].trajectory.aimStatus,
+            closestPass: lessons[42].trajectory.closestPass,
+            remainingGapMentionsSupplementation: /ambigüedad de suplementación/.test(lessons[42].trajectory.remainingGap),
+            remainingGapMentionsTransitiveVnc: /ambigüedad de modificador verbal transitivo/.test(lessons[42].trajectory.remainingGap),
+            remainingGapMentionsIncorporated: /estructuras de modificación incorporada/.test(lessons[42].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 42\.1-42\.10/.test(lessons[42].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 42.1-42.10"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-42-adjectival-modification-audit"],
+            firedArrowIds: [["lesson-42-adjectival-modification-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSupplementation: true,
+            remainingGapMentionsTransitiveVnc: true,
+            remainingGapMentionsIncorporated: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 43 trajectory records the part-two adjectival-modification partial shot",
+        {
+            status: lessons[43].status,
+            canvasRefs: lessons[43].trajectory.canvasRefs,
+            redirectAction: lessons[43].trajectory.redirectAction,
+            evidenceStatus: lessons[43].trajectory.evidenceStatus,
+            orthographyStatus: lessons[43].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[43].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[43].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[43].trajectory.aimStatus,
+            closestPass: lessons[43].trajectory.closestPass,
+            remainingGapMentionsInterrogative: /ambigüedad de núcleo interrogativo ac\/tleh/.test(lessons[43].trajectory.remainingGap),
+            remainingGapMentionsOcCe: /núcleos oc ce/.test(lessons[43].trajectory.remainingGap),
+            remainingGapMentionsNamedPartner: /modificadores de pareja nombrada/.test(lessons[43].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 43\.1-43\.9/.test(lessons[43].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 43.1-43.9"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-43-adjectival-modification-audit"],
+            firedArrowIds: [["lesson-43-adjectival-modification-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsInterrogative: true,
+            remainingGapMentionsOcCe: true,
+            remainingGapMentionsNamedPartner: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 44 trajectory records the adverbial nuclear-clause partial shot",
+        {
+            status: lessons[44].status,
+            canvasRefs: lessons[44].trajectory.canvasRefs,
+            redirectAction: lessons[44].trajectory.redirectAction,
+            evidenceStatus: lessons[44].trajectory.evidenceStatus,
+            orthographyStatus: lessons[44].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[44].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[44].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[44].trajectory.aimStatus,
+            closestPass: lessons[44].trajectory.closestPass,
+            remainingGapMentionsSecondDegree: /adverbiales nominales absolutivos de segundo grado/.test(lessons[44].trajectory.remainingGap),
+            remainingGapMentionsParticleLooking: /cláusulas nominales que parecen partículas/.test(lessons[44].trajectory.remainingGap),
+            remainingGapMentionsIncorporated: /modificadores adverbiales incorporados/.test(lessons[44].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 44\.1-44\.9/.test(lessons[44].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 44.1-44.9"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-44-adverbial-nuclear-audit"],
+            firedArrowIds: [["lesson-44-adverbial-nuclear-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSecondDegree: true,
+            remainingGapMentionsParticleLooking: true,
+            remainingGapMentionsIncorporated: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 45 trajectory records the relational NNC part-one partial shot",
+        {
+            status: lessons[45].status,
+            canvasRefs: lessons[45].trajectory.canvasRefs,
+            redirectAction: lessons[45].trajectory.redirectAction,
+            evidenceStatus: lessons[45].trajectory.evidenceStatus,
+            orthographyStatus: lessons[45].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[45].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[45].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[45].trajectory.aimStatus,
+            closestPass: lessons[45].trajectory.closestPass,
+            remainingGapMentionsRelationalData: /datos estáticos relacionales/.test(lessons[45].trajectory.remainingGap),
+            remainingGapMentionsSupplementary: /análisis de poseedor suplementario/.test(lessons[45].trajectory.remainingGap),
+            remainingGapMentionsIc: /usos especiales de ic/.test(lessons[45].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 45\.1-45\.4/.test(lessons[45].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 45.1-45.4"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-45-relational-nnc-audit"],
+            firedArrowIds: [["lesson-45-relational-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsRelationalData: true,
+            remainingGapMentionsSupplementary: true,
+            remainingGapMentionsIc: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 46 trajectory records the relational NNC part-two partial shot",
+        {
+            status: lessons[46].status,
+            canvasRefs: lessons[46].trajectory.canvasRefs,
+            redirectAction: lessons[46].trajectory.redirectAction,
+            evidenceStatus: lessons[46].trajectory.evidenceStatus,
+            orthographyStatus: lessons[46].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[46].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[46].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[46].trajectory.aimStatus,
+            closestPass: lessons[46].trajectory.closestPass,
+            remainingGapMentionsMatrixData: /datos estáticos relacionales solo de matriz/.test(lessons[46].trajectory.remainingGap),
+            remainingGapMentionsOrthography: /ortogr[aá]f|orthography|spelling/i.test(lessons[46].trajectory.remainingGap),
+            remainingGapMentionsPa: /desambiguación de homónimo pa/.test(lessons[46].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 46\.1-46\.15/.test(lessons[46].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 46.1-46.15"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-46-relational-nnc-audit"],
+            firedArrowIds: [["lesson-46-relational-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsMatrixData: true,
+            remainingGapMentionsOrthography: true,
+            remainingGapMentionsPa: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 47 trajectory records the relational NNC part-three partial shot",
+        {
+            status: lessons[47].status,
+            canvasRefs: lessons[47].trajectory.canvasRefs,
+            redirectAction: lessons[47].trajectory.redirectAction,
+            evidenceStatus: lessons[47].trajectory.evidenceStatus,
+            orthographyStatus: lessons[47].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[47].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[47].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[47].trajectory.aimStatus,
+            closestPass: lessons[47].trajectory.closestPass,
+            remainingGapMentionsCopa: /incrustación pa\/copa/.test(lessons[47].trajectory.remainingGap),
+            remainingGapMentionsGentilic: /contraste entidad asociada frente a gentilicio/.test(lessons[47].trajectory.remainingGap),
+            remainingGapMentionsPertinency: /enrutamiento de pertinencia/.test(lessons[47].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 47\.1-47\.5/.test(lessons[47].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 47.1-47.5"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-47-relational-nnc-audit"],
+            firedArrowIds: [["lesson-47-relational-nnc-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsCopa: true,
+            remainingGapMentionsGentilic: true,
+            remainingGapMentionsPertinency: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 48 trajectory records the place-name and gentilic partial shot",
+        {
+            status: lessons[48].status,
+            canvasRefs: lessons[48].trajectory.canvasRefs,
+            redirectAction: lessons[48].trajectory.redirectAction,
+            evidenceStatus: lessons[48].trajectory.evidenceStatus,
+            orthographyStatus: lessons[48].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[48].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[48].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[48].trajectory.aimStatus,
+            closestPass: lessons[48].trajectory.closestPass,
+            remainingGapMentionsUnique: /resolución de referencia única/.test(lessons[48].trajectory.remainingGap),
+            remainingGapMentionsGentilic: /enrutamiento de derivación gentilicia/.test(lessons[48].trajectory.remainingGap),
+            remainingGapMentionsProfession: /extensión de profesión\/título/.test(lessons[48].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 48\.1-48\.13/.test(lessons[48].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 48.1-48.13"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-48-place-gentilic-audit"],
+            firedArrowIds: [["lesson-48-place-gentilic-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsUnique: true,
+            remainingGapMentionsGentilic: true,
+            remainingGapMentionsProfession: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 49 trajectory records the adverbial-modification part-one partial shot",
+        {
+            status: lessons[49].status,
+            canvasRefs: lessons[49].trajectory.canvasRefs,
+            redirectAction: lessons[49].trajectory.redirectAction,
+            evidenceStatus: lessons[49].trajectory.evidenceStatus,
+            orthographyStatus: lessons[49].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[49].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[49].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[49].trajectory.aimStatus,
+            closestPass: lessons[49].trajectory.closestPass,
+            remainingGapMentionsRecursiveParser: /detección recursiva de analizador/.test(lessons[49].trajectory.remainingGap),
+            remainingGapMentionsInterrogative: /análisis de cláusula principal interrogativa/.test(lessons[49].trajectory.remainingGap),
+            remainingGapMentionsOrthography: /ortogr[aá]f|orthography|spelling/i.test(lessons[49].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 49\.1-49\.10/.test(lessons[49].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 49.1-49.10"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-49-adverbial-adjunction-audit"],
+            firedArrowIds: [["lesson-49-adverbial-adjunction-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsRecursiveParser: true,
+            remainingGapMentionsInterrogative: true,
+            remainingGapMentionsOrthography: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 50 trajectory records the adverbial-modification part-two partial shot",
+        {
+            status: lessons[50].status,
+            canvasRefs: lessons[50].trajectory.canvasRefs,
+            redirectAction: lessons[50].trajectory.redirectAction,
+            evidenceStatus: lessons[50].trajectory.evidenceStatus,
+            orthographyStatus: lessons[50].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[50].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[50].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[50].trajectory.aimStatus,
+            closestPass: lessons[50].trajectory.closestPass,
+            remainingGapMentionsSupplementation: /suplementación de referente incluido/.test(lessons[50].trajectory.remainingGap),
+            remainingGapMentionsCondition: /condición abierta e hipotética/.test(lessons[50].trajectory.remainingGap),
+            remainingGapMentionsOrthography: /ortogr[aá]f|orthography|spelling/i.test(lessons[50].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 50\.1-50\.11/.test(lessons[50].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 50.1-50.11"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-50-adverbial-adjunction-audit"],
+            firedArrowIds: [["lesson-50-adverbial-adjunction-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsSupplementation: true,
+            remainingGapMentionsCondition: true,
+            remainingGapMentionsOrthography: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 51 trajectory records the complementation partial shot",
+        {
+            status: lessons[51].status,
+            canvasRefs: lessons[51].trajectory.canvasRefs,
+            redirectAction: lessons[51].trajectory.redirectAction,
+            evidenceStatus: lessons[51].trajectory.evidenceStatus,
+            orthographyStatus: lessons[51].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[51].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[51].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[51].trajectory.aimStatus,
+            closestPass: lessons[51].trajectory.closestPass,
+            remainingGapMentionsObjectInventory: /inventarios de troncos verbales de complemento de objeto/.test(lessons[51].trajectory.remainingGap),
+            remainingGapMentionsRelational: /vocabulario relacional lexicalizado/.test(lessons[51].trajectory.remainingGap),
+            remainingGapMentionsOrthography: /ortogr[aá]f|orthography|spelling/i.test(lessons[51].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 51\.1-51\.4/.test(lessons[51].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 51.1-51.4"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-51-complement-clause-audit"],
+            firedArrowIds: [["lesson-51-complement-clause-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsObjectInventory: true,
+            remainingGapMentionsRelational: true,
+            remainingGapMentionsOrthography: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 52 trajectory records the conjunction partial shot",
+        {
+            status: lessons[52].status,
+            canvasRefs: lessons[52].trajectory.canvasRefs,
+            redirectAction: lessons[52].trajectory.redirectAction,
+            evidenceStatus: lessons[52].trajectory.evidenceStatus,
+            orthographyStatus: lessons[52].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[52].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[52].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[52].trajectory.aimStatus,
+            closestPass: lessons[52].trajectory.closestPass,
+            remainingGapMentionsRelationInference: /inferencia de relación no marcada/.test(lessons[52].trajectory.remainingGap),
+            remainingGapMentionsCorrelation: /emparejamiento correlativo/.test(lessons[52].trajectory.remainingGap),
+            remainingGapMentionsOrthography: /ortogr[aá]f|orthography|spelling/i.test(lessons[52].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 52\.1-52\.7/.test(lessons[52].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 52.1-52.7"],
+            redirectAction: "diagnostic-only",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "not-surface-bearing",
+            plannedArrowIds: ["lesson-52-conjunction-clause-audit"],
+            firedArrowIds: [["lesson-52-conjunction-clause-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsRelationInference: true,
+            remainingGapMentionsCorrelation: true,
+            remainingGapMentionsOrthography: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 53 trajectory records the exhaustive Canvas-only typed closure",
+        {
+            status: lessons[53].status,
+            canvasRefs: lessons[53].trajectory.canvasRefs,
+            redirectAction: lessons[53].trajectory.redirectAction,
+            evidenceStatus: lessons[53].trajectory.evidenceStatus,
+            orthographyStatus: lessons[53].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[53].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[53].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[53].trajectory.aimStatus,
+            closestPass: lessons[53].trajectory.closestPass,
+            remainingGap: lessons[53].trajectory.remainingGap,
+            generationAllowed: lessons[53].trajectory.sourceGatedRoute.generationAllowed,
+            notesMentionGcdLcm: /23 rutas semánticas/.test(lessons[53].notes) && /31 ejes/.test(lessons[53].notes),
+            canvasOnly: /ANDREWS_TRANSCRIPTION_CANVAS\.md/.test(lessons[53].trajectory.directive),
+        },
+        {
+            status: "implemented",
+            canvasRefs: ["Andrews Lesson 53.1-53.7"],
+            redirectAction: "keep",
+            evidenceStatus: "canvas-source-verified",
+            orthographyStatus: "classical-canonical-realization",
+            plannedArrowIds: ["lesson-53-comparison-closure"],
+            firedArrowIds: [["lesson-53-comparison-closure", "hit"]],
+            aimStatus: "closest-pass",
+            closestPass: true,
+            remainingGap: "none",
+            generationAllowed: true,
+            notesMentionGcdLcm: true,
+            canvasOnly: true,
+        }
+    );
+    s.eq(
+        "lesson 54 trajectory records the denominal verbstem part-one partial shot",
+        {
+            status: lessons[54].status,
+            canvasRefs: lessons[54].trajectory.canvasRefs,
+            redirectAction: lessons[54].trajectory.redirectAction,
+            evidenceStatus: lessons[54].trajectory.evidenceStatus,
+            orthographyStatus: lessons[54].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[54].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[54].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[54].trajectory.aimStatus,
+            closestPass: lessons[54].trajectory.closestPass,
+            remainingGapMentionsPossessionTi: /semántica de ti posesivo/.test(lessons[54].trajectory.remainingGap),
+            remainingGapMentionsDoubleObject: /ti-a de dos objetos/.test(lessons[54].trajectory.remainingGap),
+            remainingGapMentionsVisibleUi: /acciones visibles de interfaz/.test(lessons[54].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 54\.1-54\.6/.test(lessons[54].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 54.1-54.6"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-54-denominal-verbstem-audit"],
+            firedArrowIds: [["lesson-54-denominal-verbstem-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsPossessionTi: true,
+            remainingGapMentionsDoubleObject: true,
+            remainingGapMentionsVisibleUi: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 55 trajectory records the denominal verbstem part-two partial shot",
+        {
+            status: lessons[55].status,
+            canvasRefs: lessons[55].trajectory.canvasRefs,
+            redirectAction: lessons[55].trajectory.redirectAction,
+            evidenceStatus: lessons[55].trajectory.evidenceStatus,
+            orthographyStatus: lessons[55].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[55].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[55].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[55].trajectory.aimStatus,
+            closestPass: lessons[55].trajectory.closestPass,
+            remainingGapMentionsTemporalParsing: /análisis de compuestos temporales/.test(lessons[55].trajectory.remainingGap),
+            remainingGapMentionsTlaInventory: /inventarios de tla/.test(lessons[55].trajectory.remainingGap),
+            remainingGapMentionsVisibleUi: /acciones visibles de interfaz/.test(lessons[55].trajectory.remainingGap),
+            notesMentionAndrewsSubsections: /Andrews 55\.1-55\.7/.test(lessons[55].notes),
+        },
+        {
+            status: "partially-implemented",
+            canvasRefs: ["Andrews Lesson 55.1-55.7"],
+            redirectAction: "source-gated",
+            evidenceStatus: "direct-canvas-partial",
+            orthographyStatus: "contextual-classical-realization-plus-source-gate-required",
+            plannedArrowIds: ["lesson-55-denominal-verbstem-audit"],
+            firedArrowIds: [["lesson-55-denominal-verbstem-audit", "hit"]],
+            aimStatus: "shooting",
+            closestPass: false,
+            remainingGapMentionsTemporalParsing: true,
+            remainingGapMentionsTlaInventory: true,
+            remainingGapMentionsVisibleUi: true,
+            notesMentionAndrewsSubsections: true,
+        }
+    );
+    s.eq(
+        "lesson 56 trajectory records the complete personal-name NNC closure",
+        {
+            status: lessons[56].status,
+            canvasRefs: lessons[56].trajectory.canvasRefs,
+            implementationState: lessons[56].trajectory.implementationState,
+            redirectAction: lessons[56].trajectory.redirectAction,
+            evidenceStatus: lessons[56].trajectory.evidenceStatus,
+            orthographyStatus: lessons[56].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[56].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[56].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[56].trajectory.aimStatus,
+            closestPass: lessons[56].trajectory.closestPass,
+            remainingGap: lessons[56].trajectory.remainingGap,
+            notesMentionTwentyFamilies: /veinte familias de fuente/.test(lessons[56].notes),
+            notesMentionEightOperations: /ocho operaciones/.test(lessons[56].notes),
+            notesMentionHostileProof: /pruebas exhaustivas y hostiles/.test(lessons[56].notes),
+        },
+        {
+            status: "implemented",
+            canvasRefs: ["Andrews Lesson 56.1-56.5"],
+            implementationState: "implemented-audited",
+            redirectAction: "keep",
+            evidenceStatus: "canvas-source-span-complete",
+            orthographyStatus: "typed-boundary-realization",
+            plannedArrowIds: ["lesson-56-personal-name-nnc-exhaustive-closure"],
+            firedArrowIds: [["lesson-56-personal-name-nnc-exhaustive-closure", "hit"]],
+            aimStatus: "closest-pass",
+            closestPass: true,
+            remainingGap: "none",
+            notesMentionTwentyFamilies: true,
+            notesMentionEightOperations: true,
+            notesMentionHostileProof: true,
+        }
+    );
+    s.eq(
+        "lesson 57 trajectory records canonical-owner closure",
+        {
+            status: lessons[57].status,
+            canvasRefs: lessons[57].trajectory.canvasRefs,
+            implementationState: lessons[57].trajectory.implementationState,
+            redirectAction: lessons[57].trajectory.redirectAction,
+            evidenceStatus: lessons[57].trajectory.evidenceStatus,
+            orthographyStatus: lessons[57].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[57].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[57].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[57].trajectory.aimStatus,
+            closestPass: lessons[57].trajectory.closestPass,
+            remainingGap: lessons[57].trajectory.remainingGap,
+            notesRejectAnalysisLane: /no existe ruta ni resultado genérico de análisis/.test(lessons[57].notes),
+        },
+        {
+            status: "implemented",
+            canvasRefs: ["Andrews Lesson 57.1-57.7", "ANDREWS_TRANSCRIPTION_CANVAS.md:24705-25018"],
+            implementationState: "implemented-audited",
+            redirectAction: "keep",
+            evidenceStatus: "canvas-source-span-complete",
+            orthographyStatus: "typed-boundary-realization",
+            plannedArrowIds: ["lesson-57-canonical-owner-exhaustive-closure"],
+            firedArrowIds: [["lesson-57-canonical-owner-exhaustive-closure", "hit"]],
+            aimStatus: "closest-pass",
+            closestPass: true,
+            remainingGap: "none",
+            notesRejectAnalysisLane: true,
+        }
+    );
+    s.eq(
+        "lesson 58 trajectory records canonical-owner closure",
+        {
+            status: lessons[58].status,
+            canvasRefs: lessons[58].trajectory.canvasRefs,
+            implementationState: lessons[58].trajectory.implementationState,
+            redirectAction: lessons[58].trajectory.redirectAction,
+            evidenceStatus: lessons[58].trajectory.evidenceStatus,
+            orthographyStatus: lessons[58].trajectory.orthographyStatus,
+            plannedArrowIds: lessons[58].trajectory.plannedArrows.map((arrow) => arrow.id),
+            firedArrowIds: lessons[58].trajectory.firedArrows.map((arrow) => [arrow.id, arrow.result]),
+            aimStatus: lessons[58].trajectory.aimStatus,
+            closestPass: lessons[58].trajectory.closestPass,
+            remainingGap: lessons[58].trajectory.remainingGap,
+            notesRejectProductiveTextApi: /sin interfaz productiva/.test(lessons[58].notes),
+        },
+        {
+            status: "implemented",
+            canvasRefs: ["Andrews Lesson 58.1-58.8", "ANDREWS_TRANSCRIPTION_CANVAS.md:25019-25462"],
+            implementationState: "implemented-audited",
+            redirectAction: "keep",
+            evidenceStatus: "canvas-source-span-complete",
+            orthographyStatus: "typed-boundary-realization",
+            plannedArrowIds: ["lesson-58-canonical-owner-exhaustive-closure"],
+            firedArrowIds: [["lesson-58-canonical-owner-exhaustive-closure", "hit"]],
+            aimStatus: "closest-pass",
+            closestPass: true,
+            remainingGap: "none",
+            notesRejectProductiveTextApi: true,
+        }
+    );
+    s.ok("lesson 8 notes sentence generation gap", /capa oracional diagnóstica/.test(lessons[8].notes) && /generación oracional/.test(lessons[8].notes));
+    s.ok("lesson 9 notes sentence-level optative gap", /formas finitas optativas/.test(lessons[9].notes) && /nivel oracional/.test(lessons[9].notes));
+    s.ok("lesson 10 notes sentence-level admonition gap", /formas finitas admonitivas/.test(lessons[10].notes) && /nivel oracional/.test(lessons[10].notes));
+    s.ok("lesson 11 notes broader Andrews irregular gap", /perfectivos irregulares de Andrews/.test(lessons[11].notes));
+
+    s.eq(
+        "lessons 1-4 keep foundations separate from implemented motors",
+        [1, 2, 3, 4].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [1, "implemented"],
+            [2, "partially-implemented"],
+            [3, "partially-implemented"],
+            [4, "partially-implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 1-4 reserve only foundation dependencies",
+        [1, 2, 3, 4].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/concepts"],
+            ["core/phonology", "core/orthography"],
+            ["core/particles"],
+            ["core/clause"],
+        ]
+    );
+
+    const foundationsGroup = curriculumGroups.find((group) => group.id === "foundations");
+    s.eq("curriculum keeps lessons 1-4 grouped as foundations", {
+        range: foundationsGroup.range,
+        structures: foundationsGroup.structures,
+        next: foundationsGroup.next,
+    }, {
+        range: [1, 4],
+        structures: ["conceptos", "ortografia", "particulas", "clausula"],
+        next: ["glosario activo", "normalizador ortografico", "inventario de particulas", "esqueleto de clausula"],
+    });
+    s.eq(
+        "curriculum keeps lesson 2 and 4 partial in foundations",
+        foundationsGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["2", "partial", "core/orthography + core/phonology"],
+            ["3", "partial", "core/particles + data/static_particles"],
+            ["4", "partial", "core/clause + data/static_formulae"],
+        ]
+    );
+
+    s.eq(
+        "lessons 5-7 are implemented VNC motors and 8-11 are partial mappings",
+        [5, 6, 7, 8, 9, 10, 11].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [5, "implemented"],
+            [6, "implemented"],
+            [7, "implemented"],
+            [8, "partially-implemented"],
+            [9, "partially-implemented"],
+            [10, "partially-implemented"],
+            [11, "partially-implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 5-11 distinguish implemented VNC motors from missing sentence layer",
+        [5, 6, 7, 8, 9, 10, 11].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/agreement", "core/vnc", "core/preterit"],
+            ["core/agreement", "core/vnc"],
+            ["core/vnc", "core/preterit"],
+            ["core/vnc", "core/agreement", "core/sentence"],
+            ["core/vnc", "core/sentence"],
+            ["core/vnc", "core/sentence"],
+            ["core/irregulars"],
+        ]
+    );
+
+    const verbalCoreGroup = curriculumGroups.find((group) => group.id === "verbal-core");
+    s.eq("curriculum keeps lessons 5-11 grouped as VNC basic", {
+        range: verbalCoreGroup.range,
+        structures: verbalCoreGroup.structures,
+        next: verbalCoreGroup.next,
+    }, {
+        range: [5, 11],
+        structures: ["acuerdo", "VNC", "preterito", "irregulares"],
+        next: ["capa de oracion", "matriz de modos", "catalogo irregular"],
+    });
+    s.eq(
+        "curriculum keeps VNC motors partial only for explanation and sentence-level gaps",
+        verbalCoreGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["5-6", "partial", "ui/paradigms + core/agreement"],
+            ["7", "partial", "data/static_verbstem_classes"],
+            ["8", "partial", "core/sentence + core/clause"],
+            ["9-10", "partial", "core/clause/mood + data/static_modes"],
+            ["11", "partial", "core/irregulars + data/static_irregular_vnc"],
+            ["A,C", "partial", "ui/paradigms"],
+        ]
+    );
+
+    const appendices = byId(appendixRegistry);
+    s.eq(
+        "appendices A and C are implemented reference surfaces for VNC basics",
+        [appendices.A.status, appendices.C.status],
+        ["implemented", "implemented"]
+    );
+    s.eq(
+        "appendix D is partial boundary metadata rather than numeral generation",
+        {
+            status: appendices.D.status,
+            dependencies: appendices.D.engineDependencies,
+            notes: appendices.D.notes,
+        },
+        {
+            status: "partially-implemented",
+            dependencies: ["core/nnc", "core/nnc/numerals"],
+            notes: "Diagnostic numeral-NNC boundary metadata exists; no confirmed numeral data or generation",
+        }
+    );
+    s.eq(
+        "appendix E is partial boundary metadata rather than calendar generation",
+        {
+            status: appendices.E.status,
+            dependencies: appendices.E.engineDependencies,
+            notes: appendices.E.notes,
+        },
+        {
+            status: "partially-implemented",
+            dependencies: ["core/calendar"],
+            notes: "Diagnostic calendar-name boundary metadata exists; no confirmed calendar data or generation",
+        }
+    );
+    s.eq(
+        "appendix F is partial orthography bridge metadata rather than Appendix F spelling generation",
+        {
+            status: appendices.F.status,
+            dependencies: appendices.F.engineDependencies,
+            notes: appendices.F.notes,
+        },
+        {
+            status: "partially-implemented",
+            dependencies: ["core/orthography"],
+            notes: "Diagnostic Classical/Appendix F spelling bridge metadata exists; no Appendix F spelling normalizer or fixture-backed alias data",
+        }
+    );
+
+    s.eq(
+        "derived-verb lessons distinguish audited motors from voice, object, causative, and frequentative partials",
+        [20, 21, 22, 23, 24, 25, 26, 27].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [20, "implemented"],
+            [21, "partially-implemented"],
+            [22, "partially-implemented"],
+            [23, "partially-implemented"],
+            [24, "partially-implemented"],
+            [25, "partially-implemented"],
+            [26, "partially-implemented"],
+            [27, "partially-implemented"],
+        ]
+    );
+    s.ok("lesson 23 notes object-function and silent-morph gap", /función de objeto/.test(lessons[23].notes) && /morfemas silenciosos/.test(lessons[23].notes));
+    s.ok("lesson 24 notes final-vowel, destockal, and source-CNV gaps", /vocal final/.test(lessons[24].notes) && /desacervales/.test(lessons[24].notes) && /cláusula verbal a objeto/.test(lessons[24].notes));
+    s.ok("lesson 25 notes source-CNV and silent-object gaps", /cláusula verbal fuente/.test(lessons[25].notes) && /objeto silencioso/.test(lessons[25].notes));
+    s.ok("lesson 26 notes source-CNV and object-plus-suffix gaps", /cláusula verbal fuente/.test(lessons[26].notes) && /objeto-más-sufijo/.test(lessons[26].notes));
+    s.ok("lesson 27 notes frequentative generation gap", /límite frecuentativo/.test(lessons[27].notes) && /pronombre objeto/.test(lessons[27].notes));
+    s.eq(
+        "lessons 20-27 keep voice, object, causative, and frequentative audits separate from current derivation motors",
+        [20, 21, 22, 23, 24, 25, 26, 27].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/derivation"],
+            ["core/derivation", "core/vnc"],
+            ["core/derivation", "core/vnc"],
+            ["core/agreement", "core/vnc"],
+            ["core/derivation"],
+            ["core/derivation"],
+            ["core/derivation"],
+            ["core/derivation/frequentative"],
+        ]
+    );
+
+    const derivedVerbsGroup = curriculumGroups.find((group) => group.id === "derived-verbs");
+    s.eq("curriculum keeps lessons 20-27 grouped as derived verbs", {
+        range: derivedVerbsGroup.range,
+        structures: derivedVerbsGroup.structures,
+        next: derivedVerbsGroup.next,
+    }, {
+        range: [20, 27],
+        structures: ["derivacion", "valencia", "voz"],
+        next: ["pasivo", "impersonal", "objetos", "causativo 1", "causativo 2", "aplicativo", "frecuentativo"],
+    });
+    s.eq(
+        "curriculum keeps passive, impersonal, object, causative, and frequentative rows pending for derived verbs",
+        derivedVerbsGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["21", "partial", "core/generation/valency + core/vnc"],
+            ["22", "partial", "core/generation/valency + core/vnc"],
+            ["23", "partial", "core/agreement + core/vnc"],
+            ["24", "partial", "core/derivation + core/vnc"],
+            ["25", "partial", "core/derivation + core/vnc"],
+            ["26", "partial", "core/derivation + core/vnc"],
+            ["27", "partial", "core/derivation/frequentative"],
+        ]
+    );
+    s.eq(
+        "curriculum no longer counts implemented derived-verb motors as pending rows",
+        derivedVerbsGroup.missing
+            .filter((row) => /20/.test(row.lessons))
+            .map((row) => row.lessons),
+        []
+    );
+
+    s.eq(
+        "lessons 28-34 stay partial with boundary metadata",
+        [28, 29, 30, 31, 32, 33, 34].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [28, "partially-implemented"],
+            [29, "partially-implemented"],
+            [30, "partially-implemented"],
+            [31, "partially-implemented"],
+            [32, "partially-implemented"],
+            [33, "partially-implemented"],
+            [34, "partially-implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 28-34 keep parser compounds and boundary metadata separate from missing engines",
+        [28, 29, 30, 31, 32, 33, 34].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/parsing", "core/vnc"],
+            ["core/vnc/purposive"],
+            ["core/parsing", "core/vnc"],
+            ["core/nnc", "core/nnc/compound"],
+            ["core/nnc", "core/nnc/compound"],
+            ["core/vnc", "core/vnc/honorific_pejorative"],
+            ["core/nnc", "core/nnc/numerals"],
+        ]
+    );
+
+    const compoundStemsGroup = curriculumGroups.find((group) => group.id === "compound-stems");
+    s.eq("curriculum keeps lessons 28-34 grouped as compounds", {
+        range: compoundStemsGroup.range,
+        structures: compoundStemsGroup.structures,
+        next: compoundStemsGroup.next,
+    }, {
+        range: [28, 34],
+        structures: ["parser", "compuestos", "NNC/VNC"],
+        next: ["purposivo", "NNC compuesto", "numeral y honorifico"],
+    });
+    s.eq(
+        "curriculum marks compound constructor and boundary metadata partial in 28-34",
+        compoundStemsGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["28,30", "partial", "core/parsing + core/compound"],
+            ["29", "partial", "core/vnc/purposive"],
+            ["31-32", "partial", "core/nnc/compound + data/static_affective_nnc"],
+            ["33", "partial", "core/vnc/honorific_pejorative"],
+            ["34,D", "partial", "core/nnc/numerals + data/static_numbers"],
+        ]
+    );
+    s.eq(
+        "curriculum labels Lesson 28/30 compound work in Spanish",
+        compoundStemsGroup.missing[0].label,
+        "compuesto verbal/nominal"
+    );
+
+    const nominalFormationLessons = Array.from({ length: 9 }, (_, index) => lessons[index + 35]);
+    s.eq(
+        "lessons 35-43 remain partial with modification boundary metadata",
+        nominalFormationLessons.map((lesson) => [lesson.id, lesson.status]),
+        [
+            [35, "partially-implemented"],
+            [36, "partially-implemented"],
+            [37, "partially-implemented"],
+            [38, "partially-implemented"],
+            [39, "partially-implemented"],
+            [40, "partially-implemented"],
+            [41, "partially-implemented"],
+            [42, "partially-implemented"],
+            [43, "partially-implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 35-39 keep NNC plus derivation dependencies",
+        [35, 36, 37, 38, 39].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/nnc", "core/nnc/nominalization", "core/derivation"],
+            ["core/nnc", "core/nnc/nominalization", "core/derivation"],
+            ["core/nnc", "core/nnc/nominalization", "core/derivation"],
+            ["core/nnc", "core/nnc/nominalization", "core/derivation"],
+            ["core/nnc", "core/nnc/nominalization", "core/derivation"],
+        ]
+    );
+    s.eq(
+        "lessons 40-43 separate adjectival output from modification AST",
+        [40, 41, 42, 43].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/nnc", "core/nnc/adjectival"],
+            ["core/nnc", "core/nnc/adjectival"],
+            ["core/clause", "core/clause/modification"],
+            ["core/clause", "core/clause/modification"],
+        ]
+    );
+
+    const nominalFormationGroup = curriculumGroups.find((group) => group.id === "nominal-formation");
+    s.eq("curriculum keeps lessons 35-43 grouped as nominal formation", {
+        range: nominalFormationGroup.range,
+        structures: nominalFormationGroup.structures,
+        next: nominalFormationGroup.next,
+    }, {
+        range: [35, 43],
+        structures: ["nominalizacion", "adjetivos", "modificacion"],
+        next: ["registro por fuente", "funcion adjetival", "AST de modificacion"],
+    });
+    s.eq(
+        "curriculum distinguishes partial nominal/adjectival motors from boundary modification AST",
+        nominalFormationGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["35", "partial", "core/nnc/nominalization"],
+            ["36", "partial", "data/static_nominalized_vnc_rules"],
+            ["37", "partial", "core/nnc/nominalization + evidence"],
+            ["38-39", "partial", "core/nnc/nominalization + patientiveFamilyProfile"],
+            ["40-41", "partial", "core/nnc/adjectival + ui/adjective"],
+            ["42-43", "partial", "core/clause/modification"],
+        ]
+    );
+
+    s.eq(
+        "lessons 44-50 are partial boundary mappings",
+        [44, 45, 46, 47, 48, 49, 50].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [44, "partially-implemented"],
+            [45, "partially-implemented"],
+            [46, "partially-implemented"],
+            [47, "partially-implemented"],
+            [48, "partially-implemented"],
+            [49, "partially-implemented"],
+            [50, "partially-implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 45-50 use boundary metadata dependencies",
+        [44, 45, 46, 47, 48, 49, 50].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/clause", "core/clause/adverbial"],
+            ["core/nnc", "core/nnc/relational"],
+            ["core/nnc", "core/nnc/relational"],
+            ["core/nnc", "core/nnc/relational"],
+            ["core/nnc", "core/nnc/place_gentilic"],
+            ["core/clause", "core/clause/adjunction"],
+            ["core/clause", "core/clause/adjunction"],
+        ]
+    );
+
+    const relationsAdverbsGroup = curriculumGroups.find((group) => group.id === "relations-adverbs");
+    s.eq("curriculum keeps lessons 44-50 grouped as relations", {
+        range: relationsAdverbsGroup.range,
+        structures: relationsAdverbsGroup.structures,
+        next: relationsAdverbsGroup.next,
+    }, {
+        range: [44, 50],
+        structures: ["relacional", "adverbio", "lugar"],
+        next: ["registro relacional", "lugar y gentilicio", "adjuncion adverbial"],
+    });
+    s.eq(
+        "curriculum marks relation/place/adjunction boundaries partial while data gaps remain missing",
+        relationsAdverbsGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["44", "partial", "core/clause + data/static_adverbials"],
+            ["45-47", "missing", "data/static_relational_nnc"],
+            ["45-47", "partial", "core/nnc/relational"],
+            ["48", "missing", "data/static_places + data/static_gentilics"],
+            ["48", "partial", "core/nnc/place_gentilic"],
+            ["49-50", "missing", "data/static_adverbial_adjunction + clause-adjunction AST"],
+            ["49-50", "partial", "core/clause/adjunction"],
+            ["E", "missing", "data/static_calendar"],
+            ["E", "partial", "core/calendar"],
+        ]
+    );
+
+    s.eq(
+        "lessons 51-58 retain their exact implementation status",
+        [51, 52, 53, 54, 55, 56, 57, 58].map((lessonId) => [lessonId, lessons[lessonId].status]),
+        [
+            [51, "partially-implemented"],
+            [52, "partially-implemented"],
+            [53, "implemented"],
+            [54, "partially-implemented"],
+            [55, "partially-implemented"],
+            [56, "implemented"],
+            [57, "implemented"],
+            [58, "implemented"],
+        ]
+    );
+    s.eq(
+        "lessons 51-58 expose boundary/derivation dependencies without generation claims",
+        [51, 52, 53, 54, 55, 56, 57, 58].map((lessonId) => lessons[lessonId].engineDependencies),
+        [
+            ["core/clause", "core/clause/complement"],
+            ["core/clause", "core/clause/conjunction"],
+            ["core/comparison"],
+            ["core/derivation", "core/vnc"],
+            ["core/derivation", "core/vnc"],
+            ["core/nnc", "core/nnc/names"],
+            [
+                "application/classical/vnc",
+                "application/classical/nnc",
+                "core/sentence/supplementation",
+            ],
+            [
+                "application/classical/nnc",
+                "core/classical/denominal_vnc_grammar",
+                "core/classical/nominal_construction",
+                "core/sentence/supplementation",
+            ],
+        ]
+    );
+
+    const clauseNamesGroup = curriculumGroups.find((group) => group.id === "clause-names");
+    s.eq("curriculum keeps lessons 51-58 grouped as clause and names", {
+        range: clauseNamesGroup.range,
+        structures: clauseNamesGroup.structures,
+        next: clauseNamesGroup.next,
+    }, {
+        range: [51, 58],
+        structures: ["sintaxis", "denominal", "nombres"],
+        next: ["AST de clausulas", "comparacion", "nombres y diagnosticos"],
+    });
+    s.eq(
+        "curriculum marks 51-53 boundaries and 54-55 denominal partial while data gaps remain missing",
+        clauseNamesGroup.missing.map((row) => [row.lessons, row.state, row.target]),
+        [
+            ["51", "missing", "data/static_complements + complement AST"],
+            ["51", "partial", "core/clause/complement"],
+            ["52", "missing", "data/static_conjunctions + conjunction AST"],
+            ["52", "partial", "core/clause/conjunction"],
+            ["53", "missing", "data/static_comparisons + comparison AST"],
+            ["53", "partial", "core/comparison"],
+            ["54-55", "partial", "core/derivation/denominal"],
+            ["56,E", "missing", "data/static_names + data/static_calendar"],
+            ["56,E", "partial", "core/nnc/names"],
+            ["F", "partial", "core/orthography + data/static_old_spellings"],
+        ]
+    );
+
+    return s;
+}
+
+module.exports = { run };

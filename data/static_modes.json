@@ -1,0 +1,78 @@
+{
+  "tenseMode": {
+    "verbo": {
+      "value": "verbo"
+    },
+    "sustantivo": {
+      "value": "sustantivo"
+    },
+    "particula": {
+      "value": "particula"
+    }
+  },
+  "functionRole": {
+    "adjetivo": {
+      "value": "adjetivo"
+    },
+    "adverbio": {
+      "value": "adverbio"
+    }
+  },
+  "tenseModeSystem": {
+    "european": {
+      "value": "european",
+      "labelEs": "Ruta funcional"
+    },
+    "function": {
+      "value": "function",
+      "labelEs": "Ruta funcional"
+    },
+    "unit": {
+      "value": "unit",
+      "labelEs": "Clase formal"
+    }
+  },
+  "voiceMode": {
+    "active": {
+      "value": "active"
+    },
+    "passive": {
+      "value": "passive-impersonal"
+    }
+  },
+  "derivationMode": {
+    "active": {
+      "value": "active"
+    },
+    "nonactive": {
+      "value": "nonactive"
+    }
+  },
+  "combinedMode": {
+    "active": {
+      "value": "active"
+    },
+    "nonactive": {
+      "value": "nonactive"
+    }
+  },
+  "instrumentivoMode": {
+    "absolutivo": {
+      "value": "absolutivo"
+    },
+    "posesivo": {
+      "value": "posesivo"
+    },
+    "absolutivoImperfectoActivo": {
+      "value": "absolutivo-imperfecto-activo"
+    }
+  },
+  "conjugationGroups": {
+    "tense": {
+      "value": "tense"
+    },
+    "universal": {
+      "value": "universal"
+    }
+  }
+}

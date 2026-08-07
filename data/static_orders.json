@@ -1,0 +1,43 @@
+{
+  "tenseOrder": [
+    "presente",
+    "optativo",
+    "sustantivo-verbal",
+    "potencial",
+    "potencial-habitual",
+    "adjetivo-preterito",
+    "adjetivo-perfecto",
+    "adjetivo-preterito-tik",
+    "adjetivo-perfecto-tik",
+    "adjetivo-preterito-naj",
+    "adjetivo-perfecto-naj",
+    "adjetivo-patientivo-no-activo",
+    "adjetivo-patientivo-perfectivo",
+    "pasado-remoto-adverbio-activo",
+    "agentivo",
+    "agentivo-presente",
+    "agentivo-preterito",
+    "agentivo-futuro",
+    "patientivo",
+    "instrumentivo",
+    "predicado-nominal",
+    "calificativo-instrumentivo",
+    "locativo-temporal",
+    "presente-habitual",
+    "presente-desiderativo",
+    "imperfecto",
+    "preterito",
+    "pasado-remoto",
+    "perfecto",
+    "pluscuamperfecto",
+    "condicional-perfecto",
+    "futuro",
+    "condicional"
+  ],
+  "preteritoUniversalOrder": [
+    "preterito-universal-1",
+    "preterito-universal-2",
+    "preterito-universal-4",
+    "preterito-universal-3"
+  ]
+}

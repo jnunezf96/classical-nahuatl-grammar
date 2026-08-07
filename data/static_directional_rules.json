@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "hual-placement",
+      "prefixes": ["huāl"],
+      "handler": "hual-placement",
+      "stages": ["prefix", "post-elision"],
+      "applyToNouns": false,
+      "applyToVerbs": true
+    },
+    {
+      "id": "hual-noun-placement",
+      "prefixes": ["huāl"],
+      "handler": "hual-noun-placement",
+      "stages": ["prefix"],
+      "applyToNouns": true,
+      "applyToVerbs": false
+    }
+  ]
+}

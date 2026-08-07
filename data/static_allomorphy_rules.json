@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "supportive": {
+    "keepSlashPrefixes": ["huāl", "on"]
+  },
+  "patientivoPerfectivo": {
+    "allowedFinals": ["w", "k", "kw", "s", "sh", "n", "l", "tz", "p", "t"],
+    "allowedFinalsClassC": ["j"],
+    "allowedFinalsClassD": ["j"]
+  }
+}

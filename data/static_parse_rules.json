@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "pipeline": [
+    "supportive-i",
+    "exact-base",
+    "segments",
+    "directional-fusion",
+    "valence",
+    "directional-rule-mode",
+    "suppletives",
+    "root-plus-ya"
+  ]
+}

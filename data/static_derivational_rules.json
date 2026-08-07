@@ -1,0 +1,295 @@
+{
+  "version": 2,
+  "config": {
+    "causative": {
+      "intransitiveEndsWithI": {
+        "pairBias": {
+          "enabled": true,
+          "minTopScore": 2.5,
+          "minMargin": 0.7,
+          "rules": [
+            { "to": "additive", "weight": 4.4, "when": { "endsWithWi": true, "mannerPair": "glide:fricative", "penultimateNucleus": "e" } },
+            { "to": "none", "weight": 5.0, "when": { "endsWithWi": true, "endsWithConsonantCluster": true, "firstManner": "glide" } },
+            { "to": "replacive", "weight": 3.8, "when": { "endsWithWi": true, "mannerPair": { "not": "glide:fricative" } } },
+            { "to": "replacive", "weight": 3.8, "when": { "endsWithWi": true, "mannerPair": "glide:fricative", "penultimateNucleus": { "not": "e" } } },
+            { "to": "replacive", "weight": 4.0, "when": { "endsWithWi": true, "mannerPair": "glide:stop" } },
+            { "to": "replacive", "weight": 3.6, "when": { "endsWithWi": true, "mannerPair": "glide:affricate" } },
+            { "to": "additive", "weight": 3.2, "when": { "endsWithTi": true, "penultimateHasCoda": true } },
+            { "to": "additive", "weight": 3.2, "when": { "endsWithTi": true, "penultimateNucleus": "e" } },
+            { "to": "replacive", "weight": 2.6, "when": { "endsWithTi": true, "firstOnset": "p", "penultimateHasCoda": false, "penultimateNucleus": { "not": "e" } } },
+            { "to": "none", "weight": 2.8, "when": { "endsWithTi": true, "firstOnset": { "not": "p" }, "penultimateHasCoda": false, "penultimateNucleus": { "not": "e" } } },
+            { "to": "additive", "weight": 4.8, "when": { "mannerPair": ["nasal:stop", "nasal:fricative"] } },
+            { "to": "replacive", "weight": 2.6, "when": { "finalManner": "nasal", "firstOnset": "m" } },
+            { "to": "none", "weight": 2.6, "when": { "finalManner": "nasal", "firstManner": "nasal", "firstOnset": { "not": "m" } } },
+            { "to": "none", "weight": 4.8, "when": { "finalManner": ["fricative", "lateral"] } },
+            { "to": "none", "weight": 4.8, "when": { "finalConsonant": ["s", "sh", "tz"] } },
+            { "to": "replacive", "weight": 4.2, "when": { "finalConsonant": ["y", "j", "ch", "kw", "w"] } },
+            { "to": "replacive", "weight": 4.0, "when": { "mannerPair": "glide:stop" } },
+            { "to": "none", "weight": 1.9, "when": { "placePair": "dorsal:coronal", "finalManner": "stop", "firstManner": "nasal" } },
+            { "to": "none", "weight": 1.7, "when": { "mannerPair": "stop:nasal", "firstOnset": { "not": "p" } } },
+            { "to": "additive", "weight": 2.6, "when": { "finalManner": "stop", "firstManner": "lateral" } },
+            { "to": "additive", "weight": 1.6, "when": { "mannerPair": "affricate:affricate" } },
+            { "to": "additive", "weight": 1.5, "when": { "finalConsonant": "k", "penultimateHasCoda": false, "firstOnset": { "not": "n" } } },
+            { "to": "replacive", "weight": 1.8, "when": { "finalConsonant": ["p"] } },
+            { "to": "replacive", "weight": 1.4, "when": { "finalConsonant": "w", "firstOnset": ["k", "kw", "p", "sh", "s"] } },
+            { "to": "replacive", "weight": 1.6, "when": { "mannerPair": "stop:stop", "placePair": { "not": "dorsal:dorsal" } } },
+            { "to": "additive", "weight": 2.0, "when": { "finalConsonant": "m", "firstOnset": "t", "penultimateNucleus": "a" } },
+            { "to": "replacive", "weight": 3.4, "when": { "finalConsonant": "m", "firstOnset": "t", "penultimateNucleus": { "not": "a" } } },
+            { "to": "none", "weight": 2.2, "when": { "finalConsonant": "m", "firstOnset": "n" } }
+          ]
+        },
+        "regressionSet": {
+          "additive": ["ilpi", "aki", "pajti", "shini", "seti", "pani", "tami"],
+          "replacive": ["mani", "sawi", "sewi", "kwepi", "tzakwi", "tumi", "ishtawi", "temi", "puwi", "kawi", "kajkawi", "pati", "siyawi", "tanawi"],
+          "none": ["nemi", "naki", "yuli", "mati", "nesi", "tesi", "kali", "ajwi", "wetzi", "tzajtzi"]
+        }
+      },
+      "intransitiveEndsWithA": {
+        "replacementOnly": ["ewa", "pishka"],
+        "typeTwoAllow": ["ewa"],
+        "rootPlusYa": {
+          "allowVerbs": ["kukuya"],
+          "allowSuffixes": ["wiya", "tiya"]
+        }
+      },
+      "intransitiveEndsWithU": {
+        "nonactiveWa": {
+          "typeTwo": {
+            "addition": { "verbs": ["temu"] },
+            "replacement": { "verbs": ["tejku", "ejku", "panu"] }
+          }
+        },
+        "nonactiveLu": {
+          "typeTwo": {
+            "verbs": ["tejku"]
+          }
+        }
+      },
+      "typeTwo": {
+        "suffix": "tia",
+        "nonactiveBaseSuffixes": ["wa", "u", "uwa", "lu"],
+        "uwaOnly": ["kwepi"],
+        "uwaBlock": ["mani"],
+        "deleteSuffixes": ["wa", "u", "uwa"],
+        "allowTypeTwoForIntransitives": {
+          "endsWithU": true,
+          "endsWithA": true,
+          "endsWithNi": { "minSyllables": 3, "requireNonactiveSuffix": "uwa" },
+          "allowWhenHasNonactiveSuffixes": ["uwa", "wa"]
+        }
+      },
+      "destockal": {
+        "ni": { "prefer": ["addSuffix", "replaceFinalI"] },
+        "wi": { "prefer": ["replaceFinalI", "addSuffix"] },
+        "wa": {},
+        "wiStockFormative": {
+          "allowPatterns": ["CVC-i-wi", "CVC-a-wi", "CVl-i-wi", "VjC-a-wi", "VjC-i-wi"],
+          "blockVerbs": [
+            "tuyawi",
+            "chayawi",
+            "chikawi",
+            "siyawi",
+            "pitzawi",
+            "kwechawi",
+            "pusuwi",
+            "puyawi",
+            "petawi",
+            "peyawi",
+            "pinawi",
+            "pushawi",
+            "pusawi",
+            "tetzawi",
+            "tanawi",
+            "tumawi",
+            "kusawi",
+            "sepuwi",
+            "ijsiwi",
+            "ijisiwi"
+          ]
+        },
+        "wiStockFormativeU": {}
+      }
+    },
+    "actionNominal": {
+      "sustantivoVerbal": {
+        "replaciveImperfective": {
+          "finalKaToKiOnly": ["chuka"],
+          "finalSiToShiOnlySuffixes": ["ajsi", "nesi"],
+          "finalTiToChiOptional": ["teomati"]
+        },
+        "rootPlusYa": {
+          "deleteYaOnlyVerbs": ["istaya", "kwaistaya"],
+          "deleteYaOnlySuffixes": ["tiya"],
+          "allowStemVariantSuffixes": ["wiya"]
+        }
+      }
+    },
+    "applicative": {
+      "exceptions": {
+        "maka": {
+          "base": "maka",
+          "applyToPrefixes": true,
+          "directStems": ["-maka"],
+          "applicativeStems": ["--maka", "--makilia"]
+        },
+        "itzi": {
+          "base": "itzi",
+          "applyToPrefixes": true,
+          "applicativeStem": "-itta",
+          "perfectiveBase": "-itz"
+        }
+      },
+      "valenceNeutralPairs": {
+        "verbs": ["mayana"],
+        "suffixes": ["miki"]
+      },
+      "uaStockFormativeU": ["tapua", "kukua", "sakamua", "panua"],
+      "uaLia": ["temua", "yukuya", "namuya"],
+      "uaLiaKeepYa": ["namuya"]
+    }
+  },
+  "docs": {
+    "valencePositions": {
+      "summary": "Rules governing how multiple valence positions are filled and ordered in VNCs.",
+      "orderingPriorities": ["direct", "indirect", "benefactive"],
+      "orderingExample": "I give it < to you < for her.",
+      "rules": [
+        {
+          "id": 1,
+          "text": "Every position and subposition is obligatorily present and must be filled, even if only by a silent morph."
+        },
+        {
+          "id": 2,
+          "text": "Only one reflexive object pronoun can have a mainline shape (mu); except in rare anomalies, this mainline object is controlled by the verbstem's last-added derivational suffix. It may be the only object of a nonderived transitive stem."
+        },
+        {
+          "id": 3,
+          "text": "A derived verbstem may be built of only causative suffixes, only applicative suffixes, or a combination; in combinations, causative suffixes are added before applicative ones."
+        },
+        {
+          "id": 4,
+          "text": "The leftward sequence of valence positions does not mirror stem suffix order; object pronoun order follows the ordering priorities."
+        },
+        {
+          "id": 5,
+          "text": "Specific projective object pronouns are incompatible with one another; therefore, only one can be represented by sounded morphs."
+        }
+      ]
+    },
+    "causative": {
+      "vnc": {
+        "typeTwo": {
+          "summary": "Type-two causative VNCs follow type-one transformations, with extra handling for transitive source VNCs.",
+          "steps": [
+            "Replace source stem with causative stem.",
+            "Convert source subject pronoun into a causative object pronoun.",
+            "Import a new subject pronoun external to the source VNC."
+          ],
+          "objectSubjectPronoun": {
+            "description": "Object in form but subject in function (e.g., 'I fell' -> 'me fall' in 'He made me fall')."
+          },
+          "objectPronounSpecificity": {
+            "dependsOnSourceVoice": ["active", "passive", "impersonal"]
+          },
+          "singleObject": {
+            "sources": ["active intransitive VNC", "impersonal intransitive VNC"],
+            "notes": "Type-two stem may be TIA, LIA, or WIA."
+          },
+          "doubleObject": {
+            "sources": [
+              "active single-object transitive VNC",
+              "passive intransitive VNC",
+              "single-object impersonal VNC"
+            ],
+            "mainlineObject": "causative object",
+            "reflexiveShuntlineExceptions": [
+              {
+                "condition": "imported subject coreferential with specific projective object of source",
+                "result": "shuntline reflexive/reciprocative object pronoun does not take shuntline shape",
+                "label": "projective > reflexive"
+              },
+              {
+                "condition": "imported subject coreferential with subject of passive source",
+                "result": "shuntline reflexive/reciprocative object pronoun does not take shuntline shape",
+                "label": "passive subject > reflexive object"
+              }
+            ]
+          },
+          "tripleObject": {
+            "structure": {
+              "mainline": "causative object",
+              "secondShuntline": ["causative object", "applicative object"],
+              "firstShuntline": ["direct object", "causative object", "applicative object (rare)"]
+            },
+            "notes": "One or both shuntline objects may be silently present; identify object function by stem requirements.",
+            "reflexiveShuntlineExceptions": [
+              {
+                "condition": "mainline projective object of source coreferential with imported subject",
+                "result": "shuntline reflexive-object pronoun does not take shuntline shape"
+              }
+            ]
+          }
+        }
+      },
+      "typeTwo": {
+        "notes": "Deletes wa/u before adding TIA; only -l- from -lu may remain audible.",
+        "exceptions": [
+          {
+            "activeEndsWith": "ti",
+            "nonactiveEndsWith": "lu",
+            "suffix": "ia",
+            "components": ["i", "a"],
+            "notes": "Some intransitives with active -ti and nonactive -lu take IA instead of TIA."
+          },
+          {
+            "nonactiveEndsWith": "lu",
+            "rootPlusYa": true,
+            "deleteSuffix": "ya",
+            "retainFromLu": "l",
+            "suffix": "ia",
+            "components": ["i", "a"],
+            "notes": "Root+YA nonactive -lu takes -ia; delete -ya, retain -l, add -ia (e.g., seya -> selia).",
+            "alsoAppliesTo": {
+              "derivedBy": "ya",
+              "baseIntransitiveEndsWith": ["ti", "wi"],
+              "examples": ["tetiya -> tetilia"]
+            }
+          }
+        ]
+      },
+      "intransitiveEndsWithU": {
+        "nonactiveWa": {
+          "typeTwo": {
+            "suffix": "wia",
+            "components": ["wi", "a"],
+            "additionExamples": ["temu -> temuwia"],
+            "replacementExamples": ["tejku -> tejkawia", "ejku -> ejkawia", "panu -> panawia"]
+          }
+        },
+        "nonactiveLu": {
+          "typeTwo": {
+            "suffix": "tia",
+            "components": ["ti", "a"],
+            "notes": "Some -u intransitives take -lu nonactive and form causative with -tia.",
+            "examples": ["tejku -> tejkultia"]
+          }
+        }
+      },
+      "destockal": {
+        "wiStockFormative": {
+          "selection": {
+            "rootVowelsToStockFormative": {
+              "e": "i",
+              "a": "i",
+              "i": "a",
+              "u": "a"
+            },
+            "rootFinalLForcesStockFormative": "i",
+            "notes": "Andrews 24.7 supplies the structural stock-formative contrast; contextual Classical realization remains responsible for accepted surfaces.",
+            "repoEvidenceExamples": ["petziwi", "patziwi", "pipishawi", "puliwi", "kweliwi"]
+          }
+        }
+      }
+    }
+  }
+}

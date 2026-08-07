@@ -1,0 +1,11 @@
+{
+  "compoundTokenClasses": {
+    "letterRanges": [{ "from": "a", "to": "z" }],
+    "markerTokens": ["|", "~", "#", "(", ")", "[", "]", "\\", "/", "?", "-"],
+    "splitTokens": ["|", "~", "#", "(", ")", "/", "?", "-"]
+  },
+  "subjectToggleAll": "all",
+  "objectToggleAll": "all",
+  "verbSuggestionLimit": 10,
+  "uiScaleStorageKey": "ui-scale-offset"
+}
