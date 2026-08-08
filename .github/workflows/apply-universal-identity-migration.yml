@@ -5,7 +5,6 @@ on:
     branches:
       - main
     types:
-      - synchronize
       - ready_for_review
   workflow_dispatch:
 
@@ -54,6 +53,18 @@ jobs:
           git apply --check /tmp/universal-identity.patch
           git apply /tmp/universal-identity.patch
           git diff --check
+
+      - name: Restore new identity registry and test files
+        run: |
+          cat .github/identity-migration/registry.* > /tmp/canonical-identity-registry.b64
+          echo "__REGISTRY_B64_SHA__  /tmp/canonical-identity-registry.b64" | sha256sum --check
+          base64 --decode /tmp/canonical-identity-registry.b64 > src/core/grammar/canonical_identity_registry.mjs
+          echo "507d52a104976acba603d24f07daf2b296d0b5bb4d1e08b693d742bdb924475a  src/core/grammar/canonical_identity_registry.mjs" | sha256sum --check
+
+          cat .github/identity-migration/identity-test.* > /tmp/canonical-identity-test.b64
+          echo "__TEST_B64_SHA__  /tmp/canonical-identity-test.b64" | sha256sum --check
+          base64 --decode /tmp/canonical-identity-test.b64 > src/tests/canonical_identity_registry.test.js
+          echo "937aed3b4cae5ff86851f2e0739d60d63b5614a70255a00195a9af62e8e3b770  src/tests/canonical_identity_registry.test.js" | sha256sum --check
 
       - name: Check changed module syntax
         run: |
