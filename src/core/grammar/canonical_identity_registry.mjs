@@ -274,6 +274,34 @@ function coordinateRecords(spec, ownerIdentityId) {
         metadata: {
           coordinateIdentityId: coordinateRecord.identityId,
           addressScope: proof.addressScope || "result-path",
+          deprecated: proof.deprecated === true,
+          replacementProofAddressIds:
+            proof.replacementProofAddressIds || [],
+        },
+      }));
+    }
+    if (
+      coordinate?.legacyProofAddressId
+      && coordinate.legacyProofAddressId !== coordinate.proofAddressId
+      && hasCanonicalProofAddress(coordinate.legacyProofAddressId)
+    ) {
+      const legacyProof = getCanonicalProofAddress(
+        coordinate.legacyProofAddressId,
+      );
+      records.push(resolveCanonicalIdentity({
+        identityId: legacyProof.proofAddressId,
+        namespace: "proof-address",
+        semanticName: legacyProof.semanticName,
+        stableKey: legacyProof.legacyKey || legacyProof.semanticName,
+        scopeKey: ownerIdentityId,
+        currentLocation: legacyProof.currentPath,
+        metadata: {
+          addressScope: legacyProof.addressScope || "result-path",
+          deprecated: legacyProof.deprecated === true,
+          replacementProofAddressIds:
+            legacyProof.replacementProofAddressIds || [],
+          compatibilityOnly: true,
+          sharedLegacyAddress: true,
         },
       }));
     }

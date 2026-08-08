@@ -265,6 +265,7 @@ const EXPLICIT_RECORDS_BY_ID = freeze({
 const CURRENT_PATH_OVERRIDES_BY_ID = freeze({});
 
 const AUTOMATIC_RECORDS_BY_ID = new Map();
+const REPLACEMENT_PROOF_ADDRESS_IDS_BY_ID = new Map();
 const IDS_BY_SEMANTIC_NAME = new Map(
   Object.values(EXPLICIT_RECORDS_BY_ID).map(record => [
     record.semanticName,
@@ -333,8 +334,32 @@ function automaticRecord(proofAddressId) {
   return AUTOMATIC_RECORDS_BY_ID.get(proofAddressId) || null;
 }
 
-function recordById(proofAddressId) {
+function rawRecordById(proofAddressId) {
   return explicitRecord(proofAddressId) || automaticRecord(proofAddressId);
+}
+
+function replacementIdsFor(proofAddressId) {
+  return freeze([
+    ...(REPLACEMENT_PROOF_ADDRESS_IDS_BY_ID.get(proofAddressId) || []),
+  ]);
+}
+
+function decorateRecord(record = null) {
+  if (!record) return null;
+  const replacementProofAddressIds = replacementIdsFor(record.proofAddressId);
+  if (!replacementProofAddressIds.length) return record;
+  return freeze({
+    ...record,
+    deprecated: true,
+    addressSource: record.addressSource === "explicit"
+      ? "retired-explicit-checkpoint"
+      : "retired-broad-checkpoint",
+    replacementProofAddressIds,
+  });
+}
+
+function recordById(proofAddressId) {
+  return decorateRecord(rawRecordById(proofAddressId));
 }
 
 export function getCanonicalProofAddressIdForLegacyKey(
@@ -358,6 +383,8 @@ export function resolveCanonicalProofAddress({
   currentPath = "",
   legacyKey = "",
   assertionId = "",
+  addressSource = "",
+  metadata = {},
 } = {}) {
   const normalizedOwnerId = normalizeText(ownerId);
   if (!normalizedOwnerId) {
@@ -422,13 +449,41 @@ export function resolveCanonicalProofAddress({
     currentPath: resolvedPath,
     legacyKey: normalizedLegacyKey,
     addressScope: resolvedPath ? "result-path" : "whole-result",
-    addressSource: "automatic-migration",
+    addressSource: normalizeText(addressSource) || "automatic-migration",
+    metadata: freeze({ ...(metadata || {}) }),
   });
   AUTOMATIC_RECORDS_BY_ID.set(generatedId, record);
   if (!IDS_BY_SEMANTIC_NAME.has(resolvedSemanticName)) {
     IDS_BY_SEMANTIC_NAME.set(resolvedSemanticName, generatedId);
   }
   return record;
+}
+
+export function retireCanonicalProofAddress({
+  proofAddressId = "",
+  replacementProofAddressId = "",
+} = {}) {
+  const legacyId = normalizeText(proofAddressId);
+  const replacementId = normalizeText(replacementProofAddressId);
+  const legacyRecord = rawRecordById(legacyId);
+  const replacementRecord = rawRecordById(replacementId);
+  if (!legacyRecord) {
+    throw new Error(`unknown-canonical-proof-address:${legacyId}`);
+  }
+  if (!replacementRecord) {
+    throw new Error(`unknown-canonical-proof-address:${replacementId}`);
+  }
+  if (legacyRecord.ownerId !== replacementRecord.ownerId) {
+    throw new Error(
+      `canonical-proof-address-replacement-owner-mismatch:${legacyId}:${replacementId}`,
+    );
+  }
+  if (legacyId === replacementId) return decorateRecord(legacyRecord);
+  const replacements = REPLACEMENT_PROOF_ADDRESS_IDS_BY_ID.get(legacyId)
+    || new Set();
+  replacements.add(replacementId);
+  REPLACEMENT_PROOF_ADDRESS_IDS_BY_ID.set(legacyId, replacements);
+  return decorateRecord(legacyRecord);
 }
 
 export function hasCanonicalProofAddress(proofAddressId = "") {
@@ -463,7 +518,7 @@ export function listCanonicalProofAddresses() {
   return freeze([
     ...Object.values(EXPLICIT_RECORDS_BY_ID),
     ...AUTOMATIC_RECORDS_BY_ID.values(),
-  ]);
+  ].map(decorateRecord));
 }
 
 // Backward-compatible explicit snapshot. Use listCanonicalProofAddresses() for

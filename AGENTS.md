@@ -107,3 +107,20 @@ Families may share and cache immutable owner-issued canonical Results. They may
 not invent grammar, bypass an owner validator, or turn proof metadata into
 grammatical authority. Preserve public owner APIs, Results, permanent IDs, and
 correct output while consolidating their shared execution machinery.
+
+
+## Exact Proof Observations
+
+A grammar-bearing atom must observe an owner-issued canonical Result, relation,
+or restriction—not a completion flag by itself.
+
+Treat legacy paths ending in `authorizationStatus`, `gcdSatisfied`,
+`lcmComplete`, `ownerExecutionCompleted`, `blocksInput`,
+`formulaOutputAllowed`, or `classificationStatus` as compatibility metadata.
+The effective proof coordinate must use a distinct permanent proof identity and
+observe the selection-specific canonical parent Result. Keep the legacy proof
+identity resolvable as a deprecated alias to the exact witness.
+
+Do not add new broad-only proof coordinates. Do not copy expected strings into
+proof. Proof observation metadata remains non-authorizing; grammatical truth
+continues to come from the canonical owner-issued Result.

@@ -81,6 +81,10 @@ const CONCEPTUAL_OWNER_IDS = new Set([
   "morpheme-syllable-separation",
   "silent-morph-contrast-validation",
 ]);
+const TECHNICAL_OWNER_IDS = new Set([
+  "classical-nahuatl-deverbal-nnc-runtime",
+]);
+
 const NUCLEAR_OWNER_IDS = new Set([
   "classical-vnc",
   "classical-nnc",
@@ -410,7 +414,11 @@ function registerUnboundCanonicalOwners() {
   ));
   for (const record of owners) {
     const ownerId = normalize(record.semanticName);
-    if (!ownerId || BINDING_BY_OWNER_ID.has(ownerId)) continue;
+    if (
+      !ownerId
+      || TECHNICAL_OWNER_IDS.has(ownerId)
+      || BINDING_BY_OWNER_ID.has(ownerId)
+    ) continue;
     const classified = explicitCanonicalOwnerFamily(ownerId);
     registerCanonicalGrammarFamilyBinding({
       ownerId,

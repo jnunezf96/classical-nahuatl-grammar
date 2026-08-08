@@ -168,8 +168,13 @@ function run(ctx = {}) {
             coreObservedValue: coreResult.payload?.facetValue,
             restrictedStatus: restrictedResult.authorizationStatus,
             restrictedOwnerId: restrictedResult.semanticOwnerId,
-            restrictedObservedValue:
-                restrictedResult.payload?.facetValue,
+            restrictedObservedStatus:
+                restrictedResult.payload?.facetValue
+                    ?.authorizationStatus
+                || restrictedResult.payload?.facetValue,
+            restrictedWitnessOperation:
+                restrictedResult.payload?.facetValue
+                    ?.operationId || "",
             invocationDelta: metricDelta(after, before, "invocationCount"),
             cacheHitDelta: metricDelta(after, before, "cacheHitCount"),
             cacheMissDelta: metricDelta(after, before, "cacheMissCount"),
@@ -183,7 +188,9 @@ function run(ctx = {}) {
             restrictedStatus: "authorized",
             restrictedOwnerId:
                 "classical-preterit-agentive-restricted-use",
-            restrictedObservedValue: "authorized",
+            restrictedObservedStatus: "authorized",
+            restrictedWitnessOperation:
+                "predicate-nominalization:preterit-agentive",
             invocationDelta: 2,
             cacheHitDelta: 1,
             cacheMissDelta: 1,

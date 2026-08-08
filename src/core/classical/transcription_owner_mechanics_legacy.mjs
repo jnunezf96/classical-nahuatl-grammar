@@ -32,6 +32,19 @@ const DOCUMENTARY_KEYS = new Set([
   "outputExample",
 ]);
 const FAMILY_KERNELS_BY_TARGET = new WeakMap();
+const NON_SEMANTIC_PROOF_KEYS = new Set([
+  "authorizationStatus",
+  "finiteAuthorizationStatus",
+  "inventoryAuthorizationStatus",
+  "gcdSatisfied",
+  "lcmComplete",
+  "ownerExecutionCompleted",
+  "blocksInput",
+  "formulaOutputAllowed",
+  "classificationStatus",
+  "kind",
+  "version",
+]);
 
 const NON_AUTHORITY = freeze({
   lessonMetadataAuthority: false,
@@ -116,6 +129,36 @@ function valueAtPath(value, path = "") {
     if (current == null) return undefined;
     return current[key];
   }, value);
+}
+
+function hasMeaningfulCanonicalWitness(value, key = "", seen = new WeakSet()) {
+  if (value == null) return false;
+  if (typeof value !== "object") {
+    if (NON_SEMANTIC_PROOF_KEYS.has(key)) return false;
+    if (/authority$/iu.test(key)) return false;
+    if (typeof value === "string") return value.trim() !== "";
+    return true;
+  }
+  if (seen.has(value)) return false;
+  seen.add(value);
+  if (Array.isArray(value)) {
+    return value.some(item => hasMeaningfulCanonicalWitness(item, key, seen));
+  }
+  return Reflect.ownKeys(value).some((childKey) => {
+    if (typeof childKey !== "string") return false;
+    if (DOCUMENTARY_KEYS.has(childKey)) return false;
+    if (NON_SEMANTIC_PROOF_KEYS.has(childKey)) return false;
+    if (/authority$/iu.test(childKey)) return false;
+    const descriptor = Object.getOwnPropertyDescriptor(value, childKey);
+    if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, "value")) {
+      return false;
+    }
+    return hasMeaningfulCanonicalWitness(
+      descriptor.value,
+      childKey,
+      seen,
+    );
+  });
 }
 
 function recordFor(target, spec, selection) {
@@ -558,6 +601,19 @@ function createMechanism(target, spec, familyKernel = null) {
       routeSteps,
       outcome: { status: execution.status, reason: execution.reason },
     });
+    const facetValue = authorized
+      ? sanitize(valueAtPath(
+        canonical.definition,
+        context.coordinate.canonicalPath || "",
+      ))
+      : undefined;
+    const proofObservationStatus = !authorized
+      ? "blocked"
+      : context.coordinate.broadCompletionProxyRetired === true
+        ? hasMeaningfulCanonicalWitness(facetValue)
+          ? "observed"
+          : "unresolved"
+        : "direct";
     const result = deepFreeze({
       kind: `${spec.ownerId}-result`, version: VERSION,
       authorizationStatus: authorized ? "authorized" : "blocked",
@@ -592,10 +648,27 @@ function createMechanism(target, spec, familyKernel = null) {
       payload: authorized ? {
         ...canonical.payload,
         semanticAssertionId: context.coordinate.assertionId,
-        facetValue: sanitize(valueAtPath(
-          canonical.definition,
+        facetValue,
+        proofObservationKind:
+          context.coordinate.proofObservationKind
+          || "direct-canonical-result-observation",
+        proofObservationStatus,
+        effectiveCanonicalPath:
           context.coordinate.canonicalPath || "",
-        )),
+        sourceCanonicalPath:
+          context.coordinate.sourceCanonicalPath
+          || context.coordinate.canonicalPath
+          || "",
+        legacyCanonicalPath:
+          context.coordinate.legacyCanonicalPath || "",
+        legacyProofAddressId:
+          context.coordinate.legacyProofAddressId || "",
+        legacyProofSemanticName:
+          context.coordinate.legacyProofSemanticName || "",
+        broadCompletionLeaf:
+          context.coordinate.broadCompletionLeaf || "",
+        broadCompletionProxyRetired:
+          context.coordinate.broadCompletionProxyRetired === true,
       } : {},
       ownerExecutionCompleted: authorized,
       unitConstructed: false,

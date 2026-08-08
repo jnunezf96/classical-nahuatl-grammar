@@ -108,7 +108,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "an unmigrated owner coordinate receives one stable opaque proof address automatically",
+        "a legacy broad numeral coordinate receives one stable exact canonical witness automatically",
         (() => {
             const facet =
                 "p3269-when-not-occurring-as-the-embed-of-a-compound";
@@ -125,6 +125,7 @@ function run(ctx = {}) {
                 ctx.buildClassicalNumeralOneSource(request)
             );
             const proofAddressId = first.payload?.proofAddressId || "";
+            const witness = first.payload?.facetValue || {};
             return {
                 firstStatus: first.authorizationStatus,
                 secondStatus: second.authorizationStatus,
@@ -133,7 +134,16 @@ function run(ctx = {}) {
                     /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u
                         .test(proofAddressId),
                 semanticName: first.payload?.proofSemanticName || "",
-                observedValue: first.payload?.facetValue || "",
+                observationStatus:
+                    first.payload?.proofObservationStatus || "",
+                broadProxyRetired:
+                    first.payload?.broadCompletionProxyRetired === true,
+                hasLegacyProofIdentity:
+                    Boolean(first.payload?.legacyProofAddressId),
+                numeralValue: witness.value,
+                stem: witness.stem,
+                formula: witness.formulaRealization,
+                word: witness.wordSurface,
             };
         })(),
         {
@@ -142,8 +152,14 @@ function run(ctx = {}) {
             stable: true,
             opaqueUuid: true,
             semanticName:
-                "numeral.one.cases.one.authorizationstatus",
-            observedValue: "authorized",
+                "numeral.one.p3269.when.not.occurring.as.the.embed.of.a.compound.canonical.witness",
+            observationStatus: "observed",
+            broadProxyRetired: true,
+            hasLegacyProofIdentity: true,
+            numeralValue: 1,
+            stem: "cē",
+            formula: "#0-0(cē)0-0#",
+            word: "cē",
         }
     );
 
