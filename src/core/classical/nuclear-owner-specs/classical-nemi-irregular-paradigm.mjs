@@ -1,3 +1,11 @@
+import {
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS,
+  getCanonicalProofPath,
+} from "../../grammar/canonical_proof_address_registry.mjs";
+
+const NEMI_SELECTED_PERFECTIVE_STEM =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.NEMI_SELECTED_PERFECTIVE_STEM;
+
 const spec = {
   "ownerId": "classical-nemi-irregular-paradigm",
   "prefix": "ClassicalNemiIrregularParadigm",
@@ -13,7 +21,8 @@ const spec = {
   "coordinates": {
     "claim-p1216::p1216-nemi-nen-to-live-vncs-built-on-these-stems": {
       "assertionId": "classical-nemi-irregular-paradigm:p1216-nemi-nen-to-live-vncs-built-on-these-stems",
-      "canonicalPath": "authorizationStatus"
+      "proofAddressId": NEMI_SELECTED_PERFECTIVE_STEM,
+      "canonicalPath": getCanonicalProofPath(NEMI_SELECTED_PERFECTIVE_STEM)
     },
     "claim-p1217::p1217-finds-vncs-with-a-distant-past-tense-used-with": {
       "assertionId": "classical-nemi-irregular-paradigm:p1217-finds-vncs-with-a-distant-past-tense-used-with",
