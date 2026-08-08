@@ -29,7 +29,25 @@ jobs:
 
       - name: Reassemble and apply the reviewed migration patch
         run: |
-          cat .github/identity-migration/patch.* | base64 --decode > /tmp/universal-identity.patch
+          python - <<'PY'
+          from pathlib import Path
+
+          directory = Path('.github/identity-migration')
+          head = (directory / 'patch.00').read_text()
+          for index in (6048, 6684, 6788, 7392):
+              head = head[:index] + 'I' + head[index:]
+          if len(head) != 10000:
+              raise SystemExit(f'unexpected-repaired-head-length:{len(head)}')
+          payload = ''.join([
+              head,
+              (directory / 'patch.01').read_text()[3000:],
+              (directory / 'patch.02').read_text(),
+              (directory / 'patch.03').read_text(),
+          ])
+          Path('/tmp/universal-identity.patch.b64').write_text(payload)
+          PY
+          echo "4a4488d4c33e73e9c25b4e315ae690b4130ce44b636b8e5c17869a678fb84c39  /tmp/universal-identity.patch.b64" | sha256sum --check
+          base64 --decode /tmp/universal-identity.patch.b64 > /tmp/universal-identity.patch
           echo "fec27399cb896a3f64e6bf94c15c8131a44d3943c896059daa8e23e5720de4b6  /tmp/universal-identity.patch" | sha256sum --check
           git apply --check /tmp/universal-identity.patch
           git apply /tmp/universal-identity.patch
