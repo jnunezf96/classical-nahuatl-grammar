@@ -14,8 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Archive repository source
-        run: tar --exclude=.git -czf source-snapshot.tar.gz .
+        run: tar --exclude=.git -czf ../source-snapshot.tar.gz .
       - uses: actions/upload-artifact@v4
         with:
           name: source-snapshot
-          path: source-snapshot.tar.gz
+          path: ../source-snapshot.tar.gz
