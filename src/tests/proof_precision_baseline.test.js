@@ -166,7 +166,7 @@ function readRetiredProofAddresses() {
     ));
 }
 
-function run() {
+function run(ctx = {}) {
     const s = createSuite("proof_precision_baseline");
     const baseline = JSON.parse(
         fs.readFileSync(LEGACY_FIXTURE_PATH, "utf8")
@@ -184,6 +184,18 @@ function run() {
             coordinateKey,
             canonicalPath,
         }));
+    const effectiveCoordinates =
+        ctx.listRoutineSemanticEffectiveProofCoordinates?.() || [];
+    const migratedCoordinates = effectiveCoordinates.filter(
+        (record) => record.migratedFromBroadCompletion === true
+    );
+    const effectiveBroadCoordinates = migratedCoordinates.filter(
+        (record) => CLEAR_BROAD_PROOF_SUFFIXES.some((suffix) =>
+            String(record.effectiveCanonicalPath || "")
+                .toLowerCase()
+                .endsWith(suffix)
+        )
+    );
 
     s.eq(
         "the legacy broad-proof baseline is compact, fixed, and well formed",
@@ -219,6 +231,89 @@ function run() {
     s.ok(
         "the first exact vertical migration removes at least six unmistakably administrative coordinates",
         current.length <= baseline.legacyCoordinateCount - 6
+    );
+
+    s.eq(
+        "every remaining legacy broad source coordinate is projected to one distinct exact canonical witness",
+        {
+            sourceBroadCoordinates: current.length,
+            migratedCoordinates: migratedCoordinates.length,
+            uniqueExactProofAddresses:
+                new Set(migratedCoordinates.map(
+                    (record) => record.proofAddressId
+                )).size,
+            uniqueLegacyProofAddresses:
+                new Set(migratedCoordinates.map(
+                    (record) => record.legacyProofAddressId
+                )).size,
+            wholeResultWitnesses: migratedCoordinates.filter(
+                (record) => !record.effectiveCanonicalPath
+            ).length,
+            effectiveBroadCoordinates:
+                effectiveBroadCoordinates.length,
+            migrationDigest: crypto.createHash("sha256").update(
+                JSON.stringify(migratedCoordinates.map((record) => [
+                    record.ownerId,
+                    record.coordinateKey,
+                    record.proofAddressId,
+                    record.legacyProofAddressId,
+                    record.effectiveCanonicalPath,
+                ]).sort((left, right) => (
+                    JSON.stringify(left).localeCompare(
+                        JSON.stringify(right)
+                    )
+                )))
+            ).digest("hex"),
+            nonAuthorizing: migratedCoordinates.every(
+                (record) => record.grammarAuthority === false
+            ),
+        },
+        {
+            sourceBroadCoordinates: 826,
+            migratedCoordinates: 826,
+            uniqueExactProofAddresses: 826,
+            uniqueLegacyProofAddresses: 483,
+            wholeResultWitnesses: 187,
+            effectiveBroadCoordinates: 0,
+            migrationDigest:
+                "3f78681a0d60b8a94e18a8bb1f674193c3b3421c436ce55e9bff71038a4f8023",
+            nonAuthorizing: true,
+        }
+    );
+
+    s.eq(
+        "all automatic legacy proof identities remain resolvable as deprecated aliases to their exact witnesses",
+        migratedCoordinates.flatMap((record) => {
+            const exact = ctx.getCanonicalProofAddress?.(
+                record.proofAddressId
+            );
+            const legacy = ctx.getCanonicalProofAddress?.(
+                record.legacyProofAddressId
+            );
+            const valid = Boolean(
+                exact
+                && legacy
+                && exact.addressSource
+                    === "automatic-exact-semantic-observation"
+                && exact.currentPath
+                    === record.effectiveCanonicalPath
+                && legacy.deprecated === true
+                && legacy.addressSource
+                    === "retired-broad-checkpoint"
+                && legacy.replacementProofAddressIds?.includes(
+                    record.proofAddressId
+                )
+                && record.proofAddressId
+                    !== record.legacyProofAddressId
+            );
+            return valid ? [] : [{
+                ownerId: record.ownerId,
+                coordinateKey: record.coordinateKey,
+                exact,
+                legacy,
+            }];
+        }),
+        []
     );
 
     const retiredAddresses = readRetiredProofAddresses();

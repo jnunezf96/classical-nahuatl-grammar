@@ -9,10 +9,14 @@ import {
   createRoutineSemanticOwnerMechanicsApi as createLegacyRoutineSemanticOwnerMechanicsApi,
 } from "./transcription_owner_mechanics_legacy.mjs";
 import {
+  getCanonicalProofAddress,
+  listCanonicalProofAddresses,
   resolveCanonicalProofAddress,
+  retireCanonicalProofAddress,
 } from "../grammar/canonical_proof_address_registry.mjs";
 import {
   registerCanonicalOwnerSpecIdentity,
+  resolveCanonicalIdentity,
 } from "../grammar/canonical_identity_registry.mjs";
 import {
   getCanonicalGrammarFamilyForOwner,
@@ -27,6 +31,65 @@ import {
 } from "./routine_semantic_family_registry.mjs";
 
 const freeze = Object.freeze;
+const CLEAR_BROAD_PROOF_SUFFIXES = freeze([
+  "authorizationstatus",
+  "gcdsatisfied",
+  "lcmcomplete",
+  "ownerexecutioncompleted",
+  "blocksinput",
+  "formulaoutputallowed",
+  "classificationstatus",
+]);
+const EFFECTIVE_PROOF_COORDINATES_BY_KEY = new Map();
+
+function normalizeText(value = "") {
+  return String(value == null ? "" : value).normalize("NFC").trim();
+}
+
+function semanticToken(value = "") {
+  return normalizeText(value)
+    .replace(/^classical-/u, "")
+    .replace(/[^\p{L}\p{N}]+/gu, ".")
+    .replace(/^\.+|\.+$/gu, "")
+    .toLowerCase();
+}
+
+function broadCompletionLeaf(path = "") {
+  const leaf = normalizeText(path).split(".").at(-1)?.toLowerCase() || "";
+  return CLEAR_BROAD_PROOF_SUFFIXES.find(suffix => leaf.endsWith(suffix))
+    || "";
+}
+
+function canonicalParentPath(path = "") {
+  const segments = normalizeText(path).split(".").filter(Boolean);
+  return segments.slice(0, -1).join(".");
+}
+
+function exactSemanticName(spec, coordinateKey, coordinate) {
+  const facet = coordinateKey.split("::")[1] || coordinate.assertionId || coordinateKey;
+  return [
+    semanticToken(spec.ownerId),
+    semanticToken(facet),
+    "canonical.witness",
+  ].filter(Boolean).join(".");
+}
+
+function registerEffectiveProofCoordinate(record) {
+  const key = `${record.ownerId}\u241f${record.coordinateKey}`;
+  const existing = EFFECTIVE_PROOF_COORDINATES_BY_KEY.get(key) || null;
+  if (existing) {
+    if (
+      existing.proofAddressId !== record.proofAddressId
+      || existing.effectiveCanonicalPath !== record.effectiveCanonicalPath
+    ) {
+      throw new Error(`effective-proof-coordinate-drift:${key}`);
+    }
+    return existing;
+  }
+  const frozen = deepFreeze(record);
+  EFFECTIVE_PROOF_COORDINATES_BY_KEY.set(key, frozen);
+  return frozen;
+}
 
 function deepFreeze(value, seen = new WeakSet()) {
   if (!value || typeof value !== "object" || seen.has(value)) return value;
@@ -41,24 +104,113 @@ function deepFreeze(value, seen = new WeakSet()) {
 }
 
 function prepareCoordinate(spec, coordinateKey, coordinate = {}) {
-  const currentPath = String(coordinate.canonicalPath || "");
-  const proofAddress = resolveCanonicalProofAddress({
+  const sourceCanonicalPath = normalizeText(coordinate.canonicalPath);
+  const legacyProofAddress = resolveCanonicalProofAddress({
     proofAddressId: coordinate.proofAddressId || "",
     ownerId: spec.ownerId,
     semanticName: coordinate.proofSemanticName || "",
-    currentPath,
+    currentPath: sourceCanonicalPath,
     legacyKey: coordinate.proofAddressKey
-      || currentPath
+      || sourceCanonicalPath
       || coordinate.assertionId
       || coordinateKey,
     assertionId: coordinate.assertionId || "",
   });
-  return deepFreeze({
+  const broadLeaf = broadCompletionLeaf(sourceCanonicalPath);
+  if (!broadLeaf) {
+    const prepared = deepFreeze({
+      ...coordinate,
+      proofAddressId: legacyProofAddress.proofAddressId,
+      proofSemanticName: legacyProofAddress.semanticName,
+      canonicalPath: legacyProofAddress.currentPath,
+      proofObservationKind: "direct-canonical-result-observation",
+      sourceCanonicalPath,
+      legacyProofAddressId: "",
+      broadCompletionProxyRetired: false,
+    });
+    registerEffectiveProofCoordinate({
+      kind: "effective-routine-semantic-proof-coordinate",
+      ownerId: spec.ownerId,
+      coordinateKey,
+      assertionId: coordinate.assertionId || "",
+      proofAddressId: prepared.proofAddressId,
+      proofSemanticName: prepared.proofSemanticName,
+      sourceCanonicalPath,
+      effectiveCanonicalPath: prepared.canonicalPath,
+      observationScope: prepared.canonicalPath ? "result-path" : "whole-result",
+      migratedFromBroadCompletion: false,
+      legacyProofAddressId: "",
+      legacyProofSemanticName: "",
+      broadCompletionLeaf: "",
+      grammarAuthority: false,
+    });
+    return prepared;
+  }
+
+  const ownerIdentity = resolveCanonicalIdentity({
+    namespace: "owner",
+    semanticName: spec.ownerId,
+    stableKey: spec.ownerId,
+    currentLocation: "ownerId",
+  });
+  const assertionIdentity = resolveCanonicalIdentity({
+    namespace: "assertion",
+    semanticName: coordinate.assertionId || coordinateKey,
+    stableKey: coordinateKey,
+    scopeKey: ownerIdentity.identityId,
+    currentLocation: `coordinates.${coordinateKey}.assertionId`,
+  });
+  const effectiveCanonicalPath = canonicalParentPath(sourceCanonicalPath);
+  const proofAddress = resolveCanonicalProofAddress({
+    ownerId: spec.ownerId,
+    semanticName: exactSemanticName(spec, coordinateKey, coordinate),
+    currentPath: effectiveCanonicalPath,
+    legacyKey:
+      `canonical-semantic-witness:${assertionIdentity.identityId}`,
+    assertionId: coordinate.assertionId || "",
+    addressSource: "automatic-exact-semantic-observation",
+    metadata: {
+      assertionIdentityId: assertionIdentity.identityId,
+      legacyProofAddressId: legacyProofAddress.proofAddressId,
+      legacyCanonicalPath: sourceCanonicalPath,
+      broadCompletionLeaf: broadLeaf,
+    },
+  });
+  const retiredLegacy = retireCanonicalProofAddress({
+    proofAddressId: legacyProofAddress.proofAddressId,
+    replacementProofAddressId: proofAddress.proofAddressId,
+  });
+  const prepared = deepFreeze({
     ...coordinate,
     proofAddressId: proofAddress.proofAddressId,
     proofSemanticName: proofAddress.semanticName,
     canonicalPath: proofAddress.currentPath,
+    proofObservationKind: "selection-specific-canonical-result-witness",
+    sourceCanonicalPath,
+    legacyCanonicalPath: sourceCanonicalPath,
+    legacyProofAddressId: retiredLegacy.proofAddressId,
+    legacyProofSemanticName: retiredLegacy.semanticName,
+    broadCompletionLeaf: broadLeaf,
+    broadCompletionProxyRetired: true,
   });
+  registerEffectiveProofCoordinate({
+    kind: "effective-routine-semantic-proof-coordinate",
+    ownerId: spec.ownerId,
+    coordinateKey,
+    assertionId: coordinate.assertionId || "",
+    assertionIdentityId: assertionIdentity.identityId,
+    proofAddressId: prepared.proofAddressId,
+    proofSemanticName: prepared.proofSemanticName,
+    sourceCanonicalPath,
+    effectiveCanonicalPath: prepared.canonicalPath,
+    observationScope: prepared.canonicalPath ? "result-path" : "whole-result",
+    migratedFromBroadCompletion: true,
+    legacyProofAddressId: prepared.legacyProofAddressId,
+    legacyProofSemanticName: prepared.legacyProofSemanticName,
+    broadCompletionLeaf: broadLeaf,
+    grammarAuthority: false,
+  });
+  return prepared;
 }
 
 function prepareSpec(spec = {}) {
@@ -117,6 +269,9 @@ function wrapOwnerApi(legacyApi, spec) {
     const proofSemanticName = authorized
       ? coordinate?.proofSemanticName || ""
       : "";
+    const proofObservationStatus = authorized
+      ? legacyResult?.payload?.proofObservationStatus || ""
+      : "";
     const result = deepFreeze({
       ...legacyResult,
       payload: authorized
@@ -133,6 +288,15 @@ function wrapOwnerApi(legacyApi, spec) {
         ...legacyEvidence,
         proofAddressId,
         proofSemanticName,
+        proofObservationStatus,
+        proofObservationKind:
+          legacyResult?.payload?.proofObservationKind || "",
+        effectiveCanonicalPath:
+          legacyResult?.payload?.effectiveCanonicalPath || "",
+        legacyProofAddressId:
+          legacyResult?.payload?.legacyProofAddressId || "",
+        broadCompletionProxyRetired:
+          legacyResult?.payload?.broadCompletionProxyRetired === true,
       })
       : legacyEvidence;
     issuedResults.add(result);
@@ -172,6 +336,8 @@ function wrapOwnerApi(legacyApi, spec) {
       && legacyIsEvidence(legacyEvidence, legacyResult) === true
       && evidence.proofAddressId === result?.payload?.proofAddressId
       && evidence.proofSemanticName === result?.payload?.proofSemanticName
+      && evidence.proofObservationStatus
+        === result?.payload?.proofObservationStatus
       && Object.isFrozen(evidence)
     );
   }
@@ -184,6 +350,24 @@ function wrapOwnerApi(legacyApi, spec) {
     [names.getEvidence]: getEvidence,
     [names.isEvidence]: isEvidence,
   });
+}
+
+export function listRoutineSemanticEffectiveProofCoordinates() {
+  return freeze([
+    ...EFFECTIVE_PROOF_COORDINATES_BY_KEY.values(),
+  ].sort((left, right) => (
+    left.ownerId.localeCompare(right.ownerId)
+    || left.coordinateKey.localeCompare(right.coordinateKey)
+  )));
+}
+
+export function getRoutineSemanticEffectiveProofCoordinate(
+  ownerId = "",
+  coordinateKey = "",
+) {
+  return EFFECTIVE_PROOF_COORDINATES_BY_KEY.get(
+    `${normalizeText(ownerId)}\u241f${normalizeText(coordinateKey)}`,
+  ) || null;
 }
 
 export function createRoutineSemanticOwnerMechanicsApi(
@@ -208,6 +392,10 @@ export function createRoutineSemanticOwnerMechanicsApi(
     isRoutineSemanticFamilyRecord,
     listCanonicalGrammarFamilies,
     listRoutineSemanticFamilies,
+    getCanonicalProofAddress,
+    listCanonicalProofAddresses,
+    getRoutineSemanticEffectiveProofCoordinate,
+    listRoutineSemanticEffectiveProofCoordinates,
   });
   return freeze(api);
 }
