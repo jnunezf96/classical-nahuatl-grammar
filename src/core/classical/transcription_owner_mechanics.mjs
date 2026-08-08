@@ -94,24 +94,29 @@ function wrapOwnerApi(legacyApi, spec) {
   function evaluate(source = null) {
     const legacyResult = legacyEvaluate(source);
     const coordinate = coordinateForSource(spec, source);
-    const proofAddressId = coordinate?.proofAddressId || "";
-    const proofSemanticName = coordinate?.proofSemanticName || "";
+    const authorized = legacyResult?.authorizationStatus === "authorized";
+    const proofAddressId = authorized ? coordinate?.proofAddressId || "" : "";
+    const proofSemanticName = authorized
+      ? coordinate?.proofSemanticName || ""
+      : "";
     const result = deepFreeze({
       ...legacyResult,
-      payload: {
-        ...(legacyResult?.payload || {}),
-        proofAddressId,
-        proofSemanticName,
-      },
+      payload: authorized
+        ? {
+          ...(legacyResult?.payload || {}),
+          proofAddressId,
+          proofSemanticName,
+        }
+        : legacyResult?.payload || {},
     });
     const legacyEvidence = legacyGetEvidence(legacyResult);
-    const evidence = legacyEvidence
+    const evidence = legacyEvidence && authorized
       ? deepFreeze({
         ...legacyEvidence,
         proofAddressId,
         proofSemanticName,
       })
-      : null;
+      : legacyEvidence;
     issuedResults.add(result);
     legacyResultsByResult.set(result, legacyResult);
     evidenceByResult.set(result, evidence);
