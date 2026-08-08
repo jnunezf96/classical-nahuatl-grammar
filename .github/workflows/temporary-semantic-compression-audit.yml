@@ -1,0 +1,805 @@
+name: Temporary semantic compression and proof precision audit
+
+on:
+  push:
+    branches:
+      - agent/migrate-proof-addresses
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Audit owners, proof precision, and coupling
+        run: |
+          mkdir -p audit-output
+          node --input-type=module <<'NODE'
+          import { readdir, readFile, writeFile } from "node:fs/promises";
+          import path from "node:path";
+          import { pathToFileURL } from "node:url";
+
+          const root = process.cwd();
+          const coreRoot = path.join(root, "src/core");
+
+          async function walk(directory) {
+            const output = [];
+            for (const entry of await readdir(directory, { withFileTypes: true })) {
+              const full = path.join(directory, entry.name);
+              if (entry.isDirectory()) output.push(...await walk(full));
+              else output.push(full);
+            }
+            return output;
+          }
+
+          const coreFiles = (await walk(coreRoot))
+            .filter(file => /\.(?:mjs|js)$/u.test(file))
+            .sort();
+          const sourceByFile = new Map();
+          for (const file of coreFiles) {
+            sourceByFile.set(file, await readFile(file, "utf8"));
+          }
+
+          const ownerSpecDirectories = [...new Set(coreFiles
+            .map(file => path.dirname(file))
+            .filter(directory => /owner-specs$/u.test(directory)))]
+            .sort();
+          const specs = [];
+          const importFailures = [];
+          for (const directory of ownerSpecDirectories) {
+            for (const file of (await readdir(directory))
+              .filter(value => value.endsWith(".mjs"))
+              .sort()) {
+              const full = path.resolve(directory, file);
+              try {
+                const module = await import(pathToFileURL(full));
+                const spec = module.default;
+                if (spec?.ownerId) {
+                  specs.push({
+                    spec,
+                    file: path.relative(root, full),
+                    directory: path.relative(root, directory),
+                  });
+                }
+              } catch (error) {
+                importFailures.push({
+                  file: path.relative(root, full),
+                  message: String(error?.message || error),
+                });
+              }
+            }
+          }
+
+          const { createModuleRuntime } = await import(
+            pathToFileURL(path.join(root, "src/node/runtime.mjs"))
+          );
+          const { context } = await createModuleRuntime({
+            rootDir: root,
+            extraGlobals: { __TEST_RUNTIME_MODE__: "module" },
+            exposeModuleInspectionCapabilities: true,
+          });
+          const identityRecords = typeof context.listCanonicalIdentityRecords === "function"
+            ? context.listCanonicalIdentityRecords()
+            : [];
+          const identityCounts = identityRecords.reduce((output, record) => {
+            output[record.namespace] = (output[record.namespace] || 0) + 1;
+            return output;
+          }, {});
+          const ownerIdentityRecords = identityRecords.filter(
+            record => record.namespace === "owner",
+          );
+          const ownerNameByIdentityId = new Map(ownerIdentityRecords.map(record => [
+            record.identityId,
+            record.semanticName,
+          ]));
+          const operationsByOwner = new Map();
+          for (const record of identityRecords.filter(
+            item => item.namespace === "operation",
+          )) {
+            const ownerName = ownerNameByIdentityId.get(record.scopeKey) || "";
+            if (!ownerName) continue;
+            if (!operationsByOwner.has(ownerName)) operationsByOwner.set(ownerName, []);
+            operationsByOwner.get(ownerName).push(record.semanticName);
+          }
+
+          const {
+            getCanonicalProofAddress,
+            getCanonicalProofAddressIdForLegacyKey,
+          } = await import(pathToFileURL(path.join(
+            root,
+            "src/core/grammar/canonical_proof_address_registry.mjs",
+          )));
+
+          const STOPWORDS = new Set([
+            "a", "an", "and", "as", "at", "be", "by", "for", "from",
+            "has", "have", "in", "is", "it", "of", "on", "or", "that",
+            "the", "these", "this", "to", "when", "with", "without",
+            "claim", "classical", "nahuatl", "p", "owner", "semantic",
+            "canonical", "analysis", "validation", "operation", "execute",
+          ]);
+
+          function tokens(value = "") {
+            return String(value)
+              .normalize("NFKD")
+              .toLowerCase()
+              .replace(/p\d+/gu, " ")
+              .split(/[^\p{L}\p{N}]+/u)
+              .filter(token => token.length > 1 && !STOPWORDS.has(token));
+          }
+
+          function paragraphIds(spec) {
+            const values = [
+              ...(spec.selections || []),
+              ...Object.keys(spec.coordinates || {}),
+              ...Object.values(spec.coordinates || {}).map(item => item?.assertionId || ""),
+            ].join(" ");
+            return [...new Set(values.match(/p\d+/gu) || [])];
+          }
+
+          const FAMILY_RULES = [
+            ["stem-selection", /stem|perfective|imperfective|verbstem|supplet|allomorph/iu],
+            ["valence-object", /valence|transitiv|object|argument|applicative|causative/iu],
+            ["voice", /voice|passive|reflexive|reciprocal|impersonal|middle/iu],
+            ["nominalization", /nominal|agentive|patientive|deverbal|nounstem|nnc/iu],
+            ["tense-aspect-mood", /tense|aspect|preterit|past|future|present|imperfect|mood|potential/iu],
+            ["person-number-agreement", /person|number|plural|singular|agreement|subject/iu],
+            ["possession", /possess|possessor|ownerhood/iu],
+            ["relational-locative", /relational|locative|place|gentilic|spatial/iu],
+            ["derivation-affix", /deriv|affix|suffix|prefix|infix|morph/iu],
+            ["compound-composition", /compound|compose|composition|embed|stock/iu],
+            ["phonology-orthography", /phon|graphe|sigeme|transcription|orthograph|sound|spelling|syllable|vocable/iu],
+            ["syntax-clause", /syntax|clause|adjunct|conjunct|govern|group/iu],
+            ["particle", /particle/iu],
+            ["numeral", /numeral|cardinal|ordinal|count/iu],
+            ["conceptual-structure", /concept|terminology|carrier|sememe|structure|rank|unit/iu],
+            ["runtime-infrastructure", /registry|catalog|manifest|routing|runtime|contract|identity|coverage|reachability|integrity/iu],
+          ];
+
+          function familyFor(value = "") {
+            for (const [family, pattern] of FAMILY_RULES) {
+              if (pattern.test(value)) return family;
+            }
+            return "other";
+          }
+
+          function executionRole(ownerId, operationIds, spec) {
+            const value = [ownerId, ...operationIds, spec?.mode || ""].join(" ");
+            if (/registry|catalog|manifest|routing|runtime|contract|identity|coverage|reachability|integrity/iu.test(value)) {
+              return "technical-or-routing";
+            }
+            if (/proof|validation|validate|audit|reconcile|closure|gate|check/iu.test(value)) {
+              return "proof-or-validation";
+            }
+            if (/transcription|documentary|evidence|witness/iu.test(value)) {
+              return "evidence-or-documentary";
+            }
+            if (/realize|compose|transform|derive|form|select|inflect|apply|project|rewrite/iu.test(value)
+              || ["canonical-operation", "canonical-rule", "canonical-particle-operation", "canonical-particle-result"].includes(spec?.mode)) {
+              return "generation-selection-or-transformation";
+            }
+            if (/classify|analy[sz]e|establish|inventory|taxonomy|definition/iu.test(value)
+              || Object.keys(spec?.analyses || {}).length) {
+              return "classification-or-analysis";
+            }
+            return "mixed-or-unclear";
+          }
+
+          const BROAD_LEAVES = new Set([
+            "authorizationstatus", "gcdsatisfied", "lcmcomplete",
+            "ownerexecutioncompleted", "blocksinput", "formulaoutputallowed",
+            "classificationstatus", "status", "valid", "accepted",
+            "authorized", "satisfied", "complete", "canonicalresult",
+          ]);
+          const ADMIN_PATTERN = /(?:count|kind|version|reason|ruleid|routeid|available|inventory|index|length)$/iu;
+          const SURFACE_PATTERN = /(?:surface|written|formula|formularealization|outputform|outputsound|outputspelling|realization)$/iu;
+          const EXACT_PATTERN = /(?:selectedstem|targetstems?|sourcestem|perfectivestem|imperfectivestem|stem|suffix|prefix|infix|allomorph|morph|class|valence|voice|transitivity|person|number|tense|aspect|mood|polarity|animacy|possessor|object|subject|particle|phoneme|grapheme)$/iu;
+          const GENERIC_VALUE_PATTERN = /(?:semanticvalue|facetvalue|value|classification)$/iu;
+          const STRUCTURAL_PATTERN = /(?:frame|rules?|cases?|history|boundary|slots?|coordinates?|relations?|facts?|profile|record|definition)$/iu;
+
+          function precisionGrade(currentPath = "", semanticName = "") {
+            const pathValue = String(currentPath || "");
+            const leaf = pathValue.split(".").filter(Boolean).at(-1) || "";
+            const normalizedLeaf = leaf.toLowerCase().replace(/[^a-z0-9]/gu, "");
+            const combined = `${pathValue} ${semanticName}`;
+            if (!pathValue) {
+              return { grade: "whole-result", score: 1, leaf };
+            }
+            if (BROAD_LEAVES.has(normalizedLeaf)
+              || /(?:authorizationstatus|gcdsatisfied|lcmcomplete|ownerexecutioncompleted|blocksinput|formulaoutputallowed)$/iu.test(combined)) {
+              return { grade: "broad-status", score: 1, leaf };
+            }
+            if (ADMIN_PATTERN.test(normalizedLeaf)) {
+              return { grade: "administrative", score: 0, leaf };
+            }
+            if (SURFACE_PATTERN.test(normalizedLeaf)) {
+              return { grade: "surface-or-formula", score: 3, leaf };
+            }
+            if (EXACT_PATTERN.test(normalizedLeaf)) {
+              return { grade: "exact-grammatical-value", score: 4, leaf };
+            }
+            if (GENERIC_VALUE_PATTERN.test(normalizedLeaf)) {
+              return { grade: "generic-value", score: 2, leaf };
+            }
+            if (STRUCTURAL_PATTERN.test(normalizedLeaf) || /[\[\]\/]/u.test(leaf)) {
+              return { grade: "structural", score: 2, leaf };
+            }
+            return { grade: "unresolved", score: 1, leaf };
+          }
+
+          function semanticOverlap(facet, currentPath, semanticName) {
+            const facetTokens = new Set(tokens(facet));
+            const proofTokens = new Set(tokens(`${currentPath} ${semanticName}`));
+            return [...facetTokens].filter(token => proofTokens.has(token));
+          }
+
+          const allCoordinates = [];
+          const ownerStatic = new Map();
+          for (const { spec, file, directory } of specs) {
+            const coordinates = Object.entries(spec.coordinates || {});
+            const paragraphs = paragraphIds(spec);
+            const selections = [...new Set(spec.selections || coordinates.map(([key]) => key.split("::")[0]))];
+            const operations = operationsByOwner.get(spec.ownerId) || [spec.operationId].filter(Boolean);
+            const ownerRecord = {
+              ownerId: spec.ownerId,
+              file,
+              directory,
+              prefix: spec.prefix || "",
+              domain: spec.domain || "",
+              mode: spec.mode || "",
+              operationIds: [...new Set(operations)],
+              coordinateCount: coordinates.length,
+              analysisCount: Object.keys(spec.analyses || {}).length,
+              selectionCount: selections.length,
+              paragraphCount: paragraphs.length,
+              paragraphs,
+              family: familyFor(`${spec.ownerId} ${operations.join(" ")}`),
+              executionRole: executionRole(spec.ownerId, operations, spec),
+            };
+            ownerStatic.set(spec.ownerId, ownerRecord);
+
+            for (const [coordinateKey, coordinate] of coordinates) {
+              const [selection = "", facet = coordinateKey] = coordinateKey.split("::");
+              const legacyKey = String(
+                coordinate?.proofAddressKey
+                || coordinate?.canonicalPath
+                || coordinate?.assertionId
+                || coordinateKey,
+              );
+              let proofAddressId = coordinate?.proofAddressId || "";
+              let proofRecord = null;
+              try {
+                proofAddressId ||= getCanonicalProofAddressIdForLegacyKey(
+                  spec.ownerId,
+                  legacyKey,
+                );
+                proofRecord = getCanonicalProofAddress(proofAddressId);
+              } catch {
+                proofRecord = null;
+              }
+              const currentPath = proofRecord?.currentPath
+                ?? coordinate?.canonicalPath
+                ?? "";
+              const semanticName = proofRecord?.semanticName
+                ?? coordinate?.proofSemanticName
+                ?? "";
+              const precision = precisionGrade(currentPath, semanticName);
+              const overlap = semanticOverlap(facet, currentPath, semanticName);
+              const outputClaim = /surface|formula|written|spell|sound|realiz|form/iu.test(facet);
+              const mismatchRisk = precision.grade === "broad-status"
+                || precision.grade === "administrative"
+                || precision.grade === "whole-result"
+                || precision.grade === "unresolved"
+                || (precision.grade === "surface-or-formula" && !outputClaim)
+                || ((precision.grade === "generic-value" || precision.grade === "structural") && overlap.length === 0);
+              allCoordinates.push({
+                ownerId: spec.ownerId,
+                family: ownerRecord.family,
+                file,
+                coordinateKey,
+                selection,
+                facet,
+                assertionId: coordinate?.assertionId || "",
+                proofAddressId,
+                proofSemanticName: semanticName,
+                currentPath,
+                pathLeaf: precision.leaf,
+                precisionGrade: precision.grade,
+                precisionScore: precision.score,
+                semanticOverlap: overlap,
+                mismatchRisk,
+                outputClaim,
+              });
+            }
+          }
+
+          const proofGroups = new Map();
+          for (const coordinate of allCoordinates) {
+            const key = coordinate.proofAddressId || `${coordinate.ownerId}:${coordinate.currentPath}`;
+            if (!proofGroups.has(key)) proofGroups.set(key, []);
+            proofGroups.get(key).push(coordinate);
+          }
+          for (const coordinate of allCoordinates) {
+            const key = coordinate.proofAddressId || `${coordinate.ownerId}:${coordinate.currentPath}`;
+            const group = proofGroups.get(key) || [];
+            coordinate.sharedAddressAtomCount = group.length;
+            coordinate.sharedAddressDistinctFacetCount = new Set(
+              group.map(item => item.facet),
+            ).size;
+            coordinate.sharedBroadRisk = group.length > 1
+              && ["broad-status", "generic-value", "structural", "whole-result", "unresolved"].includes(coordinate.precisionGrade);
+          }
+
+          function referenceStats(value, ownFile = "") {
+            if (!value) return { fileCount: 0, occurrenceCount: 0, files: [] };
+            const files = [];
+            let occurrenceCount = 0;
+            for (const [file, source] of sourceByFile) {
+              const relative = path.relative(root, file);
+              const matches = source.split(value).length - 1;
+              if (matches > 0) {
+                files.push(relative);
+                occurrenceCount += matches;
+              }
+            }
+            return {
+              fileCount: files.filter(file => file !== ownFile).length,
+              occurrenceCount,
+              files: files.slice(0, 20),
+            };
+          }
+
+          const runtimeOwnerNames = new Set(ownerIdentityRecords.map(record => record.semanticName));
+          const allOwnerNames = [...new Set([
+            ...runtimeOwnerNames,
+            ...ownerStatic.keys(),
+          ])].sort();
+          const owners = [];
+          for (const ownerId of allOwnerNames) {
+            const staticRecord = ownerStatic.get(ownerId) || null;
+            const operations = operationsByOwner.get(ownerId)
+              || staticRecord?.operationIds
+              || [];
+            const coordinateRows = allCoordinates.filter(row => row.ownerId === ownerId);
+            const broadCount = coordinateRows.filter(row => row.precisionScore <= 1).length;
+            const mismatchCount = coordinateRows.filter(row => row.mismatchRisk).length;
+            const sharedBroadCount = coordinateRows.filter(row => row.sharedBroadRisk).length;
+            const refs = referenceStats(ownerId, staticRecord?.file || "");
+            const coordinateCount = staticRecord?.coordinateCount || 0;
+            const analysisCount = staticRecord?.analysisCount || 0;
+            const selectionCount = staticRecord?.selectionCount || 0;
+            const paragraphCount = staticRecord?.paragraphCount || 0;
+            const reasons = [];
+            let atomShapeScore = 0;
+            if (coordinateCount === 1 || (coordinateCount === 0 && analysisCount === 1)) {
+              atomShapeScore += 4;
+              reasons.push("one-coordinate-or-analysis");
+            } else if (coordinateCount + analysisCount <= 2) {
+              atomShapeScore += 2;
+              reasons.push("two-or-fewer-coordinates-or-analyses");
+            }
+            if (selectionCount <= 1 && coordinateCount > 0) {
+              atomShapeScore += 2;
+              reasons.push("one-selection");
+            }
+            if (paragraphCount <= 1 && coordinateCount > 0) {
+              atomShapeScore += 2;
+              reasons.push("one-source-paragraph");
+            }
+            if (coordinateCount > 0 && broadCount === coordinateCount) {
+              atomShapeScore += 2;
+              reasons.push("all-proof-observations-broad");
+            }
+            if (operations.some(operation => /\.execute$/u.test(operation))) {
+              atomShapeScore += 1;
+              reasons.push("generic-execute-operation-name");
+            }
+            if (refs.fileCount <= 1) {
+              atomShapeScore += 1;
+              reasons.push("low-cross-file-reuse");
+            }
+            if (coordinateCount >= 6 || analysisCount >= 4) atomShapeScore -= 3;
+            if (selectionCount >= 3) atomShapeScore -= 2;
+            if (refs.fileCount >= 5) atomShapeScore -= 2;
+            const atomShapeLevel = atomShapeScore >= 8
+              ? "high"
+              : atomShapeScore >= 5
+                ? "medium"
+                : atomShapeScore >= 3
+                  ? "low"
+                  : "not-indicated";
+            owners.push({
+              ownerId,
+              file: staticRecord?.file || "",
+              directory: staticRecord?.directory || "",
+              domain: staticRecord?.domain || "",
+              mode: staticRecord?.mode || "bespoke-or-runtime",
+              operationIds: [...new Set(operations)],
+              family: staticRecord?.family || familyFor(`${ownerId} ${operations.join(" ")}`),
+              executionRole: staticRecord?.executionRole
+                || executionRole(ownerId, operations, null),
+              coordinateCount,
+              analysisCount,
+              selectionCount,
+              paragraphCount,
+              paragraphs: staticRecord?.paragraphs || [],
+              broadProofCount: broadCount,
+              proofMismatchRiskCount: mismatchCount,
+              sharedBroadProofCount: sharedBroadCount,
+              referenceFileCount: refs.fileCount,
+              referenceOccurrenceCount: refs.occurrenceCount,
+              referenceFiles: refs.files,
+              atomShapeScore,
+              atomShapeLevel,
+              atomShapeReasons: reasons,
+            });
+          }
+
+          const pathCoupling = [];
+          const uniquePaths = [...new Set(allCoordinates
+            .map(row => row.currentPath)
+            .filter(value => value && value.length >= 4))];
+          for (const currentPath of uniquePaths) {
+            const files = [];
+            let count = 0;
+            for (const [file, source] of sourceByFile) {
+              const relative = path.relative(root, file);
+              if (/owner-specs\//u.test(relative)
+                || relative.endsWith("canonical_proof_address_registry.mjs")
+                || relative.endsWith("canonical_identity_registry.mjs")) continue;
+              const occurrences = source.split(currentPath).length - 1;
+              if (occurrences > 0) {
+                files.push(relative);
+                count += occurrences;
+              }
+            }
+            if (count > 0) {
+              pathCoupling.push({
+                currentPath,
+                occurrenceCount: count,
+                files: files.slice(0, 20),
+                atomCount: allCoordinates.filter(row => row.currentPath === currentPath).length,
+                precisionGrade: precisionGrade(currentPath, "").grade,
+              });
+            }
+          }
+          pathCoupling.sort((left, right) => right.occurrenceCount - left.occurrenceCount);
+
+          const FIELD_LITERAL_PATTERN = /\b(selectedStem|perfectiveStem|imperfectiveStem|targetStem|sourceStem|stemOverride|suffix|prefix|surface|formula|written)\s*:\s*(["'`])([^"'`\n]{1,100})\2/gu;
+          const FORMULA_LITERAL_PATTERN = /(["'`])(#(?:\\.|[^#\n]){3,}#)\1/gu;
+          const hardcodedAssignments = [];
+          const formulaLiterals = [];
+          for (const [file, source] of sourceByFile) {
+            const relative = path.relative(root, file);
+            const lines = source.split("\n");
+            for (let index = 0; index < lines.length; index += 1) {
+              const line = lines[index];
+              FIELD_LITERAL_PATTERN.lastIndex = 0;
+              for (const match of line.matchAll(FIELD_LITERAL_PATTERN)) {
+                const value = match[3];
+                if (/^(?:authorized|blocked|true|false|null|undefined|none|unknown|unselected)$/iu.test(value)) continue;
+                hardcodedAssignments.push({
+                  file: relative,
+                  line: index + 1,
+                  field: match[1],
+                  value,
+                  family: familyFor(`${relative} ${match[1]} ${value}`),
+                  sourceLine: line.trim().slice(0, 240),
+                });
+              }
+              FORMULA_LITERAL_PATTERN.lastIndex = 0;
+              for (const match of line.matchAll(FORMULA_LITERAL_PATTERN)) {
+                formulaLiterals.push({
+                  file: relative,
+                  line: index + 1,
+                  formula: match[2],
+                  sourceLine: line.trim().slice(0, 240),
+                });
+              }
+            }
+          }
+          const assignmentValueGroups = new Map();
+          for (const item of hardcodedAssignments) {
+            const key = `${item.field}:${item.value}`;
+            if (!assignmentValueGroups.has(key)) assignmentValueGroups.set(key, []);
+            assignmentValueGroups.get(key).push(item);
+          }
+          const duplicatedHardcodedValues = [...assignmentValueGroups.entries()]
+            .map(([key, items]) => ({
+              key,
+              field: items[0].field,
+              value: items[0].value,
+              occurrenceCount: items.length,
+              fileCount: new Set(items.map(item => item.file)).size,
+              files: [...new Set(items.map(item => item.file))].slice(0, 20),
+              family: items[0].family,
+            }))
+            .filter(item => item.fileCount > 1)
+            .sort((left, right) => right.fileCount - left.fileCount
+              || right.occurrenceCount - left.occurrenceCount);
+
+          const familyMap = new Map();
+          for (const owner of owners) {
+            if (!familyMap.has(owner.family)) {
+              familyMap.set(owner.family, {
+                family: owner.family,
+                ownerCount: 0,
+                coordinateCount: 0,
+                broadProofCount: 0,
+                mismatchRiskCount: 0,
+                sharedBroadProofCount: 0,
+                highAtomShapeCount: 0,
+                mediumAtomShapeCount: 0,
+                directPathCouplingCount: 0,
+                duplicatedHardcodedValueCount: 0,
+                priorityScore: 0,
+              });
+            }
+            const family = familyMap.get(owner.family);
+            family.ownerCount += 1;
+            family.coordinateCount += owner.coordinateCount;
+            family.broadProofCount += owner.broadProofCount;
+            family.mismatchRiskCount += owner.proofMismatchRiskCount;
+            family.sharedBroadProofCount += owner.sharedBroadProofCount;
+            if (owner.atomShapeLevel === "high") family.highAtomShapeCount += 1;
+            if (owner.atomShapeLevel === "medium") family.mediumAtomShapeCount += 1;
+          }
+          for (const item of pathCoupling) {
+            const related = allCoordinates.find(row => row.currentPath === item.currentPath);
+            const family = familyMap.get(related?.family || "other");
+            if (family) family.directPathCouplingCount += item.occurrenceCount;
+          }
+          for (const item of duplicatedHardcodedValues) {
+            const family = familyMap.get(item.family || "other");
+            if (family) family.duplicatedHardcodedValueCount += 1;
+          }
+          const familyPriorities = [...familyMap.values()].map(family => {
+            family.priorityScore =
+              family.mismatchRiskCount * 4
+              + family.sharedBroadProofCount * 3
+              + family.broadProofCount * 2
+              + family.highAtomShapeCount * 8
+              + family.mediumAtomShapeCount * 4
+              + family.directPathCouplingCount * 3
+              + family.duplicatedHardcodedValueCount * 2;
+            return family;
+          }).sort((left, right) => right.priorityScore - left.priorityScore);
+
+          function normalizedTopic(ownerId) {
+            const meaningful = tokens(ownerId).filter(token => ![
+              "base", "ordinary", "specific", "system", "paradigm",
+              "restricted", "general", "type", "use",
+            ].includes(token));
+            return meaningful.slice(0, 4).join(".") || ownerId;
+          }
+          const compressionGroups = new Map();
+          for (const owner of owners.filter(item => ["high", "medium"].includes(item.atomShapeLevel))) {
+            const key = `${owner.family}:${normalizedTopic(owner.ownerId)}`;
+            if (!compressionGroups.has(key)) compressionGroups.set(key, []);
+            compressionGroups.get(key).push(owner);
+          }
+          const consolidationCandidates = [...compressionGroups.entries()]
+            .map(([key, items]) => ({
+              key,
+              family: items[0].family,
+              ownerCount: items.length,
+              coordinateCount: items.reduce((sum, item) => sum + item.coordinateCount, 0),
+              broadProofCount: items.reduce((sum, item) => sum + item.broadProofCount, 0),
+              owners: items.map(item => item.ownerId),
+            }))
+            .filter(group => group.ownerCount >= 2)
+            .sort((left, right) => right.ownerCount - left.ownerCount
+              || right.broadProofCount - left.broadProofCount);
+
+          const precisionCounts = allCoordinates.reduce((output, coordinate) => {
+            output[coordinate.precisionGrade]
+              = (output[coordinate.precisionGrade] || 0) + 1;
+            return output;
+          }, {});
+          const broadOnlyOwners = owners
+            .filter(owner => owner.coordinateCount > 0
+              && owner.broadProofCount === owner.coordinateCount)
+            .sort((left, right) => right.coordinateCount - left.coordinateCount);
+          const topBroadAddresses = [...proofGroups.entries()]
+            .map(([proofAddressId, rows]) => ({
+              proofAddressId,
+              proofSemanticName: rows[0]?.proofSemanticName || "",
+              currentPath: rows[0]?.currentPath || "",
+              precisionGrade: rows[0]?.precisionGrade || "",
+              atomCount: rows.length,
+              ownerCount: new Set(rows.map(row => row.ownerId)).size,
+              distinctFacetCount: new Set(rows.map(row => row.facet)).size,
+              owners: [...new Set(rows.map(row => row.ownerId))].slice(0, 20),
+              sampleFacets: rows.map(row => row.facet).slice(0, 12),
+            }))
+            .filter(item => ["broad-status", "generic-value", "structural", "whole-result", "unresolved"].includes(item.precisionGrade))
+            .sort((left, right) => right.atomCount - left.atomCount);
+
+          const summary = {
+            generatedAt: new Date().toISOString(),
+            repository: "jnunezf96/classical-nahuatl-grammar",
+            branch: "agent/migrate-proof-addresses",
+            method: "static owner-spec and source analysis plus installed-runtime identity inspection",
+            limitations: [
+              "owner-shape and consolidation labels are heuristic candidates, not automatic merge decisions",
+              "proof precision is graded from checkpoint semantics and path shape; exact grammatical adequacy still requires atom-by-atom linguistic review",
+              "hardcoding detection is conservative and reports candidates rather than declaring every literal invalid",
+            ],
+            counts: {
+              coreFiles: coreFiles.length,
+              ownerSpecDirectories: ownerSpecDirectories.length,
+              importedOwnerSpecs: specs.length,
+              importFailures: importFailures.length,
+              runtimeIdentityRecords: identityRecords.length,
+              runtimeOwners: ownerIdentityRecords.length,
+              coordinates: allCoordinates.length,
+              uniqueProofAddresses: proofGroups.size,
+              proofMismatchRiskCoordinates: allCoordinates.filter(row => row.mismatchRisk).length,
+              sharedBroadRiskCoordinates: allCoordinates.filter(row => row.sharedBroadRisk).length,
+              broadOnlyOwners: broadOnlyOwners.length,
+              highAtomShapeCandidates: owners.filter(owner => owner.atomShapeLevel === "high").length,
+              mediumAtomShapeCandidates: owners.filter(owner => owner.atomShapeLevel === "medium").length,
+              directInternalPathCouplings: pathCoupling.reduce((sum, item) => sum + item.occurrenceCount, 0),
+              hardcodedAssignmentCandidates: hardcodedAssignments.length,
+              duplicatedHardcodedValues: duplicatedHardcodedValues.length,
+              formulaLiterals: formulaLiterals.length,
+            },
+            identityCounts,
+            precisionCounts,
+            owners,
+            coordinates: allCoordinates,
+            familyPriorities,
+            consolidationCandidates,
+            broadOnlyOwners,
+            topBroadAddresses,
+            pathCoupling,
+            hardcodedAssignments,
+            duplicatedHardcodedValues,
+            formulaLiterals,
+            importFailures,
+          };
+
+          function csvEscape(value) {
+            const text = Array.isArray(value) || (value && typeof value === "object")
+              ? JSON.stringify(value)
+              : String(value ?? "");
+            return `"${text.replaceAll('"', '""')}"`;
+          }
+          function toCsv(rows, columns) {
+            return [
+              columns.map(csvEscape).join(","),
+              ...rows.map(row => columns.map(column => csvEscape(row[column])).join(",")),
+            ].join("\n");
+          }
+
+          const topFamilies = familyPriorities.slice(0, 12);
+          const topAtomOwners = owners
+            .filter(owner => ["high", "medium"].includes(owner.atomShapeLevel))
+            .sort((left, right) => right.atomShapeScore - left.atomShapeScore
+              || right.broadProofCount - left.broadProofCount)
+            .slice(0, 40);
+          const highRiskCoordinates = allCoordinates
+            .filter(row => row.mismatchRisk || row.sharedBroadRisk)
+            .sort((left, right) => Number(right.sharedBroadRisk) - Number(left.sharedBroadRisk)
+              || left.precisionScore - right.precisionScore
+              || right.sharedAddressAtomCount - left.sharedAddressAtomCount)
+            .slice(0, 80);
+
+          const markdown = `# Semantic Compression and Proof Precision Audit\n\n`
+            + `## Executive finding\n\n`
+            + `The runtime is a highly explicit proof-oriented dependency graph, but a substantial part of its size is administrative scaffolding. This audit separates owner shape from proof precision so that simplification can preserve grammatical distinctions rather than flatten them.\n\n`
+            + `No grammar or generated output was changed by this audit. All classifications below are migration candidates requiring linguistic review.\n\n`
+            + `## Scope\n\n`
+            + `- ${summary.counts.importedOwnerSpecs.toLocaleString()} imported owner specs across ${summary.counts.ownerSpecDirectories} owner-spec catalogs\n`
+            + `- ${summary.counts.runtimeOwners.toLocaleString()} installed runtime owner identities\n`
+            + `- ${summary.counts.coordinates.toLocaleString()} semantic coordinates\n`
+            + `- ${summary.counts.uniqueProofAddresses.toLocaleString()} unique proof addresses\n`
+            + `- ${summary.counts.runtimeIdentityRecords.toLocaleString()} total canonical identity records\n\n`
+            + `## Proof precision\n\n`
+            + Object.entries(precisionCounts)
+              .sort((a, b) => b[1] - a[1])
+              .map(([grade, count]) => `- **${grade}:** ${count.toLocaleString()}`)
+              .join("\n")
+            + `\n\nPotential mismatch risk was detected for **${summary.counts.proofMismatchRiskCoordinates.toLocaleString()}** coordinates. **${summary.counts.sharedBroadRiskCoordinates.toLocaleString()}** coordinates share a broad or structural checkpoint with another atom. These are candidates for exact semantic observations, not automatic failures.\n\n`
+            + `## Owner shape\n\n`
+            + `- High atom-shaped candidates: **${summary.counts.highAtomShapeCandidates.toLocaleString()}**\n`
+            + `- Medium atom-shaped candidates: **${summary.counts.mediumAtomShapeCandidates.toLocaleString()}**\n`
+            + `- Owners whose every coordinate is currently broad-status proof: **${summary.counts.broadOnlyOwners.toLocaleString()}**\n\n`
+            + `An atom-shaped score means the owner is narrow, tied to one claim or paragraph, broadly proved, and weakly reused. It does not mean the owner is necessarily wrong; lexical irregularities may legitimately remain narrow.\n\n`
+            + `## Highest-priority grammatical families\n\n`
+            + `| Family | Priority | Owners | Coordinates | Mismatch risk | Broad proof | High atom-shaped | Direct path coupling |\n`
+            + `|---|---:|---:|---:|---:|---:|---:|---:|\n`
+            + topFamilies.map(item => `| ${item.family} | ${item.priorityScore} | ${item.ownerCount} | ${item.coordinateCount} | ${item.mismatchRiskCount} | ${item.broadProofCount} | ${item.highAtomShapeCount} | ${item.directPathCouplingCount} |`).join("\n")
+            + `\n\n## Leading atom-shaped owner candidates\n\n`
+            + topAtomOwners.map(owner => `- **${owner.ownerId}** — ${owner.family}; score ${owner.atomShapeScore}; ${owner.coordinateCount} coordinates; ${owner.broadProofCount} broad proofs; reasons: ${owner.atomShapeReasons.join(", ")}`).join("\n")
+            + `\n\n## Leading proof-observation risks\n\n`
+            + highRiskCoordinates.map(row => `- **${row.ownerId}** · ${row.facet} → \`${row.currentPath || "<whole Result>"}\` (${row.precisionGrade}; shared by ${row.sharedAddressAtomCount} atom${row.sharedAddressAtomCount === 1 ? "" : "s"})`).join("\n")
+            + `\n\n## Direct path and hardcoding candidates\n\n`
+            + `- Direct internal-path occurrences outside owner specs/registries: **${summary.counts.directInternalPathCouplings.toLocaleString()}**\n`
+            + `- Literal grammatical-field assignments: **${summary.counts.hardcodedAssignmentCandidates.toLocaleString()}**\n`
+            + `- Literal field/value pairs duplicated across files: **${summary.counts.duplicatedHardcodedValues.toLocaleString()}**\n`
+            + `- Formula literals in core code: **${summary.counts.formulaLiterals.toLocaleString()}**\n\n`
+            + `These are review candidates. A literal is acceptable when it is canonical lexical data owned in one place; it is risky when downstream code reconstructs or duplicates an upstream Result.\n\n`
+            + `## Recommended implementation order\n\n`
+            + `1. Introduce a proof-precision baseline: broad administrative status may support proof but cannot be the only observation for a new grammar-bearing atom.\n`
+            + `2. Refine one vertical family first: stem class → perfective-stem selection → preterit agentive → predicate nominalization → realization.\n`
+            + `3. Replace broad shared checkpoints with exact semantic observations while preserving permanent IDs.\n`
+            + `4. Consolidate only owners that share one grammatical jurisdiction; retain their old IDs as aliases.\n`
+            + `5. Replace downstream literal reconstruction and direct internal-path reads with owner-issued Result consumption.\n`
+            + `6. Repeat by descending family priority score.\n\n`
+            + `## Safe guardrail proposed\n\n`
+            + `For future additions, reject a grammar-bearing atom whose sole proof is one of: \`authorizationStatus\`, \`gcdSatisfied\`, \`lcmComplete\`, \`ownerExecutionCompleted\`, or an equivalent completion flag. Existing broad checkpoints should be baselined and reduced monotonically rather than broken all at once.\n\n`
+            + `## Method limits\n\n`
+            + summary.limitations.map(item => `- ${item}`).join("\n")
+            + `\n`;
+
+          await writeFile(
+            "audit-output/semantic-compression-proof-precision-audit.json",
+            JSON.stringify(summary, null, 2),
+          );
+          await writeFile(
+            "audit-output/semantic-compression-proof-precision-audit.md",
+            markdown,
+          );
+          await writeFile(
+            "audit-output/owners.csv",
+            toCsv(owners, [
+              "ownerId", "file", "family", "executionRole", "mode",
+              "operationIds", "coordinateCount", "analysisCount",
+              "selectionCount", "paragraphCount", "broadProofCount",
+              "proofMismatchRiskCount", "sharedBroadProofCount",
+              "referenceFileCount", "atomShapeScore", "atomShapeLevel",
+              "atomShapeReasons",
+            ]),
+          );
+          await writeFile(
+            "audit-output/coordinates.csv",
+            toCsv(allCoordinates, [
+              "ownerId", "family", "file", "coordinateKey", "selection",
+              "facet", "assertionId", "proofAddressId", "proofSemanticName",
+              "currentPath", "pathLeaf", "precisionGrade", "precisionScore",
+              "semanticOverlap", "mismatchRisk", "sharedAddressAtomCount",
+              "sharedAddressDistinctFacetCount", "sharedBroadRisk",
+            ]),
+          );
+          await writeFile(
+            "audit-output/family-priorities.csv",
+            toCsv(familyPriorities, [
+              "family", "priorityScore", "ownerCount", "coordinateCount",
+              "broadProofCount", "mismatchRiskCount", "sharedBroadProofCount",
+              "highAtomShapeCount", "mediumAtomShapeCount",
+              "directPathCouplingCount", "duplicatedHardcodedValueCount",
+            ]),
+          );
+          await writeFile(
+            "audit-output/hardcoding-candidates.csv",
+            toCsv(hardcodedAssignments, [
+              "file", "line", "field", "value", "family", "sourceLine",
+            ]),
+          );
+          await writeFile(
+            "audit-output/consolidation-candidates.csv",
+            toCsv(consolidationCandidates, [
+              "key", "family", "ownerCount", "coordinateCount",
+              "broadProofCount", "owners",
+            ]),
+          );
+          console.log(JSON.stringify({
+            counts: summary.counts,
+            precisionCounts,
+            topFamilies: topFamilies.slice(0, 6),
+          }, null, 2));
+          NODE
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-compression-proof-precision-audit
+          path: audit-output
+          retention-days: 30
