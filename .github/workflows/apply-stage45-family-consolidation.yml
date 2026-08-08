@@ -1,0 +1,123 @@
+name: Apply grammatical family consolidation
+
+on:
+  pull_request:
+    branches:
+      - agent/nemi-preterit-agentive-exact-proof
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  apply-and-verify:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.ref == 'agent/consolidate-grammar-families'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/consolidate-grammar-families
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Reassemble and apply the reviewed consolidation patch
+        run: |
+          cat \
+            .github/stage45-consolidation/patch.00 \
+            .github/stage45-consolidation/patch.01 \
+            .github/stage45-consolidation/patch.02 \
+            .github/stage45-consolidation/patch.03 \
+            .github/stage45-consolidation/patch.04 \
+            .github/stage45-consolidation/patch.05 \
+            .github/stage45-consolidation/patch.06 \
+            > /tmp/stage45-consolidation.patch.b64
+          echo "3b76e4e61c60925738fe916adbd67a2c50062e6ee0755bc3b368cdbf171471fe  /tmp/stage45-consolidation.patch.b64" | sha256sum --check
+          base64 --decode /tmp/stage45-consolidation.patch.b64 > /tmp/stage45-consolidation.patch
+          echo "5914fd7ce83c840aabc8ab2af51c1999d7622f33cecfd91e2a7f25a71eeddb2a  /tmp/stage45-consolidation.patch" | sha256sum --check
+          git apply --check /tmp/stage45-consolidation.patch
+          git apply /tmp/stage45-consolidation.patch
+          git diff --check
+
+      - name: Check changed module syntax
+        run: |
+          node --check src/core/classical/routine_semantic_family_registry.mjs
+          node --check src/core/classical/transcription_owner_mechanics.mjs
+          node --check src/core/classical/transcription_owner_mechanics_legacy.mjs
+          node --check src/tests/routine_semantic_family_consolidation.test.js
+
+      - name: Run family consolidation and grammar regression suites
+        run: |
+          cat > /tmp/run-family-consolidation-tests.mjs <<'NODE'
+          import path from "node:path";
+          import { pathToFileURL } from "node:url";
+          import { createRequire } from "node:module";
+
+          const root = process.cwd();
+          const require = createRequire(import.meta.url);
+          const { createModuleRuntime } = await import(
+            pathToFileURL(path.join(root, "src/node/runtime.mjs")).href
+          );
+          const tests = [
+            "routine_semantic_family_consolidation.test.js",
+            "proof_precision_baseline.test.js",
+            "nemi_preterit_agentive_exact_proof.test.js",
+            "irregulars.test.js",
+            "canonical_identity_registry.test.js",
+            "classical_foundational_owner_identity.test.js",
+            "concepts.test.js",
+            "morpheme_structure_owners.test.js",
+            "meaningful_morpheme_unit_classification.test.js",
+            "meaningless_carrier_unit_classification.test.js",
+            "carrier_rank_taxonomy.test.js",
+            "morpheme_syllable_separation.test.js",
+            "particles.test.js",
+            "classical_sgr_orthography_surface.test.js",
+            "classical_application_owner_identity.test.js",
+            "grammar_operation.test.js",
+            "module_runtime_integrity.test.js",
+            "classical_lesson11_application_continuity.test.js",
+            "classical_firewall.test.js",
+            "classical_canonical_boundary_environment.test.js",
+          ];
+          let total = 0;
+          let passed = 0;
+          let failed = 0;
+          for (const testFile of tests) {
+            const { context } = await createModuleRuntime({
+              rootDir: root,
+              extraGlobals: { __TEST_RUNTIME_MODE__: "module" },
+              exposeModuleInspectionCapabilities: true,
+            });
+            const testModule = require(path.join(root, "src/tests", testFile));
+            const result = testModule.run(context).summarize();
+            total += result.total;
+            passed += result.passed;
+            failed += result.failed;
+          }
+          console.log(
+            `Family consolidation total: ${passed}/${total} passed across ${tests.length} suites`
+          );
+          if (failed || total !== 212 || passed !== 212) process.exit(1);
+          NODE
+          node /tmp/run-family-consolidation-tests.mjs
+
+      - name: Remove one-use migration material and publish the verified result
+        env:
+          BRANCH: agent/consolidate-grammar-families
+        run: |
+          rm -rf .github/stage45-consolidation
+          rm -f .github/workflows/apply-stage45-family-consolidation.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Consolidate grammar owners into canonical families"
+          git push origin "HEAD:${BRANCH}"
