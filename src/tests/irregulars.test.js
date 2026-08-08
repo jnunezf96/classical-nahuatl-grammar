@@ -38,6 +38,44 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "the canonical nemi irregular owner selects nen for the general-past stem",
+        (() => {
+            const plan = ctx.buildClassicalNahuatlIrregularVncParadigmPlan("nemi", {
+                subject: "3sg",
+                mood: "indicative",
+                tense: "general-past",
+            });
+            const typed = ctx.buildClassicalNahuatlVncSlotFrame({
+                sourceFrameKind: "nemi-permanent-proof-address-runtime-proof",
+                sourceAuthorizationStatus: "authorized",
+                stem: "nemi",
+                personDyad: { pers1: "0", pers2: "0" },
+                tenseFrame: { tns: "ca" },
+                numberDyad: { num1: "0", num2: "0" },
+            });
+            const application = ctx.applyClassicalNahuatlLesson11PlanToVncSlotFrame(
+                plan,
+                typed
+            );
+            return {
+                planStatus: plan.authorizationStatus,
+                selectedStem: plan.selectedStemOverride,
+                applicationStatus: application.authorizationStatus,
+                sourceStem: application.sourcePredicateStem,
+                projectedStem:
+                    application.typedVncSlotFrame?.slots?.predicate?.stem || "",
+            };
+        })(),
+        {
+            planStatus: "authorized",
+            selectedStem: "nen",
+            applicationStatus: "authorized",
+            sourceStem: "nemi",
+            projectedStem: "nen",
+        }
+    );
+
+    s.eq(
         "canonical Lesson 11 scalar planning projects the selected stem into the typed VNC frame",
         (() => {
             const plan = ctx.buildClassicalNahuatlIrregularVncParadigmPlan("yā", {
