@@ -1,0 +1,240 @@
+name: Temporary proof-address migration validation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check changed module syntax
+        run: |
+          node --check src/core/grammar/canonical_proof_address_registry.mjs
+          node --check src/core/classical/transcription_owner_mechanics.mjs
+          node --check src/core/classical/transcription_owner_mechanics_legacy.mjs
+          node --check src/tests/irregulars.test.js
+      - name: Validate every routine-owner checkpoint
+        run: |
+          node --input-type=module <<'NODE'
+          import { readdir } from "node:fs/promises";
+          import path from "node:path";
+          import { pathToFileURL } from "node:url";
+          import {
+            createRoutineSemanticOwnerMechanicsApi,
+          } from "./src/core/classical/transcription_owner_mechanics.mjs";
+          import {
+            getCanonicalProofAddressIdForLegacyKey,
+            listCanonicalProofAddresses,
+          } from "./src/core/grammar/canonical_proof_address_registry.mjs";
+
+          const ownerDirectories = [
+            "src/core/classical/nuclear-owner-specs",
+            "src/core/classical/transcription-owner-specs",
+            "src/core/classical/particle-owner-specs",
+          ];
+          const specs = [];
+          for (const directory of ownerDirectories) {
+            for (const file of (await readdir(directory)).filter(
+              value => value.endsWith(".mjs"),
+            ).sort()) {
+              const module = await import(pathToFileURL(
+                path.resolve(directory, file),
+              ));
+              if (!module.default?.ownerId || !module.default?.prefix) {
+                throw new Error(`owner-spec-required:${directory}/${file}`);
+              }
+              specs.push(module.default);
+            }
+          }
+
+          const expectedById = new Map();
+          let coordinateCount = 0;
+          for (const spec of specs) {
+            for (const [coordinateKey, coordinate] of Object.entries(
+              spec.coordinates || {},
+            )) {
+              coordinateCount += 1;
+              const currentPath = String(coordinate.canonicalPath || "");
+              const legacyKey = String(
+                coordinate.proofAddressKey
+                || currentPath
+                || coordinate.assertionId
+                || coordinateKey,
+              );
+              const proofAddressId = coordinate.proofAddressId
+                || getCanonicalProofAddressIdForLegacyKey(
+                  spec.ownerId,
+                  legacyKey,
+                );
+              const expected = {
+                ownerId: spec.ownerId,
+                currentPath,
+              };
+              const previous = expectedById.get(proofAddressId);
+              if (
+                previous
+                && (
+                  previous.ownerId !== expected.ownerId
+                  || previous.currentPath !== expected.currentPath
+                )
+              ) {
+                throw new Error(`proof-address-collision:${proofAddressId}`);
+              }
+              expectedById.set(proofAddressId, expected);
+            }
+          }
+
+          createRoutineSemanticOwnerMechanicsApi(Object.create(null), specs);
+          const records = listCanonicalProofAddresses();
+          const recordById = new Map(records.map(record => [
+            record.proofAddressId,
+            record,
+          ]));
+          if (records.length !== expectedById.size) {
+            throw new Error(
+              `registry-size-mismatch:${records.length}:${expectedById.size}`,
+            );
+          }
+          for (const [proofAddressId, expected] of expectedById) {
+            const record = recordById.get(proofAddressId);
+            if (!record) {
+              throw new Error(`proof-address-missing:${proofAddressId}`);
+            }
+            if (record.ownerId !== expected.ownerId) {
+              throw new Error(`proof-address-owner-drift:${proofAddressId}`);
+            }
+            if (record.currentPath !== expected.currentPath) {
+              throw new Error(`proof-address-path-drift:${proofAddressId}`);
+            }
+            if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u.test(proofAddressId)) {
+              throw new Error(`proof-address-not-opaque-uuid:${proofAddressId}`);
+            }
+          }
+
+          const nemiSpec = specs.find(
+            spec => spec.ownerId === "classical-nemi-irregular-paradigm",
+          );
+          const numeralSpec = specs.find(
+            spec => spec.ownerId === "classical-numeral-one",
+          );
+          if (!nemiSpec || !numeralSpec) {
+            throw new Error("focused-owner-specs-required");
+          }
+          const nemiFrame = Object.freeze({
+            authorizationStatus: "authorized",
+            lesson11: Object.freeze({ selectedStem: "nen" }),
+          });
+          const numeralFrame = Object.freeze({
+            authorizationStatus: "authorized",
+            cases: Object.freeze({
+              one: Object.freeze({ authorizationStatus: "authorized" }),
+            }),
+          });
+          const target = {
+            buildClassicalNahuatlIrregularValidationFrame: () => nemiFrame,
+            isClassicalNahuatlIrregularValidationFrame:
+              candidate => candidate === nemiFrame,
+            buildClassicalNahuatlCardinalNumeralValidationFrame:
+              () => numeralFrame,
+            isClassicalNahuatlCardinalNumeralValidationFrame:
+              candidate => candidate === numeralFrame,
+          };
+          const focused = createRoutineSemanticOwnerMechanicsApi(
+            target,
+            [nemiSpec, numeralSpec],
+          );
+
+          const nemiCoordinateKey = Object.keys(nemiSpec.coordinates).find(
+            key => key.startsWith("claim-p1216::"),
+          );
+          const nemiFacet = nemiCoordinateKey.split("::")[1];
+          const nemiSource = focused.buildClassicalNemiIrregularParadigmSource({
+            analysisDomain: nemiSpec.domain,
+            selection: "claim-p1216",
+            requestedFacet: nemiFacet,
+            participantChoice: `claim-p1216:${nemiFacet}`,
+          });
+          const nemiResult = focused.evaluateClassicalNemiIrregularParadigm(
+            nemiSource,
+          );
+          const nemiEvidence =
+            focused.getClassicalNemiIrregularParadigmExecutionEvidence(
+              nemiResult,
+            );
+          if (nemiResult.payload.facetValue !== "nen") {
+            throw new Error("nemi-perfective-observation-required");
+          }
+          if (
+            nemiResult.payload.proofAddressId
+            !== "4d533cc8-d6c2-48fb-8bad-a85bb036f6b0"
+          ) {
+            throw new Error("nemi-permanent-proof-id-drift");
+          }
+          if (!focused.isClassicalNemiIrregularParadigmResult(nemiResult)) {
+            throw new Error("nemi-result-identity-required");
+          }
+          if (!focused.isClassicalNemiIrregularParadigmExecutionEvidence(
+            nemiEvidence,
+            nemiResult,
+          )) {
+            throw new Error("nemi-evidence-identity-required");
+          }
+
+          const numeralCoordinateKey = Object.keys(
+            numeralSpec.coordinates,
+          ).find(key => key.startsWith("claim-p3269::"));
+          const numeralFacet = numeralCoordinateKey.split("::")[1];
+          const numeralRequest = {
+            analysisDomain: numeralSpec.domain,
+            selection: "claim-p3269",
+            requestedFacet: numeralFacet,
+            participantChoice: `claim-p3269:${numeralFacet}`,
+          };
+          const firstNumeral = focused.evaluateClassicalNumeralOne(
+            focused.buildClassicalNumeralOneSource(numeralRequest),
+          );
+          const secondNumeral = focused.evaluateClassicalNumeralOne(
+            focused.buildClassicalNumeralOneSource(numeralRequest),
+          );
+          if (
+            firstNumeral.payload.proofAddressId
+            !== secondNumeral.payload.proofAddressId
+          ) {
+            throw new Error("automatic-proof-id-not-stable");
+          }
+          if (firstNumeral.payload.facetValue !== "authorized") {
+            throw new Error("automatic-checkpoint-observation-required");
+          }
+
+          const blocked = focused.evaluateClassicalNumeralOne(
+            focused.buildClassicalNumeralOneSource({
+              ...numeralRequest,
+              analysisDomain: "wrong-domain",
+            }),
+          );
+          if (
+            blocked.authorizationStatus !== "blocked"
+            || Object.keys(blocked.payload || {}).length !== 0
+          ) {
+            throw new Error("blocked-proof-payload-must-remain-empty");
+          }
+
+          console.log(JSON.stringify({
+            ownerSpecs: specs.length,
+            coordinates: coordinateCount,
+            uniqueProofAddresses: records.length,
+            explicitNemiProofAddress:
+              nemiResult.payload.proofAddressId,
+            automaticExampleProofAddress:
+              firstNumeral.payload.proofAddressId,
+          }, null, 2));
+          NODE
