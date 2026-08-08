@@ -31,6 +31,7 @@ jobs:
 
       - name: Reassemble and apply the reviewed consolidation patch
         run: |
+          sha256sum .github/stage45-consolidation/patch.*
           cat \
             .github/stage45-consolidation/patch.00 \
             .github/stage45-consolidation/patch.01 \
