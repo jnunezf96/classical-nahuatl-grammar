@@ -37,6 +37,7 @@ jobs:
             .github/stage45-consolidation/patch.01 \
             .github/stage45-consolidation/patch.02 \
             .github/stage45-consolidation/patch.03 \
+            .github/stage45-consolidation/patch.03b \
             .github/stage45-consolidation/patch.04 \
             .github/stage45-consolidation/patch.05 \
             .github/stage45-consolidation/patch.06 \
