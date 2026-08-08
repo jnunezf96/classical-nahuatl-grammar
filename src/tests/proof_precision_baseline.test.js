@@ -11,7 +11,7 @@ const ROOT = path.resolve(__dirname, "..", "..");
 const LEGACY_FIXTURE_PATH = path.join(
     __dirname,
     "fixtures",
-    "legacy_broad_proof_coordinate_hashes.json"
+    "legacy_broad_proof_baseline.json"
 );
 
 const OWNER_SPEC_DIRECTORIES = Object.freeze([
@@ -72,12 +72,32 @@ for (const directory of directories) {
 process.stdout.write(JSON.stringify(output));
 `;
 
-function coordinateHash(record) {
+function coordinateDigest(record) {
     return crypto.createHash("sha256").update([
         record.ownerId,
         record.coordinateKey,
         record.canonicalPath,
-    ].join("\u241f"), "utf8").digest("hex");
+    ].join("\u241f"), "utf8").digest();
+}
+
+function baselineBitIsSet(bitset, bitIndex) {
+    return Boolean(bitset[Math.floor(bitIndex / 8)] & (
+        1 << (bitIndex % 8)
+    ));
+}
+
+function belongsToLegacyBaseline(record, baseline, bitset) {
+    const digest = coordinateDigest(record);
+    const h1 = digest.readBigUInt64BE(0);
+    const h2 = digest.readBigUInt64BE(8) | 1n;
+    const modulus = BigInt(baseline.bitCount);
+    for (let probe = 0; probe < baseline.probeCount; probe += 1) {
+        const bitIndex = Number(
+            (h1 + BigInt(probe) * h2) % modulus
+        );
+        if (!baselineBitIsSet(bitset, bitIndex)) return false;
+    }
+    return true;
 }
 
 function readCurrentBroadProofCoordinates() {
@@ -108,17 +128,17 @@ function readCurrentBroadProofCoordinates() {
 
 function run() {
     const s = createSuite("proof_precision_baseline");
-    const legacyHashes = JSON.parse(
+    const baseline = JSON.parse(
         fs.readFileSync(LEGACY_FIXTURE_PATH, "utf8")
     );
-    const legacySet = new Set(legacyHashes);
+    const bitset = Buffer.from(baseline.filterBase64, "base64");
     const current = readCurrentBroadProofCoordinates();
-    const currentWithHashes = current.map((record) => ({
-        ...record,
-        hash: coordinateHash(record),
-    }));
-    const newBroadCoordinates = currentWithHashes
-        .filter((record) => !legacySet.has(record.hash))
+    const newBroadCoordinates = current
+        .filter((record) => !belongsToLegacyBaseline(
+            record,
+            baseline,
+            bitset
+        ))
         .map(({ ownerId, coordinateKey, canonicalPath }) => ({
             ownerId,
             coordinateKey,
@@ -126,18 +146,22 @@ function run() {
         }));
 
     s.eq(
-        "the legacy broad-proof baseline is unique and well formed",
+        "the legacy broad-proof baseline is compact, fixed, and well formed",
         {
-            count: legacyHashes.length,
-            unique: legacySet.size,
-            invalid: legacyHashes.filter(
-                (value) => !/^[0-9a-f]{64}$/u.test(value)
-            ),
+            version: baseline.version,
+            algorithm: baseline.algorithm,
+            bitCount: baseline.bitCount,
+            probeCount: baseline.probeCount,
+            coordinateCount: baseline.legacyCoordinateCount,
+            decodedByteCount: bitset.length,
         },
         {
-            count: 832,
-            unique: 832,
-            invalid: [],
+            version: 1,
+            algorithm: "sha256-prefix128-double-hash",
+            bitCount: 65536,
+            probeCount: 9,
+            coordinateCount: 832,
+            decodedByteCount: 8192,
         }
     );
 
@@ -149,7 +173,7 @@ function run() {
 
     s.ok(
         "the legacy broad-proof population can only stay level or decrease",
-        currentWithHashes.length <= legacyHashes.length
+        current.length <= baseline.legacyCoordinateCount
     );
 
     return s;
