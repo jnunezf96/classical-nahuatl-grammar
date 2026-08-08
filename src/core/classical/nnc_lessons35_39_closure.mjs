@@ -559,6 +559,107 @@ function joinMorphs(parts = []) {
   return parts.map(normalizeStem).filter(Boolean).join("-");
 }
 
+function buildPredicateNominalizationSemanticProfile({
+  nominalizationKind = "",
+  preteritAgentiveVariant = "",
+  sourceFrame = null,
+  restrictedUse = "",
+  generalUse = "",
+  allowedStates = [],
+} = {}) {
+  if (
+    nominalizationKind !== "preterit-agentive"
+    || preteritAgentiveVariant !== "ordinary"
+  ) {
+    return null;
+  }
+  const derivation = sourceFrame?.canonicalStageDerivationFrame || null;
+  const expectedRestrictedUse = joinMorphs([
+    sourceFrame?.sourceStem || "",
+    "0",
+  ]);
+  const expectedGeneralUse = joinMorphs([restrictedUse, "cā"]);
+  const nonAbsolutiveStates = allowedStates.filter(
+    state => state !== "absolutive",
+  );
+  const restrictedUseSourceRelation = deepFreeze({
+    sourceUnit: sourceFrame?.sourceUnit || "",
+    sourceStage: sourceFrame?.sourceStage || "",
+    sourcePredicateStem: sourceFrame?.sourceStem || "",
+    sourceImperfectiveStem: sourceFrame?.sourceImperfectiveStem || "",
+    sourcePerfectiveStem: derivation?.perfectiveStem
+      || sourceFrame?.sourceStem
+      || "",
+    perfectiveChangeRule: derivation?.perfectiveChangeRule || "",
+    ownerFrameKind: derivation?.ownerFrameKind || "",
+    ownerIssuedStageMember: derivation
+      ? derivation.ownerIssuedStageMember === true
+      : sourceFrame?.authorizationStatus === "authorized",
+    outputNounstem: restrictedUse,
+    finalConstituent: restrictedUse.endsWith("-0") ? "0" : "",
+    relation: "preterit-predicate-reanalyzed-as-nounstem",
+    satisfied: Boolean(
+      sourceFrame?.sourceStage === "preterit-predicate"
+      && restrictedUse === expectedRestrictedUse
+    ),
+  });
+  const generalUseCompound = deepFreeze({
+    constructionKind: "compound",
+    embedRole: "restricted-use",
+    embedStem: restrictedUse,
+    matrixStem: "cā",
+    outputStem: generalUse,
+    relation: "restricted-use-embed-plus-ca-matrix",
+    satisfied: Boolean(
+      restrictedUse
+      && generalUse
+      && generalUse === expectedGeneralUse
+    ),
+  });
+  return deepFreeze({
+    kind: "classical-nahuatl-preterit-agentive-semantic-profile",
+    version: VERSION,
+    agentSemanticRole: "agent-of-action",
+    agentiveTaxonomyStatus: "most-common-agentive-nnc",
+    stemShapeInventory: [
+      "restricted-use",
+      "general-use",
+    ],
+    restrictedUseSourceRelation,
+    generalUseCompound,
+    stateStemDistribution: {
+      absolutive: {
+        state: "absolutive",
+        stemRole: "restricted-use",
+        stem: restrictedUse,
+        licensed: allowedStates.includes("absolutive"),
+      },
+      nonAbsolutive: {
+        stateClass: "non-absolutive",
+        licensedStates: nonAbsolutiveStates,
+        stemRole: "general-use",
+        stem: generalUse,
+        licensed: Boolean(
+          nonAbsolutiveStates.length
+          && nonAbsolutiveStates.every(state => allowedStates.includes(state))
+        ),
+      },
+    },
+    derivationOrder: {
+      orderedRoles: [
+        "restricted-use",
+        "general-use",
+      ],
+      dependency: "general-use-embeds-restricted-use",
+      satisfied: generalUseCompound.satisfied,
+    },
+    semanticProfileAuthority:
+      "canonical-predicate-nominalization-operation",
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+}
+
 function finalUnit(stem = "") {
   const source = normalizeStem(stem).replace(/-/gu, "");
   return ["tz", "ch", "qu", "uh"].find(unit => source.endsWith(unit))
@@ -1771,6 +1872,14 @@ function buildPredicateNominalizationOperation(
     );
   }
 
+  const semanticProfile = buildPredicateNominalizationSemanticProfile({
+    nominalizationKind,
+    preteritAgentiveVariant,
+    sourceFrame,
+    restrictedUse,
+    generalUse,
+    allowedStates,
+  });
   const operationFrame = deepFreeze({
     kind: "classical-nahuatl-deverbal-nnc-operation-frame",
     version: VERSION,
@@ -1808,6 +1917,7 @@ function buildPredicateNominalizationOperation(
     affinityApplied: affinitySelected,
     appliedAuthorizationIds,
     appliedSemanticRules: rules,
+    semanticProfile,
     typedOperationAuthority: true,
     callerSuppliedDerivedAuthorityAccepted: false,
     formulaStringAuthority: false,

@@ -5,6 +5,9 @@ import {
 
 const NEMI_SELECTED_PERFECTIVE_STEM =
   CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.NEMI_SELECTED_PERFECTIVE_STEM;
+const NEMI_DISTANT_PAST_AS_PAST_MAPPING =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .NEMI_DISTANT_PAST_AS_PAST_MAPPING;
 
 const spec = {
   "ownerId": "classical-nemi-irregular-paradigm",
@@ -26,7 +29,10 @@ const spec = {
     },
     "claim-p1217::p1217-finds-vncs-with-a-distant-past-tense-used-with": {
       "assertionId": "classical-nemi-irregular-paradigm:p1217-finds-vncs-with-a-distant-past-tense-used-with",
-      "canonicalPath": "authorizationStatus"
+      "proofAddressId": NEMI_DISTANT_PAST_AS_PAST_MAPPING,
+      "canonicalPath": getCanonicalProofPath(
+        NEMI_DISTANT_PAST_AS_PAST_MAPPING
+      )
     }
   },
   "executionFunctionName": "buildClassicalNahuatlIrregularValidationFrame",

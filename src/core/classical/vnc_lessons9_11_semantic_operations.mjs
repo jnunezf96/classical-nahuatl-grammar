@@ -132,6 +132,28 @@ function compactSentence(frame) {
   };
 }
 
+function compactLesson11TenseMapping(plan = {}, selectedStem = "") {
+  const semanticTenseValue = plan.semanticTenseValue || "";
+  const morphologicalTense = plan.morphologicalTense || "";
+  const interpretation = plan.paradigmTense || semanticTenseValue;
+  return {
+    lexemeId: plan.lexemeId || "",
+    selectedStem,
+    morphologicalTense,
+    semanticTenseValue,
+    interpretation,
+    remapped: Boolean(
+      morphologicalTense
+      && semanticTenseValue
+      && (
+        morphologicalTense !== semanticTenseValue
+        || interpretation !== semanticTenseValue
+      )
+    ),
+    relation: plan.paradigmRelationFrame?.relationDisplay || "",
+  };
+}
+
 function compactCanonicalFrame(frame, recipeId) {
   const logic = frame?.selectedOutputLogicFrame?.outputFillers || {};
   const plan = frame?.lesson11ParadigmPlan || {};
@@ -155,6 +177,10 @@ function compactCanonicalFrame(frame, recipeId) {
       semanticTenseValue: plan.semanticTenseValue || "",
       morphologicalTense: plan.morphologicalTense || "",
       selectedStem: frame?.lesson11VncApplicationFrame?.selectedPredicateStem || "",
+      tenseMapping: compactLesson11TenseMapping(
+        plan,
+        frame?.lesson11VncApplicationFrame?.selectedPredicateStem || "",
+      ),
       alternatives: plan.alternatives || [],
       authorizedAlternatives: plan.authorizedAlternatives || [],
       rejectedVariants: plan.rejectedVariants || [],
@@ -281,6 +307,10 @@ export function createClassicalVncValidationSemanticOperationsApi(targetObject =
         semanticTenseValue: plan.semanticTenseValue || "",
         morphologicalTense: plan.morphologicalTense || "",
         selectedStem: application?.selectedPredicateStem || "",
+        tenseMapping: compactLesson11TenseMapping(
+          plan,
+          application?.selectedPredicateStem || "",
+        ),
         alternatives: plan.alternatives || [],
         authorizedAlternatives: plan.authorizedAlternatives || [],
         rejectedVariants: plan.rejectedVariants || [],

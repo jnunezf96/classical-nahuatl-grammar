@@ -3,8 +3,27 @@ import {
   getCanonicalProofPath,
 } from "../../grammar/canonical_proof_address_registry.mjs";
 
+const PRETERIT_AGENTIVE_AGENT_ROLE =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_AGENT_ROLE;
+const PRETERIT_AGENTIVE_PRIMARY_KIND =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_PRIMARY_KIND;
+const PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY;
+const PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND;
 const PRETERIT_AGENTIVE_RESTRICTED_STEM =
   CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_RESTRICTED_STEM;
+const PRETERIT_AGENTIVE_RESTRICTED_STATE_USE =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_RESTRICTED_STATE_USE;
+const PRETERIT_AGENTIVE_DERIVATION_ORDER =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_DERIVATION_ORDER;
+const PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION;
 
 const spec = {
   "ownerId": "classical-predicate-nominalization-preterit-agentive",
@@ -27,19 +46,31 @@ const spec = {
   "coordinates": {
     "claim-p3361::p3361-the-stem-of-any-kind-of-agentive-nnc-names": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3361-the-stem-of-any-kind-of-agentive-nnc-names",
-      "canonicalPath": "cases.preteritAgentive.authorizationStatus"
+      "proofAddressId": PRETERIT_AGENTIVE_AGENT_ROLE,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_AGENT_ROLE
+      )
     },
     "claim-p3362::p3362-the-most-common-kind-of-agentive-nnc-is-the": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3362-the-most-common-kind-of-agentive-nnc-is-the",
-      "canonicalPath": "cases.preteritAgentive.canonicalResult"
+      "proofAddressId": PRETERIT_AGENTIVE_PRIMARY_KIND,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_PRIMARY_KIND
+      )
     },
     "claim-p3363::p3363-like-all-nounstems-a-preterit-agentive-nounstem-has-two": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3363-like-all-nounstems-a-preterit-agentive-nounstem-has-two",
-      "canonicalPath": "cases.preteritAgentive.gcdSatisfied"
+      "proofAddressId": PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY
+      )
     },
     "claim-p3364::p3364-the-general-use-stem-is-a-compound-that-uses": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3364-the-general-use-stem-is-a-compound-that-uses",
-      "canonicalPath": "cases.preteritAgentive.lcmComplete"
+      "proofAddressId": PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND
+      )
     },
     "claim-p3365::p3365-the-restricted-use-stem-is-simply-the-predicate-of": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3365-the-restricted-use-stem-is-simply-the-predicate-of",
@@ -48,15 +79,24 @@ const spec = {
     },
     "claim-p3366::p3366-the-restricted-use-stem-is-used-in-absolutive-state": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3366-the-restricted-use-stem-is-used-in-absolutive-state",
-      "canonicalPath": "cases.preteritAgentive.canonicalResult"
+      "proofAddressId": PRETERIT_AGENTIVE_RESTRICTED_STATE_USE,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_RESTRICTED_STATE_USE
+      )
     },
     "claim-p3367::p3367-the-restricted-use-stem-is-discussed-first": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3367-the-restricted-use-stem-is-discussed-first",
-      "canonicalPath": "cases.preteritAgentive.gcdSatisfied"
+      "proofAddressId": PRETERIT_AGENTIVE_DERIVATION_ORDER,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_DERIVATION_ORDER
+      )
     },
     "claim-p3368::p3368-the-general-use-stem-is-used-everywhere-else": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3368-the-general-use-stem-is-used-everywhere-else",
-      "canonicalPath": "cases.preteritAgentive.lcmComplete"
+      "proofAddressId": PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION,
+      "canonicalPath": getCanonicalProofPath(
+        PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION
+      )
     }
   },
   "executionFunctionName": "buildClassicalNahuatlDeverbalNncValidationFrame",
