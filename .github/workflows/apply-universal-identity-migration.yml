@@ -38,9 +38,11 @@ jobs:
               head = head[:index] + 'I' + head[index:]
           if len(head) != 10000:
               raise SystemExit(f'unexpected-repaired-head-length:{len(head)}')
+          middle = (directory / 'patch.01').read_text()
+          middle = middle[:4778] + 'Up' + middle[4780:]
           payload = ''.join([
               head,
-              (directory / 'patch.01').read_text()[3000:],
+              middle[3000:],
               (directory / 'patch.02').read_text(),
               (directory / 'patch.03').read_text(),
           ])
