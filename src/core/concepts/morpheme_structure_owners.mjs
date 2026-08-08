@@ -8,6 +8,9 @@
 import {
   createGrammarOperationContractOwner,
 } from "../grammar/operation_owner.mjs";
+import {
+  registerCanonicalOwnerSpecIdentity,
+} from "../grammar/canonical_identity_registry.mjs";
 
 const VERSION = 1;
 const NON_AUTHORITY_FLAGS = Object.freeze({
@@ -443,6 +446,7 @@ function namespacePrerequisiteSteps(analyses = []) {
 }
 
 function createMechanism(targetObject, spec, analyzeRequest) {
+  registerCanonicalOwnerSpecIdentity(spec);
   const issuedSources = new WeakSet();
   const sourceContexts = new WeakMap();
   const issuedResults = new WeakSet();

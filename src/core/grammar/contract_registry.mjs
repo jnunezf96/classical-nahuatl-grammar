@@ -1,6 +1,7 @@
 // Canonical modern ESM module.
 
 import { CLASSICAL_RESULT_OUTPUT_SCOPES } from "../output/scope.mjs?v=20260722-output-scope-contract-054";
+import { createCanonicalIdentityInspectionApi } from "./canonical_identity_registry.mjs";
 
 export function createGrammarContractRegistryModule(targetObject = globalThis) {
     var GRAMMAR_CONTRACT_REGISTRY_VERSION = 1;
@@ -4247,6 +4248,8 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
 
 export function installGrammarContractRegistryGlobals(targetObject = globalThis) {
     const api = createGrammarContractRegistryModule(targetObject);
+    const identityApi = createCanonicalIdentityInspectionApi();
+    Object.defineProperties(api, Object.getOwnPropertyDescriptors(identityApi));
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
     return api;
 }

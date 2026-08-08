@@ -3,6 +3,7 @@
 // execution evidence, and atom-bound validation route.
 
 import { createGrammarOperationContractOwner } from "../grammar/operation_owner.mjs";
+import { registerCanonicalOwnerSpecIdentity } from "../grammar/canonical_identity_registry.mjs";
 
 const freeze = Object.freeze;
 const VERSION = 1;
@@ -331,6 +332,7 @@ function publicNames(prefix) {
 
 export function createCarrierStructureOwnerMechanicsApi(targetObject = globalThis, ownerSpecs = []) {
   const mechanisms = new Map();
+  ownerSpecs.forEach(registerCanonicalOwnerSpecIdentity);
   const segmentSources = new WeakSet();
   const segmentSourceContexts = new WeakMap();
   const segmentResults = new WeakSet();

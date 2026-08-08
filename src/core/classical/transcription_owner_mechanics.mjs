@@ -11,6 +11,9 @@ import {
 import {
   resolveCanonicalProofAddress,
 } from "../grammar/canonical_proof_address_registry.mjs";
+import {
+  registerCanonicalOwnerSpecIdentity,
+} from "../grammar/canonical_identity_registry.mjs";
 
 const freeze = Object.freeze;
 
@@ -54,10 +57,12 @@ function prepareSpec(spec = {}) {
       prepareCoordinate(spec, coordinateKey, coordinate),
     ]),
   );
-  return deepFreeze({
+  const prepared = deepFreeze({
     ...spec,
     coordinates: deepFreeze(coordinates),
   });
+  registerCanonicalOwnerSpecIdentity(prepared);
+  return prepared;
 }
 
 function publicNames(prefix) {

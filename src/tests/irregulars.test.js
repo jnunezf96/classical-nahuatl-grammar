@@ -105,23 +105,36 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "the canonical irregular validation frame still realizes the corrected nemi result",
+        "the public canonical verbstem route still realizes the corrected nemi result",
         (() => {
-            const frame = ctx.buildClassicalNahuatlIrregularValidationFrame(
-                "nemi-past"
+            const frame = ctx.buildClassicalNahuatlVerbstemClassFrame(
+                "(nemi)",
+                {
+                    valence: "intransitive",
+                    subject: "3sg",
+                    mood: "indicative",
+                    tense: "general-past",
+                    verbClass: "B",
+                }
             );
             return {
                 status: frame.authorizationStatus,
-                recipeId: frame.recipeId,
-                semanticTense: frame.lesson11?.semanticTenseValue || "",
-                morphologicalTense: frame.lesson11?.morphologicalTense || "",
-                selectedStem: frame.lesson11?.selectedStem || "",
+                semanticTense:
+                    frame.lesson11ParadigmPlan
+                        ?.semanticTenseValue || "",
+                morphologicalTense:
+                    frame.lesson11ParadigmPlan
+                        ?.morphologicalTense || "",
+                selectedStem:
+                    frame.selectedOutputLogic?.stemVariant
+                    || frame.displayReceiptFrame?.slotSummary
+                        ?.lesson11SelectedStem
+                    || "",
                 formula: frame.formulaRealization,
             };
         })(),
         {
             status: "authorized",
-            recipeId: "nemi-past",
             semanticTense: "general-past",
             morphologicalTense: "distant-past",
             selectedStem: "nen",
