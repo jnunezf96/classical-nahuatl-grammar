@@ -1,3 +1,11 @@
+import {
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS,
+  getCanonicalProofPath,
+} from "../../grammar/canonical_proof_address_registry.mjs";
+
+const PRETERIT_AGENTIVE_RESTRICTED_STEM =
+  CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_RESTRICTED_STEM;
+
 const spec = {
   "ownerId": "classical-predicate-nominalization-preterit-agentive",
   "prefix": "ClassicalPredicateNominalizationPreteritAgentive",
@@ -35,7 +43,8 @@ const spec = {
     },
     "claim-p3365::p3365-the-restricted-use-stem-is-simply-the-predicate-of": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3365-the-restricted-use-stem-is-simply-the-predicate-of",
-      "canonicalPath": "cases.preteritAgentive.authorizationStatus"
+      "proofAddressId": PRETERIT_AGENTIVE_RESTRICTED_STEM,
+      "canonicalPath": getCanonicalProofPath(PRETERIT_AGENTIVE_RESTRICTED_STEM)
     },
     "claim-p3366::p3366-the-restricted-use-stem-is-used-in-absolutive-state": {
       "assertionId": "classical-predicate-nominalization-preterit-agentive:p3366-the-restricted-use-stem-is-used-in-absolutive-state",
