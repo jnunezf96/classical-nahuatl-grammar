@@ -1,0 +1,27 @@
+name: Temporary proof-precision baseline check
+
+on:
+  pull_request:
+    branches:
+      - agent/migrate-proof-addresses
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check and run the proof-precision safeguard
+        run: |
+          node --check src/tests/proof_precision_baseline.test.js
+          node - <<'NODE'
+          const test = require("./src/tests/proof_precision_baseline.test.js");
+          const result = test.run({}).summarize();
+          if (result.failed) process.exit(1);
+          NODE
