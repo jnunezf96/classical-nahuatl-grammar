@@ -30,7 +30,22 @@ jobs:
 
       - name: Reassemble and apply the reviewed exact-proof patch
         run: |
-          cat .github/exact-proof-migration/patch.* > /tmp/exact-proof.patch.b64
+          cat \
+            .github/exact-proof-migration/patch.00 \
+            .github/exact-proof-migration/patch.01a \
+            .github/exact-proof-migration/patch.01b1 \
+            .github/exact-proof-migration/patch.01b2 \
+            .github/exact-proof-migration/patch.01b3 \
+            .github/exact-proof-migration/patch.01c1 \
+            .github/exact-proof-migration/patch.01c2 \
+            .github/exact-proof-migration/patch.01c3 \
+            .github/exact-proof-migration/patch.02 \
+            .github/exact-proof-migration/patch.03 \
+            .github/exact-proof-migration/patch.04 \
+            .github/exact-proof-migration/patch.05 \
+            .github/exact-proof-migration/patch.06 \
+            .github/exact-proof-migration/patch.07 \
+            > /tmp/exact-proof.patch.b64
           echo "6e7a6e9af998fad45f11057ecb846799427175292254416d7f33bf16a29128a0  /tmp/exact-proof.patch.b64" | sha256sum --check
           base64 --decode /tmp/exact-proof.patch.b64 > /tmp/exact-proof.patch
           echo "af252230d46faaf609720f32ab534675d7545537bd0b3385258c5d3e4ba7b786  /tmp/exact-proof.patch" | sha256sum --check
