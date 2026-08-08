@@ -1,41 +1,18 @@
-// Shared mechanics for independently owned routine semantic operations.
-// This factory and its routing catalog own no atoms and authorize no rule by
-// themselves. Each exact owner spec limits the canonical facts or operation
-// family that its issued Source may inspect or execute.
+// Permanent proof-address adapter for routine semantic owners.
+//
+// The legacy mechanics remains the canonical Source/Result executor. This
+// adapter assigns every owner checkpoint a stable opaque proof identity,
+// resolves its current Result path centrally, and returns identity-bound
+// Results/Evidence carrying that proof identity.
 
-import { createGrammarOperationContractOwner } from "../grammar/operation_owner.mjs";
+import {
+  createRoutineSemanticOwnerMechanicsApi as createLegacyRoutineSemanticOwnerMechanicsApi,
+} from "./transcription_owner_mechanics_legacy.mjs";
+import {
+  resolveCanonicalProofAddress,
+} from "../grammar/canonical_proof_address_registry.mjs";
 
 const freeze = Object.freeze;
-const VERSION = 1;
-const SOURCE_KEYS = new Set([
-  "analysisDomain",
-  "selection",
-  "requestedFacet",
-  "participantChoice",
-]);
-const DOCUMENTARY_KEYS = new Set([
-  "exactWitness",
-  "lesson",
-  "section",
-  "sourceAuthority",
-  "sourceDocument",
-  "sourceExcerpt",
-  "transcriptionLineStart",
-  "transcriptionLineEnd",
-  "examples",
-  "example",
-  "blockedExample",
-  "outputExample",
-]);
-const NON_AUTHORITY = freeze({
-  lessonMetadataAuthority: false,
-  storedExampleAuthority: false,
-  storedAnswerAuthority: false,
-  labelAuthority: false,
-  formulaStringAuthority: false,
-  surfaceStringAuthority: false,
-  generationAllowed: false,
-});
 
 function deepFreeze(value, seen = new WeakSet()) {
   if (!value || typeof value !== "object" || seen.has(value)) return value;
@@ -49,575 +26,38 @@ function deepFreeze(value, seen = new WeakSet()) {
   return freeze(value);
 }
 
-function sanitize(value, seen = new WeakMap()) {
-  if (!value || typeof value !== "object") return value;
-  if (seen.has(value)) return seen.get(value);
-  const copy = Array.isArray(value) ? [] : {};
-  seen.set(value, copy);
-  for (const key of Reflect.ownKeys(value)) {
-    if (typeof key === "string" && DOCUMENTARY_KEYS.has(key)) continue;
-    const descriptor = Object.getOwnPropertyDescriptor(value, key);
-    if (!descriptor || descriptor.get || descriptor.set
-      || !Object.prototype.hasOwnProperty.call(descriptor, "value")) continue;
-    copy[key] = sanitize(descriptor.value, seen);
-  }
-  return deepFreeze(copy);
-}
-
-function inspectRequest(request) {
-  if (!request || typeof request !== "object" || Array.isArray(request)) {
-    return "typed-transcription-owner-request-object-required";
-  }
-  const prototype = Object.getPrototypeOf(request);
-  if (prototype !== Object.prototype && prototype !== null) {
-    return "typed-transcription-owner-request-plain-object-required";
-  }
-  for (const key of Reflect.ownKeys(request)) {
-    if (!SOURCE_KEYS.has(key)) {
-      return `typed-transcription-owner-request-unrecognized-key:${String(key)}`;
-    }
-    const descriptor = Object.getOwnPropertyDescriptor(request, key);
-    if (!descriptor || !Object.prototype.hasOwnProperty.call(descriptor, "value")) {
-      return `typed-transcription-owner-request-data-property-required:${String(key)}`;
-    }
-  }
-  return "";
-}
-
-function argsFor(spec, selection) {
-  const selected = spec.executionArgsBySelection?.[selection]
-    ?? spec.defaultExecutionArgs
-    ?? [];
-  return Array.isArray(selected) ? selected : [selected];
-}
-
-function coordinateFor(spec, selection, facet) {
-  return spec.coordinates?.[`${selection}::${facet}`] || null;
-}
-
-function routeToken(value, fallback = "unselected") {
-  const token = String(value || "")
-    .normalize("NFKD")
-    .replace(/[^a-z0-9._-]+/giu, "-")
-    .replace(/^-+|-+$/gu, "")
-    .toLowerCase();
-  return token || fallback;
-}
-
-function valueAtPath(value, path = "") {
-  if (!path) return value;
-  return String(path).split(".").reduce((current, key) => {
-    if (current == null) return undefined;
-    return current[key];
-  }, value);
-}
-
-function recordFor(target, spec, selection) {
-  if (spec.mode === "canonical-fact") {
-    if (selection === "system") return target?.[spec.systemCapabilityName] || null;
-    const groupedSelections = spec.selectionRecords?.[selection];
-    if (Array.isArray(groupedSelections)) {
-      const collection = target?.[spec.collectionCapabilityName] || {};
-      const records = groupedSelections.map((item) => collection[item]).filter(Boolean);
-      return records.length === groupedSelections.length ? records : null;
-    }
-    return target?.[spec.collectionCapabilityName]?.[selection] || null;
-  }
-  if (spec.mode === "canonical-rule" || spec.mode === "canonical-rule-analysis") {
-    const getter = target?.[spec.ruleGetterName];
-    if (typeof getter !== "function") return null;
-    return getter().find((record) => record?.id === selection) || null;
-  }
-  return null;
-}
-
-function executeCanonicalSelection(target, spec, selection) {
-  if (spec.mode === "canonical-operation") {
-    const executor = target?.[spec.executionFunctionName];
-    const validator = target?.[spec.executionValidatorName];
-    if (typeof executor !== "function" || typeof validator !== "function") {
-      return deepFreeze({
-        authorized: false,
-        reason: `${spec.ownerId}-canonical-executor-required`,
-        definition: null,
-        canonicalFrame: null,
-        payload: {},
-      });
-    }
-    const operationResult = executor(...argsFor(spec, selection));
-    const expectedStatus = spec.expectedCanonicalStatusBySelection?.[selection]
-      || "authorized";
-    const observedStatus = operationResult?.authorizationStatus
-      || (operationResult?.blocksInput === false
-        || operationResult?.proofFrame?.conclusion?.authorized === true
-        || operationResult?.formulaOutputAllowed === true
-        ? "authorized"
-        : "");
-    const authorized = validator(operationResult) === true
-      && observedStatus === expectedStatus;
-    const canonicalFrame = deepFreeze({
-      kind: "classical-canonical-semantic-operation-frame",
-      canonicalAnalysisKind: spec.canonicalAnalysisKind || "typed-semantic-operation",
-      authorizationStatus: authorized ? "authorized" : "blocked",
-      blockReason: authorized ? "" : `${spec.ownerId}-canonical-operation-required`,
-      selectedRuleId: selection,
-      evaluatedRuleIds: [spec.executionFunctionName],
-      appliedRuleIds: authorized ? [spec.executionFunctionName] : [],
-      surface: operationResult?.written || "",
-      formula: operationResult?.formula || operationResult?.formulaRealization || "",
-      operationResult,
-    });
-    return deepFreeze({
-      authorized,
-      reason: authorized ? "" : canonicalFrame.blockReason,
-      definition: operationResult,
-      canonicalFrame,
-      payload: {
-        definition: sanitize(operationResult),
-        canonicalExecution: sanitize(canonicalFrame),
-      },
-    });
-  }
-  if (spec.mode === "canonical-particle-operation") {
-    const sourceBuilder = target?.[spec.sourceBuilderName];
-    const executor = target?.[spec.executionFunctionName];
-    const validator = target?.[spec.executionValidatorName];
-    const sourceArgs = spec.executionArgsBySelection?.[selection] || [];
-    if (typeof sourceBuilder !== "function" || typeof executor !== "function"
-      || typeof validator !== "function" || !sourceArgs.length) {
-      return deepFreeze({
-        authorized: false,
-        reason: `${spec.ownerId}-canonical-executor-required`,
-        definition: null,
-        canonicalFrame: null,
-        payload: {},
-      });
-    }
-    const canonicalSource = sourceBuilder(...sourceArgs);
-    const operationResult = executor(canonicalSource);
-    const authorized = validator(operationResult) === true
-      && operationResult?.authorizationStatus === "authorized";
-    const canonicalFrame = deepFreeze({
-      kind: "classical-particle-owner-operation-frame",
-      canonicalAnalysisKind: "typed-particle-operation",
-      authorizationStatus: authorized ? "authorized" : "blocked",
-      blockReason: authorized ? "" : `${spec.ownerId}-canonical-particle-operation-required`,
-      selectedRuleId: selection,
-      evaluatedRuleIds: [operationResult?.operationId || spec.operationId],
-      appliedRuleIds: authorized
-        ? [operationResult?.operationId || spec.operationId] : [],
-      surface: operationResult?.surface || "",
-      formula: operationResult?.formula || "",
-      operationResult,
-    });
-    return deepFreeze({
-      authorized,
-      reason: authorized ? "" : canonicalFrame.blockReason,
-      definition: operationResult,
-      canonicalFrame,
-      payload: {
-        definition: sanitize(operationResult),
-        canonicalExecution: sanitize(canonicalFrame),
-      },
-    });
-  }
-  if (spec.mode === "canonical-particle-result") {
-    const particleIds = spec.selectionRecords?.[selection] || [selection];
-    const getter = target?.[spec.ruleGetterName];
-    const sourceBuilder = target?.[spec.sourceBuilderName];
-    const executor = target?.[spec.executionFunctionName];
-    const validator = target?.[spec.executionValidatorName];
-    const inventory = typeof getter === "function" ? getter() : [];
-    const definitions = particleIds.map((particleId) =>
-      inventory.find((record) => record?.id === particleId) || null);
-    if (!definitions.length || definitions.some((record) => !record)) {
-      return deepFreeze({
-        authorized: false,
-        reason: `${spec.ownerId}-canonical-selection-required`,
-        definition: null,
-        canonicalFrame: null,
-        payload: {},
-      });
-    }
-    if (typeof sourceBuilder !== "function" || typeof executor !== "function"
-      || typeof validator !== "function") {
-      return deepFreeze({
-        authorized: false,
-        reason: `${spec.ownerId}-canonical-executor-required`,
-        definition: definitions,
-        canonicalFrame: null,
-        payload: {},
-      });
-    }
-    const resultFrames = particleIds.map((particleId) => {
-      const sourceFrame = sourceBuilder(particleId);
-      return executor(sourceFrame);
-    });
-    const authorized = resultFrames.every((frame) =>
-      validator(frame) === true && frame?.authorizationStatus === "authorized");
-    const canonicalFrame = deepFreeze({
-      kind: "classical-particle-owner-execution-frame",
-      canonicalAnalysisKind: "typed-particle-result-set",
-      authorizationStatus: authorized ? "authorized" : "blocked",
-      blockReason: authorized ? "" : `${spec.ownerId}-canonical-particle-result-required`,
-      selectedRuleId: selection,
-      evaluatedRuleIds: [...particleIds],
-      appliedRuleIds: authorized ? [...particleIds] : [],
-      surfaces: resultFrames.map((frame) => frame?.surface || ""),
-      formulas: resultFrames.map((frame) => frame?.formula || ""),
-      resultFrames,
-    });
-    return deepFreeze({
-      authorized,
-      reason: authorized ? "" : canonicalFrame.blockReason,
-      definition: definitions,
-      canonicalFrame,
-      payload: {
-        definition: sanitize(definitions),
-        canonicalExecution: sanitize(canonicalFrame),
-      },
-    });
-  }
-  const definition = recordFor(target, spec, selection);
-  if (!definition) {
-    return deepFreeze({
-      authorized: false,
-      reason: `${spec.ownerId}-canonical-selection-required`,
-      definition: null,
-      canonicalFrame: null,
-      payload: {},
-    });
-  }
-  if (spec.mode === "canonical-fact" || spec.mode === "canonical-rule-analysis") {
-    return deepFreeze({
-      authorized: true,
-      reason: "",
-      definition,
-      canonicalFrame: null,
-      payload: { definition: sanitize(definition) },
-    });
-  }
-  const executor = target?.[spec.executionFunctionName];
-  if (typeof executor !== "function") {
-    return deepFreeze({
-      authorized: false,
-      reason: `${spec.ownerId}-canonical-executor-required`,
-      definition,
-      canonicalFrame: null,
-      payload: {},
-    });
-  }
-  const canonicalFrame = executor(...argsFor(spec, selection));
-  const validator = target?.[spec.executionValidatorName];
-  const expectedStatus = spec.expectedCanonicalStatusBySelection?.[selection]
-    || "authorized";
-  const canonical = typeof validator === "function"
-    && validator(canonicalFrame) === true
-    && canonicalFrame?.authorizationStatus === expectedStatus;
-  const selectedRuleMatches = spec.requireSelectedRuleMatch !== true
-    || canonicalFrame?.selectedRuleId === selection
-    || canonicalFrame?.evaluatedRuleIds?.includes(selection)
-    || canonicalFrame?.appliedRuleIds?.includes(selection);
-  if (!canonical || !selectedRuleMatches) {
-    return deepFreeze({
-      authorized: false,
-      reason: !canonical
-      ? `${spec.ownerId}-canonical-execution-status-required:${expectedStatus}`
-        : `${spec.ownerId}-selected-rule-mismatch`,
-      definition,
-      canonicalFrame,
-      payload: {},
-    });
-  }
-  return deepFreeze({
-    authorized: true,
-    reason: "",
-    definition,
-    canonicalFrame,
-    payload: {
-      definition: sanitize(definition),
-      canonicalExecution: sanitize({
-        kind: canonicalFrame.kind,
-        canonicalAnalysisKind: canonicalFrame.canonicalAnalysisKind,
-        sharedOperationId: canonicalFrame.sharedOperationId,
-        authorizationStatus: canonicalFrame.authorizationStatus,
-        blockReason: canonicalFrame.blockReason,
-        selectedRuleId: canonicalFrame.selectedRuleId || "",
-        evaluatedRuleIds: canonicalFrame.evaluatedRuleIds || [],
-        appliedRuleIds: canonicalFrame.appliedRuleIds || [],
-        outputSound: canonicalFrame.outputSound || "",
-        outputSpelling: canonicalFrame.outputSpelling || "",
-        outputForm: canonicalFrame.outputForm || "",
-        outputMorphType: canonicalFrame.outputMorphType || "",
-        surface: canonicalFrame.surface || "",
-        formula: canonicalFrame.formula || "",
-        conclusion: canonicalFrame.conclusion || null,
-      }),
-    },
-  });
-}
-
-function createMechanism(target, spec) {
-  const issuedSources = new WeakSet();
-  const sourceContexts = new WeakMap();
-  const issuedResults = new WeakSet();
-  const resultEvidence = new WeakMap();
-  const owner = createGrammarOperationContractOwner({
+function prepareCoordinate(spec, coordinateKey, coordinate = {}) {
+  const currentPath = String(coordinate.canonicalPath || "");
+  const proofAddress = resolveCanonicalProofAddress({
+    proofAddressId: coordinate.proofAddressId || "",
     ownerId: spec.ownerId,
-    domain: spec.domain,
+    semanticName: coordinate.proofSemanticName || "",
+    currentPath,
+    legacyKey: coordinate.proofAddressKey
+      || currentPath
+      || coordinate.assertionId
+      || coordinateKey,
+    assertionId: coordinate.assertionId || "",
   });
-  const realizesCanonicalOutput = spec.mode === "canonical-rule"
-    || spec.mode === "canonical-operation"
-    || spec.mode === "canonical-particle-result"
-    || spec.mode === "canonical-particle-operation";
-  const contract = owner.buildContract({
-    operationId: spec.operationId,
-    operationType: realizesCanonicalOutput ? "realize" : "establish",
-    consumesFrameKinds: [`${spec.ownerId}-source`],
-    producesFrameKind: `${spec.ownerId}-result`,
-    effectScopes: realizesCanonicalOutput
-      ? ["typed-source-validation", "canonical-semantic-operation"]
-      : ["typed-source-validation", "read-only-repertory-analysis"],
-    outputKinds: ["typed-semantic-result"],
-    authorityRefs: ["andrews-canvas-semantic-owner"],
-    description: `Execute ${spec.ownerId} through its exact canonical semantic scope.`,
+  return deepFreeze({
+    ...coordinate,
+    proofAddressId: proofAddress.proofAddressId,
+    proofSemanticName: proofAddress.semanticName,
+    canonicalPath: proofAddress.currentPath,
   });
+}
 
-  function buildSource(request = {}) {
-    const requestReason = inspectRequest(request);
-    const analysisDomain = requestReason ? "" : String(request.analysisDomain || "");
-    const selection = requestReason ? "" : String(request.selection || "");
-    const requestedFacet = requestReason ? "" : String(request.requestedFacet || "");
-    const participantChoice = requestReason ? "" : String(request.participantChoice || "");
-    const domainReason = analysisDomain === spec.domain
-      ? ""
-      : `${spec.ownerId}-analysis-domain-required`;
-    const selectionReason = spec.selections.includes(selection)
-      ? ""
-      : `${spec.ownerId}-canonical-selection-required`;
-    const coordinate = coordinateFor(spec, selection, requestedFacet);
-    const facetReason = coordinate
-      ? ""
-      : `${spec.ownerId}-licensed-semantic-coordinate-required`;
-    const participantReason = participantChoice === `${selection}:${requestedFacet}`
-      ? ""
-      : `${spec.ownerId}-typed-participant-choice-required`;
-    const reason = requestReason || domainReason || selectionReason
-      || facetReason || participantReason;
-    const source = deepFreeze({
-      kind: `${spec.ownerId}-source`,
-      version: VERSION,
-      analysisDomain,
-      selection,
-      requestedFacet,
-      participantChoice,
-      authorizationStatus: reason ? "blocked" : "authorized",
-      blockReason: reason,
-      ...NON_AUTHORITY,
-    });
-    issuedSources.add(source);
-    sourceContexts.set(source, deepFreeze({ reason, coordinate }));
-    return source;
-  }
-
-  function isSource(source = null) {
-    const context = sourceContexts.get(source) || null;
-    return Boolean(
-      source
-      && issuedSources.has(source)
-      && context
-      && !context.reason
-      && source.kind === `${spec.ownerId}-source`
-      && source.authorizationStatus === "authorized"
-      && source.blockReason === ""
-      && Object.isFrozen(source)
-    );
-  }
-
-  function evaluate(source = null) {
-    const sourceIssued = issuedSources.has(source);
-    const context = sourceContexts.get(source) || null;
-    const sourceReason = !sourceIssued
-      ? `owner-issued-${spec.ownerId}-source-required`
-      : source?.blockReason || context?.reason || "";
-    const sourceAuthorized = Boolean(sourceIssued && context && !sourceReason && isSource(source));
-    const canonical = sourceAuthorized
-      ? executeCanonicalSelection(target, spec, source.selection)
-      : deepFreeze({ authorized: false, reason: sourceReason, payload: {}, canonicalFrame: null });
-    const reason = sourceReason || canonical.reason || "";
-    const authorized = sourceAuthorized && canonical.authorized === true && !reason;
-    const inputState = deepFreeze({
-      analysisDomain: source?.analysisDomain || "",
-      selection: source?.selection || "",
-      requestedFacet: source?.requestedFacet || "",
-      participantChoice: source?.participantChoice || "",
-    });
-    const canonicalRuleIds = [...new Set([
-      canonical.canonicalFrame?.selectedRuleId,
-      ...(canonical.canonicalFrame?.evaluatedRuleIds || []),
-      ...(canonical.canonicalFrame?.appliedRuleIds || []),
-    ].filter(Boolean))];
-    const canonicalActorId = spec.canonicalActorId || "orthography:transcription";
-    const canonicalActorToken = routeToken(canonicalActorId, "semantic-prerequisite");
-    const routeSteps = deepFreeze([
-      deepFreeze({
-        stepId: `${spec.ownerId}-source-admitted`, kind: "source",
-        actorId: spec.ownerId, status: sourceIssued ? "accepted" : "rejected",
-        reason: sourceIssued ? `owner-issued-${spec.ownerId}-source` : reason,
-        branchId: `${spec.ownerId}-source-authority`,
-        decision: sourceIssued ? "admit" : "reject",
-        evaluatedRuleIds: [], executedRuleIds: [], inputState,
-        outputState: { sourceIssued },
-      }),
-      deepFreeze({
-        stepId: `${spec.ownerId}-${routeToken(source?.requestedFacet)}-checkpoint`,
-        kind: authorized ? "branch" : "guard", actorId: spec.ownerId,
-        invocationRole: "current", status: authorized ? "evaluated" : "rejected",
-        reason: authorized ? `${source.requestedFacet}-facet-retained` : reason,
-        branchId: `${spec.ownerId}-${routeToken(source?.selection)}-${routeToken(source?.requestedFacet)}`,
-        decision: authorized ? "retain" : "reject",
-        evaluatedRuleIds: sourceIssued ? [spec.operationId, ...canonicalRuleIds] : [],
-        executedRuleIds: [], inputState,
-        outputState: { canonicalSelection: authorized ? source.selection : "", facet: authorized ? source.requestedFacet : "" },
-      }),
-      ...(canonical.canonicalFrame ? [deepFreeze({
-        stepId: `${spec.ownerId}-canonical-${canonicalActorToken}-executed`,
-        kind: "operation", actorId: canonicalActorId,
-        invocationRole: "prerequisite", status: authorized ? "executed" : "rejected",
-        reason: authorized ? "canonical-semantic-frame-accepted" : reason,
-        branchId: `${spec.ownerId}-canonical-${canonicalActorToken}`,
-        decision: authorized ? "consume" : "reject",
-        evaluatedRuleIds: canonicalRuleIds,
-        executedRuleIds: authorized ? canonicalRuleIds : [],
-        inputState,
-        outputState: {
-          canonicalAnalysisKind: canonical.canonicalFrame.canonicalAnalysisKind || "",
-          selectedRuleId: canonical.canonicalFrame.selectedRuleId || "",
-          authorizationStatus: canonical.canonicalFrame.authorizationStatus || "",
-        },
-      })] : []),
-      deepFreeze({
-        stepId: authorized ? `${spec.ownerId}-executed` : `${spec.ownerId}-rejected`,
-        kind: authorized ? "operation" : "guard", actorId: spec.ownerId,
-        invocationRole: "current", status: authorized ? "executed" : "rejected",
-        reason: authorized ? `${spec.ownerId}-executed` : reason,
-        branchId: `${spec.ownerId}-outcome`, decision: authorized ? "establish" : "reject",
-        evaluatedRuleIds: sourceIssued ? [spec.operationId] : [],
-        executedRuleIds: authorized ? [spec.operationId] : [], inputState,
-        outputState: {
-          classificationStatus: authorized ? `established-${spec.ownerId}` : `${spec.ownerId}-rejected`,
-          selection: authorized ? source.selection : "",
-          facet: authorized ? source.requestedFacet : "",
-        },
-      }),
-    ]);
-    const execution = deepFreeze({
-      status: authorized ? "authorized" : "rejected",
-      reason: reason || null,
-      semanticOwnerId: spec.ownerId,
-      operationId: spec.operationId,
-      selectedRuleId: authorized ? spec.operationId : null,
-      stages: routeSteps.map((step) => step.stepId),
-      routeSteps,
-    });
-    const evidence = deepFreeze({
-      ownerId: spec.ownerId,
-      evaluatedOperationId: spec.operationId,
-      inputContract: spec.inputContract,
-      functionIds: [`build${spec.prefix}Source`, `evaluate${spec.prefix}`],
-      providedInput: inputState,
-      execution,
-      routeSteps,
-      outcome: { status: execution.status, reason: execution.reason },
-    });
-    const result = deepFreeze({
-      kind: `${spec.ownerId}-result`, version: VERSION,
-      authorizationStatus: authorized ? "authorized" : "blocked",
-      blockReason: reason,
-      semanticOwnerId: spec.ownerId,
-      operationId: spec.operationId,
-      operationContract: contract,
-      classificationStatus: authorized ? `established-${spec.ownerId}` : `${spec.ownerId}-rejected`,
-      analysisKind: authorized ? source.requestedFacet : "",
-      participantChoice: authorized ? source.participantChoice : "",
-      classification: authorized ? `${spec.ownerId}:${source.requestedFacet}` : "",
-      facts: authorized ? [`${spec.ownerId}:${source.selection}:${source.requestedFacet}`] : [],
-      relations: authorized ? [`${source.selection}:${source.requestedFacet}:retained-by:${spec.ownerId}`] : [],
-      restrictions: [
-        `${spec.ownerId}-requires-an-owner-issued-typed-source`,
-        "copied-results-labels-examples-formulas-surfaces-and-validation-configurations-are-non-authorizing",
-        "routing-catalogs-and-shared-mechanics-own-no-atoms-or-proof",
-      ],
-      coordinates: authorized ? {
-        analysisDomain: source.analysisDomain,
-        selection: source.selection,
-        requestedFacet: source.requestedFacet,
-        participantChoice: source.participantChoice,
-      } : {},
-      prerequisiteOwnerIds: canonical.canonicalFrame ? [canonicalActorId] : [],
-      prerequisiteSnapshots: canonical.canonicalFrame ? [{
-        ownerId: canonicalActorId,
-        issuedResultAccepted: authorized,
-        observedKind: canonical.canonicalFrame.kind || "",
-        observedAuthorizationStatus: canonical.canonicalFrame.authorizationStatus || "",
-      }] : [],
-      payload: authorized ? {
-        ...canonical.payload,
-        semanticAssertionId: context.coordinate.assertionId,
-        facetValue: sanitize(valueAtPath(
-          canonical.definition,
-          context.coordinate.canonicalPath || "",
-        )),
-      } : {},
-      ownerExecutionCompleted: authorized,
-      unitConstructed: false,
-      boundaryRewritten: authorized && realizesCanonicalOutput
-        && canonical.canonicalFrame?.authorizationStatus === "authorized",
-      soundedSurfaceGenerated: false,
-      writtenSurfaceGenerated: authorized && realizesCanonicalOutput
-        && canonical.canonicalFrame?.authorizationStatus === "authorized"
-        && Boolean(canonical.canonicalFrame?.surface
-          || canonical.canonicalFrame?.surfaces?.some(Boolean)),
-      formulaGenerated: authorized && realizesCanonicalOutput
-        && canonical.canonicalFrame?.authorizationStatus === "authorized"
-        && Boolean(canonical.canonicalFrame?.formula
-          || canonical.canonicalFrame?.formulas?.some(Boolean)),
-      ...NON_AUTHORITY,
-    });
-    issuedResults.add(result);
-    resultEvidence.set(result, evidence);
-    return result;
-  }
-
-  function isResult(result = null) {
-    return Boolean(
-      result
-      && issuedResults.has(result)
-      && result.semanticOwnerId === spec.ownerId
-      && result.operationId === spec.operationId
-      && owner.isContractIssued(result.operationContract)
-      && Object.isFrozen(result)
-    );
-  }
-  function getEvidence(result = null) { return resultEvidence.get(result) || null; }
-  function isEvidence(evidence = null, result = null) {
-    const executed = evidence?.routeSteps?.filter((step) =>
-      step.invocationRole !== "prerequisite"
-      && step.executedRuleIds?.includes(spec.operationId)) || [];
-    return Boolean(
-      evidence
-      && isResult(result)
-      && resultEvidence.get(result) === evidence
-      && evidence.ownerId === spec.ownerId
-      && evidence.evaluatedOperationId === spec.operationId
-      && evidence.execution?.routeSteps === evidence.routeSteps
-      && (result.authorizationStatus === "authorized"
-        ? executed.length === 1 && executed[0].stepId === `${spec.ownerId}-executed`
-        : executed.length === 0)
-      && Object.isFrozen(evidence)
-    );
-  }
-  return deepFreeze({ spec, buildSource, isSource, evaluate, isResult, getEvidence, isEvidence });
+function prepareSpec(spec = {}) {
+  const coordinates = Object.fromEntries(
+    Object.entries(spec.coordinates || {}).map(([coordinateKey, coordinate]) => [
+      coordinateKey,
+      prepareCoordinate(spec, coordinateKey, coordinate),
+    ]),
+  );
+  return deepFreeze({
+    ...spec,
+    coordinates: deepFreeze(coordinates),
+  });
 }
 
 function publicNames(prefix) {
@@ -631,17 +71,110 @@ function publicNames(prefix) {
   });
 }
 
-export function createRoutineSemanticOwnerMechanicsApi(targetObject = globalThis, ownerSpecs = []) {
+function coordinateForSource(spec, source) {
+  if (!source || typeof source !== "object") return null;
+  return spec.coordinates?.[
+    `${String(source.selection || "")}::${String(source.requestedFacet || "")}`
+  ] || null;
+}
+
+function wrapOwnerApi(legacyApi, spec) {
+  const names = publicNames(spec.prefix);
+  const legacyBuild = legacyApi[names.build];
+  const legacyIsSource = legacyApi[names.isSource];
+  const legacyEvaluate = legacyApi[names.evaluate];
+  const legacyIsResult = legacyApi[names.isResult];
+  const legacyGetEvidence = legacyApi[names.getEvidence];
+  const legacyIsEvidence = legacyApi[names.isEvidence];
+  const issuedResults = new WeakSet();
+  const legacyResultsByResult = new WeakMap();
+  const evidenceByResult = new WeakMap();
+  const legacyEvidenceByEvidence = new WeakMap();
+
+  function evaluate(source = null) {
+    const legacyResult = legacyEvaluate(source);
+    const coordinate = coordinateForSource(spec, source);
+    const proofAddressId = coordinate?.proofAddressId || "";
+    const proofSemanticName = coordinate?.proofSemanticName || "";
+    const result = deepFreeze({
+      ...legacyResult,
+      payload: {
+        ...(legacyResult?.payload || {}),
+        proofAddressId,
+        proofSemanticName,
+      },
+    });
+    const legacyEvidence = legacyGetEvidence(legacyResult);
+    const evidence = legacyEvidence
+      ? deepFreeze({
+        ...legacyEvidence,
+        proofAddressId,
+        proofSemanticName,
+      })
+      : null;
+    issuedResults.add(result);
+    legacyResultsByResult.set(result, legacyResult);
+    evidenceByResult.set(result, evidence);
+    if (evidence && legacyEvidence) {
+      legacyEvidenceByEvidence.set(evidence, legacyEvidence);
+    }
+    return result;
+  }
+
+  function isResult(result = null) {
+    const legacyResult = legacyResultsByResult.get(result) || null;
+    return Boolean(
+      result
+      && issuedResults.has(result)
+      && legacyResult
+      && legacyIsResult(legacyResult) === true
+      && result.semanticOwnerId === spec.ownerId
+      && result.operationId === spec.operationId
+      && Object.isFrozen(result)
+    );
+  }
+
+  function getEvidence(result = null) {
+    return evidenceByResult.get(result) || null;
+  }
+
+  function isEvidence(evidence = null, result = null) {
+    const legacyResult = legacyResultsByResult.get(result) || null;
+    const legacyEvidence = legacyEvidenceByEvidence.get(evidence) || null;
+    return Boolean(
+      evidence
+      && legacyResult
+      && legacyEvidence
+      && evidenceByResult.get(result) === evidence
+      && legacyIsEvidence(legacyEvidence, legacyResult) === true
+      && evidence.proofAddressId === result?.payload?.proofAddressId
+      && evidence.proofSemanticName === result?.payload?.proofSemanticName
+      && Object.isFrozen(evidence)
+    );
+  }
+
+  return freeze({
+    [names.build]: legacyBuild,
+    [names.isSource]: legacyIsSource,
+    [names.evaluate]: evaluate,
+    [names.isResult]: isResult,
+    [names.getEvidence]: getEvidence,
+    [names.isEvidence]: isEvidence,
+  });
+}
+
+export function createRoutineSemanticOwnerMechanicsApi(
+  targetObject = globalThis,
+  ownerSpecs = [],
+) {
+  const preparedSpecs = ownerSpecs.map(prepareSpec);
+  const legacyApi = createLegacyRoutineSemanticOwnerMechanicsApi(
+    targetObject,
+    preparedSpecs,
+  );
   const api = Object.create(null);
-  for (const spec of ownerSpecs) {
-    const mechanism = createMechanism(targetObject, spec);
-    const names = publicNames(spec.prefix);
-    api[names.build] = mechanism.buildSource;
-    api[names.isSource] = mechanism.isSource;
-    api[names.evaluate] = mechanism.evaluate;
-    api[names.isResult] = mechanism.isResult;
-    api[names.getEvidence] = mechanism.getEvidence;
-    api[names.isEvidence] = mechanism.isEvidence;
+  for (const spec of preparedSpecs) {
+    Object.assign(api, wrapOwnerApi(legacyApi, spec));
   }
   return freeze(api);
 }

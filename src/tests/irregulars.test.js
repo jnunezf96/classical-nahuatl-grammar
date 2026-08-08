@@ -40,6 +40,73 @@ function run(ctx = {}) {
     s.eq(
         "the nemi owner Result exposes nen at the permanent perfective-stem proof address",
         (() => {
+            const facet =
+                "p1216-nemi-nen-to-live-vncs-built-on-these-stems";
+            const source = ctx.buildClassicalNemiIrregularParadigmSource({
+                analysisDomain: "classical-nemi-irregular-paradigm",
+                selection: "claim-p1216",
+                requestedFacet: facet,
+                participantChoice: `claim-p1216:${facet}`,
+            });
+            const result = ctx.evaluateClassicalNemiIrregularParadigm(source);
+            return {
+                status: result.authorizationStatus,
+                proofAddressId: result.payload?.proofAddressId || "",
+                proofSemanticName: result.payload?.proofSemanticName || "",
+                selectedStem: result.payload?.facetValue || "",
+            };
+        })(),
+        {
+            status: "authorized",
+            proofAddressId: "4d533cc8-d6c2-48fb-8bad-a85bb036f6b0",
+            proofSemanticName: "stem.perfective.selected",
+            selectedStem: "nen",
+        }
+    );
+
+    s.eq(
+        "an unmigrated owner coordinate receives one stable opaque proof address automatically",
+        (() => {
+            const facet =
+                "p3269-when-not-occurring-as-the-embed-of-a-compound";
+            const request = {
+                analysisDomain: "classical-numeral-one",
+                selection: "claim-p3269",
+                requestedFacet: facet,
+                participantChoice: `claim-p3269:${facet}`,
+            };
+            const first = ctx.evaluateClassicalNumeralOne(
+                ctx.buildClassicalNumeralOneSource(request)
+            );
+            const second = ctx.evaluateClassicalNumeralOne(
+                ctx.buildClassicalNumeralOneSource(request)
+            );
+            const proofAddressId = first.payload?.proofAddressId || "";
+            return {
+                firstStatus: first.authorizationStatus,
+                secondStatus: second.authorizationStatus,
+                stable: proofAddressId === second.payload?.proofAddressId,
+                opaqueUuid:
+                    /^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/u
+                        .test(proofAddressId),
+                semanticName: first.payload?.proofSemanticName || "",
+                observedValue: first.payload?.facetValue || "",
+            };
+        })(),
+        {
+            firstStatus: "authorized",
+            secondStatus: "authorized",
+            stable: true,
+            opaqueUuid: true,
+            semanticName:
+                "numeral.one.cases.one.authorizationstatus",
+            observedValue: "authorized",
+        }
+    );
+
+    s.eq(
+        "the canonical irregular validation frame still realizes the corrected nemi result",
+        (() => {
             const frame = ctx.buildClassicalNahuatlIrregularValidationFrame(
                 "nemi-past"
             );
