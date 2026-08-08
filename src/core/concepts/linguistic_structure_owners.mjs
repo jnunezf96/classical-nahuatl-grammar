@@ -3,6 +3,7 @@
 // Result, operation contract, identity store, route, and evidence boundary.
 
 import { createGrammarOperationContractOwner } from "../grammar/operation_owner.mjs";
+import { registerCanonicalOwnerSpecIdentity } from "../grammar/canonical_identity_registry.mjs";
 
 const VERSION = 1;
 const freeze = Object.freeze;
@@ -276,6 +277,7 @@ function analyzeRequest(request, spec) {
 }
 
 function createMechanism(spec) {
+  registerCanonicalOwnerSpecIdentity(spec);
   const issuedSources = new WeakSet();
   const sourceContexts = new WeakMap();
   const issuedResults = new WeakSet();

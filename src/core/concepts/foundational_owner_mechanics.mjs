@@ -4,6 +4,7 @@
 // prerequisite checks, route, and execution evidence.
 
 import { createGrammarOperationContractOwner } from "../grammar/operation_owner.mjs";
+import { registerCanonicalOwnerSpecIdentity } from "../grammar/canonical_identity_registry.mjs";
 
 const freeze = Object.freeze;
 const VERSION = 1;
@@ -371,6 +372,7 @@ function publicNames(prefix) {
 export function createFoundationalOwnerMechanicsApi(targetObject = globalThis, ownerSpecs = []) {
   const api = Object.create(null);
   for (const spec of ownerSpecs) {
+    registerCanonicalOwnerSpecIdentity(spec);
     const mechanism = createMechanism(targetObject, spec);
     const names = publicNames(spec.prefix);
     api[names.build] = mechanism.buildSource;

@@ -2,6 +2,11 @@
 // This module deliberately exposes no caller-mintable contract builder or
 // runtime installer. Domain owners receive a private issuer/evaluator pair.
 
+import {
+  registerCanonicalIdentitySurface,
+  resolveCanonicalIdentity,
+} from "./canonical_identity_registry.mjs";
+
 const GRAMMAR_OPERATION_CONTRACT_VERSION = 1;
 const GRAMMAR_OPERATION_TYPES = Object.freeze([
   "establish",
@@ -212,15 +217,103 @@ export function createGrammarOperationContractOwner({
   const normalizedOwnerId = normalizeGrammarOperationToken(ownerId);
   const normalizedDomain = normalizeGrammarOperationToken(domain);
   const ownerIdentity = Object.freeze({});
+  const ownerIdentityRecord = resolveCanonicalIdentity({
+    namespace: "owner",
+    semanticName: normalizedOwnerId,
+    stableKey: normalizedOwnerId,
+    currentLocation: "grammar-operation-owner.ownerId",
+  });
+  const domainIdentityRecord = resolveCanonicalIdentity({
+    namespace: "domain",
+    semanticName: normalizedDomain,
+    stableKey: "owner-domain",
+    scopeKey: ownerIdentityRecord.identityId,
+    currentLocation: "grammar-operation-owner.domain",
+  });
+  registerCanonicalIdentitySurface(ownerIdentity, [
+    ownerIdentityRecord,
+    domainIdentityRecord,
+  ], { source: "grammar-operation-owner" });
 
   function buildContract(options = {}) {
-    return buildGrammarOperationContractFrame({
+    const contract = buildGrammarOperationContractFrame({
       ...options,
       domain: normalizedDomain,
     }, {
       ownerId: normalizedOwnerId,
       ownerIdentity,
     });
+    const operationIdentityRecord = resolveCanonicalIdentity({
+      namespace: "operation",
+      semanticName: contract.operationId,
+      stableKey: "primary-operation",
+      scopeKey: ownerIdentityRecord.identityId,
+      currentLocation: "grammar-operation-contract.operationId",
+    });
+    const contractIdentityRecord = resolveCanonicalIdentity({
+      namespace: "operation-contract",
+      semanticName: `${normalizedOwnerId}:${contract.operationId}`,
+      stableKey: "primary-operation-contract",
+      scopeKey: ownerIdentityRecord.identityId,
+      currentLocation: "grammar-operation-contract",
+    });
+    const records = [
+      ownerIdentityRecord,
+      domainIdentityRecord,
+      operationIdentityRecord,
+      contractIdentityRecord,
+      ...contract.consumesFrameKinds.map((frameKind, index) =>
+        resolveCanonicalIdentity({
+          namespace: "frame-kind",
+          semanticName: frameKind,
+          stableKey: `consumes-frame-kind:${index}`,
+          scopeKey: operationIdentityRecord.identityId,
+          currentLocation: `grammar-operation-contract.consumesFrameKinds[${index}]`,
+        })),
+      resolveCanonicalIdentity({
+        namespace: "result-kind",
+        semanticName: contract.producesFrameKind,
+        stableKey: "produces-frame-kind",
+        scopeKey: operationIdentityRecord.identityId,
+        currentLocation: "grammar-operation-contract.producesFrameKind",
+      }),
+      ...contract.prerequisites.map((operationId, index) =>
+        resolveCanonicalIdentity({
+          namespace: "operation",
+          semanticName: operationId,
+          stableKey: operationId,
+          scopeKey: ownerIdentityRecord.identityId,
+          currentLocation: `grammar-operation-contract.prerequisites[${index}]`,
+        })),
+      ...contract.effectScopes.map((scope, index) =>
+        resolveCanonicalIdentity({
+          namespace: "effect-scope",
+          semanticName: scope,
+          stableKey: scope,
+          scopeKey: operationIdentityRecord.identityId,
+          currentLocation: `grammar-operation-contract.effectScopes[${index}]`,
+        })),
+      ...contract.outputKinds.map((outputKind, index) =>
+        resolveCanonicalIdentity({
+          namespace: "output-kind",
+          semanticName: outputKind,
+          stableKey: outputKind,
+          scopeKey: operationIdentityRecord.identityId,
+          currentLocation: `grammar-operation-contract.outputKinds[${index}]`,
+        })),
+      ...contract.authorityRefs.map((authorityRef, index) =>
+        resolveCanonicalIdentity({
+          namespace: "authority-reference",
+          semanticName: authorityRef,
+          stableKey: authorityRef,
+          scopeKey: operationIdentityRecord.identityId,
+          currentLocation: `grammar-operation-contract.authorityRefs[${index}]`,
+        })),
+    ];
+    registerCanonicalIdentitySurface(contract, records, {
+      source: "grammar-operation-contract",
+    });
+    return contract;
   }
 
   function isContractIssued(contract = null) {
