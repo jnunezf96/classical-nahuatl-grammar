@@ -1,9 +1,9 @@
 name: Temporary exact-proof source snapshot
 
 on:
-  push:
+  pull_request:
     branches:
-      - agent/nemi-preterit-agentive-exact-proof
+      - agent/proof-precision-baseline
   workflow_dispatch:
 
 permissions:
@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: agent/nemi-preterit-agentive-exact-proof
       - name: Archive repository source
         run: git archive --format=tar.gz -o exact-proof-source.tar.gz HEAD
       - uses: actions/upload-artifact@v4
