@@ -12,8 +12,37 @@ const UUID_PATTERN =
 export const CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS = freeze({
   NEMI_SELECTED_PERFECTIVE_STEM:
     "4d533cc8-d6c2-48fb-8bad-a85bb036f6b0",
+  NEMI_DISTANT_PAST_AS_PAST_MAPPING:
+    "1beb2397-a54b-474f-bad1-7329dbf18731",
+  PRETERIT_AGENTIVE_AGENT_ROLE:
+    "02f255e4-e2ef-4646-9e1c-4bbaf54d2420",
+  PRETERIT_AGENTIVE_PRIMARY_KIND:
+    "51a105d3-996a-4b3f-acf1-c05be39ebaa7",
+  PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY:
+    "f0ec1f09-868f-4385-ac92-fddd461cce32",
+  PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND:
+    "0caeef7a-8c5b-43c4-9c8b-c54219342caf",
   PRETERIT_AGENTIVE_RESTRICTED_STEM:
     "b49d598f-f4a4-4de1-80ad-9c1e901b7be6",
+  PRETERIT_AGENTIVE_RESTRICTED_STATE_USE:
+    "7724581c-0c59-4af1-9d29-29de1d3e603a",
+  PRETERIT_AGENTIVE_DERIVATION_ORDER:
+    "e7198f9f-9d2f-4c9e-973d-bede2076ff22",
+  PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION:
+    "49c10c73-b5ea-4ffa-9527-37f617c6f2b8",
+
+  // Retired broad checkpoints remain permanently resolvable. New atoms must
+  // use the exact replacement identities below rather than these aliases.
+  LEGACY_NEMI_AUTHORIZATION_STATUS:
+    "881b37c8-657d-5998-9333-d2c7ddba3420",
+  LEGACY_PRETERIT_AGENTIVE_AUTHORIZATION_STATUS:
+    "6bdfc603-8957-5eb5-aadf-b0ef9667a4c5",
+  LEGACY_PRETERIT_AGENTIVE_CANONICAL_RESULT:
+    "dd4a70b1-4474-5701-a0f0-ff04ea05a390",
+  LEGACY_PRETERIT_AGENTIVE_GCD_SATISFIED:
+    "58640559-f3ba-5d85-80c5-8b276b0f31a3",
+  LEGACY_PRETERIT_AGENTIVE_LCM_COMPLETE:
+    "c3b9fdf9-eacb-59b0-9b58-580b7cdb36ae",
 });
 
 const EXPLICIT_RECORDS_BY_ID = freeze({
@@ -23,16 +52,210 @@ const EXPLICIT_RECORDS_BY_ID = freeze({
     semanticName: "stem.perfective.selected",
     ownerId: "classical-nemi-irregular-paradigm",
     currentPath: "lesson11.selectedStem",
+    addressScope: "result-path",
     addressSource: "explicit",
   }),
-  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_RESTRICTED_STEM]: freeze({
-    proofAddressId:
-      CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_RESTRICTED_STEM,
-    semanticName: "preterit-agentive.restricted-stem.selected",
-    ownerId: "classical-predicate-nominalization-preterit-agentive",
-    currentPath: "cases.preteritAgentive.targetStems.restrictedUse",
-    addressSource: "explicit",
-  }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.NEMI_DISTANT_PAST_AS_PAST_MAPPING]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .NEMI_DISTANT_PAST_AS_PAST_MAPPING,
+      semanticName: "nemi.tense.distant-past-as-past.mapping",
+      ownerId: "classical-nemi-irregular-paradigm",
+      currentPath: "lesson11.tenseMapping",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_AGENT_ROLE]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_AGENT_ROLE,
+      semanticName: "preterit-agentive.semantic-role.agent",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.agentSemanticRole",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_PRIMARY_KIND]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_PRIMARY_KIND,
+      semanticName: "preterit-agentive.taxonomy.most-common",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.agentiveTaxonomyStatus",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY,
+      semanticName: "preterit-agentive.stem-shapes.inventory",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.stemShapeInventory",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND,
+      semanticName: "preterit-agentive.general-use.compound",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.generalUseCompound",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_RESTRICTED_STEM]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_RESTRICTED_STEM,
+      semanticName: "preterit-agentive.restricted-stem.selected",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.restrictedUseSourceRelation",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_RESTRICTED_STATE_USE]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_RESTRICTED_STATE_USE,
+      semanticName: "preterit-agentive.state-use.absolutive",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.stateStemDistribution.absolutive",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_DERIVATION_ORDER]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_DERIVATION_ORDER,
+      semanticName:
+        "preterit-agentive.derivation-order.restricted-before-general",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.derivationOrder",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION,
+      semanticName: "preterit-agentive.state-use.non-absolutive",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath:
+        "cases.preteritAgentive.proofObservations.stateStemDistribution.nonAbsolutive",
+      addressScope: "result-path",
+      addressSource: "exact-semantic-observation",
+    }),
+
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.LEGACY_NEMI_AUTHORIZATION_STATUS]:
+    freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .LEGACY_NEMI_AUTHORIZATION_STATUS,
+      semanticName: "nemi.irregular.paradigm.authorizationstatus",
+      ownerId: "classical-nemi-irregular-paradigm",
+      currentPath: "authorizationStatus",
+      legacyKey: "authorizationStatus",
+      addressScope: "result-path",
+      addressSource: "retired-broad-checkpoint",
+      deprecated: true,
+      replacementProofAddressIds: freeze([
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .NEMI_DISTANT_PAST_AS_PAST_MAPPING,
+      ]),
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .LEGACY_PRETERIT_AGENTIVE_AUTHORIZATION_STATUS]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .LEGACY_PRETERIT_AGENTIVE_AUTHORIZATION_STATUS,
+      semanticName:
+        "predicate.nominalization.preterit.agentive.cases.preteritagentive.authorizationstatus",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath: "cases.preteritAgentive.authorizationStatus",
+      legacyKey: "cases.preteritAgentive.authorizationStatus",
+      addressScope: "result-path",
+      addressSource: "retired-broad-checkpoint",
+      deprecated: true,
+      replacementProofAddressIds: freeze([
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS.PRETERIT_AGENTIVE_AGENT_ROLE,
+      ]),
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .LEGACY_PRETERIT_AGENTIVE_CANONICAL_RESULT]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .LEGACY_PRETERIT_AGENTIVE_CANONICAL_RESULT,
+      semanticName:
+        "predicate.nominalization.preterit.agentive.cases.preteritagentive.canonicalresult",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath: "cases.preteritAgentive.canonicalResult",
+      legacyKey: "cases.preteritAgentive.canonicalResult",
+      addressScope: "result-path",
+      addressSource: "retired-broad-checkpoint",
+      deprecated: true,
+      replacementProofAddressIds: freeze([
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_PRIMARY_KIND,
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_RESTRICTED_STATE_USE,
+      ]),
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .LEGACY_PRETERIT_AGENTIVE_GCD_SATISFIED]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .LEGACY_PRETERIT_AGENTIVE_GCD_SATISFIED,
+      semanticName:
+        "predicate.nominalization.preterit.agentive.cases.preteritagentive.gcdsatisfied",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath: "cases.preteritAgentive.gcdSatisfied",
+      legacyKey: "cases.preteritAgentive.gcdSatisfied",
+      addressScope: "result-path",
+      addressSource: "retired-broad-checkpoint",
+      deprecated: true,
+      replacementProofAddressIds: freeze([
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_STEM_SHAPE_INVENTORY,
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_DERIVATION_ORDER,
+      ]),
+    }),
+  [CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+    .LEGACY_PRETERIT_AGENTIVE_LCM_COMPLETE]: freeze({
+      proofAddressId:
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .LEGACY_PRETERIT_AGENTIVE_LCM_COMPLETE,
+      semanticName:
+        "predicate.nominalization.preterit.agentive.cases.preteritagentive.lcmcomplete",
+      ownerId: "classical-predicate-nominalization-preterit-agentive",
+      currentPath: "cases.preteritAgentive.lcmComplete",
+      legacyKey: "cases.preteritAgentive.lcmComplete",
+      addressScope: "result-path",
+      addressSource: "retired-broad-checkpoint",
+      deprecated: true,
+      replacementProofAddressIds: freeze([
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_GENERAL_USE_COMPOUND,
+        CLASSICAL_CANONICAL_PROOF_ADDRESS_IDS
+          .PRETERIT_AGENTIVE_GENERAL_USE_DISTRIBUTION,
+      ]),
+    }),
 });
 
 // When an automatically migrated checkpoint moves inside its Result, add only

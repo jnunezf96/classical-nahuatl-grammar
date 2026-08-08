@@ -112,11 +112,23 @@ function compact(runtime, frame) {
       runtime.isClassicalNahuatlDeverbalNncGrammarFrame?.(frame) === true,
     operationId: operation.operationId || "",
     sourceStage: operation.sourceStage || frame?.sourceFrame?.sourceStage || "",
+    sourceStem: frame?.sourceFrame?.sourceStem || "",
+    sourceImperfectiveStem:
+      frame?.sourceFrame?.sourceImperfectiveStem || "",
+    sourceStemDerivedByCanonicalOwner:
+      frame?.sourceFrame?.sourceStemDerivedByCanonicalOwner === true,
+    perfectiveChangeRule:
+      frame?.sourceFrame?.canonicalStageDerivationFrame
+        ?.perfectiveChangeRule || "",
     sourceVoice: operation.sourceVoice || frame?.sourceFrame?.sourceVoice || "",
     sourceValence: operation.sourceValence || frame?.sourceFrame?.sourceValence || "",
     sourceObjectPattern:
       operation.sourceObjectPattern || frame?.sourceFrame?.sourceObjectPattern || "",
     targetStems: operation.targetStems || {},
+    proofObservations: operation.semanticProfile || {},
+    selectedResultState: frame?.canonicalResult?.state || "",
+    selectedResultStem:
+      frame?.canonicalResult?.nncSlotFrame?.slots?.predicate?.stem || "",
     nounClass: operation.nounClass || "",
     connectorProfile: operation.connectorProfile || "",
     singularConnectorChoice: operation.singularConnectorChoice || "",
@@ -186,6 +198,18 @@ function buildProjection(runtime) {
     state: "possessive",
     possessor: "3sg",
   });
+  const nemiPreteritAgentiveRequest = patchSource(
+    predicateRequest("preterit-agentive"),
+    {
+      sourceStem: "",
+      sourceImperfectiveStem: "nemi",
+      verbClass: "B",
+      sourceVoice: "active",
+      sourceValence: "intransitive",
+      sourceObjectPattern: "none",
+      sourceSubject: "3sg",
+    },
+  );
   const customaryFullRequest = predicateRequest("customary-agentive-full");
   const customaryReanalysisRequest =
     predicateRequest("customary-agentive-reanalysis");
@@ -229,6 +253,7 @@ function buildProjection(runtime) {
       runtime, predicateRequest("preterit-agentive"),
     ),
     preteritAgentive: evaluate(runtime, predicateRequest("preterit-agentive")),
+    preteritAgentiveNemi: evaluate(runtime, nemiPreteritAgentiveRequest),
     preteritRestricted: evaluate(runtime, patchSource(
       predicateRequest("preterit-agentive", { numberConnector: "silent" }),
       {

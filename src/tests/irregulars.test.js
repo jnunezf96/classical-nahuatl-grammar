@@ -65,6 +65,49 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "the nemi owner proves the optional distant-past-as-past reading through an exact tense mapping",
+        (() => {
+            const facet =
+                "p1217-finds-vncs-with-a-distant-past-tense-used-with";
+            const source = ctx.buildClassicalNemiIrregularParadigmSource({
+                analysisDomain: "classical-nemi-irregular-paradigm",
+                selection: "claim-p1217",
+                requestedFacet: facet,
+                participantChoice: `claim-p1217:${facet}`,
+            });
+            const result = ctx.evaluateClassicalNemiIrregularParadigm(source);
+            const mapping = result.payload?.facetValue || {};
+            return {
+                status: result.authorizationStatus,
+                proofAddressId: result.payload?.proofAddressId || "",
+                proofSemanticName:
+                    result.payload?.proofSemanticName || "",
+                lexemeId: mapping.lexemeId || "",
+                selectedStem: mapping.selectedStem || "",
+                morphologicalTense:
+                    mapping.morphologicalTense || "",
+                semanticTenseValue:
+                    mapping.semanticTenseValue || "",
+                interpretation: mapping.interpretation || "",
+                remapped: mapping.remapped === true,
+            };
+        })(),
+        {
+            status: "authorized",
+            proofAddressId:
+                "1beb2397-a54b-474f-bad1-7329dbf18731",
+            proofSemanticName:
+                "nemi.tense.distant-past-as-past.mapping",
+            lexemeId: "nemi",
+            selectedStem: "nen",
+            morphologicalTense: "distant-past",
+            semanticTenseValue: "general-past",
+            interpretation: "distant-past-as-past",
+            remapped: true,
+        }
+    );
+
+    s.eq(
         "an unmigrated owner coordinate receives one stable opaque proof address automatically",
         (() => {
             const facet =
