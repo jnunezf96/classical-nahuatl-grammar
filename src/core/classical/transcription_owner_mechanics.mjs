@@ -14,6 +14,17 @@ import {
 import {
   registerCanonicalOwnerSpecIdentity,
 } from "../grammar/canonical_identity_registry.mjs";
+import {
+  getCanonicalGrammarFamilyForOwner,
+  getCanonicalGrammarFamilyMetrics,
+  getRoutineSemanticFamilyForOwner,
+  getRoutineSemanticFamilyMetrics,
+  isCanonicalGrammarFamilyRecord,
+  isRoutineSemanticFamilyRecord,
+  listCanonicalGrammarFamilies,
+  listRoutineSemanticFamilies,
+  registerRoutineSemanticFamilyBinding,
+} from "./routine_semantic_family_registry.mjs";
 
 const freeze = Object.freeze;
 
@@ -57,9 +68,11 @@ function prepareSpec(spec = {}) {
       prepareCoordinate(spec, coordinateKey, coordinate),
     ]),
   );
+  const routineFamily = registerRoutineSemanticFamilyBinding(spec);
   const prepared = deepFreeze({
     ...spec,
     coordinates: deepFreeze(coordinates),
+    routineFamily,
   });
   registerCanonicalOwnerSpecIdentity(prepared);
   return prepared;
@@ -186,6 +199,16 @@ export function createRoutineSemanticOwnerMechanicsApi(
   for (const spec of preparedSpecs) {
     Object.assign(api, wrapOwnerApi(legacyApi, spec));
   }
+  Object.assign(api, {
+    getCanonicalGrammarFamilyForOwner,
+    getCanonicalGrammarFamilyMetrics,
+    getRoutineSemanticFamilyForOwner,
+    getRoutineSemanticFamilyMetrics,
+    isCanonicalGrammarFamilyRecord,
+    isRoutineSemanticFamilyRecord,
+    listCanonicalGrammarFamilies,
+    listRoutineSemanticFamilies,
+  });
   return freeze(api);
 }
 

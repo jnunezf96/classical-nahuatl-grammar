@@ -4,6 +4,10 @@
 // family that its issued Source may inspect or execute.
 
 import { createGrammarOperationContractOwner } from "../grammar/operation_owner.mjs";
+import {
+  getRoutineSemanticExecutionCacheKey,
+  registerRoutineSemanticFamilyMetricProvider,
+} from "./routine_semantic_family_registry.mjs";
 
 const freeze = Object.freeze;
 const VERSION = 1;
@@ -27,6 +31,8 @@ const DOCUMENTARY_KEYS = new Set([
   "blockedExample",
   "outputExample",
 ]);
+const FAMILY_KERNELS_BY_TARGET = new WeakMap();
+
 const NON_AUTHORITY = freeze({
   lessonMetadataAuthority: false,
   storedExampleAuthority: false,
@@ -131,7 +137,10 @@ function recordFor(target, spec, selection) {
   return null;
 }
 
-function executeCanonicalSelection(target, spec, selection) {
+function executeCanonicalSelection(target, spec, selection, familyKernel = null) {
+  const invoke = (phase, callback) => familyKernel?.invoke
+    ? familyKernel.invoke(spec, selection, phase, callback)
+    : callback();
   if (spec.mode === "canonical-operation") {
     const executor = target?.[spec.executionFunctionName];
     const validator = target?.[spec.executionValidatorName];
@@ -144,7 +153,10 @@ function executeCanonicalSelection(target, spec, selection) {
         payload: {},
       });
     }
-    const operationResult = executor(...argsFor(spec, selection));
+    const operationResult = invoke(
+      "canonical-operation-result",
+      () => executor(...argsFor(spec, selection)),
+    );
     const expectedStatus = spec.expectedCanonicalStatusBySelection?.[selection]
       || "authorized";
     const observedStatus = operationResult?.authorizationStatus
@@ -193,8 +205,13 @@ function executeCanonicalSelection(target, spec, selection) {
         payload: {},
       });
     }
-    const canonicalSource = sourceBuilder(...sourceArgs);
-    const operationResult = executor(canonicalSource);
+    const operationResult = invoke(
+      "canonical-particle-operation-result",
+      () => {
+        const canonicalSource = sourceBuilder(...sourceArgs);
+        return executor(canonicalSource);
+      },
+    );
     const authorized = validator(operationResult) === true
       && operationResult?.authorizationStatus === "authorized";
     const canonicalFrame = deepFreeze({
@@ -249,10 +266,13 @@ function executeCanonicalSelection(target, spec, selection) {
         payload: {},
       });
     }
-    const resultFrames = particleIds.map((particleId) => {
-      const sourceFrame = sourceBuilder(particleId);
-      return executor(sourceFrame);
-    });
+    const resultFrames = invoke(
+      "canonical-particle-result-frames",
+      () => deepFreeze(particleIds.map((particleId) => {
+        const sourceFrame = sourceBuilder(particleId);
+        return executor(sourceFrame);
+      })),
+    );
     const authorized = resultFrames.every((frame) =>
       validator(frame) === true && frame?.authorizationStatus === "authorized");
     const canonicalFrame = deepFreeze({
@@ -307,7 +327,10 @@ function executeCanonicalSelection(target, spec, selection) {
       payload: {},
     });
   }
-  const canonicalFrame = executor(...argsFor(spec, selection));
+  const canonicalFrame = invoke(
+    "canonical-rule-frame",
+    () => executor(...argsFor(spec, selection)),
+  );
   const validator = target?.[spec.executionValidatorName];
   const expectedStatus = spec.expectedCanonicalStatusBySelection?.[selection]
     || "authorized";
@@ -357,7 +380,7 @@ function executeCanonicalSelection(target, spec, selection) {
   });
 }
 
-function createMechanism(target, spec) {
+function createMechanism(target, spec, familyKernel = null) {
   const issuedSources = new WeakSet();
   const sourceContexts = new WeakMap();
   const issuedResults = new WeakSet();
@@ -442,7 +465,12 @@ function createMechanism(target, spec) {
       : source?.blockReason || context?.reason || "";
     const sourceAuthorized = Boolean(sourceIssued && context && !sourceReason && isSource(source));
     const canonical = sourceAuthorized
-      ? executeCanonicalSelection(target, spec, source.selection)
+      ? executeCanonicalSelection(
+        target,
+        spec,
+        source.selection,
+        familyKernel,
+      )
       : deepFreeze({ authorized: false, reason: sourceReason, payload: {}, canonicalFrame: null });
     const reason = sourceReason || canonical.reason || "";
     const authorized = sourceAuthorized && canonical.authorized === true && !reason;
@@ -631,10 +659,70 @@ function publicNames(prefix) {
   });
 }
 
+function createFamilyKernel(familyBinding = null) {
+  const cache = new Map();
+  let invocationCount = 0;
+  let cacheHitCount = 0;
+  let cacheMissCount = 0;
+
+  function invoke(spec, selection, phase, callback) {
+    invocationCount += 1;
+    const cacheKey = getRoutineSemanticExecutionCacheKey(
+      spec,
+      selection,
+      phase,
+    );
+    if (cache.has(cacheKey)) {
+      cacheHitCount += 1;
+      return cache.get(cacheKey);
+    }
+    cacheMissCount += 1;
+    const result = callback();
+    cache.set(cacheKey, result);
+    return result;
+  }
+
+  const metrics = () => freeze({
+    invocationCount,
+    cacheHitCount,
+    cacheMissCount,
+    cacheEntryCount: cache.size,
+  });
+  if (familyBinding?.familyIdentityId) {
+    registerRoutineSemanticFamilyMetricProvider(
+      familyBinding.familyIdentityId,
+      metrics,
+    );
+  }
+  return freeze({ invoke, metrics });
+}
+
+function getFamilyKernel(targetObject, familyBinding, fallbackKey) {
+  let familyKernels = FAMILY_KERNELS_BY_TARGET.get(targetObject) || null;
+  if (!familyKernels) {
+    familyKernels = new Map();
+    FAMILY_KERNELS_BY_TARGET.set(targetObject, familyKernels);
+  }
+  const familyKey = familyBinding?.familyIdentityId || fallbackKey;
+  if (!familyKernels.has(familyKey)) {
+    familyKernels.set(familyKey, createFamilyKernel(familyBinding || null));
+  }
+  return familyKernels.get(familyKey);
+}
+
 export function createRoutineSemanticOwnerMechanicsApi(targetObject = globalThis, ownerSpecs = []) {
   const api = Object.create(null);
   for (const spec of ownerSpecs) {
-    const mechanism = createMechanism(targetObject, spec);
+    const familyKernel = getFamilyKernel(
+      targetObject,
+      spec.routineFamily || null,
+      spec.ownerId,
+    );
+    const mechanism = createMechanism(
+      targetObject,
+      spec,
+      familyKernel,
+    );
     const names = publicNames(spec.prefix);
     api[names.build] = mechanism.buildSource;
     api[names.isSource] = mechanism.isSource;
