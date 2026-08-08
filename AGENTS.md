@@ -91,3 +91,19 @@ the relevant proof passes.
 Deeper development and validation material belongs in the sibling
 `Classical_Nahuatl_Grammar` project unless the live application explicitly
 imports or fetches it.
+
+## Grammatical Families and Compatibility Owners
+
+Treat canonical grammatical families as the reusable execution layer. Existing
+owner IDs remain permanent compatibility and proof-jurisdiction adapters; they
+do not each require an independent grammar engine.
+
+Every canonical owner must belong to exactly one non-authorizing family. New
+routine owners join the family of their canonical execution contract unless a
+reviewed grammatical jurisdiction, such as the preterit-agentive or particle
+family, explicitly spans several execution lanes.
+
+Families may share and cache immutable owner-issued canonical Results. They may
+not invent grammar, bypass an owner validator, or turn proof metadata into
+grammatical authority. Preserve public owner APIs, Results, permanent IDs, and
+correct output while consolidating their shared execution machinery.
