@@ -37,7 +37,8 @@ const EXPLICIT_RECORDS_BY_ID = freeze({
 
 // When an automatically migrated checkpoint moves inside its Result, add only
 // its permanent ID here. Existing owner specs retain their old path as an
-// identity key; no atom-by-atom rewrite is required.
+// identity key; no atom-by-atom rewrite is required. An empty override means
+// that the checkpoint observes the whole Result rather than a nested field.
 const CURRENT_PATH_OVERRIDES_BY_ID = freeze({});
 
 const AUTOMATIC_RECORDS_BY_ID = new Map();
@@ -180,12 +181,15 @@ export function resolveCanonicalProofAddress({
     return existing;
   }
 
-  const resolvedPath = normalizeText(
-    CURRENT_PATH_OVERRIDES_BY_ID[generatedId] || normalizedCurrentPath,
+  const hasPathOverride = Object.prototype.hasOwnProperty.call(
+    CURRENT_PATH_OVERRIDES_BY_ID,
+    generatedId,
   );
-  if (!resolvedPath) {
-    throw new Error(`canonical-proof-current-path-required:${generatedId}`);
-  }
+  const resolvedPath = normalizeText(
+    hasPathOverride
+      ? CURRENT_PATH_OVERRIDES_BY_ID[generatedId]
+      : normalizedCurrentPath,
+  );
   const resolvedSemanticName = normalizeText(semanticName)
     || automaticSemanticName(normalizedOwnerId, normalizedLegacyKey);
   const record = freeze({
@@ -194,6 +198,7 @@ export function resolveCanonicalProofAddress({
     ownerId: normalizedOwnerId,
     currentPath: resolvedPath,
     legacyKey: normalizedLegacyKey,
+    addressScope: resolvedPath ? "result-path" : "whole-result",
     addressSource: "automatic-migration",
   });
   AUTOMATIC_RECORDS_BY_ID.set(generatedId, record);
