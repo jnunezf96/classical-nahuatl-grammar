@@ -38,40 +38,27 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "the canonical nemi irregular owner selects nen for the general-past stem",
+        "the nemi owner Result exposes nen at the permanent perfective-stem proof address",
         (() => {
-            const plan = ctx.buildClassicalNahuatlIrregularVncParadigmPlan("nemi", {
-                subject: "3sg",
-                mood: "indicative",
-                tense: "general-past",
-            });
-            const typed = ctx.buildClassicalNahuatlVncSlotFrame({
-                sourceFrameKind: "nemi-permanent-proof-address-runtime-proof",
-                sourceAuthorizationStatus: "authorized",
-                stem: "nemi",
-                personDyad: { pers1: "0", pers2: "0" },
-                tenseFrame: { tns: "ca" },
-                numberDyad: { num1: "0", num2: "0" },
-            });
-            const application = ctx.applyClassicalNahuatlLesson11PlanToVncSlotFrame(
-                plan,
-                typed
+            const frame = ctx.buildClassicalNahuatlIrregularValidationFrame(
+                "nemi-past"
             );
             return {
-                planStatus: plan.authorizationStatus,
-                selectedStem: plan.selectedStemOverride,
-                applicationStatus: application.authorizationStatus,
-                sourceStem: application.sourcePredicateStem,
-                projectedStem:
-                    application.typedVncSlotFrame?.slots?.predicate?.stem || "",
+                status: frame.authorizationStatus,
+                recipeId: frame.recipeId,
+                semanticTense: frame.lesson11?.semanticTenseValue || "",
+                morphologicalTense: frame.lesson11?.morphologicalTense || "",
+                selectedStem: frame.lesson11?.selectedStem || "",
+                formula: frame.formulaRealization,
             };
         })(),
         {
-            planStatus: "authorized",
+            status: "authorized",
+            recipeId: "nemi-past",
+            semanticTense: "general-past",
+            morphologicalTense: "distant-past",
             selectedStem: "nen",
-            applicationStatus: "authorized",
-            sourceStem: "nemi",
-            projectedStem: "nen",
+            formula: "#0-0(nen)ca+0-0#",
         }
     );
 
