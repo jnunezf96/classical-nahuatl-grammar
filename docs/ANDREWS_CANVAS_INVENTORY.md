@@ -62,14 +62,19 @@ Reconciliation first corrected four §58.8 classifications without changing
 the then-current 13,780-item denominator. A later, claim-by-claim review of
 §§25.13 and 25.16 found two compound rows that had hidden independently
 countable claims, plus one duplicated Appendix C reference. Those corrections
-replace 20 prior rows with 38 atomic rows and establish the corrected
+replace 20 prior rows with 38 atomic rows and established the then-current
 13,798-item denominator. A subsequent manual Lesson 1 review reclassified
 fourteen foreign-language/example witnesses as evidence and eleven
 comparative or epistemological propositions as analysis; the denominator did
 not change. Four mixed or general propositions proposed for evidence
 classification were explicitly rejected and remain grammar-bearing. The
 inventory remains documentary accounting only; neither its classifications
-nor its rows participate in generation.
+nor its rows participate in generation. A later independent Canvas-to-inventory
+semantic pass split eleven additional compound passages, corrected their force
+and category assignments, and removed two duplicated cross-reference rows.
+Those source-first corrections add 32 grammar-bearing, 7 evidence, 12 analysis,
+and 4 documentary records, for a net increase of 55 and a new 13,853-item
+denominator.
 
 | Inventory ID | Previous | Final | Review disposition |
 |---|---|---|---|
@@ -111,6 +116,25 @@ nor its rows participate in generation.
 | §25.13, Canvas 8458–8460 | 9 items | 20 items | Split object-prefix order, functional nondiscrimination, ambiguity, reverse-analysis alternatives and conditions, two independent witnesses, contextual choice, the general reflexive-shuntline realization, and exact positive/contrast diagnostics. The editorial §§25.11–12 sentence is documentary; the Appendix C sentence is one reference, not duplicate ANA and REF items. Example-specific readings remain evidence or analysis and do not become grammar authority. |
 | §25.16, Canvas 8489–8507 | 11 items | 18 items | Split the silent-object status, shared privileges, and supplementation license from the nine documentary form witnesses and six bracketed diagnostic analyses. Example-specific object alternatives, head mappings, and ambiguity resolution remain non-authoritative analysis. |
 | **Combined denominator delta** | **20 items** | **38 items** | **+5 grammar-bearing, +3 evidence, +9 analysis, and +1 documentary item; net +18.** |
+
+### Source-first semantic atomization corrections
+
+| Canvas scope | Previous | Final | Review disposition |
+|---|---:|---:|---|
+| §2.3.2, Canvas 1589–1592 | 1 item | 5 items | Split the general `/y/` spelling rule, the `/iya/` and `/ayi/` omission rule, two examples, and the Class C cross-reference. |
+| §3.2.2, Canvas 2061–2098 | 1 item | 18 items | Split the lexical identity and contextual translation of `in`, adjunction behavior, determiner restrictions, nuclear-clause and nounstem constraints, translation evidence and analysis, `cē`, and the source reference. |
+| §3.2.5, Canvas 2129–2137 | 1 item | 7 items | Split vocative `e` meaning, gendered use, attachment, stress, spelling, notation, and reference. |
+| §3.4, Canvas 2199–2201 | 3 items | 5 items | Retained one lexical entry and the traditional-spelling note; split the Molina/Simeon analyses and dictionary-error reference instead of duplicating the same documentary span. |
+| §4.6, Canvas 2405–2409 | 1 item | 4 items | Split animate-number assignment, third-person ambiguity, common/singular shape identity, and contextual translation. |
+| §9.2, Canvas 3513–3519 | 2 items | 5 items | Split identification by use, indicative-form identity, the obligatory preterit-optative particle, and the two optative functions. |
+| §11.4.2, Canvas 4056–4058 | 1 item | 5 items | Split the stem schema, fused-prefix rule, compound-matrix exception, locative restriction, and references. |
+| §11.4.6 and §11.5.1.c.ii | 4 duplicate REF rows | 2 REF rows | Removed the two truncated copies of the same `ahmō` reference. |
+| §11.4.8, Canvas 4156–4158 | 1 item | 4 items | Split the stem schema, perfective restriction, distant-past-as-past inventory, and wide/flat usage. |
+| §26.1.2, Canvas 8528–8536 | 2 items | 7 items | Split rejected directive analysis, gemination irregularity, phonological shift, defective source, feature derivation, and two references. |
+| §26.22, Canvas 8972–8974 | 2 items | 6 items | Split the surface witness, alternative readings and analyses, source condition, reference, and diagnostic guidance. |
+| §27.5.1, Canvas 9254–9260 | 1 item | 6 items | Split the burbling witness, growling lexical stem, `tla`-fusion rule, related-stem reference, turkey witness, and reconstruction. |
+| §36.9, Canvas 14039–14049 | 2 items | 3 items | Split the action-NNC definition, label qualification, and English comparison. |
+| **Combined denominator delta** | **22 items** | **77 items** | **+32 grammar-bearing, +7 evidence, +12 analysis, and +4 documentary items; net +55.** |
 
 ## Lesson totals
 
@@ -2426,9 +2450,9 @@ The structural units above are containers. The records below count the individua
 - Item IDs are derived from the Canvas PDF-page coordinate and normalized claim anchor, so unrelated insertions elsewhere do not renumber existing items.
 - Source force is derived consistently: definitions through usage are grammar-bearing; paradigms and examples are evidence; analyses are analysis; references are documentary.
 - A compound source sentence receives multiple records only when it contains independently countable contributions (for example, a licensing condition plus its result, or a rule plus a substantive cross-reference pointer).
-- Atomic content items: **13798**.
-- Exclusive primary-category checksum: **13798/13798**.
-- Direct-container assignment checksum: **13798/13798**.
+- Atomic content items: **13853**.
+- Exclusive primary-category checksum: **13853/13853**.
+- Direct-container assignment checksum: **13853/13853**.
 - Lessons represented: **58/58**.
 - Primary sublessons represented: **504/504**.
 - Nested occurrences with at least one direct item: **1108/1125**.
@@ -2439,33 +2463,33 @@ The structural units above are containers. The records below count the individua
 
 | Code | Category | Items |
 |---|---|---:|
-| DEF | Definition or terminology | 208 |
-| INV | Grammatical category or inventory member | 365 |
-| SCH | Formula or structural schema | 296 |
-| RUL | Rule or operation | 1251 |
+| DEF | Definition or terminology | 209 |
+| INV | Grammatical category or inventory member | 366 |
+| SCH | Formula or structural schema | 294 |
+| RUL | Rule or operation | 1254 |
 | CON | Condition or prerequisite | 580 |
-| CST | Constraint or prohibition | 453 |
+| CST | Constraint or prohibition | 457 |
 | DEP | Ordering or dependency | 260 |
-| REA | Realization or spelling rule | 373 |
-| ALT | Alternative or variant | 324 |
-| EXC | Exception, irregularity, or suppletion | 122 |
-| LEX | Lexical fact | 634 |
-| USE | Meaning or usage claim | 478 |
+| REA | Realization or spelling rule | 378 |
+| ALT | Alternative or variant | 328 |
+| EXC | Exception, irregularity, or suppletion | 126 |
+| LEX | Lexical fact | 638 |
+| USE | Meaning or usage claim | 486 |
 | PAR | Paradigm or summary | 41 |
-| EXA | Example or evidence | 6187 |
-| ANA | Analysis or diagnostic guidance | 1108 |
-| REF | Note or cross-reference | 1118 |
-| **Total** | **Exclusive checksum** | **13798** |
+| EXA | Example or evidence | 6194 |
+| ANA | Analysis or diagnostic guidance | 1120 |
+| REF | Note or cross-reference | 1122 |
+| **Total** | **Exclusive checksum** | **13853** |
 
 ### Source-force totals
 
 | Source force | Items |
 |---|---:|
-| grammar-bearing | 5344 |
-| evidence | 6228 |
-| analysis | 1108 |
-| documentary | 1118 |
-| **Total** | **13798** |
+| grammar-bearing | 5376 |
+| evidence | 6235 |
+| analysis | 1120 |
+| documentary | 1122 |
+| **Total** | **13853** |
 
 ### Lesson category rollups
 
@@ -4724,7 +4748,11 @@ The structural units above are containers. The records below count the individua
 | ACI-P043-L020-A07915A2FD | §2.3.2 | INV | grammar-bearing | 43 | 20 | 1582–1584 | At times, criteria for choosing between /owa/ and /oa/ are lacking; for example, there is no way to decide whether… |
 | ACI-P043-L022-3DBCFED63B | §2.3.2 | REA | grammar-bearing | 43 | 22 | 1584–1586 | The syllable-final voiceless phones [w̥] and [ɸ] are spelled with uh: [na:w̥] > nāuh; [iw̥ki] > iuhqui. |
 | ACI-P043-L024-287580F016 | §2.3.2 | CST | grammar-bearing | 43 | 24 | 1586–1588 | In hu and uh, h is not the glottal-stop letter and u is not a vowel. |
-| ACI-P043-L027-98A44BD022 | §2.3.2 | SCH | grammar-bearing | 43 | 27 | 1589–1592 | The sound /y/ is spelled with the letter y: /yehwa:λ/ > yehhuātl. In the combinations /iya/ and /ayi/ the /y/ is… |
+| ACI-P043-L027-98A44BD022 | §2.3.2 | REA | grammar-bearing | 43 | 27 | 1589–1592 | The sound /y/ is spelled with the letter y: /yehwa:λ/ > yehhuātl. |
+| ACI-P043-L027-98A44BD022-02 | §2.3.2 | REA | grammar-bearing | 43 | 27 | 1589–1592 | In the combinations /iya/ and /ayi/ the /y/ is seldom written. |
+| ACI-P043-L027-98A44BD022-03 | §2.3.2 | EXA | evidence | 43 | 27 | 1589–1592 | /λačiya/, properly spelled tlachiya, usually appears as tlachia, which misleadingly makes it look like a Class C verb. |
+| ACI-P043-L027-98A44BD022-04 | §2.3.2 | REF | documentary | 43 | 27 | 1589–1592 | See § 7.3 concerning the Class C diagnostic. |
+| ACI-P043-L027-98A44BD022-05 | §2.3.2 | EXA | evidence | 43 | 27 | 1589–1592 | /λaa:yi/, properly spelled tlaāyi, always appears as tlaai. |
 | ACI-P043-L031-878278E713 | §2.3.3 | REA | grammar-bearing | 43 | 31 | 1593–1594 | Stops /p/ An unaspirated (not followed by a puff of air) p-sound like that in spot. |
 | ACI-P043-L032-F7362249C5 | §2.3.3 | REA | grammar-bearing | 43 | 32 | 1594–1595 | It is not like the aspirated /p/ of pot. |
 | ACI-P043-L034-AB18229A6C | §2.3.3 | SCH | grammar-bearing | 43 | 34 | 1596 | PR: /p/ > [p] |
@@ -5019,7 +5047,24 @@ The structural units above are containers. The records below count the individua
 | ACI-P055-L012-0DAB15A93F | §3.2.1 | LEX | grammar-bearing | 55 | 12 | 2057 | tlā = if, in the event that, in case; provided that |
 | ACI-P055-L013-FC34FCAEDA | §3.2.1 | LEX | grammar-bearing | 55 | 13 | 2058 | mā = if only, would that |
 | ACI-P055-L014-DBD44C3C73 | §3.2.1 | LEX | grammar-bearing | 55 | 14 | 2059 | ō = here is, here are, here you have, behold [Contrast ō# in subsection 4.] |
-| ACI-P055-L016-EC4A61E09F | §3.2.2 | LEX | grammar-bearing | 55 | 16 | 2061–2098 | in = the, a/an, who, that, when, if, etc. [The adjunctor par excellence. The translation into English is whatever… |
+| ACI-P055-L016-EC4A61E09F | §3.2.2 | LEX | grammar-bearing | 55 | 16 | 2061–2098 | in = the, a/an, who, that, when, if, etc. |
+| ACI-P055-L016-EC4A61E09F-02 | §3.2.2 | LEX | grammar-bearing | 55 | 16 | 2061–2098 | in is the adjunctor par excellence. |
+| ACI-P055-L016-EC4A61E09F-03 | §3.2.2 | USE | grammar-bearing | 55 | 16 | 2061–2098 | The translation of in into English is whatever the English context requires. |
+| ACI-P055-L016-EC4A61E09F-04 | §3.2.2 | ALT | grammar-bearing | 55 | 16 | 2061–2098 | The use of in to indicate an adjoined unit is almost always optional; adjunction rarely has to be explicitly indicated in Nahuatl. |
+| ACI-P055-L016-EC4A61E09F-05 | §3.2.2 | RUL | grammar-bearing | 55 | 16 | 2061–2098 | in may indicate that a single item is subordinate or that a multi-item sequence is subordinate. |
+| ACI-P055-L016-EC4A61E09F-06 | §3.2.2 | CST | grammar-bearing | 55 | 16 | 2061–2098 | The particle in is an adjunctor, not a determiner. |
+| ACI-P055-L016-EC4A61E09F-07 | §3.2.2 | ANA | analysis | 55 | 16 | 2061–2098 | Treating nominal nuclear clauses as nounwords under translational influence led some grammarians to analyze in as a definite article. |
+| ACI-P055-L016-EC4A61E09F-08 | §3.2.2 | CST | grammar-bearing | 55 | 16 | 2061–2098 | The definite-versus-indefinite distinction, at least for nounstems, is absent in Nahuatl. |
+| ACI-P055-L016-EC4A61E09F-09 | §3.2.2 | DEF | grammar-bearing | 55 | 16 | 2061–2098 | Nahuatl grammar is based on nuclear clauses rather than words. |
+| ACI-P055-L016-EC4A61E09F-10 | §3.2.2 | CST | grammar-bearing | 55 | 16 | 2061–2098 | A Nahuatl nounstem cannot occur in an utterance without being actualized in a nominal nuclear clause or as an embed. |
+| ACI-P055-L016-EC4A61E09F-11 | §3.2.2 | CST | grammar-bearing | 55 | 16 | 2061–2098 | Actualization as a nominal nuclear clause or compound includes no determiner position. |
+| ACI-P055-L016-EC4A61E09F-12 | §3.2.2 | EXA | evidence | 55 | 16 | 2061–2098 | The nominal nuclear clauses “I man” and “we men” require English copular and determiner translations. |
+| ACI-P055-L016-EC4A61E09F-13 | §3.2.2 | ANA | analysis | 55 | 16 | 2061–2098 | With a third-person subject, English translation normally discards the Nahuatl clausal structure and produces a noun phrase. |
+| ACI-P055-L016-EC4A61E09F-14 | §3.2.2 | LEX | grammar-bearing | 55 | 16 | 2061–2098 | The nominal nuclear clause cē means “it is one in number,” not an indefinite determiner. |
+| ACI-P055-L016-EC4A61E09F-15 | §3.2.2 | ANA | analysis | 55 | 16 | 2061–2098 | English translations can violently distort Nahuatl structure. |
+| ACI-P055-L016-EC4A61E09F-16 | §3.2.2 | ANA | analysis | 55 | 16 | 2061–2098 | The widespread use of in as an adjunctor without determiner force argues against analyzing it as a determiner before a nominal nuclear clause. |
+| ACI-P055-L016-EC4A61E09F-17 | §3.2.2 | ANA | analysis | 55 | 16 | 2061–2098 | English inserts the, a/an, or neither according to English needs whether the Nahuatl nominal nuclear clause is adjoined by in or not. |
+| ACI-P055-L016-EC4A61E09F-18 | §3.2.2 | REF | documentary | 55 | 16 | 2061–2098 | See § 1.11.2 concerning nuclear clauses, nounstems, and stems as hypothetical constructs. |
 | ACI-P056-L010-B5C02F73D2 | §3.2.2 | LEX | grammar-bearing | 56 | 10 | 2099–2101 | anca = therefore; if that is the case then; it is for this reason that; for that reason; consequently; hence; in… |
 | ACI-P056-L013-0AB93ED9AA | §3.2.2 | LEX | grammar-bearing | 56 | 13 | 2102 | mah = as though; such that [See § 58.4-6.] |
 | ACI-P056-L015-5DAE53297D | §3.2.3 | LEX | grammar-bearing | 56 | 15 | 2104 | auh = and; but |
@@ -5038,7 +5083,13 @@ The structural units above are containers. The records below count the individua
 | ACI-P056-L037-DCC9E4187C | §3.2.5 | RUL | grammar-bearing | 56 | 37 | 2126 | Interjections (most can occur alone as an utterance (see § 58.3) ): |
 | ACI-P056-L038-AE8309CDD9 | §3.2.5 | LEX | grammar-bearing | 56 | 38 | 2127 | o = huh? really? is that a fact? [indicates surprise at something unexpected]; oh! ouch! |
 | ACI-P056-L039-564D7EA4ED | §3.2.5 | LEX | grammar-bearing | 56 | 39 | 2128 | [expresses pain]; I say there! hey! [initiates a vocative] |
-| ACI-P056-L040-9F2DD2E0DF | §3.2.5 | LEX | grammar-bearing | 56 | 40 | 2129–2137 | #e = O ... ; Hey . . . [The vocative ( or direct-address) particle; it is used only by men to address someone. It is… |
+| ACI-P056-L040-9F2DD2E0DF | §3.2.5 | LEX | grammar-bearing | 56 | 40 | 2129–2137 | #e = O ... ; Hey . . .; the vocative or direct-address particle. |
+| ACI-P056-L040-9F2DD2E0DF-02 | §3.2.5 | USE | grammar-bearing | 56 | 40 | 2129–2137 | The vocative particle e is used only by men to address someone. |
+| ACI-P056-L040-9F2DD2E0DF-03 | §3.2.5 | CST | grammar-bearing | 56 | 40 | 2129–2137 | The vocative particle e is obligatorily bound in pronunciation and writing to a preceding nominal nuclear clause. |
+| ACI-P056-L040-9F2DD2E0DF-04 | §3.2.5 | REA | grammar-bearing | 56 | 40 | 2129–2137 | The vocative particle e attracts stress to itself. |
+| ACI-P056-L040-9F2DD2E0DF-05 | §3.2.5 | REA | grammar-bearing | 56 | 40 | 2129–2137 | The vocative particle e is the only Nahuatl item that should be written with a stress accent. |
+| ACI-P056-L040-9F2DD2E0DF-06 | §3.2.5 | DEF | grammar-bearing | 56 | 40 | 2129–2137 | The symbol # indicates obligatory attachment to the preceding item. |
+| ACI-P056-L040-9F2DD2E0DF-07 | §3.2.5 | REF | documentary | 56 | 40 | 2129–2137 | See § 18.10 concerning the vocative particle e. |
 | ACI-P057-L005-1DF84143A6 | §3.2.5 | LEX | grammar-bearing | 57 | 5 | 2138 | a= alas! |
 | ACI-P057-L006-92D7836223 | §3.2.5 | LEX | grammar-bearing | 57 | 6 | 2139–2140 | ax = alas! ouch! ow! [This particle is normally doubled: ax ax. It can be tripled: ax ax ax.] |
 | ACI-P057-L008-F1D2F3418D | §3.2.5 | LEX | grammar-bearing | 57 | 8 | 2141 | hue ~ hueya = alas! [ Also yahua.] |
@@ -5091,8 +5142,10 @@ The structural units above are containers. The records below count the individua
 | ACI-P058-L020-4835B3189A | §3.4 | LEX | grammar-bearing | 58 | 20 | 2197 | in tlā zā = and if, and if still; but if now only [No morph here expresses "and" or "but."] |
 | ACI-P058-L021-9EAF8D91D6 | §3.4 | LEX | grammar-bearing | 58 | 21 | 2198 | in aya = before [See§ 3.3.] |
 | ACI-P058-L022-54A38AB312 | §3.4 | REF | documentary | 58 | 22 | 2199–2201 | Traditionally written intlanozo |
-| ACI-P058-L022-C370B709CC | §3.4 | LEX | grammar-bearing | 58 | 22 | 2199–2201 | in tlā no zo = and if perhaps, by chance, maybe; but if [Traditionally written intlanozo. The entry intlanazo in… |
-| ACI-P058-L022-81B0784858 | §3.4 | REF | documentary | 58 | 22 | 2199–2201 | Traditionally written intlanozo. The entry intlanazo in Molina is a misprint. Simeon docilely copies it (see § 1.13… |
+| ACI-P058-L022-C370B709CC | §3.4 | LEX | grammar-bearing | 58 | 22 | 2199–2201 | in tlā no zo = and if perhaps, by chance, maybe; but if. |
+| ACI-P058-L022-81B0784858 | §3.4 | ANA | analysis | 58 | 22 | 2199–2201 | The entry intlanazo in Molina is a misprint. |
+| ACI-P058-L022-81B0784858-02 | §3.4 | ANA | analysis | 58 | 22 | 2199–2201 | Simeon copies Molina’s intlanazo misprint. |
+| ACI-P058-L022-81B0784858-03 | §3.4 | REF | documentary | 58 | 22 | 2199–2201 | See § 1.13 concerning dictionary error. |
 | ACI-P058-L025-B7FF1E5CA5 | §3.4 | LEX | grammar-bearing | 58 | 25 | 2202 | no zo = either [traditionally written nozo] |
 | ACI-P058-L026-C5DDB29CF8 | §3.4 | LEX | grammar-bearing | 58 | 26 | 2203 | ahno zo = neither [traditionally written anozo] |
 | ACI-P058-L027-9F98D48BC5 | §3.4 | LEX | grammar-bearing | 58 | 27 | 2204 | mā cano zo = if only neither |
@@ -5223,7 +5276,10 @@ The structural units above are containers. The records below count the individua
 | ACI-P063-L034-DE732D4B66 | §4.6 | INV | grammar-bearing | 63 | 34 | 2402 | The category of number has two features defined by animacy: animate number distinguishes |
 | ACI-P063-L035-9A38B2F923 | §4.6 | LEX | grammar-bearing | 63 | 35 | 2403 | singular(= one) from plural(= more than one); nonanimate number has only one feature, |
 | ACI-P063-L036-F81590F0A8 | §4.6 | LEX | grammar-bearing | 63 | 36 | 2404 | common(= one or more than one indiscriminately). The first and second persons and all |
-| ACI-P063-L037-2FCBC82610 | §4.6 | CST | grammar-bearing | 63 | 37 | 2405–2409 | plural pronouns show animate number. A third-person singular pronoun is ambiguous, permitting either animate or… |
+| ACI-P063-L037-2FCBC82610 | §4.6 | CST | grammar-bearing | 63 | 37 | 2405–2409 | The first and second persons and all plural pronouns show animate number. |
+| ACI-P063-L037-2FCBC82610-02 | §4.6 | ALT | grammar-bearing | 63 | 37 | 2405–2409 | A third-person singular pronoun is ambiguous, permitting either animate or nonanimate reference. |
+| ACI-P063-L037-2FCBC82610-03 | §4.6 | REA | grammar-bearing | 63 | 37 | 2405–2409 | A common-number third-person pronoun has exactly the same shape as a singular-number pronoun. |
+| ACI-P063-L037-2FCBC82610-04 | §4.6 | USE | grammar-bearing | 63 | 37 | 2405–2409 | Common-number personal pronouns translate into English as singular or plural according to context. |
 | ACI-P063-L042-165D0BA214 | §4.6 | USE | grammar-bearing | 63 | 42 | 2410 | The category of case identifies the syntactic function of the personal pronoun and has three |
 | ACI-P063-L043-3D1D240A14 | §4.6 | LEX | grammar-bearing | 63 | 43 | 2411 | features: nominative ( = subject function), objective ( = verb object function), and possessive |
 | ACI-P063-L044-C8D1ADFE91 | §4.6 | LEX | grammar-bearing | 63 | 44 | 2412–2417 | ( = possessor function). The nominative-case pronouns occur in both VNCs and NNCs. The objective-case pronouns occur… |
@@ -5859,8 +5915,11 @@ The structural units above are containers. The records below count the individua
 | ACI-P093-L005-B7B90A1D8F | §9.1 | CST | grammar-bearing | 93 | 5 | 3509–3510 | As explained in Lessons 5 and 7, VNCs manifesting this mood have only two distinctive tenses, the nonpast and the past. |
 | ACI-P093-L006-9D0547B7C1 | §9.1 | DEF | grammar-bearing | 93 | 6 | 3510–3511 | The latter could be called the general past, since it expresses the entire range of anteriority covered by the… |
 | ACI-P093-L008-8FFE93D28E | §9.1 | INV | grammar-bearing | 93 | 8 | 3512 | indicative tenses. There are also so-called future optative and preterit optative VNCs. |
-| ACI-P093-L009-14EB6E5881 | §9.2 | CON | grammar-bearing | 93 | 9 | 3513–3519 | when regret or disillusionment is expressed about a definitely past event. |
-| ACI-P093-L009-4068409005 | §9.2 | CST | grammar-bearing | 93 | 9 | 3513–3519 | Preterit and Future Optative VNCs. A preterit or future optative VNC is identified by use, not by form. Both are… |
+| ACI-P093-L009-14EB6E5881 | §9.2 | USE | grammar-bearing | 93 | 9 | 3513–3519 | The preterit optative is an alternative to the general past optative when regret or disillusionment concerns a definitely past event. |
+| ACI-P093-L009-4068409005 | §9.2 | USE | grammar-bearing | 93 | 9 | 3513–3519 | A preterit or future optative VNC is identified by use, not by form. |
+| ACI-P093-L009-4068409005-02 | §9.2 | ALT | grammar-bearing | 93 | 9 | 3513–3519 | Preterit and future optative VNCs are borrowed from and otherwise identical to the corresponding indicative VNCs. |
+| ACI-P093-L009-4068409005-03 | §9.2 | EXC | grammar-bearing | 93 | 9 | 3513–3519 | The antecessive-order particle is obligatory on a preterit optative but only optional on a preterit indicative. |
+| ACI-P093-L009-4068409005-04 | §9.2 | USE | grammar-bearing | 93 | 9 | 3513–3519 | The future optative is used to insist on the futurity of the event wished for. |
 | ACI-P093-L016-0D8135AA61 | §9.3 | REF | documentary | 93 | 16 | 3520–3521 | The morphic fillers of the subject-personal pronoun subpositions for optative VNCs have already been presented in § 5.4. |
 | ACI-P093-L018-EB13E376B5 | §9.3 | RUL | grammar-bearing | 93 | 18 | 3522–3523 | As explained in § 5.5.2, both nonpast and past optative VNCs are formed on the imperfective stem. |
 | ACI-P093-L019-6B22C08964 | §9.3 | ALT | grammar-bearing | 93 | 19 | 3523–3524 | As illustrated in § 7.7, the predicate of a past optative VNC is always phonologically identical to that of a… |
@@ -6146,7 +6205,11 @@ The structural units above are containers. The records below count the individua
 | ACI-P106-L033-52089E187B | §11.4.1.a | EXA | evidence | 106 | 33 | 4051 | ihcaqueh = #Ø-Ø(ih-ca)Ø+qu-eh# = they are standing |
 | ACI-P106-L035-3EBBE90F77 | §11.4.1.b | EXA | evidence | 106 | 35 | 4053–4054 | ōnihcaca = ō#n-Ø(ih-ca)ca+Ø-Ø# = I used to stand; I stood; I had been standing; I had stood; I will have stood |
 | ACI-P106-L037-987EBB0647 | §11.4.1.b | CST | grammar-bearing | 106 | 37 | 4055 | The other tense forms are regular. |
-| ACI-P106-L038-D8D005B8FD | §11.4.2 | SCH | grammar-bearing | 106 | 38 | 4056–4058 | (on-o) > (on-o) = to be lying down. Except when occurring in connective-t compound verbstems as a matrix (see §… |
+| ACI-P106-L038-D8D005B8FD | §11.4.2 | SCH | grammar-bearing | 106 | 38 | 4056–4058 | (on-o) > (on-o) = to be lying down. |
+| ACI-P106-L038-D8D005B8FD-02 | §11.4.2 | RUL | grammar-bearing | 106 | 38 | 4056–4058 | The stem (o) normally has the directional or locative prefix on fused to it. |
+| ACI-P106-L038-D8D005B8FD-03 | §11.4.2 | EXC | grammar-bearing | 106 | 38 | 4056–4058 | Fused on is not required when (o) occurs as the matrix in a connective-t compound verbstem. |
+| ACI-P106-L038-D8D005B8FD-04 | §11.4.2 | USE | grammar-bearing | 106 | 38 | 4056–4058 | Fused on with (o) has locative meaning only. |
+| ACI-P106-L038-D8D005B8FD-05 | §11.4.2 | REF | documentary | 106 | 38 | 4056–4058 | See § 28.6.9 for the connective-t matrix exception and § 8.1.1 for the locative use. |
 | ACI-P107-L003-BA60279C25 | §11.4.2.a | EXA | evidence | 107 | 3 | 4064 | nonoc = #n-Ø(on-o)Ø+c-Ø# = I am lying down, I am recumbent |
 | ACI-P107-L004-85A06C74F0 | §11.4.2.a | EXA | evidence | 107 | 4 | 4065 | tonoqueh = #t-Ø(on-o)Ø+qu-eh# = we are lying down, we are recumbent |
 | ACI-P107-L007-676685827F | §11.4.2.b | EXA | evidence | 107 | 7 | 4068–4069 | ōnonoca = ō#n-Ø(on-o)ca+Ø-Ø# = I used to be recumbent/lying down; I was recum- lying down; I had been… |
@@ -6204,14 +6267,16 @@ The structural units above are containers. The records below count the individua
 | ACI-P108-L037-90BDE6BBE7 | §11.4.6 | RUL | grammar-bearing | 108 | 37 | 4140 | The quēn can be incorporated to create a compound verbstem: |
 | ACI-P108-L038-2E993CEDEE | §11.4.6 | EXA | evidence | 108 | 38 | 4141–4142 | ahmō zan tiquēnamih = #ti-Ø(quē-n-am-i-h)Ø+⎕-Ø# = you are not just anyhow, i.e., you are marvelous [Concerning ahmō,… |
 | ACI-P108-L038-84D37731FC | §11.4.6 | REF | documentary | 108 | 38 | 4141–4142 | Concerning ahmō, see § 44.5.4. |
-| ACI-P108-L038-215378DF8C | §11.4.6 | REF | documentary | 108 | 38 | 4141–4142 | Concerning ahmō, see § 44 |
 | ACI-P108-L040-8CDA405528 | §11.4.7 | SCH | grammar-bearing | 108 | 40 | 4143–4149 | *(Ø-i-ā) > (Ø-i-h) = to exist. This is a defective Class C verb. The imperfective stem is not used, and the… |
 | ACI-P109-L002-AF0781E708 | §11.4.7 | CST | grammar-bearing | 109 | 2 | 4149–4150 | Moreover, these VNCs are used only in cooperation with certain pronominal NNCs (see § 16.3). |
 | ACI-P109-L003-8C51A8439E | §11.4.7 | LEX | grammar-bearing | 109 | 3 | 4150 | The stem is unusual in that its root is Ø. |
 | ACI-P109-L004-CC21A72F8A | §11.4.7 | EXA | evidence | 109 | 4 | 4151 | ihqueh = #Ø-Ø(Ø-i-h)Ø+qu-eh# = they exist |
 | ACI-P109-L005-659955C382 | §11.4.7 | EXA | evidence | 109 | 5 | 4152–4153 | amihqueh = #am-Ø(Ø-i-h)Ø+qu-eh# = you (pl) exist [There is no possibility of confusion between this VNC and the… |
 | ACI-P109-L007-47A8327B8E | §11.4.7 | EXA | evidence | 109 | 7 | 4154–4155 | above: amihqueh = #Ø-Ø(am-i-h)Ø+queh# = "they are." The structure and usage of the two forms is totally different.] |
-| ACI-P109-L009-154A6AA078 | §11.4.8 | SCH | grammar-bearing | 109 | 9 | 4156–4158 | (mani) > (man) = to extend, to be. VNCs built on these stems are regular in all tenses except that preterit-tense… |
+| ACI-P109-L009-154A6AA078 | §11.4.8 | SCH | grammar-bearing | 109 | 9 | 4156–4158 | (mani) > (man) = to extend, to be. |
+| ACI-P109-L009-154A6AA078-02 | §11.4.8 | EXC | grammar-bearing | 109 | 9 | 4156–4158 | Preterit-tense predicates of (mani) are not built on the perfective stem. |
+| ACI-P109-L009-154A6AA078-03 | §11.4.8 | INV | grammar-bearing | 109 | 9 | 4156–4158 | VNCs built on (mani) have a distant-past-as-past tense. |
+| ACI-P109-L009-154A6AA078-04 | §11.4.8 | USE | grammar-bearing | 109 | 9 | 4156–4158 | (mani) is used for wide or flat things such as books, plates, basins, and houses. |
 | ACI-P109-L012-463D207465 | §11.4.8 | USE | grammar-bearing | 109 | 12 | 4159 | is also used for masses or crowds of men or animals. |
 | ACI-P109-L012-3F5C84A7B4 | §11.4.8 | USE | grammar-bearing | 109 | 12 | 4159–4160 | It is not ordinarily used for individual animate beings. |
 | ACI-P109-L014-8AF3FDF18E | §11.4.8 | EXA | evidence | 109 | 14 | 4161 | mani = #Ø-Ø(mani)Ø+Ø-Ø# = it extends/is (over an area)/sits/rests/lies/stands |
@@ -6274,7 +6339,6 @@ The structural units above are containers. The records below count the individua
 | ACI-P111-L015-26C64C1FDE | §11.5.1.c.ii | EXA | evidence | 111 | 15 | 4248 | Oncateh. = They (animate) are there; i.e., There are some. |
 | ACI-P111-L016-A951D7770B | §11.5.1.c.ii | EXA | evidence | 111 | 16 | 4249–4250 | Ahmō oncatca. = It was not there; i.e., There was none. There wasn't any. There weren't any. [Concerning ahmō, see §… |
 | ACI-P111-L016-30658F8A16 | §11.5.1.c.ii | REF | documentary | 111 | 16 | 4249–4250 | Concerning ahmō, see § 44.5.4. |
-| ACI-P111-L016-2A56C39158 | §11.5.1.c.ii | REF | documentary | 111 | 16 | 4249–4250 | Concerning ahmō, see § 44 |
 | ACI-P111-L018-DF2C580189 | §11.5.1.c.ii | ANA | analysis | 111 | 18 | 4251–4252 | Note 2: Since Nahuatl verbs have traditionally been listed in dictionaries under the stem used in the singular VNCs… |
 | ACI-P111-L020-9E6B134C7E | §11.5.2 | SCH | grammar-bearing | 111 | 20 | 4253–4254 | (yā) ~ (ya-uh) ~ (hui) > (yah) ~ (hui) = to go. To form its VNCs, this verb uses three imperfective stems and two… |
 | ACI-P111-L022-633C7FA21D | §11.5.2 | LEX | grammar-bearing | 111 | 22 | 4255 | which, since it has the perfective stem (yah), is a Class D verb. |
@@ -9047,8 +9111,13 @@ The structural units above are containers. The records below count the individua
 | ACI-P226-L009-CC47D12972 | §26.1.1 | RUL | grammar-bearing | 226 | 9 | 8526 | Thus, although a transitive stem is involved, the formation resembles that of the valence-neutral stems in subsection 3 below. |
 | ACI-P226-L009-0C1D38808A | §26.1.1 | EXA | evidence | 226 | 9 | 8526 | But if we can judge by certain of Nahuatl’s “sister” languages, the verbstem’s double object valence is very old; for example, Ho… |
 | ACI-P226-L009-C995EFBBB4-02 | §26.1.1 | REF | documentary | 226 | 9 | 8526 | That the verbstem is basically a single-object one is apparently supported by the future-agentive nounstem (tla-maca-z)-qui-, “on… |
-| ACI-P226-L010-DF64443D02 | §26.1.2 | REA | grammar-bearing | 226 | 10 | 8528–8536 | Judging by its translation of “to see s.o. or s.th.,” one might think that the single-object stem tē ~ tla-(itt-a) is a simple di… |
-| ACI-P226-L010-DF64443D02-02 | §26.1.2 | REF | documentary | 226 | 10 | 8528–8536 | Judging by its translation of “to see s.o. or s.th.,” one might think that the single-object stem tē ~ tla-(itt-a) is a simple di… |
+| ACI-P226-L010-DF64443D02 | §26.1.2 | ANA | analysis | 226 | 10 | 8528–8536 | Its translation may suggest that tē ~ tla-(itt-a) is a simple directive stem, but this analysis is rejected. |
+| ACI-P226-L010-DF64443D02-02 | §26.1.2 | EXC | grammar-bearing | 226 | 10 | 8528–8536 | The geminate [tt] of tē ~ tla-(itt-a) is unique and is not justified by normal morphological processes. |
+| ACI-P226-L010-DF64443D02-03 | §26.1.2 | REF | documentary | 226 | 10 | 8528–8536 | Compare the morphologically produced [tt] in § 28.6. |
+| ACI-P226-L010-DF64443D02-04 | §26.1.2 | REA | grammar-bearing | 226 | 10 | 8528–8536 | The geminate [tt] of tē ~ tla-(itt-a) results from a phonological shift. |
+| ACI-P226-L010-DF64443D02-05 | §26.1.2 | LEX | grammar-bearing | 226 | 10 | 8528–8536 | The source of tē ~ tla-(itt-a) is the defective intransitive stem *(itzi), “to be alert or observant.” |
+| ACI-P226-L010-DF64443D02-06 | §26.1.2 | REA | grammar-bearing | 226 | 10 | 8528–8536 | Replacing the sibilant-release feature of the source phoneme with the stop-release feature produces [t], manifested as tt. |
+| ACI-P226-L010-DF64443D02-07 | §26.1.2 | REF | documentary | 226 | 10 | 8528–8536 | See § 2.3.4 for the source phoneme’s feature analysis. |
 | ACI-P227-L006-C2BE00887C | §26.1.2 | EXC | grammar-bearing | 227 | 6 | 8537–8538 | In addition to the irregular base itt-, the derived stem is further irregular in that the a suffix attached to it is applicative,… |
 | ACI-P227-L007-85AE9E79AA | §26.1.2 | ANA | analysis | 227 | 7 | 8538–8541 | This analysis is based on the fact that the source stem is valence neutral, since there is a single-object applicative mate, *tē-… |
 | ACI-P227-L007-85AE9E79AA-02 | §26.1.2 | REF | documentary | 227 | 7 | 8538–8541 | This analysis is based on the fact that the source stem is valence neutral, since there is a single-object applicative mate, *tē-… |
@@ -9365,8 +9434,12 @@ The structural units above are containers. The records below count the individua
 | ACI-P241-L003-247D29595F | §26.21.2 [2] | LEX | grammar-bearing | 241 | 3 | 8969 | tē-(nō-nōtza) = to give advice to s.o., to advise/correct/reproach s.o. |
 | ACI-P241-L004-866E49D0FB | §26.21.2 [2] | CON | grammar-bearing | 241 | 4 | 8970 | Obviously, in dealing with a VNC built on such a stem, if there is a third-person singular/common specific projective-object pron… |
 | ACI-P241-L005-1DB043BE9E | §26.22 | RUL | grammar-bearing | 241 | 5 | 8971 | At times the surface appearance of a VNC may conceal morphosyntactical distinctions that need to be dealt with. |
-| ACI-P241-L006-1CED0E12BC | §26.22 | SCH | grammar-bearing | 241 | 6 | 8972–8974 | For example, the applicative VNC nēchtłachihuilih can be translated “he made s.th. for me” because of the analysis #0-0+n-ēch+tla… |
-| ACI-P241-L006-1CED0E12BC-02 | §26.22 | REF | documentary | 241 | 6 | 8972–8974 | For example, the applicative VNC nēchtłachihuilih can be translated “he made s.th. for me” because of the analysis #0-0+n-ēch+tla… |
+| ACI-P241-L006-1CED0E12BC | §26.22 | EXA | evidence | 241 | 6 | 8972–8974 | nēchtłachihuilih can mean “he made s.th. for me” under the analysis with tla-(chihua), “to make s.th.” |
+| ACI-P241-L006-1CED0E12BC-02 | §26.22 | ANA | analysis | 241 | 6 | 8972–8974 | nēchtłachihuilih can also mean “he cast a spell on him or her for me” under an alternative analysis. |
+| ACI-P241-L006-1CED0E12BC-03 | §26.22 | ANA | analysis | 241 | 6 | 8972–8974 | If the VNC contains the silent dyad rather than the silent third-person object, it can mean “he cast a spell on you for me.” |
+| ACI-P241-L006-1CED0E12BC-04 | §26.22 | CON | grammar-bearing | 241 | 6 | 8972–8974 | The double-object readings require the single-object applicative source tē-(tla-chihu-iā), “to cast a spell on s.o.” |
+| ACI-P241-L006-1CED0E12BC-05 | §26.22 | REF | documentary | 241 | 6 | 8972–8974 | See § 26.2 and § 26.12 for the required applicative source. |
+| ACI-P241-L006-1CED0E12BC-06 | §26.22 | ANA | analysis | 241 | 6 | 8972–8974 | Readers must remain alert to morphosyntactic analyses concealed by the same surface VNC. |
 | ACI-P241-L008-7A1A30F7B5 | §26.23 | RUL | grammar-bearing | 241 | 8 | 8976 | As in the case of the causative suffix a and the causative object pronoun (see § 24.9), the applicative suffix iā (or l-iā or hu-… |
 | ACI-P241-L008-7A1A30F7B5-02 | §26.23 | REF | documentary | 241 | 8 | 8976 | As in the case of the causative suffix a and the causative object pronoun (see § 24.9), the applicative suffix iā (or l-iā or hu-… |
 | ACI-P241-L008-B4B13D1E3B | §26.23 | USE | grammar-bearing | 241 | 8 | 8976–8984 | The following analysis, using a diagrammatic format, illustrates this point with the VNC nimitztlacōhuiła, “I buy s.th. for you.”… |
@@ -9535,7 +9608,12 @@ The structural units above are containers. The records below count the individua
 | ACI-P248-L035-ACD7BF2C38 | §27.5.1 | EXA | evidence | 248 | 35 | 9244–9245 | (cha-chal-ca) = to speak with a loud angry voice; (for geese) to gaggle [Compare (cha-chal-a-ca) in § 27.4.1.] |
 | ACI-P248-L037-76A2A0BE3B | §27.5.1 | EXA | evidence | 248 | 37 | 9246 | (tzi-tzil-ca) = to shiver (because of coldness) |
 | ACI-P248-L038-B8901E0EC8 | §27.5.1 | EXA | evidence | 248 | 38 | 9247–9249 | (na-na-l-ca) = (for geese) to gaggle; (for dogs) to growl/snarl; (for pigs) to grunt [There is also an applicative stem: tla-(na-… |
-| ACI-P249-L002-CFC1B3542A | §27.5.1 | REA | grammar-bearing | 249 | 2 | 9254–9260 | (hua-hua-l-ca) = (for a boiling liquid) to burble [There is also an applicative stem: tē- ~ tla-(hua-hua-l-tz-a), "(for a dog) to… |
+| ACI-P249-L002-CFC1B3542A | §27.5.1 | EXA | evidence | 249 | 2 | 9254–9260 | (hua-hua-l-ca) = (for a boiling liquid) to burble. |
+| ACI-P249-L002-CFC1B3542A-02 | §27.5.1 | LEX | grammar-bearing | 249 | 2 | 9254–9260 | tē- ~ tla-(hua-hua-l-tz-a) is an applicative stem meaning “for a dog to growl at s.o. or s.th.” |
+| ACI-P249-L002-CFC1B3542A-03 | §27.5.1 | RUL | grammar-bearing | 249 | 2 | 9254–9260 | Fusion of the tla object pronoun to the applicative stem creates the intransitive (tla-hua-hua-l-tz-a), “for a dog to bark.” |
+| ACI-P249-L002-CFC1B3542A-04 | §27.5.1 | REF | documentary | 249 | 2 | 9254–9260 | See § 26.23 for the related applicative stem tē- ~ tla-(hua-hua-l-o-ā), “to bark at s.o. or s.th.” |
+| ACI-P249-L002-CFC1B3542A-05 | §27.5.1 | EXA | evidence | 249 | 2 | 9254–9260 | Compare the onomatopoeic verbstem tla-(co-co-l-o-ā), “for a turkey cock to gobble at s.th.” |
+| ACI-P249-L002-CFC1B3542A-06 | §27.5.1 | ANA | analysis | 249 | 2 | 9254–9260 | The turkey-gobble applicative suggests an intransitive source *(co-co-l-ca), “for a turkey cock to gobble.” |
 | ACI-P249-L009-A4A60E7DC1 | §27.5.1 | ALT | grammar-bearing | 249 | 9 | 9261 | This type of verbstem formation may also explain the structure of the following: |
 | ACI-P249-L010-2E9F293B46 | §27.5.1 | EXA | evidence | 249 | 10 | 9262–9264 | (pa-pach-ca) = to curdle [This has the causative stem tla-(pa-pach-tz-a), "to cause s.th. to curdle (when cooking it)." Because o… |
 | ACI-P249-L010-2E9F293B46-02 | §27.5.1 | REF | documentary | 249 | 10 | 9262–9264 | (pa-pach-ca) = to curdle [This has the causative stem tla-(pa-pach-tz-a), "to cause s.th. to curdle (when cooking it)." Because o… |
@@ -11974,8 +12052,9 @@ The structural units above are containers. The records below count the individua
 | ACI-P364-L025-46F5604DC3 | §36.8.2 | EXA | evidence | 364 | 25 | 14029 | tlamacaztōntli = #Ø-Ø(tla-maca-z-tōn)tli-Ø# = he is a minor priest |
 | ACI-P364-L026-1899A9227D | §36.8.2 | EXA | evidence | 364 | 26 | 14030–14038 | tlamacaztēiccāhuān = #Ø-Ø(tla-maca-z-tē-ic-cā)hu-ān# = they are s.o.'s younger brothers in the form of offering priests; i.e., th… |
 | ACI-P364-L026-1899A9227D-02 | §36.8.2 | REF | documentary | 364 | 26 | 14030–14038 | tlamacaztēiccāhuān = #Ø-Ø(tla-maca-z-tē-ic-cā)hu-ān# = they are s.o.'s younger brothers in the form of offering priests; i.e., th… |
-| ACI-P364-L035-44A905C8AA | §36.9 | DEF | grammar-bearing | 364 | 35 | 14039–14042 | The nominalization process also produces "action" NNCs whose stem names an action, process, event, resultant state, etc. The term… |
-| ACI-P364-L038-6FD470A794 | §36.9 | DEF | grammar-bearing | 364 | 38 | 14042–14049 | (Compare English "action" words such as "reflection," which is defined as "the act or state of being reflected" as well as "somet… |
+| ACI-P364-L035-44A905C8AA | §36.9 | DEF | grammar-bearing | 364 | 35 | 14039–14042 | Nominalization produces “action” NNCs whose stems name an action, process, event, resultant state, and related notions. |
+| ACI-P364-L035-44A905C8AA-02 | §36.9 | ALT | grammar-bearing | 364 | 35 | 14039–14042 | The term “action NNC” is not fully satisfactory because these stems can also name a thing that is an instance or result of an action. |
+| ACI-P364-L038-6FD470A794 | §36.9 | EXA | evidence | 364 | 38 | 14042–14049 | English “reflection” likewise names an act or state as well as something reflected. |
 | ACI-P365-L002-FDF6D08ED4 | §36.9 | RUL | grammar-bearing | 365 | 2 | 14049–14052 | As with certain other NNCs resulting from nominalization, the restricted-use stem is different from the general-use stem, but wit… |
 | ACI-P365-L006-2E1ECEB4EC | §36.10 | DEF | grammar-bearing | 365 | 6 | 14053–14054 | The stem of a passive-action NNC names an action, etc., from the point of view of the passive voice. |
 | ACI-P365-L008-0AD204B2F8 | §36.10.1 | RUL | grammar-bearing | 365 | 8 | 14055–14057 | The general-use stem that occurs in a possessive- state passive-action NNC results from the downgrading of the predicate of a dis… |

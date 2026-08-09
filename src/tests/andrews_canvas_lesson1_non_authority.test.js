@@ -88,10 +88,10 @@ function run() {
                 documentary: 15,
             },
             globalForceTotals: {
-                documentary: 1118,
-                analysis: 1108,
-                evidence: 6228,
-                "grammar-bearing": 5344,
+                documentary: 1122,
+                analysis: 1120,
+                evidence: 6235,
+                "grammar-bearing": 5376,
             },
             failures: [],
         }

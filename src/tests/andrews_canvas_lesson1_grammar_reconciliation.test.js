@@ -148,10 +148,10 @@ function run() {
         },
         {
             suppliedRecords: 435,
-            grammarRequired: 5344,
+            grammarRequired: 5376,
             grammarAssigned: 203,
             grammarBlocked: 203,
-            grammarUnresolved: 5344,
+            grammarUnresolved: 5376,
             grammarUnowned: 5141,
             evidenceDispositioned: 68,
             analysisDispositioned: 149,
