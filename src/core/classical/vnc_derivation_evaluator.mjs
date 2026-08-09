@@ -1800,6 +1800,16 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         derivationSubtype: "irregular-applicative", derivationRoute: "irregular-applicative-itzi-to-itta",
         procedure: "replace-affricate-release-and-add-irregular-applicative-a", ruleId: "cn-l26-2612-itzi-itta",
         andrewsSection: "26.1.2", suppressGenericTypeOne: true,
+        sourceDefective: true,
+        sourceMeaning: "be-alert-or-observant",
+        geminateStatus: "unique-not-normal-morphology",
+        phonologicalShift: {
+          operation: "replace-release-feature",
+          sourceFeature: "sibilant-release",
+          targetFeature: "stop-release",
+          resultingPhone: "t",
+          writtenManifestation: "tt"
+        },
         targetConstruction: { operation: "replace-final-tzi", remove: "tzi", add: "tt-a" }
       },
       {
@@ -5007,6 +5017,12 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           derivationLicenseId: formation.ruleId,
           formationRuleTier: formation.formationRuleTier || "exact-lexical-overlay",
           productivityStatus: formation.productivityStatus || "exact-andrews-witness",
+          sourceDefective: formation.sourceDefective === true,
+          sourceMeaning: formation.sourceMeaning || "",
+          geminateStatus: formation.geminateStatus || "",
+          phonologicalShift: formation.phonologicalShift
+            ? Object.freeze({ ...formation.phonologicalShift })
+            : null,
           lexicalChoiceRequired: false,
           optionAliases: [formation.ruleId],
           ...(internalBridgeFrame ? {

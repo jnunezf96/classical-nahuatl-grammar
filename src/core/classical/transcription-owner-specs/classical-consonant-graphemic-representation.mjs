@@ -34,7 +34,7 @@ const spec = {
     "times-criteria-choosing-between-owa-oa-lacking-example-there",
     "syllable-final-voiceless-phones-w-spelled-uh-na-w",
     "hu-uh-h-not-glottal-stop-letter-u-not",
-    "sound-y-spelled-letter-y-yehwa-λ-yehhua-tl",
+    "y-grapheme",
     "spelling-sounds-p-t-spelled-letters-p-t-po",
     "sound-k-spelled-c-before-vowels-a-o-syllable",
     "kaʔ-cah-a-k-a-c-koko-k-coco",
@@ -48,7 +48,8 @@ const spec = {
     "spelling-sound-λ-spelled-digraph-tl-λa-kaλ-tlacatl",
     "sound-¢-spelled-digraph-tz-¢ah¢i-tzahtzi-te-no",
     "sound-c-spelled-digraph-ch-c-o-ka-cho",
-    "chu-since-u-not-a-vowel-letters-represent-phoneme"
+    "chu-since-u-not-a-vowel-letters-represent-phoneme",
+    "y-omission-iya-ayi"
   ],
   "coordinates": {
     "/l/::phoneme-l-spelled-l-i-li-λ-i-li": {
@@ -95,9 +96,9 @@ const spec = {
       "assertionId": "classical-consonant-graphemic-representation:hu-uh-h-not-glottal-stop-letter-u-not",
       "canonicalPath": ""
     },
-    "/y/::sound-y-spelled-letter-y-yehwa-λ-yehhua-tl": {
-      "assertionId": "classical-consonant-graphemic-representation:sound-y-spelled-letter-y-yehwa-λ-yehhua-tl",
-      "canonicalPath": ""
+    "/y/::y-grapheme": {
+      "assertionId": "classical-consonant-graphemic-representation:y-grapheme",
+      "canonicalPath": "grapheme"
     },
     "p-t-pair::spelling-sounds-p-t-spelled-letters-p-t-po": {
       "assertionId": "classical-consonant-graphemic-representation:spelling-sounds-p-t-spelled-letters-p-t-po",
@@ -154,6 +155,10 @@ const spec = {
     "ch-kw-sequence::chu-since-u-not-a-vowel-letters-represent-phoneme": {
       "assertionId": "classical-consonant-graphemic-representation:chu-since-u-not-a-vowel-letters-represent-phoneme",
       "canonicalPath": ""
+    },
+    "/y/::y-omission-iya-ayi": {
+      "assertionId": "classical-consonant-graphemic-representation:y-omission-iya-ayi",
+      "canonicalPath": "yFrequentlyUnwrittenSequences"
     }
   },
   "collectionCapabilityName": "CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS",

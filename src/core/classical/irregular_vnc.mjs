@@ -1349,6 +1349,9 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         usageStatus,
         constructionSurfaceMode,
         requiredCooperatingLayer,
+        fusedDirectionalSlotOwnership: cloneClassicalNahuatlLesson11Value(
+          fusedDirectionalSlotOwnership,
+        ),
         rootMorpheme,
         rootMorphemeRole,
         zeroRootPreserved,

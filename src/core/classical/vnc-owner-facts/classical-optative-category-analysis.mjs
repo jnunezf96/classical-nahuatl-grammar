@@ -56,8 +56,41 @@ const records = {
     "semanticValue": {
       "ownerId": "classical-optative-category-analysis",
       "semanticMechanism": "optative-category-analysis",
-      "claimCategory": "CST",
-      "claimFacet": "p1040-preterit-and-future-optative-vncs-a-preterit-or-future"
+      "claimCategory": "USE",
+      "identificationBasis": "use-not-form"
+    }
+  },
+  "claim-p1040-02": {
+    "id": "claim-p1040-02",
+    "ownerId": "classical-optative-category-analysis",
+    "semanticValue": {
+      "ownerId": "classical-optative-category-analysis",
+      "semanticMechanism": "optative-category-analysis",
+      "claimCategory": "ALT",
+      "borrowedIndicativeIdentity": ["preterit", "future"]
+    }
+  },
+  "claim-p1040-03": {
+    "id": "claim-p1040-03",
+    "ownerId": "classical-optative-category-analysis",
+    "semanticValue": {
+      "ownerId": "classical-optative-category-analysis",
+      "semanticMechanism": "optative-category-analysis",
+      "claimCategory": "EXC",
+      "preteritAntecessiveRequirement": {
+        "optative": "obligatory",
+        "indicative": "optional"
+      }
+    }
+  },
+  "claim-p1040-04": {
+    "id": "claim-p1040-04",
+    "ownerId": "classical-optative-category-analysis",
+    "semanticValue": {
+      "ownerId": "classical-optative-category-analysis",
+      "semanticMechanism": "optative-category-analysis",
+      "claimCategory": "USE",
+      "futureOptativeUse": "insist-on-futurity-of-wished-event"
     }
   }
 };

@@ -756,7 +756,11 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
               ? "causative"
               : ""
         };
-      } else if (variant === "uncertain-ca") {
+      } else if ([
+        "uncertain-ca",
+        "uncertain-ca-applicative-growl",
+        "uncertain-ca-fused-tla-bark",
+      ].includes(variant)) {
         targetStem = text(UNCERTAIN_CA_FREQUENTATIVES.get(sourceStem));
         if (!targetStem) {
           return blockedOperation(
@@ -767,6 +771,35 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         }
         targetClass = "A";
         ruleFamily = "frequentative-uncertain";
+        if (variant === "uncertain-ca-applicative-growl") {
+          if (sourceStem !== "hual") return blockedOperation(
+            request,
+            "hual-growl-applicative-source-required",
+            "frequentative-uncertain",
+          );
+          targetStem = "hua-hua-l-tz-a";
+          targetClass = "A";
+          targetValence = "specific-projective";
+          operationFacts = {
+            lexicalMeaning: "dog-growl-at-object",
+            objectPrefixAlternatives: ["tē", "tla"],
+            applicative: true,
+          };
+        } else if (variant === "uncertain-ca-fused-tla-bark") {
+          if (sourceStem !== "hual") return blockedOperation(
+            request,
+            "hual-bark-source-required",
+            "frequentative-uncertain",
+          );
+          targetStem = "tla-hua-hua-l-tz-a";
+          targetClass = "A";
+          targetValence = "intransitive";
+          operationFacts = {
+            lexicalMeaning: "dog-bark",
+            fusedObjectPrefix: "tla",
+            fusionLowersValence: true,
+          };
+        }
       } else if (variant === "uncertain-tzca") {
         targetStem = text(UNCERTAIN_TZCA_FREQUENTATIVES.get(sourceStem));
         if (!targetStem) {

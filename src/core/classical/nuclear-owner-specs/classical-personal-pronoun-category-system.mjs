@@ -31,7 +31,10 @@ const spec = {
     "claim-p670",
     "claim-p671",
     "claim-p672",
-    "claim-p673"
+    "claim-p673",
+    "claim-p667-02",
+    "claim-p667-03",
+    "claim-p667-04"
   ],
   "coordinates": {
     "claim-p649::p649-he-true-personal-pronouns-in-nahuatl-are-always-affixal": {
@@ -106,9 +109,9 @@ const spec = {
       "assertionId": "classical-personal-pronoun-category-system:p666-common-one-or-more-than-one-indiscriminately-the-first",
       "canonicalPath": "semanticValue"
     },
-    "claim-p667::p667-plural-pronouns-show-animate-number-a-third-person-singular": {
-      "assertionId": "classical-personal-pronoun-category-system:p667-plural-pronouns-show-animate-number-a-third-person-singular",
-      "canonicalPath": "semanticValue"
+    "claim-p667::pronouns-animate-number": {
+      "assertionId": "classical-personal-pronoun-category-system:pronouns-animate-number",
+      "canonicalPath": "semanticValue.proposition"
     },
     "claim-p668::p668-the-category-of-case-identifies-the-syntactic-function-of": {
       "assertionId": "classical-personal-pronoun-category-system:p668-the-category-of-case-identifies-the-syntactic-function-of",
@@ -133,6 +136,18 @@ const spec = {
     "claim-p673::p673-the-personal-pronouns-in-nahuatl-are-different-from-those": {
       "assertionId": "classical-personal-pronoun-category-system:p673-the-personal-pronouns-in-nahuatl-are-different-from-those",
       "canonicalPath": "semanticValue"
+    },
+    "claim-p667-02::third-person-singular-animacy-ambiguity": {
+      "assertionId": "classical-personal-pronoun-category-system:third-person-singular-animacy-ambiguity",
+      "canonicalPath": "semanticValue.thirdPersonSingularAnimacy"
+    },
+    "claim-p667-03::common-number-shape": {
+      "assertionId": "classical-personal-pronoun-category-system:common-number-shape",
+      "canonicalPath": "semanticValue.commonNumberShapeRelation"
+    },
+    "claim-p667-04::common-number-context-translation": {
+      "assertionId": "classical-personal-pronoun-category-system:common-number-context-translation",
+      "canonicalPath": "semanticValue.commonNumberEnglishTranslation"
     }
   },
   "collectionCapabilityName": "CLASSICAL_NAHUATL_NUCLEAR_FACT_RECORDS"

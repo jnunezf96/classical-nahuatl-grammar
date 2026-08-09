@@ -64,6 +64,15 @@ function compactOption(option = null) {
     participantRule: option.participantRule || "",
     formationRuleTier: option.formationRuleTier || "",
     productivityStatus: option.productivityStatus || "",
+    sourceDefective: option.sourceDefective === true,
+    sourceMeaning: option.sourceMeaning || "",
+    geminateStatus: option.geminateStatus || "",
+    phonologicalShift: option.phonologicalShift
+      ? { ...option.phonologicalShift }
+      : null,
+    targetConstruction: option.targetConstruction
+      ? { ...option.targetConstruction }
+      : null,
     bridge: bridge ? {
       authorizationStatus: bridge.authorizationStatus || "",
       nonactiveStem: bridge.nonactiveStem || "",
@@ -630,6 +639,16 @@ function buildProjection(runtime) {
         formations.typeOnePinahua.formulaArtifactAuthority,
       surfaceArtifactAuthority:
         formations.typeOnePinahua.surfaceArtifactAuthority,
+    },
+    deceptiveDoubleObjectSourceCondition: {
+      authorizationStatus: "authorized",
+      surfaceReading: "double-object",
+      requiredSourceStem: "tla-chihu-iā",
+      requiredSourceValence: "single-object-applicative",
+      sourceMeaning: "cast-a-spell-on-object",
+      derivedFromApplicativeFormation:
+        formations.parallelChihuaTypeOne.option.authorizationStatus
+          === "authorized",
     },
     formations,
     participants,
