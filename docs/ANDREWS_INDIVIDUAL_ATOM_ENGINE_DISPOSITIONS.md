@@ -43,6 +43,35 @@ This ledger records the 36 newly separated grammar atoms produced by the source-
 | ACI-P249-L002-CFC1B3542A-03 | typed operation / constraint | classical-uncertain-ca-frequentative | `cases.uncertainCaFusedTlaBark.targetValence` | `"intransitive"` |
 | ACI-P364-L035-44A905C8AA-02 | typed operation / constraint | classical-predicate-nominalization-action-taxonomy | `actionTaxonomyDefinition.labelQualification.fullyExhaustive` | `false` |
 
+## Lesson 7.9 corrective atomization and semantic scope
+
+The §7.9 atoms carry both their structural container and what they are about.
+`human-object-specified` and `nonhuman-object-specified` are semantic topics,
+not user controls. Evidence witnesses confirm the grammar but never authorize,
+limit, or whitelist its realizations.
+
+| Atom | Force | Belongs to | About | Runtime disposition |
+|---|---|---|---|---|
+| ACI-P085-L039-34663E0D60 | grammar | §7.9 | human and nonhuman object relationships | typed relationship schema |
+| ACI-P085-L041-E1B2B33CE4 | grammar | §7.9 | indefinite-reference range in both domains | typed constraint |
+| ACI-P085-L045-B320BEFD1C | evidence | §7.9.1.a | human object specified | witness only; never admission authority |
+| ACI-P085-L046-2ED1C60069 | evidence | §7.9.1.b | human object specified, singular reflexive | witness only; never admission authority |
+| ACI-P085-L047-7996ED1D2C | evidence | §7.9.1.b | human object specified, singular second-person projective | witness only; never admission authority |
+| ACI-P085-L048-E16A4B72AC | evidence | §7.9.1.b | human object specified, third-person singular projective | witness only; never admission authority |
+| ACI-P085-L049-40DB9806C4 | evidence | §7.9.1.b | human object specified, first-person plural projective | witness only; never admission authority |
+| ACI-P086-L002-B58354DE3F | evidence | §7.9.1.b | human object specified, second-person plural projective | witness only; never admission authority |
+| ACI-P086-L003-D41B7FE7E2 | evidence | §7.9.1.b | human object specified, third-person plural projective | witness only; never admission authority |
+| ACI-P086-L005-336D0005B5 | grammar | §7.9.1.b | human object specified with a singular subject | typed singular correspondence constraint |
+| ACI-P086-L007-336D0005B5 | grammar | §7.9.1.b | human object specified with a plural subject | typed plural-reflexive agreement constraint |
+| ACI-P086-L008-336D0005B5 | grammar | §7.9.1.b | human object specified with a plural subject | typed reflexive/reciprocative interpretation alternative |
+| ACI-P086-L011-AABB0EA37B | evidence | §7.9.2.a | nonhuman object specified | witness only; never admission authority |
+| ACI-P086-L012-3BB77976D7 | evidence | §7.9.2.b | nonhuman object specified, common third-person projective | witness only; never admission authority |
+| ACI-P086-L014-60D916D128 | evidence | §7.9.2.b | nonhuman object specified, animate third-person plural projective | witness only; never admission authority |
+
+The executable policy is `examplesAuthorizeGeneration = false`,
+`evidenceAbsenceBlocksGeneration = false`, and
+`typedGrammarAuthorizesUnlistedRealizations = true`.
+
 ## Reclassified former grammar atoms
 
 These four former broad atoms no longer authorize runtime behavior because the source-first audit classified them as analysis or evidence:

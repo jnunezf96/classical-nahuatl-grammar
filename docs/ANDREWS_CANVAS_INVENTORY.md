@@ -74,7 +74,11 @@ semantic pass split eleven additional compound passages, corrected their force
 and category assignments, and removed two duplicated cross-reference rows.
 Those source-first corrections add 32 grammar-bearing, 7 evidence, 12 analysis,
 and 4 documentary records, for a net increase of 55 and a new 13,853-item
-denominator.
+denominator. A corrective review of §7.9.1.b then split its compound
+singular/plural/reciprocative condition into three grammar atoms. This adds
+one condition and one alternative, producing the current 13,855-item
+denominator. Every §7.9 atom now also has an explicit semantic topic in the
+individual-disposition ledger.
 
 | Inventory ID | Previous | Final | Review disposition |
 |---|---|---|---|
@@ -2450,12 +2454,12 @@ The structural units above are containers. The records below count the individua
 - Item IDs are derived from the Canvas PDF-page coordinate and normalized claim anchor, so unrelated insertions elsewhere do not renumber existing items.
 - Source force is derived consistently: definitions through usage are grammar-bearing; paradigms and examples are evidence; analyses are analysis; references are documentary.
 - A compound source sentence receives multiple records only when it contains independently countable contributions (for example, a licensing condition plus its result, or a rule plus a substantive cross-reference pointer).
-- Atomic content items: **13853**.
-- Exclusive primary-category checksum: **13853/13853**.
-- Direct-container assignment checksum: **13853/13853**.
+- Atomic content items: **13855**.
+- Exclusive primary-category checksum: **13855/13855**.
+- Direct-container assignment checksum: **13855/13855**.
 - Lessons represented: **58/58**.
 - Primary sublessons represented: **504/504**.
-- Nested occurrences with at least one direct item: **1108/1125**.
+- Nested occurrences with at least one direct item: **1105/1125**.
 - Nested occurrences represented by direct or descendant items: **1125/1125**.
 - Primary sublessons with no classified item: **0**.
 
@@ -2467,11 +2471,11 @@ The structural units above are containers. The records below count the individua
 | INV | Grammatical category or inventory member | 366 |
 | SCH | Formula or structural schema | 294 |
 | RUL | Rule or operation | 1254 |
-| CON | Condition or prerequisite | 580 |
+| CON | Condition or prerequisite | 581 |
 | CST | Constraint or prohibition | 457 |
 | DEP | Ordering or dependency | 260 |
 | REA | Realization or spelling rule | 378 |
-| ALT | Alternative or variant | 328 |
+| ALT | Alternative or variant | 329 |
 | EXC | Exception, irregularity, or suppletion | 126 |
 | LEX | Lexical fact | 638 |
 | USE | Meaning or usage claim | 486 |
@@ -2479,17 +2483,17 @@ The structural units above are containers. The records below count the individua
 | EXA | Example or evidence | 6194 |
 | ANA | Analysis or diagnostic guidance | 1120 |
 | REF | Note or cross-reference | 1122 |
-| **Total** | **Exclusive checksum** | **13853** |
+| **Total** | **Exclusive checksum** | **13855** |
 
 ### Source-force totals
 
 | Source force | Items |
 |---|---:|
-| grammar-bearing | 5376 |
+| grammar-bearing | 5378 |
 | evidence | 6235 |
 | analysis | 1120 |
 | documentary | 1122 |
-| **Total** | **13853** |
+| **Total** | **13855** |
 
 ### Lesson category rollups
 
@@ -2501,7 +2505,7 @@ The structural units above are containers. The records below count the individua
 | 4 | DEF 8; INV 12; SCH 22; RUL 2; CON 4; CST 11; DEP 2; REA 1; ALT 5; EXC 1; LEX 10; USE 4; EXA 2; ANA 16; REF 8 | 108 |
 | 5 | DEF 17; INV 12; SCH 2; RUL 2; CON 14; CST 6; DEP 3; REA 1; ALT 7; EXC 1; LEX 10; USE 4; PAR 3; EXA 22; ANA 16; REF 8 | 128 |
 | 6 | DEF 10; INV 11; SCH 10; RUL 7; CON 12; CST 5; REA 2; ALT 1; EXC 1; LEX 9; USE 1; PAR 2; EXA 12; ANA 4; REF 1 | 88 |
-| 7 | DEF 2; INV 8; SCH 17; RUL 10; CON 18; CST 9; DEP 5; REA 11; ALT 11; EXC 2; LEX 31; USE 5; PAR 10; EXA 82; ANA 27; REF 12 | 260 |
+| 7 | DEF 2; INV 8; SCH 17; RUL 10; CON 19; CST 9; DEP 5; REA 11; ALT 12; EXC 2; LEX 31; USE 5; PAR 10; EXA 82; ANA 27; REF 12 | 262 |
 | 8 | DEF 8; INV 5; SCH 9; RUL 17; CON 8; CST 10; DEP 4; REA 5; ALT 2; EXC 1; LEX 5; USE 3; EXA 48; ANA 9; REF 3 | 137 |
 | 9 | DEF 2; INV 2; RUL 10; CON 8; CST 16; DEP 1; REA 1; ALT 10; LEX 3; USE 7; EXA 59; ANA 3; REF 5 | 127 |
 | 10 | DEF 5; SCH 2; RUL 5; CON 9; CST 21; DEP 2; ALT 15; USE 2; PAR 7; EXA 39; ANA 10; REF 2 | 119 |
@@ -2618,7 +2622,7 @@ The structural units above are containers. The records below count the individua
 | §7.6 | INV 1 | INV 2; RUL 3; CON 4; REA 2; ALT 2; EXC 1; LEX 9; EXA 22 | 45 |
 | §7.7 | CON 1; CST 1; DEP 1; ALT 1; ANA 4; REF 1 | RUL 2; CON 2; CST 1; DEP 1; ALT 1; LEX 3; PAR 10; ANA 4; REF 1 | 25 |
 | §7.8 | DEP 1; ANA 2; REF 5 | CON 2; CST 2; DEP 1; REA 1; ALT 4; EXA 36; ANA 9; REF 9 | 64 |
-| §7.9 | SCH 1; CST 1 | SCH 1; CON 1; CST 1; EXA 10 | 13 |
+| §7.9 | SCH 1; CST 1 | SCH 1; CON 2; CST 1; ALT 1; EXA 10 | 15 |
 | §7.10 | DEF 1; RUL 2; CON 1; REA 1; EXA 8; ANA 5 | DEF 1; RUL 2; CON 1; REA 1; EXA 8; ANA 5 | 18 |
 | §8.1 | DEF 1; INV 2; CST 2 | DEF 5; INV 3; SCH 9; RUL 10; CON 7; CST 9; DEP 3; REA 4; EXC 1; LEX 4; USE 2; EXA 24; ANA 9; REF 3 | 93 |
 | §8.2 | DEF 2; INV 2; RUL 2; REA 1; ALT 1 | DEF 2; INV 2; RUL 2; REA 1; ALT 1 | 8 |
@@ -3213,9 +3217,9 @@ The structural units above are containers. The records below count the individua
 | §7.8.2 | SCH 3; EXA 4 | SCH 3; EXA 4 | 7 |
 | §7.8.3 | SCH 1; EXA 4 | SCH 1; EXA 4 | 5 |
 | §7.8.4 | SCH 2; CON 2; CST 2; DEP 1; REA 1; ALT 2; EXA 17; ANA 11 | SCH 2; CON 2; CST 2; DEP 1; REA 1; ALT 2; EXA 17; ANA 11 | 38 |
-| §7.9.1 | — | CON 1; EXA 7 | 8 |
+| §7.9.1 | — | CON 2; ALT 1; EXA 7 | 10 |
 | §7.9.1.a | EXA 1 | EXA 1 | 1 |
-| §7.9.1.b | CON 1; EXA 6 | CON 1; EXA 6 | 7 |
+| §7.9.1.b | CON 2; ALT 1; EXA 6 | CON 2; ALT 1; EXA 6 | 9 |
 | §7.9.2 | — | EXA 3 | 3 |
 | §7.9.2.a | EXA 1 | EXA 1 | 1 |
 | §7.9.2.b | EXA 2 | EXA 2 | 2 |
@@ -5752,7 +5756,9 @@ The structural units above are containers. The records below count the individua
 | ACI-P085-L049-40DB9806C4 | §7.9.1.b | EXA | evidence | 85 | 49 | 3247 | nitēchitta = #ni-Ø+t-ēch(itt-a)Ø+Ø-Ø# = I see us |
 | ACI-P086-L002-B58354DE3F | §7.9.1.b | EXA | evidence | 86 | 2 | 3252 | namēchitta = #n-Ø+am-ēch(itt-a)Ø+Ø-Ø# = I see you (pl) |
 | ACI-P086-L003-D41B7FE7E2 | §7.9.1.b | EXA | evidence | 86 | 3 | 3253 | niquimitta = #ni-Ø+qu-im(itt-a)Ø+Ø-Ø# = I see them |
-| ACI-P086-L005-336D0005B5 | §7.9.1.b | CON | grammar-bearing | 86 | 5 | 3255–3259 | If the VNC in item a had been titēitta ("you (sg) see s.o."), the specific-object VNCs in item b would have been… |
+| ACI-P086-L005-336D0005B5 | §7.9.1.b | CON | grammar-bearing | 86 | 5 | 3255–3256 | With singular subject titēitta ("you see s.o."), the corresponding specific-human-object forms include tinēchitta ("you see me") and timotta ("you see yourself"). |
+| ACI-P086-L007-336D0005B5 | §7.9.1.b | CON | grammar-bearing | 86 | 7 | 3257–3258 | With plural subject titēittah ("we see s.o."), the corresponding plural reflexive form is titottah. |
+| ACI-P086-L008-336D0005B5 | §7.9.1.b | ALT | grammar-bearing | 86 | 8 | 3258–3259 | With a plural subject, titottah can mean either "we see ourselves" or reciprocatively "we see one another." |
 | ACI-P086-L011-AABB0EA37B | §7.9.2.a | EXA | evidence | 86 | 11 | 3261 | nitlatta = #ni-Ø+tla(tt-a)Ø+Ø-Ø# = I see s.th./things/everything |
 | ACI-P086-L012-3BB77976D7 | §7.9.2.b | EXA | evidence | 86 | 12 | 3262–3263 | niquitta = #ni-Ø+qu-Ø(itt-a)Ø+Ø-Ø# = I see it (animate or nonanimate); I see them (nonanimate) |
 | ACI-P086-L014-60D916D128 | §7.9.2.b | EXA | evidence | 86 | 14 | 3264 | niquimitta = #ni-Ø+qu-im(itt-a)Ø+Ø-Ø# = I see them (animate) |

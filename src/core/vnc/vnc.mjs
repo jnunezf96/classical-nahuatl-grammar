@@ -664,14 +664,27 @@ export function createVncApi(targetObject = globalThis) {
       humanIndefinite: Object.freeze({
         classical: "te",
         currentClassical: "te",
-        relatesTo: Object.freeze(["reflexive", "specific projective personal objects"])
+        relatesTo: Object.freeze(["reflexive", "specific projective personal objects"]),
+        belongsToSection: "7.9.1",
+        aboutTopic: "human-object-specified"
       }),
       nonhumanIndefinite: Object.freeze({
         classical: "tla",
         currentClassical: "ta",
-        relatesTo: Object.freeze(["3sg/3common", "3pl animate"])
+        relatesTo: Object.freeze(["3sg/3common", "3pl animate"]),
+        belongsToSection: "7.9.2",
+        aboutTopic: "nonhuman-object-specified"
       }),
       indefiniteRange: Object.freeze(["nonspecific", "vague", "total"]),
+      subjectNumberDistinction: Object.freeze({
+        singular: "reflexive interpretation only",
+        plural: "reflexive form with an additional reciprocative interpretation"
+      }),
+      evidencePolicy: Object.freeze({
+        examplesAuthorizeGeneration: false,
+        evidenceAbsenceBlocksGeneration: false,
+        typedGrammarAuthorizesUnlistedRealizations: true
+      }),
       implementationBoundary: "object controls may explain relationships; they do not prove a clause relation by surface alone"
     });
     const VNC_LESSON7_TLA_FUSION_FRAME = Object.freeze({
