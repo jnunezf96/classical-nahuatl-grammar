@@ -570,8 +570,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || normalizeClassicalBasalUnitForRendering(
           surfaceFrame.basalUnit
         ) !== "vnc"
-        || surfaceFrame.state?.vncLateOperationClosureFrame
-        || surfaceFrame.state?.vncOrderedVoiceApplicationFrame
         || typeof targetObject
           .getClassicalNahuatlVncContinuationSourceConstituents
           !== "function"
@@ -579,19 +577,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return null;
       }
       const resultFrame =
-        surfaceFrame.state?.vncApplicationFrame?.resultFrame || null;
-      if (
-        !resultFrame
-        || (
-          typeof targetObject
-            .isClassicalNahuatlVncApplicationResultFrame
-            === "function"
-          && targetObject
-            .isClassicalNahuatlVncApplicationResultFrame(
-              resultFrame
-            ) !== true
-        )
-      ) {
+        surfaceFrame.state?.vncLateOperationClosureFrame
+        || surfaceFrame.state?.vncOrderedVoiceApplicationFrame
+        || surfaceFrame.state?.vncApplicationFrame?.resultFrame
+        || null;
+      if (!resultFrame) {
         return null;
       }
       const projection =
@@ -1780,8 +1770,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
             }
           )
           : null;
-      const lateOperation = basalUnit === "vnc"
+      const requestedLateOperation = basalUnit === "vnc"
         ? String(overrides.lateOperation || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-late-operation", "none") || "none").trim()
+        : "none";
+      const lateOperation = [
+        "none",
+        "frequentative",
+        "compound",
+        "purposive",
+        "honorific",
+        "reverential",
+        "pejorative"
+      ].includes(requestedLateOperation)
+        ? requestedLateOperation
         : "none";
       const lateVariant = basalUnit === "vnc"
         ? String(overrides.lateVariant || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-late-variant", "") || "").trim()
@@ -2080,26 +2081,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const resultSourceContinuation =
         getActiveClassicalVncResultSourceForState(finalizedState);
-      const continuationLateOperationBlocked = Boolean(
-        resultSourceContinuation
-        && lateOperation !== "none"
-      );
+      const continuationLateOperationBlocked = false;
       const applicationRequest = buildClassicalRuleLogicVncApplicationRequest(finalizedState);
+      const continuedBaseVncApplicationFrame = resultSourceContinuation
+        ? targetObject.requestClassicalVncApplicationResult(
+          applicationRequest,
+          resultSourceContinuation.resultFrame
+        )
+        : null;
       const lessons27282933ClosureFrame = lateOperation !== "none"
-        && !resultSourceContinuation
         && typeof targetObject.requestClassicalLateVncOperation === "function"
-        ? targetObject.requestClassicalLateVncOperation(applicationRequest)
+        ? targetObject.requestClassicalLateVncOperation(
+          continuedBaseVncApplicationFrame
+            ? {
+              ...applicationRequest,
+              sourceApplicationFrame: continuedBaseVncApplicationFrame
+            }
+            : applicationRequest
+        )
         : null;
       const baseVncApplicationFrame = lessons27282933ClosureFrame?.baseApplicationFrame
-        || (
-          resultSourceContinuation
-            ? targetObject.requestClassicalVncApplicationResult(
-              applicationRequest,
-              resultSourceContinuation.resultFrame
-            )
-            : targetObject.requestClassicalVncApplicationResult(
-              applicationRequest
-            )
+        || continuedBaseVncApplicationFrame
+        || targetObject.requestClassicalVncApplicationResult(
+          applicationRequest
         );
       let vncOrderedVoiceApplicationFrame = null;
       if (
@@ -2713,15 +2717,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           };
         }
         const selectedResultFrame =
-          state.continuationLateOperationBlocked === true
-            ? Object.freeze({
-              authorizationStatus: "blocked",
-              blockReason:
-                "classical-vnc-result-source-continuation-late-operation-not-licensed"
-            })
-            : lateOperationClosureFrame
-              || orderedVoiceApplicationFrame
-              || applicationResultFrame;
+          lateOperationClosureFrame
+          || orderedVoiceApplicationFrame
+          || applicationResultFrame;
         if (
           selectedResultFrame
           && selectedResultFrame.authorizationStatus !== "authorized"
@@ -9418,6 +9416,43 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (derivationOptionControl) {
           derivationOptionControl.value = "";
         }
+        if (surfaceFrame.state?.vncLateOperationClosureFrame) {
+          [
+            "classical-rule-logic-late-operation",
+            "classical-rule-logic-late-variant",
+            "classical-rule-logic-compound-matrix",
+            "classical-rule-logic-compound-matrix-class",
+            "classical-rule-logic-compound-itz-sense",
+            "classical-rule-logic-compound-ya-syncopation",
+            "classical-rule-logic-compound-event-order",
+            "classical-rule-logic-compound-nonactive-scope",
+            "classical-rule-logic-compound-subject-animacy",
+            "classical-rule-logic-compound-possessive-stem",
+            "classical-rule-logic-compound-possessor",
+            "classical-rule-logic-frequentative-repetitions",
+            "classical-rule-logic-purposive-series",
+            "classical-rule-logic-purposive-irregular-n",
+            "classical-rule-logic-purposive-external",
+            "classical-rule-logic-honored-participant",
+            "classical-rule-logic-honorific-stem-alternative"
+          ].forEach(id => {
+            const control = targetObject.document.getElementById(id);
+            if (!control) return;
+            if (control.type === "checkbox") {
+              control.checked = control.defaultChecked === true;
+              return;
+            }
+            if (control.tagName === "SELECT") {
+              const defaultOption = Array.from(control.options || [])
+                .find(option => option.defaultSelected)
+                || control.options?.[0]
+                || null;
+              control.value = defaultOption?.value || "";
+              return;
+            }
+            control.value = control.defaultValue || "";
+          });
+        }
         [
           "classical-vnc-source-initial-i-choice",
           "classical-vnc-source-lexeme-choice"
@@ -13311,7 +13346,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-whole-canvas-action classical-rule-surface__action";
         continueAction.dataset.classicalRuleSurfaceAction =
           "use-result-as-source";
-        continueAction.textContent = "Use Result as new Source";
+        continueAction.textContent = "Add another derivation";
         continueAction.addEventListener("click", () => (
           useClassicalWholeCanvasResultAsNextSource(frame)
         ));
@@ -17180,7 +17215,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (getClassicalVncResultSourceContinuationCandidate(surfaceFrame)) {
         actionRow.appendChild(
           makeAction(
-            "Use Result as new Source",
+            "Add another derivation",
             "use-result-as-source",
             () => useClassicalWholeCanvasResultAsNextSource(
               surfaceFrame

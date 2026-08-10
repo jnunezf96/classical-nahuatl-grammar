@@ -5040,19 +5040,46 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const getContinuationSourceForResult = (
         sourceResultFrame = null,
       ) => {
+        const applicationResultAuthorized = Boolean(
+          issuedApplicationResultFrames.has(sourceResultFrame)
+          && classicalNahuatlVncApplicationBuiltResultFrames.has(
+            sourceResultFrame,
+          )
+          && isClassicalNahuatlVncApplicationResultFrame(
+            sourceResultFrame,
+          ),
+        );
+        const orderedVoiceResultAuthorized =
+          isClassicalNahuatlOrderedVoiceVncApplicationFrame(
+            sourceResultFrame,
+          );
+        const currentRuntimeTarget =
+          getClassicalNahuatlVncApplicationRuntimeTarget();
+        const lateClosureValidator =
+          typeof currentRuntimeTarget?.isClassicalNahuatlClosureFrame
+            === "function"
+            ? currentRuntimeTarget.isClassicalNahuatlClosureFrame
+            : dependencySource?.isClassicalNahuatlClosureFrame;
+        const lateOperationResultAuthorized = Boolean(
+          sourceResultFrame?.authorizationStatus === "authorized"
+          && typeof lateClosureValidator === "function"
+          && lateClosureValidator(
+            sourceResultFrame,
+          ) === true,
+        );
         if (
-          !issuedApplicationResultFrames.has(sourceResultFrame)
-          || !classicalNahuatlVncApplicationBuiltResultFrames.has(
-            sourceResultFrame,
-          )
-          || !isClassicalNahuatlVncApplicationResultFrame(
-            sourceResultFrame,
-          )
+          !applicationResultAuthorized
+          && !orderedVoiceResultAuthorized
+          && !lateOperationResultAuthorized
         ) {
           return null;
         }
+        const canonicalContinuationResultFrame = lateOperationResultAuthorized
+          ? sourceResultFrame.operationFrame
+            ?.targetApplicationFrame?.resultFrame || null
+          : sourceResultFrame;
         const sourceMachineryFrame =
-          sourceResultFrame.selectedMachineryFrame || null;
+          canonicalContinuationResultFrame?.selectedMachineryFrame || null;
         if (
           !isCanonicalClassicalNahuatlVncApplicationDerivationSourceMachineryFrame(
             sourceMachineryFrame,
@@ -5070,7 +5097,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           && sourceDescriptor.verbClass
           && sourceDescriptor.sourceValence
           ? Object.freeze({
-            sourceResultFrame,
+            sourceResultFrame: canonicalContinuationResultFrame,
             sourceMachineryFrame,
             formationSourceMachineryFrame:
               sourceDescriptor.formationSourceMachineryFrame,
