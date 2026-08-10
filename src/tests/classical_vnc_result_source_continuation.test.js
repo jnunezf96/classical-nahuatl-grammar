@@ -293,6 +293,81 @@ function run(ctx = {}) {
         }
     );
 
+    const lateResult = ctx.requestClassicalLateVncOperation({
+        sourceStem: "chōca",
+        sourceValence: "intransitive",
+        verbClass: "A",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        derivationType: "direct",
+        voice: "active",
+        lateOperation: "frequentative",
+        lateVariant: "ordinary-long",
+        frequentativeRepetitions: 2,
+    });
+    const lateProjection = service.getContinuationSourceConstituents(
+        lateResult
+    );
+    const orderedBase = service.evaluate({
+        sourceStem: "yohua",
+        verbClass: "A",
+        sourceValence: "intransitive",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "impersonal",
+        nonactiveOptionId: "inherent-impersonal",
+    });
+    const orderedResult =
+        ctx.buildClassicalNahuatlOrderedVoiceVncApplicationFrame(
+            orderedBase,
+            {
+                operations: [
+                    "inherent-impersonal",
+                    "tla-impersonal",
+                    "nonactive-lō",
+                ],
+            }
+        );
+    const orderedProjection = service.getContinuationSourceConstituents(
+        orderedResult
+    );
+    const continuedLate = service.continueFromResult(lateResult, {
+        sourceStem: lateProjection?.sourceStem,
+        sourceLexemeId: lateProjection?.sourceLexemeId,
+        sourceInitialISelection:
+            lateProjection?.sourceInitialISelection,
+        verbClass: lateProjection?.verbClass,
+        sourceValence: lateProjection?.sourceValence,
+        sourceSubject: lateProjection?.sourceSubject,
+        objectKind: lateProjection?.objectKind,
+        objectPerson: lateProjection?.objectPerson,
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+    });
+    s.ok(
+        "a late-operation terminal Result continues through its canonical target application while copied and ineligible terminal frames fail closed",
+        lateResult.authorizationStatus === "authorized"
+            && lateProjection?.sourceStem === "chō-chō-chōca"
+            && continuedLate?.authorizationStatus === "authorized"
+            && orderedResult.authorizationStatus === "authorized"
+            && orderedProjection === null
+            && service.getContinuationSourceConstituents(
+                { ...lateResult }
+            ) === null
+            && service.getContinuationSourceConstituents(
+                JSON.parse(JSON.stringify(lateResult))
+            ) === null
+            && service.getContinuationSourceConstituents(
+                { ...orderedResult }
+            ) === null
+    );
+
     return s;
 }
 

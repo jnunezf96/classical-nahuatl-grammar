@@ -2519,13 +2519,13 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-operation">
-                        <span class="classical-rule-control__label">Later operation</span>
+                        <span class="classical-rule-control__label">Add derivation</span>
                         <select id="classical-rule-logic-late-operation" data-classical-rule-logic-control="late-operation">
 ${renderClassicalVncLateOperationOptions("classical-rule-logic-late-operation")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-variant">
-                        <span class="classical-rule-control__label">Licensed formation</span>
+                        <span class="classical-rule-control__label">Grammar-supported formation</span>
                         <select id="classical-rule-logic-late-variant" data-classical-rule-logic-control="late-variant">
 ${renderClassicalVncLateOperationOptions("classical-rule-logic-late-variant")}
                         </select>

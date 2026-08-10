@@ -113,8 +113,30 @@ function run(ctx = {}) {
         })()
     );
 
+    s.ok(
+        "the derivation workflow selects the actual terminal Result and can feed a continued application into another late operation",
+        rendering.includes(
+            "surfaceFrame.state?.vncLateOperationClosureFrame\n        || surfaceFrame.state?.vncOrderedVoiceApplicationFrame"
+        )
+            && rendering.includes(
+                "sourceApplicationFrame: continuedBaseVncApplicationFrame"
+            )
+            && !rendering.includes(
+                "classical-vnc-result-source-continuation-late-operation-not-licensed"
+            )
+            && rendering.includes(
+                'continueAction.textContent = "Add another derivation"'
+            )
+            && rendering.includes(
+                "if (surfaceFrame.state?.vncLateOperationClosureFrame)"
+            )
+            && shell.includes(
+                'class="classical-rule-control__label">Add derivation</span>'
+            )
+    );
+
     s.eq(
-        "Use Result as new Source binds the exact Result, exposes inherited Source facts read-only, and runs the required second causative",
+        "Add another derivation binds the exact Result, exposes inherited Source facts read-only, and runs the required second causative",
         (() => {
             const first = buildFirstCaquiCausative(ctx);
             configureSecondCausativeControls(ctx);
@@ -185,6 +207,9 @@ function run(ctx = {}) {
                     status:
                         state.vncApplicationFrame
                             ?.authorizationStatus || "",
+                    reason:
+                        state.vncApplicationFrame
+                            ?.blockReason || "",
                     written:
                         state.vncApplicationFrame?.resultFrame
                             ?.surfaceRealization || "",
@@ -197,6 +222,16 @@ function run(ctx = {}) {
                     sourceValence:
                         state.vncApplicationFrame?.normalizedRequest
                             ?.sourceValence || "",
+                    lateOperation: state.lateOperation || "",
+                    requestedDerivation:
+                        state.vncApplicationFrame?.normalizedRequest
+                            ?.requestedDerivation || "",
+                    derivationType:
+                        state.vncApplicationFrame?.normalizedRequest
+                            ?.derivationType || "",
+                    resultReason:
+                        state.vncApplicationFrame?.resultFrame
+                            ?.blockReason || "",
                 },
                 ambiguity: {
                     disposition:
@@ -237,11 +272,16 @@ function run(ctx = {}) {
             },
             state: {
                 status: "authorized",
+                reason: "",
                 written: "nēchcaquitiltia",
                 formula:
                     "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
                 sourceStem: "caqui-tiā",
                 sourceValence: "multiple-object",
+                lateOperation: "none",
+                requestedDerivation: "causative",
+                derivationType: "causative",
+                resultReason: "",
             },
             ambiguity: {
                 disposition: "read-only-not-authority",
