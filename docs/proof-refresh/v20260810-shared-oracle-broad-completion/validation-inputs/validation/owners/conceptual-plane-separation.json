@@ -1,0 +1,612 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "conceptual-plane-separation",
+  "operationId": "classical.structure.conceptual-plane.separate",
+  "indexEntryIds": [
+    "IDX-0399",
+    "IDX-0390",
+    "IDX-0784"
+  ],
+  "atomIds": [
+    "ACI-P032-L035-8614AE1561",
+    "ACI-P032-L036-1DB4314953",
+    "ACI-P032-L038-5CFADB0FE4-04"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:conceptual-plane-separation:1",
+      "fromAtomId": "ACI-P032-L036-1DB4314953",
+      "toAtomId": "ACI-P032-L035-8614AE1561",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P032-L036-1DB4314953 adds a non-equivalent Canvas-bound adds-constraint relationship with its own semantic checkpoint; shared mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:conceptual-plane-separation:scenario-nonintermingling:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:conceptual-plane-separation:2",
+      "fromAtomId": "ACI-P032-L038-5CFADB0FE4-04",
+      "toAtomId": "ACI-P032-L036-1DB4314953",
+      "relationType": "supplies-evidence",
+      "basis": "ACI-P032-L038-5CFADB0FE4-04 adds a non-equivalent Canvas-bound supplies-evidence relationship with its own semantic checkpoint; shared mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:conceptual-plane-separation:scenario-function-form-confusion-rejected:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued typed conceptual-plane relation coordinates",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "participantChoice"
+    ],
+    "validatedHere": [
+      "four-plane inventory",
+      "nonintermingling constraint",
+      "function-unit/form-class conflation rejection"
+    ],
+    "validatedElsewhere": [
+      "participant role internals",
+      "form class classification",
+      "function unit realization"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:semantic",
+      "atomId": "ACI-P032-L035-8614AE1561",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d49a608545bc63d5fcf47f46823820e8d4f940b7d719fb4c2d0ab4e9a170dee5",
+      "predicateId": "conceptual-plane-separation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L035-8614AE1561"
+      ]
+    },
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:guard",
+      "atomId": "ACI-P032-L035-8614AE1561",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d49a608545bc63d5fcf47f46823820e8d4f940b7d719fb4c2d0ab4e9a170dee5",
+      "predicateId": "conceptual-plane-separation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L035-8614AE1561"
+      ]
+    },
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L036-1DB4314953:semantic",
+      "atomId": "ACI-P032-L036-1DB4314953",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:eeb3721f93e0cb04da2143638720536749b25078e0f833a709c0e3498d95d87e",
+      "predicateId": "conceptual-plane-separation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L036-1DB4314953"
+      ]
+    },
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L036-1DB4314953:guard",
+      "atomId": "ACI-P032-L036-1DB4314953",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:eeb3721f93e0cb04da2143638720536749b25078e0f833a709c0e3498d95d87e",
+      "predicateId": "conceptual-plane-separation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L036-1DB4314953"
+      ]
+    },
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04:semantic",
+      "atomId": "ACI-P032-L038-5CFADB0FE4-04",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:89a712163ceacf4dcee05beb9de3ce0f9035952658d9d98d90629a81fcb17f17",
+      "predicateId": "conceptual-plane-separation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04"
+      ]
+    },
+    {
+      "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04:guard",
+      "atomId": "ACI-P032-L038-5CFADB0FE4-04",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:89a712163ceacf4dcee05beb9de3ce0f9035952658d9d98d90629a81fcb17f17",
+      "predicateId": "conceptual-plane-separation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "plane-inventory",
+        "nonintermingling",
+        "function-form-confusion-rejected",
+        "wrong-coordinate"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-plane-inventory:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "plane-inventory",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-plane-inventory:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "plane-inventory",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-plane-inventory:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "plane-inventory",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-nonintermingling:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "nonintermingling",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-nonintermingling:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "nonintermingling",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-nonintermingling:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "nonintermingling",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-function-form-confusion-rejected:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "function-form-confusion-rejected",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-function-form-confusion-rejected:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "function-form-confusion-rejected",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-function-form-confusion-rejected:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "function-form-confusion-rejected",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-wrong-coordinate:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-wrong-coordinate:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:conceptual-plane-separation:scenario-wrong-coordinate:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "conceptual-plane-separation.full-source.v1",
+    "minimumUniqueSources": 12,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "plane-inventory",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "nonintermingling",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "function-form-confusion-rejected",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:conceptual-plane-separation:ACI-P032-L035-8614AE1561",
+      "atomId": "ACI-P032-L035-8614AE1561",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.12.3",
+      "inventoryRecordDigest": "sha256:016d465ef44c3194c457d7643aa9560cce4d224b8ed863a43003cede85f6ca5e",
+      "sourceAnchor": "Note: Function units, form classes, lexical items, and participant roles exist on different conceptual planes (i.e.,…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:conceptual-plane-separation:trust-copied-source",
+            "mutation:conceptual-plane-separation:wrong-analysis-domain",
+            "mutation:conceptual-plane-separation:wrong-owner-identity",
+            "mutation:conceptual-plane-separation:reverse-owner-relation",
+            "mutation:conceptual-plane-separation:corrupt-first-fact",
+            "mutation:conceptual-plane-separation:corrupt-first-classification",
+            "mutation:conceptual-plane-separation:accept-unlicensed-coordinate"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "conceptual-plane-inventory-checkpoint",
+                "conceptual-plane-separation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "conceptual-plane-separation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:conceptual-plane-separation:ACI-P032-L036-1DB4314953",
+      "atomId": "ACI-P032-L036-1DB4314953",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.12.3",
+      "inventoryRecordDigest": "sha256:0382d96b920f6f90d04c0160c232599a56c702caf3522e593f3fdaea64ee1c9b",
+      "sourceAnchor": "They should not, therefore, be intermingled as if they were conceptual mates (as happens, for example, in the…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L036-1DB4314953:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L036-1DB4314953:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:conceptual-plane-separation:trust-copied-source",
+            "mutation:conceptual-plane-separation:wrong-analysis-domain",
+            "mutation:conceptual-plane-separation:wrong-owner-identity",
+            "mutation:conceptual-plane-separation:reverse-owner-relation",
+            "mutation:conceptual-plane-separation:corrupt-first-fact",
+            "mutation:conceptual-plane-separation:corrupt-first-classification",
+            "mutation:conceptual-plane-separation:accept-unlicensed-coordinate"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "conceptual-plane-nonintermingling-checkpoint",
+                "conceptual-plane-separation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "conceptual-plane-separation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04",
+      "atomId": "ACI-P032-L038-5CFADB0FE4-04",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.12.3",
+      "inventoryRecordDigest": "sha256:94c1cd344f50395bc39193fdeb0beead924815e6aefba8b447b477000527855a",
+      "sourceAnchor": "Subjects cooperate with predicates or predicators, not with verbs as a form class.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:conceptual-plane-separation:trust-copied-source",
+            "mutation:conceptual-plane-separation:wrong-analysis-domain",
+            "mutation:conceptual-plane-separation:wrong-owner-identity",
+            "mutation:conceptual-plane-separation:reverse-owner-relation",
+            "mutation:conceptual-plane-separation:corrupt-first-fact",
+            "mutation:conceptual-plane-separation:corrupt-first-classification",
+            "mutation:conceptual-plane-separation:accept-unlicensed-coordinate"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "function-unit-form-class-confusion-checkpoint",
+                "conceptual-plane-separation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "conceptual-plane-separation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:conceptual-plane-separation:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:reverse-owner-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:corrupt-first-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:corrupt-first-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      },
+      {
+        "mutationId": "mutation:conceptual-plane-separation:accept-unlicensed-coordinate",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P032-L035-8614AE1561",
+          "ACI-P032-L036-1DB4314953",
+          "ACI-P032-L038-5CFADB0FE4-04"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No additional exception is licensed by this owner's exact Canvas span.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:conceptual-plane-separation:ACI-P032-L035-8614AE1561:semantic"
+      }
+    ]
+  },
+  "randomSeed": "conceptual-plane-separation.deterministic.v1"
+}

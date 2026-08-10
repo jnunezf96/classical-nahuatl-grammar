@@ -36,10 +36,6 @@ const spec = {
       "assertionId": "classical-demonstrative-pronominal-plural-cooperation:p1913-the-final-n-is-frequently-not-written",
       "canonicalPath": "demonstrativePluralCooperation.cooperationDerivedFromOwnerIssuedVncSource"
     },
-    "claim-p1914::p1914-subject-in-cross-reference-to-the-nuclear-subject-of": {
-      "assertionId": "classical-demonstrative-pronominal-plural-cooperation:p1914-subject-in-cross-reference-to-the-nuclear-subject-of",
-      "canonicalPath": "demonstrativePlural.authorizationStatus"
-    },
     "claim-p1915::p1915-this-nnc-is-a-preterit-aspresent-agentive-nnc-see": {
       "assertionId": "classical-demonstrative-pronominal-plural-cooperation:p1915-this-nnc-is-a-preterit-aspresent-agentive-nnc-see",
       "canonicalPath": "demonstrativePluralCooperation.route"

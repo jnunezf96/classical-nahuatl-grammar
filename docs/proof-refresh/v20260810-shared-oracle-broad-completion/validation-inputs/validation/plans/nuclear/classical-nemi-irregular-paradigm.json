@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "ownerId": "classical-nemi-irregular-paradigm",
+  "atomIds": [
+    "ACI-P109-L016-5287F30C12",
+    "ACI-P109-L018-813CB3CE7E"
+  ],
+  "scenarios": [
+    "claim-1216",
+    "claim-1217"
+  ],
+  "atomIdsByScenario": {
+    "claim-1216": [
+      "ACI-P109-L016-5287F30C12"
+    ],
+    "claim-1217": [
+      "ACI-P109-L018-813CB3CE7E"
+    ]
+  },
+  "relatedAtomIdsByScenario": {
+    "claim-1216": [],
+    "claim-1217": [
+      "ACI-P109-L016-5287F30C12"
+    ]
+  },
+  "scenariosByAtom": {
+    "ACI-P109-L016-5287F30C12": [
+      "claim-1216"
+    ],
+    "ACI-P109-L018-813CB3CE7E": [
+      "claim-1217"
+    ]
+  },
+  "expectedByScenario": {
+    "claim-1216": {
+      "selection": "claim-p1216",
+      "facet": "p1216-nemi-nen-to-live-vncs-built-on-these-stems",
+      "participantChoice": "claim-p1216:p1216-nemi-nen-to-live-vncs-built-on-these-stems",
+      "assertionId": "classical-nemi-irregular-paradigm:p1216-nemi-nen-to-live-vncs-built-on-these-stems",
+      "canonicalStatus": "authorized",
+      "canonicalPath": "lesson11.selectedStem",
+      "oracleExpectation": "nen"
+    },
+    "claim-1217": {
+      "selection": "claim-p1217",
+      "facet": "p1217-finds-vncs-with-a-distant-past-tense-used-with",
+      "participantChoice": "claim-p1217:p1217-finds-vncs-with-a-distant-past-tense-used-with",
+      "assertionId": "classical-nemi-irregular-paradigm:p1217-finds-vncs-with-a-distant-past-tense-used-with",
+      "canonicalStatus": "authorized",
+      "canonicalPath": "lesson11.tenseMapping",
+      "oracleExpectation": {
+        "lexemeId": "nemi",
+        "selectedStem": "nen",
+        "morphologicalTense": "distant-past",
+        "semanticTenseValue": "general-past",
+        "interpretation": "distant-past-as-past",
+        "remapped": true,
+        "relation": "(nemi) > (nen)"
+      }
+    }
+  },
+  "declarationPath": "validation/declarations/lessons4-6/classical-nemi-irregular-paradigm.json",
+  "declarationDigest": "sha256:d742b5a3db67b1205e3f8f50181c481c3c7ae3afbb6b77504f0b28060a3cf04e",
+  "proofRecordAddress": "sha256:db2d36b309a45379c57ae8e52549041da7918831a3f2e75c7da2d6b2450cd196",
+  "compiler": "scripts/lib/andrews_proof_record_compiler.mjs",
+  "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-nemi-irregular-paradigm.mjs"
+}

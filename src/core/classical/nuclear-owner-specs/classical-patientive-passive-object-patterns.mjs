@@ -24,10 +24,6 @@ const spec = {
     "claim-p3701::p3701-when-the-object-pronoun-on-the-passive-vnc-source": {
       "assertionId": "classical-patientive-passive-object-patterns:p3701-when-the-object-pronoun-on-the-passive-vnc-source",
       "canonicalPath": "cases.patientivePassiveObjectPatterns.records.2.authorizationIds.0"
-    },
-    "claim-p3702::p3702-te-tlan-e-uh-ti-l-li-tlan-e": {
-      "assertionId": "classical-patientive-passive-object-patterns:p3702-te-tlan-e-uh-ti-l-li-tlan-e",
-      "canonicalPath": "cases.patientivePassiveObjectPatterns.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlDeverbalPatientiveValidationFrame",

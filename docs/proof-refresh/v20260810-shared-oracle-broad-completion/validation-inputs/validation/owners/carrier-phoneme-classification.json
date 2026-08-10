@@ -1,0 +1,887 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "carrier-phoneme-classification",
+  "operationId": "classical.carrier.phoneme.classify",
+  "indexEntryIds": [
+    "IDX-0834"
+  ],
+  "atomIds": [
+    "ACI-P022-L033-AE3B440D23",
+    "ACI-P022-L033-478D5F9A93",
+    "ACI-P022-L037-894EBF19B1",
+    "ACI-P023-L002-279111D147",
+    "ACI-P023-L012-F4B62F7E06",
+    "ACI-P023-L014-112DF25EB0",
+    "ACI-P023-L014-1C4F5A0C74"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:phoneme-classification:definition-refines-membership",
+      "fromAtomId": "ACI-P022-L033-478D5F9A93",
+      "toAtomId": "ACI-P022-L033-AE3B440D23",
+      "relationType": "refines",
+      "basis": "The definition refines phonological-subsystem membership with the phoneme's meaningless but meaning-distinguishing function.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:definition"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phoneme-classification:features-add-condition",
+      "fromAtomId": "ACI-P022-L037-894EBF19B1",
+      "toAtomId": "ACI-P022-L033-478D5F9A93",
+      "relationType": "adds-condition",
+      "basis": "The physical-makeup atom adds the articulatory feature organization by voicing, place, and manner.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:articulatory-features"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phoneme-classification:functional-identity-adds-constraint",
+      "fromAtomId": "ACI-P023-L002-279111D147",
+      "toAtomId": "ACI-P022-L037-894EBF19B1",
+      "relationType": "adds-constraint",
+      "basis": "The identity atom constrains physical feature makeup by requiring enculturated perception of functional distinctiveness to establish phoneme identity.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:functional-identity"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phoneme-classification:inventory-adds-constraint",
+      "fromAtomId": "ACI-P023-L012-F4B62F7E06",
+      "toAtomId": "ACI-P023-L002-279111D147",
+      "relationType": "adds-constraint",
+      "basis": "The inventory atom constrains phoneme nature, variety, and number to a particular language.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:language-inventory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phoneme-classification:single-symbol-adds-realization",
+      "fromAtomId": "ACI-P023-L014-112DF25EB0",
+      "toAtomId": "ACI-P022-L033-478D5F9A93",
+      "relationType": "adds-realization",
+      "basis": "The symbolization atom adds the documentary one-sound, one-alphabetic-symbol representation convention.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:single-symbol"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phoneme-classification:special-symbols-add-condition",
+      "fromAtomId": "ACI-P023-L014-1C4F5A0C74",
+      "toAtomId": "ACI-P023-L014-112DF25EB0",
+      "relationType": "adds-condition",
+      "basis": "The special-symbol atom adds the consequence that the one-symbol convention can require dedicated symbols and routes Nahuatl inventory detail to §§2.2-2.3.",
+      "discriminatingCaseIds": [
+        "case:phoneme-classification:special-symbols"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "phonological-subsystem membership",
+      "meaningless but meaning-distinguishing function",
+      "articulatory organization by voicing, place, and manner",
+      "enculturated functional distinctiveness as phoneme identity",
+      "language-specific phonemic inventory",
+      "one-sound one-alphabetic-symbol convention",
+      "possible need for special phonemic symbols and the Nahuatl cross-reference"
+    ],
+    "validatedElsewhere": [
+      "contextual phone repertories and environment-conditioned realization",
+      "grapheme identity and spelling correspondence",
+      "Classical Nahuatl phonemic inventory in §§2.2-2.3",
+      "written boundary realization",
+      "Nahuatl word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:phoneme-classification:subsystem-membership",
+      "atomId": "ACI-P022-L033-AE3B440D23",
+      "kind": "exact-subsystem-membership",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9f7aa641fe5899203468f40ad56fdc45013aad39512aa5123bcb9784ab38b787",
+      "predicateId": "phoneme-classification.subsystem-membership",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P022-L033-AE3B440D23"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:definition",
+      "atomId": "ACI-P022-L033-478D5F9A93",
+      "kind": "exact-functional-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:a487b5379fa66b08d86263c9320bc34b9f9af461236709b8d7d47601bdc60787",
+      "predicateId": "phoneme-classification.definition",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P022-L033-478D5F9A93"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:articulatory-features",
+      "atomId": "ACI-P022-L037-894EBF19B1",
+      "kind": "exact-articulatory-feature-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:01611df08d921a0c88519135ed799a7de27590b985a8f45e573e38a46705c94c",
+      "predicateId": "phoneme-classification.articulatory-features",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P022-L037-894EBF19B1"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:functional-identity",
+      "atomId": "ACI-P023-L002-279111D147",
+      "kind": "exact-functional-identity-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2a724b87b7182ca1cd43ca6f68f7a3fd89235c9f3d2c28a42a0d39ef907e687c",
+      "predicateId": "phoneme-classification.functional-identity",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P023-L002-279111D147"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:language-inventory",
+      "atomId": "ACI-P023-L012-F4B62F7E06",
+      "kind": "exact-language-specific-inventory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:05fa357ef56c9d01430f4f45d6bb7f9cd0f22d349dcb5a2272e8db7916866d9f",
+      "predicateId": "phoneme-classification.language-inventory",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P023-L012-F4B62F7E06"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:single-symbol",
+      "atomId": "ACI-P023-L014-112DF25EB0",
+      "kind": "exact-symbolization-convention",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7134a3b094c2479fc63e12e79f25a1c9c0f5413b8030ff26dd0e3b101c06d8d1",
+      "predicateId": "phoneme-classification.single-symbol",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P023-L014-112DF25EB0"
+      ]
+    },
+    {
+      "oracleId": "oracle:phoneme-classification:special-symbols",
+      "atomId": "ACI-P023-L014-1C4F5A0C74",
+      "kind": "exact-special-symbol-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:01561c9fedfcc5f9ee662ce54cefd2b520e2e2a7ed1562bfddd63261f70ff683",
+      "predicateId": "phoneme-classification.special-symbols",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-phoneme-classification:ACI-P023-L014-1C4F5A0C74"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "phonemeFacet",
+      "values": [
+        "subsystem-membership",
+        "functional-definition",
+        "articulatory-features",
+        "functional-identity",
+        "language-inventory",
+        "single-symbol",
+        "special-symbols"
+      ]
+    },
+    {
+      "id": "sourceSelection",
+      "values": [
+        "phoneme"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:phoneme-classification:subsystem-membership",
+      "coordinates": {
+        "phonemeFacet": "subsystem-membership",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:definition",
+      "coordinates": {
+        "phonemeFacet": "functional-definition",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:articulatory-features",
+      "coordinates": {
+        "phonemeFacet": "articulatory-features",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:functional-identity",
+      "coordinates": {
+        "phonemeFacet": "functional-identity",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:language-inventory",
+      "coordinates": {
+        "phonemeFacet": "language-inventory",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:single-symbol",
+      "coordinates": {
+        "phonemeFacet": "single-symbol",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    },
+    {
+      "caseId": "case:phoneme-classification:special-symbols",
+      "coordinates": {
+        "phonemeFacet": "special-symbols",
+        "sourceSelection": "phoneme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.1"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "carrier-phoneme-classification.full-source.v1",
+    "minimumUniqueSources": 7,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "phonemeFacet": "subsystem-membership",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "functional-definition",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "articulatory-features",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "functional-identity",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "language-inventory",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "single-symbol",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "phonemeFacet": "special-symbols",
+          "sourceSelection": "phoneme"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:phoneme-classification:functional-identity",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:phoneme-classification:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L033-AE3B440D23",
+          "ACI-P022-L033-478D5F9A93"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:omit-subsystem-membership",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L033-AE3B440D23"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:omit-meaning-distinction",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L033-478D5F9A93"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:omit-articulatory-features",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L037-894EBF19B1"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:physical-identity-only",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P023-L002-279111D147"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:universal-inventory",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P023-L012-F4B62F7E06"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:omit-single-symbol",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L014-112DF25EB0"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:omit-special-symbols",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L014-1C4F5A0C74"
+        ]
+      },
+      {
+        "mutationId": "mutation:phoneme-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P022-L033-AE3B440D23",
+          "ACI-P022-L033-478D5F9A93",
+          "ACI-P022-L037-894EBF19B1",
+          "ACI-P023-L002-279111D147",
+          "ACI-P023-L012-F4B62F7E06",
+          "ACI-P023-L014-112DF25EB0",
+          "ACI-P023-L014-1C4F5A0C74"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected phoneme claims define a category and its conditions; they state no exception to phoneme identity.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:phoneme-classification:functional-identity"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only phoneme classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:phoneme-classification:definition"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Phonological carrier elements are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:phoneme-classification:subsystem-membership"
+      }
+    ]
+  },
+  "randomSeed": "carrier-phoneme-classification.full-source.v1",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P022-L033-AE3B440D23",
+      "atomId": "ACI-P022-L033-AE3B440D23",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:f96b8b82dd0afb15b8362f9e734a4712c5adc31290f405a76cae79ae78286b88",
+      "sourceAnchor": "Phonemes are members of a language's phonological subsystem.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:subsystem-membership"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:wrong-domain",
+            "mutation:phoneme-classification:omit-subsystem-membership",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-subsystem-membership-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-subsystem-membership-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P022-L033-478D5F9A93",
+      "atomId": "ACI-P022-L033-478D5F9A93",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:1ab0125cd078e4231f528c6cf3d4a740a24a5f2acf19d4be06f15d682e571c17",
+      "sourceAnchor": "A phoneme is a theoretical segment of sound which, while itself devoid of meaning, serves to distinguish meanings;…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:definition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:wrong-domain",
+            "mutation:phoneme-classification:omit-meaning-distinction",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-meaning-distinction-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-meaning-distinction-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P022-L037-894EBF19B1",
+      "atomId": "ACI-P022-L037-894EBF19B1",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:8cdd8bdd91f0d82551fa9ff95b79c215cacd6ccbfc159544421ec84602ab5f62",
+      "sourceAnchor": "Phonemes differ from one another because of their (ideal) physical makeup as determined by (ideal) muscular…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:articulatory-features"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:omit-articulatory-features",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-articulatory-features-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-articulatory-features-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P023-L002-279111D147",
+      "atomId": "ACI-P023-L002-279111D147",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:d27659df3a0b497f34a128fa81908851ef78d32acbc5c9e80c9dda1e04f044db",
+      "sourceAnchor": "But while a phoneme depends on a particular selection and interaction of distinctive features (i.e., its (ideal)…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:functional-identity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:physical-identity-only",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-enculturated-functional-identity-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-enculturated-functional-identity-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P023-L012-F4B62F7E06",
+      "atomId": "ACI-P023-L012-F4B62F7E06",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:327af938c562f603a2771c5dd15c5af30d8e2980a8a4d49aa89084087cfeb4a3",
+      "sourceAnchor": "The nature, variety, and number of phonemes in a language's phonemic inventory are particular to that language.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:language-inventory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:universal-inventory",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-language-specific-inventory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-language-specific-inventory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P023-L014-112DF25EB0",
+      "atomId": "ACI-P023-L014-112DF25EB0",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:297646d783bf4bfefd974eef6bbdd2282931eb6b38c08fd180bc106593d0f8e0",
+      "sourceAnchor": "A phoneme is symbolized by a single alphabetic letter (one sound, one symbol).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:single-symbol"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:omit-single-symbol",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-one-sound-one-symbol-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-one-sound-one-symbol-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-phoneme-classification:ACI-P023-L014-1C4F5A0C74",
+      "atomId": "ACI-P023-L014-1C4F5A0C74",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.6.1",
+      "inventoryRecordDigest": "sha256:1c1df8fecb57cb8227c00329ffce10955a23b7a76eb18a7c6a0ef491faadbd70",
+      "sourceAnchor": "Consequently, special symbols may be required",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phoneme-classification:special-symbols"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "phonemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "phonemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phoneme-classification:omit-special-symbols",
+            "mutation:phoneme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phoneme-special-symbol-requirement-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phoneme-special-symbol-requirement-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

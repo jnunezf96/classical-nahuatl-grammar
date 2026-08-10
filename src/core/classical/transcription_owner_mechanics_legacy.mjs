@@ -180,10 +180,25 @@ function recordFor(target, spec, selection) {
   return null;
 }
 
-function executeCanonicalSelection(target, spec, selection, familyKernel = null) {
+function executeCanonicalSelection(target, spec, selection, familyKernel = null, coordinate = null) {
   const invoke = (phase, callback) => familyKernel?.invoke
     ? familyKernel.invoke(spec, selection, phase, callback)
     : callback();
+  if (spec.mode === "owner-typed-assertion") {
+    const semanticAssertion = coordinate?.semanticAssertion || null;
+    const authorized = Boolean(
+      semanticAssertion
+      && semanticAssertion.assertionOwnerId === spec.ownerId
+      && semanticAssertion.grammaticalForce === "productive-canonical-grammar"
+    );
+    return deepFreeze({
+      authorized,
+      reason: authorized ? "" : `${spec.ownerId}-typed-semantic-assertion-required`,
+      definition: authorized ? { semanticAssertion } : null,
+      canonicalFrame: null,
+      payload: authorized ? { definition: sanitize({ semanticAssertion }) } : {},
+    });
+  }
   if (spec.mode === "canonical-operation") {
     const executor = target?.[spec.executionFunctionName];
     const validator = target?.[spec.executionValidatorName];
@@ -513,6 +528,7 @@ function createMechanism(target, spec, familyKernel = null) {
         spec,
         source.selection,
         familyKernel,
+        context.coordinate,
       )
       : deepFreeze({ authorized: false, reason: sourceReason, payload: {}, canonicalFrame: null });
     const reason = sourceReason || canonical.reason || "";
@@ -602,10 +618,13 @@ function createMechanism(target, spec, familyKernel = null) {
       outcome: { status: execution.status, reason: execution.reason },
     });
     const facetValue = authorized
-      ? sanitize(valueAtPath(
-        canonical.definition,
-        context.coordinate.canonicalPath || "",
-      ))
+      ? sanitize(
+        context.coordinate.semanticAssertion
+        ?? valueAtPath(
+          canonical.definition,
+          context.coordinate.canonicalPath || "",
+        )
+      )
       : undefined;
     const proofObservationStatus = !authorized
       ? "blocked"
@@ -671,6 +690,13 @@ function createMechanism(target, spec, familyKernel = null) {
           context.coordinate.broadCompletionProxyRetired === true,
       } : {},
       ownerExecutionCompleted: authorized,
+      grammaticalForce: authorized ? "productive-canonical-grammar" : "",
+      evidencePolicy: deepFreeze({
+        evidenceAuthorizesGrammar: false,
+        evidenceAbsenceBlocksResult: false,
+        examplesWhitelistRealization: false,
+        inventoryAuthorizesGrammar: false,
+      }),
       unitConstructed: false,
       boundaryRewritten: authorized && realizesCanonicalOutput
         && canonical.canonicalFrame?.authorizationStatus === "authorized",

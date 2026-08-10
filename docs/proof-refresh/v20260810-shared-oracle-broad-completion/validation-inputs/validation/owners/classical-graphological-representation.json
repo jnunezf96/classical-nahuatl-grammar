@@ -1,0 +1,1155 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-graphological-representation",
+  "operationId": "classical.orthography.graphological-representation.analyze",
+  "indexEntryIds": [
+    "IDX-0425",
+    "IDX-0426",
+    "IDX-0427",
+    "IDX-1024"
+  ],
+  "atomIds": [
+    "ACI-P039-L007-2C1DE9E201",
+    "ACI-P039-L008-483475B7F1",
+    "ACI-P039-L009-12800DB414",
+    "ACI-P039-L010-C014D0FE1B",
+    "ACI-P039-L010-9ACAD2E5CB",
+    "ACI-P039-L015-D741EB618B"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:classical-graphological-representation:1",
+      "fromAtomId": "ACI-P039-L008-483475B7F1",
+      "toAtomId": "ACI-P039-L007-2C1DE9E201",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L008-483475B7F1 supplies a non-equivalent digraph-inventory checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-graphological-representation:scenario-digraph-inventory:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-graphological-representation:2",
+      "fromAtomId": "ACI-P039-L009-12800DB414",
+      "toAtomId": "ACI-P039-L007-2C1DE9E201",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L009-12800DB414 supplies a non-equivalent u-not-vowel checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-graphological-representation:scenario-u-not-vowel:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-graphological-representation:3",
+      "fromAtomId": "ACI-P039-L010-C014D0FE1B",
+      "toAtomId": "ACI-P039-L007-2C1DE9E201",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L010-C014D0FE1B supplies a non-equivalent u-consonantal-digraph-only checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-graphological-representation:scenario-u-consonantal-digraph-only:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-graphological-representation:4",
+      "fromAtomId": "ACI-P039-L010-9ACAD2E5CB",
+      "toAtomId": "ACI-P039-L007-2C1DE9E201",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L010-9ACAD2E5CB supplies a non-equivalent u-digraph-roles checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-graphological-representation:scenario-u-digraph-roles:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-graphological-representation:5",
+      "fromAtomId": "ACI-P039-L015-D741EB618B",
+      "toAtomId": "ACI-P039-L007-2C1DE9E201",
+      "relationType": "refines",
+      "basis": "ACI-P039-L015-D741EB618B supplies a non-equivalent ordinary-and-irregular-phone-relation checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-graphological-representation:scenario-ordinary-and-irregular-phone-relation:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued typed Classical graphological-representation analysis coordinates",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "participantChoice"
+    ],
+    "validatedHere": [
+      "the transcription's letter inventory",
+      "the digraph inventory and positional variants",
+      "the nonvocalic and digraph-only distribution of u",
+      "the three digraph-conditioned roles of u",
+      "the default phoneme relation and conditioned irregular-phone relation"
+    ],
+    "validatedElsewhere": [
+      "segmental phoneme inventory",
+      "typed phoneme-environment realization",
+      "boundary spelling output and word generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:semantic",
+      "atomId": "ACI-P039-L007-2C1DE9E201",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:18b001f0bc8b848d6ba621c4962cd55b9ba79837e55a251426b38f5e5af61df4",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L007-2C1DE9E201"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:guard",
+      "atomId": "ACI-P039-L007-2C1DE9E201",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:18b001f0bc8b848d6ba621c4962cd55b9ba79837e55a251426b38f5e5af61df4",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L007-2C1DE9E201"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L008-483475B7F1:semantic",
+      "atomId": "ACI-P039-L008-483475B7F1",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:0ce882649ca2d1e714a9ecec89c792bfcc0d62e89f38ff0fcce9e57ccf1bda84",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L008-483475B7F1"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L008-483475B7F1:guard",
+      "atomId": "ACI-P039-L008-483475B7F1",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:0ce882649ca2d1e714a9ecec89c792bfcc0d62e89f38ff0fcce9e57ccf1bda84",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L008-483475B7F1"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L009-12800DB414:semantic",
+      "atomId": "ACI-P039-L009-12800DB414",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:afb945373fddda2f5e9190c5fe125127bcda70599bf94e343398cc62ef5e5e72",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L009-12800DB414"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L009-12800DB414:guard",
+      "atomId": "ACI-P039-L009-12800DB414",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:afb945373fddda2f5e9190c5fe125127bcda70599bf94e343398cc62ef5e5e72",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L009-12800DB414"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L010-C014D0FE1B:semantic",
+      "atomId": "ACI-P039-L010-C014D0FE1B",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:dfc6c7f54cafb958b752cd5bd5aa671c36e273f856e18b5e3ea1d32b0fd3ba46",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L010-C014D0FE1B"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L010-C014D0FE1B:guard",
+      "atomId": "ACI-P039-L010-C014D0FE1B",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:dfc6c7f54cafb958b752cd5bd5aa671c36e273f856e18b5e3ea1d32b0fd3ba46",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L010-C014D0FE1B"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB:semantic",
+      "atomId": "ACI-P039-L010-9ACAD2E5CB",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f8bfaf717e03a811ed84f50868183ad30e01555e7524484707f64347d98dccb2",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB:guard",
+      "atomId": "ACI-P039-L010-9ACAD2E5CB",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f8bfaf717e03a811ed84f50868183ad30e01555e7524484707f64347d98dccb2",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L015-D741EB618B:semantic",
+      "atomId": "ACI-P039-L015-D741EB618B",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:abd2b052f87ba6065c4012043874ee7d1730fa080bb3709c51edd7a880cd89b2",
+      "predicateId": "classical-graphological-representation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L015-D741EB618B"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-graphological-representation:ACI-P039-L015-D741EB618B:guard",
+      "atomId": "ACI-P039-L015-D741EB618B",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:abd2b052f87ba6065c4012043874ee7d1730fa080bb3709c51edd7a880cd89b2",
+      "predicateId": "classical-graphological-representation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-graphological-representation:ACI-P039-L015-D741EB618B"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "letter-inventory",
+        "digraph-inventory",
+        "u-not-vowel",
+        "u-consonantal-digraph-only",
+        "u-digraph-roles",
+        "ordinary-and-irregular-phone-relation",
+        "wrong-coordinate"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:classical-graphological-representation:scenario-letter-inventory:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "letter-inventory",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-letter-inventory:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "letter-inventory",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-letter-inventory:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "letter-inventory",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-digraph-inventory:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "digraph-inventory",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-digraph-inventory:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "digraph-inventory",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-digraph-inventory:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "digraph-inventory",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-not-vowel:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "u-not-vowel",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-not-vowel:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "u-not-vowel",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-not-vowel:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "u-not-vowel",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-consonantal-digraph-only:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "u-consonantal-digraph-only",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-consonantal-digraph-only:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "u-consonantal-digraph-only",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-consonantal-digraph-only:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "u-consonantal-digraph-only",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-digraph-roles:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "u-digraph-roles",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-digraph-roles:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "u-digraph-roles",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-u-digraph-roles:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "u-digraph-roles",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-ordinary-and-irregular-phone-relation:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "ordinary-and-irregular-phone-relation",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-ordinary-and-irregular-phone-relation:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "ordinary-and-irregular-phone-relation",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-ordinary-and-irregular-phone-relation:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "ordinary-and-irregular-phone-relation",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-wrong-coordinate:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-wrong-coordinate:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-graphological-representation:scenario-wrong-coordinate:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-graphological-representation.full-source.v1",
+    "minimumUniqueSources": 21,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "letter-inventory",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "digraph-inventory",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "u-not-vowel",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "u-consonantal-digraph-only",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "u-digraph-roles",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "ordinary-and-irregular-phone-relation",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L007-2C1DE9E201",
+      "atomId": "ACI-P039-L007-2C1DE9E201",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:6a5bf660f39fc88451df6cb8fde569a065ad8569f74632976a86c3399f06f70b",
+      "sourceAnchor": "In this text the spelling conventions used to represent these Nahuatl sounds employ the following letters: a, c, e,…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-letter-inventory-fact",
+            "mutation:classical-graphological-representation:corrupt-letter-inventory-classification",
+            "mutation:classical-graphological-representation:reverse-letter-inventory-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "graphological-letter-inventory-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L008-483475B7F1",
+      "atomId": "ACI-P039-L008-483475B7F1",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:1c6f8393957a7d3d8ee118a1008f8ee55160c8c6749b473d9a21c109ff25ff7f",
+      "sourceAnchor": "Several of these are used in digraphs (two letters to represent one sound): ch, cu ~ uc, hu ~uh, qu, tz, tl.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L008-483475B7F1:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L008-483475B7F1:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-digraph-inventory-fact",
+            "mutation:classical-graphological-representation:corrupt-digraph-inventory-classification",
+            "mutation:classical-graphological-representation:reverse-digraph-inventory-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "graphological-digraph-inventory-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L009-12800DB414",
+      "atomId": "ACI-P039-L009-12800DB414",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:ce439878cc1c4a52dbf4adc1162896e0684b9f8f6700c6cd13f907cb35433a57",
+      "sourceAnchor": "The letter U does not represent a vowel.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L009-12800DB414:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L009-12800DB414:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-u-not-vowel-fact",
+            "mutation:classical-graphological-representation:corrupt-u-not-vowel-classification",
+            "mutation:classical-graphological-representation:reverse-u-not-vowel-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "letter-u-nonvocalic-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L010-C014D0FE1B",
+      "atomId": "ACI-P039-L010-C014D0FE1B",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:0da517655a2c700f154c5ee9afe9e824980895c0e83c157fe0d8c28aedb636d0",
+      "sourceAnchor": "It occurs only in a consonantal digraph.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L010-C014D0FE1B:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L010-C014D0FE1B:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-u-consonantal-digraph-only-fact",
+            "mutation:classical-graphological-representation:corrupt-u-consonantal-digraph-only-classification",
+            "mutation:classical-graphological-representation:reverse-u-consonantal-digraph-only-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "letter-u-digraph-distribution-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB",
+      "atomId": "ACI-P039-L010-9ACAD2E5CB",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:826ad1dde64e2afba86d849dc891238a874917af95d51853cdb7d69d8c4ef580",
+      "sourceAnchor": "In cu ~ uc, u represents the labial release feature of /kʷ/.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L010-9ACAD2E5CB:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-u-digraph-roles-fact",
+            "mutation:classical-graphological-representation:corrupt-u-digraph-roles-classification",
+            "mutation:classical-graphological-representation:reverse-u-digraph-roles-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "letter-u-digraph-role-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-graphological-representation:ACI-P039-L015-D741EB618B",
+      "atomId": "ACI-P039-L015-D741EB618B",
+      "obligationType": "exception",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:787e4b36a42a94d622405bfb921fa2fe93cdcee1f7785e7a6ef3bf6dbbfef079",
+      "sourceAnchor": "Nahuatl spelling generally represents phonemes.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L015-D741EB618B:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-graphological-representation:ACI-P039-L015-D741EB618B:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-graphological-representation:trust-copied-source",
+            "mutation:classical-graphological-representation:wrong-analysis-domain",
+            "mutation:classical-graphological-representation:wrong-owner-identity",
+            "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+            "mutation:classical-graphological-representation:corrupt-ordinary-and-irregular-phone-relation-fact",
+            "mutation:classical-graphological-representation:corrupt-ordinary-and-irregular-phone-relation-classification",
+            "mutation:classical-graphological-representation:reverse-ordinary-and-irregular-phone-relation-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "ordinary-and-irregular-phone-relation-checkpoint",
+                "classical-graphological-representation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-graphological-representation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:classical-graphological-representation:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201",
+          "ACI-P039-L008-483475B7F1",
+          "ACI-P039-L009-12800DB414",
+          "ACI-P039-L010-C014D0FE1B",
+          "ACI-P039-L010-9ACAD2E5CB",
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201",
+          "ACI-P039-L008-483475B7F1",
+          "ACI-P039-L009-12800DB414",
+          "ACI-P039-L010-C014D0FE1B",
+          "ACI-P039-L010-9ACAD2E5CB",
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201",
+          "ACI-P039-L008-483475B7F1",
+          "ACI-P039-L009-12800DB414",
+          "ACI-P039-L010-C014D0FE1B",
+          "ACI-P039-L010-9ACAD2E5CB",
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:accept-unlicensed-coordinate",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201",
+          "ACI-P039-L008-483475B7F1",
+          "ACI-P039-L009-12800DB414",
+          "ACI-P039-L010-C014D0FE1B",
+          "ACI-P039-L010-9ACAD2E5CB",
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-letter-inventory-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-letter-inventory-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-letter-inventory-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L007-2C1DE9E201"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-digraph-inventory-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L008-483475B7F1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-digraph-inventory-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L008-483475B7F1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-digraph-inventory-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L008-483475B7F1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-not-vowel-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L009-12800DB414"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-not-vowel-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L009-12800DB414"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-u-not-vowel-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L009-12800DB414"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-consonantal-digraph-only-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L010-C014D0FE1B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-consonantal-digraph-only-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L010-C014D0FE1B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-u-consonantal-digraph-only-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L010-C014D0FE1B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-digraph-roles-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L010-9ACAD2E5CB"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-u-digraph-roles-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L010-9ACAD2E5CB"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-u-digraph-roles-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L010-9ACAD2E5CB"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-ordinary-and-irregular-phone-relation-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:corrupt-ordinary-and-irregular-phone-relation-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L015-D741EB618B"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-graphological-representation:reverse-ordinary-and-irregular-phone-relation-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L015-D741EB618B"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The exact conditioned irregular-phone alternative is owned here; no additional exception is licensed by this span.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This read-only carrier analysis neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-graphological-representation:ACI-P039-L007-2C1DE9E201:semantic"
+      }
+    ]
+  },
+  "randomSeed": "classical-graphological-representation.deterministic.v1"
+}

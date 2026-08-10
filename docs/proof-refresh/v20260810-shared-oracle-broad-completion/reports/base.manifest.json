@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "manifestId": "andrews-proof-corpus-base-v1",
+  "mode": "base-only",
+  "base": {
+    "runs": "/Users/jaimenunez/Desktop/Classical_Nahuatl/Classical_Nahuatl_Grammar/validation/runs",
+    "routes": "/Users/jaimenunez/Desktop/Classical_Nahuatl/Classical_Nahuatl_Grammar/validation/routes",
+    "snapshotDigest": "sha256:62926066b59b54a5334f539351df78c4f4a596a2944878af2c9a1f6a9d8aa275"
+  },
+  "overlays": [],
+  "contentDigest": "sha256:7a44cdbe71ce43c63f8085929ef09641c7f84d2a7b86e5ae0e90a27f3a5f9ac3"
+}

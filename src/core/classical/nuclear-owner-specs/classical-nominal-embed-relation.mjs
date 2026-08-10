@@ -9,12 +9,7 @@ const spec = {
   "selections": [
     "claim-p2962"
   ],
-  "coordinates": {
-    "claim-p2962::p2962-there-are-then-three-types-of-incorporated-nnc-compound": {
-      "assertionId": "classical-nominal-embed-relation:p2962-there-are-then-three-types-of-incorporated-nnc-compound",
-      "canonicalPath": "cases.base.rules.nominal-embed/relation"
-    }
-  },
+  "coordinates": {},
   "executionFunctionName": "buildClassicalNahuatlNominalEmbedValidationFrame",
   "executionValidatorName": "isClassicalNahuatlNominalEmbedValidationFrame",
   "executionArgsBySelection": {

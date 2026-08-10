@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "ownerId": "conceptual-plane-separation",
+  "authority": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "bindings": [
+    {
+      "bindingId": "canvas-binding:conceptual-plane-separation:ACI-P032-L035-8614AE1561",
+      "atomId": "ACI-P032-L035-8614AE1561",
+      "startLine": 1122,
+      "endLine": 1123,
+      "sourceDigest": "sha256:d49a608545bc63d5fcf47f46823820e8d4f940b7d719fb4c2d0ab4e9a170dee5",
+      "requiredText": [
+        "exist on different conceptual planes"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:conceptual-plane-separation:ACI-P032-L036-1DB4314953",
+      "atomId": "ACI-P032-L036-1DB4314953",
+      "startLine": 1123,
+      "endLine": 1125,
+      "sourceDigest": "sha256:eeb3721f93e0cb04da2143638720536749b25078e0f833a709c0e3498d95d87e",
+      "requiredText": [
+        "should not, therefore, be intermingled"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:conceptual-plane-separation:ACI-P032-L038-5CFADB0FE4-04",
+      "atomId": "ACI-P032-L038-5CFADB0FE4-04",
+      "startLine": 1125,
+      "endLine": 1127,
+      "sourceDigest": "sha256:89a712163ceacf4dcee05beb9de3ce0f9035952658d9d98d90629a81fcb17f17",
+      "requiredText": [
+        "never cooperate with verbs but, rather, with predicates or predicators"
+      ],
+      "status": "bound-current"
+    }
+  ]
+}
+

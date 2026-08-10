@@ -1,0 +1,564 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "carrier-sigeme-classification",
+  "operationId": "classical.carrier.sigeme.classify",
+  "indexEntryIds": [
+    "IDX-0171",
+    "IDX-1009"
+  ],
+  "atomIds": [
+    "ACI-P023-L031-C883FC8A7E",
+    "ACI-P023-L033-66EC97F7A1",
+    "ACI-P023-L035-7999A49BFC",
+    "ACI-P023-L036-0ECB58A90D"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:sigeme-classification:inventory-adds-constraint",
+      "fromAtomId": "ACI-P023-L033-66EC97F7A1",
+      "toAtomId": "ACI-P023-L031-C883FC8A7E",
+      "relationType": "adds-constraint",
+      "basis": "The inventory atom constrains the soundless carrier contrast to exactly one sigeme per language system.",
+      "discriminatingCaseIds": [
+        "case:sigeme-classification:single-inventory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:sigeme-classification:definition-refines-carrier",
+      "fromAtomId": "ACI-P023-L035-7999A49BFC",
+      "toAtomId": "ACI-P023-L031-C883FC8A7E",
+      "relationType": "refines",
+      "basis": "The definition refines soundless carrier status as a single-membered set of meaning-bearing silence.",
+      "discriminatingCaseIds": [
+        "case:sigeme-classification:meaning-bearing-silence"
+      ]
+    },
+    {
+      "relationId": "atom-relation:sigeme-classification:notation-adds-realization",
+      "fromAtomId": "ACI-P023-L036-0ECB58A90D",
+      "toAtomId": "ACI-P023-L035-7999A49BFC",
+      "relationType": "adds-realization",
+      "basis": "The notation atom adds documentary /Ø/ representation and its distinction from the vowel o without authorizing a generated zero surface.",
+      "discriminatingCaseIds": [
+        "case:sigeme-classification:slash-oval-zero"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "soundless sigeme and sounded phoneme as equally effective carrier elements",
+      "exactly one sigeme per language system",
+      "single-membered set of meaning-bearing silence",
+      "documentary /Ø/ notation distinct from the vowel o"
+    ],
+    "validatedElsewhere": [
+      "regular [0] and irregular [⎕] sig-token classification",
+      "morpheme-specific zero realization",
+      "Classical Nahuatl word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:sigeme-classification:silent-carrier-equivalence",
+      "atomId": "ACI-P023-L031-C883FC8A7E",
+      "kind": "exact-silent-carrier-equivalence",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:920a4ae498a0fa3e4344102ecfe104cc12d4f1cf37346b089c659fea78cd7b5c",
+      "predicateId": "sigeme-classification.silent-carrier-equivalence",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-sigeme-classification:ACI-P023-L031-C883FC8A7E"
+      ]
+    },
+    {
+      "oracleId": "oracle:sigeme-classification:single-inventory",
+      "atomId": "ACI-P023-L033-66EC97F7A1",
+      "kind": "exact-single-sigeme-inventory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:da891a03078a81f24b98c3fe90c5ade459e4616c247365d68ff38d1427abd0c0",
+      "predicateId": "sigeme-classification.single-inventory",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-sigeme-classification:ACI-P023-L033-66EC97F7A1"
+      ]
+    },
+    {
+      "oracleId": "oracle:sigeme-classification:meaning-bearing-silence",
+      "atomId": "ACI-P023-L035-7999A49BFC",
+      "kind": "exact-meaning-bearing-silence-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:47bbc19ed0fb9ab7e81fff300d02d2b2c61334541c22e1b47683f6421a98d570",
+      "predicateId": "sigeme-classification.meaning-bearing-silence",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-sigeme-classification:ACI-P023-L035-7999A49BFC"
+      ]
+    },
+    {
+      "oracleId": "oracle:sigeme-classification:slash-oval-zero",
+      "atomId": "ACI-P023-L036-0ECB58A90D",
+      "kind": "exact-slash-oval-zero-notation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3d64d81e1b6302f0af141322d4807196be284096d042c36245b96e2404146886",
+      "predicateId": "sigeme-classification.slash-oval-zero",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-sigeme-classification:ACI-P023-L036-0ECB58A90D"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "sigemeFacet",
+      "values": [
+        "silent-carrier-equivalence",
+        "single-inventory",
+        "meaning-bearing-silence",
+        "slash-oval-zero"
+      ]
+    },
+    {
+      "id": "sourceSelection",
+      "values": [
+        "sigeme"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:sigeme-classification:silent-carrier-equivalence",
+      "coordinates": {
+        "sigemeFacet": "silent-carrier-equivalence",
+        "sourceSelection": "sigeme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.3"
+    },
+    {
+      "caseId": "case:sigeme-classification:single-inventory",
+      "coordinates": {
+        "sigemeFacet": "single-inventory",
+        "sourceSelection": "sigeme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.3"
+    },
+    {
+      "caseId": "case:sigeme-classification:meaning-bearing-silence",
+      "coordinates": {
+        "sigemeFacet": "meaning-bearing-silence",
+        "sourceSelection": "sigeme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.3"
+    },
+    {
+      "caseId": "case:sigeme-classification:slash-oval-zero",
+      "coordinates": {
+        "sigemeFacet": "slash-oval-zero",
+        "sourceSelection": "sigeme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.3"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "carrier-sigeme-classification.full-source.v1",
+    "minimumUniqueSources": 4,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "sigemeFacet": "silent-carrier-equivalence",
+          "sourceSelection": "sigeme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sigemeFacet": "single-inventory",
+          "sourceSelection": "sigeme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sigemeFacet": "meaning-bearing-silence",
+          "sourceSelection": "sigeme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sigemeFacet": "slash-oval-zero",
+          "sourceSelection": "sigeme"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:sigeme-classification:silent-carrier-equivalence",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:sigeme-classification:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P023-L031-C883FC8A7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:omit-silent-carrier-equivalence",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L031-C883FC8A7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:many-sigemes-per-language",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P023-L033-66EC97F7A1"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:omit-meaning-bearing-silence",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L035-7999A49BFC"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:replace-oval-with-square-zero",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P023-L036-0ECB58A90D"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:omit-vowel-o-distinction",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L036-0ECB58A90D"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:make-displayed-zero-authoritative",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P023-L036-0ECB58A90D"
+        ]
+      },
+      {
+        "mutationId": "mutation:sigeme-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P023-L031-C883FC8A7E",
+          "ACI-P023-L033-66EC97F7A1",
+          "ACI-P023-L035-7999A49BFC",
+          "ACI-P023-L036-0ECB58A90D"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected type-level sigeme claims state no exception; regular and irregular sig tokens belong to the separate token owner.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:sigeme-classification:slash-oval-zero"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only sigeme classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:sigeme-classification:meaning-bearing-silence"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Silent carrier elements are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:sigeme-classification:silent-carrier-equivalence"
+      }
+    ]
+  },
+  "randomSeed": "carrier-sigeme-classification.full-source.v1",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:carrier-sigeme-classification:ACI-P023-L031-C883FC8A7E",
+      "atomId": "ACI-P023-L031-C883FC8A7E",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.6.3",
+      "inventoryRecordDigest": "sha256:8c0985cee671d1e04476c3c1892176f081a1dbc052857db7c4ce0a40284ef286",
+      "sourceAnchor": "Here, however, the wider term \"carrier system\" has been chosen because-although not commonly acknowledged-meaning is…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sigeme-classification:silent-carrier-equivalence"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "sigemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sigeme-classification:wrong-domain",
+            "mutation:sigeme-classification:omit-silent-carrier-equivalence",
+            "mutation:sigeme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sigeme-silent-carrier-equivalence-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sigeme-silent-carrier-equivalence-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-sigeme-classification:ACI-P023-L033-66EC97F7A1",
+      "atomId": "ACI-P023-L033-66EC97F7A1",
+      "obligationType": "rule",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6.3",
+      "inventoryRecordDigest": "sha256:7edabdfc110ab7fb0f3cf43c326e61d8775fce14121b5ac5b6432504d5b5ec2c",
+      "sourceAnchor": "Of course, while a language can have a fairly large inventory of phonemes, it has only one sigeme (just as in the…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sigeme-classification:single-inventory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "sigemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sigeme-classification:many-sigemes-per-language",
+            "mutation:sigeme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sigeme-single-inventory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sigeme-single-inventory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-sigeme-classification:ACI-P023-L035-7999A49BFC",
+      "atomId": "ACI-P023-L035-7999A49BFC",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6.3",
+      "inventoryRecordDigest": "sha256:81e5aab773b3621bab1a891181175f1630d4fc1051eeb5909a5f6c56b678ee1f",
+      "sourceAnchor": "A sigeme is a single-membered set of meaning-bearing silence (see the comments on silence in § 1.7).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sigeme-classification:meaning-bearing-silence"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "sigemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sigeme-classification:omit-meaning-bearing-silence",
+            "mutation:sigeme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sigeme-meaning-bearing-silence-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sigeme-meaning-bearing-silence-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-sigeme-classification:ACI-P023-L036-0ECB58A90D",
+      "atomId": "ACI-P023-L036-0ECB58A90D",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.6.3",
+      "inventoryRecordDigest": "sha256:7f37f890bbd3d7e1e3742d1202d461f7ee6b5e84877aef13c5f1b7940cccd432",
+      "sourceAnchor": "A sigeme is represented by /Ø/, an oval zero.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sigeme-classification:slash-oval-zero"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "sigemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sigeme-classification:replace-oval-with-square-zero",
+            "mutation:sigeme-classification:omit-vowel-o-distinction",
+            "mutation:sigeme-classification:make-displayed-zero-authoritative",
+            "mutation:sigeme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sigeme-slash-oval-zero-notation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sigeme-slash-oval-zero-notation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

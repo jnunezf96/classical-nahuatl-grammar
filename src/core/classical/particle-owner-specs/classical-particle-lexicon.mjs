@@ -46,6 +46,14 @@ const spec = {
     "l3-iye"
   ],
   "coordinates": {
+    "cn-achi::achi-ach-liaison-contrast": {
+      "assertionId": "classical-particle-lexicon:achi-ach-liaison-contrast",
+      "canonicalPath": ""
+    },
+    "l3-ach::ach-doubt-particle-identity": {
+      "assertionId": "classical-particle-lexicon:ach-doubt-particle-identity",
+      "canonicalPath": ""
+    },
     "l3-ca::p487-ca-indeed-in-fact-introducer-for-principal-clause-ca": {
       "assertionId": "classical-particle-lexicon:p487-ca-indeed-in-fact-introducer-for-principal-clause-ca",
       "canonicalPath": ""
@@ -66,9 +74,9 @@ const spec = {
       "assertionId": "classical-particle-lexicon:p491-o-here-is-here-are-here-you-have-behold",
       "canonicalPath": ""
     },
-    "l3-in::p492-in-the-a-an-who-that-when-if-etc": {
-      "assertionId": "classical-particle-lexicon:p492-in-the-a-an-who-that-when-if-etc",
-      "canonicalPath": ""
+    "l3-in::in-contextual-meanings": {
+      "assertionId": "classical-particle-lexicon:in-contextual-meanings",
+      "canonicalPath": "lexicalFactFrame.meanings"
     },
     "l3-anca::p493-anca-therefore-if-that-is-the-case-then-it": {
       "assertionId": "classical-particle-lexicon:p493-anca-therefore-if-that-is-the-case-then-it",
@@ -138,9 +146,9 @@ const spec = {
       "assertionId": "classical-particle-lexicon:p510-expresses-pain-i-say-there-hey-initiates-a-vocative",
       "canonicalPath": ""
     },
-    "l3-e-vocative::p511-e-o-hey-the-vocative-or-direct-address-particle": {
-      "assertionId": "classical-particle-lexicon:p511-e-o-hey-the-vocative-or-direct-address-particle",
-      "canonicalPath": ""
+    "l3-e-vocative::e-vocative-function": {
+      "assertionId": "classical-particle-lexicon:e-vocative-function",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.function"
     },
     "l3-a::p512-a-alas": {
       "assertionId": "classical-particle-lexicon:p512-a-alas",
@@ -194,13 +202,65 @@ const spec = {
       "assertionId": "classical-particle-lexicon:p524-iye-yes",
       "canonicalPath": ""
     },
-    "l3-ach::ach-doubt-particle-identity": {
-      "assertionId": "classical-particle-lexicon:ach-doubt-particle-identity",
-      "canonicalPath": ""
+    "l3-in::in-adjunctor": {
+      "assertionId": "classical-particle-lexicon:in-adjunctor",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.category"
     },
-    "cn-achi::achi-ach-liaison-contrast": {
-      "assertionId": "classical-particle-lexicon:achi-ach-liaison-contrast",
-      "canonicalPath": ""
+    "l3-in::in-context-translation": {
+      "assertionId": "classical-particle-lexicon:in-context-translation",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.contextualTranslation"
+    },
+    "l3-in::in-adjunction-optional": {
+      "assertionId": "classical-particle-lexicon:in-adjunction-optional",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.adjoinedUnitMarking"
+    },
+    "l3-in::in-adjoined-unit-scope": {
+      "assertionId": "classical-particle-lexicon:in-adjoined-unit-scope",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.adjoinedUnitScope"
+    },
+    "l3-in::in-not-determiner": {
+      "assertionId": "classical-particle-lexicon:in-not-determiner",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.determinerStatus"
+    },
+    "l3-in::nounstem-no-definiteness": {
+      "assertionId": "classical-particle-lexicon:nounstem-no-definiteness",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.nounstemDefinitenessContrast"
+    },
+    "l3-in::nahuatl-grammar-nuclear-clause-unit": {
+      "assertionId": "classical-particle-lexicon:nahuatl-grammar-nuclear-clause-unit",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.grammarUnit"
+    },
+    "l3-in::nounstem-actualization-requirement": {
+      "assertionId": "classical-particle-lexicon:nounstem-actualization-requirement",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.nounstemActualizationRequirement"
+    },
+    "l3-in::actualization-no-determiner-position": {
+      "assertionId": "classical-particle-lexicon:actualization-no-determiner-position",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.actualizationDeterminerPosition"
+    },
+    "l3-in::ce-one-in-number-not-determiner": {
+      "assertionId": "classical-particle-lexicon:ce-one-in-number-not-determiner",
+      "canonicalPath": "lexicalFactFrame.adjunctorProfile.ceSemanticAnalysis"
+    },
+    "l3-e-vocative::e-male-speaker": {
+      "assertionId": "classical-particle-lexicon:e-male-speaker",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.speakerGender"
+    },
+    "l3-e-vocative::e-obligatory-binding": {
+      "assertionId": "classical-particle-lexicon:e-obligatory-binding",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.attachmentHost"
+    },
+    "l3-e-vocative::e-attracts-stress": {
+      "assertionId": "classical-particle-lexicon:e-attracts-stress",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.stressBehavior"
+    },
+    "l3-e-vocative::e-written-stress-accent": {
+      "assertionId": "classical-particle-lexicon:e-written-stress-accent",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.writtenStressAccent"
+    },
+    "l3-e-vocative::hash-obligatory-left-attachment": {
+      "assertionId": "classical-particle-lexicon:hash-obligatory-left-attachment",
+      "canonicalPath": "lexicalFactFrame.vocativeProfile.boundaryNotation"
     }
   },
   "ruleGetterName": "getClassicalNahuatlParticleSourceEntries",

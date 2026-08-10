@@ -1,0 +1,1170 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "phone-repertory-analysis",
+  "operationId": "classical.carrier.phone.repertory.analyze",
+  "indexEntryIds": [
+    "IDX-0831",
+    "IDX-0832",
+    "IDX-0833",
+    "IDX-0834",
+    "IDX-0835"
+  ],
+  "atomIds": [
+    "ACI-P025-L013-D86D42970D",
+    "ACI-P025-L017-7F505766AE",
+    "ACI-P025-L018-CBEA0C32E5",
+    "ACI-P025-L021-DF42A7FD1E",
+    "ACI-P025-L023-DC972EE0B6",
+    "ACI-P025-L025-7F845F243B",
+    "ACI-P025-L025-D93A8B370D",
+    "ACI-P025-L029-B44E4F4DFD",
+    "ACI-P025-L032-D94B8184A3",
+    "ACI-P039-L025-A0793B2361",
+    "ACI-P039-L027-566A4F635F"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:single-repertory-adds-constraint",
+      "fromAtomId": "ACI-P025-L017-7F505766AE",
+      "toAtomId": "ACI-P025-L013-D86D42970D",
+      "relationType": "adds-constraint",
+      "basis": "The one-member repertory claim constrains the phone definition by allowing a phoneme to have exactly one phone.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:single-member-repertory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:multiple-repertory-adds-realization",
+      "fromAtomId": "ACI-P025-L018-CBEA0C32E5",
+      "toAtomId": "ACI-P025-L013-D86D42970D",
+      "relationType": "adds-realization",
+      "basis": "The multiple-member repertory claim adds the common realization in which one phoneme has two or more phones.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:multiple-member-repertory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:regular-adds-constraint",
+      "fromAtomId": "ACI-P025-L021-DF42A7FD1E",
+      "toAtomId": "ACI-P025-L013-D86D42970D",
+      "relationType": "adds-constraint",
+      "basis": "The regular-phone claim adds the constraint that a regular phone contains only the phoneme's distinctive features.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:regular-phone"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:irregular-adds-exception",
+      "fromAtomId": "ACI-P025-L023-DC972EE0B6",
+      "toAtomId": "ACI-P025-L021-DF42A7FD1E",
+      "relationType": "adds-exception",
+      "basis": "The irregular-phone alternative is an explicit exception to the regular distinctive-feature-only pattern.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:irregular-phone"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:distant-irregular-refines-exception",
+      "fromAtomId": "ACI-P025-L025-7F845F243B",
+      "toAtomId": "ACI-P025-L023-DC972EE0B6",
+      "relationType": "refines",
+      "basis": "The seriously or totally different phone refines the irregular alternative beyond slight variation.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:distant-irregular-phone"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:cross-identity-adds-condition",
+      "fromAtomId": "ACI-P025-L025-D93A8B370D",
+      "toAtomId": "ACI-P025-L025-7F845F243B",
+      "relationType": "adds-condition",
+      "basis": "When a phone differs from its phoneme, it may coincide with the regular phone of another phoneme.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:cross-phoneme-identity"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:nahuatl-adds-realization",
+      "fromAtomId": "ACI-P025-L029-B44E4F4DFD",
+      "toAtomId": "ACI-P025-L025-D93A8B370D",
+      "relationType": "adds-realization",
+      "basis": "The Nahuatl claim adds the exact regular and irregular phone correspondences for n, ch, and t without making the Lesson 2 cross-reference authoritative.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:nahuatl-irregular-repertory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:symbol-specificity-adds-alternative",
+      "fromAtomId": "ACI-P025-L032-D94B8184A3",
+      "toAtomId": "ACI-P025-L013-D86D42970D",
+      "relationType": "adds-realization",
+      "basis": "Loose and strict symbolization add alternative documentary projections of a phone without changing its identity.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:symbol-specificity"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:optionality-adds-constraint",
+      "fromAtomId": "ACI-P039-L025-A0793B2361",
+      "toAtomId": "ACI-P025-L023-DC972EE0B6",
+      "relationType": "adds-constraint",
+      "basis": "The Classical repertory statement adds the non-equivalent distribution constraint that irregular phones may be obligatory, optional, or rarely optional without supplying their unlicensed selection environments.",
+      "discriminatingCaseIds": [
+        "case:phone-repertory-analysis:repertory-optionality"
+      ]
+    },
+    {
+      "relationId": "atom-relation:phone-repertory-analysis:classical-cross-identity-corroborates",
+      "fromAtomId": "ACI-P039-L027-566A4F635F",
+      "toAtomId": "ACI-P025-L025-D93A8B370D",
+      "relationType": "corroborates",
+      "basis": "The Canvas explicitly says 'As stated in §1.8.1' and repeats the same cross-phoneme phone-identity claim; the following morphemic-source explanation is a separate evidence atom and is not promoted here.",
+      "discriminatingCaseIds": []
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-phone-repertory-analysis-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "read-only analysis of a phone as a nondistinctive phoneme token in a specifiable environment",
+      "one-member and multiple-member phonic repertories",
+      "regular distinctive-feature-only phones",
+      "irregular and seriously or totally different phones",
+      "cross-phoneme phone identity",
+      "the exact Nahuatl n, ch, and t regular and irregular repertory claims",
+      "loose and strict phone-symbol representation",
+      "the Classical obligatory, optional, and rare-optional irregular-phone distribution constraint",
+      "the explicit Lesson 2 corroboration of cross-phoneme phone identity"
+    ],
+    "validatedElsewhere": [
+      "phoneme identity and language-specific inventory",
+      "the English and Spanish examples retained as evidence",
+      "actual phoneme, phone/feature, and environment coordinates",
+      "Lesson 2 contextual spelling and boundary realization",
+      "the independently owned graph/grapheme token analysis",
+      "Classical word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:phone-repertory-analysis:definition",
+      "atomId": "ACI-P025-L013-D86D42970D",
+      "kind": "exact-phone-token-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2f3ae25af6cce2ae9146ec2aeb5623eb711053c9ed2465a323aab39d596479e5",
+      "predicateId": "phone-repertory-analysis.definition",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L013-D86D42970D"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:single-member-repertory",
+      "atomId": "ACI-P025-L017-7F505766AE",
+      "kind": "exact-single-member-repertory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d6b157c6525826194d04454eff731becc9821edc23e6b9b5409b1246cade7187",
+      "predicateId": "phone-repertory-analysis.single-member-repertory",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L017-7F505766AE"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:multiple-member-repertory",
+      "atomId": "ACI-P025-L018-CBEA0C32E5",
+      "kind": "exact-multiple-member-repertory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:dae9e99b883cc375474fae0f9ce79d8e8deffbc4e8860c5b6323616427cc94d9",
+      "predicateId": "phone-repertory-analysis.multiple-member-repertory",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L018-CBEA0C32E5"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:regular-phone",
+      "atomId": "ACI-P025-L021-DF42A7FD1E",
+      "kind": "exact-regular-phone-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:aa0c52c952b4aa04f09366f112aea99fa4ddf3e08614f9024f8693026ab84a3d",
+      "predicateId": "phone-repertory-analysis.regular-phone",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L021-DF42A7FD1E"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:irregular-phone",
+      "atomId": "ACI-P025-L023-DC972EE0B6",
+      "kind": "exact-irregular-phone-alternative",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:bfb7a4e5f950014d2af04926f0249377c28c9ad6c5b2ba5072493ccae4ebe74f",
+      "predicateId": "phone-repertory-analysis.irregular-phone",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L023-DC972EE0B6"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:distant-irregular-phone",
+      "atomId": "ACI-P025-L025-7F845F243B",
+      "kind": "exact-distant-irregular-alternative",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:aec93fcea6069076a8629d3e6d294a169a79461756e1538f6096efe240433126",
+      "predicateId": "phone-repertory-analysis.distant-irregular-phone",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L025-7F845F243B"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:cross-phoneme-identity",
+      "atomId": "ACI-P025-L025-D93A8B370D",
+      "kind": "exact-cross-phoneme-identity-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:72fdee43f649d863b8ee6086ed0661fbdc42dd9fdfebb90e2b1a23bbbbe4ef63",
+      "predicateId": "phone-repertory-analysis.cross-phoneme-identity",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L025-D93A8B370D"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:nahuatl-irregular-repertory",
+      "atomId": "ACI-P025-L029-B44E4F4DFD",
+      "kind": "exact-nahuatl-phone-repertory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2b8c084ab84cc5d2ffef4ad1bdb2f26a54f5304aa1ad8c406612f5f9a061e685",
+      "predicateId": "phone-repertory-analysis.nahuatl-irregular-repertory",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L029-B44E4F4DFD"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:symbol-specificity",
+      "atomId": "ACI-P025-L032-D94B8184A3",
+      "kind": "exact-loose-strict-symbol-alternative",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e6a5de800e89fee8ef0ba59201154593a0b263b6eb760e6a7a74227ab70ecf7f",
+      "predicateId": "phone-repertory-analysis.symbol-specificity",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P025-L032-D94B8184A3"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:repertory-optionality",
+      "atomId": "ACI-P039-L025-A0793B2361",
+      "kind": "exact-irregular-phone-optionality",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:4e30156c72c5fb59896199704d9c212530997611fe63e895f4a07d0e9f6d82ff",
+      "predicateId": "phone-repertory-analysis.repertory-optionality",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P039-L025-A0793B2361"
+      ]
+    },
+    {
+      "oracleId": "oracle:phone-repertory-analysis:classical-cross-phoneme-identity",
+      "atomId": "ACI-P039-L027-566A4F635F",
+      "kind": "exact-classical-cross-phoneme-identity-corroboration",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9f1444e75c4777eb18c5a358c084cf14e24522e804a5c5677c6028345e441e7d",
+      "predicateId": "phone-repertory-analysis.classical-cross-phoneme-identity",
+      "canvasBindingIds": [
+        "canvas-binding:phone-repertory-analysis:ACI-P039-L027-566A4F635F"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "analysisFacet",
+      "values": [
+        "phone-definition",
+        "single-member-repertory",
+        "multiple-member-repertory",
+        "regular-phone",
+        "irregular-phone",
+        "distant-irregular-phone",
+        "cross-phoneme-identity",
+        "nahuatl-irregular-repertory",
+        "symbol-specificity",
+        "repertory-optionality"
+      ]
+    },
+    {
+      "id": "sourceDomain",
+      "values": [
+        "phone-repertory-analysis"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:phone-repertory-analysis:definition",
+      "coordinates": {
+        "analysisFacet": "phone-definition",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:single-member-repertory",
+      "coordinates": {
+        "analysisFacet": "single-member-repertory",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:multiple-member-repertory",
+      "coordinates": {
+        "analysisFacet": "multiple-member-repertory",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:regular-phone",
+      "coordinates": {
+        "analysisFacet": "regular-phone",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:irregular-phone",
+      "coordinates": {
+        "analysisFacet": "irregular-phone",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:distant-irregular-phone",
+      "coordinates": {
+        "analysisFacet": "distant-irregular-phone",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:cross-phoneme-identity",
+      "coordinates": {
+        "analysisFacet": "cross-phoneme-identity",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:nahuatl-irregular-repertory",
+      "coordinates": {
+        "analysisFacet": "nahuatl-irregular-repertory",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:symbol-specificity",
+      "coordinates": {
+        "analysisFacet": "symbol-specificity",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.1"
+    },
+    {
+      "caseId": "case:phone-repertory-analysis:repertory-optionality",
+      "coordinates": {
+        "analysisFacet": "repertory-optionality",
+        "sourceDomain": "phone-repertory-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-2.1"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "phone-repertory-analysis.full-source.v1",
+    "minimumUniqueSources": 10,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "analysisFacet": "phone-definition",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "single-member-repertory",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "multiple-member-repertory",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "regular-phone",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "irregular-phone",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "distant-irregular-phone",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "cross-phoneme-identity",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "nahuatl-irregular-repertory",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "symbol-specificity",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisFacet": "repertory-optionality",
+          "sourceDomain": "phone-repertory-analysis"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:phone-repertory-analysis:definition",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:phone-repertory-analysis:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L013-D86D42970D"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:omit-definition",
+        "category": "output",
+        "atomIds": [
+          "ACI-P025-L013-D86D42970D"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:forbid-single-repertory",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P025-L017-7F505766AE"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:forbid-multiple-repertory",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P025-L018-CBEA0C32E5"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:regular-allows-added-features",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L021-DF42A7FD1E"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:omit-irregular-alternative",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P025-L023-DC972EE0B6"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:collapse-distant-irregular",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P025-L025-7F845F243B"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:forbid-cross-phoneme-identity",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L025-D93A8B370D"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:omit-nahuatl-repertory",
+        "category": "output",
+        "atomIds": [
+          "ACI-P025-L029-B44E4F4DFD"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:collapse-symbol-specificity",
+        "category": "output",
+        "atomIds": [
+          "ACI-P025-L032-D94B8184A3"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:collapse-optionality",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P039-L025-A0793B2361"
+        ]
+      },
+      {
+        "mutationId": "mutation:phone-repertory-analysis:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P025-L013-D86D42970D",
+          "ACI-P025-L017-7F505766AE",
+          "ACI-P025-L018-CBEA0C32E5",
+          "ACI-P025-L021-DF42A7FD1E",
+          "ACI-P025-L023-DC972EE0B6",
+          "ACI-P025-L025-7F845F243B",
+          "ACI-P025-L025-D93A8B370D",
+          "ACI-P025-L029-B44E4F4DFD",
+          "ACI-P025-L032-D94B8184A3",
+          "ACI-P039-L025-A0793B2361",
+          "ACI-P039-L027-566A4F635F"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "valence",
+        "reason": "Phone-repertory analysis neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:phone-repertory-analysis:definition"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Phones and phonemes are carrier elements, not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:phone-repertory-analysis:definition"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L013-D86D42970D",
+      "atomId": "ACI-P025-L013-D86D42970D",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:19e7f29d2280b9498e7c4e79ccabfcd3da4fd6d969eb92d623be8372c3a74bdc",
+      "sourceAnchor": "A phone is a token-level nondistinctive (i.e., noncontrastive) representation of a phoneme occurring in a…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:definition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisFacet",
+              "sourceDomain"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:wrong-domain",
+            "mutation:phone-repertory-analysis:omit-definition",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-definition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-definition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L017-7F505766AE",
+      "atomId": "ACI-P025-L017-7F505766AE",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:b6ac61cd5db4274aa2debb7f9d5b2cf6678861450ca0240d4085f6a06dc93fed",
+      "sourceAnchor": "A phoneme may have a phonic repertory of only one member ( e.g., the English phoneme /b/ has [b] as its only phone).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:single-member-repertory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:forbid-single-repertory",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-single-member-repertory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-single-member-repertory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L018-CBEA0C32E5",
+      "atomId": "ACI-P025-L018-CBEA0C32E5",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:90f0ca578719dfa2e9e584679ec8a2538c89a92146c84355d1bf7c13befd63f1",
+      "sourceAnchor": "More commonly, however, a phoneme's phonic repertory has two or more members (for example, the English phoneme /l/…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:multiple-member-repertory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:forbid-multiple-repertory",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-multiple-member-repertory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-multiple-member-repertory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L021-DF42A7FD1E",
+      "atomId": "ACI-P025-L021-DF42A7FD1E",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:92b078c09ac22f35d5d2b79e02228c39d0b83d5e791585b04ad9aa097b443739",
+      "sourceAnchor": "A phone may be regular (i.e., it contains only the distinctive features of the phoneme)",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:regular-phone"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:regular-allows-added-features",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-regular-feature-identity-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-regular-feature-identity-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L023-DC972EE0B6",
+      "atomId": "ACI-P025-L023-DC972EE0B6",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:4587bc4d60a1c188c717556cbaa607eae1eb15ec1c4756217a11ed5e6aa59857",
+      "sourceAnchor": "Or it can be irregular.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:irregular-phone"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:omit-irregular-alternative",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-irregular-alternative-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-irregular-alternative-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L025-7F845F243B",
+      "atomId": "ACI-P025-L025-7F845F243B",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:90015f57cfcdb59a3e3b69cd8b07ac9284da1142f20310945b76a4f318584ce7",
+      "sourceAnchor": "Or it may be seriously or even totally different.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:distant-irregular-phone"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:collapse-distant-irregular",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-distant-irregular-alternative-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-distant-irregular-alternative-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L025-D93A8B370D",
+      "atomId": "ACI-P025-L025-D93A8B370D",
+      "obligationType": "condition",
+      "inventoryCategory": "CON",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:3216b94c6afe89c12fc4a0f3ea28575b3b0062b07bc350e263c8d546807c807f",
+      "sourceAnchor": "When a phone is different from its phoneme, it can even be identical to the regular phone of another phoneme; for…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:cross-phoneme-identity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:forbid-cross-phoneme-identity",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-cross-phoneme-identity-condition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-cross-phoneme-identity-condition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L029-B44E4F4DFD",
+      "atomId": "ACI-P025-L029-B44E4F4DFD",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:19b8fb79d81e220088d53041c1f44d76b15389a484bd1595bc5276f953e21b60",
+      "sourceAnchor": "In Nahuatl [n] is a regular phone of /n/ and an irregular phone of /m/; [č] is a regular phone of /č/ and an…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:nahuatl-irregular-repertory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:omit-nahuatl-repertory",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-nahuatl-irregular-repertory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-nahuatl-irregular-repertory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P025-L032-D94B8184A3",
+      "atomId": "ACI-P025-L032-D94B8184A3",
+      "obligationType": "alternative",
+      "inventoryCategory": "ALT",
+      "canvasReference": "§1.8.1",
+      "inventoryRecordDigest": "sha256:3c0fc9ad67a8398ea143d23ed248c9d8451a4f009b1005ac29e202535a9a8da4",
+      "sourceAnchor": "The representation of phones by symbols may be \"loose,\" leaning toward the generality of the type, or \"strict,\"…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:symbol-specificity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:collapse-symbol-specificity",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-symbol-specificity-alternative-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-symbol-specificity-alternative-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P039-L025-A0793B2361",
+      "atomId": "ACI-P039-L025-A0793B2361",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:7a4be21497bc6b9421f36a11c3c7c09e54803199b4f8b448d83796890836e315",
+      "sourceAnchor": "Some of the irregular phones in a phoneme's repertory are optional (and, in some instances, rare) while others are…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:repertory-optionality"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:collapse-optionality",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-repertory-optionality-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-repertory-optionality-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:phone-repertory-analysis:ACI-P039-L027-566A4F635F",
+      "atomId": "ACI-P039-L027-566A4F635F",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:2590408c84fa6350b1baf99d93e822c54ceecda0ec8950239da92f3afa31d893",
+      "sourceAnchor": "As stated in $ 1.8.1, at times an irregular phone in a phoneme's phonic repertory will be identical to the regular…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:phone-repertory-analysis:classical-cross-phoneme-identity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:phone-repertory-analysis:forbid-cross-phoneme-identity",
+            "mutation:phone-repertory-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "phone-cross-phoneme-identity-condition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "phone-cross-phoneme-identity-condition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "phone-repertory-analysis.full-source.v1"
+}

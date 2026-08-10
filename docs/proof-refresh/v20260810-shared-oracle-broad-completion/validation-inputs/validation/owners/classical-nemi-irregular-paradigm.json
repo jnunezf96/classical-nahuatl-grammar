@@ -1,0 +1,485 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-nemi-irregular-paradigm",
+  "operationId": "classical.nemi.irregular.paradigm.execute",
+  "indexEntryIds": [
+    "IDX-0276",
+    "IDX-0834",
+    "IDX-1227"
+  ],
+  "atomIds": [
+    "ACI-P109-L016-5287F30C12",
+    "ACI-P109-L018-813CB3CE7E"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:classical-nemi-irregular-paradigm:1",
+      "fromAtomId": "ACI-P109-L018-813CB3CE7E",
+      "toAtomId": "ACI-P109-L016-5287F30C12",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-nemi-irregular-paradigm:scenario-claim-1217:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "proofRecordCompilation": {
+    "compilerVersion": 2,
+    "declarationPath": "validation/declarations/lessons4-6/classical-nemi-irregular-paradigm.json",
+    "declarationDigest": "sha256:d742b5a3db67b1205e3f8f50181c481c3c7ae3afbb6b77504f0b28060a3cf04e",
+    "proofRecordAddress": "sha256:db2d36b309a45379c57ae8e52549041da7918831a3f2e75c7da2d6b2450cd196",
+    "liveExecutionRequiredForMigration": true,
+    "routeStepsGeneratedByCompiler": false
+  },
+  "contractBoundary": {
+    "inputAuthority": "owner-issued typed classical-nemi-irregular-paradigm coordinates",
+    "suppliedFacts": [
+      "analysisDomain",
+      "selection",
+      "requestedFacet",
+      "participantChoice"
+    ],
+    "validatedHere": [
+      "classical-nemi-irregular-paradigm:p1216-nemi-nen-to-live-vncs-built-on-these-stems",
+      "classical-nemi-irregular-paradigm:p1217-finds-vncs-with-a-distant-past-tense-used-with"
+    ],
+    "validatedElsewhere": [
+      "other semantic owners",
+      "lesson metadata",
+      "stored examples and answers"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:semantic",
+      "atomId": "ACI-P109-L016-5287F30C12",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§11.4.9",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:50a0e9b4c1beada6e9006811168e07b978895e20e24c36e9f3195e04668cef89",
+      "predicateId": "classical-nemi-irregular-paradigm.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:guard",
+      "atomId": "ACI-P109-L016-5287F30C12",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§11.4.9",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:50a0e9b4c1beada6e9006811168e07b978895e20e24c36e9f3195e04668cef89",
+      "predicateId": "classical-nemi-irregular-paradigm.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E:semantic",
+      "atomId": "ACI-P109-L018-813CB3CE7E",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§11.4.9",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2862314e9ba19aeea505b63bcf922fa40899fa2092609131dd908640689de5dc",
+      "predicateId": "classical-nemi-irregular-paradigm.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E:guard",
+      "atomId": "ACI-P109-L018-813CB3CE7E",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§11.4.9",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2862314e9ba19aeea505b63bcf922fa40899fa2092609131dd908640689de5dc",
+      "predicateId": "classical-nemi-irregular-paradigm.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "claim-1216",
+        "claim-1217",
+        "wrong-coordinate"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1216:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-1216",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1217:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-1217",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1216:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-1216",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1216:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-1216",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1217:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-1217",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-claim-1217:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-1217",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-wrong-coordinate:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-wrong-coordinate:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-nemi-irregular-paradigm:scenario-wrong-coordinate:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-nemi-irregular-paradigm.full-source.v1",
+    "minimumUniqueSources": 9,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "claim-1216",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-1217",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12",
+      "atomId": "ACI-P109-L016-5287F30C12",
+      "obligationType": "structural-schema",
+      "inventoryCategory": "SCH",
+      "canvasReference": "§11.4.9",
+      "inventoryRecordDigest": "sha256:e2471f58c435b618a26757ca2cf0cf01be2524bc76c98882b3f7c08280b6df42",
+      "sourceAnchor": "(nemi) > (nen) = to live. VNCs built on these stems are regular in all tenses. However, despite the fact that there…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-nemi-irregular-paradigm:trust-copied-source",
+            "mutation:classical-nemi-irregular-paradigm:wrong-analysis-domain",
+            "mutation:classical-nemi-irregular-paradigm:wrong-owner-identity",
+            "mutation:classical-nemi-irregular-paradigm:wrong-operation-identity",
+            "mutation:classical-nemi-irregular-paradigm:accept-unlicensed-coordinate",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-first-assertion",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-canonical-facet-value",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-claim-1216-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-nemi-irregular-paradigm-p1216-nemi-nen-to-live-vncs-built-on-these-stems-checkpoint",
+                "classical-nemi-irregular-paradigm-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-nemi-irregular-paradigm-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E",
+      "atomId": "ACI-P109-L018-813CB3CE7E",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§11.4.9",
+      "inventoryRecordDigest": "sha256:d553c7231c988c561a90f8e945b2e67b2c7882a2b92d1de5ed81db6e098cbd27",
+      "sourceAnchor": "finds VNCs with a distant-past tense used with a distant-past-as-past meaning; for example:",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-nemi-irregular-paradigm:trust-copied-source",
+            "mutation:classical-nemi-irregular-paradigm:wrong-analysis-domain",
+            "mutation:classical-nemi-irregular-paradigm:wrong-owner-identity",
+            "mutation:classical-nemi-irregular-paradigm:wrong-operation-identity",
+            "mutation:classical-nemi-irregular-paradigm:accept-unlicensed-coordinate",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-first-assertion",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-canonical-facet-value",
+            "mutation:classical-nemi-irregular-paradigm:corrupt-claim-1217-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-nemi-irregular-paradigm-p1217-finds-vncs-with-a-distant-past-tense-used-with-checkpoint",
+                "classical-nemi-irregular-paradigm-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-nemi-irregular-paradigm-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:wrong-operation-identity",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:accept-unlicensed-coordinate",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:corrupt-first-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:corrupt-canonical-facet-value",
+        "category": "output",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12",
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:corrupt-claim-1216-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P109-L016-5287F30C12"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-nemi-irregular-paradigm:corrupt-claim-1217-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P109-L018-813CB3CE7E"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No contextual exception is owned by this exact semantic contract.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This phonological or transcription owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12:semantic"
+      }
+    ]
+  },
+  "randomSeed": "classical-nemi-irregular-paradigm.deterministic.v1"
+}

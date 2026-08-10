@@ -50,6 +50,7 @@ const IRREGULAR_RECIPES = Object.freeze({
   "ihca-present": ["(ih-ca)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "present", verbClass: "A" }],
   "ihca-past": ["(ih-ca)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "general-past", verbClass: "A" }],
   "ono-present": ["(on-o)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "present", verbClass: "A" }],
+  "ono-connective-t-matrix": ["(on-o)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "present", verbClass: "A", connectiveTMatrix: true }],
   "pilca-present": ["(pil-ca)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "A" }],
   "a-present": ["(ā)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "present", verbClass: "A", polarity: "positive" }],
   "a-negative": ["(ā)", { valence: "intransitive", subject: "1sg", mood: "indicative", tense: "present", verbClass: "A", polarity: "negative", negative: true }],
@@ -59,7 +60,9 @@ const IRREGULAR_RECIPES = Object.freeze({
   "amia-quen": ["(am-i-ā)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "C", construction: "quēn" }],
   "amia-quen-mach": ["(am-i-ā)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "C", construction: "quēn-mach" }],
   "zero-ia": ["(0-i-ā)", { valence: "intransitive", subject: "3pl", mood: "indicative", tense: "present", verbClass: "C", zeroRoot: true }],
-  "mani-present": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "B", referentClass: "mass-or-crowd" }],
+  "mani-present": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "B", referentKind: "mass-or-crowd" }],
+  "mani-wide-flat": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "B", referentKind: "wide-flat-thing" }],
+  "mani-individual-animate": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "present", verbClass: "B", referentKind: "individual-animate" }],
   "mani-preterit": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "preterit", verbClass: "B" }],
   "mani-past": ["(mani)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "general-past", verbClass: "B" }],
   "nemi-past": ["(nemi)", { valence: "intransitive", subject: "3sg", mood: "indicative", tense: "general-past", verbClass: "A" }],
@@ -190,6 +193,9 @@ function compactCanonicalFrame(frame, recipeId) {
       relation: plan.paradigmRelationFrame?.relationDisplay || "",
       zeroRootPreserved: plan.zeroRootPreserved === true,
       requiredCooperatingLayer: plan.requiredCooperatingLayer || "",
+      regularSystemRemainsAuthority:
+        plan.regularSystemRemainsAuthority === true,
+      fusedDirectional: plan.fusedDirectionalSlotOwnership || null,
     },
   });
 }
@@ -320,6 +326,9 @@ export function createClassicalVncValidationSemanticOperationsApi(targetObject =
         relation: plan.paradigmRelationFrame?.relationDisplay || "",
         zeroRootPreserved: plan.zeroRootPreserved === true,
         requiredCooperatingLayer: plan.requiredCooperatingLayer || "",
+        regularSystemRemainsAuthority:
+          plan.regularSystemRemainsAuthority === true,
+        fusedDirectional: plan.fusedDirectionalSlotOwnership || null,
       },
     });
   }

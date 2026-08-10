@@ -1,0 +1,568 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "sig-token-classification",
+  "operationId": "classical.carrier.sig.token.classify",
+  "indexEntryIds": [
+    "IDX-1008",
+    "IDX-1009",
+    "IDX-1262",
+    "IDX-1263"
+  ],
+  "atomIds": [
+    "ACI-P025-L037-71B57177AC",
+    "ACI-P025-L037-5D87EC0010",
+    "ACI-P025-L038-A7DF113DAB",
+    "ACI-P025-L039-D796BF4184",
+    "ACI-P025-L040-7EB970CB7A"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:sig-token-classification:regular-zero-adds-constraint",
+      "fromAtomId": "ACI-P025-L037-5D87EC0010",
+      "toAtomId": "ACI-P025-L037-71B57177AC",
+      "relationType": "adds-constraint",
+      "basis": "The [0] notation and singleton-token claim constrain the regular sig definition without authorizing a glyph-derived Source.",
+      "discriminatingCaseIds": [
+        "case:sig-token-classification:regular"
+      ]
+    },
+    {
+      "relationId": "atom-relation:sig-token-classification:irregular-adds-exception",
+      "fromAtomId": "ACI-P025-L038-A7DF113DAB",
+      "toAtomId": "ACI-P025-L037-71B57177AC",
+      "relationType": "adds-exception",
+      "basis": "The irregular sig is the explicit alternative to the regular sig token class.",
+      "discriminatingCaseIds": [
+        "case:sig-token-classification:irregular"
+      ]
+    },
+    {
+      "relationId": "atom-relation:sig-token-classification:phoneme-unit-refines-irregular",
+      "fromAtomId": "ACI-P025-L039-D796BF4184",
+      "toAtomId": "ACI-P025-L038-A7DF113DAB",
+      "relationType": "refines",
+      "basis": "The phoneme-unit representation claim specifies what makes the exceptional sig irregular.",
+      "discriminatingCaseIds": [
+        "case:sig-token-classification:irregular"
+      ]
+    },
+    {
+      "relationId": "atom-relation:sig-token-classification:square-zero-adds-realization",
+      "fromAtomId": "ACI-P025-L040-7EB970CB7A",
+      "toAtomId": "ACI-P025-L039-D796BF4184",
+      "relationType": "adds-realization",
+      "basis": "The [⎕] square-zero notation documents the irregular sig class while remaining non-authoritative for classification and surface generation.",
+      "discriminatingCaseIds": [
+        "case:sig-token-classification:irregular"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-sig-token-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "regular sig token-level representation of a sigeme",
+      "regular [0] notation and one-token sigeme membership",
+      "the irregular sig alternative",
+      "irregular sig representation of a phoneme unit",
+      "irregular [⎕] square-zero notation"
+    ],
+    "validatedElsewhere": [
+      "type-level sigeme identity and slash-oval-zero notation",
+      "seme and morph token classification",
+      "actual zero realization in a morphological environment",
+      "Classical word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:sig-token-classification:regular-definition",
+      "atomId": "ACI-P025-L037-71B57177AC",
+      "kind": "exact-regular-sig-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:177bf280b562fd14bf38b38224f0849520b4ce021b625e567f5bc1281d97a7d4",
+      "predicateId": "sig-token-classification.regular-definition",
+      "canvasBindingIds": [
+        "canvas-binding:sig-token-classification:ACI-P025-L037-71B57177AC"
+      ]
+    },
+    {
+      "oracleId": "oracle:sig-token-classification:regular-zero-singleton",
+      "atomId": "ACI-P025-L037-5D87EC0010",
+      "kind": "exact-regular-zero-singleton-constraint",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:5ff725a1dead90ecc4aaedf31808589ff1baa68be969e5efc53e8a51cc56fca2",
+      "predicateId": "sig-token-classification.regular-zero-singleton",
+      "canvasBindingIds": [
+        "canvas-binding:sig-token-classification:ACI-P025-L037-5D87EC0010"
+      ]
+    },
+    {
+      "oracleId": "oracle:sig-token-classification:irregular-alternative",
+      "atomId": "ACI-P025-L038-A7DF113DAB",
+      "kind": "exact-irregular-sig-alternative",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2f12da07032f52cbefc4f094a51427ae6d1f854f5a1d4967dc7bb482f0c8a636",
+      "predicateId": "sig-token-classification.irregular-alternative",
+      "canvasBindingIds": [
+        "canvas-binding:sig-token-classification:ACI-P025-L038-A7DF113DAB"
+      ]
+    },
+    {
+      "oracleId": "oracle:sig-token-classification:irregular-phoneme-unit",
+      "atomId": "ACI-P025-L039-D796BF4184",
+      "kind": "exact-irregular-phoneme-unit-representation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:1fc35efb8b76d6d1c030bc6778f07ff8214905adf5dfaf74c84c76a4a7a09434",
+      "predicateId": "sig-token-classification.irregular-phoneme-unit",
+      "canvasBindingIds": [
+        "canvas-binding:sig-token-classification:ACI-P025-L039-D796BF4184"
+      ]
+    },
+    {
+      "oracleId": "oracle:sig-token-classification:irregular-square-zero",
+      "atomId": "ACI-P025-L040-7EB970CB7A",
+      "kind": "exact-irregular-square-zero-notation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7ae8a5a2bce0800eb807332f9d2e4d889c092f5c1f95fa41955feb723d087b66",
+      "predicateId": "sig-token-classification.irregular-square-zero",
+      "canvasBindingIds": [
+        "canvas-binding:sig-token-classification:ACI-P025-L040-7EB970CB7A"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "sigKind",
+      "values": [
+        "regular-sig",
+        "irregular-sig"
+      ]
+    },
+    {
+      "id": "sourceDomain",
+      "values": [
+        "token-element"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:sig-token-classification:regular",
+      "coordinates": {
+        "sigKind": "regular-sig",
+        "sourceDomain": "token-element"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.3"
+    },
+    {
+      "caseId": "case:sig-token-classification:irregular",
+      "coordinates": {
+        "sigKind": "irregular-sig",
+        "sourceDomain": "token-element"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.3"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "sig-token-classification.full-source.v1",
+    "minimumUniqueSources": 2,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "sigKind": "regular-sig",
+          "sourceDomain": "token-element"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sigKind": "irregular-sig",
+          "sourceDomain": "token-element"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:sig-token-classification:regular-definition",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:sig-token-classification:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L037-71B57177AC"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:omit-regular-definition",
+        "category": "output",
+        "atomIds": [
+          "ACI-P025-L037-71B57177AC"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:swap-regular-zero",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P025-L037-5D87EC0010"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:break-singleton-membership",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P025-L037-5D87EC0010"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:omit-irregular-alternative",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P025-L038-A7DF113DAB"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:irregular-represents-sigeme",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P025-L039-D796BF4184"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:swap-square-zero",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P025-L040-7EB970CB7A"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:make-displayed-zero-authoritative",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L037-5D87EC0010",
+          "ACI-P025-L040-7EB970CB7A"
+        ]
+      },
+      {
+        "mutationId": "mutation:sig-token-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P025-L037-71B57177AC",
+          "ACI-P025-L037-5D87EC0010",
+          "ACI-P025-L038-A7DF113DAB",
+          "ACI-P025-L039-D796BF4184",
+          "ACI-P025-L040-7EB970CB7A"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "valence",
+        "reason": "Read-only sig-token classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:sig-token-classification:regular-definition"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Sig tokens and their type-level carrier correspondents are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:sig-token-classification:regular-definition"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:sig-token-classification:ACI-P025-L037-71B57177AC",
+      "atomId": "ACI-P025-L037-71B57177AC",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.8.3",
+      "inventoryRecordDigest": "sha256:5bae41b9aea7775091f59182a2b2602b91bbb4cacf6640eda5bb93982c4e16d6",
+      "sourceAnchor": "A sig can be regular.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sig-token-classification:regular-definition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "sigKind",
+              "sourceDomain"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sig-token-classification:wrong-domain",
+            "mutation:sig-token-classification:omit-regular-definition",
+            "mutation:sig-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sig-regular-definition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sig-regular-definition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:sig-token-classification:ACI-P025-L037-5D87EC0010",
+      "atomId": "ACI-P025-L037-5D87EC0010",
+      "obligationType": "constraint",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.8.3",
+      "inventoryRecordDigest": "sha256:c38431a9e236664af51eeea2d20741441280175b4f78e0d1cf59cf00e1f46fde",
+      "sourceAnchor": "A regular sig is represented by [0].",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sig-token-classification:regular-zero-singleton"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sig-token-classification:swap-regular-zero",
+            "mutation:sig-token-classification:break-singleton-membership",
+            "mutation:sig-token-classification:make-displayed-zero-authoritative",
+            "mutation:sig-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sig-regular-zero-singleton-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sig-regular-zero-singleton-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:sig-token-classification:ACI-P025-L038-A7DF113DAB",
+      "atomId": "ACI-P025-L038-A7DF113DAB",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.3",
+      "inventoryRecordDigest": "sha256:7f1e25b2506e85743c2e2a37dc0b8780634c79f6f8ed0b3b317873d343f39bcf",
+      "sourceAnchor": "But there can also be an irregular sig.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sig-token-classification:irregular-alternative"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sig-token-classification:omit-irregular-alternative",
+            "mutation:sig-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sig-irregular-alternative-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sig-irregular-alternative-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:sig-token-classification:ACI-P025-L039-D796BF4184",
+      "atomId": "ACI-P025-L039-D796BF4184",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.3",
+      "inventoryRecordDigest": "sha256:47fbe837dd71b3f83b34dcc85fb106869aed6100f1341a1bfce4a077c5f38676",
+      "sourceAnchor": "In this case the sig is an irregular representation of a phoneme unit.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sig-token-classification:irregular-phoneme-unit"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sig-token-classification:irregular-represents-sigeme",
+            "mutation:sig-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sig-irregular-phoneme-unit-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sig-irregular-phoneme-unit-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:sig-token-classification:ACI-P025-L040-7EB970CB7A",
+      "atomId": "ACI-P025-L040-7EB970CB7A",
+      "obligationType": "exception",
+      "inventoryCategory": "EXC",
+      "canvasReference": "§1.8.3",
+      "inventoryRecordDigest": "sha256:94205c71b212e92654ca6f1e1c6dff9b5bf5ae5fdc415ee2e91dea87fc5cbefe",
+      "sourceAnchor": "An irregular sig is represented by [⎕], a \"square zero.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:sig-token-classification:irregular-square-zero"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sigKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:sig-token-classification:swap-square-zero",
+            "mutation:sig-token-classification:make-displayed-zero-authoritative",
+            "mutation:sig-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "sig-irregular-square-zero-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "sig-irregular-square-zero-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "sig-token-classification.full-source.v1"
+}

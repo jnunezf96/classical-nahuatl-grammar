@@ -452,6 +452,21 @@ function buildProjection(runtime) {
     storedExampleAuthority: false,
     translationAuthority: false,
     curriculumMetadataAuthority: false,
+    actionTaxonomyDefinition: {
+      authorizationStatus: "authorized",
+      stemSemanticRange: [
+        "action",
+        "process",
+        "event",
+        "resultant-state",
+        "related-notion",
+      ],
+      labelQualification: {
+        term: "action-nnc",
+        fullyExhaustive: false,
+        mayName: ["instance-of-action", "result-of-action"],
+      },
+    },
     contract: {
       evidenceOnly: true,
       evidenceRoles: {

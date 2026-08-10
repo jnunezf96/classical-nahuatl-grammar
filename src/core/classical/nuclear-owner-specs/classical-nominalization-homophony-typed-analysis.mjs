@@ -51,10 +51,6 @@ const spec = {
       "assertionId": "classical-nominalization-homophony-typed-analysis:p3619-the-stem-of-the-active-action-nnc-signifies-an",
       "canonicalPath": "cases.homophonyTypedAnalysis.second.canonicalResult"
     },
-    "claim-p3620::p3620-note-the-difference-between-a-possessive-state-preterit-patientive": {
-      "assertionId": "classical-nominalization-homophony-typed-analysis:p3620-note-the-difference-between-a-possessive-state-preterit-patientive",
-      "canonicalPath": "cases.homophonyTypedAnalysis.distinctOperationIds"
-    },
     "claim-p3621::p3621-the-stem-of-the-preterit-patientive-nnc-signifies-a": {
       "assertionId": "classical-nominalization-homophony-typed-analysis:p3621-the-stem-of-the-preterit-patientive-nnc-signifies-a",
       "canonicalPath": "contract.homophonyCannotCollapseOperationIdentity"

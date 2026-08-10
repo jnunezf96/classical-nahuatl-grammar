@@ -79,10 +79,6 @@ const spec = {
       "assertionId": "classical-ya-hui-suppletive-paradigm:p1247-the-fact-is-however-that-the-stem-hui-does",
       "canonicalPath": "authorizationStatus"
     },
-    "claim-p1248::p1248-the-following-tenses-are-formed-on-the-imperfective-stem": {
-      "assertionId": "classical-ya-hui-suppletive-paradigm:p1248-the-following-tenses-are-formed-on-the-imperfective-stem",
-      "canonicalPath": "authorizationStatus"
-    },
     "claim-p1249::p1249-optative-tense-morphs-all-the-other-tense-morphs-possible": {
       "assertionId": "classical-ya-hui-suppletive-paradigm:p1249-optative-tense-morphs-all-the-other-tense-morphs-possible",
       "canonicalPath": "authorizationStatus"

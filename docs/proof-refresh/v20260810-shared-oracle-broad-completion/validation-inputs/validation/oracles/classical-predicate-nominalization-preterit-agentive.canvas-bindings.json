@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "ownerId": "classical-predicate-nominalization-preterit-agentive",
+  "authority": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "bindings": [
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD",
+      "atomId": "ACI-P334-L010-E1662A9EBD",
+      "startLine": 12743,
+      "endLine": 12745,
+      "sourceDigest": "sha256:339b054cd37eb536d931abe507d556d82e0a82d95ba08e435839247418a8bad0",
+      "requiredText": [
+        "The stem of any kind of agentive NNC names the agent of"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4",
+      "atomId": "ACI-P334-L012-E882A1A0A4",
+      "startLine": 12745,
+      "endLine": 12745,
+      "sourceDigest": "sha256:ea8d0a1a63ddb03f22b5d860be618b146a18945fb344a70e66d4cf83e6a92d13",
+      "requiredText": [
+        "The most common kind of agentive NNC is the preterit-agentive NNC."
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF",
+      "atomId": "ACI-P334-L016-5FA32D84DF",
+      "startLine": 12749,
+      "endLine": 12750,
+      "sourceDigest": "sha256:bb3292d900678a76e98fd7b80d9425253ab8e3c77119b07f4553f0c2031d35f8",
+      "requiredText": [
+        "Like all nounstems, a preterit-agentive nounstem has two shapes-restricted use and general"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110",
+      "atomId": "ACI-P334-L017-1A13076110",
+      "startLine": 12750,
+      "endLine": 12751,
+      "sourceDigest": "sha256:9f09a3200606d01fece0208d93ae92df3ddbcdc43a2f38ac4204c03e8bb64fa5",
+      "requiredText": [
+        "The general-"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008",
+      "atomId": "ACI-P334-L017-F7B2BB0008",
+      "startLine": 12750,
+      "endLine": 12750,
+      "sourceDigest": "sha256:a10a57d5d29d7b847dcf10802d1e997cd4d5db9a6246ec32a24bdb7229c71a0b",
+      "requiredText": [
+        "The restricted-use stem is simply the predicate of a preterit-tense VNC."
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F",
+      "atomId": "ACI-P334-L018-DBD81A202F",
+      "startLine": 12751,
+      "endLine": 12752,
+      "sourceDigest": "sha256:f0787445b93d262357442344a92d16225ce1455e326be7702d2743b2198151ed",
+      "requiredText": [
+        "The restricted-use"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516",
+      "atomId": "ACI-P334-L019-564C5B2516",
+      "startLine": 12752,
+      "endLine": 12753,
+      "sourceDigest": "sha256:9609aa96d7d5c029969912ade857f1677ad2738c65fcd3bd5d2662621cf4eec8",
+      "requiredText": [
+        "The"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41",
+      "atomId": "ACI-P334-L019-FCBA253D41",
+      "startLine": 12752,
+      "endLine": 12752,
+      "sourceDigest": "sha256:db589f62643b2d3e6638a1bf7587d15c44638f5365de121c2b14940ec6d77d17",
+      "requiredText": [
+        "The general-use stem is used everywhere else."
+      ],
+      "status": "bound-current"
+    }
+  ]
+}

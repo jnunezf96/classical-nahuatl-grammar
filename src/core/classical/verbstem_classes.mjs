@@ -812,16 +812,52 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       lineEnd: 3241,
       exactWitness: "The indefinite\npronouns tē and tla have the following relationships",
       rule: "Indefinite te and tla relate to, but do not collapse into, specific reflexive and projective personal-pronoun objects.",
-      relationKind: "indefinite-to-personal-object"
+      relationKind: "indefinite-to-personal-object",
+      semanticScope: Object.freeze({ section: "7.9", topic: "indefinite-and-personal-pronoun-object-relationships", objectDomain: Object.freeze(["human", "nonhuman"]) })
     }), Object.freeze({
       id: "cn-l7-79-human-object-specified",
       tagId: "cn-l7-indefinite-personal-object-relationship",
       section: "7.9.1",
       lineStart: 3242,
-      lineEnd: 3259,
+      lineEnd: 3253,
       exactWitness: "nitēitta = #ni-Ø+tē(itt-a)Ø+Ø-Ø# = I see s.o./people/everyone",
       rule: "Human indefinite te sits in relation to reflexive and specific human projective object forms.",
-      objectKind: "human"
+      objectKind: "human",
+      semanticScope: Object.freeze({ section: "7.9.1", topic: "human-object-specified", objectDomain: "human" })
+    }), Object.freeze({
+      id: "cn-l7-79-human-singular-specific-correspondence",
+      tagId: "cn-l7-indefinite-personal-object-relationship",
+      section: "7.9.1.b",
+      lineStart: 3255,
+      lineEnd: 3256,
+      exactWitness: "If the VNC in item a had been titēitta (\"you (sg) see s.o.\"), the specific-object VNCs in item b would have been tinēchitta (\"you see me\"), timotta (\"you see yourself\"), etc.",
+      rule: "A singular subject selects the matching singular reflexive or specific-human projective object series.",
+      objectKind: "human",
+      subjectNumber: "singular",
+      semanticScope: Object.freeze({ section: "7.9.1.b", topic: "human-object-specified", objectDomain: "human" })
+    }), Object.freeze({
+      id: "cn-l7-79-human-plural-reflexive-agreement",
+      tagId: "cn-l7-indefinite-personal-object-relationship",
+      section: "7.9.1.b",
+      lineStart: 3257,
+      lineEnd: 3258,
+      exactWitness: "If the subject in item a had been plural, e.g., titēittah (\"we see s.o.\"), the reflexive plural VNC in item b would have included titottah.",
+      rule: "A plural subject selects the matching plural reflexive object form.",
+      objectKind: "human",
+      subjectNumber: "plural",
+      semanticScope: Object.freeze({ section: "7.9.1.b", topic: "human-object-specified", objectDomain: "human" })
+    }), Object.freeze({
+      id: "cn-l7-79-human-plural-reciprocal-alternative",
+      tagId: "cn-l7-indefinite-personal-object-relationship",
+      section: "7.9.1.b",
+      lineStart: 3258,
+      lineEnd: 3259,
+      exactWitness: "titottah = \"we see ourselves\" or \"we see one another.\"",
+      rule: "Only the plural reflexive form additionally permits a reciprocative interpretation.",
+      objectKind: "human",
+      subjectNumber: "plural",
+      interpretations: Object.freeze(["reflexive", "reciprocative"]),
+      semanticScope: Object.freeze({ section: "7.9.1.b", topic: "human-object-specified", objectDomain: "human" })
     }), Object.freeze({
       id: "cn-l7-79-nonhuman-object-specified",
       tagId: "cn-l7-indefinite-personal-object-relationship",
@@ -830,7 +866,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       lineEnd: 3264,
       exactWitness: "nitlatta = #ni-Ø+tla(tt-a)Ø+Ø-Ø# = I see s.th./things/everything",
       rule: "Nonhuman indefinite tla sits in relation to third-person specific projective object forms.",
-      objectKind: "nonhuman"
+      objectKind: "nonhuman",
+      semanticScope: Object.freeze({ section: "7.9.2", topic: "nonhuman-object-specified", objectDomain: "nonhuman" })
     })]);
     const CLASSICAL_NAHUATL_LESSON7_TLA_FUSION_RULES = Object.freeze([Object.freeze({
       id: "cn-l7-710-tla-fusion-derivation",
@@ -3695,6 +3732,16 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }
       return rules.find(rule => rule.id === "cn-l7-79-indefinite-personal-object-relationship") || rules[0] || null;
     }
+    function getClassicalNahuatlApplicableObjectRelationshipRules(relationshipKind = "", relationshipGroup = "", subjectNumber = "") {
+      return getClassicalNahuatlObjectRelationshipRules().filter(rule => {
+        if (rule.id === "cn-l7-79-indefinite-personal-object-relationship") return true;
+        if (relationshipGroup === "human" && rule.objectKind !== "human") return false;
+        if (relationshipGroup === "nonhuman" && rule.objectKind !== "nonhuman") return false;
+        if (rule.subjectNumber && rule.subjectNumber !== subjectNumber) return false;
+        if (rule.id === "cn-l7-79-human-plural-reciprocal-alternative" && relationshipKind !== "human-reflexive-reciprocal") return false;
+        return Boolean(relationshipGroup);
+      });
+    }
     function getClassicalNahuatlSpecificProjectiveRelationshipKind({
       objectPerson = "",
       objectHumanness = ""
@@ -3724,6 +3771,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const objectKind = normalizeClassicalNahuatlObjectRelationshipToken(objectFrame?.objectKind || options.objectKind || "");
       const objectPerson = normalizeClassicalNahuatlObjectRelationshipToken(objectFrame?.objectPerson || options.objectPerson || options.object || options.obj || "");
       const objectHumanness = normalizeClassicalNahuatlObjectRelationshipToken(objectFrame?.humanness || options.objectHumanness || options.objectAnimacy || options.animacy || "");
+      const subject = normalizeClassicalNahuatlObjectRelationshipToken(options.subject || options.subjectPersonNumber || options.person || "");
+      const subjectNumber = /pl$/u.test(subject) || ["we", "they", "you-plural"].includes(subject) ? "plural" : /sg$/u.test(subject) ? "singular" : "";
       let relationshipKind = "not-applicable";
       if (normalizedValence === "projective-human" || objectKind === "nonspecific-human") {
         relationshipKind = "human-indefinite";
@@ -3742,11 +3791,15 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const selectedIndefiniteObject = possibleIndefiniteObjects.length === 1 ? possibleIndefiniteObjects[0] : "";
       const selectedIndefiniteObjectSurface = selectedIndefiniteObject === "tē" ? "te" : selectedIndefiniteObject;
       const relatedSpecificObjectKinds = relationshipGroup === "human" ? ["mainline-reflexive", "n-o", "m-itz", "qu-0", "t-ēch", "am-ēch", "qu-im"] : relationshipGroup === "nonhuman" ? ["qu-0", "qu-im"] : [];
-      const pluralReflexiveReciprocalPossible = Boolean((objectFrame?.pluralMayBeReciprocal === true || normalizedValence === "human-reciprocal") && relationshipKind === "human-reflexive-reciprocal");
+      const pluralReflexiveReciprocalPossible = Boolean(subjectNumber === "plural" && relationshipKind === "human-reflexive-reciprocal");
       const witness = getClassicalNahuatlObjectRelationshipWitness(relationshipGroup);
+      const applicableRules = getClassicalNahuatlApplicableObjectRelationshipRules(relationshipKind, relationshipGroup, subjectNumber);
       return {
         selectedObjectRelationshipKind: relationshipKind,
         selectedObjectRelationshipGroup: relationshipGroup,
+        selectedObjectRelationshipSection: relationshipGroup === "human" ? "7.9.1" : relationshipGroup === "nonhuman" ? "7.9.2" : "7.9",
+        selectedObjectRelationshipTopic: relationshipGroup === "human" ? "human-object-specified" : relationshipGroup === "nonhuman" ? "nonhuman-object-specified" : "indefinite-and-personal-pronoun-object-relationships",
+        selectedSubjectNumber: subjectNumber,
         selectedObjectKind: objectFrame?.objectKind || objectKind,
         selectedObjectPerson: objectFrame?.objectPerson || objectPerson,
         selectedObjectHumanness: objectFrame?.humanness || objectHumanness,
@@ -3760,6 +3813,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         relationshipRange: selectedIndefiniteObject ? ["nonspecific", "vague", "total"] : [],
         objectRelationshipApplies: relationshipKind !== "not-applicable",
         pluralReflexiveReciprocalPossible,
+        applicableObjectRelationshipRuleIds: applicableRules.map(rule => rule.id),
+        evidencePolicy: Object.freeze({ examplesAuthorizeGeneration: false, evidenceAbsenceBlocksGeneration: false, typedGrammarAuthorizesUnlistedRealizations: true }),
         selectedObjectRelationshipRuleId: witness?.id || "",
         selectedObjectRelationshipExactWitness: witness?.exactWitness || "",
         selectedObjectRelationshipLineStart: witness?.lineStart || 0,
@@ -3804,6 +3859,11 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
             range: ["nonspecific", "vague", "total"],
             relatesTo: ["third-singular-projective", "third-plural-projective"]
           }
+        },
+        evidencePolicy: {
+          examplesAuthorizeGeneration: false,
+          evidenceAbsenceBlocksGeneration: false,
+          typedGrammarAuthorizesUnlistedRealizations: true
         },
         ...selectedRelationship,
         objectRelationshipActions,

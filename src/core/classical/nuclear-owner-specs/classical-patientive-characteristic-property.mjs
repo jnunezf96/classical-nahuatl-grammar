@@ -52,10 +52,6 @@ const spec = {
       "assertionId": "classical-patientive-characteristic-property:p3773-the-patientive-nounstem-may-signify-a-thing-pertaining-to",
       "canonicalPath": "cases.characteristicProperty.operationIds.2"
     },
-    "claim-p3774::p3774-tla-mati-ni-yo-tl-a-thing-that-pertains": {
-      "assertionId": "classical-patientive-characteristic-property:p3774-tla-mati-ni-yo-tl-a-thing-that-pertains",
-      "canonicalPath": "cases.characteristicProperty.authorizationStatus"
-    },
     "claim-p3775::p3775-the-patientive-nounstem-may-signify-a-thing-intrinsic-to": {
       "assertionId": "classical-patientive-characteristic-property:p3775-the-patientive-nounstem-may-signify-a-thing-intrinsic-to",
       "canonicalPath": "cases.characteristicProperty.allCanonical"

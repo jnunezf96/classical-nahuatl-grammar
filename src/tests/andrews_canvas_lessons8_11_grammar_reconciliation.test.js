@@ -68,11 +68,11 @@ function run(ctx = {}) {
         },
         {
             valid: true,
-            atomicItems: 13798,
-            grammarBearing: 5344,
-            evidence: 6228,
-            analysis: 1108,
-            documentary: 1118,
+            atomicItems: 13853,
+            grammarBearing: 5376,
+            evidence: 6235,
+            analysis: 1120,
+            documentary: 1122,
             section4910Items: 44,
             sourceCount: 636,
             sourceDigest:

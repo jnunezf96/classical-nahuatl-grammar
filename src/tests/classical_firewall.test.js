@@ -3198,6 +3198,13 @@ function run(ctx = {}) {
                 tense: "present",
                 verbClass: "A",
             });
+            const singularReflexive = ctx.buildClassicalNahuatlVerbstemClassFrame("(itta)", {
+                valence: "mainline-reflexive",
+                subject: "1sg",
+                mood: "indicative",
+                tense: "present",
+                verbClass: "A",
+            });
             const hostileHumanAsTla = ctx.buildClassicalNahuatlVerbstemClassFrame("(itta)", {
                 valence: "projective-human",
                 hostileIndefiniteObject: "tla",
@@ -3228,8 +3235,14 @@ function run(ctx = {}) {
                 specificThirdRelationship: specificThird.selectedOutputLogicFrame.outputFillers.selectedObjectRelationshipKind,
                 specificThirdPossibleIndefinites: specificThird.selectedOutputLogicFrame.outputFillers.possibleIndefiniteObjects,
                 pluralReflexiveRelationship: pluralReflexive.selectedOutputLogicFrame.outputFillers.selectedObjectRelationshipKind,
+                pluralReflexiveTopic: pluralReflexive.objectRelationshipRuleFrame.selectedObjectRelationshipTopic,
+                pluralReflexiveSubjectNumber: pluralReflexive.objectRelationshipRuleFrame.selectedSubjectNumber,
                 pluralReflexiveReciprocalPossible: pluralReflexive.selectedOutputLogicFrame.outputFillers.pluralReflexiveReciprocalPossible,
+                pluralReflexiveApplicableRules: pluralReflexive.objectRelationshipRuleFrame.applicableObjectRelationshipRuleIds,
                 pluralReflexiveActions: pluralReflexive.selectedOutputLogicFrame.outputFillers.objectRelationshipActions,
+                singularReflexiveSubjectNumber: singularReflexive.objectRelationshipRuleFrame.selectedSubjectNumber,
+                singularReflexiveReciprocalPossible: singularReflexive.objectRelationshipRuleFrame.pluralReflexiveReciprocalPossible,
+                singularReflexiveApplicableRules: singularReflexive.objectRelationshipRuleFrame.applicableObjectRelationshipRuleIds,
                 hostileHumanStatus: hostileHumanAsTla.proofFrame.authorizationStatus,
                 hostileHumanFormula: hostileHumanAsTla.formulaRealization,
                 hostileHumanBlockedBy: hostileHumanAsTla.displayReceiptFrame.blockedBy,
@@ -3258,12 +3271,27 @@ function run(ctx = {}) {
             specificThirdRelationship: "ambiguous-specific-projective",
             specificThirdPossibleIndefinites: ["tē", "tla"],
             pluralReflexiveRelationship: "human-reflexive-reciprocal",
+            pluralReflexiveTopic: "human-object-specified",
+            pluralReflexiveSubjectNumber: "plural",
             pluralReflexiveReciprocalPossible: true,
+            pluralReflexiveApplicableRules: [
+                "cn-l7-79-indefinite-personal-object-relationship",
+                "cn-l7-79-human-object-specified",
+                "cn-l7-79-human-plural-reflexive-agreement",
+                "cn-l7-79-human-plural-reciprocal-alternative",
+            ],
             pluralReflexiveActions: [
                 "select-canvas-7.9-object-relationship",
                 "preserve-indefinite-specific-object-distinction",
                 "carry-object-relationship-to-selected-output",
                 "preserve-human-reflexive-reciprocal-possibility",
+            ],
+            singularReflexiveSubjectNumber: "singular",
+            singularReflexiveReciprocalPossible: false,
+            singularReflexiveApplicableRules: [
+                "cn-l7-79-indefinite-personal-object-relationship",
+                "cn-l7-79-human-object-specified",
+                "cn-l7-79-human-singular-specific-correspondence",
             ],
             hostileHumanStatus: "blocked",
             hostileHumanFormula: "",
@@ -3274,6 +3302,35 @@ function run(ctx = {}) {
             hostileNonhumanBlockedBy: "object-relationship-and-tla-fusion",
             hostileNonhumanReason: "requested-object-relationship-not-authorized-by-canvas-7.9",
         }
+    );
+
+    s.ok(
+        "Classical Lesson 7.9 evidence examples never whitelist grammar realization",
+        (() => {
+            const base = {
+                subject: "1sg",
+                mood: "indicative",
+                tense: "present",
+                verbClass: "A",
+            };
+            const human = ctx.buildClassicalNahuatlVerbstemClassFrame("(xōchichīhua)", {
+                ...base,
+                valence: "projective-human",
+            });
+            const nonhuman = ctx.buildClassicalNahuatlVerbstemClassFrame("(xōchichīhua)", {
+                ...base,
+                valence: "projective-nonhuman",
+            });
+            return human.proofFrame.authorizationStatus === "authorized"
+                && nonhuman.proofFrame.authorizationStatus === "authorized"
+                && Boolean(human.formulaRealization)
+                && Boolean(nonhuman.formulaRealization)
+                && human.objectRelationshipRuleFrame.selectedObjectRelationshipTopic === "human-object-specified"
+                && nonhuman.objectRelationshipRuleFrame.selectedObjectRelationshipTopic === "nonhuman-object-specified"
+                && human.objectRelationshipRuleFrame.evidencePolicy.examplesAuthorizeGeneration === false
+                && human.objectRelationshipRuleFrame.evidencePolicy.evidenceAbsenceBlocksGeneration === false
+                && human.objectRelationshipRuleFrame.evidencePolicy.typedGrammarAuthorizesUnlistedRealizations === true;
+        })()
     );
 
     s.eq(

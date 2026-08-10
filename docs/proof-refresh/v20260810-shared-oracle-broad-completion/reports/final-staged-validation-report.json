@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-shared-oracle-broad-completion",
+  "activation": {
+    "permitted": true,
+    "reason": "all activation gates passed",
+    "activeManifestUnchanged": false,
+    "activeManifestId": "andrews-proof-corpus-v20260810-shared-oracle-broad-completion",
+    "candidateManifestActivated": true,
+    "atomicSwitchRollbackTestPassed": true
+  },
+  "replay": {
+    "warrantedOwnerCount": 350,
+    "completedOwnerCount": 350,
+    "retainedReplayInputOwnerCount": 321,
+    "retainedRawOracleInputOwnerCount": 0,
+    "oldFailedCaseCount": 830,
+    "newFailedCaseCount": 0,
+    "improvedCaseCount": 830,
+    "regressedCaseCount": 0,
+    "mutationCount": 3979,
+    "mutationStatusDifferenceCount": 0,
+    "mutationObservationDifferenceCount": 0,
+    "dependencyMismatches": {
+      "engine": 0,
+      "runner": 0,
+      "otherValidators": 0
+    },
+    "failures": []
+  },
+  "registry": {
+    "grammarAtomCount": 18639,
+    "ownerCount": 2491,
+    "migratedOwnerCount": 2491,
+    "blockedOwnerCount": 0,
+    "migratedAtomCount": 18639,
+    "assignedUnprovedAtomCount": 0,
+    "unassignedAtomCount": 0,
+    "competingOwnerAtomCount": 0,
+    "replayedOwnerCount": 350,
+    "semanticCompatibilityOwnerCount": 2415
+  },
+  "blockers": {
+    "ownerCount": 0,
+    "atomCount": 0,
+    "sourceObligationOwnerCount": 0,
+    "sourceObligationOwnerIds": [],
+    "nonWaivableStoredFailureOwnerCount": 0,
+    "nonWaivableStoredFailureOwnerIds": [],
+    "inventoryCategoryMismatchOwnerCount": 0,
+    "inventoryCategoryMismatchOwnerIds": [],
+    "notGrammarBearingOwnerCount": 0,
+    "notGrammarBearingOwnerIds": [],
+    "mutationCoverageOwnerCount": 0,
+    "mutationCoverageOwnerIds": []
+  },
+  "validation": {
+    "basePlusOverrideRegistryComplete": true,
+    "dependencyChecksPassed": true,
+    "ownerCountsPassed": true,
+    "oldNewVerdictDifferencesPassed": true,
+    "mutationObservationsPassed": true,
+    "section7_9CanaryPassed": true,
+    "methodCanariesPassed": true,
+    "atomicSwitchRollbackTestPassed": true,
+    "baseCorpusIntegrityPassed": true,
+    "section7_9": {
+      "schemaVersion": 1,
+      "version": "v20260810-shared-oracle-broad-completion",
+      "ownerId": "classical-object-relationship-analysis",
+      "caseCount": 18,
+      "routeCount": 18,
+      "failedCaseCount": 0,
+      "atoms": [
+        {
+          "atomId": "ACI-P086-L005-336D0005B5",
+          "semanticRole": "singular-subject-specific-human-object-correspondence",
+          "receiptCount": 14,
+          "semanticCaseCount": 1
+        },
+        {
+          "atomId": "ACI-P086-L007-336D0005B5",
+          "semanticRole": "plural-subject-reflexive-formation",
+          "receiptCount": 14,
+          "semanticCaseCount": 1
+        },
+        {
+          "atomId": "ACI-P086-L008-336D0005B5",
+          "semanticRole": "plural-reflexive-or-reciprocal-alternative",
+          "receiptCount": 14,
+          "semanticCaseCount": 1
+        }
+      ],
+      "distinctionsPreserved": {
+        "singularSubjectSeparate": true,
+        "pluralSubjectSeparate": true,
+        "pluralReflexiveReciprocalAlternativeSeparate": true
+      },
+      "failures": []
+    }
+  },
+  "sourceOverlay": {
+    "mode": "isolated-versioned-source-overlay",
+    "root": "/Users/jaimenunez/Documents/Codex/2026-08-08/referenced-chatgpt-conversation-this-is-an/work/proof-corpora/v20260810-shared-oracle-broad-completion/repair-validation-root",
+    "recordCount": 19722,
+    "contentDigest": "sha256:4f4b8e1888733aecd4d5be4369f5232ae9edc91dac257dba30d5ab1a0949be19",
+    "repairReport": "/Users/jaimenunez/Documents/Codex/2026-08-08/referenced-chatgpt-conversation-this-is-an/work/proof-corpora/v20260810-shared-oracle-broad-completion/activation-blocker-repair-report.json",
+    "canonicalInputsModified": false
+  },
+  "corpusIntegrity": {
+    "baseSnapshotDigest": "sha256:62926066b59b54a5334f539351df78c4f4a596a2944878af2c9a1f6a9d8aa275",
+    "baseSnapshotUnchanged": true,
+    "baseSnapshotMismatchCount": 0,
+    "baseSnapshotMismatches": [],
+    "baseRunShardCount": 2497,
+    "baseRouteShardCount": 2497,
+    "nonOwnerShards": {
+      "runs": [
+        "_RUN_RECORD.example.json",
+        "classical-clause-conjunction-translation-mirage.json",
+        "classical-denominal-vnc-ti-a-unattested-source-chain.json",
+        "classical-nominal-embed-relation.json",
+        "classical-nounstem-lexicon.json",
+        "conceptual-plane-separation-canvas-atom-assertions.json"
+      ],
+      "routes": [
+        "_ROUTE_BUNDLE.example.json",
+        "classical-clause-conjunction-translation-mirage.json",
+        "classical-denominal-vnc-ti-a-unattested-source-chain.json",
+        "classical-nominal-embed-relation.json",
+        "classical-nounstem-lexicon.json",
+        "conceptual-plane-separation-canvas-atom-assertions.json"
+      ]
+    },
+    "overrideRunCount": 350,
+    "overrideRouteCount": 350,
+    "mergedRunCount": 2497,
+    "mergedRouteCount": 2497
+  },
+  "disk": {
+    "overrideLogicalBytes": 545588597,
+    "stageAllocatedBytes": 930283520,
+    "filesystemFreeBytes": 18252361728
+  }
+}

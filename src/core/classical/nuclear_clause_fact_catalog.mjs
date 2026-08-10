@@ -568,7 +568,34 @@ const records = {
     "semanticValue": {
       "ownerId": "classical-personal-pronoun-category-system",
       "category": "CST",
-      "proposition": "plural pronouns show animate number. A third-person singular pronoun is ambiguous, permitting either animate or…"
+      "proposition": "First- and second-person pronouns and every plural pronoun show animate number."
+    }
+  },
+  "claim-p667-02": {
+    "id": "claim-p667-02",
+    "ownerId": "classical-personal-pronoun-category-system",
+    "semanticValue": {
+      "ownerId": "classical-personal-pronoun-category-system",
+      "category": "ALT",
+      "thirdPersonSingularAnimacy": ["animate", "nonanimate"]
+    }
+  },
+  "claim-p667-03": {
+    "id": "claim-p667-03",
+    "ownerId": "classical-personal-pronoun-category-system",
+    "semanticValue": {
+      "ownerId": "classical-personal-pronoun-category-system",
+      "category": "REA",
+      "commonNumberShapeRelation": "identical-to-singular-number-pronoun"
+    }
+  },
+  "claim-p667-04": {
+    "id": "claim-p667-04",
+    "ownerId": "classical-personal-pronoun-category-system",
+    "semanticValue": {
+      "ownerId": "classical-personal-pronoun-category-system",
+      "category": "USE",
+      "commonNumberEnglishTranslation": "context-selects-singular-or-plural"
     }
   },
   "claim-p668": {

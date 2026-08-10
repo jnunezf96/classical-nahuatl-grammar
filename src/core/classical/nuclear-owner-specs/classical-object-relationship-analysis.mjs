@@ -9,7 +9,9 @@ const spec = {
   "selections": [
     "claim-p950",
     "claim-p951",
-    "claim-p952"
+    "claim-p952",
+    "claim-p952-02",
+    "claim-p952-03"
   ],
   "coordinates": {
     "claim-p950::p950-the-indefinite-pronouns-te-and-tla-have-the-following": {
@@ -22,6 +24,14 @@ const spec = {
     },
     "claim-p952::p952-if-the-vnc-in-item-a-had-been-tite": {
       "assertionId": "classical-object-relationship-analysis:p952-if-the-vnc-in-item-a-had-been-tite",
+      "canonicalPath": "semanticValue"
+    },
+    "claim-p952-02::p952-02-plural-subject-selects-plural-reflexive": {
+      "assertionId": "classical-object-relationship-analysis:p952-02-plural-subject-selects-plural-reflexive",
+      "canonicalPath": "semanticValue"
+    },
+    "claim-p952-03::p952-03-plural-reflexive-allows-reciprocative-interpretation": {
+      "assertionId": "classical-object-relationship-analysis:p952-03-plural-reflexive-allows-reciprocative-interpretation",
       "canonicalPath": "semanticValue"
     }
   },

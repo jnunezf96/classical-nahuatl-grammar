@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-shared-oracle-broad-completion",
+  "activated": true,
+  "rolledBackOnFailure": false,
+  "activeManifestId": "andrews-proof-corpus-v20260810-shared-oracle-broad-completion",
+  "activeManifestDigest": "sha256:19900b5b2d2a67e6c11783d7cf727828b4d4122875c7a79c93e86d3756fbf153",
+  "rollbackManifestId": "andrews-proof-corpus-base-v1",
+  "rollbackManifestDigest": "sha256:7a44cdbe71ce43c63f8085929ef09641c7f84d2a7b86e5ae0e90a27f3a5f9ac3",
+  "activeRunShardCount": 2497,
+  "activeRouteShardCount": 2497,
+  "overlayOwnerCount": 350,
+  "oldCorpusRetained": true
+}

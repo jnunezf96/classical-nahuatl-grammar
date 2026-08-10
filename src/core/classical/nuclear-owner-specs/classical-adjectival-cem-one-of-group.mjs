@@ -31,10 +31,6 @@ const spec = {
       "assertionId": "classical-adjectival-cem-one-of-group:p4123-the-group-may-be-designated-by-a-pronominal-nnc",
       "canonicalPath": "cases.oneOf.canonicalResult"
     },
-    "claim-p4124::p4124-the-meaning-of-the-nnc-seems-strangely-reversed-e": {
-      "assertionId": "classical-adjectival-cem-one-of-group:p4124-the-meaning-of-the-nnc-seems-strangely-reversed-e",
-      "canonicalPath": "cases.oneOf.exceptionProfile"
-    },
     "claim-p4125::p4125-the-group-may-be-designated-by-an-nnc": {
       "assertionId": "classical-adjectival-cem-one-of-group:p4125-the-group-may-be-designated-by-an-nnc",
       "canonicalPath": "cases.oneOf.operationKind"

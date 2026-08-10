@@ -879,7 +879,9 @@ const records = {
     "semanticValue": {
       "ownerId": "classical-object-relationship-analysis",
       "category": "SCH",
-      "proposition": "The indefinite pronouns tē and tla have the following relationships with the specific reflexive and projective…"
+      "proposition": "The indefinite pronouns tē and tla have relationships with specific reflexive and projective personal-pronoun objects.",
+      "belongsTo": { "structuralContainer": "lesson-7-section-7.9", "semanticTopic": "indefinite-and-personal-pronoun-object-relationships" },
+      "aboutObjectDomain": ["human", "nonhuman"]
     }
   },
   "claim-p951": {
@@ -888,7 +890,9 @@ const records = {
     "semanticValue": {
       "ownerId": "classical-object-relationship-analysis",
       "category": "CST",
-      "proposition": "As the translation of the indefinites shows, \"indefinite\" ranges from nonspecific or vague to total (and the…"
+      "proposition": "Indefinite reference ranges from nonspecific or vague to total, and totality may be absolute or limited to a particular group.",
+      "belongsTo": { "structuralContainer": "lesson-7-section-7.9", "semanticTopic": "indefinite-and-personal-pronoun-object-relationships" },
+      "aboutObjectDomain": ["human", "nonhuman"]
     }
   },
   "claim-p952": {
@@ -897,7 +901,35 @@ const records = {
     "semanticValue": {
       "ownerId": "classical-object-relationship-analysis",
       "category": "CON",
-      "proposition": "If the VNC in item a had been titēitta (\"you (sg) see s.o.\"), the specific-object VNCs in item b would have been…"
+      "proposition": "With singular subject titēitta (you see someone), the corresponding specific-human-object forms include tinēchitta (you see me) and timotta (you see yourself).",
+      "belongsTo": { "structuralContainer": "lesson-7-section-7.9.1.b", "semanticTopic": "human-object-specified" },
+      "aboutObjectDomain": "human",
+      "subjectNumber": "singular"
+    }
+  },
+  "claim-p952-02": {
+    "id": "claim-p952-02",
+    "ownerId": "classical-object-relationship-analysis",
+    "semanticValue": {
+      "ownerId": "classical-object-relationship-analysis",
+      "category": "CON",
+      "proposition": "With plural subject titēittah (we see someone), the corresponding plural reflexive form is titottah.",
+      "belongsTo": { "structuralContainer": "lesson-7-section-7.9.1.b", "semanticTopic": "human-object-specified" },
+      "aboutObjectDomain": "human",
+      "subjectNumber": "plural"
+    }
+  },
+  "claim-p952-03": {
+    "id": "claim-p952-03",
+    "ownerId": "classical-object-relationship-analysis",
+    "semanticValue": {
+      "ownerId": "classical-object-relationship-analysis",
+      "category": "ALT",
+      "proposition": "With a plural subject, titottah can mean either we see ourselves or reciprocatively we see one another.",
+      "belongsTo": { "structuralContainer": "lesson-7-section-7.9.1.b", "semanticTopic": "human-object-specified" },
+      "aboutObjectDomain": "human",
+      "subjectNumber": "plural",
+      "interpretations": ["reflexive", "reciprocative"]
     }
   },
   "claim-p958": {

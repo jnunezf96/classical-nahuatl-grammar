@@ -12,7 +12,10 @@ const spec = {
     "claim-p1037",
     "claim-p1038",
     "claim-p1039",
-    "claim-p1040"
+    "claim-p1040",
+    "claim-p1040-02",
+    "claim-p1040-03",
+    "claim-p1040-04"
   ],
   "coordinates": {
     "claim-p1035::p1035-the-optative-mood-is-characteristically-used-to-express-wishes": {
@@ -35,9 +38,21 @@ const spec = {
       "assertionId": "classical-optative-category-analysis:p1039-when-regret-or-disillusionment-is-expressed-about-a-definitely",
       "canonicalPath": "semanticValue"
     },
-    "claim-p1040::p1040-preterit-and-future-optative-vncs-a-preterit-or-future": {
-      "assertionId": "classical-optative-category-analysis:p1040-preterit-and-future-optative-vncs-a-preterit-or-future",
-      "canonicalPath": "semanticValue"
+    "claim-p1040::optative-identified-by-use": {
+      "assertionId": "classical-optative-category-analysis:optative-identified-by-use",
+      "canonicalPath": "semanticValue.identificationBasis"
+    },
+    "claim-p1040-02::optative-borrows-indicative": {
+      "assertionId": "classical-optative-category-analysis:optative-borrows-indicative",
+      "canonicalPath": "semanticValue.borrowedIndicativeIdentity"
+    },
+    "claim-p1040-03::preterit-optative-antecessive": {
+      "assertionId": "classical-optative-category-analysis:preterit-optative-antecessive",
+      "canonicalPath": "semanticValue.preteritAntecessiveRequirement.optative"
+    },
+    "claim-p1040-04::future-optative-futurity": {
+      "assertionId": "classical-optative-category-analysis:future-optative-futurity",
+      "canonicalPath": "semanticValue.futureOptativeUse"
     }
   },
   "collectionCapabilityName": "CLASSICAL_NAHUATL_VNC_OWNER_FACTS:classical-optative-category-analysis"

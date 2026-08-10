@@ -9,12 +9,7 @@ const spec = {
   "selections": [
     "claim-p5075"
   ],
-  "coordinates": {
-    "claim-p5075::p5075-at-times-not-only-is-the-source-intransitive-verbstem": {
-      "assertionId": "classical-denominal-vnc-ti-a-unattested-source-chain:p5075-at-times-not-only-is-the-source-intransitive-verbstem",
-      "canonicalPath": "analysis.unsupportedProductiveGuessBlocked"
-    }
-  },
+  "coordinates": {},
   "executionFunctionName": "buildClassicalDenominalVncValidationFrame",
   "executionValidatorName": "isClassicalDenominalVncValidationFrame",
   "executionArgsBySelection": {

@@ -19,10 +19,6 @@ const spec = {
     "claim-p2431::p2431-te-tla-i-hc-i-hui-tia-to-cause": {
       "assertionId": "classical-type-two-tia-destockal-alternative:p2431-te-tla-i-hc-i-hui-tia-to-cause",
       "canonicalPath": "derivations.polihui.options.1.typeTwoBridgeStem"
-    },
-    "claim-p2432::p2432-note-at-times-a-type-two-causative-stem-may": {
-      "assertionId": "classical-type-two-tia-destockal-alternative:p2432-note-at-times-a-type-two-causative-stem-may",
-      "canonicalPath": "derivations.polihui.options.0.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",

@@ -279,6 +279,16 @@ function buildProjection(runtime) {
       verbClass: "A",
       lateVariant: "uncertain-ca",
     }),
+    uncertainCaApplicativeGrowl: evaluate(runtime, {
+      sourceStem: "hual",
+      verbClass: "A",
+      lateVariant: "uncertain-ca-applicative-growl",
+    }),
+    uncertainCaFusedTlaBark: evaluate(runtime, {
+      sourceStem: "hual",
+      verbClass: "A",
+      lateVariant: "uncertain-ca-fused-tla-bark",
+    }),
     uncertainTzca: evaluate(runtime, {
       sourceStem: "tla-tla",
       verbClass: "A",

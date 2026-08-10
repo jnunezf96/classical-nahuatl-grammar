@@ -1008,6 +1008,35 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
       const formulaSegments = Object.freeze(
         Array.from(entry.formulaSegments || [])
       );
+      const adjunctorProfile = entry.id === "l3-in"
+        ? freezeClassicalNahuatlLesson3ParticleResult({
+            category: "adjunctor",
+            contextualTranslation: true,
+            adjoinedUnitMarking: "almost-always-optional",
+            adjoinedUnitScope: Object.freeze(["single-item", "multi-item-sequence"]),
+            determinerStatus: "not-a-determiner",
+            nounstemDefinitenessContrast: "absent",
+            grammarUnit: "nuclear-clause",
+            nounstemActualizationRequirement: Object.freeze([
+              "nominal-nuclear-clause",
+              "embed",
+            ]),
+            actualizationDeterminerPosition: "none",
+            ceSemanticAnalysis: "nominal-nuclear-clause-one-in-number",
+          })
+        : null;
+      const vocativeProfile = entry.id === "l3-e-vocative"
+        ? freezeClassicalNahuatlLesson3ParticleResult({
+            function: "vocative-direct-address",
+            speakerGender: "male",
+            attachmentHost: "preceding-nominal-nuclear-clause",
+            pronunciationAttachment: "obligatory",
+            writingAttachment: "obligatory",
+            stressBehavior: "attracts-stress",
+            writtenStressAccent: "required-unique-item",
+            boundaryNotation: "hash-marks-obligatory-attachment-to-preceding-item",
+          })
+        : null;
       const frame = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-lexical-fact-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -1028,6 +1057,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         usageFacts: lexicalFacts?.usageFacts || Object.freeze([]),
         functionScope: entry.functionScope,
         placementScope: entry.placement?.scope || "",
+        adjunctorProfile,
+        vocativeProfile,
         readOnly: true,
         userSelectable: false,
         generationAuthority: false,
@@ -1043,6 +1074,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           formulaSegments: frame.formulaSegments,
           meanings: frame.meanings,
           usageFacts: frame.usageFacts,
+          adjunctorProfile: frame.adjunctorProfile,
+          vocativeProfile: frame.vocativeProfile,
         })
       );
       return frame;
@@ -1061,6 +1094,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && frame.formulaSegments === receipt.formulaSegments
         && frame.meanings === receipt.meanings
         && frame.usageFacts === receipt.usageFacts
+        && frame.adjunctorProfile === receipt.adjunctorProfile
+        && frame.vocativeProfile === receipt.vocativeProfile
         && frame.invariant === true
         && frame.paradigmatic === false
         && frame.readOnly === true

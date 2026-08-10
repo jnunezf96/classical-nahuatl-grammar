@@ -1,0 +1,1223 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "linguistic-analysis-levels",
+  "operationId": "classical.analysis.level.classify",
+  "indexEntryIds": [
+    "IDX-0530",
+    "IDX-1136",
+    "IDX-1174"
+  ],
+  "atomIds": [
+    "ACI-P021-L040-983AAB2A55",
+    "ACI-P021-L041-3DE74E00D8",
+    "ACI-P021-L041-561E318901",
+    "ACI-P022-L009-A44A947808",
+    "ACI-P022-L010-25FF0A0188",
+    "ACI-P022-L014-088E4694F0",
+    "ACI-P022-L015-E4F6215A17",
+    "ACI-P022-L015-A856A07B70",
+    "ACI-P022-L017-F38C10C17F",
+    "ACI-P022-L019-91A226D6C8",
+    "ACI-P022-L022-29DB1DDE8D"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:analysis-levels:type-class-adds-constraint",
+      "fromAtomId": "ACI-P021-L041-3DE74E00D8",
+      "toAtomId": "ACI-P021-L040-983AAB2A55",
+      "relationType": "adds-constraint",
+      "basis": "The class atom constrains the abstract type definition to a hypothetical identificational grouping.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:type"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:eme-label-adds-condition",
+      "fromAtomId": "ACI-P021-L041-561E318901",
+      "toAtomId": "ACI-P021-L041-3DE74E00D8",
+      "relationType": "adds-condition",
+      "basis": "The eme atom adds the language-specific systemic contrastive-feature condition for linguistic type labels.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:type"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:token-adds-rank",
+      "fromAtomId": "ACI-P022-L009-A44A947808",
+      "toAtomId": "ACI-P021-L040-983AAB2A55",
+      "relationType": "adds-constraint",
+      "basis": "The token atom introduces a less abstract particularization rank distinct from its type.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:token"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:token-representation-adds-condition",
+      "fromAtomId": "ACI-P022-L010-25FF0A0188",
+      "toAtomId": "ACI-P022-L009-A44A947808",
+      "relationType": "adds-condition",
+      "basis": "The representation atom adds conformity to the type's distinguishing function and permits environmental variation.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:token"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:instance-adds-rank",
+      "fromAtomId": "ACI-P022-L014-088E4694F0",
+      "toAtomId": "ACI-P022-L009-A44A947808",
+      "relationType": "adds-constraint",
+      "basis": "The instance atom introduces the concrete one-time realization rank beneath token.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:instance"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:manifestation-adds-relation",
+      "fromAtomId": "ACI-P022-L015-E4F6215A17",
+      "toAtomId": "ACI-P022-L014-088E4694F0",
+      "relationType": "adds-condition",
+      "basis": "The manifestation atom explicitly relates an instance to the token it realizes.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:instance"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:quotation-adds-use",
+      "fromAtomId": "ACI-P022-L015-A856A07B70",
+      "toAtomId": "ACI-P022-L014-088E4694F0",
+      "relationType": "adds-condition",
+      "basis": "The quotation atom adds a nontechnical documentary identification convention without authorizing output.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:instance"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:cardinality-adds-constraint",
+      "fromAtomId": "ACI-P022-L017-F38C10C17F",
+      "toAtomId": "ACI-P022-L010-25FF0A0188",
+      "relationType": "adds-constraint",
+      "basis": "The cardinality atom constrains a type to limited token representations and a token to unlimited manifestations.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:token"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:mental-status-adds-constraint",
+      "fromAtomId": "ACI-P022-L019-91A226D6C8",
+      "toAtomId": "ACI-P022-L010-25FF0A0188",
+      "relationType": "adds-constraint",
+      "basis": "The mental-status atom distinguishes type and token constructs from concrete instances.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:token"
+      ]
+    },
+    {
+      "relationId": "atom-relation:analysis-levels:distillation-adds-dependency",
+      "fromAtomId": "ACI-P022-L022-29DB1DDE8D",
+      "toAtomId": "ACI-P022-L017-F38C10C17F",
+      "relationType": "adds-condition",
+      "basis": "The distillation atom orders token abstraction over instance detail and type abstraction over token variation.",
+      "discriminatingCaseIds": [
+        "case:analysis-levels:token"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "type, token, and instance rank classification",
+      "type abstraction and identificational class status",
+      "eme label semantics",
+      "token particularization, representation, and contextual variation",
+      "instance definition, manifestation, and nontechnical quotation use",
+      "limited type-to-token and unlimited token-to-instance cardinality",
+      "type and token mental-construct status",
+      "ordered instance-to-token-to-type distillation"
+    ],
+    "validatedElsewhere": [
+      "phoneme, grapheme, sigeme, and sememe classification",
+      "token-level phone, graph, sig, seme, and morph realization",
+      "formula and written projections",
+      "Nahuatl generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:analysis-levels:type-abstraction",
+      "atomId": "ACI-P021-L040-983AAB2A55",
+      "kind": "exact-type-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:49ce464a3f8d8e19aeddf114c865b9c44480dda783cb38d71d399b30060e324a",
+      "predicateId": "analysis-levels.type-abstraction",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P021-L040-983AAB2A55"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:type-class",
+      "atomId": "ACI-P021-L041-3DE74E00D8",
+      "kind": "exact-type-class-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ea5555c7f1208138cee91028e26286b7a9890864340e3c9f3d4b4fa18fb10dd3",
+      "predicateId": "analysis-levels.type-class",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P021-L041-3DE74E00D8"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:eme-label",
+      "atomId": "ACI-P021-L041-561E318901",
+      "kind": "exact-type-label-semantics",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:1e9dacf15cf8b2ae7f701add639b8d805d53345c9dadf81856a8cb82fb4a7a4e",
+      "predicateId": "analysis-levels.eme-label",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P021-L041-561E318901"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:token-particularization",
+      "atomId": "ACI-P022-L009-A44A947808",
+      "kind": "exact-token-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e3dc3774f39b4d90cc26b2ab9472d589b8bee2333632e8e0c2f7a51f2e8677d0",
+      "predicateId": "analysis-levels.token-particularization",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L009-A44A947808"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:token-representation",
+      "atomId": "ACI-P022-L010-25FF0A0188",
+      "kind": "exact-token-representation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:507a6ee9e4e7ddd7077b7dba6d5758b903c8d31fac02947e29514f3a3a6c007a",
+      "predicateId": "analysis-levels.token-representation",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L010-25FF0A0188"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:instance-definition",
+      "atomId": "ACI-P022-L014-088E4694F0",
+      "kind": "exact-instance-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:5e2fa14c034491c67db844761cb05fdaa1bb90f7ab559984e9cf751997b6bfab",
+      "predicateId": "analysis-levels.instance-definition",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L014-088E4694F0"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:instance-manifestation",
+      "atomId": "ACI-P022-L015-E4F6215A17",
+      "kind": "exact-instance-token-relation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:14ee0e3572aa4963d8637ec931155f09d907713731ea5e722ae2ad12801e9efc",
+      "predicateId": "analysis-levels.instance-manifestation",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L015-E4F6215A17"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:instance-quotation",
+      "atomId": "ACI-P022-L015-A856A07B70",
+      "kind": "exact-documentary-use",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d32e6906e048e649cd80099dd08972507aeb3cf01953892c1d4f5dd3f71d155e",
+      "predicateId": "analysis-levels.instance-quotation",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L015-A856A07B70"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:cardinality",
+      "atomId": "ACI-P022-L017-F38C10C17F",
+      "kind": "exact-level-cardinality",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:c0049ab50d9ab5b0d0bd42804574586ff194599281d8632dcd89f794cd184388",
+      "predicateId": "analysis-levels.cardinality",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L017-F38C10C17F"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:mental-construct",
+      "atomId": "ACI-P022-L019-91A226D6C8",
+      "kind": "exact-mental-status",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:480e16edb6e1692ef9994145d9c65cb52b45e0e28df6a7f816ce9d3f3ddb63ea",
+      "predicateId": "analysis-levels.mental-construct",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L019-91A226D6C8"
+      ]
+    },
+    {
+      "oracleId": "oracle:analysis-levels:distillation",
+      "atomId": "ACI-P022-L022-29DB1DDE8D",
+      "kind": "exact-ordered-abstraction-dependency",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:1f701dd32b3b63a99a4079ef4f99338e70d93fb2555310afdef691a0c55cbe91",
+      "predicateId": "analysis-levels.distillation",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-analysis-levels:ACI-P022-L022-29DB1DDE8D"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "analysisLevel",
+      "values": [
+        "type",
+        "token",
+        "instance"
+      ]
+    },
+    {
+      "id": "levelClassification",
+      "values": [
+        "type-level",
+        "token-level",
+        "instance-level"
+      ]
+    }
+  ],
+  "invalidAssignments": [
+    {
+      "analysisLevel": "type",
+      "levelClassification": [
+        "token-level",
+        "instance-level"
+      ]
+    },
+    {
+      "analysisLevel": "token",
+      "levelClassification": [
+        "type-level",
+        "instance-level"
+      ]
+    },
+    {
+      "analysisLevel": "instance",
+      "levelClassification": [
+        "type-level",
+        "token-level"
+      ]
+    }
+  ],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:analysis-levels:type",
+      "coordinates": {
+        "analysisLevel": "type",
+        "levelClassification": "type-level"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.5"
+    },
+    {
+      "caseId": "case:analysis-levels:token",
+      "coordinates": {
+        "analysisLevel": "token",
+        "levelClassification": "token-level"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.5"
+    },
+    {
+      "caseId": "case:analysis-levels:instance",
+      "coordinates": {
+        "analysisLevel": "instance",
+        "levelClassification": "instance-level"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.5"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "linguistic-analysis-levels.full-source.v1",
+    "minimumUniqueSources": 3,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "analysisLevel": "type",
+          "levelClassification": "type-level"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisLevel": "token",
+          "levelClassification": "token-level"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "analysisLevel": "instance",
+          "levelClassification": "instance-level"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:analysis-levels:distillation",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:analysis-levels:omit-type-abstraction",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P021-L040-983AAB2A55"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-type-class",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P021-L041-3DE74E00D8"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-eme-label",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P021-L041-561E318901"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:wrong-token-domain",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P022-L009-A44A947808",
+          "ACI-P022-L010-25FF0A0188",
+          "ACI-P022-L017-F38C10C17F",
+          "ACI-P022-L019-91A226D6C8",
+          "ACI-P022-L022-29DB1DDE8D"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-token-variation",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L010-25FF0A0188"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:wrong-instance-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L014-088E4694F0",
+          "ACI-P022-L015-E4F6215A17",
+          "ACI-P022-L015-A856A07B70"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-instance-manifestation",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L015-E4F6215A17"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-instance-quotation",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L015-A856A07B70"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:invert-cardinality",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L017-F38C10C17F"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:omit-mental-construct",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L019-91A226D6C8"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:invert-distillation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P022-L022-29DB1DDE8D"
+        ]
+      },
+      {
+        "mutationId": "mutation:analysis-levels:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P021-L040-983AAB2A55",
+          "ACI-P021-L041-3DE74E00D8",
+          "ACI-P021-L041-561E318901",
+          "ACI-P022-L009-A44A947808",
+          "ACI-P022-L010-25FF0A0188",
+          "ACI-P022-L014-088E4694F0",
+          "ACI-P022-L015-E4F6215A17",
+          "ACI-P022-L015-A856A07B70",
+          "ACI-P022-L017-F38C10C17F",
+          "ACI-P022-L019-91A226D6C8",
+          "ACI-P022-L022-29DB1DDE8D"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected Canvas claims define analytical ranks and license no exception that changes their identity or ordering.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:analysis-levels:distillation"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only analysis-level classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:analysis-levels:type-abstraction"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Type, token, and instance relationships are analytical representation links, not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:analysis-levels:token-representation"
+      }
+    ]
+  },
+  "randomSeed": "linguistic-analysis-levels.full-source.v1",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P021-L040-983AAB2A55",
+      "atomId": "ACI-P021-L040-983AAB2A55",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:d833f63acfa1924dddb3395b17ddde9a8d89aa17f4bcadef78e1d332a7df84db",
+      "sourceAnchor": "A type is an ideal, extremely abstract and generalizing kind of conceptual entity, comparable to a genus in biology.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:type-abstraction"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:omit-type-abstraction",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-type-abstraction-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-type-abstraction-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P021-L041-3DE74E00D8",
+      "atomId": "ACI-P021-L041-3DE74E00D8",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:787f13c2047aca18bee2a2f0704693a5bcf2bcf4392e5ada41c1f6d11f685e65",
+      "sourceAnchor": "It is a hypothetical identificational grouping-a class.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:type-class"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:omit-type-class",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-type-class-identity-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-type-class-identity-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P021-L041-561E318901",
+      "atomId": "ACI-P021-L041-561E318901",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:1956388083018252e47a241cd820a01964db327216538b847f62af78415aba3f",
+      "sourceAnchor": "Linguistic ele men ts at the type level are identified by labels formed with the suffix \"-eme,\" which here means \"a…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:eme-label"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:omit-eme-label",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-eme-label-system-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-eme-label-system-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L009-A44A947808",
+      "atomId": "ACI-P022-L009-A44A947808",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:1aec847453300b645bc9282a30a9090466633377d9b386c85e6c47b6c6be28ef",
+      "sourceAnchor": "A token exists on a less abstract level than a type, because it is a particularization of its type (compare a…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:token-particularization"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-token-domain",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-token-particularization-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-token-particularization-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L010-25FF0A0188",
+      "atomId": "ACI-P022-L010-25FF0A0188",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:be328e522508df4792f1d458562eac8ea82da43e8c9e4467fdcb0baad5945e8b",
+      "sourceAnchor": "A token represents its type and therefore conforms to the distinguishing function of the type",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:token-representation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-token-domain",
+            "mutation:analysis-levels:omit-token-variation",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-token-representation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-token-representation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L014-088E4694F0",
+      "atomId": "ACI-P022-L014-088E4694F0",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:d6b8ea8c91295fd38d4fe311d91cf1d6a6703181886efce5f4559799a4766f7b",
+      "sourceAnchor": "An instance is a concrete, actual, performed, specific, one-time-occurring realization of a token.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:instance-definition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-instance-classification",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-instance-definition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-instance-definition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L015-E4F6215A17",
+      "atomId": "ACI-P022-L015-E4F6215A17",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:9b2978b75ec5598cd89e60433ef169c578a25df64b9f41d1d5d2b8d8f7838536",
+      "sourceAnchor": "An instance manifests (or realizes) its token.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:instance-manifestation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:omit-instance-manifestation",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-instance-manifestation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-instance-manifestation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L015-A856A07B70",
+      "atomId": "ACI-P022-L015-A856A07B70",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:83820d69621f4e4bf87204c40be3194d4bdfe31f796e78f13af009044e418fc5",
+      "sourceAnchor": "In discussions of a nontechnical nature, quotation marks can be used to identify an instance-level item.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:instance-quotation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:omit-instance-quotation",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-instance-quotation-use-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-instance-quotation-use-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L017-F38C10C17F",
+      "atomId": "ACI-P022-L017-F38C10C17F",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:8f250e99d650b05ab5d5e73d475977965793fa21f2a7aff9d7021b5f79f459c1",
+      "sourceAnchor": "A type-level item can be represented by only a limited number of token-level items, at times by only one.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:cardinality"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-token-domain",
+            "mutation:analysis-levels:invert-cardinality",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-type-token-cardinality-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-type-token-cardinality-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L019-91A226D6C8",
+      "atomId": "ACI-P022-L019-91A226D6C8",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:373d9df523168b772e1869ac51d872d8ec268de2d84530085d739e52032e629f",
+      "sourceAnchor": "The type level and the token level have to do with mental constructs.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:mental-construct"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-token-domain",
+            "mutation:analysis-levels:omit-mental-construct",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "analysis-mental-construct-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-mental-construct-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-analysis-levels:ACI-P022-L022-29DB1DDE8D",
+      "atomId": "ACI-P022-L022-29DB1DDE8D",
+      "obligationType": "dependency",
+      "inventoryCategory": "DEP",
+      "canvasReference": "§1.5",
+      "inventoryRecordDigest": "sha256:63be16b59b5bcde83ffeca8c334ec1e9823a9b9f5b1bb713a21c63c11ec4fd41",
+      "sourceAnchor": "In other words, the token level distills out a large number of irrelevant details encountered on the instance level,…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:analysis-levels:distillation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "analysisLevel",
+            "levelClassification"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "analysisLevel",
+              "levelClassification"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:analysis-levels:wrong-token-domain",
+            "mutation:analysis-levels:invert-distillation",
+            "mutation:analysis-levels:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-type-distillation-validated",
+                "analysis-token-distillation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "analysis-type-distillation-validated",
+                "analysis-token-distillation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

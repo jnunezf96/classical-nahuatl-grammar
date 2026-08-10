@@ -1,0 +1,763 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-syllable-structure",
+  "operationId": "classical.carrier.syllable.compose",
+  "indexEntryIds": [
+    "IDX-1043",
+    "IDX-1044",
+    "IDX-1083"
+  ],
+  "atomIds": [
+    "ACI-P028-L007-AF1513ED05",
+    "ACI-P028-L008-971DAE6FDD",
+    "ACI-P028-L009-C219AF8581",
+    "ACI-P028-L010-7DA7C5FBDF"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:classical-syllable-structure:1",
+      "fromAtomId": "ACI-P028-L008-971DAE6FDD",
+      "toAtomId": "ACI-P028-L007-AF1513ED05",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P028-L008-971DAE6FDD adds a non-equivalent Canvas-bound constraint with its own live checkpoint and receipt; shared dependency mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:classical-syllable-structure:scenario-consonant-margins:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-syllable-structure:2",
+      "fromAtomId": "ACI-P028-L009-C219AF8581",
+      "toAtomId": "ACI-P028-L007-AF1513ED05",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P028-L009-C219AF8581 adds a non-equivalent Canvas-bound constraint with its own live checkpoint and receipt; shared dependency mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:classical-syllable-structure:scenario-language-specific-structure:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-syllable-structure:3",
+      "fromAtomId": "ACI-P028-L010-7DA7C5FBDF",
+      "toAtomId": "ACI-P028-L007-AF1513ED05",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P028-L010-7DA7C5FBDF adds a non-equivalent Canvas-bound constraint with its own live checkpoint and receipt; shared dependency mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:classical-syllable-structure:scenario-meaningless-unit:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "identity-bound vowel and optional consonant phoneme or phone instance Results plus carrier rank Results",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "prerequisites"
+    ],
+    "validatedHere": [
+      "Classical vowel center",
+      "consonant margins",
+      "language specificity",
+      "meaningless-unit status"
+    ],
+    "validatedElsewhere": [
+      "Lesson 2 syllable rules",
+      "English syllabic consonants",
+      "written or sounded surfaces"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:semantic",
+      "atomId": "ACI-P028-L007-AF1513ED05",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:86b49a4971f856a9d0c61ce6b3d1e90e0669f80a114d7e1da38a714bb412eb88",
+      "predicateId": "classical-syllable-structure.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L007-AF1513ED05"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:guard",
+      "atomId": "ACI-P028-L007-AF1513ED05",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:86b49a4971f856a9d0c61ce6b3d1e90e0669f80a114d7e1da38a714bb412eb88",
+      "predicateId": "classical-syllable-structure.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L007-AF1513ED05"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L008-971DAE6FDD:semantic",
+      "atomId": "ACI-P028-L008-971DAE6FDD",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:b19bf9c99b983e5d2671524ce422b5c221f7ea73fad3063b857d6640be3ba3d7",
+      "predicateId": "classical-syllable-structure.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L008-971DAE6FDD"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L008-971DAE6FDD:guard",
+      "atomId": "ACI-P028-L008-971DAE6FDD",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:b19bf9c99b983e5d2671524ce422b5c221f7ea73fad3063b857d6640be3ba3d7",
+      "predicateId": "classical-syllable-structure.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L008-971DAE6FDD"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L009-C219AF8581:semantic",
+      "atomId": "ACI-P028-L009-C219AF8581",
+      "kind": "canvas-bound-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3afe1e06dc41a36db582e7d3fcddf025e49881f14bdc97dd3eb2536fcedd3311",
+      "predicateId": "classical-syllable-structure.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L009-C219AF8581"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L009-C219AF8581:guard",
+      "atomId": "ACI-P028-L009-C219AF8581",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3afe1e06dc41a36db582e7d3fcddf025e49881f14bdc97dd3eb2536fcedd3311",
+      "predicateId": "classical-syllable-structure.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L009-C219AF8581"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF:semantic",
+      "atomId": "ACI-P028-L010-7DA7C5FBDF",
+      "kind": "canvas-bound-constraint",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:febca35d879d07978af295f3a9c425e2a15f464ae69f25aab34d7eacab6492d4",
+      "predicateId": "classical-syllable-structure.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF:guard",
+      "atomId": "ACI-P028-L010-7DA7C5FBDF",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.b",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:febca35d879d07978af295f3a9c425e2a15f464ae69f25aab34d7eacab6492d4",
+      "predicateId": "classical-syllable-structure.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "vowel-center",
+        "consonant-margins",
+        "language-specific-structure",
+        "meaningless-unit",
+        "wrong-prerequisite"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:classical-syllable-structure:scenario-vowel-center:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "vowel-center",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-vowel-center:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "vowel-center",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-vowel-center:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "vowel-center",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-consonant-margins:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "consonant-margins",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-consonant-margins:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "consonant-margins",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-consonant-margins:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "consonant-margins",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-language-specific-structure:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "language-specific-structure",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-language-specific-structure:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "language-specific-structure",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-language-specific-structure:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "language-specific-structure",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-meaningless-unit:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "meaningless-unit",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-meaningless-unit:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "meaningless-unit",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-meaningless-unit:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "meaningless-unit",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-wrong-prerequisite:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-wrong-prerequisite:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-syllable-structure:scenario-wrong-prerequisite:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-syllable-structure.full-source.v1",
+    "minimumUniqueSources": 15,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "vowel-center",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "consonant-margins",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "language-specific-structure",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "meaningless-unit",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-syllable-structure:ACI-P028-L007-AF1513ED05",
+      "atomId": "ACI-P028-L007-AF1513ED05",
+      "obligationType": "rule",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.11.1.b",
+      "inventoryRecordDigest": "sha256:e80cdc650bb7e868b4a10b3083c0e6d5a7f7c72d3171bab7d814c26fea7bc89d",
+      "sourceAnchor": "In Nahuatl (as in Spanish) a syllable has a vowel phoneme/phone at its center",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-syllable-structure:trust-copied-source",
+            "mutation:classical-syllable-structure:wrong-analysis-domain",
+            "mutation:classical-syllable-structure:wrong-owner-identity",
+            "mutation:classical-syllable-structure:reverse-owner-relation",
+            "mutation:classical-syllable-structure:corrupt-first-fact",
+            "mutation:classical-syllable-structure:corrupt-first-classification",
+            "mutation:classical-syllable-structure:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-syllable-vowel-center-checkpoint",
+                "classical-syllable-structure-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-syllable-structure-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-syllable-structure:ACI-P028-L008-971DAE6FDD",
+      "atomId": "ACI-P028-L008-971DAE6FDD",
+      "obligationType": "rule",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.11.1.b",
+      "inventoryRecordDigest": "sha256:85b926b0e97c8c37e782645488eadd30dea29155236ff9dad95c4537a661875a",
+      "sourceAnchor": "Consonant phonemes/phones can appear in the fore and aft margins.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L008-971DAE6FDD:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L008-971DAE6FDD:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-syllable-structure:trust-copied-source",
+            "mutation:classical-syllable-structure:wrong-analysis-domain",
+            "mutation:classical-syllable-structure:wrong-owner-identity",
+            "mutation:classical-syllable-structure:reverse-owner-relation",
+            "mutation:classical-syllable-structure:corrupt-first-fact",
+            "mutation:classical-syllable-structure:corrupt-first-classification",
+            "mutation:classical-syllable-structure:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-syllable-consonant-margins-checkpoint",
+                "classical-syllable-structure-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-syllable-structure-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-syllable-structure:ACI-P028-L009-C219AF8581",
+      "atomId": "ACI-P028-L009-C219AF8581",
+      "obligationType": "condition",
+      "inventoryCategory": "CON",
+      "canvasReference": "§1.11.1.b",
+      "inventoryRecordDigest": "sha256:43ed2866e6b07d02493bc13e00c4cc7d16f65ef1ec8e8ff270f5b400a0fd5491",
+      "sourceAnchor": "The rules for syllable structure differ for each language (for Nahuatl syllable structure, see § 2.6).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L009-C219AF8581:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L009-C219AF8581:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-syllable-structure:trust-copied-source",
+            "mutation:classical-syllable-structure:wrong-analysis-domain",
+            "mutation:classical-syllable-structure:wrong-owner-identity",
+            "mutation:classical-syllable-structure:reverse-owner-relation",
+            "mutation:classical-syllable-structure:corrupt-first-fact",
+            "mutation:classical-syllable-structure:corrupt-first-classification",
+            "mutation:classical-syllable-structure:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-syllable-language-specificity-checkpoint",
+                "classical-syllable-structure-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-syllable-structure-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF",
+      "atomId": "ACI-P028-L010-7DA7C5FBDF",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.11.1.b",
+      "inventoryRecordDigest": "sha256:91b5089b381c756431821146d5bbfa1d848a489ce8ffd87dc30cd5a732d1cd71",
+      "sourceAnchor": "Remember: Syllables are meaningless units.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-syllable-structure:ACI-P028-L010-7DA7C5FBDF:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-syllable-structure:trust-copied-source",
+            "mutation:classical-syllable-structure:wrong-analysis-domain",
+            "mutation:classical-syllable-structure:wrong-owner-identity",
+            "mutation:classical-syllable-structure:reverse-owner-relation",
+            "mutation:classical-syllable-structure:corrupt-first-fact",
+            "mutation:classical-syllable-structure:corrupt-first-classification",
+            "mutation:classical-syllable-structure:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-syllable-meaningless-unit-checkpoint",
+                "classical-syllable-structure-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-syllable-structure-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:classical-syllable-structure:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:reverse-owner-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:corrupt-first-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:corrupt-first-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-syllable-structure:ignore-prerequisite-failure",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P028-L007-AF1513ED05",
+          "ACI-P028-L008-971DAE6FDD",
+          "ACI-P028-L009-C219AF8581",
+          "ACI-P028-L010-7DA7C5FBDF"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No additional exception is licensed by this owner's exact Canvas span.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This structural owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-syllable-structure:ACI-P028-L007-AF1513ED05:semantic"
+      }
+    ]
+  },
+  "randomSeed": "classical-syllable-structure.deterministic.v1"
+}

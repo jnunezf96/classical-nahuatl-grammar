@@ -19,10 +19,6 @@ const spec = {
       "assertionId": "classical-patientive-human-source-tla:p3721-a-final-a-in-the-active-voice-verbstem-is",
       "canonicalPath": "cases.patientiveHumanSourceTla.authorizationStatus"
     },
-    "claim-p3722::p3722-tla-chcui-tl-a-thing-dug-out-as-a": {
-      "assertionId": "classical-patientive-human-source-tla:p3722-tla-chcui-tl-a-thing-dug-out-as-a",
-      "canonicalPath": "cases.patientiveHumanSourceTla.first.canonicalResult"
-    },
     "claim-p3723::p3723-when-the-active-voice-source-is-a-single-object": {
       "assertionId": "classical-patientive-human-source-tla:p3723-when-the-active-voice-source-is-a-single-object",
       "canonicalPath": "cases.patientiveHumanSourceTla.second.canonicalResult"

@@ -1,0 +1,310 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "nahuatl-structure-level-distribution",
+  "operationId": "classical.structure.level-distribution.validate",
+  "indexEntryIds": [
+    "IDX-0637",
+    "IDX-0640",
+    "IDX-1087",
+    "IDX-1044"
+  ],
+  "atomIds": [
+    "ACI-P032-L026-ADA59A0620"
+  ],
+  "atomRelations": [],
+  "contractBoundary": {
+    "inputAuthority": "independent identity-bound morphological, morphosyntactical, and syntactical structure Results",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "prerequisites"
+    ],
+    "validatedHere": [
+      "distinct only-or-mainly, only, and cross-level distribution possibilities"
+    ],
+    "validatedElsewhere": [
+      "supplementation and modification realization",
+      "English examples",
+      "stored level table"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:semantic",
+      "atomId": "ACI-P032-L026-ADA59A0620",
+      "kind": "canvas-bound-constraint",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:aaa7d9bd3e6829d202dbdc2075d63223b70db7a46450da7b581e64b640fd91e2",
+      "predicateId": "nahuatl-structure-level-distribution.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620"
+      ]
+    },
+    {
+      "oracleId": "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:guard",
+      "atomId": "ACI-P032-L026-ADA59A0620",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:aaa7d9bd3e6829d202dbdc2075d63223b70db7a46450da7b581e64b640fd91e2",
+      "predicateId": "nahuatl-structure-level-distribution.guard",
+      "canvasBindingIds": [
+        "canvas-binding:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "cross-level-distribution",
+        "wrong-prerequisite"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-cross-level-distribution:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "cross-level-distribution",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-cross-level-distribution:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "cross-level-distribution",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-cross-level-distribution:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "cross-level-distribution",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-wrong-prerequisite:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-wrong-prerequisite:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:nahuatl-structure-level-distribution:scenario-wrong-prerequisite:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "nahuatl-structure-level-distribution.full-source.v1",
+    "minimumUniqueSources": 6,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "cross-level-distribution",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620",
+      "atomId": "ACI-P032-L026-ADA59A0620",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.12.3",
+      "inventoryRecordDigest": "sha256:e7f036defe743fe8ae3bbfa112bb8f82e0d1c7b0be534aa0d6d8a1f0e97b8fce",
+      "sourceAnchor": "Some Nahuatl structures occur only or mainly on the morphosyntactical level, as basic sentence formation does.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:nahuatl-structure-level-distribution:trust-copied-source",
+            "mutation:nahuatl-structure-level-distribution:wrong-analysis-domain",
+            "mutation:nahuatl-structure-level-distribution:wrong-owner-identity",
+            "mutation:nahuatl-structure-level-distribution:reverse-owner-relation",
+            "mutation:nahuatl-structure-level-distribution:corrupt-first-fact",
+            "mutation:nahuatl-structure-level-distribution:corrupt-first-classification",
+            "mutation:nahuatl-structure-level-distribution:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "nahuatl-cross-level-structure-distribution-checkpoint",
+                "nahuatl-structure-level-distribution-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "nahuatl-structure-level-distribution-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:reverse-owner-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:corrupt-first-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:corrupt-first-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      },
+      {
+        "mutationId": "mutation:nahuatl-structure-level-distribution:ignore-prerequisite-failure",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P032-L026-ADA59A0620"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No additional exception is licensed by this owner's exact Canvas span.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This structural owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:nahuatl-structure-level-distribution:ACI-P032-L026-ADA59A0620:semantic"
+      }
+    ]
+  },
+  "randomSeed": "nahuatl-structure-level-distribution.deterministic.v1"
+}

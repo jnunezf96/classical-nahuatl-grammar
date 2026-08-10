@@ -9,20 +9,35 @@ const spec = {
   "selections": [
     "claim-p1213",
     "claim-p1214",
-    "claim-p1215"
+    "claim-p1215",
+    "claim-p1213-02",
+    "claim-p1213-03",
+    "claim-p1213-04"
   ],
   "coordinates": {
-    "claim-p1213::p1213-mani-man-to-extend-to-be-vncs-built-on": {
-      "assertionId": "classical-mani-irregular-paradigm:p1213-mani-man-to-extend-to-be-vncs-built-on",
-      "canonicalPath": "authorizationStatus"
+    "claim-p1213::mani-schema": {
+      "assertionId": "classical-mani-irregular-paradigm:mani-schema",
+      "canonicalPath": "lesson11.selectedStem"
     },
     "claim-p1214::p1214-it-is-not-ordinarily-used-for-individual-animate-beings": {
       "assertionId": "classical-mani-irregular-paradigm:p1214-it-is-not-ordinarily-used-for-individual-animate-beings",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "lesson11.usageStatus"
     },
     "claim-p1215::p1215-is-also-used-for-masses-or-crowds-of-men": {
       "assertionId": "classical-mani-irregular-paradigm:p1215-is-also-used-for-masses-or-crowds-of-men",
-      "canonicalPath": "authorizationStatus"
+      "canonicalPath": "lesson11.contextualInterpretation"
+    },
+    "claim-p1213-02::mani-preterit-imperfective-stem": {
+      "assertionId": "classical-mani-irregular-paradigm:mani-preterit-imperfective-stem",
+      "canonicalPath": "lesson11.selectedStem"
+    },
+    "claim-p1213-03::mani-distant-past-as-past": {
+      "assertionId": "classical-mani-irregular-paradigm:mani-distant-past-as-past",
+      "canonicalPath": "lesson11.morphologicalTense"
+    },
+    "claim-p1213-04::mani-wide-flat-usage": {
+      "assertionId": "classical-mani-irregular-paradigm:mani-wide-flat-usage",
+      "canonicalPath": "lesson11.contextualInterpretation"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlIrregularValidationFrame",
@@ -32,16 +47,28 @@ const spec = {
       "mani-present"
     ],
     "claim-p1214": [
-      "mani-preterit"
+      "mani-individual-animate"
     ],
     "claim-p1215": [
+      "mani-present"
+    ],
+    "claim-p1213-02": [
+      "mani-preterit"
+    ],
+    "claim-p1213-03": [
       "mani-past"
+    ],
+    "claim-p1213-04": [
+      "mani-wide-flat"
     ]
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p1213": "authorized",
     "claim-p1214": "authorized",
-    "claim-p1215": "authorized"
+    "claim-p1215": "authorized",
+    "claim-p1213-02": "authorized",
+    "claim-p1213-03": "authorized",
+    "claim-p1213-04": "authorized"
   }
 };
 export default Object.freeze(spec);
