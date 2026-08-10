@@ -2,7 +2,7 @@
 
 Strict completion: **NO**.
 
-This report deliberately has no weighted overall percentage. A high score in one layer cannot conceal a missing source zone, an unproved rule, or an undelivered genuine choice.
+This report deliberately has no weighted overall percentage. An atom-to-owner link does not count as exact behavior.
 
 ## Current measurements
 
@@ -13,19 +13,24 @@ This report deliberately has no weighted overall percentage. A high score in one
 | lessonAtomization | 28540 | 28540 | 100.00% | complete |
 | lessonAtomForceClassification | 28540 | 28540 | 100.00% | complete |
 | lessonNonGrammarAccounting | 9901 | 9901 | 100.00% | complete |
-| lessonGrammarOwnerAndExactProof | 18639 | 18639 | 100.00% | complete |
+| lessonGrammarOwnerLinked | 18639 | 18639 | 100.00% | complete |
+| lessonGrammarExactBehaviorObserved | 8261 | 18639 | 44.32% | incomplete |
 | applicationAxisClassification | 184 | 184 | 100.00% | complete |
 | genuineChoiceCanvasProvenance | 58 | 58 | 100.00% | complete |
 | genuineChoiceLiveDeclarations | 18 | 58 | 31.03% | incomplete |
 | genuineChoiceBrowserDeliveryProof | not measured | 58 | not measured | not-measured |
 
-## What is genuinely complete
+## Exact behavior rule
 
-Lessons 1–58 have **28,540** independently classified atoms. Their **18,639** grammar-bearing atoms reconcile to **18,639** exact typed proof coordinates: 5,347 retained canonical coordinates plus 13,292 individual atom coordinates. Evidence (6,524), analysis (1,423), and documentary material (1,954) are accounted for but never authorize or block grammar.
+Lessons 1–58 contain **18,639** grammar-bearing atoms. All have owner links, but only **8,261** currently have an acceptable exact-behavior observation.
+
+The remaining **10,378** use non-generative assertion coordinates where the canonical engine must instead be observed performing, deriving, projecting, enforcing, constructing, or validating the atom-specific behavior.
+
+A legitimately read-only grammar fact may remain non-generative only when a test observes its exact typed value. Evidence, analysis, and documentary material never authorize or block grammar.
 
 ## Full-Canvas scope blockers
 
-The present atom denominator covers Lessons 1–58, not all source zones in the Canvas file. These zones need current atom-level ledgers before “all Canvas” can be claimed:
+The present atom denominator covers Lessons 1–58, not all source zones in the Canvas file:
 
 - Front matter
 - Appendix A
@@ -36,11 +41,11 @@ The present atom denominator covers Lessons 1–58, not all source zones in the 
 - Appendix F
 - Suggested Reading
 
-The 87.88% source-zone figure is structural coverage only; it is not atom-weighted and must not be presented as grammatical completion.
+The 87.88% source-zone figure is structural only; it is not grammatical completion.
 
 ## Genuine-choice delivery backlog
 
-All 58 genuine application axes are classified and linked to Canvas. 18 are backed by live application declarations; 40 remain contract-audited rather than live-declared:
+All 58 genuine application axes are classified and linked to Canvas. 18 are live-declared; 40 remain contract-audited:
 
 - `clause:adverbial-adjunction` / `clause-position`
 - `clause:adverbial-adjunction` / `relation-scope`
@@ -85,4 +90,4 @@ All 58 genuine application axes are classified and linked to Canvas. 18 are back
 
 ## Completion rule
 
-Strict completion becomes true only when every Canvas source zone has an atom ledger, every grammar-bearing atom has a typed owner and exact owner-issued proof, every application axis is classified, and every genuine choice is live-declared. Derived, contextual, lexical, boundary-conditioned, evidential, and presentational facts must remain non-authoritative.
+Strict completion requires an atom-specific test to observe the canonical engine performing or enforcing every executable grammar contribution. Owner linkage, copied expectations, and non-generative assertions cannot satisfy that obligation.

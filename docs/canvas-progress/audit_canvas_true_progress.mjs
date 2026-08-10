@@ -13,6 +13,7 @@ const checkOnly = process.argv.includes("--check");
 const inputPaths = {
   canvas: "ANDREWS_TRANSCRIPTION_CANVAS.md",
   semanticLedger: "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+  atomUiReconciliation: "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json",
   proofMigration: "docs/ANDREWS_INDIVIDUAL_ATOM_PROOF_MIGRATION.json",
   applicationBridge: "docs/CLASSICAL_APPLICATION_AXIS_CANVAS_BRIDGE.json",
   applicationDispositions: "docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json",
@@ -59,6 +60,7 @@ function assert(condition, message) {
 }
 
 const semantic = await readJson(inputPaths.semanticLedger);
+const atomUi = await readJson(inputPaths.atomUiReconciliation);
 const migration = await readJson(inputPaths.proofMigration);
 const bridge = await readJson(inputPaths.applicationBridge);
 const dispositions = await readJson(inputPaths.applicationDispositions);
@@ -79,12 +81,37 @@ const validForces = new Set(["grammar-bearing", "evidence", "analysis", "documen
 const classifiedAtoms = semantic.atoms.filter((atom) => validForces.has(atom.force));
 const grammarAtoms = semantic.atoms.filter((atom) => atom.force === "grammar-bearing");
 const nonGrammarAtoms = semantic.atoms.filter((atom) => atom.force !== "grammar-bearing");
+const atomTupleFields = atomUi.codebooks.atomTuple;
+const atomTupleIndex = Object.fromEntries(atomTupleFields.map((field, index) => [field, index]));
+const grammarAtomTuples = atomUi.atoms.filter((tuple) => tuple[atomTupleIndex.force] === "grammar-bearing");
+const retainedCanonicalProofTuples = grammarAtomTuples.filter(
+  (tuple) => tuple[atomTupleIndex.proofCoordinateKind] === "retained-existing-canonical-proof",
+);
+const assertionProofTuples = grammarAtomTuples.filter(
+  (tuple) => tuple[atomTupleIndex.proofCoordinateKind] === "non-generative-individual-atom-assertion",
+);
+const readOnlyAssertionTuples = assertionProofTuples.filter(
+  (tuple) => tuple[atomTupleIndex.uiRole] === "read-only-grammar-fact",
+);
+const behaviorRequiredRoles = new Map([
+  ["canonical-rule-or-alternation", "perform-canonical-operation-or-alternation"],
+  ["derived-realization", "derive-canonical-realization"],
+  ["result-projection", "project-canonical-result"],
+  ["applicability-or-constraint", "enforce-applicability-or-constraint"],
+  ["source-structure-schema", "construct-or-validate-typed-source-structure"],
+]);
+const insufficientAssertionTuples = assertionProofTuples.filter(
+  (tuple) => behaviorRequiredRoles.has(tuple[atomTupleIndex.uiRole]),
+);
 
 assert(uniqueAtomIds.size === atomIds.length, "semantic ledger contains duplicate atom IDs");
 assert(semantic.counts.atoms === atomIds.length, "semantic atom count does not match records");
 assert(classifiedAtoms.length === atomIds.length, "one or more atoms lack a recognized force");
 assert(grammarAtoms.length === semantic.counts.grammarBearing, "grammar atom count drifted");
 assert(nonGrammarAtoms.length === semantic.counts.evidence + semantic.counts.analysis + semantic.counts.documentary, "non-grammar atom count drifted");
+assert(grammarAtomTuples.length === grammarAtoms.length, "atom UI grammar denominator drifted");
+assert(retainedCanonicalProofTuples.length + assertionProofTuples.length === grammarAtoms.length, "proof coordinate accounting drifted");
+assert(readOnlyAssertionTuples.length + insufficientAssertionTuples.length === assertionProofTuples.length, "an assertion atom lacks an execution-obligation classification");
 assert(semantic.invariants.evidenceAbsenceBlocksGeneration === false, "evidence absence must not block generation");
 assert(semantic.invariants.typedGrammarAuthorizesUnlistedRealizations === true, "typed grammar must authorize unlisted realizations");
 
@@ -125,6 +152,8 @@ const newProofs = migration.counts.newIndividualAtomProofs;
 const retainedProofs = grammarAtoms.length - newProofs;
 assert(newProofs === 13292, "individual atom proof migration count drifted");
 assert(retainedProofs === 5347, "retained exact proof count drifted");
+assert(retainedCanonicalProofTuples.length === retainedProofs, "retained canonical proof records drifted");
+assert(assertionProofTuples.length === newProofs, "non-generative assertion records drifted");
 
 const coveredZones = sourceZones.filter((zone) => zone.atomLedgerStatus === "complete");
 const missingZones = sourceZones.filter((zone) => zone.atomLedgerStatus !== "complete");
@@ -135,7 +164,11 @@ const metrics = {
   lessonAtomization: ratio(atomIds.length, atomIds.length),
   lessonAtomForceClassification: ratio(classifiedAtoms.length, atomIds.length),
   lessonNonGrammarAccounting: ratio(nonGrammarAtoms.length, nonGrammarAtoms.length),
-  lessonGrammarOwnerAndExactProof: ratio(retainedProofs + newProofs, grammarAtoms.length),
+  lessonGrammarOwnerLinked: ratio(grammarAtomTuples.length, grammarAtoms.length),
+  lessonGrammarExactBehaviorObserved: ratio(
+    retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length,
+    grammarAtoms.length,
+  ),
   applicationAxisClassification: ratio(classifiedApplicationAxes.length, dispositions.entries.length),
   genuineChoiceCanvasProvenance: ratio(bridge.counts.mappedAxisCount, bridge.counts.interactiveAxisCount),
   genuineChoiceLiveDeclarations: ratio(liveAxes.length, genuineAxes.length),
@@ -148,7 +181,7 @@ const metrics = {
   },
 };
 
-const strictComplete = missingZones.length === 0 && contractOnlyAxes.length === 0 && Object.values(metrics).every((metric) => metric.complete);
+const strictComplete = missingZones.length === 0 && insufficientAssertionTuples.length === 0 && contractOnlyAxes.length === 0 && Object.values(metrics).every((metric) => metric.complete);
 
 const report = {
   schemaVersion: 1,
@@ -157,7 +190,7 @@ const report = {
   strictComplete,
   measurementPolicy: {
     headline: "No weighted aggregate is permitted. Every applicable denominator is reported separately.",
-    completionRule: "Strict completion requires full Canvas source-zone atomization, exhaustive force classification, typed owner assignment, exact owner-issued proof, application-axis classification, Canvas provenance for every genuine choice, and live declaration of every genuine choice.",
+    completionRule: "Strict completion requires full Canvas source-zone atomization, exhaustive force classification, and an atom-specific test that observes the canonical engine performing, deriving, projecting, enforcing, constructing, validating, or issuing the exact required behavior. An atom-to-owner link or non-generative assertion is insufficient wherever executable behavior is required.",
     grammarAuthority: "Only typed grammar owners authorize results. Canvas atoms supply specification and provenance.",
     evidencePolicy: "Evidence neither authorizes grammar nor blocks a result when absent.",
     uiPolicy: "Only genuine grammatical choices become controls; derived, contextual, lexical, boundary-conditioned, evidence, and presentation facts do not.",
@@ -173,7 +206,17 @@ const report = {
     exactProofs: {
       retainedCanonicalCoordinates: retainedProofs,
       newIndividualAtomCoordinates: newProofs,
-      total: retainedProofs + newProofs,
+      exactBehaviorObserved: retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length,
+      linkOnlyInsufficient: insufficientAssertionTuples.length,
+      totalOwnerLinked: retainedProofs + newProofs,
+      executionObligations: Object.fromEntries(
+        [...behaviorRequiredRoles].map(([uiRole, requiredBehavior]) => [uiRole, {
+          requiredBehavior,
+          linkOnlyInsufficient: insufficientAssertionTuples.filter(
+            (tuple) => tuple[atomTupleIndex.uiRole] === uiRole,
+          ).length,
+        }]),
+      ),
     },
     proofRelease: {
       version: release.version,
@@ -194,6 +237,13 @@ const report = {
   blockers: [
     ...missingZones.map((zone) => ({ kind: "missing-source-zone-ledger", id: zone.id, label: zone.label })),
     ...contractOnlyAxes.map((entry) => ({ kind: "genuine-choice-not-live-declared", id: entry.atomId, operationId: entry.operationId, axisId: entry.axisId })),
+    ...insufficientAssertionTuples.map((tuple) => ({
+      kind: "atom-link-without-exact-canonical-behavior-proof",
+      id: tuple[atomTupleIndex.atomId],
+      canonicalOwnerId: tuple[atomTupleIndex.canonicalOwnerId],
+      uiRole: tuple[atomTupleIndex.uiRole],
+      requiredBehavior: behaviorRequiredRoles.get(tuple[atomTupleIndex.uiRole]),
+    })),
     { kind: "missing-per-axis-browser-delivery-proof-registry", id: "genuine-choice-browser-delivery-proof", axisCount: genuineAxes.length },
   ],
   inputDigests: Object.fromEntries(
@@ -207,7 +257,46 @@ function markdown(progress) {
   );
   const missing = progress.sourceScope.zones.filter((zone) => zone.atomLedgerStatus !== "complete").map((zone) => `- ${zone.label}`).join("\n");
   const backlog = progress.interaction.contractOnlyBacklog.map((entry) => `- \`${entry.operationId}\` / \`${entry.axisId}\``).join("\n");
-  return `# Canvas true grammar progress\n\nStrict completion: **${progress.strictComplete ? "YES" : "NO"}**.\n\nThis report deliberately has no weighted overall percentage. A high score in one layer cannot conceal a missing source zone, an unproved rule, or an undelivered genuine choice.\n\n## Current measurements\n\n| Denominator | Done | Total | Progress | Status |\n|---|---:|---:|---:|---|\n${rows.join("\n")}\n\n## What is genuinely complete\n\nLessons 1–58 have **${progress.lessonCorpus.atoms.atoms.toLocaleString("en-US")}** independently classified atoms. Their **${progress.lessonCorpus.atoms.grammarBearing.toLocaleString("en-US")}** grammar-bearing atoms reconcile to **${progress.lessonCorpus.exactProofs.total.toLocaleString("en-US")}** exact typed proof coordinates: ${progress.lessonCorpus.exactProofs.retainedCanonicalCoordinates.toLocaleString("en-US")} retained canonical coordinates plus ${progress.lessonCorpus.exactProofs.newIndividualAtomCoordinates.toLocaleString("en-US")} individual atom coordinates. Evidence (${progress.lessonCorpus.atoms.evidence.toLocaleString("en-US")}), analysis (${progress.lessonCorpus.atoms.analysis.toLocaleString("en-US")}), and documentary material (${progress.lessonCorpus.atoms.documentary.toLocaleString("en-US")}) are accounted for but never authorize or block grammar.\n\n## Full-Canvas scope blockers\n\nThe present atom denominator covers Lessons 1–58, not all source zones in the Canvas file. These zones need current atom-level ledgers before “all Canvas” can be claimed:\n\n${missing}\n\nThe ${progress.metrics.fullCanvasSourceZones.percent.toFixed(2)}% source-zone figure is structural coverage only; it is not atom-weighted and must not be presented as grammatical completion.\n\n## Genuine-choice delivery backlog\n\nAll ${progress.interaction.genuineChoiceCount} genuine application axes are classified and linked to Canvas. ${progress.interaction.liveDeclarationCount} are backed by live application declarations; ${progress.interaction.contractOnlyCount} remain contract-audited rather than live-declared:\n\n${backlog}\n\n## Completion rule\n\nStrict completion becomes true only when every Canvas source zone has an atom ledger, every grammar-bearing atom has a typed owner and exact owner-issued proof, every application axis is classified, and every genuine choice is live-declared. Derived, contextual, lexical, boundary-conditioned, evidential, and presentational facts must remain non-authoritative.\n`;
+  return [
+    "# Canvas true grammar progress",
+    "",
+    `Strict completion: **${progress.strictComplete ? "YES" : "NO"}**.`,
+    "",
+    "This report deliberately has no weighted overall percentage. An atom-to-owner link does not count as exact behavior.",
+    "",
+    "## Current measurements",
+    "",
+    "| Denominator | Done | Total | Progress | Status |",
+    "|---|---:|---:|---:|---|",
+    ...rows,
+    "",
+    "## Exact behavior rule",
+    "",
+    `Lessons 1–58 contain **${progress.lessonCorpus.atoms.grammarBearing.toLocaleString("en-US")}** grammar-bearing atoms. All have owner links, but only **${progress.lessonCorpus.exactProofs.exactBehaviorObserved.toLocaleString("en-US")}** currently have an acceptable exact-behavior observation.`,
+    "",
+    `The remaining **${progress.lessonCorpus.exactProofs.linkOnlyInsufficient.toLocaleString("en-US")}** use non-generative assertion coordinates where the canonical engine must instead be observed performing, deriving, projecting, enforcing, constructing, or validating the atom-specific behavior.`,
+    "",
+    "A legitimately read-only grammar fact may remain non-generative only when a test observes its exact typed value. Evidence, analysis, and documentary material never authorize or block grammar.",
+    "",
+    "## Full-Canvas scope blockers",
+    "",
+    "The present atom denominator covers Lessons 1–58, not all source zones in the Canvas file:",
+    "",
+    missing,
+    "",
+    `The ${progress.metrics.fullCanvasSourceZones.percent.toFixed(2)}% source-zone figure is structural only; it is not grammatical completion.`,
+    "",
+    "## Genuine-choice delivery backlog",
+    "",
+    `All ${progress.interaction.genuineChoiceCount} genuine application axes are classified and linked to Canvas. ${progress.interaction.liveDeclarationCount} are live-declared; ${progress.interaction.contractOnlyCount} remain contract-audited:`,
+    "",
+    backlog,
+    "",
+    "## Completion rule",
+    "",
+    "Strict completion requires an atom-specific test to observe the canonical engine performing or enforcing every executable grammar contribution. Owner linkage, copied expectations, and non-generative assertions cannot satisfy that obligation.",
+    "",
+  ].join("\n");
 }
 
 const serializedJson = `${JSON.stringify(report, null, 2)}\n`;
@@ -228,7 +317,8 @@ console.log(JSON.stringify({
   status: report.status,
   strictComplete: report.strictComplete,
   fullCanvasSourceZones: report.metrics.fullCanvasSourceZones,
-  lessonGrammarOwnerAndExactProof: report.metrics.lessonGrammarOwnerAndExactProof,
+  lessonGrammarOwnerLinked: report.metrics.lessonGrammarOwnerLinked,
+  lessonGrammarExactBehaviorObserved: report.metrics.lessonGrammarExactBehaviorObserved,
   genuineChoiceLiveDeclarations: report.metrics.genuineChoiceLiveDeclarations,
   blockerCount: report.blockers.length,
 }, null, 2));
