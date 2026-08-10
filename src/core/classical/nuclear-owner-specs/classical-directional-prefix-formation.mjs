@@ -50,6 +50,14 @@ const spec = {
       "canonicalPath": "formulaSlotAuthorized"
     }
   },
+  "exactAtomCoordinates": {
+    "ACI-P087-L018-073DCB9B6E-02": {
+      "assertionId": "classical-directional-prefix-formation:atom-aci-p087-l018-073dcb9b6e-02-translation-value-change",
+      "canonicalPath": "translationValueChangesWithDirectionalPrefix",
+      "observationKind": "owner-issued-canonical-result",
+      "expected": true
+    }
+  },
   "executionFunctionName": "buildClassicalNahuatlDirectionalPrefixSystemFrame",
   "executionValidatorName": "isClassicalNahuatlDirectionalPrefixSystemFrame",
   "executionArgsBySelection": {

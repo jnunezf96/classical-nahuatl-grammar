@@ -19,6 +19,8 @@ const inputPaths = {
   applicationDispositions: "docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json",
   proofRelease:
     "docs/proof-refresh/v20260810-shared-oracle-broad-completion/release-manifest.json",
+  activeExactObservationPointer:
+    "docs/canvas-progress/active-exact-observation-manifest.json",
 };
 
 const outputPaths = {
@@ -65,6 +67,8 @@ const migration = await readJson(inputPaths.proofMigration);
 const bridge = await readJson(inputPaths.applicationBridge);
 const dispositions = await readJson(inputPaths.applicationDispositions);
 const release = await readJson(inputPaths.proofRelease);
+const exactObservationPointer = await readJson(inputPaths.activeExactObservationPointer);
+const exactObservationManifest = await readJson(exactObservationPointer.activeManifest);
 const canvas = await readFile(path.join(repositoryRoot, inputPaths.canvas), "utf8");
 
 for (let lesson = 1; lesson <= 58; lesson += 1) {
@@ -100,8 +104,14 @@ const behaviorRequiredRoles = new Map([
   ["applicability-or-constraint", "enforce-applicability-or-constraint"],
   ["source-structure-schema", "construct-or-validate-typed-source-structure"],
 ]);
+const refreshedExactAtomIds = new Set(
+  exactObservationManifest.observations
+    .filter((observation) => observation.status === "EXACTLY_OBSERVED")
+    .map((observation) => observation.atomId),
+);
 const insufficientAssertionTuples = assertionProofTuples.filter(
-  (tuple) => behaviorRequiredRoles.has(tuple[atomTupleIndex.uiRole]),
+  (tuple) => behaviorRequiredRoles.has(tuple[atomTupleIndex.uiRole])
+    && !refreshedExactAtomIds.has(tuple[atomTupleIndex.atomId]),
 );
 
 assert(uniqueAtomIds.size === atomIds.length, "semantic ledger contains duplicate atom IDs");
@@ -111,7 +121,7 @@ assert(grammarAtoms.length === semantic.counts.grammarBearing, "grammar atom cou
 assert(nonGrammarAtoms.length === semantic.counts.evidence + semantic.counts.analysis + semantic.counts.documentary, "non-grammar atom count drifted");
 assert(grammarAtomTuples.length === grammarAtoms.length, "atom UI grammar denominator drifted");
 assert(retainedCanonicalProofTuples.length + assertionProofTuples.length === grammarAtoms.length, "proof coordinate accounting drifted");
-assert(readOnlyAssertionTuples.length + insufficientAssertionTuples.length === assertionProofTuples.length, "an assertion atom lacks an execution-obligation classification");
+assert(readOnlyAssertionTuples.length + insufficientAssertionTuples.length + refreshedExactAtomIds.size === assertionProofTuples.length, "an assertion atom lacks an execution-obligation classification");
 assert(semantic.invariants.evidenceAbsenceBlocksGeneration === false, "evidence absence must not block generation");
 assert(semantic.invariants.typedGrammarAuthorizesUnlistedRealizations === true, "typed grammar must authorize unlisted realizations");
 
@@ -154,6 +164,13 @@ assert(newProofs === 13292, "individual atom proof migration count drifted");
 assert(retainedProofs === 5347, "retained exact proof count drifted");
 assert(retainedCanonicalProofTuples.length === retainedProofs, "retained canonical proof records drifted");
 assert(assertionProofTuples.length === newProofs, "non-generative assertion records drifted");
+assert(exactObservationManifest.status === "validated", "active exact-observation manifest is not validated");
+assert(exactObservationManifest.counts.failed === 0, "active exact-observation manifest contains failures");
+assert(
+  sha256(await readFile(path.join(repositoryRoot, exactObservationPointer.activeManifest), "utf8"))
+    === exactObservationPointer.activeManifestDigest,
+  "active exact-observation manifest digest drifted",
+);
 
 const coveredZones = sourceZones.filter((zone) => zone.atomLedgerStatus === "complete");
 const missingZones = sourceZones.filter((zone) => zone.atomLedgerStatus !== "complete");
@@ -166,7 +183,7 @@ const metrics = {
   lessonNonGrammarAccounting: ratio(nonGrammarAtoms.length, nonGrammarAtoms.length),
   lessonGrammarOwnerLinked: ratio(grammarAtomTuples.length, grammarAtoms.length),
   lessonGrammarExactBehaviorObserved: ratio(
-    retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length,
+    retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length + refreshedExactAtomIds.size,
     grammarAtoms.length,
   ),
   applicationAxisClassification: ratio(classifiedApplicationAxes.length, dispositions.entries.length),
@@ -206,9 +223,11 @@ const report = {
     exactProofs: {
       retainedCanonicalCoordinates: retainedProofs,
       newIndividualAtomCoordinates: newProofs,
-      exactBehaviorObserved: retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length,
+      exactBehaviorObserved: retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length + refreshedExactAtomIds.size,
       linkOnlyInsufficient: insufficientAssertionTuples.length,
       totalOwnerLinked: retainedProofs + newProofs,
+      activeExactObservationManifest: exactObservationPointer.activeManifest,
+      refreshedExactAtomCount: refreshedExactAtomIds.size,
       executionObligations: Object.fromEntries(
         [...behaviorRequiredRoles].map(([uiRole, requiredBehavior]) => [uiRole, {
           requiredBehavior,

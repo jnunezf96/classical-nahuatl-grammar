@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "version": "exact-observation-base-v1",
+  "status": "validated-empty-base",
+  "baseProofCorpusManifest": "andrews-proof-corpus-v20260810-shared-oracle-broad-completion",
+  "baseProofCorpusRetained": true,
+  "counts": {
+    "owners": 0,
+    "atoms": 0,
+    "exactlyObserved": 0,
+    "failed": 0
+  },
+  "observations": []
+}

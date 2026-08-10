@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-batch-001",
+  "status": "validated",
+  "baseProgressCommit": "1351ef7b265b27005c6409714c1e127c35e6bc36",
+  "baseProofCorpusManifest": "andrews-proof-corpus-v20260810-shared-oracle-broad-completion",
+  "baseProofCorpusRetained": true,
+  "dependencyFingerprint": "sha256:d2c1c9f7323c427a56b7e78e79d1ff736104d577ce237b99466f0a31746b7893",
+  "counts": {
+    "owners": 1,
+    "atoms": 1,
+    "exactlyObserved": 1,
+    "failed": 0
+  },
+  "receipts": [
+    {
+      "ownerId": "classical-directional-prefix-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-batch-001/receipts/classical-directional-prefix-formation.json",
+      "digest": "sha256:7762369fd7c5c8b3d1949000ac8748f1dcdf3d2b691e2e18ef87ecc55ef6e563"
+    }
+  ],
+  "observations": [
+    {
+      "atomId": "ACI-P087-L018-073DCB9B6E-02",
+      "ownerId": "classical-directional-prefix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "derive-canonical-realization",
+      "canonicalPath": "translationValueChangesWithDirectionalPrefix",
+      "receiptDigest": "sha256:7762369fd7c5c8b3d1949000ac8748f1dcdf3d2b691e2e18ef87ecc55ef6e563"
+    }
+  ],
+  "validation": {
+    "canvasAuthorityPhrasePassed": true,
+    "canonicalOwnerResultPassed": true,
+    "exactAtomObservationPassed": true,
+    "mutationObservationPassed": true,
+    "dependencyFingerprintRecorded": true,
+    "baseProofCorpusUnchanged": true,
+    "atomicSwitchRollbackTestPassed": true
+  }
+}

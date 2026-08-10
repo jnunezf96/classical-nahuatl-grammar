@@ -158,9 +158,19 @@ export function createClassicalVncSemanticOperationsApi(targetObject = globalThi
       const build = requireFunction(targetObject, "buildClassicalNahuatlExpandedVncBoundaryFrame");
       const on = build({ stem: "chōca", valence: "intransitive", mood: "indicative", tense: "present", directionalPrefix: "on" });
       const hual = build({ stem: "chōca", valence: "intransitive", mood: "indicative", tense: "present", directionalPrefix: "huāl" });
+      const meaningsByPrefix = freeze({
+        on: on.directionalMeaning,
+        huāl: hual.directionalMeaning,
+      });
       return {
         prefixes: freeze([on.directionalPrefix, hual.directionalPrefix]),
         meanings: freeze([on.directionalMeaning, hual.directionalMeaning]),
+        meaningsByPrefix,
+        translationValueChangesWithDirectionalPrefix: Boolean(
+          meaningsByPrefix.on
+          && meaningsByPrefix.huāl
+          && meaningsByPrefix.on !== meaningsByPrefix.huāl
+        ),
         insideVncCore: on.directionalInsideVncCore,
         formulaSlotAuthorized: on.directionalFormulaSlotAuthorized,
         intransitivePlacement: on.directionalPlacement,

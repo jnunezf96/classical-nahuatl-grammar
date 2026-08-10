@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-batch-001",
+  "ownerId": "classical-directional-prefix-formation",
+  "dependencyFingerprint": "sha256:d2c1c9f7323c427a56b7e78e79d1ff736104d577ce237b99466f0a31746b7893",
+  "dependencyDigests": {
+    "ANDREWS_TRANSCRIPTION_CANVAS.md": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
+    "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
+    "src/core/classical/vnc_semantic_operations.mjs": "sha256:6a39340a1bffd5418d5284a67892fc7d1f92773e565ec7f51e86aecc72d5d7bd",
+    "src/core/classical/nuclear-owner-specs/classical-directional-prefix-formation.mjs": "sha256:c42ec75f080b17e94da7b5aa5cc193d6f870103631b9f5fe4c8949b69eaeeb4f",
+    "src/runtime/create_runtime.mjs": "sha256:4e53d39cbf97699f7cf518866dad7161dc5a6d968c46045247301b09692bd7f4",
+    "src/bootstrap/runtime_bridge.mjs": "sha256:1dd00cc9dae1704cb7c2fd127a47986765c7ab06469ddba9317089a0e2e1540d",
+    "src/bootstrap/bootstrap.mjs": "sha256:4fd98396738e6d120a131b0505163c104d52f7254818bcec958371e6c546a46d",
+    "src/browser/main.mjs": "sha256:86f1457c46db94aaf74128a2921422216bca2a4e1a863850549160f7d6b093b9",
+    "index.html": "sha256:948e0d6d8ef9137d268e35e149e1c8f0a6d6e2bf0f451965ed004f0d39a8d657"
+  },
+  "resultDigest": "sha256:15bcd4487fce9049af3b1e569e6144aedc6334613907092584eaf4b5d127fc5f",
+  "observations": [
+    {
+      "atomId": "ACI-P087-L018-073DCB9B6E-02",
+      "ownerId": "classical-directional-prefix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "derive-canonical-realization",
+      "assertionId": "classical-directional-prefix-formation:atom-aci-p087-l018-073dcb9b6e-02-translation-value-change",
+      "canonicalPath": "translationValueChangesWithDirectionalPrefix",
+      "companionCanonicalPath": "meaningsByPrefix",
+      "expected": {
+        "authorizationStatus": "authorized",
+        "meaningsByPrefix": {
+          "on": "distance-thither-away-there",
+          "huāl": "proximity-hither-here"
+        },
+        "translationValueChangesWithDirectionalPrefix": true
+      },
+      "actual": {
+        "authorizationStatus": "authorized",
+        "meaningsByPrefix": {
+          "on": "distance-thither-away-there",
+          "huāl": "proximity-hither-here"
+        },
+        "translationValueChangesWithDirectionalPrefix": true
+      },
+      "nonTautologicalChecks": [
+        "owner-issued Result is authorized",
+        "on and huāl produce distinct typed directional meanings for the same source stem",
+        "the Result explicitly records that directional selection changes translation value",
+        "a false translation-value-change mutation is rejected"
+      ]
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-batch-001",
+  "status": "validated-bounded-batch",
+  "baseline": {
+    "exactlyObserved": 8261,
+    "grammarAtomDenominator": 18639,
+    "percent": 44.32
+  },
+  "result": {
+    "ownersChanged": 1,
+    "atomsNewlyExactlyObserved": 1,
+    "exactlyObserved": 8262,
+    "grammarAtomDenominator": 18639,
+    "percent": 44.33,
+    "atomsStillIncomplete": 10377,
+    "failures": 0,
+    "linguisticBlockers": 0
+  },
+  "obligationDelta": {
+    "derived-realization": {
+      "before": 817,
+      "newlyExactlyObserved": 1,
+      "remaining": 816
+    },
+    "canonical-rule-or-alternation": { "remaining": 2085 },
+    "result-projection": { "remaining": 2932 },
+    "applicability-or-constraint": { "remaining": 1405 },
+    "source-structure-schema": { "remaining": 3139 }
+  },
+  "canonicalChanges": [
+    {
+      "ownerId": "classical-directional-prefix-formation",
+      "operation": "buildClassicalNahuatlDirectionalPrefixSystemFrame",
+      "newResultFields": [
+        "meaningsByPrefix",
+        "translationValueChangesWithDirectionalPrefix"
+      ],
+      "atomId": "ACI-P087-L018-073DCB9B6E-02"
+    }
+  ],
+  "tests": [
+    { "name": "exact behavior batch runner", "passed": 1, "failed": 0 },
+    { "name": "exact observation mutation check", "passed": 1, "failed": 0 },
+    { "name": "classical_directional_authority", "passed": 2, "failed": 0 },
+    { "name": "classical_directional_derivation_source_continuity", "passed": 2, "failed": 0 },
+    { "name": "runtime_delivery_checks", "passed": 7, "failed": 0 },
+    { "name": "panel render navigation boundary", "passed": 1, "failed": 0 },
+    { "name": "runtime manifest", "passed": 1, "failed": 0 },
+    { "name": "true progress regeneration and stale check", "passed": 2, "failed": 0 }
+  ],
+  "notApplicable": {
+    "scalarParadigm": "The changed owner returns a shared directional semantic-system frame rather than a finite scalar or paradigm surface.",
+    "browserInteraction": "The atom is a derived grammar fact and must not become an independent UI control. Cache delivery and runtime manifest checks passed."
+  },
+  "proofCorpus": {
+    "baseManifest": "andrews-proof-corpus-v20260810-shared-oracle-broad-completion",
+    "baseCorpusRetained": true,
+    "exactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
+    "exactObservationManifestDigest": "sha256:7e469e7a3b58c9b7bfa16de063d5d53a678e6b336ba0278da2cca280f8e9264d",
+    "activePointer": "docs/canvas-progress/active-exact-observation-manifest.json",
+    "dependencyFingerprint": "sha256:d2c1c9f7323c427a56b7e78e79d1ff736104d577ce237b99466f0a31746b7893",
+    "atomicPointerSwitch": true,
+    "rollbackManifest": "docs/proof-refresh/exact-observation-base-v1/manifest.json",
+    "atomicSwitchRollbackTestPassed": true
+  },
+  "diskUse": {
+    "versionedBatch": "24K",
+    "rollbackBase": "4.0K",
+    "progressLedger": "3.5M"
+  },
+  "broaderReadiness": {
+    "fullRepositorySuite": "not run for this one-owner bounded batch",
+    "fullBrowserSweep": "not run; no user-facing control or surface was added",
+    "section7_9Canary": "unchanged active base proof corpus retains its previously validated canary"
+  }
+}

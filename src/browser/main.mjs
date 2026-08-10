@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260806-preterit-agentive-nemi-173";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-exact-behavior-batch-001";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

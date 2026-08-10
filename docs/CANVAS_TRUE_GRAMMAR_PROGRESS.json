@@ -48,9 +48,9 @@
       "complete": true
     },
     "lessonGrammarExactBehaviorObserved": {
-      "numerator": 8261,
+      "numerator": 8262,
       "denominator": 18639,
-      "percent": 44.32,
+      "percent": 44.33,
       "complete": false
     },
     "applicationAxisClassification": {
@@ -502,9 +502,11 @@
     "exactProofs": {
       "retainedCanonicalCoordinates": 5347,
       "newIndividualAtomCoordinates": 13292,
-      "exactBehaviorObserved": 8261,
-      "linkOnlyInsufficient": 10378,
+      "exactBehaviorObserved": 8262,
+      "linkOnlyInsufficient": 10377,
       "totalOwnerLinked": 18639,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
+      "refreshedExactAtomCount": 1,
       "executionObligations": {
         "canonical-rule-or-alternation": {
           "requiredBehavior": "perform-canonical-operation-or-alternation",
@@ -512,7 +514,7 @@
         },
         "derived-realization": {
           "requiredBehavior": "derive-canonical-realization",
-          "linkOnlyInsufficient": 817
+          "linkOnlyInsufficient": 816
         },
         "result-projection": {
           "requiredBehavior": "project-canonical-result",
@@ -3114,13 +3116,6 @@
       "canonicalOwnerId": "classical-tla-fusion-formation",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P087-L018-073DCB9B6E-02",
-      "canonicalOwnerId": "classical-directional-prefix-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -74178,6 +74173,7 @@
     "proofMigration": "sha256:42ac2eecced5d220ea6e360096cf81f118466acce8fa3c8a3e7edf01196e18f5",
     "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
     "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
-    "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc"
+    "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
+    "activeExactObservationPointer": "sha256:16bfcc5756749ff08581e37c8ce33e79092226f3803b2ea57d5e0819ef13cfac"
   }
 }

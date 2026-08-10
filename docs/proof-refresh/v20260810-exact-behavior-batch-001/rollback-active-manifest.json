@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "activeManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
+  "activeManifestDigest": "sha256:7e469e7a3b58c9b7bfa16de063d5d53a678e6b336ba0278da2cca280f8e9264d",
+  "rollbackManifest": "docs/proof-refresh/exact-observation-base-v1/manifest.json",
+  "rollbackManifestDigest": "sha256:fd18b8eec899b4a67ee1af65665ddae914b229a55f716eb4878c624ecf82fb27",
+  "baseProofCorpusRetained": true
+}
