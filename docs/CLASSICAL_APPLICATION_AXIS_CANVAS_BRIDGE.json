@@ -1,20 +1,28 @@
 {
   "kind": "classical-interactive-application-axis-canvas-provenance-bridge",
-  "version": 1,
+  "version": 2,
   "authority": {
-    "scope": "interactive application axes only",
+    "scope": "direct Canvas provenance cited by existing interactive application axes only",
     "grammarAuthority": false,
     "semanticOwnerAuthority": false,
     "canonicalGenerationAuthority": false,
     "uiAuthority": "none",
     "canvasInventoryAuthority": false,
     "evidenceAbsenceBlocksGeneration": false,
-    "mappingPurpose": "Specification provenance from a genuine UI choice axis to the grammar-bearing Canvas propositions that license the choice. Typed grammar owners and their applicability contracts remain authoritative."
+    "mappingPurpose": "Direct specification provenance from a genuine UI choice axis to selected grammar-bearing Canvas propositions that license the choice. This bridge is not the exhaustive atom ledger and its linked-atom count is not an atom-coverage denominator. Typed grammar owners and their applicability contracts remain authoritative.",
+    "exhaustiveAtomReconciliationOwner": "Classical_Nahuatl_Grammar validation sibling",
+    "exhaustiveAtomReconciliationArtifact": "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json"
   },
   "counts": {
     "interactiveAxisCount": 58,
     "mappedAxisCount": 58,
-    "unmappedAxisCount": 0
+    "unmappedAxisCount": 0,
+    "directProvenanceLinkCount": 86,
+    "uniqueDirectProvenanceAtomCount": 77,
+    "exhaustivelyReviewedAtomCount": 28540,
+    "grammarBearingAtomCount": 18639,
+    "newIndividualAssertionCoordinateCount": 13292,
+    "applicationAxesCreatedByAtomAssertions": 0
   },
   "entries": [
     { "applicationAxisAtomId": "CAA-clause-adverbial-adjunction--clause-position", "canvasAtomIds": ["ACI-P527-L005-DB0BFDAE48"] },

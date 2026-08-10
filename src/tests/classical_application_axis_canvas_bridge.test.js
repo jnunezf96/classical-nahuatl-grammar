@@ -67,8 +67,12 @@ function run() {
     });
 
     s.eq("Canvas provenance is grammar-bearing but non-authorizing", {
+        bridgeVersion: bridge.version,
         linkedAtomCount: bridge.entries.reduce((count, entry) => count + entry.canvasAtomIds.length, 0),
         uniqueLinkedAtomCount: linkedAtomIds.length,
+        exhaustivelyReviewedAtomCount: bridge.counts.exhaustivelyReviewedAtomCount,
+        applicationAxesCreatedByAtomAssertions:
+            bridge.counts.applicationAxesCreatedByAtomAssertions,
         invalidLinks,
         grammarAuthority: bridge.authority.grammarAuthority,
         semanticOwnerAuthority: bridge.authority.semanticOwnerAuthority,
@@ -77,8 +81,11 @@ function run() {
         canvasInventoryAuthority: bridge.authority.canvasInventoryAuthority,
         evidenceAbsenceBlocksGeneration: bridge.authority.evidenceAbsenceBlocksGeneration,
     }, {
+        bridgeVersion: 2,
         linkedAtomCount: 86,
         uniqueLinkedAtomCount: 77,
+        exhaustivelyReviewedAtomCount: 28540,
+        applicationAxesCreatedByAtomAssertions: 0,
         invalidLinks: [],
         grammarAuthority: false,
         semanticOwnerAuthority: false,
