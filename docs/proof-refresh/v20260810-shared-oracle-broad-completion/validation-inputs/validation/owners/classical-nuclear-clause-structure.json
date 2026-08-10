@@ -1,0 +1,530 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-nuclear-clause-structure",
+  "operationId": "classical.nuclear-clause.rank.validate",
+  "indexEntryIds": [
+    "IDX-0717",
+    "IDX-0785",
+    "IDX-1238"
+  ],
+  "atomIds": [
+    "ACI-P021-L002-E18F45FEB5",
+    "ACI-P021-L004-30A32B1D48",
+    "ACI-P033-L038-979B2933D1"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:nuclear-clause-structure:exclusion-adds-constraint",
+      "fromAtomId": "ACI-P021-L004-30A32B1D48",
+      "toAtomId": "ACI-P021-L002-E18F45FEB5",
+      "relationType": "adds-constraint",
+      "basis": "The second atom makes the nuclear-clause exclusion explicit beyond the first atom's particle-only word jurisdiction.",
+      "discriminatingCaseIds": [
+        "case:nuclear-clause-structure:nuclear-clause-as-word"
+      ]
+    },
+    {
+      "relationId": "atom-relation:nuclear-clause-structure:exotl-requires-full-rank",
+      "fromAtomId": "ACI-P033-L038-979B2933D1",
+      "toAtomId": "ACI-P021-L004-30A32B1D48",
+      "relationType": "supplies-evidence",
+      "basis": "The exōtl atom supplies a typed ordinary nuclear-clause instance whose complete owner-issued result is consumed to confirm that a nuclear clause remains a full clause rather than a word.",
+      "discriminatingCaseIds": [
+        "case:nuclear-clause-structure:exotl-full-clause"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source-or-canonical-nuclear-clause-result",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification",
+      "canonicalOwnerResult"
+    ],
+    "validatedHere": [
+      "particle-only word-rank jurisdiction",
+      "particle word-rank classification",
+      "nuclear-clause word-rank exclusion",
+      "owner-issued complete nuclear-clause rank"
+    ],
+    "validatedElsewhere": [
+      "particle selection and realization",
+      "nuclear-clause generation (consumed here only as an owner-issued prerequisite)",
+      "nuclear-clause formula and written projections"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:nuclear-clause-structure:particle-word-rank",
+      "atomId": "ACI-P021-L002-E18F45FEB5",
+      "kind": "exact-positive-rank-classification",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.3.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f39c75ce71a85ffec7c050ff177bd56810f1c13cd20c775715de8211e727eb05",
+      "predicateId": "nuclear-clause-structure.particle-word-rank",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nuclear-clause-structure:ACI-P021-L002-E18F45FEB5"
+      ]
+    },
+    {
+      "oracleId": "oracle:nuclear-clause-structure:particle-only-jurisdiction",
+      "atomId": "ACI-P021-L002-E18F45FEB5",
+      "kind": "exact-word-rank-jurisdiction-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.3.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f39c75ce71a85ffec7c050ff177bd56810f1c13cd20c775715de8211e727eb05",
+      "predicateId": "nuclear-clause-structure.particle-only-jurisdiction",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nuclear-clause-structure:ACI-P021-L002-E18F45FEB5"
+      ]
+    },
+    {
+      "oracleId": "oracle:nuclear-clause-structure:nuclear-clause-not-word",
+      "atomId": "ACI-P021-L004-30A32B1D48",
+      "kind": "exact-nuclear-clause-rank-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.3.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:baea2176deb59867f563dbfa9356e81a2197f8b76f5e87e0b716d4bf528d8179",
+      "predicateId": "nuclear-clause-structure.nuclear-clause-not-word",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nuclear-clause-structure:ACI-P021-L004-30A32B1D48"
+      ]
+    },
+    {
+      "oracleId": "oracle:nuclear-clause-structure:exotl-full-clause",
+      "atomId": "ACI-P033-L038-979B2933D1",
+      "kind": "exact-owner-issued-nuclear-clause-classification",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.13",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ed3db7e16916b199fa23d7222a58197d8ee37d50b94b63876e0de54336ada2a0",
+      "predicateId": "nuclear-clause-structure.exotl-full-clause",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nuclear-clause-structure:ACI-P033-L038-979B2933D1"
+      ]
+    },
+    {
+      "oracleId": "oracle:nuclear-clause-structure:exotl-owner-result-boundary",
+      "atomId": "ACI-P033-L038-979B2933D1",
+      "kind": "exact-owner-prerequisite-boundary",
+      "role": "trace-conformance",
+      "source": "canvas",
+      "canvasReference": "§1.13",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ed3db7e16916b199fa23d7222a58197d8ee37d50b94b63876e0de54336ada2a0",
+      "predicateId": "nuclear-clause-structure.exotl-owner-result-boundary",
+      "canvasBindingIds": [
+        "canvas-binding:classical-nuclear-clause-structure:ACI-P033-L038-979B2933D1"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "unitRank",
+      "values": [
+        "particle",
+        "nuclear-clause",
+        "owner-issued-nuclear-clause"
+      ]
+    },
+    {
+      "id": "wordDisposition",
+      "values": [
+        "licensed",
+        "rejected",
+        "full-clause"
+      ]
+    }
+  ],
+  "invalidAssignments": [
+    {
+      "unitRank": "particle",
+      "wordDisposition": "rejected"
+    },
+    {
+      "unitRank": "particle",
+      "wordDisposition": "full-clause"
+    },
+    {
+      "unitRank": "nuclear-clause",
+      "wordDisposition": "licensed"
+    },
+    {
+      "unitRank": "nuclear-clause",
+      "wordDisposition": "full-clause"
+    },
+    {
+      "unitRank": "owner-issued-nuclear-clause",
+      "wordDisposition": "licensed"
+    },
+    {
+      "unitRank": "owner-issued-nuclear-clause",
+      "wordDisposition": "rejected"
+    }
+  ],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:nuclear-clause-structure:particle-as-word",
+      "coordinates": {
+        "unitRank": "particle",
+        "wordDisposition": "licensed"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.3.3"
+    },
+    {
+      "caseId": "case:nuclear-clause-structure:nuclear-clause-as-word",
+      "coordinates": {
+        "unitRank": "nuclear-clause",
+        "wordDisposition": "rejected"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-direct-section-1.3.3"
+    },
+    {
+      "caseId": "case:nuclear-clause-structure:exotl-full-clause",
+      "coordinates": {
+        "unitRank": "owner-issued-nuclear-clause",
+        "wordDisposition": "full-clause"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.5"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-nuclear-clause-structure.full-source.v2",
+    "minimumUniqueSources": 3,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "unitRank": "particle",
+          "wordDisposition": "licensed"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "unitRank": "nuclear-clause",
+          "wordDisposition": "rejected"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "unitRank": "owner-issued-nuclear-clause",
+          "wordDisposition": "full-clause"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:nuclear-clause-structure:particle-only-jurisdiction",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:nuclear-clause-structure:accept-nuclear-clause-word",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5",
+          "ACI-P021-L004-30A32B1D48"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:reject-particle-word",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:wrong-particle-domain",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:wrong-particle-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:generic-nuclear-clause-reason",
+        "category": "output",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5",
+          "ACI-P021-L004-30A32B1D48"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P021-L002-E18F45FEB5",
+          "ACI-P021-L004-30A32B1D48",
+          "ACI-P033-L038-979B2933D1"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:wrong-exotl-full-clause-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P033-L038-979B2933D1"
+        ]
+      },
+      {
+        "mutationId": "mutation:nuclear-clause-structure:erase-owner-result-checkpoint",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P033-L038-979B2933D1"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected Canvas claims license no nuclear-clause exception to the particle-only word rank.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:nuclear-clause-structure:nuclear-clause-not-word"
+      },
+      {
+        "category": "valence",
+        "reason": "Rank validation neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:nuclear-clause-structure:particle-only-jurisdiction"
+      }
+    ]
+  },
+  "randomSeed": "classical-nuclear-clause-structure.full-source.v2",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-nuclear-clause-structure:ACI-P021-L002-E18F45FEB5",
+      "atomId": "ACI-P021-L002-E18F45FEB5",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.3.3",
+      "inventoryRecordDigest": "sha256:aee2cd55752457d2859db00bc13602385ff1d3733608bf1e8df36f8fc327c5b7",
+      "sourceAnchor": "A term may have to be rejected, even when this is difficult to accept.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:nuclear-clause-structure:particle-word-rank"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:nuclear-clause-structure:particle-only-jurisdiction"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "unitRank",
+            "wordDisposition"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "unitRank",
+              "wordDisposition"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:nuclear-clause-structure:accept-nuclear-clause-word",
+            "mutation:nuclear-clause-structure:reject-particle-word",
+            "mutation:nuclear-clause-structure:wrong-particle-domain",
+            "mutation:nuclear-clause-structure:wrong-particle-classification",
+            "mutation:nuclear-clause-structure:generic-nuclear-clause-reason",
+            "mutation:nuclear-clause-structure:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "particle-word-rank-licensed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "particle-only-word-jurisdiction-enforced"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-nuclear-clause-structure:ACI-P021-L004-30A32B1D48",
+      "atomId": "ACI-P021-L004-30A32B1D48",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.3.3",
+      "inventoryRecordDigest": "sha256:6df182c1cb0482c3247e60968957d4dcbd05808c0106845b9d9abb2d9b3163b7",
+      "sourceAnchor": "It should NEVER be used to refer to nuclear clauses ( see Lesson 4 ), and a strong, sustained effort must be made…",
+      "bindings": [
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:nuclear-clause-structure:nuclear-clause-not-word"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "unitRank",
+            "wordDisposition"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "unitRank",
+              "wordDisposition"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:nuclear-clause-structure:accept-nuclear-clause-word",
+            "mutation:nuclear-clause-structure:generic-nuclear-clause-reason",
+            "mutation:nuclear-clause-structure:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "nuclear-clause-word-rank-rejected"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "nuclear-clause-word-rank-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-nuclear-clause-structure:ACI-P033-L038-979B2933D1",
+      "atomId": "ACI-P033-L038-979B2933D1",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.13",
+      "inventoryRecordDigest": "sha256:26d9f21f1d1c5c04b44c655127dacdfa32c6d1b0f9d3fd1e5dace6094023b2df",
+      "sourceAnchor": "Even such an evident translation as \"green bean\" for the Nahuatl exōtl is a misrepresentation of the meaning, which…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:nuclear-clause-structure:exotl-full-clause"
+          ]
+        },
+        {
+          "deviceType": "trace-conformance-oracle",
+          "deviceIds": [
+            "oracle:nuclear-clause-structure:exotl-owner-result-boundary"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "unitRank",
+            "wordDisposition"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "unitRank",
+              "wordDisposition"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:nuclear-clause-structure:trace-order-inversion",
+            "mutation:nuclear-clause-structure:wrong-exotl-full-clause-fact",
+            "mutation:nuclear-clause-structure:erase-owner-result-checkpoint"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "nuclear-clause-owner-result-validated",
+                "concept-classification-resolved"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "nuclear-clause-owner-result-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

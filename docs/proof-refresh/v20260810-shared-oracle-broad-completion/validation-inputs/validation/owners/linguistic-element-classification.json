@@ -1,0 +1,629 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "linguistic-element-classification",
+  "operationId": "classical.linguistic.element.classify",
+  "indexEntryIds": [
+    "IDX-0426",
+    "IDX-0834",
+    "IDX-0976",
+    "IDX-1009"
+  ],
+  "atomIds": [
+    "ACI-P022-L025-3DEA923C11",
+    "ACI-P022-L026-AC0DC80697",
+    "ACI-P022-L029-F58ED00379",
+    "ACI-P022-L030-D680960934",
+    "ACI-P022-L031-B3BF50C0F3"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:element-classification:feature-bundle-adds-constraint",
+      "fromAtomId": "ACI-P022-L026-AC0DC80697",
+      "toAtomId": "ACI-P022-L025-3DEA923C11",
+      "relationType": "adds-constraint",
+      "basis": "The feature-bundle atom constrains linear indivisibility by distinguishing it from internal simultaneous simplicity.",
+      "discriminatingCaseIds": [
+        "case:element-classification:element"
+      ]
+    },
+    {
+      "relationId": "atom-relation:element-classification:inventory-adds-constraint",
+      "fromAtomId": "ACI-P022-L029-F58ED00379",
+      "toAtomId": "ACI-P022-L025-3DEA923C11",
+      "relationType": "adds-constraint",
+      "basis": "The inventory atom classifies the four named type-level kinds without replacing the generic definition of an element.",
+      "discriminatingCaseIds": [
+        "case:element-classification:type-level-inventory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:element-classification:system-partition-adds-constraint",
+      "fromAtomId": "ACI-P022-L030-D680960934",
+      "toAtomId": "ACI-P022-L029-F58ED00379",
+      "relationType": "adds-constraint",
+      "basis": "The system atom partitions the four inventory members into three carrier elements and one content element.",
+      "discriminatingCaseIds": [
+        "case:element-classification:type-level-inventory"
+      ]
+    },
+    {
+      "relationId": "atom-relation:element-classification:greek-roots-refine-terms",
+      "fromAtomId": "ACI-P022-L031-B3BF50C0F3",
+      "toAtomId": "ACI-P022-L029-F58ED00379",
+      "relationType": "refines",
+      "basis": "The lexical atom refines each inventory label with its stated Greek root and gloss.",
+      "discriminatingCaseIds": [
+        "case:element-classification:type-level-inventory"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "element as a linearly indivisible basic unit or segment",
+      "simultaneously present feature bundles within an element",
+      "the four-kind phoneme, grapheme, sigeme, and sememe inventory",
+      "the carrier-system versus content-system partition",
+      "the phon, graph, sig, and sem Greek-root terminology"
+    ],
+    "validatedElsewhere": [
+      "phoneme-specific classification and phone realization",
+      "grapheme-specific classification and graph realization",
+      "sigeme-specific classification and sig realization",
+      "sememe-specific content identity and seme realization",
+      "Nahuatl generation and written realization"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:element-classification:basic-linear-unit",
+      "atomId": "ACI-P022-L025-3DEA923C11",
+      "kind": "exact-element-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2a4b680480dc552bc1944952e13a5769d4f090bdd953a0f23592653daf3fbe69",
+      "predicateId": "element-classification.basic-linear-unit",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-element-classification:ACI-P022-L025-3DEA923C11"
+      ]
+    },
+    {
+      "oracleId": "oracle:element-classification:feature-bundle",
+      "atomId": "ACI-P022-L026-AC0DC80697",
+      "kind": "exact-element-complexity-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e4f8c3bc6d655113981a3d68a8b29f6f4e54a4525bf5f02dc32233b143a6cf17",
+      "predicateId": "element-classification.feature-bundle",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-element-classification:ACI-P022-L026-AC0DC80697"
+      ]
+    },
+    {
+      "oracleId": "oracle:element-classification:four-kind-inventory",
+      "atomId": "ACI-P022-L029-F58ED00379",
+      "kind": "exact-type-level-inventory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9f8cacbe6c3570cfc2226d4b4a11a2af6041d3d60120235ecf5a544ef7bcfb1d",
+      "predicateId": "element-classification.four-kind-inventory",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-element-classification:ACI-P022-L029-F58ED00379"
+      ]
+    },
+    {
+      "oracleId": "oracle:element-classification:system-partition",
+      "atomId": "ACI-P022-L030-D680960934",
+      "kind": "exact-carrier-content-partition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:5c780e1fca7a786a1c6a03d0869ff516da8c4dbd3c3753bafe4ee68312569f6a",
+      "predicateId": "element-classification.system-partition",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-element-classification:ACI-P022-L030-D680960934"
+      ]
+    },
+    {
+      "oracleId": "oracle:element-classification:greek-root-terminology",
+      "atomId": "ACI-P022-L031-B3BF50C0F3",
+      "kind": "exact-lexical-terminology",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3a8c1bfdaab6398f83fdda2812840ab0d22e960040474250394049523f799f9d",
+      "predicateId": "element-classification.greek-root-terminology",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-element-classification:ACI-P022-L031-B3BF50C0F3"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "elementScope",
+      "values": [
+        "generic-definition",
+        "type-level-inventory"
+      ]
+    },
+    {
+      "id": "sourceSelection",
+      "values": [
+        "element",
+        "type-level-inventory"
+      ]
+    }
+  ],
+  "invalidAssignments": [
+    {
+      "elementScope": "generic-definition",
+      "sourceSelection": [
+        "type-level-inventory"
+      ]
+    },
+    {
+      "elementScope": "type-level-inventory",
+      "sourceSelection": [
+        "element"
+      ]
+    }
+  ],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:element-classification:element",
+      "coordinates": {
+        "elementScope": "generic-definition",
+        "sourceSelection": "element"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6"
+    },
+    {
+      "caseId": "case:element-classification:type-level-inventory",
+      "coordinates": {
+        "elementScope": "type-level-inventory",
+        "sourceSelection": "type-level-inventory"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "linguistic-element-classification.full-source.v1",
+    "minimumUniqueSources": 2,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "elementScope": "generic-definition",
+          "sourceSelection": "element"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "elementScope": "type-level-inventory",
+          "sourceSelection": "type-level-inventory"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:element-classification:basic-linear-unit",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:element-classification:wrong-element-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P022-L025-3DEA923C11",
+          "ACI-P022-L026-AC0DC80697"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:omit-linear-indivisibility",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L025-3DEA923C11"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:omit-feature-bundle",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L026-AC0DC80697"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:omit-sememe-inventory-member",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L029-F58ED00379"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:move-sememe-to-carrier",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P022-L030-D680960934"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:wrong-sem-root",
+        "category": "output",
+        "atomIds": [
+          "ACI-P022-L031-B3BF50C0F3"
+        ]
+      },
+      {
+        "mutationId": "mutation:element-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P022-L025-3DEA923C11",
+          "ACI-P022-L026-AC0DC80697",
+          "ACI-P022-L029-F58ED00379",
+          "ACI-P022-L030-D680960934",
+          "ACI-P022-L031-B3BF50C0F3"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected claims define the inventory and its partition; they state no exception to either classification.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:element-classification:four-kind-inventory"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only linguistic element classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:element-classification:basic-linear-unit"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Element kinds and their terminology are lexical classifications, not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:element-classification:system-partition"
+      }
+    ]
+  },
+  "randomSeed": "linguistic-element-classification.full-source.v1",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:linguistic-element-classification:ACI-P022-L025-3DEA923C11",
+      "atomId": "ACI-P022-L025-3DEA923C11",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6",
+      "inventoryRecordDigest": "sha256:1e2ea7fa1638bb1cef0ff3d73391de569e5e164973ba8415fb65634cf280503e",
+      "sourceAnchor": "An element is a basic unit ( or segment) that cannot be analyzed into smaller linear units (or segments).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:element-classification:basic-linear-unit"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "elementScope",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "elementScope",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:element-classification:wrong-element-domain",
+            "mutation:element-classification:omit-linear-indivisibility",
+            "mutation:element-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "element-basic-linear-unit-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "element-basic-linear-unit-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-element-classification:ACI-P022-L026-AC0DC80697",
+      "atomId": "ACI-P022-L026-AC0DC80697",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6",
+      "inventoryRecordDigest": "sha256:c0bb79be73cdafdb57f026ad5c0ce28a6bc98cdda4ac980ba3609a1cda06e5dd",
+      "sourceAnchor": "An element need not be simple, however, since it may consist of a \"bundle\" of simultaneously present features that…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:element-classification:feature-bundle"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "elementScope",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "elementScope",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:element-classification:wrong-element-domain",
+            "mutation:element-classification:omit-feature-bundle",
+            "mutation:element-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "element-feature-bundle-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "element-feature-bundle-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-element-classification:ACI-P022-L029-F58ED00379",
+      "atomId": "ACI-P022-L029-F58ED00379",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6",
+      "inventoryRecordDigest": "sha256:bb7ed9f4e750ab742b5c91894329aec4f42a9d162aaa99b91443ef9ec7d14891",
+      "sourceAnchor": "There are four kinds of basic type-level elements: phoneme, grapheme, sigeme, and sememe.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:element-classification:four-kind-inventory"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "elementScope",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "elementScope",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:element-classification:omit-sememe-inventory-member",
+            "mutation:element-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "element-four-kind-inventory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "element-four-kind-inventory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-element-classification:ACI-P022-L030-D680960934",
+      "atomId": "ACI-P022-L030-D680960934",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6",
+      "inventoryRecordDigest": "sha256:5f8a11e45e9655ada6431dedaae83d9e2e198881ebed9cea424e7d9e43eb93cf",
+      "sourceAnchor": "The first three belong to the carrier system",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:element-classification:system-partition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "elementScope",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "elementScope",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:element-classification:move-sememe-to-carrier",
+            "mutation:element-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "element-carrier-content-partition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "element-carrier-content-partition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-element-classification:ACI-P022-L031-B3BF50C0F3",
+      "atomId": "ACI-P022-L031-B3BF50C0F3",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.6",
+      "inventoryRecordDigest": "sha256:170f58e3c83463f987c3556405ba9bfa054b2c7cf7663a5c8505c596e0a1d506",
+      "sourceAnchor": "The terms for these elements are derived from the Greek roots phon- (\"sound\"), graph- (\"writing\"), sig- (\"silence\"),…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:element-classification:greek-root-terminology"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "elementScope",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "elementScope",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:element-classification:wrong-sem-root",
+            "mutation:element-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "element-greek-root-terminology-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "element-greek-root-terminology-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "ownerId": "classical-nemi-irregular-paradigm",
+  "authority": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "bindings": [
+    {
+      "bindingId": "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L016-5287F30C12",
+      "atomId": "ACI-P109-L016-5287F30C12",
+      "startLine": 4163,
+      "endLine": 4164,
+      "sourceDigest": "sha256:50a0e9b4c1beada6e9006811168e07b978895e20e24c36e9f3195e04668cef89",
+      "requiredText": [
+        "(nemi) > (nen) = to live. VNCs built on these stems are regular in all tenses. However,"
+      ],
+      "status": "bound-current"
+    },
+    {
+      "bindingId": "canvas-binding:classical-nemi-irregular-paradigm:ACI-P109-L018-813CB3CE7E",
+      "atomId": "ACI-P109-L018-813CB3CE7E",
+      "startLine": 4165,
+      "endLine": 4166,
+      "sourceDigest": "sha256:2862314e9ba19aeea505b63bcf922fa40899fa2092609131dd908640689de5dc",
+      "requiredText": [
+        "finds VNCs with a distant-past tense used with a distant-past-as-past meaning; for"
+      ],
+      "status": "bound-current"
+    }
+  ]
+}

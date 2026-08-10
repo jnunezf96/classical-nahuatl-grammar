@@ -1,0 +1,461 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "carrier-rank-formation",
+  "operationId": "classical.carrier.rank.form",
+  "indexEntryIds": [
+    "IDX-0435",
+    "IDX-1043",
+    "IDX-1044"
+  ],
+  "atomIds": [
+    "ACI-P028-L004-336CF18BAB",
+    "ACI-P028-L016-238751CF7B"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:carrier-rank-formation:1",
+      "fromAtomId": "ACI-P028-L016-238751CF7B",
+      "toAtomId": "ACI-P028-L004-336CF18BAB",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P028-L016-238751CF7B adds a non-equivalent Canvas-bound constraint with its own live checkpoint and receipt; shared dependency mechanics do not merge proof.",
+      "discriminatingCaseIds": [
+        "case:carrier-rank-formation:scenario-single-unit-rank-upgrade:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "identity-bound lower-rank and higher-rank carrier unit Results",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "prerequisites"
+    ],
+    "validatedHere": [
+      "normal lower-to-higher formation",
+      "single-unit rank upgrade"
+    ],
+    "validatedElsewhere": [
+      "rank labels",
+      "taxonomy",
+      "syllable and vocable internals"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:semantic",
+      "atomId": "ACI-P028-L004-336CF18BAB",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.a",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f0b1b69f9a2e80f3de32233820488e677adc647a50510fa9897ca10b3b4d2e43",
+      "predicateId": "carrier-rank-formation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-rank-formation:ACI-P028-L004-336CF18BAB"
+      ]
+    },
+    {
+      "oracleId": "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:guard",
+      "atomId": "ACI-P028-L004-336CF18BAB",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.a",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f0b1b69f9a2e80f3de32233820488e677adc647a50510fa9897ca10b3b4d2e43",
+      "predicateId": "carrier-rank-formation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-rank-formation:ACI-P028-L004-336CF18BAB"
+      ]
+    },
+    {
+      "oracleId": "oracle:carrier-rank-formation:ACI-P028-L016-238751CF7B:semantic",
+      "atomId": "ACI-P028-L016-238751CF7B",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.c",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f4fb630a753ee3275c1a96b46788d5387dfae387bbd59ce7684c3ed0e9dc8a1f",
+      "predicateId": "carrier-rank-formation.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-rank-formation:ACI-P028-L016-238751CF7B"
+      ]
+    },
+    {
+      "oracleId": "oracle:carrier-rank-formation:ACI-P028-L016-238751CF7B:guard",
+      "atomId": "ACI-P028-L016-238751CF7B",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11.1.c",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f4fb630a753ee3275c1a96b46788d5387dfae387bbd59ce7684c3ed0e9dc8a1f",
+      "predicateId": "carrier-rank-formation.guard",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-rank-formation:ACI-P028-L016-238751CF7B"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "normal-lower-rank-source",
+        "single-unit-rank-upgrade",
+        "wrong-prerequisite"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:carrier-rank-formation:scenario-normal-lower-rank-source:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "normal-lower-rank-source",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-normal-lower-rank-source:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "normal-lower-rank-source",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-normal-lower-rank-source:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "normal-lower-rank-source",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-single-unit-rank-upgrade:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "single-unit-rank-upgrade",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-single-unit-rank-upgrade:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "single-unit-rank-upgrade",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-single-unit-rank-upgrade:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "single-unit-rank-upgrade",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-wrong-prerequisite:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-wrong-prerequisite:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:carrier-rank-formation:scenario-wrong-prerequisite:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-prerequisite",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "carrier-rank-formation.full-source.v1",
+    "minimumUniqueSources": 9,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "normal-lower-rank-source",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "single-unit-rank-upgrade",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:carrier-rank-formation:ACI-P028-L004-336CF18BAB",
+      "atomId": "ACI-P028-L004-336CF18BAB",
+      "obligationType": "rule",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.11.1.a",
+      "inventoryRecordDigest": "sha256:9d07398c1d9e2b29c5abe8200bfec138ce5f5fe8c8b94d396bb2b77cc436e5dd",
+      "sourceAnchor": "Units on a lower rank normally source the formation of units on a higher rank.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:carrier-rank-formation:trust-copied-source",
+            "mutation:carrier-rank-formation:wrong-analysis-domain",
+            "mutation:carrier-rank-formation:wrong-owner-identity",
+            "mutation:carrier-rank-formation:reverse-owner-relation",
+            "mutation:carrier-rank-formation:corrupt-first-fact",
+            "mutation:carrier-rank-formation:corrupt-first-classification",
+            "mutation:carrier-rank-formation:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "carrier-normal-rank-formation-checkpoint",
+                "carrier-rank-formation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "carrier-rank-formation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-rank-formation:ACI-P028-L016-238751CF7B",
+      "atomId": "ACI-P028-L016-238751CF7B",
+      "obligationType": "rule",
+      "inventoryCategory": "ALT",
+      "canvasReference": "§1.11.1.c",
+      "inventoryRecordDigest": "sha256:86e48d35ec8de5900fc864a9af02cc0c05fafb0a57620e0d27fe755c113a6a6e",
+      "sourceAnchor": "A vocable can, of course, be monosyllablic (i.e., a single syllable can be upgraded to the rank of a vocable).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:carrier-rank-formation:ACI-P028-L016-238751CF7B:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:carrier-rank-formation:ACI-P028-L016-238751CF7B:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:carrier-rank-formation:trust-copied-source",
+            "mutation:carrier-rank-formation:wrong-analysis-domain",
+            "mutation:carrier-rank-formation:wrong-owner-identity",
+            "mutation:carrier-rank-formation:reverse-owner-relation",
+            "mutation:carrier-rank-formation:corrupt-first-fact",
+            "mutation:carrier-rank-formation:corrupt-first-classification",
+            "mutation:carrier-rank-formation:ignore-prerequisite-failure"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "carrier-single-unit-upgrade-checkpoint",
+                "carrier-rank-formation-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "carrier-rank-formation-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:carrier-rank-formation:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:reverse-owner-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:corrupt-first-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:corrupt-first-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      },
+      {
+        "mutationId": "mutation:carrier-rank-formation:ignore-prerequisite-failure",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P028-L004-336CF18BAB",
+          "ACI-P028-L016-238751CF7B"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No additional exception is licensed by this owner's exact Canvas span.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This structural owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:carrier-rank-formation:ACI-P028-L004-336CF18BAB:semantic"
+      }
+    ]
+  },
+  "randomSeed": "carrier-rank-formation.deterministic.v1"
+}

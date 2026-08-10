@@ -1,0 +1,669 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "carrier-grapheme-classification",
+  "operationId": "classical.carrier.grapheme.classify",
+  "indexEntryIds": [
+    "IDX-0426"
+  ],
+  "atomIds": [
+    "ACI-P023-L018-65A274BA81",
+    "ACI-P023-L018-A0BF2F1403",
+    "ACI-P023-L020-FA3F525868",
+    "ACI-P023-L023-E930B0D126",
+    "ACI-P025-L034-8F1A289913"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:grapheme-classification:visual-adds-realization",
+      "fromAtomId": "ACI-P023-L018-A0BF2F1403",
+      "toAtomId": "ACI-P023-L018-65A274BA81",
+      "relationType": "adds-realization",
+      "basis": "The realization atom adds the grapheme's subsidiary written-symbol role of visually representing linguistic sounds.",
+      "discriminatingCaseIds": [
+        "case:grapheme-classification:visual-representation"
+      ]
+    },
+    {
+      "relationId": "atom-relation:grapheme-classification:shape-set-refines-membership",
+      "fromAtomId": "ACI-P023-L020-FA3F525868",
+      "toAtomId": "ACI-P023-L018-65A274BA81",
+      "relationType": "refines",
+      "basis": "The definition refines graphological-subsystem membership by identifying a grapheme as the recognizable set of identically valued shapes.",
+      "discriminatingCaseIds": [
+        "case:grapheme-classification:shape-set-identity"
+      ]
+    },
+    {
+      "relationId": "atom-relation:grapheme-classification:correspondence-adds-constraint",
+      "fromAtomId": "ACI-P023-L023-E930B0D126",
+      "toAtomId": "ACI-P023-L020-FA3F525868",
+      "relationType": "adds-constraint",
+      "basis": "The correspondence atom constrains grapheme identity by permitting one-, two-, or three-to-one sequences and many-to-many grapheme-phoneme mappings.",
+      "discriminatingCaseIds": [
+        "case:grapheme-classification:phoneme-correspondence"
+      ]
+    },
+    {
+      "relationId": "atom-relation:grapheme-classification:graph-variation-adds-realization",
+      "fromAtomId": "ACI-P025-L034-8F1A289913",
+      "toAtomId": "ACI-P023-L020-FA3F525868",
+      "relationType": "adds-realization",
+      "basis": "The graph atom adds token-level realization through variants in case, script, print, style, and size without changing grapheme value.",
+      "discriminatingCaseIds": [
+        "case:grapheme-classification:graph-variation"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "graphological-subsystem membership",
+      "subsidiary visual representation of linguistic sound",
+      "recognizable identity across alphabetic shape variants",
+      "one-, two-, three-, and many-to-many grapheme-phoneme correspondence",
+      "token graph variation without change of grapheme value"
+    ],
+    "validatedElsewhere": [
+      "graph definition and token-level ownership",
+      "Classical Nahuatl orthographic boundary realization",
+      "Classical Nahuatl word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:grapheme-classification:subsystem-membership",
+      "atomId": "ACI-P023-L018-65A274BA81",
+      "kind": "exact-subsystem-membership",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f472214318b5e53d55ba531a575c74c5eda21c9de8ced48487ac59c3f0c40bda",
+      "predicateId": "grapheme-classification.subsystem-membership",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-grapheme-classification:ACI-P023-L018-65A274BA81"
+      ]
+    },
+    {
+      "oracleId": "oracle:grapheme-classification:visual-representation",
+      "atomId": "ACI-P023-L018-A0BF2F1403",
+      "kind": "exact-visual-representation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:b2d039462720d930217b5d99d0a4568dbfd9dca04bfec8b3c2ceab7582b4a40d",
+      "predicateId": "grapheme-classification.visual-representation",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-grapheme-classification:ACI-P023-L018-A0BF2F1403"
+      ]
+    },
+    {
+      "oracleId": "oracle:grapheme-classification:shape-set-identity",
+      "atomId": "ACI-P023-L020-FA3F525868",
+      "kind": "exact-shape-set-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:c53dcdd62a474aa887c7889876af7ef4a4792a7dca5f3f42ff99b09b18db5e69",
+      "predicateId": "grapheme-classification.shape-set-identity",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-grapheme-classification:ACI-P023-L020-FA3F525868"
+      ]
+    },
+    {
+      "oracleId": "oracle:grapheme-classification:phoneme-correspondence",
+      "atomId": "ACI-P023-L023-E930B0D126",
+      "kind": "exact-phoneme-correspondence",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.6.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7113d65b3fff9abf269689eba1f8de2cd17b89faf61da4ab46106f538345707f",
+      "predicateId": "grapheme-classification.phoneme-correspondence",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-grapheme-classification:ACI-P023-L023-E930B0D126"
+      ]
+    },
+    {
+      "oracleId": "oracle:grapheme-classification:graph-variation",
+      "atomId": "ACI-P025-L034-8F1A289913",
+      "kind": "exact-graph-variation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7119c436bb332c336cb027619a474b24d048c79e3c19b673858a23ca00eccd27",
+      "predicateId": "grapheme-classification.graph-variation",
+      "canvasBindingIds": [
+        "canvas-binding:carrier-grapheme-classification:ACI-P025-L034-8F1A289913"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "graphemeFacet",
+      "values": [
+        "subsystem-membership",
+        "visual-representation",
+        "shape-set-identity",
+        "phoneme-correspondence",
+        "graph-variation"
+      ]
+    },
+    {
+      "id": "sourceSelection",
+      "values": [
+        "grapheme"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:grapheme-classification:subsystem-membership",
+      "coordinates": {
+        "graphemeFacet": "subsystem-membership",
+        "sourceSelection": "grapheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.2"
+    },
+    {
+      "caseId": "case:grapheme-classification:visual-representation",
+      "coordinates": {
+        "graphemeFacet": "visual-representation",
+        "sourceSelection": "grapheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.2"
+    },
+    {
+      "caseId": "case:grapheme-classification:shape-set-identity",
+      "coordinates": {
+        "graphemeFacet": "shape-set-identity",
+        "sourceSelection": "grapheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.2"
+    },
+    {
+      "caseId": "case:grapheme-classification:phoneme-correspondence",
+      "coordinates": {
+        "graphemeFacet": "phoneme-correspondence",
+        "sourceSelection": "grapheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.6.2"
+    },
+    {
+      "caseId": "case:grapheme-classification:graph-variation",
+      "coordinates": {
+        "graphemeFacet": "graph-variation",
+        "sourceSelection": "grapheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.2"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "carrier-grapheme-classification.full-source.v1",
+    "minimumUniqueSources": 5,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "graphemeFacet": "subsystem-membership",
+          "sourceSelection": "grapheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "graphemeFacet": "visual-representation",
+          "sourceSelection": "grapheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "graphemeFacet": "shape-set-identity",
+          "sourceSelection": "grapheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "graphemeFacet": "phoneme-correspondence",
+          "sourceSelection": "grapheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "graphemeFacet": "graph-variation",
+          "sourceSelection": "grapheme"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:grapheme-classification:shape-set-identity",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:grapheme-classification:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P023-L018-65A274BA81",
+          "ACI-P023-L018-A0BF2F1403"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:omit-subsystem-membership",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L018-65A274BA81"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:omit-visual-representation",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L018-A0BF2F1403"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:omit-shape-set-identity",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L020-FA3F525868"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:collapse-correspondence-to-one-to-one",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P023-L023-E930B0D126"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:omit-reverse-correspondence",
+        "category": "output",
+        "atomIds": [
+          "ACI-P023-L023-E930B0D126"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:make-typography-authoritative",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L034-8F1A289913"
+        ]
+      },
+      {
+        "mutationId": "mutation:grapheme-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P023-L018-65A274BA81",
+          "ACI-P023-L018-A0BF2F1403",
+          "ACI-P023-L020-FA3F525868",
+          "ACI-P023-L023-E930B0D126",
+          "ACI-P025-L034-8F1A289913"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected grapheme claims define a category, correspondence range, and token variation; they state no exception to grapheme identity.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:grapheme-classification:shape-set-identity"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only grapheme classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:grapheme-classification:subsystem-membership"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Graphological carrier elements are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:grapheme-classification:subsystem-membership"
+      }
+    ]
+  },
+  "randomSeed": "carrier-grapheme-classification.full-source.v1",
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:carrier-grapheme-classification:ACI-P023-L018-65A274BA81",
+      "atomId": "ACI-P023-L018-65A274BA81",
+      "obligationType": "rule",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.6.2",
+      "inventoryRecordDigest": "sha256:0574712d24e886455e2aff7dbfbc4587e33a855ef496285e3b409c55cfb5f03c",
+      "sourceAnchor": "Graphemes are members of a language's graphological subsystem.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:grapheme-classification:subsystem-membership"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "graphemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "graphemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:grapheme-classification:wrong-domain",
+            "mutation:grapheme-classification:omit-subsystem-membership",
+            "mutation:grapheme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "grapheme-subsystem-membership-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "grapheme-subsystem-membership-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-grapheme-classification:ACI-P023-L018-A0BF2F1403",
+      "atomId": "ACI-P023-L018-A0BF2F1403",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.6.2",
+      "inventoryRecordDigest": "sha256:dd3babd37de442ddb35c626066c0eba9293b054fad707e88fcf7b6450a71734f",
+      "sourceAnchor": "They are subsidiary symbols invented for the purpose of giving visual representation to linguistic sounds in a…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:grapheme-classification:visual-representation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "graphemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "graphemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:grapheme-classification:wrong-domain",
+            "mutation:grapheme-classification:omit-visual-representation",
+            "mutation:grapheme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "grapheme-visual-representation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "grapheme-visual-representation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-grapheme-classification:ACI-P023-L020-FA3F525868",
+      "atomId": "ACI-P023-L020-FA3F525868",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6.2",
+      "inventoryRecordDigest": "sha256:c77b567bfb9d900a84cf8252b9704e941e36bd08ee2ee4abbece01d808fc57c1",
+      "sourceAnchor": "A grapheme is a set of identically valued alphabetic symbols or letters",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:grapheme-classification:shape-set-identity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "graphemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "graphemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:grapheme-classification:omit-shape-set-identity",
+            "mutation:grapheme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "grapheme-shape-set-identity-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "grapheme-shape-set-identity-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-grapheme-classification:ACI-P023-L023-E930B0D126",
+      "atomId": "ACI-P023-L023-E930B0D126",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.6.2",
+      "inventoryRecordDigest": "sha256:d1390fda7b062d59b4004e5b45a66d05c7f777b9a729f4160a9718bd6f8daea1",
+      "sourceAnchor": "Graphemes may have a one-to-one correspondence with phonemes (e.g., /pit/, pit), a two-to-one correspondence (e.g.,…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:grapheme-classification:phoneme-correspondence"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "graphemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "graphemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:grapheme-classification:collapse-correspondence-to-one-to-one",
+            "mutation:grapheme-classification:omit-reverse-correspondence",
+            "mutation:grapheme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "grapheme-phoneme-correspondence-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "grapheme-phoneme-correspondence-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:carrier-grapheme-classification:ACI-P025-L034-8F1A289913",
+      "atomId": "ACI-P025-L034-8F1A289913",
+      "obligationType": "alternative",
+      "inventoryCategory": "ALT",
+      "canvasReference": "§1.8.2",
+      "inventoryRecordDigest": "sha256:1c01cb91f197051288ed5843b870af8c96f1f93ccb275ed5deafb6470171314c",
+      "sourceAnchor": "It can differ from the other variants of its grapheme with regard to upper case, lower case, script, print, typeface…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:grapheme-classification:graph-variation"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "graphemeFacet",
+            "sourceSelection"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "graphemeFacet",
+              "sourceSelection"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:grapheme-classification:make-typography-authoritative",
+            "mutation:grapheme-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "grapheme-graph-variation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "grapheme-graph-variation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

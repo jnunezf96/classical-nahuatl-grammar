@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "morph-conditioning-analysis",
+  "operationId": "classical.morpheme.morph.conditioning.analyze",
+  "indexEntryIds": [
+    "IDX-0629",
+    "IDX-0630"
+  ],
+  "atomIds": [
+    "ACI-P026-L014-5590222FBC"
+  ],
+  "atomRelations": [],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-morph-conditioning-analysis-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "contextual sounds condition slightly irregular morph variation",
+      "a particular governing morpheme conditions certain seriously irregular morph variation",
+      "phonological and morphological conditioning are distinct analysis categories"
+    ],
+    "validatedElsewhere": [
+      "morph token identity and regularity",
+      "concrete phonological environment admission",
+      "concrete governing-morpheme admission",
+      "allomorph selection and application",
+      "Classical written-surface generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:morph-conditioning-analysis:contrast",
+      "atomId": "ACI-P026-L014-5590222FBC",
+      "kind": "exact-morph-conditioning-contrast",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3472fc9562b9ac5c57d876a6049c172f7bb058146d84261ba2760afb7fdc1f6b",
+      "predicateId": "morph-conditioning-analysis.contrast",
+      "canvasBindingIds": [
+        "canvas-binding:morph-conditioning-analysis:ACI-P026-L014-5590222FBC"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "conditioningKind",
+      "values": [
+        "phonological-conditioning",
+        "morphological-conditioning"
+      ]
+    },
+    {
+      "id": "sourceDomain",
+      "values": [
+        "morph-conditioning-analysis"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:morph-conditioning-analysis:phonological",
+      "coordinates": {
+        "conditioningKind": "phonological-conditioning",
+        "sourceDomain": "morph-conditioning-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.5"
+    },
+    {
+      "caseId": "case:morph-conditioning-analysis:morphological",
+      "coordinates": {
+        "conditioningKind": "morphological-conditioning",
+        "sourceDomain": "morph-conditioning-analysis"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.5"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "morph-conditioning-analysis.full-source.v1",
+    "minimumUniqueSources": 2,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "conditioningKind": "phonological-conditioning",
+          "sourceDomain": "morph-conditioning-analysis"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "conditioningKind": "morphological-conditioning",
+          "sourceDomain": "morph-conditioning-analysis"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:morph-conditioning-analysis:contrast",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:collapse-branches",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:omit-contextual-sound-trigger",
+        "category": "output",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:omit-governing-morpheme-trigger",
+        "category": "output",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:swap-phonological-relation",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:swap-morphological-relation",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:make-label-authoritative",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-conditioning-analysis:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P026-L014-5590222FBC"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "boundary",
+        "reason": "The conditioning contrast classifies triggers without applying a boundary transformation.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-conditioning-analysis:contrast"
+      },
+      {
+        "category": "exception",
+        "reason": "The atom contrasts conditioning categories but states no exception to either category.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-conditioning-analysis:contrast"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only morph-conditioning analysis neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-conditioning-analysis:contrast"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Conditioning triggers are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-conditioning-analysis:contrast"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:morph-conditioning-analysis:ACI-P026-L014-5590222FBC",
+      "atomId": "ACI-P026-L014-5590222FBC",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.8.5",
+      "inventoryRecordDigest": "sha256:7aebe3379ba3508291aa9b9f6c90afdda30a0a9dce32049bf09a07a0defa2d4b",
+      "sourceAnchor": "The slightly irregular morphs are said to be phonologically conditioned (i.e., contextual sounds trigger the variation)",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morph-conditioning-analysis:contrast"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "conditioningKind",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "conditioningKind",
+              "sourceDomain"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morph-conditioning-analysis:wrong-domain",
+            "mutation:morph-conditioning-analysis:collapse-branches",
+            "mutation:morph-conditioning-analysis:omit-contextual-sound-trigger",
+            "mutation:morph-conditioning-analysis:omit-governing-morpheme-trigger",
+            "mutation:morph-conditioning-analysis:swap-phonological-relation",
+            "mutation:morph-conditioning-analysis:swap-morphological-relation",
+            "mutation:morph-conditioning-analysis:make-label-authoritative",
+            "mutation:morph-conditioning-analysis:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-phonological-conditioning-validated",
+                "morph-morphological-conditioning-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-phonological-conditioning-validated",
+                "morph-morphological-conditioning-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "morph-conditioning-analysis.full-source.v1"
+}

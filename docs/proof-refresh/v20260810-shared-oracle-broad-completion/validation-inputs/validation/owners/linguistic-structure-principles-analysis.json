@@ -1,0 +1,972 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "linguistic-structure-principles-analysis",
+  "operationId": "concept.structure.principles.analyze",
+  "indexEntryIds": [
+    "IDX-0241",
+    "IDX-0537",
+    "IDX-1044",
+    "IDX-1050",
+    "IDX-1052"
+  ],
+  "atomIds": [
+    "ACI-P031-L018-805D8A996A",
+    "ACI-P031-L021-F146630E6E",
+    "ACI-P031-L024-D4D08940CA",
+    "ACI-P031-L026-388B1CEA5B",
+    "ACI-P031-L032-D462261F8C"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:linguistic-structure-principles-analysis:1",
+      "fromAtomId": "ACI-P031-L021-F146630E6E",
+      "toAtomId": "ACI-P031-L018-805D8A996A",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P031-L021-F146630E6E has its own cooperative-principles checkpoint and adds a non-equivalent Canvas obligation to ACI-P031-L018-805D8A996A; shared mechanics do not merge their receipts.",
+      "discriminatingCaseIds": [
+        "case:linguistic-structure-principles-analysis:scenario-cooperative-principles:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:linguistic-structure-principles-analysis:2",
+      "fromAtomId": "ACI-P031-L024-D4D08940CA",
+      "toAtomId": "ACI-P031-L018-805D8A996A",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P031-L024-D4D08940CA has its own concatenation-additive checkpoint and adds a non-equivalent Canvas obligation to ACI-P031-L018-805D8A996A; shared mechanics do not merge their receipts.",
+      "discriminatingCaseIds": [
+        "case:linguistic-structure-principles-analysis:scenario-concatenation-additive:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:linguistic-structure-principles-analysis:3",
+      "fromAtomId": "ACI-P031-L026-388B1CEA5B",
+      "toAtomId": "ACI-P031-L018-805D8A996A",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P031-L026-388B1CEA5B has its own concatenation-unit-closure checkpoint and adds a non-equivalent Canvas obligation to ACI-P031-L018-805D8A996A; shared mechanics do not merge their receipts.",
+      "discriminatingCaseIds": [
+        "case:linguistic-structure-principles-analysis:scenario-concatenation-unit-closure:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:linguistic-structure-principles-analysis:4",
+      "fromAtomId": "ACI-P031-L032-D462261F8C",
+      "toAtomId": "ACI-P031-L018-805D8A996A",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P031-L032-D462261F8C has its own interaction-justification checkpoint and adds a non-equivalent Canvas obligation to ACI-P031-L018-805D8A996A; shared mechanics do not merge their receipts.",
+      "discriminatingCaseIds": [
+        "case:linguistic-structure-principles-analysis:scenario-interaction-justification:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued linguistic-structure analysis Source with one typed principle question",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind"
+    ],
+    "validatedHere": [
+      "static and dynamic facets",
+      "cooperating principles",
+      "additive concatenation",
+      "one-unit closure",
+      "interaction justification"
+    ],
+    "validatedElsewhere": [
+      "governance taxonomy",
+      "adjunctive governance",
+      "conjunctive governance",
+      "language-specific composition"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:semantic",
+      "atomId": "ACI-P031-L018-805D8A996A",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:51c117955c7b3988e2e82a2ddd36b8a1b47f29b7657e8bd9acf8f861957745e4",
+      "predicateId": "linguistic-structure-principles-analysis.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:guard",
+      "atomId": "ACI-P031-L018-805D8A996A",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:51c117955c7b3988e2e82a2ddd36b8a1b47f29b7657e8bd9acf8f861957745e4",
+      "predicateId": "linguistic-structure-principles-analysis.guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E:semantic",
+      "atomId": "ACI-P031-L021-F146630E6E",
+      "kind": "canvas-bound-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:bba713144cd1b8da9238aa9f83b8bb09aff25feb7eca76c5d3b8404e4503ef20",
+      "predicateId": "linguistic-structure-principles-analysis.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E:guard",
+      "atomId": "ACI-P031-L021-F146630E6E",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:bba713144cd1b8da9238aa9f83b8bb09aff25feb7eca76c5d3b8404e4503ef20",
+      "predicateId": "linguistic-structure-principles-analysis.guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA:semantic",
+      "atomId": "ACI-P031-L024-D4D08940CA",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:c998b6352b6138006d96b8170791cc5ef6a6d69b3ed024c00a2b958b1365f0dd",
+      "predicateId": "linguistic-structure-principles-analysis.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA:guard",
+      "atomId": "ACI-P031-L024-D4D08940CA",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:c998b6352b6138006d96b8170791cc5ef6a6d69b3ed024c00a2b958b1365f0dd",
+      "predicateId": "linguistic-structure-principles-analysis.guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B:semantic",
+      "atomId": "ACI-P031-L026-388B1CEA5B",
+      "kind": "canvas-bound-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ad3fd1b6db6c624acc7bd894e76f0e996398aa1050b0b658bde4528e359b9bdd",
+      "predicateId": "linguistic-structure-principles-analysis.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B:guard",
+      "atomId": "ACI-P031-L026-388B1CEA5B",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ad3fd1b6db6c624acc7bd894e76f0e996398aa1050b0b658bde4528e359b9bdd",
+      "predicateId": "linguistic-structure-principles-analysis.guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C:semantic",
+      "atomId": "ACI-P031-L032-D462261F8C",
+      "kind": "canvas-bound-dependency",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.12.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:13e39187275d4ea49e684418d76e7edc10ce6eb34674f3c7d3384bc06b0f30e7",
+      "predicateId": "linguistic-structure-principles-analysis.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C:guard",
+      "atomId": "ACI-P031-L032-D462261F8C",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.12.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:13e39187275d4ea49e684418d76e7edc10ce6eb34674f3c7d3384bc06b0f30e7",
+      "predicateId": "linguistic-structure-principles-analysis.guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "static-dynamic-facets",
+        "cooperative-principles",
+        "concatenation-additive",
+        "concatenation-unit-closure",
+        "interaction-justification",
+        "unknown-analysis",
+        "wrong-domain"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [
+    {
+      "scenario": [
+        "unknown-analysis",
+        "wrong-domain"
+      ],
+      "sourceAuthority": "owner-issued-source"
+    }
+  ],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-static-dynamic-facets:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "static-dynamic-facets",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-static-dynamic-facets:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "static-dynamic-facets",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-static-dynamic-facets:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "static-dynamic-facets",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-cooperative-principles:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "cooperative-principles",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-cooperative-principles:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "cooperative-principles",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-cooperative-principles:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "cooperative-principles",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-additive:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "concatenation-additive",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-additive:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "concatenation-additive",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-additive:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "concatenation-additive",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-unit-closure:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "concatenation-unit-closure",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-unit-closure:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "concatenation-unit-closure",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-concatenation-unit-closure:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "concatenation-unit-closure",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-interaction-justification:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "interaction-justification",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-interaction-justification:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "interaction-justification",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-interaction-justification:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "interaction-justification",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-unknown-analysis:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "unknown-analysis",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-unknown-analysis:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "unknown-analysis",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-unknown-analysis:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "unknown-analysis",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-wrong-domain:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-domain",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-wrong-domain:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-domain",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:linguistic-structure-principles-analysis:scenario-wrong-domain:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-domain",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "linguistic-structure-principles-analysis.full-source.v1",
+    "minimumUniqueSources": 19,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "static-dynamic-facets",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "cooperative-principles",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "concatenation-additive",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "concatenation-unit-closure",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "interaction-justification",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind",
+        "category": "output",
+        "atomIds": [
+          "ACI-P031-L018-805D8A996A",
+          "ACI-P031-L021-F146630E6E",
+          "ACI-P031-L024-D4D08940CA",
+          "ACI-P031-L026-388B1CEA5B",
+          "ACI-P031-L032-D462261F8C"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No exception is licensed by this owner's exact Canvas atoms.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This read-only structure analysis neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:semantic"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A",
+      "atomId": "ACI-P031-L018-805D8A996A",
+      "obligationType": "rule",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.12",
+      "inventoryRecordDigest": "sha256:61f42b46e871d36330f8a6f4137ef1867f34e37e7981c9cd6df20afaee461c3e",
+      "sourceAnchor": "Morphological, morphosyntactical, and syntactical structures share static and dynamic facets.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L018-805D8A996A:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+            "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+            "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+            "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+            "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+            "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+            "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "static-dynamic-structure-facets-checkpoint",
+                "linguistic-structure-principles-analysis-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linguistic-structure-principles-analysis-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E",
+      "atomId": "ACI-P031-L021-F146630E6E",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.12",
+      "inventoryRecordDigest": "sha256:1a5c7e8b6f0de53192147d987c7c28f28257c3eff382f86a515b475c5837a8cf",
+      "sourceAnchor": "This means that a linguistic structure is the result of the cooperation of at least two structuring principles:…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L021-F146630E6E:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+            "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+            "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+            "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+            "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+            "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+            "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "cooperative-structuring-principles-checkpoint",
+                "linguistic-structure-principles-analysis-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linguistic-structure-principles-analysis-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA",
+      "atomId": "ACI-P031-L024-D4D08940CA",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§1.12.1",
+      "inventoryRecordDigest": "sha256:7061a567c87737c136cd8e49314de4c253a3219e9637adec4b8a31f33eff315d",
+      "sourceAnchor": "Concatenation (i.e., \"a linking or chaining together\") creates a structure according to an additive structuring…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L024-D4D08940CA:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+            "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+            "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+            "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+            "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+            "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+            "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "additive-concatenation-principle-checkpoint",
+                "linguistic-structure-principles-analysis-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linguistic-structure-principles-analysis-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B",
+      "atomId": "ACI-P031-L026-388B1CEA5B",
+      "obligationType": "rule",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.12.1",
+      "inventoryRecordDigest": "sha256:06afacda8c7d68b4979d340f6eec95f4ba4b8356d1a64bd4f9245fbd766428fa",
+      "sourceAnchor": "In § 1.11 this was the \"1 + 1 = 1\" principle.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L026-388B1CEA5B:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+            "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+            "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+            "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+            "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+            "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+            "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "concatenation-unit-closure-checkpoint",
+                "linguistic-structure-principles-analysis-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linguistic-structure-principles-analysis-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C",
+      "atomId": "ACI-P031-L032-D462261F8C",
+      "obligationType": "dependency",
+      "inventoryCategory": "DEP",
+      "canvasReference": "§1.12.2",
+      "inventoryRecordDigest": "sha256:58b2eec416af18169d55954524966400dcbb96fd1b4668a5d1a1e967247303c6",
+      "sourceAnchor": "Behind the mere linear succession present in concatenated unity stands the fact that constituents forming such unity…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-structure-principles-analysis:ACI-P031-L032-D462261F8C:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-structure-principles-analysis:trust-copied-source",
+            "mutation:linguistic-structure-principles-analysis:wrong-analysis-domain",
+            "mutation:linguistic-structure-principles-analysis:wrong-owner-identity",
+            "mutation:linguistic-structure-principles-analysis:reverse-principle-order",
+            "mutation:linguistic-structure-principles-analysis:corrupt-static-fact",
+            "mutation:linguistic-structure-principles-analysis:corrupt-facet-classification",
+            "mutation:linguistic-structure-principles-analysis:corrupt-analysis-kind"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "interaction-justification-checkpoint",
+                "linguistic-structure-principles-analysis-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linguistic-structure-principles-analysis-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "linguistic-structure-principles-analysis.deterministic.v1"
+}

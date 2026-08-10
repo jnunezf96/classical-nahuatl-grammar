@@ -1,0 +1,817 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-segmental-phoneme-inventory",
+  "operationId": "classical.carrier.segmental-phoneme-inventory.analyze",
+  "indexEntryIds": [
+    "IDX-0276",
+    "IDX-0834",
+    "IDX-1227"
+  ],
+  "atomIds": [
+    "ACI-P039-L003-5036476036",
+    "ACI-P039-L004-897BE64FB1",
+    "ACI-P039-L004-E7E01D8587",
+    "ACI-P040-L014-ADEC9EA5BA"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:classical-segmental-phoneme-inventory:1",
+      "fromAtomId": "ACI-P039-L004-897BE64FB1",
+      "toAtomId": "ACI-P039-L003-5036476036",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L004-897BE64FB1 supplies a non-equivalent vowel-membership-and-length checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-segmental-phoneme-inventory:scenario-vowel-membership-and-length:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-segmental-phoneme-inventory:2",
+      "fromAtomId": "ACI-P039-L004-E7E01D8587",
+      "toAtomId": "ACI-P039-L003-5036476036",
+      "relationType": "adds-constraint",
+      "basis": "ACI-P039-L004-E7E01D8587 supplies a non-equivalent consonant-count-and-silent-sigeme checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-segmental-phoneme-inventory:scenario-consonant-count-and-silent-sigeme:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-segmental-phoneme-inventory:3",
+      "fromAtomId": "ACI-P040-L014-ADEC9EA5BA",
+      "toAtomId": "ACI-P039-L003-5036476036",
+      "relationType": "refines",
+      "basis": "ACI-P040-L014-ADEC9EA5BA supplies a non-equivalent vowel-length-pairs checkpoint within the same precise owner; shared mechanics and hostile guards do not merge execution proof.",
+      "discriminatingCaseIds": [
+        "case:classical-segmental-phoneme-inventory:scenario-vowel-length-pairs:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued typed Classical segmental-inventory analysis coordinates",
+    "suppliedFacts": [
+      "analysisDomain",
+      "requestedAnalysisKind",
+      "participantChoice"
+    ],
+    "validatedHere": [
+      "the twenty-three segmental-phoneme count",
+      "the eight vowel phonemes and Andrews full-length notation",
+      "the fifteen consonant count and separate unpronounced sigeme",
+      "the four short-long vowel pairs"
+    ],
+    "validatedElsewhere": [
+      "phone selection and contextual realization",
+      "graphological representation",
+      "written surface generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:semantic",
+      "atomId": "ACI-P039-L003-5036476036",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:6911162adfdd0cb6d71228fb820238a26352d8c1f49f2cfdf77fc1cd734c63b8",
+      "predicateId": "classical-segmental-phoneme-inventory.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:guard",
+      "atomId": "ACI-P039-L003-5036476036",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:6911162adfdd0cb6d71228fb820238a26352d8c1f49f2cfdf77fc1cd734c63b8",
+      "predicateId": "classical-segmental-phoneme-inventory.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1:semantic",
+      "atomId": "ACI-P039-L004-897BE64FB1",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:6101516bd310d5d9653c91fb329f5ba726b327cdd596c5efa1c9459abf8ed8b1",
+      "predicateId": "classical-segmental-phoneme-inventory.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1:guard",
+      "atomId": "ACI-P039-L004-897BE64FB1",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:6101516bd310d5d9653c91fb329f5ba726b327cdd596c5efa1c9459abf8ed8b1",
+      "predicateId": "classical-segmental-phoneme-inventory.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587:semantic",
+      "atomId": "ACI-P039-L004-E7E01D8587",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:379976af99fc3366c6bf85929842a8e5a5b07622040b2a5836598e1e4283e41a",
+      "predicateId": "classical-segmental-phoneme-inventory.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587:guard",
+      "atomId": "ACI-P039-L004-E7E01D8587",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:379976af99fc3366c6bf85929842a8e5a5b07622040b2a5836598e1e4283e41a",
+      "predicateId": "classical-segmental-phoneme-inventory.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA:semantic",
+      "atomId": "ACI-P040-L014-ADEC9EA5BA",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§2.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d129f73b1ee41812acce3dfae7189f3e1d4d15210a6cfdd1d3eac5c12ed03cce",
+      "predicateId": "classical-segmental-phoneme-inventory.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA:guard",
+      "atomId": "ACI-P040-L014-ADEC9EA5BA",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§2.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d129f73b1ee41812acce3dfae7189f3e1d4d15210a6cfdd1d3eac5c12ed03cce",
+      "predicateId": "classical-segmental-phoneme-inventory.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "segmental-count",
+        "vowel-membership-and-length",
+        "consonant-count-and-silent-sigeme",
+        "vowel-length-pairs",
+        "wrong-coordinate"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-segmental-count:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "segmental-count",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-segmental-count:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "segmental-count",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-segmental-count:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "segmental-count",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-membership-and-length:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "vowel-membership-and-length",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-membership-and-length:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "vowel-membership-and-length",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-membership-and-length:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "vowel-membership-and-length",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-consonant-count-and-silent-sigeme:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "consonant-count-and-silent-sigeme",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-consonant-count-and-silent-sigeme:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "consonant-count-and-silent-sigeme",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-consonant-count-and-silent-sigeme:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "consonant-count-and-silent-sigeme",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-length-pairs:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "vowel-length-pairs",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-length-pairs:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "vowel-length-pairs",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-vowel-length-pairs:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "vowel-length-pairs",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-wrong-coordinate:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-wrong-coordinate:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-segmental-phoneme-inventory:scenario-wrong-coordinate:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-segmental-phoneme-inventory.full-source.v1",
+    "minimumUniqueSources": 15,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "segmental-count",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "vowel-membership-and-length",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "consonant-count-and-silent-sigeme",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "vowel-length-pairs",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036",
+      "atomId": "ACI-P039-L003-5036476036",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "INV",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:4b407d8567d3ed98a09734b6870053595e2441babb785e6cdac11c4af3b8a779",
+      "sourceAnchor": "Nahuatl has twenty-three segmental phonemes.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-segmental-phoneme-inventory:trust-copied-source",
+            "mutation:classical-segmental-phoneme-inventory:wrong-analysis-domain",
+            "mutation:classical-segmental-phoneme-inventory:wrong-owner-identity",
+            "mutation:classical-segmental-phoneme-inventory:accept-unlicensed-coordinate",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-segmental-count-fact",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-segmental-count-classification",
+            "mutation:classical-segmental-phoneme-inventory:reverse-segmental-count-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "segmental-phoneme-count-checkpoint",
+                "classical-segmental-phoneme-inventory-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-segmental-phoneme-inventory-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1",
+      "atomId": "ACI-P039-L004-897BE64FB1",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "INV",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:34c19f5f79f9a3e6e15fb2d40c1fd36462e2f9faa75332819e3d09ff7610f422",
+      "sourceAnchor": "Eight are vowels: /a a: e e: i i: o o:/ (the symbol /:/ indicates full length).",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-897BE64FB1:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-segmental-phoneme-inventory:trust-copied-source",
+            "mutation:classical-segmental-phoneme-inventory:wrong-analysis-domain",
+            "mutation:classical-segmental-phoneme-inventory:wrong-owner-identity",
+            "mutation:classical-segmental-phoneme-inventory:accept-unlicensed-coordinate",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-membership-and-length-fact",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-membership-and-length-classification",
+            "mutation:classical-segmental-phoneme-inventory:reverse-vowel-membership-and-length-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "vowel-phoneme-membership-checkpoint",
+                "classical-segmental-phoneme-inventory-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-segmental-phoneme-inventory-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587",
+      "atomId": "ACI-P039-L004-E7E01D8587",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "INV",
+      "canvasReference": "§2.1",
+      "inventoryRecordDigest": "sha256:6ec3469383bd41f54e93f7215639c8a5701c9f9e471227e4ff51edd48965fe34",
+      "sourceAnchor": "Fifteen of the twenty-three segmental phonemes are consonants.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P039-L004-E7E01D8587:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-segmental-phoneme-inventory:trust-copied-source",
+            "mutation:classical-segmental-phoneme-inventory:wrong-analysis-domain",
+            "mutation:classical-segmental-phoneme-inventory:wrong-owner-identity",
+            "mutation:classical-segmental-phoneme-inventory:accept-unlicensed-coordinate",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-consonant-count-and-silent-sigeme-fact",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-consonant-count-and-silent-sigeme-classification",
+            "mutation:classical-segmental-phoneme-inventory:reverse-consonant-count-and-silent-sigeme-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "consonant-and-silent-sigeme-count-checkpoint",
+                "classical-segmental-phoneme-inventory-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-segmental-phoneme-inventory-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA",
+      "atomId": "ACI-P040-L014-ADEC9EA5BA",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "INV",
+      "canvasReference": "§2.2",
+      "inventoryRecordDigest": "sha256:a0f87406cc373e7454c095da5bb40ba09be5fd28d523d0ed0d205c7551a5f635",
+      "sourceAnchor": "The eight Nahuatl vowel phonemes are divided into four pairs by the feature of length: four short vowels are matched…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-segmental-phoneme-inventory:ACI-P040-L014-ADEC9EA5BA:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-segmental-phoneme-inventory:trust-copied-source",
+            "mutation:classical-segmental-phoneme-inventory:wrong-analysis-domain",
+            "mutation:classical-segmental-phoneme-inventory:wrong-owner-identity",
+            "mutation:classical-segmental-phoneme-inventory:accept-unlicensed-coordinate",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-length-pairs-fact",
+            "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-length-pairs-classification",
+            "mutation:classical-segmental-phoneme-inventory:reverse-vowel-length-pairs-relation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "vowel-length-pair-checkpoint",
+                "classical-segmental-phoneme-inventory-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-segmental-phoneme-inventory-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P039-L003-5036476036",
+          "ACI-P039-L004-897BE64FB1",
+          "ACI-P039-L004-E7E01D8587",
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P039-L003-5036476036",
+          "ACI-P039-L004-897BE64FB1",
+          "ACI-P039-L004-E7E01D8587",
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P039-L003-5036476036",
+          "ACI-P039-L004-897BE64FB1",
+          "ACI-P039-L004-E7E01D8587",
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:accept-unlicensed-coordinate",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P039-L003-5036476036",
+          "ACI-P039-L004-897BE64FB1",
+          "ACI-P039-L004-E7E01D8587",
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-segmental-count-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L003-5036476036"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-segmental-count-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L003-5036476036"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:reverse-segmental-count-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L003-5036476036"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-membership-and-length-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L004-897BE64FB1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-membership-and-length-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L004-897BE64FB1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:reverse-vowel-membership-and-length-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L004-897BE64FB1"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-consonant-count-and-silent-sigeme-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L004-E7E01D8587"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-consonant-count-and-silent-sigeme-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P039-L004-E7E01D8587"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:reverse-consonant-count-and-silent-sigeme-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P039-L004-E7E01D8587"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-length-pairs-fact",
+        "category": "output",
+        "atomIds": [
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:corrupt-vowel-length-pairs-classification",
+        "category": "output",
+        "atomIds": [
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-segmental-phoneme-inventory:reverse-vowel-length-pairs-relation",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P040-L014-ADEC9EA5BA"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "This inventory owner describes no contextual exception; phone and spelling exceptions remain separately owned.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This read-only carrier analysis neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-segmental-phoneme-inventory:ACI-P039-L003-5036476036:semantic"
+      }
+    ]
+  },
+  "randomSeed": "classical-segmental-phoneme-inventory.deterministic.v1"
+}

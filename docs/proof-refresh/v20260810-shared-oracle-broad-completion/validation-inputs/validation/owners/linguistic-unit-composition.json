@@ -1,0 +1,857 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "linguistic-unit-composition",
+  "operationId": "classical.linguistic.unit.compose",
+  "indexEntryIds": [
+    "IDX-1043",
+    "IDX-1044"
+  ],
+  "atomIds": [
+    "ACI-P027-L005-FCA7823D2B",
+    "ACI-P027-L006-3F63976A21",
+    "ACI-P027-L007-F8C79B445B",
+    "ACI-P027-L008-6551E0E9EF"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:linguistic-unit-composition:structure-adds-constraint",
+      "fromAtomId": "ACI-P027-L006-3F63976A21",
+      "toAtomId": "ACI-P027-L005-FCA7823D2B",
+      "relationType": "adds-constraint",
+      "basis": "The linear-sequence rule admits the medium-specific sequence, while the following atom additionally requires its parts to be patterned into a linguistically valid whole.",
+      "discriminatingCaseIds": [
+        "case:linguistic-unit-composition:reject-unstructured-speech"
+      ]
+    },
+    {
+      "relationId": "atom-relation:linguistic-unit-composition:binary-unity-refines-composition",
+      "fromAtomId": "ACI-P027-L007-F8C79B445B",
+      "toAtomId": "ACI-P027-L005-FCA7823D2B",
+      "relationType": "refines",
+      "basis": "The 1 + 1 = 1 principle refines general sequence combination as a binary operation whose direct result is one unit; larger sequences require separately proved recursive application.",
+      "discriminatingCaseIds": [
+        "case:linguistic-unit-composition:reject-three-constituents"
+      ]
+    },
+    {
+      "relationId": "atom-relation:linguistic-unit-composition:unit-input-output-refines-binary-unity",
+      "fromAtomId": "ACI-P027-L008-6551E0E9EF",
+      "toAtomId": "ACI-P027-L007-F8C79B445B",
+      "relationType": "refines",
+      "basis": "The constituent rule specifies that both binary inputs must already be units and that the binary result is itself a complex unit, beyond the documentary arithmetic shorthand.",
+      "discriminatingCaseIds": [
+        "case:linguistic-unit-composition:reject-documentary-structure"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-complete-typed-linguistic-unit-composition-source-with-two-owner-issued-basic-linear-element-results",
+    "suppliedFacts": [
+      "medium",
+      "sequenceOrder",
+      "structurePattern",
+      "constituents"
+    ],
+    "validatedHere": [
+      "speech linear sequences are temporal and written linear sequences are spatial",
+      "a linguistically valid sequence has parts patterned into a whole",
+      "exactly two admitted constituent units compose directly into one result unit",
+      "the composition result is one typed complex structural unit",
+      "non-unit, documentary, formula, lesson, stored-answer, and surface carriers cannot authorize composition"
+    ],
+    "validatedElsewhere": [
+      "the internal grammar of each constituent unit",
+      "discontinuous-unit admissibility and cohesion",
+      "recursive reapplication of composition",
+      "meaningful and meaningless structural-unit hierarchies",
+      "sounded and written surface realization"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:linguistic-unit-composition:linear-medium-sequence",
+      "atomId": "ACI-P027-L005-FCA7823D2B",
+      "kind": "exact-medium-specific-linear-sequence-composition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:96cecb98c7c5404b130529a141586580368cb59ed910d4f912e4a8dbace9a773",
+      "predicateId": "linguistic-unit-composition.linear-medium-sequence",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L005-FCA7823D2B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:medium-order-guard",
+      "atomId": "ACI-P027-L005-FCA7823D2B",
+      "kind": "exact-medium-order-domain-guard",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:96cecb98c7c5404b130529a141586580368cb59ed910d4f912e4a8dbace9a773",
+      "predicateId": "linguistic-unit-composition.medium-order-guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L005-FCA7823D2B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:structured-whole",
+      "atomId": "ACI-P027-L006-3F63976A21",
+      "kind": "exact-structured-sequence-requirement",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d62b3e512679e1e492b135b20c80409d9b6b58e9f8e806bbc9dbd534daf74ded",
+      "predicateId": "linguistic-unit-composition.structured-whole",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L006-3F63976A21"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:unstructured-rejection",
+      "atomId": "ACI-P027-L006-3F63976A21",
+      "kind": "exact-unstructured-sequence-domain-guard",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d62b3e512679e1e492b135b20c80409d9b6b58e9f8e806bbc9dbd534daf74ded",
+      "predicateId": "linguistic-unit-composition.unstructured-rejection",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L006-3F63976A21"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:binary-unity",
+      "atomId": "ACI-P027-L007-F8C79B445B",
+      "kind": "exact-binary-input-single-unit-result",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7ec97f36142379e8c939556849d0dfedc7ae0fec536900c04bd1435ebd4ba2d7",
+      "predicateId": "linguistic-unit-composition.binary-unity",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L007-F8C79B445B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:binary-arity-guard",
+      "atomId": "ACI-P027-L007-F8C79B445B",
+      "kind": "exact-direct-binary-composition-domain-guard",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:7ec97f36142379e8c939556849d0dfedc7ae0fec536900c04bd1435ebd4ba2d7",
+      "predicateId": "linguistic-unit-composition.binary-arity-guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L007-F8C79B445B"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:constituents-and-result-are-units",
+      "atomId": "ACI-P027-L008-6551E0E9EF",
+      "kind": "exact-unit-input-and-unit-output-composition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d4d9dc811eb756544cffd3fad3af461beed7927f3a40036bd8cc35bd7bae4f3a",
+      "predicateId": "linguistic-unit-composition.constituents-and-result-are-units",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L008-6551E0E9EF"
+      ]
+    },
+    {
+      "oracleId": "oracle:linguistic-unit-composition:constituent-authority-guard",
+      "atomId": "ACI-P027-L008-6551E0E9EF",
+      "kind": "exact-owner-issued-unit-domain-guard",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§1.11",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d4d9dc811eb756544cffd3fad3af461beed7927f3a40036bd8cc35bd7bae4f3a",
+      "predicateId": "linguistic-unit-composition.constituent-authority-guard",
+      "canvasBindingIds": [
+        "canvas-binding:linguistic-unit-composition:ACI-P027-L008-6551E0E9EF"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "medium",
+      "values": [
+        "speech",
+        "writing"
+      ]
+    },
+    {
+      "id": "sequenceOrder",
+      "values": [
+        "temporal",
+        "spatial"
+      ]
+    },
+    {
+      "id": "structurePattern",
+      "values": [
+        "patterned-whole",
+        "unstructured-sequence"
+      ]
+    },
+    {
+      "id": "constituentAuthority",
+      "values": [
+        "admitted-basic-elements",
+        "documentary-structure",
+        "plain-authority-carrier"
+      ]
+    },
+    {
+      "id": "constituentCount",
+      "values": [
+        "one",
+        "two",
+        "three"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:linguistic-unit-composition:positive-speech",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.11"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:positive-writing",
+      "coordinates": {
+        "medium": "writing",
+        "sequenceOrder": "spatial",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.11"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-speech-spatial",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "spatial",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-medium-order-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-writing-temporal",
+      "coordinates": {
+        "medium": "writing",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-medium-order-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-unstructured-speech",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "unstructured-sequence",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-structure-condition-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-unstructured-writing",
+      "coordinates": {
+        "medium": "writing",
+        "sequenceOrder": "spatial",
+        "structurePattern": "unstructured-sequence",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-structure-condition-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-one-constituent",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "one"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-binary-operation-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-three-constituents",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "admitted-basic-elements",
+        "constituentCount": "three"
+      },
+      "stratum": "boundary",
+      "origin": "canvas-direct-binary-operation-boundary"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-documentary-structure",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "documentary-structure",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "hostile-documentary-owner-disproof"
+    },
+    {
+      "caseId": "case:linguistic-unit-composition:reject-authority-carrier",
+      "coordinates": {
+        "medium": "speech",
+        "sequenceOrder": "temporal",
+        "structurePattern": "patterned-whole",
+        "constituentAuthority": "plain-authority-carrier",
+        "constituentCount": "two"
+      },
+      "stratum": "boundary",
+      "origin": "hostile-formula-carrier-disproof"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "linguistic-unit-composition.full-source.v1",
+    "minimumUniqueSources": 10,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "writing",
+          "sequenceOrder": "spatial",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "spatial",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "writing",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "unstructured-sequence",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "writing",
+          "sequenceOrder": "spatial",
+          "structurePattern": "unstructured-sequence",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "one"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "admitted-basic-elements",
+          "constituentCount": "three"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "documentary-structure",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "medium": "speech",
+          "sequenceOrder": "temporal",
+          "structurePattern": "patterned-whole",
+          "constituentAuthority": "plain-authority-carrier",
+          "constituentCount": "two"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": true,
+    "relations": [
+      {
+        "relationId": "relation:linguistic-unit-composition:medium-order-pair-invariance",
+        "atomIds": [
+          "ACI-P027-L005-FCA7823D2B",
+          "ACI-P027-L006-3F63976A21",
+          "ACI-P027-L007-F8C79B445B",
+          "ACI-P027-L008-6551E0E9EF"
+        ],
+        "requiredInstances": [
+          {
+            "instanceId": "patterned-speech-writing-composition-invariance",
+            "inDomain": true
+          },
+          {
+            "instanceId": "unstructured-speech-writing-rejection-invariance",
+            "inDomain": true
+          }
+        ],
+        "canvasBindingIds": [
+          "canvas-binding:linguistic-unit-composition:ACI-P027-L005-FCA7823D2B",
+          "canvas-binding:linguistic-unit-composition:ACI-P027-L006-3F63976A21",
+          "canvas-binding:linguistic-unit-composition:ACI-P027-L007-F8C79B445B",
+          "canvas-binding:linguistic-unit-composition:ACI-P027-L008-6551E0E9EF"
+        ],
+        "independentOfImplementation": true
+      }
+    ]
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:linguistic-unit-composition:allow-speech-spatial",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P027-L005-FCA7823D2B"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:allow-writing-temporal",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P027-L005-FCA7823D2B"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:allow-unstructured-sequence",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P027-L006-3F63976A21"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:allow-single-constituent",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P027-L007-F8C79B445B"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:allow-three-direct-constituents",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P027-L007-F8C79B445B"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:accept-documentary-structure",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P027-L008-6551E0E9EF"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:accept-formula-carrier",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P027-L008-6551E0E9EF"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:wrong-result-unit-count",
+        "category": "output",
+        "atomIds": [
+          "ACI-P027-L007-F8C79B445B",
+          "ACI-P027-L008-6551E0E9EF"
+        ]
+      },
+      {
+        "mutationId": "mutation:linguistic-unit-composition:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P027-L005-FCA7823D2B",
+          "ACI-P027-L006-3F63976A21",
+          "ACI-P027-L007-F8C79B445B",
+          "ACI-P027-L008-6551E0E9EF"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The selected Canvas rules state no exception to binary unit composition, medium order, or the structured-sequence requirement.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:linguistic-unit-composition:structured-whole"
+      },
+      {
+        "category": "valence",
+        "reason": "General structural-unit composition neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:linguistic-unit-composition:binary-unity"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Constituent-unit admission does not create, move, or reclassify a morphosyntactic object slot.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:linguistic-unit-composition:constituents-and-result-are-units"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:linguistic-unit-composition:ACI-P027-L005-FCA7823D2B",
+      "atomId": "ACI-P027-L005-FCA7823D2B",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§1.11",
+      "inventoryRecordDigest": "sha256:50a1ce2b4f106adc1a98829463e11b4b5c2e57d31b71f30b156641471b908234",
+      "sourceAnchor": "The elements in §§1.6–1.10 can combine into linear sequences.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:linear-medium-sequence"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:medium-order-guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "medium",
+            "sequenceOrder"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "medium",
+              "sequenceOrder"
+            ]
+          ]
+        },
+        {
+          "deviceType": "metamorphic-relation",
+          "deviceIds": [
+            "relation:linguistic-unit-composition:medium-order-pair-invariance"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-unit-composition:allow-speech-spatial",
+            "mutation:linguistic-unit-composition:allow-writing-temporal",
+            "mutation:linguistic-unit-composition:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "linear-sequence-composition-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "linear-sequence-medium-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-unit-composition:ACI-P027-L006-3F63976A21",
+      "atomId": "ACI-P027-L006-3F63976A21",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.11",
+      "inventoryRecordDigest": "sha256:0655178486b58665f53764e09d32c9f249328c9060feb5e07630a990525c9e78",
+      "sourceAnchor": "For a sequence to be linguistically valid it must be structured: parts must be patterned into wholes.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:structured-whole"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:unstructured-rejection"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "structurePattern"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "medium",
+              "structurePattern"
+            ]
+          ]
+        },
+        {
+          "deviceType": "metamorphic-relation",
+          "deviceIds": [
+            "relation:linguistic-unit-composition:medium-order-pair-invariance"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-unit-composition:allow-unstructured-sequence",
+            "mutation:linguistic-unit-composition:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "linguistic-sequence-structure-established"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "all",
+              "stepIds": [
+                "linguistic-sequence-structure-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-unit-composition:ACI-P027-L007-F8C79B445B",
+      "atomId": "ACI-P027-L007-F8C79B445B",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.11",
+      "inventoryRecordDigest": "sha256:447af621d1c013c0cc917aed23a829eccaee8bcbec75f227b7f944703ad77a0e",
+      "sourceAnchor": "The basic principle of linguistic structure is \"1 + 1 = 1.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:binary-unity"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:binary-arity-guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "constituentCount"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "constituentCount",
+              "constituentAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-unit-composition:allow-single-constituent",
+            "mutation:linguistic-unit-composition:allow-three-direct-constituents",
+            "mutation:linguistic-unit-composition:wrong-result-unit-count",
+            "mutation:linguistic-unit-composition:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "binary-unity-principle-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "all",
+              "stepIds": [
+                "binary-constituent-count-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:linguistic-unit-composition:ACI-P027-L008-6551E0E9EF",
+      "atomId": "ACI-P027-L008-6551E0E9EF",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§1.11",
+      "inventoryRecordDigest": "sha256:f865a5089443a03a4174b9cf987825e6c8d2022099ac6d78f978adec264a2e4f",
+      "sourceAnchor": "Constituents always enter into combinations as units and always result in a unit; i.e., a segment plus a segment…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:constituents-and-result-are-units"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:linguistic-unit-composition:constituent-authority-guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "constituentAuthority",
+            "constituentCount"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "constituentAuthority",
+              "constituentCount"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:linguistic-unit-composition:accept-documentary-structure",
+            "mutation:linguistic-unit-composition:accept-formula-carrier",
+            "mutation:linguistic-unit-composition:wrong-result-unit-count",
+            "mutation:linguistic-unit-composition:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "constituent-unit-composition-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "all",
+              "stepIds": [
+                "constituent-unit-authority-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "linguistic-unit-composition.full-source.v1"
+}

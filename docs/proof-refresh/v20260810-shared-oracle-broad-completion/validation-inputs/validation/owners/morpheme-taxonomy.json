@@ -1,0 +1,1599 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "morpheme-taxonomy",
+  "operationId": "classical.morpheme.taxonomy.classify",
+  "indexEntryIds": [
+    "IDX-0577",
+    "IDX-0630",
+    "IDX-0631",
+    "IDX-0632",
+    "IDX-1264"
+  ],
+  "atomIds": [
+    "ACI-P024-L006-EB311DD196",
+    "ACI-P024-L007-9F38DD7282",
+    "ACI-P024-L009-E2B0DA0F5F",
+    "ACI-P024-L012-E4BCEAC1D6",
+    "ACI-P024-L016-0EB898B984",
+    "ACI-P024-L016-FC75A2AB0D",
+    "ACI-P024-L019-17DD742EB0",
+    "ACI-P024-L020-77C274CB6A",
+    "ACI-P024-L023-6BF471C3F2",
+    "ACI-P024-L023-442014574B",
+    "ACI-P024-L027-D0F34C748F",
+    "ACI-P024-L031-AA30EF2A71",
+    "ACI-P024-L032-692BC9BC17",
+    "ACI-P024-L033-F69986D35B",
+    "ACI-P024-L035-4E27B2EC8D",
+    "ACI-P024-L035-A253CAAFEA",
+    "ACI-P024-L038-CED398A575",
+    "ACI-P025-L002-246CC44700",
+    "ACI-P025-L002-B46A78D758"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:composite-refines-term",
+      "fromAtomId": "ACI-P024-L007-9F38DD7282",
+      "toAtomId": "ACI-P024-L006-EB311DD196",
+      "relationType": "refines",
+      "basis": "The composite definition refines the named type-level morpheme category.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:formation-adds-condition",
+      "fromAtomId": "ACI-P024-L009-E2B0DA0F5F",
+      "toAtomId": "ACI-P024-L007-9F38DD7282",
+      "relationType": "adds-condition",
+      "basis": "The formation claim adds the carrier-plus-content condition to the composite definition.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:grapheme-adds-constraint",
+      "fromAtomId": "ACI-P024-L012-E4BCEAC1D6",
+      "toAtomId": "ACI-P024-L009-E2B0DA0F5F",
+      "relationType": "adds-constraint",
+      "basis": "The graphological limitation excludes graphemes from the full carrier alternative.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:notation-adds-realization",
+      "fromAtomId": "ACI-P024-L016-0EB898B984",
+      "toAtomId": "ACI-P024-L007-9F38DD7282",
+      "relationType": "adds-realization",
+      "basis": "The notation claim requires the documentary representation to preserve symbiosis.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:compact-notation-refines",
+      "fromAtomId": "ACI-P024-L016-FC75A2AB0D",
+      "toAtomId": "ACI-P024-L016-0EB898B984",
+      "relationType": "refines",
+      "basis": "The compact notation refines how symbiotic representation is recorded in the lessons.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:shorthand-adds-constraint",
+      "fromAtomId": "ACI-P024-L019-17DD742EB0",
+      "toAtomId": "ACI-P024-L016-FC75A2AB0D",
+      "relationType": "adds-constraint",
+      "basis": "Carrier shorthand may omit displayed content only as understood documentation.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:carrier-nonconflation",
+      "fromAtomId": "ACI-P024-L020-77C274CB6A",
+      "toAtomId": "ACI-P024-L019-17DD742EB0",
+      "relationType": "adds-constraint",
+      "basis": "The carrier-only warning prevents documentary shorthand from redefining the morpheme.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:portmanteau-refines-composite",
+      "fromAtomId": "ACI-P024-L023-6BF471C3F2",
+      "toAtomId": "ACI-P024-L007-9F38DD7282",
+      "relationType": "refines",
+      "basis": "A portmanteau morpheme is the content-cluster subtype of the composite category.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:portmanteau"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:content-cluster-condition",
+      "fromAtomId": "ACI-P024-L023-442014574B",
+      "toAtomId": "ACI-P024-L023-6BF471C3F2",
+      "relationType": "adds-condition",
+      "basis": "The cluster condition requires indivisible sememes without separately analyzable carriers.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:portmanteau"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:cooperation-adds-constraint",
+      "fromAtomId": "ACI-P024-L027-D0F34C748F",
+      "toAtomId": "ACI-P024-L009-E2B0DA0F5F",
+      "relationType": "adds-constraint",
+      "basis": "Carrier and content elements retain their linguistic identities through cooperation in morphemes.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:inventory-refines-structure",
+      "fromAtomId": "ACI-P024-L031-AA30EF2A71",
+      "toAtomId": "ACI-P024-L007-9F38DD7282",
+      "relationType": "refines",
+      "basis": "The three-kind inventory partitions morphemes by symbiotic carrier-content structure.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:general"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:connective-refines-inventory",
+      "fromAtomId": "ACI-P024-L032-692BC9BC17",
+      "toAtomId": "ACI-P024-L031-AA30EF2A71",
+      "relationType": "refines",
+      "basis": "The connective class realizes the sound-plus-no-sememic-meaning inventory member.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:connective"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:connective-grammar-refines",
+      "fromAtomId": "ACI-P024-L033-F69986D35B",
+      "toAtomId": "ACI-P024-L032-692BC9BC17",
+      "relationType": "refines",
+      "basis": "The grammatical-meaning claim distinguishes absence of a sememe from absence of grammatical function.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:connective"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:ordinary-refines-inventory",
+      "fromAtomId": "ACI-P024-L035-4E27B2EC8D",
+      "toAtomId": "ACI-P024-L031-AA30EF2A71",
+      "relationType": "refines",
+      "basis": "The ordinary class realizes the phoneme-unit-plus-sememe-unit inventory member.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:ordinary"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:ordinary-example-evidence",
+      "fromAtomId": "ACI-P024-L035-A253CAAFEA",
+      "toAtomId": "ACI-P024-L035-4E27B2EC8D",
+      "relationType": "supplies-evidence",
+      "basis": "The English example evidences coexistence of ordinary morphemes without authorizing a Classical Source.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:ordinary"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:silent-refines-inventory",
+      "fromAtomId": "ACI-P024-L038-CED398A575",
+      "toAtomId": "ACI-P024-L031-AA30EF2A71",
+      "relationType": "refines",
+      "basis": "The silent class realizes the sigeme-plus-sememe-unit inventory member.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:silent"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:economy-adds-condition",
+      "fromAtomId": "ACI-P025-L002-246CC44700",
+      "toAtomId": "ACI-P024-L038-CED398A575",
+      "relationType": "adds-condition",
+      "basis": "Linguistic economy licenses silent expression where phonological expenditure is unnecessary.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:silent"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morpheme-taxonomy:default-adds-condition",
+      "fromAtomId": "ACI-P025-L002-B46A78D758",
+      "toAtomId": "ACI-P025-L002-246CC44700",
+      "relationType": "adds-condition",
+      "basis": "The economy rule applies when a culture treats the information as a default absent contrary indication.",
+      "discriminatingCaseIds": [
+        "case:morpheme-taxonomy:silent"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-concept-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "morpheme carrier-content symbiosis and carrier alternatives",
+      "documentary notation boundary and carrier-only shorthand warning",
+      "portmanteau content-cluster condition",
+      "connective, ordinary, and silently present morpheme taxonomy",
+      "linguistic-economy and language-specific default condition"
+    ],
+    "validatedElsewhere": [
+      "phoneme, sigeme, and sememe internal classifications",
+      "token-level morph realization",
+      "lexical and contextual morpheme selection",
+      "Classical word and clause generation"
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L006-EB311DD196",
+      "atomId": "ACI-P024-L006-EB311DD196",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:e6141e02ffe6bd72d4773e7d8bdb75a27c30797057ef9b512d78119804886f6a",
+      "sourceAnchor": "Another type-level linguistic element-the most important-is the morpheme (from the Greek root morph-, \"shape, form\").",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:type-level-terminology"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "sourceSelection",
+            "carrierMode"
+          ]
+        },
+        {
+          "deviceType": "invalid-assignment-set",
+          "all": true
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:wrong-domain",
+            "mutation:morpheme-taxonomy:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-type-level-terminology-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-type-level-terminology-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L007-9F38DD7282",
+      "atomId": "ACI-P024-L007-9F38DD7282",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:58d4b9d300f8dd345463f793f4292a677d37c64a0e22546a9bd03c2e479e6d52",
+      "sourceAnchor": "A morpheme is a composite entity, an amalgam resulting from a symbiotic relationship between elements of the carrier…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:composite-symbiosis"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-composite"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-composite-symbiosis-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-composite-symbiosis-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L009-E2B0DA0F5F",
+      "atomId": "ACI-P024-L009-E2B0DA0F5F",
+      "obligationType": "condition",
+      "inventoryCategory": "CON",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:f3f644fa0a3e40325f50a909407c8817a71259b06bc1ad8388873f91887b97ba",
+      "sourceAnchor": "A morpheme comes into being when a sememe, or sememe cluster, is combined with a phoneme unit ( a single phoneme or,…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:carrier-content-formation"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:detach-carrier-content"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-carrier-content-formation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-carrier-content-formation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L012-E4BCEAC1D6",
+      "atomId": "ACI-P024-L012-E4BCEAC1D6",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:67b56939b47a92e73310f44d8e8c832bd67af3287dba695107af457e4e5a486e",
+      "sourceAnchor": "(In this description of the morpheme no mention has been made of graphemes, since the graphological subsystem is…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:grapheme-exclusion"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:admit-grapheme-carrier"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-grapheme-exclusion-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-grapheme-exclusion-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L016-0EB898B984",
+      "atomId": "ACI-P024-L016-0EB898B984",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:a8f849cbb491658440462284abb04a0bbb8e7666d5838ef396fb54235f47a7a0",
+      "sourceAnchor": "The notation used for representing morphemes should indicate their symbiotic nature.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:symbiotic-notation"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-notation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-symbiotic-notation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-symbiotic-notation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L016-FC75A2AB0D",
+      "atomId": "ACI-P024-L016-FC75A2AB0D",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:1839cde9b3745f826883abe9314e10c762cbbb21ea42a726adef9a2a9ab0f183",
+      "sourceAnchor": "One possible morpheme notation is a fraction format with the carrier above the content unit.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:space-saving-notation"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-notation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-space-saving-notation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-space-saving-notation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L019-17DD742EB0",
+      "atomId": "ACI-P024-L019-17DD742EB0",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:6d4074bf318ba0bd0ad08d3c39cd3b7d48d89f7fde1e09231c818916ccf20b77",
+      "sourceAnchor": "Be warned, however, that frequently only the carrier part of the amalgam is given to represent a morpheme, leaving…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:carrier-shorthand"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:authorize-carrier-alone"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-carrier-shorthand-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-carrier-shorthand-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L020-77C274CB6A",
+      "atomId": "ACI-P024-L020-77C274CB6A",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:cfa0dba7baf92eba716ea9e7d49c986288f4952eded2895a3f08cf274181645a",
+      "sourceAnchor": "Do not let this space-saving practice (morphemic-carrier representation in place of a full morpheme representation)…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:carrier-nonconflation"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:authorize-carrier-alone"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-carrier-nonconflation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-carrier-nonconflation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L023-6BF471C3F2",
+      "atomId": "ACI-P024-L023-6BF471C3F2",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:1e0473db702d19c90137bfbfad41fcbd0cf3adf6b16c65f37be2b7b1d1e87d18",
+      "sourceAnchor": "When a morpheme contains a content cluster (i.e., two or more sememes so indivisibly joined that each cannot be…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:content-cluster-definition"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-portmanteau"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-content-cluster-definition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-content-cluster-definition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L023-442014574B",
+      "atomId": "ACI-P024-L023-442014574B",
+      "obligationType": "condition",
+      "inventoryCategory": "CON",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:992f31295c71bc6db9dbc7c2b3f7132bbb0ea8b257c055adf815cd5fb811217e",
+      "sourceAnchor": "When a morpheme contains a content cluster (i.e.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:content-cluster-condition"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-portmanteau"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-content-cluster-condition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-content-cluster-condition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L027-D0F34C748F",
+      "atomId": "ACI-P024-L027-D0F34C748F",
+      "obligationType": "constraint",
+      "inventoryCategory": "CST",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:ff174272e0592958296e3a3e2d8dac8d8876fa0dddb4b4e476dc7314ab69362c",
+      "sourceAnchor": "Phonemes are phonemes, sigemes sigemes, and sememes sememes only by virtue of the fact that they cooperate in the…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:element-cooperation"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-cooperation"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-element-cooperation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-element-cooperation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L031-AA30EF2A71",
+      "atomId": "ACI-P024-L031-AA30EF2A71",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.7",
+      "inventoryRecordDigest": "sha256:fe6c71b5419cd1065fcade0aa04479f82691cf6ea5e0d4c3f650e44e613f4c67",
+      "sourceAnchor": "From the point of view of symbiotic structure, there are three kinds of morphemes:",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:three-kind-inventory"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-inventory"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-three-kind-inventory-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-three-kind-inventory-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L032-692BC9BC17",
+      "atomId": "ACI-P024-L032-692BC9BC17",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.7.1",
+      "inventoryRecordDigest": "sha256:c3b34e84f0a245b0a93f4b430d0fb57e5242cf90cc7c5be72191f0c8db49da7c",
+      "sourceAnchor": "sound+ no (sememic) meaning= \"connective or housekeeping morpheme\"",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:connective-carrier-content"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:connective-add-sememe"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-connective-carrier-content-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-connective-carrier-content-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L033-F69986D35B",
+      "atomId": "ACI-P024-L033-F69986D35B",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§1.7.1",
+      "inventoryRecordDigest": "sha256:53d369a58e47dfe30691a18ba6d2cae8c263aaa644a5988a4309f4c54de1227f",
+      "sourceAnchor": "While the morpheme lacks sememic meaning (i.e., it has no sememe ), it does have grammatical meaning.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:connective-grammatical-meaning"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:connective-add-sememe"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-connective-grammatical-meaning-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-connective-grammatical-meaning-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L035-4E27B2EC8D",
+      "atomId": "ACI-P024-L035-4E27B2EC8D",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.7.2",
+      "inventoryRecordDigest": "sha256:1a5050cb77c5c004c8061534e042354794f41d54485eaa4a042db06cefe785d9",
+      "sourceAnchor": "sound+ meaning (i.e., phoneme unit+ sememe unit)= \"ordinary morpheme.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:ordinary-carrier-content"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:ordinary-drop-meaning"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-ordinary-carrier-content-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-ordinary-carrier-content-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L035-A253CAAFEA",
+      "atomId": "ACI-P024-L035-A253CAAFEA",
+      "obligationType": "inventory-member",
+      "inventoryCategory": "INV",
+      "canvasReference": "§1.7.2",
+      "inventoryRecordDigest": "sha256:0c1460c28200b4d39f9b92c8a24ecc9e89547747dc0312f0e5b0ef7a433ba46b",
+      "sourceAnchor": "For example, in the English word \"pits\" there are two morphemes of this type: \"/pit-/, 'pit-'\" and \"/-s/, 'plural…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:ordinary-cooccurrence-evidence"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:ordinary-drop-meaning"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-ordinary-cooccurrence-evidence-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-ordinary-cooccurrence-evidence-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P024-L038-CED398A575",
+      "atomId": "ACI-P024-L038-CED398A575",
+      "obligationType": "lexical-fact",
+      "inventoryCategory": "LEX",
+      "canvasReference": "§1.7.3",
+      "inventoryRecordDigest": "sha256:b93e2e78a8e7e3493d3903fa9a5af94b789227a6c436cda79aaf70095b166071",
+      "sourceAnchor": "no sound + meaning (i.e., sigeme + sememe unit) = \"mute or silently present morpheme.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:silent-carrier-content"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:silent-add-sound"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-silent-carrier-content-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-silent-carrier-content-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P025-L002-246CC44700",
+      "atomId": "ACI-P025-L002-246CC44700",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§1.7.3",
+      "inventoryRecordDigest": "sha256:1b9036a5bbcebd7b68b282c208353f6f48d27741faf801dc958291bcf85427d4",
+      "sourceAnchor": "Result: Note: Languages make extensive use of silently present morphemes in response to the \"principle of linguistic…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:linguistic-economy"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-economy"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-linguistic-economy-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-linguistic-economy-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morpheme-taxonomy:ACI-P025-L002-B46A78D758",
+      "atomId": "ACI-P025-L002-B46A78D758",
+      "obligationType": "condition",
+      "inventoryCategory": "CON",
+      "canvasReference": "§1.7.3",
+      "inventoryRecordDigest": "sha256:c9824b339ab87f8dd5822850a465147a5ae079c996f2a950abfba6d2351c3a73",
+      "sourceAnchor": "Note: Languages make extensive use of silently present morphemes in response to the \"principle of linguistic…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morpheme-taxonomy:default-redundancy-condition"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morpheme-taxonomy:omit-economy"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morpheme-default-redundancy-condition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morpheme-default-redundancy-condition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:morpheme-taxonomy:type-level-terminology",
+      "atomId": "ACI-P024-L006-EB311DD196",
+      "kind": "exact-type-level-morpheme-terminology",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:fa3718d9bab9103756fe7d7e6de98be1a50ea82138cc018bcc687400113c1a40",
+      "predicateId": "morpheme-taxonomy.type-level-terminology",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L006-EB311DD196"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:composite-symbiosis",
+      "atomId": "ACI-P024-L007-9F38DD7282",
+      "kind": "exact-composite-symbiosis",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:78f3a42c422740890da8966803bec2d69ee4e9163e420d51f258e22c8cb7760a",
+      "predicateId": "morpheme-taxonomy.composite-symbiosis",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L007-9F38DD7282"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:carrier-content-formation",
+      "atomId": "ACI-P024-L009-E2B0DA0F5F",
+      "kind": "exact-carrier-content-formation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:86e8cf76c7546cb4a59e5f7524ac6a00251be8d8c6d7ae973003e9d74794d802",
+      "predicateId": "morpheme-taxonomy.carrier-content-formation",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L009-E2B0DA0F5F"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:grapheme-exclusion",
+      "atomId": "ACI-P024-L012-E4BCEAC1D6",
+      "kind": "exact-grapheme-exclusion",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e9f0286821ab736660be753bc764e98c6673f97b903e1b3d172d7b7000f676a6",
+      "predicateId": "morpheme-taxonomy.grapheme-exclusion",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L012-E4BCEAC1D6"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:symbiotic-notation",
+      "atomId": "ACI-P024-L016-0EB898B984",
+      "kind": "exact-symbiotic-notation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:b24489feaa36f9da1501a4ce82c7fe69ae8b74c1b63c4ca1057b59735842b5fd",
+      "predicateId": "morpheme-taxonomy.symbiotic-notation",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L016-0EB898B984"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:space-saving-notation",
+      "atomId": "ACI-P024-L016-FC75A2AB0D",
+      "kind": "exact-space-saving-notation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ee063768baf9e50889863ceb4091a37af53ab4431beb3abd76ccdd8ca4d1550b",
+      "predicateId": "morpheme-taxonomy.space-saving-notation",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L016-FC75A2AB0D"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:carrier-shorthand",
+      "atomId": "ACI-P024-L019-17DD742EB0",
+      "kind": "exact-carrier-shorthand",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e66e5275eabef51709dc0d9053bffbe1a41aab7ebd1e9b507b56a5d2ea72f605",
+      "predicateId": "morpheme-taxonomy.carrier-shorthand",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L019-17DD742EB0"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:carrier-nonconflation",
+      "atomId": "ACI-P024-L020-77C274CB6A",
+      "kind": "exact-carrier-nonconflation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ffe54c43ba12064678e03210096ed4ed49a6ca56528d95a76f7aec31fdd27f17",
+      "predicateId": "morpheme-taxonomy.carrier-nonconflation",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L020-77C274CB6A"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:content-cluster-definition",
+      "atomId": "ACI-P024-L023-6BF471C3F2",
+      "kind": "exact-content-cluster-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:80d2ccd299bac392dbd66227ce1113d00836e7d44d4773b063047a7d7b197b8c",
+      "predicateId": "morpheme-taxonomy.content-cluster-definition",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L023-6BF471C3F2"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:content-cluster-condition",
+      "atomId": "ACI-P024-L023-442014574B",
+      "kind": "exact-content-cluster-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:80d2ccd299bac392dbd66227ce1113d00836e7d44d4773b063047a7d7b197b8c",
+      "predicateId": "morpheme-taxonomy.content-cluster-condition",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L023-442014574B"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:element-cooperation",
+      "atomId": "ACI-P024-L027-D0F34C748F",
+      "kind": "exact-element-cooperation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e3d53f66e1f6ca1e92270ee2d4d61cb4f5863317af01617f17da738b2815f793",
+      "predicateId": "morpheme-taxonomy.element-cooperation",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L027-D0F34C748F"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:three-kind-inventory",
+      "atomId": "ACI-P024-L031-AA30EF2A71",
+      "kind": "exact-three-kind-inventory",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e1cee46443955295465adcccf52f4ea119a989e34a20f59b8cc289c5f081079c",
+      "predicateId": "morpheme-taxonomy.three-kind-inventory",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L031-AA30EF2A71"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:connective-carrier-content",
+      "atomId": "ACI-P024-L032-692BC9BC17",
+      "kind": "exact-connective-carrier-content",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:33408184a6f0dca1beff9edede9ea6df0dd361487e6b08668c46e463ee01600d",
+      "predicateId": "morpheme-taxonomy.connective-carrier-content",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L032-692BC9BC17"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:connective-grammatical-meaning",
+      "atomId": "ACI-P024-L033-F69986D35B",
+      "kind": "exact-connective-grammatical-meaning",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.1",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:eb1f0e47bb52ab843580e8621a97a90cfb6f6c3caff4a7dc91815b3253ba2b64",
+      "predicateId": "morpheme-taxonomy.connective-grammatical-meaning",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L033-F69986D35B"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:ordinary-carrier-content",
+      "atomId": "ACI-P024-L035-4E27B2EC8D",
+      "kind": "exact-ordinary-carrier-content",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:e9d2d9053894f9aed7e27f6173d666ce7494057c95a46a1c0cfe8d4a7fee0092",
+      "predicateId": "morpheme-taxonomy.ordinary-carrier-content",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L035-4E27B2EC8D"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:ordinary-cooccurrence-evidence",
+      "atomId": "ACI-P024-L035-A253CAAFEA",
+      "kind": "exact-ordinary-cooccurrence-evidence",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:38bcc8b3980ab6a2490babf7c36ca0149505842d9b04fda9f8036e49b27fd7c2",
+      "predicateId": "morpheme-taxonomy.ordinary-cooccurrence-evidence",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L035-A253CAAFEA"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:silent-carrier-content",
+      "atomId": "ACI-P024-L038-CED398A575",
+      "kind": "exact-silent-carrier-content",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ba7124194d14a6878fa2e538f1ed9a04f4fd3c9226320f00cb1e0c8f7fe1b1ec",
+      "predicateId": "morpheme-taxonomy.silent-carrier-content",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P024-L038-CED398A575"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:linguistic-economy",
+      "atomId": "ACI-P025-L002-246CC44700",
+      "kind": "exact-linguistic-economy-rule",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2b831a88d2c1954c3bde2195b3c8d197132c7139fe9513fb060f7438d12ee212",
+      "predicateId": "morpheme-taxonomy.linguistic-economy",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P025-L002-246CC44700"
+      ]
+    },
+    {
+      "oracleId": "oracle:morpheme-taxonomy:default-redundancy-condition",
+      "atomId": "ACI-P025-L002-B46A78D758",
+      "kind": "exact-default-redundancy-condition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.7.3",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:2b831a88d2c1954c3bde2195b3c8d197132c7139fe9513fb060f7438d12ee212",
+      "predicateId": "morpheme-taxonomy.default-redundancy-condition",
+      "canvasBindingIds": [
+        "canvas-binding:morpheme-taxonomy:ACI-P025-L002-B46A78D758"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "sourceSelection",
+      "values": [
+        "morpheme",
+        "portmanteau-morpheme",
+        "connective-morpheme",
+        "ordinary-morpheme",
+        "silent-morpheme"
+      ]
+    },
+    {
+      "id": "carrierMode",
+      "values": [
+        "general",
+        "content-cluster",
+        "sound-no-sememic",
+        "sound-meaning",
+        "no-sound-meaning"
+      ]
+    }
+  ],
+  "invalidAssignments": [
+    {
+      "sourceSelection": "morpheme",
+      "carrierMode": [
+        "content-cluster",
+        "sound-no-sememic",
+        "sound-meaning",
+        "no-sound-meaning"
+      ]
+    },
+    {
+      "sourceSelection": "portmanteau-morpheme",
+      "carrierMode": [
+        "general",
+        "sound-no-sememic",
+        "sound-meaning",
+        "no-sound-meaning"
+      ]
+    },
+    {
+      "sourceSelection": "connective-morpheme",
+      "carrierMode": [
+        "general",
+        "content-cluster",
+        "sound-meaning",
+        "no-sound-meaning"
+      ]
+    },
+    {
+      "sourceSelection": "ordinary-morpheme",
+      "carrierMode": [
+        "general",
+        "content-cluster",
+        "sound-no-sememic",
+        "no-sound-meaning"
+      ]
+    },
+    {
+      "sourceSelection": "silent-morpheme",
+      "carrierMode": [
+        "general",
+        "content-cluster",
+        "sound-no-sememic",
+        "sound-meaning"
+      ]
+    }
+  ],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:morpheme-taxonomy:general",
+      "coordinates": {
+        "sourceSelection": "morpheme",
+        "carrierMode": "general"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.7"
+    },
+    {
+      "caseId": "case:morpheme-taxonomy:portmanteau",
+      "coordinates": {
+        "sourceSelection": "portmanteau-morpheme",
+        "carrierMode": "content-cluster"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.7"
+    },
+    {
+      "caseId": "case:morpheme-taxonomy:connective",
+      "coordinates": {
+        "sourceSelection": "connective-morpheme",
+        "carrierMode": "sound-no-sememic"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.7.1"
+    },
+    {
+      "caseId": "case:morpheme-taxonomy:ordinary",
+      "coordinates": {
+        "sourceSelection": "ordinary-morpheme",
+        "carrierMode": "sound-meaning"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.7.2"
+    },
+    {
+      "caseId": "case:morpheme-taxonomy:silent",
+      "coordinates": {
+        "sourceSelection": "silent-morpheme",
+        "carrierMode": "no-sound-meaning"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.7.3"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "morpheme-taxonomy.full-source.v1",
+    "minimumUniqueSources": 5,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "sourceSelection": "morpheme",
+          "carrierMode": "general"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sourceSelection": "portmanteau-morpheme",
+          "carrierMode": "content-cluster"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sourceSelection": "connective-morpheme",
+          "carrierMode": "sound-no-sememic"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sourceSelection": "ordinary-morpheme",
+          "carrierMode": "sound-meaning"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "sourceSelection": "silent-morpheme",
+          "carrierMode": "no-sound-meaning"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:morpheme-taxonomy:carrier-nonconflation",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:morpheme-taxonomy:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P024-L006-EB311DD196"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-composite",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L007-9F38DD7282"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:detach-carrier-content",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P024-L009-E2B0DA0F5F"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:admit-grapheme-carrier",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P024-L012-E4BCEAC1D6"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-notation",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L016-0EB898B984",
+          "ACI-P024-L016-FC75A2AB0D"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:authorize-carrier-alone",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P024-L019-17DD742EB0",
+          "ACI-P024-L020-77C274CB6A"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-portmanteau",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L023-6BF471C3F2",
+          "ACI-P024-L023-442014574B"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-cooperation",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L027-D0F34C748F"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-inventory",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L031-AA30EF2A71"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:connective-add-sememe",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L032-692BC9BC17",
+          "ACI-P024-L033-F69986D35B"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:ordinary-drop-meaning",
+        "category": "output",
+        "atomIds": [
+          "ACI-P024-L035-4E27B2EC8D",
+          "ACI-P024-L035-A253CAAFEA"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:silent-add-sound",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P024-L038-CED398A575"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:omit-economy",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P025-L002-246CC44700",
+          "ACI-P025-L002-B46A78D758"
+        ]
+      },
+      {
+        "mutationId": "mutation:morpheme-taxonomy:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P024-L006-EB311DD196",
+          "ACI-P024-L007-9F38DD7282",
+          "ACI-P024-L009-E2B0DA0F5F",
+          "ACI-P024-L012-E4BCEAC1D6",
+          "ACI-P024-L016-0EB898B984",
+          "ACI-P024-L016-FC75A2AB0D",
+          "ACI-P024-L019-17DD742EB0",
+          "ACI-P024-L020-77C274CB6A",
+          "ACI-P024-L023-6BF471C3F2",
+          "ACI-P024-L023-442014574B",
+          "ACI-P024-L027-D0F34C748F",
+          "ACI-P024-L031-AA30EF2A71",
+          "ACI-P024-L032-692BC9BC17",
+          "ACI-P024-L033-F69986D35B",
+          "ACI-P024-L035-4E27B2EC8D",
+          "ACI-P024-L035-A253CAAFEA",
+          "ACI-P024-L038-CED398A575",
+          "ACI-P025-L002-246CC44700",
+          "ACI-P025-L002-B46A78D758"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "The section defines taxonomy and conditions but states no exception to morpheme identity.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morpheme-taxonomy:three-kind-inventory"
+      },
+      {
+        "category": "valence",
+        "reason": "Read-only morpheme taxonomy neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morpheme-taxonomy:type-level-terminology"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Carrier-content classification does not assign morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morpheme-taxonomy:carrier-content-formation"
+      }
+    ]
+  },
+  "randomSeed": "morpheme-taxonomy.full-source.v1"
+}

@@ -1,0 +1,502 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "morph-token-classification",
+  "operationId": "classical.morpheme.morph.token.classify",
+  "indexEntryIds": [
+    "IDX-0629",
+    "IDX-0630"
+  ],
+  "atomIds": [
+    "ACI-P026-L002-51DF5FD7F0",
+    "ACI-P026-L002-B7D69FA11C",
+    "ACI-P026-L004-8066DAB08F",
+    "ACI-P026-L005-633552FA43"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:morph-token-classification:regularity-adds-exception",
+      "fromAtomId": "ACI-P026-L002-B7D69FA11C",
+      "toAtomId": "ACI-P026-L002-51DF5FD7F0",
+      "relationType": "adds-exception",
+      "basis": "Regular and irregular morphs are alternatives within the token-level representation class while their morphemic meaning remains constant.",
+      "discriminatingCaseIds": [
+        "case:morph-token-classification:regularity"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morph-token-classification:notation-adds-condition",
+      "fromAtomId": "ACI-P026-L004-8066DAB08F",
+      "toAtomId": "ACI-P026-L002-51DF5FD7F0",
+      "relationType": "adds-condition",
+      "basis": "Regular-morph notation depends on the separately established notation for the type-level morpheme.",
+      "discriminatingCaseIds": [
+        "case:morph-token-classification:notation"
+      ]
+    },
+    {
+      "relationId": "atom-relation:morph-token-classification:brackets-add-realization",
+      "fromAtomId": "ACI-P026-L005-633552FA43",
+      "toAtomId": "ACI-P026-L004-8066DAB08F",
+      "relationType": "adds-realization",
+      "basis": "Square brackets document the morphic carrier in place of morpheme slashes without supplying a Source or generating a written surface.",
+      "discriminatingCaseIds": [
+        "case:morph-token-classification:notation"
+      ]
+    }
+  ],
+  "contractBoundary": {
+    "inputAuthority": "owner-issued-typed-morph-token-source",
+    "suppliedFacts": [
+      "domain",
+      "selection",
+      "assertedClassification"
+    ],
+    "validatedHere": [
+      "morph token-level representation of a morpheme",
+      "regular or irregular morph alternatives with constant meaning",
+      "regular-morph notation dependency on morpheme notation",
+      "square-bracket notation around the morphic carrier"
+    ],
+    "validatedElsewhere": [
+      "type-level morpheme identity and taxonomy",
+      "phonic and sigic token classification",
+      "phonological versus morphological conditioning",
+      "environment selection and contextual allomorph application",
+      "Classical word and clause generation"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:morph-token-classification:definition",
+      "atomId": "ACI-P026-L002-51DF5FD7F0",
+      "kind": "exact-morph-token-definition",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:3437f2b6ff30ad5ec216b13d40643d867a455ad1ac4ee5a91ec01992e7fd6918",
+      "predicateId": "morph-token-classification.definition",
+      "canvasBindingIds": [
+        "canvas-binding:morph-token-classification:ACI-P026-L002-51DF5FD7F0"
+      ]
+    },
+    {
+      "oracleId": "oracle:morph-token-classification:regularity",
+      "atomId": "ACI-P026-L002-B7D69FA11C",
+      "kind": "exact-regular-irregular-morph-alternative",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:dae692b31e863134c37056cebe95d6f50c21d5a3706b26c9eec3eed7f19aa4d4",
+      "predicateId": "morph-token-classification.regularity",
+      "canvasBindingIds": [
+        "canvas-binding:morph-token-classification:ACI-P026-L002-B7D69FA11C"
+      ]
+    },
+    {
+      "oracleId": "oracle:morph-token-classification:notation-dependency",
+      "atomId": "ACI-P026-L004-8066DAB08F",
+      "kind": "exact-morph-notation-dependency",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:8c3bf477a4025edb49af1e9acb46e09cca683237bacbbd5272da77840f5022e4",
+      "predicateId": "morph-token-classification.notation-dependency",
+      "canvasBindingIds": [
+        "canvas-binding:morph-token-classification:ACI-P026-L004-8066DAB08F"
+      ]
+    },
+    {
+      "oracleId": "oracle:morph-token-classification:square-brackets",
+      "atomId": "ACI-P026-L005-633552FA43",
+      "kind": "exact-morph-square-bracket-notation",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§1.8.5",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:d26110e8e2e4bb18334afa40283103499ab3f3dac19b9340c3576f5eb70129e4",
+      "predicateId": "morph-token-classification.square-brackets",
+      "canvasBindingIds": [
+        "canvas-binding:morph-token-classification:ACI-P026-L005-633552FA43"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "morphFacet",
+      "values": [
+        "identity",
+        "regularity",
+        "notation"
+      ]
+    },
+    {
+      "id": "sourceDomain",
+      "values": [
+        "morpheme"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": []
+  },
+  "validationCases": [
+    {
+      "caseId": "case:morph-token-classification:identity",
+      "coordinates": {
+        "morphFacet": "identity",
+        "sourceDomain": "morpheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.5"
+    },
+    {
+      "caseId": "case:morph-token-classification:regularity",
+      "coordinates": {
+        "morphFacet": "regularity",
+        "sourceDomain": "morpheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.5"
+    },
+    {
+      "caseId": "case:morph-token-classification:notation",
+      "coordinates": {
+        "morphFacet": "notation",
+        "sourceDomain": "morpheme"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-section-1.8.5"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "morph-token-classification.full-source.v1",
+    "minimumUniqueSources": 3,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "morphFacet": "identity",
+          "sourceDomain": "morpheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "morphFacet": "regularity",
+          "sourceDomain": "morpheme"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "morphFacet": "notation",
+          "sourceDomain": "morpheme"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:morph-token-classification:definition",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:morph-token-classification:wrong-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L002-51DF5FD7F0"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:omit-definition",
+        "category": "output",
+        "atomIds": [
+          "ACI-P026-L002-51DF5FD7F0"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:omit-regularity",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P026-L002-B7D69FA11C"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:allow-meaning-change",
+        "category": "exception",
+        "atomIds": [
+          "ACI-P026-L002-B7D69FA11C"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:remove-notation-dependency",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L004-8066DAB08F"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:use-slash-notation",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P026-L005-633552FA43"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:make-brackets-authoritative",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P026-L004-8066DAB08F",
+          "ACI-P026-L005-633552FA43"
+        ]
+      },
+      {
+        "mutationId": "mutation:morph-token-classification:trace-order-inversion",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P026-L002-51DF5FD7F0",
+          "ACI-P026-L002-B7D69FA11C",
+          "ACI-P026-L004-8066DAB08F",
+          "ACI-P026-L005-633552FA43"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "valence",
+        "reason": "Read-only morph-token classification neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-token-classification:definition"
+      },
+      {
+        "category": "object-ownership",
+        "reason": "Morph tokens and their type-level morpheme correspondents are not morphosyntactic object slots.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:morph-token-classification:definition"
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:morph-token-classification:ACI-P026-L002-51DF5FD7F0",
+      "atomId": "ACI-P026-L002-51DF5FD7F0",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§1.8.5",
+      "inventoryRecordDigest": "sha256:2d1c18b7be0fbd194651b4a0f6b137798c1f13984a195d920a11976c11492513",
+      "sourceAnchor": "A morph is a token-level representation of a morpheme.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morph-token-classification:definition"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "morphFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "morphFacet",
+              "sourceDomain"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morph-token-classification:wrong-domain",
+            "mutation:morph-token-classification:omit-definition",
+            "mutation:morph-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morph-token-definition-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-token-definition-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morph-token-classification:ACI-P026-L002-B7D69FA11C",
+      "atomId": "ACI-P026-L002-B7D69FA11C",
+      "obligationType": "exception",
+      "inventoryCategory": "ALT",
+      "canvasReference": "§1.8.5",
+      "inventoryRecordDigest": "sha256:3ac0baa8de979022db05c7697b70a0ac1f5ddc759d727f3ced86b21f4aa8f861",
+      "sourceAnchor": "A morph may be regular or irregular.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morph-token-classification:regularity"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "morphFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morph-token-classification:omit-regularity",
+            "mutation:morph-token-classification:allow-meaning-change",
+            "mutation:morph-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morph-regular-irregular-alternative-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-regular-irregular-alternative-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morph-token-classification:ACI-P026-L004-8066DAB08F",
+      "atomId": "ACI-P026-L004-8066DAB08F",
+      "obligationType": "dependency",
+      "inventoryCategory": "DEP",
+      "canvasReference": "§1.8.5",
+      "inventoryRecordDigest": "sha256:80ac7bc9ec2b659dc1441bfdccd381ef89f119c95e813ae0713129baf0ca7763",
+      "sourceAnchor": "The notation representing a regular morph should follow that chosen for a morpheme (see § 1.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morph-token-classification:notation-dependency"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "morphFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morph-token-classification:remove-notation-dependency",
+            "mutation:morph-token-classification:make-brackets-authoritative",
+            "mutation:morph-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morph-notation-dependency-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-notation-dependency-validated"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:morph-token-classification:ACI-P026-L005-633552FA43",
+      "atomId": "ACI-P026-L005-633552FA43",
+      "obligationType": "realization",
+      "inventoryCategory": "REA",
+      "canvasReference": "§1.8.5",
+      "inventoryRecordDigest": "sha256:859e6ac5e6988fb55f6f8ed78c2f634a2c54df2497dd45cf5c2f050ca1d47bab",
+      "sourceAnchor": "7), simply replacing the slashes with square brackets around the morphic carrier.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:morph-token-classification:square-brackets"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "morphFacet",
+            "sourceDomain"
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:morph-token-classification:use-slash-notation",
+            "mutation:morph-token-classification:make-brackets-authoritative",
+            "mutation:morph-token-classification:trace-order-inversion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "morph-square-bracket-notation-validated"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "morph-square-bracket-notation-validated"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "randomSeed": "morph-token-classification.full-source.v1"
+}

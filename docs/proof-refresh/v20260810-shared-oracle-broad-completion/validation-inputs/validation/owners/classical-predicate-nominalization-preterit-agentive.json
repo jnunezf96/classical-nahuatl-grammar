@@ -1,0 +1,1433 @@
+{
+  "schemaVersion": 1,
+  "protocolVersion": "1.5.0",
+  "ownerId": "classical-predicate-nominalization-preterit-agentive",
+  "operationId": "classical.predicate.nominalization.preterit.agentive.execute",
+  "indexEntryIds": [
+    "IDX-0276",
+    "IDX-0834",
+    "IDX-1227"
+  ],
+  "atomIds": [
+    "ACI-P334-L010-E1662A9EBD",
+    "ACI-P334-L012-E882A1A0A4",
+    "ACI-P334-L016-5FA32D84DF",
+    "ACI-P334-L017-1A13076110",
+    "ACI-P334-L017-F7B2BB0008",
+    "ACI-P334-L018-DBD81A202F",
+    "ACI-P334-L019-564C5B2516",
+    "ACI-P334-L019-FCBA253D41"
+  ],
+  "atomRelations": [
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:1",
+      "fromAtomId": "ACI-P334-L012-E882A1A0A4",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3362:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:2",
+      "fromAtomId": "ACI-P334-L016-5FA32D84DF",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3363:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:3",
+      "fromAtomId": "ACI-P334-L017-1A13076110",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3364:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:4",
+      "fromAtomId": "ACI-P334-L017-F7B2BB0008",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3365:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:5",
+      "fromAtomId": "ACI-P334-L018-DBD81A202F",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3366:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:6",
+      "fromAtomId": "ACI-P334-L019-564C5B2516",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3367:sourceAuthority-owner-issued-source"
+      ]
+    },
+    {
+      "relationId": "atom-relation:classical-predicate-nominalization-preterit-agentive:7",
+      "fromAtomId": "ACI-P334-L019-FCBA253D41",
+      "toAtomId": "ACI-P334-L010-E1662A9EBD",
+      "relationType": "refines",
+      "basis": "This atom supplies a distinct Canvas-bound semantic facet within the same precise owner and receives its own live coordinate and receipt.",
+      "discriminatingCaseIds": [
+        "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3368:sourceAuthority-owner-issued-source"
+      ]
+    }
+  ],
+  "proofRecordCompilation": {
+    "compilerVersion": 2,
+    "declarationPath": "validation/declarations/lessons35-36/classical-predicate-nominalization-preterit-agentive.json",
+    "declarationDigest": "sha256:b14c0f44113ec9897475ffba5a650627172b04a12f1ac81cddcd6460e12419ac",
+    "proofRecordAddress": "sha256:d886729bdb15762effa8a21cf5708a15a761d9578487703e8630afe3d0a1ab99",
+    "liveExecutionRequiredForMigration": true,
+    "routeStepsGeneratedByCompiler": false
+  },
+  "contractBoundary": {
+    "inputAuthority": "owner-issued typed classical-predicate-nominalization-preterit-agentive coordinates",
+    "suppliedFacts": [
+      "analysisDomain",
+      "selection",
+      "requestedFacet",
+      "participantChoice"
+    ],
+    "validatedHere": [
+      "classical-predicate-nominalization-preterit-agentive:p3361-the-stem-of-any-kind-of-agentive-nnc-names",
+      "classical-predicate-nominalization-preterit-agentive:p3362-the-most-common-kind-of-agentive-nnc-is-the",
+      "classical-predicate-nominalization-preterit-agentive:p3363-like-all-nounstems-a-preterit-agentive-nounstem-has-two",
+      "classical-predicate-nominalization-preterit-agentive:p3364-the-general-use-stem-is-a-compound-that-uses",
+      "classical-predicate-nominalization-preterit-agentive:p3365-the-restricted-use-stem-is-simply-the-predicate-of",
+      "classical-predicate-nominalization-preterit-agentive:p3366-the-restricted-use-stem-is-used-in-absolutive-state",
+      "classical-predicate-nominalization-preterit-agentive:p3367-the-restricted-use-stem-is-discussed-first",
+      "classical-predicate-nominalization-preterit-agentive:p3368-the-general-use-stem-is-used-everywhere-else"
+    ],
+    "validatedElsewhere": [
+      "other semantic owners",
+      "lesson metadata",
+      "stored examples and answers"
+    ]
+  },
+  "oracleObligations": [
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:semantic",
+      "atomId": "ACI-P334-L010-E1662A9EBD",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:339b054cd37eb536d931abe507d556d82e0a82d95ba08e435839247418a8bad0",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:guard",
+      "atomId": "ACI-P334-L010-E1662A9EBD",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:339b054cd37eb536d931abe507d556d82e0a82d95ba08e435839247418a8bad0",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4:semantic",
+      "atomId": "ACI-P334-L012-E882A1A0A4",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ea8d0a1a63ddb03f22b5d860be618b146a18945fb344a70e66d4cf83e6a92d13",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4:guard",
+      "atomId": "ACI-P334-L012-E882A1A0A4",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:ea8d0a1a63ddb03f22b5d860be618b146a18945fb344a70e66d4cf83e6a92d13",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF:semantic",
+      "atomId": "ACI-P334-L016-5FA32D84DF",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:bb3292d900678a76e98fd7b80d9425253ab8e3c77119b07f4553f0c2031d35f8",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF:guard",
+      "atomId": "ACI-P334-L016-5FA32D84DF",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:bb3292d900678a76e98fd7b80d9425253ab8e3c77119b07f4553f0c2031d35f8",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110:semantic",
+      "atomId": "ACI-P334-L017-1A13076110",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9f09a3200606d01fece0208d93ae92df3ddbcdc43a2f38ac4204c03e8bb64fa5",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110:guard",
+      "atomId": "ACI-P334-L017-1A13076110",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9f09a3200606d01fece0208d93ae92df3ddbcdc43a2f38ac4204c03e8bb64fa5",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008:semantic",
+      "atomId": "ACI-P334-L017-F7B2BB0008",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:a10a57d5d29d7b847dcf10802d1e997cd4d5db9a6246ec32a24bdb7229c71a0b",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008:guard",
+      "atomId": "ACI-P334-L017-F7B2BB0008",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:a10a57d5d29d7b847dcf10802d1e997cd4d5db9a6246ec32a24bdb7229c71a0b",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F:semantic",
+      "atomId": "ACI-P334-L018-DBD81A202F",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f0787445b93d262357442344a92d16225ce1455e326be7702d2743b2198151ed",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F:guard",
+      "atomId": "ACI-P334-L018-DBD81A202F",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:f0787445b93d262357442344a92d16225ce1455e326be7702d2743b2198151ed",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516:semantic",
+      "atomId": "ACI-P334-L019-564C5B2516",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9609aa96d7d5c029969912ade857f1677ad2738c65fcd3bd5d2662621cf4eec8",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516:guard",
+      "atomId": "ACI-P334-L019-564C5B2516",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:9609aa96d7d5c029969912ade857f1677ad2738c65fcd3bd5d2662621cf4eec8",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41:semantic",
+      "atomId": "ACI-P334-L019-FCBA253D41",
+      "kind": "canvas-bound-semantic-claim",
+      "role": "semantic-output",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:db589f62643b2d3e6638a1bf7587d15c44638f5365de121c2b14940ec6d77d17",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.semantic",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41"
+      ]
+    },
+    {
+      "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41:guard",
+      "atomId": "ACI-P334-L019-FCBA253D41",
+      "kind": "typed-owner-and-source-authority-boundary",
+      "role": "domain-guard",
+      "source": "canvas",
+      "canvasReference": "§35.2",
+      "independentOfImplementation": true,
+      "claimDigest": "sha256:db589f62643b2d3e6638a1bf7587d15c44638f5365de121c2b14940ec6d77d17",
+      "predicateId": "classical-predicate-nominalization-preterit-agentive.guard",
+      "canvasBindingIds": [
+        "canvas-binding:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41"
+      ]
+    }
+  ],
+  "factors": [
+    {
+      "id": "scenario",
+      "values": [
+        "claim-3361",
+        "claim-3362",
+        "claim-3363",
+        "claim-3364",
+        "claim-3365",
+        "claim-3366",
+        "claim-3367",
+        "claim-3368",
+        "wrong-coordinate"
+      ]
+    },
+    {
+      "id": "sourceAuthority",
+      "values": [
+        "owner-issued-source",
+        "copied-source",
+        "raw-labels"
+      ]
+    }
+  ],
+  "invalidAssignments": [],
+  "coverage": {
+    "mode": "combinatorial",
+    "defaultStrength": 2,
+    "explicitInteractions": [
+      [
+        "scenario",
+        "sourceAuthority"
+      ]
+    ]
+  },
+  "validationCases": [
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3361:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3361",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3362:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3362",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3363:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3363",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3364:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3364",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3365:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3365",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3366:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3366",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3367:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3367",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3368:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "claim-3368",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "sourced-positive",
+      "origin": "canvas-direct-typed-coordinate"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3361:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3361",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3361:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3361",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3362:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3362",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3362:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3362",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3363:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3363",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3363:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3363",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3364:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3364",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3364:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3364",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3365:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3365",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3365:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3365",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3366:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3366",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3366:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3366",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3367:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3367",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3367:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3367",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3368:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "claim-3368",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-claim-3368:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "claim-3368",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-wrong-coordinate:sourceAuthority-copied-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "copied-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-wrong-coordinate:sourceAuthority-raw-labels",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "raw-labels"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    },
+    {
+      "caseId": "case:classical-predicate-nominalization-preterit-agentive:scenario-wrong-coordinate:sourceAuthority-owner-issued-source",
+      "coordinates": {
+        "scenario": "wrong-coordinate",
+        "sourceAuthority": "owner-issued-source"
+      },
+      "stratum": "boundary",
+      "origin": "full-factor-grid-boundary"
+    }
+  ],
+  "requiredEvidenceStrata": [
+    "sourced-positive",
+    "boundary"
+  ],
+  "sourceSampling": {
+    "applicable": true,
+    "strategy": "targeted-deterministic-stratified",
+    "poolId": "classical-predicate-nominalization-preterit-agentive.full-source.v1",
+    "minimumUniqueSources": 27,
+    "requiredStrata": [
+      {
+        "coordinates": {
+          "scenario": "claim-3361",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3362",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3363",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3364",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3365",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3366",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3367",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      },
+      {
+        "coordinates": {
+          "scenario": "claim-3368",
+          "sourceAuthority": "owner-issued-source"
+        },
+        "minimumUniqueSources": 1
+      }
+    ]
+  },
+  "sourceObligations": [
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD",
+      "atomId": "ACI-P334-L010-E1662A9EBD",
+      "obligationType": "definition",
+      "inventoryCategory": "DEF",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:1cc030d9ad1eed6e3d4782a82d11cccbbd2827f63ffdb171c558051674bac1cf",
+      "sourceAnchor": "The stem of any kind of agentive NNC names the agent of an action (compare the English agentives \"preacher,\" i.e., one who preach…",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3361-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3361-the-stem-of-any-kind-of-agentive-nnc-names-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4",
+      "atomId": "ACI-P334-L012-E882A1A0A4",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:bfab14cadf35dc4c15128595298d7df5a099e257e7dad9db4d4265715db04a96",
+      "sourceAnchor": "The most common kind of agentive NNC is the preterit-agentive NNC.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L012-E882A1A0A4:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3362-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3362-the-most-common-kind-of-agentive-nnc-is-the-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF",
+      "atomId": "ACI-P334-L016-5FA32D84DF",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:40b5aea69a77bef0a3420ff7beaf22c3933d30648d95ac214a5c91e2b604c800",
+      "sourceAnchor": "Like all nounstems, a preterit-agentive nounstem has two shapes-restricted use and general use.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L016-5FA32D84DF:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3363-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3363-like-all-nounstems-a-preterit-agentive-nounstem-has-two-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110",
+      "atomId": "ACI-P334-L017-1A13076110",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:0f3e8f9de498006c560add2df33d8d7a3a034f1649c0312f10330bf6e0cbc9ba",
+      "sourceAnchor": "The general- use stem is a compound that uses the restricted-use stem as its embed.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-1A13076110:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3364-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3364-the-general-use-stem-is-a-compound-that-uses-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008",
+      "atomId": "ACI-P334-L017-F7B2BB0008",
+      "obligationType": "rule",
+      "inventoryCategory": "RUL",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:54de76cbda31207f6801a2566b977e680e0d933737a36d12aea5f391b68547ba",
+      "sourceAnchor": "The restricted-use stem is simply the predicate of a preterit-tense VNC.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L017-F7B2BB0008:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3365-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3365-the-restricted-use-stem-is-simply-the-predicate-of-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F",
+      "atomId": "ACI-P334-L018-DBD81A202F",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:487b30583018a4fce0804b54bc16321ac1bd74bd11ec577133a4aaeeb73b2113",
+      "sourceAnchor": "The restricted-use stem is used in absolutive-state NNCs.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L018-DBD81A202F:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3366-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3366-the-restricted-use-stem-is-used-in-absolutive-state-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516",
+      "atomId": "ACI-P334-L019-564C5B2516",
+      "obligationType": "dependency",
+      "inventoryCategory": "DEP",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:3bb7248997222ca5bec7c9ce01da1fed66b77edae459f4869a458b49353c05f8",
+      "sourceAnchor": "The restricted-use stem is discussed first.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-564C5B2516:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3367-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3367-the-restricted-use-stem-is-discussed-first-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "obligationId": "obligation:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41",
+      "atomId": "ACI-P334-L019-FCBA253D41",
+      "obligationType": "usage",
+      "inventoryCategory": "USE",
+      "canvasReference": "§35.2",
+      "inventoryRecordDigest": "sha256:dd68d959d81403e13dc9fb079a9db38f5129cd9f0111766103786c73f169c2b6",
+      "sourceAnchor": "The general-use stem is used everywhere else.",
+      "bindings": [
+        {
+          "deviceType": "semantic-output-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41:semantic"
+          ]
+        },
+        {
+          "deviceType": "domain-guard-oracle",
+          "deviceIds": [
+            "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L019-FCBA253D41:guard"
+          ]
+        },
+        {
+          "deviceType": "factor",
+          "deviceIds": [
+            "scenario",
+            "sourceAuthority"
+          ]
+        },
+        {
+          "deviceType": "interaction",
+          "factorSets": [
+            [
+              "scenario",
+              "sourceAuthority"
+            ]
+          ]
+        },
+        {
+          "deviceType": "mutation-operator",
+          "deviceIds": [
+            "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+            "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+            "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3368-assertion"
+          ]
+        },
+        {
+          "deviceType": "route-contribution",
+          "receiptKinds": {
+            "execution": {
+              "matchMode": "all",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-p3368-the-general-use-stem-is-used-everywhere-else-checkpoint",
+                "classical-predicate-nominalization-preterit-agentive-executed"
+              ]
+            },
+            "domain-guard": {
+              "matchMode": "any",
+              "stepIds": [
+                "classical-predicate-nominalization-preterit-agentive-rejected"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "metamorphic": {
+    "applicable": false,
+    "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:semantic",
+    "relations": []
+  },
+  "mutations": {
+    "applicable": true,
+    "operators": [
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:trust-copied-source",
+        "category": "boundary",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:wrong-analysis-domain",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:wrong-owner-identity",
+        "category": "object-ownership",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:wrong-operation-identity",
+        "category": "ordering",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:accept-unlicensed-coordinate",
+        "category": "condition",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-first-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-canonical-facet-value",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD",
+          "ACI-P334-L012-E882A1A0A4",
+          "ACI-P334-L016-5FA32D84DF",
+          "ACI-P334-L017-1A13076110",
+          "ACI-P334-L017-F7B2BB0008",
+          "ACI-P334-L018-DBD81A202F",
+          "ACI-P334-L019-564C5B2516",
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3361-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L010-E1662A9EBD"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3362-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L012-E882A1A0A4"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3363-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L016-5FA32D84DF"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3364-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L017-1A13076110"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3365-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L017-F7B2BB0008"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3366-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L018-DBD81A202F"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3367-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L019-564C5B2516"
+        ]
+      },
+      {
+        "mutationId": "mutation:classical-predicate-nominalization-preterit-agentive:corrupt-claim-3368-assertion",
+        "category": "output",
+        "atomIds": [
+          "ACI-P334-L019-FCBA253D41"
+        ]
+      }
+    ],
+    "categoryExemptions": [
+      {
+        "category": "exception",
+        "reason": "No contextual exception is owned by this exact semantic contract.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:semantic"
+      },
+      {
+        "category": "valence",
+        "reason": "This phonological or transcription owner neither assigns nor changes verbal valence.",
+        "independentlyReviewed": true,
+        "oracleId": "oracle:classical-predicate-nominalization-preterit-agentive:ACI-P334-L010-E1662A9EBD:semantic"
+      }
+    ]
+  },
+  "randomSeed": "classical-predicate-nominalization-preterit-agentive.deterministic.v1"
+}
