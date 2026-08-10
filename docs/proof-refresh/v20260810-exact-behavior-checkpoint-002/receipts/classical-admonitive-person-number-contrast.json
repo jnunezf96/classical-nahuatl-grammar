@@ -1,0 +1,386 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-002",
+  "ownerId": "classical-admonitive-person-number-contrast",
+  "dependencyFingerprint": "sha256:8184a8665b22ca78b19e78ac6b04c28bc73e4e09a51b468aafc656a2cbafc240",
+  "dependencyDigests": {
+    "ANDREWS_TRANSCRIPTION_CANVAS.md": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
+    "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
+    "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json": "sha256:4685feaf32c5fe34eaed6b5c0b647a9a9eec86f50f7a65cb8b9616037db7c54f",
+    "src/node/runtime.mjs": "sha256:ccf2284534428af482e2c286518c03c6104b2298b7ac6e70de7f75356f7958ad",
+    "src/core/classical/nuclear_clause_semantic_operations.mjs": "sha256:09b011777c8958889cac4432a85b046f3a979e33c89ed3e3e91d22d64e5617f9",
+    "src/core/classical/vnc_semantic_operations.mjs": "sha256:6a39340a1bffd5418d5284a67892fc7d1f92773e565ec7f51e86aecc72d5d7bd",
+    "src/core/classical/nonactive_voice_object_validation_semantic_operations.mjs": "sha256:a36edf7e9e8ed1cfc99b2e9ded41c93b342507602020b4014a07eb7c40af2234",
+    "src/core/classical/vnc_applicative_validation_semantic_operations.mjs": "sha256:cbf71dee96b6909dc86cb9845cd74e01dbd73b82c5f8ec96e089b6d38296c63a",
+    "src/core/classical/nnc_lessons12_13_semantic_operations.mjs": "sha256:e1ff55b3683579656ce2a8a66998779982e92301baba8c31dbf55e793b730954"
+  },
+  "resultDigest": "sha256:815cc66076fb32e7a551e6dab3ab555605625d8097c585087c4392f195e2b656",
+  "observations": [
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nitzahtzic",
+      "actual": "nitzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular preterit indicative is nitzahtzic.",
+      "mutation": {
+        "replacement": "nitzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-02",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-02",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nitzahtzih",
+      "actual": "mā nitzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular nonpast admonitive is mā nitzahtzih.",
+      "mutation": {
+        "replacement": "mā nitzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-03",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-03",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nitzahtzi",
+      "actual": "mā nitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular nonpast optative is mā nitzahtzi.",
+      "mutation": {
+        "replacement": "mā nitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-04",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-04",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nitzahtzi",
+      "actual": "nitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular present indicative is nitzahtzi.",
+      "mutation": {
+        "replacement": "nitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-05",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-05",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzic",
+      "actual": "titzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular preterit indicative is titzahtzic.",
+      "mutation": {
+        "replacement": "titzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-06",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-06",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzih",
+      "actual": "mā titzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular nonpast admonitive is mā titzahtzih.",
+      "mutation": {
+        "replacement": "mā titzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-07",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-07",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xitzahtzi",
+      "actual": "mā xitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular nonpast optative is mā xitzahtzi.",
+      "mutation": {
+        "replacement": "mā xitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-08",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-08",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzi",
+      "actual": "titzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular present indicative is titzahtzi.",
+      "mutation": {
+        "replacement": "titzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-09",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-09",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzic",
+      "actual": "tzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular preterit indicative is tzahtzic.",
+      "mutation": {
+        "replacement": "tzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-10",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-10",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzih",
+      "actual": "mā tzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular nonpast admonitive is mā tzahtzih.",
+      "mutation": {
+        "replacement": "mā tzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-11",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-11",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzi",
+      "actual": "mā tzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular nonpast optative is mā tzahtzi.",
+      "mutation": {
+        "replacement": "mā tzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-12",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-12",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzi",
+      "actual": "tzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular present indicative is tzahtzi.",
+      "mutation": {
+        "replacement": "tzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-13",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-13",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtziqueh",
+      "actual": "titzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural preterit indicative is titzahtziqueh.",
+      "mutation": {
+        "replacement": "titzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-14",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-14",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzihtin",
+      "actual": "mā titzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural nonpast admonitive is mā titzahtzihtin.",
+      "mutation": {
+        "replacement": "mā titzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-15",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-15",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzicān",
+      "actual": "mā titzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural nonpast optative is mā titzahtzicān.",
+      "mutation": {
+        "replacement": "mā titzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-16",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-16",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzih",
+      "actual": "titzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural present indicative is titzahtzih.",
+      "mutation": {
+        "replacement": "titzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-17",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-17",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "antzahtziqueh",
+      "actual": "antzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural preterit indicative is antzahtziqueh.",
+      "mutation": {
+        "replacement": "antzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-18",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-18",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā antzahtzihtin",
+      "actual": "mā antzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural nonpast admonitive is mā antzahtzihtin.",
+      "mutation": {
+        "replacement": "mā antzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-19",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-19",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xitzahtzicān",
+      "actual": "mā xitzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural nonpast optative is mā xitzahtzicān.",
+      "mutation": {
+        "replacement": "mā xitzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-20",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-20",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "antzahtzih",
+      "actual": "antzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural present indicative is antzahtzih.",
+      "mutation": {
+        "replacement": "antzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-21",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-21",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtziqueh",
+      "actual": "tzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural preterit indicative is tzahtziqueh.",
+      "mutation": {
+        "replacement": "tzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-22",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-22",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzihtin",
+      "actual": "mā tzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural nonpast admonitive is mā tzahtzihtin.",
+      "mutation": {
+        "replacement": "mā tzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-23",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-23",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzicān",
+      "actual": "mā tzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural nonpast optative is mā tzahtzicān.",
+      "mutation": {
+        "replacement": "mā tzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-24",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-24",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzih",
+      "actual": "tzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural present indicative is tzahtzih.",
+      "mutation": {
+        "replacement": "tzahtzih-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 24,
+    "passed": 24,
+    "failed": 0,
+    "mutationsRejected": 24
+  }
+}

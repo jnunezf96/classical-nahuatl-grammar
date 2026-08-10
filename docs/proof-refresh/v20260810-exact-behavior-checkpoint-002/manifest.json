@@ -1,0 +1,1626 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-002",
+  "status": "validated",
+  "baseProgressCommit": "b97b25c2db230d97a73cef78a8336fc093084b8c",
+  "previousActiveManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
+  "baseProofCorpusRetained": true,
+  "dependencyFingerprint": "sha256:8184a8665b22ca78b19e78ac6b04c28bc73e4e09a51b468aafc656a2cbafc240",
+  "checkpointCounts": {
+    "owners": 23,
+    "newlyExactlyObserved": 96,
+    "failed": 0,
+    "mutationsRejected": 96,
+    "linguisticConflicts": 1
+  },
+  "counts": {
+    "owners": 24,
+    "atoms": 97,
+    "exactlyObserved": 97,
+    "failed": 0
+  },
+  "receipts": [
+    {
+      "ownerId": "classical-directional-prefix-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-batch-001/receipts/classical-directional-prefix-formation.json",
+      "digest": "sha256:7762369fd7c5c8b3d1949000ac8748f1dcdf3d2b691e2e18ef87ecc55ef6e563"
+    },
+    {
+      "ownerId": "classical-absolutive-singular-connector-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-absolutive-singular-connector-formation.json",
+      "digest": "sha256:23c6d332a4552f2e7c7f2b8fab54187d36d6a5ddb54370de8b559131ab58326c"
+    },
+    {
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-admonitive-antecessive-contrast-analysis.json",
+      "digest": "sha256:49c610091c63dfc261cb350ee68d08be475c6e88709bc6bea05467472700534f"
+    },
+    {
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-admonitive-person-number-contrast.json",
+      "digest": "sha256:09e59c41cb4bc84e69935f3d756bfd2e95c1b21e12bac7526c61cb1a491b078e"
+    },
+    {
+      "ownerId": "classical-admonitive-silent-t-variant-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-admonitive-silent-t-variant-formation.json",
+      "digest": "sha256:ad9a5a6457250b404d8f922d3589c67773c153c65d8cb5fc35209ce8b7a29297"
+    },
+    {
+      "ownerId": "classical-antecessive-prefix-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-antecessive-prefix-formation.json",
+      "digest": "sha256:e71e756190975ec3b0e87674758ebfe5f1753f56c8e4e5860335b3537a5f0d4b"
+    },
+    {
+      "ownerId": "classical-command-exhortation-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-command-exhortation-formation.json",
+      "digest": "sha256:e9e8c1db4788fef4c9ef11e6580b72662c284e2d97fd0299958cd06a6ac60fc7"
+    },
+    {
+      "ownerId": "classical-defective-a-irregular-paradigm",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-defective-a-irregular-paradigm.json",
+      "digest": "sha256:30853e0af66b9e63699a534a925fffed3cc24f0750958e367157845dd4ff2f0d"
+    },
+    {
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-mainline-reflexive-object-formation.json",
+      "digest": "sha256:b669aff039a52f5231391044a485f9951f202de50985a6d69a4e7ff8dc544aac"
+    },
+    {
+      "ownerId": "classical-monadic-object-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-monadic-object-formation.json",
+      "digest": "sha256:1bb477ee78763255ff8edec7889bb6950484f923ba11baf97a2d4de2bad76e57"
+    },
+    {
+      "ownerId": "classical-mood-tense-filler-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-mood-tense-filler-formation.json",
+      "digest": "sha256:258c025994dd817a33d1401b7077f4b056115e604d6d6fbd031a6132543fc787"
+    },
+    {
+      "ownerId": "classical-negative-wish-sentence-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-negative-wish-sentence-formation.json",
+      "digest": "sha256:f1e13c0923b2971112243b700a3c62123a3fe752f7124143998b7393e1edddb4"
+    },
+    {
+      "ownerId": "classical-object-priority-linearization",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-object-priority-linearization.json",
+      "digest": "sha256:8e54021c5282b7651d940b9c1c508df73be0ae0ccdc877d451079433fb85b636"
+    },
+    {
+      "ownerId": "classical-passive-reflexive-ne-retention",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-passive-reflexive-ne-retention.json",
+      "digest": "sha256:6eddd29517ea23dbb921c5920fb6fcad486616eb942aa1ce7d1c13a71b8ac6fe"
+    },
+    {
+      "ownerId": "classical-passive-reflexive-projective-transformation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-passive-reflexive-projective-transformation.json",
+      "digest": "sha256:227abf6b464fc485f6244a5754f7c3fa20170eb5502fc3591a58fab677e8b16a"
+    },
+    {
+      "ownerId": "classical-projective-object-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-projective-object-formation.json",
+      "digest": "sha256:e4ba8e457427801ce49fcec4a009fe19d3c3c12814fb54111ddc037ef23c2d14"
+    },
+    {
+      "ownerId": "classical-subject-number-suffix-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-subject-number-suffix-formation.json",
+      "digest": "sha256:bfc9b23651d82d4cf2188b06ed10556f776c737f469eabf66dc1516c97f1c406"
+    },
+    {
+      "ownerId": "classical-subject-person-dyad-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-subject-person-dyad-formation.json",
+      "digest": "sha256:7a0a3d616cf1fde044ad2760e864831d813b95763e45530d28813197c7d2d77e"
+    },
+    {
+      "ownerId": "classical-supportive-initial-i-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-supportive-initial-i-formation.json",
+      "digest": "sha256:2e85632db4195c2db74dcd91a80cea5032670a866b31468aeeaecf2b3431fb2b"
+    },
+    {
+      "ownerId": "classical-ti-perfective-variant-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-ti-perfective-variant-formation.json",
+      "digest": "sha256:0af50625cf578d5aff7281ef0a07c5c1475601299b54c37e884966a7c67e33a3"
+    },
+    {
+      "ownerId": "classical-tla-fusion-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-tla-fusion-formation.json",
+      "digest": "sha256:5c16d2775e21fccfc99d2c0e7f3174902ec801159b4acccfa4a5848fe5b831c5"
+    },
+    {
+      "ownerId": "classical-type-two-applicative-suffix-system",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-type-two-applicative-suffix-system.json",
+      "digest": "sha256:369a8e89db181782afb696e13b70ad5602adc928bb27f0460f064518a541c997"
+    },
+    {
+      "ownerId": "classical-wish-intensification-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-wish-intensification-formation.json",
+      "digest": "sha256:e36501b7a064555cfe27d5a8e19bfc58937d7a025ea229ae73f5bd7b274d696d"
+    },
+    {
+      "ownerId": "classical-yes-no-question-formation",
+      "path": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/receipts/classical-yes-no-question-formation.json",
+      "digest": "sha256:e72f485d6cb5a2191827cc247b8334295022c8fced4dc1f3e0a49b0e5d2b7349"
+    }
+  ],
+  "observations": [
+    {
+      "atomId": "ACI-P087-L018-073DCB9B6E-02",
+      "ownerId": "classical-directional-prefix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "derive-canonical-realization",
+      "canonicalPath": "translationValueChangesWithDirectionalPrefix",
+      "receiptDigest": "sha256:7762369fd7c5c8b3d1949000ac8748f1dcdf3d2b691e2e18ef87ecc55ef6e563"
+    },
+    {
+      "atomId": "ACI-P089-L033-4B7B4345A0-02",
+      "ownerId": "classical-antecessive-prefix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-antecessive-prefix-formation:aci-p089-l033-4b7b4345a0-02",
+      "canonicalPath": "buildClassicalNahuatlAntecessivePrefixSystemFrame.literalAlreadyTranslationRequired",
+      "expected": false,
+      "actual": false,
+      "canvasAnchor": "ō# is never translated literally as ‘already.’",
+      "mutation": {
+        "replacement": true,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L028-B320257450",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p074-l028-b320257450",
+      "canonicalPath": "buildClassicalNahuatlMainlineReflexiveObjectSystemFrame.alignment",
+      "expected": [
+        "person-number",
+        "objective-case"
+      ],
+      "actual": [
+        "person-number",
+        "objective-case"
+      ],
+      "canvasAnchor": "In a mainline reflexive-object construction, subposition va1 carries person information.",
+      "mutation": {
+        "replacement": [
+          "person-number"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a",
+      "canonicalPath": "buildClassicalNahuatlMainlineReflexiveObjectSystemFrame.nonfirstVa1",
+      "expected": "m",
+      "actual": "m",
+      "canvasAnchor": "+M-o( ~ +m-⎕( is the nonfirst-person reflexive-object morphic alternation.",
+      "mutation": {
+        "replacement": "m-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P072-L017-A707ACD636-03",
+      "ownerId": "classical-monadic-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-monadic-object-formation:aci-p072-l017-a707acd636-03",
+      "canonicalPath": "buildClassicalNahuatlMonadicObjectSystemFrame.nonhumanMayReferToPeopleGenerally",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The contrast between tē and tla is not a contrast of animateness.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L008-3B897B6D84-02",
+      "ownerId": "classical-mood-tense-filler-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-filler-formation:aci-p070-l008-3b897b6d84-02",
+      "canonicalPath": "buildClassicalNahuatlMoodTenseFillerSystemFrame.indicative.customaryPresent",
+      "expected": "ni",
+      "actual": "ni",
+      "canvasAnchor": "The customary-present tense morph is ni.",
+      "mutation": {
+        "replacement": "ni-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P073-L008-4749BA79B8-02",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p073-l008-4749ba79b8-02",
+      "canonicalPath": "buildClassicalNahuatlProjectiveObjectSystemFrame.va1NeverPersonAlone",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Person is never the only information manifested in subposition va1.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L010-79A1F5AC90-02",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l010-79a1f5ac90-02",
+      "canonicalPath": "buildClassicalNahuatlProjectiveObjectSystemFrame.assimilationApplies",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The morph itz is subject to assimilation.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L004-BA9F731283-02",
+      "ownerId": "classical-subject-number-suffix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-number-suffix-formation:aci-p068-l004-ba9f731283-02",
+      "canonicalPath": "buildClassicalNahuatlSubjectNumberSuffixSystemFrame.admonitiveVariants",
+      "expected": [
+        "in",
+        "ih"
+      ],
+      "actual": [
+        "in",
+        "ih"
+      ],
+      "canvasAnchor": "The plural-number carrier in has ih as a subvariant.",
+      "mutation": {
+        "replacement": [
+          "in"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P066-L029-F5311302DA-02",
+      "ownerId": "classical-subject-person-dyad-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-person-dyad-formation:aci-p066-l029-f5311302da-02",
+      "canonicalPath": "buildClassicalNahuatlSubjectPersonDyadSystemFrame.secondPluralMCondition",
+      "expected": "am-before-vowel-m-p",
+      "actual": "am-before-vowel-m-p",
+      "canvasAnchor": "The morph am occurs before m.",
+      "mutation": {
+        "replacement": "am-before-vowel-m-p-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P085-L003-6E0E0B43A7",
+      "ownerId": "classical-supportive-initial-i-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supportive-initial-i-formation:aci-p085-l003-6e0e0b43a7",
+      "canonicalPath": "buildClassicalNahuatlSupportiveInitialISystemFrame.tlaDropsSupportiveI",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "When a mainline reflexive object precedes a verbstem whose initial [i] is merely supportive, that supportive [i] is no longer needed and is omitted.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P085-L003-6E0E0B43A7-02",
+      "ownerId": "classical-supportive-initial-i-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supportive-initial-i-formation:aci-p085-l003-6e0e0b43a7-02",
+      "canonicalPath": "buildClassicalNahuatlSupportiveInitialISystemFrame.tlaStemRealization",
+      "expected": "tta",
+      "actual": "tta",
+      "canvasAnchor": "Omission of supportive [i] after a reflexive object is a positive phonological realization, not evidence that the stem or result is absent.",
+      "mutation": {
+        "replacement": "tta-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P086-L019-7E6A7560AB-03",
+      "ownerId": "classical-tla-fusion-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tla-fusion-formation:aci-p086-l019-7e6a7560ab-03",
+      "canonicalPath": "buildClassicalNahuatlTlaFusionSystemFrame.buildKind",
+      "expected": "embed-matrix-plus-tla-fusion",
+      "actual": "embed-matrix-plus-tla-fusion",
+      "canvasAnchor": "Tla fusion is a derivational process.",
+      "mutation": {
+        "replacement": "embed-matrix-plus-tla-fusion-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P086-L025-CD621F315E-02",
+      "ownerId": "classical-tla-fusion-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tla-fusion-formation:aci-p086-l025-cd621f315e-02",
+      "canonicalPath": "buildClassicalNahuatlTlaFusionSystemFrame.targetValence",
+      "expected": "intransitive",
+      "actual": "intransitive",
+      "canvasAnchor": "A surface form containing tla may instead instantiate a derived intransitive stem created by tla fusion.",
+      "mutation": {
+        "replacement": "intransitive-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P091-L033-4DB00A926D-02",
+      "ownerId": "classical-yes-no-question-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-yes-no-question-formation:aci-p091-l033-4db00a926d-02",
+      "canonicalPath": "buildClassicalNahuatlYesNoQuestionSystemFrame.finalPunctuation",
+      "expected": "?",
+      "actual": "?",
+      "canvasAnchor": "this is indicated in writing by replacing a period with a question mark.",
+      "mutation": {
+        "replacement": "?-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P100-L033-A7AEE03A98-02",
+      "ownerId": "classical-admonitive-silent-t-variant-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-silent-t-variant-formation:aci-p100-l033-a7aee03a98-02",
+      "canonicalPath": "formulaRealization",
+      "expected": "#ti-0(huetz)0+⎕-0#",
+      "actual": "#ti-0(huetz)0+⎕-0#",
+      "canvasAnchor": "The second-person-singular Class B admonition of (huetzi) is realized as mā tihuetz with singular num² shape ⎕-Ø.",
+      "mutation": {
+        "replacement": "#ti-0(huetz)0+⎕-0#-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P096-L021-1AFCF5F5C8-02",
+      "ownerId": "classical-wish-intensification-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-wish-intensification-formation:aci-p096-l021-1afcf5f5c8-02",
+      "canonicalPath": "sentence.canvasSentenceRole",
+      "expected": "wish",
+      "actual": "wish",
+      "canvasAnchor": "Mā gives the proposition wish or optative force.",
+      "mutation": {
+        "replacement": "wish-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P097-L038-0A37FD65EC-02",
+      "ownerId": "classical-command-exhortation-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-command-exhortation-formation:aci-p097-l038-0a37fd65ec-02",
+      "canonicalPath": "sentence.sentenceType",
+      "expected": "exhortation-sentence",
+      "actual": "exhortation-sentence",
+      "canvasAnchor": "Mā marks Mā nihcihui as a nonpast optative exhortation.",
+      "mutation": {
+        "replacement": "exhortation-sentence-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P097-L004-9B41376753",
+      "ownerId": "classical-negative-wish-sentence-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-negative-wish-sentence-formation:aci-p097-l004-9b41376753",
+      "canonicalPath": "sentence.negativePrefix",
+      "expected": "ca#",
+      "actual": "ca#",
+      "canvasAnchor": "In the grammar's analytical spelling of negative wishes, prefixal ca# is attached to the VNC it negates.",
+      "mutation": {
+        "replacement": "ca#-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P106-L016-2506893806-02",
+      "ownerId": "classical-ti-perfective-variant-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ti-perfective-variant-formation:aci-p106-l016-2506893806-02",
+      "canonicalPath": "lesson11.selectedStem",
+      "expected": "huē-hue-h",
+      "actual": "huē-hue-h",
+      "canvasAnchor": "The /e:/ before the glottal stop in huē-hue-h is shortened.",
+      "mutation": {
+        "replacement": "huē-hue-h-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P107-L017-153B6118EF-02",
+      "ownerId": "classical-defective-a-irregular-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-defective-a-irregular-paradigm:aci-p107-l017-153b6118ef-02",
+      "canonicalPath": "lesson11.irregularityKind",
+      "expected": "defective-preterit-as-present",
+      "actual": "defective-preterit-as-present",
+      "canvasAnchor": "furthermore, its perfective stem is used to form VNCs in only the preterit-as-present tense.",
+      "mutation": {
+        "replacement": "defective-preterit-as-present-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P182-L004-194C24FE0D-04",
+      "ownerId": "classical-passive-reflexive-projective-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-reflexive-projective-transformation:aci-p182-l004-194c24fe0d-04",
+      "canonicalPath": "voice.passiveSingle.promotedObjectBecomesSubject",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Active projective object c-Ø is promoted to common-number subject Ø-Ø+…+Ø-Ø in the passive transform.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P181-L029-18EC409F25-02",
+      "ownerId": "classical-passive-reflexive-ne-retention",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-reflexive-ne-retention:aci-p181-l029-18ec409f25-02",
+      "canonicalPath": "voice.reflexivePassive.formulaRealization",
+      "expected": "#ni-0+ne(zahua-lo)0+0-0#",
+      "actual": "#ni-0+ne(zahua-lo)0+0-0#",
+      "canvasAnchor": "After the mainline reflexive-object pronoun is converted into the passive subject, shuntline ne persists as a representative of its reflexive nature.",
+      "mutation": {
+        "replacement": "#ni-0+ne(zahua-lo)0+0-0#-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P195-L009-056F1FE6CE",
+      "ownerId": "classical-object-priority-linearization",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-object-priority-linearization:aci-p195-l009-056f1fe6ce",
+      "canonicalPath": "objectHistory.combinationCount",
+      "expected": 13,
+      "actual": 13,
+      "canvasAnchor": "The chart contains exactly thirteen three-pronoun combinations licensed by the ordering rules.",
+      "mutation": {
+        "replacement": 14,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P229-L004-5BE588303C",
+      "ownerId": "classical-type-two-applicative-suffix-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-applicative-suffix-system:aci-p229-l004-5be588303c",
+      "canonicalPath": "formations.typeTwoFinalI.option.targetConstruction.add",
+      "expected": "liā",
+      "actual": "liā",
+      "canvasAnchor": "Type-two applicative verbstems are more frequent than type-one applicatives and are formed with the suffixal units liā and huiā.",
+      "mutation": {
+        "replacement": "liā-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P116-L009-CDD787101F-02",
+      "ownerId": "classical-absolutive-singular-connector-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-absolutive-singular-connector-formation:aci-p116-l009-cdd787101f-02",
+      "canonicalPath": "numberFrame.connectorRule",
+      "expected": "lesson-12.3.2a-tl-class-after-vowel",
+      "actual": "lesson-12.3.2a-tl-class-after-vowel",
+      "canvasAnchor": "The ti morph occurs after a vowel.",
+      "mutation": {
+        "replacement": "lesson-12.3.2a-tl-class-after-vowel-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nitzahtzic",
+      "actual": "nitzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular preterit indicative is nitzahtzic.",
+      "mutation": {
+        "replacement": "nitzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-02",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-02",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nitzahtzih",
+      "actual": "mā nitzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular nonpast admonitive is mā nitzahtzih.",
+      "mutation": {
+        "replacement": "mā nitzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-03",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-03",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nitzahtzi",
+      "actual": "mā nitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular nonpast optative is mā nitzahtzi.",
+      "mutation": {
+        "replacement": "mā nitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-04",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-04",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nitzahtzi",
+      "actual": "nitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, first-person singular present indicative is nitzahtzi.",
+      "mutation": {
+        "replacement": "nitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-05",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-05",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzic",
+      "actual": "titzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular preterit indicative is titzahtzic.",
+      "mutation": {
+        "replacement": "titzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-06",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-06",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzih",
+      "actual": "mā titzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular nonpast admonitive is mā titzahtzih.",
+      "mutation": {
+        "replacement": "mā titzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-07",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-07",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xitzahtzi",
+      "actual": "mā xitzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular nonpast optative is mā xitzahtzi.",
+      "mutation": {
+        "replacement": "mā xitzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-08",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-08",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzi",
+      "actual": "titzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, second-person singular present indicative is titzahtzi.",
+      "mutation": {
+        "replacement": "titzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-09",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-09",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzic",
+      "actual": "tzahtzic",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular preterit indicative is tzahtzic.",
+      "mutation": {
+        "replacement": "tzahtzic-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-10",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-10",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzih",
+      "actual": "mā tzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular nonpast admonitive is mā tzahtzih.",
+      "mutation": {
+        "replacement": "mā tzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-11",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-11",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzi",
+      "actual": "mā tzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular nonpast optative is mā tzahtzi.",
+      "mutation": {
+        "replacement": "mā tzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-12",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-12",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzi",
+      "actual": "tzahtzi",
+      "canvasAnchor": "For Class A tzahtzi, third-person singular present indicative is tzahtzi.",
+      "mutation": {
+        "replacement": "tzahtzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-13",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-13",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtziqueh",
+      "actual": "titzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural preterit indicative is titzahtziqueh.",
+      "mutation": {
+        "replacement": "titzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-14",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-14",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzihtin",
+      "actual": "mā titzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural nonpast admonitive is mā titzahtzihtin.",
+      "mutation": {
+        "replacement": "mā titzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-15",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-15",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā titzahtzicān",
+      "actual": "mā titzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural nonpast optative is mā titzahtzicān.",
+      "mutation": {
+        "replacement": "mā titzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-16",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-16",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "titzahtzih",
+      "actual": "titzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, first-person plural present indicative is titzahtzih.",
+      "mutation": {
+        "replacement": "titzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-17",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-17",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "antzahtziqueh",
+      "actual": "antzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural preterit indicative is antzahtziqueh.",
+      "mutation": {
+        "replacement": "antzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-18",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-18",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā antzahtzihtin",
+      "actual": "mā antzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural nonpast admonitive is mā antzahtzihtin.",
+      "mutation": {
+        "replacement": "mā antzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-19",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-19",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xitzahtzicān",
+      "actual": "mā xitzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural nonpast optative is mā xitzahtzicān.",
+      "mutation": {
+        "replacement": "mā xitzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-20",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-20",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "antzahtzih",
+      "actual": "antzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, second-person plural present indicative is antzahtzih.",
+      "mutation": {
+        "replacement": "antzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-21",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-21",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtziqueh",
+      "actual": "tzahtziqueh",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural preterit indicative is tzahtziqueh.",
+      "mutation": {
+        "replacement": "tzahtziqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-22",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-22",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzihtin",
+      "actual": "mā tzahtzihtin",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural nonpast admonitive is mā tzahtzihtin.",
+      "mutation": {
+        "replacement": "mā tzahtzihtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-23",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-23",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tzahtzicān",
+      "actual": "mā tzahtzicān",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural nonpast optative is mā tzahtzicān.",
+      "mutation": {
+        "replacement": "mā tzahtzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L014-79A4F2FBB7-24",
+      "ownerId": "classical-admonitive-person-number-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-person-number-contrast:aci-p102-l014-79a4f2fbb7-24",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tzahtzih",
+      "actual": "tzahtzih",
+      "canvasAnchor": "For Class A tzahtzi, third-person plural present indicative is tzahtzih.",
+      "mutation": {
+        "replacement": "tzahtzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nihuetz",
+      "actual": "nihuetz",
+      "canvasAnchor": "For Class B huetzi, first-person singular preterit indicative is nihuetz.",
+      "mutation": {
+        "replacement": "nihuetz-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-02",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-02",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nihuetz",
+      "actual": "mā nihuetz",
+      "canvasAnchor": "For Class B huetzi, first-person singular nonpast admonitive is mā nihuetz.",
+      "mutation": {
+        "replacement": "mā nihuetz-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-03",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-03",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nihuetzi",
+      "actual": "mā nihuetzi",
+      "canvasAnchor": "For Class B huetzi, first-person singular nonpast optative is mā nihuetzi.",
+      "mutation": {
+        "replacement": "mā nihuetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-04",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-04",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nihuetzi",
+      "actual": "nihuetzi",
+      "canvasAnchor": "For Class B huetzi, first-person singular present indicative is nihuetzi.",
+      "mutation": {
+        "replacement": "nihuetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-05",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-05",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tihuetz",
+      "actual": "tihuetz",
+      "canvasAnchor": "For Class B huetzi, second-person singular preterit indicative is tihuetz.",
+      "mutation": {
+        "replacement": "tihuetz-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-06",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-06",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tihuetz",
+      "actual": "mā tihuetz",
+      "canvasAnchor": "For Class B huetzi, second-person singular nonpast admonitive is mā tihuetz.",
+      "mutation": {
+        "replacement": "mā tihuetz-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-07",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-07",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xihuetzi",
+      "actual": "mā xihuetzi",
+      "canvasAnchor": "For Class B huetzi, second-person singular nonpast optative is mā xihuetzi.",
+      "mutation": {
+        "replacement": "mā xihuetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-08",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-08",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tihuetzi",
+      "actual": "tihuetzi",
+      "canvasAnchor": "For Class B huetzi, second-person singular present indicative is tihuetzi.",
+      "mutation": {
+        "replacement": "tihuetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-09",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-09",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "huetz",
+      "actual": "huetz",
+      "canvasAnchor": "For Class B huetzi, third-person singular preterit indicative is huetz.",
+      "mutation": {
+        "replacement": "huetz-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-11",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-11",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā huetzi",
+      "actual": "mā huetzi",
+      "canvasAnchor": "For Class B huetzi, third-person singular nonpast optative is mā huetzi.",
+      "mutation": {
+        "replacement": "mā huetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-12",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-12",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "huetzi",
+      "actual": "huetzi",
+      "canvasAnchor": "For Class B huetzi, third-person singular present indicative is huetzi.",
+      "mutation": {
+        "replacement": "huetzi-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-13",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-13",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tihuetzqueh",
+      "actual": "tihuetzqueh",
+      "canvasAnchor": "For Class B huetzi, first-person plural preterit indicative is tihuetzqueh.",
+      "mutation": {
+        "replacement": "tihuetzqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-14",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-14",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tihuetztin",
+      "actual": "mā tihuetztin",
+      "canvasAnchor": "For Class B huetzi, first-person plural nonpast admonitive is mā tihuetztin.",
+      "mutation": {
+        "replacement": "mā tihuetztin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-15",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-15",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā tihuetzicān",
+      "actual": "mā tihuetzicān",
+      "canvasAnchor": "For Class B huetzi, first-person plural nonpast optative is mā tihuetzicān.",
+      "mutation": {
+        "replacement": "mā tihuetzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-16",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-16",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "tihuetzih",
+      "actual": "tihuetzih",
+      "canvasAnchor": "For Class B huetzi, first-person plural present indicative is tihuetzih.",
+      "mutation": {
+        "replacement": "tihuetzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-17",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-17",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "anhuetzqueh",
+      "actual": "anhuetzqueh",
+      "canvasAnchor": "For Class B huetzi, second-person plural preterit indicative is anhuetzqueh.",
+      "mutation": {
+        "replacement": "anhuetzqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-18",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-18",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā anhuetztin",
+      "actual": "mā anhuetztin",
+      "canvasAnchor": "For Class B huetzi, second-person plural nonpast admonitive is mā anhuetztin.",
+      "mutation": {
+        "replacement": "mā anhuetztin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-19",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-19",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xihuetzicān",
+      "actual": "mā xihuetzicān",
+      "canvasAnchor": "For Class B huetzi, second-person plural nonpast optative is mā xihuetzicān.",
+      "mutation": {
+        "replacement": "mā xihuetzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-20",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-20",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "anhuetzih",
+      "actual": "anhuetzih",
+      "canvasAnchor": "For Class B huetzi, second-person plural present indicative is anhuetzih.",
+      "mutation": {
+        "replacement": "anhuetzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-21",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-21",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "huetzqueh",
+      "actual": "huetzqueh",
+      "canvasAnchor": "For Class B huetzi, third-person plural preterit indicative is huetzqueh.",
+      "mutation": {
+        "replacement": "huetzqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-22",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-22",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā huetztin",
+      "actual": "mā huetztin",
+      "canvasAnchor": "For Class B huetzi, third-person plural nonpast admonitive is mā huetztin.",
+      "mutation": {
+        "replacement": "mā huetztin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-23",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-23",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā huetzicān",
+      "actual": "mā huetzicān",
+      "canvasAnchor": "For Class B huetzi, third-person plural nonpast optative is mā huetzicān.",
+      "mutation": {
+        "replacement": "mā huetzicān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-24",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-24",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "huetzih",
+      "actual": "huetzih",
+      "canvasAnchor": "For Class B huetzi, third-person plural present indicative is huetzih.",
+      "mutation": {
+        "replacement": "huetzih-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nicholoh",
+      "actual": "nicholoh",
+      "canvasAnchor": "For Class C choloa, first-person singular preterit indicative is nicholoh.",
+      "mutation": {
+        "replacement": "nicholoh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-02",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-02",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nicholoh",
+      "actual": "mā nicholoh",
+      "canvasAnchor": "For Class C choloa, first-person singular nonpast admonitive is mā nicholoh.",
+      "mutation": {
+        "replacement": "mā nicholoh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-03",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-03",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā nicholo",
+      "actual": "mā nicholo",
+      "canvasAnchor": "For Class C choloa, first-person singular nonpast optative is mā nicholo.",
+      "mutation": {
+        "replacement": "mā nicholo-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-04",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-04",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "nicholoa",
+      "actual": "nicholoa",
+      "canvasAnchor": "For Class C choloa, first-person singular present indicative is nicholoa.",
+      "mutation": {
+        "replacement": "nicholoa-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-05",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-05",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ticholoh",
+      "actual": "ticholoh",
+      "canvasAnchor": "For Class C choloa, second-person singular preterit indicative is ticholoh.",
+      "mutation": {
+        "replacement": "ticholoh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-06",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-06",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā ticholoh",
+      "actual": "mā ticholoh",
+      "canvasAnchor": "For Class C choloa, second-person singular nonpast admonitive is mā ticholoh.",
+      "mutation": {
+        "replacement": "mā ticholoh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-07",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-07",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xicholo",
+      "actual": "mā xicholo",
+      "canvasAnchor": "For Class C choloa, second-person singular nonpast optative is mā xicholo.",
+      "mutation": {
+        "replacement": "mā xicholo-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-08",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-08",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ticholoa",
+      "actual": "ticholoa",
+      "canvasAnchor": "For Class C choloa, second-person singular present indicative is ticholoa.",
+      "mutation": {
+        "replacement": "ticholoa-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-09",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-09",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "choloh",
+      "actual": "choloh",
+      "canvasAnchor": "For Class C choloa, third-person singular preterit indicative is choloh.",
+      "mutation": {
+        "replacement": "choloh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-10",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-10",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā choloh",
+      "actual": "mā choloh",
+      "canvasAnchor": "For Class C choloa, third-person singular nonpast admonitive is mā choloh.",
+      "mutation": {
+        "replacement": "mā choloh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-11",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-11",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā cholo",
+      "actual": "mā cholo",
+      "canvasAnchor": "For Class C choloa, third-person singular nonpast optative is mā cholo.",
+      "mutation": {
+        "replacement": "mā cholo-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-12",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-12",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "choloa",
+      "actual": "choloa",
+      "canvasAnchor": "For Class C choloa, third-person singular present indicative is choloa.",
+      "mutation": {
+        "replacement": "choloa-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-13",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-13",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ticholohqueh",
+      "actual": "ticholohqueh",
+      "canvasAnchor": "For Class C choloa, first-person plural preterit indicative is ticholohqueh.",
+      "mutation": {
+        "replacement": "ticholohqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-14",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-14",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā ticholohtin",
+      "actual": "mā ticholohtin",
+      "canvasAnchor": "For Class C choloa, first-person plural nonpast admonitive is mā ticholohtin.",
+      "mutation": {
+        "replacement": "mā ticholohtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-15",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-15",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā ticholōcān",
+      "actual": "mā ticholōcān",
+      "canvasAnchor": "For Class C choloa, first-person plural nonpast optative is mā ticholōcān.",
+      "mutation": {
+        "replacement": "mā ticholōcān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-16",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-16",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ticholoah",
+      "actual": "ticholoah",
+      "canvasAnchor": "For Class C choloa, first-person plural present indicative is ticholoah.",
+      "mutation": {
+        "replacement": "ticholoah-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-17",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-17",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ancholohqueh",
+      "actual": "ancholohqueh",
+      "canvasAnchor": "For Class C choloa, second-person plural preterit indicative is ancholohqueh.",
+      "mutation": {
+        "replacement": "ancholohqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-18",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-18",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā ancholohtin",
+      "actual": "mā ancholohtin",
+      "canvasAnchor": "For Class C choloa, second-person plural nonpast admonitive is mā ancholohtin.",
+      "mutation": {
+        "replacement": "mā ancholohtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-19",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-19",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā xicholōcān",
+      "actual": "mā xicholōcān",
+      "canvasAnchor": "For Class C choloa, second-person plural nonpast optative is mā xicholōcān.",
+      "mutation": {
+        "replacement": "mā xicholōcān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-20",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-20",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "ancholoah",
+      "actual": "ancholoah",
+      "canvasAnchor": "For Class C choloa, second-person plural present indicative is ancholoah.",
+      "mutation": {
+        "replacement": "ancholoah-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-21",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-21",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "cholohqueh",
+      "actual": "cholohqueh",
+      "canvasAnchor": "For Class C choloa, third-person plural preterit indicative is cholohqueh.",
+      "mutation": {
+        "replacement": "cholohqueh-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-22",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-22",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā cholohtin",
+      "actual": "mā cholohtin",
+      "canvasAnchor": "For Class C choloa, third-person plural nonpast admonitive is mā cholohtin.",
+      "mutation": {
+        "replacement": "mā cholohtin-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-23",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-23",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "mā cholōcān",
+      "actual": "mā cholōcān",
+      "canvasAnchor": "For Class C choloa, third-person plural nonpast optative is mā cholōcān.",
+      "mutation": {
+        "replacement": "mā cholōcān-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P103-L015-57C6506AD7-24",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p103-l015-57c6506ad7-24",
+      "canonicalPath": "buildClassicalNahuatlVerbstemClassFrame.sentenceSurface",
+      "expected": "choloah",
+      "actual": "choloah",
+      "canvasAnchor": "For Class C choloa, third-person plural present indicative is choloah.",
+      "mutation": {
+        "replacement": "choloah-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "blockers": [
+    {
+      "kind": "canvas-canonical-orthographic-ambiguity",
+      "atomId": "ACI-P102-L036-214BAB939B-10",
+      "expected": "mahuetz",
+      "actual": "mā huetz",
+      "canvasAnchor": "For Class B huetzi, third-person singular nonpast admonitive is mahuetz."
+    }
+  ],
+  "validation": {
+    "exactAtomObservationPassed": true,
+    "mutationObservationPassed": true,
+    "dependencyFingerprintRecorded": true,
+    "baseProofCorpusUnchanged": true,
+    "atomicSwitchRollbackTestPassed": true
+  }
+}

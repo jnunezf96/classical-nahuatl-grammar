@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-002",
+  "status": "passed",
+  "baseCommit": "b97b25c2db230d97a73cef78a8336fc093084b8c",
+  "checkpoint": {
+    "owners": 23,
+    "newlyExactlyObserved": 96,
+    "failures": 0,
+    "mutationFailuresObserved": 96
+  },
+  "progress": {
+    "denominator": 18639,
+    "before": 8262,
+    "after": 8358,
+    "remaining": 10281
+  },
+  "linguisticBlockers": [
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-10",
+      "expected": "mahuetz",
+      "actual": "mā huetz",
+      "canvasAnchor": "For Class B huetzi, third-person singular nonpast admonitive is mahuetz."
+    }
+  ],
+  "validations": {
+    "allAffectedOwnersAuthorized": true,
+    "separateAssertionPerCreditedAtom": true,
+    "mutationsRejected": true,
+    "ledgerRegenerated": true,
+    "versionedProofDataPreserved": true,
+    "rollbackManifestPreserved": true,
+    "atomicSwitchRollbackTestPassed": true,
+    "activeManifestReactivated": true
+  },
+  "auditSummary": {
+    "status": "incomplete",
+    "strictComplete": false,
+    "fullCanvasSourceZones": {
+      "numerator": 58,
+      "denominator": 66,
+      "percent": 87.88,
+      "complete": false
+    },
+    "lessonGrammarOwnerLinked": {
+      "numerator": 18639,
+      "denominator": 18639,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonGrammarExactBehaviorObserved": {
+      "numerator": 8358,
+      "denominator": 18639,
+      "percent": 44.84,
+      "complete": false
+    },
+    "genuineChoiceLiveDeclarations": {
+      "numerator": 18,
+      "denominator": 58,
+      "percent": 31.03,
+      "complete": false
+    },
+    "blockerCount": 10330
+  }
+}

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "activeManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/manifest.json",
-  "activeManifestDigest": "sha256:02bba4bad0f104de142bb50df8bea6e7575746b7861305750cef52e1c696cf90",
+  "activeManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
+  "activeManifestDigest": "sha256:7e469e7a3b58c9b7bfa16de063d5d53a678e6b336ba0278da2cca280f8e9264d",
   "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-batch-001/manifest.json",
   "rollbackManifestDigest": "sha256:7e469e7a3b58c9b7bfa16de063d5d53a678e6b336ba0278da2cca280f8e9264d",
   "baseProofCorpusRetained": true

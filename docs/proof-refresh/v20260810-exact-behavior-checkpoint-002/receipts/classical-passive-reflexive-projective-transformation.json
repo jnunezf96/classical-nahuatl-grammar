@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-002",
+  "ownerId": "classical-passive-reflexive-projective-transformation",
+  "dependencyFingerprint": "sha256:8184a8665b22ca78b19e78ac6b04c28bc73e4e09a51b468aafc656a2cbafc240",
+  "dependencyDigests": {
+    "ANDREWS_TRANSCRIPTION_CANVAS.md": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
+    "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
+    "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json": "sha256:4685feaf32c5fe34eaed6b5c0b647a9a9eec86f50f7a65cb8b9616037db7c54f",
+    "src/node/runtime.mjs": "sha256:ccf2284534428af482e2c286518c03c6104b2298b7ac6e70de7f75356f7958ad",
+    "src/core/classical/nuclear_clause_semantic_operations.mjs": "sha256:09b011777c8958889cac4432a85b046f3a979e33c89ed3e3e91d22d64e5617f9",
+    "src/core/classical/vnc_semantic_operations.mjs": "sha256:6a39340a1bffd5418d5284a67892fc7d1f92773e565ec7f51e86aecc72d5d7bd",
+    "src/core/classical/nonactive_voice_object_validation_semantic_operations.mjs": "sha256:a36edf7e9e8ed1cfc99b2e9ded41c93b342507602020b4014a07eb7c40af2234",
+    "src/core/classical/vnc_applicative_validation_semantic_operations.mjs": "sha256:cbf71dee96b6909dc86cb9845cd74e01dbd73b82c5f8ec96e089b6d38296c63a",
+    "src/core/classical/nnc_lessons12_13_semantic_operations.mjs": "sha256:e1ff55b3683579656ce2a8a66998779982e92301baba8c31dbf55e793b730954"
+  },
+  "resultDigest": "sha256:ac41b0ee44ab7989e156b2ea361109fc948e92c0721e8004c873017658e57f4d",
+  "observations": [
+    {
+      "atomId": "ACI-P182-L004-194C24FE0D-04",
+      "ownerId": "classical-passive-reflexive-projective-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-reflexive-projective-transformation:aci-p182-l004-194c24fe0d-04",
+      "canonicalPath": "voice.passiveSingle.promotedObjectBecomesSubject",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Active projective object c-Ø is promoted to common-number subject Ø-Ø+…+Ø-Ø in the passive transform.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

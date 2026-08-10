@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-002",
+  "ownerId": "classical-supportive-initial-i-formation",
+  "dependencyFingerprint": "sha256:8184a8665b22ca78b19e78ac6b04c28bc73e4e09a51b468aafc656a2cbafc240",
+  "dependencyDigests": {
+    "ANDREWS_TRANSCRIPTION_CANVAS.md": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
+    "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
+    "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json": "sha256:4685feaf32c5fe34eaed6b5c0b647a9a9eec86f50f7a65cb8b9616037db7c54f",
+    "src/node/runtime.mjs": "sha256:ccf2284534428af482e2c286518c03c6104b2298b7ac6e70de7f75356f7958ad",
+    "src/core/classical/nuclear_clause_semantic_operations.mjs": "sha256:09b011777c8958889cac4432a85b046f3a979e33c89ed3e3e91d22d64e5617f9",
+    "src/core/classical/vnc_semantic_operations.mjs": "sha256:6a39340a1bffd5418d5284a67892fc7d1f92773e565ec7f51e86aecc72d5d7bd",
+    "src/core/classical/nonactive_voice_object_validation_semantic_operations.mjs": "sha256:a36edf7e9e8ed1cfc99b2e9ded41c93b342507602020b4014a07eb7c40af2234",
+    "src/core/classical/vnc_applicative_validation_semantic_operations.mjs": "sha256:cbf71dee96b6909dc86cb9845cd74e01dbd73b82c5f8ec96e089b6d38296c63a",
+    "src/core/classical/nnc_lessons12_13_semantic_operations.mjs": "sha256:e1ff55b3683579656ce2a8a66998779982e92301baba8c31dbf55e793b730954"
+  },
+  "resultDigest": "sha256:1fd420feec078ee7870460c1574c0bec192aeaf90368536317a8eb178c6d34fe",
+  "observations": [
+    {
+      "atomId": "ACI-P085-L003-6E0E0B43A7",
+      "ownerId": "classical-supportive-initial-i-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supportive-initial-i-formation:aci-p085-l003-6e0e0b43a7",
+      "canonicalPath": "buildClassicalNahuatlSupportiveInitialISystemFrame.tlaDropsSupportiveI",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "When a mainline reflexive object precedes a verbstem whose initial [i] is merely supportive, that supportive [i] is no longer needed and is omitted.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P085-L003-6E0E0B43A7-02",
+      "ownerId": "classical-supportive-initial-i-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supportive-initial-i-formation:aci-p085-l003-6e0e0b43a7-02",
+      "canonicalPath": "buildClassicalNahuatlSupportiveInitialISystemFrame.tlaStemRealization",
+      "expected": "tta",
+      "actual": "tta",
+      "canvasAnchor": "Omission of supportive [i] after a reflexive object is a positive phonological realization, not evidence that the stem or result is absent.",
+      "mutation": {
+        "replacement": "tta-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}
