@@ -1,0 +1,1506 @@
+{
+  "schemaVersion": 1,
+  "kind": "canvas-true-grammar-progress",
+  "status": "incomplete",
+  "strictComplete": false,
+  "measurementPolicy": {
+    "headline": "No weighted aggregate is permitted. Every applicable denominator is reported separately.",
+    "completionRule": "Strict completion requires full Canvas source-zone atomization, exhaustive force classification, typed owner assignment, exact owner-issued proof, application-axis classification, Canvas provenance for every genuine choice, and live declaration of every genuine choice.",
+    "grammarAuthority": "Only typed grammar owners authorize results. Canvas atoms supply specification and provenance.",
+    "evidencePolicy": "Evidence neither authorizes grammar nor blocks a result when absent.",
+    "uiPolicy": "Only genuine grammatical choices become controls; derived, contextual, lexical, boundary-conditioned, evidence, and presentation facts do not."
+  },
+  "metrics": {
+    "fullCanvasSourceZones": {
+      "numerator": 58,
+      "denominator": 66,
+      "percent": 87.88,
+      "complete": false
+    },
+    "lessonSourceZones": {
+      "numerator": 58,
+      "denominator": 58,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonAtomization": {
+      "numerator": 28540,
+      "denominator": 28540,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonAtomForceClassification": {
+      "numerator": 28540,
+      "denominator": 28540,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonNonGrammarAccounting": {
+      "numerator": 9901,
+      "denominator": 9901,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonGrammarOwnerAndExactProof": {
+      "numerator": 18639,
+      "denominator": 18639,
+      "percent": 100,
+      "complete": true
+    },
+    "applicationAxisClassification": {
+      "numerator": 184,
+      "denominator": 184,
+      "percent": 100,
+      "complete": true
+    },
+    "genuineChoiceCanvasProvenance": {
+      "numerator": 58,
+      "denominator": 58,
+      "percent": 100,
+      "complete": true
+    },
+    "genuineChoiceLiveDeclarations": {
+      "numerator": 18,
+      "denominator": 58,
+      "percent": 31.03,
+      "complete": false
+    },
+    "genuineChoiceBrowserDeliveryProof": {
+      "numerator": null,
+      "denominator": 58,
+      "percent": null,
+      "complete": false,
+      "status": "not-measured"
+    }
+  },
+  "sourceScope": {
+    "zones": [
+      {
+        "id": "lesson-1",
+        "label": "Lesson 1",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-2",
+        "label": "Lesson 2",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-3",
+        "label": "Lesson 3",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-4",
+        "label": "Lesson 4",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-5",
+        "label": "Lesson 5",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-6",
+        "label": "Lesson 6",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-7",
+        "label": "Lesson 7",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-8",
+        "label": "Lesson 8",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-9",
+        "label": "Lesson 9",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-10",
+        "label": "Lesson 10",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-11",
+        "label": "Lesson 11",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-12",
+        "label": "Lesson 12",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-13",
+        "label": "Lesson 13",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-14",
+        "label": "Lesson 14",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-15",
+        "label": "Lesson 15",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-16",
+        "label": "Lesson 16",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-17",
+        "label": "Lesson 17",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-18",
+        "label": "Lesson 18",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-19",
+        "label": "Lesson 19",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-20",
+        "label": "Lesson 20",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-21",
+        "label": "Lesson 21",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-22",
+        "label": "Lesson 22",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-23",
+        "label": "Lesson 23",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-24",
+        "label": "Lesson 24",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-25",
+        "label": "Lesson 25",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-26",
+        "label": "Lesson 26",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-27",
+        "label": "Lesson 27",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-28",
+        "label": "Lesson 28",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-29",
+        "label": "Lesson 29",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-30",
+        "label": "Lesson 30",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-31",
+        "label": "Lesson 31",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-32",
+        "label": "Lesson 32",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-33",
+        "label": "Lesson 33",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-34",
+        "label": "Lesson 34",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-35",
+        "label": "Lesson 35",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-36",
+        "label": "Lesson 36",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-37",
+        "label": "Lesson 37",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-38",
+        "label": "Lesson 38",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-39",
+        "label": "Lesson 39",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-40",
+        "label": "Lesson 40",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-41",
+        "label": "Lesson 41",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-42",
+        "label": "Lesson 42",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-43",
+        "label": "Lesson 43",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-44",
+        "label": "Lesson 44",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-45",
+        "label": "Lesson 45",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-46",
+        "label": "Lesson 46",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-47",
+        "label": "Lesson 47",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-48",
+        "label": "Lesson 48",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-49",
+        "label": "Lesson 49",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-50",
+        "label": "Lesson 50",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-51",
+        "label": "Lesson 51",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-52",
+        "label": "Lesson 52",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-53",
+        "label": "Lesson 53",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-54",
+        "label": "Lesson 54",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-55",
+        "label": "Lesson 55",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-56",
+        "label": "Lesson 56",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-57",
+        "label": "Lesson 57",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "lesson-58",
+        "label": "Lesson 58",
+        "kind": "lesson",
+        "atomLedgerStatus": "complete"
+      },
+      {
+        "id": "front-matter",
+        "label": "Front matter",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-a",
+        "label": "Appendix A",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-b",
+        "label": "Appendix B",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-c",
+        "label": "Appendix C",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-d",
+        "label": "Appendix D",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-e",
+        "label": "Appendix E",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "appendix-f",
+        "label": "Appendix F",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      },
+      {
+        "id": "suggested-reading",
+        "label": "Suggested Reading",
+        "kind": "non-lesson",
+        "atomLedgerStatus": "missing"
+      }
+    ],
+    "missingZoneIds": [
+      "front-matter",
+      "appendix-a",
+      "appendix-b",
+      "appendix-c",
+      "appendix-d",
+      "appendix-e",
+      "appendix-f",
+      "suggested-reading"
+    ],
+    "warning": "The 28,540-atom denominator is exhaustive for Lessons 1-58 only. It is not a full-Canvas denominator until the eight non-lesson zones have current atom ledgers."
+  },
+  "lessonCorpus": {
+    "atoms": {
+      "atoms": 28540,
+      "withExplicitAboutFacets": 9239,
+      "grammarBearing": 18639,
+      "evidence": 6524,
+      "analysis": 1423,
+      "documentary": 1954
+    },
+    "exactProofs": {
+      "retainedCanonicalCoordinates": 5347,
+      "newIndividualAtomCoordinates": 13292,
+      "total": 18639
+    },
+    "proofRelease": {
+      "version": "v20260810-shared-oracle-broad-completion",
+      "ownerCount": 2491,
+      "replayedOwnerCount": 350,
+      "failureCount": 0,
+      "section7_9CanaryPassed": true
+    },
+    "byLesson": [
+      {
+        "lesson": 1,
+        "totalAtoms": 854,
+        "grammarBearing": 307,
+        "evidence": 138,
+        "analysis": 337,
+        "documentary": 72
+      },
+      {
+        "lesson": 2,
+        "totalAtoms": 539,
+        "grammarBearing": 343,
+        "evidence": 141,
+        "analysis": 20,
+        "documentary": 35
+      },
+      {
+        "lesson": 3,
+        "totalAtoms": 204,
+        "grammarBearing": 176,
+        "evidence": 5,
+        "analysis": 12,
+        "documentary": 11
+      },
+      {
+        "lesson": 4,
+        "totalAtoms": 167,
+        "grammarBearing": 111,
+        "evidence": 20,
+        "analysis": 25,
+        "documentary": 11
+      },
+      {
+        "lesson": 5,
+        "totalAtoms": 200,
+        "grammarBearing": 141,
+        "evidence": 23,
+        "analysis": 12,
+        "documentary": 24
+      },
+      {
+        "lesson": 6,
+        "totalAtoms": 138,
+        "grammarBearing": 110,
+        "evidence": 15,
+        "analysis": 3,
+        "documentary": 10
+      },
+      {
+        "lesson": 7,
+        "totalAtoms": 344,
+        "grammarBearing": 188,
+        "evidence": 100,
+        "analysis": 29,
+        "documentary": 27
+      },
+      {
+        "lesson": 8,
+        "totalAtoms": 204,
+        "grammarBearing": 143,
+        "evidence": 47,
+        "analysis": 10,
+        "documentary": 4
+      },
+      {
+        "lesson": 9,
+        "totalAtoms": 187,
+        "grammarBearing": 87,
+        "evidence": 87,
+        "analysis": 4,
+        "documentary": 9
+      },
+      {
+        "lesson": 10,
+        "totalAtoms": 248,
+        "grammarBearing": 161,
+        "evidence": 61,
+        "analysis": 22,
+        "documentary": 4
+      },
+      {
+        "lesson": 11,
+        "totalAtoms": 352,
+        "grammarBearing": 191,
+        "evidence": 122,
+        "analysis": 19,
+        "documentary": 20
+      },
+      {
+        "lesson": 12,
+        "totalAtoms": 137,
+        "grammarBearing": 114,
+        "evidence": 6,
+        "analysis": 12,
+        "documentary": 5
+      },
+      {
+        "lesson": 13,
+        "totalAtoms": 83,
+        "grammarBearing": 68,
+        "evidence": 2,
+        "analysis": 6,
+        "documentary": 7
+      },
+      {
+        "lesson": 14,
+        "totalAtoms": 428,
+        "grammarBearing": 293,
+        "evidence": 94,
+        "analysis": 17,
+        "documentary": 24
+      },
+      {
+        "lesson": 15,
+        "totalAtoms": 237,
+        "grammarBearing": 130,
+        "evidence": 74,
+        "analysis": 19,
+        "documentary": 14
+      },
+      {
+        "lesson": 16,
+        "totalAtoms": 381,
+        "grammarBearing": 197,
+        "evidence": 132,
+        "analysis": 34,
+        "documentary": 18
+      },
+      {
+        "lesson": 17,
+        "totalAtoms": 253,
+        "grammarBearing": 151,
+        "evidence": 57,
+        "analysis": 37,
+        "documentary": 8
+      },
+      {
+        "lesson": 18,
+        "totalAtoms": 254,
+        "grammarBearing": 151,
+        "evidence": 60,
+        "analysis": 32,
+        "documentary": 11
+      },
+      {
+        "lesson": 19,
+        "totalAtoms": 593,
+        "grammarBearing": 424,
+        "evidence": 78,
+        "analysis": 44,
+        "documentary": 47
+      },
+      {
+        "lesson": 20,
+        "totalAtoms": 251,
+        "grammarBearing": 134,
+        "evidence": 100,
+        "analysis": 2,
+        "documentary": 15
+      },
+      {
+        "lesson": 21,
+        "totalAtoms": 161,
+        "grammarBearing": 100,
+        "evidence": 43,
+        "analysis": 7,
+        "documentary": 11
+      },
+      {
+        "lesson": 22,
+        "totalAtoms": 251,
+        "grammarBearing": 173,
+        "evidence": 68,
+        "analysis": 2,
+        "documentary": 8
+      },
+      {
+        "lesson": 23,
+        "totalAtoms": 149,
+        "grammarBearing": 120,
+        "evidence": 5,
+        "analysis": 4,
+        "documentary": 20
+      },
+      {
+        "lesson": 24,
+        "totalAtoms": 520,
+        "grammarBearing": 344,
+        "evidence": 131,
+        "analysis": 14,
+        "documentary": 31
+      },
+      {
+        "lesson": 25,
+        "totalAtoms": 756,
+        "grammarBearing": 518,
+        "evidence": 171,
+        "analysis": 20,
+        "documentary": 47
+      },
+      {
+        "lesson": 26,
+        "totalAtoms": 664,
+        "grammarBearing": 412,
+        "evidence": 162,
+        "analysis": 25,
+        "documentary": 65
+      },
+      {
+        "lesson": 27,
+        "totalAtoms": 335,
+        "grammarBearing": 227,
+        "evidence": 78,
+        "analysis": 13,
+        "documentary": 17
+      },
+      {
+        "lesson": 28,
+        "totalAtoms": 614,
+        "grammarBearing": 384,
+        "evidence": 167,
+        "analysis": 18,
+        "documentary": 45
+      },
+      {
+        "lesson": 29,
+        "totalAtoms": 346,
+        "grammarBearing": 239,
+        "evidence": 90,
+        "analysis": 6,
+        "documentary": 11
+      },
+      {
+        "lesson": 30,
+        "totalAtoms": 1004,
+        "grammarBearing": 707,
+        "evidence": 209,
+        "analysis": 29,
+        "documentary": 59
+      },
+      {
+        "lesson": 31,
+        "totalAtoms": 470,
+        "grammarBearing": 268,
+        "evidence": 121,
+        "analysis": 30,
+        "documentary": 51
+      },
+      {
+        "lesson": 32,
+        "totalAtoms": 369,
+        "grammarBearing": 192,
+        "evidence": 121,
+        "analysis": 11,
+        "documentary": 45
+      },
+      {
+        "lesson": 33,
+        "totalAtoms": 327,
+        "grammarBearing": 199,
+        "evidence": 99,
+        "analysis": 8,
+        "documentary": 21
+      },
+      {
+        "lesson": 34,
+        "totalAtoms": 537,
+        "grammarBearing": 370,
+        "evidence": 135,
+        "analysis": 8,
+        "documentary": 24
+      },
+      {
+        "lesson": 35,
+        "totalAtoms": 1136,
+        "grammarBearing": 844,
+        "evidence": 204,
+        "analysis": 14,
+        "documentary": 74
+      },
+      {
+        "lesson": 36,
+        "totalAtoms": 830,
+        "grammarBearing": 620,
+        "evidence": 158,
+        "analysis": 17,
+        "documentary": 35
+      },
+      {
+        "lesson": 37,
+        "totalAtoms": 491,
+        "grammarBearing": 328,
+        "evidence": 122,
+        "analysis": 13,
+        "documentary": 28
+      },
+      {
+        "lesson": 38,
+        "totalAtoms": 486,
+        "grammarBearing": 350,
+        "evidence": 93,
+        "analysis": 9,
+        "documentary": 34
+      },
+      {
+        "lesson": 39,
+        "totalAtoms": 1024,
+        "grammarBearing": 708,
+        "evidence": 202,
+        "analysis": 29,
+        "documentary": 85
+      },
+      {
+        "lesson": 40,
+        "totalAtoms": 394,
+        "grammarBearing": 175,
+        "evidence": 154,
+        "analysis": 6,
+        "documentary": 59
+      },
+      {
+        "lesson": 41,
+        "totalAtoms": 327,
+        "grammarBearing": 226,
+        "evidence": 70,
+        "analysis": 8,
+        "documentary": 23
+      },
+      {
+        "lesson": 42,
+        "totalAtoms": 383,
+        "grammarBearing": 233,
+        "evidence": 103,
+        "analysis": 15,
+        "documentary": 32
+      },
+      {
+        "lesson": 43,
+        "totalAtoms": 306,
+        "grammarBearing": 216,
+        "evidence": 57,
+        "analysis": 9,
+        "documentary": 24
+      },
+      {
+        "lesson": 44,
+        "totalAtoms": 815,
+        "grammarBearing": 518,
+        "evidence": 186,
+        "analysis": 38,
+        "documentary": 73
+      },
+      {
+        "lesson": 45,
+        "totalAtoms": 428,
+        "grammarBearing": 289,
+        "evidence": 88,
+        "analysis": 13,
+        "documentary": 38
+      },
+      {
+        "lesson": 46,
+        "totalAtoms": 1250,
+        "grammarBearing": 841,
+        "evidence": 294,
+        "analysis": 22,
+        "documentary": 93
+      },
+      {
+        "lesson": 47,
+        "totalAtoms": 803,
+        "grammarBearing": 477,
+        "evidence": 277,
+        "analysis": 13,
+        "documentary": 36
+      },
+      {
+        "lesson": 48,
+        "totalAtoms": 880,
+        "grammarBearing": 530,
+        "evidence": 219,
+        "analysis": 50,
+        "documentary": 81
+      },
+      {
+        "lesson": 49,
+        "totalAtoms": 645,
+        "grammarBearing": 384,
+        "evidence": 199,
+        "analysis": 14,
+        "documentary": 48
+      },
+      {
+        "lesson": 50,
+        "totalAtoms": 939,
+        "grammarBearing": 732,
+        "evidence": 137,
+        "analysis": 29,
+        "documentary": 41
+      },
+      {
+        "lesson": 51,
+        "totalAtoms": 241,
+        "grammarBearing": 142,
+        "evidence": 81,
+        "analysis": 8,
+        "documentary": 10
+      },
+      {
+        "lesson": 52,
+        "totalAtoms": 896,
+        "grammarBearing": 674,
+        "evidence": 147,
+        "analysis": 37,
+        "documentary": 38
+      },
+      {
+        "lesson": 53,
+        "totalAtoms": 406,
+        "grammarBearing": 285,
+        "evidence": 102,
+        "analysis": 12,
+        "documentary": 7
+      },
+      {
+        "lesson": 54,
+        "totalAtoms": 998,
+        "grammarBearing": 666,
+        "evidence": 215,
+        "analysis": 30,
+        "documentary": 87
+      },
+      {
+        "lesson": 55,
+        "totalAtoms": 469,
+        "grammarBearing": 319,
+        "evidence": 107,
+        "analysis": 16,
+        "documentary": 27
+      },
+      {
+        "lesson": 56,
+        "totalAtoms": 896,
+        "grammarBearing": 623,
+        "evidence": 144,
+        "analysis": 55,
+        "documentary": 74
+      },
+      {
+        "lesson": 57,
+        "totalAtoms": 440,
+        "grammarBearing": 318,
+        "evidence": 59,
+        "analysis": 27,
+        "documentary": 36
+      },
+      {
+        "lesson": 58,
+        "totalAtoms": 500,
+        "grammarBearing": 268,
+        "evidence": 144,
+        "analysis": 48,
+        "documentary": 40
+      }
+    ]
+  },
+  "interaction": {
+    "allAxes": {
+      "operationCount": 33,
+      "uniqueAxisCount": 159,
+      "entryCount": 184,
+      "status": {
+        "classified": 184,
+        "unresolved": 0
+      },
+      "surfaceDisposition": {
+        "interactive-choice": 58,
+        "read-only-fact": 0,
+        "diagnostic-evidence": 0,
+        "internal-support": 2,
+        "intentionally-unsurfaced": 124,
+        "unresolved": 0
+      },
+      "semanticFactRole": {
+        "boundary-conditioned-fact": 13,
+        "contextual-fact": 29,
+        "derived-fact": 50,
+        "genuine-user-choice": 58,
+        "lexical-fact": 34,
+        "unresolved": 0
+      },
+      "roleEvidenceKind": {
+        "live-application-declaration": 104,
+        "canonical-owner-contract-audit": 80
+      }
+    },
+    "genuineChoiceCount": 58,
+    "liveDeclarationCount": 18,
+    "contractOnlyCount": 40,
+    "contractOnlyBacklog": [
+      {
+        "atomId": "CAA-clause-adverbial-adjunction--clause-position",
+        "operationId": "clause:adverbial-adjunction",
+        "axisId": "clause-position"
+      },
+      {
+        "atomId": "CAA-clause-adverbial-adjunction--relation-scope",
+        "operationId": "clause:adverbial-adjunction",
+        "axisId": "relation-scope"
+      },
+      {
+        "atomId": "CAA-clause-comparison--degree-strategy",
+        "operationId": "clause:comparison",
+        "axisId": "degree-strategy"
+      },
+      {
+        "atomId": "CAA-clause-comparison--superlative-strategy",
+        "operationId": "clause:comparison",
+        "axisId": "superlative-strategy"
+      },
+      {
+        "atomId": "CAA-clause-composition--clause-rank",
+        "operationId": "clause:composition",
+        "axisId": "clause-rank"
+      },
+      {
+        "atomId": "CAA-clause-composition--complement-relation",
+        "operationId": "clause:composition",
+        "axisId": "complement-relation"
+      },
+      {
+        "atomId": "CAA-clause-composition--conjunction-relation",
+        "operationId": "clause:composition",
+        "axisId": "conjunction-relation"
+      },
+      {
+        "atomId": "CAA-clause-composition--parallel-structure",
+        "operationId": "clause:composition",
+        "axisId": "parallel-structure"
+      },
+      {
+        "atomId": "CAA-clause-composition--relation-marker",
+        "operationId": "clause:composition",
+        "axisId": "relation-marker"
+      },
+      {
+        "atomId": "CAA-grammar-nominal-construction--affective-nnc",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "affective-nnc"
+      },
+      {
+        "atomId": "CAA-grammar-nominal-construction--cardinal-number",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "cardinal-number"
+      },
+      {
+        "atomId": "CAA-grammar-nominal-construction--compound-nnc",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "compound-nnc"
+      },
+      {
+        "atomId": "CAA-grammar-nominal-construction--measure-modification",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "measure-modification"
+      },
+      {
+        "atomId": "CAA-grammar-nominal-construction--nominal-embed",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "nominal-embed"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--adjunctor",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "adjunctor"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--compound-head-target",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "compound-head-target"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--modification-topology",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "modification-topology"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--modifier-head-order",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "modifier-head-order"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--transitive-reference-contact",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "transitive-reference-contact"
+      },
+      {
+        "atomId": "CAA-nnc-adverbial--adverbial-context",
+        "operationId": "nnc:adverbial",
+        "axisId": "adverbial-context"
+      },
+      {
+        "atomId": "CAA-nnc-adverbial--clause-rank",
+        "operationId": "nnc:adverbial",
+        "axisId": "clause-rank"
+      },
+      {
+        "atomId": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "double-nucleus-ownerhood"
+      },
+      {
+        "atomId": "CAA-nnc-deverbal-construction--external-object",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "external-object"
+      },
+      {
+        "atomId": "CAA-nnc-deverbal-construction--nominalization-family",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "nominalization-family"
+      },
+      {
+        "atomId": "CAA-nnc-deverbal-construction--patientive-family",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "patientive-family"
+      },
+      {
+        "atomId": "CAA-nnc-personal-name--name-source-family",
+        "operationId": "nnc:personal-name",
+        "axisId": "name-source-family"
+      },
+      {
+        "atomId": "CAA-nnc-personal-name--outer-subject",
+        "operationId": "nnc:personal-name",
+        "axisId": "outer-subject"
+      },
+      {
+        "atomId": "CAA-nnc-personal-name--reranking",
+        "operationId": "nnc:personal-name",
+        "axisId": "reranking"
+      },
+      {
+        "atomId": "CAA-nnc-personal-name--sentence-operation",
+        "operationId": "nnc:personal-name",
+        "axisId": "sentence-operation"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--collectivity",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "collectivity"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--gentilic-formation",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "gentilic-formation"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--place-formation",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "place-formation"
+      },
+      {
+        "atomId": "CAA-nnc-relational--possessor-structure",
+        "operationId": "nnc:relational",
+        "axisId": "possessor-structure"
+      },
+      {
+        "atomId": "CAA-nnc-relational--relation-family",
+        "operationId": "nnc:relational",
+        "axisId": "relation-family"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--denominal-operation",
+        "operationId": "vnc:denominal",
+        "axisId": "denominal-operation"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--finite-participants",
+        "operationId": "vnc:denominal",
+        "axisId": "finite-participants"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--target-verbstem-class",
+        "operationId": "vnc:denominal",
+        "axisId": "target-verbstem-class"
+      },
+      {
+        "atomId": "CAA-vnc-derivational-operation--derivation-family",
+        "operationId": "vnc:derivational-operation",
+        "axisId": "derivation-family"
+      },
+      {
+        "atomId": "CAA-vnc-ordered-voice-application--voice-operation-order",
+        "operationId": "vnc:ordered-voice-application",
+        "axisId": "voice-operation-order"
+      },
+      {
+        "atomId": "CAA-vnc-ordered-voice-chain--voice-operation-order",
+        "operationId": "vnc:ordered-voice-chain",
+        "axisId": "voice-operation-order"
+      }
+    ]
+  },
+  "blockers": [
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "front-matter",
+      "label": "Front matter"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-a",
+      "label": "Appendix A"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-b",
+      "label": "Appendix B"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-c",
+      "label": "Appendix C"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-d",
+      "label": "Appendix D"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-e",
+      "label": "Appendix E"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "appendix-f",
+      "label": "Appendix F"
+    },
+    {
+      "kind": "missing-source-zone-ledger",
+      "id": "suggested-reading",
+      "label": "Suggested Reading"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-adverbial-adjunction--clause-position",
+      "operationId": "clause:adverbial-adjunction",
+      "axisId": "clause-position"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-adverbial-adjunction--relation-scope",
+      "operationId": "clause:adverbial-adjunction",
+      "axisId": "relation-scope"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-comparison--degree-strategy",
+      "operationId": "clause:comparison",
+      "axisId": "degree-strategy"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-comparison--superlative-strategy",
+      "operationId": "clause:comparison",
+      "axisId": "superlative-strategy"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--clause-rank",
+      "operationId": "clause:composition",
+      "axisId": "clause-rank"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--complement-relation",
+      "operationId": "clause:composition",
+      "axisId": "complement-relation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--conjunction-relation",
+      "operationId": "clause:composition",
+      "axisId": "conjunction-relation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--parallel-structure",
+      "operationId": "clause:composition",
+      "axisId": "parallel-structure"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--relation-marker",
+      "operationId": "clause:composition",
+      "axisId": "relation-marker"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-grammar-nominal-construction--affective-nnc",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "affective-nnc"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-grammar-nominal-construction--cardinal-number",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "cardinal-number"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-grammar-nominal-construction--compound-nnc",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "compound-nnc"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-grammar-nominal-construction--measure-modification",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "measure-modification"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-grammar-nominal-construction--nominal-embed",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "nominal-embed"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--adjunctor",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "adjunctor"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--compound-head-target",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "compound-head-target"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--modification-topology",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "modification-topology"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--modifier-head-order",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "modifier-head-order"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--transitive-reference-contact",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "transitive-reference-contact"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adverbial--adverbial-context",
+      "operationId": "nnc:adverbial",
+      "axisId": "adverbial-context"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adverbial--clause-rank",
+      "operationId": "nnc:adverbial",
+      "axisId": "clause-rank"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "double-nucleus-ownerhood"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--external-object",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "external-object"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--nominalization-family",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "nominalization-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--patientive-family",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "patientive-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-personal-name--name-source-family",
+      "operationId": "nnc:personal-name",
+      "axisId": "name-source-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-personal-name--outer-subject",
+      "operationId": "nnc:personal-name",
+      "axisId": "outer-subject"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-personal-name--reranking",
+      "operationId": "nnc:personal-name",
+      "axisId": "reranking"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-personal-name--sentence-operation",
+      "operationId": "nnc:personal-name",
+      "axisId": "sentence-operation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--collectivity",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "collectivity"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--gentilic-formation",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "gentilic-formation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--place-formation",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "place-formation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-relational--possessor-structure",
+      "operationId": "nnc:relational",
+      "axisId": "possessor-structure"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-relational--relation-family",
+      "operationId": "nnc:relational",
+      "axisId": "relation-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--denominal-operation",
+      "operationId": "vnc:denominal",
+      "axisId": "denominal-operation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--finite-participants",
+      "operationId": "vnc:denominal",
+      "axisId": "finite-participants"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--target-verbstem-class",
+      "operationId": "vnc:denominal",
+      "axisId": "target-verbstem-class"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-derivational-operation--derivation-family",
+      "operationId": "vnc:derivational-operation",
+      "axisId": "derivation-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-ordered-voice-application--voice-operation-order",
+      "operationId": "vnc:ordered-voice-application",
+      "axisId": "voice-operation-order"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-ordered-voice-chain--voice-operation-order",
+      "operationId": "vnc:ordered-voice-chain",
+      "axisId": "voice-operation-order"
+    },
+    {
+      "kind": "missing-per-axis-browser-delivery-proof-registry",
+      "id": "genuine-choice-browser-delivery-proof",
+      "axisCount": 58
+    }
+  ],
+  "inputDigests": {
+    "canvas": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
+    "semanticLedger": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
+    "proofMigration": "sha256:42ac2eecced5d220ea6e360096cf81f118466acce8fa3c8a3e7edf01196e18f5",
+    "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
+    "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
+    "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc"
+  }
+}
