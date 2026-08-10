@@ -14,7 +14,7 @@ const spec = {
   "coordinates": {
     "claim-p3670::p3670-study-the-difference-between-the-members-of-the-following": {
       "assertionId": "classical-action-possessor-role-contrast:p3670-study-the-difference-between-the-members-of-the-following",
-      "canonicalPath": "cases.actionPossessorRoleContrast.authorizationStatus"
+      "canonicalPath": "cases.actionPossessorRoleContrast.relation"
     },
     "claim-p3671::p3671-in-the-ones-derived-from-the-active-voice-the": {
       "assertionId": "classical-action-possessor-role-contrast:p3671-in-the-ones-derived-from-the-active-voice-the",
