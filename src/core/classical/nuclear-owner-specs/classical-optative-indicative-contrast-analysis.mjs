@@ -46,10 +46,6 @@ const spec = {
       "assertionId": "classical-optative-indicative-contrast-analysis:p1060-subject-singular-or-plural",
       "canonicalPath": "semanticValue"
     },
-    "claim-p1061::p1061-when-optative-and-indicative-vncs-have-the-same-shape": {
-      "assertionId": "classical-optative-indicative-contrast-analysis:p1061-when-optative-and-indicative-vncs-have-the-same-shape",
-      "canonicalPath": "semanticValue"
-    },
     "claim-p1062::p1062-the-following-can-be-either-past-optative-or-customary": {
       "assertionId": "classical-optative-indicative-contrast-analysis:p1062-the-following-can-be-either-past-optative-or-customary",
       "canonicalPath": "semanticValue"

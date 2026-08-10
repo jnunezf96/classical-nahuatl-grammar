@@ -30,10 +30,6 @@ const spec = {
       "assertionId": "classical-late-grammar-active-incorporated-noun-adverbial:p5335-this-is-most-obvious-in-monezahualhuitequi-where-ne-zahua",
       "canonicalPath": "analysis.semanticBoundary"
     },
-    "claim-p5336::p5336-neither-of-these-literal-translations-means-anything-to-english": {
-      "assertionId": "classical-late-grammar-active-incorporated-noun-adverbial:p5336-neither-of-these-literal-translations-means-anything-to-english",
-      "canonicalPath": "analysis.hostileAuthorityBlocked"
-    },
     "claim-p5337::p5337-the-translation-given-above-for-ehehcapolihui-is-especially-misleading": {
       "assertionId": "classical-late-grammar-active-incorporated-noun-adverbial:p5337-the-translation-given-above-for-ehehcapolihui-is-especially-misleading",
       "canonicalPath": "analysis.translationAuthority"

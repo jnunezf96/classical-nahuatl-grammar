@@ -16,10 +16,6 @@ const spec = {
       "assertionId": "classical-adverbial-quen-fused-adjunctor-in:p4185-is-vouched-for-by-its-role-as-embed-in",
       "canonicalPath": "cases.particleQuenInitial.canonicalResult"
     },
-    "claim-p4186::p4186-this-morph-is-here-assumed-to-be-the-adjunctor": {
-      "assertionId": "classical-adverbial-quen-fused-adjunctor-in:p4186-this-morph-is-here-assumed-to-be-the-adjunctor",
-      "canonicalPath": "cases.particleQuenInitial.context.interrogativeForce"
-    },
     "claim-p4187::p4187-the-fusion-of-que-and-in-has-been-so": {
       "assertionId": "classical-adverbial-quen-fused-adjunctor-in:p4187-the-fusion-of-que-and-in-has-been-so",
       "canonicalPath": "cases.particleQuenInitial.lexicalEntryId"

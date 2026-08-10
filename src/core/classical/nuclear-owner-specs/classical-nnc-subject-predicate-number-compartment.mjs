@@ -28,10 +28,6 @@ const spec = {
       "assertionId": "classical-nnc-subject-predicate-number-compartment:p1347-warning-the-number-position-on-an-nnc-i-e",
       "canonicalPath": "numberFrame.numberBelongsTo"
     },
-    "claim-p1348::p1348-in-an-english-nounword-a-number-suffix-is-an": {
-      "assertionId": "classical-nnc-subject-predicate-number-compartment:p1348-in-an-english-nounword-a-number-suffix-is-an",
-      "canonicalPath": "numberFrame.numberIsNounInflection"
-    },
     "claim-p1349::p1349-it-is-a-constituent-of-the-subject-personal-pronoun": {
       "assertionId": "classical-nnc-subject-predicate-number-compartment:p1349-it-is-a-constituent-of-the-subject-personal-pronoun",
       "canonicalPath": "slotFrame.slots.number.belongsTo"

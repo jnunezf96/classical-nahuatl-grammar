@@ -1,8 +1,66 @@
 # Andrews individual atom engine dispositions
 
-Status: individually mapped and focused-proof complete.
+Status: exhaustive semantic disposition, typed-proof migration, and isolated live validation complete.
 
-This ledger records the 36 newly separated grammar atoms produced by the source-first Canvas audit. Each atom has one semantic owner and one exact owner-issued Result path. Documentary and analytical atoms remain outside runtime authority; read-only facts do not create user controls.
+This ledger records the all-Canvas audit of **28,540** Lessons 1–58 atoms.
+Every atom has one independently adjudicated source force. Every one of the
+**18,639 grammar-bearing** atoms has one typed semantic owner and one engine
+disposition; the remaining **9,901** records are evidence, analysis, or
+documentary material and never become runtime authority.
+
+The inventory remains accounting only. Productive grammar comes from an
+owner-issued typed Result. A missing example or other evidence never means
+that a grammatical realization is absent, invalid, or blocked.
+
+### Exhaustive force accounting
+
+| Force | Atoms | Runtime authority |
+|---|---:|---|
+| grammar-bearing | 18639 | typed owner required |
+| evidence | 6524 | never authorizes or blocks grammar |
+| analysis | 1423 | never authorizes or blocks grammar |
+| documentary | 1954 | never authorizes or blocks grammar |
+| **Total** | **28540** | **one force per atom** |
+
+### Grammar-engine dispositions
+
+| Disposition | Grammar atoms |
+|---|---:|
+| canonical operation or alternation | 5049 |
+| canonical paradigm projection | 26 |
+| read-only typed grammar fact | 3998 |
+| typed applicability constraint or dependency | 2672 |
+| typed meaning or result projection | 3432 |
+| typed structure or referent relation | 3462 |
+| **Total** | **18639** |
+
+### Semantic object scope
+
+The atom-level scope ledger records `belongsTo` separately from `about`.
+`human-object-specified` occurs on **369** atoms, including
+**335** grammar atoms. `nonhuman-object-specified` occurs
+on **452** atoms, including **432**
+grammar atoms. These are semantic applicability facets, not evidence gates or
+automatic user controls.
+
+### Individual proof migration
+
+The exhaustive migration retains **5347**
+current exact owner proofs and adds **13292**
+unique typed atom coordinates grouped by **862**
+canonical semantic owners. The new coordinates live on
+**862** distinct typed assertion owners linked
+back to those canonical owners; they do not overwrite or impersonate existing
+production owners. Assertion Results are non-generative, while actual surface
+realization remains authorized only by the canonical operation or paradigm
+owner named by the atom's engine disposition. Copied sources, inventory rows,
+examples, expected strings, and cached validation records do not authorize a
+Result.
+
+## Earlier source-first focused proof slice
+
+The table below preserves the earlier 36-atom focused migration as historical
+detail inside the now-exhaustive accounting.
 
 | Atom | Disposition | Semantic owner | Exact Result path | Oracle expectation |
 |---|---|---|---|---|
@@ -85,4 +143,10 @@ The corresponding broad proof coordinates were removed. Their narrower grammar-b
 
 ## Proof boundary
 
-The ten affected owners passed focused live validation, including owner-issued source admission, exact semantic oracles, hostile copied/raw carriers, mutation detection, and replayable routes. Aggregate repository currency is reported separately because shared engine changes can invalidate additional dependent owner shards.
+The exhaustive owner assignment and typed-proof migration reconcile one-to-one
+with all **18,639** grammar atoms. In the isolated repository integration,
+all **862** new assertion owners completed live execution: **42,462** cases,
+**42,462** replayable routes, **1,126,732** validation receipts, and
+**19,326** mutation checks, with zero owner failures. The frozen denominator,
+Canvas inventory reconciliation, generated proof-record checks, copied-source
+rejection, and evidence non-authority checks also passed.

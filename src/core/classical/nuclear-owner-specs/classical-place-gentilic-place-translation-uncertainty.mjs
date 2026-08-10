@@ -15,10 +15,6 @@ const spec = {
     "claim-p4563"
   ],
   "coordinates": {
-    "claim-p4558::p4558-the-problem-is-often-due-to-inadequate-spelling-practices": {
-      "assertionId": "classical-place-gentilic-place-translation-uncertainty:p4558-the-problem-is-often-due-to-inadequate-spelling-practices",
-      "canonicalPath": "analyses.translationUncertainty.translationAuthorizesMorphology"
-    },
     "claim-p4559::p4559-or-the-problem-may-be-due-to-sound-changes": {
       "assertionId": "classical-place-gentilic-place-translation-uncertainty:p4559-or-the-problem-may-be-due-to-sound-changes",
       "canonicalPath": "analyses.translationUncertainty.spellingGuessAuthorizesMorphology"

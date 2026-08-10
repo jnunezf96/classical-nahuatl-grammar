@@ -24,10 +24,6 @@ const spec = {
     "claim-p5272::p5272-care-must-be-taken-in-this-matter": {
       "assertionId": "classical-late-grammar-adverbial-nnc-supplement:p5272-care-must-be-taken-in-this-matter",
       "canonicalPath": "analysis.semanticBoundary"
-    },
-    "claim-p5273::p5273-the-adjunct-has-no-direct-grammatical-relationship-to-the": {
-      "assertionId": "classical-late-grammar-adverbial-nnc-supplement:p5273-the-adjunct-has-no-direct-grammatical-relationship-to-the",
-      "canonicalPath": "analysis.hostileAuthorityBlocked"
     }
   },
   "executionFunctionName": "buildClassicalLateGrammarValidationFrame",

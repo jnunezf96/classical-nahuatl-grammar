@@ -19,10 +19,6 @@ const spec = {
     "claim-p4582::p4582-the-embed-is-frequently-the-general-use-stem-of": {
       "assertionId": "classical-place-gentilic-place-n-preterit-agentive:p4582-the-embed-is-frequently-the-general-use-stem-of",
       "canonicalPath": "cases.nPreterit.lcmAxisId"
-    },
-    "claim-p4583::p4583-the-fifth-one-apparently-assumes-the-source-to-be": {
-      "assertionId": "classical-place-gentilic-place-n-preterit-agentive:p4583-the-fifth-one-apparently-assumes-the-source-to-be",
-      "canonicalPath": "cases.nPreterit.canonicalFrame"
     }
   },
   "executionFunctionName": "buildClassicalPlaceGentilicValidationFrame",

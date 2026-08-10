@@ -9,12 +9,7 @@ const spec = {
   "selections": [
     "claim-p4864"
   ],
-  "coordinates": {
-    "claim-p4864::p4864-everyone-looks-upon-this-i-hua-n-as-a": {
-      "assertionId": "classical-clause-conjunction-translation-mirage:p4864-everyone-looks-upon-this-i-hua-n-as-a",
-      "canonicalPath": "analysis.semanticBoundary"
-    }
-  },
+  "coordinates": {},
   "executionFunctionName": "buildClassicalClauseConjunctionValidationFrame",
   "executionValidatorName": "isClassicalClauseConjunctionValidationFrame",
   "executionArgsBySelection": {

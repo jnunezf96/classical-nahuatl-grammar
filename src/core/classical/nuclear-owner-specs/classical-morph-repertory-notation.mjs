@@ -34,10 +34,6 @@ const spec = {
     "claim-p691::p691-when-two-or-more-morphs-are-listed-in-a": {
       "assertionId": "classical-morph-repertory-notation:p691-when-two-or-more-morphs-are-listed-in-a",
       "canonicalPath": "semanticValue"
-    },
-    "claim-p692::p692-for-example-the-spellings-te-uc-and-te-cu": {
-      "assertionId": "classical-morph-repertory-notation:p692-for-example-the-spellings-te-uc-and-te-cu",
-      "canonicalPath": "semanticValue"
     }
   },
   "collectionCapabilityName": "CLASSICAL_NAHUATL_NUCLEAR_FACT_RECORDS"

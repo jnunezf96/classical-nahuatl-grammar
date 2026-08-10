@@ -11,10 +11,6 @@ const spec = {
     "claim-p3096"
   ],
   "coordinates": {
-    "claim-p3095::p3095-the-second-problem-to-be-faced-in-dealing-with": {
-      "assertionId": "classical-compound-nnc-order-ambiguity:p3095-the-second-problem-to-be-faced-in-dealing-with",
-      "canonicalPath": "cases.orderAmbiguity.rules.compound-nnc/order-ambiguity"
-    },
     "claim-p3096::p3096-although-the-english-translation-is-unable-to-capture-the": {
       "assertionId": "classical-compound-nnc-order-ambiguity:p3096-although-the-english-translation-is-unable-to-capture-the",
       "canonicalPath": "cases.orderAmbiguity.authorizationStatus"

@@ -61,10 +61,6 @@ const spec = {
       "assertionId": "classical-syllabification:any-two-vowels-sequence-belong-separate-syllables-e-g",
       "canonicalPath": ""
     },
-    "cn-l2-26-u-is-digraph-only::special-care-should-taken-symbol-u-lessons-never-a": {
-      "assertionId": "classical-syllabification:special-care-should-taken-symbol-u-lessons-never-a",
-      "canonicalPath": ""
-    },
     "cn-l2-26-two-consonant-cluster-split::no-more-than-two-consonant-sounds-juxtaposed-such-a": {
       "assertionId": "classical-syllabification:no-more-than-two-consonant-sounds-juxtaposed-such-a",
       "canonicalPath": ""

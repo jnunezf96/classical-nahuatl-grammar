@@ -29,10 +29,6 @@ const spec = {
     "claim-p731::p731-3-for-vncs-expressing-the-nonpast-optative": {
       "assertionId": "classical-vnc-subject-paradigm-formation:p731-3-for-vncs-expressing-the-nonpast-optative",
       "canonicalPath": "nonpastOptative"
-    },
-    "claim-p732::p732-for-vncs-expressing-the-nonpast-admonitive-only-the-first": {
-      "assertionId": "classical-vnc-subject-paradigm-formation:p732-for-vncs-expressing-the-nonpast-admonitive-only-the-first",
-      "canonicalPath": "nonpastAdmonitive"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlSubjectParadigmSystemFrame",

@@ -75,10 +75,6 @@ const spec = {
       "assertionId": "classical-continuation-patientive-complement:p3839-when-the-source-of-the-embed-as-object-complement",
       "canonicalPath": "cases.patientiveComplement.second.canonicalResult"
     },
-    "claim-p3840::p3840-this-is-reminiscent-of-the-transformation-described-in-30": {
-      "assertionId": "classical-continuation-patientive-complement:p3840-this-is-reminiscent-of-the-transformation-described-in-30",
-      "canonicalPath": "cases.patientiveComplement.second.participantTransform.targetCase"
-    },
     "claim-p3841::p3841-the-matrix-verbstem-may-be-m-o-te-toca": {
       "assertionId": "classical-continuation-patientive-complement:p3841-the-matrix-verbstem-may-be-m-o-te-toca",
       "canonicalPath": "cases.patientiveComplement.authorizationStatus"

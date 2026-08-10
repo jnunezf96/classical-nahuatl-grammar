@@ -58,10 +58,6 @@ const spec = {
     "cn-l2-210-ll-only-listed::rules-1-2-above-ways-ll-sequence-occur-therefore": {
       "assertionId": "classical-progressive-assimilation:rules-1-2-above-ways-ll-sequence-occur-therefore",
       "canonicalPath": ""
-    },
-    "cn-l2-210-ll-only-listed::example-ollin-incorrect-cannot-day-name-component-meaning-a": {
-      "assertionId": "classical-progressive-assimilation:example-ollin-incorrect-cannot-day-name-component-meaning-a",
-      "canonicalPath": ""
     }
   },
   "ruleGetterName": "getClassicalNahuatlAssimilationRules",

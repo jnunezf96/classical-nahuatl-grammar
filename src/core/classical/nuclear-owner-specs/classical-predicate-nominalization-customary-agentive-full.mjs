@@ -38,10 +38,6 @@ const spec = {
       "assertionId": "classical-predicate-nominalization-customary-agentive-full:p3516-also-only-the-fully-nominalized-nnc-of-the-present",
       "canonicalPath": "cases.customaryFull.nounClass"
     },
-    "claim-p3517::p3517-a-huiyanitl-a-hui-ya-ni-tl-a-huiyani": {
-      "assertionId": "classical-predicate-nominalization-customary-agentive-full:p3517-a-huiyanitl-a-hui-ya-ni-tl-a-huiyani",
-      "canonicalPath": "cases.customaryFull.authorizationStatus"
-    },
     "claim-p3518::p3518-ordinarily-the-customary-present-agentive-nounstem-is-not-used": {
       "assertionId": "classical-predicate-nominalization-customary-agentive-full:p3518-ordinarily-the-customary-present-agentive-nounstem-is-not-used",
       "canonicalPath": "cases.customaryFull.canonicalResult"

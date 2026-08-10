@@ -56,10 +56,6 @@ const spec = {
       "assertionId": "classical-ti-perfective-variant-formation:p1175-by-means-of-the-derivational-suffix-ti-see-54",
       "canonicalPath": "authorizationStatus"
     },
-    "claim-p1176::p1176-11-5-1-hue-hue-ti-hue-hue-t": {
-      "assertionId": "classical-ti-perfective-variant-formation:p1176-11-5-1-hue-hue-ti-hue-hue-t",
-      "canonicalPath": "authorizationStatus"
-    },
     "claim-p1177::p1177-to-become-an-old-woman-see-35-8-1": {
       "assertionId": "classical-ti-perfective-variant-formation:p1177-to-become-an-old-woman-see-35-8-1",
       "canonicalPath": "authorizationStatus"

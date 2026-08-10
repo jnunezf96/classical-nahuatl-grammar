@@ -19,10 +19,6 @@ const spec = {
     "claim-p2507::p2507-since-one-or-both-of-the-shuntline-object-pronouns": {
       "assertionId": "classical-triple-object-causative-system:p2507-since-one-or-both-of-the-shuntline-object-pronouns",
       "canonicalPath": "participants.maximumLicensedObjectCount"
-    },
-    "claim-p2508::p2508-no-attempt-has-been-made-to-show-all-possible": {
-      "assertionId": "classical-triple-object-causative-system:p2508-no-attempt-has-been-made-to-show-all-possible",
-      "canonicalPath": "participants.tripleSpecific.targetObjectRequests.2.derivationalLevel"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",

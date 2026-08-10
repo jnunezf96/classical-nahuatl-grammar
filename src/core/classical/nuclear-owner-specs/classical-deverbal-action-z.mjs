@@ -41,10 +41,6 @@ const spec = {
       "assertionId": "classical-deverbal-action-z:p3628-in-the-possessive-state-nnc-the-possessor-pronoun-indicates",
       "canonicalPath": "cases.deverbalZ.actionSuffix"
     },
-    "claim-p3629::p3629-the-z-derivation-is-discussed-first-the-presentation-of": {
-      "assertionId": "classical-deverbal-action-z:p3629-the-z-derivation-is-discussed-first-the-presentation-of",
-      "canonicalPath": "cases.deverbalZ.authorizationStatus"
-    },
     "claim-p3630::p3630-the-active-action-suffix-z-is-added-to-the": {
       "assertionId": "classical-deverbal-action-z:p3630-the-active-action-suffix-z-is-added-to-the",
       "canonicalPath": "cases.deverbalZ.canonicalResult"
