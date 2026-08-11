@@ -31,7 +31,7 @@ function run(ctx) {
         {
             kind: "classical-grammar-system-readout",
             authorizationStatus: "authorized",
-            operationCount: 33,
+            operationCount: 85,
             gcd: "typed-semantic-application-to-canonical-result",
             gcdInvariantCount: 9,
             lcmAxisCount: grammarSystemReadout.leastCommonMultipleAxisCount,
@@ -182,6 +182,7 @@ function run(ctx) {
                 missingOperation: ctx.getAndrewsUnitSourceTargetRouteOptionsFromOperationFrame(null).diagnosticId,
                 displayPoison: {
                     ok: displayPoisonResult.ok,
+                    diagnosticId: displayPoisonResult.diagnosticId,
                     targetFormulaType: displayPoisonResult.targetFormulaType,
                     sourceTargetOptions: displayPoisonResult.sourceTargetOptions,
                 },
@@ -199,9 +200,10 @@ function run(ctx) {
             directString: "andrews-unit-source-target-route-options-missing-operation-frame",
             missingOperation: "andrews-unit-source-target-route-options-missing-operation-frame",
             displayPoison: {
-                ok: true,
-                targetFormulaType: "CNN",
-                sourceTargetOptions: "CNV->CNN|CNN->CNN|CNV/CNN->CNV/CNN",
+                ok: false,
+                diagnosticId: "andrews-unit-source-target-route-options-unissued-source-frame",
+                targetFormulaType: "",
+                sourceTargetOptions: "",
             },
             contradictoryTarget: "andrews-unit-source-target-route-options-contradictory-target-frame",
             applied: {

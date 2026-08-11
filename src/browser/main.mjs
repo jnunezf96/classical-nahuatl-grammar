@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson-route-read-only-025";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-grammar-owned-unit-routes-026";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

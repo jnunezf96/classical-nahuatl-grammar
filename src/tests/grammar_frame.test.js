@@ -97,6 +97,28 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "the grammar owner, not UI state, issues CNV and CNN route choices",
+        (() => {
+            const cnv = ctx.issueAndrewsUnitSourceTargetRouteOptionsSourceFrame("verbo");
+            const cnn = ctx.issueAndrewsUnitSourceTargetRouteOptionsSourceFrame("sustantivo");
+            return {
+                cnvOwner: cnv.owner,
+                cnvTransitions: cnv.routeOptionFrames.map(frame => frame.formulaTransition),
+                cnnTransitions: cnn.routeOptionFrames.map(frame => frame.formulaTransition),
+                cnvIssued: ctx.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame(cnv),
+                copiedFrameIssued: ctx.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame({ ...cnv }),
+            };
+        })(),
+        {
+            cnvOwner: "core/grammar/frame",
+            cnvTransitions: ["CNV->CNV", "CNN->CNV", "CNV/CNN->CNV/CNN"],
+            cnnTransitions: ["CNV->CNN", "CNN->CNN", "CNV/CNN->CNV/CNN"],
+            cnvIssued: true,
+            copiedFrameIssued: false,
+        }
+    );
+
+    s.eq(
         "formula source requirements fail closed before generation",
         {
             missingNnc:

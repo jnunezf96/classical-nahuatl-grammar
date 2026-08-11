@@ -1245,38 +1245,6 @@ export function createUiStateModule(targetObject = globalThis) {
     function getActiveUnitKind() {
       return getUnitKindForTenseMode(getActiveUnitTenseModeForCurrentSelection());
     }
-    const ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY = Object.freeze({
-      "unit-target-cnv": Object.freeze({
-        key: "unit-target-cnv",
-        mode: "verbo",
-        targetFormulaType: "CNV",
-        routeOptions: Object.freeze([Object.freeze({
-          sourceFormulaType: "CNV",
-          targetFormulaType: "CNV"
-        }), Object.freeze({
-          sourceFormulaType: "CNN",
-          targetFormulaType: "CNV"
-        }), Object.freeze({
-          sourceFormulaType: "CNV/CNN",
-          targetFormulaType: "CNV/CNN"
-        })])
-      }),
-      "unit-target-cnn": Object.freeze({
-        key: "unit-target-cnn",
-        mode: "sustantivo",
-        targetFormulaType: "CNN",
-        routeOptions: Object.freeze([Object.freeze({
-          sourceFormulaType: "CNV",
-          targetFormulaType: "CNN"
-        }), Object.freeze({
-          sourceFormulaType: "CNN",
-          targetFormulaType: "CNN"
-        }), Object.freeze({
-          sourceFormulaType: "CNV/CNN",
-          targetFormulaType: "CNV/CNN"
-        })])
-      })
-    });
     function normalizeAndrewsUnitFormulaType(value = "") {
       return String(value || "").trim().toUpperCase();
     }
@@ -1357,35 +1325,21 @@ export function createUiStateModule(targetObject = globalThis) {
     }
     function buildAndrewsUnitSourceTargetRouteOptionsSourceFrame(mode = "") {
       const registryKey = getAndrewsUnitRouteOptionRegistryKeyForMode(mode);
-      const spec = registryKey ? ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY[registryKey] : null;
-      if (!spec) {
+      const issueSourceFrame = targetObject.issueAndrewsUnitSourceTargetRouteOptionsSourceFrame;
+      const isIssuedSourceFrame = targetObject.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame;
+      const sourceFrame = typeof issueSourceFrame === "function" ? issueSourceFrame(mode) : null;
+      if (!sourceFrame || typeof isIssuedSourceFrame !== "function" || !isIssuedSourceFrame(sourceFrame)) {
         return {
           kind: "andrews-unit-source-target-route-options-source-frame",
           version: 1,
           status: "blocked",
-          diagnosticId: "andrews-unit-source-target-route-options-missing-registry-spec",
+          diagnosticId: "andrews-unit-source-target-route-options-missing-grammar-owner",
           mode: String(mode || ""),
           registryKey,
           routeOptionFrames: []
         };
       }
-      const targetFormulaFrame = buildAndrewsUnitFormulaFrame(spec.targetFormulaType, "unit-target");
-      const routeOptionFrames = Array.from(spec.routeOptions || []).map((option, index) => buildAndrewsUnitRouteOptionFrame(option, index));
-      return {
-        kind: "andrews-unit-source-target-route-options-source-frame",
-        version: 1,
-        status: "authorized",
-        mode: String(mode || spec.mode || ""),
-        registryKey,
-        modeSystem: "unit",
-        targetFormulaFrame,
-        routeOptionFrames,
-        boundaries: {
-          noDomDatasetOptionAuthority: true,
-          noPipeDelimitedOptionAuthority: true,
-          renderDatasetOnlyAfterStructuralAuthorization: true
-        }
-      };
+      return sourceFrame;
     }
     function getAndrewsUnitSourceFrameMismatch(sourceFrame = null) {
       if (!sourceFrame || typeof sourceFrame !== "object") {
@@ -1397,15 +1351,15 @@ export function createUiStateModule(targetObject = globalThis) {
       if (sourceFrame.status !== "authorized") {
         return sourceFrame.diagnosticId || "unauthorized-source-frame";
       }
+      if (typeof targetObject.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame !== "function" || !targetObject.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame(sourceFrame)) {
+        return "unissued-source-frame";
+      }
       if (!sourceFrame.boundaries || sourceFrame.boundaries.noDomDatasetOptionAuthority !== true || sourceFrame.boundaries.noPipeDelimitedOptionAuthority !== true) {
         return "missing-source-frame-authority-boundaries";
       }
       const registryKey = String(sourceFrame.registryKey || "");
-      const spec = registryKey ? ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY[registryKey] : null;
-      if (!spec) {
-        return "missing-registry-spec";
-      }
-      const expectedSourceFrame = buildAndrewsUnitSourceTargetRouteOptionsSourceFrame(spec.mode);
+      const expectedSourceFrame = buildAndrewsUnitSourceTargetRouteOptionsSourceFrame(sourceFrame.mode);
+      if (expectedSourceFrame.status !== "authorized" || expectedSourceFrame.registryKey !== registryKey) return "missing-grammar-owner-route";
       if (sourceFrame.targetFormulaFrame?.formulaType !== expectedSourceFrame.targetFormulaFrame.formulaType) {
         return "contradictory-target-formula-frame";
       }
@@ -1442,14 +1396,7 @@ export function createUiStateModule(targetObject = globalThis) {
         version: 1,
         status: "authorized",
         operation: "resolve-unit-target-route-options-from-andrews-source-frame",
-        sourceFrame: {
-          ...sourceFrame,
-          targetFormulaFrame: cloneAndrewsUnitFormulaFrame(sourceFrame.targetFormulaFrame),
-          routeOptionFrames: sourceFrame.routeOptionFrames.map(cloneAndrewsUnitRouteOptionFrame).filter(Boolean),
-          boundaries: {
-            ...sourceFrame.boundaries
-          }
-        },
+        sourceFrame,
         targetFormulaFrame: cloneAndrewsUnitFormulaFrame(sourceFrame.targetFormulaFrame),
         routeOptionFrames,
         targetFrame: {
@@ -1493,7 +1440,10 @@ export function createUiStateModule(targetObject = globalThis) {
     function getAndrewsUnitSourceTargetRouteOptionsFromOperationFrame(operationFrame = null) {
       const mismatch = getAndrewsUnitOperationFrameMismatch(operationFrame);
       if (mismatch) {
-        return blockAndrewsUnitSourceTargetRouteOptions(`andrews-unit-source-target-route-options-${mismatch}`);
+        const diagnosticId = String(mismatch).startsWith("andrews-unit-source-target-route-options-")
+          ? String(mismatch)
+          : `andrews-unit-source-target-route-options-${mismatch}`;
+        return blockAndrewsUnitSourceTargetRouteOptions(diagnosticId);
       }
       const routeOptionFrames = operationFrame.targetFrame.sourceTargetOptionFrames.map(cloneAndrewsUnitRouteOptionFrame).filter(Boolean);
       const sourceTargetOptionList = routeOptionFrames.map(frame => frame.formulaTransition);

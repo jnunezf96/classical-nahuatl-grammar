@@ -23,6 +23,7 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
     }
     const issuedAndrewsCnvTenseLogicAuthorityFrames = new WeakSet();
     const issuedAndrewsFormulaSlotSchemas = new WeakSet();
+    const issuedAndrewsUnitSourceTargetRouteOptionFrames = new WeakSet();
     var GRAMMAR_NO_OUTPUT_SURFACE_MARKERS = Object.freeze(["—"]);
     const ANDREWS_FORMULA_SLOT_SCHEMA_VERSION = 1;
     const ANDREWS_LOGIC_AUTHORITY_POLICY_VERSION = 1;
@@ -38,6 +39,81 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
       noClassicalSurfaceImport: true,
       scope: "Andrews-licensed route, slot, boundary, and derivation logic"
     });
+    const ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY = Object.freeze({
+      "unit-target-cnv": Object.freeze({
+        mode: "verbo",
+        targetFormulaType: "CNV",
+        routeOptions: Object.freeze([
+          Object.freeze({ sourceFormulaType: "CNV", targetFormulaType: "CNV" }),
+          Object.freeze({ sourceFormulaType: "CNN", targetFormulaType: "CNV" }),
+          Object.freeze({ sourceFormulaType: "CNV/CNN", targetFormulaType: "CNV/CNN" })
+        ])
+      }),
+      "unit-target-cnn": Object.freeze({
+        mode: "sustantivo",
+        targetFormulaType: "CNN",
+        routeOptions: Object.freeze([
+          Object.freeze({ sourceFormulaType: "CNV", targetFormulaType: "CNN" }),
+          Object.freeze({ sourceFormulaType: "CNN", targetFormulaType: "CNN" }),
+          Object.freeze({ sourceFormulaType: "CNV/CNN", targetFormulaType: "CNV/CNN" })
+        ])
+      })
+    });
+    function getAndrewsUnitSourceTargetRouteOptionRegistryKey(mode = "") {
+      const normalized = String(mode || "").trim().toLowerCase();
+      if (normalized === "verbo" || normalized === "cnv") return "unit-target-cnv";
+      if (normalized === "sustantivo" || normalized === "cnn") return "unit-target-cnn";
+      return "";
+    }
+    function issueAndrewsUnitSourceTargetRouteOptionsSourceFrame(mode = "") {
+      const registryKey = getAndrewsUnitSourceTargetRouteOptionRegistryKey(mode);
+      const spec = registryKey ? ANDREWS_UNIT_SOURCE_TARGET_ROUTE_OPTION_REGISTRY[registryKey] : null;
+      if (!spec) return null;
+      const routeOptionFrames = Object.freeze(spec.routeOptions.map((option, index) => Object.freeze({
+        kind: "andrews-unit-source-target-route-option-frame",
+        version: 1,
+        index,
+        sourceFormulaFrame: Object.freeze({
+          kind: "andrews-unit-formula-type-frame",
+          version: 1,
+          role: "source",
+          formulaType: option.sourceFormulaType
+        }),
+        targetFormulaFrame: Object.freeze({
+          kind: "andrews-unit-formula-type-frame",
+          version: 1,
+          role: "target",
+          formulaType: option.targetFormulaType
+        }),
+        formulaTransition: `${option.sourceFormulaType}->${option.targetFormulaType}`
+      })));
+      const frame = {
+        kind: "andrews-unit-source-target-route-options-source-frame",
+        version: 1,
+        status: "authorized",
+        owner: "core/grammar/frame",
+        mode: spec.mode,
+        registryKey,
+        modeSystem: "unit",
+        targetFormulaFrame: Object.freeze({
+          kind: "andrews-unit-formula-type-frame",
+          version: 1,
+          role: "unit-target",
+          formulaType: spec.targetFormulaType
+        }),
+        routeOptionFrames,
+        boundaries: Object.freeze({
+          noDomDatasetOptionAuthority: true,
+          noPipeDelimitedOptionAuthority: true,
+          renderDatasetOnlyAfterStructuralAuthorization: true
+        })
+      };
+      issuedAndrewsUnitSourceTargetRouteOptionFrames.add(frame);
+      return Object.freeze(frame);
+    }
+    function isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame(frame = null) {
+      return Boolean(frame && typeof frame === "object" && issuedAndrewsUnitSourceTargetRouteOptionFrames.has(frame));
+    }
     const ANDREWS_CNV_TENSE_LOGIC_AUTHORITY_BY_TENSE = Object.freeze({
       presente: Object.freeze({
         scope: "andrews-licensed",
@@ -2433,6 +2509,8 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
     });
     api.getAndrewsLogicAuthorityPolicy = getAndrewsLogicAuthorityPolicy;
     api.isAndrewsLogicGenerationAuthorityEnabled = isAndrewsLogicGenerationAuthorityEnabled;
+    api.issueAndrewsUnitSourceTargetRouteOptionsSourceFrame = issueAndrewsUnitSourceTargetRouteOptionsSourceFrame;
+    api.isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame = isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame;
     api.cloneAndrewsCnvTenseLogicAuthorityFrame = cloneAndrewsCnvTenseLogicAuthorityFrame;
     api.getAndrewsCnvTenseLogicAuthorityFrame = getAndrewsCnvTenseLogicAuthorityFrame;
     api.getAndrewsCnvTenseLogicGenerationGateFrame = getAndrewsCnvTenseLogicGenerationGateFrame;
@@ -2499,6 +2577,8 @@ export function createGrammarFrameModule(targetObject = globalThis, installation
     [
       "getAndrewsLogicAuthorityPolicy",
       "isAndrewsLogicGenerationAuthorityEnabled",
+      "issueAndrewsUnitSourceTargetRouteOptionsSourceFrame",
+      "isIssuedAndrewsUnitSourceTargetRouteOptionsSourceFrame",
       "cloneAndrewsCnvTenseLogicAuthorityFrame",
       "getAndrewsCnvTenseLogicAuthorityFrame",
       "getAndrewsCnvTenseLogicGenerationGateFrame",
