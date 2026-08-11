@@ -23,12 +23,9 @@ const EXACTLY_OBSERVED_SECTIONS = new Set([
   "1.9",
   "1.10",
 ]);
-const READER_GUIDANCE_IDEA_BY_ATOM = new Map(
-  LESSON1_READER_GUIDANCE_GROUPS.flatMap((group) => (
-    group.records.map((record) => [record.atomId, group.ideaId])
-  )),
+const PRESENTED_READER_JOB_FAMILIES = new Set(
+  LESSON1_READER_GUIDANCE_GROUPS.map((group) => group.ideaId),
 );
-const EXACTLY_PRESENTED_READER_ATOMS = new Set(READER_GUIDANCE_IDEA_BY_ATOM.keys());
 
 const SECTION_1_1_OBSERVATIONS = Object.freeze({
   "ACI-P018-L003-6F9AEBE144": "preliminary-scope-bounded",
@@ -1592,7 +1589,7 @@ function buildLedger() {
         WRITING: directions.includes("WRITING")
           ? "EXACTLY_OBSERVED"
           : "NOT_APPLICABLE",
-        READING_AND_INTERPRETATION: EXACTLY_PRESENTED_READER_ATOMS.has(atom.atomId)
+        READING_AND_INTERPRETATION: PRESENTED_READER_JOB_FAMILIES.has(jobFamily)
           ? "EXACTLY_PRESENTED"
           : "JOB_ASSIGNED_NOT_YET_PRESENTED",
       }),
@@ -1613,8 +1610,8 @@ function buildLedger() {
       mutationTest: accepted
         ? `${observationTestFile}#mutation:${observationKind}`
         : "",
-      ...(EXACTLY_PRESENTED_READER_ATOMS.has(atom.atomId) ? {
-        readerGuidanceIdeaId: READER_GUIDANCE_IDEA_BY_ATOM.get(atom.atomId),
+      ...(PRESENTED_READER_JOB_FAMILIES.has(jobFamily) ? {
+        readerGuidanceIdeaId: jobFamily,
         readerObservationTest:
           `src/tests/classical_lesson1_reader_guidance.test.js#${atom.atomId}`,
         readerMutationTest:

@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-reader-guidance-032";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-reader-guidance-033";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-reader-guidance-032";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-reader-guidance-032";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-reader-guidance-032";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-reader-guidance-032";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-reader-guidance-032";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-032";
+} from "../runtime/create_runtime.mjs?v=20260811-reader-guidance-033";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-reader-guidance-033";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-reader-guidance-033";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-reader-guidance-033";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-reader-guidance-033";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 
 let browserBootstrapPromise = null;
 

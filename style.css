@@ -15085,21 +15085,66 @@ body.is-language-classical .classical-reader-guidance[open] > .classical-reader-
 }
 
 body.is-language-classical .classical-reader-guidance__body {
-  padding: 16px;
+  padding: 10px;
   border-top: 1px solid rgba(47, 105, 115, 0.14);
 }
 
-body.is-language-classical .classical-reader-guidance__intro {
-  max-width: 68ch;
-  margin: 0 0 14px;
+body.is-language-classical .classical-reader-guidance__lesson {
+  overflow: hidden;
+  border: 1px solid rgba(47, 105, 115, 0.18);
+  border-radius: 9px;
+  background: #ffffff;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-summary {
+  position: relative;
+  display: grid;
+  gap: 2px;
+  padding: 12px 42px 12px 14px;
+  color: #173f37;
+  cursor: pointer;
+  list-style: none;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-summary::-webkit-details-marker {
+  display: none;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-summary > span {
+  font-size: calc(0.8rem + var(--font-size-adjust));
+  font-weight: 840;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-summary > small {
   color: var(--ink-soft);
-  font-size: calc(0.76rem + var(--font-size-adjust));
-  line-height: 1.55;
+  font-size: calc(0.68rem + var(--font-size-adjust));
+  font-weight: 650;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-summary::after {
+  content: "+";
+  position: absolute;
+  inset-block-start: 50%;
+  inset-inline-end: 15px;
+  translate: 0 -50%;
+  color: #35695b;
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+body.is-language-classical .classical-reader-guidance__lesson[open] > .classical-reader-guidance__lesson-summary::after {
+  content: "−";
+}
+
+body.is-language-classical .classical-reader-guidance__lesson-body {
+  padding: 14px;
+  border-top: 1px solid rgba(47, 105, 115, 0.13);
+  background: #f8fbf9;
 }
 
 body.is-language-classical .classical-reader-guidance__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
   gap: 12px;
 }
 
@@ -15128,12 +15173,12 @@ body.is-language-classical .classical-reader-guidance__card p {
 }
 
 @media (max-width: 720px) {
-  body.is-language-classical .classical-reader-guidance__grid {
-    grid-template-columns: minmax(0, 1fr);
+  body.is-language-classical .classical-reader-guidance__body {
+    padding: 8px;
   }
 
-  body.is-language-classical .classical-reader-guidance__body {
-    padding: 12px;
+  body.is-language-classical .classical-reader-guidance__lesson-body {
+    padding: 10px;
   }
 }
 

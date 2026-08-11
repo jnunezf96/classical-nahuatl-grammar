@@ -9,7 +9,7 @@ import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
   renderLesson1ReaderGuidance,
-} from "../curriculum/lesson1_reader_guidance.mjs?v=20260811-lesson1-reader-guidance-004";
+} from "../curriculum/lesson1_reader_guidance.mjs?v=20260811-lesson1-reader-guidance-005";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2950,15 +2950,14 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                 ></div>
                 <details
                   class="classical-rule-surface__disclosure classical-reader-guidance"
-                  id="classical-lesson1-reader-guidance"
-                  data-classical-reader-guidance="lesson-1"
+                  id="classical-reader-guidance"
+                  data-classical-reader-guidance="lessons"
                   data-classical-source-authorizes="none"
                   data-classical-result-authorizes="none"
                   data-classical-stage-authority="false"
                 >
                   <summary class="classical-reader-guidance__summary">Reading guide</summary>
                   <div class="classical-reader-guidance__body">
-                    <p class="classical-reader-guidance__intro">These ideas help with reading and interpretation. They do not change the Result.</p>
 ${renderLesson1ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
