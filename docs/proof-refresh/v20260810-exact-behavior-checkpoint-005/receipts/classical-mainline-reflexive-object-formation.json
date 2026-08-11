@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-005",
+  "ownerId": "classical-mainline-reflexive-object-formation",
+  "resultDigest": "sha256:97b0985426bf69738cf1fe24e5fe246b5afce846a1c02bcebfeccd9a68c52c83",
+  "observations": [
+    {
+      "atomId": "ACI-P074-L028-B320257450-02",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p074-l028-b320257450-02",
+      "canonicalPath": "va1Carries.number",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "In a mainline reflexive-object construction, subposition va1 carries number information.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L028-B320257450-03",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p074-l028-b320257450-03",
+      "canonicalPath": "personNumberDyads.firstSingular",
+      "expected": "n-o",
+      "actual": "n-o",
+      "canvasAnchor": "The va1 filler n realizes first-person singular in a mainline reflexive-object construction.",
+      "mutation": {
+        "replacement": "m-o",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L028-B320257450-04",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p074-l028-b320257450-04",
+      "canonicalPath": "personNumberDyads.firstPlural",
+      "expected": "t-o",
+      "actual": "t-o",
+      "canvasAnchor": "The va1 filler t realizes first-person plural in a mainline reflexive-object construction.",
+      "mutation": {
+        "replacement": "n-o",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L036-7758C04A7A",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p074-l036-7758c04a7a",
+      "canonicalPath": "personNumberDyads",
+      "expected": {
+        "firstSingular": "n-o",
+        "firstPlural": "t-o",
+        "nonfirst": "m-o"
+      },
+      "actual": {
+        "firstSingular": "n-o",
+        "firstPlural": "t-o",
+        "nonfirst": "m-o"
+      },
+      "canvasAnchor": "Each mainline reflexive-object morphic dyad in the §6.7 paradigm realizes its indicated person-number value.",
+      "mutation": {
+        "replacement": {
+          "firstSingular": "n-o",
+          "firstPlural": "n-o",
+          "nonfirst": "m-o"
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-02",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-02",
+      "canonicalPath": "readingsBySubject.secondSingular",
+      "expected": [
+        "yourself"
+      ],
+      "actual": [
+        "yourself"
+      ],
+      "canvasAnchor": "With a second-person singular human subject, +m-o( ~ +m-⎕( has the reflexive object value ‘yourself.’",
+      "mutation": {
+        "replacement": [
+          "yourself-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-03",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-03",
+      "canonicalPath": "readingsBySubject.thirdSingularHumanMale",
+      "expected": [
+        "himself"
+      ],
+      "actual": [
+        "himself"
+      ],
+      "canvasAnchor": "With a third-person singular male-human subject, the nonfirst reflexive object has the value ‘himself.’",
+      "mutation": {
+        "replacement": [
+          "himself-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-04",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-04",
+      "canonicalPath": "readingsBySubject.thirdSingularHumanFemale",
+      "expected": [
+        "herself"
+      ],
+      "actual": [
+        "herself"
+      ],
+      "canvasAnchor": "With a third-person singular female-human subject, the nonfirst reflexive object has the value ‘herself.’",
+      "mutation": {
+        "replacement": [
+          "herself-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-05",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-05",
+      "canonicalPath": "readingsBySubject.thirdSingularNonhuman",
+      "expected": [
+        "itself"
+      ],
+      "actual": [
+        "itself"
+      ],
+      "canvasAnchor": "With a third-person singular nonhuman subject, the nonfirst reflexive object has the value ‘itself.’",
+      "mutation": {
+        "replacement": [
+          "itself-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-06",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-06",
+      "canonicalPath": "readingsBySubject.secondPlural",
+      "expected": [
+        "yourselves",
+        "one another"
+      ],
+      "actual": [
+        "yourselves",
+        "one another"
+      ],
+      "canvasAnchor": "With a second-person plural human subject, the nonfirst reflexive object can have the reflexive value ‘yourselves.’",
+      "mutation": {
+        "replacement": [
+          "yourselves-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-07",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-07",
+      "canonicalPath": "readingsBySubject.secondPlural",
+      "expected": [
+        "yourselves",
+        "one another"
+      ],
+      "actual": [
+        "yourselves",
+        "one another"
+      ],
+      "canvasAnchor": "With a second-person plural human subject, the same morph can have the reciprocal value ‘one another.’",
+      "mutation": {
+        "replacement": [
+          "yourselves-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-08",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-08",
+      "canonicalPath": "readingsBySubject.thirdPlural",
+      "expected": [
+        "themselves",
+        "one another"
+      ],
+      "actual": [
+        "themselves",
+        "one another"
+      ],
+      "canvasAnchor": "With a third-person plural subject, the nonfirst reflexive object can have the reflexive value ‘themselves.’",
+      "mutation": {
+        "replacement": [
+          "themselves-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-09",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-09",
+      "canonicalPath": "readingsBySubject.thirdPlural",
+      "expected": [
+        "themselves",
+        "one another"
+      ],
+      "actual": [
+        "themselves",
+        "one another"
+      ],
+      "canvasAnchor": "With a third-person plural subject, the same morph can have the reciprocal value ‘one another.’",
+      "mutation": {
+        "replacement": [
+          "themselves-BROKEN"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P075-L004-A99BF9D40A-10",
+      "ownerId": "classical-mainline-reflexive-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mainline-reflexive-object-formation:aci-p075-l004-a99bf9d40a-10",
+      "canonicalPath": "reciprocalRequiresPluralSubject",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Reciprocal ‘one another’ is licensed only with a plural subject interpretation, whereas singular subjects receive reflexive readings.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 13,
+    "passed": 13,
+    "failed": 0,
+    "mutationsRejected": 13
+  }
+}

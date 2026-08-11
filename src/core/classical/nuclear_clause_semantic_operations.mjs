@@ -121,11 +121,18 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
 
   function buildClassicalNahuatlSubjectPersonDyadSystemFrame() {
     const get = requireFunction(targetObject, "getClassicalNahuatlFiniteSubjectPersonDyad");
+    const getNumber = requireFunction(targetObject, "getClassicalNahuatlFiniteSubjectNumberDyad");
     const third = get("3sg", "indicative", { stem: "mati" });
     const second = get("2sg", "indicative", { stem: "mati" });
     const firstPlural = get("1pl", "indicative", { stem: "mati" });
     const firstSingular = get("1sg", "indicative", { stem: "mati" });
     const secondPlural = get("2pl", "indicative", { stem: "mati" });
+    const secondNumber = getNumber({ subject: "2sg", mood: "indicative", tense: "present", stem: "mati" });
+    const firstPluralNumber = getNumber({ subject: "1pl", mood: "indicative", tense: "present", stem: "mati" });
+    const secondPluralMEnvironments = secondPlural.pers1VariantRule === "am-before-vowel-m-p"
+      ? ["before-vowel", "before-m", "before-p"]
+      : [];
+    const licensedSecondPluralNasalAssimilations = ["am", "an", "az", "ax"];
     return personDyadOwner.issue({
       authorizationStatus: "authorized",
       locus: "pers1",
@@ -141,6 +148,15 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       supportiveVowel: firstSingular.pers1SupportiveVowel,
       supportiveBeforeConsonant: firstSingular.pers1SupportiveVowelPresent,
       secondPluralMCondition: secondPlural.pers1VariantRule,
+      secondSingularFirstPluralPers1Homophonous:
+        second.pers1BaseMorph === firstPlural.pers1BaseMorph,
+      numberSuffixRequiredForSecondSingularFirstPluralDisambiguation:
+        second.pers1BaseMorph === firstPlural.pers1BaseMorph
+        && secondNumber.num2 !== firstPluralNumber.num2,
+      secondPluralMEnvironments,
+      secondPluralNasalAssimilationVariants: secondPlural.pers1Variants,
+      allLicensedSecondPluralNasalAssimilationsAvailable:
+        licensedSecondPluralNasalAssimilations.every(variant => secondPlural.pers1Variants.includes(variant)),
     });
   }
 
@@ -149,6 +165,7 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const frame = (subject, mood, tense) => get({ subject, mood, tense, stem: "nemi" });
     return numberSuffixOwner.issue({
       authorizationStatus: "authorized",
+      locus: "num2",
       singular: frame("1sg", "indicative", "present").num2,
       pluralVariants: ["h", "eh", "ān", "in"],
       presentPlural: frame("1pl", "indicative", "present").num2,
@@ -181,6 +198,7 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
         present: filler("indicative", "present"),
         customaryPresent: filler("indicative", "customary-present"),
         imperfect: filler("indicative", "imperfect"),
+        imperfectCanonicalMorph: "yā",
         future: filler("indicative", "future"),
         preterit: filler("indicative", "preterit"),
         distantPast: filler("indicative", "distant-past"),
@@ -271,6 +289,10 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const threeSingular = projective("3sg");
     const threePlural = projective("3pl");
     const threeBeforeConsonant = projective("3sg", "mati", "3sg");
+    const stemBoundaryCases = Object.fromEntries(["ca", "tiqui", "que"].map(stem => {
+      const frame = projective("3sg", stem, "1sg");
+      return [stem, { objectCarrier: frame.objectFrame.va1, stem: frame.stem }];
+    }));
     return projectiveObjectOwner.issue({
       authorizationStatus: "authorized",
       categoriesDistributedAcrossDyad: ["person", "number", "objective-case"],
@@ -296,6 +318,22 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       nonthirdVa2Variants: [oneSingular.objectFrame.va2, twoSingular.objectFrame.va2],
       frequentItzPhoneVariant: "[¢]",
       assimilationApplies: true,
+      stemBoundaryCases,
+      automaticEnglishObjectCorrespondence: true,
+      thirdCommonInterpretations: {
+        singularHumanMale: "him",
+        singularHumanFemale: "her",
+        singularAnimateNonhuman: "it",
+        singularNonanimate: "it",
+        pluralNonanimate: "them",
+      },
+      thirdPluralAnimateRealization: {
+        va1: threePlural.objectFrame.va1,
+        va2: threePlural.objectFrame.va2,
+        human: "them",
+        animateNonhuman: "them",
+        allPhonologicalVariants: threePlural.objectFrame.va2Variants,
+      },
     });
   }
 
@@ -313,6 +351,9 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const oneSingularConsonant = reflexive("1sg", "mati");
     const onePlural = reflexive("1pl", "mati");
     const nonfirst = reflexive("2sg", "mati");
+    const twoPlural = reflexive("2pl", "mati");
+    const threeSingular = reflexive("3sg", "mati");
+    const threePlural = reflexive("3pl", "mati");
     const oneSingularVowel = reflexive("1sg", "itta");
     return reflexiveObjectOwner.issue({
       authorizationStatus: "authorized",
@@ -326,6 +367,25 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       vowelInitialCondition: "vowel-initial-verbstem",
       vowelInitialVa2: oneSingularVowel.objectFrame.va2,
       replacementRule: oneSingularVowel.objectFrame.objectRule,
+      va1Carries: oneSingularConsonant.objectFrame.va1Carries,
+      personNumberDyads: {
+        firstSingular: `${oneSingularConsonant.objectFrame.va1}-${oneSingularConsonant.objectFrame.va2}`,
+        firstPlural: `${onePlural.objectFrame.va1}-${onePlural.objectFrame.va2}`,
+        nonfirst: `${nonfirst.objectFrame.va1}-${nonfirst.objectFrame.va2}`,
+      },
+      readingsBySubject: {
+        secondSingular: ["yourself"],
+        thirdSingularHumanMale: ["himself"],
+        thirdSingularHumanFemale: ["herself"],
+        thirdSingularNonhuman: ["itself"],
+        secondPlural: twoPlural.objectFrame.pluralMayBeReciprocal ? ["yourselves", "one another"] : ["yourselves"],
+        thirdPlural: threePlural.objectFrame.pluralMayBeReciprocal ? ["themselves", "one another"] : ["themselves"],
+      },
+      reciprocalRequiresPluralSubject:
+        !nonfirst.objectFrame.pluralMayBeReciprocal
+        && !threeSingular.objectFrame.pluralMayBeReciprocal
+        && twoPlural.objectFrame.pluralMayBeReciprocal
+        && threePlural.objectFrame.pluralMayBeReciprocal,
     });
   }
 

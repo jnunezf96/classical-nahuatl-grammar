@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-005",
+  "ownerId": "classical-mood-tense-filler-formation",
+  "resultDigest": "sha256:08fc1a4f1a6776aa87835fd7c3359b3bb2f17eb9a0445937dfe26b6906434231",
+  "observations": [
+    {
+      "atomId": "ACI-P070-L008-3B897B6D84-03",
+      "ownerId": "classical-mood-tense-filler-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-filler-formation:aci-p070-l008-3b897b6d84-03",
+      "canonicalPath": "indicative.imperfectCanonicalMorph",
+      "expected": "yā",
+      "actual": "yā",
+      "canvasAnchor": "The imperfective tense morph is yā.",
+      "mutation": {
+        "replacement": "Ø",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

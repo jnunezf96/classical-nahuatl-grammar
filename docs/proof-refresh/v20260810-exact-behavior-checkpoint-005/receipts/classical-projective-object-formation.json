@@ -1,0 +1,302 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-005",
+  "ownerId": "classical-projective-object-formation",
+  "resultDigest": "sha256:b686286c3cf0376c0ab05dd223c21b1240d26d8911eda3307b4bd55f0d662c07",
+  "observations": [
+    {
+      "atomId": "ACI-P073-L013-BB51D62737-03",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p073-l013-bb51d62737-03",
+      "canonicalPath": "stemBoundaryCases.ca",
+      "expected": {
+        "objectCarrier": "c",
+        "stem": "ca"
+      },
+      "actual": {
+        "objectCarrier": "c",
+        "stem": "ca"
+      },
+      "canvasAnchor": "The a in ca... belongs to the stem rather than to the preceding carrier.",
+      "mutation": {
+        "replacement": {
+          "objectCarrier": "cc",
+          "stem": "a"
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P073-L013-BB51D62737-07",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p073-l013-bb51d62737-07",
+      "canonicalPath": "stemBoundaryCases.tiqui",
+      "expected": {
+        "objectCarrier": "c",
+        "stem": "tiqui"
+      },
+      "actual": {
+        "objectCarrier": "c",
+        "stem": "tiqui"
+      },
+      "canvasAnchor": "The second i in tiqui... belongs to the stem rather than to the preceding carrier.",
+      "mutation": {
+        "replacement": {
+          "objectCarrier": "ct",
+          "stem": "iqui"
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P073-L013-BB51D62737-09",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p073-l013-bb51d62737-09",
+      "canonicalPath": "stemBoundaryCases.que",
+      "expected": {
+        "objectCarrier": "c",
+        "stem": "que"
+      },
+      "actual": {
+        "objectCarrier": "c",
+        "stem": "que"
+      },
+      "canvasAnchor": "The e in que... belongs to the stem rather than to the preceding carrier.",
+      "mutation": {
+        "replacement": {
+          "objectCarrier": "cq",
+          "stem": "ue"
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L012-A332BF3928",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l012-a332bf3928",
+      "canonicalPath": "automaticEnglishObjectCorrespondence",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Specific projective-object morphic dyads automatically correspond to English object personal pronouns.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-02",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-02",
+      "canonicalPath": "thirdVa1Variants.c",
+      "expected": "c",
+      "actual": "c",
+      "canvasAnchor": "+c-Ø( can realize the specific third-person common-or-singular projective object pronoun.",
+      "mutation": {
+        "replacement": "c-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-03",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-03",
+      "canonicalPath": "thirdVa1Variants.qu",
+      "expected": "qu",
+      "actual": "qu",
+      "canvasAnchor": "+qu-Ø( can realize the specific third-person common-or-singular projective object pronoun.",
+      "mutation": {
+        "replacement": "qu-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-04",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-04",
+      "canonicalPath": "thirdVa1Variants.qui",
+      "expected": "qui",
+      "actual": "qui",
+      "canvasAnchor": "+qui-Ø( can realize the specific third-person common-or-singular projective object pronoun.",
+      "mutation": {
+        "replacement": "qui-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-05",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-05",
+      "canonicalPath": "thirdCommonInterpretations.singularHumanMale",
+      "expected": "him",
+      "actual": "him",
+      "canvasAnchor": "With a singular human male object, +c-Ø( / +qu-Ø( ~ +qui-Ø( can be rendered ‘him.’",
+      "mutation": {
+        "replacement": "him-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-06",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-06",
+      "canonicalPath": "thirdCommonInterpretations.singularHumanFemale",
+      "expected": "her",
+      "actual": "her",
+      "canvasAnchor": "With a singular human female object, +c-Ø( / +qu-Ø( ~ +qui-Ø( can be rendered ‘her.’",
+      "mutation": {
+        "replacement": "her-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-07",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-07",
+      "canonicalPath": "thirdCommonInterpretations.singularAnimateNonhuman",
+      "expected": "it",
+      "actual": "it",
+      "canvasAnchor": "With a singular animate nonhuman object, +c-Ø( / +qu-Ø( ~ +qui-Ø( can be rendered ‘it.’",
+      "mutation": {
+        "replacement": "it-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-08",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-08",
+      "canonicalPath": "thirdCommonInterpretations.singularNonanimate",
+      "expected": "it",
+      "actual": "it",
+      "canvasAnchor": "With a singular nonanimate object, +c-Ø( / +qu-Ø( ~ +qui-Ø( can be rendered ‘it.’",
+      "mutation": {
+        "replacement": "it-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L019-46BB96CE7D-09",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l019-46bb96ce7d-09",
+      "canonicalPath": "thirdCommonInterpretations.pluralNonanimate",
+      "expected": "them",
+      "actual": "them",
+      "canvasAnchor": "With plural nonanimate objects, common-number +c-Ø( / +qu-Ø( ~ +qui-Ø( can be rendered ‘them.’",
+      "mutation": {
+        "replacement": "them-BROKEN",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L020-21C34D798B-02",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l020-21c34d798b-02",
+      "canonicalPath": "thirdPluralAnimateRealization.va1-va2",
+      "expected": [
+        "qu",
+        "im"
+      ],
+      "actual": [
+        "qu",
+        "im"
+      ],
+      "canvasAnchor": "+qu-im( realizes a specific third-person plural animate projective-object pronoun.",
+      "mutation": {
+        "replacement": [
+          "qu",
+          "in"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L020-21C34D798B-03",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l020-21c34d798b-03",
+      "canonicalPath": "thirdPluralAnimateRealization.human",
+      "expected": "them",
+      "actual": "them",
+      "canvasAnchor": "With plural human objects, +qu-im( can be rendered ‘them.’",
+      "mutation": {
+        "replacement": "him",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L020-21C34D798B-04",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l020-21c34d798b-04",
+      "canonicalPath": "thirdPluralAnimateRealization.animateNonhuman",
+      "expected": "them",
+      "actual": "them",
+      "canvasAnchor": "With plural animate nonhuman objects, +qu-im( can be rendered ‘them.’",
+      "mutation": {
+        "replacement": "it",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P074-L020-21C34D798B-05",
+      "ownerId": "classical-projective-object-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-projective-object-formation:aci-p074-l020-21c34d798b-05",
+      "canonicalPath": "thirdPluralAnimateRealization.allPhonologicalVariants",
+      "expected": [
+        "im",
+        "in",
+        "iz",
+        "ix"
+      ],
+      "actual": [
+        "im",
+        "in",
+        "iz",
+        "ix"
+      ],
+      "canvasAnchor": "All phonologically conditioned assimilated variants of +qu-im( are included as grammatical realizations of the same plural animate object pronoun.",
+      "mutation": {
+        "replacement": [
+          "im"
+        ],
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 16,
+    "passed": 16,
+    "failed": 0,
+    "mutationsRejected": 16
+  }
+}

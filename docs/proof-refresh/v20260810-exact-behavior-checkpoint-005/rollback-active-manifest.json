@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "activeManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-004/manifest.json",
+  "activeManifestDigest": "sha256:442bf2061056b7f59245a633e590adb73000a729f5cfadb85cd0076dfbd7c5a4",
+  "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-003/manifest.json",
+  "rollbackManifestDigest": "sha256:1c0872951b0c216fd219b410725b8a59f845b23dfa2204717951b99705176cc2",
+  "baseProofCorpusRetained": true
+}

@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-005",
+  "ownerId": "classical-subject-person-dyad-formation",
+  "resultDigest": "sha256:5ce663da8fb91936511a3a2e765d8d5c844c2637db3d49bd0a409ce35122f2f3",
+  "observations": [
+    {
+      "atomId": "ACI-P066-L024-8BF9B5C6AB-02",
+      "ownerId": "classical-subject-person-dyad-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-person-dyad-formation:aci-p066-l024-8bf9b5c6ab-02",
+      "canonicalPath": "fillers.secondSingular=fillers.firstPlural",
+      "expected": [
+        "t",
+        "t"
+      ],
+      "actual": [
+        "t",
+        "t"
+      ],
+      "canvasAnchor": "Because t and ti are homophonous, the pers1 filler alone cannot distinguish second-person singular from first-person plural number.",
+      "mutation": {
+        "replacement": [
+          "t",
+          "n"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P066-L024-8BF9B5C6AB-03",
+      "ownerId": "classical-subject-person-dyad-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-person-dyad-formation:aci-p066-l024-8bf9b5c6ab-03",
+      "canonicalPath": "numberSuffixRequiredForSecondSingularFirstPluralDisambiguation",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The subject pronoun’s num2 suffix is required to disambiguate second-person singular from first-person plural when pers1 is t or ti.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P066-L029-F5311302DA-03",
+      "ownerId": "classical-subject-person-dyad-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-person-dyad-formation:aci-p066-l029-f5311302da-03",
+      "canonicalPath": "secondPluralMEnvironments.before-p",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The morph am occurs before p.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P066-L029-F5311302DA-05",
+      "ownerId": "classical-subject-person-dyad-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-subject-person-dyad-formation:aci-p066-l029-f5311302da-05",
+      "canonicalPath": "allLicensedSecondPluralNasalAssimilationsAvailable",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "All nasal assimilations described in §§2.10.5–2.10.6 are possible for this morph.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 4,
+    "passed": 4,
+    "failed": 0,
+    "mutationsRejected": 4
+  }
+}
