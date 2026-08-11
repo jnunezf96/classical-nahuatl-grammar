@@ -351,7 +351,7 @@ function run(ctx) {
             surfaceStringAuthority: applicationReceipt.surfaceStringAuthority,
         },
         {
-            operationCount: 85,
+            operationCount: 87,
             allCapabilitiesInstalled: true,
             gcd: {
                 identityId: "typed-semantic-application-to-canonical-result",
@@ -1833,10 +1833,10 @@ function run(ctx) {
             proxyGetTrapReads,
         },
         {
-            operationCount: 85,
+            operationCount: 87,
             installedCount: 0,
             allCapabilitiesInstalled: false,
-            blockedCount: 85,
+            blockedCount: 87,
             authorizedCount: 0,
             proxyGetTrapReads: 0,
         }

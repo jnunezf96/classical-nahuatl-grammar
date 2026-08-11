@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 38,
-    "writingJobsAwaitingExactObservation": 361,
+    "exactlyImplementedWritingJobs": 71,
+    "writingJobsAwaitingExactObservation": 328,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -6162,10 +6162,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: A vocable in Nahuatl has as many syllables as it has vowels (there are no diphthongs).",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: A vocable in Nahuatl has as many syllables as it has vowels (there are no diphthongs).",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L021-40B6D61100",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L021-40B6D61100-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6186,10 +6186,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: A Nahuatl syllable has one of four structural shapes.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: A Nahuatl syllable has one of four structural shapes.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6210,10 +6210,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Syllable shapes a and b are open.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Syllable shapes a and b are open.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6234,10 +6234,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Syllable shapes c and d are closed.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Syllable shapes c and d are closed.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE-03",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L022-9665D9D2EE-03-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6258,10 +6258,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: vowel [e.g., a, e, o]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: vowel [e.g., a, e, o]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L024-D0D789C3B1",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L024-D0D789C3B1-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6282,10 +6282,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: consonant + vowel [e.g., nō, chi, tlā]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: consonant + vowel [e.g., nō, chi, tlā]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L025-4E77FB10D4",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L025-4E77FB10D4-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6306,10 +6306,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: vowel + consonant [e.g., oh, euc, ātl, ic]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: vowel + consonant [e.g., oh, euc, ātl, ic]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L026-70651956D2",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L026-70651956D2-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6330,10 +6330,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: consonant + vowel + consonant [e.g., pan, zātl, cuech] These shapes exist under the following constraints:",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: consonant + vowel + consonant [e.g., pan, zātl, cuech] These shapes exist under the following constraints:",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L027-8FBF6FAAED",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L027-8FBF6FAAED-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6354,10 +6354,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: A consonant between two vowels syllabifies with the second vowel.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: A consonant between two vowels syllabifies with the second vowel.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6378,10 +6378,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: cāna is syllabified cā-na.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: cāna is syllabified cā-na.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6402,10 +6402,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: nāhui is syllabified nā-hui.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: nāhui is syllabified nā-hui.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C-03",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L029-25646A541C-03-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6426,10 +6426,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Any two vowels in sequence belong to separate syllables",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Any two vowels in sequence belong to separate syllables",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L031-4CF7032CCC",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L031-4CF7032CCC-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6450,10 +6450,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: e.g., teōtl is divided te-ōtl.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: e.g., teōtl is divided te-ōtl.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L031-4CF7032CCC-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L031-4CF7032CCC-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6497,10 +6497,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In these lessons, u is never a vowel letter.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In these lessons, u is never a vowel letter.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6521,10 +6521,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In these lessons, u occurs only as part of a digraph.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In these lessons, u occurs only as part of a digraph.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-03",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-03-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6545,10 +6545,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: quitzacuia is syllabified qui-tza-cui-a.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: quitzacuia is syllabified qui-tza-cui-a.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-04",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-04-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6569,10 +6569,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: nāuh is one syllable.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: nāuh is one syllable.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-05",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-05-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6593,10 +6593,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: iucci is syllabified iuc-ci.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: iucci is syllabified iuc-ci.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-06",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-06-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6617,10 +6617,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: nocuauh is syllabified no-cuauh.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: nocuauh is syllabified no-cuauh.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-07",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-07-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6665,10 +6665,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: No more than two consonant sounds can be juxtaposed, and such a juxtaposition is never permitted in initial or final…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: No more than two consonant sounds can be juxtaposed, and such a juxtaposition is never permitted in initial or final…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L036-545DFECF5A",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L036-545DFECF5A-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6689,10 +6689,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Two juxtaposed consonants always belong to separate syllables.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Two juxtaposed consonants always belong to separate syllables.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6713,10 +6713,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: ōmpa is syllabified ōm-pa.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: ōmpa is syllabified ōm-pa.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6737,10 +6737,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: calli is syllabified cal-li.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: calli is syllabified cal-li.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-03",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-03-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6761,10 +6761,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: iztatl is syllabified iz-tatl.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: iztatl is syllabified iz-tatl.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-04",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L037-BD23B5712F-04-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6785,10 +6785,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: A digraph represents a single consonant sound and must be kept together in syllabification.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: A digraph represents a single consonant sound and must be kept together in syllabification.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6809,10 +6809,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: atzan is syllabified a-tzan.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: atzan is syllabified a-tzan.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3-02",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3-02-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6833,10 +6833,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: tōchtli is syllabified tōch-tli.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: tōchtli is syllabified tōch-tli.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-structure-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3-03",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L040-0A22B91DC3-03-broken-syllable-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6857,10 +6857,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Result: Note 1: The vowel phone [i] has an important supportive function in Nahuatl: any type-level consonant…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Result: Note 1: The vowel phone [i] has an important supportive function in Nahuatl: any type-level consonant…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L002-BB982A730E",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L002-BB982A730E-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6881,10 +6881,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Note 1: The vowel phone [i] has an important supportive function in Nahuatl: any type-level consonant sequence that…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Note 1: The vowel phone [i] has an important supportive function in Nahuatl: any type-level consonant sequence that…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L002-9154CBB67D",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L002-9154CBB67D-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6905,10 +6905,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /šλa:walo:/ > [išλa:walo:]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /šλa:walo:/ > [išλa:walo:]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L005-DE55B2626F",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L005-DE55B2626F-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6929,10 +6929,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /kkaki/ > [kikaki]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /kkaki/ > [kikaki]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L006-941AE6C38C",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L006-941AE6C38C-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6953,10 +6953,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /okičλ/ > [okičλi]; /noʔw/ > [nohw]; /nλapiyk/ > [niλapišk]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /okičλ/ > [okičλi]; /noʔw/ > [nohw]; /nλapiyk/ > [niλapišk]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L007-B9B2E97833",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L007-B9B2E97833-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6977,10 +6977,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Under certain conditions, an initial supportive [i] (and only rarely a final one) ceases to be needed and is dropped.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Under certain conditions, an initial supportive [i] (and only rarely a final one) ceases to be needed and is dropped.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "supportive-i-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L008-FA751C6F0E",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L008-FA751C6F0E-broken-supportive-i-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

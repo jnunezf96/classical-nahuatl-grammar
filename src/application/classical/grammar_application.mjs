@@ -268,6 +268,14 @@ const ROUTE_DEFINITIONS = Object.freeze({
     capabilityName: "buildClassicalNahuatlTranscriptionFrame",
     axisIds: Object.freeze(["transcription-source", "phonological-boundary", "orthographic-realization"]),
   }),
+  "phonology:syllabify": Object.freeze({
+    capabilityName: "buildClassicalNahuatlSyllableStructureFrame",
+    axisIds: Object.freeze(["written-vocable", "vowel-centers", "syllable-boundaries"]),
+  }),
+  "phonology:supportive-vowel": Object.freeze({
+    capabilityName: "buildClassicalNahuatlSupportiveVowelFrame",
+    axisIds: Object.freeze(["source-segments", "pronounceability", "supportive-i-realization"]),
+  }),
   "vnc:nuclear-clause": Object.freeze({
     capabilityName: "buildClassicalNahuatlNuclearClauseResult",
     axisIds: Object.freeze(["basal-unit", "source-transitivity", "participant-structure", "predicate-stem"]),
@@ -934,6 +942,12 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   "orthography:transcription": defineCanonicalResultContract(
     "classical-nahuatl-transcription-frame",
   ),
+  "phonology:syllabify": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:supportive-vowel": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
   "vnc:nuclear-clause": defineCanonicalResultContract(
     "classical-nahuatl-nuclear-clause-structure-result",
   ),
@@ -1572,6 +1586,12 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
   "classical.nnc.king-praise-role-contrast.interpret": Object.freeze(["isClassicalNahuatlKingPraiseRoleContrastResult"]),
   "orthography:transcription": Object.freeze([
     "isClassicalNahuatlTranscriptionFrame",
+  ]),
+  "phonology:syllabify": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:supportive-vowel": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "vnc:nuclear-clause": Object.freeze([
     "isClassicalNahuatlNuclearClauseResult",
