@@ -3,6 +3,9 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import {
+  LESSON1_READER_GUIDANCE_GROUPS,
+} from "../../src/ui/curriculum/lesson1_reader_guidance.mjs";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const SOURCE_PATH = path.join(ROOT, "docs", "ANDREWS_ATOM_LEDGER.json");
@@ -20,53 +23,12 @@ const EXACTLY_OBSERVED_SECTIONS = new Set([
   "1.9",
   "1.10",
 ]);
-const EXACTLY_PRESENTED_READER_ATOMS = new Set([
-  "ACI-P018-L003-6F9AEBE144",
-  "ACI-P018-L003-6F9AEBE144-02",
-  "ACI-P018-L004-8B274196BE",
-  "ACI-P018-L005-C65BAEE067",
-  "ACI-P018-L007-11699BCBF2",
-  "ACI-P018-L008-FC00404AFC",
-  "ACI-P018-L008-FC00404AFC-02",
-  "ACI-P018-L008-FC00404AFC-03",
-  "ACI-P018-L008-FC00404AFC-04",
-  "ACI-P018-L008-FC00404AFC-05",
-  "ACI-P018-L008-FC00404AFC-06",
-  "ACI-P018-L008-FC00404AFC-07",
-  "ACI-P018-L008-FC00404AFC-08",
-  "ACI-P018-L008-FC00404AFC-09",
-  "ACI-P018-L011-9AF60BB546",
-  "ACI-P018-L011-9AF60BB546-02",
-  "ACI-P018-L011-9AF60BB546-03",
-  "ACI-P018-L011-9AF60BB546-04",
-  "ACI-P018-L016-856BF54621",
-  "ACI-P018-L016-56E13BB51A",
-  "ACI-P018-L017-632BA40D59",
-  "ACI-P018-L017-632BA40D59-02",
-  "ACI-P018-L018-F9C2B920A2",
-  "ACI-P018-L019-8F0CF99916",
-  "ACI-P018-L019-8F0CF99916-02",
-  "ACI-P018-L019-8F0CF99916-03",
-  "ACI-P018-L019-8F0CF99916-04",
-  "ACI-P018-L019-8F0CF99916-05",
-  "ACI-P018-L019-8F0CF99916-06",
-  "ACI-P018-L019-8F0CF99916-07",
-  "ACI-P018-L022-470C28E427",
-  "ACI-P018-L022-470C28E427-02",
-  "ACI-P018-L024-7D8A399481",
-  "ACI-P018-L024-7D8A399481-02",
-  "ACI-P018-L024-7D8A399481-03",
-  "ACI-P018-L026-ECB4179AF8",
-  "ACI-P018-L026-ECB4179AF8-02",
-  "ACI-P018-L027-97FD0346D9",
-  "ACI-P018-L028-45C023E675",
-  "ACI-P018-L028-45C023E675-02",
-  "ACI-P019-L002-0AE428CE24",
-  "ACI-P019-L002-0AE428CE24-02",
-  "ACI-P019-L002-0AE428CE24-03",
-  "ACI-P019-L004-DB6E5C2A3A",
-  "ACI-P019-L004-DB6E5C2A3A-02",
-]);
+const READER_GUIDANCE_IDEA_BY_ATOM = new Map(
+  LESSON1_READER_GUIDANCE_GROUPS.flatMap((group) => (
+    group.records.map((record) => [record.atomId, group.ideaId])
+  )),
+);
+const EXACTLY_PRESENTED_READER_ATOMS = new Set(READER_GUIDANCE_IDEA_BY_ATOM.keys());
 
 const SECTION_1_1_OBSERVATIONS = Object.freeze({
   "ACI-P018-L003-6F9AEBE144": "preliminary-scope-bounded",
@@ -1652,6 +1614,7 @@ function buildLedger() {
         ? `${observationTestFile}#mutation:${observationKind}`
         : "",
       ...(EXACTLY_PRESENTED_READER_ATOMS.has(atom.atomId) ? {
+        readerGuidanceIdeaId: READER_GUIDANCE_IDEA_BY_ATOM.get(atom.atomId),
         readerObservationTest:
           `src/tests/classical_lesson1_reader_guidance.test.js#${atom.atomId}`,
         readerMutationTest:
@@ -1722,6 +1685,7 @@ function buildLedger() {
             === "JOB_ASSIGNED_NOT_YET_PRESENTED"
         )).length,
       },
+      readerGuidanceIdeas: LESSON1_READER_GUIDANCE_GROUPS.length,
     },
     invariants: {
       ledgerAuthorizesGrammar: false,

@@ -1,20 +1,22 @@
 const freeze = Object.freeze;
 
-function freezeGroup(title, records) {
+function freezeGroup(ideaId, title, guidance, records) {
   return freeze({
+    ideaId,
     title,
+    guidance,
     records: freeze(records.map(([atomId, statement]) => freeze({ atomId, statement }))),
   });
 }
 
 export const LESSON1_READER_GUIDANCE_GROUPS = freeze([
-  freezeGroup("Lesson 1 is a foundation", [
+  freezeGroup("lesson1-is-a-foundation", "Lesson 1 is a foundation", "Treat Lesson 1 as a foundation; later lessons supply the specific grammar.", [
     ["ACI-P018-L003-6F9AEBE144", "Spatial limitations constrain the scope of the preliminary presentation."],
     ["ACI-P018-L003-6F9AEBE144-02", "The preliminary paragraphs present only an extremely limited subset of a very complex subject."],
     ["ACI-P018-L004-8B274196BE", "Only a few general topics pertinent to the following lessons are considered in the preliminary presentation."],
     ["ACI-P018-L005-C65BAEE067", "Less general linguistic concepts are deferred until the specific grammatical problems to which they apply are discussed."],
   ]),
-  freezeGroup("Read each language on its own terms", [
+  freezeGroup("read-each-language-on-its-own-terms", "Read each language on its own terms", "Read Classical Nahuatl on its own terms; do not assume that another language organizes form and meaning in the same way.", [
     ["ACI-P018-L007-11699BCBF2", "Languages differ from one another."],
     ["ACI-P018-L008-FC00404AFC", "Languages can vary widely even when they belong to the same language family."],
     ["ACI-P018-L008-FC00404AFC-02", "English is presented as a member of the Indo-European language family."],
@@ -26,13 +28,13 @@ export const LESSON1_READER_GUIDANCE_GROUPS = freeze([
     ["ACI-P018-L008-FC00404AFC-08", "Languages from different families can display still greater differences than languages within one family."],
     ["ACI-P018-L008-FC00404AFC-09", "English, Swahili, Tagalog, Arabic, Japanese, Turkish, Quechua, and Nahuatl are listed to illustrate comparison across different language families."],
   ]),
-  freezeGroup("Language remains open and changing", [
+  freezeGroup("language-remains-open-and-changing", "Language remains open and changing", "Expect language to be arbitrary, creative, and continually changing.", [
     ["ACI-P018-L011-9AF60BB546", "Language diversity is supported by arbitrariness, creativity, and change."],
     ["ACI-P018-L011-9AF60BB546-02", "Linguistic arbitrariness means that the content dimension is not motivatedly linked to the medium dimension."],
     ["ACI-P018-L011-9AF60BB546-03", "Linguistic creativity means that every language can produce an indefinitely large number of sentences."],
     ["ACI-P018-L011-9AF60BB546-04", "Linguistic change means that languages continually change in pronunciation, grammar, and lexicon."],
   ]),
-  freezeGroup("Recognize adult language-learning pressure", [
+  freezeGroup("recognize-adult-language-learning-pressure", "Recognize adult language-learning pressure", "Notice the habits and expectations that an adult reader brings from earlier language learning.", [
     ["ACI-P018-L016-856BF54621", "Young children have no problem with language difference."],
     ["ACI-P018-L016-56E13BB51A", "Young children can apparently acquire native competence in a foreign language as easily as in their first language."],
     ["ACI-P018-L017-632BA40D59", "The openness to foreign-language learning described in §1.2 is said to diminish gradually with age."],
@@ -46,7 +48,7 @@ export const LESSON1_READER_GUIDANCE_GROUPS = freeze([
     ["ACI-P018-L019-8F0CF99916-06", "These habits, presuppositions, and predispositions operate as automatic expectations and responses."],
     ["ACI-P018-L019-8F0CF99916-07", "The constraining expectations and responses are inculcated during the learner's formative years."],
   ]),
-  freezeGroup("Compare without replacing the language", [
+  freezeGroup("compare-without-replacing-the-language", "Compare without replacing the language", "Use comparison to notice differences, never to replace Classical Nahuatl with the comparison language.", [
     ["ACI-P018-L022-470C28E427", "Andrews argues that an adult learns a foreign language partly by using the adult’s own language as a means of comparison."],
     ["ACI-P018-L022-470C28E427-02", "Andrews argues that an adult learns a foreign language in constant struggle against interference from the adult’s own language."],
     ["ACI-P018-L024-7D8A399481", "A native speaker’s ease in handling minute details of pronunciation results from years of intimate familiarity."],
@@ -55,7 +57,7 @@ export const LESSON1_READER_GUIDANCE_GROUPS = freeze([
     ["ACI-P018-L026-ECB4179AF8", "An adult foreign-language learner does not have the years of intimate familiarity available to a native-learning child."],
     ["ACI-P018-L026-ECB4179AF8-02", "An adult foreign-language learner does not have the child's innocence of language-transfer pressure."],
   ]),
-  freezeGroup("Use an adult learning strategy", [
+  freezeGroup("use-an-adult-learning-strategy", "Use an adult learning strategy", "Use deliberate practice, comparison, contrast, and grammatical explanation as adult learning tools.", [
     ["ACI-P018-L027-97FD0346D9", "An adult foreign-language learner must use an acquisition strategy different from a child's strategy."],
     ["ACI-P018-L028-45C023E675", "An adult learner should compensate for limited time through alert, thoughtful, repetitive practice of basic patterns."],
     ["ACI-P018-L028-45C023E675-02", "Language learning resembles other skills in requiring attentive repetition of basics to achieve familiarity and ease of performance."],
@@ -73,10 +75,9 @@ export function isLesson1ReaderGuidanceExact(candidate = []) {
 
 export function renderLesson1ReaderGuidance(escapeHtml = String) {
   return LESSON1_READER_GUIDANCE_GROUPS.map((group) => `
-                    <section class="grammar-inspector__section" data-classical-reader-guidance-group="true">
+                    <section class="grammar-inspector__section" data-classical-reader-guidance-group="${escapeHtml(group.ideaId)}" data-classical-reader-guidance-atoms="${escapeHtml(group.records.map((record) => record.atomId).join(" "))}">
                       <h5>${escapeHtml(group.title)}</h5>
-                      <ul>
-${group.records.map((record) => `                        <li data-classical-reader-guidance-atom="${escapeHtml(record.atomId)}">${escapeHtml(record.statement)}</li>`).join("\n")}
-                      </ul>
+                      <p data-classical-reader-guidance-idea="${escapeHtml(group.ideaId)}">${escapeHtml(group.guidance)}</p>
+                      <small>${group.records.length} exact Lesson 1 atoms support this idea.</small>
                     </section>`).join("");
 }
