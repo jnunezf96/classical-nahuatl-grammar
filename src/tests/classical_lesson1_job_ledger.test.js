@@ -181,8 +181,8 @@ function run() {
             readingAndInterpretation: 854,
             invalidDirections: [],
             readerStatus: {
-                EXACTLY_PRESENTED: 18,
-                JOB_ASSIGNED_NOT_YET_PRESENTED: 836,
+                EXACTLY_PRESENTED: 45,
+                JOB_ASSIGNED_NOT_YET_PRESENTED: 809,
             },
             presentedWithoutProof: [],
         }

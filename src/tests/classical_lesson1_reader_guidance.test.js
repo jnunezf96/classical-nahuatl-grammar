@@ -8,14 +8,14 @@ function run(ctx = {}) {
     const authorityPanel = ctx.ClassicalAuthorityPanel();
     const records = groups.flatMap((group) => group.records);
 
-    s.eq("three accepted reading groups contain eighteen exact Lesson 1 atoms", {
+    s.eq("six accepted reading groups contain forty-five exact Lesson 1 atoms", {
         groupCount: groups.length,
         atomCount: records.length,
         uniqueAtomCount: new Set(records.map((record) => record.atomId)).size,
     }, {
-        groupCount: 3,
-        atomCount: 18,
-        uniqueAtomCount: 18,
+        groupCount: 6,
+        atomCount: 45,
+        uniqueAtomCount: 45,
     });
 
     for (const record of records) {
