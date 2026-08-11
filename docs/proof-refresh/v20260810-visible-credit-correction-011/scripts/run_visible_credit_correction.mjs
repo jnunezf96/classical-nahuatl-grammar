@@ -18,8 +18,17 @@ const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const digest = (value) => `sha256:${createHash("sha256").update(value).digest("hex")}`;
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 
-const priorPointer = JSON.parse(await readFile(pointerPath, "utf8"));
-const baseManifest = JSON.parse(await readFile(path.join(repositoryRoot, baseManifestRelative), "utf8"));
+const currentPointer = JSON.parse(await readFile(pointerPath, "utf8"));
+const storedPriorPointerPath = path.join(correctionRoot, "rollback-active-manifest.json");
+const supersededPointer = currentPointer.activeManifest === `docs/proof-refresh/${version}/manifest.json`
+  ? JSON.parse(await readFile(storedPriorPointerPath, "utf8"))
+  : currentPointer;
+const baseManifestText = await readFile(path.join(repositoryRoot, baseManifestRelative), "utf8");
+const baseManifest = JSON.parse(baseManifestText);
+const basePriorPointer = JSON.parse(await readFile(path.join(
+  repositoryRoot,
+  "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/rollback-active-manifest.json",
+), "utf8"));
 const selection009 = JSON.parse(await readFile(path.join(repositoryRoot, "docs/canvas-progress/checkpoint009_fact_selection.json"), "utf8"));
 const selection010 = JSON.parse(await readFile(path.join(repositoryRoot, "docs/canvas-progress/checkpoint010_fact_selection.json"), "utf8"));
 const affectedAtomIds = [...selection009.atoms, ...selection010.atoms].map((record) => record.atomId);
@@ -30,7 +39,7 @@ const manifest = {
   schemaVersion: 1,
   version,
   status: "validated",
-  previousActiveManifest: priorPointer.activeManifest,
+  previousActiveManifest: supersededPointer.activeManifest,
   baseExactManifest: baseManifestRelative,
   baseProofCorpusRetained: true,
   checkpointCounts: {
@@ -70,6 +79,8 @@ const manifest = {
     falseVisibleCreditsRemoved: true,
     baseProofCorpusUnchanged: true,
     atomicSwitchRollbackTestPassed: true,
+    rollbackTarget: baseManifestRelative,
+    supersededFalseCreditManifestsAreHistoricalOnly: true,
   },
 };
 
@@ -80,13 +91,21 @@ const activePointer = {
   schemaVersion: 1,
   activeManifest: `docs/proof-refresh/${version}/manifest.json`,
   activeManifestDigest: digest(await readFile(manifestPath, "utf8")),
-  rollbackManifest: priorPointer.activeManifest,
-  rollbackManifestDigest: priorPointer.activeManifestDigest,
+  rollbackManifest: baseManifestRelative,
+  rollbackManifestDigest: digest(baseManifestText),
   baseProofCorpusRetained: true,
 };
-await writeFile(path.join(correctionRoot, "rollback-active-manifest.json"), stableJson(priorPointer));
+const honestRollbackPointer = {
+  schemaVersion: 1,
+  activeManifest: baseManifestRelative,
+  activeManifestDigest: digest(baseManifestText),
+  rollbackManifest: basePriorPointer.activeManifest,
+  rollbackManifestDigest: basePriorPointer.activeManifestDigest,
+  baseProofCorpusRetained: true,
+};
+await writeFile(storedPriorPointerPath, stableJson(honestRollbackPointer));
 const temporaryPointerPath = `${pointerPath}.tmp`;
-for (const candidate of [activePointer, priorPointer, activePointer]) {
+for (const candidate of [activePointer, honestRollbackPointer, activePointer]) {
   await writeFile(temporaryPointerPath, stableJson(candidate));
   await rename(temporaryPointerPath, pointerPath);
   assert(JSON.parse(await readFile(pointerPath, "utf8")).activeManifestDigest === candidate.activeManifestDigest,
@@ -114,6 +133,8 @@ const report = {
     runtimePreparationRetained: true,
     ledgerRegenerated: true,
     atomicSwitchRollbackPassed: true,
+    rollbackTarget: baseManifestRelative,
+    supersededFalseCreditManifestsAreHistoricalOnly: true,
   },
   auditSummary: JSON.parse(auditOutput),
 };

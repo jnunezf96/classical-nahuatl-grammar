@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "activeManifest": "docs/proof-refresh/v20260810-visible-credit-correction-011/manifest.json",
-  "activeManifestDigest": "sha256:a580684cedd52ecd3c1a7b8ba7e0d0542866aee91f86e405605dc8636f80729d",
-  "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-010/manifest.json",
-  "rollbackManifestDigest": "sha256:94c7fc890723feb387e623831e048771e31e506b564136a2063ee5e6d81ceaea",
+  "activeManifestDigest": "sha256:d655cf46025aae2713f7f00028402093dcb6835d7c969437add93cc4bbc8fc5c",
+  "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
+  "rollbackManifestDigest": "sha256:1ad3655d00fa906583173103f5387e5e6e1369996d082017551c7692c32e0037",
   "baseProofCorpusRetained": true
 }

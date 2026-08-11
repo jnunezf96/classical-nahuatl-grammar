@@ -8548,6 +8548,8 @@
     "baseExactObservationsRetained": true,
     "falseVisibleCreditsRemoved": true,
     "baseProofCorpusUnchanged": true,
-    "atomicSwitchRollbackTestPassed": true
+    "atomicSwitchRollbackTestPassed": true,
+    "rollbackTarget": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
+    "supersededFalseCreditManifestsAreHistoricalOnly": true
   }
 }

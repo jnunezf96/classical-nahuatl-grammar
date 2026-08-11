@@ -25,12 +25,14 @@ function run() {
         activeExactObservations: manifest.counts.atoms,
         preparedStatus: manifest.preparedRuntimeFacts.status,
         preparedCount: manifest.preparedRuntimeFacts.atomCount,
+        rollbackManifest: pointer.rollbackManifest,
         uiConsumesGrammarFactProjection: /GrammarFactProjection|present\w+GrammarFact/u.test(userInterfaceSource),
     }, {
         activeVersion: "v20260810-visible-credit-correction-011",
         activeExactObservations: 409,
         preparedStatus: "prepared-runtime-ready-not-exactly-observed",
         preparedCount: 1000,
+        rollbackManifest: "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
         uiConsumesGrammarFactProjection: false,
     });
     return s;

@@ -13,7 +13,9 @@
     "baseExactObservationsRetained": true,
     "runtimePreparationRetained": true,
     "ledgerRegenerated": true,
-    "atomicSwitchRollbackPassed": true
+    "atomicSwitchRollbackPassed": true,
+    "rollbackTarget": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
+    "supersededFalseCreditManifestsAreHistoricalOnly": true
   },
   "auditSummary": {
     "status": "incomplete",
