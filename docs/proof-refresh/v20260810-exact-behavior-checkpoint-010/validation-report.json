@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "status": "passed",
+  "checkpoint": {
+    "owners": 30,
+    "newlyExactlyObserved": 500,
+    "failures": 0,
+    "mutationsRejected": 500
+  },
+  "progress": {
+    "denominator": 18639,
+    "before": 6256,
+    "after": 6756,
+    "remaining": 11883
+  },
+  "validations": {
+    "canonicalResultObserved": true,
+    "mutationObservationPassed": true,
+    "sharedOperationReusePassed": true,
+    "focusedRuntimeTestsPassed": true,
+    "ledgerRegenerated": true,
+    "rollbackPassed": true
+  },
+  "auditSummary": {
+    "status": "incomplete",
+    "strictComplete": false,
+    "fullCanvasSourceZones": {
+      "numerator": 58,
+      "denominator": 66,
+      "percent": 87.88,
+      "complete": false
+    },
+    "lessonGrammarOwnerLinked": {
+      "numerator": 18639,
+      "denominator": 18639,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonGrammarExactBehaviorObserved": {
+      "numerator": 6756,
+      "denominator": 18639,
+      "percent": 36.25,
+      "complete": false
+    },
+    "genuineChoiceLiveDeclarations": {
+      "numerator": 18,
+      "denominator": 58,
+      "percent": 31.03,
+      "complete": false
+    },
+    "blockerCount": 11932
+  }
+}

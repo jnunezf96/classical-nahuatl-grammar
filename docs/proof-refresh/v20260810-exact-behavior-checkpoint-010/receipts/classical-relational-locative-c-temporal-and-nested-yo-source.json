@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+  "canonicalResultDigest": "sha256:f1675003d77509b5d0c969d868c64be36b3bc6590934d63aceed1d30a5ab9dc4",
+  "observations": [
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f5ddedb6e20683963d05c1ef2202c3fb1e00357631a5aa45d82a8619a4ddbe24",
+      "actualDigest": "sha256:f5ddedb6e20683963d05c1ef2202c3fb1e00357631a5aa45d82a8619a4ddbe24",
+      "canvasAnchorDigest": "sha256:2f324a1121f9375216920a76c5030e4fd73d28d7e80d1ff3c6b1c78fce0c168a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B-02",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0f1d1c43438cdb4ff97406fe6880cca12d1ed29a68e7532ea95544dc899188d8",
+      "actualDigest": "sha256:0f1d1c43438cdb4ff97406fe6880cca12d1ed29a68e7532ea95544dc899188d8",
+      "canvasAnchorDigest": "sha256:ca213750cacbeea95acc478fda355da65ce5d33807c126007e70c5dfc397ba68",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B-03",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2047352d6dd14a2c1fc2b8425b1508e0b0750c6c3eeb45082c696f5210823a5c",
+      "actualDigest": "sha256:2047352d6dd14a2c1fc2b8425b1508e0b0750c6c3eeb45082c696f5210823a5c",
+      "canvasAnchorDigest": "sha256:12418b10b7ab750892f51b4c601b519f202c4fc967938261b709eeef4fb85f1a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B-04",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4c71e606a42529cf01dd0f90bca981947759c9ea4eba795a644f786c1a34cbc5",
+      "actualDigest": "sha256:4c71e606a42529cf01dd0f90bca981947759c9ea4eba795a644f786c1a34cbc5",
+      "canvasAnchorDigest": "sha256:1d0a35fda377633bfeaeed0e6f263e3c51c90dff70c6a0130fd8e6895919d7c0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B-05",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:33e7c36c0ece69a5bb8c45d40822beacde8f56f9de0d442517ab62a51e634a7c",
+      "actualDigest": "sha256:33e7c36c0ece69a5bb8c45d40822beacde8f56f9de0d442517ab62a51e634a7c",
+      "canvasAnchorDigest": "sha256:3a5275e6fcdca57af41bf410c43ae4e0404e3d5a16b91d58d36f9d58d5a2e8de",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P479-L036-CE84A8550B-06",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p479-l036-ce84a8550b-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4cfea0428fd374718b06e60c927517de0f3159d71ed843c9b8ca3d4e6267550b",
+      "actualDigest": "sha256:4cfea0428fd374718b06e60c927517de0f3159d71ed843c9b8ca3d4e6267550b",
+      "canvasAnchorDigest": "sha256:703df1220f3dd7ab1ad0a61f17f59ca618838195ed2067ceceb86e700ca0ea44",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P479-L036-CE84A8550B-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L002-AE03455548",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l002-ae03455548",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8eebdc09e3c99299f80801f75cad560ba048d683a604af029ba8e22bfbc5673f",
+      "actualDigest": "sha256:8eebdc09e3c99299f80801f75cad560ba048d683a604af029ba8e22bfbc5673f",
+      "canvasAnchorDigest": "sha256:dfe8673370b7ee3ec9edcbcca25b6470ac77d74b4e050ac3a8d40da66a7a6a76",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L002-AE03455548 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L002-AE03455548-02",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l002-ae03455548-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:421c80882383e5268c50a5288f3a51c35f7579f871fdb3f650cab6f26d07854f",
+      "actualDigest": "sha256:421c80882383e5268c50a5288f3a51c35f7579f871fdb3f650cab6f26d07854f",
+      "canvasAnchorDigest": "sha256:3f1a12f349ea5fc466c6443f2d14a1495c54cc1420846698565ad5498eb853c9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L002-AE03455548-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L025-29EDB6DB13",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l025-29edb6db13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3ea88145834344a543151e16c7ffb7748dd08ceec7fcc32f410f189225c1e3bb",
+      "actualDigest": "sha256:3ea88145834344a543151e16c7ffb7748dd08ceec7fcc32f410f189225c1e3bb",
+      "canvasAnchorDigest": "sha256:5f645acbedf41f036c289e45ffc5f0459740f93af526a1d60b99b1c943add061",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L025-29EDB6DB13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L025-29EDB6DB13-02",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l025-29edb6db13-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ba7165ad620685a4638b2ff6ef9088bdd8b6511822c5de5e955ef0d80079316e",
+      "actualDigest": "sha256:ba7165ad620685a4638b2ff6ef9088bdd8b6511822c5de5e955ef0d80079316e",
+      "canvasAnchorDigest": "sha256:de885ae42d820af8a5cf64eb92503bb77e1ef2afd65c0e01dd31588593894cd5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L025-29EDB6DB13-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L029-9D7FCF632F-04",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l029-9d7fcf632f-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4b3c5eed52eaec709624b250e1f301e2b82bc8396f60aa35cfa855a71ae5093d",
+      "actualDigest": "sha256:4b3c5eed52eaec709624b250e1f301e2b82bc8396f60aa35cfa855a71ae5093d",
+      "canvasAnchorDigest": "sha256:ff212edd13a67228f12c531af706f50c84ff5dffffd09bc8036d63718ddd861d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L029-9D7FCF632F-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L029-9D7FCF632F-06",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l029-9d7fcf632f-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:067fa928bb15fd62ab8bf05a84118778fb0c70b4c412918cd4b9d1755db4382b",
+      "actualDigest": "sha256:067fa928bb15fd62ab8bf05a84118778fb0c70b4c412918cd4b9d1755db4382b",
+      "canvasAnchorDigest": "sha256:ee2c7dcd5ed8c5f41dfcc443edf2da0d410c14a8df1be1cd92e4653cac61822f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L029-9D7FCF632F-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L029-9D7FCF632F-07",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l029-9d7fcf632f-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1b7f799e7eed255175d16023e804dd8172b18a0600d5aed84e21a1da07a0aae6",
+      "actualDigest": "sha256:1b7f799e7eed255175d16023e804dd8172b18a0600d5aed84e21a1da07a0aae6",
+      "canvasAnchorDigest": "sha256:54615969b91af9083f2360d73f0bd63d49ddb9fd38258d3d2ce99a4ad8e1a064",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L029-9D7FCF632F-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L029-9D7FCF632F-08",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l029-9d7fcf632f-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bb4a12a9b38ef2251cba6366731d6c1f47cc2dfd5d7a5e31e5161a5ffdbf255c",
+      "actualDigest": "sha256:bb4a12a9b38ef2251cba6366731d6c1f47cc2dfd5d7a5e31e5161a5ffdbf255c",
+      "canvasAnchorDigest": "sha256:2d6b50bff58593f5298cb0ed02d2942a9da7bf9020f280d0c1e18cb82dde50ea",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L029-9D7FCF632F-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L029-9D7FCF632F-09",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l029-9d7fcf632f-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9e943ac99d2c54548cf3d5fa1d906220a13d304015c988d0d4d2c3ed02a95083",
+      "actualDigest": "sha256:9e943ac99d2c54548cf3d5fa1d906220a13d304015c988d0d4d2c3ed02a95083",
+      "canvasAnchorDigest": "sha256:55d91882e2ccdc58669b5255e526321e7f1e7d844f8978d27a7feef12cf42fed",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L029-9D7FCF632F-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P480-L034-7E4059F7B1-07",
+      "ownerId": "classical-relational-locative-c-temporal-and-nested-yo-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-c-temporal-and-nested-yo-source:aci-p480-l034-7e4059f7b1-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:895fc61935ffca4094a55c24029aeedd7770c58375bedb205f4de457c0b90b01",
+      "actualDigest": "sha256:895fc61935ffca4094a55c24029aeedd7770c58375bedb205f4de457c0b90b01",
+      "canvasAnchorDigest": "sha256:223b05337fdf0853bd52b6c1113a2a1df1381a40b48dc75c7118ed546c859ddb",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P480-L034-7E4059F7B1-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 16,
+    "passed": 16,
+    "failed": 0,
+    "mutationsRejected": 16
+  }
+}

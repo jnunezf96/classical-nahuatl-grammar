@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+  "canonicalResultDigest": "sha256:d94fa8f0de6518638c957c050581d4670ce8e0726fcd2aa55a3e8446dbaba131",
+  "observations": [
+    {
+      "atomId": "ACI-P550-L004-A991367795-03",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l004-a991367795-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a06c87a0d29ac7354860a2efb8589bb888941e11005c0755faa4251ce9afaaf9",
+      "actualDigest": "sha256:a06c87a0d29ac7354860a2efb8589bb888941e11005c0755faa4251ce9afaaf9",
+      "canvasAnchorDigest": "sha256:8846f25d8f4253666dee8bd64f6ccdf9a11fbbafbee788fd3a0533ea9330fb35",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L004-A991367795-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L004-A991367795-04",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l004-a991367795-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a490ae9df2af59ad0b695e4eb724a95ae8763db66f94300c328a2e4efa8cce85",
+      "actualDigest": "sha256:a490ae9df2af59ad0b695e4eb724a95ae8763db66f94300c328a2e4efa8cce85",
+      "canvasAnchorDigest": "sha256:1e719afbc8e5898d4a1f3d0a052c5e6196e7a4f470eb419eb6540a1616bb5143",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L004-A991367795-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L004-A991367795-09",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l004-a991367795-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6cc1254218ee0cfba6f9d0ef5f75ca3f23478e556255a1433841692f72f46e45",
+      "actualDigest": "sha256:6cc1254218ee0cfba6f9d0ef5f75ca3f23478e556255a1433841692f72f46e45",
+      "canvasAnchorDigest": "sha256:b425bd4d2f911c87c7b351f5a1670162eaa538134eaa1edbcd93f122d077fd54",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L004-A991367795-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L004-A991367795-12",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l004-a991367795-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3436dd5ef4b650e4ae2890087454409569dd8f75642635c9e94fea69a7638fee",
+      "actualDigest": "sha256:3436dd5ef4b650e4ae2890087454409569dd8f75642635c9e94fea69a7638fee",
+      "canvasAnchorDigest": "sha256:13b0af99de3d9ca5939a53619ffed68555d4257cb59929a416c0823c75b069d8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L004-A991367795-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L033-01AC65E231-04",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l033-01ac65e231-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:38df2dfe852c41a2934ba4af6c356b721d690317ba0c7c53d00db6daa5f91c74",
+      "actualDigest": "sha256:38df2dfe852c41a2934ba4af6c356b721d690317ba0c7c53d00db6daa5f91c74",
+      "canvasAnchorDigest": "sha256:0ae54ebbe84a04d07b284c90a13e824c94a04f76a68959b44ac49d0d918c2194",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L033-01AC65E231-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L033-01AC65E231-07",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l033-01ac65e231-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3e6b5443e52b88a9272e838b7afd823b6815677de5b581d2121a2d8a65e67d19",
+      "actualDigest": "sha256:3e6b5443e52b88a9272e838b7afd823b6815677de5b581d2121a2d8a65e67d19",
+      "canvasAnchorDigest": "sha256:5e8689d325eac430cd03007e325f79452bfa174edca75ec1d387d463ba7ce184",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L033-01AC65E231-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L033-01AC65E231-08",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l033-01ac65e231-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:67098445529f7d4eb45024678f6c642d5d6e63082750e67ed78579149431a321",
+      "actualDigest": "sha256:67098445529f7d4eb45024678f6c642d5d6e63082750e67ed78579149431a321",
+      "canvasAnchorDigest": "sha256:359b48789a6fc7e565a96a5892dccede8917e3f2d4a7f610a40de8800ec070ff",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L033-01AC65E231-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L033-01AC65E231-10",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l033-01ac65e231-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0d050fb29f0b5cb64c2fdaf9419e3e26c0e067957377584bbba50fdf08e69fa8",
+      "actualDigest": "sha256:0d050fb29f0b5cb64c2fdaf9419e3e26c0e067957377584bbba50fdf08e69fa8",
+      "canvasAnchorDigest": "sha256:0b1976919e2e24f6d24a485edfb633194288bbc3080f0c1f27ae10abde7c714e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L033-01AC65E231-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L040-CDFD082FD6-02",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l040-cdfd082fd6-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b34dbed649d4d0a0015b76638ff1ed438a5d54fb8b02f598e7ff9a2516e47385",
+      "actualDigest": "sha256:b34dbed649d4d0a0015b76638ff1ed438a5d54fb8b02f598e7ff9a2516e47385",
+      "canvasAnchorDigest": "sha256:c2ca8ca0793f4eb3eb90d571474e786b79b86767d7738344d25a66d6d5afa3d0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L040-CDFD082FD6-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L040-CDFD082FD6-03",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l040-cdfd082fd6-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1abbc7d91e7bf90ece5af87097fcc42a71e257d6362e135550a4862e63ba6271",
+      "actualDigest": "sha256:1abbc7d91e7bf90ece5af87097fcc42a71e257d6362e135550a4862e63ba6271",
+      "canvasAnchorDigest": "sha256:a3e3ed3a30db38127b0dd58cc8ca7902ed116a81290367f111f1c3956c963167",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L040-CDFD082FD6-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L040-CDFD082FD6-06",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l040-cdfd082fd6-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b20efac2be0e366c53910a1e3bb156fec5a3f57143357e0992215e880b45b82c",
+      "actualDigest": "sha256:b20efac2be0e366c53910a1e3bb156fec5a3f57143357e0992215e880b45b82c",
+      "canvasAnchorDigest": "sha256:4604fc30ae56afa0a17e9769c6053be67865714acc6f09c52fa8e64626a067f1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L040-CDFD082FD6-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L040-CDFD082FD6-08",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l040-cdfd082fd6-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3e992e82404193ffcd72e8b4c46bc55fae4488622dbc2c08ea62ed9ecc1bb875",
+      "actualDigest": "sha256:3e992e82404193ffcd72e8b4c46bc55fae4488622dbc2c08ea62ed9ecc1bb875",
+      "canvasAnchorDigest": "sha256:0ed0b30d89235d00c692d85ab8431999231b489cd6185a60df78d79c82d0d670",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L040-CDFD082FD6-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P550-L040-CDFD082FD6-12",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p550-l040-cdfd082fd6-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9ab68bdc507b0f5e332a397e236f301945cee26e4cb3a117cf26da5d15ea6651",
+      "actualDigest": "sha256:9ab68bdc507b0f5e332a397e236f301945cee26e4cb3a117cf26da5d15ea6651",
+      "canvasAnchorDigest": "sha256:e16bf2b25c178955bbf048a090d9956c20a1626a02a8d40292a63868a5f98c54",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P550-L040-CDFD082FD6-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-02",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c8f638f8eba123a59900bb9193a4159991a86604a934504a815a71ecc5485a99",
+      "actualDigest": "sha256:c8f638f8eba123a59900bb9193a4159991a86604a934504a815a71ecc5485a99",
+      "canvasAnchorDigest": "sha256:a18be80ca2dc442c088ac8676225f4138302fa54594a9c0b5d6aa9e5aec418a1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-03",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8dd14a95aafe12103c6bec6481db0e7d35d9593a7643fdd83e833330150af9c3",
+      "actualDigest": "sha256:8dd14a95aafe12103c6bec6481db0e7d35d9593a7643fdd83e833330150af9c3",
+      "canvasAnchorDigest": "sha256:d5834460705f0bd003d111c53847428c84b7ff82a28b629e2928d78a35e74faa",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-06",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7dbd84b3a01640725bc669ed1036b2a21fafdac09bdc594d884281e66e3e8ad4",
+      "actualDigest": "sha256:7dbd84b3a01640725bc669ed1036b2a21fafdac09bdc594d884281e66e3e8ad4",
+      "canvasAnchorDigest": "sha256:b213b7d0ff159b2bffae8c5fea6c26509d05bc9e532bd579e7f8df1a734eb43c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-07",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dea0a98ba21b56fabde5e2d8179d5331a344e1b18e48cb94e459dd02bd6cbcab",
+      "actualDigest": "sha256:dea0a98ba21b56fabde5e2d8179d5331a344e1b18e48cb94e459dd02bd6cbcab",
+      "canvasAnchorDigest": "sha256:b744f2189ef96b5cb54bce32a4a3fab849b191107e3b4e95e5f9f9daf2b56da2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-08",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8a893845e24d486b727615aed53a8e0ac4a0bf240705eb85700f890f53fe0ddd",
+      "actualDigest": "sha256:8a893845e24d486b727615aed53a8e0ac4a0bf240705eb85700f890f53fe0ddd",
+      "canvasAnchorDigest": "sha256:f25aaf3097400f7d699e63d2cc85c9b83e03a560bf73c626b831dc35d71543a6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P551-L005-2002D307B5-12",
+      "ownerId": "classical-adverbial-adjunction-concession-in-tla-nel",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-in-tla-nel:aci-p551-l005-2002d307b5-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ab97670656eeae065e5bc283b9969b9ad19669b7d878b51fa2c63d3c0c2c4909",
+      "actualDigest": "sha256:ab97670656eeae065e5bc283b9969b9ad19669b7d878b51fa2c63d3c0c2c4909",
+      "canvasAnchorDigest": "sha256:71feec2e0727dc7222f54c1cbb515f4353c892e8034e2af2eb530eb31320b328",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P551-L005-2002D307B5-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 19,
+    "passed": 19,
+    "failed": 0,
+    "mutationsRejected": 19
+  }
+}

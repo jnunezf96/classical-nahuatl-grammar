@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+  "canonicalResultDigest": "sha256:381832749a88c3885cf031135095c9b8a41d9de927ddec3e64c988fc784e27f9",
+  "observations": [
+    {
+      "atomId": "ACI-P560-L002-C9CC9F3E49",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l002-c9cc9f3e49",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:786b1fc00a766c41383f00c5c6a2a8166b5995088fb3e5f7a74d11a2936725e2",
+      "actualDigest": "sha256:786b1fc00a766c41383f00c5c6a2a8166b5995088fb3e5f7a74d11a2936725e2",
+      "canvasAnchorDigest": "sha256:1951f2cf3a0129af0ea636a0a4cc33c8cb4b5ff251712ac3a6a6bf50b533d375",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L002-C9CC9F3E49 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L002-C9CC9F3E49-02",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l002-c9cc9f3e49-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5b31c2fefd28fb2be1208635dc47aafd3921db09a9422496a3e4614833014309",
+      "actualDigest": "sha256:5b31c2fefd28fb2be1208635dc47aafd3921db09a9422496a3e4614833014309",
+      "canvasAnchorDigest": "sha256:9d2c452e550656559af7e8807be386e6a5d080a56ef82ac827b291dfeb3b4112",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L002-C9CC9F3E49-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L002-C9CC9F3E49-03",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l002-c9cc9f3e49-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a6d67bd10e108d89c0b535c1f3a741c97914de6698807aa11bee64cfb8b6ccd5",
+      "actualDigest": "sha256:a6d67bd10e108d89c0b535c1f3a741c97914de6698807aa11bee64cfb8b6ccd5",
+      "canvasAnchorDigest": "sha256:c191e6141d6cd53c157e1e54e2f5682c4f367a144bcbea5761cb984b8dd4ae73",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L002-C9CC9F3E49-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-03",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:86ab558e5ac9f688893ce850b299dbead820ff1fdce1b5ef548ca27babcd61ad",
+      "actualDigest": "sha256:86ab558e5ac9f688893ce850b299dbead820ff1fdce1b5ef548ca27babcd61ad",
+      "canvasAnchorDigest": "sha256:dfaf0340229088f3b9f238d42165f4f66884d261a8fcd3fa0ade85ffd4d5f320",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-04",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:93a89c8b3af0b5d2156243cde5f4eefd04654c35142035388e9c0aedcb775905",
+      "actualDigest": "sha256:93a89c8b3af0b5d2156243cde5f4eefd04654c35142035388e9c0aedcb775905",
+      "canvasAnchorDigest": "sha256:7f1493ae192a8f6e6bbd097cc026b64b18e48ce75ea5fd2a21e0480fce374598",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-05",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bac18219eaaf3ad2b87b5f0a9b735a112a95f0bde8cb45dc860f1927ce44b4b1",
+      "actualDigest": "sha256:bac18219eaaf3ad2b87b5f0a9b735a112a95f0bde8cb45dc860f1927ce44b4b1",
+      "canvasAnchorDigest": "sha256:8c9f975401d4657e29021d370b0ebb102d864aa7272d4dc858a1f0a08f4fee6b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-06",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d1a8f3586a2f5b227fbed35ece794c29a796a2f68414c65a32bb426e679b53c9",
+      "actualDigest": "sha256:d1a8f3586a2f5b227fbed35ece794c29a796a2f68414c65a32bb426e679b53c9",
+      "canvasAnchorDigest": "sha256:153c0562932716f4d562553d2e27bf5ec35a104fd3b136a9f7ffc3ba916f6cc2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-07",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ddf55815c4f7e62517c6d2e3c3ae83a3f4cf8009cfa1d602dba39e9aeeedd03d",
+      "actualDigest": "sha256:ddf55815c4f7e62517c6d2e3c3ae83a3f4cf8009cfa1d602dba39e9aeeedd03d",
+      "canvasAnchorDigest": "sha256:1d0ac4cadccdd603cce47ae35d3ecce127fb108bbe955f66cae9bfd2ce2afe87",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-08",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1b0277b06d76cd3d30d0cc8cd0102f20421d07650b63954272401004994c53a4",
+      "actualDigest": "sha256:1b0277b06d76cd3d30d0cc8cd0102f20421d07650b63954272401004994c53a4",
+      "canvasAnchorDigest": "sha256:5d9c20d5fe4e144d360c466e7966de89a31f5a6bb8a7bcb3aba2002ec9e527ce",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-09",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0dc8dad3aa9508dcca2a5ff31ba57b5203a6a7de80e92fb5f428497bbaac4f28",
+      "actualDigest": "sha256:0dc8dad3aa9508dcca2a5ff31ba57b5203a6a7de80e92fb5f428497bbaac4f28",
+      "canvasAnchorDigest": "sha256:337bdc5a8909e7acfd42ff7b7f9b5284a2fb7db67aac54681a88bdfb172dd1d2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L005-11C8C311CB-10",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l005-11c8c311cb-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:caa756e81208bf86700886e0fe42304b021665965c7a2c1561f76c4999008475",
+      "actualDigest": "sha256:caa756e81208bf86700886e0fe42304b021665965c7a2c1561f76c4999008475",
+      "canvasAnchorDigest": "sha256:08b2d9dc1a351d650aba5868be33a2844e0fb13efded8fa45d21ab5b17e7ab27",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L005-11C8C311CB-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L015-85F4BD4118",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l015-85f4bd4118",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3ad3be0f052bf1f28b6f6cce5747cc9f344c063ac604ee7d34d6ac8e817bf932",
+      "actualDigest": "sha256:3ad3be0f052bf1f28b6f6cce5747cc9f344c063ac604ee7d34d6ac8e817bf932",
+      "canvasAnchorDigest": "sha256:d019a4a68dcc8bd2ebbe1dfd71d6c60d2d7a21c4ddb39a78b32593dfdaf20613",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L015-85F4BD4118 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L030-AF5C941F90",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l030-af5c941f90",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1c4817af72fe73eb9fd97726429ab7418c224b3492884ca746aeb052dc97190e",
+      "actualDigest": "sha256:1c4817af72fe73eb9fd97726429ab7418c224b3492884ca746aeb052dc97190e",
+      "canvasAnchorDigest": "sha256:2d4503ddb43b66e198b5d3628f9eabbfb1f5feca77918f267c1381096ddc2844",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L030-AF5C941F90 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L037-6C920D15D3",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l037-6c920d15d3",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:26d77de158adc306438ee5624a3daafd5f43e90f3ed65a540e6b2b2c05c3315b",
+      "actualDigest": "sha256:26d77de158adc306438ee5624a3daafd5f43e90f3ed65a540e6b2b2c05c3315b",
+      "canvasAnchorDigest": "sha256:864f6993237e7c5f44030138dd6f2345b13e9da70d75a307dc7d1182335b4176",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L037-6C920D15D3 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P560-L037-6C920D15D3-02",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p560-l037-6c920d15d3-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e13d80da6f73f36de1a6d7c785e60acbf6fcdb8cb9c4283b1e3cbc75545a328e",
+      "actualDigest": "sha256:e13d80da6f73f36de1a6d7c785e60acbf6fcdb8cb9c4283b1e3cbc75545a328e",
+      "canvasAnchorDigest": "sha256:e2a6745ea9be58e173bcbcf2c7ee1373930b1a184709f4c70b2e6577b0d815b3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P560-L037-6C920D15D3-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P561-L015-5214FC27D8-02",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p561-l015-5214fc27d8-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6548cde5fd8fcf2ea97f0f1df246cdbf0c29a6214e857e2a070d6291d2e04f9e",
+      "actualDigest": "sha256:6548cde5fd8fcf2ea97f0f1df246cdbf0c29a6214e857e2a070d6291d2e04f9e",
+      "canvasAnchorDigest": "sha256:38f3ae67faa4d54b2b9cf16863694c5521d2ca018c5eeb809e5aa28823a59962",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P561-L015-5214FC27D8-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P561-L015-5214FC27D8-03",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p561-l015-5214fc27d8-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:fb73e21294571bcb567abf4dd2393e3211598b9ae28df8dc13653bdb13053997",
+      "actualDigest": "sha256:fb73e21294571bcb567abf4dd2393e3211598b9ae28df8dc13653bdb13053997",
+      "canvasAnchorDigest": "sha256:2eff85f6f5fc248ffe40f4b0b78d2247152c622fb03eb209955b019345f6b957",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P561-L015-5214FC27D8-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P561-L015-5214FC27D8-04",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p561-l015-5214fc27d8-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:11d6ac365c0172fc1a17e8780dd9b5153b81ab9b0624d87e258d604d3fd96876",
+      "actualDigest": "sha256:11d6ac365c0172fc1a17e8780dd9b5153b81ab9b0624d87e258d604d3fd96876",
+      "canvasAnchorDigest": "sha256:34bd7243ca63d8ab2067accd177276f7d1757167fbdc357acd36bae17d35be62",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P561-L015-5214FC27D8-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P561-L015-5214FC27D8-06",
+      "ownerId": "classical-clause-conjunction-unmarked-asyndeton",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-unmarked-asyndeton:aci-p561-l015-5214fc27d8-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:161a3a4f07e6a2dcb913b33dea9f56da9f2361e507b31f24ed0712e2159adc9b",
+      "actualDigest": "sha256:161a3a4f07e6a2dcb913b33dea9f56da9f2361e507b31f24ed0712e2159adc9b",
+      "canvasAnchorDigest": "sha256:23bf0bb9047c98a52cc4655c790e153521123e88344c4226cc4bc5c04ff219a6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P561-L015-5214FC27D8-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 19,
+    "passed": 19,
+    "failed": 0,
+    "mutationsRejected": 19
+  }
+}

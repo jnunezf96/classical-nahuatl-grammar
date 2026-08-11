@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+  "canonicalResultDigest": "sha256:7d76ce0407d14965a6cff8013976d31c1e1f0d517c1918bc964357a3fbe914eb",
+  "observations": [
+    {
+      "atomId": "ACI-P615-L016-1EF6E861FD-07",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p615-l016-1ef6e861fd-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3a173295c2eff7e5a0b158c5541e7aa4f634496ccfa9ed5b8789e01ca264d070",
+      "actualDigest": "sha256:3a173295c2eff7e5a0b158c5541e7aa4f634496ccfa9ed5b8789e01ca264d070",
+      "canvasAnchorDigest": "sha256:f5dadc209f69ddad78890a2a086a7a8ad7301b4cc6e7a24f9f6e04e83137629c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P615-L016-1EF6E861FD-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P615-L016-1EF6E861FD-09",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p615-l016-1ef6e861fd-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:86815c2af9413ae6ecbec5b6db51333230c8e2a01a209dd2fe79611e545b46cf",
+      "actualDigest": "sha256:86815c2af9413ae6ecbec5b6db51333230c8e2a01a209dd2fe79611e545b46cf",
+      "canvasAnchorDigest": "sha256:75ef52daee052b272b772ab32153fa3120d8e500f74206d6e1424d257f1408d2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P615-L016-1EF6E861FD-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P615-L039-CFD933C673-11",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p615-l039-cfd933c673-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3bbe9125d66a792636ae00c66b93d5d18cae90d168fe28480c96a5b9ddf33228",
+      "actualDigest": "sha256:3bbe9125d66a792636ae00c66b93d5d18cae90d168fe28480c96a5b9ddf33228",
+      "canvasAnchorDigest": "sha256:fe8a6216a03446875a3787030020118cc2a7fd358955569c27faa30521abff32",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P615-L039-CFD933C673-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L006-EF4EAE5531-06",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l006-ef4eae5531-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a5ae2bfc31cbf32615f1c439600acfe320b57c1884a7b52ae09f570e78b1750b",
+      "actualDigest": "sha256:a5ae2bfc31cbf32615f1c439600acfe320b57c1884a7b52ae09f570e78b1750b",
+      "canvasAnchorDigest": "sha256:1ea36bad9aacfe24a13dc15964e8bae5b617ed3ace70775ffc93202028701351",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L006-EF4EAE5531-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L016-EB6B8D31C5",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l016-eb6b8d31c5",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:96a7c4ca2823d324a4603f11785e4271f0bef0815d390f8b49e1a91d1d311d15",
+      "actualDigest": "sha256:96a7c4ca2823d324a4603f11785e4271f0bef0815d390f8b49e1a91d1d311d15",
+      "canvasAnchorDigest": "sha256:8dd945cb2fda0d0758bbfc51bcf0a540f2b39b9b676aa87a6e7405f71a668902",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L016-EB6B8D31C5 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L016-EB6B8D31C5-04",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l016-eb6b8d31c5-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e019bdf5b9bdf1b507245acf2a1338363229176c5b9a125a637a4d027cb674d",
+      "actualDigest": "sha256:7e019bdf5b9bdf1b507245acf2a1338363229176c5b9a125a637a4d027cb674d",
+      "canvasAnchorDigest": "sha256:d84f5ad6eb88d364a340a63fc91fa512f2df6023716e35bfe26759677e74ce6f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L016-EB6B8D31C5-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L016-EB6B8D31C5-05",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l016-eb6b8d31c5-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6d7bf3153fe3b08812bc3b18628646bd0320ad105aba13b41c30380465572546",
+      "actualDigest": "sha256:6d7bf3153fe3b08812bc3b18628646bd0320ad105aba13b41c30380465572546",
+      "canvasAnchorDigest": "sha256:9a15202c7119c1b092498af69bd1e6eb4138f7175e9f630201e957864cff2899",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L016-EB6B8D31C5-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L023-6DDD64DB26-08",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l023-6ddd64db26-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c8d81b0ab83a5e61b79932929a802426db7d2a06d13384bcf3a5ca3471ecdd98",
+      "actualDigest": "sha256:c8d81b0ab83a5e61b79932929a802426db7d2a06d13384bcf3a5ca3471ecdd98",
+      "canvasAnchorDigest": "sha256:e76696215e04441c7e084270d4ccb86df4b009eac09d07e92556ca54f8f38ab7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L023-6DDD64DB26-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L023-6DDD64DB26-09",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l023-6ddd64db26-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:74ca39a36323962c47baca3426ace39486761258eeeeb527bebd95995b580668",
+      "actualDigest": "sha256:74ca39a36323962c47baca3426ace39486761258eeeeb527bebd95995b580668",
+      "canvasAnchorDigest": "sha256:3af1ce90557df0980c0c6f3a0d0284ac37453da93cfb1f82457974bd4850973a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L023-6DDD64DB26-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-06",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:23c067cc3d459c99969d33242642da82303c653628f2180af6ce79ad3082a551",
+      "actualDigest": "sha256:23c067cc3d459c99969d33242642da82303c653628f2180af6ce79ad3082a551",
+      "canvasAnchorDigest": "sha256:5e21f7f21edba42d999887f55081f97c31ebd858e065016a162e7d558e6578a1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-07",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9f114631160e48e9bf7ee073cf7474bb85f864c20f3c946f4dca4dd9c4aa3681",
+      "actualDigest": "sha256:9f114631160e48e9bf7ee073cf7474bb85f864c20f3c946f4dca4dd9c4aa3681",
+      "canvasAnchorDigest": "sha256:35151843fa1e5af96942a885ab641d690280b36d963901aad9fd922cf9731615",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-08",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:665fe3a7c45292b3c549c8e420ddd10a4a823baa54ea73d59468ac212a198144",
+      "actualDigest": "sha256:665fe3a7c45292b3c549c8e420ddd10a4a823baa54ea73d59468ac212a198144",
+      "canvasAnchorDigest": "sha256:5300e508cba18b358bf834c4cff1d1e49fe792c8d16eb648e3001e9cf69d6bdb",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-09",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cbde324c01555c34f2295ef9a85d52aed06a6490b71a9d004af8c92d12153a3f",
+      "actualDigest": "sha256:cbde324c01555c34f2295ef9a85d52aed06a6490b71a9d004af8c92d12153a3f",
+      "canvasAnchorDigest": "sha256:d5c85081bbc0d84585d4d2494fb48082646caf5119dff510d2d533d914852ff8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-10",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c6ad5a68b4040236a6574a0fc60c2b31e76819f7356f9ed138eb8e69554b521c",
+      "actualDigest": "sha256:c6ad5a68b4040236a6574a0fc60c2b31e76819f7356f9ed138eb8e69554b521c",
+      "canvasAnchorDigest": "sha256:146854ddbe120ae3101bbdb15992a8a935182746052bd1758164741b579c7272",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P616-L028-30F84CE271-11",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p616-l028-30f84ce271-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a6f91e3945c1ebf766b9d2490c820da3bf559a467b52bdfdab213e73b3d128f1",
+      "actualDigest": "sha256:a6f91e3945c1ebf766b9d2490c820da3bf559a467b52bdfdab213e73b3d128f1",
+      "canvasAnchorDigest": "sha256:7da6604ba57e2ffcee3498b319ccd5e4d29cf15fd1bd15b245316c12b862d4da",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P616-L028-30F84CE271-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P617-L016-EFFDDD5853",
+      "ownerId": "classical-personal-name-nnc-absolutive-inner-matrix-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-absolutive-inner-matrix-embed:aci-p617-l016-effddd5853",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cbcef651d33e47f89a70746b4c5c28c3263b238a300fc3aba32d81c7c0c72405",
+      "actualDigest": "sha256:cbcef651d33e47f89a70746b4c5c28c3263b238a300fc3aba32d81c7c0c72405",
+      "canvasAnchorDigest": "sha256:84087c80e6f1e518de6d9ed3cb89206422e5e548159ca1466bd4164c0bd74452",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P617-L016-EFFDDD5853 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 16,
+    "passed": 16,
+    "failed": 0,
+    "mutationsRejected": 16
+  }
+}

@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-mood-tense-category-system",
+  "canonicalResultDigest": "sha256:1dfd68cbf70470d2760c26d5dcf93eb0c7cff3276bd281ecf48ec698b0dc2abf",
+  "observations": [
+    {
+      "atomId": "ACI-P069-L035-91475DC064-02",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p069-l035-91475dc064-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1ac8ba75917efd3ebbb2d054d3b09857c9ae094769d9091575a5160ff1253b68",
+      "actualDigest": "sha256:1ac8ba75917efd3ebbb2d054d3b09857c9ae094769d9091575a5160ff1253b68",
+      "canvasAnchorDigest": "sha256:7f02dda23b39d6594206b28f1502232685e6d82524719e5b7cd8a29fd4cb1e74",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P069-L035-91475DC064-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P069-L035-91475DC064-03",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p069-l035-91475dc064-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:332bd8d844df1ce13e1df009ecb427fc57d12bbfd258d0f8810c9583dea54a16",
+      "actualDigest": "sha256:332bd8d844df1ce13e1df009ecb427fc57d12bbfd258d0f8810c9583dea54a16",
+      "canvasAnchorDigest": "sha256:e0e717e0c64948a1f7a8758f54409f5c8787f95907b0e6f16842b87b2ecc9109",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P069-L035-91475DC064-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P069-L035-91475DC064-04",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p069-l035-91475dc064-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:844978bebbe45a44308a89368352bb7722052b514a1154368aa2344cc3b8ef6b",
+      "actualDigest": "sha256:844978bebbe45a44308a89368352bb7722052b514a1154368aa2344cc3b8ef6b",
+      "canvasAnchorDigest": "sha256:ffed38659874a4568e325431712f38ff6c5ea813623e076ad7a7c94a2cff619e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P069-L035-91475DC064-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P069-L035-91475DC064-05",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p069-l035-91475dc064-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e851a3213f664cfbbe3412c74bc0e2c0bb9956ab7b210a5bf246fe66deedf555",
+      "actualDigest": "sha256:e851a3213f664cfbbe3412c74bc0e2c0bb9956ab7b210a5bf246fe66deedf555",
+      "canvasAnchorDigest": "sha256:6226d1c2687b76b5394fec00e8c843bedd98adee4713c237f2719e8ab38eccb7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P069-L035-91475DC064-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P069-L035-91475DC064-06",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p069-l035-91475dc064-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0a10369b8ed1312e383fec373689a4f50a6ba07e6dbba87440c620cb49c7d6c9",
+      "actualDigest": "sha256:0a10369b8ed1312e383fec373689a4f50a6ba07e6dbba87440c620cb49c7d6c9",
+      "canvasAnchorDigest": "sha256:649b62fdd8e5c3ff3bb390970293d1dbbe9ca470f9dac9e48022a786be65c89e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P069-L035-91475DC064-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b20d690d80cc1bfe17eb9d4ad9327bc2377df0f448fd175c73be2f3a0cc309e6",
+      "actualDigest": "sha256:b20d690d80cc1bfe17eb9d4ad9327bc2377df0f448fd175c73be2f3a0cc309e6",
+      "canvasAnchorDigest": "sha256:507ed895b51eb6efceab84453e24dba7e235536e76bfff982dd5def0e21b9f78",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-02",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:09a856330816a97f9a51ceb5e2adfeab44c0623276360695052b39f95e1006ab",
+      "actualDigest": "sha256:09a856330816a97f9a51ceb5e2adfeab44c0623276360695052b39f95e1006ab",
+      "canvasAnchorDigest": "sha256:c40baece937c6308712cc8403b723a7cbf58dae57168a8a293bdcb1efebd7f84",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-03",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:fe29df2f1c7fedf2713744f66b92681c5f2e77b75dac782215afa4ec46ffb36d",
+      "actualDigest": "sha256:fe29df2f1c7fedf2713744f66b92681c5f2e77b75dac782215afa4ec46ffb36d",
+      "canvasAnchorDigest": "sha256:7aba23f728c92f0fcb2156cac12cb5fe4c5c4cbf87c58bfc38827f38827ed07c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-04",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:21369a2826301d68adbeaa9316e8ed622c6b9a37c80fca4ddbc68838c2e91960",
+      "actualDigest": "sha256:21369a2826301d68adbeaa9316e8ed622c6b9a37c80fca4ddbc68838c2e91960",
+      "canvasAnchorDigest": "sha256:5c4fc1a9f3f5672b4946740219654f9ec9791a76ca7338001a235cd97d755d6d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-05",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ea0f6235298440dd83d6757452e82fd3cca07e3842d26fd79c6cf6ac8f7e1dec",
+      "actualDigest": "sha256:ea0f6235298440dd83d6757452e82fd3cca07e3842d26fd79c6cf6ac8f7e1dec",
+      "canvasAnchorDigest": "sha256:e18babc48c48a597d9b52621c7bd6a81472e4267faa3c13cbb6375ac136cf0fc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-06",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c6c37c47aa9b29aa01ee3c4c6be86b72180798326c3ac44ca62100c9a0a96bb3",
+      "actualDigest": "sha256:c6c37c47aa9b29aa01ee3c4c6be86b72180798326c3ac44ca62100c9a0a96bb3",
+      "canvasAnchorDigest": "sha256:e015d39c81a0aa1d41b9c18a93321f3304c23e468494995f4886c22b2f008b30",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-07",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8ed749ebf878aafa39b06ca3c915701bcdf22749a5be68dfc01ab7ece565c5f7",
+      "actualDigest": "sha256:8ed749ebf878aafa39b06ca3c915701bcdf22749a5be68dfc01ab7ece565c5f7",
+      "canvasAnchorDigest": "sha256:9dba7417f96ce7bf73c4b36b75f65f81534e9c947c123fa3c75d2264cff9bb39",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L017-55ACE00A59-08",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l017-55ace00a59-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9230d6c78bc1d1da521384d318ccc64e662fc70ad96fe3513825b5a5fd21790b",
+      "actualDigest": "sha256:9230d6c78bc1d1da521384d318ccc64e662fc70ad96fe3513825b5a5fd21790b",
+      "canvasAnchorDigest": "sha256:30f300ef0a76fb1bb57d57c6041d9e22bbede982d51a1fe2bf10017720ce2b92",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L017-55ACE00A59-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L024-2606AD2250",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l024-2606ad2250",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:50bb432f37de0a9f3c9babda60ed0d9078d68ff890583a4548a040556bc9b588",
+      "actualDigest": "sha256:50bb432f37de0a9f3c9babda60ed0d9078d68ff890583a4548a040556bc9b588",
+      "canvasAnchorDigest": "sha256:e028493abe433c9333bbe8a899af647a8d3b548af44cd678451787408fecd1f3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L024-2606AD2250 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L024-2606AD2250-02",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l024-2606ad2250-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bf35495f37d92f3522c0ad3674750225400324f4a5a695fd66085f334d5fd395",
+      "actualDigest": "sha256:bf35495f37d92f3522c0ad3674750225400324f4a5a695fd66085f334d5fd395",
+      "canvasAnchorDigest": "sha256:1261d0fc45cdd44cd83b07a3f6b5a977b38c91a553b21e1b563dce34f37bcb4a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L024-2606AD2250-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P070-L024-2606AD2250-04",
+      "ownerId": "classical-mood-tense-category-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-mood-tense-category-system:aci-p070-l024-2606ad2250-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:df3b09dfdc484e81f18eb30a1a40bd69dd0a7e860ec253d189dd1303d3775828",
+      "actualDigest": "sha256:df3b09dfdc484e81f18eb30a1a40bd69dd0a7e860ec253d189dd1303d3775828",
+      "canvasAnchorDigest": "sha256:1cfef3f815deda29dcab5d1ba08eda6ac9041d5281f90554956cd906d1255e65",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P070-L024-2606AD2250-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 16,
+    "passed": 16,
+    "failed": 0,
+    "mutationsRejected": 16
+  }
+}

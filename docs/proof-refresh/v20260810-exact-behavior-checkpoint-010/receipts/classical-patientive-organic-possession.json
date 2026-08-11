@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-patientive-organic-possession",
+  "canonicalResultDigest": "sha256:9280e22a5ba105b4f26b6aa4c4d10af9042484797f1d1e9ae00baaee82d65f4f",
+  "observations": [
+    {
+      "atomId": "ACI-P398-L007-EBF573439C",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d91c66e23da32d82bf2e5d9cfc848dd09296ef717f61b01ef72ba9b877687ef9",
+      "actualDigest": "sha256:d91c66e23da32d82bf2e5d9cfc848dd09296ef717f61b01ef72ba9b877687ef9",
+      "canvasAnchorDigest": "sha256:03e042959cf3fc8c085ba22702e463bc6155ee3c390bb7501693c4050f0f1de1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-02",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:765ca6b145083450de5a173152f109718064f4ca5f42e3237fcf4204cbdaa742",
+      "actualDigest": "sha256:765ca6b145083450de5a173152f109718064f4ca5f42e3237fcf4204cbdaa742",
+      "canvasAnchorDigest": "sha256:d0a58aafae76a3f0464f5fde10cb76f6ff0000397836f4dc4d3afbc8577caa51",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-03",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2667c49fce9dee09b99d8f36b7c9aa613f3cb77e8b398a972f9b4ee3e6d79010",
+      "actualDigest": "sha256:2667c49fce9dee09b99d8f36b7c9aa613f3cb77e8b398a972f9b4ee3e6d79010",
+      "canvasAnchorDigest": "sha256:f4d13921adc8b6133457a875065d16a014058d540b9fa886997d99bb71ac18fd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-07",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:10cc41d835c221586c632d4ad27c996c8ce12f54f459faed5cf08f1f4c1f5625",
+      "actualDigest": "sha256:10cc41d835c221586c632d4ad27c996c8ce12f54f459faed5cf08f1f4c1f5625",
+      "canvasAnchorDigest": "sha256:5f90a148c0c8ef4270fb6a2f39449862cbaa2d03afa4513409ab846350b3883e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-12",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:849d996ae67f85182435f8d8284aef1ad4f7d8354bbe5db341a4a7893cd26c63",
+      "actualDigest": "sha256:849d996ae67f85182435f8d8284aef1ad4f7d8354bbe5db341a4a7893cd26c63",
+      "canvasAnchorDigest": "sha256:60e30181f3da25588e291cdf8de954a91c731f58d971da4461391ce2767d4d8e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-14",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-14",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f79d2b7a2eb85195db4f681fc63c4b2382dccffe3427b7ff1e972ae41969352c",
+      "actualDigest": "sha256:f79d2b7a2eb85195db4f681fc63c4b2382dccffe3427b7ff1e972ae41969352c",
+      "canvasAnchorDigest": "sha256:67e26f3b33ca9cbf56730cb1348a22d9854248852ce8d85e16c0f00c50828eac",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-14 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-16",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-16",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7ed3b48ef55ec24487058a506aa198778822cb02dbe7740b3319ce466b7e6cee",
+      "actualDigest": "sha256:7ed3b48ef55ec24487058a506aa198778822cb02dbe7740b3319ce466b7e6cee",
+      "canvasAnchorDigest": "sha256:e8804252b2ab60161e98f4e7528772a17f4134ad23fe6205308d4b03d6fc82f6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-16 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L007-EBF573439C-18",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l007-ebf573439c-18",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:22fb1e90d2d04eb59cc17bff08216462250d6c22f15b756d18df6d8c037a302d",
+      "actualDigest": "sha256:22fb1e90d2d04eb59cc17bff08216462250d6c22f15b756d18df6d8c037a302d",
+      "canvasAnchorDigest": "sha256:d10344f5ad98619450a38d1f4a9653da527e51a3773349b77c2c3a32a7aec39a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L007-EBF573439C-18 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L030-3E2666F517",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l030-3e2666f517",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ea74bf65a45c2cf81d2641e8da8658eb60bfe02ac081adb6db4f880067ac2c6b",
+      "actualDigest": "sha256:ea74bf65a45c2cf81d2641e8da8658eb60bfe02ac081adb6db4f880067ac2c6b",
+      "canvasAnchorDigest": "sha256:0dad6c7e6148f14d88fbdf2831eb23be53a144c3a9b58e03747923c96a26fa73",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L030-3E2666F517 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L030-3E2666F517-02",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l030-3e2666f517-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:afbf0e9ca8193e0ff02af47fc1c6a448391b9aa9356598af0a3f512e6b54c809",
+      "actualDigest": "sha256:afbf0e9ca8193e0ff02af47fc1c6a448391b9aa9356598af0a3f512e6b54c809",
+      "canvasAnchorDigest": "sha256:3a2d8b989318268a851efaa7ebeb7c468744a80438425a9133c7f0836a39b413",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L030-3E2666F517-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L033-F36692AC41",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l033-f36692ac41",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7446fee901c9e7e1deaef95e39e7cdafe1a65366f7246c0a7987c7c5dce557f2",
+      "actualDigest": "sha256:7446fee901c9e7e1deaef95e39e7cdafe1a65366f7246c0a7987c7c5dce557f2",
+      "canvasAnchorDigest": "sha256:59b9fe735dd12f2597b8f7c8736ad4ba8823642af0115085d8f095ef2bef1fd2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L033-F36692AC41 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P398-L033-F36692AC41-03",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p398-l033-f36692ac41-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ad7c5677a04fc0443c53ef8a5824af83fabf09741488ea4fc818d6a23d7a7d36",
+      "actualDigest": "sha256:ad7c5677a04fc0443c53ef8a5824af83fabf09741488ea4fc818d6a23d7a7d36",
+      "canvasAnchorDigest": "sha256:4c1d5bddf60b15f01ffce2894d20177daa9158d6418884d32846f095e74d4b92",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P398-L033-F36692AC41-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P399-L016-FA1022BB11-07",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p399-l016-fa1022bb11-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:74a90346a9df3087d6284ed04a420284932b0e7d101f8fad41d7b00dd2bb750b",
+      "actualDigest": "sha256:74a90346a9df3087d6284ed04a420284932b0e7d101f8fad41d7b00dd2bb750b",
+      "canvasAnchorDigest": "sha256:4278218eb3ff5d5dc7c3e2c9d7545288018a91327b57074534e55bb4d5e5410b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P399-L016-FA1022BB11-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P399-L022-613CA5716C",
+      "ownerId": "classical-patientive-organic-possession",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-organic-possession:aci-p399-l022-613ca5716c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a9f8c8773a41e4bf9259d3888808a41c268f158de45940187eb3c5815a596d36",
+      "actualDigest": "sha256:a9f8c8773a41e4bf9259d3888808a41c268f158de45940187eb3c5815a596d36",
+      "canvasAnchorDigest": "sha256:065a13b03ff12a7b1ff691be34ed3413f7bc6af4bf12817906d9ea536e997aa3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P399-L022-613CA5716C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 14,
+    "passed": 14,
+    "failed": 0,
+    "mutationsRejected": 14
+  }
+}

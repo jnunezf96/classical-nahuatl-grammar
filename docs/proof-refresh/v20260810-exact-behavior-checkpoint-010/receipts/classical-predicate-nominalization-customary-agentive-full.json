@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+  "canonicalResultDigest": "sha256:80cd7b5307264cd8a498c6f485919c445ca2f84a533ce80ef9d37a68e9179534",
+  "observations": [
+    {
+      "atomId": "ACI-P356-L023-C90365DC60-02",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p356-l023-c90365dc60-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cd33eaef8628c6f54a41e494fb2ca1cebdf6af998842490bb3fc1462008fc07c",
+      "actualDigest": "sha256:cd33eaef8628c6f54a41e494fb2ca1cebdf6af998842490bb3fc1462008fc07c",
+      "canvasAnchorDigest": "sha256:ba36e5db49c8a785ba6c00ffd116f66b14371fa725f07a2d5549b904681cc316",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P356-L023-C90365DC60-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P356-L029-703EAC2C17-06",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p356-l029-703eac2c17-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:50dd80b6e8627315c08036dca60d9ed4e450b1b2ab0cbbff25353591486c742a",
+      "actualDigest": "sha256:50dd80b6e8627315c08036dca60d9ed4e450b1b2ab0cbbff25353591486c742a",
+      "canvasAnchorDigest": "sha256:91217a43a2626c7dbe395389ac1f4902bc93ca850800b9b2dc48c05e8956b79a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P356-L029-703EAC2C17-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P356-L029-703EAC2C17-09",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p356-l029-703eac2c17-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:08d333316feaa2153cdf6534112c74493ca78f02d2a1260213f490ad4949f6c1",
+      "actualDigest": "sha256:08d333316feaa2153cdf6534112c74493ca78f02d2a1260213f490ad4949f6c1",
+      "canvasAnchorDigest": "sha256:768b71836719e9783f1e28309032d13f039c2b1b089d5dfaf7072556f38b0212",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P356-L029-703EAC2C17-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P356-L032-C1DF809964-06",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p356-l032-c1df809964-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cddc16c15fdc16d9d6659bc49773a809448a6c425763dea9d60cc570fae0dddf",
+      "actualDigest": "sha256:cddc16c15fdc16d9d6659bc49773a809448a6c425763dea9d60cc570fae0dddf",
+      "canvasAnchorDigest": "sha256:6a8ae541923247d3734ef14d1a6ad21b1351b6a68e62cd1318e273f44b03a8c6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P356-L032-C1DF809964-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L021-E00CF19063-05",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l021-e00cf19063-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d6db867d87c0c6e722891bb448233ed7c8bde40b3f0c5dd7e9bcbd2d517593ba",
+      "actualDigest": "sha256:d6db867d87c0c6e722891bb448233ed7c8bde40b3f0c5dd7e9bcbd2d517593ba",
+      "canvasAnchorDigest": "sha256:4a077110df67dcf492e625624b67d4a1383e04ec56c58483783957d8bde93491",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L021-E00CF19063-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L023-A2F340FCBE",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l023-a2f340fcbe",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c233783e31ca5e606ac8673b177cc8329062ddeeda696d3fbd871af50cad52ac",
+      "actualDigest": "sha256:c233783e31ca5e606ac8673b177cc8329062ddeeda696d3fbd871af50cad52ac",
+      "canvasAnchorDigest": "sha256:20435b94999396012c11be1e0bb9c3e4ae3178270c6dea2f386d8163a092c783",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L023-A2F340FCBE rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L023-A2F340FCBE-03",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l023-a2f340fcbe-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:258fb6ca38871fe8dd1e3d3a8a7aeca87371db7cac273e9507e999d8a97b5d64",
+      "actualDigest": "sha256:258fb6ca38871fe8dd1e3d3a8a7aeca87371db7cac273e9507e999d8a97b5d64",
+      "canvasAnchorDigest": "sha256:0d95d3f6b354764bf06db75152fa9cc81a8f865f4df8c82415aedd0a06615f51",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L023-A2F340FCBE-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L023-A2F340FCBE-04",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l023-a2f340fcbe-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a0529bb65bd69d9f66cb376225fb93cbeb1a06437535f06d41c46d460645e2a5",
+      "actualDigest": "sha256:a0529bb65bd69d9f66cb376225fb93cbeb1a06437535f06d41c46d460645e2a5",
+      "canvasAnchorDigest": "sha256:7b3d9a9f1c18166b51f3b5ba634043cf07285791eeefdf6efbe9ffdcf7449c3e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L023-A2F340FCBE-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L026-BD0E98D04A-03",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l026-bd0e98d04a-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8bd5b08f4799be4621e64ce42dd853f07be283e3fbffa9b34d890735211a0ed2",
+      "actualDigest": "sha256:8bd5b08f4799be4621e64ce42dd853f07be283e3fbffa9b34d890735211a0ed2",
+      "canvasAnchorDigest": "sha256:1eb2aa15070284214756043f4439c59f0c0df904c132e44d38640eea08317715",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L026-BD0E98D04A-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L026-BD0E98D04A-04",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l026-bd0e98d04a-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6616af2cfa113a2b2242a4248441d4186130ccd241db946b66dad71aa6ce0e2d",
+      "actualDigest": "sha256:6616af2cfa113a2b2242a4248441d4186130ccd241db946b66dad71aa6ce0e2d",
+      "canvasAnchorDigest": "sha256:4d719348e6770ff7998123a5e2b5e0252c17f4ac8704b59f405e8a441b36f454",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L026-BD0E98D04A-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L026-BD0E98D04A-08",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l026-bd0e98d04a-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ed00da71a1b3366b85ce4ab8edb2b2f6c1130680bb720ac9033d3e0805021105",
+      "actualDigest": "sha256:ed00da71a1b3366b85ce4ab8edb2b2f6c1130680bb720ac9033d3e0805021105",
+      "canvasAnchorDigest": "sha256:6b3cedaf319ccf4547e1b766c4b5cb57fe8d46891374e6d6c607027e2f643ba2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L026-BD0E98D04A-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L026-BD0E98D04A-09",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l026-bd0e98d04a-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f764671e1e1c1a96417e83bb81a008db3a7b3259d7fdc927f75493d0142d4082",
+      "actualDigest": "sha256:f764671e1e1c1a96417e83bb81a008db3a7b3259d7fdc927f75493d0142d4082",
+      "canvasAnchorDigest": "sha256:afc1494a25593132712f00d8979f61e2f8514acf51dd0c7aa9c7e0d6db68db4b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L026-BD0E98D04A-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L034-08B6842458-07",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l034-08b6842458-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:87081bbee5e0e6dc4bbed6cc4a7dcd8d74076b89e43036d10c1b11eaed59397d",
+      "actualDigest": "sha256:87081bbee5e0e6dc4bbed6cc4a7dcd8d74076b89e43036d10c1b11eaed59397d",
+      "canvasAnchorDigest": "sha256:45fc1730240c45154014f1c612afc2b1c68e89a4b2ad1ba93d9b15046cc3ab3b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L034-08B6842458-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L034-08B6842458-08",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l034-08b6842458-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c27c6d95b1dc9542381cec7febe41b1cdc1b9eb67c6b091d652cd8f19fa47a0c",
+      "actualDigest": "sha256:c27c6d95b1dc9542381cec7febe41b1cdc1b9eb67c6b091d652cd8f19fa47a0c",
+      "canvasAnchorDigest": "sha256:131371e5e17ae0ee6e3f7c3f04b215b877194f25d9708a8788abbbb87bb07d78",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L034-08B6842458-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P357-L034-08B6842458-10",
+      "ownerId": "classical-predicate-nominalization-customary-agentive-full",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-predicate-nominalization-customary-agentive-full:aci-p357-l034-08b6842458-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0efb79d1fb814f443d8e8d1c19f0ab7c08ca25401fbc5c35615e1171075ab1fb",
+      "actualDigest": "sha256:0efb79d1fb814f443d8e8d1c19f0ab7c08ca25401fbc5c35615e1171075ab1fb",
+      "canvasAnchorDigest": "sha256:a7f5aa2a90155300e06465af605eab780952326c965622dafff71ce77ec6a30d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P357-L034-08B6842458-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 15,
+    "passed": 15,
+    "failed": 0,
+    "mutationsRejected": 15
+  }
+}

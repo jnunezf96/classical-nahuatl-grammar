@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-patientive-characteristic-property",
+  "canonicalResultDigest": "sha256:b03cd5ed44c8b8524d4e19a107d40892fca7eb4ced114ade836a22e3b50442f6",
+  "observations": [
+    {
+      "atomId": "ACI-P395-L012-9969C57670",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p395-l012-9969c57670",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:86c51bb1de8c7d7628e79ed9de310271e010b3bd1d13632b109ec8313963dc04",
+      "actualDigest": "sha256:86c51bb1de8c7d7628e79ed9de310271e010b3bd1d13632b109ec8313963dc04",
+      "canvasAnchorDigest": "sha256:33598fafe7041fe9b6e8518925aaec89f04648661e85b87bdd55dd7507c82b59",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P395-L012-9969C57670 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P395-L012-9969C57670-02",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p395-l012-9969c57670-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:828944b3a56067eb5a09368bdb0e48a172c8242689e0b1c91b73714806df2a54",
+      "actualDigest": "sha256:828944b3a56067eb5a09368bdb0e48a172c8242689e0b1c91b73714806df2a54",
+      "canvasAnchorDigest": "sha256:e084509ba670a9de789bf21d4df744111ce393fe77dfe59169f9508a05065652",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P395-L012-9969C57670-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P395-L012-9969C57670-03",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p395-l012-9969c57670-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c76685134c4c9f25b362848e556e0b97afffda98ed198322b21e59f78525d697",
+      "actualDigest": "sha256:c76685134c4c9f25b362848e556e0b97afffda98ed198322b21e59f78525d697",
+      "canvasAnchorDigest": "sha256:cbbcf7732443e98e7fb54df09012f343d0f8bde45301d583b6ecb956bc38a852",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P395-L012-9969C57670-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P395-L033-DE059FD946-06",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p395-l033-de059fd946-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:859a3e1241e01aa182219d97b1f6f54b5b418dccc3b3f1b2f3e7a447b2d07639",
+      "actualDigest": "sha256:859a3e1241e01aa182219d97b1f6f54b5b418dccc3b3f1b2f3e7a447b2d07639",
+      "canvasAnchorDigest": "sha256:576b3aa5d2c5a0eda8f9e86df72fec6d89bd3e7552a562859054958bba0e6e2f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P395-L033-DE059FD946-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L011-A005CFCAF7-03",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l011-a005cfcaf7-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:34c9d92929c600defd00e519594cf99cbadf0d559636bed013e8141d957b9b03",
+      "actualDigest": "sha256:34c9d92929c600defd00e519594cf99cbadf0d559636bed013e8141d957b9b03",
+      "canvasAnchorDigest": "sha256:05e4b2e0b3295828d42696c2cd829516ba95cb1a52f224c3074c5ca65710f4ef",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L011-A005CFCAF7-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L011-A005CFCAF7-06",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l011-a005cfcaf7-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9252a7c023745943dddcd76fee6a96c127bcca520a57702513a2f326d521fbce",
+      "actualDigest": "sha256:9252a7c023745943dddcd76fee6a96c127bcca520a57702513a2f326d521fbce",
+      "canvasAnchorDigest": "sha256:cdf04ec79aed476532f3829a52e658689c8aed78d168f9f98d10d8b7b842bbdc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L011-A005CFCAF7-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L018-7853A1A1CB-02",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l018-7853a1a1cb-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:40ec1e5bfd22b94b857802892989fc718ac88aa9a23425754545dfa65ff5a407",
+      "actualDigest": "sha256:40ec1e5bfd22b94b857802892989fc718ac88aa9a23425754545dfa65ff5a407",
+      "canvasAnchorDigest": "sha256:468989adaa3ea65224fe418b04c05191c86da71340561537e4ba3e73629d47c5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L018-7853A1A1CB-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L024-10900EB770-03",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l024-10900eb770-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:730f10912aa1e18edfccb960badf82eee4520ce5858de164d5e9746f6f500fcc",
+      "actualDigest": "sha256:730f10912aa1e18edfccb960badf82eee4520ce5858de164d5e9746f6f500fcc",
+      "canvasAnchorDigest": "sha256:9970c02680a033ea513038c85c4ec3d0dad770d3fccd6483bd11aebc8a117df5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L024-10900EB770-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L024-10900EB770-04",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l024-10900eb770-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:87d1e98948acc346be6850fc1888a1f2299e3bb2648b88151f9f12c94f10fa2f",
+      "actualDigest": "sha256:87d1e98948acc346be6850fc1888a1f2299e3bb2648b88151f9f12c94f10fa2f",
+      "canvasAnchorDigest": "sha256:8f771c4d5a6e5b8da3d3154f414d789157f6cb88d8664965de7528ef05f989dc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L024-10900EB770-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L024-10900EB770-05",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l024-10900eb770-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:20c3a667dd85bae4f805e597104f00cf660e5dd1ccd7e446d161145ceaa4945b",
+      "actualDigest": "sha256:20c3a667dd85bae4f805e597104f00cf660e5dd1ccd7e446d161145ceaa4945b",
+      "canvasAnchorDigest": "sha256:c0291dcce93480944ddc1fe77b78f2a88382a98b32eb93e46ccb63e43c8bfe2c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L024-10900EB770-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L024-10900EB770-08",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l024-10900eb770-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6346b34fdb22384218bf3a71575ef64793f6d020df9d6bbedfc50687ee0809f1",
+      "actualDigest": "sha256:6346b34fdb22384218bf3a71575ef64793f6d020df9d6bbedfc50687ee0809f1",
+      "canvasAnchorDigest": "sha256:925fd49205377fdb5cb5b5812341d2a8c4d962f9e10fcc4d659583b02bbf5803",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L024-10900EB770-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L035-AD9EF745C4",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l035-ad9ef745c4",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d151d343c074372176291cc6181be7d4bf6041b1a80393f80336383eb64dd78b",
+      "actualDigest": "sha256:d151d343c074372176291cc6181be7d4bf6041b1a80393f80336383eb64dd78b",
+      "canvasAnchorDigest": "sha256:d18c39f581ae58800e42bb9ec4c3c3da84fbca62fd7d4225a3ba0602bc6efb42",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L035-AD9EF745C4 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L038-A61003755A",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l038-a61003755a",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:adb283b8bd0b3886366b71a44fbac224ece1839026034230c75abfaa661aec17",
+      "actualDigest": "sha256:adb283b8bd0b3886366b71a44fbac224ece1839026034230c75abfaa661aec17",
+      "canvasAnchorDigest": "sha256:887a0a8a8433b6459e3897013fb943d2a2fb3f05f9e762a27c52d7a41e8f6d5b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L038-A61003755A rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L038-A61003755A-02",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l038-a61003755a-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:73cc03e2f23230ea757c23cadef8af4caa88736ec4fd8d51389ca97c21ac341c",
+      "actualDigest": "sha256:73cc03e2f23230ea757c23cadef8af4caa88736ec4fd8d51389ca97c21ac341c",
+      "canvasAnchorDigest": "sha256:3f656a67bad14e8f2b3fedf5e248024cfbe629af06af6da6f01ada42876bb332",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L038-A61003755A-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P396-L038-A61003755A-03",
+      "ownerId": "classical-patientive-characteristic-property",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-characteristic-property:aci-p396-l038-a61003755a-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:65374d36360e78f6d02ebc4b0a7398b8321e21d2d261302c5cda3ded7d9ddde2",
+      "actualDigest": "sha256:65374d36360e78f6d02ebc4b0a7398b8321e21d2d261302c5cda3ded7d9ddde2",
+      "canvasAnchorDigest": "sha256:5fbb7df987713403a14382d16efee324dd12825f0a15a53089f500a8945636dd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P396-L038-A61003755A-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 15,
+    "passed": 15,
+    "failed": 0,
+    "mutationsRejected": 15
+  }
+}

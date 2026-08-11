@@ -1,0 +1,252 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+  "canonicalResultDigest": "sha256:65c2a9fdb96156934ea0631d494892ac30bd8a08a6ff0400491b8c487df058a7",
+  "observations": [
+    {
+      "atomId": "ACI-P590-L023-F6DA313184-04",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l023-f6da313184-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4cf0864bec4e8dbd15fda0a6f4335ccc0f20bd4d03314d2c38f99165d66eb916",
+      "actualDigest": "sha256:4cf0864bec4e8dbd15fda0a6f4335ccc0f20bd4d03314d2c38f99165d66eb916",
+      "canvasAnchorDigest": "sha256:e657a59c1d69699eaf988cd876e3cba05f25e1f6d255cb28eb2865f74dfc508f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L023-F6DA313184-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L023-F6DA313184-08",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l023-f6da313184-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a526cfb7a057ecd0159b0369b14e725c0a6c398ccf073912cfd559ae1d0c521b",
+      "actualDigest": "sha256:a526cfb7a057ecd0159b0369b14e725c0a6c398ccf073912cfd559ae1d0c521b",
+      "canvasAnchorDigest": "sha256:bc8396a6935604442b218d75b4ffb5e1c63c4ee835242ccf91a38d8f5db1eb76",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L023-F6DA313184-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L023-F6DA313184-12",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l023-f6da313184-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f2aa0c291ff77b2761cefccf61fcc897519b8b53f4d6d428afae3d4a092d2694",
+      "actualDigest": "sha256:f2aa0c291ff77b2761cefccf61fcc897519b8b53f4d6d428afae3d4a092d2694",
+      "canvasAnchorDigest": "sha256:57bb92e48fec70859cd48d6bdc773398757d401763e09215dfadd3d6af14098d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L023-F6DA313184-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L031-8DA914417A",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l031-8da914417a",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:616e006e126a52c093e3bc654b3279f96bf4ba98120fd73372cde1b46a89a78e",
+      "actualDigest": "sha256:616e006e126a52c093e3bc654b3279f96bf4ba98120fd73372cde1b46a89a78e",
+      "canvasAnchorDigest": "sha256:7d8cabb336e8c473310bc672a55b7195112de807a2785cd2173e15ef4e09879d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L031-8DA914417A rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L031-8DA914417A-02",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l031-8da914417a-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:26c18deb689369c1e7e3849199569fe56f3a42e8ef5371c0a0a28a25df1e8b71",
+      "actualDigest": "sha256:26c18deb689369c1e7e3849199569fe56f3a42e8ef5371c0a0a28a25df1e8b71",
+      "canvasAnchorDigest": "sha256:3fab1bcb68627a0a72c2a611ac94af5edaaad0f1595fdb858518660d3722abcf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L031-8DA914417A-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-03",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c58e5064e5f0a888141e13372fadbe982f8a445914b423283b0185da5f2ff013",
+      "actualDigest": "sha256:c58e5064e5f0a888141e13372fadbe982f8a445914b423283b0185da5f2ff013",
+      "canvasAnchorDigest": "sha256:875af4f56465f03b66509bc8e1867f09eb385c7dd362dfe51fc0228a29a159b7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-04",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a7a3739ce5b494cdc682d19b551da3ce6da0c0ce5309873b952dc5895f45d69d",
+      "actualDigest": "sha256:a7a3739ce5b494cdc682d19b551da3ce6da0c0ce5309873b952dc5895f45d69d",
+      "canvasAnchorDigest": "sha256:c01f9c723553cc2bcf451ebf0fc6bed3a79419a8835cb72b2e0bdd9170a8a838",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-05",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:630447e8bc38c8f5bb4c853a43a0bef1349f5d3f1e704156820950e05c7d989a",
+      "actualDigest": "sha256:630447e8bc38c8f5bb4c853a43a0bef1349f5d3f1e704156820950e05c7d989a",
+      "canvasAnchorDigest": "sha256:e9a67569fac38503ea63fa62d7d9d35dae4e7f3ac22df2dd62e51a47b63eb835",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-06",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:48f822147585134a98bd77be7913c1e46cfdfcf718bbaf633b15df22352205c7",
+      "actualDigest": "sha256:48f822147585134a98bd77be7913c1e46cfdfcf718bbaf633b15df22352205c7",
+      "canvasAnchorDigest": "sha256:074ef31ad9ea6110ea58ac7b51791bb891ac7960c5e43a642e2d99edf29ca22b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-07",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c41aefdc5f11c3846b8225db193feddf76660f1325b8acf998e5e85125da3c83",
+      "actualDigest": "sha256:c41aefdc5f11c3846b8225db193feddf76660f1325b8acf998e5e85125da3c83",
+      "canvasAnchorDigest": "sha256:7f63d67a7596962c7468762995aa213dfbb461d787abd2b9de97c9fda2a00d91",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-08",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:775f680900929dd55cc4186e75aaaa4513af67e99e4fbf81d0f15c8a617b425a",
+      "actualDigest": "sha256:775f680900929dd55cc4186e75aaaa4513af67e99e4fbf81d0f15c8a617b425a",
+      "canvasAnchorDigest": "sha256:f6965fe26d22472832782789d82ef8f4c3681901b52d9cdfaf28e0177d9750e2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-09",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b167e8ab729b278a40478d3f460074efd1359f93ebf48b584014c6040d9371a9",
+      "actualDigest": "sha256:b167e8ab729b278a40478d3f460074efd1359f93ebf48b584014c6040d9371a9",
+      "canvasAnchorDigest": "sha256:023486e943f6870bd6a88d0c2ac2355698a5f0704ccd7f5bc4fae401d482511e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L035-51857C73E0-10",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l035-51857c73e0-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c5221bdc79abd166ab61827dc0c88d1952a7121318c73b95d6925717e2d6384d",
+      "actualDigest": "sha256:c5221bdc79abd166ab61827dc0c88d1952a7121318c73b95d6925717e2d6384d",
+      "canvasAnchorDigest": "sha256:8295bfbb8c50a0677612da6fa36bfecc9ec4c03db8051a40845f642fcaf2c896",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L035-51857C73E0-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P590-L038-827D397AFA-09",
+      "ownerId": "classical-denominal-vnc-included-possessor-proxy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-proxy:aci-p590-l038-827d397afa-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:52ba0dae634ad2491ea8eae7c72dbb1fa70b4a2308f8ca479f1e291cb7978f01",
+      "actualDigest": "sha256:52ba0dae634ad2491ea8eae7c72dbb1fa70b4a2308f8ca479f1e291cb7978f01",
+      "canvasAnchorDigest": "sha256:da516c7ee900182c671eb1b9ee2ad0d8c2ba80f15087c1338f7cdfeecb6879f2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L038-827D397AFA-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 14,
+    "passed": 14,
+    "failed": 0,
+    "mutationsRejected": 14
+  }
+}

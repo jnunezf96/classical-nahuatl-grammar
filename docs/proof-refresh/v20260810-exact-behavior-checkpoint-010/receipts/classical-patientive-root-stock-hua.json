@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-patientive-root-stock-hua",
+  "canonicalResultDigest": "sha256:de08bc176f82d14d68d7d624328aec466bf5800f6ac71c804aabdf8dd19b53fe",
+  "observations": [
+    {
+      "atomId": "ACI-P402-L024-6FE7B85CFA",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l024-6fe7b85cfa",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ec021a7d8f4ee935cb907a5cf9fec2dc5ba472196e0d9cfb835bbf6f6c1242af",
+      "actualDigest": "sha256:ec021a7d8f4ee935cb907a5cf9fec2dc5ba472196e0d9cfb835bbf6f6c1242af",
+      "canvasAnchorDigest": "sha256:a6aea8f58c08a5578f140c09ce622ec81efe106d030482d041471e8001012c46",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L024-6FE7B85CFA rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L024-6FE7B85CFA-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l024-6fe7b85cfa-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5771e9e292bb012291f93d7c1658db9bbb16d69fecdaeee4ab8bca60fbc455a6",
+      "actualDigest": "sha256:5771e9e292bb012291f93d7c1658db9bbb16d69fecdaeee4ab8bca60fbc455a6",
+      "canvasAnchorDigest": "sha256:8bb86cca1c3c58765bd4f7dc19849b39616b7ec52408d0d971f203e8dd6ba0f9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L024-6FE7B85CFA-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L026-CEC987E6B1",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l026-cec987e6b1",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:352061abeb7950287b7f30cead5bf51103f7372d3b558ffd59002fccb2e0f71a",
+      "actualDigest": "sha256:352061abeb7950287b7f30cead5bf51103f7372d3b558ffd59002fccb2e0f71a",
+      "canvasAnchorDigest": "sha256:f3e482659123fa321769c486c309f4a42d10801137802ccba4c99515a6d7ad76",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L026-CEC987E6B1 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L026-CEC987E6B1-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l026-cec987e6b1-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9073e2147a572075609b82bb9e7602d8fbe14001ee70b45c4459880a11f12906",
+      "actualDigest": "sha256:9073e2147a572075609b82bb9e7602d8fbe14001ee70b45c4459880a11f12906",
+      "canvasAnchorDigest": "sha256:ad21da47cad6345d3bb9d33680a72505fbca338168ef448d02a64173c6907dcf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L026-CEC987E6B1-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L028-E6419BE443",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l028-e6419be443",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bd9eb184f12b1add20272036fd787d64ba5ff84bed0e0b30e2c6b01399a08d0c",
+      "actualDigest": "sha256:bd9eb184f12b1add20272036fd787d64ba5ff84bed0e0b30e2c6b01399a08d0c",
+      "canvasAnchorDigest": "sha256:bbc26ee3c5a93157086c7402f2617bb8b334d2035b3b9e7218b05c32f48209d4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L028-E6419BE443 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L028-E6419BE443-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l028-e6419be443-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6a5f82c896307a5e21c8650ee67cf1bd96a513e16603108ea1d382a5325db9e3",
+      "actualDigest": "sha256:6a5f82c896307a5e21c8650ee67cf1bd96a513e16603108ea1d382a5325db9e3",
+      "canvasAnchorDigest": "sha256:2868beeb9fdf33fc7eca9c9e6c9858a3a077349bfd77ea48e2232e3839c3cfae",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L028-E6419BE443-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L030-C1D239F48C",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l030-c1d239f48c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2d0b472e65453aa11392c10a03f425c8db1cc2474f9312c03c04a0ceb39b883f",
+      "actualDigest": "sha256:2d0b472e65453aa11392c10a03f425c8db1cc2474f9312c03c04a0ceb39b883f",
+      "canvasAnchorDigest": "sha256:8358d3fb15a546da07daf9d0dbfb3411ec1d1ca63d5685c12bb9f23ca943bb93",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L030-C1D239F48C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L030-C1D239F48C-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l030-c1d239f48c-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1765cec23f889e42a2e5d92c1158642ec370ab3421b2aca07bfa2b6053865fee",
+      "actualDigest": "sha256:1765cec23f889e42a2e5d92c1158642ec370ab3421b2aca07bfa2b6053865fee",
+      "canvasAnchorDigest": "sha256:e609a59d0d507b2116153716e139f403e9e1b9abf3530850acd51858d2577e16",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L030-C1D239F48C-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L032-D57E4AEADD",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l032-d57e4aeadd",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1624df9287ea62ddaa8d71c8da18d1673b211443497ccdd6d29e7a1462cbcb12",
+      "actualDigest": "sha256:1624df9287ea62ddaa8d71c8da18d1673b211443497ccdd6d29e7a1462cbcb12",
+      "canvasAnchorDigest": "sha256:20439d0cdb780b16470a066c2ba30f2ae7ea041e80ce383ac11f681b36e32274",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L032-D57E4AEADD rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L032-D57E4AEADD-02",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l032-d57e4aeadd-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:21d6e622e9e0a7623a8f2dd60c87eb8cf4ff93999ca9447b6aef6370e244181c",
+      "actualDigest": "sha256:21d6e622e9e0a7623a8f2dd60c87eb8cf4ff93999ca9447b6aef6370e244181c",
+      "canvasAnchorDigest": "sha256:5fcf53b1962163504c06e91ff44b662422fd9cb2a7d77648d714fafb21d6fcc5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L032-D57E4AEADD-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L032-D57E4AEADD-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l032-d57e4aeadd-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e7cc4ef4441a122a850f5ae8133cac38d7fdd83776c4a996720e0e9e0d4846eb",
+      "actualDigest": "sha256:e7cc4ef4441a122a850f5ae8133cac38d7fdd83776c4a996720e0e9e0d4846eb",
+      "canvasAnchorDigest": "sha256:aa9a38bd423eb0cba8110eed570e14c35e08d6c51a9da668b4cac5bf7a9a336a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L032-D57E4AEADD-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P402-L032-D57E4AEADD-04",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p402-l032-d57e4aeadd-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cce3a1b18e8edda6f459afd738b3c17cfd82d82df895554277ee113eaed0dfe2",
+      "actualDigest": "sha256:cce3a1b18e8edda6f459afd738b3c17cfd82d82df895554277ee113eaed0dfe2",
+      "canvasAnchorDigest": "sha256:4cae46f733d38f80c83546225b6f6490a4e7e4d7b1dfed5139f27048421f44ed",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P402-L032-D57E4AEADD-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P403-L006-F8B3986294-03",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p403-l006-f8b3986294-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:50e60d76b0a9a6ee9a8594a9368e9acf169af3cd09dee9ef5b347509c378fb6f",
+      "actualDigest": "sha256:50e60d76b0a9a6ee9a8594a9368e9acf169af3cd09dee9ef5b347509c378fb6f",
+      "canvasAnchorDigest": "sha256:b589d3b1f8cb6e14a1ff564f8cc1079f7de53efb88faf533c6dabdda6682097b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P403-L006-F8B3986294-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P403-L009-F04F6DCBCA-04",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p403-l009-f04f6dcbca-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:05cd9e54b0bcd7fc259e6411f321d09a8fc196c20556ba2c708c99be9df6b394",
+      "actualDigest": "sha256:05cd9e54b0bcd7fc259e6411f321d09a8fc196c20556ba2c708c99be9df6b394",
+      "canvasAnchorDigest": "sha256:c60c5286a2fc27fc13dcb4d1881c253a4ac72fc2a0b900b29810368aee75c97f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P403-L009-F04F6DCBCA-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P403-L009-F04F6DCBCA-07",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p403-l009-f04f6dcbca-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c9c8c3cccdfa1ff1b6873b05629aba90c07a2c138391362248815a62ae1bb0f4",
+      "actualDigest": "sha256:c9c8c3cccdfa1ff1b6873b05629aba90c07a2c138391362248815a62ae1bb0f4",
+      "canvasAnchorDigest": "sha256:d1bd9de26918e28847b4ab894823f10ad1d5f13cf1c75d78d06aa548bc086399",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P403-L009-F04F6DCBCA-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P403-L009-F04F6DCBCA-09",
+      "ownerId": "classical-patientive-root-stock-hua",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-patientive-root-stock-hua:aci-p403-l009-f04f6dcbca-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:83d9f12b0587e393dc5ab25c88553e2d07b396c8ffa98fd0468b766238b8f594",
+      "actualDigest": "sha256:83d9f12b0587e393dc5ab25c88553e2d07b396c8ffa98fd0468b766238b8f594",
+      "canvasAnchorDigest": "sha256:cff6358f26ed934cb03d1962ba09175ab58aa99b39f17b2d210a8cf0ee757696",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P403-L009-F04F6DCBCA-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 16,
+    "passed": 16,
+    "failed": 0,
+    "mutationsRejected": 16
+  }
+}

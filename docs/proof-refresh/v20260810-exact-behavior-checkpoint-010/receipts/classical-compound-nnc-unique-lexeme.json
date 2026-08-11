@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-compound-nnc-unique-lexeme",
+  "canonicalResultDigest": "sha256:967c9226661e054192ef4b7b26fe97bb9f3d2987225ff19943937897c41a4dca",
+  "observations": [
+    {
+      "atomId": "ACI-P298-L032-362BCFFA57-06",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l032-362bcffa57-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:be37b734ec04e06c1ef1a9a0db4f71ee09ee2328e710493e6d264dba9d230dd6",
+      "actualDigest": "sha256:be37b734ec04e06c1ef1a9a0db4f71ee09ee2328e710493e6d264dba9d230dd6",
+      "canvasAnchorDigest": "sha256:f89eaf71c2d648db38d1af163d131115ecc97876cda741b8ef878e2b93c0403b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L032-362BCFFA57-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L032-362BCFFA57-07",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l032-362bcffa57-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:04c1fc1d10ce133a831d610415c80d3689287281ba07f36b2bf43af4c7abbdbb",
+      "actualDigest": "sha256:04c1fc1d10ce133a831d610415c80d3689287281ba07f36b2bf43af4c7abbdbb",
+      "canvasAnchorDigest": "sha256:936e30b3dadf100764ecde7d159272db2acc431290b9364ad70dafe84d76ebca",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L032-362BCFFA57-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L038-C1D416540C",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l038-c1d416540c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2dcfb54d459e57b6ca8d3188928dfca1a8306b4c8cc69c913ccf8da942715849",
+      "actualDigest": "sha256:2dcfb54d459e57b6ca8d3188928dfca1a8306b4c8cc69c913ccf8da942715849",
+      "canvasAnchorDigest": "sha256:be7afd46e3ad9e61ee8c1dc052498d37bd43836ab52f21568c88af85c49abe5a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L038-C1D416540C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L038-C1D416540C-05",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l038-c1d416540c-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:841a970f27eb411bbfec236158cc8d8bcbe0b452a9bb44c0307fb1e7ecbd67ba",
+      "actualDigest": "sha256:841a970f27eb411bbfec236158cc8d8bcbe0b452a9bb44c0307fb1e7ecbd67ba",
+      "canvasAnchorDigest": "sha256:1888a37f1245d03aba83a825535ef1fdd176c38d10ea74b0f3c49ee9a0faeca1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L038-C1D416540C-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L038-C1D416540C-06",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l038-c1d416540c-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7046b24b9a67d204fd94d38323a39a5eac80e158cef26df24d21a5a243c032a1",
+      "actualDigest": "sha256:7046b24b9a67d204fd94d38323a39a5eac80e158cef26df24d21a5a243c032a1",
+      "canvasAnchorDigest": "sha256:cbb35b8c9fbcf78d82504c2f1d8e5583b2b4140d6f137e079449b524457bcafc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L038-C1D416540C-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L038-C1D416540C-07",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l038-c1d416540c-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3035a5275681691c9060f1c234ce52c91fa800d449b7c26456d607b9f17d2a86",
+      "actualDigest": "sha256:3035a5275681691c9060f1c234ce52c91fa800d449b7c26456d607b9f17d2a86",
+      "canvasAnchorDigest": "sha256:a2dfe6b8cb1a0e6e2935a2976f3a84fbade80aaab0dcd333f973fbe8f2331be4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L038-C1D416540C-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L038-C1D416540C-09",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l038-c1d416540c-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f850e563293b1ecb0f19263c97112d529c9ad979510f099eb0d08e9d0b0b8321",
+      "actualDigest": "sha256:f850e563293b1ecb0f19263c97112d529c9ad979510f099eb0d08e9d0b0b8321",
+      "canvasAnchorDigest": "sha256:9110dd9200fde2286efd44c6c597b1d919b3a5c7547336f0e352475ceee3cca3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L038-C1D416540C-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-02",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e2dd4904eb4d09b3d51daa67c57ab61c747f4e5371d0c1e3377c2f1a53bebf0",
+      "actualDigest": "sha256:7e2dd4904eb4d09b3d51daa67c57ab61c747f4e5371d0c1e3377c2f1a53bebf0",
+      "canvasAnchorDigest": "sha256:285e45c32bb3fa5d3daa6078f9da4158a8b6d1d3e086da2ab0513c8f31289c75",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-03",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8f0f9960592e6298750a250ec08c68fb5f8cd7663333238de4cd08404b34c023",
+      "actualDigest": "sha256:8f0f9960592e6298750a250ec08c68fb5f8cd7663333238de4cd08404b34c023",
+      "canvasAnchorDigest": "sha256:72e27db452d23ef331646fd0f8a59b585b6845fce0a3b649dd9d8cf9f82ef96c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-05",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9a82ca2e2ad369d87c0e4df212f2455bdcc278e41017c9522159bbf8b819e619",
+      "actualDigest": "sha256:9a82ca2e2ad369d87c0e4df212f2455bdcc278e41017c9522159bbf8b819e619",
+      "canvasAnchorDigest": "sha256:1eb5b2444077f7f891774ee8a84ed9391f45a167dc9fce0dfc42f17cae7037a0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-06",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dbe188b1b77b3937a25acb4e1ae8d77ba7fc530ee0270850704e2364b73229c0",
+      "actualDigest": "sha256:dbe188b1b77b3937a25acb4e1ae8d77ba7fc530ee0270850704e2364b73229c0",
+      "canvasAnchorDigest": "sha256:f3d3fc56a1ba526d70e5f045a3e3f186071f49538a47f835a5f13aa23851afda",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-08",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4c974f7095b06c71dd604a7d95dce7e151c8f9e494053cd04a7a54d5d4350c62",
+      "actualDigest": "sha256:4c974f7095b06c71dd604a7d95dce7e151c8f9e494053cd04a7a54d5d4350c62",
+      "canvasAnchorDigest": "sha256:ba85d726de505b2ae9268f97a786c9c833d1fc82b166ccdc53f1c8ac5c4fb8aa",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-10",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0c206cdafdc6a13fcef1fa7752d9d22e4ed21a7cc20f2bace1cbc06d7e061aa1",
+      "actualDigest": "sha256:0c206cdafdc6a13fcef1fa7752d9d22e4ed21a7cc20f2bace1cbc06d7e061aa1",
+      "canvasAnchorDigest": "sha256:00d6d77448c8d5c569bdd7ddf1096258bde5f3aac6a8280ae891ca1bf6fa1513",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-11",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:728a13f2c5b6c2d3c36778d8ae284639e94251e8ff04953197e9c8be8a64ed09",
+      "actualDigest": "sha256:728a13f2c5b6c2d3c36778d8ae284639e94251e8ff04953197e9c8be8a64ed09",
+      "canvasAnchorDigest": "sha256:cd60e80c26eafd8f6a0ef201423641682edba89fe50d0a3726afd345e7487a2a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P298-L041-1F1DD21429-12",
+      "ownerId": "classical-compound-nnc-unique-lexeme",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-unique-lexeme:aci-p298-l041-1f1dd21429-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cb49c3f20d150e490109a85cd555be700afa98fb1ed4faee7d41c44e6c921be3",
+      "actualDigest": "sha256:cb49c3f20d150e490109a85cd555be700afa98fb1ed4faee7d41c44e6c921be3",
+      "canvasAnchorDigest": "sha256:0dfd43ecd713df76652d0e174dc0368176e7f42a9800ce33afba4d9ac5020c9f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P298-L041-1F1DD21429-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 15,
+    "passed": 15,
+    "failed": 0,
+    "mutationsRejected": 15
+  }
+}

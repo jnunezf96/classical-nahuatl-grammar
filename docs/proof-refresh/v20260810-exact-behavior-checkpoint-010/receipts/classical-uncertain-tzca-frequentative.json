@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-uncertain-tzca-frequentative",
+  "canonicalResultDigest": "sha256:9192f70c6a3fe5069d7de3aed5b9f76bfe25dae72d5282c9db48e04c1c9e9adc",
+  "observations": [
+    {
+      "atomId": "ACI-P249-L023-4242E2B9D0",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l023-4242e2b9d0",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:abd6a42638d89e46a18ecd62e3d6011344c8ee8b082af2ecdeccdff5ef27d387",
+      "actualDigest": "sha256:abd6a42638d89e46a18ecd62e3d6011344c8ee8b082af2ecdeccdff5ef27d387",
+      "canvasAnchorDigest": "sha256:6991943668743aa3e552805a63dd2266759002bd8dd21432d853404c14375411",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L023-4242E2B9D0 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L023-4242E2B9D0-03",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l023-4242e2b9d0-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6c308f30418f8caa457a0eb2676bf93281155e631f4eb022a34f2c6600ecc858",
+      "actualDigest": "sha256:6c308f30418f8caa457a0eb2676bf93281155e631f4eb022a34f2c6600ecc858",
+      "canvasAnchorDigest": "sha256:f00207bd081ff3381fbb3b3c70078668e503365f5305895185d34a681b2ce268",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L023-4242E2B9D0-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L023-4242E2B9D0-04",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l023-4242e2b9d0-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:df7cb3195d65f3588f8da1b2f2558cfb765c02fdd8d69f80eeffa15835d70b6b",
+      "actualDigest": "sha256:df7cb3195d65f3588f8da1b2f2558cfb765c02fdd8d69f80eeffa15835d70b6b",
+      "canvasAnchorDigest": "sha256:d744f647d3c5b5eb750921eda7beed822ba74f80b2096f3278fb6d28f1a8ba32",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L023-4242E2B9D0-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L023-4242E2B9D0-07",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l023-4242e2b9d0-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f6ac37db836ad764e8bdfd5b0261d3dd657059f9d4ebd1d553c0fb5d523c6546",
+      "actualDigest": "sha256:f6ac37db836ad764e8bdfd5b0261d3dd657059f9d4ebd1d553c0fb5d523c6546",
+      "canvasAnchorDigest": "sha256:a60a24978d7643f018bd0852c9768b0aeaf358209f55a3873f6f041754ac6d2f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L023-4242E2B9D0-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L023-4242E2B9D0-08",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l023-4242e2b9d0-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f431b93539eedf481e9ac4df3cb00e0f912e73bf2335796255751c203a51c812",
+      "actualDigest": "sha256:f431b93539eedf481e9ac4df3cb00e0f912e73bf2335796255751c203a51c812",
+      "canvasAnchorDigest": "sha256:7c3bf82d38ea4de7f87856948fd4a0290b891c5a38668e177220a322fccf3217",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L023-4242E2B9D0-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L028-59CF7CB613",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l028-59cf7cb613",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:105db1bb48ae459b396757f033b747d6d3f71f9d1995f333271297b6c58b9233",
+      "actualDigest": "sha256:105db1bb48ae459b396757f033b747d6d3f71f9d1995f333271297b6c58b9233",
+      "canvasAnchorDigest": "sha256:cacb9de9c8f46dbd2d8f02ebe4544fd0a6d97c5e06a9982e727a6af276593c2a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L028-59CF7CB613 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L028-59CF7CB613-02",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l028-59cf7cb613-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4b14f2229c95e1acc54d9fea3d542b7ef83604f0c4889b2a1e9e8afd81ca13b3",
+      "actualDigest": "sha256:4b14f2229c95e1acc54d9fea3d542b7ef83604f0c4889b2a1e9e8afd81ca13b3",
+      "canvasAnchorDigest": "sha256:1b6e8280b77c51e38b6135da6d5c1062341c9df37d0cc0dd2ca3813d7d3ec53d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L028-59CF7CB613-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L028-59CF7CB613-04",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l028-59cf7cb613-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ac1e3f3719d4d28f261875e44b8c5c776c036b151201867e9dc86016398bf34c",
+      "actualDigest": "sha256:ac1e3f3719d4d28f261875e44b8c5c776c036b151201867e9dc86016398bf34c",
+      "canvasAnchorDigest": "sha256:670ecad3d552af6e12863ce1136f785bfa6fee0be02e78a6efeaee8f3d2a977a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L028-59CF7CB613-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6794df26b81212eea0faa9ff7e21ac7d38b96ee4905c17db5997db46ce6ba577",
+      "actualDigest": "sha256:6794df26b81212eea0faa9ff7e21ac7d38b96ee4905c17db5997db46ce6ba577",
+      "canvasAnchorDigest": "sha256:25b5e93484bafd4df1305fbf8265b95a2858c9eafb39f7df5460bdf4103a7088",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-02",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f6b186ff92eb2e1f4959439028cc565b311a03216b7debd64f0323ae496130cc",
+      "actualDigest": "sha256:f6b186ff92eb2e1f4959439028cc565b311a03216b7debd64f0323ae496130cc",
+      "canvasAnchorDigest": "sha256:b507e3808b9c0d09efd956a339fd1b902ddb333a3c75f9ab2762b5373b6dcf55",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-03",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:879d3a75144c8cbd5bd7c7b65bc710b45a661e5b0f9c1e0fed6dae3d010ac58a",
+      "actualDigest": "sha256:879d3a75144c8cbd5bd7c7b65bc710b45a661e5b0f9c1e0fed6dae3d010ac58a",
+      "canvasAnchorDigest": "sha256:29caab6b08ad63ff2f8ad6a5fab2596fded42b2478376dbeac38de954ca66c58",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-04",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:fcc12c0ec1092d6bc3b4684dae477087b1a3676b2989f6ccb3600d92670f0015",
+      "actualDigest": "sha256:fcc12c0ec1092d6bc3b4684dae477087b1a3676b2989f6ccb3600d92670f0015",
+      "canvasAnchorDigest": "sha256:d6704e479699ee7a4f7dfb9ebac009b8a5be5f59a64c7bea3062a1b0f9999c65",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-06",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:21903547ab79e1c772e01ebae53256fb6596a8cea7c77eddee976320b09ab1a2",
+      "actualDigest": "sha256:21903547ab79e1c772e01ebae53256fb6596a8cea7c77eddee976320b09ab1a2",
+      "canvasAnchorDigest": "sha256:f23129b3ff4e9514eaaae3f1c0e35af568cb68f529c310badc9a9923941e8297",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-07",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:247a6ea14c933f929884a64b0b663b49c7e3d41a0d05a169b23e8dbd69636e84",
+      "actualDigest": "sha256:247a6ea14c933f929884a64b0b663b49c7e3d41a0d05a169b23e8dbd69636e84",
+      "canvasAnchorDigest": "sha256:53c79a3e09bfd62ed1cf08d53d870e69404099ed8c07d0a0302953eba36cc357",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P249-L033-15AED4EE8D-09",
+      "ownerId": "classical-uncertain-tzca-frequentative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-uncertain-tzca-frequentative:aci-p249-l033-15aed4ee8d-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b5f65a54a8307350d2b924c053ba4c3035b5943df1914140f3a076d4d3a59d94",
+      "actualDigest": "sha256:b5f65a54a8307350d2b924c053ba4c3035b5943df1914140f3a076d4d3a59d94",
+      "canvasAnchorDigest": "sha256:c9e8d0ec043582c99d200490ca91fecc3dc0b22f47e384000dacfa713f4c4174",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P249-L033-15AED4EE8D-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 15,
+    "passed": 15,
+    "failed": 0,
+    "mutationsRejected": 15
+  }
+}

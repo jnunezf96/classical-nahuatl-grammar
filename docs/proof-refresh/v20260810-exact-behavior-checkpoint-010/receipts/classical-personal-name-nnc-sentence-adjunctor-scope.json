@@ -1,0 +1,337 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-010",
+  "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+  "canonicalResultDigest": "sha256:af71ef29134bfa63bb7ef65080cf9aec16412c050132efe471612c885924d9a9",
+  "observations": [
+    {
+      "atomId": "ACI-P621-L033-43B41E24EB",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p621-l033-43b41e24eb",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a6fa76600e076aba6c7690dd208c977c8c850463e392c6f1bb07605a499326b8",
+      "actualDigest": "sha256:a6fa76600e076aba6c7690dd208c977c8c850463e392c6f1bb07605a499326b8",
+      "canvasAnchorDigest": "sha256:e03bbe29438d31e066ae4f28833ecb9b4aae9a70887aaaa06efac67396a06df4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P621-L033-43B41E24EB rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P621-L033-43B41E24EB-02",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p621-l033-43b41e24eb-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1e77d0c2c4c67ced674db201472972a9e1ad2b61c6d7b28408c6f0c795b1910f",
+      "actualDigest": "sha256:1e77d0c2c4c67ced674db201472972a9e1ad2b61c6d7b28408c6f0c795b1910f",
+      "canvasAnchorDigest": "sha256:1163edf19eb7215fe73bdd793dd73acabfedb95d682bd866c9d35b6a4a327494",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P621-L033-43B41E24EB-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P621-L037-CF7683F2D3",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p621-l037-cf7683f2d3",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cd20bb845bc0efccc341ffce835eca360c4cc08f268f0d07e67067f6bd1cb015",
+      "actualDigest": "sha256:cd20bb845bc0efccc341ffce835eca360c4cc08f268f0d07e67067f6bd1cb015",
+      "canvasAnchorDigest": "sha256:a0d95fabc4367a2adc8fb864285c1c5a687794c7fb0ae7a82e7c5cf5e5a3d8e2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P621-L037-CF7683F2D3 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P621-L037-CF7683F2D3-02",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p621-l037-cf7683f2d3-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:206b6675ccadeb12e58b65de4f605c210f97d613eb88069b3685a55943da2394",
+      "actualDigest": "sha256:206b6675ccadeb12e58b65de4f605c210f97d613eb88069b3685a55943da2394",
+      "canvasAnchorDigest": "sha256:0480688cb6cb2c01b640b53d389ad41317f2dfc1e86773881443530066351560",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P621-L037-CF7683F2D3-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P621-L037-CF7683F2D3-05",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p621-l037-cf7683f2d3-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:be2b16cec5f9188e673f154137b3e3874db216bf8934a0b8780a4de5cfc3a005",
+      "actualDigest": "sha256:be2b16cec5f9188e673f154137b3e3874db216bf8934a0b8780a4de5cfc3a005",
+      "canvasAnchorDigest": "sha256:b9e79d841d07e6388c12eb0af4da2956ffd635bd37450880e9ee48d81dec3e01",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P621-L037-CF7683F2D3-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L004-992BFB871D-02",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l004-992bfb871d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f4aba40941fb66c98f11bbc0e28331e2d4e16e4d5da0db31a0bdb91faf35eab8",
+      "actualDigest": "sha256:f4aba40941fb66c98f11bbc0e28331e2d4e16e4d5da0db31a0bdb91faf35eab8",
+      "canvasAnchorDigest": "sha256:7835b8602616b8e04ad4f2c84b849ebf0070895c21d5d659b009345ce491bce1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L004-992BFB871D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L004-992BFB871D-05",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l004-992bfb871d-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6efa11ec704daa5156286866de494b077e8761d76c78114e9cb4d0467b6627d3",
+      "actualDigest": "sha256:6efa11ec704daa5156286866de494b077e8761d76c78114e9cb4d0467b6627d3",
+      "canvasAnchorDigest": "sha256:bff8e0e3775c18bcfb9e1816dca37f0700c06ff724e4368bc494474bcc4ca1c3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L004-992BFB871D-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L004-992BFB871D-06",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l004-992bfb871d-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a6620b13df4a5b02175feecc7c33f972bb10d122c9bb8976c375dd90ac4920ef",
+      "actualDigest": "sha256:a6620b13df4a5b02175feecc7c33f972bb10d122c9bb8976c375dd90ac4920ef",
+      "canvasAnchorDigest": "sha256:e74baabdb504962749b1fee5b8ecbb9cc4d429b8866a36b5a0ceb0c2c4f2a2c2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L004-992BFB871D-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L004-992BFB871D-12",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l004-992bfb871d-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c8be5a49618643435ccf2d0bed1e873c9338687b700af21bd195fb7c5f6f9047",
+      "actualDigest": "sha256:c8be5a49618643435ccf2d0bed1e873c9338687b700af21bd195fb7c5f6f9047",
+      "canvasAnchorDigest": "sha256:7d2332fccab7d6eb5ce44c1fef554a827206daeb9429756b28838415b614e576",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L004-992BFB871D-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-04",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ad49d478b7edae7f4153da872cebcced2288f96020ca25806948bfa82f7f19c0",
+      "actualDigest": "sha256:ad49d478b7edae7f4153da872cebcced2288f96020ca25806948bfa82f7f19c0",
+      "canvasAnchorDigest": "sha256:5bee66b45935081b0c07d66358a3ed210c524a2ed76714b2a93af38a3c29b203",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-05",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:05b3ba8a69487985386decca44dd2e3d91c62f2cd6098c797268191cc9237ff3",
+      "actualDigest": "sha256:05b3ba8a69487985386decca44dd2e3d91c62f2cd6098c797268191cc9237ff3",
+      "canvasAnchorDigest": "sha256:f186cca979c6bc239c4d08b8cd3e8060dab14e8ae55148da998a55f851344df6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-06",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:516c9490a9af58f8bbd7df3758aa135bbc417b8308f03a8cc2c7984a51a09a74",
+      "actualDigest": "sha256:516c9490a9af58f8bbd7df3758aa135bbc417b8308f03a8cc2c7984a51a09a74",
+      "canvasAnchorDigest": "sha256:eb50b3d9976a2e20d7ed623c40c924d41db41079d70994907149dbc305fe695a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-10",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e4aa2a5a1850ebfb08b4936580098b853533c594ae9bf605377426860f48aae3",
+      "actualDigest": "sha256:e4aa2a5a1850ebfb08b4936580098b853533c594ae9bf605377426860f48aae3",
+      "canvasAnchorDigest": "sha256:291df2ef2e6c9058b0de2e3a38e5584b16e4ddcc09d69661381d2f67b76fbe67",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-11",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bfe71bf8fecf4229436d7fbb6bf3eb6dc1c77dd8ee3410666fdf45a7192853dc",
+      "actualDigest": "sha256:bfe71bf8fecf4229436d7fbb6bf3eb6dc1c77dd8ee3410666fdf45a7192853dc",
+      "canvasAnchorDigest": "sha256:60d701155e235ac5b7b04ec0aaa2dbd0ee6357c7817d510f38cbc763318ed17e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L021-368D27CBD8-12",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l021-368d27cbd8-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7a2f16378a2b7e6690e1b59a2f76a0a32a0783b9f8d22ff83a70becc3bf15dbb",
+      "actualDigest": "sha256:7a2f16378a2b7e6690e1b59a2f76a0a32a0783b9f8d22ff83a70becc3bf15dbb",
+      "canvasAnchorDigest": "sha256:7e1bcf2125f054bac3fb6c6cf7d3770663cd228738c4bde330354ac7556f6174",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L021-368D27CBD8-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L022-F07498FE98-04",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l022-f07498fe98-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:74f5b1adbb3bfad05b8fca215fd8830a25f173560d9a6c63d25ec04798035ffb",
+      "actualDigest": "sha256:74f5b1adbb3bfad05b8fca215fd8830a25f173560d9a6c63d25ec04798035ffb",
+      "canvasAnchorDigest": "sha256:9fc6a74fef7179ab6d434057bb9d768fe6bca84726bff2670a69daaadcf48290",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L022-F07498FE98-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L022-F07498FE98-05",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l022-f07498fe98-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c5f9ecdea98ed1103342fbbb1228e4e0ab88099e92411eef4b8eb78a016ed29c",
+      "actualDigest": "sha256:c5f9ecdea98ed1103342fbbb1228e4e0ab88099e92411eef4b8eb78a016ed29c",
+      "canvasAnchorDigest": "sha256:c809023111c50819341e5be7b69d45f4b3a18c77f71a3eaf03a10d3e727f9da8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L022-F07498FE98-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L022-F07498FE98-09",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l022-f07498fe98-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4ee6e8aea49a60fd78986fa892a812defd8a21a70fedc9830c9afe3a132b2c55",
+      "actualDigest": "sha256:4ee6e8aea49a60fd78986fa892a812defd8a21a70fedc9830c9afe3a132b2c55",
+      "canvasAnchorDigest": "sha256:6f0b76456d4ce796105878a9f7cf5b367f7913def62b51923eabc21610b79c5c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L022-F07498FE98-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P622-L022-F07498FE98-10",
+      "ownerId": "classical-personal-name-nnc-sentence-adjunctor-scope",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-name-nnc-sentence-adjunctor-scope:aci-p622-l022-f07498fe98-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ddef0224f34687c9d04a309431fcf04f1977134c75f374e2ce567feecae313f9",
+      "actualDigest": "sha256:ddef0224f34687c9d04a309431fcf04f1977134c75f374e2ce567feecae313f9",
+      "canvasAnchorDigest": "sha256:4e323a72bd8be8fad2696e132f9486e3e018596c566e55d00aefbc4c5fe9ee57",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint010_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P622-L022-F07498FE98-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 19,
+    "passed": 19,
+    "failed": 0,
+    "mutationsRejected": 19
+  }
+}
