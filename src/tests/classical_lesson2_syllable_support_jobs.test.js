@@ -33,6 +33,13 @@ const U_ATOMS = Object.freeze([
     ["ACI-P046-L032-8E0B4956C5-05", value => value.nāuh.division === "nāuh" && value.nāuh.count === 1],
     ["ACI-P046-L032-8E0B4956C5-06", value => value.iucci.division === "iuc-ci"],
     ["ACI-P046-L032-8E0B4956C5-07", value => value.nocuauh.division === "no-cuauh"],
+    ["ACI-P046-L032-8E0B4956C5-08", value => value.cachuah.division === "cac-huah"],
+]);
+
+const BOUNDARY_ATOMS = Object.freeze([
+    ["ACI-P047-L019-47ABC339AF", value => value.morphologyIndependent.ignoresMorphology],
+    ["ACI-P047-L019-321EE487CC", value => value.morphologyIndependent.ignoresMorphology && value.morphologyIndependent.division === "cā-na"],
+    ["ACI-P047-L020-CA0F776F7A", value => value.morphologyIndependent.ignoresMorphology && value.morphologyIndependent.division === "cā-na"],
 ]);
 
 const SUPPORT_ATOMS = Object.freeze([
@@ -46,10 +53,10 @@ const SUPPORT_ATOMS = Object.freeze([
 
 function run(ctx) {
     const s = createSuite("classical_lesson2_syllable_support_jobs");
-    const syllabify = word => {
+    const syllabify = (word, options = undefined) => {
         const application = ctx.executeClassicalGrammarApplicationRequest({
             operationId: "phonology:syllabify",
-            args: [word],
+            args: options ? [word, options] : [word],
         });
         const result = application.canonicalResult;
         return {
@@ -60,6 +67,7 @@ function run(ctx) {
             count: result?.syllableCount || 0,
             vowels: result?.vowelCount || 0,
             shapes: result?.syllables?.map(value => value.shape) || [],
+            ignoresMorphology: result?.morphologyBoundaryIgnored === true,
         };
     };
     const observed = {
@@ -69,11 +77,13 @@ function run(ctx) {
         atzan: syllabify("atzan"), tōchtli: syllabify("tōchtli"),
         quitzacuia: syllabify("quitzacuia"), nāuh: syllabify("nāuh"),
         iucci: syllabify("iucci"), nocuauh: syllabify("nocuauh"),
+        cachuah: syllabify("cachuah"),
+        morphologyIndependent: syllabify("cāna", { morphologyBoundaryIgnored: true }),
         standaloneU: syllabify("u"), initialCluster: syllabify("ppa"), finalCluster: syllabify("atlch"),
         shapes: ["V", "CV", "VC", "CVC"], open: ["V", "CV"], closed: ["VC", "CVC"],
     };
     s.eq("syllable jobs use the ordinary application request path", {
-        ordinaryExamplesAuthorized: ["a", "nō", "oh", "pan", "cāna", "nāhui", "teōtl", "ōmpa", "calli", "iztatl", "atzan", "tōchtli", "quitzacuia", "nāuh", "iucci", "nocuauh"]
+        ordinaryExamplesAuthorized: ["a", "nō", "oh", "pan", "cāna", "nāhui", "teōtl", "ōmpa", "calli", "iztatl", "atzan", "tōchtli", "quitzacuia", "nāuh", "iucci", "nocuauh", "cachuah", "morphologyIndependent"]
             .every(key => observed[key].authorized),
         standaloneUBlocked: observed.standaloneU.blocked,
         initialClusterBlocked: observed.initialCluster.blocked,
@@ -94,7 +104,7 @@ function run(ctx) {
         initialCluster: "xitlāhualō", medialCluster: "cicaqui", finalCluster: "oquichtli", dropInitial: "tla",
     });
 
-    for (const [atomId, observes] of [...SYLLABLE_ATOMS, ...U_ATOMS]) {
+    for (const [atomId, observes] of [...SYLLABLE_ATOMS, ...U_ATOMS, ...BOUNDARY_ATOMS]) {
         s.eq(`${atomId}: exact syllable job`, observes(observed), true);
         const broken = structuredClone(observed);
         for (const value of Object.values(broken)) {
@@ -103,6 +113,7 @@ function run(ctx) {
                 value.count = 999;
                 value.vowels = 999;
                 value.authorized = false;
+                value.ignoresMorphology = false;
                 value.shapes = ["broken"];
             }
         }

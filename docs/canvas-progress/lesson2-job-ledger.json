@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 71,
-    "writingJobsAwaitingExactObservation": 328,
+    "exactlyImplementedWritingJobs": 87,
+    "writingJobsAwaitingExactObservation": 312,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -5874,10 +5874,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When two stems are joined by compounding (see primarily Lessons 30 and 31), their boundaries, as a rule, are…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When two stems are joined by compounding (see primarily Lessons 30 and 31), their boundaries, as a rule, are…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L009-EFF49EA6AF",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L009-EFF49EA6AF-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5898,10 +5898,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Open transition has several phonological consequences.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Open transition has several phonological consequences.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5922,10 +5922,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: At open transition, an initial supportive [i] is frequently retained.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: At open transition, an initial supportive [i] is frequently retained.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-02",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-02-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5946,10 +5946,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: [tekoma + ikšiλ] witnesses retention of supportive [i] at open transition.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: [tekoma + ikšiλ] witnesses retention of supportive [i] at open transition.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-03",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-03-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5970,10 +5970,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: At open transition, a stem-final consonant has its vocable-final sound.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: At open transition, a stem-final consonant has its vocable-final sound.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-04",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-04-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5994,10 +5994,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: In [kʷaw̥ + e:waλ], final /w/ is voiceless as a witness of the vocable-final realization.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In [kʷaw̥ + e:waλ], final /w/ is voiceless as a witness of the vocable-final realization.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-05",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L011-06E359A028-05-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6018,10 +6018,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Written texts recognize open transition by spelling a stem-final consonant in such a context as if it were…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Written texts recognize open transition by spelling a stem-final consonant in such a context as if it were…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L014-F4DAC0D6CD",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L014-F4DAC0D6CD-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6042,10 +6042,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: There are exceptions to this rule.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: There are exceptions to this rule.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-673C32854A",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-673C32854A-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6066,10 +6066,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Stem-final /k/ before stem-initial /e/ or /i/ is spelled qu.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Stem-final /k/ before stem-initial /e/ or /i/ is spelled qu.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-611CEFD323",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-611CEFD323-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6090,10 +6090,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: tēyēquihtoa rather than tēyēcihtoa witnesses qu for stem-final /k/ before /i/.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: tēyēquihtoa rather than tēyēcihtoa witnesses qu for stem-final /k/ before /i/.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-611CEFD323-02",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L016-611CEFD323-02-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6114,10 +6114,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Stem- final /kʷ/ retains voice on its release feature before a vowel and is usually spelled cu: necuātl (instead of…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Stem- final /kʷ/ retains voice on its release feature before a vowel and is usually spelled cu: necuātl (instead of…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L017-F8C9C48474",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L017-F8C9C48474-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6138,10 +6138,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: At times stem-final [w̥] before a vowel is spelled hu: cuācuahueh (for cuācuauheh).",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: At times stem-final [w̥] before a vowel is spelled hu: cuācuahueh (for cuācuauheh).",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "open-transition-application-result",
+      "observationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L019-E3C2518B7A",
+      "mutationTest": "src/tests/classical_lesson2_open_transition_jobs.test.js#ACI-P046-L019-E3C2518B7A-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6641,10 +6641,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: cachuah is syllabified cac-huah.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: cachuah is syllabified cac-huah.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-boundary-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-08",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P046-L032-8E0B4956C5-08-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -7048,10 +7048,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Note 2: It should be remembered that syllables belong to the phonological system.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Note 2: It should be remembered that syllables belong to the phonological system.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-boundary-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L019-47ABC339AF",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L019-47ABC339AF-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -7072,10 +7072,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: One should never confuse syllable division in a vocable with the morphological analysis of a particle or nuclear clause.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: One should never confuse syllable division in a vocable with the morphological analysis of a particle or nuclear clause.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-boundary-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L019-321EE487CC",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L019-321EE487CC-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -7096,10 +7096,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Even if a morpheme or morph should happen to be coextensive with a syllable the difference between syllables and…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Even if a morpheme or morph should happen to be coextensive with a syllable the difference between syllables and…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "syllable-boundary-application-result",
+      "observationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L020-CA0F776F7A",
+      "mutationTest": "src/tests/classical_lesson2_syllable_support_jobs.test.js#ACI-P047-L020-CA0F776F7A-broken-boundary-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

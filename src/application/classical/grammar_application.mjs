@@ -276,6 +276,10 @@ const ROUTE_DEFINITIONS = Object.freeze({
     capabilityName: "buildClassicalNahuatlSupportiveVowelFrame",
     axisIds: Object.freeze(["source-segments", "pronounceability", "supportive-i-realization"]),
   }),
+  "phonology:open-transition": Object.freeze({
+    capabilityName: "buildClassicalNahuatlOpenTransitionFrame",
+    axisIds: Object.freeze(["first-stem-edge", "second-stem-edge", "open-transition-realization"]),
+  }),
   "vnc:nuclear-clause": Object.freeze({
     capabilityName: "buildClassicalNahuatlNuclearClauseResult",
     axisIds: Object.freeze(["basal-unit", "source-transitivity", "participant-structure", "predicate-stem"]),
@@ -948,6 +952,9 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   "phonology:supportive-vowel": defineCanonicalResultContract(
     "classical-nahuatl-transcription-analysis-frame",
   ),
+  "phonology:open-transition": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
   "vnc:nuclear-clause": defineCanonicalResultContract(
     "classical-nahuatl-nuclear-clause-structure-result",
   ),
@@ -1591,6 +1598,9 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:supportive-vowel": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:open-transition": Object.freeze([
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "vnc:nuclear-clause": Object.freeze([

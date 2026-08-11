@@ -128,6 +128,34 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
     observationTest: `src/tests/classical_lesson2_syllable_support_jobs.test.js#${atomId}`,
     mutationTest: `src/tests/classical_lesson2_syllable_support_jobs.test.js#${atomId}-broken-supportive-i-result`,
   })])),
+  ...Object.fromEntries([
+    "ACI-P046-L009-EFF49EA6AF",
+    "ACI-P046-L011-06E359A028",
+    "ACI-P046-L011-06E359A028-02",
+    "ACI-P046-L011-06E359A028-03",
+    "ACI-P046-L011-06E359A028-04",
+    "ACI-P046-L011-06E359A028-05",
+    "ACI-P046-L014-F4DAC0D6CD",
+    "ACI-P046-L016-673C32854A",
+    "ACI-P046-L016-611CEFD323",
+    "ACI-P046-L016-611CEFD323-02",
+    "ACI-P046-L017-F8C9C48474",
+    "ACI-P046-L019-E3C2518B7A",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "open-transition-application-result",
+    observationTest: `src/tests/classical_lesson2_open_transition_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_open_transition_jobs.test.js#${atomId}-broken-boundary-result`,
+  })])),
+  ...Object.fromEntries([
+    "ACI-P046-L032-8E0B4956C5-08",
+    "ACI-P047-L019-47ABC339AF",
+    "ACI-P047-L019-321EE487CC",
+    "ACI-P047-L020-CA0F776F7A",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "syllable-boundary-application-result",
+    observationTest: `src/tests/classical_lesson2_syllable_support_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_syllable_support_jobs.test.js#${atomId}-broken-boundary-result`,
+  })])),
 });
 
 const JOB_FAMILIES = Object.freeze([
