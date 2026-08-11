@@ -49,12 +49,43 @@ function run() {
         uiAuthority: bridge.authority.uiAuthority,
         evidenceAbsenceBlocksGeneration: bridge.authority.evidenceAbsenceBlocksGeneration,
     }, {
-        applicationAxes: 184,
-        genuineChoices: 58,
-        nonChoices: 126,
+        applicationAxes: 392,
+        genuineChoices: 64,
+        nonChoices: 328,
         atomCreatedAxes: 0,
         uiAuthority: "none",
         evidenceAbsenceBlocksGeneration: false,
+    });
+
+    const lesson1ChoiceLinks = {
+        "CAA-classical.morpheme.inflectional-affix.demote--process-kind": ["ACI-P029-L016-682536CD59"],
+        "CAA-classical.structure.group.compose--group-shape": ["ACI-P031-L014-D364C15A04"],
+        "CAA-classical.structure.meaningful-rank.downgrade--downgrade-mode": ["ACI-P030-L006-518758C8D7", "ACI-P030-L006-518758C8D7-02"],
+        "CAA-classical.structure.meaningful-rank.source-or-upgrade.validate--transition-mode": ["ACI-P030-L004-D47685394D"],
+        "CAA-classical.structure.stem.compound--compound-relation": ["ACI-P030-L015-A02A98BF92"],
+        "CAA-classical.structure.stem.form-directly--formation-kind": ["ACI-P030-L011-9FE9D0F679", "ACI-P030-L011-9FE9D0F679-02", "ACI-P030-L011-9FE9D0F679-03"],
+    };
+    const bridgeByAxis = new Map(bridge.entries.map(entry => [
+        entry.applicationAxisAtomId,
+        entry.canvasAtomIds,
+    ]));
+    s.eq("the six new Lesson 1 user choices point to their exact Canvas atoms", {
+        bridgeCounts: {
+            interactive: bridge.counts.interactiveAxisCount,
+            mapped: bridge.counts.mappedAxisCount,
+            links: bridge.counts.directProvenanceLinkCount,
+            uniqueAtoms: bridge.counts.uniqueDirectProvenanceAtomCount,
+        },
+        links: Object.fromEntries(Object.keys(lesson1ChoiceLinks).map(axisId => [
+            axisId,
+            bridgeByAxis.get(axisId) || [],
+        ])),
+        linkedAtomsAreGrammar: Object.values(lesson1ChoiceLinks).flat().every(atomId =>
+            atomById.get(atomId)?.force === "grammar-bearing"),
+    }, {
+        bridgeCounts: { interactive: 64, mapped: 64, links: 95, uniqueAtoms: 86 },
+        links: lesson1ChoiceLinks,
+        linkedAtomsAreGrammar: true,
     });
 
     s.eq("section 7.9 keeps singular, plural, and reciprocal propositions distinct", {

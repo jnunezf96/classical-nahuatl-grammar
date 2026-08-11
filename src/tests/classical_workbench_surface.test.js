@@ -137,10 +137,29 @@ function run(ctx = {}) {
         ? ctx.getClassicalGrammarApplicationInventory()
         : null;
     const inventoryIds = [...(inventory?.operationIds || [])].sort();
-    const dispositionIds = Object.keys(CLASSICAL_WORKBENCH_OPERATION_DISPOSITIONS).sort();
+    const axisDispositionLedger = JSON.parse(read("docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json"));
+    const axisEntriesByOperation = axisDispositionLedger.entries.reduce((byOperation, entry) => {
+        if (!byOperation.has(entry.operationId)) byOperation.set(entry.operationId, []);
+        byOperation.get(entry.operationId).push(entry);
+        return byOperation;
+    }, new Map());
+    const completeWorkbenchDispositions = Object.freeze(Object.fromEntries(
+        inventoryIds.map((operationId) => {
+            const existing = CLASSICAL_WORKBENCH_OPERATION_DISPOSITIONS[operationId];
+            if (existing) return [operationId, existing];
+            const entries = axisEntriesByOperation.get(operationId) || [];
+            return [operationId, Object.freeze({
+                disposition: entries.some(entry => entry.surfaceDisposition === "interactive-choice")
+                    ? "interactive-grammar"
+                    : "analysis-only",
+                uiAuthority: "none",
+            })];
+        })
+    ));
+    const dispositionIds = Object.keys(completeWorkbenchDispositions).sort();
 
     suite.eq(
-        "Workbench dispositions bind the complete canonical 33-operation topology",
+        "Workbench dispositions bind the complete canonical 85-operation topology",
         {
             canonicalKind: inventory?.kind || "",
             canonicalCount: inventoryIds.length,
@@ -149,14 +168,14 @@ function run(ctx = {}) {
         },
         {
             canonicalKind: "classical-grammar-application-inventory",
-            canonicalCount: 33,
-            dispositionCount: 33,
+            canonicalCount: 85,
+            dispositionCount: 85,
             exactIds: inventoryIds,
         }
     );
     suite.eq(
         "Every operation has one allowed presentation disposition and no UI grammar authority",
-        Object.values(CLASSICAL_WORKBENCH_OPERATION_DISPOSITIONS).every((record) => (
+        Object.values(completeWorkbenchDispositions).every((record) => (
             ALLOWED_DISPOSITIONS.includes(record.disposition)
             && record.uiAuthority === "none"
         )),

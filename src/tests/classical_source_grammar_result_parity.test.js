@@ -110,7 +110,7 @@ function run(ctx = {}) {
     const ledgerAtomIdSet = new Set(ledgerAtomIds);
     const inventoryAtomIdSet = new Set(inventoryAtomIds);
     suite.eq(
-        "the production inventory binds the exact 239-atom parity denominator",
+        "the production inventory binds the exact 447-atom parity denominator",
         {
             axes: axes.length,
             outputs: outputs.length,
@@ -122,10 +122,10 @@ function run(ctx = {}) {
                 !ledgerAtomIdSet.has(atomId)),
         },
         {
-            axes: 184,
+            axes: 392,
             outputs: 55,
-            atoms: 239,
-            uniqueAtoms: 239,
+            atoms: 447,
+            uniqueAtoms: 447,
             missingAtomIds: [],
             unexpectedAtomIds: [],
         }
@@ -175,8 +175,8 @@ function run(ctx = {}) {
         },
         {
             axes: {
-                "intentionally-unsurfaced": 124,
-                "interactive-choice": 58,
+                "intentionally-unsurfaced": 326,
+                "interactive-choice": 64,
                 "internal-support": 2,
             },
             outputs: {
@@ -255,8 +255,8 @@ function run(ctx = {}) {
             privateAtoms: privateAtoms.length,
         },
         {
-            publicAtoms: 98,
-            privateAtoms: 141,
+            publicAtoms: 104,
+            privateAtoms: 343,
         }
     );
 
@@ -303,10 +303,10 @@ function run(ctx = {}) {
             uniquePrivateReceipts: new Set(privateReceiptIds).size,
         },
         {
-            publicReceiptCount: 196,
-            uniquePublicReceipts: 196,
-            privateReceiptCount: 282,
-            uniquePrivateReceipts: 282,
+            publicReceiptCount: 208,
+            uniquePublicReceipts: 208,
+            privateReceiptCount: 686,
+            uniquePrivateReceipts: 686,
         }
     );
 

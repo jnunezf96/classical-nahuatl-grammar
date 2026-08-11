@@ -1010,36 +1010,37 @@
   },
   "interaction": {
     "allAxes": {
-      "operationCount": 33,
-      "uniqueAxisCount": 159,
-      "entryCount": 184,
+      "operationCount": 85,
+      "uniqueAxisCount": 344,
+      "entryCount": 392,
       "status": {
-        "classified": 184,
+        "classified": 392,
         "unresolved": 0
       },
       "surfaceDisposition": {
-        "interactive-choice": 58,
+        "interactive-choice": 64,
         "read-only-fact": 0,
         "diagnostic-evidence": 0,
         "internal-support": 2,
-        "intentionally-unsurfaced": 124,
+        "intentionally-unsurfaced": 326,
         "unresolved": 0
       },
       "semanticFactRole": {
-        "boundary-conditioned-fact": 13,
-        "contextual-fact": 29,
-        "derived-fact": 50,
-        "genuine-user-choice": 58,
-        "lexical-fact": 34,
+        "architecture-invariant": 22,
+        "boundary-conditioned-fact": 44,
+        "contextual-fact": 111,
+        "derived-fact": 114,
+        "genuine-user-choice": 64,
+        "lexical-fact": 37,
         "unresolved": 0
       },
       "roleEvidenceKind": {
-        "live-application-declaration": 104,
+        "live-application-declaration": 312,
         "canonical-owner-contract-audit": 80
       }
     },
-    "genuineChoiceCount": 58,
-    "liveDeclarationCount": 18,
+    "genuineChoiceCount": 64,
+    "liveDeclarationCount": 24,
     "contractOnlyCount": 40,
     "contractOnlyBacklog": [
       {

@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-grammar-owned-unit-routes-026";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-axis-inventory-parity-027";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-grammar-owned-unit-routes-026";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-grammar-owned-unit-routes-026";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-grammar-owned-unit-routes-026";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-grammar-owned-unit-routes-026";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-grammar-owned-unit-routes-026";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-grammar-owned-unit-routes-026";
+} from "../runtime/create_runtime.mjs?v=20260811-axis-inventory-parity-027";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-axis-inventory-parity-027";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-axis-inventory-parity-027";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-axis-inventory-parity-027";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-axis-inventory-parity-027";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-axis-inventory-parity-027";
 
 let browserBootstrapPromise = null;
 

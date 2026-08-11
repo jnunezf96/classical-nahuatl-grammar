@@ -14,17 +14,23 @@
     "exhaustiveAtomReconciliationArtifact": "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json"
   },
   "counts": {
-    "interactiveAxisCount": 58,
-    "mappedAxisCount": 58,
+    "interactiveAxisCount": 64,
+    "mappedAxisCount": 64,
     "unmappedAxisCount": 0,
-    "directProvenanceLinkCount": 86,
-    "uniqueDirectProvenanceAtomCount": 77,
+    "directProvenanceLinkCount": 95,
+    "uniqueDirectProvenanceAtomCount": 86,
     "exhaustivelyReviewedAtomCount": 28540,
     "grammarBearingAtomCount": 18639,
     "newIndividualAssertionCoordinateCount": 13292,
     "applicationAxesCreatedByAtomAssertions": 0
   },
   "entries": [
+    { "applicationAxisAtomId": "CAA-classical.morpheme.inflectional-affix.demote--process-kind", "canvasAtomIds": ["ACI-P029-L016-682536CD59"] },
+    { "applicationAxisAtomId": "CAA-classical.structure.group.compose--group-shape", "canvasAtomIds": ["ACI-P031-L014-D364C15A04"] },
+    { "applicationAxisAtomId": "CAA-classical.structure.meaningful-rank.downgrade--downgrade-mode", "canvasAtomIds": ["ACI-P030-L006-518758C8D7", "ACI-P030-L006-518758C8D7-02"] },
+    { "applicationAxisAtomId": "CAA-classical.structure.meaningful-rank.source-or-upgrade.validate--transition-mode", "canvasAtomIds": ["ACI-P030-L004-D47685394D"] },
+    { "applicationAxisAtomId": "CAA-classical.structure.stem.compound--compound-relation", "canvasAtomIds": ["ACI-P030-L015-A02A98BF92"] },
+    { "applicationAxisAtomId": "CAA-classical.structure.stem.form-directly--formation-kind", "canvasAtomIds": ["ACI-P030-L011-9FE9D0F679", "ACI-P030-L011-9FE9D0F679-02", "ACI-P030-L011-9FE9D0F679-03"] },
     { "applicationAxisAtomId": "CAA-clause-adverbial-adjunction--clause-position", "canvasAtomIds": ["ACI-P527-L005-DB0BFDAE48"] },
     { "applicationAxisAtomId": "CAA-clause-adverbial-adjunction--relation-scope", "canvasAtomIds": ["ACI-P534-L010-FE034D4F51", "ACI-P538-L009-DBB483A264"] },
     { "applicationAxisAtomId": "CAA-clause-comparison--degree-strategy", "canvasAtomIds": ["ACI-P578-L031-3333D447E8"] },

@@ -373,7 +373,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the private denominator is the exact 124 unsurfaced plus 17 internal-support partition",
+        "the private denominator is the exact 326 unsurfaced plus 17 internal-support partition",
         {
             ledgerIntentionallyUnsurfaced:
                 INTENTIONALLY_UNSURFACED_AXIS_ENTRIES.length,
@@ -393,7 +393,7 @@ function run(ctx = {}) {
             )),
         },
         {
-            ledgerIntentionallyUnsurfaced: 124,
+            ledgerIntentionallyUnsurfaced: 326,
             ledgerAxes: [
                 "CAA-vnc-application--coordinate-projection",
                 "CAA-vnc-application--operation-plan",
@@ -415,10 +415,10 @@ function run(ctx = {}) {
                 "CAO-vnc-transitive-object--scalar",
                 "CAO-vnc-verbstem-class--scalar",
             ],
-            inventoryCount: 141,
+            inventoryCount: 343,
             inventoryIds: expectedPrivateIds,
             dispositionCounts: {
-                "intentionally-unsurfaced": 124,
+                "intentionally-unsurfaced": 326,
                 "internal-support": 17,
             },
             stagesMatchDisposition: true,

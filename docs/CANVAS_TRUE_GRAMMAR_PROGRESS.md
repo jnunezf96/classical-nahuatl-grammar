@@ -15,10 +15,10 @@ This report deliberately has no weighted overall percentage. An atom-to-owner li
 | lessonNonGrammarAccounting | 9901 | 9901 | 100.00% | complete |
 | lessonGrammarOwnerLinked | 18639 | 18639 | 100.00% | complete |
 | lessonGrammarExactBehaviorObserved | 6256 | 18639 | 33.56% | incomplete |
-| applicationAxisClassification | 184 | 184 | 100.00% | complete |
-| genuineChoiceCanvasProvenance | 58 | 58 | 100.00% | complete |
-| genuineChoiceLiveDeclarations | 18 | 58 | 31.03% | incomplete |
-| genuineChoiceBrowserDeliveryProof | not measured | 58 | not measured | not-measured |
+| applicationAxisClassification | 392 | 392 | 100.00% | complete |
+| genuineChoiceCanvasProvenance | 64 | 64 | 100.00% | complete |
+| genuineChoiceLiveDeclarations | 24 | 64 | 37.50% | incomplete |
+| genuineChoiceBrowserDeliveryProof | not measured | 64 | not measured | not-measured |
 
 ## Exact behavior rule
 
