@@ -1195,6 +1195,26 @@ function requirementFor(jobType, jobFamily, meaning) {
   return `${protectionRequirement}: ${meaning}`;
 }
 
+function applicationDirectionFor(section, jobType) {
+  if (
+    section === "1.13"
+    && (jobType === JOB_TYPES.check || jobType === JOB_TYPES.protect)
+  ) {
+    return "READING_GUIDANCE";
+  }
+  if (jobType === JOB_TYPES.grammar) return "WRITES_OR_CONTROLS_RESULT";
+  if (jobType === JOB_TYPES.model) return "BUILDS_WRITING_MODEL";
+  if (jobType === JOB_TYPES.check) return "CHECKS_WRITING_GRAMMAR";
+  return "PROTECTS_WRITING_GRAMMAR";
+}
+
+function directionalRequirementFor({ applicationDirection, jobType, jobFamily, meaning }) {
+  if (applicationDirection === "READING_GUIDANCE") {
+    return `This teaches how to read or interpret finished language. It must not compose, select, or change a Result; it may only check evidence or prevent a translation from authorizing Nahuatl grammar: ${meaning}`;
+  }
+  return requirementFor(jobType, jobFamily, meaning);
+}
+
 function nearestOwner(atoms, index, sectionFamily) {
   if (atoms[index].semanticOwnerId) return atoms[index].semanticOwnerId;
   const section = majorSection(atoms[index].canvasSection);
@@ -1218,6 +1238,7 @@ function buildLedger() {
     const section = majorSection(atom.canvasSection);
     const jobFamily = SECTION_FAMILIES[section];
     const jobType = assignJobType(atom);
+    const applicationDirection = applicationDirectionFor(section, jobType);
     const relatedGrammarOwnerId = nearestOwner(lessonAtoms, index, jobFamily);
     const accepted = EXACTLY_OBSERVED_SECTIONS.has(section)
       || EXACTLY_OBSERVED_ATOM_IDS.has(atom.atomId);
@@ -1537,15 +1558,20 @@ function buildLedger() {
       sourceCategory: atom.category,
       jobType,
       jobFamily,
+      canvasTeachingDirection: applicationDirection === "READING_GUIDANCE"
+        ? "FINISHED_TEXT_TO_STRUCTURE_AND_MEANING"
+        : "FOUNDATION_FOR_GRAMMATICAL_WRITING",
+      applicationDirection,
       targetOwnerId,
       relatedGrammarOwnerId: atom.force === "grammar-bearing"
         ? atom.semanticOwnerId || ""
         : relatedGrammarOwnerId === jobFamily ? "" : relatedGrammarOwnerId,
-      normalApplicationRequirement: requirementFor(
+      normalApplicationRequirement: directionalRequirementFor({
+        applicationDirection,
         jobType,
         jobFamily,
-        atom.meaning,
-      ),
+        meaning: atom.meaning,
+      }),
       observationKind,
       observationTest: accepted
         ? `${observationTestFile}#${atom.atomId}`
@@ -1554,7 +1580,9 @@ function buildLedger() {
         ? `${observationTestFile}#mutation:${observationKind}`
         : "",
       acceptanceStatus: accepted
-        ? "exactly-observed-normal-application-behavior"
+        ? applicationDirection === "READING_GUIDANCE"
+          ? "accepted-reading-guidance-boundary-observed"
+          : "exactly-observed-normal-application-behavior"
         : "job-assigned-not-yet-accepted",
     });
   });
@@ -1563,6 +1591,7 @@ function buildLedger() {
   ));
   const acceptedRecords = records.filter((record) => (
     record.acceptanceStatus === "exactly-observed-normal-application-behavior"
+    || record.acceptanceStatus === "accepted-reading-guidance-boundary-observed"
   ));
   const acceptedByJob = Object.fromEntries(Object.values(JOB_TYPES).map(
     (jobType) => [
@@ -1571,7 +1600,7 @@ function buildLedger() {
     ],
   ));
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     kind: "classical-nahuatl-lesson1-atom-job-ledger",
     source: "ANDREWS_TRANSCRIPTION_CANVAS.md",
     rule: "Every Lesson 1 atom receives one real project job before implementation credit is possible.",
@@ -1583,13 +1612,24 @@ function buildLedger() {
       unassignedJobs: records.filter((record) => !record.jobType || !record.jobFamily).length,
       byJobType: countsByJob,
       acceptedByJobType: acceptedByJob,
+      byApplicationDirection: Object.fromEntries([
+        "WRITES_OR_CONTROLS_RESULT",
+        "BUILDS_WRITING_MODEL",
+        "CHECKS_WRITING_GRAMMAR",
+        "PROTECTS_WRITING_GRAMMAR",
+        "READING_GUIDANCE",
+      ].map((direction) => [
+        direction,
+        records.filter((record) => record.applicationDirection === direction).length,
+      ])),
     },
     invariants: {
       ledgerAuthorizesGrammar: false,
       storedWordingCountsAsImplementation: false,
       evidenceAuthorizesGrammar: false,
       evidenceAbsenceBlocksGrammar: false,
-      everyAcceptedJobRequiresNormalApplicationBehavior: true,
+      everyWritingJobRequiresNormalApplicationBehavior: true,
+      readingGuidanceDoesNotAuthorizeOrComposeResult: true,
     },
     records,
   };
