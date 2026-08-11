@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-004",
+  "ownerId": "classical-particle-collocation-lexicon",
+  "resultDigest": "sha256:9173a9ebcc4f85d3e961b248b5e93bfeea10fcbcc6e757618220e4ddde06884a",
+  "observations": [
+    {
+      "atomId": "ACI-P058-L020-4835B3189A-04",
+      "ownerId": "classical-particle-collocation-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-collocation-lexicon:aci-p058-l020-4835b3189a-04",
+      "canonicalPath": "formulaSegments.containsAndMorph",
+      "expected": false,
+      "actual": false,
+      "canvasAnchor": "No morph in in tlā zā expresses English ‘and.’",
+      "mutation": {
+        "replacement": true,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P058-L020-4835B3189A-05",
+      "ownerId": "classical-particle-collocation-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-collocation-lexicon:aci-p058-l020-4835b3189a-05",
+      "canonicalPath": "formulaSegments.containsButMorph",
+      "expected": false,
+      "actual": false,
+      "canvasAnchor": "No morph in in tlā zā expresses English ‘but.’",
+      "mutation": {
+        "replacement": true,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P146-L025-8BFBD677DB-03",
+      "ownerId": "classical-particle-collocation-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-collocation-lexicon:aci-p146-l025-8bfbd677db-03",
+      "canonicalPath": "lexicalFactFrame.meanings",
+      "expected": [
+        "perhaps"
+      ],
+      "actual": [
+        "perhaps"
+      ],
+      "canvasAnchor": "Ahza zo gives the question the epistemic value ‘perhaps.’",
+      "mutation": {
+        "replacement": [
+          "certainly"
+        ],
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 3,
+    "passed": 3,
+    "failed": 0,
+    "mutationsRejected": 3
+  }
+}

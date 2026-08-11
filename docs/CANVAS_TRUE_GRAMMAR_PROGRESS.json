@@ -48,9 +48,9 @@
       "complete": true
     },
     "lessonGrammarExactBehaviorObserved": {
-      "numerator": 8382,
+      "numerator": 8395,
       "denominator": 18639,
-      "percent": 44.97,
+      "percent": 45.04,
       "complete": false
     },
     "applicationAxisClassification": {
@@ -502,27 +502,27 @@
     "exactProofs": {
       "retainedCanonicalCoordinates": 5347,
       "newIndividualAtomCoordinates": 13292,
-      "exactBehaviorObserved": 8382,
-      "linkOnlyInsufficient": 10257,
+      "exactBehaviorObserved": 8395,
+      "linkOnlyInsufficient": 10244,
       "totalOwnerLinked": 18639,
-      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-003/manifest.json",
-      "refreshedExactAtomCount": 121,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-004/manifest.json",
+      "refreshedExactAtomCount": 134,
       "executionObligations": {
         "canonical-rule-or-alternation": {
           "requiredBehavior": "perform-canonical-operation-or-alternation",
-          "linkOnlyInsufficient": 2079
+          "linkOnlyInsufficient": 2077
         },
         "derived-realization": {
           "requiredBehavior": "derive-canonical-realization",
-          "linkOnlyInsufficient": 732
+          "linkOnlyInsufficient": 731
         },
         "result-projection": {
           "requiredBehavior": "project-canonical-result",
-          "linkOnlyInsufficient": 2930
+          "linkOnlyInsufficient": 2927
         },
         "applicability-or-constraint": {
           "requiredBehavior": "enforce-applicability-or-constraint",
-          "linkOnlyInsufficient": 1395
+          "linkOnlyInsufficient": 1388
         },
         "source-structure-schema": {
           "requiredBehavior": "construct-or-validate-typed-source-structure",
@@ -2524,69 +2524,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-03",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-04",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-05",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-06",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-07",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-09",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L024-EA0D75FF38-10",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L035-2AED292FE4-02",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P056-L035-2AED292FE4-03",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P057-L023-C7FBC7F91A-03",
       "canonicalOwnerId": "classical-negative-particle-distribution",
       "uiRole": "applicability-or-constraint",
@@ -2596,20 +2533,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P057-L023-C7FBC7F91A-04",
       "canonicalOwnerId": "classical-negative-particle-distribution",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P058-L020-4835B3189A-04",
-      "canonicalOwnerId": "classical-particle-collocation-lexicon",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P058-L020-4835B3189A-05",
-      "canonicalOwnerId": "classical-particle-collocation-lexicon",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
     },
@@ -5405,20 +5328,6 @@
       "canonicalOwnerId": "classical-indefinite-pronominal-source-formation",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P146-L025-8BFBD677DB-03",
-      "canonicalOwnerId": "classical-particle-collocation-lexicon",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P146-L025-8BFBD677DB-04",
-      "canonicalOwnerId": "classical-particle-lexicon",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -73334,6 +73243,6 @@
     "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
     "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
-    "activeExactObservationPointer": "sha256:9d032350a6758fa4f75997eb68a5c9cfb123bb624496d6d7b45aed452bd15da0"
+    "activeExactObservationPointer": "sha256:9c47ec946e4e72c7142f1d3cfed52fca233ae2c5290ca7d67894403c281bca77"
   }
 }

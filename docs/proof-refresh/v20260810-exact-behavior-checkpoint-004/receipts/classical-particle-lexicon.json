@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-004",
+  "ownerId": "classical-particle-lexicon",
+  "resultDigest": "sha256:901c76bee0ede3b43e0a0b74d79ffbe928a820d4e0e5392666d26475f67f9f1e",
+  "observations": [
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-03",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-03",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.pronunciationAttachment",
+      "expected": "obligatory-to-following-item",
+      "actual": "obligatory-to-following-item",
+      "canvasAnchor": "ō# is obligatorily bound in pronunciation to a following item.",
+      "mutation": {
+        "replacement": "optional",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-04",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-04",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.writingAttachment",
+      "expected": "obligatory-to-following-item",
+      "actual": "obligatory-to-following-item",
+      "canvasAnchor": "ō# is obligatorily bound in writing to a following item.",
+      "mutation": {
+        "replacement": "separate-word",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-05",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-05",
+      "canonicalPath": "antecessiveTenseRestriction",
+      "expected": {
+        "past": [
+          "authorized",
+          true
+        ],
+        "present": [
+          "blocked",
+          false
+        ]
+      },
+      "actual": {
+        "past": [
+          "authorized",
+          true
+        ],
+        "present": [
+          "blocked",
+          false
+        ]
+      },
+      "canvasAnchor": "ō# can occur only before a past-tense form.",
+      "mutation": {
+        "replacement": {
+          "past": [
+            "authorized",
+            true
+          ],
+          "present": [
+            "authorized",
+            true
+          ]
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-06",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-06",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.placementRelativeToPastVnc",
+      "expected": [
+        "immediate",
+        "nonimmediate"
+      ],
+      "actual": [
+        "immediate",
+        "nonimmediate"
+      ],
+      "canvasAnchor": "ō# may occur immediately or nonimmediately before its past-tense form.",
+      "mutation": {
+        "replacement": [
+          "immediate"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-07",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-07",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.defaultEnglishTensePreference",
+      "expected": "perfect",
+      "actual": "perfect",
+      "canvasAnchor": "ō# frequently favors an English perfect-tense translation.",
+      "mutation": {
+        "replacement": "preterit-only",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-09",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-09",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.untranslatedWhenPerfectRenderingUnwarranted",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "When no perfect-tense rendering is warranted, ō# should be left untranslated.",
+      "mutation": {
+        "replacement": false,
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L024-EA0D75FF38-10",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l024-ea0d75ff38-10",
+      "canonicalPath": "lexicalFactFrame.antecessiveProfile.boundaryNotation",
+      "expected": "hash-marks-obligatory-attachment-to-following-item",
+      "actual": "hash-marks-obligatory-attachment-to-following-item",
+      "canvasAnchor": "The # in ō# marks attachment to the right.",
+      "mutation": {
+        "replacement": "hash-is-presentation-only",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L035-2AED292FE4-02",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l035-2aed292fe4-02",
+      "canonicalPath": "atAcVariantRelation",
+      "expected": {
+        "at": [
+          "variant of ac"
+        ],
+        "ac": [
+          "variant of at"
+        ]
+      },
+      "actual": {
+        "at": [
+          "variant of ac"
+        ],
+        "ac": [
+          "variant of at"
+        ]
+      },
+      "canvasAnchor": "ac is a variant of at ‘perhaps, maybe.’",
+      "mutation": {
+        "replacement": {
+          "at": [],
+          "ac": []
+        },
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P056-L035-2AED292FE4-03",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p056-l035-2aed292fe4-03",
+      "canonicalPath": "atAcPronounContrast",
+      "expected": [
+        "distinct from interrogative pronoun āc",
+        "distinct from interrogative pronoun āc"
+      ],
+      "actual": [
+        "distinct from interrogative pronoun āc",
+        "distinct from interrogative pronoun āc"
+      ],
+      "canvasAnchor": "The particle at ~ ac is distinct from the interrogative pronoun āc.",
+      "mutation": {
+        "replacement": [
+          "same as āc",
+          "same as āc"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P146-L025-8BFBD677DB-04",
+      "ownerId": "classical-particle-lexicon",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-particle-lexicon:aci-p146-l025-8bfbd677db-04",
+      "canonicalPath": "lexicalFactFrame.meanings",
+      "expected": [
+        "else",
+        "besides"
+      ],
+      "actual": [
+        "else",
+        "besides"
+      ],
+      "canvasAnchor": "Oc contributes the alternative value ‘else’ or ‘besides.’",
+      "mutation": {
+        "replacement": [
+          "still"
+        ],
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 10,
+    "passed": 10,
+    "failed": 0,
+    "mutationsRejected": 10
+  }
+}

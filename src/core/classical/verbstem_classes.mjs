@@ -6613,7 +6613,10 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       expandedVncBoundaryFrame = null,
       sentenceSurfaceFrame = null
     } = {}) {
-      const authorized = proofFrame?.conclusion?.authorized === true;
+      const sentenceAuthorized = sentenceSurfaceFrame?.sentenceSurfaceApplies !== true
+        || sentenceSurfaceFrame?.authorizationStatus === "authorized";
+      const authorized = proofFrame?.conclusion?.authorized === true
+        && sentenceAuthorized;
       const ruleFrames = [structureRuleFrame, sourceSelectionFrame, progressiveAssimilationFrame, lesson11ParadigmPlan, lesson11VncApplicationFrame, citationRuleFrame, classRuleFrame, predicateFormationRuleFrame, analysisRuleFrame, objectRelationshipRuleFrame, tlaFusionRuleFrame, ...(expandedVncBoundaryFrame?.boundaryApplies === true ? [expandedVncBoundaryFrame] : []), ...(sentenceSurfaceFrame?.sentenceSurfaceApplies === true ? [sentenceSurfaceFrame] : [])].filter(Boolean);
       return {
         kind: "classical-nahuatl-verbstem-selected-output-logic-frame",
@@ -6623,6 +6626,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceDocument: CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT,
         legalWitnessAuthority: CLASSICAL_NAHUATL_LESSON7_LEGAL_WITNESS_AUTHORITY,
         authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : sentenceSurfaceFrame?.blockReason || proofFrame?.conclusion?.blockReason || "logic-proof-blocked",
         outputableSlots: [...CLASSICAL_NAHUATL_LESSON7_OUTPUTABLE_SLOTS],
         selectedFormula: authorized ? proofFrame.conclusion.selectedFormula : "",
         outputFillers: authorized ? {
@@ -7284,7 +7288,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       selectedOutputLogicFrame = null,
       receiptInventory = null
     } = {}) {
-      const authorized = proofFrame?.conclusion?.authorized === true;
+      const authorized = selectedOutputLogicFrame?.authorizationStatus === "authorized";
       const firstFailedPremise = Array.isArray(proofFrame?.premises) ? proofFrame.premises.find(premise => premise.passed !== true) : null;
       return {
         kind: "classical-nahuatl-verbstem-display-receipt-frame",
@@ -7294,13 +7298,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceDocument: CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT,
         legalWitnessAuthority: CLASSICAL_NAHUATL_LESSON7_LEGAL_WITNESS_AUTHORITY,
         ruleRefs: getClassicalNahuatlVerbstemReceiptRules(),
-        status: proofFrame?.authorizationStatus || "blocked",
+        status: selectedOutputLogicFrame?.authorizationStatus || "blocked",
         selectedFormula: authorized ? proofFrame.conclusion.selectedFormula : "",
         selectedOutputLogicKind: authorized ? selectedOutputLogicFrame?.kind || "" : "",
         selectedOutputLogicStatus: selectedOutputLogicFrame?.authorizationStatus || "blocked",
         receiptInventoryKind: receiptInventory?.kind || "",
         classSummaryCount: receiptInventory ? Object.keys(receiptInventory.classSummaries || {}).length : 0,
-        blockedBy: authorized ? "" : firstFailedPremise?.layer || "logic-proof",
+        blockedBy: authorized ? "" : selectedOutputLogicFrame?.blockReason || firstFailedPremise?.layer || "logic-proof",
         slotSummary: authorized ? selectedOutputLogicFrame?.outputFillers || {} : {},
         grammarGenerationAllowed: false,
         surfaceGenerationAllowed: false
@@ -7541,6 +7545,24 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         predicateFormationRuleFrame,
         options
       });
+      if (sentenceSurfaceFrame.sentenceSurfaceApplies === true) {
+        const sentenceSurfaceAuthorized = sentenceSurfaceFrame.authorizationStatus === "authorized";
+        proofFrame.premises.push({
+          lesson: "Andrews Lessons 8–10",
+          layer: "sentence-surface-authorization",
+          rule: "A typed VNC sentence must satisfy its sentence-level particle, mood, tense, and boundary requirements.",
+          passed: sentenceSurfaceAuthorized,
+          sentenceType: sentenceSurfaceFrame.sentenceType,
+          blockReason: sentenceSurfaceFrame.blockReason || "",
+          ruleFrameKind: sentenceSurfaceFrame.kind,
+        });
+        if (!sentenceSurfaceAuthorized) {
+          proofFrame.authorizationStatus = "blocked";
+          proofFrame.conclusion.authorized = false;
+          proofFrame.conclusion.blockReason = sentenceSurfaceFrame.blockReason || "sentence-surface-not-authorized";
+          proofFrame.conclusion.selectedFormula = "";
+        }
+      }
       const grammarOperationEvaluationFrame = typeof getClassicalNahuatlVerbstemRuntimeTarget()?.buildClassicalNahuatlVncOperationEvaluationFrame === "function" ? getClassicalNahuatlVerbstemRuntimeTarget().buildClassicalNahuatlVncOperationEvaluationFrame({
         priorVncFrame,
         finalBoundaryFrame: proofFrame.conclusion.finalBoundaryRealizationFrame,
@@ -7584,7 +7606,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceAuthority: "Andrews transcription",
         grammarAuthority: "Andrews transcription",
         outputAuthority: "Andrews transcription",
-        authorizationStatus: proofFrame.authorizationStatus,
+        authorizationStatus: selectedOutputLogicFrame.authorizationStatus,
         sourceDocument: options.sourceDocument || CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT,
         sourceProfileId: CLASSICAL_NAHUATL_LESSON7_PROFILE_ID,
         targetProfileId: CLASSICAL_NAHUATL_LESSON7_PROFILE_ID,
@@ -7661,16 +7683,16 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         optionalIrregularPriorVncFrames,
         optionalIrregularStemVariants: predicateFormationRuleFrame.optionalIrregularStemVariants || [],
         optionalIrregularFormulaRealizations: proofFrame.conclusion.optionalIrregularFormulaRealizations || [],
-        formulaRealization: proofFrame.conclusion.selectedFormula,
-        blockReason: proofFrame.conclusion.blockReason || "",
+        formulaRealization: selectedOutputLogicFrame.authorizationStatus === "authorized" ? proofFrame.conclusion.selectedFormula : "",
+        blockReason: selectedOutputLogicFrame.blockReason || proofFrame.conclusion.blockReason || "",
         proofFrame,
         selectedOutputLogicFrame,
         receiptInventory,
         displayReceiptFrame,
         grammarGenerationAllowed: false,
-        formulaOutputAllowed: proofFrame.conclusion.authorized,
+        formulaOutputAllowed: selectedOutputLogicFrame.authorizationStatus === "authorized",
         surfaceGenerationAllowed: false,
-        blocksInput: proofFrame.conclusion.authorized !== true
+        blocksInput: selectedOutputLogicFrame.authorizationStatus !== "authorized"
       };
       classicalNahuatlLesson7IssuedVerbstemClassFrames.add(frame);
       return frame;

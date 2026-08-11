@@ -469,6 +469,41 @@ function run(ctx = {}) {
         callerTarget: "classical-vnc-caller-supplied-surface-authority-rejected",
     });
 
+    const buildWish = (subject, introductoryParticle, overrides = {}) => ctx.buildClassicalNahuatlVerbstemClassFrame("(cochi)", {
+        subject,
+        mood: "optative",
+        tense: "nonpast",
+        verbClass: "B",
+        valence: "intransitive",
+        sentenceType: "wish-sentence",
+        ...(introductoryParticle ? { introductoryParticle } : {}),
+        ...overrides,
+    });
+    const firstWithoutParticle = buildWish("1sg", "");
+    const thirdWithoutParticle = buildWish("3sg", "");
+    const firstWithMa = buildWish("1sg", "mā");
+    const thirdWithTla = buildWish("3sg", "tlā");
+    const fusedBoundaryMutation = buildWish("1sg", "mācochi");
+    const verbFormMutation = buildWish("1sg", "mā", { mood: "indicative", tense: "present" });
+    const secondPersonCommand = buildWish("2sg", "", { sentenceType: "command-sentence" });
+    s.eq("first- and third-person optatives require a separate mā or tlā while second-person commands retain licensed omission", {
+        missingFirst: [firstWithoutParticle.authorizationStatus, firstWithoutParticle.blockReason, firstWithoutParticle.formulaRealization],
+        missingThird: [thirdWithoutParticle.authorizationStatus, thirdWithoutParticle.blockReason, thirdWithoutParticle.formulaRealization],
+        firstMa: [firstWithMa.authorizationStatus, firstWithMa.sentenceSurfaceFrame.sentenceParticles, firstWithMa.formulaRealization],
+        thirdTla: [thirdWithTla.authorizationStatus, thirdWithTla.sentenceSurfaceFrame.sentenceParticles, thirdWithTla.formulaRealization],
+        boundaryMutation: [fusedBoundaryMutation.authorizationStatus, fusedBoundaryMutation.blockReason],
+        verbMutation: [verbFormMutation.authorizationStatus, verbFormMutation.blockReason],
+        secondPersonOmission: [secondPersonCommand.authorizationStatus, secondPersonCommand.sentenceSurfaceFrame.introductoryParticleOmissionAllowed],
+    }, {
+        missingFirst: ["blocked", "lesson-9-wish-command-requires-ma-or-tla", ""],
+        missingThird: ["blocked", "lesson-9-wish-command-requires-ma-or-tla", ""],
+        firstMa: ["authorized", ["mā"], "#ni-0(cochi)0+⎕-0#"],
+        thirdTla: ["authorized", ["tlā"], "#0-0(cochi)0+⎕-0#"],
+        boundaryMutation: ["blocked", "lesson-9-wish-command-requires-ma-or-tla"],
+        verbMutation: ["blocked", "lesson-9-wish-command-requires-optative-or-future-optative-vnc"],
+        secondPersonOmission: ["authorized", true],
+    });
+
     const reflexiveItta = buildSource(ctx, "itta", {
         subject: "3sg",
         verbClass: "A",

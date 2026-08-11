@@ -566,7 +566,7 @@ l3-auh-conjunctor|and; but|clause and sentence conjunctor
 l3-mec|then|adverbial modifier
 l3-nee|then|adverbial modifier
 l3-tel|nevertheless; despite that; otherwise|adverbial modifier
-l3-oc|still; yet; for a little while|adverbial modifier
+l3-oc|still; yet; for a little while; else; besides|adverbial modifier
 l3-zan|only; just; nothing else but|unqualified restrictive adverbial modifier
 l3-za|now only|diminutive-from-prior-state adverbial modifier
 l3-ye|already; soon|soon with future tense
@@ -1037,6 +1037,17 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
             boundaryNotation: "hash-marks-obligatory-attachment-to-preceding-item",
           })
         : null;
+      const antecessiveProfile = entry.id === "l3-o-antecessive"
+        ? freezeClassicalNahuatlLesson3ParticleResult({
+            pronunciationAttachment: "obligatory-to-following-item",
+            writingAttachment: "obligatory-to-following-item",
+            boundaryNotation: "hash-marks-obligatory-attachment-to-following-item",
+            licensedTenseDomain: Object.freeze(["preterit", "imperfect", "past-optative"]),
+            placementRelativeToPastVnc: Object.freeze(["immediate", "nonimmediate"]),
+            defaultEnglishTensePreference: "perfect",
+            untranslatedWhenPerfectRenderingUnwarranted: true,
+          })
+        : null;
       const frame = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-lexical-fact-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -1059,6 +1070,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         placementScope: entry.placement?.scope || "",
         adjunctorProfile,
         vocativeProfile,
+        antecessiveProfile,
         readOnly: true,
         userSelectable: false,
         generationAuthority: false,

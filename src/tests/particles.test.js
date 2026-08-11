@@ -143,6 +143,92 @@ function run(ctx = {}) {
         }
     );
 
+    const antecessive = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-o-antecessive")
+    );
+    const antecessivePreterit = ctx.buildClassicalNahuatlVerbstemClassFrame("(cochi)", {
+        subject: "1sg",
+        mood: "indicative",
+        tense: "preterit",
+        verbClass: "B",
+        valence: "intransitive",
+        antecessive: true,
+    });
+    const antecessivePresentMutation = ctx.buildClassicalNahuatlVerbstemClassFrame("(cochi)", {
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        verbClass: "B",
+        valence: "intransitive",
+        antecessive: true,
+    });
+    const atResult = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-at")
+    );
+    const acResult = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-ac")
+    );
+    const ocResult = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-oc")
+    );
+    s.eq("particle results expose and enforce antecessive boundary, tense, placement, translation, and lexical-variant grammar", {
+        antecessiveFormula: antecessive.formula,
+        antecessiveProfile: antecessive.lexicalFactFrame.antecessiveProfile,
+        pastApplication: [antecessivePreterit.authorizationStatus, antecessivePreterit.expandedVncBoundaryFrame.outsidePrefixes],
+        presentMutation: [antecessivePresentMutation.authorizationStatus, antecessivePresentMutation.expandedVncBoundaryFrame.antecessiveTenseAuthorized],
+        atAc: [atResult.lexicalFactFrame.meanings, atResult.lexicalFactFrame.usageFacts, acResult.lexicalFactFrame.meanings, acResult.lexicalFactFrame.usageFacts],
+        ocMeanings: ocResult.lexicalFactFrame.meanings,
+    }, {
+        antecessiveFormula: "ō#",
+        antecessiveProfile: {
+            pronunciationAttachment: "obligatory-to-following-item",
+            writingAttachment: "obligatory-to-following-item",
+            boundaryNotation: "hash-marks-obligatory-attachment-to-following-item",
+            licensedTenseDomain: ["preterit", "imperfect", "past-optative"],
+            placementRelativeToPastVnc: ["immediate", "nonimmediate"],
+            defaultEnglishTensePreference: "perfect",
+            untranslatedWhenPerfectRenderingUnwarranted: true,
+        },
+        pastApplication: ["authorized", ["ō#"]],
+        presentMutation: ["blocked", false],
+        atAc: [
+            ["perhaps", "maybe"],
+            ["variant of ac", "distinct from interrogative pronoun āc"],
+            ["perhaps", "maybe"],
+            ["variant of at", "distinct from interrogative pronoun āc"],
+        ],
+        ocMeanings: ["still", "yet", "for a little while", "else", "besides"],
+    });
+    const inTlaZa = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-in-tla-za")
+    );
+    const ahzaZo = ctx.buildClassicalNahuatlParticleResultFrame(
+        ctx.buildClassicalNahuatlParticleSourceFrame("l3-ahza-zo")
+    );
+    s.eq("collocation Results preserve compositional-member limits and epistemic value", {
+        inTlaZa: {
+            formulaSegments: inTlaZa.formulaSegments,
+            usageFacts: inTlaZa.lexicalFactFrame.usageFacts,
+            containsAndMorph: inTlaZa.formulaSegments.includes("auh"),
+            containsButMorph: inTlaZa.formulaSegments.includes("but"),
+        },
+        ahzaZo: {
+            formulaSegments: ahzaZo.formulaSegments,
+            meanings: ahzaZo.lexicalFactFrame.meanings,
+        },
+    }, {
+        inTlaZa: {
+            formulaSegments: ["in", "tlā", "zā"],
+            usageFacts: ["no particle member means and or but"],
+            containsAndMorph: false,
+            containsButMorph: false,
+        },
+        ahzaZo: {
+            formulaSegments: ["ahzā", "zo"],
+            meanings: ["perhaps", "maybe"],
+        },
+    });
+
     const honorificResults = [
         "l3-otzin",
         "l3-auhtzin",
