@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
-  "activeManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-010/manifest.json",
-  "activeManifestDigest": "sha256:94c7fc890723feb387e623831e048771e31e506b564136a2063ee5e6d81ceaea",
-  "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-009/manifest.json",
-  "rollbackManifestDigest": "sha256:65bbe52814d7fa7d28b2106034d0e176337bbda82ceea9cf08122a8fb003a4c3",
+  "activeManifest": "docs/proof-refresh/v20260810-visible-credit-correction-011/manifest.json",
+  "activeManifestDigest": "sha256:a580684cedd52ecd3c1a7b8ba7e0d0542866aee91f86e405605dc8636f80729d",
+  "rollbackManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-010/manifest.json",
+  "rollbackManifestDigest": "sha256:94c7fc890723feb387e623831e048771e31e506b564136a2063ee5e6d81ceaea",
   "baseProofCorpusRetained": true
 }

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-credit-correction-011",
+  "status": "passed",
+  "correction": {
+    "removedFalseExactCredits": 1000,
+    "preparedRuntimeFactsRetained": 1000,
+    "exactlyObservedBeforeCorrection": 6756,
+    "exactlyObservedAfterCorrection": 5756,
+    "remainingAfterCorrection": 12883
+  },
+  "validations": {
+    "baseExactObservationsRetained": true,
+    "runtimePreparationRetained": true,
+    "ledgerRegenerated": true,
+    "atomicSwitchRollbackPassed": true
+  },
+  "auditSummary": {
+    "status": "incomplete",
+    "strictComplete": false,
+    "fullCanvasSourceZones": {
+      "numerator": 58,
+      "denominator": 66,
+      "percent": 87.88,
+      "complete": false
+    },
+    "lessonGrammarOwnerLinked": {
+      "numerator": 18639,
+      "denominator": 18639,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonGrammarExactBehaviorObserved": {
+      "numerator": 5756,
+      "denominator": 18639,
+      "percent": 30.88,
+      "complete": false
+    },
+    "genuineChoiceLiveDeclarations": {
+      "numerator": 18,
+      "denominator": 58,
+      "percent": 31.03,
+      "complete": false
+    },
+    "blockerCount": 12932
+  }
+}
