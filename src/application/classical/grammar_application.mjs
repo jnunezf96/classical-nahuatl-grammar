@@ -292,6 +292,18 @@ const ROUTE_DEFINITIONS = Object.freeze({
     capabilityName: "buildClassicalNahuatlAssimilationFrame",
     axisIds: Object.freeze(["first-consonant", "second-consonant", "regressive-boundary-realization"]),
   }),
+  "phonology:consonant-loss": Object.freeze({
+    capabilityName: "buildClassicalNahuatlConsonantLossFrame",
+    axisIds: Object.freeze(["first-consonant", "second-consonant", "loss-result"]),
+  }),
+  "phonology:consonant-shift": Object.freeze({
+    capabilityName: "buildClassicalNahuatlConsonantPhoneShiftFrame",
+    axisIds: Object.freeze(["source-consonant", "phonological-environment", "shift-result"]),
+  }),
+  "phonology:vowel-elision": Object.freeze({
+    capabilityName: "buildClassicalNahuatlVowelElisionFrame",
+    axisIds: Object.freeze(["source-morpheme", "stress-group-environment", "elided-result"]),
+  }),
   "vnc:nuclear-clause": Object.freeze({
     capabilityName: "buildClassicalNahuatlNuclearClauseResult",
     axisIds: Object.freeze(["basal-unit", "source-transitivity", "participant-structure", "predicate-stem"]),
@@ -976,6 +988,15 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   "phonology:assimilation": defineCanonicalResultContract(
     "classical-nahuatl-transcription-analysis-frame",
   ),
+  "phonology:consonant-loss": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:consonant-shift": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:vowel-elision": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
   "vnc:nuclear-clause": defineCanonicalResultContract(
     "classical-nahuatl-nuclear-clause-structure-result",
   ),
@@ -1631,6 +1652,15 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:assimilation": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:consonant-loss": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:consonant-shift": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:vowel-elision": Object.freeze([
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "vnc:nuclear-clause": Object.freeze([

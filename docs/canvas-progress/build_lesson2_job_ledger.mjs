@@ -217,6 +217,15 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
     observationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}`,
     mutationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}-broken-regressive-result`,
   })])),
+  ...Object.fromEntries([
+    "ACI-P050-L028-B8D8FC0DC6", "ACI-P050-L029-420DB9E127", "ACI-P050-L029-420DB9E127-02", "ACI-P050-L031-20EA88210A", "ACI-P050-L033-8ED17977BE", "ACI-P050-L035-9EFC19B9DD", "ACI-P050-L038-FDCDDD3E8C", "ACI-P050-L039-F36B64DA08", "ACI-P051-L002-C2956C7FBE", "ACI-P051-L010-2EE5A7A9B5", "ACI-P051-L012-BC6FF0C48A", "ACI-P051-L017-604F54B6B3",
+  ].map(atomId => [atomId, Object.freeze({ observationKind: "consonant-loss-application-result", observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-loss-result` })])),
+  ...Object.fromEntries([
+    "ACI-P051-L019-A6D680E32A", "ACI-P051-L019-97F9BE6EAC", "ACI-P051-L024-FA7BB4A79C", "ACI-P051-L033-C91A77F168", "ACI-P051-L036-56B81394BE", "ACI-P052-L004-6BDC02425C", "ACI-P052-L007-141665CE3D", "ACI-P052-L010-C54302F544", "ACI-P052-L014-75267806EC", "ACI-P052-L017-66E82EE5B5",
+  ].map(atomId => [atomId, Object.freeze({ observationKind: "consonant-shift-application-result", observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-shift-result` })])),
+  ...Object.fromEntries([
+    "ACI-P052-L020-B62AAD1010", "ACI-P052-L021-547243D130", "ACI-P052-L027-342C84A888", "ACI-P052-L028-1D946166F0", "ACI-P052-L028-F3ABD9CFDA",
+  ].map(atomId => [atomId, Object.freeze({ observationKind: "vowel-elision-application-result", observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-elision-result` })])),
 });
 
 const JOB_FAMILIES = Object.freeze([

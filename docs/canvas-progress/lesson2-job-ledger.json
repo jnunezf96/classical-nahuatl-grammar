@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 130,
-    "writingJobsAwaitingExactObservation": 269,
+    "exactlyImplementedWritingJobs": 157,
+    "writingJobsAwaitingExactObservation": 242,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -10611,10 +10611,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In certain consonant sequences one of the consonants becomes imperceptible.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In certain consonant sequences one of the consonants becomes imperceptible.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L028-B8D8FC0DC6",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L028-B8D8FC0DC6-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10635,10 +10635,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: This is a subvariety of assimilation",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: This is a subvariety of assimilation",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L029-420DB9E127",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L029-420DB9E127-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10659,10 +10659,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: the lost consonant may be either the first or the second one.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: the lost consonant may be either the first or the second one.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L029-420DB9E127-02",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L029-420DB9E127-02-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10683,10 +10683,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /¢/ + /w/ > [¢]. This is an optional rule.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /¢/ + /w/ > [¢]. This is an optional rule.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L031-20EA88210A",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L031-20EA88210A-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10731,10 +10731,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /č/ + /w/ > [č]. This is an optional rule.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /č/ + /w/ > [č]. This is an optional rule.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L033-8ED17977BE",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L033-8ED17977BE-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10779,10 +10779,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /ʔ/ + /y/ > [h]. This is an optional rule.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /ʔ/ + /y/ > [h]. This is an optional rule.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L035-9EFC19B9DD",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L035-9EFC19B9DD-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10851,10 +10851,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: There is another rule that produces the opposite result (i.e., the first consonant is lost): /ʔ/ + /y/",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: There is another rule that produces the opposite result (i.e., the first consonant is lost): /ʔ/ + /y/",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L038-FDCDDD3E8C",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L038-FDCDDD3E8C-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10875,10 +10875,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: > *[yy] > [y]. Concerning /ʔ/ > /y/, see § 2.13.1. Since [yy] is impossible, it is simplified to [y]. This rule…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: > *[yy] > [y]. Concerning /ʔ/ > /y/, see § 2.13.1. Since [yy] is impossible, it is simplified to [y]. This rule…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L039-F36B64DA08",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P050-L039-F36B64DA08-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11042,10 +11042,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /nasal/ + /y/ > [y]. The nasal, which is voiceless in syllable-final position, seems to fade even further, although…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /nasal/ + /y/ > [y]. The nasal, which is voiceless in syllable-final position, seems to fade even further, although…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L002-C2956C7FBE",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L002-C2956C7FBE-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11281,10 +11281,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /nasal/ + /w/ > [w]. As in Rule 4, the unpronounced nasal tends to leave a trace of itself in a slight nasalization…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /nasal/ + /w/ > [w]. As in Rule 4, the unpronounced nasal tends to leave a trace of itself in a slight nasalization…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L010-2EE5A7A9B5",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L010-2EE5A7A9B5-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11305,10 +11305,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: An /m/ before /w/, if it is represented in writing, is spelled with the letter n (which is not pronounced).…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: An /m/ before /w/, if it is represented in writing, is spelled with the letter n (which is not pronounced).…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L012-BC6FF0C48A",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L012-BC6FF0C48A-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11353,10 +11353,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /w/ + /w/ > [w]. The first /w/, which is voiceless, is lost.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /w/ + /w/ > [w]. The first /w/, which is voiceless, is lost.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-loss-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L017-604F54B6B3",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L017-604F54B6B3-broken-loss-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11401,10 +11401,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Result: In addition to consonant-phone shift produced by assimilation (where the regular consonant phone is replaced…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Result: In addition to consonant-phone shift produced by assimilation (where the regular consonant phone is replaced…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L019-A6D680E32A",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L019-A6D680E32A-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11425,10 +11425,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In addition to consonant-phone shift produced by assimilation (where the regular consonant phone is replaced by an…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In addition to consonant-phone shift produced by assimilation (where the regular consonant phone is replaced by an…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L019-97F9BE6EAC",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L019-97F9BE6EAC-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11449,10 +11449,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /ʔ/ + /vowel/ > [y] + [vowel]. This is an optional change. When intervocalic, the resultant [y] may disappear.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /ʔ/ + /vowel/ > [y] + [vowel]. This is an optional change. When intervocalic, the resultant [y] may disappear.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L024-FA7BB4A79C",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L024-FA7BB4A79C-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11760,10 +11760,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /m/ > [n̥] when left exposed at the end of a syllable or vocable.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /m/ > [n̥] when left exposed at the end of a syllable or vocable.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L033-C91A77F168",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L033-C91A77F168-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11832,10 +11832,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: An [n̥] phone resulting from this change reverts to the original /m/ sound when the following vocable of the stress…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: An [n̥] phone resulting from this change reverts to the original /m/ sound when the following vocable of the stress…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L036-56B81394BE",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P051-L036-56B81394BE-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11952,10 +11952,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /y/ > [š] when left exposed at the end of a syllable or vocable.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /y/ > [š] when left exposed at the end of a syllable or vocable.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L004-6BDC02425C",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L004-6BDC02425C-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12024,10 +12024,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When the vocable contains a prior s-sound, /y/ > [s] when left exposed in this manner.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When the vocable contains a prior s-sound, /y/ > [s] when left exposed in this manner.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L007-141665CE3D",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L007-141665CE3D-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12072,10 +12072,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Occasionally, /kʷ/ > [k] (i.e., it becomes delabialized by dropping its labial release feature) when left exposed at…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Occasionally, /kʷ/ > [k] (i.e., it becomes delabialized by dropping its labial release feature) when left exposed at…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L010-C54302F544",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L010-C54302F544-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12144,10 +12144,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Occasionally, /t/ > [h] when the /t/ is forced into a vocable-final position:",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Occasionally, /t/ > [h] when the /t/ is forced into a vocable-final position:",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L014-75267806EC",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L014-75267806EC-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12216,10 +12216,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: On extremely rare occasions the shift can go in the opposite direction: non-final /ʔ/ > non- final [t].",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: On extremely rare occasions the shift can go in the opposite direction: non-final /ʔ/ > non- final [t].",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "consonant-shift-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L017-66E82EE5B5",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L017-66E82EE5B5-broken-shift-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12264,10 +12264,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: An initial or final short vowel of certain vocables can be elided (i.e., omitted) in free variation from a number of…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: An initial or final short vowel of certain vocables can be elided (i.e., omitted) in free variation from a number of…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-elision-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L020-B62AAD1010",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L020-B62AAD1010-broken-elision-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12288,10 +12288,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: A long vowel tends not to undergo elision.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: A long vowel tends not to undergo elision.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-elision-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L021-547243D130",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L021-547243D130-broken-elision-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12432,10 +12432,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Notice that if elision is indicated in writing, a spelling change is often necessary.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Notice that if elision is indicated in writing, a spelling change is often necessary.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-elision-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L027-342C84A888",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L027-342C84A888-broken-elision-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12456,10 +12456,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When the omitted vowel is a supportive [i]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When the omitted vowel is a supportive [i]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-elision-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L028-1D946166F0",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L028-1D946166F0-broken-elision-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12480,10 +12480,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When the omitted vowel is a supportive [i], it is not, properly speaking, elision since the vowel affected is not…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When the omitted vowel is a supportive [i], it is not, properly speaking, elision since the vowel affected is not…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-elision-application-result",
+      "observationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L028-F3ABD9CFDA",
+      "mutationTest": "src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#ACI-P052-L028-F3ABD9CFDA-broken-elision-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
