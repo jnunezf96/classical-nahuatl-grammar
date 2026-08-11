@@ -1200,7 +1200,7 @@ function applicationDirectionFor(section, jobType) {
     section === "1.13"
     && (jobType === JOB_TYPES.check || jobType === JOB_TYPES.protect)
   ) {
-    return "READING_GUIDANCE";
+    return "GUIDES_READER_AND_INTERPRETER";
   }
   if (jobType === JOB_TYPES.grammar) return "WRITES_OR_CONTROLS_RESULT";
   if (jobType === JOB_TYPES.model) return "BUILDS_WRITING_MODEL";
@@ -1209,7 +1209,7 @@ function applicationDirectionFor(section, jobType) {
 }
 
 function directionalRequirementFor({ applicationDirection, jobType, jobFamily, meaning }) {
-  if (applicationDirection === "READING_GUIDANCE") {
+  if (applicationDirection === "GUIDES_READER_AND_INTERPRETER") {
     return `This teaches how to read or interpret finished language. It must not compose, select, or change a Result; it may only check evidence or prevent a translation from authorizing Nahuatl grammar: ${meaning}`;
   }
   return requirementFor(jobType, jobFamily, meaning);
@@ -1558,7 +1558,7 @@ function buildLedger() {
       sourceCategory: atom.category,
       jobType,
       jobFamily,
-      canvasTeachingDirection: applicationDirection === "READING_GUIDANCE"
+      canvasTeachingDirection: applicationDirection === "GUIDES_READER_AND_INTERPRETER"
         ? "FINISHED_TEXT_TO_STRUCTURE_AND_MEANING"
         : "FOUNDATION_FOR_GRAMMATICAL_WRITING",
       applicationDirection,
@@ -1580,8 +1580,8 @@ function buildLedger() {
         ? `${observationTestFile}#mutation:${observationKind}`
         : "",
       acceptanceStatus: accepted
-        ? applicationDirection === "READING_GUIDANCE"
-          ? "accepted-reading-guidance-boundary-observed"
+        ? applicationDirection === "GUIDES_READER_AND_INTERPRETER"
+          ? "accepted-reader-interpreter-guidance-observed"
           : "exactly-observed-normal-application-behavior"
         : "job-assigned-not-yet-accepted",
     });
@@ -1591,7 +1591,7 @@ function buildLedger() {
   ));
   const acceptedRecords = records.filter((record) => (
     record.acceptanceStatus === "exactly-observed-normal-application-behavior"
-    || record.acceptanceStatus === "accepted-reading-guidance-boundary-observed"
+    || record.acceptanceStatus === "accepted-reader-interpreter-guidance-observed"
   ));
   const acceptedByJob = Object.fromEntries(Object.values(JOB_TYPES).map(
     (jobType) => [
@@ -1617,7 +1617,7 @@ function buildLedger() {
         "BUILDS_WRITING_MODEL",
         "CHECKS_WRITING_GRAMMAR",
         "PROTECTS_WRITING_GRAMMAR",
-        "READING_GUIDANCE",
+        "GUIDES_READER_AND_INTERPRETER",
       ].map((direction) => [
         direction,
         records.filter((record) => record.applicationDirection === direction).length,
@@ -1629,7 +1629,7 @@ function buildLedger() {
       evidenceAuthorizesGrammar: false,
       evidenceAbsenceBlocksGrammar: false,
       everyWritingJobRequiresNormalApplicationBehavior: true,
-      readingGuidanceDoesNotAuthorizeOrComposeResult: true,
+      readerInterpreterGuidanceDoesNotAuthorizeOrComposeResult: true,
     },
     records,
   };

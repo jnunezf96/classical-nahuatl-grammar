@@ -57,7 +57,7 @@ function run() {
         record.acceptanceStatus
             === "exactly-observed-normal-application-behavior"
         || record.acceptanceStatus
-            === "accepted-reading-guidance-boundary-observed"
+            === "accepted-reader-interpreter-guidance-observed"
     );
     s.eq(
         "only accepted review spans earn exact Lesson 1 credit",
@@ -127,24 +127,28 @@ function run() {
     s.eq(
         "Lesson 1 reading guidance cannot be mistaken for Result-writing grammar",
         {
-            readingGuidance: jobLedger.counts.byApplicationDirection.READING_GUIDANCE,
+            readerInterpreterGuidance:
+                jobLedger.counts.byApplicationDirection.GUIDES_READER_AND_INTERPRETER,
             wrongSection: jobLedger.records
-                .filter(record => record.applicationDirection === "READING_GUIDANCE")
+                .filter(record => record.applicationDirection
+                    === "GUIDES_READER_AND_INTERPRETER")
                 .filter(record => !record.canvasSection.startsWith("§1.13"))
                 .map(record => record.atomId),
             writesResult: jobLedger.records
-                .filter(record => record.applicationDirection === "READING_GUIDANCE")
+                .filter(record => record.applicationDirection
+                    === "GUIDES_READER_AND_INTERPRETER")
                 .filter(record => record.jobType === "BUILD_GRAMMAR")
                 .map(record => record.atomId),
             composesResult: jobLedger.records
-                .filter(record => record.applicationDirection === "READING_GUIDANCE")
+                .filter(record => record.applicationDirection
+                    === "GUIDES_READER_AND_INTERPRETER")
                 .filter(record => !record.normalApplicationRequirement.includes(
                     "must not compose, select, or change a Result"
                 ))
                 .map(record => record.atomId),
         },
         {
-            readingGuidance: 255,
+            readerInterpreterGuidance: 255,
             wrongSection: [],
             writesResult: [],
             composesResult: [],
