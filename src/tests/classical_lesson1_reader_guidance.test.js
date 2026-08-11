@@ -13,6 +13,7 @@ function run(ctx = {}) {
         __dirname,
         "../../docs/canvas-progress/lesson1-job-ledger.json"
     ), "utf8"));
+    const style = fs.readFileSync(path.resolve(__dirname, "../../style.css"), "utf8");
     const ledgerByAtomId = new Map(ledger.records.map((record) => [record.atomId, record]));
 
     s.eq("six accepted reading groups contain forty-five exact Lesson 1 atoms", {
@@ -41,6 +42,18 @@ function run(ctx = {}) {
         records.filter((record) => authorityPanel.includes(record.statement)).map((record) => record.atomId),
         []);
 
+    s.ok("the visible guide contains no atom bookkeeping language",
+        !authorityPanel.includes("exact Lesson 1 atoms")
+        && !authorityPanel.includes("support this idea")
+        && authorityPanel.includes("These ideas help with reading and interpretation."));
+
+    s.ok("the guide uses spaced cards with a responsive two-to-one-column layout",
+        style.includes(".classical-reader-guidance__card")
+        && style.includes("grid-template-columns: repeat(2, minmax(0, 1fr))")
+        && style.includes("grid-template-columns: minmax(0, 1fr)")
+        && style.includes("gap: 12px")
+        && style.includes("padding: 14px 15px"));
+
     for (const record of records) {
         const mutation = groups.map((group) => ({
             ...group,
@@ -54,7 +67,7 @@ function run(ctx = {}) {
     s.ok("reader guidance cannot authorize or compose a Result",
         authorityPanel.includes('data-classical-source-authorizes="none"')
         && authorityPanel.includes('data-classical-result-authorizes="none"')
-        && authorityPanel.includes("They do not create, change, allow, or block a Result."));
+        && authorityPanel.includes("They do not change the Result."));
 
     return s;
 }

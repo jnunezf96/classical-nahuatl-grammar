@@ -74,10 +74,11 @@ export function isLesson1ReaderGuidanceExact(candidate = []) {
 }
 
 export function renderLesson1ReaderGuidance(escapeHtml = String) {
-  return LESSON1_READER_GUIDANCE_GROUPS.map((group) => `
-                    <section class="grammar-inspector__section" data-classical-reader-guidance-group="${escapeHtml(group.ideaId)}" data-classical-reader-guidance-atoms="${escapeHtml(group.records.map((record) => record.atomId).join(" "))}">
-                      <h5>${escapeHtml(group.title)}</h5>
+  return `<div class="classical-reader-guidance__grid">
+${LESSON1_READER_GUIDANCE_GROUPS.map((group) => `
+                    <section class="classical-reader-guidance__card" data-classical-reader-guidance-group="${escapeHtml(group.ideaId)}" data-classical-reader-guidance-atoms="${escapeHtml(group.records.map((record) => record.atomId).join(" "))}">
+                      <h5 class="classical-reader-guidance__title">${escapeHtml(group.title)}</h5>
                       <p data-classical-reader-guidance-idea="${escapeHtml(group.ideaId)}">${escapeHtml(group.guidance)}</p>
-                      <small>${group.records.length} exact Lesson 1 atoms support this idea.</small>
-                    </section>`).join("");
+                    </section>`).join("")}
+                  </div>`;
 }
