@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "kind": "classical-atom-assertion-scaffolding-cleanup-validation",
+  "status": "validated",
+  "baseCommit": "57378ab3733b82fda3f1a9884b3e7b1abd010f37",
+  "scope": {
+    "removed": "redundant non-generative per-atom assertion owner modules and their executable catalog wiring",
+    "consolidatedInto": "docs/ANDREWS_ATOM_LEDGER.json",
+    "preserved": [
+      "fixed 28,540-atom accounting",
+      "fixed 18,639 grammar-bearing denominator",
+      "Canvas source provenance",
+      "real canonical semantic owners",
+      "active exact-observation receipts and tests",
+      "versioned proof history",
+      "active and rollback manifests",
+      "dependency invalidation"
+    ]
+  },
+  "dependencyAudit": {
+    "redundant": {
+      "assertionOwnerModules": 862,
+      "trackingCoordinates": 13292,
+      "catalogImportLines": 862,
+      "catalogOwnerListLines": 862,
+      "executionFunctions": 0,
+      "activeExactObservationsUsingAssertionOwners": 0,
+      "liveAssertionDeclarations": 0
+    },
+    "requiredAndPreserved": {
+      "canonicalOwnerSpecs": 1518,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
+      "activeExactObservationReceipts": true,
+      "exactObservationTests": true,
+      "historicalMigrationManifest": "docs/ANDREWS_INDIVIDUAL_ATOM_PROOF_MIGRATION.json",
+      "semanticScopeCompatibilityInput": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "projectRoleCompatibilityInput": "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json",
+      "proofReleaseHistory": true,
+      "rollbackManifests": true
+    }
+  },
+  "before": {
+    "trackedFiles": 3107,
+    "trackedBytes": 77524121,
+    "checkoutDiskKiB": 82520,
+    "nuclearOwnerSpecFiles": 2380,
+    "assertionOwnerFiles": 862,
+    "assertionOwnerBytes": 18197093,
+    "catalogBytes": 498808
+  },
+  "after": {
+    "trackedFiles": 2249,
+    "trackedBytes": 72850758,
+    "checkoutDiskKiB": 76704,
+    "nuclearOwnerSpecFiles": 1518,
+    "assertionOwnerFiles": 0,
+    "catalogBytes": 280955
+  },
+  "delta": {
+    "trackedFiles": -858,
+    "trackedBytes": -4673363,
+    "checkoutDiskKiB": -5816,
+    "assertionOwnerFiles": -862,
+    "runtimeAssertionCapabilities": -5172
+  },
+  "atomAccounting": {
+    "before": {
+      "atoms": 28540,
+      "grammarBearing": 18639,
+      "nonGrammar": 9901,
+      "orphanAtoms": 0
+    },
+    "after": {
+      "atoms": 28540,
+      "grammarBearing": 18639,
+      "nonGrammar": 9901,
+      "orphanAtoms": 0
+    },
+    "difference": {
+      "atoms": 0,
+      "grammarBearing": 0,
+      "nonGrammar": 0,
+      "orphanAtoms": 0
+    }
+  },
+  "proofAccounting": {
+    "before": {
+      "exactBehaviorObserved": 5756,
+      "activeExactlyObserved": 409,
+      "retainedCanonicalProof": 5347,
+      "exactObservationPending": 12883,
+      "failed": 0
+    },
+    "after": {
+      "exactBehaviorObserved": 5756,
+      "activeExactlyObserved": 409,
+      "retainedCanonicalProof": 5347,
+      "exactObservationPending": 12883,
+      "failed": 0
+    },
+    "difference": {
+      "exactBehaviorObserved": 0,
+      "activeExactlyObserved": 0,
+      "retainedCanonicalProof": 0,
+      "exactObservationPending": 0,
+      "failed": 0
+    },
+    "proofCorpusFilesBefore": 287,
+    "proofCorpusFilesAfter": 287,
+    "proofCorpusDigestBefore": "sha256:2430d7d612b854403a3f0f38ea2be7315d552106d8410e84ce318cff695b2dfe",
+    "proofCorpusDigestAfter": "sha256:2430d7d612b854403a3f0f38ea2be7315d552106d8410e84ce318cff695b2dfe",
+    "exactObservationFilesModified": 0
+  },
+  "validation": {
+    "passed": [
+      "authoritative ledger generation and stale-file check",
+      "28,540 unique atom IDs and 18,639 grammar-bearing atoms",
+      "zero orphan atoms and zero missing proof or presentation references",
+      "Canvas progress audit",
+      "checkpoint 008 exact role observations: 100/100",
+      "exact and owner-focused files: 23/23 applicable files",
+      "routine semantic family consolidation: 5/5",
+      "atom UI reconciliation: 3/3",
+      "application axis Canvas bridge: 2/2",
+      "browser module cache-chain boundary"
+    ],
+    "preExistingFailuresUnchanged": [
+      {
+        "test": "canonical_identity_registry",
+        "before": "6/7",
+        "after": "6/7",
+        "reason": "checkpoint 008 identity-count expectation is stale"
+      },
+      {
+        "test": "canonical_semantic_witness_projection",
+        "before": "1/2",
+        "after": "1/2",
+        "reason": "expected 826 migrated coordinates but checkpoint 008 has 811"
+      },
+      {
+        "test": "proof_precision_baseline",
+        "before": "6/7",
+        "after": "6/7",
+        "reason": "same pre-existing 826-versus-811 baseline drift"
+      }
+    ],
+    "unavailableInWebCheckout": [
+      {
+        "test": "classical_canvas_exact_evidence_audits",
+        "reason": "references development-project scripts that are not present in this Web checkout"
+      }
+    ]
+  },
+  "rollback": {
+    "recoverable": true,
+    "baseCommit": "57378ab3733b82fda3f1a9884b3e7b1abd010f37",
+    "preferred": "git revert <published-cleanup-commit>",
+    "note": "A revert restores all 862 assertion modules, the old catalog wiring, and the previous cache chain while preserving later history."
+  }
+}

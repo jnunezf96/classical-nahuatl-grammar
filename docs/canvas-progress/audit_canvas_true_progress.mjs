@@ -5,6 +5,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
 import { fileURLToPath } from "node:url";
+import { buildAuthoritativeAtomLedger } from "./build_authoritative_atom_ledger.mjs";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "../..");
@@ -329,6 +330,8 @@ for (const [kind, relativePath] of Object.entries(outputPaths)) {
     await writeFile(absolutePath, expected);
   }
 }
+
+await buildAuthoritativeAtomLedger({ checkOnly });
 
 console.log(JSON.stringify({
   status: report.status,

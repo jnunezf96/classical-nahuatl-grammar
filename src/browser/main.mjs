@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-exact-behavior-batch-001";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-atom-ledger-cleanup-009";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
