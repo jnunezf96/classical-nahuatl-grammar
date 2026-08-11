@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 87,
-    "writingJobsAwaitingExactObservation": 312,
+    "exactlyImplementedWritingJobs": 114,
+    "writingJobsAwaitingExactObservation": 285,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -7825,10 +7825,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When two identical consonants come together as a result of grammatical construction, they create a long consonant.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When two identical consonants come together as a result of grammatical construction, they create a long consonant.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L006-25D05DF809",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L006-25D05DF809-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -7849,10 +7849,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: This may occur either between vocables or within a vocable.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: This may occur either between vocables or within a vocable.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L007-7D80962D8F",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L007-7D80962D8F-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8172,10 +8172,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Result: In the case of /¢¢/ and /čč/ the release feature of the first consonant is lost, so that /¢¢/ is pronounced…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Result: In the case of /¢¢/ and /čč/ the release feature of the first consonant is lost, so that /¢¢/ is pronounced…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L014-75FA4A7118",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L014-75FA4A7118-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8196,10 +8196,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In the case of /¢¢/ and /čč/ the release feature of the first consonant is lost, so that /¢¢/ is pronounced [t¢] and…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In the case of /¢¢/ and /čč/ the release feature of the first consonant is lost, so that /¢¢/ is pronounced [t¢] and…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L014-6209EBFA5B",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L014-6209EBFA5B-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8244,10 +8244,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Result: it is usually spelled with a double letter or a double digraph:",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Result: it is usually spelled with a double letter or a double digraph:",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L017-21FD087CB5",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L017-21FD087CB5-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8268,10 +8268,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When a long consonant occurs within a vocable, it is usually spelled with a double letter or a double digraph:",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When a long consonant occurs within a vocable, it is usually spelled with a double letter or a double digraph:",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L017-AA7D9FFE1E",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L017-AA7D9FFE1E-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8292,10 +8292,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /kʷeppan/ > cueppan",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /kʷeppan/ > cueppan",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L020-5D3CE9F346",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L020-5D3CE9F346-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8316,10 +8316,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: [kite:nna:miki] > quitēnnāmiqui",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: [kite:nna:miki] > quitēnnāmiqui",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L021-F4ABE9D684",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L021-F4ABE9D684-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8340,10 +8340,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /tepossa:loa/ > tepozzāloa",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /tepossa:loa/ > tepozzāloa",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L022-E80F04FD5F",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L022-E80F04FD5F-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8364,10 +8364,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /o:ne:ččis/ > ōnēchchix",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /o:ne:ččis/ > ōnēchchix",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L023-40EA5A1AE2",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L023-40EA5A1AE2-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8388,10 +8388,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: [nicmattikaʔ] > nicmatticah",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: [nicmattikaʔ] > nicmatticah",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L024-D82B147173",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L024-D82B147173-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8412,10 +8412,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /semma:λ/ > cemmātl",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /semma:λ/ > cemmātl",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L025-80DD05B6AD",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L025-80DD05B6AD-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8436,10 +8436,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: /λaī:ššī:ma/ > tlaixxīma",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /λaī:ššī:ma/ > tlaixxīma",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L026-1D67AB27C4",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L026-1D67AB27C4-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8460,10 +8460,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: [mi¢¢akʷa] > mitztzacua",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: [mi¢¢akʷa] > mitztzacua",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "long-consonant-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L027-3DE404BBB6",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L027-3DE404BBB6-broken-length-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8622,10 +8622,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Result: When, as a result of grammatical construction, certain unlike consonants are juxtaposed, one of the two…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Result: When, as a result of grammatical construction, certain unlike consonants are juxtaposed, one of the two…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L031-8CCC8F75E7",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L031-8CCC8F75E7-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8646,10 +8646,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When, as a result of grammatical construction, certain unlike consonants are juxtaposed, one of the two undergoes a…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When, as a result of grammatical construction, certain unlike consonants are juxtaposed, one of the two undergoes a…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L031-93FE5B0669",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L031-93FE5B0669-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8670,10 +8670,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When there is total assimilation, a situation parallel to the juxtaposition of identical consonants is created and…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When there is total assimilation, a situation parallel to the juxtaposition of identical consonants is created and…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L033-9117D5E59C",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L033-9117D5E59C-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8694,10 +8694,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When there is total assimilation",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When there is total assimilation",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L033-4DBE276D8A",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L033-4DBE276D8A-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8718,10 +8718,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The assimilation may be progressive (the second sound imitates the dominant first) or regressive (the first sound…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The assimilation may be progressive (the second sound imitates the dominant first) or regressive (the first sound…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L036-B8514ED37A",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L036-B8514ED37A-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8742,10 +8742,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The following rules deal with the most frequent cases of progressive assimilation (the first consonant dominates the…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The following rules deal with the most frequent cases of progressive assimilation (the first consonant dominates the…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L038-479C0137E2",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P048-L038-479C0137E2-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8766,10 +8766,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /l/ + /λ/ > [ll]: mīl- + -tlah > mīllah",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /l/ + /λ/ > [ll]: mīl- + -tlah > mīllah",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L002-B51D7D7656",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L002-B51D7D7656-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8790,10 +8790,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /l/ + /y/ > [ll]: pil- + -yōtl > pillōtl",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /l/ + /y/ > [ll]: pil- + -yōtl > pillōtl",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L003-AD6AB5D703",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L003-AD6AB5D703-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8814,10 +8814,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /s/ + /y/ > [ss]: chōquiz- + -yoh > chōquizzoh",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /s/ + /y/ > [ss]: chōquiz- + -yoh > chōquizzoh",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L004-D7CCA4F6F0",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L004-D7CCA4F6F0-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8838,10 +8838,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /š/ + /y/ > [šš]: mix- + -yoh > mixxoh",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /š/ + /y/ > [šš]: mix- + -yoh > mixxoh",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L005-54CFD576ED",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L005-54CFD576ED-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8862,10 +8862,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /¢/ + /y/ > [¢¢]: huitz- + -yoh > huitztzoh",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /¢/ + /y/ > [¢¢]: huitz- + -yoh > huitztzoh",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L006-0AE4EA92F1",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L006-0AE4EA92F1-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8886,10 +8886,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /č/ + /y/ > [čč]: oquich- + -yōtl > oquichchōtl",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /č/ + /y/ > [čč]: oquich- + -yōtl > oquichchōtl",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L007-91AB12AD1D",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L007-91AB12AD1D-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -8910,10 +8910,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Rules 1 and 2 above are the only ways in which the [ll] sequence can occur, therefore, scholars show their ignorance…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Rules 1 and 2 above are the only ways in which the [ll] sequence can occur, therefore, scholars show their ignorance…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "progressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L008-212820251B",
+      "mutationTest": "src/tests/classical_lesson2_length_progressive_jobs.test.js#ACI-P049-L008-212820251B-broken-assimilation-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

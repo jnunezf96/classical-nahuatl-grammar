@@ -1,6 +1,6 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-boundary-036";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-length-037";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260726-lessons2-58-one-system-094";
