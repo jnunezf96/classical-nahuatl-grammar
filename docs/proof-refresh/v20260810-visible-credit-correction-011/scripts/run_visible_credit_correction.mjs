@@ -14,15 +14,12 @@ const repositoryRoot = path.resolve(correctionRoot, "../../..");
 const version = "v20260810-visible-credit-correction-011";
 const pointerPath = path.join(repositoryRoot, "docs/canvas-progress/active-exact-observation-manifest.json");
 const baseManifestRelative = "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json";
+const supersededManifestRelative = "docs/proof-refresh/v20260810-exact-behavior-checkpoint-010/manifest.json";
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const digest = (value) => `sha256:${createHash("sha256").update(value).digest("hex")}`;
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 
-const currentPointer = JSON.parse(await readFile(pointerPath, "utf8"));
 const storedPriorPointerPath = path.join(correctionRoot, "rollback-active-manifest.json");
-const supersededPointer = currentPointer.activeManifest === `docs/proof-refresh/${version}/manifest.json`
-  ? JSON.parse(await readFile(storedPriorPointerPath, "utf8"))
-  : currentPointer;
 const baseManifestText = await readFile(path.join(repositoryRoot, baseManifestRelative), "utf8");
 const baseManifest = JSON.parse(baseManifestText);
 const basePriorPointer = JSON.parse(await readFile(path.join(
@@ -39,7 +36,7 @@ const manifest = {
   schemaVersion: 1,
   version,
   status: "validated",
-  previousActiveManifest: supersededPointer.activeManifest,
+  previousActiveManifest: supersededManifestRelative,
   baseExactManifest: baseManifestRelative,
   baseProofCorpusRetained: true,
   checkpointCounts: {
