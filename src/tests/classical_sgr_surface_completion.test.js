@@ -553,7 +553,7 @@ function run(ctx = {}) {
     const publicAtoms = atoms.filter(atom => atom?.binding?.public === true);
     const privateAtoms = atoms.filter(atom => atom?.binding?.public === false);
     suite.eq(
-        "DOM correlation uses the exact v2 239-atom public/private boundary",
+        "DOM correlation uses the exact v2 447-atom public/private boundary",
         {
             kind: inventory?.kind || "",
             version: inventory?.version,
@@ -567,12 +567,12 @@ function run(ctx = {}) {
         {
             kind: "classical-source-grammar-result-surface-inventory",
             version: 2,
-            axes: 184,
+            axes: 392,
             outputs: 55,
-            atoms: 239,
-            publicAtoms: 98,
-            privateAtoms: 141,
-            uniqueAtoms: 239,
+            atoms: 447,
+            publicAtoms: 104,
+            privateAtoms: 343,
+            uniqueAtoms: 447,
         }
     );
 
@@ -608,7 +608,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "all 124 unsurfaced fact and diagnostic axes retain identity without a public binding",
+        "all 326 unsurfaced fact and diagnostic axes retain identity without a public binding",
         {
             count: intentionallyUnsurfacedAxes.length,
             allPrivate: intentionallyUnsurfacedAxes.every(atom => (
@@ -618,7 +618,7 @@ function run(ctx = {}) {
                 && atom.authority?.grammarAuthority === false
             )),
         },
-        { count: 124, allPrivate: true }
+        { count: 326, allPrivate: true }
     );
 
     suite.eq(

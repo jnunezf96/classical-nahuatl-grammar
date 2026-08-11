@@ -20,6 +20,26 @@ const EXACTLY_OBSERVED_SECTIONS = new Set([
   "1.9",
   "1.10",
 ]);
+const EXACTLY_PRESENTED_READER_ATOMS = new Set([
+  "ACI-P018-L003-6F9AEBE144",
+  "ACI-P018-L003-6F9AEBE144-02",
+  "ACI-P018-L004-8B274196BE",
+  "ACI-P018-L005-C65BAEE067",
+  "ACI-P018-L007-11699BCBF2",
+  "ACI-P018-L008-FC00404AFC",
+  "ACI-P018-L008-FC00404AFC-02",
+  "ACI-P018-L008-FC00404AFC-03",
+  "ACI-P018-L008-FC00404AFC-04",
+  "ACI-P018-L008-FC00404AFC-05",
+  "ACI-P018-L008-FC00404AFC-06",
+  "ACI-P018-L008-FC00404AFC-07",
+  "ACI-P018-L008-FC00404AFC-08",
+  "ACI-P018-L008-FC00404AFC-09",
+  "ACI-P018-L011-9AF60BB546",
+  "ACI-P018-L011-9AF60BB546-02",
+  "ACI-P018-L011-9AF60BB546-03",
+  "ACI-P018-L011-9AF60BB546-04",
+]);
 
 const SECTION_1_1_OBSERVATIONS = Object.freeze({
   "ACI-P018-L003-6F9AEBE144": "preliminary-scope-bounded",
@@ -1583,7 +1603,9 @@ function buildLedger() {
         WRITING: directions.includes("WRITING")
           ? "EXACTLY_OBSERVED"
           : "NOT_APPLICABLE",
-        READING_AND_INTERPRETATION: "JOB_ASSIGNED_NOT_YET_PRESENTED",
+        READING_AND_INTERPRETATION: EXACTLY_PRESENTED_READER_ATOMS.has(atom.atomId)
+          ? "EXACTLY_PRESENTED"
+          : "JOB_ASSIGNED_NOT_YET_PRESENTED",
       }),
       targetOwnerId,
       relatedGrammarOwnerId: atom.force === "grammar-bearing"
@@ -1602,6 +1624,12 @@ function buildLedger() {
       mutationTest: accepted
         ? `${observationTestFile}#mutation:${observationKind}`
         : "",
+      ...(EXACTLY_PRESENTED_READER_ATOMS.has(atom.atomId) ? {
+        readerObservationTest:
+          `src/tests/classical_lesson1_reader_guidance.test.js#${atom.atomId}`,
+        readerMutationTest:
+          `src/tests/classical_lesson1_reader_guidance.test.js#mutation:${atom.atomId}`,
+      } : {}),
       acceptanceStatus: accepted
         ? applicationDirection === "GUIDES_READER_AND_INTERPRETER"
           ? "accepted-reader-interpreter-guidance-observed"
@@ -1623,7 +1651,7 @@ function buildLedger() {
     ],
   ));
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     kind: "classical-nahuatl-lesson1-atom-job-ledger",
     source: "ANDREWS_TRANSCRIPTION_CANVAS.md",
     rule: "Every Lesson 1 atom receives one real project job before implementation credit is possible.",
@@ -1656,6 +1684,15 @@ function buildLedger() {
         WRITING: records.filter((record) => record.directions.includes("WRITING")).length,
         READING_AND_INTERPRETATION: records.filter((record) => (
           record.directions.includes("READING_AND_INTERPRETATION")
+        )).length,
+      },
+      byReaderStatus: {
+        EXACTLY_PRESENTED: records.filter((record) => (
+          record.directionStatus.READING_AND_INTERPRETATION === "EXACTLY_PRESENTED"
+        )).length,
+        JOB_ASSIGNED_NOT_YET_PRESENTED: records.filter((record) => (
+          record.directionStatus.READING_AND_INTERPRETATION
+            === "JOB_ASSIGNED_NOT_YET_PRESENTED"
         )).length,
       },
     },

@@ -4,7 +4,7 @@ import {
 
 // Run inside the delivered page. Call observe() after each real Source →
 // Grammar → Result scenario, then finalize() for the exact public-material /
-// private-inert outcome ledger or assertComplete() to require all 239 outcomes.
+// private-inert outcome ledger or assertComplete() to require all 447 outcomes.
 
 const AUDIT_KIND = "classical-sgr-material-browser-audit";
 const MATERIAL_RECEIPT_KIND = "classical-sgr-material-dom-receipt";
@@ -66,9 +66,9 @@ function freezeRecord(value) {
 export const CLASSICAL_SGR_MATERIAL_OUTCOME_SCHEMA = freezeRecord({
   kind: "classical-sgr-material-browser-atom-outcome-schema",
   version: 1,
-  atomCount: 239,
-  publicAtomCount: 98,
-  privateAtomCount: 141,
+  atomCount: 447,
+  publicAtomCount: 104,
+  privateAtomCount: 343,
   publicExpectation: "materialized",
   privateExpectation: "private-inert",
   outcomes: [
@@ -577,10 +577,10 @@ export function createClassicalSgrMaterialBrowserAudit(targetWindow = globalThis
     || inventory.version !== 2
     || inventory.authority?.uiAuthority !== "none"
     || inventory.authority?.grammarAuthority !== false
-    || allAtoms.length !== 239
-    || publicAtoms.length !== 98
-    || privateAtoms.length !== 141
-    || new Set(allAtoms.map(atom => atom.atomId)).size !== 239
+    || allAtoms.length !== 447
+    || publicAtoms.length !== 104
+    || privateAtoms.length !== 343
+    || new Set(allAtoms.map(atom => atom.atomId)).size !== 447
   ) {
     throw new Error("classical-sgr-material-browser-inventory-drift");
   }

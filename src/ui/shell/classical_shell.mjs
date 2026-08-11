@@ -5,6 +5,11 @@ import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_ge
 import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
 } from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
+import {
+  LESSON1_READER_GUIDANCE_GROUPS,
+  isLesson1ReaderGuidanceExact,
+  renderLesson1ReaderGuidance,
+} from "../curriculum/lesson1_reader_guidance.mjs?v=20260811-lesson1-reader-guidance-001";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2944,6 +2949,20 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                   hidden
                 ></div>
                 <details
+                  class="classical-rule-surface__disclosure classical-reader-guidance"
+                  id="classical-lesson1-reader-guidance"
+                  data-classical-reader-guidance="lesson-1"
+                  data-classical-source-authorizes="none"
+                  data-classical-result-authorizes="none"
+                  data-classical-stage-authority="false"
+                >
+                  <summary>Reading foundation</summary>
+                  <div class="grammar-inspector__section">
+                    <p>Use these principles when reading or interpreting. They do not create, change, allow, or block a Result.</p>
+${renderLesson1ReaderGuidance(escapeClassicalShellHtml)}
+                  </div>
+                </details>
+                <details
                   class="classical-rule-surface__disclosure classical-canvas-grammar-facts"
                   id="classical-canvas-grammar-facts"
                   data-classical-canvas-grammar-facts="presentation-only"
@@ -3479,6 +3498,8 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     installClassicalShellWhenReady();
 
     const api = {};
+    api.LESSON1_READER_GUIDANCE_GROUPS = LESSON1_READER_GUIDANCE_GROUPS;
+    api.isLesson1ReaderGuidanceExact = isLesson1ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;

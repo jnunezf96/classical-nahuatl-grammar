@@ -169,16 +169,22 @@ function run() {
                         "READING_AND_INTERPRETATION",
                     ].includes(direction)))
                 .map(record => record.atomId),
-            falselyPresented: jobLedger.records
+            readerStatus: jobLedger.counts.byReaderStatus,
+            presentedWithoutProof: jobLedger.records
                 .filter(record => record.directionStatus.READING_AND_INTERPRETATION
-                    !== "JOB_ASSIGNED_NOT_YET_PRESENTED")
+                    === "EXACTLY_PRESENTED")
+                .filter(record => !record.readerObservationTest || !record.readerMutationTest)
                 .map(record => record.atomId),
         },
         {
             writing: 599,
             readingAndInterpretation: 854,
             invalidDirections: [],
-            falselyPresented: [],
+            readerStatus: {
+                EXACTLY_PRESENTED: 18,
+                JOB_ASSIGNED_NOT_YET_PRESENTED: 836,
+            },
+            presentedWithoutProof: [],
         }
     );
 

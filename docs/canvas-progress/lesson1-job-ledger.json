@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "kind": "classical-nahuatl-lesson1-atom-job-ledger",
   "source": "ANDREWS_TRANSCRIPTION_CANVAS.md",
   "rule": "Every Lesson 1 atom receives one real project job before implementation credit is possible.",
@@ -35,6 +35,10 @@
     "byDirection": {
       "WRITING": 599,
       "READING_AND_INTERPRETATION": 854
+    },
+    "byReaderStatus": {
+      "EXACTLY_PRESENTED": 18,
+      "JOB_ASSIGNED_NOT_YET_PRESENTED": 836
     }
   },
   "invariants": {
@@ -67,7 +71,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "lesson1-foundation-dependency-model",
       "relatedGrammarOwnerId": "",
@@ -75,6 +79,8 @@
       "observationKind": "preliminary-scope-bounded",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L003-6F9AEBE144",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:preliminary-scope-bounded",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L003-6F9AEBE144",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L003-6F9AEBE144",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -95,7 +101,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "lesson1-foundation-dependency-model",
       "relatedGrammarOwnerId": "",
@@ -103,6 +109,8 @@
       "observationKind": "preliminary-foundation-not-complete-grammar",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L003-6F9AEBE144-02",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:preliminary-foundation-not-complete-grammar",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L003-6F9AEBE144-02",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L003-6F9AEBE144-02",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -123,7 +131,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "lesson1-foundation-dependency-model",
       "relatedGrammarOwnerId": "",
@@ -131,6 +139,8 @@
       "observationKind": "general-prerequisites-only",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L004-8B274196BE",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:general-prerequisites-only",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L004-8B274196BE",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L004-8B274196BE",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -151,7 +161,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "lesson1-foundation-dependency-model",
       "relatedGrammarOwnerId": "",
@@ -159,6 +169,8 @@
       "observationKind": "later-lesson-specific-owners-required",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L005-C65BAEE067",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:later-lesson-specific-owners-required",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L005-C65BAEE067",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L005-C65BAEE067",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -179,7 +191,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -187,6 +199,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L007-11699BCBF2",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L007-11699BCBF2",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L007-11699BCBF2",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -207,7 +221,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -215,6 +229,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -235,7 +251,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -243,6 +259,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-02",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-02",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-02",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -263,7 +281,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -271,6 +289,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-03",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-03",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-03",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -291,7 +311,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -299,6 +319,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-04",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-04",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-04",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -319,7 +341,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -327,6 +349,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-05",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-05",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-05",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -347,7 +371,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -355,6 +379,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-06",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-06",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-06",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -375,7 +401,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -383,6 +409,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-07",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-07",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-07",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -403,7 +431,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -411,6 +439,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-08",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-08",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-08",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -431,7 +461,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -439,6 +469,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L008-FC00404AFC-09",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L008-FC00404AFC-09",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L008-FC00404AFC-09",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -459,7 +491,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -467,6 +499,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L011-9AF60BB546",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L011-9AF60BB546",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L011-9AF60BB546",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -487,7 +521,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -495,6 +529,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L011-9AF60BB546-02",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L011-9AF60BB546-02",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L011-9AF60BB546-02",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -515,7 +551,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -523,6 +559,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L011-9AF60BB546-03",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L011-9AF60BB546-03",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L011-9AF60BB546-03",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
@@ -543,7 +581,7 @@
       "readerInterpreterRole": "GUIDES_READER_AND_INTERPRETER",
       "directionStatus": {
         "WRITING": "EXACTLY_OBSERVED",
-        "READING_AND_INTERPRETATION": "JOB_ASSIGNED_NOT_YET_PRESENTED"
+        "READING_AND_INTERPRETATION": "EXACTLY_PRESENTED"
       },
       "targetOwnerId": "language-specific-grammar-boundary",
       "relatedGrammarOwnerId": "",
@@ -551,6 +589,8 @@
       "observationKind": "foreign-language-transfer-rejected",
       "observationTest": "src/tests/classical_lesson1_foundation.test.js#ACI-P018-L011-9AF60BB546-04",
       "mutationTest": "src/tests/classical_lesson1_foundation.test.js#mutation:foreign-language-transfer-rejected",
+      "readerObservationTest": "src/tests/classical_lesson1_reader_guidance.test.js#ACI-P018-L011-9AF60BB546-04",
+      "readerMutationTest": "src/tests/classical_lesson1_reader_guidance.test.js#mutation:ACI-P018-L011-9AF60BB546-04",
       "acceptanceStatus": "exactly-observed-normal-application-behavior"
     },
     {
