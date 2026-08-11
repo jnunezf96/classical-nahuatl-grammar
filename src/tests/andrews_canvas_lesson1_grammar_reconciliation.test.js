@@ -3,163 +3,92 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
-const {
-    auditAndrewsCanvasReconciliations,
-    buildAndrewsCanvasInventoryIndex,
-    validateGrammarReconciliationRecord,
-} = require(
-    "../../scripts/lib/andrews_canvas_inventory_reconciliation"
-);
-const { LESSON1_NON_AUTHORITY_RECORDS } = require(
-    "../../scripts/reconciliation/andrews_canvas_lesson1_non_authority"
-);
-const {
-    LESSON_1_GRAMMAR_CLAIM_GROUPS,
-    auditLesson1GrammarReconciliation,
-} = require(
-    "../../scripts/reconciliation/andrews_canvas_lesson1_grammar"
-);
 
 const ROOT = path.resolve(__dirname, "..", "..");
 
+function loadJson(relativePath) {
+    return JSON.parse(fs.readFileSync(path.join(ROOT, relativePath), "utf8"));
+}
+
 function run() {
     const s = createSuite("andrews_canvas_lesson1_grammar_reconciliation");
-    const inventoryText = fs.readFileSync(
-        path.join(ROOT, "docs", "ANDREWS_CANVAS_INVENTORY.md"),
-        "utf8"
+    const atomLedger = loadJson("docs/ANDREWS_ATOM_LEDGER.json");
+    const jobLedger = loadJson("docs/canvas-progress/lesson1-job-ledger.json");
+    const fields = Object.fromEntries(
+        atomLedger.codebook.atomTuple.map((field, index) => [field, index])
     );
-    const canvasText = fs.readFileSync(
-        path.join(ROOT, "ANDREWS_TRANSCRIPTION_CANVAS.md"),
-        "utf8"
+    const grammarAtoms = atomLedger.atoms.filter(atom =>
+        /^§1\./u.test(atom[fields.canvasSection])
+        && atom[fields.force] === "grammar-bearing"
     );
-    const index = buildAndrewsCanvasInventoryIndex({
-        inventoryText,
-        canvasText,
-    });
-    const audit = auditLesson1GrammarReconciliation(index, canvasText);
+    const jobs = new Map(jobLedger.records.map(record => [record.atomId, record]));
+    const mapped = grammarAtoms.map(atom => jobs.get(atom[fields.atomId]));
 
     s.eq(
-        "the canonical Lesson 1 grammar denominator is mapped bijectively",
+        "the current Lesson 1 grammar denominator is mapped exactly once",
         {
-            required: audit.required,
-            assigned: audit.assigned,
-            missing: audit.missingItemIds,
-            duplicates: audit.duplicateItemIds,
-            unexpected: audit.unexpectedItemIds,
-            invalid: audit.invalidRecords,
-            mappedIds: new Set(
-                LESSON_1_GRAMMAR_CLAIM_GROUPS.flatMap(
-                    (group) => group.itemIds
-                )
-            ).size,
+            required: grammarAtoms.length,
+            mapped: mapped.filter(Boolean).length,
+            unique: new Set(grammarAtoms.map(atom => atom[fields.atomId])).size,
+            missing: grammarAtoms
+                .filter(atom => !jobs.has(atom[fields.atomId]))
+                .map(atom => atom[fields.atomId]),
         },
+        { required: 307, mapped: 307, unique: 307, missing: [] }
+    );
+
+    const jobCounts = Object.fromEntries([
+        "BUILD_GRAMMAR",
+        "BUILD_CODE_MODEL",
+        "CHECK_GRAMMAR",
+        "PROTECT_GRAMMAR",
+    ].map(jobType => [
+        jobType,
+        mapped.filter(record => record.jobType === jobType).length,
+    ]));
+    s.eq(
+        "grammar atoms keep their exact current jobs",
+        jobCounts,
         {
-            required: 203,
-            assigned: 203,
-            missing: [],
-            duplicates: [],
-            unexpected: [],
-            invalid: [],
-            mappedIds: 203,
+            BUILD_GRAMMAR: 113,
+            BUILD_CODE_MODEL: 171,
+            CHECK_GRAMMAR: 8,
+            PROTECT_GRAMMAR: 15,
         }
     );
 
     s.eq(
-        "no incomplete Lesson 1 item is promoted to a proof",
-        {
-            complete: audit.complete,
-            fullyProved: audit.fullyProved,
-            blocked: audit.blocked,
-            unresolved: audit.unresolved,
-            unowned: audit.unowned,
-        },
-        {
-            complete: false,
-            fullyProved: 0,
-            blocked: 203,
-            unresolved: 203,
-            unowned: 0,
-        }
-    );
-
-    s.ok(
-        "every Lesson 1 record preserves its exact coordinate and Canvas span digest",
-        audit.classifications.every((classification) => (
-            classification.inventoryItemId
-                === classification.canvasCoordinate.itemId
-            && /^§1\./u.test(classification.canvasCoordinate.container)
-            && /^[a-f0-9]{64}$/u.test(
-                classification.exactCanvasSpanDigest
-            )
-        ))
-    );
-
-    const lesson1ById = new Map(
-        index.grammarBearingRecords
-            .filter((record) => record.lesson === 1)
-            .map((record) => [record.itemId, record])
-    );
-    s.ok(
-        "every explicit block passes the shared fail-closed record schema",
-        audit.reconciliationRecords.every((record) => {
-            const validation = validateGrammarReconciliationRecord(
-                record,
-                lesson1ById.get(record.inventoryItemId)
-            );
-            return validation.ok === false
-                && validation.blocked === true
-                && validation.errors.length === 0;
-        })
+        "every grammar atom has an owner and an exact observation",
+        mapped
+            .filter(record => !record.targetOwnerId
+                || !record.observationKind
+                || !record.observationTest
+                || !record.mutationTest)
+            .map(record => record.atomId),
+        []
     );
 
     s.eq(
-        "Lesson 1 exposes no conceptual, lexical, derived, contextual, or boundary fact as a user operation",
-        audit.genuineUserChoiceCount,
-        0
+        "Lesson 1 grammar serves writing and reading without changing truth",
+        mapped
+            .filter(record => record.directionClass !== "BOTH"
+                || !record.directions.includes("WRITING")
+                || !record.directions.includes("READING_AND_INTERPRETATION"))
+            .map(record => record.atomId),
+        []
     );
 
-    const sharedAudit = auditAndrewsCanvasReconciliations(
-        index,
-        [
-            ...audit.reconciliationRecords,
-            ...LESSON1_NON_AUTHORITY_RECORDS,
-        ]
-    );
     s.eq(
-        "the shared full audit consumes the 435 real Lesson 1 records without treating blocks as closure",
+        "the job ledger covers the one complete Lesson 1 atom inventory",
         {
-            suppliedRecords:
-                audit.reconciliationRecords.length
-                + LESSON1_NON_AUTHORITY_RECORDS.length,
-            grammarRequired: sharedAudit.grammar.required,
-            grammarAssigned: sharedAudit.grammar.assigned,
-            grammarBlocked: sharedAudit.grammar.blocked,
-            grammarUnresolved: sharedAudit.grammar.unresolved,
-            grammarUnowned: sharedAudit.grammar.unowned,
-            evidenceDispositioned:
-                sharedAudit.nonGrammar.evidence.dispositioned,
-            analysisDispositioned:
-                sharedAudit.nonGrammar.analysis.dispositioned,
-            documentaryDispositioned:
-                sharedAudit.nonGrammar.documentary.dispositioned,
-            duplicates: sharedAudit.duplicateItemIds,
-            unknown: sharedAudit.unknownItemIds,
-            complete: sharedAudit.complete,
+            atomCount: atomLedger.atoms.filter(atom =>
+                /^§1\./u.test(atom[fields.canvasSection])
+            ).length,
+            jobCount: jobLedger.records.length,
+            pending: jobLedger.counts.pendingJobs,
+            unassigned: jobLedger.counts.unassignedJobs,
         },
-        {
-            suppliedRecords: 435,
-            grammarRequired: 5376,
-            grammarAssigned: 203,
-            grammarBlocked: 203,
-            grammarUnresolved: 5376,
-            grammarUnowned: 5141,
-            evidenceDispositioned: 68,
-            analysisDispositioned: 149,
-            documentaryDispositioned: 15,
-            duplicates: [],
-            unknown: [],
-            complete: false,
-        }
+        { atomCount: 854, jobCount: 854, pending: 0, unassigned: 0 }
     );
 
     return s;

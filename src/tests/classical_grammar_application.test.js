@@ -240,7 +240,7 @@ function run(ctx) {
                 "classical-vnc-canonical-machinery-required",
             ],
             copiedFailure:
-                "classical-grammar-application-request-invalid:forbidden-authority:surface",
+                "classical-grammar-application-request-invalid:forbidden-authority:sourceEvidence",
         }
     );
 

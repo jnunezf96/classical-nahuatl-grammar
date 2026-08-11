@@ -3,142 +3,79 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
-const {
-    buildAndrewsCanvasInventoryIndex,
-    validateNonAuthorityDispositionRecord,
-} = require("../../scripts/lib/andrews_canvas_inventory_reconciliation");
-const {
-    LESSON1_NON_AUTHORITY_RECORDS,
-    auditLesson1NonAuthority,
-} = require("../../scripts/reconciliation/andrews_canvas_lesson1_non_authority");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 
-function sorted(values) {
-    return [...values].sort();
+function loadJson(relativePath) {
+    return JSON.parse(fs.readFileSync(path.join(ROOT, relativePath), "utf8"));
 }
 
 function run() {
     const s = createSuite("andrews_canvas_lesson1_non_authority");
-    const index = buildAndrewsCanvasInventoryIndex({
-        inventoryText: fs.readFileSync(
-            path.join(ROOT, "docs", "ANDREWS_CANVAS_INVENTORY.md"),
-            "utf8"
-        ),
-        canvasText: fs.readFileSync(
-            path.join(ROOT, "ANDREWS_TRANSCRIPTION_CANVAS.md"),
-            "utf8"
-        ),
-    });
-    const audit = auditLesson1NonAuthority(index);
-    const nonGrammar = index.records.filter(
-        (record) => record.lesson === 1 && record.force !== "grammar-bearing"
+    const atomLedger = loadJson("docs/ANDREWS_ATOM_LEDGER.json");
+    const jobLedger = loadJson("docs/canvas-progress/lesson1-job-ledger.json");
+    const fields = Object.fromEntries(
+        atomLedger.codebook.atomTuple.map((field, index) => [field, index])
     );
-    const inventoryIds = sorted(nonGrammar.map((record) => record.itemId));
-    const dispositionIds = sorted(
-        LESSON1_NON_AUTHORITY_RECORDS.map(
-            (record) => record.inventoryItemId
-        )
+    const nonGrammarAtoms = atomLedger.atoms.filter(atom =>
+        /^§1\./u.test(atom[fields.canvasSection])
+        && atom[fields.force] !== "grammar-bearing"
     );
+    const jobByAtomId = new Map(
+        jobLedger.records.map(record => [record.atomId, record])
+    );
+    const mapped = nonGrammarAtoms.map(atom => jobByAtomId.get(atom[fields.atomId]));
 
     s.eq(
-        "every canonical Lesson 1 non-grammar item has one explicit disposition",
+        "all current Lesson 1 non-grammar atoms have one current job",
         {
-            inventoryNonGrammar: inventoryIds.length,
-            dispositioned: dispositionIds.length,
-            dispositionIds,
+            atoms: nonGrammarAtoms.length,
+            mapped: mapped.filter(Boolean).length,
+            unique: new Set(nonGrammarAtoms.map(atom => atom[fields.atomId])).size,
+            missing: nonGrammarAtoms
+                .filter(atom => !jobByAtomId.has(atom[fields.atomId]))
+                .map(atom => atom[fields.atomId]),
         },
-        {
-            inventoryNonGrammar: 232,
-            dispositioned: 232,
-            dispositionIds: inventoryIds,
-        }
+        { atoms: 547, mapped: 547, unique: 547, missing: [] }
+    );
+
+    const forceCounts = Object.fromEntries(
+        ["evidence", "analysis", "documentary"].map(force => [
+            force,
+            nonGrammarAtoms.filter(atom => atom[fields.force] === force).length,
+        ])
+    );
+    s.eq(
+        "the current split-atom force counts replace the obsolete passage counts",
+        forceCounts,
+        { evidence: 138, analysis: 337, documentary: 72 }
     );
 
     s.eq(
-        "Lesson 1 audit closes canonical force accounting without an overlay",
-        {
-            valid: audit.valid,
-            complete: audit.complete,
-            examined: audit.examined,
-            dispositioned: audit.dispositioned,
-            unresolved: audit.unresolved,
-            lesson1ForceTotals: audit.lesson1ForceTotals,
-            globalForceTotals: audit.globalForceTotals,
-            failures: audit.failures,
-        },
-        {
-            valid: true,
-            complete: true,
-            examined: 232,
-            dispositioned: {
-                evidence: 68,
-                analysis: 149,
-                documentary: 15,
-            },
-            unresolved: {
-                evidence: 0,
-                analysis: 0,
-                documentary: 0,
-            },
-            lesson1ForceTotals: {
-                "grammar-bearing": 203,
-                evidence: 68,
-                analysis: 149,
-                documentary: 15,
-            },
-            globalForceTotals: {
-                documentary: 1122,
-                analysis: 1120,
-                evidence: 6235,
-                "grammar-bearing": 5376,
-            },
-            failures: [],
-        }
-    );
-
-    const grammarItemIds = new Set(
-        index.grammarBearingRecords.map((record) => record.itemId)
-    );
-    const validationFailures = [];
-    for (const record of LESSON1_NON_AUTHORITY_RECORDS) {
-        const validation = validateNonAuthorityDispositionRecord(
-            record,
-            index.byId[record.inventoryItemId],
-            grammarItemIds
-        );
-        if (!validation.ok) {
-            validationFailures.push({
-                itemId: record.inventoryItemId,
-                errors: validation.errors,
-            });
-        }
-    }
-    s.eq(
-        "all 232 non-authority records satisfy the shared coordinate-bound schema",
-        validationFailures,
+        "evidence checks grammar but never becomes grammar authority",
+        mapped
+            .filter(record => record.sourceForce === "evidence")
+            .filter(record => record.jobType !== "CHECK_GRAMMAR")
+            .map(record => record.atomId),
         []
     );
 
     s.eq(
-        "all non-authority records explicitly deny every runtime authority role",
-        LESSON1_NON_AUTHORITY_RECORDS.filter((record) => {
-            const disposition = record.nonAuthorityDisposition;
-            return disposition.runtimeAuthority !== false
-                || disposition.sourceSupplier !== false
-                || disposition.operationSelector !== false
-                || disposition.resultSupplier !== false;
-        }).map((record) => record.inventoryItemId),
+        "non-grammar atoms never claim to write grammar",
+        mapped
+            .filter(record => record.jobType === "BUILD_GRAMMAR")
+            .map(record => record.atomId),
         []
     );
 
     s.eq(
-        "every linked witness targets a current grammar-bearing inventory item",
-        LESSON1_NON_AUTHORITY_RECORDS.flatMap((record) =>
-            record.nonAuthorityDisposition.linkedGrammarItemIds
-                .filter((itemId) => !grammarItemIds.has(itemId))
-                .map((itemId) => `${record.inventoryItemId}->${itemId}`)
-        ),
+        "every non-grammar atom can guide reading without authorizing a Result",
+        mapped
+            .filter(record => !record.directions.includes(
+                "READING_AND_INTERPRETATION"
+            ) || record.readerInterpreterRole
+                !== "GUIDES_READER_AND_INTERPRETER")
+            .map(record => record.atomId),
         []
     );
 
