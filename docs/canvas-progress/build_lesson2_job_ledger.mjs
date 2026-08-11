@@ -195,6 +195,28 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
     observationTest: `src/tests/classical_lesson2_length_progressive_jobs.test.js#${atomId}`,
     mutationTest: `src/tests/classical_lesson2_length_progressive_jobs.test.js#${atomId}-broken-assimilation-result`,
   })])),
+  ...Object.fromEntries([
+    "ACI-P049-L015-C455C3B960",
+    "ACI-P049-L017-858F416ABB",
+    "ACI-P049-L025-D67ABE3304",
+    "ACI-P049-L026-3F7681258F",
+    "ACI-P049-L027-6C08DCFF81",
+    "ACI-P049-L035-5545D7F300",
+    "ACI-P049-L038-A0960810AA",
+    "ACI-P050-L002-2A6FAEECC1",
+    "ACI-P050-L003-3F5C1F70A0",
+    "ACI-P050-L011-3504D7C808",
+    "ACI-P050-L014-BF59E2C201",
+    "ACI-P050-L017-467770C28E",
+    "ACI-P050-L018-F2730C2E59",
+    "ACI-P050-L021-98D398DFAD",
+    "ACI-P050-L022-A33747C200",
+    "ACI-P050-L023-D4122E6980",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "regressive-assimilation-application-result",
+    observationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_regressive_rule_jobs.test.js#${atomId}-broken-regressive-result`,
+  })])),
 });
 
 const JOB_FAMILIES = Object.freeze([

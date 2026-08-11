@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-length-037";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-regressive-038";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-lesson2-length-037";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-length-037";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-length-037";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-length-037";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-lesson2-length-037";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-lesson2-length-037";
+} from "../runtime/create_runtime.mjs?v=20260811-lesson2-regressive-038";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-regressive-038";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-regressive-038";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-regressive-038";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-lesson2-regressive-038";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-lesson2-regressive-038";
 
 let browserBootstrapPromise = null;
 

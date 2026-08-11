@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 114,
-    "writingJobsAwaitingExactObservation": 285,
+    "exactlyImplementedWritingJobs": 130,
+    "writingJobsAwaitingExactObservation": 269,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -9124,10 +9124,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The following rules deal with the most frequent cases of regressive assimilation (the second consonant dominates the…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The following rules deal with the most frequent cases of regressive assimilation (the second consonant dominates the…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L015-C455C3B960",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L015-C455C3B960-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -9148,10 +9148,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /nasal/+ /sibilant/> [long sibilant]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /nasal/+ /sibilant/> [long sibilant]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L017-858F416ABB",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L017-858F416ABB-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -9460,10 +9460,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In a combination of any two unlike consonants of the group /s š ¢ č/, the second sound totally assimilates the first…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In a combination of any two unlike consonants of the group /s š ¢ č/, the second sound totally assimilates the first…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L025-D67ABE3304",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L025-D67ABE3304-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -9484,10 +9484,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Of the twelve possibilities the following are common:",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Of the twelve possibilities the following are common:",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L026-3F7681258F",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L026-3F7681258F-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -9508,10 +9508,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /č/ + /¢/ > [¢¢]; /č/ + /s/ > [ss]; /¢/ + /č/ > [čč]; and /č/ + /š/ > [šš]. Spelling frequently does not indicate…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /č/ + /¢/ > [¢¢]; /č/ + /s/ > [ss]; /¢/ + /č/ > [čč]; and /č/ + /š/ > [šš]. Spelling frequently does not indicate…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L027-6C08DCFF81",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L027-6C08DCFF81-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -9940,10 +9940,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /w/ + /bilabial/ > [long bilabial]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /w/ + /bilabial/ > [long bilabial]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L035-5545D7F300",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L035-5545D7F300-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10012,10 +10012,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /m/ + /n/ > [nn]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /m/ + /n/ > [nn]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L038-A0960810AA",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P049-L038-A0960810AA-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10060,10 +10060,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When /m/ is followed by /t/, /λ/, /¢/, /č/, /k/, or /kʷ/, it undergoes partial assimilation, resulting in [nt],…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When /m/ is followed by /t/, /λ/, /¢/, /č/, /k/, or /kʷ/, it undergoes partial assimilation, resulting in [nt],…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L002-2A6FAEECC1",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L002-2A6FAEECC1-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10084,10 +10084,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The [n] and [ŋ] here are always spelled n.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The [n] and [ŋ] here are always spelled n.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L003-3F5C1F70A0",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L003-3F5C1F70A0-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10252,10 +10252,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /n/ + /m/ > [mm]",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /n/ + /m/ > [mm]",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L011-3504D7C808",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L011-3504D7C808-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10300,10 +10300,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: When /n/ is followed by /p/, it undergoes partial assimilation, resulting in [mp].",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: When /n/ is followed by /p/, it undergoes partial assimilation, resulting in [mp].",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L014-BF59E2C201",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L014-BF59E2C201-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10348,10 +10348,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Remark: As has been suggested, other, less frequently encountered assimilation is possible; for example, /č/ +",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Remark: As has been suggested, other, less frequently encountered assimilation is possible; for example, /č/ +",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L017-467770C28E",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L017-467770C28E-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10372,10 +10372,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: /p/ > [pp].",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: /p/ > [pp].",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L018-F2730C2E59",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L018-F2730C2E59-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10443,10 +10443,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Note: There is another process called dissimilation, in which a sound changes to become different from an identical…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Note: There is another process called dissimilation, in which a sound changes to become different from an identical…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L021-98D398DFAD",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L021-98D398DFAD-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10467,10 +10467,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In Nahuatl it occurs optionally (as regressive dissimilation) when the first /k/ of the",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In Nahuatl it occurs optionally (as regressive dissimilation) when the first /k/ of the",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L022-A33747C200",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L022-A33747C200-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -10491,10 +10491,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: sequence /kk/ is represented by the irregular phone [h]; i.e., /kk/ > [hk].",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: sequence /kk/ is represented by the irregular phone [h]; i.e., /kk/ > [hk].",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L023-D4122E6980",
+      "mutationTest": "src/tests/classical_lesson2_regressive_rule_jobs.test.js#ACI-P050-L023-D4122E6980-broken-regressive-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

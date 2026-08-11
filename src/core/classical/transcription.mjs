@@ -2352,6 +2352,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       if (dissimilationRule) {
         return dissimilationRule;
       }
+      if (leftConsonant === "m" && ["t", "tl", "tz", "ch", "k", "kw"].includes(rightConsonant)) {
+        return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-m-partial") || null;
+      }
       if (isClassicalNahuatlNasal(leftConsonant) && isClassicalNahuatlSibilant(rightConsonant)) {
         return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-nasal-sibilant") || null;
       }
@@ -2360,9 +2363,6 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       }
       if (leftConsonant === "w" && isClassicalNahuatlBilabial(rightConsonant)) {
         return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-w-bilabial") || null;
-      }
-      if (leftConsonant === "m" && ["t", "tl", "tz", "ch", "k", "kw"].includes(rightConsonant)) {
-        return CLASSICAL_NAHUATL_LESSON2_ASSIMILATION_RULES.find(rule => rule.id === "cn-l2-211-regressive-m-partial") || null;
       }
       return null;
     }
