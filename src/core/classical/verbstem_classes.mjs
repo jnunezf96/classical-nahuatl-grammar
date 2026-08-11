@@ -1,5 +1,9 @@
 // Canonical modern ESM module.
 
+import {
+  getClassicalNahuatlPhoneRepertoryRelation,
+} from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
+
 export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_LESSON7_VERBSTEM_CLASSES_VERSION = 1;
     const CLASSICAL_NAHUATL_LESSON7_PROFILE_ID = "classical-nahuatl";
@@ -2899,6 +2903,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const finalDropped = trimClassicalNahuatlLesson7StemRightBoundary(stripClassicalNahuatlLesson7FinalVowel(normalizedStem));
       let perfective = finalDropped;
       let changeRule = "class-b-final-vowel-disappears";
+      let phoneRepertoryRelation = null;
       if (/qu$/iu.test(perfective)) {
         perfective = perfective.replace(/qu$/iu, "c");
         changeRule = "class-b-spelling-qu-to-c";
@@ -2912,8 +2917,15 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         perfective = perfective.replace(/cu$/iu, "uc");
         changeRule = "class-b-kw-change-cu-to-uc";
       } else if (/m$/iu.test(perfective)) {
-        perfective = perfective.replace(/m$/iu, "n");
-        changeRule = "class-b-m-to-n";
+        phoneRepertoryRelation =
+          getClassicalNahuatlPhoneRepertoryRelation("m", "n");
+        if (phoneRepertoryRelation) {
+          perfective = perfective.replace(
+            /m$/iu,
+            phoneRepertoryRelation.phone,
+          );
+          changeRule = "class-b-m-to-n";
+        }
       } else if (/y$/iu.test(perfective)) {
         const rootContainsS = doesClassicalNahuatlLesson7RootContainSSound(perfective.replace(/y$/iu, ""));
         perfective = perfective.replace(/y$/iu, rootContainsS ? "z" : "x");
@@ -2923,7 +2935,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         imperfectiveStem: normalizedStem,
         finalDropped,
         perfectiveStem: perfective,
-        changeRule
+        changeRule,
+        phoneRepertoryRelation,
       };
     }
     function getClassicalNahuatlClassBPerfectiveCarrierFrame(stem = "", classProfile = null, perfective = null) {
@@ -3327,6 +3340,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         changeRule: aspect === "perfective" ? perfective.changeRule : "imperfective-basic-shape",
         imperfectiveStem: normalizedStem,
         perfectiveStem: selectedPerfectiveStem,
+        phoneRepertoryRelation: perfective.phoneRepertoryRelation || null,
         analyzedPerfectiveStem: classBPerfectiveCarrierFrame.classBAnalyzedPerfectiveStem || perfective.perfectiveStem,
         classBPerfectiveKind: classBPerfectiveCarrierFrame.classBPerfectiveKind,
         classBSilentCausativeCarrierPresent: classBPerfectiveCarrierFrame.classBSilentCausativeCarrierPresent,
@@ -3482,6 +3496,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         classActions: Array.from(new Set(classActions)),
         guidelineId: classProfile.guidelineId,
         perfectiveChangeRule: perfective.changeRule,
+        phoneRepertoryRelation: perfective.phoneRepertoryRelation || null,
         shapeSummary: cloneClassicalNahuatlLesson7Record(classProfile.shapeSummary),
         imperfectiveShapeCount: classProfile.shapeSummary?.imperfectiveShapeCount || "",
         perfectiveShapeCount: classProfile.shapeSummary?.perfectiveShapeCount || "",
@@ -5676,10 +5691,20 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       });
       const lesson10SentenceType = lesson10Applies ? "admonition-sentence" : "";
       const lesson8SentenceType = lesson9SentenceType || lesson10SentenceType ? "" : normalizeClassicalNahuatlVncSentenceType(options);
+      const antecessiveSentenceRequested = Boolean(
+        options.antecessive === true
+        || options.antecessiveOrder === true
+        || options.sentenceAntecessive === true
+        || options.prefixStackMode === "antecessive"
+        || (Array.isArray(options.outsidePrefixes)
+          && options.outsidePrefixes.some(prefix => ["o", "ō", "o#", "ō#"].includes(String(prefix))))
+        || (Array.isArray(expandedVncBoundaryFrame?.outsidePrefixes)
+          && expandedVncBoundaryFrame.outsidePrefixes.includes("ō#"))
+      );
       const sentenceType = lesson10SentenceType || lesson9SentenceType || lesson8SentenceType;
       const lesson8Applies = Boolean(lesson8SentenceType);
       const lesson9Applies = Boolean(lesson9SentenceType);
-      const applies = Boolean(sentenceType);
+      const applies = Boolean(sentenceType || antecessiveSentenceRequested);
       const questionMode = lesson8SentenceType === "yes-no-question" ? normalizeClassicalNahuatlQuestionMode(options) : "";
       const lesson9CanvasSentenceRole = getClassicalNahuatlIntroductoryParticleCanvasSentenceRole(lesson9SentenceType, subjectPersonClass);
       const lesson9RoleDerivedFromSubject = Boolean(lesson9Applies && ["command-sentence", "exhortation-sentence"].includes(lesson9SentenceType));

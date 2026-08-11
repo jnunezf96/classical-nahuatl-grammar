@@ -9,7 +9,12 @@ const spec = {
       "classification": "simple-transitive-versus-compound-intransitive",
       "facts": [
         "teh-object-prefix-xima-is-simple-transitive",
-        "te-stone-embed-xima-is-compound-intransitive"
+        "te-stone-embed-xima-is-compound-intransitive",
+        "molina-combines-shave-someone-and-work-stone-under-xima-nite",
+        "shave-someone-selects-a-nonspecific-human-object",
+        "work-stone-selects-incorporated-nonhuman-stone-not-a-human-object-prefix",
+        "combining-human-object-and-incorporated-stone-readings-is-erroneous",
+        "teh-xima-is-simple-transitive-while-te-xima-is-compound-intransitive"
       ],
       "relation": "typed-object-prefix-and-embedded-nounstem-select-distinct-valence-structures",
       "checkpoint": "xima-valence-contrast-checkpoint",
@@ -34,7 +39,8 @@ const spec = {
       "classification": "compound-intransitive-verbstem-source",
       "facts": [
         "te-xima-must-be-listed-as-an-intransitive-compound-source",
-        "quauh-xima-provides-comparative-lexicographic-evidence-only"
+        "quauh-xima-provides-comparative-lexicographic-evidence-only",
+        "molina-should-list-te-xima-as-texima-ni-like-quauhxima-ni"
       ],
       "relation": "typed-compound-source-precedes-dictionary-entry-classification",
       "checkpoint": "te-xima-intransitive-source-checkpoint",
@@ -51,7 +57,9 @@ const spec = {
       "classification": "embedded-stone-nounstem",
       "facts": [
         "te-is-the-stone-rock-nounstem-embed",
-        "te-embed-must-not-be-reclassified-as-teh-someone-object-prefix"
+        "te-embed-must-not-be-reclassified-as-teh-someone-object-prefix",
+        "molinas-xolouia-nitetla-entry-means-to-pound-something-with-a-pestle",
+        "molina-misplaces-te-rock-outside-the-stem-as-teh-someone"
       ],
       "relation": "stem-internal-embed-identity-precedes-object-prefix-analysis",
       "checkpoint": "te-embed-versus-teh-object-checkpoint",
@@ -68,7 +76,8 @@ const spec = {
       "classification": "stone-pestle-instrument-verbstem-source",
       "facts": [
         "texolouia-retains-stem-internal-te-stone-source",
-        "dictionary-placement-outside-the-stem-is-rejected"
+        "dictionary-placement-outside-the-stem-is-rejected",
+        "molina-also-lists-the-correct-texolouia-formation-for-pounding-with-a-stone-pestle"
       ],
       "relation": "te-xolo-nounstem-source-precedes-texolouia-verbstem-analysis",
       "checkpoint": "texolouia-correct-source-checkpoint",
@@ -85,7 +94,8 @@ const spec = {
       "classification": "compound-stone-pestle-nounstem",
       "facts": [
         "te-xolo-tl-is-a-compound-nounstem",
-        "te-xolo-tl-denotes-a-stone-pestle"
+        "te-xolo-tl-denotes-a-stone-pestle",
+        "te-xolo-tl-literally-combines-stone-and-servant"
       ],
       "relation": "te-stone-embed-precedes-xolo-servant-matrix",
       "checkpoint": "te-xolo-stone-pestle-checkpoint",
@@ -103,4 +113,3 @@ const spec = {
 };
 
 export default Object.freeze(spec);
-

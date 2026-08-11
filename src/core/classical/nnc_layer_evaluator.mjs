@@ -6,6 +6,14 @@ import {
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
+    const issuedExotlInterpretationSources = new WeakSet();
+    const issuedExotlInterpretationResults = new WeakSet();
+    const issuedTlehAdmonitoryPairSources = new WeakSet();
+    const issuedTlehAdmonitoryPairResults = new WeakSet();
+    const issuedTlehClosingVocativeSources = new WeakSet();
+    const issuedTlehClosingVocativeResults = new WeakSet();
+    const issuedKingPraiseRoleContrastSources = new WeakSet();
+    const issuedKingPraiseRoleContrastResults = new WeakSet();
     const issuedCooperationFrames = new WeakMap();
     const issuedNncDiagrammaticFrames = new WeakSet();
     const CLASSICAL_NAHUATL_NNC_SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
@@ -2835,6 +2843,478 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         && frame.sentenceSurface === receipt.sentenceSurface
         && frame.sentenceType === receipt.sentenceType
         && frame.polarity === receipt.polarity
+      );
+    }
+    function buildClassicalNahuatlExotlInterpretationSource(
+      sentenceSurfaceFrame = null,
+    ) {
+      const slot = sentenceSurfaceFrame?.sourceNncSlotFrame;
+      const exact = isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+        sentenceSurfaceFrame,
+      )
+        && slot?.slots?.subject?.subject === "3sg"
+        && slot?.slots?.predicate?.stem === "exō"
+        && slot?.slots?.number?.num1 === "tl"
+        && slot?.slots?.number?.num2 === "0"
+        && sentenceSurfaceFrame.canonicalNuclearSurface === "exōtl";
+      const source = Object.freeze({
+        kind: "classical-nahuatl-exotl-interpretation-source",
+        version: 1,
+        authorizationStatus: exact ? "authorized" : "blocked",
+        blockReason: exact ? "" : "canonical-exotl-nnc-sentence-required",
+        sentenceSurfaceFrame: exact ? sentenceSurfaceFrame : null,
+        canonicalNuclearSurface: exact ? "exōtl" : "",
+        translationAuthority: false,
+        surfaceStringAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      issuedExotlInterpretationSources.add(source);
+      return source;
+    }
+    function isClassicalNahuatlExotlInterpretationSource(source = null) {
+      return Boolean(
+        source
+        && issuedExotlInterpretationSources.has(source)
+        && source.kind === "classical-nahuatl-exotl-interpretation-source"
+        && source.version === 1
+        && source.authorizationStatus === "authorized"
+        && isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+          source.sentenceSurfaceFrame,
+        )
+        && source.canonicalNuclearSurface === "exōtl"
+        && source.translationAuthority === false
+        && source.surfaceStringAuthority === false
+        && source.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(source)
+      );
+    }
+    function evaluateClassicalNahuatlExotlInterpretation(source = null) {
+      const authorized = isClassicalNahuatlExotlInterpretationSource(source);
+      const result = Object.freeze({
+        kind: "classical-nahuatl-exotl-interpretation-result",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "owner-issued-exotl-interpretation-source-required",
+        semanticOwnerId: "classical-nuclear-clause-structure",
+        operationId: "classical.nnc.exotl.interpret",
+        canonicalResult: authorized ? "exōtl" : "",
+        canonicalFormula: authorized ? "#0-0(exō)tl-0#" : "",
+        nuclearClauseKind: authorized ? "nominal-nuclear-clause" : "",
+        completeClause: authorized,
+        wordPhrase: false,
+        subject: authorized ? Object.freeze({ person: "third", number: "singular", sounded: false }) : Object.freeze({}),
+        predicate: authorized ? Object.freeze({
+          nounstem: "exō",
+          absolutiveNumberMorph: "tl",
+          referentHumanness: "nonhuman",
+        }) : Object.freeze({}),
+        compositionalMeaning: authorized
+          ? "it-is-a-green-thing-in-the-form-of-a-bean"
+          : "",
+        semanticWeighting: authorized ? Object.freeze({
+          primary: "green-quality",
+          secondary: "bean-form-entity",
+          relation: "quality-predicated-of-a-nonhuman-entity-form",
+        }) : Object.freeze({}),
+        englishGreenBeanAuthority: false,
+        reversedWeightingAllowed: false,
+        ownerExecutionCompleted: authorized,
+        grammarGenerationAllowed: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) issuedExotlInterpretationResults.add(result);
+      return result;
+    }
+    function isClassicalNahuatlExotlInterpretationResult(result = null) {
+      return Boolean(
+        result
+        && issuedExotlInterpretationResults.has(result)
+        && result.kind === "classical-nahuatl-exotl-interpretation-result"
+        && result.version === 1
+        && result.authorizationStatus === "authorized"
+        && result.semanticOwnerId === "classical-nuclear-clause-structure"
+        && result.operationId === "classical.nnc.exotl.interpret"
+        && result.canonicalResult === "exōtl"
+        && result.canonicalFormula === "#0-0(exō)tl-0#"
+        && result.nuclearClauseKind === "nominal-nuclear-clause"
+        && result.completeClause === true
+        && result.wordPhrase === false
+        && result.subject?.person === "third"
+        && result.subject?.number === "singular"
+        && result.subject?.sounded === false
+        && result.predicate?.nounstem === "exō"
+        && result.predicate?.absolutiveNumberMorph === "tl"
+        && result.predicate?.referentHumanness === "nonhuman"
+        && result.compositionalMeaning === "it-is-a-green-thing-in-the-form-of-a-bean"
+        && result.semanticWeighting?.primary === "green-quality"
+        && result.semanticWeighting?.secondary === "bean-form-entity"
+        && result.semanticWeighting?.relation === "quality-predicated-of-a-nonhuman-entity-form"
+        && result.englishGreenBeanAuthority === false
+        && result.reversedWeightingAllowed === false
+        && result.ownerExecutionCompleted === true
+        && result.grammarGenerationAllowed === false
+        && result.formulaStringAuthority === false
+        && result.surfaceStringAuthority === false
+        && result.translationAuthority === false
+        && result.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(result)
+      );
+    }
+    function buildClassicalNahuatlTlehAdmonitoryPairSource(
+      tlehFrame = null,
+      knowingFrame = null,
+      knowerFrame = null,
+    ) {
+      const tlehSlot = tlehFrame?.nncSlotFrame;
+      const exactTleh = isClassicalNahuatlNncSlotFrame(tlehSlot)
+        && tlehSlot.slots?.subject?.subject === "3sg"
+        && tlehSlot.slots?.predicate?.stem === "tl-eh"
+        && tlehSlot.slots?.number?.num1 === "0"
+        && tlehFrame.formulaRealization === "#0-0(tl-eh)0-0#";
+      const exactKnowing = targetObject.isClassicalNahuatlVncApplicationFrame?.(knowingFrame) === true
+        && knowingFrame.normalizedRequest?.sourceStem === "momachītia"
+        && knowingFrame.normalizedRequest?.subject === "2sg"
+        && knowingFrame.normalizedRequest?.sourceValence === "transitive"
+        && knowingFrame.normalizedRequest?.mood === "indicative"
+        && knowingFrame.normalizedRequest?.tense === "present"
+        && knowingFrame.resultFrame?.surfaceRealization === "ticmomachītia";
+      const exactKnower = targetObject.isClassicalNahuatlVncApplicationFrame?.(knowerFrame) === true
+        && knowerFrame.normalizedRequest?.sourceStem === "matcātzintli"
+        && knowerFrame.normalizedRequest?.subject === "2sg"
+        && knowerFrame.normalizedRequest?.sourceValence === "transitive"
+        && knowerFrame.normalizedRequest?.mood === "indicative"
+        && knowerFrame.normalizedRequest?.tense === "present"
+        && knowerFrame.resultFrame?.surfaceRealization === "ticmatcātzintli";
+      const authorized = exactTleh && exactKnowing && exactKnower;
+      const source = Object.freeze({
+        kind: "classical-nahuatl-tleh-admonitory-pair-source",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "canonical-tleh-and-two-vnc-results-required",
+        tlehSlotFrame: authorized ? tlehSlot : null,
+        knowingFrame: authorized ? knowingFrame : null,
+        knowerFrame: authorized ? knowerFrame : null,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      issuedTlehAdmonitoryPairSources.add(source);
+      return source;
+    }
+    function isClassicalNahuatlTlehAdmonitoryPairSource(source = null) {
+      return Boolean(
+        source
+        && issuedTlehAdmonitoryPairSources.has(source)
+        && source.kind === "classical-nahuatl-tleh-admonitory-pair-source"
+        && source.version === 1
+        && source.authorizationStatus === "authorized"
+        && isClassicalNahuatlNncSlotFrame(source.tlehSlotFrame)
+        && source.tlehSlotFrame.slots?.subject?.subject === "3sg"
+        && source.tlehSlotFrame.slots?.predicate?.stem === "tl-eh"
+        && targetObject.isClassicalNahuatlVncApplicationFrame?.(source.knowingFrame) === true
+        && targetObject.isClassicalNahuatlVncApplicationFrame?.(source.knowerFrame) === true
+        && source.knowingFrame.resultFrame?.surfaceRealization === "ticmomachītia"
+        && source.knowerFrame.resultFrame?.surfaceRealization === "ticmatcātzintli"
+        && source.formulaStringAuthority === false
+        && source.surfaceStringAuthority === false
+        && source.translationAuthority === false
+        && source.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(source)
+      );
+    }
+    function evaluateClassicalNahuatlTlehAdmonitoryPair(source = null) {
+      const authorized = isClassicalNahuatlTlehAdmonitoryPairSource(source);
+      const result = Object.freeze({
+        kind: "classical-nahuatl-tleh-admonitory-pair-result",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "owner-issued-tleh-admonitory-pair-source-required",
+        semanticOwnerId: "classical-nuclear-clause-structure",
+        operationId: "classical.sentence.tleh-admonitory-pair.interpret",
+        canonicalQuestions: authorized ? Object.freeze([
+          "Tleh ticmomachītia?",
+          "Tleh ticmatcātzintli?",
+        ]) : Object.freeze([]),
+        questionMeanings: authorized ? Object.freeze([
+          "what-is-it-that-you-honored-one-know",
+          "what-is-it-that-you-honored-one-are-a-knower-of",
+        ]) : Object.freeze([]),
+        subjects: authorized ? Object.freeze([
+          Object.freeze({ person: "second", number: "singular", humanness: "human", honorific: true, role: "knower" }),
+          Object.freeze({ person: "second", number: "singular", humanness: "human", honorific: true, role: "knower" }),
+        ]) : Object.freeze([]),
+        interrogativeObject: authorized ? Object.freeze({ form: "tleh", humanness: "nonhuman", role: "thing-known" }) : Object.freeze({}),
+        pairDiscourse: authorized ? Object.freeze({
+          rhetorical: true,
+          pragmaticFunctions: Object.freeze(["challenge", "wake-up-call"]),
+          expectedAnswer: "nothing",
+          comfortingWish: false,
+          goodCheerAndRestMeaning: false,
+        }) : Object.freeze({}),
+        ownerExecutionCompleted: authorized,
+        translationAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) issuedTlehAdmonitoryPairResults.add(result);
+      return result;
+    }
+    function isClassicalNahuatlTlehAdmonitoryPairResult(result = null) {
+      return Boolean(
+        result
+        && issuedTlehAdmonitoryPairResults.has(result)
+        && result.kind === "classical-nahuatl-tleh-admonitory-pair-result"
+        && result.authorizationStatus === "authorized"
+        && result.semanticOwnerId === "classical-nuclear-clause-structure"
+        && result.operationId === "classical.sentence.tleh-admonitory-pair.interpret"
+        && result.canonicalQuestions?.[0] === "Tleh ticmomachītia?"
+        && result.canonicalQuestions?.[1] === "Tleh ticmatcātzintli?"
+        && result.questionMeanings?.[0] === "what-is-it-that-you-honored-one-know"
+        && result.questionMeanings?.[1] === "what-is-it-that-you-honored-one-are-a-knower-of"
+        && result.subjects?.every(subject => subject.person === "second" && subject.number === "singular" && subject.humanness === "human" && subject.honorific === true)
+        && result.interrogativeObject?.form === "tleh"
+        && result.interrogativeObject?.humanness === "nonhuman"
+        && result.interrogativeObject?.role === "thing-known"
+        && result.pairDiscourse?.rhetorical === true
+        && result.pairDiscourse?.pragmaticFunctions?.includes("challenge")
+        && result.pairDiscourse?.pragmaticFunctions?.includes("wake-up-call")
+        && result.pairDiscourse?.expectedAnswer === "nothing"
+        && result.pairDiscourse?.comfortingWish === false
+        && result.pairDiscourse?.goodCheerAndRestMeaning === false
+        && result.ownerExecutionCompleted === true
+        && result.translationAuthority === false
+        && result.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(result)
+      );
+    }
+    function buildClassicalNahuatlTlehClosingVocativeSource(pairResult = null) {
+      const authorized = isClassicalNahuatlTlehAdmonitoryPairResult(pairResult);
+      const source = Object.freeze({
+        kind: "classical-nahuatl-tleh-closing-vocative-source",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "canonical-tleh-admonitory-pair-result-required",
+        pairResult: authorized ? pairResult : null,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      issuedTlehClosingVocativeSources.add(source);
+      return source;
+    }
+    function isClassicalNahuatlTlehClosingVocativeSource(source = null) {
+      return Boolean(
+        source
+        && issuedTlehClosingVocativeSources.has(source)
+        && source.kind === "classical-nahuatl-tleh-closing-vocative-source"
+        && source.authorizationStatus === "authorized"
+        && isClassicalNahuatlTlehAdmonitoryPairResult(source.pairResult)
+        && source.formulaStringAuthority === false
+        && source.surfaceStringAuthority === false
+        && source.translationAuthority === false
+        && source.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(source)
+      );
+    }
+    function evaluateClassicalNahuatlTlehClosingVocative(source = null) {
+      const authorized = isClassicalNahuatlTlehClosingVocativeSource(source);
+      const result = Object.freeze({
+        kind: "classical-nahuatl-tleh-closing-vocative-result",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "owner-issued-tleh-closing-vocative-source-required",
+        semanticOwnerId: "classical-nuclear-clause-structure",
+        operationId: "classical.sentence.tleh-closing-vocative.interpret",
+        returnsToEarlierRhetoricalQuestion: authorized,
+        canonicalQuestion: authorized
+          ? "Tleh ticmatcātzintli, tlazohtitlācatle, totēucyōe?"
+          : "",
+        principalClauseMeaning: authorized ? "you-are-ignorant" : "",
+        principalSubject: authorized ? Object.freeze({
+          person: "second",
+          number: "singular",
+          humanness: "human",
+          honorific: true,
+        }) : Object.freeze({}),
+        vocatives: authorized ? Object.freeze([
+          Object.freeze({ form: "tlazohtitlācatle", meaning: "O-valued-person", addressee: "same-honored-singular-human-woman" }),
+          Object.freeze({ form: "totēucyōe", meaning: "O-our-lady", addressee: "same-honored-singular-human-woman" }),
+        ]) : Object.freeze([]),
+        rejectedRestInPeaceMeaning: authorized,
+        pragmaticFunctions: authorized ? Object.freeze([
+          "remind-addressee-of-her-ignorance",
+          "instruct-addressee-to-think-carefully-about-preceding-advice",
+        ]) : Object.freeze([]),
+        sourceCitation: authorized ? "Anderson-and-Dibble-VI-page-185" : "",
+        citedSpeechEvidenceSupportsReading: authorized,
+        citedSpeechAuthority: false,
+        takeThingsEasyMeaning: false,
+        prepareForPossibleDisasterMeaning: authorized,
+        culturallyFamiliarMindsetCanMaskInadequateTranslation: authorized,
+        ownerExecutionCompleted: authorized,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) issuedTlehClosingVocativeResults.add(result);
+      return result;
+    }
+    function isClassicalNahuatlTlehClosingVocativeResult(result = null) {
+      return Boolean(
+        result
+        && issuedTlehClosingVocativeResults.has(result)
+        && result.kind === "classical-nahuatl-tleh-closing-vocative-result"
+        && result.authorizationStatus === "authorized"
+        && result.semanticOwnerId === "classical-nuclear-clause-structure"
+        && result.operationId === "classical.sentence.tleh-closing-vocative.interpret"
+        && result.returnsToEarlierRhetoricalQuestion === true
+        && result.canonicalQuestion === "Tleh ticmatcātzintli, tlazohtitlācatle, totēucyōe?"
+        && result.principalClauseMeaning === "you-are-ignorant"
+        && result.principalSubject?.person === "second"
+        && result.principalSubject?.number === "singular"
+        && result.principalSubject?.honorific === true
+        && result.vocatives?.[0]?.form === "tlazohtitlācatle"
+        && result.vocatives?.[0]?.meaning === "O-valued-person"
+        && result.vocatives?.[1]?.form === "totēucyōe"
+        && result.vocatives?.[1]?.meaning === "O-our-lady"
+        && result.vocatives?.every(vocative => vocative.addressee === "same-honored-singular-human-woman")
+        && result.rejectedRestInPeaceMeaning === true
+        && result.pragmaticFunctions?.includes("remind-addressee-of-her-ignorance")
+        && result.pragmaticFunctions?.includes("instruct-addressee-to-think-carefully-about-preceding-advice")
+        && result.sourceCitation === "Anderson-and-Dibble-VI-page-185"
+        && result.citedSpeechEvidenceSupportsReading === true
+        && result.citedSpeechAuthority === false
+        && result.takeThingsEasyMeaning === false
+        && result.prepareForPossibleDisasterMeaning === true
+        && result.culturallyFamiliarMindsetCanMaskInadequateTranslation === true
+        && result.ownerExecutionCompleted === true
+        && result.translationAuthority === false
+        && result.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(result)
+      );
+    }
+    function buildClassicalNahuatlKingPraiseRoleContrastSource(
+      actualMerit = null,
+      actualBoon = null,
+      reversedMerit = null,
+      reversedBoon = null,
+    ) {
+      const exact = [actualMerit, actualBoon, reversedMerit, reversedBoon]
+        .every(frame => isClassicalNahuatlIssuedNncSentenceSurfaceFrame(frame))
+        && actualMerit.canonicalNuclearSurface === "tīmahcēhualti"
+        && actualMerit.baseNncFormula === "#t-0+ī-0(mahcēhualti)0-0#"
+        && actualBoon.canonicalNuclearSurface === "tīcnōpilti"
+        && actualBoon.baseNncFormula === "#t-0+ī-0(cnōpilti)0-0#"
+        && reversedMerit.canonicalNuclearSurface === "momahcēhualti"
+        && reversedMerit.baseNncFormula === "#0-0+m-o(mahcēhualti)0-0#"
+        && reversedBoon.canonicalNuclearSurface === "mocnōpilti"
+        && reversedBoon.baseNncFormula === "#0-0+m-o(cnōpilti)0-0#";
+      const source = Object.freeze({
+        kind: "classical-nahuatl-king-praise-role-contrast-source",
+        version: 1,
+        authorizationStatus: exact ? "authorized" : "blocked",
+        blockReason: exact ? "" : "four-canonical-king-praise-nnc-results-required",
+        actualMerit: exact ? actualMerit : null,
+        actualBoon: exact ? actualBoon : null,
+        reversedMerit: exact ? reversedMerit : null,
+        reversedBoon: exact ? reversedBoon : null,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      issuedKingPraiseRoleContrastSources.add(source);
+      return source;
+    }
+    function isClassicalNahuatlKingPraiseRoleContrastSource(source = null) {
+      return Boolean(
+        source
+        && issuedKingPraiseRoleContrastSources.has(source)
+        && source.kind === "classical-nahuatl-king-praise-role-contrast-source"
+        && source.authorizationStatus === "authorized"
+        && isClassicalNahuatlIssuedNncSentenceSurfaceFrame(source.actualMerit)
+        && isClassicalNahuatlIssuedNncSentenceSurfaceFrame(source.actualBoon)
+        && isClassicalNahuatlIssuedNncSentenceSurfaceFrame(source.reversedMerit)
+        && isClassicalNahuatlIssuedNncSentenceSurfaceFrame(source.reversedBoon)
+        && source.actualMerit.canonicalNuclearSurface === "tīmahcēhualti"
+        && source.actualBoon.canonicalNuclearSurface === "tīcnōpilti"
+        && source.reversedMerit.canonicalNuclearSurface === "momahcēhualti"
+        && source.reversedBoon.canonicalNuclearSurface === "mocnōpilti"
+        && source.formulaStringAuthority === false
+        && source.surfaceStringAuthority === false
+        && source.translationAuthority === false
+        && source.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(source)
+      );
+    }
+    function evaluateClassicalNahuatlKingPraiseRoleContrast(source = null) {
+      const authorized = isClassicalNahuatlKingPraiseRoleContrastSource(source);
+      const result = Object.freeze({
+        kind: "classical-nahuatl-king-praise-role-contrast-result",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "owner-issued-king-praise-role-contrast-source-required",
+        semanticOwnerId: "participant-role-analysis",
+        operationId: "classical.nnc.king-praise-role-contrast.interpret",
+        canvasFormsPresent: authorized ? Object.freeze(["tīmahcēhualti", "tīcnōpilti"]) : Object.freeze([]),
+        substitutedFormsAbsent: authorized ? Object.freeze(["momahcēhualti", "mocnōpilti"]) : Object.freeze([]),
+        formMeanings: authorized ? Object.freeze({
+          momahcēhualti: "it-is-your-merit",
+          mocnōpilti: "it-is-your-boon",
+          tīmahcēhualti: "you-are-its-merit",
+          tīcnōpilti: "you-are-its-boon",
+        }) : Object.freeze({}),
+        actualParticipantRoles: authorized ? Object.freeze({
+          honoredRuler: "second-person-singular-human-merited-object-or-boon",
+          city: "nonhuman-entity-that-has-merited-and-deserved-the-ruler",
+        }) : Object.freeze({}),
+        substitutedAnalysisReversesSubjectIntoPossessor: authorized,
+        correctedTranslations: authorized ? Object.freeze([
+          "Now you are the one whom the city has merited and deserved.",
+          "Now it is you who are the one whom the city has merited and deserved.",
+        ]) : Object.freeze([]),
+        publishedTranslationReversesWhoMeritsWhom: authorized,
+        reversalMovesReaderFurtherFromNahuatlEthos: authorized,
+        ownerExecutionCompleted: authorized,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) issuedKingPraiseRoleContrastResults.add(result);
+      return result;
+    }
+    function isClassicalNahuatlKingPraiseRoleContrastResult(result = null) {
+      return Boolean(
+        result
+        && issuedKingPraiseRoleContrastResults.has(result)
+        && result.kind === "classical-nahuatl-king-praise-role-contrast-result"
+        && result.authorizationStatus === "authorized"
+        && result.semanticOwnerId === "participant-role-analysis"
+        && result.operationId === "classical.nnc.king-praise-role-contrast.interpret"
+        && result.canvasFormsPresent?.join("|") === "tīmahcēhualti|tīcnōpilti"
+        && result.substitutedFormsAbsent?.join("|") === "momahcēhualti|mocnōpilti"
+        && result.formMeanings?.momahcēhualti === "it-is-your-merit"
+        && result.formMeanings?.mocnōpilti === "it-is-your-boon"
+        && result.formMeanings?.tīmahcēhualti === "you-are-its-merit"
+        && result.formMeanings?.tīcnōpilti === "you-are-its-boon"
+        && result.actualParticipantRoles?.honoredRuler === "second-person-singular-human-merited-object-or-boon"
+        && result.actualParticipantRoles?.city === "nonhuman-entity-that-has-merited-and-deserved-the-ruler"
+        && result.substitutedAnalysisReversesSubjectIntoPossessor === true
+        && result.correctedTranslations?.length === 2
+        && result.publishedTranslationReversesWhoMeritsWhom === true
+        && result.reversalMovesReaderFurtherFromNahuatlEthos === true
+        && result.ownerExecutionCompleted === true
+        && result.translationAuthority === false
+        && result.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(result)
       );
     }
     function getClassicalNahuatlNncGeneralFormulaProjection(stateArity = "vacant") {
@@ -7562,6 +8042,22 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.capitalizeClassicalNahuatlNncSentenceInitial = capitalizeClassicalNahuatlNncSentenceInitial;
     api.buildClassicalNahuatlNncSentenceSurfaceFrame = buildClassicalNahuatlNncSentenceSurfaceFrame;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
+    api.buildClassicalNahuatlExotlInterpretationSource = buildClassicalNahuatlExotlInterpretationSource;
+    api.isClassicalNahuatlExotlInterpretationSource = isClassicalNahuatlExotlInterpretationSource;
+    api.evaluateClassicalNahuatlExotlInterpretation = evaluateClassicalNahuatlExotlInterpretation;
+    api.isClassicalNahuatlExotlInterpretationResult = isClassicalNahuatlExotlInterpretationResult;
+    api.buildClassicalNahuatlTlehAdmonitoryPairSource = buildClassicalNahuatlTlehAdmonitoryPairSource;
+    api.isClassicalNahuatlTlehAdmonitoryPairSource = isClassicalNahuatlTlehAdmonitoryPairSource;
+    api.evaluateClassicalNahuatlTlehAdmonitoryPair = evaluateClassicalNahuatlTlehAdmonitoryPair;
+    api.isClassicalNahuatlTlehAdmonitoryPairResult = isClassicalNahuatlTlehAdmonitoryPairResult;
+    api.buildClassicalNahuatlTlehClosingVocativeSource = buildClassicalNahuatlTlehClosingVocativeSource;
+    api.isClassicalNahuatlTlehClosingVocativeSource = isClassicalNahuatlTlehClosingVocativeSource;
+    api.evaluateClassicalNahuatlTlehClosingVocative = evaluateClassicalNahuatlTlehClosingVocative;
+    api.isClassicalNahuatlTlehClosingVocativeResult = isClassicalNahuatlTlehClosingVocativeResult;
+    api.buildClassicalNahuatlKingPraiseRoleContrastSource = buildClassicalNahuatlKingPraiseRoleContrastSource;
+    api.isClassicalNahuatlKingPraiseRoleContrastSource = isClassicalNahuatlKingPraiseRoleContrastSource;
+    api.evaluateClassicalNahuatlKingPraiseRoleContrast = evaluateClassicalNahuatlKingPraiseRoleContrast;
+    api.isClassicalNahuatlKingPraiseRoleContrastResult = isClassicalNahuatlKingPraiseRoleContrastResult;
     api.getClassicalNahuatlNncGeneralFormulaProjection = getClassicalNahuatlNncGeneralFormulaProjection;
     api.buildClassicalNahuatlNncDiagrammaticFrame = buildClassicalNahuatlNncDiagrammaticFrame;
     api.isClassicalNahuatlNncDiagrammaticFrame = isClassicalNahuatlNncDiagrammaticFrame;

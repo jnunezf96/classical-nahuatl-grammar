@@ -10,6 +10,7 @@ import classicalStemComposition from "./foundational-owner-specs/classical-stem-
 import classicalPlaceNncFormation from "./foundational-owner-specs/classical-place-nnc-formation.mjs";
 import classicalPhonologicalDistinction from "./foundational-owner-specs/classical-phonological-distinction.mjs";
 import classicalObjectEmbedDistinction from "./foundational-owner-specs/classical-object-embed-distinction.mjs";
+import classicalParticleLexicalDistinction from "./foundational-owner-specs/classical-particle-lexicon.mjs";
 import classicalVerbstemLexicon from "./foundational-owner-specs/classical-verbstem-lexicon.mjs";
 import classicalNounstemLexicon from "./foundational-owner-specs/classical-nounstem-lexicon.mjs";
 import classicalSegmentalPhonemeInventory from "./foundational-owner-specs/classical-segmental-phoneme-inventory.mjs";
@@ -23,6 +24,7 @@ const OWNER_SPECS = Object.freeze([
   classicalPlaceNncFormation,
   classicalPhonologicalDistinction,
   classicalObjectEmbedDistinction,
+  classicalParticleLexicalDistinction,
   classicalVerbstemLexicon,
   classicalNounstemLexicon,
   classicalSegmentalPhonemeInventory,

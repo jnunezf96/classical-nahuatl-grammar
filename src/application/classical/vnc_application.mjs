@@ -34,6 +34,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlVncApplicationBuiltParadigmPlans = new WeakSet();
     const classicalNahuatlVncApplicationBuiltParadigmCoordinates = new WeakSet();
     const classicalNahuatlVncApplicationIssuedSentenceResultFrames = new WeakSet();
+    const classicalNahuatlWidowhoodInterpretationSources = new WeakSet();
+    const classicalNahuatlWidowhoodInterpretationResults = new WeakSet();
     const classicalNahuatlOrderedVoiceVncApplicationFrames = new WeakSet();
     const classicalNahuatlContextualTimeFrames = new WeakSet();
     const classicalNahuatlContextualTimeBatchFrames = new WeakSet();
@@ -3210,6 +3212,140 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             frame.sentenceSurfaceFrame
           );
     }
+    function getClassicalNahuatlWidowhoodCompoundContext(sentenceResult = null) {
+      if (!isClassicalNahuatlVncSentenceResultFrame(sentenceResult)) return null;
+      const request = sentenceResult.vncApplicationFrame?.normalizedRequest || {};
+      const sourceStem = normalizeClassicalNahuatlVncApplicationStem(
+        request.sourceStem,
+      ).replace(/[-\s]/gu, "");
+      const canonicalRealization = normalizeClassicalNahuatlVncApplicationToken(
+        sentenceResult.sentenceSurfaceDisplay,
+      ).replace(/[.!?]+$/u, "").replace(/^./u, value => value.toLowerCase());
+      const prefixalStack = sentenceResult.sentenceSurfaceFrame?.sentencePrefixalStack || [];
+      return {
+        request,
+        sourceStem,
+        canonicalRealization,
+        prefixalStack,
+        valid: sourceStem === "cihuāmiqui"
+          && request.subject === "1sg"
+          && request.mood === "indicative"
+          && request.tense === "preterit"
+          && prefixalStack.includes("ō#")
+          && canonicalRealization === "ōnicihuāmic",
+      };
+    }
+    function buildClassicalNahuatlWidowhoodCompoundInterpretationSource(
+      sentenceResult = null,
+    ) {
+      const context = getClassicalNahuatlWidowhoodCompoundContext(sentenceResult);
+      const source = Object.freeze({
+        kind: "classical-nahuatl-widowhood-compound-interpretation-source",
+        version: 1,
+        authorizationStatus: context?.valid ? "authorized" : "blocked",
+        blockReason: context?.valid ? "" : "canonical-onicihuamic-sentence-result-required",
+        sentenceResult: context?.valid ? sentenceResult : null,
+        sourceStem: context?.valid ? context.sourceStem : "",
+        canonicalRealization: context?.valid ? context.canonicalRealization : "",
+        subject: context?.valid ? context.request.subject : "",
+        tense: context?.valid ? context.request.tense : "",
+        translationAuthority: false,
+        surfaceStringAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      classicalNahuatlWidowhoodInterpretationSources.add(source);
+      return source;
+    }
+    function isClassicalNahuatlWidowhoodCompoundInterpretationSource(source = null) {
+      const context = source?.sentenceResult
+        ? getClassicalNahuatlWidowhoodCompoundContext(source.sentenceResult)
+        : null;
+      return Boolean(
+        source
+        && classicalNahuatlWidowhoodInterpretationSources.has(source)
+        && source.kind === "classical-nahuatl-widowhood-compound-interpretation-source"
+        && source.version === 1
+        && source.authorizationStatus === "authorized"
+        && source.blockReason === ""
+        && context?.valid
+        && source.sourceStem === context.sourceStem
+        && source.canonicalRealization === context.canonicalRealization
+        && source.subject === "1sg"
+        && source.tense === "preterit"
+        && source.translationAuthority === false
+        && source.surfaceStringAuthority === false
+        && source.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(source)
+      );
+    }
+    function evaluateClassicalNahuatlWidowhoodCompoundInterpretation(source = null) {
+      const authorized = isClassicalNahuatlWidowhoodCompoundInterpretationSource(source);
+      const result = Object.freeze({
+        kind: "classical-nahuatl-widowhood-compound-interpretation-result",
+        version: 1,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized ? "" : "owner-issued-widowhood-compound-source-required",
+        semanticOwnerId: "classical-incorporated-adverb-supplement-subject",
+        operationId: "classical.vnc.compound.widowhood.interpret",
+        canonicalRealization: authorized ? source.canonicalRealization : "",
+        lexicalMeaning: authorized ? "become-a-widower" : "",
+        literalStructure: authorized ? Object.freeze([
+          "already",
+          "first-person-singular-human-male-subject",
+          "wife-or-woman",
+          "die-perfective",
+        ]) : Object.freeze([]),
+        subjectInterpretation: authorized ? Object.freeze({
+          person: "first",
+          number: "singular",
+          humanness: "human",
+          sex: "male",
+          role: "widower-experiencer",
+          subjectPrefix: "ni-",
+        }) : Object.freeze({}),
+        explanatoryParaphrases: authorized ? Object.freeze([
+          "die-in-the-form-of-my-wife",
+          "die-in-regard-to-my-wife",
+          "die-by-means-of-my-wife",
+          "die-because-of-my-wife",
+          "die-in-relation-to-my-wife",
+        ]) : Object.freeze([]),
+        paraphraseAuthority: false,
+        paraphrasesExhaustive: false,
+        englishAnalogueAuthority: false,
+        grammarSourceSections: authorized ? Object.freeze(["1.13", "30.14.1"]) : Object.freeze([]),
+        ownerExecutionCompleted: authorized,
+        grammarGenerationAllowed: false,
+        surfaceGenerationAllowed: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        translationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) classicalNahuatlWidowhoodInterpretationResults.add(result);
+      return result;
+    }
+    function isClassicalNahuatlWidowhoodCompoundInterpretationResult(result = null) {
+      return Boolean(
+        result
+        && classicalNahuatlWidowhoodInterpretationResults.has(result)
+        && result.kind === "classical-nahuatl-widowhood-compound-interpretation-result"
+        && result.version === 1
+        && result.authorizationStatus === "authorized"
+        && result.semanticOwnerId === "classical-incorporated-adverb-supplement-subject"
+        && result.operationId === "classical.vnc.compound.widowhood.interpret"
+        && result.canonicalRealization === "ōnicihuāmic"
+        && result.lexicalMeaning === "become-a-widower"
+        && result.subjectInterpretation?.subjectPrefix === "ni-"
+        && result.paraphraseAuthority === false
+        && result.paraphrasesExhaustive === false
+        && result.englishAnalogueAuthority === false
+        && result.ownerExecutionCompleted === true
+        && result.translationAuthority === false
+        && result.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(result)
+      );
+    }
     function freezeClassicalNahuatlVncApplicationProjectionValue(value) {
       if (Array.isArray(value)) {
         return Object.freeze(value.map(freezeClassicalNahuatlVncApplicationProjectionValue));
@@ -5885,6 +6021,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.getClassicalNahuatlVncSentenceFormulaAttachment = getClassicalNahuatlVncSentenceFormulaAttachment;
     api.buildClassicalNahuatlVncSentenceResultFrame = buildClassicalNahuatlVncSentenceResultFrame;
     api.isClassicalNahuatlVncSentenceResultFrame = isClassicalNahuatlVncSentenceResultFrame;
+    api.buildClassicalNahuatlWidowhoodCompoundInterpretationSource = buildClassicalNahuatlWidowhoodCompoundInterpretationSource;
+    api.isClassicalNahuatlWidowhoodCompoundInterpretationSource = isClassicalNahuatlWidowhoodCompoundInterpretationSource;
+    api.evaluateClassicalNahuatlWidowhoodCompoundInterpretation = evaluateClassicalNahuatlWidowhoodCompoundInterpretation;
+    api.isClassicalNahuatlWidowhoodCompoundInterpretationResult = isClassicalNahuatlWidowhoodCompoundInterpretationResult;
     api.isClassicalNahuatlVncParadigmPlan = isClassicalNahuatlVncParadigmPlan;
     api.isClassicalNahuatlVncParadigmCoordinateFrame = isClassicalNahuatlVncParadigmCoordinateFrame;
     api.buildClassicalNahuatlVncDerivationExplanationProjection = buildClassicalNahuatlVncDerivationExplanationProjection;

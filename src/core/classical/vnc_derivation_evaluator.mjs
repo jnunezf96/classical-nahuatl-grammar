@@ -8,6 +8,9 @@ import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
 } from "./vnc_layer_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
+import {
+  getClassicalNahuatlPhoneRepertoryRelation,
+} from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
 
 export const CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES = Object.freeze(["direct", "causative", "applicative"]);
 
@@ -1769,10 +1772,10 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceClass: "A",
       sourceValence: "specific-projective",
       sourceObjectCount: 1,
-      targetStem: "pa-ti-lia",
+      targetStem: "pa-ti-liā",
       ruleId: "cn-l26-267-patla-pa-ti-lia",
       andrewsSection: "26.7",
-      exactWitness: "tla-(pa-tla) > te+tla-(pa-ti-lia)",
+      exactWitness: "tla-(pa-tla) > tē+tla-(pa-ti-liā)",
       evidenceSections: Object.freeze(["26.7", "26.14", "26.23"])
     }), Object.freeze({
       derivationLicenseId: "cn-l26-267-tlazohtla-tlazohti-lia",
@@ -1780,10 +1783,10 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceClass: "A",
       sourceValence: "specific-projective",
       sourceObjectCount: 1,
-      targetStem: "tla-zo-h-ti-lia",
+      targetStem: "tla-zo-h-ti-liā",
       ruleId: "cn-l26-267-tlazohtla-tlazohti-lia",
       andrewsSection: "26.7",
-      exactWitness: "te-(tla-zo-h-tla) > te+te-(tla-zo-h-ti-lia)",
+      exactWitness: "tē-(tla-zo-h-tla) > tē+tē-(tla-zo-h-ti-liā)",
       evidenceSections: Object.freeze(["26.7", "26.14", "26.23"])
     })]);
     const CLASSICAL_NAHUATL_APPLICATIVE_EXACT_FORMATIONS = Object.freeze([
@@ -3340,6 +3343,9 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         causativeCitationRole: option.causativeCitationRole || "",
         parallelFormationLexicalRelation:
           option.parallelFormationLexicalRelation || null,
+        phoneRepertoryRelation: option.phoneRepertoryRelation
+          || option.typeTwoInternalBridgeFrame?.phoneRepertoryRelation
+          || null,
       };
     }
     function getClassicalNahuatlRecordFingerprintPayload(record = null) {
@@ -3575,6 +3581,12 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           license.bridgeBaseOperation,
         );
       let bridgeBaseStem = "";
+      const bridgePhoneRepertoryRelation = [
+        "replace-final-ti-with-ch",
+        "replace-final-ti-with-chi",
+      ].includes(bridgeBaseOperation)
+        ? getClassicalNahuatlPhoneRepertoryRelation("t", "ch")
+        : null;
       if (bridgeBaseOperation === "preserve-source") {
         bridgeBaseStem = sourceStem;
       } else if (
@@ -3590,13 +3602,15 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       } else if (
         bridgeBaseOperation === "replace-final-ti-with-ch"
         && /ti$/u.test(sourceStem)
+        && bridgePhoneRepertoryRelation
       ) {
-        bridgeBaseStem = `${sourceStem.slice(0, -2)}ch`;
+        bridgeBaseStem = `${sourceStem.slice(0, -2)}${bridgePhoneRepertoryRelation.phone}`;
       } else if (
         bridgeBaseOperation === "replace-final-ti-with-chi"
         && /ti$/u.test(sourceStem)
+        && bridgePhoneRepertoryRelation
       ) {
-        bridgeBaseStem = `${sourceStem.slice(0, -2)}chi`;
+        bridgeBaseStem = `${sourceStem.slice(0, -2)}${bridgePhoneRepertoryRelation.phone}i`;
       } else if (
         bridgeBaseOperation === "replace-final-ca-with-qui"
         && /ca$/u.test(sourceStem)
@@ -3753,6 +3767,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         classBFinalMToNBoundaryPolicy,
         bridgeBaseOperation,
         bridgeBaseStem,
+        phoneRepertoryRelation: bridgePhoneRepertoryRelation,
         suffixFamily,
         nonactiveStem,
         retainedStem,
@@ -5068,6 +5083,17 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       }
       const exactFinalTlToTLicense = CLASSICAL_NAHUATL_APPLICATIVE_FINAL_TL_TO_T_EXACT_LICENSES.find(license => hasClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem, license.sourceStem) && license.sourceClass === sourceDescriptor.sourceClass && license.sourceValence === sourceDescriptor.sourceValence && license.sourceObjectCount === sourceDescriptor.sourceObjectCount) || null;
       if (exactFinalTlToTLicense) {
+        const phoneRepertoryRelation =
+          getClassicalNahuatlPhoneRepertoryRelation("tl", "t");
+        const repertoryBuiltTargetStem = phoneRepertoryRelation
+          ? sourceDescriptor.sourceStem.replace(
+            /tla$/u,
+            `${phoneRepertoryRelation.phone}i-${lia}`,
+          )
+          : "";
+        if (repertoryBuiltTargetStem !== exactFinalTlToTLicense.targetStem) {
+          return candidates;
+        }
         candidates.push(finalizeClassicalNahuatlVncDerivationOption(sourceDescriptor, {
           ...common,
           optionId: `applicative:type-two:exact-final-tl-to-t:${exactFinalTlToTLicense.sourceStem}:${exactFinalTlToTLicense.targetStem}`,
@@ -5087,6 +5113,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           formationRuleTier: "exact-lexical-overlay",
           productivityStatus: "exact-andrews-witness",
           optionAliases: [exactFinalTlToTLicense.ruleId],
+          phoneRepertoryRelation,
           targetConstruction: Object.freeze({ operation: "replace-final-tla-with-ti-and-append", remove: "tla", add: `ti-${lia}` })
         }));
       }

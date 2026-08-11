@@ -4,6 +4,14 @@
 // This boundary resolves required engine capabilities and returns their canonical
 // results. It never reconstructs a formula, surface, lesson answer, or fallback.
 
+import {
+  hasClassicalGrammarReadOnlyArtifactDeclaration,
+  isClassicalGrammarReadOnlyAuthorityDeclaration,
+  isForbiddenClassicalGrammarAuthorityKey,
+  validateClassicalGrammarFoundationRoute,
+  validateClassicalGrammarLanguageIdentity,
+} from "../../core/concepts/classical_grammar_foundation.mjs?v=20260811-lesson1-multigroup-024";
+
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";
 const APPLICATION_RESULT_DIAGNOSTIC = "classical-grammar-application-result-invalid";
@@ -114,6 +122,148 @@ const ROUTE_DEFINITIONS = Object.freeze({
       "non-generative-projection",
     ]),
   }),
+  "classical.morpheme.silent.contrast.validate": Object.freeze({
+    capabilityName: "evaluateClassicalSilentMorphContrast",
+    axisIds: Object.freeze([
+      "silent-candidate-kind",
+      "corresponding-position",
+      "similar-structure",
+      "related-category",
+      "sounded-counterpart",
+    ]),
+  }),
+  "classical.linguistic.unit.compose": Object.freeze({
+    capabilityName: "evaluateClassicalLinguisticUnitComposition",
+    axisIds: Object.freeze([
+      "medium",
+      "sequence-order",
+      "structure-pattern",
+      "constituent-units",
+      "resulting-unity",
+    ]),
+  }),
+  "classical.linguistic.structure.recurse": Object.freeze({
+    capabilityName: "evaluateClassicalLinguisticStructureRecursion",
+    axisIds: Object.freeze([
+      "prior-structured-unit",
+      "next-constituent-unit",
+      "retained-operation-lineage",
+      "recursive-unity",
+    ]),
+  }),
+  "classical.linguistic.unit.discontinuity.validate": Object.freeze({
+    capabilityName: "evaluateClassicalDiscontinuousUnitAdmissibility",
+    axisIds: Object.freeze([
+      "typed-unit-kind",
+      "constituent-roles",
+      "nonjuxtaposed-topology",
+      "functional-cohesion",
+      "restricted-applicability",
+    ]),
+  }),
+  "classical.carrier.meaningless-unit.classify": Object.freeze({
+    capabilityName: "evaluateClassicalMeaninglessCarrierUnitClassification",
+    axisIds: Object.freeze([
+      "candidate-kind",
+      "carrier-subsystem",
+      "analysis-level",
+      "meaning-exclusion",
+    ]),
+  }),
+  "classical.carrier.rank.taxonomy.classify": Object.freeze({
+    capabilityName: "evaluateClassicalCarrierRankTaxonomy",
+    axisIds: Object.freeze([
+      "carrier-subsystem",
+      "rank-tier",
+      "rank-identity",
+      "rank-order",
+    ]),
+  }),
+  "classical.carrier.rank.form": Object.freeze({
+    capabilityName: "evaluateClassicalCarrierRankFormation",
+    axisIds: Object.freeze([
+      "source-unit-rank",
+      "target-unit-rank",
+      "formation-kind",
+      "rank-upgrade",
+    ]),
+  }),
+  "classical.carrier.syllable.compose": Object.freeze({
+    capabilityName: "evaluateClassicalSyllableStructure",
+    axisIds: Object.freeze([
+      "vowel-center",
+      "consonant-margins",
+      "language-specific-structure",
+      "meaningless-unit",
+    ]),
+  }),
+  "classical.carrier.vocable.compose": Object.freeze({
+    capabilityName: "evaluateClassicalCarrierVocableStructure",
+    axisIds: Object.freeze([
+      "syllable-constituents",
+      "vocable-rank",
+      "word-syllable-perspective",
+      "monosyllabic-upgrade",
+    ]),
+  }),
+  "classical.carrier.vocable.prosody.validate": Object.freeze({
+    capabilityName: "evaluateClassicalCarrierVocableProsody",
+    axisIds: Object.freeze([
+      "polysyllabic-vocable",
+      "stressed-syllable",
+      "stress-applicability",
+    ]),
+  }),
+  "classical.carrier.phonotactic.constraints.validate": Object.freeze({
+    capabilityName: "evaluateClassicalCarrierPhonotacticSurfaceConstraints",
+    axisIds: Object.freeze([
+      "carrier-structure",
+      "language-specific-phonotactics",
+      "possible-sequence",
+      "meaningful-surface-conformance",
+    ]),
+  }),
+  "classical.morpheme.meaningful-unit.classify": Object.freeze({ capabilityName: "evaluateClassicalMeaningfulMorphemeUnitClassification", axisIds: Object.freeze(["candidate-kind", "meaningful-family"]) }),
+  "classical.morpheme.syllable.separate": Object.freeze({ capabilityName: "evaluateClassicalMorphemeSyllableSeparation", axisIds: Object.freeze(["meaningful-unit", "syllable-rank", "rank-contrast", "coterminality"]) }),
+  "classical.morpheme.combinatorial-type.classify": Object.freeze({ capabilityName: "evaluateClassicalMorphemeCombinatorialTypeClassification", axisIds: Object.freeze(["meaningful-unit", "major-minor-type", "representational-center", "affixal-status"]) }),
+  "classical.morpheme.affix.position.classify": Object.freeze({ capabilityName: "evaluateClassicalAffixLinearPositionClassification", axisIds: Object.freeze(["minor-morpheme", "sequence-position", "affix-position-class"]) }),
+  "classical.morpheme.affix.function.classify": Object.freeze({ capabilityName: "evaluateClassicalAffixFunctionalTypeClassification", axisIds: Object.freeze(["affix-position", "information-role", "stem-boundary", "functional-type"]) }),
+  "classical.morpheme.inflectional-paradigm.classify": Object.freeze({ capabilityName: "evaluateClassicalInflectionalParadigmDefinition", axisIds: Object.freeze(["inflectional-affix", "common-stem", "stem-class", "variant-set"]) }),
+  "classical.structure.post-stem-unit.classify": Object.freeze({ capabilityName: "evaluateClassicalNahuatlPostStemUnitClassification", axisIds: Object.freeze(["rank-result", "unit-disposition", "nuclear-clause-rank"]) }),
+  "classical.morpheme.inflectional-dyad.analyze": Object.freeze({ capabilityName: "evaluateClassicalInflectionalAffixDyadAnalysis", axisIds: Object.freeze(["first-affix", "second-affix", "inseparable-sequence", "dyad-structure"]) }),
+  "classical.morpheme.inflectional-affix.demote": Object.freeze({ capabilityName: "evaluateClassicalInflectionalAffixStemInternalDemotion", axisIds: Object.freeze(["inflectional-affix", "process-kind", "source-boundary", "target-boundary"]) }),
+  "classical.morpheme.meaningful-rank.hierarchy.validate": Object.freeze({ capabilityName: "evaluateClassicalMeaningfulStructuralRankHierarchy", axisIds: Object.freeze(["major-type", "minor-type", "rank-stages", "lower-stage-dependency"]) }),
+  "classical.structure.meaningful-rank.source-or-upgrade.validate": Object.freeze({ capabilityName: "evaluateClassicalMeaningfulRankSourceUpgradeAdmissibility", axisIds: Object.freeze(["hierarchy", "source-rank", "target-rank", "transition-mode"]) }),
+  "classical.structure.meaningful-rank.downgrade": Object.freeze({ capabilityName: "evaluateClassicalMeaningfulRankDowngrade", axisIds: Object.freeze(["hierarchy", "higher-rank", "lower-rank", "downgrade-mode"]) }),
+  "classical.structure.root.major-morpheme.validate": Object.freeze({ capabilityName: "evaluateClassicalRootMajorMorphemeDefinition", axisIds: Object.freeze(["major-type", "major-unit-count", "root-structure"]) }),
+  "classical.structure.stem.form-directly": Object.freeze({ capabilityName: "evaluateClassicalDirectStemFormation", axisIds: Object.freeze(["base-unit", "derivational-affix", "formation-kind", "stem-result"]) }),
+  "classical.structure.stem.form-via-stock": Object.freeze({ capabilityName: "evaluateClassicalStockMediatedStemFormation", axisIds: Object.freeze(["root", "derivational-suffix", "stock-stage", "stem-result"]) }),
+  "classical.structure.stem.compound": Object.freeze({ capabilityName: "evaluateClassicalCompoundStemFormation", axisIds: Object.freeze(["first-stem", "second-stem", "compound-relation", "stem-result"]) }),
+  "classical.structure.meaning-bearing-unit.classify": Object.freeze({ capabilityName: "evaluateClassicalLexemeBearingUnitClassification", axisIds: Object.freeze(["unit", "unit-rank", "meaning-component"]) }),
+  "classical.structure.stem.lexical-status.classify": Object.freeze({ capabilityName: "evaluateClassicalStemLexicalItemClassification", axisIds: Object.freeze(["stem", "lexical-status", "lexicon-membership"]) }),
+  "classical.structure.root.meaning-rank.upgrade": Object.freeze({ capabilityName: "evaluateClassicalRootMeaningRankUpgrade", axisIds: Object.freeze(["root", "rank-upgrade", "source-meaning", "target-meaning"]) }),
+  "concept.word.sentence-fragment.analyze": Object.freeze({ capabilityName: "evaluateComparativeWordSentenceFragmentAnalysis", axisIds: Object.freeze(["word-rank", "sentence-fragment", "simple-word-exception"]) }),
+  "classical.structure.stem-transition-zone.validate": Object.freeze({ capabilityName: "evaluateClassicalStemInflectionTransitionZone", axisIds: Object.freeze(["stem", "post-stem-unit", "derivation-boundary", "inflection-onset"]) }),
+  "classical.nuclear-clause.morphosyntax.validate": Object.freeze({ capabilityName: "evaluateClassicalNuclearClauseMorphosyntaxDomain", axisIds: Object.freeze(["nuclear-clause", "subject", "predicate", "morphosyntax-domain"]) }),
+  "classical.structure.group.compose": Object.freeze({ capabilityName: "evaluateClassicalNahuatlGroupComposition", axisIds: Object.freeze(["particles", "nuclear-clauses", "group-shape", "group-result"]) }),
+  "classical.structure.syntax-domain-onset.validate": Object.freeze({ capabilityName: "evaluateClassicalNahuatlSyntaxDomainOnset", axisIds: Object.freeze(["group-result", "group-rank", "syntax-domain"]) }),
+  "concept.structure.principles.analyze": Object.freeze({ capabilityName: "evaluateLinguisticStructurePrinciplesAnalysis", axisIds: Object.freeze(["structure-facet", "structuring-principles", "concatenation", "unit-closure"]) }),
+  "concept.structure.governance-taxonomy.analyze": Object.freeze({ capabilityName: "evaluateGovernanceTypeTaxonomy", axisIds: Object.freeze(["governance", "general-type", "function-unit-coupling", "governance-subtype"]) }),
+  "concept.structure.adjunctive-governance.analyze": Object.freeze({ capabilityName: "evaluateAdjunctiveGovernanceAnalysis", axisIds: Object.freeze(["governor", "adjunct", "predicate-structure", "relation-structure", "modification", "function-unit-filler", "adjunctor", "agreement-case"]) }),
+  "concept.structure.conjunctive-governance.analyze": Object.freeze({ capabilityName: "evaluateConjunctiveGovernanceAnalysis", axisIds: Object.freeze(["conjuncts", "equal-governance", "conjunct-filler-class"]) }),
+  "classical.structure.level-distribution.validate": Object.freeze({ capabilityName: "evaluateClassicalNahuatlStructureLevelDistribution", axisIds: Object.freeze(["morphological-level", "morphosyntactical-level", "syntactical-level", "cross-level-distribution"]) }),
+  "classical.structure.participant-role.analyze": Object.freeze({ capabilityName: "evaluateClassicalParticipantRoleAnalysis", axisIds: Object.freeze(["participant", "event-relation", "participant-role", "entitive-function-unit"]) }),
+  "classical.structure.conceptual-plane.separate": Object.freeze({ capabilityName: "evaluateClassicalConceptualPlaneSeparation", axisIds: Object.freeze(["function-unit-plane", "form-class-plane", "lexical-item-plane", "participant-role-plane", "nonintermingling"]) }),
+  "classical.authority.source-language.firewall.enforce": Object.freeze({ capabilityName: "evaluateTranslationAuthorityBoundary", axisIds: Object.freeze(["interpretive-provenance", "source-language-authority", "interpretive-bias", "grammar-firewall"]) }),
+  "classical.source.phonological-identity.validate": Object.freeze({ capabilityName: "evaluateClassicalPhonologicalDistinction", axisIds: Object.freeze(["vowel-length", "glottal-stop", "lexical-identity", "dictionary-collapse"]) }),
+  "classical.verbstem.object-embed.validate": Object.freeze({ capabilityName: "evaluateClassicalObjectEmbedDistinction", axisIds: Object.freeze(["object-prefix", "embedded-nounstem", "valence", "stem-boundary"]) }),
+  "classical.particle.lexical-distinction.authorize": Object.freeze({ capabilityName: "evaluateClassicalParticleLexicalDistinction", axisIds: Object.freeze(["particle-identity", "particle-sequence", "liaison", "dictionary-head"]) }),
+  "classical.verbstem.lexicon.authorize": Object.freeze({ capabilityName: "evaluateClassicalVerbstemLexicon", axisIds: Object.freeze(["verbstem-identity", "valence", "canonical-meaning", "dictionary-head"]) }),
+  "classical.vnc.compound.widowhood.interpret": Object.freeze({ capabilityName: "evaluateClassicalNahuatlWidowhoodCompoundInterpretation", axisIds: Object.freeze(["compound-verbstem", "subject-person-number", "participant-sex", "widowhood-meaning"]) }),
+  "classical.nnc.exotl.interpret": Object.freeze({ capabilityName: "evaluateClassicalNahuatlExotlInterpretation", axisIds: Object.freeze(["nominal-clause", "silent-subject", "compositional-meaning", "semantic-weighting"]) }),
+  "classical.sentence.tleh-admonitory-pair.interpret": Object.freeze({ capabilityName: "evaluateClassicalNahuatlTlehAdmonitoryPair", axisIds: Object.freeze(["question-forms", "honored-subject", "nonhuman-object", "rhetorical-force", "expected-answer"]) }),
+  "classical.sentence.tleh-closing-vocative.interpret": Object.freeze({ capabilityName: "evaluateClassicalNahuatlTlehClosingVocative", axisIds: Object.freeze(["closing-question", "honored-subject", "vocatives", "pragmatic-force", "translation-boundary"]) }),
+  "classical.nnc.king-praise-role-contrast.interpret": Object.freeze({ capabilityName: "evaluateClassicalNahuatlKingPraiseRoleContrast", axisIds: Object.freeze(["actual-forms", "substituted-forms", "subject-possessor-relation", "participant-roles", "corrected-meaning"]) }),
   "orthography:transcription": Object.freeze({
     capabilityName: "buildClassicalNahuatlTranscriptionFrame",
     axisIds: Object.freeze(["transcription-source", "phonological-boundary", "orthographic-realization"]),
@@ -323,6 +473,115 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "concept-authority-rejection": "derived-fact",
     "non-generative-projection": "derived-fact",
   }),
+  "classical.morpheme.silent.contrast.validate": defineAxisSemanticFactRoles({
+    "silent-candidate-kind": "lexical-fact",
+    "corresponding-position": "boundary-conditioned-fact",
+    "similar-structure": "boundary-conditioned-fact",
+    "related-category": "contextual-fact",
+    "sounded-counterpart": "boundary-conditioned-fact",
+  }),
+  "classical.linguistic.unit.compose": defineAxisSemanticFactRoles({
+    medium: "contextual-fact",
+    "sequence-order": "boundary-conditioned-fact",
+    "structure-pattern": "boundary-conditioned-fact",
+    "constituent-units": "contextual-fact",
+    "resulting-unity": "derived-fact",
+  }),
+  "classical.linguistic.structure.recurse": defineAxisSemanticFactRoles({
+    "prior-structured-unit": "contextual-fact",
+    "next-constituent-unit": "contextual-fact",
+    "retained-operation-lineage": "derived-fact",
+    "recursive-unity": "derived-fact",
+  }),
+  "classical.linguistic.unit.discontinuity.validate": defineAxisSemanticFactRoles({
+    "typed-unit-kind": "contextual-fact",
+    "constituent-roles": "contextual-fact",
+    "nonjuxtaposed-topology": "boundary-conditioned-fact",
+    "functional-cohesion": "derived-fact",
+    "restricted-applicability": "boundary-conditioned-fact",
+  }),
+  "classical.carrier.meaningless-unit.classify": defineAxisSemanticFactRoles({
+    "candidate-kind": "lexical-fact",
+    "carrier-subsystem": "derived-fact",
+    "analysis-level": "derived-fact",
+    "meaning-exclusion": "boundary-conditioned-fact",
+  }),
+  "classical.carrier.rank.taxonomy.classify": defineAxisSemanticFactRoles({
+    "carrier-subsystem": "contextual-fact",
+    "rank-tier": "contextual-fact",
+    "rank-identity": "derived-fact",
+    "rank-order": "derived-fact",
+  }),
+  "classical.carrier.rank.form": defineAxisSemanticFactRoles({
+    "source-unit-rank": "contextual-fact",
+    "target-unit-rank": "contextual-fact",
+    "formation-kind": "derived-fact",
+    "rank-upgrade": "boundary-conditioned-fact",
+  }),
+  "classical.carrier.syllable.compose": defineAxisSemanticFactRoles({
+    "vowel-center": "boundary-conditioned-fact",
+    "consonant-margins": "boundary-conditioned-fact",
+    "language-specific-structure": "architecture-invariant",
+    "meaningless-unit": "derived-fact",
+  }),
+  "classical.carrier.vocable.compose": defineAxisSemanticFactRoles({
+    "syllable-constituents": "contextual-fact",
+    "vocable-rank": "contextual-fact",
+    "word-syllable-perspective": "derived-fact",
+    "monosyllabic-upgrade": "boundary-conditioned-fact",
+  }),
+  "classical.carrier.vocable.prosody.validate": defineAxisSemanticFactRoles({
+    "polysyllabic-vocable": "contextual-fact",
+    "stressed-syllable": "contextual-fact",
+    "stress-applicability": "boundary-conditioned-fact",
+  }),
+  "classical.carrier.phonotactic.constraints.validate": defineAxisSemanticFactRoles({
+    "carrier-structure": "contextual-fact",
+    "language-specific-phonotactics": "architecture-invariant",
+    "possible-sequence": "boundary-conditioned-fact",
+    "meaningful-surface-conformance": "boundary-conditioned-fact",
+  }),
+  "classical.morpheme.meaningful-unit.classify": defineAxisSemanticFactRoles({ "candidate-kind": "lexical-fact", "meaningful-family": "derived-fact" }),
+  "classical.morpheme.syllable.separate": defineAxisSemanticFactRoles({ "meaningful-unit": "contextual-fact", "syllable-rank": "contextual-fact", "rank-contrast": "derived-fact", coterminality: "boundary-conditioned-fact" }),
+  "classical.morpheme.combinatorial-type.classify": defineAxisSemanticFactRoles({ "meaningful-unit": "contextual-fact", "major-minor-type": "derived-fact", "representational-center": "derived-fact", "affixal-status": "derived-fact" }),
+  "classical.morpheme.affix.position.classify": defineAxisSemanticFactRoles({ "minor-morpheme": "contextual-fact", "sequence-position": "boundary-conditioned-fact", "affix-position-class": "derived-fact" }),
+  "classical.morpheme.affix.function.classify": defineAxisSemanticFactRoles({ "affix-position": "contextual-fact", "information-role": "contextual-fact", "stem-boundary": "boundary-conditioned-fact", "functional-type": "derived-fact" }),
+  "classical.morpheme.inflectional-paradigm.classify": defineAxisSemanticFactRoles({ "inflectional-affix": "contextual-fact", "common-stem": "architecture-invariant", "stem-class": "contextual-fact", "variant-set": "derived-fact" }),
+  "classical.structure.post-stem-unit.classify": defineAxisSemanticFactRoles({ "rank-result": "contextual-fact", "unit-disposition": "boundary-conditioned-fact", "nuclear-clause-rank": "derived-fact" }),
+  "classical.morpheme.inflectional-dyad.analyze": defineAxisSemanticFactRoles({ "first-affix": "contextual-fact", "second-affix": "contextual-fact", "inseparable-sequence": "boundary-conditioned-fact", "dyad-structure": "derived-fact" }),
+  "classical.morpheme.inflectional-affix.demote": defineAxisSemanticFactRoles({ "inflectional-affix": "contextual-fact", "process-kind": "genuine-user-choice", "source-boundary": "contextual-fact", "target-boundary": "boundary-conditioned-fact" }),
+  "classical.morpheme.meaningful-rank.hierarchy.validate": defineAxisSemanticFactRoles({ "major-type": "contextual-fact", "minor-type": "contextual-fact", "rank-stages": "architecture-invariant", "lower-stage-dependency": "architecture-invariant" }),
+  "classical.structure.meaningful-rank.source-or-upgrade.validate": defineAxisSemanticFactRoles({ hierarchy: "contextual-fact", "source-rank": "contextual-fact", "target-rank": "contextual-fact", "transition-mode": "genuine-user-choice" }),
+  "classical.structure.meaningful-rank.downgrade": defineAxisSemanticFactRoles({ hierarchy: "contextual-fact", "higher-rank": "contextual-fact", "lower-rank": "contextual-fact", "downgrade-mode": "genuine-user-choice" }),
+  "classical.structure.root.major-morpheme.validate": defineAxisSemanticFactRoles({ "major-type": "contextual-fact", "major-unit-count": "boundary-conditioned-fact", "root-structure": "derived-fact" }),
+  "classical.structure.stem.form-directly": defineAxisSemanticFactRoles({ "base-unit": "contextual-fact", "derivational-affix": "contextual-fact", "formation-kind": "genuine-user-choice", "stem-result": "derived-fact" }),
+  "classical.structure.stem.form-via-stock": defineAxisSemanticFactRoles({ root: "contextual-fact", "derivational-suffix": "contextual-fact", "stock-stage": "derived-fact", "stem-result": "derived-fact" }),
+  "classical.structure.stem.compound": defineAxisSemanticFactRoles({ "first-stem": "contextual-fact", "second-stem": "contextual-fact", "compound-relation": "genuine-user-choice", "stem-result": "derived-fact" }),
+  "classical.structure.meaning-bearing-unit.classify": defineAxisSemanticFactRoles({ unit: "contextual-fact", "unit-rank": "contextual-fact", "meaning-component": "derived-fact" }),
+  "classical.structure.stem.lexical-status.classify": defineAxisSemanticFactRoles({ stem: "contextual-fact", "lexical-status": "derived-fact", "lexicon-membership": "derived-fact" }),
+  "classical.structure.root.meaning-rank.upgrade": defineAxisSemanticFactRoles({ root: "contextual-fact", "rank-upgrade": "contextual-fact", "source-meaning": "contextual-fact", "target-meaning": "derived-fact" }),
+  "concept.word.sentence-fragment.analyze": defineAxisSemanticFactRoles({ "word-rank": "contextual-fact", "sentence-fragment": "architecture-invariant", "simple-word-exception": "boundary-conditioned-fact" }),
+  "classical.structure.stem-transition-zone.validate": defineAxisSemanticFactRoles({ stem: "contextual-fact", "post-stem-unit": "contextual-fact", "derivation-boundary": "architecture-invariant", "inflection-onset": "architecture-invariant" }),
+  "classical.nuclear-clause.morphosyntax.validate": defineAxisSemanticFactRoles({ "nuclear-clause": "contextual-fact", subject: "derived-fact", predicate: "derived-fact", "morphosyntax-domain": "architecture-invariant" }),
+  "classical.structure.group.compose": defineAxisSemanticFactRoles({ particles: "contextual-fact", "nuclear-clauses": "contextual-fact", "group-shape": "genuine-user-choice", "group-result": "derived-fact" }),
+  "classical.structure.syntax-domain-onset.validate": defineAxisSemanticFactRoles({ "group-result": "contextual-fact", "group-rank": "derived-fact", "syntax-domain": "architecture-invariant" }),
+  "concept.structure.principles.analyze": defineAxisSemanticFactRoles({ "structure-facet": "contextual-fact", "structuring-principles": "architecture-invariant", concatenation: "architecture-invariant", "unit-closure": "derived-fact" }),
+  "concept.structure.governance-taxonomy.analyze": defineAxisSemanticFactRoles({ governance: "architecture-invariant", "general-type": "derived-fact", "function-unit-coupling": "boundary-conditioned-fact", "governance-subtype": "derived-fact" }),
+  "concept.structure.adjunctive-governance.analyze": defineAxisSemanticFactRoles({ governor: "derived-fact", adjunct: "derived-fact", "predicate-structure": "boundary-conditioned-fact", "relation-structure": "boundary-conditioned-fact", modification: "boundary-conditioned-fact", "function-unit-filler": "contextual-fact", adjunctor: "boundary-conditioned-fact", "agreement-case": "contextual-fact" }),
+  "concept.structure.conjunctive-governance.analyze": defineAxisSemanticFactRoles({ conjuncts: "contextual-fact", "equal-governance": "architecture-invariant", "conjunct-filler-class": "contextual-fact" }),
+  "classical.structure.level-distribution.validate": defineAxisSemanticFactRoles({ "morphological-level": "contextual-fact", "morphosyntactical-level": "contextual-fact", "syntactical-level": "contextual-fact", "cross-level-distribution": "architecture-invariant" }),
+  "classical.structure.participant-role.analyze": defineAxisSemanticFactRoles({ participant: "contextual-fact", "event-relation": "contextual-fact", "participant-role": "derived-fact", "entitive-function-unit": "contextual-fact" }),
+  "classical.structure.conceptual-plane.separate": defineAxisSemanticFactRoles({ "function-unit-plane": "architecture-invariant", "form-class-plane": "architecture-invariant", "lexical-item-plane": "architecture-invariant", "participant-role-plane": "architecture-invariant", nonintermingling: "boundary-conditioned-fact" }),
+  "classical.authority.source-language.firewall.enforce": defineAxisSemanticFactRoles({ "interpretive-provenance": "contextual-fact", "source-language-authority": "architecture-invariant", "interpretive-bias": "contextual-fact", "grammar-firewall": "architecture-invariant" }),
+  "classical.source.phonological-identity.validate": defineAxisSemanticFactRoles({ "vowel-length": "contextual-fact", "glottal-stop": "contextual-fact", "lexical-identity": "derived-fact", "dictionary-collapse": "boundary-conditioned-fact" }),
+  "classical.verbstem.object-embed.validate": defineAxisSemanticFactRoles({ "object-prefix": "contextual-fact", "embedded-nounstem": "contextual-fact", valence: "derived-fact", "stem-boundary": "derived-fact" }),
+  "classical.particle.lexical-distinction.authorize": defineAxisSemanticFactRoles({ "particle-identity": "derived-fact", "particle-sequence": "derived-fact", liaison: "boundary-conditioned-fact", "dictionary-head": "contextual-fact" }),
+  "classical.verbstem.lexicon.authorize": defineAxisSemanticFactRoles({ "verbstem-identity": "derived-fact", valence: "derived-fact", "canonical-meaning": "derived-fact", "dictionary-head": "contextual-fact" }),
+  "classical.vnc.compound.widowhood.interpret": defineAxisSemanticFactRoles({ "compound-verbstem": "contextual-fact", "subject-person-number": "contextual-fact", "participant-sex": "derived-fact", "widowhood-meaning": "derived-fact" }),
+  "classical.nnc.exotl.interpret": defineAxisSemanticFactRoles({ "nominal-clause": "derived-fact", "silent-subject": "derived-fact", "compositional-meaning": "derived-fact", "semantic-weighting": "derived-fact" }),
+  "classical.sentence.tleh-admonitory-pair.interpret": defineAxisSemanticFactRoles({ "question-forms": "derived-fact", "honored-subject": "derived-fact", "nonhuman-object": "derived-fact", "rhetorical-force": "contextual-fact", "expected-answer": "contextual-fact" }),
+  "classical.sentence.tleh-closing-vocative.interpret": defineAxisSemanticFactRoles({ "closing-question": "derived-fact", "honored-subject": "derived-fact", vocatives: "derived-fact", "pragmatic-force": "contextual-fact", "translation-boundary": "architecture-invariant" }),
+  "classical.nnc.king-praise-role-contrast.interpret": defineAxisSemanticFactRoles({ "actual-forms": "derived-fact", "substituted-forms": "contextual-fact", "subject-possessor-relation": "derived-fact", "participant-roles": "derived-fact", "corrected-meaning": "derived-fact" }),
   "orthography:transcription": defineAxisSemanticFactRoles({
     "transcription-source": "lexical-fact",
     "phonological-boundary": "boundary-conditioned-fact",
@@ -598,6 +857,80 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   "concept:classification": defineCanonicalResultContract(
     "classical-grammar-concept-result",
   ),
+  "classical.morpheme.silent.contrast.validate": defineCanonicalResultContract(
+    "classical-silent-morph-contrast-result",
+  ),
+  "classical.linguistic.unit.compose": defineCanonicalResultContract(
+    "classical-linguistic-unit-composition-result",
+  ),
+  "classical.linguistic.structure.recurse": defineCanonicalResultContract(
+    "classical-linguistic-structure-recursion-result",
+  ),
+  "classical.linguistic.unit.discontinuity.validate": defineCanonicalResultContract(
+    "classical-discontinuous-unit-admissibility-result",
+  ),
+  "classical.carrier.meaningless-unit.classify": defineCanonicalResultContract(
+    "classical-meaningless-carrier-unit-classification-result",
+  ),
+  "classical.carrier.rank.taxonomy.classify": defineCanonicalResultContract(
+    "classical-carrier-rank-taxonomy-result",
+  ),
+  "classical.carrier.rank.form": defineCanonicalResultContract(
+    "carrier-rank-formation-result",
+  ),
+  "classical.carrier.syllable.compose": defineCanonicalResultContract(
+    "classical-syllable-structure-result",
+  ),
+  "classical.carrier.vocable.compose": defineCanonicalResultContract(
+    "carrier-vocable-structure-result",
+  ),
+  "classical.carrier.vocable.prosody.validate": defineCanonicalResultContract(
+    "carrier-vocable-prosody-result",
+  ),
+  "classical.carrier.phonotactic.constraints.validate": defineCanonicalResultContract(
+    "carrier-phonotactic-surface-constraints-result",
+  ),
+  "classical.morpheme.meaningful-unit.classify": defineCanonicalResultContract("classical-meaningful-morpheme-unit-classification-result"),
+  "classical.morpheme.syllable.separate": defineCanonicalResultContract("classical-morpheme-syllable-separation-result"),
+  "classical.morpheme.combinatorial-type.classify": defineCanonicalResultContract("classical-morpheme-combinatorial-type-classification-result"),
+  "classical.morpheme.affix.position.classify": defineCanonicalResultContract("classical-affix-linear-position-classification-result"),
+  "classical.morpheme.affix.function.classify": defineCanonicalResultContract("classical-affix-functional-type-classification-result"),
+  "classical.morpheme.inflectional-paradigm.classify": defineCanonicalResultContract("classical-inflectional-paradigm-definition-result"),
+  "classical.structure.post-stem-unit.classify": defineCanonicalResultContract("classical-nahuatl-post-stem-unit-classification-result"),
+  "classical.morpheme.inflectional-dyad.analyze": defineCanonicalResultContract("classical-inflectional-affix-dyad-analysis-result"),
+  "classical.morpheme.inflectional-affix.demote": defineCanonicalResultContract("classical-inflectional-affix-stem-internal-demotion-result"),
+  "classical.morpheme.meaningful-rank.hierarchy.validate": defineCanonicalResultContract("classical-meaningful-structural-rank-hierarchy-result"),
+  "classical.structure.meaningful-rank.source-or-upgrade.validate": defineCanonicalResultContract("classical-meaningful-rank-source-and-upgrade-result"),
+  "classical.structure.meaningful-rank.downgrade": defineCanonicalResultContract("classical-meaningful-rank-downgrade-result"),
+  "classical.structure.root.major-morpheme.validate": defineCanonicalResultContract("classical-root-major-morpheme-definition-result"),
+  "classical.structure.stem.form-directly": defineCanonicalResultContract("classical-direct-stem-formation-result"),
+  "classical.structure.stem.form-via-stock": defineCanonicalResultContract("classical-stock-mediated-stem-formation-result"),
+  "classical.structure.stem.compound": defineCanonicalResultContract("classical-compound-stem-formation-result"),
+  "classical.structure.meaning-bearing-unit.classify": defineCanonicalResultContract("classical-lexeme-bearing-unit-classification-result"),
+  "classical.structure.stem.lexical-status.classify": defineCanonicalResultContract("classical-stem-lexical-item-classification-result"),
+  "classical.structure.root.meaning-rank.upgrade": defineCanonicalResultContract("classical-root-meaning-rank-upgrade-result"),
+  "concept.word.sentence-fragment.analyze": defineCanonicalResultContract("comparative-word-sentence-fragment-analysis-result"),
+  "classical.structure.stem-transition-zone.validate": defineCanonicalResultContract("classical-stem-inflection-transition-zone-result"),
+  "classical.nuclear-clause.morphosyntax.validate": defineCanonicalResultContract("nuclear-clause-morphosyntax-domain-result"),
+  "classical.structure.group.compose": defineCanonicalResultContract("nahuatl-group-composition-result"),
+  "classical.structure.syntax-domain-onset.validate": defineCanonicalResultContract("nahuatl-syntax-domain-onset-result"),
+  "concept.structure.principles.analyze": defineCanonicalResultContract("linguistic-structure-principles-analysis-result"),
+  "concept.structure.governance-taxonomy.analyze": defineCanonicalResultContract("governance-type-taxonomy-result"),
+  "concept.structure.adjunctive-governance.analyze": defineCanonicalResultContract("adjunctive-governance-analysis-result"),
+  "concept.structure.conjunctive-governance.analyze": defineCanonicalResultContract("conjunctive-governance-analysis-result"),
+  "classical.structure.level-distribution.validate": defineCanonicalResultContract("nahuatl-structure-level-distribution-result"),
+  "classical.structure.participant-role.analyze": defineCanonicalResultContract("participant-role-analysis-result"),
+  "classical.structure.conceptual-plane.separate": defineCanonicalResultContract("conceptual-plane-separation-result"),
+  "classical.authority.source-language.firewall.enforce": defineCanonicalResultContract("translation-authority-boundary-result"),
+  "classical.source.phonological-identity.validate": defineCanonicalResultContract("classical-phonological-distinction-result"),
+  "classical.verbstem.object-embed.validate": defineCanonicalResultContract("classical-object-embed-distinction-result"),
+  "classical.particle.lexical-distinction.authorize": defineCanonicalResultContract("classical-particle-lexical-distinction-result"),
+  "classical.verbstem.lexicon.authorize": defineCanonicalResultContract("classical-verbstem-lexicon-result"),
+  "classical.vnc.compound.widowhood.interpret": defineCanonicalResultContract("classical-nahuatl-widowhood-compound-interpretation-result"),
+  "classical.nnc.exotl.interpret": defineCanonicalResultContract("classical-nahuatl-exotl-interpretation-result"),
+  "classical.sentence.tleh-admonitory-pair.interpret": defineCanonicalResultContract("classical-nahuatl-tleh-admonitory-pair-result"),
+  "classical.sentence.tleh-closing-vocative.interpret": defineCanonicalResultContract("classical-nahuatl-tleh-closing-vocative-result"),
+  "classical.nnc.king-praise-role-contrast.interpret": defineCanonicalResultContract("classical-nahuatl-king-praise-role-contrast-result"),
   "orthography:transcription": defineCanonicalResultContract(
     "classical-nahuatl-transcription-frame",
   ),
@@ -1021,110 +1354,71 @@ const LCM_AXIS_OWNERS = Object.freeze(LCM_AXIS_IDS.map((axisId) => Object.freeze
   callerSuppliedValueAuthority: false,
 })));
 
-const FORBIDDEN_AUTHORITY_KEYS = Object.freeze(new Set([
-  "lesson",
-  "lessonid",
-  "lessonnumber",
-  "lessonmetadata",
-  "highestactivelesson",
-  "curriculum",
-  "curriculumorder",
-  "formula",
-  "formulastring",
-  "formularecord",
-  "formularecords",
-  "surface",
-  "surfaceform",
-  "surfaceforms",
-  "targetsurface",
-  "selectedresult",
-  "result",
-  "answer",
-  "storedanswer",
-  "canvasanswer",
-  "example",
-  "evidence",
-  "citation",
-  "sourcetext",
-  "translation",
-  "display",
-  "displaytext",
-  "label",
-  "storedlabel",
-  "glossary",
-  "restoredstate",
-  "uistate",
-  "urlstate",
-]));
-
-function isForbiddenApplicationAuthorityKey(normalizedPropertyName = "") {
-  const key = String(normalizedPropertyName || "");
-  if (FORBIDDEN_AUTHORITY_KEYS.has(key)) return true;
-  return /(formula|surface|answer|translation|display|label|glossary|curriculum|lesson|canvas|example|evidence|citation|sourcetext|restoredstate|uistate|urlstate)/u
-    .test(key);
-}
-
-function isExplicitReadOnlyAuthorityDeclaration(
-  normalizedPropertyName = "",
-  value = undefined,
-) {
-  if (!/(authority|authorizing|accepted)$/u.test(
-    String(normalizedPropertyName || ""),
-  )) {
-    return false;
-  }
-  if (value === false) {
-    return true;
-  }
-  return [
-    "display-only-not-authority",
-    "not-authority",
-    "non-authoritative",
-    "read-only-not-authority",
-  ].includes(String(value || "").trim().toLowerCase());
-}
-
-function hasExplicitReadOnlyArtifactDeclaration(
-  owner,
-  normalizedPropertyName = "",
-) {
-  const family = String(normalizedPropertyName || "").includes("formula")
-    ? "formula"
-    : String(normalizedPropertyName || "").includes("surface")
-      ? "surface"
-      : "";
-  if (!family || !owner || typeof owner !== "object") {
-    return false;
-  }
-  const authorityKeys = family === "formula"
-    ? ["formulaArtifactAuthority", "formulaStringAuthority"]
-    : ["surfaceArtifactAuthority", "surfaceStringAuthority"];
-  return authorityKeys.some((authorityKey) => {
-    let descriptor = null;
-    try {
-      descriptor = Object.getOwnPropertyDescriptor(owner, authorityKey);
-    } catch {
-      descriptor = null;
-    }
-    return Boolean(
-      descriptor
-      && Object.prototype.hasOwnProperty.call(descriptor, "value")
-      && isExplicitReadOnlyAuthorityDeclaration(
-        authorityKey.toLowerCase(),
-        descriptor.value,
-      ),
-    );
-  });
-}
-
 const CANONICAL_APPLICATION_SOURCE_BUILDER_NAMES = Object.freeze([
   "buildClassicalNahuatlTranscriptionSourceFrame",
   "buildClassicalNahuatlParticleSourceFrame",
+  "buildClassicalMeaningfulMorphemeUnitClassificationSource",
+  "buildClassicalMorphemeSyllableSeparationSource",
+  "buildClassicalMorphemeCombinatorialTypeClassificationSource",
+  "buildClassicalAffixLinearPositionClassificationSource",
+  "buildClassicalAffixFunctionalTypeClassificationSource",
+  "buildClassicalInflectionalParadigmDefinitionSource",
+  "buildClassicalNahuatlPostStemUnitClassificationSource",
+  "buildClassicalInflectionalAffixDyadAnalysisSource",
+  "buildClassicalInflectionalAffixStemInternalDemotionSource",
+  "buildClassicalMeaningfulStructuralRankHierarchySource",
+  "buildClassicalMeaningfulRankSourceUpgradeAdmissibilitySource",
+  "buildClassicalMeaningfulRankDowngradeSource",
+  "buildClassicalRootMajorMorphemeDefinitionSource",
+  "buildClassicalDirectStemFormationSource",
+  "buildClassicalStockMediatedStemFormationSource",
+  "buildClassicalCompoundStemFormationSource",
+  "buildClassicalLexemeBearingUnitClassificationSource",
+  "buildClassicalStemLexicalItemClassificationSource",
+  "buildClassicalRootMeaningRankUpgradeSource",
+  "buildComparativeWordSentenceFragmentAnalysisSource",
+  "buildClassicalStemInflectionTransitionZoneSource",
+  "buildClassicalNuclearClauseMorphosyntaxDomainSource",
+  "buildClassicalParticleLexicalDistinctionSource",
+  "buildClassicalVerbstemLexiconSource",
 ]);
 
 const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
   "isIssuedGrammarFrame",
   "isClassicalGrammarConceptSource",
+  "isClassicalSilentMorphContrastSource",
+  "isClassicalMeaninglessCarrierUnitClassificationSource",
+  "isClassicalCarrierRankTaxonomySource",
+  "isClassicalCarrierRankFormationSource",
+  "isClassicalSyllableStructureSource",
+  "isClassicalCarrierVocableStructureSource",
+  "isClassicalCarrierVocableProsodySource",
+  "isClassicalCarrierPhonotacticSurfaceConstraintsSource",
+  "isClassicalMeaningfulMorphemeUnitClassificationSource",
+  "isClassicalMorphemeSyllableSeparationSource",
+  "isClassicalMorphemeCombinatorialTypeClassificationSource",
+  "isClassicalAffixLinearPositionClassificationSource",
+  "isClassicalAffixFunctionalTypeClassificationSource",
+  "isClassicalInflectionalParadigmDefinitionSource",
+  "isClassicalNahuatlPostStemUnitClassificationSource",
+  "isClassicalInflectionalAffixDyadAnalysisSource",
+  "isClassicalInflectionalAffixStemInternalDemotionSource",
+  "isClassicalMeaningfulStructuralRankHierarchySource",
+  "isClassicalMeaningfulRankSourceUpgradeAdmissibilitySource",
+  "isClassicalMeaningfulRankDowngradeSource",
+  "isClassicalRootMajorMorphemeDefinitionSource",
+  "isClassicalDirectStemFormationSource",
+  "isClassicalStockMediatedStemFormationSource",
+  "isClassicalCompoundStemFormationSource",
+  "isClassicalLexemeBearingUnitClassificationSource",
+  "isClassicalStemLexicalItemClassificationSource",
+  "isClassicalRootMeaningRankUpgradeSource",
+  "isComparativeWordSentenceFragmentAnalysisSource",
+  "isClassicalStemInflectionTransitionZoneSource",
+  "isClassicalNuclearClauseMorphosyntaxDomainSource",
+  "isClassicalParticleLexicalDistinctionSource",
+  "isClassicalVerbstemLexiconSource",
+  "isClassicalNahuatlIdiomFrame",
   "isClassicalNahuatlTranscriptionFrame",
   "isClassicalNahuatlParticleSourceFrame",
   "isClassicalNahuatlNuclearClauseSource",
@@ -1202,6 +1496,80 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
   "concept:classification": Object.freeze([
     "isClassicalGrammarConceptResult",
   ]),
+  "classical.morpheme.silent.contrast.validate": Object.freeze([
+    "isClassicalSilentMorphContrastResult",
+  ]),
+  "classical.linguistic.unit.compose": Object.freeze([
+    "isClassicalLinguisticUnitCompositionResult",
+  ]),
+  "classical.linguistic.structure.recurse": Object.freeze([
+    "isClassicalLinguisticStructureRecursionResult",
+  ]),
+  "classical.linguistic.unit.discontinuity.validate": Object.freeze([
+    "isClassicalDiscontinuousUnitAdmissibilityResult",
+  ]),
+  "classical.carrier.meaningless-unit.classify": Object.freeze([
+    "isClassicalMeaninglessCarrierUnitClassificationResult",
+  ]),
+  "classical.carrier.rank.taxonomy.classify": Object.freeze([
+    "isClassicalCarrierRankTaxonomyResult",
+  ]),
+  "classical.carrier.rank.form": Object.freeze([
+    "isClassicalCarrierRankFormationResult",
+  ]),
+  "classical.carrier.syllable.compose": Object.freeze([
+    "isClassicalSyllableStructureResult",
+  ]),
+  "classical.carrier.vocable.compose": Object.freeze([
+    "isClassicalCarrierVocableStructureResult",
+  ]),
+  "classical.carrier.vocable.prosody.validate": Object.freeze([
+    "isClassicalCarrierVocableProsodyResult",
+  ]),
+  "classical.carrier.phonotactic.constraints.validate": Object.freeze([
+    "isClassicalCarrierPhonotacticSurfaceConstraintsResult",
+  ]),
+  "classical.morpheme.meaningful-unit.classify": Object.freeze(["isClassicalMeaningfulMorphemeUnitClassificationResult"]),
+  "classical.morpheme.syllable.separate": Object.freeze(["isClassicalMorphemeSyllableSeparationResult"]),
+  "classical.morpheme.combinatorial-type.classify": Object.freeze(["isClassicalMorphemeCombinatorialTypeClassificationResult"]),
+  "classical.morpheme.affix.position.classify": Object.freeze(["isClassicalAffixLinearPositionClassificationResult"]),
+  "classical.morpheme.affix.function.classify": Object.freeze(["isClassicalAffixFunctionalTypeClassificationResult"]),
+  "classical.morpheme.inflectional-paradigm.classify": Object.freeze(["isClassicalInflectionalParadigmDefinitionResult"]),
+  "classical.structure.post-stem-unit.classify": Object.freeze(["isClassicalNahuatlPostStemUnitClassificationResult"]),
+  "classical.morpheme.inflectional-dyad.analyze": Object.freeze(["isClassicalInflectionalAffixDyadAnalysisResult"]),
+  "classical.morpheme.inflectional-affix.demote": Object.freeze(["isClassicalInflectionalAffixStemInternalDemotionResult"]),
+  "classical.morpheme.meaningful-rank.hierarchy.validate": Object.freeze(["isClassicalMeaningfulStructuralRankHierarchyResult"]),
+  "classical.structure.meaningful-rank.source-or-upgrade.validate": Object.freeze(["isClassicalMeaningfulRankSourceUpgradeAdmissibilityResult"]),
+  "classical.structure.meaningful-rank.downgrade": Object.freeze(["isClassicalMeaningfulRankDowngradeResult"]),
+  "classical.structure.root.major-morpheme.validate": Object.freeze(["isClassicalRootMajorMorphemeDefinitionResult"]),
+  "classical.structure.stem.form-directly": Object.freeze(["isClassicalDirectStemFormationResult"]),
+  "classical.structure.stem.form-via-stock": Object.freeze(["isClassicalStockMediatedStemFormationResult"]),
+  "classical.structure.stem.compound": Object.freeze(["isClassicalCompoundStemFormationResult"]),
+  "classical.structure.meaning-bearing-unit.classify": Object.freeze(["isClassicalLexemeBearingUnitClassificationResult"]),
+  "classical.structure.stem.lexical-status.classify": Object.freeze(["isClassicalStemLexicalItemClassificationResult"]),
+  "classical.structure.root.meaning-rank.upgrade": Object.freeze(["isClassicalRootMeaningRankUpgradeResult"]),
+  "concept.word.sentence-fragment.analyze": Object.freeze(["isComparativeWordSentenceFragmentAnalysisResult"]),
+  "classical.structure.stem-transition-zone.validate": Object.freeze(["isClassicalStemInflectionTransitionZoneResult"]),
+  "classical.nuclear-clause.morphosyntax.validate": Object.freeze(["isClassicalNuclearClauseMorphosyntaxDomainResult"]),
+  "classical.structure.group.compose": Object.freeze(["isClassicalNahuatlGroupCompositionResult"]),
+  "classical.structure.syntax-domain-onset.validate": Object.freeze(["isClassicalNahuatlSyntaxDomainOnsetResult"]),
+  "concept.structure.principles.analyze": Object.freeze(["isLinguisticStructurePrinciplesAnalysisResult"]),
+  "concept.structure.governance-taxonomy.analyze": Object.freeze(["isGovernanceTypeTaxonomyResult"]),
+  "concept.structure.adjunctive-governance.analyze": Object.freeze(["isAdjunctiveGovernanceAnalysisResult"]),
+  "concept.structure.conjunctive-governance.analyze": Object.freeze(["isConjunctiveGovernanceAnalysisResult"]),
+  "classical.structure.level-distribution.validate": Object.freeze(["isClassicalNahuatlStructureLevelDistributionResult"]),
+  "classical.structure.participant-role.analyze": Object.freeze(["isClassicalParticipantRoleAnalysisResult"]),
+  "classical.structure.conceptual-plane.separate": Object.freeze(["isClassicalConceptualPlaneSeparationResult"]),
+  "classical.authority.source-language.firewall.enforce": Object.freeze(["isTranslationAuthorityBoundaryResult"]),
+  "classical.source.phonological-identity.validate": Object.freeze(["isClassicalPhonologicalDistinctionResult"]),
+  "classical.verbstem.object-embed.validate": Object.freeze(["isClassicalObjectEmbedDistinctionResult"]),
+  "classical.particle.lexical-distinction.authorize": Object.freeze(["isClassicalParticleLexicalDistinctionResult"]),
+  "classical.verbstem.lexicon.authorize": Object.freeze(["isClassicalVerbstemLexiconResult"]),
+  "classical.vnc.compound.widowhood.interpret": Object.freeze(["isClassicalNahuatlWidowhoodCompoundInterpretationResult"]),
+  "classical.nnc.exotl.interpret": Object.freeze(["isClassicalNahuatlExotlInterpretationResult"]),
+  "classical.sentence.tleh-admonitory-pair.interpret": Object.freeze(["isClassicalNahuatlTlehAdmonitoryPairResult"]),
+  "classical.sentence.tleh-closing-vocative.interpret": Object.freeze(["isClassicalNahuatlTlehClosingVocativeResult"]),
+  "classical.nnc.king-praise-role-contrast.interpret": Object.freeze(["isClassicalNahuatlKingPraiseRoleContrastResult"]),
   "orthography:transcription": Object.freeze([
     "isClassicalNahuatlTranscriptionFrame",
   ]),
@@ -1508,12 +1876,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           });
         }
         if (
-          isForbiddenApplicationAuthorityKey(normalizedPropertyName)
-          && !isExplicitReadOnlyAuthorityDeclaration(
+          isForbiddenClassicalGrammarAuthorityKey(normalizedPropertyName)
+          && !isClassicalGrammarReadOnlyAuthorityDeclaration(
             normalizedPropertyName,
             descriptor.value,
           )
-          && !hasExplicitReadOnlyArtifactDeclaration(
+          && !hasClassicalGrammarReadOnlyArtifactDeclaration(
             inspectedOwner,
             normalizedPropertyName,
           )
@@ -1553,8 +1921,26 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         `${APPLICATION_REQUEST_DIAGNOSTIC}:output-kind-not-supported:${outputKind}`,
       );
     }
+    const foundationRoute = validateClassicalGrammarFoundationRoute({
+      operationId,
+      capabilityName: outputContract.capabilityName,
+      axisIds: route.axisIds,
+    });
+    if (!foundationRoute.valid) {
+      throw new Error(
+        `${APPLICATION_REQUEST_DIAGNOSTIC}:foundation-route-invalid:${foundationRoute.errors[0]}`,
+      );
+    }
     if (!Array.isArray(request.args)) {
       throw new TypeError(`${APPLICATION_REQUEST_DIAGNOSTIC}:args-array-required`);
+    }
+    const languageIdentity = validateClassicalGrammarLanguageIdentity(
+      request.languageId,
+    );
+    if (!languageIdentity.valid) {
+      throw new Error(
+        `${APPLICATION_REQUEST_DIAGNOSTIC}:${languageIdentity.error}`,
+      );
     }
     const forbiddenCarrier = getForbiddenApplicationAuthorityCarrier(request);
     if (forbiddenCarrier) {
@@ -1577,6 +1963,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       semanticOperationIdentity: (
         ROUTE_DEFINITIONS[operationId] === route
         && CANONICAL_RESULT_CONTRACTS[operationId] != null
+        && foundationRoute.valid === true
+        && languageIdentity.valid === true
         && getApplicationOutputContract(
           operationId,
           outputKind,
@@ -2244,6 +2632,78 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     );
   }
 
+  function issueClassicalLinguisticUnitCompositionSource(request = {}) {
+    const resolvedBuilder = resolveCanonicalCallableCapability(
+      targetObject,
+      "buildClassicalLinguisticUnitCompositionSource",
+      api,
+    );
+    if (!resolvedBuilder) {
+      throw new Error(
+        `${REQUIRED_CAPABILITY_DIAGNOSTIC}:buildClassicalLinguisticUnitCompositionSource`,
+      );
+    }
+    return Reflect.apply(resolvedBuilder.capability, targetObject, [request]);
+  }
+
+  function issueClassicalLinguisticStructureRecursionSource(request = {}) {
+    const resolvedBuilder = resolveCanonicalCallableCapability(
+      targetObject,
+      "buildClassicalLinguisticStructureRecursionSource",
+      api,
+    );
+    if (!resolvedBuilder) {
+      throw new Error(
+        `${REQUIRED_CAPABILITY_DIAGNOSTIC}:buildClassicalLinguisticStructureRecursionSource`,
+      );
+    }
+    return Reflect.apply(resolvedBuilder.capability, targetObject, [request]);
+  }
+
+  function issueClassicalDiscontinuousUnitAdmissibilitySource(request = {}) {
+    const resolvedBuilder = resolveCanonicalCallableCapability(
+      targetObject,
+      "buildClassicalDiscontinuousUnitAdmissibilitySource",
+      api,
+    );
+    if (!resolvedBuilder) {
+      throw new Error(
+        `${REQUIRED_CAPABILITY_DIAGNOSTIC}:buildClassicalDiscontinuousUnitAdmissibilitySource`,
+      );
+    }
+    return Reflect.apply(resolvedBuilder.capability, targetObject, [request]);
+  }
+
+  function issueClassicalCarrierRankTaxonomySource(request = {}) {
+    const resolvedBuilder = resolveCanonicalCallableCapability(
+      targetObject,
+      "buildClassicalCarrierRankTaxonomySource",
+      api,
+    );
+    if (!resolvedBuilder) {
+      throw new Error(
+        `${REQUIRED_CAPABILITY_DIAGNOSTIC}:buildClassicalCarrierRankTaxonomySource`,
+      );
+    }
+    return Reflect.apply(resolvedBuilder.capability, targetObject, [request]);
+  }
+
+  function issueClassicalMeaninglessCarrierUnitClassificationSource(
+    request = {},
+  ) {
+    const resolvedBuilder = resolveCanonicalCallableCapability(
+      targetObject,
+      "buildClassicalMeaninglessCarrierUnitClassificationSource",
+      api,
+    );
+    if (!resolvedBuilder) {
+      throw new Error(
+        `${REQUIRED_CAPABILITY_DIAGNOSTIC}:buildClassicalMeaninglessCarrierUnitClassificationSource`,
+      );
+    }
+    return Reflect.apply(resolvedBuilder.capability, targetObject, [request]);
+  }
+
   function requestClassicalVncSourceSelectionFrame(...args) {
     return requestCanonicalResult("vnc:source-selection", args);
   }
@@ -2673,6 +3133,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     requestClassicalSentenceAdverbialFrame,
     requestClassicalSentenceParticleFrame,
     requestClassicalParticleResult,
+    issueClassicalLinguisticUnitCompositionSource,
+    issueClassicalLinguisticStructureRecursionSource,
+    issueClassicalDiscontinuousUnitAdmissibilitySource,
+    issueClassicalCarrierRankTaxonomySource,
+    issueClassicalMeaninglessCarrierUnitClassificationSource,
     requestClassicalVncSourceSelectionFrame,
     requestClassicalOrderedVoiceVncApplicationFrame,
     requestClassicalPronominalNncResult,

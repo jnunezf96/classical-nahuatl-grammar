@@ -1,6 +1,6 @@
-import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260801-pre-l58-gates-120";
+import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260806-class-c-claim-172";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260726-lessons2-58-one-system-094";
@@ -14,7 +14,7 @@ import { installClassicalTranscriptionSemanticOwnersGlobals } from "../core/clas
 import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260726-transcription-route-109";
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";
 import { installClassicalNahuatlNuclearClauseGlobals } from "../core/classical/nuclear_clause_source.mjs?v=20260801-pre-l58-gates-118";
-import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
+import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20260806-class-c-claim-172";
 import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20260806-preterit-agentive-nemi-173";
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20260726-lessons2-58-one-system-094";
@@ -38,7 +38,7 @@ import { installClauseGlobals } from "../core/clause/clause.mjs?v=20260726-lesso
 import { installComplementClauseGlobals } from "../core/clause/complement/complement.mjs?v=20260728-lessons51-53-owner-115";
 import { installConjunctionClauseGlobals } from "../core/clause/conjunction/conjunction.mjs?v=20260728-lessons51-53-owner-115";
 import { installComparisonGlobals } from "../core/comparison/comparison.mjs?v=20260728-lessons51-53-owner-115";
-import { installConceptsGlobals } from "../core/concepts/concepts.mjs?v=20260802-l58-rank-transition-150";
+import { installConceptsGlobals } from "../core/concepts/concepts.mjs?v=20260811-lesson1-multigroup-024";
 import { installDerivationSourceModelGlobals } from "../core/derivation/source_model.mjs?v=20260726-lessons2-58-one-system-094";
 import { installForwardDerivationRuntimeGlobals } from "../core/derivation/forward_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installNonactiveDerivationGlobals } from "../core/derivation/nonactive.mjs?v=20260726-lessons2-58-one-system-094";
@@ -76,7 +76,7 @@ import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=2026
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-canvas-fact-browser-012d";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-canvas-fact-browser-012";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-lesson1-multigroup-024";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],

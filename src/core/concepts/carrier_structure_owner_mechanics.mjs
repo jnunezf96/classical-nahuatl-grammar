@@ -204,6 +204,24 @@ function unitPayload(spec, analysisKind, prerequisites, participantChoice, suppo
   if (spec.ownerId === "carrier-vocable-structure") {
     return { unitKind: "carrier-vocable-unit", unitRank: "vocable", rankOrdinal: 3, constituentCount: p.syllableResults?.length || 0, hierarchyFamily: "meaningless" };
   }
+  if (spec.ownerId === "carrier-rank-formation") {
+    const source = support.unitDetails(p.sourceUnitResult) || {};
+    const target = support.unitDetails(p.targetUnitResult) || {};
+    return {
+      formationMode: analysisKind,
+      sourceUnitKind: source.unitKind || "",
+      sourceUnitRank: source.unitRank || "",
+      sourceRankOrdinal: source.rankOrdinal || 0,
+      sourceCarrierKind: source.carrierKind || "",
+      sourceSegmentClass: source.segmentClass || "",
+      targetUnitKind: target.unitKind || "",
+      targetUnitRank: target.unitRank || "",
+      targetRankOrdinal: target.rankOrdinal || 0,
+      targetConstituentCount: target.constituentCount || 0,
+      higherRankFormationValidated: true,
+      sourceUnitUpgraded: analysisKind === "single-unit-rank-upgrade",
+    };
+  }
   if (spec.ownerId === "nahuatl-group-composition") {
     return { unitKind: "nahuatl-group-unit", unitRank: "group", rankOrdinal: 6, constituentCount: (p.particleResults?.length || 0) + (p.nuclearClauseResults?.length || 0), hierarchyFamily: "meaningful" };
   }
@@ -355,7 +373,14 @@ export function createCarrierStructureOwnerMechanicsApi(targetObject = globalThi
     segmentDetails(result) { return segmentResultContexts.get(result) || null; },
     unitDetails(result) {
       const segment = segmentResultContexts.get(result);
-      if (segment) return { rankOrdinal: 1, unitRank: "lowest", constituentCount: 1 };
+      if (segment) return {
+        unitKind: `${segment.segmentClass}-${segment.carrierKind}-instance`,
+        rankOrdinal: 1,
+        unitRank: "lowest",
+        constituentCount: 1,
+        carrierKind: segment.carrierKind,
+        segmentClass: segment.segmentClass,
+      };
       for (const mechanism of mechanisms.values()) {
         const context = mechanism.internal(result);
         if (context) return context.payload;

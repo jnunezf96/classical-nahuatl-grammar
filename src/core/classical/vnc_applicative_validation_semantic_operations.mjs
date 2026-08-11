@@ -418,7 +418,7 @@ function buildProjection(runtime) {
       "nōchi-liā",
       transitive,
     ),
-    typeTwoTlToT: formation(runtime, "pa-tla", "pa-ti-lia", transitive),
+    typeTwoTlToT: formation(runtime, "pa-tla", "pa-ti-liā", transitive),
     classDFinalLong: formation(
       runtime,
       "cuā",

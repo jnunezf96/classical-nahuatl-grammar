@@ -111,7 +111,9 @@ function run(ctx = {}) {
         "ClassicalNahuatlPostStemUnitClassification",
         "ClassicalInflectionalAffixStemInternalDemotion",
         "ClassicalMeaningfulRankSourceUpgradeAdmissibility",
+        "ClassicalMeaningfulRankDowngrade",
         "ClassicalRootMajorMorphemeDefinition",
+        "ClassicalDirectStemFormation",
         "ClassicalStockMediatedStemFormation",
         "ClassicalCompoundStemFormation",
         "ClassicalLexemeBearingUnitClassification",
@@ -120,7 +122,7 @@ function run(ctx = {}) {
         "ClassicalStemInflectionTransitionZone",
     ];
     s.eq(
-        "ten precise owners expose independent Source Result contract and evidence APIs",
+        "twelve precise owners expose independent Source Result contract and evidence APIs",
         prefixes.map((prefix) => [
             prefix,
             [
@@ -350,7 +352,22 @@ function run(ctx = {}) {
         demotion,
         normalSource,
         upgrade,
+        ctx.evaluateClassicalMeaningfulRankDowngrade(
+            ctx.buildClassicalMeaningfulRankDowngradeSource({
+                hierarchyResult: hierarchy(ctx),
+                sourceRank: "nuclear-clause",
+                targetRank: "stem",
+                transitionMode: "explicit-downgrade",
+            }),
+        ),
         rootResult,
+        ctx.evaluateClassicalDirectStemFormation(
+            ctx.buildClassicalDirectStemFormationSource({
+                baseResult: root(ctx),
+                derivationalAffixResult: null,
+                formationKind: "root-alone",
+            }),
+        ),
         stock,
         compound,
         lowerLexeme,
@@ -380,7 +397,9 @@ function run(ctx = {}) {
             "nahuatl-post-stem-unit-classification",
             "inflectional-affix-stem-internal-demotion",
             "meaningful-rank-source-and-upgrade-admissibility",
+            "meaningful-rank-downgrade",
             "root-major-morpheme-definition",
+            "direct-stem-formation",
             "stock-mediated-stem-formation",
             "compound-stem-formation",
             "lexeme-bearing-unit-classification",

@@ -119,6 +119,19 @@ const OWNER_SPECS = Object.freeze({
     successStepId: "meaningful-rank-source-or-upgrade-validated",
     rejectionStepId: "meaningful-rank-source-or-upgrade-rejected",
   }),
+  rankDowngrade: Object.freeze({
+    ownerId: "meaningful-rank-downgrade",
+    operationId: "classical.structure.meaningful-rank.downgrade",
+    sourceKind: "classical-meaningful-rank-downgrade-source",
+    resultKind: "classical-meaningful-rank-downgrade-result",
+    inputContract: "complete-typed-meaningful-rank-downgrade-source",
+    sourceRequiredReason: "owner-issued-meaningful-rank-downgrade-source-required",
+    successStepId: "meaningful-rank-downgrade-executed",
+    rejectionStepId: "meaningful-rank-downgrade-rejected",
+    operationType: "transform",
+    effectScopes: Object.freeze(["semantic-rank-transition", "typed-source-validation"]),
+    outputKinds: Object.freeze(["typed-rank-transition-result"]),
+  }),
   rootDefinition: Object.freeze({
     ownerId: "root-major-morpheme-definition",
     operationId: "classical.structure.root.major-morpheme.validate",
@@ -128,6 +141,20 @@ const OWNER_SPECS = Object.freeze({
     sourceRequiredReason: "owner-issued-root-major-morpheme-source-required",
     successStepId: "root-major-morpheme-definition-validated",
     rejectionStepId: "root-major-morpheme-definition-rejected",
+  }),
+  directStem: Object.freeze({
+    ownerId: "direct-stem-formation",
+    operationId: "classical.structure.stem.form-directly",
+    sourceKind: "classical-direct-stem-formation-source",
+    resultKind: "classical-direct-stem-formation-result",
+    inputContract: "complete-typed-direct-stem-formation-source",
+    sourceRequiredReason: "owner-issued-direct-stem-formation-source-required",
+    successStepId: "direct-stem-formation-executed",
+    rejectionStepId: "direct-stem-formation-rejected",
+    operationType: "compose",
+    effectScopes: Object.freeze(["meaningful-unit-composition", "typed-source-validation"]),
+    outputKinds: Object.freeze(["typed-stem-result"]),
+    unitConstructed: true,
   }),
   stockStem: Object.freeze({
     ownerId: "stock-mediated-stem-formation",
@@ -310,11 +337,25 @@ const RANK_SOURCE_UPGRADE_RESTRICTIONS = Object.freeze([
   "root-and-stem-examples-are-evidence-not-transition-authority",
   "validation-does-not-construct-a-unit-realize-a-boundary-formula-or-surface",
 ]);
+const RANK_DOWNGRADE_RESTRICTIONS = Object.freeze([
+  "the-Nahuatl-meaningful-rank-hierarchy-result-must-be-owner-issued-and-route-retained",
+  "downgrade-requires-an-explicit-higher-to-lower-rank-transition",
+  "upgrade-and-normal-source-relations-remain-separate-owners",
+  "the-nuclear-clause-to-stem-path-changes-rank-and-function-not-written-surface",
+  "stored-hierarchy-tables-and-examples-cannot-authorize-a-downgrade",
+]);
 const ROOT_DEFINITION_RESTRICTIONS = Object.freeze([
   "the-major-morpheme-result-must-be-owner-issued-and-route-retained",
   "a-root-has-exactly-one-major-morpheme-or-morph",
   "a-root-label-spelling-or-displayed-segmentation-cannot-authorize-structure",
   "validation-does-not-form-a-stock-stem-formula-or-surface",
+]);
+const DIRECT_STEM_RESTRICTIONS = Object.freeze([
+  "the-root-or-stem-base-result-must-be-owner-issued-and-route-retained",
+  "derivational-affix-results-are-required-for-derived-stem-paths",
+  "a-root-alone-path-cannot-smuggle-an-affix-result",
+  "stem-plus-derivational-affix-requires-an-existing-stem-result",
+  "formation-builds-an-abstract-typed-stem-without-copying-an-example-spelling",
 ]);
 const STOCK_STEM_RESTRICTIONS = Object.freeze([
   "root-derivational-affix-and-suffix-position-results-must-be-independently-owner-issued",
@@ -1034,6 +1075,7 @@ function dyadAnalysis(target, request) {
       facts: deepFreeze([
         "inflectional-affixes-may-occur-in-inseparable-sequences",
         "an-inseparable-two-member-inflectional-sequence-is-a-morphemic-or-morphic-dyad",
+        "morphemic-or-morphic-dyads-play-a-major-structural-role-in-Nahuatl",
       ]),
       relations: deepFreeze(["two-independent-inflectional-members-compose-one-dyad-analysis"]),
       coordinates: deepFreeze({ memberCount: 2, sequenceRelation: relation }),
@@ -1339,6 +1381,68 @@ function rankSourceUpgradeAnalysis(target, request) {
   });
 }
 
+function rankDowngradeAnalysis(target, request) {
+  const requestFailure = plainRequestFailure(
+    request,
+    ["hierarchyResult", "sourceRank", "targetRank", "transitionMode"],
+    "meaningful-rank-downgrade",
+  );
+  const prerequisite = analyzePrerequisite(
+    target,
+    requestFailure ? null : request.hierarchyResult,
+    HIERARCHY_DESCRIPTOR,
+  );
+  const sourceRank = requestFailure ? "" : String(request.sourceRank || "");
+  const targetRank = requestFailure ? "" : String(request.targetRank || "");
+  const transitionMode = requestFailure ? "" : String(request.transitionMode || "");
+  const sourceIndex = rankIndex(sourceRank);
+  const targetIndex = rankIndex(targetRank);
+  const coordinatesValid = sourceIndex >= 0 && targetIndex >= 0;
+  const explicitDowngrade = coordinatesValid
+    && transitionMode === "explicit-downgrade"
+    && sourceIndex > targetIndex;
+  const nuclearClauseToStem = explicitDowngrade
+    && sourceRank === "nuclear-clause"
+    && targetRank === "stem";
+  const reason = requestFailure
+    || prerequisite.reason
+    || (!coordinatesValid ? "meaningful-rank-coordinates-required" : "")
+    || (!explicitDowngrade ? "explicit-higher-to-lower-rank-downgrade-required" : "");
+  return deepFreeze({
+    reason,
+    requestDigestInput: `${sourceRank}:${targetRank}:${transitionMode}`,
+    prerequisites: deepFreeze([prerequisite]),
+    providedInput: deepFreeze({ sourceRank, targetRank, transitionMode, prerequisiteOwnerId: prerequisite.semanticOwnerId }),
+    guards: deepFreeze([
+      deepFreeze({ stepId: "rank-downgrade-request-shape-validated", branchId: "request-shape", matches: !requestFailure, acceptedReason: "typed-hierarchy-and-downgrade-coordinates-supplied", rejectedReason: requestFailure || "rank-downgrade-request-invalid" }),
+      deepFreeze({ stepId: "rank-downgrade-hierarchy-authority-validated", branchId: "hierarchy-authority", matches: prerequisite.admitted, acceptedReason: "owner-issued-Nahuatl-hierarchy-result-retained", rejectedReason: prerequisite.reason || "owner-issued-Nahuatl-hierarchy-result-required" }),
+      deepFreeze({ stepId: "rank-downgrade-coordinates-validated", branchId: "rank-coordinates", matches: coordinatesValid, acceptedReason: "source-and-target-ranks-occur-in-Nahuatl-hierarchy", rejectedReason: "meaningful-rank-coordinates-required" }),
+      deepFreeze({ stepId: "rank-downgrade-direction-validated", branchId: "downgrade-direction", matches: explicitDowngrade, acceptedReason: "explicit-higher-to-lower-rank-transition", rejectedReason: "explicit-higher-to-lower-rank-downgrade-required" }),
+    ]),
+    checkpoints: deepFreeze([
+      deepFreeze({ stepId: "higher-rank-downgrade-checkpoint", branchId: "general-downgrade-claim", applicable: explicitDowngrade, acceptedReason: "higher-rank-unit-downgraded-to-lower-rank-function", nonapplicableReason: "explicit-downgrade-not-selected" }),
+      deepFreeze({ stepId: "nuclear-clause-to-stem-downgrade-checkpoint", branchId: "Nahuatl-nuclear-clause-downgrade-claim", applicable: nuclearClauseToStem, acceptedReason: "Nahuatl-nuclear-clause-downgraded-to-stem-rank-and-function", nonapplicableReason: "different-rank-downgrade-selected" }),
+    ]),
+    restrictions: RANK_DOWNGRADE_RESTRICTIONS,
+    payload: deepFreeze({
+      classificationStatus: "executed-explicit-meaningful-rank-downgrade",
+      analysisKind: transitionMode,
+      classification: nuclearClauseToStem
+        ? "nuclear-clause-downgraded-to-stem"
+        : "explicit-meaningful-rank-downgrade",
+      facts: deepFreeze([
+        "a-higher-rank-unit-can-be-downgraded-to-function-at-a-lower-rank",
+        ...(nuclearClauseToStem
+          ? ["a-Nahuatl-nuclear-clause-can-be-downgraded-to-stem-rank-and-function"]
+          : []),
+      ]),
+      relations: deepFreeze(["downgrade-remains-distinct-from-normal-source-and-upgrade"]),
+      coordinates: deepFreeze({ sourceRank, targetRank, transitionMode, sourceIndex, targetIndex }),
+      prerequisiteOwnerIds: deepFreeze([OWNER_SPECS.hierarchy.ownerId]),
+    }),
+  });
+}
+
 function rootDefinitionAnalysis(target, request) {
   const requestFailure = plainRequestFailure(
     request,
@@ -1398,6 +1502,90 @@ const DERIVATIONAL_SUFFIX_DESCRIPTOR = selfDescriptor(
     && result.coordinates?.position === "suffix"
     && result.coordinates?.stemBoundaryRelation === "inside",
 );
+const DERIVATIONAL_AFFIX_DESCRIPTOR = selfDescriptor(
+  "classicalAffixFunctionalTypeClassification",
+  "function",
+  (result) => result.classification === "derivational"
+    && result.coordinates?.stemBoundaryRelation === "inside",
+);
+
+function directStemAnalysis(target, request) {
+  const requestFailure = plainRequestFailure(
+    request,
+    ["baseResult", "derivationalAffixResult", "formationKind"],
+    "direct-stem-formation",
+  );
+  const formationKind = requestFailure ? "" : String(request.formationKind || "");
+  const rootBase = analyzePrerequisite(
+    target,
+    requestFailure ? null : request.baseResult,
+    ROOT_DESCRIPTOR,
+  );
+  const stemBase = formationKind === "stem-plus-derivational-affix"
+    ? analyzeStemPrerequisite(target, requestFailure ? null : request.baseResult)
+    : null;
+  const affix = formationKind === "root-alone"
+    ? null
+    : analyzePrerequisite(
+      target,
+      requestFailure ? null : request.derivationalAffixResult,
+      DERIVATIONAL_AFFIX_DESCRIPTOR,
+    );
+  const formationValid = [
+    "root-alone",
+    "root-plus-derivational-affix",
+    "stem-plus-derivational-affix",
+  ].includes(formationKind);
+  const baseAdmitted = formationKind === "stem-plus-derivational-affix"
+    ? stemBase?.admitted === true
+    : rootBase.admitted;
+  const affixAdmitted = formationKind === "root-alone"
+    ? request?.derivationalAffixResult === null
+    : affix?.admitted === true;
+  const reason = requestFailure
+    || (!formationValid ? "direct-stem-formation-kind-required" : "")
+    || (!baseAdmitted
+      ? formationKind === "stem-plus-derivational-affix"
+        ? stemBase?.reason || "owner-issued-stem-base-result-required"
+        : rootBase.reason || "owner-issued-root-base-result-required"
+      : "")
+    || (!affixAdmitted
+      ? formationKind === "root-alone"
+        ? "root-alone-formation-requires-no-derivational-affix"
+        : affix?.reason || "owner-issued-derivational-affix-result-required"
+      : "");
+  const base = formationKind === "stem-plus-derivational-affix" ? stemBase : rootBase;
+  const facts = formationKind === "root-alone"
+    ? ["a-Nahuatl-stem-may-consist-of-a-root-alone"]
+    : formationKind === "root-plus-derivational-affix"
+      ? ["a-Nahuatl-stem-may-consist-of-a-root-plus-a-derivational-affix"]
+      : ["a-Nahuatl-stem-may-consist-of-an-existing-stem-plus-another-derivational-affix"];
+  return deepFreeze({
+    reason,
+    requestDigestInput: `${formationKind}:${base?.semanticOwnerId || ""}:${affix?.semanticOwnerId || ""}`,
+    prerequisites: deepFreeze([base, ...(affix ? [affix] : [])]),
+    providedInput: deepFreeze({ formationKind, baseOwnerId: base?.semanticOwnerId || "", affixOwnerId: affix?.semanticOwnerId || "" }),
+    guards: deepFreeze([
+      deepFreeze({ stepId: "direct-stem-request-shape-validated", branchId: "request-shape", matches: !requestFailure, acceptedReason: "typed-base-affix-and-formation-kind-supplied", rejectedReason: requestFailure || "direct-stem-request-invalid" }),
+      deepFreeze({ stepId: "direct-stem-formation-kind-validated", branchId: "formation-kind", matches: formationValid, acceptedReason: `${formationKind}-selected`, rejectedReason: "direct-stem-formation-kind-required" }),
+      deepFreeze({ stepId: "direct-stem-base-authority-validated", branchId: "base-authority", matches: baseAdmitted, acceptedReason: "owner-issued-root-or-stem-base-retained", rejectedReason: base?.reason || "owner-issued-root-or-stem-base-result-required" }),
+      deepFreeze({ stepId: "direct-stem-derivational-affix-validated", branchId: "derivational-affix", matches: affixAdmitted, acceptedReason: formationKind === "root-alone" ? "root-alone-has-no-affix" : "owner-issued-derivational-affix-retained", rejectedReason: formationKind === "root-alone" ? "root-alone-formation-requires-no-derivational-affix" : affix?.reason || "owner-issued-derivational-affix-result-required" }),
+    ]),
+    checkpoints: deepFreeze([
+      deepFreeze({ stepId: "direct-Nahuatl-stem-formation-checkpoint", branchId: formationKind, applicable: formationValid && baseAdmitted && affixAdmitted, acceptedReason: `${formationKind}-forms-Nahuatl-stem`, nonapplicableReason: "direct-stem-conditions-not-satisfied" }),
+    ]),
+    restrictions: DIRECT_STEM_RESTRICTIONS,
+    payload: deepFreeze({
+      classificationStatus: `formed-direct-stem-by-${formationKind}`,
+      analysisKind: formationKind,
+      classification: "direct-stem",
+      facts: deepFreeze(facts),
+      relations: deepFreeze(["root-stem-and-derivational-affix-ranks-remain-explicit"]),
+      coordinates: deepFreeze({ formationKind, resultRank: "stem" }),
+      prerequisiteOwnerIds: deepFreeze([base?.semanticOwnerId || "", ...(affix ? [affix.semanticOwnerId] : [])]),
+    }),
+  });
+}
 
 function stockStemAnalysis(target, request) {
   const requestFailure = plainRequestFailure(
@@ -1462,6 +1650,12 @@ const STOCK_STEM_DESCRIPTOR = selfDescriptor(
   (result) => result.classification === "stock-mediated-stem"
     && result.unitConstructed === true,
 );
+const DIRECT_STEM_DESCRIPTOR = selfDescriptor(
+  "classicalDirectStemFormation",
+  "directStem",
+  (result) => result.classification === "direct-stem"
+    && result.unitConstructed === true,
+);
 const COMPOUND_STEM_DESCRIPTOR = selfDescriptor(
   "classicalCompoundStemFormation",
   "compoundStem",
@@ -1470,12 +1664,14 @@ const COMPOUND_STEM_DESCRIPTOR = selfDescriptor(
 );
 
 function analyzeStemPrerequisite(target, result) {
+  const direct = analyzePrerequisite(target, result, DIRECT_STEM_DESCRIPTOR);
+  if (direct.admitted) return direct;
   const stock = analyzePrerequisite(target, result, STOCK_STEM_DESCRIPTOR);
   if (stock.admitted) return stock;
   const compound = analyzePrerequisite(target, result, COMPOUND_STEM_DESCRIPTOR);
   if (compound.admitted) return compound;
   return deepFreeze({
-    ...stock,
+    ...direct,
     reason: "owner-issued-stem-formation-result-required",
   });
 }
@@ -1844,7 +2040,9 @@ export function createMorphemeStructureOwnersApi(targetObject = globalThis) {
     ["postStem", "ClassicalNahuatlPostStemUnitClassification", postStemAnalysis],
     ["affixDemotion", "ClassicalInflectionalAffixStemInternalDemotion", affixDemotionAnalysis],
     ["rankSourceUpgrade", "ClassicalMeaningfulRankSourceUpgradeAdmissibility", rankSourceUpgradeAnalysis],
+    ["rankDowngrade", "ClassicalMeaningfulRankDowngrade", rankDowngradeAnalysis],
     ["rootDefinition", "ClassicalRootMajorMorphemeDefinition", rootDefinitionAnalysis],
+    ["directStem", "ClassicalDirectStemFormation", directStemAnalysis],
     ["stockStem", "ClassicalStockMediatedStemFormation", stockStemAnalysis],
     ["compoundStem", "ClassicalCompoundStemFormation", compoundStemAnalysis],
     ["lexemeBearing", "ClassicalLexemeBearingUnitClassification", lexemeBearingAnalysis],

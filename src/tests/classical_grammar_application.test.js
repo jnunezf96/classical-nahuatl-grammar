@@ -240,7 +240,7 @@ function run(ctx) {
                 "classical-vnc-canonical-machinery-required",
             ],
             copiedFailure:
-                "classical-grammar-application-request-invalid:forbidden-authority:sourceEvidence",
+                "classical-grammar-application-request-invalid:forbidden-authority:surface",
         }
     );
 
@@ -351,7 +351,7 @@ function run(ctx) {
             surfaceStringAuthority: applicationReceipt.surfaceStringAuthority,
         },
         {
-            operationCount: 33,
+            operationCount: 85,
             allCapabilitiesInstalled: true,
             gcd: {
                 identityId: "typed-semantic-application-to-canonical-result",
@@ -1833,10 +1833,10 @@ function run(ctx) {
             proxyGetTrapReads,
         },
         {
-            operationCount: 33,
+            operationCount: 85,
             installedCount: 0,
             allCapabilitiesInstalled: false,
-            blockedCount: 33,
+            blockedCount: 85,
             authorizedCount: 0,
             proxyGetTrapReads: 0,
         }

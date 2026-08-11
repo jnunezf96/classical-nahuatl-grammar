@@ -205,9 +205,9 @@ function run(ctx = {}) {
         "the installed registry covers every routine and shared foundational owner inventory",
         counts.owner >= 1600
             && counts.operation >= 1600
-            && counts["semantic-coordinate"] >= 5125
-            && counts.assertion === 5125
-            && counts["proof-address"] === 4687
+            && counts["semantic-coordinate"] >= 5130
+            && counts.assertion === 5130
+            && counts["proof-address"] === 4691
             && counts["analysis-coordinate"] >= 63
             && counts.selection >= 4969
     );
