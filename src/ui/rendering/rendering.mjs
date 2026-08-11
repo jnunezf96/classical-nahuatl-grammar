@@ -15010,6 +15010,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
 
     const CLASSICAL_SGR_INTERACTIVE_CONTROL_SELECTORS = Object.freeze({
+      "classical.morpheme.inflectional-affix.demote/process-kind": "#classical-rule-logic-late-operation, #classical-denominal-vnc-operation",
+      "classical.structure.group.compose/group-shape": "[data-classical-clause-relation-capture-actions], [data-classical-clause-relation-captures]",
+      "classical.structure.meaningful-rank.downgrade/downgrade-mode": "#classical-rule-logic-late-operation, #classical-personal-name-reranking",
+      "classical.structure.meaningful-rank.source-or-upgrade.validate/transition-mode": "#classical-rule-logic-derivation-option, #classical-rule-logic-late-operation, #classical-personal-name-reranking",
+      "classical.structure.stem.compound/compound-relation": "#classical-rule-logic-late-operation, #classical-rule-logic-compound-matrix, #classical-compound-nnc-structure",
+      "classical.structure.stem.form-directly/formation-kind": "[data-derivation-type], #classical-rule-logic-derivation-option, #classical-rule-logic-late-operation",
       "clause:adverbial-adjunction/clause-position": "[data-classical-clause-relation-decision=\"order\"], [data-classical-clause-relation-decision=\"position\"]",
       "clause:adverbial-adjunction/relation-scope": "[data-classical-clause-relation-decision=\"relation\"], [data-classical-clause-relation-decision=\"degree\"], [data-classical-clause-relation-decision=\"relation-profile\"]",
       "clause:comparison/degree-strategy": "[data-classical-clause-relation-decision=\"comparison-route\"], [data-classical-clause-relation-decision=\"degree-marker\"]",

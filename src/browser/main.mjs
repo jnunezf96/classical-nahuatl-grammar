@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-axis-inventory-parity-027";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-foundation-choice-ui-028";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

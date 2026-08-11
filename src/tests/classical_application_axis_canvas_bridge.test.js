@@ -17,6 +17,24 @@ function run() {
         path.resolve(__dirname, "../ui/rendering/rendering.mjs"),
         "utf8"
     );
+    const shell = fs.readFileSync(
+        path.resolve(__dirname, "../ui/shell/classical_shell.mjs"),
+        "utf8"
+    );
+    const lesson1ChoiceRoutes = {
+        "classical.morpheme.inflectional-affix.demote/process-kind":
+            "#classical-rule-logic-late-operation, #classical-denominal-vnc-operation",
+        "classical.structure.group.compose/group-shape":
+            "[data-classical-clause-relation-capture-actions], [data-classical-clause-relation-captures]",
+        "classical.structure.meaningful-rank.downgrade/downgrade-mode":
+            "#classical-rule-logic-late-operation, #classical-personal-name-reranking",
+        "classical.structure.meaningful-rank.source-or-upgrade.validate/transition-mode":
+            "#classical-rule-logic-derivation-option, #classical-rule-logic-late-operation, #classical-personal-name-reranking",
+        "classical.structure.stem.compound/compound-relation":
+            "#classical-rule-logic-late-operation, #classical-rule-logic-compound-matrix, #classical-compound-nnc-structure",
+        "classical.structure.stem.form-directly/formation-kind":
+            "[data-derivation-type], #classical-rule-logic-derivation-option, #classical-rule-logic-late-operation",
+    };
     const interactiveAxisIds = dispositions.entries
         .filter((entry) => entry.surfaceDisposition === "interactive-choice")
         .map((entry) => entry.atomId)
@@ -58,8 +76,8 @@ function run() {
             .map((entry) => entry.applicationAxisAtomId),
         missingSelectorBindings,
     }, {
-        interactiveAxisCount: 58,
-        bridgeAxisCount: 58,
+        interactiveAxisCount: 64,
+        bridgeAxisCount: 64,
         duplicateAxisCount: 0,
         setDrift: [],
         emptyMappings: [],
@@ -82,8 +100,8 @@ function run() {
         evidenceAbsenceBlocksGeneration: bridge.authority.evidenceAbsenceBlocksGeneration,
     }, {
         bridgeVersion: 2,
-        linkedAtomCount: 86,
-        uniqueLinkedAtomCount: 77,
+        linkedAtomCount: 95,
+        uniqueLinkedAtomCount: 86,
         exhaustivelyReviewedAtomCount: 28540,
         applicationAxesCreatedByAtomAssertions: 0,
         invalidLinks: [],
@@ -93,6 +111,32 @@ function run() {
         uiAuthority: "none",
         canvasInventoryAuthority: false,
         evidenceAbsenceBlocksGeneration: false,
+    });
+
+    const missingExactLesson1Routes = Object.entries(lesson1ChoiceRoutes)
+        .filter(([route, selector]) => !rendering.includes(
+            `${JSON.stringify(route)}: ${JSON.stringify(selector)}`
+        ))
+        .map(([route]) => route);
+    const missingNormalControls = [
+        "id=\"classical-rule-logic-late-operation\"",
+        "id=\"classical-denominal-vnc-operation\"",
+        "id=\"classical-personal-name-reranking\"",
+        "id=\"classical-rule-logic-derivation-option\"",
+        "id=\"classical-rule-logic-compound-matrix\"",
+        "id=\"classical-compound-nnc-structure\"",
+        "data-derivation-type=\"direct\"",
+        "data-classical-clause-relation-capture-actions",
+        "data-classical-clause-relation-captures",
+    ].filter((needle) => !shell.includes(needle) && !rendering.includes(needle));
+    s.eq("the six Lesson 1 choices use real controls on the normal Grammar screen", {
+        mappedChoiceCount: Object.keys(lesson1ChoiceRoutes).length,
+        missingExactLesson1Routes,
+        missingNormalControls,
+    }, {
+        mappedChoiceCount: 6,
+        missingExactLesson1Routes: [],
+        missingNormalControls: [],
     });
 
     return s;
