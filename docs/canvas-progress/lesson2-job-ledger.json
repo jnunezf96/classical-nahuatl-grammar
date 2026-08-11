@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 399,
-    "exactlyImplementedWritingJobs": 21,
-    "writingJobsAwaitingExactObservation": 378,
+    "exactlyImplementedWritingJobs": 38,
+    "writingJobsAwaitingExactObservation": 361,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 140,
@@ -60,10 +60,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Nahuatl has twenty-three segmental phonemes.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Nahuatl has twenty-three segmental phonemes.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L003-5036476036",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L003-5036476036-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -84,10 +84,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Eight are vowels: /a a: e e: i i: o o:/ (the symbol /:/ indicates full length).",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Eight are vowels: /a a: e e: i i: o o:/ (the symbol /:/ indicates full length).",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L004-897BE64FB1",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L004-897BE64FB1-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -108,10 +108,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Fifteen of the twenty-three segmental phonemes are consonants.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Fifteen of the twenty-three segmental phonemes are consonants.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L004-E7E01D8587",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L004-E7E01D8587-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -203,10 +203,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: In this text the spelling conventions used to represent these Nahuatl sounds employ the following letters: a, c, e,…",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: In this text the spelling conventions used to represent these Nahuatl sounds employ the following letters: a, c, e,…",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L007-2C1DE9E201",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P039-L007-2C1DE9E201-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2297,10 +2297,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Spelling: The vowels are spelled with the letters a, e, i, o.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Spelling: The vowels are spelled with the letters a, e, i, o.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P041-L033-5DC2501239",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P041-L033-5DC2501239-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2321,10 +2321,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Length is represented by a macron: ā, ē, ī, ō.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Length is represented by a macron: ā, ē, ī, ō.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P041-L033-DABD2BE51F",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P041-L033-DABD2BE51F-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2962,10 +2962,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The phoneme /l/ is spelled l: /i:li:λ/ > īlītl; /piltic/ > piltic; /nokal/ > nocal.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The phoneme /l/ is spelled l: /i:li:λ/ > īlītl; /piltic/ > piltic; /nokal/ > nocal.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P042-L022-D2C248195A",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P042-L022-D2C248195A-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3010,10 +3010,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The phoneme /m/ is spelled m only when manifested by regular [m].",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The phoneme /m/ is spelled m only when manifested by regular [m].",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P042-L027-CD2308A77F",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P042-L027-CD2308A77F-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3739,10 +3739,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The sound /š/ is spelled x: /ša:yakaλ/ > xāyacatl; /šo:λa/ > xōtla; /ši:kλi/ > xīctli; /i:i:ško/ > īixco.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The sound /š/ is spelled x: /ša:yakaλ/ > xāyacatl; /šo:λa/ > xōtla; /ši:kλi/ > xīctli; /i:i:ško/ > īixco.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P043-L015-B702A24041",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P043-L015-B702A24041-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3907,10 +3907,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The sound /y/ is spelled with the letter y: /yehwa:λ/ > yehhuātl.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The sound /y/ is spelled with the letter y: /yehwa:λ/ > yehhuātl.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P043-L027-98A44BD022",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P043-L027-98A44BD022-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4756,10 +4756,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Spelling: The sounds /p/ and /t/ are spelled with the letters p and t: /po:kλi/ > pōctli; /epλi/",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Spelling: The sounds /p/ and /t/ are spelled with the letters p and t: /po:kλi/ > pōctli; /epλi/",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L030-6CCBCBA244",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L030-6CCBCBA244-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4780,10 +4780,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: > eptli; /te:pan/ > tēpan; /at/ > at.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: > eptli; /te:pan/ > tēpan; /at/ > at.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L031-9E6CE9402F",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L031-9E6CE9402F-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4996,10 +4996,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The phoneme /ʔ/ is spelled with the letter h: /notaʔ/ > notah; /yeʔwa:λ/ > yehhuātl.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The phoneme /ʔ/ is spelled with the letter h: /notaʔ/ > notah; /yeʔwa:λ/ > yehhuātl.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L041-AD9B08BD11",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P044-L041-AD9B08BD11-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5658,10 +5658,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: Spelling: The sound /λ/ is spelled with the digraph tl: /λa:kaλ/ > tlacatl; [ahλaλ] > ahtlatl;",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: Spelling: The sound /λ/ is spelled with the digraph tl: /λa:kaλ/ > tlacatl; [ahλaλ] > ahtlatl;",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L030-2527A41ED4",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L030-2527A41ED4-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5682,10 +5682,10 @@
       "normalApplicationRequirement": "Use this Canvas example to check the related Lesson 2 writing rule without allowing the example to invent the rule: [¢ikλi] > tzictli.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: [¢ikλi] > tzictli.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L031-18802D0BDC",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L031-18802D0BDC-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5706,10 +5706,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The sound /¢/ is spelled with the digraph tz: [¢ah¢i] > tzahtzi; /te:no:¢/ > tēnōtz.",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The sound /¢/ is spelled with the digraph tz: [¢ah¢i] > tzahtzi; /te:no:¢/ > tēnōtz.",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L032-B859BA5D79",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L032-B859BA5D79-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5730,10 +5730,10 @@
       "normalApplicationRequirement": "The normal application path must perform or enforce this Lesson 2 requirement when it applies: The sound /č/ is spelled with the digraph ch: /čō:ka/ > chōca; /mač/ > mach. In the sequence",
       "readerRequirement": "Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: The sound /č/ is spelled with the digraph ch: /čō:ka/ > chōca; /mač/ > mach. In the sequence",
       "evidenceAuthorizesGrammar": false,
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "basic-inventory-spelling-result",
+      "observationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L033-E0F5380BED",
+      "mutationTest": "src/tests/classical_lesson2_basic_spelling_jobs.test.js#ACI-P045-L033-E0F5380BED-broken-result",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

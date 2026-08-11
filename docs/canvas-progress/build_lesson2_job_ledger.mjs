@@ -60,6 +60,29 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
     observationTest: `src/tests/classical_lesson2_contextual_spelling_jobs.test.js#${atomId}`,
     mutationTest: `src/tests/classical_lesson2_contextual_spelling_jobs.test.js#${atomId}-broken-spelling`,
   })])),
+  ...Object.fromEntries([
+    "ACI-P039-L003-5036476036",
+    "ACI-P039-L004-897BE64FB1",
+    "ACI-P039-L004-E7E01D8587",
+    "ACI-P039-L007-2C1DE9E201",
+    "ACI-P041-L033-5DC2501239",
+    "ACI-P041-L033-DABD2BE51F",
+    "ACI-P042-L022-D2C248195A",
+    "ACI-P042-L027-CD2308A77F",
+    "ACI-P043-L015-B702A24041",
+    "ACI-P043-L027-98A44BD022",
+    "ACI-P044-L030-6CCBCBA244",
+    "ACI-P044-L031-9E6CE9402F",
+    "ACI-P044-L041-AD9B08BD11",
+    "ACI-P045-L030-2527A41ED4",
+    "ACI-P045-L031-18802D0BDC",
+    "ACI-P045-L032-B859BA5D79",
+    "ACI-P045-L033-E0F5380BED",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "basic-inventory-spelling-result",
+    observationTest: `src/tests/classical_lesson2_basic_spelling_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_basic_spelling_jobs.test.js#${atomId}-broken-result`,
+  })])),
 });
 
 const JOB_FAMILIES = Object.freeze([
