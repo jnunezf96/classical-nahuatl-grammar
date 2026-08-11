@@ -228,6 +228,17 @@ function run(ctx = {}) {
                     || !route.andrewsRefs.length
                     || !route.formulaTransition
                     || !route.formulaTemplate
+                    || route.runtimeAuthority !== false
+                    || route.sourceSupplier !== false
+                    || route.operationSelector !== false
+                    || route.resultSupplier !== false
+                    || route.generationAllowed !== false
+                    || route.formulaTemplateRole !== "curriculum-description-only"
+                    || route.puzzleStackTemplate?.runtimeAuthority !== false
+                    || route.puzzleStackTemplate?.sourceSupplier !== false
+                    || route.puzzleStackTemplate?.operationSelector !== false
+                    || route.puzzleStackTemplate?.resultSupplier !== false
+                    || route.puzzleStackTemplate?.presentationRole !== "reader-and-interpreter-guidance"
                     || !route.structuralInfo
                     || typeof route.structuralInfo !== "object"
                     || route.structuralInfo.lesson !== lesson.id
@@ -2319,7 +2330,7 @@ function run(ctx = {}) {
             aimStatus: "closest-pass",
             closestPass: true,
             remainingGap: "none",
-            generationAllowed: true,
+            generationAllowed: false,
             notesMentionGcdLcm: true,
             canvasOnly: true,
         }

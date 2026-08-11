@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson1-multigroup-024";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson-route-read-only-025";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-lesson1-multigroup-024";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-canvas-fact-browser-012d";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-canvas-fact-browser-012d";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-canvas-fact-browser-012d";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-canvas-fact-browser-012d";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-canvas-fact-browser-012d";
+} from "../runtime/create_runtime.mjs?v=20260811-lesson-route-read-only-025";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson-route-read-only-025";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson-route-read-only-025";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson-route-read-only-025";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-lesson-route-read-only-025";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-lesson-route-read-only-025";
 
 let browserBootstrapPromise = null;
 

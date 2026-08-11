@@ -1700,8 +1700,12 @@ export function createUiPanelsContext(targetObject = globalThis) {
         routeStage: operation.routeStage || ""
       }));
       return {
-        authority: "semantic source-target diagnostic",
+        authority: "read-only source-target diagnostic",
         logicAuthority: "ANDREWS_TRANSCRIPTION_CANVAS.md",
+        runtimeAuthority: false,
+        operationSelector: false,
+        resultSupplier: false,
+        presentationRole: "reader-and-interpreter-guidance",
         tenseValue: String(tenseValue || ""),
         mode: String(mode || ""),
         routeIds: [],

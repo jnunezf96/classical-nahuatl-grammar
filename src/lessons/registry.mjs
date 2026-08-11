@@ -16617,9 +16617,23 @@ function buildAndrewsRoutePuzzleStackTemplate(route = {}) {
 }
 
 function withAndrewsRoutePuzzleStackTemplate(route = {}) {
+    const puzzleStackTemplate = buildAndrewsRoutePuzzleStackTemplate(route);
     return {
         ...route,
-        puzzleStackTemplate: buildAndrewsRoutePuzzleStackTemplate(route),
+        runtimeAuthority: false,
+        sourceSupplier: false,
+        operationSelector: false,
+        resultSupplier: false,
+        generationAllowed: false,
+        formulaTemplateRole: "curriculum-description-only",
+        puzzleStackTemplate: {
+            ...puzzleStackTemplate,
+            runtimeAuthority: false,
+            sourceSupplier: false,
+            operationSelector: false,
+            resultSupplier: false,
+            presentationRole: "reader-and-interpreter-guidance",
+        },
     };
 }
 
