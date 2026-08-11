@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-clause-conjunction-proxy-principal",
+  "canonicalResultDigest": "sha256:4b6c20cc9cfbe0a7c56800117d55f7515a1e8443d854f79ce2935ee6bb680a98",
+  "observations": [
+    {
+      "atomId": "ACI-P563-L031-B690488DBE-02",
+      "ownerId": "classical-clause-conjunction-proxy-principal",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-proxy-principal:aci-p563-l031-b690488dbe-02",
+      "canonicalPath": "ihuan as a rightward adverbial modifier rather than a conjunctor",
+      "expected": {
+        "modifier": "īhuān",
+        "modifierIsConjunctor": false,
+        "rank": "principal-clause-group"
+      },
+      "actual": {
+        "modifier": "īhuān",
+        "modifierIsConjunctor": false,
+        "rank": "principal-clause-group"
+      },
+      "canvasAnchor": "Īhuān functions as an adverbial modifier of principal clause miyec in the rightward conjunct.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P563-L031-B690488DBE-02 rejects a mutation of ihuan as a rightward adverbial modifier rather than a conjunctor",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-type-two-reflexive-single-object-transform",
+  "canonicalResultDigest": "sha256:52f4ccb8ef578e95b4c4d3ecf358e5f3928682d708321db993a1930e719a9d84",
+  "observations": [
+    {
+      "atomId": "ACI-P217-L009-FBFFE74F56-04",
+      "ownerId": "classical-type-two-reflexive-single-object-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-reflexive-single-object-transform:aci-p217-l009-fbffe74f56-04",
+      "canonicalPath": "quīza reflexive causee transform",
+      "expected": {
+        "result": "ninoquīxtia",
+        "sourceSubject": "1sg",
+        "targetSubject": "1sg",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "reflexive",
+          "objectPerson": "1sg",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "actual": {
+        "result": "ninoquīxtia",
+        "sourceSubject": "1sg",
+        "targetSubject": "1sg",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "reflexive",
+          "objectPerson": "1sg",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "canvasAnchor": "First-person source subject ni-Ø is converted into reflexive causative object n-o in ninoquīxtia.",
+      "proofTest": "src/tests/classical_vnc_type_two_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P217-L009-FBFFE74F56-04 rejects a mutation of quīza reflexive causee transform",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

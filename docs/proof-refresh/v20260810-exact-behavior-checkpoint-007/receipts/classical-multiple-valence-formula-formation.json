@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-multiple-valence-formula-formation",
+  "canonicalResultDigest": "sha256:a0d8d364cc1ee74bde70172c9a3adbc910f225f7ff51011ee56ccc1220a82e88",
+  "observations": [
+    {
+      "atomId": "ACI-P194-L015-1CBBC45E59-02",
+      "ownerId": "classical-multiple-valence-formula-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-multiple-valence-formula-formation:aci-p194-l015-1cbbc45e59-02",
+      "canonicalPath": "objectHistory.twoSpecific earlier-core demotion",
+      "expected": {
+        "later": {
+          "level": 2,
+          "prominence": "mainline"
+        },
+        "earlier": {
+          "level": 1,
+          "prominence": "shuntline"
+        }
+      },
+      "actual": {
+        "later": {
+          "level": 2,
+          "prominence": "mainline"
+        },
+        "earlier": {
+          "level": 1,
+          "prominence": "shuntline"
+        }
+      },
+      "canvasAnchor": "Addition of subsequent core elements relegates earlier core elements to shunt-line status.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P194-L015-1CBBC45E59-02 rejects a mutation of objectHistory.twoSpecific earlier-core demotion",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

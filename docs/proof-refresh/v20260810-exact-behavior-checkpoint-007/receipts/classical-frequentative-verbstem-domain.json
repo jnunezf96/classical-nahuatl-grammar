@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-frequentative-verbstem-domain",
+  "canonicalResultDigest": "sha256:ca564cc6862d48bce3a6bd8eb6de94418c6214e0f3afbebc7035559f7b32fd2d",
+  "observations": [
+    {
+      "atomId": "ACI-P243-L003-BFF719FF1B-09",
+      "ownerId": "classical-frequentative-verbstem-domain",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-frequentative-verbstem-domain:aci-p243-l003-bff719ff1b-09",
+      "canonicalPath": "a reduplicative prefix deriving a frequentative verbstem",
+      "expected": {
+        "operation": "frequentative",
+        "sourceStem": "chōca",
+        "targetStem": "choh-chōca",
+        "ruleFamily": "frequentative-prefix-shape"
+      },
+      "actual": {
+        "operation": "frequentative",
+        "sourceStem": "chōca",
+        "targetStem": "choh-chōca",
+        "ruleFamily": "frequentative-prefix-shape"
+      },
+      "canvasAnchor": "A frequentative verbstem is derived by adding a reduplicative prefix.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P243-L003-BFF719FF1B-09 rejects a mutation of a reduplicative prefix deriving a frequentative verbstem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

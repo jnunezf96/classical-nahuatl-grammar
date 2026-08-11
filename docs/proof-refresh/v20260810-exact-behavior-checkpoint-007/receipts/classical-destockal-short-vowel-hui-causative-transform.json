@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-destockal-short-vowel-hui-causative-transform",
+  "canonicalResultDigest": "sha256:637078d60e261450819ddef4e15f03664682636096622f05c51c2d7b0c932eff",
+  "observations": [
+    {
+      "atomId": "ACI-P206-L022-C4B0CB6F8E-02",
+      "ownerId": "classical-destockal-short-vowel-hui-causative-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-destockal-short-vowel-hui-causative-transform:aci-p206-l022-c4b0cb6f8e-02",
+      "canonicalPath": "pixahui stock a to o causative replacement",
+      "expected": {
+        "source": "pix-a-hui",
+        "procedure": "replace-a-hui-with-o-plus-long-causative-a",
+        "target": "pix-o-ā"
+      },
+      "actual": {
+        "source": "pix-a-hui",
+        "procedure": "replace-a-hui-with-o-plus-long-causative-a",
+        "target": "pix-o-ā"
+      },
+      "canvasAnchor": "In causative formation from an a-hui destockal stem, stock formative /a/ is replaced by /o/.",
+      "proofTest": "src/tests/classical_vnc_type_two_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P206-L022-C4B0CB6F8E-02 rejects a mutation of pixahui stock a to o causative replacement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

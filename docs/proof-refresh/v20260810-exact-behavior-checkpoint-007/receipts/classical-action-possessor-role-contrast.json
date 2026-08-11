@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-action-possessor-role-contrast",
+  "canonicalResultDigest": "sha256:f8cbb0e75a9744ac1dd99a13aff1d74ac48ae2ce6e50f9edb1602af75850dd34",
+  "observations": [
+    {
+      "atomId": "ACI-P377-L007-0CD249D451",
+      "ownerId": "classical-action-possessor-role-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-action-possessor-role-contrast:aci-p377-l007-0cd249d451",
+      "canonicalPath": "the formal active-action versus passive-action contrast",
+      "expected": {
+        "relation": "agent-possessor-versus-patient-possessor",
+        "activeVoice": "active",
+        "passiveVoice": "passive",
+        "distinctOperations": true
+      },
+      "actual": {
+        "relation": "agent-possessor-versus-patient-possessor",
+        "activeVoice": "active",
+        "passiveVoice": "passive",
+        "distinctOperations": true
+      },
+      "canvasAnchor": "Nahuatl formally distinguishes active-action NNCs from passive-action NNCs.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P377-L007-0CD249D451 rejects a mutation of the formal active-action versus passive-action contrast",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

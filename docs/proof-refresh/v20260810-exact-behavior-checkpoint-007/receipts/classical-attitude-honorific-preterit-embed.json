@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-attitude-honorific-preterit-embed",
+  "canonicalResultDigest": "sha256:a6ef24c6d1151f3fb17d72409d85f5a300f11ba838da5f7a58be4735e7c207bd",
+  "observations": [
+    {
+      "atomId": "ACI-P318-L002-3717CEFDF0-03",
+      "ownerId": "classical-attitude-honorific-preterit-embed",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-attitude-honorific-preterit-embed:aci-p318-l002-3717cefdf0-03",
+      "canonicalPath": "the preterit-embed honorific replacement",
+      "expected": {
+        "variant": "preterit-embed",
+        "targetStem": "xīn-⎕-tzin-o-ā",
+        "formula": "#0-0+m-o(xīn-⎕-tzin-o-a)0+0-0#"
+      },
+      "actual": {
+        "variant": "preterit-embed",
+        "targetStem": "xīn-⎕-tzin-o-ā",
+        "formula": "#0-0+m-o(xīn-⎕-tzin-o-a)0+0-0#"
+      },
+      "canvasAnchor": "In the preterit-embed honorific transform, the specific nonhuman-object pronoun c-Ø of reconstructed *tictzinoa is replaced by the preterit-tense reflexive predicate +m-o-(tlāl-i-h)Ø+.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P318-L002-3717CEFDF0-03 rejects a mutation of the preterit-embed honorific replacement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

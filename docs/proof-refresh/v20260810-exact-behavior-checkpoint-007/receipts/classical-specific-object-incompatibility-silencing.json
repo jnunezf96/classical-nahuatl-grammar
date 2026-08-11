@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-specific-object-incompatibility-silencing",
+  "canonicalResultDigest": "sha256:2a697e9f74dc8485c44314819ff6d51eda4efbaa4ca37f96513d15913525beef",
+  "observations": [
+    {
+      "atomId": "ACI-P194-L005-933D1A0265-03",
+      "ownerId": "classical-specific-object-incompatibility-silencing",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-specific-object-incompatibility-silencing:aci-p194-l005-933d1a0265-03",
+      "canonicalPath": "objectHistory.twoSpecific sounded specific-object ceiling",
+      "expected": {
+        "soundedSpecificObjectId": "caused",
+        "soundedSpecificCount": 1,
+        "silencedSpecificCount": 1
+      },
+      "actual": {
+        "soundedSpecificObjectId": "caused",
+        "soundedSpecificCount": 1,
+        "silencedSpecificCount": 1
+      },
+      "canvasAnchor": "Only one specific projective-object pronoun in a multiple-object core can be represented by sounded morphs.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P194-L005-933D1A0265-03 rejects a mutation of objectHistory.twoSpecific sounded specific-object ceiling",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

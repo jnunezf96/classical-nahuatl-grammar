@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-tla-impersonal-animate-generality",
+  "canonicalResultDigest": "sha256:22a690356dbf2bae5023eeaedf7ebeec3078709467439cebf2db2162c232a0b3",
+  "observations": [
+    {
+      "atomId": "ACI-P190-L009-523C5E1AFE-08",
+      "ownerId": "classical-tla-impersonal-animate-generality",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tla-impersonal-animate-generality:aci-p190-l009-523c5e1afe-08",
+      "canonicalPath": "impersonal.tlaInventory ihcahuaca derivation",
+      "expected": {
+        "sourceStem": "ih-cahu-a-ca",
+        "targetStem": "tla-h-cahu-a-ca",
+        "rule": "prefix-tla-drop-supportive-initial-i",
+        "derivedByEngine": true
+      },
+      "actual": {
+        "sourceStem": "ih-cahu-a-ca",
+        "targetStem": "tla-h-cahu-a-ca",
+        "rule": "prefix-tla-drop-supportive-initial-i",
+        "derivedByEngine": true
+      },
+      "canvasAnchor": "Impersonal stem (tla-h-cahu-a-ca) is formed from source stem (ih-cahu-a-ca) by impersonalizing tla.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P190-L009-523C5E1AFE-08 rejects a mutation of impersonal.tlaInventory ihcahuaca derivation",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P190-L009-523C5E1AFE-09",
+      "ownerId": "classical-tla-impersonal-animate-generality",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tla-impersonal-animate-generality:aci-p190-l009-523c5e1afe-09",
+      "canonicalPath": "impersonal.tlaInventory ihcahuaca animate generality",
+      "expected": {
+        "targetStem": "tla-h-cahu-a-ca",
+        "semanticClass": "animate-generality-exception"
+      },
+      "actual": {
+        "targetStem": "tla-h-cahu-a-ca",
+        "semanticClass": "animate-generality-exception"
+      },
+      "canvasAnchor": "Impersonal stem (tla-h-cahu-a-ca) has a general human subject.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P190-L009-523C5E1AFE-09 rejects a mutation of impersonal.tlaInventory ihcahuaca animate generality",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

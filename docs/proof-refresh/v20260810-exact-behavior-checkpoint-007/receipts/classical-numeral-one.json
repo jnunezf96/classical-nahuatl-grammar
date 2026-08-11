@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-numeral-one",
+  "canonicalResultDigest": "sha256:aaa031c23ed8c16081bd376daa57c3b45b635563b8b45ffc4ce31467fc89b7f2",
+  "observations": [
+    {
+      "atomId": "ACI-P323-L019-3D0EF977A1",
+      "ownerId": "classical-numeral-one",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-one:aci-p323-l019-3d0ef977a1",
+      "canonicalPath": "cases.vncAdverb incorporated cem",
+      "expected": {
+        "sourceKind": "classical-nahuatl-cardinal-vnc-adverb-source-frame",
+        "stem": "cem-yā",
+        "incorporatedRoute": true
+      },
+      "actual": {
+        "sourceKind": "classical-nahuatl-cardinal-vnc-adverb-source-frame",
+        "stem": "cem-yā",
+        "incorporatedRoute": true
+      },
+      "canvasAnchor": "Stem (cem)-Ø- can function as an incorporated adverb in a compound stem.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P323-L019-3D0EF977A1 rejects a mutation of cases.vncAdverb incorporated cem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

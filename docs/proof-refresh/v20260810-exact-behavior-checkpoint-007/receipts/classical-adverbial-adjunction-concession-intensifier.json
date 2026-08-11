@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adverbial-adjunction-concession-intensifier",
+  "canonicalResultDigest": "sha256:e270d4ee9deaf3f661b7d0e9530073c4dd180c2ae464aef7121256614902ad54",
+  "observations": [
+    {
+      "atomId": "ACI-P549-L041-9A11CAF243",
+      "ownerId": "classical-adverbial-adjunction-concession-intensifier",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-concession-intensifier:aci-p549-l041-9a11caf243",
+      "canonicalPath": "the concessive intensifier license",
+      "expected": {
+        "pronounIntensifies": true
+      },
+      "actual": {
+        "pronounIntensifies": true
+      },
+      "canvasAnchor": "Adding the pronominal NNC yeh or eh makes a mā nel concessive collocation more expressive.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P549-L041-9A11CAF243 rejects a mutation of the concessive intensifier license",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

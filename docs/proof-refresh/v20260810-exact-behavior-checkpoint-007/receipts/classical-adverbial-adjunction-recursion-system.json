@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adverbial-adjunction-recursion-system",
+  "canonicalResultDigest": "sha256:967e75f74f09989555c8dcb5a14a5c8d672fb7ef50638371699dd869ad147d43",
+  "observations": [
+    {
+      "atomId": "ACI-P530-L007-353F74199F",
+      "ownerId": "classical-adverbial-adjunction-recursion-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-recursion-system:aci-p530-l007-353f74199f",
+      "canonicalPath": "recursive adverbial adjunction producing a complex structure",
+      "expected": {
+        "licensed": true,
+        "structure": "complex",
+        "recursion": "head"
+      },
+      "actual": {
+        "licensed": true,
+        "structure": "complex",
+        "recursion": "head"
+      },
+      "canvasAnchor": "When an adverbial-modification structure occurs in the modifier, the head, or both, the result is a complex structure of adverbial modification.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P530-L007-353F74199F rejects a mutation of recursive adverbial adjunction producing a complex structure",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

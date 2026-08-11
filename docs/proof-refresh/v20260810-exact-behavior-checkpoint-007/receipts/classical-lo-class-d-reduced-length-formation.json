@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-lo-class-d-reduced-length-formation",
+  "canonicalResultDigest": "sha256:a6217d39d810fe7f1c33592e4737147d3ba96be0e231c91cbecd098d398e45c7",
+  "observations": [
+    {
+      "atomId": "ACI-P176-L037-87A9A38CFD",
+      "ownerId": "classical-lo-class-d-reduced-length-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-lo-class-d-reduced-length-formation:aci-p176-l037-87a9a38cfd",
+      "canonicalPath": "the reduced-long Class D source spelling before lo",
+      "expected": {
+        "sourceStem": "cua",
+        "verbClass": "D",
+        "finalVowelLength": "long",
+        "suffix": "lō"
+      },
+      "actual": {
+        "sourceStem": "cua",
+        "verbClass": "D",
+        "finalVowelLength": "long",
+        "suffix": "lō"
+      },
+      "canvasAnchor": "In the exceptional Class D nonactive formation, the reduced-long stem-final /a:/ before lō is written without a macron.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P176-L037-87A9A38CFD rejects a mutation of the reduced-long Class D source spelling before lo",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

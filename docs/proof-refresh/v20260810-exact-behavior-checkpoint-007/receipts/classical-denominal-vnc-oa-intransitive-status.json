@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-denominal-vnc-oa-intransitive-status",
+  "canonicalResultDigest": "sha256:70b70de7da302fddb19db0735bff07aa455318e9841796dba83ed32973ea3935",
+  "observations": [
+    {
+      "atomId": "ACI-P601-L024-78EAC70E92-02",
+      "ownerId": "classical-denominal-vnc-oa-intransitive-status",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-oa-intransitive-status:aci-p601-l024-78eac70e92-02",
+      "canonicalPath": "the noncausative intransitive o-a derivation",
+      "expected": {
+        "operation": "intransitive-o-a-use",
+        "targetStem": "āyacach-o-ā",
+        "objectCount": 0
+      },
+      "actual": {
+        "operation": "intransitive-o-a-use",
+        "targetStem": "āyacach-o-ā",
+        "objectCount": 0
+      },
+      "canvasAnchor": "The ā following stock formative /o/ in this intransitive denominal verbstem is not causative ā.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P601-L024-78EAC70E92-02 rejects a mutation of the noncausative intransitive o-a derivation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

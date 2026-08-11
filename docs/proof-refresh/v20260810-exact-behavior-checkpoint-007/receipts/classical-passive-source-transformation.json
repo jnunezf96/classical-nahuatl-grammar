@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-passive-source-transformation",
+  "canonicalResultDigest": "sha256:067f5a0302c554ebce7f5c48e39d47955306362f44dab5cb4d82cff6c892687f",
+  "observations": [
+    {
+      "atomId": "ACI-P180-L007-A148C00D37-02",
+      "ownerId": "classical-passive-source-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-source-transformation:aci-p180-l007-a148c00d37-02",
+      "canonicalPath": "voice.passiveSingle active-to-nonactive stem replacement",
+      "expected": {
+        "sourceStem": "chihua",
+        "targetStem": "chihua-lō",
+        "voice": "passive"
+      },
+      "actual": {
+        "sourceStem": "chihua",
+        "targetStem": "chihua-lō",
+        "voice": "passive"
+      },
+      "canvasAnchor": "The passive transformation replaces the active stem with its nonactive counterpart.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P180-L007-A148C00D37-02 rejects a mutation of voice.passiveSingle active-to-nonactive stem replacement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P180-L007-A148C00D37-03",
+      "ownerId": "classical-passive-source-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-source-transformation:aci-p180-l007-a148c00d37-03",
+      "canonicalPath": "voice.passiveSingle specific object promotion",
+      "expected": {
+        "sourceValence": "specific-projective",
+        "promotedObjectBecomesSubject": true,
+        "targetSubject": "1sg"
+      },
+      "actual": {
+        "sourceValence": "specific-projective",
+        "promotedObjectBecomesSubject": true,
+        "targetSubject": "1sg"
+      },
+      "canvasAnchor": "The passive transformation reassigns a specific active object to subject function.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P180-L007-A148C00D37-03 rejects a mutation of voice.passiveSingle specific object promotion",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

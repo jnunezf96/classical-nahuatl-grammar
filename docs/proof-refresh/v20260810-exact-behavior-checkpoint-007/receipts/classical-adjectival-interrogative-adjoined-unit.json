@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adjectival-interrogative-adjoined-unit",
+  "canonicalResultDigest": "sha256:2a10a969f98682be34ca08c0069fe68e932035d51739014f44606f99b2df376a",
+  "observations": [
+    {
+      "atomId": "ACI-P440-L034-11CFC6DF33",
+      "ownerId": "classical-adjectival-interrogative-adjoined-unit",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adjectival-interrogative-adjoined-unit:aci-p440-l034-11cfc6df33",
+      "canonicalPath": "in marking the boundary of an adjoined modifier",
+      "expected": {
+        "adjunctor": "in",
+        "modifierRank": "adjoined",
+        "headRank": "principal"
+      },
+      "actual": {
+        "adjunctor": "in",
+        "modifierRank": "adjoined",
+        "headRank": "principal"
+      },
+      "canvasAnchor": "Adjunctor in is normally present at the beginning of an adjoined clause to mark its boundary.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P440-L034-11CFC6DF33 rejects a mutation of in marking the boundary of an adjoined modifier",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

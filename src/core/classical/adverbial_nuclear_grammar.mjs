@@ -163,6 +163,10 @@ function makeRecord({
   allowedNegativeParticles = [],
   stressPartners = [],
   writtenBoundaryRule = "identity",
+  lexicalReadings = [],
+  sourceAnalysis = null,
+  compositionalReading = "",
+  numberSystem = null,
 } = {}) {
   const degrees = Array.isArray(degree) ? degree : [degree];
   const sourceForm = normalizeToken(surface);
@@ -192,6 +196,10 @@ function makeRecord({
     allowedNegativeParticles: allowedNegativeParticles.map(normalizeKey).filter(Boolean),
     stressPartners: stressPartners.map(normalizeKey).filter(Boolean),
     writtenBoundaryRule: normalizeKey(writtenBoundaryRule || "identity"),
+    lexicalReadings: lexicalReadings.map(normalizeToken).filter(Boolean),
+    sourceAnalysis: sourceAnalysis ? deepClone(sourceAnalysis) : null,
+    compositionalReading: normalizeToken(compositionalReading),
+    numberSystem: numberSystem ? deepClone(numberSystem) : null,
   });
 }
 
@@ -284,6 +292,63 @@ const OTHER_ABSOLUTIVE_SPECS = Object.freeze([
   ["quemah", "quēmah", "manner", ["variants-quemahca-honorific-quemahcatzin"]],
 ]);
 
+const OTHER_ABSOLUTIVE_SEMANTICS = Object.freeze({
+  noncuah: {
+    compositionalReading: "it is off in a separate place",
+    lexicalReadings: ["to one side", "separately", "apart"],
+    numberSystem: {
+      singularOrSingleEntityForm: "nōncuah",
+      multipleEntityForm: "nōnōncuah",
+      operation: "reduplication",
+      multipleEntityCondition: "more-than-one-entity",
+      multipleEntityReadings: ["severally apart", "separately apart"],
+    },
+  },
+  ixtlapal: {
+    compositionalReading: "it is with the side as the face",
+    lexicalReadings: ["crosswise", "across", "athwart", "sideways"],
+    sourceAnalysis: {
+      nounstem: "ix-tla-pal-li",
+      embed: { stem: "ix-tli", reading: "face" },
+      matrix: { stem: "tla-pal-li", readings: ["a dyed thing", "a colored thing", "side"] },
+    },
+  },
+  tlacuauh: {
+    compositionalReading: "it is in the manner of a hardened thing",
+    lexicalReadings: ["strongly", "positively", "especially"],
+    sourceAnalysis: {
+      nounstem: "tlacu-ā-uh-tli",
+      nounstemReadings: ["a thing that has become hard", "a hardened thing"],
+      sourceVerbStem: "tlacu-ā-hua",
+      sourceVerbReading: "to become hard",
+      patientiveKind: "impersonal",
+    },
+  },
+  tlapic: {
+    compositionalReading: "it is in the manner of an imagined thing",
+    lexicalReadings: ["falsely", "in vain", "futilely"],
+    sourceAnalysis: {
+      nounstem: "tla-pic-tli",
+      nounstemReadings: ["an imagined thing", "a fabricated thing", "an invented thing"],
+      sourceVerbStem: "tla-piqui",
+      sourceVerbReadings: ["to imagine something", "to invent something"],
+      object: { specificity: "nonspecific", referentCategory: "nonhuman" },
+      patientiveKind: "perfective",
+    },
+  },
+  tlamach: {
+    compositionalReading: "it is in the manner of a known thing",
+    lexicalReadings: ["quietly", "calmly", "gently"],
+    sourceAnalysis: {
+      nounstem: "tla-mach-tli",
+      sourceVerbStem: "tla-mati",
+      sourceVerbReading: "to know a nonhuman thing or something",
+      object: { morph: "tla", specificity: "nonspecific", referentCategory: "nonhuman" },
+      patientiveKind: "impersonal",
+    },
+  },
+});
+
 const OTHER_ABSOLUTIVE_RECORDS = Object.freeze(OTHER_ABSOLUTIVE_SPECS.map(([id, surface, domain, restrictions]) => makeRecord({
   id: `44.6-${id}`,
   section: "44.6",
@@ -298,6 +363,7 @@ const OTHER_ABSOLUTIVE_RECORDS = Object.freeze(OTHER_ABSOLUTIVE_SPECS.map(([id, 
   restrictions,
   incorporatedStem: id === "pani" ? "pan" : surface,
   stressPartners: id === "moztla" ? ["yeh", "eh"] : id === "ilhuiz" ? ["eh"] : [],
+  ...(OTHER_ABSOLUTIVE_SEMANTICS[id] || {}),
 })));
 
 const PRETERIT_AGENTIVE_SPECS = Object.freeze([
@@ -344,6 +410,15 @@ const PRETERIT_AGENTIVE_RECORDS = Object.freeze(PRETERIT_AGENTIVE_SPECS.map(([id
   writtenBoundaryRule: ["cenquizca", "yocoxca"].includes(id)
     ? "shorten-final-a"
     : "identity",
+  lexicalReadings: id === "yocoxca" ? ["calmly", "peacefully"] : [],
+  sourceAnalysis: id === "yocoxca" ? {
+    sourceStem: "yōco-ya",
+    sourceStemStrategy: "full-root-plus-ya",
+    sourceAttested: false,
+    nonattestationBlocksDerivation: false,
+    preteritAgentiveStem: "yōco-x-Ø-qui",
+    preteritAgentiveReading: "one who has become well formed",
+  } : null,
   restrictions: sourceKind === "transitive"
     ? ["transitive-source-is-occasional"]
     : sourceKind.startsWith("reflexive")

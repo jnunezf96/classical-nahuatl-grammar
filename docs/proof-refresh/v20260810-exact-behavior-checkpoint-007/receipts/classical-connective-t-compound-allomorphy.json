@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-connective-t-compound-allomorphy",
+  "canonicalResultDigest": "sha256:b1cc005c0d167bdeffa86d4f51f3b8e3b4eec3dd63371e28a5c4955f95d4dbd0",
+  "observations": [
+    {
+      "atomId": "ACI-P252-L032-0C3F5A758B-02",
+      "ownerId": "classical-connective-t-compound-allomorphy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-connective-t-compound-allomorphy:aci-p252-l032-0c3f5a758b-02",
+      "canonicalPath": "contract connective allomorph conditioning",
+      "expected": {
+        "beforeVowel": "t",
+        "beforeConsonant": "ti",
+        "supportiveVowelSeparatesConstituents": true
+      },
+      "actual": {
+        "beforeVowel": "t",
+        "beforeConsonant": "ti",
+        "supportiveVowelSeparatesConstituents": true
+      },
+      "canvasAnchor": "the former occurs before vowels, the latter before consonants (the [i] is a supportive vowel).",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P252-L032-0C3F5A758B-02 rejects a mutation of contract connective allomorph conditioning",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

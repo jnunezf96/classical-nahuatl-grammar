@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-numeral-higher-order-link",
+  "canonicalResultDigest": "sha256:2bed42fd64cb464a0b6fdeb319a8f12d9b8e9c72040d3a09074cbd879c147b1f",
+  "observations": [
+    {
+      "atomId": "ACI-P326-L042-38C35522E7-02",
+      "ownerId": "classical-numeral-higher-order-link",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-higher-order-link:aci-p326-l042-38c35522e7-02",
+      "canonicalPath": "cases.order400 morphological realization",
+      "expected": {
+        "formula": "#0-0(cen-tzon)tli-0#",
+        "surface": "centzontli"
+      },
+      "actual": {
+        "formula": "#0-0(cen-tzon)tli-0#",
+        "surface": "centzontli"
+      },
+      "canvasAnchor": "centzontli has the morphological realization #Ø-Ø(cen-tzon)tli-Ø#.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P326-L042-38C35522E7-02 rejects a mutation of cases.order400 morphological realization",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P326-L042-38C35522E7-04",
+      "ownerId": "classical-numeral-higher-order-link",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-higher-order-link:aci-p326-l042-38c35522e7-04",
+      "canonicalPath": "cases.order400 numerical value",
+      "expected": {
+        "multiplier": 1,
+        "unit": 400,
+        "result": 400
+      },
+      "actual": {
+        "multiplier": 1,
+        "unit": 400,
+        "result": 400
+      },
+      "canvasAnchor": "As a numeral NNC, centzontli denotes one times four hundred, or 400, in number.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P326-L042-38C35522E7-04 rejects a mutation of cases.order400 numerical value",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

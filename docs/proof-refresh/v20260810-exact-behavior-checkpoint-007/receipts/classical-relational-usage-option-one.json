@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-relational-usage-option-one",
+  "canonicalResultDigest": "sha256:bb0066d49cbbd887a26a03a78ec8ce2a3b88852d014bb4aa6b0cf0019d6f5c84",
+  "observations": [
+    {
+      "atomId": "ACI-P461-L026-D8FC647DE1",
+      "ownerId": "classical-relational-usage-option-one",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-usage-option-one:aci-p461-l026-d8fc647de1",
+      "canonicalPath": "option one possessive-state enforcement",
+      "expected": {
+        "option": "option-one",
+        "sourceState": "possessive",
+        "predicateState": "possessive",
+        "trace": [
+          "select-simple-relational-predicate",
+          "require-possessive-state"
+        ]
+      },
+      "actual": {
+        "option": "option-one",
+        "sourceState": "possessive",
+        "predicateState": "possessive",
+        "trace": [
+          "select-simple-relational-predicate",
+          "require-possessive-state"
+        ]
+      },
+      "canvasAnchor": "When a relational nounstem occurs in a simple-stemmed NNC under Option 1, that NNC is in the possessive state.",
+      "proofTest": "src/tests/classical_relational_core_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P461-L026-D8FC647DE1 rejects a mutation of option one possessive-state enforcement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

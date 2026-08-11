@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-nnc-sex",
+  "canonicalResultDigest": "sha256:496d43d0f5c37a7350f935defeeec52c0598e4b26cb414e12efd8f23b42d35d7",
+  "observations": [
+    {
+      "atomId": "ACI-P301-L034-D54D7A1D11-02",
+      "ownerId": "classical-compound-nnc-sex",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-sex:aci-p301-l034-d54d7a1d11-02",
+      "canonicalPath": "sex specification through a compound nounstem",
+      "expected": {
+        "embedRole": "sex",
+        "stem": "cihuā-cal",
+        "ruleApplied": true
+      },
+      "actual": {
+        "embedRole": "sex",
+        "stem": "cihuā-cal",
+        "ruleApplied": true
+      },
+      "canvasAnchor": "When the sex of a human referent must be specified, a compound nounstem of this pattern may be used.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P301-L034-D54D7A1D11-02 rejects a mutation of sex specification through a compound nounstem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

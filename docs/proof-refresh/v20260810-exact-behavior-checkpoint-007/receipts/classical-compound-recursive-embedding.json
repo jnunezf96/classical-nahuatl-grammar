@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-recursive-embedding",
+  "canonicalResultDigest": "sha256:595e5a29909d6ae1ff206131cc25aa3378d72b6a1c107151d2ef46a1aa546102",
+  "observations": [
+    {
+      "atomId": "ACI-P265-L018-457D21F4B2",
+      "ownerId": "classical-compound-recursive-embedding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-recursive-embedding:aci-p265-l018-457d21f4b2",
+      "canonicalPath": "cases.recursiveEmbed recursive operation",
+      "expected": {
+        "canonical": "authorized",
+        "ruleFamily": "compound-recursion",
+        "recursiveEmbed": true
+      },
+      "actual": {
+        "canonical": "authorized",
+        "ruleFamily": "compound-recursion",
+        "recursiveEmbed": true
+      },
+      "canvasAnchor": "Verbstem compounding is recursive.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P265-L018-457D21F4B2 rejects a mutation of cases.recursiveEmbed recursive operation",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P265-L018-457D21F4B2-02",
+      "ownerId": "classical-compound-recursive-embedding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-recursive-embedding:aci-p265-l018-457d21f4b2-02",
+      "canonicalPath": "cases.recursiveEmbed compound-as-embed",
+      "expected": {
+        "sourceStem": "chōca-ti-nen",
+        "targetStem": "chōca-ti-nen-ti-yah",
+        "recursiveEmbed": true
+      },
+      "actual": {
+        "sourceStem": "chōca-ti-nen",
+        "targetStem": "chōca-ti-nen-ti-yah",
+        "recursiveEmbed": true
+      },
+      "canvasAnchor": "A compound stem can itself serve as the embed of a further compound stem.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P265-L018-457D21F4B2-02 rejects a mutation of cases.recursiveEmbed compound-as-embed",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

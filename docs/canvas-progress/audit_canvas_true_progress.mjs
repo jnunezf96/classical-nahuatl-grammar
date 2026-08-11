@@ -94,15 +94,13 @@ const retainedCanonicalProofTuples = grammarAtomTuples.filter(
 const assertionProofTuples = grammarAtomTuples.filter(
   (tuple) => tuple[atomTupleIndex.proofCoordinateKind] === "non-generative-individual-atom-assertion",
 );
-const readOnlyAssertionTuples = assertionProofTuples.filter(
-  (tuple) => tuple[atomTupleIndex.uiRole] === "read-only-grammar-fact",
-);
 const behaviorRequiredRoles = new Map([
   ["canonical-rule-or-alternation", "perform-canonical-operation-or-alternation"],
   ["derived-realization", "derive-canonical-realization"],
   ["result-projection", "project-canonical-result"],
   ["applicability-or-constraint", "enforce-applicability-or-constraint"],
   ["source-structure-schema", "construct-or-validate-typed-source-structure"],
+  ["read-only-grammar-fact", "supply-or-present-exact-grammar-fact-or-explanation"],
 ]);
 const refreshedExactAtomIds = new Set(
   exactObservationManifest.observations
@@ -121,7 +119,7 @@ assert(grammarAtoms.length === semantic.counts.grammarBearing, "grammar atom cou
 assert(nonGrammarAtoms.length === semantic.counts.evidence + semantic.counts.analysis + semantic.counts.documentary, "non-grammar atom count drifted");
 assert(grammarAtomTuples.length === grammarAtoms.length, "atom UI grammar denominator drifted");
 assert(retainedCanonicalProofTuples.length + assertionProofTuples.length === grammarAtoms.length, "proof coordinate accounting drifted");
-assert(readOnlyAssertionTuples.length + insufficientAssertionTuples.length + refreshedExactAtomIds.size === assertionProofTuples.length, "an assertion atom lacks an execution-obligation classification");
+assert(insufficientAssertionTuples.length + refreshedExactAtomIds.size === assertionProofTuples.length, "an assertion atom lacks an exact project-role classification");
 assert(semantic.invariants.evidenceAbsenceBlocksGeneration === false, "evidence absence must not block generation");
 assert(semantic.invariants.typedGrammarAuthorizesUnlistedRealizations === true, "typed grammar must authorize unlisted realizations");
 
@@ -183,7 +181,7 @@ const metrics = {
   lessonNonGrammarAccounting: ratio(nonGrammarAtoms.length, nonGrammarAtoms.length),
   lessonGrammarOwnerLinked: ratio(grammarAtomTuples.length, grammarAtoms.length),
   lessonGrammarExactBehaviorObserved: ratio(
-    retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length + refreshedExactAtomIds.size,
+    retainedCanonicalProofTuples.length + refreshedExactAtomIds.size,
     grammarAtoms.length,
   ),
   applicationAxisClassification: ratio(classifiedApplicationAxes.length, dispositions.entries.length),
@@ -207,7 +205,7 @@ const report = {
   strictComplete,
   measurementPolicy: {
     headline: "No weighted aggregate is permitted. Every applicable denominator is reported separately.",
-    completionRule: "Strict completion requires full Canvas source-zone atomization, exhaustive force classification, and an atom-specific test that observes the canonical engine performing, deriving, projecting, enforcing, constructing, validating, or issuing the exact required behavior. An atom-to-owner link or non-generative assertion is insufficient wherever executable behavior is required.",
+    completionRule: "Strict completion requires full Canvas source-zone atomization, exhaustive force classification, and an atom-specific test that observes the atom's real project job: performing, deriving, projecting, enforcing, constructing, validating, controlling a genuine choice, or supplying an exact grammar fact or explanation. An owner link, file, label, semantic assertion, or existence test is insufficient.",
     grammarAuthority: "Only typed grammar owners authorize results. Canvas atoms supply specification and provenance.",
     evidencePolicy: "Evidence neither authorizes grammar nor blocks a result when absent.",
     uiPolicy: "Only genuine grammatical choices become controls; derived, contextual, lexical, boundary-conditioned, evidence, and presentation facts do not.",
@@ -223,7 +221,7 @@ const report = {
     exactProofs: {
       retainedCanonicalCoordinates: retainedProofs,
       newIndividualAtomCoordinates: newProofs,
-      exactBehaviorObserved: retainedCanonicalProofTuples.length + readOnlyAssertionTuples.length + refreshedExactAtomIds.size,
+      exactBehaviorObserved: retainedCanonicalProofTuples.length + refreshedExactAtomIds.size,
       linkOnlyInsufficient: insufficientAssertionTuples.length,
       totalOwnerLinked: retainedProofs + newProofs,
       activeExactObservationManifest: exactObservationPointer.activeManifest,

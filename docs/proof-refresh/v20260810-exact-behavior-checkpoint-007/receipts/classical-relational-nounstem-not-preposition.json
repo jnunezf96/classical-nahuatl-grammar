@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-relational-nounstem-not-preposition",
+  "canonicalResultDigest": "sha256:06a8ed3c236aadd1a96e9c800b518c75f591932f4b3e88072ee3197222fcce8a",
+  "observations": [
+    {
+      "atomId": "ACI-P460-L022-370DF69AD0-03",
+      "ownerId": "classical-relational-nounstem-not-preposition",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-nounstem-not-preposition:aci-p460-l022-370df69ad0-03",
+      "canonicalPath": "relational nounstem adverbialized NNC formation",
+      "expected": {
+        "sourceCategory": "nounstem",
+        "lexicalClass": "relational",
+        "construction": "relational-nnc",
+        "subjectMode": "adverbialized"
+      },
+      "actual": {
+        "sourceCategory": "nounstem",
+        "lexicalClass": "relational",
+        "construction": "relational-nnc",
+        "subjectMode": "adverbialized"
+      },
+      "canvasAnchor": "A relational nounstem is used to form an adverbialized NNC.",
+      "proofTest": "src/tests/classical_relational_core_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P460-L022-370DF69AD0-03 rejects a mutation of relational nounstem adverbialized NNC formation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

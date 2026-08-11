@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-cah-principal-deletion",
+  "canonicalResultDigest": "sha256:7efffd9b434b82c7c5ed3bda0cae3c0bcf14c7d48839262e08e0503a187f9d15",
+  "observations": [
+    {
+      "atomId": "ACI-P162-L007-870071A7AC",
+      "ownerId": "classical-cah-principal-deletion",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-cah-principal-deletion:aci-p162-l007-870071a7ac",
+      "canonicalPath": "cah-principal deletion licensing its proxy",
+      "expected": {
+        "deletionKind": "cah-proxy",
+        "deletedUnit": "vnc",
+        "deletedStem": "ca-h"
+      },
+      "actual": {
+        "deletionKind": "cah-proxy",
+        "deletedUnit": "vnc",
+        "deletedStem": "ca-h"
+      },
+      "canvasAnchor": "When the shared principal clause is deleted under §18.9, its adverbial adjunct is upgraded to the rank of proxy principal.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P162-L007-870071A7AC rejects a mutation of cah-principal deletion licensing its proxy",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

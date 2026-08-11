@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-male-vocative-particle-realization",
+  "canonicalResultDigest": "sha256:f3723d3934d059b19c5e703c8d243080312dcad921a4d1f35ecf6efeaed5a3f5",
+  "observations": [
+    {
+      "atomId": "ACI-P162-L035-E71629218E",
+      "ownerId": "classical-male-vocative-particle-realization",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-male-vocative-particle-realization:aci-p162-l035-e71629218e",
+      "canonicalPath": "the male vocative particle being appended to the NNC",
+      "expected": {
+        "operation": "append-male-vocative-e",
+        "surface": "Pille!",
+        "speakerGender": "male"
+      },
+      "actual": {
+        "operation": "append-male-vocative-e",
+        "surface": "Pille!",
+        "speakerGender": "male"
+      },
+      "canvasAnchor": "In writing, the attention-getting particle #e is always joined to the vocative NNC as a suffix.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P162-L035-E71629218E rejects a mutation of the male vocative particle being appended to the NNC",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

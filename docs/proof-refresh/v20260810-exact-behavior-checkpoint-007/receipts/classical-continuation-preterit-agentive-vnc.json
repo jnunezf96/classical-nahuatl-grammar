@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-continuation-preterit-agentive-vnc",
+  "canonicalResultDigest": "sha256:8a019585478b4de783305a0618924790b482f51ceb4d95b3360aefc6256f7716",
+  "observations": [
+    {
+      "atomId": "ACI-P350-L025-0696726FB9-06",
+      "ownerId": "classical-continuation-preterit-agentive-vnc",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-preterit-agentive-vnc:aci-p350-l025-0696726fb9-06",
+      "canonicalPath": "preterit-agentive continuation as an adverbial compound",
+      "expected": {
+        "relation": "adverb",
+        "target": "mic-ca-chōca",
+        "operation": "verbal-continuation:adverb"
+      },
+      "actual": {
+        "relation": "adverb",
+        "target": "mic-ca-chōca",
+        "operation": "verbal-continuation:adverb"
+      },
+      "canvasAnchor": "Because the matrix verbstem is transitive, the reflexive object on the embedded stem of nicnezcalihcāittaya has the shuntline shape ne-.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L025-0696726FB9-06 rejects a mutation of preterit-agentive continuation as an adverbial compound",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

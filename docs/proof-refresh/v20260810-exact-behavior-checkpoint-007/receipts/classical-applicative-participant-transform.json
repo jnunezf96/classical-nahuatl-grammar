@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-applicative-participant-transform",
+  "canonicalResultDigest": "sha256:049a988388c65924a56c82b39b5a5800e445390ec0e789b125001185c634304a",
+  "observations": [
+    {
+      "atomId": "ACI-P235-L007-E0CDFF94E0-02",
+      "ownerId": "classical-applicative-participant-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-applicative-participant-transform:aci-p235-l007-e0cdff94e0-02",
+      "canonicalPath": "the applicative importing a new object participant",
+      "expected": {
+        "sourceObjectCount": 0,
+        "targetObjectCount": 1,
+        "objectId": "applicative-object",
+        "governor": "applicative",
+        "subjectPreserved": true
+      },
+      "actual": {
+        "sourceObjectCount": 0,
+        "targetObjectCount": 1,
+        "objectId": "applicative-object",
+        "governor": "applicative",
+        "subjectPreserved": true
+      },
+      "canvasAnchor": "The applicative transformation imports an applicative object pronoun from outside the source VNC.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P235-L007-E0CDFF94E0-02 rejects a mutation of the applicative importing a new object participant",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

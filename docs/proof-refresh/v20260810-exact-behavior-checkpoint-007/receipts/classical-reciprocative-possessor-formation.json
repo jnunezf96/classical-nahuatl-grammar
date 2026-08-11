@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-reciprocative-possessor-formation",
+  "canonicalResultDigest": "sha256:1522b16ab33bbdbafe0686c44c25a68d1f2ccb2a1b2f13453b470f3e798f98c4",
+  "observations": [
+    {
+      "atomId": "ACI-P122-L004-79CE340A6C",
+      "ownerId": "classical-reciprocative-possessor-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-reciprocative-possessor-formation:aci-p122-l004-79ce340a6c",
+      "canonicalPath": "ne as a third-person-only reciprocative possessor",
+      "expected": {
+        "morph": "ne",
+        "role": "reciprocal",
+        "conditioning": "third-person-subject-only"
+      },
+      "actual": {
+        "morph": "ne",
+        "role": "reciprocal",
+        "conditioning": "third-person-subject-only"
+      },
+      "canvasAnchor": "The reciprocative possessor morph ne is restricted to third-person possessors.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P122-L004-79CE340A6C rejects a mutation of ne as a third-person-only reciprocative possessor",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

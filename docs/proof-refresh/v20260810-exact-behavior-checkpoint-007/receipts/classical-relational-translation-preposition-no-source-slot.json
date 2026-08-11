@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-relational-translation-preposition-no-source-slot",
+  "canonicalResultDigest": "sha256:49d3c8c45709dc25e2cc1a06bdf8229aef18d31abb1bc30e22564957fd549421",
+  "observations": [
+    {
+      "atomId": "ACI-P460-L005-770F28C4C0",
+      "ownerId": "classical-relational-translation-preposition-no-source-slot",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-translation-preposition-no-source-slot:aci-p460-l005-770f28c4c0",
+      "canonicalPath": "relational meaning inherent in the adverbialized clause",
+      "expected": {
+        "selectedAxis": true,
+        "translationPrepositionIsMorphology": false,
+        "subjectMode": "adverbialized"
+      },
+      "actual": {
+        "selectedAxis": true,
+        "translationPrepositionIsMorphology": false,
+        "subjectMode": "adverbialized"
+      },
+      "canvasAnchor": "Relational meanings translated in English with prepositions such as 'on,' 'in,' 'at,' 'to,' 'from,' 'by,' or 'with' are inherent in a Nahuatl adverbialized NNC or VNC.",
+      "proofTest": "src/tests/classical_relational_core_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P460-L005-770F28C4C0 rejects a mutation of relational meaning inherent in the adverbialized clause",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

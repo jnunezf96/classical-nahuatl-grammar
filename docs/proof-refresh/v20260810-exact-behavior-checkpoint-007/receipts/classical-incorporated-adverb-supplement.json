@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-incorporated-adverb-supplement",
+  "canonicalResultDigest": "sha256:60bd08d29dd291ea95bd1a02104f0e843a924bc46b92e7e5372deeeb40bf0152",
+  "observations": [
+    {
+      "atomId": "ACI-P285-L018-BBDDAC96DF-02",
+      "ownerId": "classical-incorporated-adverb-supplement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement:aci-p285-l018-bbddac96df-02",
+      "canonicalPath": "the explicit possessor-to-subject supplement transformation",
+      "expected": {
+        "route": "supplement-subject",
+        "restriction": "possessor-case:possessive-to-nominative",
+        "ruleApplied": true
+      },
+      "actual": {
+        "route": "supplement-subject",
+        "restriction": "possessor-case:possessive-to-nominative",
+        "ruleApplied": true
+      },
+      "canvasAnchor": "here it is explicitly recognized but transformed.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P285-L018-BBDDAC96DF-02 rejects a mutation of the explicit possessor-to-subject supplement transformation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

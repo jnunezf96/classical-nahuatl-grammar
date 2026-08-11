@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-type-two-nonspecific-single-object-transform",
+  "canonicalResultDigest": "sha256:75d50665fc32c583cec9e3816262b73a159ff43ccee38fdc89af0f0271c4b2bb",
+  "observations": [
+    {
+      "atomId": "ACI-P217-L019-3DDF8C51A6-04",
+      "ownerId": "classical-type-two-nonspecific-single-object-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-nonspecific-single-object-transform:aci-p217-l019-3ddf8c51a6-04",
+      "canonicalPath": "quīza impersonal human causee transform",
+      "expected": {
+        "result": "titēquīxtia",
+        "sourceVoice": "impersonal",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "nonspecific-human",
+          "objectPerson": "",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "actual": {
+        "result": "titēquīxtia",
+        "sourceVoice": "impersonal",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "nonspecific-human",
+          "objectPerson": "",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "canvasAnchor": "Impersonal source subject Ø-Ø is converted into nonspecific human causative object tē- in titēquīxtia.",
+      "proofTest": "src/tests/classical_vnc_type_two_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P217-L019-3DDF8C51A6-04 rejects a mutation of quīza impersonal human causee transform",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-valence-combination-system",
+  "canonicalResultDigest": "sha256:734b66b0fffd469eab17c2c50c5a15be0a5699c8c5e5d5c67862240ebc1163e7",
+  "observations": [
+    {
+      "atomId": "ACI-P252-L026-9B812B7DCB-02",
+      "ownerId": "classical-compound-valence-combination-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-valence-combination-system:aci-p252-l026-9b812b7dcb-02",
+      "canonicalPath": "contract matrix structural governance",
+      "expected": {
+        "matrixDeterminesCompoundKind": true,
+        "compoundTypes": [
+          "linked",
+          "integrated"
+        ]
+      },
+      "actual": {
+        "matrixDeterminesCompoundKind": true,
+        "compoundTypes": [
+          "linked",
+          "integrated"
+        ]
+      },
+      "canvasAnchor": "The matrix subposition determines the structural type of a compound verbstem.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P252-L026-9B812B7DCB-02 rejects a mutation of contract matrix structural governance",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P252-L026-9B812B7DCB-03",
+      "ownerId": "classical-compound-valence-combination-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-valence-combination-system:aci-p252-l026-9b812b7dcb-03",
+      "canonicalPath": "contract linked matrix outcome",
+      "expected": {
+        "matrixDeterminesCompoundKind": true,
+        "licensed": true
+      },
+      "actual": {
+        "matrixDeterminesCompoundKind": true,
+        "licensed": true
+      },
+      "canvasAnchor": "The matrix subposition can determine that a compound verbstem is linked.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P252-L026-9B812B7DCB-03 rejects a mutation of contract linked matrix outcome",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P252-L026-9B812B7DCB-04",
+      "ownerId": "classical-compound-valence-combination-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-valence-combination-system:aci-p252-l026-9b812b7dcb-04",
+      "canonicalPath": "contract integrated matrix outcome",
+      "expected": {
+        "matrixDeterminesCompoundKind": true,
+        "licensed": true
+      },
+      "actual": {
+        "matrixDeterminesCompoundKind": true,
+        "licensed": true
+      },
+      "canvasAnchor": "The matrix subposition can determine that a compound verbstem is integrated.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P252-L026-9B812B7DCB-04 rejects a mutation of contract integrated matrix outcome",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 3,
+    "passed": 3,
+    "failed": 0,
+    "mutationsRejected": 3
+  }
+}

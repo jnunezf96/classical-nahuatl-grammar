@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-embed-matrix-governance",
+  "canonicalResultDigest": "sha256:05dc7ce047ecff8a9eb8d368d0ca59940e0fb7a127c0eb49874cb16fa5739c24",
+  "observations": [
+    {
+      "atomId": "ACI-P250-L029-4B8BFDD1A9-02",
+      "ownerId": "classical-compound-embed-matrix-governance",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-embed-matrix-governance:aci-p250-l029-4b8bfdd1a9-02",
+      "canonicalPath": "the embed representing the adjunct before the matrix",
+      "expected": {
+        "matrixAfterEmbed": true,
+        "operation": "embed-before-matrix-typed-predicate"
+      },
+      "actual": {
+        "matrixAfterEmbed": true,
+        "operation": "embed-before-matrix-typed-predicate"
+      },
+      "canvasAnchor": "that in the embed subposition represents the adjunct clause.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P250-L029-4B8BFDD1A9-02 rejects a mutation of the embed representing the adjunct before the matrix",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

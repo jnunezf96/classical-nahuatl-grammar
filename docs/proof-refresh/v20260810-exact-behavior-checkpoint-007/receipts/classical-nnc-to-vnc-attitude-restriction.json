@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-nnc-to-vnc-attitude-restriction",
+  "canonicalResultDigest": "sha256:2a276b0df405372193e399633a11b2e46a2f2e9f9adbca1ec65290021176e22d",
+  "observations": [
+    {
+      "atomId": "ACI-P307-L015-2F2FCC135F-03",
+      "ownerId": "classical-nnc-to-vnc-attitude-restriction",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-nnc-to-vnc-attitude-restriction:aci-p307-l015-2f2fcc135f-03",
+      "canonicalPath": "the honorific-matrix restriction on free tzin denominal use",
+      "expected": {
+        "authorization": "blocked",
+        "reason": "tzin-denominal-vnc-is-restricted-to-honorific-matrix-operation"
+      },
+      "actual": {
+        "authorization": "blocked",
+        "reason": "tzin-denominal-vnc-is-restricted-to-honorific-matrix-operation"
+      },
+      "canvasAnchor": "The resulting verbstems are restricted to serving as matrices in honorific and pejorative verbstem formations.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P307-L015-2F2FCC135F-03 rejects a mutation of the honorific-matrix restriction on free tzin denominal use",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

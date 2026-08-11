@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-denominal-vnc-patientive-chain-ti-a",
+  "canonicalResultDigest": "sha256:a878272c5623e8f461ed4b0d0352091ed858d207242f99990b7cf5197c7fd8e4",
+  "observations": [
+    {
+      "atomId": "ACI-P595-L034-C075166E31-02",
+      "ownerId": "classical-denominal-vnc-patientive-chain-ti-a",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-patientive-chain-ti-a:aci-p595-l034-c075166e31-02",
+      "canonicalPath": "the intermediate patientive ch in the ti-a causative chain",
+      "expected": {
+        "operation": "patientive-chain-ti-a",
+        "targetStem": "il-ō-ch-ti-ā",
+        "targetClass": "C"
+      },
+      "actual": {
+        "operation": "patientive-chain-ti-a",
+        "targetStem": "il-ō-ch-ti-ā",
+        "targetClass": "C"
+      },
+      "canvasAnchor": "In such a causative, resultant [č] presupposes an intermediate patientive nounstem derived from a ti verbstem.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L034-C075166E31-02 rejects a mutation of the intermediate patientive ch in the ti-a causative chain",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

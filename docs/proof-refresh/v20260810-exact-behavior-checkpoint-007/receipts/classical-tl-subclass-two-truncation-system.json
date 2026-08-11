@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-tl-subclass-two-truncation-system",
+  "canonicalResultDigest": "sha256:3d878a4b40d55b95802e6ee99d4d2ddf575a31755ac4506b506958ddfadb0799",
+  "observations": [
+    {
+      "atomId": "ACI-P130-L020-D09B501BC1",
+      "ownerId": "classical-tl-subclass-two-truncation-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tl-subclass-two-truncation-system:aci-p130-l020-d09b501bc1",
+      "canonicalPath": "the zero singular num1 connector in the selected subclass",
+      "expected": {
+        "singularConnector": "",
+        "generalUseShape": "truncated"
+      },
+      "actual": {
+        "singularConnector": "",
+        "generalUseShape": "truncated"
+      },
+      "canvasAnchor": "For in-class and Ø-class nounstems in §14.7.1.a, the subject's num1 subposition is always filled by Ø.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P130-L020-D09B501BC1 rejects a mutation of the zero singular num1 connector in the selected subclass",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

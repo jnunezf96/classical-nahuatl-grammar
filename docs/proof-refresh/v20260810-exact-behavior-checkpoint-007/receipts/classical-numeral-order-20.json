@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-numeral-order-20",
+  "canonicalResultDigest": "sha256:9f0fb6f0116a5e0c8a1822bc84bad5654b54c8bbb242540e3c7db033259daed7",
+  "observations": [
+    {
+      "atomId": "ACI-P326-L026-852E858276-02",
+      "ownerId": "classical-numeral-order-20",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-order-20:aci-p326-l026-852e858276-02",
+      "canonicalPath": "cases.order20 numerical unit",
+      "expected": {
+        "value": 20,
+        "stem": "cem-pōhu-a-l"
+      },
+      "actual": {
+        "value": 20,
+        "stem": "cem-pōhu-a-l"
+      },
+      "canvasAnchor": "One unit of (pōhu-a-l)-li- has the numerical value twenty.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P326-L026-852E858276-02 rejects a mutation of cases.order20 numerical unit",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P326-L027-9C5AC1070B-02",
+      "ownerId": "classical-numeral-order-20",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-order-20:aci-p326-l027-9c5ac1070b-02",
+      "canonicalPath": "cases.order20 morphological realization",
+      "expected": {
+        "formula": "#0-0(cem-pōhu-a-l)li-0#",
+        "surface": "cempōhualli"
+      },
+      "actual": {
+        "formula": "#0-0(cem-pōhu-a-l)li-0#",
+        "surface": "cempōhualli"
+      },
+      "canvasAnchor": "Cempōhualli has the morphological realization #Ø-Ø(cem-pōhu-a-l)li-Ø#.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P326-L027-9C5AC1070B-02 rejects a mutation of cases.order20 morphological realization",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P326-L027-9C5AC1070B-04",
+      "ownerId": "classical-numeral-order-20",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-numeral-order-20:aci-p326-l027-9c5ac1070b-04",
+      "canonicalPath": "cases.order20 one-score computation",
+      "expected": {
+        "multiplier": 1,
+        "unit": 20,
+        "result": 20
+      },
+      "actual": {
+        "multiplier": 1,
+        "unit": 20,
+        "result": 20
+      },
+      "canvasAnchor": "Cempōhualli expresses one score, computed as 1 × 20.",
+      "proofTest": "src/tests/classical_numeral_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P326-L027-9C5AC1070B-04 rejects a mutation of cases.order20 one-score computation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 3,
+    "passed": 3,
+    "failed": 0,
+    "mutationsRejected": 3
+  }
+}

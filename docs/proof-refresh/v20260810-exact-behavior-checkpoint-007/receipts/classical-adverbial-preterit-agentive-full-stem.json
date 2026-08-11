@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+  "canonicalResultDigest": "sha256:aa7545d327f44a664305e7a56fb5582020d6089455676fff67910b21ba3d65cf",
+  "observations": [
+    {
+      "atomId": "ACI-P456-L021-EF16B29666-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p456-l021-ef16b29666-03",
+      "canonicalPath": "cases.preteritFullStem.lexicalReadings.0",
+      "expected": "calmly",
+      "actual": "calmly",
+      "canvasAnchor": "Yōcoxca can mean ‘calmly.’",
+      "proofTest": "src/tests/classical_adverbial_preterit_full_stem_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P456-L021-EF16B29666-03 rejects a broken cases.preteritFullStem.lexicalReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P456-L021-EF16B29666-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p456-l021-ef16b29666-04",
+      "canonicalPath": "cases.preteritFullStem.lexicalReadings.1",
+      "expected": "peacefully",
+      "actual": "peacefully",
+      "canvasAnchor": "Yōcoxca can mean ‘peacefully.’",
+      "proofTest": "src/tests/classical_adverbial_preterit_full_stem_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P456-L021-EF16B29666-04 rejects a broken cases.preteritFullStem.lexicalReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P456-L021-EF16B29666-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p456-l021-ef16b29666-05",
+      "canonicalPath": "cases.preteritFullStem.sourceAnalysis",
+      "expected": {
+        "sourceStem": "yōco-ya",
+        "sourceStemStrategy": "full-root-plus-ya",
+        "sourceAttested": false,
+        "nonattestationBlocksDerivation": false,
+        "preteritAgentiveStem": "yōco-x-Ø-qui",
+        "preteritAgentiveReading": "one who has become well formed"
+      },
+      "actual": {
+        "sourceStem": "yōco-ya",
+        "sourceStemStrategy": "full-root-plus-ya",
+        "sourceAttested": false,
+        "nonattestationBlocksDerivation": false,
+        "preteritAgentiveStem": "yōco-x-Ø-qui",
+        "preteritAgentiveReading": "one who has become well formed"
+      },
+      "canvasAnchor": "Yōcoxca is derived through the full root-plus-ya source stem (yōco-ya).",
+      "proofTest": "src/tests/classical_adverbial_preterit_full_stem_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P456-L021-EF16B29666-05 rejects a broken cases.preteritFullStem.sourceAnalysis",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P456-L021-EF16B29666-07",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p456-l021-ef16b29666-07",
+      "canonicalPath": "cases.preteritFullStem.sourceAnalysis.nonattestationBlocksDerivation",
+      "expected": false,
+      "actual": false,
+      "canvasAnchor": "Nonattestation of source (yōco-ya) does not negate its grammatical role in deriving yōcoxca.",
+      "proofTest": "src/tests/classical_adverbial_preterit_full_stem_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P456-L021-EF16B29666-07 rejects a broken cases.preteritFullStem.sourceAnalysis.nonattestationBlocksDerivation",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P456-L021-EF16B29666-09",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p456-l021-ef16b29666-09",
+      "canonicalPath": "cases.preteritFullStem.sourceAnalysis.preteritAgentiveReading",
+      "expected": "one who has become well formed",
+      "actual": "one who has become well formed",
+      "canvasAnchor": "Preterit-agentive nounstem (yōco-x-Ø)-qui- means ‘one who has become well formed.’",
+      "proofTest": "src/tests/classical_adverbial_preterit_full_stem_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P456-L021-EF16B29666-09 rejects a broken cases.preteritFullStem.sourceAnalysis.preteritAgentiveReading",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 5,
+    "passed": 5,
+    "failed": 0,
+    "mutationsRejected": 5
+  }
+}

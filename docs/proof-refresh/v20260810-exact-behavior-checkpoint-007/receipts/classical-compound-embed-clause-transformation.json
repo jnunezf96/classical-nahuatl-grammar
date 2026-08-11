@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-embed-clause-transformation",
+  "canonicalResultDigest": "sha256:90fdd1a4ec79919934abea9a2cccc54345cee6bc2084f68fb35502144b415068",
+  "observations": [
+    {
+      "atomId": "ACI-P251-L024-EE58159F0B-02",
+      "ownerId": "classical-compound-embed-clause-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-embed-clause-transformation:aci-p251-l024-ee58159f0b-02",
+      "canonicalPath": "contract typed VNC embed",
+      "expected": {
+        "firstOperation": "authorized-typed-embed-vnc",
+        "embedStem": "chōca",
+        "sourcePredicatePreserved": true
+      },
+      "actual": {
+        "firstOperation": "authorized-typed-embed-vnc",
+        "embedStem": "chōca",
+        "sourcePredicatePreserved": true
+      },
+      "canvasAnchor": "The embed subposition of a compound verbstem may come from a VNC.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P251-L024-EE58159F0B-02 rejects a mutation of contract typed VNC embed",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P251-L032-6F31831A04-02",
+      "ownerId": "classical-compound-embed-clause-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-embed-clause-transformation:aci-p251-l032-6f31831a04-02",
+      "canonicalPath": "contract embed valence governance",
+      "expected": {
+        "contract": true,
+        "caseFact": true,
+        "sourceValence": "intransitive",
+        "targetValence": "intransitive"
+      },
+      "actual": {
+        "contract": true,
+        "caseFact": true,
+        "sourceValence": "intransitive",
+        "targetValence": "intransitive"
+      },
+      "canvasAnchor": "consequently, the valence of the verbstem in the embed subposition determines the valence of the compound verbstem.",
+      "proofTest": "src/tests/classical_compound_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P251-L032-6F31831A04-02 rejects a mutation of contract embed valence governance",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-object-priority-linearization",
+  "canonicalResultDigest": "sha256:6a2831c424ce5e4654ff51e12b373380d63bc8b5357d7aae9a4c8ee7f59431d0",
+  "observations": [
+    {
+      "atomId": "ACI-P195-L009-056F1FE6CE-03",
+      "ownerId": "classical-object-priority-linearization",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-object-priority-linearization:aci-p195-l009-056f1fe6ce-03",
+      "canonicalPath": "objectHistory.twoSpecific canonical sequence",
+      "expected": {
+        "linearOrder": [
+          "caused",
+          "direct"
+        ],
+        "carriers": [
+          "m-itz",
+          "0-0"
+        ]
+      },
+      "actual": {
+        "linearOrder": [
+          "caused",
+          "direct"
+        ],
+        "carriers": [
+          "m-itz",
+          "0-0"
+        ]
+      },
+      "canvasAnchor": "A selected two-pronoun combination must preserve the sequence shown on its chart line.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P195-L009-056F1FE6CE-03 rejects a mutation of objectHistory.twoSpecific canonical sequence",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

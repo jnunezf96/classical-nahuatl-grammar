@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-compound-nnc-affinity",
+  "canonicalResultDigest": "sha256:4cb3e151d4566bd12e654a9b1c128e7cf0478e35cdb3811bcdc43b993bfec984",
+  "observations": [
+    {
+      "atomId": "ACI-P303-L004-C33256556E-02",
+      "ownerId": "classical-compound-nnc-affinity",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-affinity:aci-p303-l004-c33256556e-02",
+      "canonicalPath": "obligatory matrix affinity in the selected compound class",
+      "expected": {
+        "reduplication": "affinity",
+        "target": "both",
+        "ruleApplied": true,
+        "surface": "āācālcalli"
+      },
+      "actual": {
+        "reduplication": "affinity",
+        "target": "both",
+        "ruleApplied": true,
+        "surface": "āācālcalli"
+      },
+      "canvasAnchor": "For some compound nounstems, reduplication on the matrix is obligatory.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P303-L004-C33256556E-02 rejects a mutation of obligatory matrix affinity in the selected compound class",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

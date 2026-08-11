@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-clause-conjunction-auh-placement",
+  "canonicalResultDigest": "sha256:7b0520d88a8fbd55db83223463a867d47ad214caddcb5bd8cddbc75fb7a92024",
+  "observations": [
+    {
+      "atomId": "ACI-P561-L038-897D40C2E2",
+      "ownerId": "classical-clause-conjunction-auh-placement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-auh-placement:aci-p561-l038-897d40c2e2",
+      "canonicalPath": "auh marking coordination between principal clauses",
+      "expected": {
+        "marker": "auh",
+        "syntacticRank": "principal-clause-group",
+        "coordinationType": "additive"
+      },
+      "actual": {
+        "marker": "auh",
+        "syntacticRank": "principal-clause-group",
+        "coordinationType": "additive"
+      },
+      "canvasAnchor": "Marked conjunction can be formed by inserting the conjunctor auh between conjoined principal clauses or sentences.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P561-L038-897D40C2E2 rejects a mutation of auh marking coordination between principal clauses",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

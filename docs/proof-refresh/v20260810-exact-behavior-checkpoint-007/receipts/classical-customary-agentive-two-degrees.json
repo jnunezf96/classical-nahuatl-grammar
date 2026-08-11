@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-customary-agentive-two-degrees",
+  "canonicalResultDigest": "sha256:ceb72b816566ea1cfae8660a13f0fd98f7f37adb63d23fef1f45aea4e3ac25c9",
+  "observations": [
+    {
+      "atomId": "ACI-P354-L007-D95BA09915-02",
+      "ownerId": "classical-customary-agentive-two-degrees",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-customary-agentive-two-degrees:aci-p354-l007-d95ba09915-02",
+      "canonicalPath": "the fully nominal second degree of customary agentive formation",
+      "expected": {
+        "relation": "reanalysis-versus-full-nominalization",
+        "firstOperation": "predicate-nominalization:customary-agentive-reanalysis",
+        "secondOperation": "predicate-nominalization:customary-agentive-full",
+        "secondClass": "tl"
+      },
+      "actual": {
+        "relation": "reanalysis-versus-full-nominalization",
+        "firstOperation": "predicate-nominalization:customary-agentive-reanalysis",
+        "secondOperation": "predicate-nominalization:customary-agentive-full",
+        "secondClass": "tl"
+      },
+      "canvasAnchor": "the other creates a fully nominal NNC by a more thoroughgoing transformation.",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P354-L007-D95BA09915-02 rejects a mutation of the fully nominal second degree of customary agentive formation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

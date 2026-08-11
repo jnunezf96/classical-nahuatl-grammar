@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-clause-comparison-resemblance-verbstem-nnc",
+  "canonicalResultDigest": "sha256:0c26e15e19a712bad38a176615b0c8a2f3214cd9bcdd523664d882a4d2d4114c",
+  "observations": [
+    {
+      "atomId": "ACI-P575-L036-45FD89B9C7",
+      "ownerId": "classical-clause-comparison-resemblance-verbstem-nnc",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-comparison-resemblance-verbstem-nnc:aci-p575-l036-45fd89b9c7",
+      "canonicalPath": "similarity through a resemblance-verbstem NNC",
+      "expected": {
+        "route": "similarity-resemblance-verbstem-nnc",
+        "operation": "compose-resemblance-verbstem-nnc",
+        "principalFormation": "verbstem-resemblance-predicate-nnc"
+      },
+      "actual": {
+        "route": "similarity-resemblance-verbstem-nnc",
+        "operation": "compose-resemblance-verbstem-nnc",
+        "principalFormation": "verbstem-resemblance-predicate-nnc"
+      },
+      "canvasAnchor": "Similarity can be expressed with an incorporated-complement compound verbstem whose matrix is m-o-(neh-nequi).",
+      "proofTest": "src/tests/classical_multi_family_owner_threshold_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P575-L036-45FD89B9C7 rejects a mutation of similarity through a resemblance-verbstem NNC",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

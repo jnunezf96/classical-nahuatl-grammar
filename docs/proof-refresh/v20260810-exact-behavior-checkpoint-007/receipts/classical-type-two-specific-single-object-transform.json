@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-type-two-specific-single-object-transform",
+  "canonicalResultDigest": "sha256:29dc1aaa4935d27257b2ea384e3bb14badc57f4fc915a8cd6c854678a07c025a",
+  "observations": [
+    {
+      "atomId": "ACI-P217-L006-C9398E6039-02",
+      "ownerId": "classical-type-two-specific-single-object-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-specific-single-object-transform:aci-p217-l006-c9398e6039-02",
+      "canonicalPath": "quīza specific causee transform",
+      "expected": {
+        "result": "ticquīxtia",
+        "sourceSubject": "3sg",
+        "targetSubject": "2sg",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "specific-projective",
+          "objectPerson": "3sg",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "actual": {
+        "result": "ticquīxtia",
+        "sourceSubject": "3sg",
+        "targetSubject": "2sg",
+        "causativeObject": {
+          "objectId": "causative-object",
+          "objectKind": "specific-projective",
+          "objectPerson": "3sg",
+          "governor": "causative",
+          "derivationalLevel": 1
+        }
+      },
+      "canvasAnchor": "In the causative transform ticquīxtia, the third-person subject Ø-Ø of source quīza becomes specific projective causative object c-Ø referring to a human causee.",
+      "proofTest": "src/tests/classical_vnc_type_two_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P217-L006-C9398E6039-02 rejects a mutation of quīza specific causee transform",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

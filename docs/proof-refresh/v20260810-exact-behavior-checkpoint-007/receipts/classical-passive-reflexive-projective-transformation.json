@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-passive-reflexive-projective-transformation",
+  "canonicalResultDigest": "sha256:98ab96f36e86660caa2aed9ffd6a811fb6aef2b96faf68e1dd8222ac417800e2",
+  "observations": [
+    {
+      "atomId": "ACI-P182-L004-194C24FE0D-05",
+      "ownerId": "classical-passive-reflexive-projective-transformation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-passive-reflexive-projective-transformation:aci-p182-l004-194c24fe0d-05",
+      "canonicalPath": "voice.reflexivePassive mainline-to-ne transform",
+      "expected": {
+        "sourceValence": "mainline-reflexive",
+        "targetValence": "shuntline-reflexive",
+        "formulaContainsNe": true
+      },
+      "actual": {
+        "sourceValence": "mainline-reflexive",
+        "targetValence": "shuntline-reflexive",
+        "formulaContainsNe": true
+      },
+      "canvasAnchor": "Active reflexive object n-o is converted into passive ne in the transform.",
+      "proofTest": "src/tests/classical_nonactive_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P182-L004-194C24FE0D-05 rejects a mutation of voice.reflexivePassive mainline-to-ne transform",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

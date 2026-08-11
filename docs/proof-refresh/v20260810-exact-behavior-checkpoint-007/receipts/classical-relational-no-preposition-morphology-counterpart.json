@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-relational-no-preposition-morphology-counterpart",
+  "canonicalResultDigest": "sha256:5d52e071250e6c7474ac6058d2fa89878416e30a452f7c8fecdbc38d35ef9f20",
+  "observations": [
+    {
+      "atomId": "ACI-P460-L003-1E7DF7F207",
+      "ownerId": "classical-relational-no-preposition-morphology-counterpart",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-no-preposition-morphology-counterpart:aci-p460-l003-1e7df7f207",
+      "canonicalPath": "relational generation without preposition morphology",
+      "expected": {
+        "prepositionAuthority": false,
+        "canonicalResult": true,
+        "construction": "relational-nnc"
+      },
+      "actual": {
+        "prepositionAuthority": false,
+        "canonicalResult": true,
+        "construction": "relational-nnc"
+      },
+      "canvasAnchor": "Nahuatl does not require prepositions to express adverbial modification.",
+      "proofTest": "src/tests/classical_relational_core_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P460-L003-1E7DF7F207 rejects a mutation of relational generation without preposition morphology",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

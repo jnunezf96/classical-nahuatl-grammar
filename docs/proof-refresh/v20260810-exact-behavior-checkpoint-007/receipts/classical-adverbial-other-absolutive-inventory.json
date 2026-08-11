@@ -1,0 +1,812 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adverbial-other-absolutive-inventory",
+  "canonicalResultDigest": "sha256:a47acaf61e1761cad0859f893bafd4f7ea132c033aee55ea0bd1080dfd0da459",
+  "observations": [
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-02",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-02",
+      "canonicalPath": "cases.otherNoncuah.compositionalReading",
+      "expected": "it is off in a separate place",
+      "actual": "it is off in a separate place",
+      "canvasAnchor": "Nōncuah has the compositional value ‘it is off in a separate place.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-02 rejects a broken cases.otherNoncuah.compositionalReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-03",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-03",
+      "canonicalPath": "cases.otherNoncuah.lexicalReadings.0",
+      "expected": "to one side",
+      "actual": "to one side",
+      "canvasAnchor": "Adverbial nōncuah can mean ‘to one side.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-03 rejects a broken cases.otherNoncuah.lexicalReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-04",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-04",
+      "canonicalPath": "cases.otherNoncuah.lexicalReadings.1",
+      "expected": "separately",
+      "actual": "separately",
+      "canvasAnchor": "Adverbial nōncuah can mean ‘separately.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-04 rejects a broken cases.otherNoncuah.lexicalReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-05",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-05",
+      "canonicalPath": "cases.otherNoncuah.lexicalReadings.2",
+      "expected": "apart",
+      "actual": "apart",
+      "canvasAnchor": "Adverbial nōncuah can mean ‘apart.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-05 rejects a broken cases.otherNoncuah.lexicalReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-06",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-06",
+      "canonicalPath": "cases.otherNoncuah.numberSystem",
+      "expected": {
+        "singularOrSingleEntityForm": "nōncuah",
+        "multipleEntityForm": "nōnōncuah",
+        "operation": "reduplication",
+        "multipleEntityCondition": "more-than-one-entity",
+        "multipleEntityReadings": [
+          "severally apart",
+          "separately apart"
+        ]
+      },
+      "actual": {
+        "singularOrSingleEntityForm": "nōncuah",
+        "multipleEntityForm": "nōnōncuah",
+        "operation": "reduplication",
+        "multipleEntityCondition": "more-than-one-entity",
+        "multipleEntityReadings": [
+          "severally apart",
+          "separately apart"
+        ]
+      },
+      "canvasAnchor": "Nōnōncuah is the reduplicated form of nōncuah.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-06 rejects a broken cases.otherNoncuah.numberSystem",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-07",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-07",
+      "canonicalPath": "cases.otherNoncuah.numberSystem.multipleEntityCondition",
+      "expected": "more-than-one-entity",
+      "actual": "more-than-one-entity",
+      "canvasAnchor": "Reduplicated nōnōncuah is selected when more than one entity is involved.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-07 rejects a broken cases.otherNoncuah.numberSystem.multipleEntityCondition",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-08",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-08",
+      "canonicalPath": "cases.otherNoncuah.numberSystem.multipleEntityReadings.0",
+      "expected": "severally apart",
+      "actual": "severally apart",
+      "canvasAnchor": "Nōnōncuah can mean ‘severally apart.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-08 rejects a broken cases.otherNoncuah.numberSystem.multipleEntityReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L009-8E8D33AC47-09",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l009-8e8d33ac47-09",
+      "canonicalPath": "cases.otherNoncuah.numberSystem.multipleEntityReadings.1",
+      "expected": "separately apart",
+      "actual": "separately apart",
+      "canvasAnchor": "Nōnōncuah can mean ‘separately apart.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L009-8E8D33AC47-09 rejects a broken cases.otherNoncuah.numberSystem.multipleEntityReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-02",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-02",
+      "canonicalPath": "cases.otherIxtlapal.compositionalReading",
+      "expected": "it is with the side as the face",
+      "actual": "it is with the side as the face",
+      "canvasAnchor": "īxtlapal compositionally means 'it is with the side as the face.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-02 rejects a broken cases.otherIxtlapal.compositionalReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-03",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-03",
+      "canonicalPath": "cases.otherIxtlapal.lexicalReadings",
+      "expected": [
+        "crosswise",
+        "across",
+        "athwart",
+        "sideways"
+      ],
+      "actual": [
+        "crosswise",
+        "across",
+        "athwart",
+        "sideways"
+      ],
+      "canvasAnchor": "īxtlapal means 'crosswise' or 'across.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-03 rejects a broken cases.otherIxtlapal.lexicalReadings",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-04",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-04",
+      "canonicalPath": "cases.otherIxtlapal.lexicalReadings.2",
+      "expected": "athwart",
+      "actual": "athwart",
+      "canvasAnchor": "īxtlapal also means 'athwart.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-04 rejects a broken cases.otherIxtlapal.lexicalReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-05",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-05",
+      "canonicalPath": "cases.otherIxtlapal.lexicalReadings.3",
+      "expected": "sideways",
+      "actual": "sideways",
+      "canvasAnchor": "īxtlapal also means 'sideways.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-05 rejects a broken cases.otherIxtlapal.lexicalReadings.3",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-06",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-06",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.nounstem",
+      "expected": "ix-tla-pal-li",
+      "actual": "ix-tla-pal-li",
+      "canvasAnchor": "The nounstem underlying īxtlapal is compound nounstem (ix-tla-pal)-li-.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-06 rejects a broken cases.otherIxtlapal.sourceAnalysis.nounstem",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-07",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-07",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.embed",
+      "expected": {
+        "stem": "ix-tli",
+        "reading": "face"
+      },
+      "actual": {
+        "stem": "ix-tli",
+        "reading": "face"
+      },
+      "canvasAnchor": "Compound nounstem (ix-tla-pal)-li- has embed (ix)-tli- 'face.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-07 rejects a broken cases.otherIxtlapal.sourceAnalysis.embed",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-08",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-08",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.matrix.stem",
+      "expected": "tla-pal-li",
+      "actual": "tla-pal-li",
+      "canvasAnchor": "Compound nounstem (ix-tla-pal)-li- has matrix (tla-pal)-li-.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-08 rejects a broken cases.otherIxtlapal.sourceAnalysis.matrix.stem",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-09",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-09",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.matrix.readings.0",
+      "expected": "a dyed thing",
+      "actual": "a dyed thing",
+      "canvasAnchor": "Matrix nounstem (tla-pal)-li- means 'a dyed thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-09 rejects a broken cases.otherIxtlapal.sourceAnalysis.matrix.readings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-10",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-10",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.matrix.readings.1",
+      "expected": "a colored thing",
+      "actual": "a colored thing",
+      "canvasAnchor": "Matrix nounstem (tla-pal)-li- also means 'a colored thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-10 rejects a broken cases.otherIxtlapal.sourceAnalysis.matrix.readings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L016-CFBF124F98-11",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l016-cfbf124f98-11",
+      "canonicalPath": "cases.otherIxtlapal.sourceAnalysis.matrix.readings.2",
+      "expected": "side",
+      "actual": "side",
+      "canvasAnchor": "Matrix nounstem (tla-pal)-li- extendedly means 'side.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L016-CFBF124F98-11 rejects a broken cases.otherIxtlapal.sourceAnalysis.matrix.readings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-02",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-02",
+      "canonicalPath": "cases.otherTlacuauh.compositionalReading",
+      "expected": "it is in the manner of a hardened thing",
+      "actual": "it is in the manner of a hardened thing",
+      "canvasAnchor": "tlacuāuh compositionally means 'it is in the manner of a hardened thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-02 rejects a broken cases.otherTlacuauh.compositionalReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-03",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-03",
+      "canonicalPath": "cases.otherTlacuauh.lexicalReadings.0",
+      "expected": "strongly",
+      "actual": "strongly",
+      "canvasAnchor": "tlacuāuh adverbially means 'strongly.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-03 rejects a broken cases.otherTlacuauh.lexicalReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-04",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-04",
+      "canonicalPath": "cases.otherTlacuauh.lexicalReadings.1",
+      "expected": "positively",
+      "actual": "positively",
+      "canvasAnchor": "tlacuāuh adverbially means 'positively.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-04 rejects a broken cases.otherTlacuauh.lexicalReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-05",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-05",
+      "canonicalPath": "cases.otherTlacuauh.lexicalReadings.2",
+      "expected": "especially",
+      "actual": "especially",
+      "canvasAnchor": "tlacuāuh adverbially means 'especially.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-05 rejects a broken cases.otherTlacuauh.lexicalReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-06",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-06",
+      "canonicalPath": "cases.otherTlacuauh.sourceAnalysis.nounstemReadings.0",
+      "expected": "a thing that has become hard",
+      "actual": "a thing that has become hard",
+      "canvasAnchor": "Nounstem (tlacu-ā-uh)-tli- compositionally means 'a thing that has become hard.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-06 rejects a broken cases.otherTlacuauh.sourceAnalysis.nounstemReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-07",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-07",
+      "canonicalPath": "cases.otherTlacuauh.sourceAnalysis.nounstemReadings.1",
+      "expected": "a hardened thing",
+      "actual": "a hardened thing",
+      "canvasAnchor": "Nounstem (tlacu-ā-uh)-tli- lexically means 'a hardened thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-07 rejects a broken cases.otherTlacuauh.sourceAnalysis.nounstemReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-08",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-08",
+      "canonicalPath": "cases.otherTlacuauh.sourceAnalysis",
+      "expected": {
+        "nounstem": "tlacu-ā-uh-tli",
+        "nounstemReadings": [
+          "a thing that has become hard",
+          "a hardened thing"
+        ],
+        "sourceVerbStem": "tlacu-ā-hua",
+        "sourceVerbReading": "to become hard",
+        "patientiveKind": "impersonal"
+      },
+      "actual": {
+        "nounstem": "tlacu-ā-uh-tli",
+        "nounstemReadings": [
+          "a thing that has become hard",
+          "a hardened thing"
+        ],
+        "sourceVerbStem": "tlacu-ā-hua",
+        "sourceVerbReading": "to become hard",
+        "patientiveKind": "impersonal"
+      },
+      "canvasAnchor": "(tlacu-ā-uh)-tli- is an impersonal patientive nounstem derived from verbstem (tlacu-ā-hua).",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-08 rejects a broken cases.otherTlacuauh.sourceAnalysis",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L027-3ECD298782-09",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l027-3ecd298782-09",
+      "canonicalPath": "cases.otherTlacuauh.sourceAnalysis.sourceVerbReading",
+      "expected": "to become hard",
+      "actual": "to become hard",
+      "canvasAnchor": "Verbstem (tlacu-ā-hua) means 'to become hard.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L027-3ECD298782-09 rejects a broken cases.otherTlacuauh.sourceAnalysis.sourceVerbReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-02",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-02",
+      "canonicalPath": "cases.otherTlapic.compositionalReading",
+      "expected": "it is in the manner of an imagined thing",
+      "actual": "it is in the manner of an imagined thing",
+      "canvasAnchor": "tlapīc compositionally means 'it is in the manner of an imagined thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-02 rejects a broken cases.otherTlapic.compositionalReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-03",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-03",
+      "canonicalPath": "cases.otherTlapic.lexicalReadings.0",
+      "expected": "falsely",
+      "actual": "falsely",
+      "canvasAnchor": "tlapīc adverbially means 'falsely.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-03 rejects a broken cases.otherTlapic.lexicalReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-04",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-04",
+      "canonicalPath": "cases.otherTlapic.lexicalReadings.1",
+      "expected": "in vain",
+      "actual": "in vain",
+      "canvasAnchor": "tlapīc adverbially means 'in vain.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-04 rejects a broken cases.otherTlapic.lexicalReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-05",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-05",
+      "canonicalPath": "cases.otherTlapic.lexicalReadings.2",
+      "expected": "futilely",
+      "actual": "futilely",
+      "canvasAnchor": "tlapīc adverbially means 'futilely.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-05 rejects a broken cases.otherTlapic.lexicalReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-06",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-06",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis.nounstemReadings.0",
+      "expected": "an imagined thing",
+      "actual": "an imagined thing",
+      "canvasAnchor": "Perfective patientive nounstem (tla-pic)-tli- means 'an imagined thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-06 rejects a broken cases.otherTlapic.sourceAnalysis.nounstemReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-07",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-07",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis.nounstemReadings.1",
+      "expected": "a fabricated thing",
+      "actual": "a fabricated thing",
+      "canvasAnchor": "Perfective patientive nounstem (tla-pic)-tli- also means 'a fabricated thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-07 rejects a broken cases.otherTlapic.sourceAnalysis.nounstemReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-08",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-08",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis.nounstemReadings.2",
+      "expected": "an invented thing",
+      "actual": "an invented thing",
+      "canvasAnchor": "Perfective patientive nounstem (tla-pic)-tli- also means 'an invented thing.'",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-08 rejects a broken cases.otherTlapic.sourceAnalysis.nounstemReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-09",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-09",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis",
+      "expected": {
+        "nounstem": "tla-pic-tli",
+        "nounstemReadings": [
+          "an imagined thing",
+          "a fabricated thing",
+          "an invented thing"
+        ],
+        "sourceVerbStem": "tla-piqui",
+        "sourceVerbReadings": [
+          "to imagine something",
+          "to invent something"
+        ],
+        "object": {
+          "specificity": "nonspecific",
+          "referentCategory": "nonhuman"
+        },
+        "patientiveKind": "perfective"
+      },
+      "actual": {
+        "nounstem": "tla-pic-tli",
+        "nounstemReadings": [
+          "an imagined thing",
+          "a fabricated thing",
+          "an invented thing"
+        ],
+        "sourceVerbStem": "tla-piqui",
+        "sourceVerbReadings": [
+          "to imagine something",
+          "to invent something"
+        ],
+        "object": {
+          "specificity": "nonspecific",
+          "referentCategory": "nonhuman"
+        },
+        "patientiveKind": "perfective"
+      },
+      "canvasAnchor": "Perfective patientive nounstem (tla-pic)-tli- derives from tla-(piqui).",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-09 rejects a broken cases.otherTlapic.sourceAnalysis",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-10",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-10",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis.sourceVerbReadings.0",
+      "expected": "to imagine something",
+      "actual": "to imagine something",
+      "canvasAnchor": "Verbstem tla-(piqui) means 'to imagine something,' with a nonspecific nonhuman object.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-10 rejects a broken cases.otherTlapic.sourceAnalysis.sourceVerbReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L030-D7E3234B15-11",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l030-d7e3234b15-11",
+      "canonicalPath": "cases.otherTlapic.sourceAnalysis.sourceVerbReadings.1",
+      "expected": "to invent something",
+      "actual": "to invent something",
+      "canvasAnchor": "Verbstem tla-(piqui) also means 'to invent something,' with a nonspecific nonhuman object.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L030-D7E3234B15-11 rejects a broken cases.otherTlapic.sourceAnalysis.sourceVerbReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-02",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-02",
+      "canonicalPath": "cases.otherManner.compositionalReading",
+      "expected": "it is in the manner of a known thing",
+      "actual": "it is in the manner of a known thing",
+      "canvasAnchor": "Tlamach has the compositional value ‘it is in the manner of a known thing.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-02 rejects a broken cases.otherManner.compositionalReading",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-03",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-03",
+      "canonicalPath": "cases.otherManner.lexicalReadings.0",
+      "expected": "quietly",
+      "actual": "quietly",
+      "canvasAnchor": "Adverbial tlamach can mean ‘quietly.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-03 rejects a broken cases.otherManner.lexicalReadings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-04",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-04",
+      "canonicalPath": "cases.otherManner.lexicalReadings.1",
+      "expected": "calmly",
+      "actual": "calmly",
+      "canvasAnchor": "Adverbial tlamach can mean ‘calmly.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-04 rejects a broken cases.otherManner.lexicalReadings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-05",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-05",
+      "canonicalPath": "cases.otherManner.lexicalReadings.2",
+      "expected": "gently",
+      "actual": "gently",
+      "canvasAnchor": "Adverbial tlamach can mean ‘gently.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-05 rejects a broken cases.otherManner.lexicalReadings.2",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-06",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-06",
+      "canonicalPath": "cases.otherManner.sourceAnalysis.nounstem",
+      "expected": "tla-mach-tli",
+      "actual": "tla-mach-tli",
+      "canvasAnchor": "Tlamach is built on impersonal patientive nounstem (tla-mach)-tli-.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-06 rejects a broken cases.otherManner.sourceAnalysis.nounstem",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-07",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-07",
+      "canonicalPath": "cases.otherManner.sourceAnalysis.sourceVerbStem",
+      "expected": "tla-mati",
+      "actual": "tla-mati",
+      "canvasAnchor": "Impersonal patientive nounstem (tla-mach)-tli- is derived from source verbstem tla-(mati).",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-07 rejects a broken cases.otherManner.sourceAnalysis.sourceVerbStem",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-08",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-08",
+      "canonicalPath": "cases.otherManner.sourceAnalysis.object",
+      "expected": {
+        "morph": "tla",
+        "specificity": "nonspecific",
+        "referentCategory": "nonhuman"
+      },
+      "actual": {
+        "morph": "tla",
+        "specificity": "nonspecific",
+        "referentCategory": "nonhuman"
+      },
+      "canvasAnchor": "Tla in source tla-(mati) specifies a nonspecific nonhuman object that is known.",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-08 rejects a broken cases.otherManner.sourceAnalysis.object",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P454-L039-56C05572E9-09",
+      "ownerId": "classical-adverbial-other-absolutive-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-other-absolutive-inventory:aci-p454-l039-56c05572e9-09",
+      "canonicalPath": "cases.otherManner.sourceAnalysis.sourceVerbReading",
+      "expected": "to know a nonhuman thing or something",
+      "actual": "to know a nonhuman thing or something",
+      "canvasAnchor": "Source verbstem tla-(mati) means ‘to know a nonhuman thing or something.’",
+      "proofTest": "src/tests/classical_adverbial_other_absolutive_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P454-L039-56C05572E9-09 rejects a broken cases.otherManner.sourceAnalysis.sourceVerbReading",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 44,
+    "passed": 44,
+    "failed": 0,
+    "mutationsRejected": 44
+  }
+}

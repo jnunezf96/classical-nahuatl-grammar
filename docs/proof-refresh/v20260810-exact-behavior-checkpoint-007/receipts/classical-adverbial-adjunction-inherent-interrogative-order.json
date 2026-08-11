@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-adverbial-adjunction-inherent-interrogative-order",
+  "canonicalResultDigest": "sha256:68f7633f1a4919517742c4dd5438f1bbf659f279ab21c6660ca67582c659d956",
+  "observations": [
+    {
+      "atomId": "ACI-P536-L030-8832443803",
+      "ownerId": "classical-adverbial-adjunction-inherent-interrogative-order",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-inherent-interrogative-order:aci-p536-l030-8832443803",
+      "canonicalPath": "sentence-initial ordering preserving an inherently interrogative modifier",
+      "expected": {
+        "retainsForce": true,
+        "order": "modifier-head"
+      },
+      "actual": {
+        "retainsForce": true,
+        "order": "modifier-head"
+      },
+      "canvasAnchor": "An interrogative adverbial NNC must appear sentence-initially in order to retain interrogative status.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P536-L030-8832443803 rejects a mutation of sentence-initial ordering preserving an inherently interrogative modifier",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

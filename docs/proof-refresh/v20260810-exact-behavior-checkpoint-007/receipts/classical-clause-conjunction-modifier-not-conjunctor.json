@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-clause-conjunction-modifier-not-conjunctor",
+  "canonicalResultDigest": "sha256:bfed315c7237b33ad66046c16a66160f4a791ff1c7282c8d736b049b64e43e02",
+  "observations": [
+    {
+      "atomId": "ACI-P562-L037-3BB856D629",
+      "ownerId": "classical-clause-conjunction-modifier-not-conjunctor",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-clause-conjunction-modifier-not-conjunctor:aci-p562-l037-3bb856d629",
+      "canonicalPath": "an adverbial modifier remaining distinct from a conjunctor",
+      "expected": {
+        "modifierIsConjunctor": false,
+        "unmarkedAsyndeton": true
+      },
+      "actual": {
+        "modifierIsConjunctor": false,
+        "unmarkedAsyndeton": true
+      },
+      "canvasAnchor": "The adverbial modifiers discussed in §52.4 are not conjunctors.",
+      "proofTest": "src/tests/classical_cross_family_singleton_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P562-L037-3BB856D629 rejects a mutation of an adverbial modifier remaining distinct from a conjunctor",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

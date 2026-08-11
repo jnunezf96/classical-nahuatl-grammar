@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-007",
+  "ownerId": "classical-type-two-ltia-ci-xi-alternation",
+  "canonicalResultDigest": "sha256:ed817c1523fb63efb5509f4464e39c7f0f7687248c3d9045369879803a5698c9",
+  "observations": [
+    {
+      "atomId": "ACI-P214-L008-C367EA205F-02",
+      "ownerId": "classical-type-two-ltia-ci-xi-alternation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-ltia-ci-xi-alternation:aci-p214-l008-c367ea205f-02",
+      "canonicalPath": "quīza final s to x bridge alternation",
+      "expected": {
+        "source": "quīza",
+        "operation": "replace-final-za-with-x",
+        "bridge": "quīx-o-hua",
+        "target": "quix-tiā"
+      },
+      "actual": {
+        "source": "quīza",
+        "operation": "replace-final-za-with-x",
+        "bridge": "quīx-o-hua",
+        "target": "quix-tiā"
+      },
+      "canvasAnchor": "In this causative subtype, source-final /s/ changes to [š].",
+      "proofTest": "src/tests/classical_vnc_type_two_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P214-L008-C367EA205F-02 rejects a mutation of quīza final s to x bridge alternation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}
