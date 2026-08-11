@@ -24,6 +24,19 @@ const ACCEPTED_JOB_FAMILIES = new Set([
   "lesson2-sentence-prosody",
 ]);
 
+const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
+  "ACI-P039-L004-E7E01D8587-02": Object.freeze({
+    observationKind: "sigeme-retained-in-formula",
+    observationTest: "src/tests/classical_lesson2_sigeme_result.test.js#normal-application",
+    mutationTest: "src/tests/classical_lesson2_sigeme_result.test.js#mutation-pronounced-segment",
+  }),
+  "ACI-P039-L004-E7E01D8587-03": Object.freeze({
+    observationKind: "sigeme-omitted-from-pronounced-result",
+    observationTest: "src/tests/classical_lesson2_sigeme_result.test.js#normal-application",
+    mutationTest: "src/tests/classical_lesson2_sigeme_result.test.js#mutation-pronounced-segment",
+  }),
+});
+
 const JOB_FAMILIES = Object.freeze([
   ["lesson2-sound-and-spelling", /^§2\.(?:(?:1|2|4)$|3(?:\.|$))/u],
   ["lesson2-internal-stem-boundaries", /^§2\.5$/u],
@@ -173,6 +186,7 @@ function buildLedger() {
     const family = jobFamily(atom.canvasSection);
     const role = writingRole(atom);
     if (!family) throw new Error(`No Lesson 2 family for ${atom.atomId}`);
+    const exactImplementation = EXACTLY_IMPLEMENTED_WRITING_ATOMS[atom.atomId] || null;
     return {
       atomId: atom.atomId,
       canvasSection: atom.canvasSection,
@@ -188,6 +202,14 @@ function buildLedger() {
       normalApplicationRequirement: writingRequirement(atom, role),
       readerRequirement: `Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: ${atom.meaning}`,
       evidenceAuthorizesGrammar: false,
+      writingImplementationStatus: exactImplementation
+        ? "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR"
+        : role
+          ? "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED"
+          : "NOT_A_WRITING_JOB",
+      observationKind: exactImplementation?.observationKind || "",
+      observationTest: exactImplementation?.observationTest || "",
+      mutationTest: exactImplementation?.mutationTest || "",
       acceptanceStatus: ACCEPTED_JOB_FAMILIES.has(family)
         ? "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
         : "PROPOSED_AWAITING_USER_REVIEW",
@@ -204,6 +226,10 @@ function buildLedger() {
   const acceptedJobs = records.filter((record) => (
     record.acceptanceStatus === "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
   )).length;
+  const exactlyImplementedWritingJobs = records.filter((record) => (
+    record.writingImplementationStatus
+      === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR"
+  )).length;
 
   return {
     schemaVersion: 1,
@@ -216,6 +242,11 @@ function buildLedger() {
       acceptedJobs,
       pendingUserReview: records.length - acceptedJobs,
       unassignedJobs: records.filter((record) => !record.directionClass).length,
+      writingJobs: records.filter((record) => Boolean(record.writingRole)).length,
+      exactlyImplementedWritingJobs,
+      writingJobsAwaitingExactObservation:
+        records.filter((record) => Boolean(record.writingRole)).length
+        - exactlyImplementedWritingJobs,
       byDirectionClass,
       byFamily,
     },

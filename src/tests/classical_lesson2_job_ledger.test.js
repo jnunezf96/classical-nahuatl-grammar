@@ -104,6 +104,32 @@ function run() {
         wrongStatus: [],
     });
 
+    s.eq("implementation credit requires normal application and mutation observations", {
+        writingJobs: jobs.counts.writingJobs,
+        exactlyImplemented: jobs.counts.exactlyImplementedWritingJobs,
+        awaiting: jobs.counts.writingJobsAwaitingExactObservation,
+        creditedIds: jobs.records
+            .filter(record => record.writingImplementationStatus
+                === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR")
+            .map(record => record.atomId),
+        creditedWithoutProof: jobs.records
+            .filter(record => record.writingImplementationStatus
+                === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR")
+            .filter(record => !record.observationKind
+                || !record.observationTest
+                || !record.mutationTest)
+            .map(record => record.atomId),
+    }, {
+        writingJobs: 399,
+        exactlyImplemented: 2,
+        awaiting: 397,
+        creditedIds: [
+            "ACI-P039-L004-E7E01D8587-02",
+            "ACI-P039-L004-E7E01D8587-03",
+        ],
+        creditedWithoutProof: [],
+    });
+
     return s;
 }
 

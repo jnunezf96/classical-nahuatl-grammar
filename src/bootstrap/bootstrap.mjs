@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-reader-guidance-033";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-sigeme-034";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-reader-guidance-033";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-reader-guidance-033";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-reader-guidance-033";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-reader-guidance-033";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-reader-guidance-033";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
+} from "../runtime/create_runtime.mjs?v=20260811-lesson2-sigeme-034";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-sigeme-034";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-sigeme-034";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-sigeme-034";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-lesson2-sigeme-034";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-lesson2-sigeme-034";
 
 let browserBootstrapPromise = null;
 

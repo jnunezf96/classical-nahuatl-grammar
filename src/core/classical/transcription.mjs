@@ -479,6 +479,17 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           chuIsSingleLabiovelarPhoneme: false,
         }),
       });
+    const CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS =
+      Object.freeze({
+        "\u2395": Object.freeze({
+          segment: "\u2395",
+          class: "sigeme",
+          phoneme: false,
+          pronounced: false,
+          surface: "",
+          carrierRole: "meaning-bearing-silence",
+        }),
+      });
     const CLASSICAL_NAHUATL_LESSON2_SPELLING_CHANGE_RULES = Object.freeze([{
       id: "cn-l2-24-k-initial-before-a-o",
       operationId: "cn-l2-spelling-changes-k-s-environment",
@@ -4061,6 +4072,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       return (
         isClassicalNahuatlTranscriptionVowel(normalized)
         || CLASSICAL_NAHUATL_TRANSCRIPTION_PHONEMES.includes(normalized)
+        || CLASSICAL_NAHUATL_LESSON2_MORPHIC_CARRIERS.includes(normalized)
       ) ? normalized : "";
     }
     function deriveClassicalNahuatlTranscriptionContexts(
@@ -4300,6 +4312,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           const carrier =
             CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS[segment]
             || CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS[segment]
+            || CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS[segment]
             || null;
           if (!carrier) {
             return;
@@ -4330,6 +4343,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS,
         consonantCarriers:
           CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS,
+        sigemeCarriers:
+          CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS,
         selectedCarriers: Object.freeze(selectedCarriers),
         readOnly: true,
         userSelectable: false,
@@ -4369,6 +4384,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           === CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS
         && frame.consonantCarriers
           === CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS
+        && frame.sigemeCarriers
+          === CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS
         && frame.readOnly === true
         && frame.userSelectable === false
         && frame.generationAuthority === false
@@ -4401,6 +4418,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       return sourceFrame.constituents.map(
         (constituent, constituentIndex) => constituent.segments.map(
           (segment, segmentIndex) => {
+            if (segment === "\u2395") {
+              return "";
+            }
             if (isClassicalNahuatlTranscriptionVowel(segment)) {
               return segment;
             }
@@ -4802,6 +4822,11 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         configurable: true,
         enumerable: true,
         get() { return CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS; },
+    });
+    Object.defineProperty(api, "CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS", {
+        configurable: true,
+        enumerable: true,
+        get() { return CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS; },
     });
     Object.defineProperty(api, "CLASSICAL_NAHUATL_LESSON2_SPELLING_CHANGE_RULES", {
         configurable: true,
