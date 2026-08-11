@@ -58,8 +58,13 @@ function run(ctx = {}) {
                 projection,
                 browser.document,
             );
+            const visiblyExact = ctx.isClassicalCanvasGrammarFactProjectionVisiblyExact(
+                projection,
+                browser.document,
+            );
             s.eq(`${fact.atomId} observes visible Canvas grammar fact`, {
                 rendered,
+                visiblyExact,
                 hidden: browser.output.hidden,
                 visible: browser.output.dataset.classicalCanvasGrammarFactVisible,
                 atomId: browser.output.dataset.classicalCanvasGrammarFactAtomId,
@@ -71,6 +76,7 @@ function run(ctx = {}) {
                 grammarAuthority: browser.output.dataset.classicalGrammarAuthority,
             }, {
                 rendered: true,
+                visiblyExact: true,
                 hidden: false,
                 visible: "true",
                 atomId: fact.atomId,
@@ -82,11 +88,11 @@ function run(ctx = {}) {
                 grammarAuthority: "false",
             });
 
-            const forgedProjection = { ...projection, statement: `BROKEN:${sourceFact.anchor}` };
+            browser.children.statement.textContent = `BROKEN:${sourceFact.anchor}`;
             s.no(
-                `${fact.atomId} rejects a forged visible grammar fact projection`,
-                ctx.renderClassicalCanvasGrammarFactProjection(
-                    forgedProjection,
+                `${fact.atomId} rejects broken visible grammar fact content`,
+                ctx.isClassicalCanvasGrammarFactProjectionVisiblyExact(
+                    projection,
                     browser.document,
                 ),
             );

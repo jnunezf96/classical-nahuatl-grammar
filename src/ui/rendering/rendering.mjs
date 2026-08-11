@@ -16052,6 +16052,38 @@ export function createUiRenderingApi(targetObject = globalThis) {
         : "Canvas source recorded in the atom inventory.";
       return true;
     }
+    function isClassicalCanvasGrammarFactProjectionVisiblyExact(
+      projection = null,
+      documentObject = targetObject.document,
+    ) {
+      const elements = getClassicalCanvasGrammarFactBrowserElements(documentObject);
+      if (!elements) return false;
+      const validProjection = [
+        targetObject.isPreparedClassicalCanvasGrammarFactProjectionForPresentation,
+        targetObject.isPreparedClassicalLateCanvasGrammarFactProjectionForPresentation,
+      ].some((validator) => (
+        typeof validator === "function" && validator(projection) === true
+      ));
+      const heading = elements.output.querySelector("[data-classical-canvas-grammar-fact-heading]");
+      const statement = elements.output.querySelector("[data-classical-canvas-grammar-fact-statement]");
+      const source = elements.output.querySelector("[data-classical-canvas-grammar-fact-source]");
+      const expectedSource = projection?.canvasSpan
+        ? `Canvas source: ${projection.canvasSpan}`
+        : "Canvas source recorded in the atom inventory.";
+      return Boolean(
+        validProjection
+        && elements.output.hidden === false
+        && elements.output.dataset.classicalCanvasGrammarFactVisible === "true"
+        && elements.output.dataset.classicalCanvasGrammarFactAtomId === projection.atomId
+        && elements.output.dataset.classicalCanvasGrammarFactOwnerId === projection.semanticOwnerId
+        && elements.output.dataset.classicalCanvasGrammarFactProjectRole === projection.projectRole
+        && elements.output.dataset.classicalCanvasGrammarFactFingerprint === projection.contentFingerprint
+        && elements.output.dataset.classicalGrammarAuthority === "false"
+        && heading?.textContent === (projection.canvasSection || "Canvas grammar fact")
+        && statement?.textContent === projection.statement
+        && source?.textContent === expectedSource
+      );
+    }
     function showSelectedClassicalCanvasGrammarFact() {
       const elements = getClassicalCanvasGrammarFactBrowserElements();
       if (!elements) return false;
@@ -23917,6 +23949,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       syncClassicalCanvasGrammarFactBrowserMatches;
     api.renderClassicalCanvasGrammarFactProjection =
       renderClassicalCanvasGrammarFactProjection;
+    api.isClassicalCanvasGrammarFactProjectionVisiblyExact =
+      isClassicalCanvasGrammarFactProjectionVisiblyExact;
     api.showSelectedClassicalCanvasGrammarFact =
       showSelectedClassicalCanvasGrammarFact;
     api.bindClassicalCanvasGrammarFactBrowser =

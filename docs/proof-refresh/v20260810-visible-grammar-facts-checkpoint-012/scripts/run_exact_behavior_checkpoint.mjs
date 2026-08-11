@@ -23,6 +23,7 @@ const assert = (condition, message) => { if (!condition) throw new Error(message
 const testFiles = ["classical_checkpoint012_visible_grammar_fact.test.js"];
 
 const semantic = JSON.parse(await readFile(path.join(repositoryRoot, "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json"), "utf8"));
+const selection = JSON.parse(await readFile(path.join(repositoryRoot, "docs/canvas-progress/checkpoint009_fact_selection.json"), "utf8"));
 const reconciliation = JSON.parse(await readFile(path.join(repositoryRoot, "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json"), "utf8"));
 const atomIndex = Object.fromEntries(reconciliation.codebooks.atomTuple.map((field, offset) => [field, offset]));
 const tuples = new Map(reconciliation.atoms.map(tuple => [tuple[atomIndex.atomId], tuple]));
@@ -34,17 +35,29 @@ const oldPointer = currentPointer.activeManifest === `docs/proof-refresh/${versi
 const oldManifest = JSON.parse(await readFile(path.join(repositoryRoot, oldPointer.activeManifest), "utf8"));
 assert(oldManifest.version === "v20260810-visible-credit-correction-011", "checkpoint 012 must start from honest checkpoint 011");
 const alreadyObserved = new Set(oldManifest.observations.map(item => item.atomId));
-const browserCanary = JSON.parse(await readFile(path.join(batchRoot, "browser-canary.json"), "utf8"));
-assert(equal(browserCanary.observed, {
-  atomId: "ACI-P080-L040-C63CC85725",
-  semanticOwnerId: "classical-verbstem-predicate-paradigm-analysis",
-  projectRole: "read-only-grammar-fact",
-  statement: "A VNC predicate stem can vary in shape in response to Tense morphs.",
-  canvasSource: "Canvas source: 3045–3051",
-  visible: true,
-  grammarAuthority: false,
-}), "normal-user browser canary drifted");
-assert(browserCanary.passed === true, "normal-user browser canary did not pass");
+const browserSweep = JSON.parse(await readFile(path.join(batchRoot, "browser-sweep-report.json"), "utf8"));
+const sourceFactById = new Map(semantic.atoms.map(atom => [atom.atomId, atom]));
+const expectedBrowserTuples = selection.atoms.map(fact => {
+  const sourceFact = sourceFactById.get(fact.atomId);
+  assert(sourceFact, `browser sweep atom is absent from semantic scope: ${fact.atomId}`);
+  return [
+    fact.atomId,
+    fact.semanticOwnerId,
+    "read-only-grammar-fact",
+    "false",
+    sourceFact.anchor,
+    `Canvas source: ${sourceFact.canvasSpan}`,
+    "true",
+  ];
+});
+const expectedBrowserDigest = digest(JSON.stringify(expectedBrowserTuples));
+assert(browserSweep.atomsAttempted === 500, "browser sweep attempt count drifted");
+assert(browserSweep.atomsPassed === 500 && browserSweep.atomsFailed === 0, "browser sweep failures recorded");
+assert(browserSweep.firstAtomId === selection.atoms[0].atomId, "browser sweep first atom drifted");
+assert(browserSweep.lastAtomId === selection.atoms.at(-1).atomId, "browser sweep last atom drifted");
+assert(browserSweep.orderedExpectedDigest === expectedBrowserDigest, "browser sweep expected digest drifted");
+assert(browserSweep.orderedObservedDigest === expectedBrowserDigest, "browser-visible output digest does not match Canvas");
+assert(browserSweep.digestsEqual === true && browserSweep.passed === true, "normal-user browser sweep did not pass");
 
 const { context } = await createModuleRuntime({ exposeModuleInspectionCapabilities: true });
 const captured = new Map();
@@ -105,7 +118,7 @@ const observations = [...captured.values()].map(item => {
     canvasAnchorDigest: digest(anchors.get(item.atomId)),
     canvasAnchorReference: "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
     proofTest: item.testFile,
-    browserCanary: "browser-canary.json",
+    browserSweep: "browser-sweep-report.json",
     mutation: { assertion: item.mutationAssertion, rejected: true },
   };
 });
@@ -155,7 +168,7 @@ const manifest = {
     exactAtomObservationPassed: true,
     mutationObservationPassed: true,
     sharedOperationReusePassed: true,
-    normalUserVisibleBrowserCanaryPassed: true,
+    normalUserVisibleBrowserSweepPassed: true,
     baseProofCorpusUnchanged: true,
     atomicSwitchRollbackTestPassed: true,
   },
@@ -199,7 +212,7 @@ const report = {
     exactVisibleFactObserved: true,
     mutationObservationPassed: true,
     sharedOperationReusePassed: true,
-    normalUserVisibleBrowserCanaryPassed: true,
+    normalUserVisibleBrowserSweepPassed: true,
     focusedRuntimeTestsPassed: true,
     ledgerRegenerated: true,
     rollbackPassed: true,

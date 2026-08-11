@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "activeManifest": "docs/proof-refresh/v20260810-visible-grammar-facts-checkpoint-012/manifest.json",
-  "activeManifestDigest": "sha256:ef9885c71a6773eeea3b06ead07d9b2b9f5529dc306cbcd0a2c7e9d3fc466629",
+  "activeManifestDigest": "sha256:0f371d0bd122da143efb976bc312fda2054fd989c5bcd979109a56d315afd442",
   "rollbackManifest": "docs/proof-refresh/v20260810-visible-credit-correction-011/manifest.json",
   "rollbackManifestDigest": "sha256:d655cf46025aae2713f7f00028402093dcb6835d7c969437add93cc4bbc8fc5c",
   "baseProofCorpusRetained": true

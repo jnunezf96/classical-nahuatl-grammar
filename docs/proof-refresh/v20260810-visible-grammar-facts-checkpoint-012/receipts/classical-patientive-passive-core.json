@@ -3,7 +3,7 @@
   "version": "v20260810-visible-grammar-facts-checkpoint-012",
   "ownerId": "classical-patientive-passive-core",
   "projectRole": "normal-user-visible-grammar-fact-presentation",
-  "canonicalResultDigest": "sha256:18ca7486cdc50d5fbdf10be20d76c51fd4c9a2da7af20796a2f113c98a6ef126",
+  "canonicalResultDigest": "sha256:b62888956610f930cfbe17d3fab0d51fb351593066be3f2b261a47a9e18691b8",
   "observations": [
     {
       "atomId": "ACI-P378-L030-367C07B808",
@@ -12,14 +12,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p378-l030-367c07b808:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:3d3a7fec779248f1298aa6176978bc235c55d972e6e4301ba4145416b31a44cd",
-      "actualDigest": "sha256:3d3a7fec779248f1298aa6176978bc235c55d972e6e4301ba4145416b31a44cd",
+      "expectedDigest": "sha256:62390c803c3c81953780d592b6673d2a3294871340a2bba6e1371787a439b891",
+      "actualDigest": "sha256:62390c803c3c81953780d592b6673d2a3294871340a2bba6e1371787a439b891",
       "canvasAnchorDigest": "sha256:adf6744d1a4a79cd36da4a92240e5fe107b2b06dfadbfbd85db05807eb3d2cb0",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P378-L030-367C07B808 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P378-L030-367C07B808 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -30,14 +30,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p378-l030-367c07b808-02:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:22ed33bfda7e481a1f155dac238f75d36bec8d82efb407d61b09746d76d7076e",
-      "actualDigest": "sha256:22ed33bfda7e481a1f155dac238f75d36bec8d82efb407d61b09746d76d7076e",
+      "expectedDigest": "sha256:e088e62250a494413057e52acf4f6e78254922c9bec65d23aa74af0d6abf3f36",
+      "actualDigest": "sha256:e088e62250a494413057e52acf4f6e78254922c9bec65d23aa74af0d6abf3f36",
       "canvasAnchorDigest": "sha256:61e983377206cb853e21bfeeb280a4d2374e07c319ed87501bc6a6b9876c3540",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P378-L030-367C07B808-02 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P378-L030-367C07B808-02 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -48,14 +48,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p378-l030-367c07b808-04:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:774a2c0adccab680cbe30d802002ec9f5dfa9c8a8017961df1f07509e126e915",
-      "actualDigest": "sha256:774a2c0adccab680cbe30d802002ec9f5dfa9c8a8017961df1f07509e126e915",
+      "expectedDigest": "sha256:be73f9838421182ab02a9f4253b56623b7448deb1844e7e50a73925dae1ee77d",
+      "actualDigest": "sha256:be73f9838421182ab02a9f4253b56623b7448deb1844e7e50a73925dae1ee77d",
       "canvasAnchorDigest": "sha256:34406664e7190883e099b92e912f600c71b89b53dc7ae35846c7d3f33f33c3ad",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P378-L030-367C07B808-04 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P378-L030-367C07B808-04 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -66,14 +66,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p378-l037-f38bdf30ab:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:479d755ceed27e5af589dc268ce9e096047b2217818323a93cd989ddc45022dc",
-      "actualDigest": "sha256:479d755ceed27e5af589dc268ce9e096047b2217818323a93cd989ddc45022dc",
+      "expectedDigest": "sha256:8a74cc5b87406f93c34ec869129ec7eb416065d725d593923d35d8cb769fa27e",
+      "actualDigest": "sha256:8a74cc5b87406f93c34ec869129ec7eb416065d725d593923d35d8cb769fa27e",
       "canvasAnchorDigest": "sha256:56051370a4d96e879bdd33e161a7954b2e33d5d8827e1a5f9d00720a57b41598",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P378-L037-F38BDF30AB rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P378-L037-F38BDF30AB rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -84,14 +84,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p378-l037-f38bdf30ab-03:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:62189a61baff4c9ec9aaab1c59f784e2d19f5302aaabbdb60179fc6fd4bf849f",
-      "actualDigest": "sha256:62189a61baff4c9ec9aaab1c59f784e2d19f5302aaabbdb60179fc6fd4bf849f",
+      "expectedDigest": "sha256:bfcf66cecf1573a31ab351bbccba2f8ea7cd99e5b83bdbf859c97fe548c3558a",
+      "actualDigest": "sha256:bfcf66cecf1573a31ab351bbccba2f8ea7cd99e5b83bdbf859c97fe548c3558a",
       "canvasAnchorDigest": "sha256:eef1f9fd3bcde179584a91c7aa43cd1c48fe064ed0dd9f286b6a0d45e994674d",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P378-L037-F38BDF30AB-03 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P378-L037-F38BDF30AB-03 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -102,14 +102,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l007-40d090ea07:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:704caac52ca91d9762646e8300236455e2f5cb85c94230e3c88a1332752c78d4",
-      "actualDigest": "sha256:704caac52ca91d9762646e8300236455e2f5cb85c94230e3c88a1332752c78d4",
+      "expectedDigest": "sha256:34b1b48521b9c86e6b9a8dc163ee3ffed0ededba0b0042f50e3a72d95f227ebb",
+      "actualDigest": "sha256:34b1b48521b9c86e6b9a8dc163ee3ffed0ededba0b0042f50e3a72d95f227ebb",
       "canvasAnchorDigest": "sha256:af02b4b92a14ed3f0d8ab32c5816cbae296c793675bdf908ed6363e77b7f2a58",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L007-40D090EA07 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L007-40D090EA07 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -120,14 +120,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l007-40d090ea07-05:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:b63d5e932342cb988b6679ae70dd0d3f62169c1111f4390645f03982b0cafa7c",
-      "actualDigest": "sha256:b63d5e932342cb988b6679ae70dd0d3f62169c1111f4390645f03982b0cafa7c",
+      "expectedDigest": "sha256:70b5425ebf0667a18bc40326378bf4024e8859a9824ffe46994239a20d745c09",
+      "actualDigest": "sha256:70b5425ebf0667a18bc40326378bf4024e8859a9824ffe46994239a20d745c09",
       "canvasAnchorDigest": "sha256:a594980832cd7d91af4c3489e5c367d02719319cf443aec842815d76ddba7205",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L007-40D090EA07-05 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L007-40D090EA07-05 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -138,14 +138,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l007-40d090ea07-06:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:fc07f6ce0ea729b328537f356ddafe443565661ce75daf9d17d4f6748942dff3",
-      "actualDigest": "sha256:fc07f6ce0ea729b328537f356ddafe443565661ce75daf9d17d4f6748942dff3",
+      "expectedDigest": "sha256:1263a728ac9eb0d6113451475e5f7cf95ed602f6426df95b7c30907e7630ee97",
+      "actualDigest": "sha256:1263a728ac9eb0d6113451475e5f7cf95ed602f6426df95b7c30907e7630ee97",
       "canvasAnchorDigest": "sha256:1cd3d829714b9ba43b91b19dd75b3b5ba83aeb74878f262c7d42149b583e1565",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L007-40D090EA07-06 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L007-40D090EA07-06 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -156,14 +156,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l014-5ad5a1a9b4:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:e256f31ff9d65935e0d19b622b2f58487309930339a506c754c6b2d453c1ea97",
-      "actualDigest": "sha256:e256f31ff9d65935e0d19b622b2f58487309930339a506c754c6b2d453c1ea97",
+      "expectedDigest": "sha256:d35d61ee249de5f22e946dc1b8aa888b565478c4d312fd6566ea78b9143a8e59",
+      "actualDigest": "sha256:d35d61ee249de5f22e946dc1b8aa888b565478c4d312fd6566ea78b9143a8e59",
       "canvasAnchorDigest": "sha256:4ea26e880f51eb4fe2b135a3fdb615689ac39f7fe79905c8ac2689696f1eb6b6",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L014-5AD5A1A9B4 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L014-5AD5A1A9B4 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -174,14 +174,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l017-06574be383-03:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:5f814d38f262c7ff143f1da26a431bb73aaaaf52c2f8b703bce6c98202880f6d",
-      "actualDigest": "sha256:5f814d38f262c7ff143f1da26a431bb73aaaaf52c2f8b703bce6c98202880f6d",
+      "expectedDigest": "sha256:47e36114c448a8eaabfdd3b842af10ec99ba9310594616bafbb7f1d0273bb5ac",
+      "actualDigest": "sha256:47e36114c448a8eaabfdd3b842af10ec99ba9310594616bafbb7f1d0273bb5ac",
       "canvasAnchorDigest": "sha256:7797876731e1ad44ca802854fa4208bb535760339790d4718a1a03ae3c5cc1a4",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L017-06574BE383-03 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L017-06574BE383-03 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -192,14 +192,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l017-06574be383-04:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:de1975eeeacbdeff56cce60e1b61ffc35b57f57118b3bca9b36a42d99729d375",
-      "actualDigest": "sha256:de1975eeeacbdeff56cce60e1b61ffc35b57f57118b3bca9b36a42d99729d375",
+      "expectedDigest": "sha256:22fa2f515c5b9ac279ad84852c6a9751c2ce091e40a8aef4b3863eb7c4dddffc",
+      "actualDigest": "sha256:22fa2f515c5b9ac279ad84852c6a9751c2ce091e40a8aef4b3863eb7c4dddffc",
       "canvasAnchorDigest": "sha256:43e438b04d9cf13c6728d4e529af1261b0953c68114a956c8d2d532717df59c8",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L017-06574BE383-04 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L017-06574BE383-04 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -210,14 +210,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l017-06574be383-09:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:2eefbc2694807d4ecca8ea4f76aa5c5eba792b53713c393e46d118fea0cf4c21",
-      "actualDigest": "sha256:2eefbc2694807d4ecca8ea4f76aa5c5eba792b53713c393e46d118fea0cf4c21",
+      "expectedDigest": "sha256:1f5e35f43f18efbc8ceb4a96da225d98e343dcd5c995ec0cc630eb126ce524d3",
+      "actualDigest": "sha256:1f5e35f43f18efbc8ceb4a96da225d98e343dcd5c995ec0cc630eb126ce524d3",
       "canvasAnchorDigest": "sha256:d65d43185a8b531044197f020d29f31eb381c939a35e04a792829366a1d86048",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L017-06574BE383-09 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L017-06574BE383-09 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -228,14 +228,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l030-74abbdc7f6:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:d7ea49583dd92eaa6e45c4b670129e9f050cd7c0131807bf4f5e2564db34a9c6",
-      "actualDigest": "sha256:d7ea49583dd92eaa6e45c4b670129e9f050cd7c0131807bf4f5e2564db34a9c6",
+      "expectedDigest": "sha256:b271e258a84244461506657bea0ed55015cb6d1311c175630eacea14eca89453",
+      "actualDigest": "sha256:b271e258a84244461506657bea0ed55015cb6d1311c175630eacea14eca89453",
       "canvasAnchorDigest": "sha256:91e73c0f270b9ad8909c3ba83ca49d18f8248951e066ee9dffcd9d05d81b8f34",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L030-74ABBDC7F6 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L030-74ABBDC7F6 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -246,14 +246,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l030-74abbdc7f6-04:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:35bc5b79b52d29dc7cff3b9b4ba913223ffce93feccd409753f995194087a16f",
-      "actualDigest": "sha256:35bc5b79b52d29dc7cff3b9b4ba913223ffce93feccd409753f995194087a16f",
+      "expectedDigest": "sha256:cde2ece4137e41978ac7ad7ef23c5240721d05421b3a520c0d42183646a707dc",
+      "actualDigest": "sha256:cde2ece4137e41978ac7ad7ef23c5240721d05421b3a520c0d42183646a707dc",
       "canvasAnchorDigest": "sha256:1bb6567f3a026d5ee1d1d6c8da5963fc0f8314a01585f070229777aeb3c70b37",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L030-74ABBDC7F6-04 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L030-74ABBDC7F6-04 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -264,14 +264,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l030-74abbdc7f6-05:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:9a5563700a512294ee4b1198a95192f84c14999b859b288b04c2b9f3f564c084",
-      "actualDigest": "sha256:9a5563700a512294ee4b1198a95192f84c14999b859b288b04c2b9f3f564c084",
+      "expectedDigest": "sha256:3059f78b1c4e914e82dde34ff7f6568989e30e413e356fdbc33bf2a4967f89c9",
+      "actualDigest": "sha256:3059f78b1c4e914e82dde34ff7f6568989e30e413e356fdbc33bf2a4967f89c9",
       "canvasAnchorDigest": "sha256:d98b26666e4a7d0b405b8a11234a3e8436df164b8e7c60c985d18731f1675d5f",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L030-74ABBDC7F6-05 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L030-74ABBDC7F6-05 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -282,14 +282,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l040-0c675611e4-04:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:e8e9ab2970e40df7023b55c4e2222c5984b7062a70ad1a469e2be1e09911637b",
-      "actualDigest": "sha256:e8e9ab2970e40df7023b55c4e2222c5984b7062a70ad1a469e2be1e09911637b",
+      "expectedDigest": "sha256:966b224a032b8347125f59ee6ce4a138203dba8f54108dbca86554c386432c16",
+      "actualDigest": "sha256:966b224a032b8347125f59ee6ce4a138203dba8f54108dbca86554c386432c16",
       "canvasAnchorDigest": "sha256:75107da344c70dd0a96f462a06b4837d4fc9753417f4550181df7ee455c1f8ce",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L040-0C675611E4-04 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L040-0C675611E4-04 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -300,14 +300,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p379-l040-0c675611e4-08:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:5931f68a1deb658494f988136012ddff1946db29b529ab763477a1d60a69218a",
-      "actualDigest": "sha256:5931f68a1deb658494f988136012ddff1946db29b529ab763477a1d60a69218a",
+      "expectedDigest": "sha256:f79e5eb260075a001b1b05bc5c57ea6bca2af51157bcc93b07686ee8ceca6f03",
+      "actualDigest": "sha256:f79e5eb260075a001b1b05bc5c57ea6bca2af51157bcc93b07686ee8ceca6f03",
       "canvasAnchorDigest": "sha256:b4a5b80bebadb5bb7301dc181dde769a414db8fb32e651db5c15fdc588255d56",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P379-L040-0C675611E4-08 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P379-L040-0C675611E4-08 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -318,14 +318,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l004-3d141a2700-03:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:075d164ba1f55eed75a5d58ca42bd9aec78f1eba30e581517c5f98d07f5d04b6",
-      "actualDigest": "sha256:075d164ba1f55eed75a5d58ca42bd9aec78f1eba30e581517c5f98d07f5d04b6",
+      "expectedDigest": "sha256:be58efa59459b16711fe9634ef96cee6dae5cc41a184bc73230cb52c97ea3383",
+      "actualDigest": "sha256:be58efa59459b16711fe9634ef96cee6dae5cc41a184bc73230cb52c97ea3383",
       "canvasAnchorDigest": "sha256:fd3e4f4466298401e563b3f0bfc89b33d21edb0ba9f3271a797bc0700fca8c67",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L004-3D141A2700-03 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L004-3D141A2700-03 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -336,14 +336,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l012-7af6ad51c1-03:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:1e148473b110e21cb8997ddec904a9775cc10c96491e38a21041586f1a4f24a7",
-      "actualDigest": "sha256:1e148473b110e21cb8997ddec904a9775cc10c96491e38a21041586f1a4f24a7",
+      "expectedDigest": "sha256:4313fbd996aaecbfae02bcc7c2c5980541b23bacfb2811c2b68aadbc4687245c",
+      "actualDigest": "sha256:4313fbd996aaecbfae02bcc7c2c5980541b23bacfb2811c2b68aadbc4687245c",
       "canvasAnchorDigest": "sha256:edf4aad7b8c0340a0f57f420e7552a417a01ad1feff6435fee1387aa330cc204",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L012-7AF6AD51C1-03 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L012-7AF6AD51C1-03 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -354,14 +354,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l012-7af6ad51c1-06:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:ecea8f838ff70091c59e9ecf9f927d74b7987bbd82c1d5ab23347846ab170ec3",
-      "actualDigest": "sha256:ecea8f838ff70091c59e9ecf9f927d74b7987bbd82c1d5ab23347846ab170ec3",
+      "expectedDigest": "sha256:c0d0a329a13c3442ed140c0cbd8a450f60d272c403178bdf24898f5e32659cee",
+      "actualDigest": "sha256:c0d0a329a13c3442ed140c0cbd8a450f60d272c403178bdf24898f5e32659cee",
       "canvasAnchorDigest": "sha256:f0355fec9fd9de1e48bac58afc1c899eac3106e84dc9546c21efc8a86f863156",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L012-7AF6AD51C1-06 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L012-7AF6AD51C1-06 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -372,14 +372,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l015-4a7429572b-03:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:410384344e8f200c7ab9dd5e8be6d5a92acd376c222c24b8a37c2867e1c37f1e",
-      "actualDigest": "sha256:410384344e8f200c7ab9dd5e8be6d5a92acd376c222c24b8a37c2867e1c37f1e",
+      "expectedDigest": "sha256:569908143630e5ccc408511b34b6c1685063fa962b2027e55c51c7214642d1f4",
+      "actualDigest": "sha256:569908143630e5ccc408511b34b6c1685063fa962b2027e55c51c7214642d1f4",
       "canvasAnchorDigest": "sha256:2440edc9c8a61eced1a03dc01de9768bd233400d345b39ae144ed6306ec4c52a",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L015-4A7429572B-03 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L015-4A7429572B-03 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -390,14 +390,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l015-4a7429572b-08:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:ddbf79819264e5b30eaad75dd88c71562e703a863a3a96b649401a52f44530cd",
-      "actualDigest": "sha256:ddbf79819264e5b30eaad75dd88c71562e703a863a3a96b649401a52f44530cd",
+      "expectedDigest": "sha256:59db110ced0ed9a180f6a3c9e3d0d96be77a3c6602c9f6d141c54da3744dc02b",
+      "actualDigest": "sha256:59db110ced0ed9a180f6a3c9e3d0d96be77a3c6602c9f6d141c54da3744dc02b",
       "canvasAnchorDigest": "sha256:b51eb252fc4526d2b23973eb9ce81cf8f4b6fdf4199f9a8f6387475d6f9d4e12",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L015-4A7429572B-08 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L015-4A7429572B-08 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -408,14 +408,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l015-4a7429572b-09:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:d53d4cf0c82f9344a619f7d612a629600f99a7aeebf15eef891c0d8ec1f0c73e",
-      "actualDigest": "sha256:d53d4cf0c82f9344a619f7d612a629600f99a7aeebf15eef891c0d8ec1f0c73e",
+      "expectedDigest": "sha256:148341727e0cce783bd805b8c2252878b830290254b544f05e5ec92c81bce4ab",
+      "actualDigest": "sha256:148341727e0cce783bd805b8c2252878b830290254b544f05e5ec92c81bce4ab",
       "canvasAnchorDigest": "sha256:e8634aa4f4f2832f62ecd68da074587db5a627f1a740577ae1605bf4efae79c1",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L015-4A7429572B-09 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L015-4A7429572B-09 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -426,14 +426,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l019-67b363b16f-04:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:636dc7b19a5f141c774946cba72cf5c4b066864a1d1aa6c0e9080276dd66e7d8",
-      "actualDigest": "sha256:636dc7b19a5f141c774946cba72cf5c4b066864a1d1aa6c0e9080276dd66e7d8",
+      "expectedDigest": "sha256:efc8b68538f6f6bed6648338b4a04fcd90787eaac6f953b5801f45acc1fc2797",
+      "actualDigest": "sha256:efc8b68538f6f6bed6648338b4a04fcd90787eaac6f953b5801f45acc1fc2797",
       "canvasAnchorDigest": "sha256:76480e54669fab7804626ad09c418adcbebc0648d0f339a71975d817a4b65b27",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L019-67B363B16F-04 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L019-67B363B16F-04 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -444,14 +444,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l019-67b363b16f-09:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:098a5b834e745f94d09101a22c5c9305e7c2f7ead5c2bc5913dabe3a48a139a9",
-      "actualDigest": "sha256:098a5b834e745f94d09101a22c5c9305e7c2f7ead5c2bc5913dabe3a48a139a9",
+      "expectedDigest": "sha256:b4666ef68a9acf1d1af135d060aaa55fc43da0e89d2f46c8fe11e57a77555330",
+      "actualDigest": "sha256:b4666ef68a9acf1d1af135d060aaa55fc43da0e89d2f46c8fe11e57a77555330",
       "canvasAnchorDigest": "sha256:10eb65ca4379797440b5fd9247e3770c5669e37a66a59ad44fc0e830cebbac16",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L019-67B363B16F-09 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L019-67B363B16F-09 rejects broken visible grammar fact content",
         "rejected": true
       }
     },
@@ -462,14 +462,14 @@
       "obligation": "normal-user-visible-grammar-fact-presentation",
       "assertionId": "classical-patientive-passive-core:aci-p380-l021-d61fb57d37:visible",
       "canonicalPath": "visible Canvas grammar fact",
-      "expectedDigest": "sha256:822b96b710fc30514785ff33cc5e3f1642fb1251e756c2d66470e1d2e47a2543",
-      "actualDigest": "sha256:822b96b710fc30514785ff33cc5e3f1642fb1251e756c2d66470e1d2e47a2543",
+      "expectedDigest": "sha256:c52b5be99c4b15662a653fa3883586ed843ee8a7e0db0aaf1ec410fcacee2f4c",
+      "actualDigest": "sha256:c52b5be99c4b15662a653fa3883586ed843ee8a7e0db0aaf1ec410fcacee2f4c",
       "canvasAnchorDigest": "sha256:3855b74e43918fa6341755ede799b4f49f19f19cdb1b84d4f37c3e0b866e7334",
       "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
       "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
-      "browserCanary": "browser-canary.json",
+      "browserSweep": "browser-sweep-report.json",
       "mutation": {
-        "assertion": "ACI-P380-L021-D61FB57D37 rejects a forged visible grammar fact projection",
+        "assertion": "ACI-P380-L021-D61FB57D37 rejects broken visible grammar fact content",
         "rejected": true
       }
     }

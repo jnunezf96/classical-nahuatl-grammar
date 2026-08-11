@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "kind": "normal-user-visible-canvas-grammar-fact-browser-sweep",
+  "browser": "Codex In-app Browser",
+  "url": "http://127.0.0.1:8090/?checkpoint=012d",
+  "interaction": [
+    "fill Canvas grammar fact search with exact atom id",
+    "use selected exact match",
+    "press Show fact",
+    "read visible output"
+  ],
+  "atomsAttempted": 500,
+  "atomsPassed": 500,
+  "atomsFailed": 0,
+  "firstAtomId": "ACI-P080-L040-C63CC85725",
+  "lastAtomId": "ACI-P611-L030-5E18E9CC56-09",
+  "orderedObservedDigest": "sha256:4077de36bb18bfec8e3b14b253221bea9f2f47236c4f33e8b509690f72077225",
+  "orderedExpectedDigest": "sha256:4077de36bb18bfec8e3b14b253221bea9f2f47236c4f33e8b509690f72077225",
+  "digestsEqual": true,
+  "fields": [
+    "atomId",
+    "semanticOwnerId",
+    "projectRole",
+    "grammarAuthority",
+    "statement",
+    "canvasSource",
+    "visible"
+  ],
+  "passed": true
+}
