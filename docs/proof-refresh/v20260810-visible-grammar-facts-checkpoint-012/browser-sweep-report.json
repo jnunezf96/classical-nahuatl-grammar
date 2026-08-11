@@ -1,14 +1,65 @@
 {
   "schemaVersion": 1,
   "kind": "normal-user-visible-canvas-grammar-fact-browser-sweep",
+  "driver": "docs/proof-refresh/v20260810-visible-grammar-facts-checkpoint-012/scripts/run_browser_sweep.mjs",
   "browser": "Codex In-app Browser",
-  "url": "http://127.0.0.1:8090/?checkpoint=012d",
+  "url": "http://127.0.0.1:8090/?checkpoint=012-driver-2",
   "interaction": [
     "fill Canvas grammar fact search with exact atom id",
     "use selected exact match",
     "press Show fact",
     "read visible output"
   ],
+  "sourceFingerprint": {
+    "algorithm": "sha256",
+    "digest": "sha256:0be0b805cff5d449023425f4684a9a23bb459d374b3b039f0030143c323055cf",
+    "files": [
+      {
+        "path": "docs/proof-refresh/v20260810-visible-grammar-facts-checkpoint-012/scripts/run_browser_sweep.mjs",
+        "digest": "sha256:543069e4c774150a3eb0ef1ed09a9e9f9bd071bb6410b17c43f328683d70e05e"
+      },
+      {
+        "path": "index.html",
+        "digest": "sha256:c1b0122ebbc56f86e47767ccfe206d6f5662044fbec7df0bf75bdd27a68cde3d"
+      },
+      {
+        "path": "src/browser/main.mjs",
+        "digest": "sha256:24f658377e00655a6bab9b685b55165035c18a7e81f9f213d35b557a83087f45"
+      },
+      {
+        "path": "src/bootstrap/bootstrap.mjs",
+        "digest": "sha256:d758b50130e78ef2bb2925098aab45367c3f34de821dc87bceef723d2df0660a"
+      },
+      {
+        "path": "src/runtime/create_runtime.mjs",
+        "digest": "sha256:9a1baf68b5b680df71b74676de5a21c9dedf6cd29de5117ec0fe1509eef0d30a"
+      },
+      {
+        "path": "src/core/classical/canvas_grammar_fact_presentation_routes.mjs",
+        "digest": "sha256:8329b174b88d67a03eb5b2f5d23f470dcdea83122375cf1e6cdd3a3597680e75"
+      },
+      {
+        "path": "src/core/classical/transcription_owner_mechanics.mjs",
+        "digest": "sha256:ed317c0cb3778843ac1ae069198992c738326092980d5d7c512d31c0a0214def"
+      },
+      {
+        "path": "src/ui/shell/classical_shell.mjs",
+        "digest": "sha256:e656710a15bac6f4b5b0878b250fb61693a1a50c86ab61ead089ecf5bbe49906"
+      },
+      {
+        "path": "src/ui/rendering/rendering.mjs",
+        "digest": "sha256:1838f08d3810f3a1a0a664de3051b3134948b5d211bc842ff6e332528ef31ee5"
+      },
+      {
+        "path": "docs/canvas-progress/checkpoint009_fact_selection.json",
+        "digest": "sha256:e19eed911f0bb99c0dd91aaf60bc94b7e10ef571777e5835bc9db33dcd3add02"
+      },
+      {
+        "path": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+        "digest": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5"
+      }
+    ]
+  },
   "atomsAttempted": 500,
   "atomsPassed": 500,
   "atomsFailed": 0,

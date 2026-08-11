@@ -8,6 +8,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
 import { createModuleRuntime } from "../../../../src/node/runtime.mjs";
+import { getCheckpoint012BrowserSweepSourceFingerprint } from "./run_browser_sweep.mjs";
 
 const execFile = promisify(execFileCallback);
 const require = createRequire(import.meta.url);
@@ -36,6 +37,7 @@ const oldManifest = JSON.parse(await readFile(path.join(repositoryRoot, oldPoint
 assert(oldManifest.version === "v20260810-visible-credit-correction-011", "checkpoint 012 must start from honest checkpoint 011");
 const alreadyObserved = new Set(oldManifest.observations.map(item => item.atomId));
 const browserSweep = JSON.parse(await readFile(path.join(batchRoot, "browser-sweep-report.json"), "utf8"));
+const browserSweepSourceFingerprint = await getCheckpoint012BrowserSweepSourceFingerprint(repositoryRoot);
 const sourceFactById = new Map(semantic.atoms.map(atom => [atom.atomId, atom]));
 const expectedBrowserTuples = selection.atoms.map(fact => {
   const sourceFact = sourceFactById.get(fact.atomId);
@@ -52,6 +54,8 @@ const expectedBrowserTuples = selection.atoms.map(fact => {
 });
 const expectedBrowserDigest = digest(JSON.stringify(expectedBrowserTuples));
 assert(browserSweep.atomsAttempted === 500, "browser sweep attempt count drifted");
+assert(browserSweep.driver === "docs/proof-refresh/v20260810-visible-grammar-facts-checkpoint-012/scripts/run_browser_sweep.mjs", "browser sweep driver drifted");
+assert(equal(browserSweep.sourceFingerprint, browserSweepSourceFingerprint), "browser sweep application/source fingerprint drifted");
 assert(browserSweep.atomsPassed === 500 && browserSweep.atomsFailed === 0, "browser sweep failures recorded");
 assert(browserSweep.firstAtomId === selection.atoms[0].atomId, "browser sweep first atom drifted");
 assert(browserSweep.lastAtomId === selection.atoms.at(-1).atomId, "browser sweep last atom drifted");
