@@ -127,31 +127,58 @@ function run() {
     s.eq(
         "Lesson 1 reading guidance cannot be mistaken for Result-writing grammar",
         {
-            readerInterpreterGuidance:
-                jobLedger.counts.byApplicationDirection.GUIDES_READER_AND_INTERPRETER,
+            readerOnly: jobLedger.counts.byDirectionClass.READING_ONLY,
+            both: jobLedger.counts.byDirectionClass.BOTH,
+            writingOnly: jobLedger.counts.byDirectionClass.WRITING_ONLY,
             wrongSection: jobLedger.records
-                .filter(record => record.applicationDirection
-                    === "GUIDES_READER_AND_INTERPRETER")
+                .filter(record => record.directionClass === "READING_ONLY")
                 .filter(record => !record.canvasSection.startsWith("§1.13"))
                 .map(record => record.atomId),
             writesResult: jobLedger.records
-                .filter(record => record.applicationDirection
-                    === "GUIDES_READER_AND_INTERPRETER")
+                .filter(record => record.directionClass === "READING_ONLY")
                 .filter(record => record.jobType === "BUILD_GRAMMAR")
                 .map(record => record.atomId),
             composesResult: jobLedger.records
-                .filter(record => record.applicationDirection
-                    === "GUIDES_READER_AND_INTERPRETER")
+                .filter(record => record.directionClass === "READING_ONLY")
                 .filter(record => !record.normalApplicationRequirement.includes(
                     "must not compose, select, or change a Result"
                 ))
                 .map(record => record.atomId),
         },
         {
-            readerInterpreterGuidance: 255,
+            readerOnly: 255,
+            both: 599,
+            writingOnly: 0,
             wrongSection: [],
             writesResult: [],
             composesResult: [],
+        }
+    );
+
+    s.eq(
+        "every Lesson 1 atom has its complete direction assignment",
+        {
+            writing: jobLedger.counts.byDirection.WRITING,
+            readingAndInterpretation:
+                jobLedger.counts.byDirection.READING_AND_INTERPRETATION,
+            invalidDirections: jobLedger.records
+                .filter(record => !Array.isArray(record.directions)
+                    || record.directions.length === 0
+                    || record.directions.some(direction => ![
+                        "WRITING",
+                        "READING_AND_INTERPRETATION",
+                    ].includes(direction)))
+                .map(record => record.atomId),
+            falselyPresented: jobLedger.records
+                .filter(record => record.directionStatus.READING_AND_INTERPRETATION
+                    !== "JOB_ASSIGNED_NOT_YET_PRESENTED")
+                .map(record => record.atomId),
+        },
+        {
+            writing: 599,
+            readingAndInterpretation: 854,
+            invalidDirections: [],
+            falselyPresented: [],
         }
     );
 

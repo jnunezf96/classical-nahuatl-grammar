@@ -1215,6 +1215,21 @@ function directionalRequirementFor({ applicationDirection, jobType, jobFamily, m
   return requirementFor(jobType, jobFamily, meaning);
 }
 
+function directionsFor(applicationDirection) {
+  if (applicationDirection === "GUIDES_READER_AND_INTERPRETER") {
+    return Object.freeze(["READING_AND_INTERPRETATION"]);
+  }
+  return Object.freeze(["WRITING", "READING_AND_INTERPRETATION"]);
+}
+
+function directionClassFor(directions) {
+  const writes = directions.includes("WRITING");
+  const reads = directions.includes("READING_AND_INTERPRETATION");
+  if (writes && reads) return "BOTH";
+  if (writes) return "WRITING_ONLY";
+  return "READING_ONLY";
+}
+
 function nearestOwner(atoms, index, sectionFamily) {
   if (atoms[index].semanticOwnerId) return atoms[index].semanticOwnerId;
   const section = majorSection(atoms[index].canvasSection);
@@ -1239,6 +1254,8 @@ function buildLedger() {
     const jobFamily = SECTION_FAMILIES[section];
     const jobType = assignJobType(atom);
     const applicationDirection = applicationDirectionFor(section, jobType);
+    const directions = directionsFor(applicationDirection);
+    const directionClass = directionClassFor(directions);
     const relatedGrammarOwnerId = nearestOwner(lessonAtoms, index, jobFamily);
     const accepted = EXACTLY_OBSERVED_SECTIONS.has(section)
       || EXACTLY_OBSERVED_ATOM_IDS.has(atom.atomId);
@@ -1558,10 +1575,16 @@ function buildLedger() {
       sourceCategory: atom.category,
       jobType,
       jobFamily,
-      canvasTeachingDirection: applicationDirection === "GUIDES_READER_AND_INTERPRETER"
-        ? "FINISHED_TEXT_TO_STRUCTURE_AND_MEANING"
-        : "FOUNDATION_FOR_GRAMMATICAL_WRITING",
-      applicationDirection,
+      directions,
+      directionClass,
+      writingRole: directions.includes("WRITING") ? applicationDirection : "",
+      readerInterpreterRole: "GUIDES_READER_AND_INTERPRETER",
+      directionStatus: Object.freeze({
+        WRITING: directions.includes("WRITING")
+          ? "EXACTLY_OBSERVED"
+          : "NOT_APPLICABLE",
+        READING_AND_INTERPRETATION: "JOB_ASSIGNED_NOT_YET_PRESENTED",
+      }),
       targetOwnerId,
       relatedGrammarOwnerId: atom.force === "grammar-bearing"
         ? atom.semanticOwnerId || ""
@@ -1612,16 +1635,29 @@ function buildLedger() {
       unassignedJobs: records.filter((record) => !record.jobType || !record.jobFamily).length,
       byJobType: countsByJob,
       acceptedByJobType: acceptedByJob,
-      byApplicationDirection: Object.fromEntries([
+      byWritingRole: Object.fromEntries([
         "WRITES_OR_CONTROLS_RESULT",
         "BUILDS_WRITING_MODEL",
         "CHECKS_WRITING_GRAMMAR",
         "PROTECTS_WRITING_GRAMMAR",
-        "GUIDES_READER_AND_INTERPRETER",
-      ].map((direction) => [
-        direction,
-        records.filter((record) => record.applicationDirection === direction).length,
+      ].map((role) => [
+        role,
+        records.filter((record) => record.writingRole === role).length,
       ])),
+      byDirectionClass: Object.fromEntries([
+        "WRITING_ONLY",
+        "READING_ONLY",
+        "BOTH",
+      ].map((directionClass) => [
+        directionClass,
+        records.filter((record) => record.directionClass === directionClass).length,
+      ])),
+      byDirection: {
+        WRITING: records.filter((record) => record.directions.includes("WRITING")).length,
+        READING_AND_INTERPRETATION: records.filter((record) => (
+          record.directions.includes("READING_AND_INTERPRETATION")
+        )).length,
+      },
     },
     invariants: {
       ledgerAuthorizesGrammar: false,
@@ -1630,6 +1666,9 @@ function buildLedger() {
       evidenceAbsenceBlocksGrammar: false,
       everyWritingJobRequiresNormalApplicationBehavior: true,
       readerInterpreterGuidanceDoesNotAuthorizeOrComposeResult: true,
+      directionIsSeparateFromJob: true,
+      oneAtomMayServeBothDirections: true,
+      assignedReaderJobDoesNotClaimUserPresentation: true,
     },
     records,
   };
