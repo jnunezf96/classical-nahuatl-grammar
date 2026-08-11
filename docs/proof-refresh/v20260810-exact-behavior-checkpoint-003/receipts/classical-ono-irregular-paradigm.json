@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-ono-irregular-paradigm",
+  "resultDigest": "sha256:c367776a0c306bb5c1274bb31300c8762f5f2bbd710e87f55d5935af2c389bbf",
+  "observations": [
+    {
+      "atomId": "ACI-P107-L007-676685827F-02",
+      "ownerId": "classical-ono-irregular-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ono-irregular-paradigm:aci-p107-l007-676685827f-02",
+      "canonicalPath": "personDyad",
+      "expected": {
+        "subject": "1sg",
+        "pers1": "n"
+      },
+      "actual": {
+        "subject": "1sg",
+        "pers1": "n"
+      },
+      "canvasAnchor": "N- in ōnonoca identifies a first-person singular human subject.",
+      "mutation": {
+        "replacement": "[object Object]-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

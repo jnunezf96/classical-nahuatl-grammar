@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-relational-ic-means-purpose-reason-time",
+  "resultDigest": "sha256:5b932b71a7b1c0a8a602341986b876fc5a47aa211b61b6f6cf32dc2fb312e1b3",
+  "observations": [
+    {
+      "atomId": "ACI-P465-L010-F1075BB8F1-02",
+      "ownerId": "classical-relational-ic-means-purpose-reason-time",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-ic-means-purpose-reason-time:aci-p465-l010-f1075bb8f1-02",
+      "canonicalPath": "cases.ic.formula",
+      "expected": "#Ø-Ø+ī-Ø(c)Ø-Ø#",
+      "actual": "#Ø-Ø+ī-Ø(c)Ø-Ø#",
+      "canvasAnchor": "īc has the morphological realization #Ø-Ø+ī-Ø(c)Ø-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø+ī-Ø(c)Ø-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

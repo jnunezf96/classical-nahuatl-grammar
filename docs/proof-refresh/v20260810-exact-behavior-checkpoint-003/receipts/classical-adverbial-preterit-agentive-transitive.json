@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-preterit-agentive-transitive",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P456-L030-5F61196C8E-02",
+      "ownerId": "classical-adverbial-preterit-agentive-transitive",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-transitive:aci-p456-l030-5f61196c8e-02",
+      "canonicalPath": "cases.preteritTransitive.formulaRealization",
+      "expected": "#Ø-Ø(tla-cem-ān-Ø-cā)⎕-Ø#",
+      "actual": "#Ø-Ø(tla-cem-ān-Ø-cā)⎕-Ø#",
+      "canvasAnchor": "Tlacemāncā has the form #Ø-Ø(tla-cem-ān-Ø-cā)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(tla-cem-ān-Ø-cā)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-particle-looking-nnc-system",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P449-L037-2D60C36BEB-02",
+      "ownerId": "classical-adverbial-particle-looking-nnc-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-particle-looking-nnc-system:aci-p449-l037-2d60c36beb-02",
+      "canonicalPath": "cases.particleNen.formulaRealization",
+      "expected": "#Ø-Ø(nēn)⎕-Ø#",
+      "actual": "#Ø-Ø(nēn)⎕-Ø#",
+      "canvasAnchor": "nēn has the morphological realization #Ø-Ø(nēn)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(nēn)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-amia-irregular-paradigm",
+  "resultDigest": "sha256:0ea30881dd8777cf4b929352766355d0b61505c1a7aa79ef3b3eed333d440fa1",
+  "observations": [
+    {
+      "atomId": "ACI-P108-L034-7AC357A1DB-04",
+      "ownerId": "classical-amia-irregular-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-amia-irregular-paradigm:aci-p108-l034-7ac357a1db-04",
+      "canonicalPath": "lesson11.irregularityKind",
+      "expected": "defective-construction-bound",
+      "actual": "defective-construction-bound",
+      "canvasAnchor": "Namih uses defective existential stem (am-i-h) in its preterit-as-present construction.",
+      "mutation": {
+        "replacement": "defective-construction-bound-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

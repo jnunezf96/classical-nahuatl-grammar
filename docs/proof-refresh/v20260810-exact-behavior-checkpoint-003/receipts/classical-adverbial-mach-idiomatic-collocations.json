@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-mach-idiomatic-collocations",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P451-L038-AA1B388BE6",
+      "ownerId": "classical-adverbial-mach-idiomatic-collocations",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-mach-idiomatic-collocations:aci-p451-l038-aa1b388be6",
+      "canonicalPath": "cases.particleMach.formulaRealization",
+      "expected": "#Ø-Ø(mach)⎕-Ø#",
+      "actual": "#Ø-Ø(mach)⎕-Ø#",
+      "canvasAnchor": "Adverbialized NNC mach has the analysis #Ø-Ø(mach)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(mach)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-iuh-vnc-adverbial-contrast",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P446-L021-1A3F493F8C-02",
+      "ownerId": "classical-adverbial-iuh-vnc-adverbial-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-iuh-vnc-adverbial-contrast:aci-p446-l021-1a3f493f8c-02",
+      "canonicalPath": "cases.vncContrast.formulaRealization",
+      "expected": "#Ø-Ø(iuh)Ø+⎕-Ø#",
+      "actual": "#Ø-Ø(iuh)Ø+⎕-Ø#",
+      "canvasAnchor": "Iuh has the internal form #Ø-Ø(iuh)Ø+⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(iuh)Ø+⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

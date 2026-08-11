@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-place-gentilic-place-co-compound-matrix",
+  "resultDigest": "sha256:099c6b7279a8159fd2756a8277ea84fae3f18ba6afcfad7740fc5ebabd977047",
+  "observations": [
+    {
+      "atomId": "ACI-P517-L002-BD59D8EF6E-02",
+      "ownerId": "classical-place-gentilic-place-co-compound-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-place-gentilic-place-co-compound-matrix:aci-p517-l002-bd59d8ef6e-02",
+      "canonicalPath": "cases.compoundNahuac.formula",
+      "expected": "#Ø-Ø(Ā-nāhua-c)⎕-Ø#",
+      "actual": "#Ø-Ø(Ā-nāhua-c)⎕-Ø#",
+      "canvasAnchor": "Ānāhuac has the morphological realization #Ø-Ø(Ā-nāhua-c)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(Ā-nāhua-c)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

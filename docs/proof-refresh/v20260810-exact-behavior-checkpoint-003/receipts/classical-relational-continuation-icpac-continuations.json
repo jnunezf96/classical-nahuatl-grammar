@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-relational-continuation-icpac-continuations",
+  "resultDigest": "sha256:69c9f88b40bc86881f284b8b7f001e0f485d574cb40a98b7c4fbc5adc8a5d60f",
+  "observations": [
+    {
+      "atomId": "ACI-P495-L016-8B972DC9B3-02",
+      "ownerId": "classical-relational-continuation-icpac-continuations",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-continuation-icpac-continuations:aci-p495-l016-8b972dc9b3-02",
+      "canonicalPath": "cases.icpacLinked.formula",
+      "expected": "#Ø-Ø(tlāl-t-icpa-c)Ø-Ø#",
+      "actual": "#Ø-Ø(tlāl-t-icpa-c)Ø-Ø#",
+      "canvasAnchor": "Tlālticpac has the internal form #Ø-Ø(tlāl-t-icpa-c)Ø-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(tlāl-t-icpa-c)Ø-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

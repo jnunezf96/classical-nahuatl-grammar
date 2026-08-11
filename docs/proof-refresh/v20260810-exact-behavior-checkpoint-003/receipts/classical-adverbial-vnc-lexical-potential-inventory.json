@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-vnc-lexical-potential-inventory",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P446-L006-F51E97EBC8-02",
+      "ownerId": "classical-adverbial-vnc-lexical-potential-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-vnc-lexical-potential-inventory:aci-p446-l006-f51e97ebc8-02",
+      "canonicalPath": "cases.overview.formulaRealization",
+      "expected": "#Ø-Ø(cen-ca-h)Ø+⎕-Ø#",
+      "actual": "#Ø-Ø(cen-ca-h)Ø+⎕-Ø#",
+      "canvasAnchor": "Cencah has the form #Ø-Ø(cen-ca-h)Ø+⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(cen-ca-h)Ø+⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

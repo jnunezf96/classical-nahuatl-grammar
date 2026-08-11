@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-preterit-agentive-regular-intransitive",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P455-L024-1EC8CAFBCD-02",
+      "ownerId": "classical-adverbial-preterit-agentive-regular-intransitive",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-regular-intransitive:aci-p455-l024-1ec8cafbcd-02",
+      "canonicalPath": "cases.preteritProductive.formulaRealization",
+      "expected": "#Ø-Ø(pāc-Ø-cā)⎕-Ø#",
+      "actual": "#Ø-Ø(pāc-Ø-cā)⎕-Ø#",
+      "canvasAnchor": "Pāccā has the internal form #Ø-Ø(pāc-Ø-cā)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(pāc-Ø-cā)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

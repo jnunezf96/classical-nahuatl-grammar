@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-ya-hui-suppletive-paradigm",
+  "resultDigest": "sha256:60ba6404f596a2572c2a491d02be8cbfd84392dc58d335823f19e2c5b9cabf9d",
+  "observations": [
+    {
+      "atomId": "ACI-P112-L019-191AD41FD8-02",
+      "ownerId": "classical-ya-hui-suppletive-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ya-hui-suppletive-paradigm:aci-p112-l019-191ad41fd8-02",
+      "canonicalPath": "formulaRealization",
+      "expected": "#0-0(ya-uh)0+0-0#",
+      "actual": "#0-0(ya-uh)0+0-0#",
+      "canvasAnchor": "The imperfective stem yā does not permit formation with the present-indicative tense morph.",
+      "mutation": {
+        "replacement": "#0-0(ya-uh)0+0-0#-MUTATED",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P112-L019-191AD41FD8-03",
+      "ownerId": "classical-ya-hui-suppletive-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ya-hui-suppletive-paradigm:aci-p112-l019-191ad41fd8-03",
+      "canonicalPath": "formulaRealization",
+      "expected": "#0-0(ya-uh)0+⎕-0#",
+      "actual": "#0-0(ya-uh)0+⎕-0#",
+      "canvasAnchor": "The imperfective stem yā does not permit formation with the nonpast-optative tense morph.",
+      "mutation": {
+        "replacement": "#0-0(ya-uh)0+⎕-0#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

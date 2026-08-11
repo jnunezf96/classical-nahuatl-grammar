@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-negative-particle-distribution",
+  "resultDigest": "sha256:2e73c4c2e3e475f9b568211cc55fafd6b0d2dace2ab5858398ccc3284d673eda",
+  "observations": [
+    {
+      "atomId": "ACI-P057-L023-C7FBC7F91A-02",
+      "ownerId": "classical-negative-particle-distribution",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-negative-particle-distribution:aci-p057-l023-c7fbc7f91a-02",
+      "canonicalPath": "negativeWishParticleDistribution",
+      "expected": [
+        [
+          "mā",
+          "ca#"
+        ],
+        [
+          "tlā",
+          "ca#"
+        ]
+      ],
+      "actual": [
+        [
+          "mā",
+          "ca#"
+        ],
+        [
+          "tlā",
+          "ca#"
+        ]
+      ],
+      "canvasAnchor": "ca# occurs after mā and tlā in wish and command sentences.",
+      "mutation": {
+        "replacement": [
+          "mā,ca#tlā,ca#"
+        ],
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P057-L023-C7FBC7F91A-05",
+      "ownerId": "classical-negative-particle-distribution",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-negative-particle-distribution:aci-p057-l023-c7fbc7f91a-05",
+      "canonicalPath": "negativeAdmonitionParticles",
+      "expected": [
+        "mā",
+        "nēn",
+        "ah#"
+      ],
+      "actual": [
+        "mā",
+        "nēn",
+        "ah#"
+      ],
+      "canvasAnchor": "ah# occurs after mā in admonition sentences.",
+      "mutation": {
+        "replacement": [
+          "mānēnah#"
+        ],
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

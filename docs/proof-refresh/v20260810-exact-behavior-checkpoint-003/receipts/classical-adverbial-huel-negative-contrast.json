@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-huel-negative-contrast",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P449-L019-5B3E5D785F-02",
+      "ownerId": "classical-adverbial-huel-negative-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-huel-negative-contrast:aci-p449-l019-5b3e5d785f-02",
+      "canonicalPath": "cases.particleHuel.liveResult.operationFrame.boundarySurfaceFrame.baseNncFormula",
+      "expected": "#Ø-Ø(huel)⎕-Ø#",
+      "actual": "#Ø-Ø(huel)⎕-Ø#",
+      "canvasAnchor": "hoel has the morphological realization #Ø-Ø(huel)⎕-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø(huel)⎕-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

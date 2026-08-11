@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-adverbial-connective-vnc-written-boundary",
+  "resultDigest": "sha256:999fd8dae1ff6e437cd5df225deb4b458d220d94f0645bc538d440ef7339fae6",
+  "observations": [
+    {
+      "atomId": "ACI-P448-L002-07A7231855",
+      "ownerId": "classical-adverbial-connective-vnc-written-boundary",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-connective-vnc-written-boundary:aci-p448-l002-07a7231855",
+      "canonicalPath": "cases.connectiveVnc.formulaRealization",
+      "expected": "#Ø-Ø+m-o(tqui-Ø-ti-ca-h)Ø+Ø-Ø#",
+      "actual": "#Ø-Ø+m-o(tqui-Ø-ti-ca-h)Ø+Ø-Ø#",
+      "canvasAnchor": "Adverbialized VNC motquiticah has the analysis #Ø-Ø+m-o(tqui-Ø-ti-ca-h)Ø+Ø-Ø#.",
+      "mutation": {
+        "replacement": "#Ø-Ø+m-o(tqui-Ø-ti-ca-h)Ø+Ø-Ø#-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

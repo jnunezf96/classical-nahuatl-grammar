@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+  "resultDigest": "sha256:5b09f9fe5a935200fbb315282f7f5748c1c02500a5d0c04e764b0a63c2e9293d",
+  "observations": [
+    {
+      "atomId": "ACI-P102-L036-214BAB939B-10",
+      "ownerId": "classical-admonitive-antecessive-contrast-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-admonitive-antecessive-contrast-analysis:aci-p102-l036-214bab939b-10",
+      "canonicalPath": "canonicalTokenization",
+      "expected": [
+        "mā",
+        "huetz"
+      ],
+      "actual": [
+        "mā",
+        "huetz"
+      ],
+      "canvasAnchor": "For Class B huetzi, third-person singular nonpast admonitive is mahuetz.",
+      "mutation": {
+        "replacement": [
+          "māhuetz"
+        ],
+        "rejected": true
+      },
+      "provenanceNormalization": {
+        "diplomaticCanvasWitness": "mahuetz",
+        "normalizedGrammaticalRealization": "mā huetz",
+        "normalizationReason": "table-column/word-boundary compression",
+        "canonicalTokenization": [
+          "mā",
+          "huetz"
+        ]
+      },
+      "mutationChecks": {
+        "incorrectParticleRejected": true,
+        "incorrectVerbFormRejected": true,
+        "incorrectWordBoundaryRejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

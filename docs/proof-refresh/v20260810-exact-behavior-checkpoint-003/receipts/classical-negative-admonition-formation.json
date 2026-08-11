@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "ownerId": "classical-negative-admonition-formation",
+  "resultDigest": "sha256:3c22d6e8615806c9901a45c0dc668149622126ed109d65bd0ee12efa84311ccf",
+  "observations": [
+    {
+      "atomId": "ACI-P101-L035-8E4D508EFA-02",
+      "ownerId": "classical-negative-admonition-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-negative-admonition-formation:aci-p101-l035-8e4d508efa-02",
+      "canonicalPath": "negativeAdmonitionStructure",
+      "expected": {
+        "particles": [
+          "mā",
+          "nēn",
+          "ah#"
+        ],
+        "subject": "2sg",
+        "stem": "quiz",
+        "num1": "⎕",
+        "num2": "0"
+      },
+      "actual": {
+        "particles": [
+          "mā",
+          "nēn",
+          "ah#"
+        ],
+        "subject": "2sg",
+        "stem": "quiz",
+        "num1": "⎕",
+        "num2": "0"
+      },
+      "canvasAnchor": "The second-person-singular negative admonition of (quiza) is realized as mā nēn ahtiquiz with negative ah# and singular num² shape ⎕-Ø.",
+      "mutation": {
+        "replacement": "[object Object]-MUTATED",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -48,9 +48,9 @@
       "complete": true
     },
     "lessonGrammarExactBehaviorObserved": {
-      "numerator": 8358,
+      "numerator": 8382,
       "denominator": 18639,
-      "percent": 44.84,
+      "percent": 44.97,
       "complete": false
     },
     "applicationAxisClassification": {
@@ -502,11 +502,11 @@
     "exactProofs": {
       "retainedCanonicalCoordinates": 5347,
       "newIndividualAtomCoordinates": 13292,
-      "exactBehaviorObserved": 8358,
-      "linkOnlyInsufficient": 10281,
+      "exactBehaviorObserved": 8382,
+      "linkOnlyInsufficient": 10257,
       "totalOwnerLinked": 18639,
-      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-002/manifest.json",
-      "refreshedExactAtomCount": 97,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-003/manifest.json",
+      "refreshedExactAtomCount": 121,
       "executionObligations": {
         "canonical-rule-or-alternation": {
           "requiredBehavior": "perform-canonical-operation-or-alternation",
@@ -514,7 +514,7 @@
         },
         "derived-realization": {
           "requiredBehavior": "derive-canonical-realization",
-          "linkOnlyInsufficient": 740
+          "linkOnlyInsufficient": 732
         },
         "result-projection": {
           "requiredBehavior": "project-canonical-result",
@@ -522,11 +522,11 @@
         },
         "applicability-or-constraint": {
           "requiredBehavior": "enforce-applicability-or-constraint",
-          "linkOnlyInsufficient": 1399
+          "linkOnlyInsufficient": 1395
         },
         "source-structure-schema": {
           "requiredBehavior": "construct-or-validate-typed-source-structure",
-          "linkOnlyInsufficient": 3133
+          "linkOnlyInsufficient": 3121
         }
       }
     },
@@ -2587,13 +2587,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P057-L023-C7FBC7F91A-02",
-      "canonicalOwnerId": "classical-negative-particle-distribution",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P057-L023-C7FBC7F91A-03",
       "canonicalOwnerId": "classical-negative-particle-distribution",
       "uiRole": "applicability-or-constraint",
@@ -2602,13 +2595,6 @@
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P057-L023-C7FBC7F91A-04",
-      "canonicalOwnerId": "classical-negative-particle-distribution",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P057-L023-C7FBC7F91A-05",
       "canonicalOwnerId": "classical-negative-particle-distribution",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
@@ -3336,13 +3322,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P101-L035-8E4D508EFA-02",
-      "canonicalOwnerId": "classical-negative-admonition-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P101-L035-8E4D508EFA-03",
       "canonicalOwnerId": "classical-negative-admonition-formation",
       "uiRole": "result-projection",
@@ -3396,13 +3375,6 @@
       "canonicalOwnerId": "classical-negative-admonition-formation",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P102-L036-214BAB939B-10",
-      "canonicalOwnerId": "classical-admonitive-antecessive-contrast-analysis",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -3483,13 +3455,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P107-L007-676685827F-02",
-      "canonicalOwnerId": "classical-ono-irregular-paradigm",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P107-L007-676685827F-03",
       "canonicalOwnerId": "classical-ono-irregular-paradigm",
       "uiRole": "result-projection",
@@ -3526,13 +3491,6 @@
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P108-L034-7AC357A1DB-03",
-      "canonicalOwnerId": "classical-amia-irregular-paradigm",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P108-L034-7AC357A1DB-04",
       "canonicalOwnerId": "classical-amia-irregular-paradigm",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
@@ -3799,20 +3757,6 @@
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P111-L039-BADA6A134B-02",
-      "canonicalOwnerId": "classical-ya-hui-suppletive-paradigm",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P112-L019-191AD41FD8-02",
-      "canonicalOwnerId": "classical-ya-hui-suppletive-paradigm",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P112-L019-191AD41FD8-03",
       "canonicalOwnerId": "classical-ya-hui-suppletive-paradigm",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
@@ -41157,13 +41101,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P446-L006-F51E97EBC8-02",
-      "canonicalOwnerId": "classical-adverbial-vnc-lexical-potential-inventory",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P446-L006-F51E97EBC8-03",
       "canonicalOwnerId": "classical-adverbial-vnc-lexical-potential-inventory",
       "uiRole": "applicability-or-constraint",
@@ -41259,13 +41196,6 @@
       "canonicalOwnerId": "classical-adverbial-vnc-lexical-potential-inventory",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P446-L021-1A3F493F8C-02",
-      "canonicalOwnerId": "classical-adverbial-iuh-vnc-adverbial-contrast",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -41399,13 +41329,6 @@
       "canonicalOwnerId": "classical-adverbial-vnc-lexical-potential-inventory",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P447-L005-FCB0768AAD-02",
-      "canonicalOwnerId": "classical-adverbial-iz-vnc-adverbial-contrast",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -41626,13 +41549,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P448-L002-07A7231855",
-      "canonicalOwnerId": "classical-adverbial-connective-vnc-written-boundary",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P448-L002-07A7231855-02",
       "canonicalOwnerId": "classical-adverbial-connective-vnc-written-boundary",
       "uiRole": "result-projection",
@@ -41773,13 +41689,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P449-L019-5B3E5D785F-02",
-      "canonicalOwnerId": "classical-adverbial-huel-negative-contrast",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P449-L019-5B3E5D785F-03",
       "canonicalOwnerId": "classical-adverbial-huel-negative-contrast",
       "uiRole": "result-projection",
@@ -41840,13 +41749,6 @@
       "canonicalOwnerId": "classical-adverbial-huel-negative-contrast",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P449-L037-2D60C36BEB-02",
-      "canonicalOwnerId": "classical-adverbial-particle-looking-nnc-system",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -42207,13 +42109,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P451-L038-AA1B388BE6",
-      "canonicalOwnerId": "classical-adverbial-mach-idiomatic-collocations",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P451-L038-AA1B388BE6-02",
       "canonicalOwnerId": "classical-adverbial-mach-idiomatic-collocations",
       "uiRole": "result-projection",
@@ -42260,13 +42155,6 @@
       "canonicalOwnerId": "classical-adverbial-mach-idiomatic-collocations",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P452-L016-611202A770-02",
-      "canonicalOwnerId": "classical-adverbial-quen-lexicalized-collocation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -42900,13 +42788,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P455-L024-1EC8CAFBCD-02",
-      "canonicalOwnerId": "classical-adverbial-preterit-agentive-regular-intransitive",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P455-L024-1EC8CAFBCD-03",
       "canonicalOwnerId": "classical-adverbial-preterit-agentive-regular-intransitive",
       "uiRole": "source-structure-schema",
@@ -42991,13 +42872,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P456-L004-3FCEF4CA06-02",
-      "canonicalOwnerId": "classical-adverbial-preterit-agentive-obsolete-source",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P456-L004-3FCEF4CA06-03",
       "canonicalOwnerId": "classical-adverbial-preterit-agentive-obsolete-source",
       "uiRole": "source-structure-schema",
@@ -43054,24 +42928,10 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P456-L021-EF16B29666-02",
-      "canonicalOwnerId": "classical-adverbial-preterit-agentive-full-stem",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P456-L021-EF16B29666-05",
       "canonicalOwnerId": "classical-adverbial-preterit-agentive-full-stem",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P456-L025-BD5373FA7F-02",
-      "canonicalOwnerId": "classical-adverbial-preterit-agentive-irregular",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -43107,13 +42967,6 @@
       "canonicalOwnerId": "classical-adverbial-preterit-agentive-irregular",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P456-L030-5F61196C8E-02",
-      "canonicalOwnerId": "classical-adverbial-preterit-agentive-transitive",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -43758,13 +43611,6 @@
       "canonicalOwnerId": "classical-relational-ic-means-purpose-reason-time",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P465-L010-F1075BB8F1-02",
-      "canonicalOwnerId": "classical-relational-ic-means-purpose-reason-time",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -48507,13 +48353,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P495-L016-8B972DC9B3-02",
-      "canonicalOwnerId": "classical-relational-continuation-icpac-continuations",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P495-L016-8B972DC9B3-03",
       "canonicalOwnerId": "classical-relational-continuation-icpac-continuations",
       "uiRole": "source-structure-schema",
@@ -51836,13 +51675,6 @@
       "canonicalOwnerId": "classical-place-gentilic-place-co-compound-matrix",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P517-L002-BD59D8EF6E-02",
-      "canonicalOwnerId": "classical-place-gentilic-place-co-compound-matrix",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -73502,6 +73334,6 @@
     "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
     "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
-    "activeExactObservationPointer": "sha256:564a9a7db38fc40f2d6673df9b75fd90801c0c4950047b43c2e363028441329b"
+    "activeExactObservationPointer": "sha256:9d032350a6758fa4f75997eb68a5c9cfb123bb624496d6d7b45aed452bd15da0"
   }
 }

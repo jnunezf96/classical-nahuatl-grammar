@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-003",
+  "status": "passed",
+  "checkpoint": {
+    "owners": 22,
+    "newlyExactlyObserved": 24,
+    "failures": 0,
+    "mutationsRejected": 24
+  },
+  "progress": {
+    "denominator": 18639,
+    "before": 8358,
+    "after": 8382,
+    "remaining": 10257
+  },
+  "normalizationRecords": [
+    {
+      "diplomaticCanvasWitness": "mahuetz",
+      "normalizedGrammaticalRealization": "mā huetz",
+      "normalizationReason": "table-column/word-boundary compression",
+      "canonicalTokenization": [
+        "mā",
+        "huetz"
+      ]
+    },
+    {
+      "diplomaticCanvasWitness": "māohuetz",
+      "normalizedGrammaticalRealization": "mā ōhuetz",
+      "normalizationReason": "table-column/word-boundary compression",
+      "canonicalTokenization": [
+        "mā",
+        "ō#",
+        "huetz"
+      ]
+    }
+  ],
+  "validations": {
+    "canonicalResultObserved": true,
+    "incorrectParticleRejected": true,
+    "incorrectVerbFormRejected": true,
+    "incorrectWordBoundaryRejected": true,
+    "ledgerRegenerated": true,
+    "rollbackPassed": true
+  },
+  "auditSummary": {
+    "status": "incomplete",
+    "strictComplete": false,
+    "fullCanvasSourceZones": {
+      "numerator": 58,
+      "denominator": 66,
+      "percent": 87.88,
+      "complete": false
+    },
+    "lessonGrammarOwnerLinked": {
+      "numerator": 18639,
+      "denominator": 18639,
+      "percent": 100,
+      "complete": true
+    },
+    "lessonGrammarExactBehaviorObserved": {
+      "numerator": 8382,
+      "denominator": 18639,
+      "percent": 44.97,
+      "complete": false
+    },
+    "genuineChoiceLiveDeclarations": {
+      "numerator": 18,
+      "denominator": 58,
+      "percent": 31.03,
+      "complete": false
+    },
+    "blockerCount": 10306
+  }
+}
