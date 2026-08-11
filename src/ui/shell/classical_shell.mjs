@@ -2943,6 +2943,56 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                   data-classical-stage-authority="false"
                   hidden
                 ></div>
+                <details
+                  class="classical-rule-surface__disclosure classical-canvas-grammar-facts"
+                  id="classical-canvas-grammar-facts"
+                  data-classical-canvas-grammar-facts="presentation-only"
+                  data-classical-source-authorizes="none"
+                  data-classical-stage-authority="false"
+                >
+                  <summary>Canvas grammar facts</summary>
+                  <div class="grammar-inspector__section">
+                    <p>
+                      Search the grammar record. These explanations describe the
+                      grammar; they do not create or restrict a Result.
+                    </p>
+                    <label class="classical-rule-control">
+                      <span class="classical-rule-control__label">Find a fact</span>
+                      <input
+                        id="classical-canvas-grammar-fact-query"
+                        data-classical-canvas-grammar-fact-query="true"
+                        type="search"
+                        autocomplete="off"
+                        placeholder="Atom, lesson, or wording"
+                      />
+                    </label>
+                    <label class="classical-rule-control">
+                      <span class="classical-rule-control__label">Matches</span>
+                      <select
+                        id="classical-canvas-grammar-fact-matches"
+                        data-classical-canvas-grammar-fact-matches="true"
+                        size="6"
+                      ></select>
+                    </label>
+                    <button
+                      id="classical-canvas-grammar-fact-show"
+                      data-classical-canvas-grammar-fact-show="true"
+                      type="button"
+                    >Show fact</button>
+                    <article
+                      id="classical-canvas-grammar-fact-output"
+                      class="grammar-inspector__section"
+                      data-classical-canvas-grammar-fact-output="true"
+                      data-classical-grammar-authority="false"
+                      aria-live="polite"
+                      hidden
+                    >
+                      <h5 data-classical-canvas-grammar-fact-heading>Canvas grammar fact</h5>
+                      <p data-classical-canvas-grammar-fact-statement></p>
+                      <p data-classical-canvas-grammar-fact-source></p>
+                    </article>
+                  </div>
+                </details>
                 <div
                   id="tense-tabs"
                   class="tense-tabs formula-slot-controls"

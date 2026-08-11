@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-grammar-facts-checkpoint-012",
+  "ownerId": "classical-type-two-tia-destockal-alternative",
+  "projectRole": "normal-user-visible-grammar-fact-presentation",
+  "canonicalResultDigest": "sha256:483fad7e3df0dd00ca5765ade194172cde2904f590304bdb11bd3ebf43991a60",
+  "observations": [
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-03",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l020-76a31d543b-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f435e379c1f6834a143e5fe87910878299ad1ca94a8603e9317a36908809edbb",
+      "actualDigest": "sha256:f435e379c1f6834a143e5fe87910878299ad1ca94a8603e9317a36908809edbb",
+      "canvasAnchorDigest": "sha256:e4910ae63aa464e920b4545db7fbc6913c2199964bd864c1639f3790c9eef8a6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L020-76A31D543B-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-04",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l020-76a31d543b-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:bd9603eea17235f0d91cdd1b2bce75d3ea0276985d861c983bdf77fdae071307",
+      "actualDigest": "sha256:bd9603eea17235f0d91cdd1b2bce75d3ea0276985d861c983bdf77fdae071307",
+      "canvasAnchorDigest": "sha256:707b6c1829caa7e96c87cdf0b376b200ea7e99abe6d21625d1ee777b8797fc88",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L020-76A31D543B-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-05",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l020-76a31d543b-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:7f5eb984338598bb76a1c3a2c2ff443592aae099cd75888b8f6d067e22a10393",
+      "actualDigest": "sha256:7f5eb984338598bb76a1c3a2c2ff443592aae099cd75888b8f6d067e22a10393",
+      "canvasAnchorDigest": "sha256:ad6761a1ccd90f553b3b3c158741b4f2cb2e6263ce0117b04adc1cba87952967",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L020-76A31D543B-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-06",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l020-76a31d543b-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:874d5a54d080a42f168259d87bad8690ddb516dba3c963e8cb1d3eb3e4b6f9d9",
+      "actualDigest": "sha256:874d5a54d080a42f168259d87bad8690ddb516dba3c963e8cb1d3eb3e4b6f9d9",
+      "canvasAnchorDigest": "sha256:50bbb1e440bb07faffb84252835d0ad88e057f42abbd422e2ed12495c0f69479",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L020-76A31D543B-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-03",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:cec8ef8bd4e52358f87f62b40a4a316c94adf65529658080969c99212efd0462",
+      "actualDigest": "sha256:cec8ef8bd4e52358f87f62b40a4a316c94adf65529658080969c99212efd0462",
+      "canvasAnchorDigest": "sha256:041d8e7613a8a5184c31e0b950d44955a497c1243b774438f5c16fdbb7a900af",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-04",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:5627ee61b8edb78acb8781ea7558c51022fe3abcb565b5c205a0df35be1e666a",
+      "actualDigest": "sha256:5627ee61b8edb78acb8781ea7558c51022fe3abcb565b5c205a0df35be1e666a",
+      "canvasAnchorDigest": "sha256:df6cbf3af57c94328ce9285768e3145743943e0f2d079f91006917583b1559dd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-05",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f3c69306614f190dd80859683d196352e0c63838c4cee98db133e7c2f1ebb252",
+      "actualDigest": "sha256:f3c69306614f190dd80859683d196352e0c63838c4cee98db133e7c2f1ebb252",
+      "canvasAnchorDigest": "sha256:322e0f7aa910026e876d42b4120c4e6a3b8ecd4cf08a5d81a18b48bb3b80754d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-06",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:3d706b69d0dbc85ea3829a5f2b75c1942319cba4e9642ce9ed3370ec4cf07296",
+      "actualDigest": "sha256:3d706b69d0dbc85ea3829a5f2b75c1942319cba4e9642ce9ed3370ec4cf07296",
+      "canvasAnchorDigest": "sha256:82f9ee6e160b87eb711c916225d8451365306d72ef6f8438aecd318a98508a11",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-07",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-07:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e7727c9a4a927572ea9387e798201581a2fdfd2a4de1d6e1c2d4cbfc4da073b8",
+      "actualDigest": "sha256:e7727c9a4a927572ea9387e798201581a2fdfd2a4de1d6e1c2d4cbfc4da073b8",
+      "canvasAnchorDigest": "sha256:0df8d454cede0ba0cace99a20dc5ef898416f0aea8b314af86415126a3fcb71e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-07 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-08",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p211-l022-620ac3a373-08:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:bfe6befdc784113678d814df7a12180bb559cf98874db69a7b406b8102b41dbd",
+      "actualDigest": "sha256:bfe6befdc784113678d814df7a12180bb559cf98874db69a7b406b8102b41dbd",
+      "canvasAnchorDigest": "sha256:892ef4e40bab2b692e8012ac33faa2c767d734f26251eaebac01584680a337e8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P211-L022-620AC3A373-08 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-02",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:8c62e68e7ec688747962e66e3c9f63f7339f4ced45dc36202917a75c1e62a0be",
+      "actualDigest": "sha256:8c62e68e7ec688747962e66e3c9f63f7339f4ced45dc36202917a75c1e62a0be",
+      "canvasAnchorDigest": "sha256:3dac8b5465c860a701fe6bd7275e16191a8860c8311a089e5cba7be698515fc9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-03",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:16ba8d62935f332d3a58dc6e3d341aa13088bb1007ee7c5e739fa272d3dda5ab",
+      "actualDigest": "sha256:16ba8d62935f332d3a58dc6e3d341aa13088bb1007ee7c5e739fa272d3dda5ab",
+      "canvasAnchorDigest": "sha256:18d2041ad6e4b4d8d36eacf183bc65d5a26cee3edf4efd119ebf370da1c4d320",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-05",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9de6b57c28fc020b4d21df73f9c82c07eb13f985cc23f703b229573acfe1cb53",
+      "actualDigest": "sha256:9de6b57c28fc020b4d21df73f9c82c07eb13f985cc23f703b229573acfe1cb53",
+      "canvasAnchorDigest": "sha256:c3bbc4e9855e0e5dc4de0fe78c2b347bf4110dc9425bfd8a08b73be6c1d13e4d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-06",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:930fc2f37b1c6fbe304a3e0a2996a5232f447280562e9746d765eaeb7f484441",
+      "actualDigest": "sha256:930fc2f37b1c6fbe304a3e0a2996a5232f447280562e9746d765eaeb7f484441",
+      "canvasAnchorDigest": "sha256:d686345183d9c810fda9390ee80b9ade99ca107b2ead26b1b7e0504a6e89cef3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-07",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-07:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:2ac588f625667c77c470dfd559b58a3dc1232313bcf30c11df61e7ba73bc23fb",
+      "actualDigest": "sha256:2ac588f625667c77c470dfd559b58a3dc1232313bcf30c11df61e7ba73bc23fb",
+      "canvasAnchorDigest": "sha256:beb29066dc2aa0a13ece44a81daff09dc21b86a748e3c3e9e52601f7b4dd766f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-07 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-09",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:08b260f3dd0906aa7b89cf6e7b073dfb2079a6d2398713d616de167a91ca33e8",
+      "actualDigest": "sha256:08b260f3dd0906aa7b89cf6e7b073dfb2079a6d2398713d616de167a91ca33e8",
+      "canvasAnchorDigest": "sha256:b0ca753e8fa15335c37801e00ae22f71a54513a25f9c1e06ec147078b8c754ea",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-10",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-10:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:6148e1963c5a46264032ec62c4c052a2692f199761a76db561cf916c26626ad3",
+      "actualDigest": "sha256:6148e1963c5a46264032ec62c4c052a2692f199761a76db561cf916c26626ad3",
+      "canvasAnchorDigest": "sha256:22fd3e8b867c35d29bb51590fcbf23f81076a4c26e73601bfe6995509ada66fe",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-10 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-11",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:7dd247cac429cbf3d8f571e75ec4f4ff991dba3272ce2f1339134f026396d8cd",
+      "actualDigest": "sha256:7dd247cac429cbf3d8f571e75ec4f4ff991dba3272ce2f1339134f026396d8cd",
+      "canvasAnchorDigest": "sha256:5a242acdf530ee2502180f4a1f86fbbd713d11657b2c5159b557b43ced487e78",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-13",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-13:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:6448badafbf98967404aa331f2462c587492081f362a137b23e83f27d55f03b1",
+      "actualDigest": "sha256:6448badafbf98967404aa331f2462c587492081f362a137b23e83f27d55f03b1",
+      "canvasAnchorDigest": "sha256:7e58c93c5483ca09d785e88d4121123489dc1bc37856aacf97aae86e1726f360",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-13 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-14",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-14:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:79084e4cd98283f8f3cfb0cf5bb707e9e7a3416c27090b220a62e0fb3c9847c9",
+      "actualDigest": "sha256:79084e4cd98283f8f3cfb0cf5bb707e9e7a3416c27090b220a62e0fb3c9847c9",
+      "canvasAnchorDigest": "sha256:1983fd599b0d2a8e4fcc3f7ae7118254705d502971cae418d27fb916e434b765",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-14 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-15",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-15:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9d04a27ced0af1c01b852935910587011e332849b115b03479fdd627aba79dfe",
+      "actualDigest": "sha256:9d04a27ced0af1c01b852935910587011e332849b115b03479fdd627aba79dfe",
+      "canvasAnchorDigest": "sha256:2fedc3985d231ed2b3e743c3aeee8a2d4ba4c465fad632c476d48b2f56db76e2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-15 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-16",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-16:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:4ab8820be93be77395f4b11b258ba7ba47af49ef214a3439abff47af3f7862d9",
+      "actualDigest": "sha256:4ab8820be93be77395f4b11b258ba7ba47af49ef214a3439abff47af3f7862d9",
+      "canvasAnchorDigest": "sha256:bfbf816374db7bc8646337f90d997ccf792368f8dcd4a435edcef8c8e3adbd1f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-16 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-18",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-18:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:998eaaef562293c03c973eb4cafe70ba1c5b7ace6b3f59e09846b97143188daf",
+      "actualDigest": "sha256:998eaaef562293c03c973eb4cafe70ba1c5b7ace6b3f59e09846b97143188daf",
+      "canvasAnchorDigest": "sha256:0f6347b4863f861c11d9013b392272ff64a3f4178ba1a280f5f056da8ba09bf6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-18 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-19",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-19:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:63442c7abaec4d2b40b6f4cd94b678ef1ca9b18945f3201151984dd61a9ec591",
+      "actualDigest": "sha256:63442c7abaec4d2b40b6f4cd94b678ef1ca9b18945f3201151984dd61a9ec591",
+      "canvasAnchorDigest": "sha256:c97db4932a98cf1f21038a3b060f82eacd0fa194a217c785679c2d9932ace853",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-19 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-20",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-20:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:27960802b10794cdb7b5002dd8fb048371cf3707887be3ecfe9d240cf85785c4",
+      "actualDigest": "sha256:27960802b10794cdb7b5002dd8fb048371cf3707887be3ecfe9d240cf85785c4",
+      "canvasAnchorDigest": "sha256:05ed672f8d3423c127432c53fd1e6577e49078eac0a57af749f17e3ac8f0b00c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-20 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-21",
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-type-two-tia-destockal-alternative:aci-p212-l002-c0a9df1192-21:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:aa079839b94ca63752209d06a9325dd8bc08e2f6eab8f6f8139606660b6a4eb8",
+      "actualDigest": "sha256:aa079839b94ca63752209d06a9325dd8bc08e2f6eab8f6f8139606660b6a4eb8",
+      "canvasAnchorDigest": "sha256:7bc634ba90ee2e9bc33bd03f3e9c89a4b19b0231f79510447be3d0789adf6637",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P212-L002-C0A9DF1192-21 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 26,
+    "passed": 26,
+    "failed": 0,
+    "mutationsRejected": 26
+  }
+}

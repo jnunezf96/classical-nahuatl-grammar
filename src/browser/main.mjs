@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-canvas-grammar-facts-010";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-canvas-fact-browser-012d";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

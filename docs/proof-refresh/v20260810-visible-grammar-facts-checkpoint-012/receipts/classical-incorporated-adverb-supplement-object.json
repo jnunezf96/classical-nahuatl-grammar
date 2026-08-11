@@ -1,0 +1,465 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-grammar-facts-checkpoint-012",
+  "ownerId": "classical-incorporated-adverb-supplement-object",
+  "projectRole": "normal-user-visible-grammar-fact-presentation",
+  "canonicalResultDigest": "sha256:01b57d889688cdb8d407dfeacb891facbb33ac1ec5c3c1c479db77b98667d62e",
+  "observations": [
+    {
+      "atomId": "ACI-P287-L006-4158BBF940",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:743789123ad991457cabec7c03e58e58e061d136c3360a77e886f54d323c21f4",
+      "actualDigest": "sha256:743789123ad991457cabec7c03e58e58e061d136c3360a77e886f54d323c21f4",
+      "canvasAnchorDigest": "sha256:7f76ca7fc5ee46cab4ac4908fcc069a9400b86dff3082796ecec64550b3e0630",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:1661348a669ba62a52871bfb467f1d2d426cbf52c493e7541695fee5c036154f",
+      "actualDigest": "sha256:1661348a669ba62a52871bfb467f1d2d426cbf52c493e7541695fee5c036154f",
+      "canvasAnchorDigest": "sha256:6f762d19eb64aadee1dec0f3327f5e5f97e24d2304c8bd7207db564904b14a7f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:2716cb83b138e4608eed8533d56a2b6fd26fc37f168d62ddc612278e91b939d3",
+      "actualDigest": "sha256:2716cb83b138e4608eed8533d56a2b6fd26fc37f168d62ddc612278e91b939d3",
+      "canvasAnchorDigest": "sha256:7609e113fa42c6221e78d6d6329016a21f5f86e41f946456698126dbc5da04d2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:744e748fdefd327d059bb719a4992d9cba1b0c12687e32762d10e7e32322c12f",
+      "actualDigest": "sha256:744e748fdefd327d059bb719a4992d9cba1b0c12687e32762d10e7e32322c12f",
+      "canvasAnchorDigest": "sha256:3c9fc8644e50bb218aad16938d95e9967a042aa2b92ae9dd53053f3e24b90439",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:239704daa3a42e3df1838989bacfc25a80bfd4688e648160a898b6a687565471",
+      "actualDigest": "sha256:239704daa3a42e3df1838989bacfc25a80bfd4688e648160a898b6a687565471",
+      "canvasAnchorDigest": "sha256:d922448eb44e5cf3343f927d991ac59c9229d5f50ca677cb585034074681d301",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e8a70e000d2e313eeb7c256bcf571eb788db7a4a269cb579a200f67537e9bcd2",
+      "actualDigest": "sha256:e8a70e000d2e313eeb7c256bcf571eb788db7a4a269cb579a200f67537e9bcd2",
+      "canvasAnchorDigest": "sha256:94f75883abf4b815f359aa74557467c4960b33122077bba4249127426d9b71b7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:d3a1e0b6c82cdd6dc9ea24519d4e67051bc9ad4d7d6160cbde7bb60faf3ebdeb",
+      "actualDigest": "sha256:d3a1e0b6c82cdd6dc9ea24519d4e67051bc9ad4d7d6160cbde7bb60faf3ebdeb",
+      "canvasAnchorDigest": "sha256:692919028ac2c0d4c1dc22b8d6b10472e32f04a43f89e9aa3adf1b0624bd612c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:59c8d1d0d7b0338f7b6f8c1c43d35626013bae1ad54d6b5b05b47f23bdb15907",
+      "actualDigest": "sha256:59c8d1d0d7b0338f7b6f8c1c43d35626013bae1ad54d6b5b05b47f23bdb15907",
+      "canvasAnchorDigest": "sha256:aefc1d22343b43b9b6df18201972f14b58576a85f001d487f82de704dcd45b5c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:18a18e99f04410f45b36adc589b9f9176f1756a9ccf3bd331002f6a60ed6dd1e",
+      "actualDigest": "sha256:18a18e99f04410f45b36adc589b9f9176f1756a9ccf3bd331002f6a60ed6dd1e",
+      "canvasAnchorDigest": "sha256:0a850f871a0495db1753441eeb3ed10e50d255879c67acbfc4978138bc2ef7b2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L036-C894D113A0-11",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l036-c894d113a0-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:fbd839bfdcef460c058176cba8bccb98ea09461e4fa039c6314fe559a9b8c0f0",
+      "actualDigest": "sha256:fbd839bfdcef460c058176cba8bccb98ea09461e4fa039c6314fe559a9b8c0f0",
+      "canvasAnchorDigest": "sha256:82c5fd8f8c4a00479e5f6d5d8dbc06d1c14cc09833609dd0a1f288e131bb3635",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P287-L036-C894D113A0-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L002-555B394CB5-09",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l002-555b394cb5-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:4c93d77e2d40c131e2ed117946a4ddabeec66813a77d1745cd0d4cf60f3d8346",
+      "actualDigest": "sha256:4c93d77e2d40c131e2ed117946a4ddabeec66813a77d1745cd0d4cf60f3d8346",
+      "canvasAnchorDigest": "sha256:c2a324e82f1633c75771918f01c39119b442b46062c495a998415b50edb230ea",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L002-555B394CB5-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L005-F89C85B0A8",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l005-f89c85b0a8:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9b68c40ab11bff35b15c130e90ac0266bf3b9ba9af541b174c9f986e40cbd1e0",
+      "actualDigest": "sha256:9b68c40ab11bff35b15c130e90ac0266bf3b9ba9af541b174c9f986e40cbd1e0",
+      "canvasAnchorDigest": "sha256:9c4c3cf08a0b531fe0113c8c2905347454908c4b58ec9dac50e2daefd91598fd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L005-F89C85B0A8 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e082c8c5a0937087ab26bf3388ae47ff7aff2c4c89d3fafe0179a2592294c3b8",
+      "actualDigest": "sha256:e082c8c5a0937087ab26bf3388ae47ff7aff2c4c89d3fafe0179a2592294c3b8",
+      "canvasAnchorDigest": "sha256:cec8a94a5e2e8edc9d46c8348619c57dd6ee6d229c15b51f5c1fca6d625028ce",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a7e1a7071a1262fab9c082814c86721b05076171c02a882e9a43566cb0003d9d",
+      "actualDigest": "sha256:a7e1a7071a1262fab9c082814c86721b05076171c02a882e9a43566cb0003d9d",
+      "canvasAnchorDigest": "sha256:338652f3447a6838c7ce4d3b0eab3d7bbff12903e25bc1baecaf458f5b29b4c2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ddc7c4f82035c43e90cee3199bb9b0be95dea795f3301364a3bfcaa0cb7faae8",
+      "actualDigest": "sha256:ddc7c4f82035c43e90cee3199bb9b0be95dea795f3301364a3bfcaa0cb7faae8",
+      "canvasAnchorDigest": "sha256:5d196326bd632c08fc117be4ad8d2d1ef2030c0a940085d64cfd98316a9b3a74",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:559c2d23c4aa4c1afef1704193d89691bbd14058cf0a03b342794c01107e1010",
+      "actualDigest": "sha256:559c2d23c4aa4c1afef1704193d89691bbd14058cf0a03b342794c01107e1010",
+      "canvasAnchorDigest": "sha256:dd230f940e129cd1ab1169cce631f4d03913bdad598ad8c6b25edc5852b01236",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:42d404276aefed25f4319ce96ccf337dce9db933ff8343dc6ee09d9d23f43422",
+      "actualDigest": "sha256:42d404276aefed25f4319ce96ccf337dce9db933ff8343dc6ee09d9d23f43422",
+      "canvasAnchorDigest": "sha256:b1420189dd47bed17594112ff2dacf337341db32c89bafe859c5674ab8f671b5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:5f032207d8165a32f54d598083706ca811982d9a720b25f1dc9d68e2afc85165",
+      "actualDigest": "sha256:5f032207d8165a32f54d598083706ca811982d9a720b25f1dc9d68e2afc85165",
+      "canvasAnchorDigest": "sha256:df782c3249e9719b0e44deaa28e45190808b01f61ab89bc640e8c730fb8f33b7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e2e3560881a205d3b6289aa4026728aff2a654dfc5ec526a4c5a530594d1a199",
+      "actualDigest": "sha256:e2e3560881a205d3b6289aa4026728aff2a654dfc5ec526a4c5a530594d1a199",
+      "canvasAnchorDigest": "sha256:e1d659acb79f9ead1eb24489be492d86f39db97b0955cffac5af5a7166d743b2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L031-66053E0692-09",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l031-66053e0692-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ea1b2cdffd36e83818491d9613483c47972406d7188042b5b41e57aa8740d0d8",
+      "actualDigest": "sha256:ea1b2cdffd36e83818491d9613483c47972406d7188042b5b41e57aa8740d0d8",
+      "canvasAnchorDigest": "sha256:38d521251f3d9c0d3d5660d8c8c3707c910c98a68ce9169bf874c0e638da98a2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L031-66053E0692-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l033-ac4116496d-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:08b9945b471dedd7f6726156fadbd315b6a6203b036dc49fca65470d515800b3",
+      "actualDigest": "sha256:08b9945b471dedd7f6726156fadbd315b6a6203b036dc49fca65470d515800b3",
+      "canvasAnchorDigest": "sha256:57710fca02010f8085aac66e2e1aa88625ae49ee38cc9214a75812ab5867f125",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L033-AC4116496D-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l033-ac4116496d-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ed012c31c65be1be8d9a272a47abad0a6cd465beeb307cf34ebcccc81a9f8ad5",
+      "actualDigest": "sha256:ed012c31c65be1be8d9a272a47abad0a6cd465beeb307cf34ebcccc81a9f8ad5",
+      "canvasAnchorDigest": "sha256:d33fe78c01d4596052877ce082aedd511753d7adbc6fc20ca09cbacfd5cce65f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L033-AC4116496D-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:cd222bef6dae77affe9da9da9dda8e7d1d694fcc345830a3beb21c8dab55742e",
+      "actualDigest": "sha256:cd222bef6dae77affe9da9da9dda8e7d1d694fcc345830a3beb21c8dab55742e",
+      "canvasAnchorDigest": "sha256:df08abec3908f0b82af143499192aa00b0a3efc93a41d9852bc7fa2e2aea2d11",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:6939120be5d1861e642a206d159686b018263043dc48cfe4487696278069c3ab",
+      "actualDigest": "sha256:6939120be5d1861e642a206d159686b018263043dc48cfe4487696278069c3ab",
+      "canvasAnchorDigest": "sha256:4681234a029e40ba0d1d3ab2831fe2c758ec621043edb83f81dacf9a93338a37",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f5e93a49b39150d571a56bd0354487bcda961427d58820b24d8d5af52a563b4b",
+      "actualDigest": "sha256:f5e93a49b39150d571a56bd0354487bcda961427d58820b24d8d5af52a563b4b",
+      "canvasAnchorDigest": "sha256:4fcf1fb33fe3f2d59e10de054051d0c9024345393eebeab7d208c689e0c94e21",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 25,
+    "passed": 25,
+    "failed": 0,
+    "mutationsRejected": 25
+  }
+}

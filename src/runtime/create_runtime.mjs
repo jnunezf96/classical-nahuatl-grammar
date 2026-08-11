@@ -1,7 +1,7 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260801-pre-l58-gates-120";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
 import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260806-class-c-claim-172";
-import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260728-lessons51-53-owner-115";
+import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementDisplayGlobals } from "../core/agreement/display.mjs?v=20260726-lessons2-58-one-system-094";
@@ -29,7 +29,7 @@ import { installClassicalNahuatlTransitiveVncObjectGlobals } from "../core/class
 import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classical/nuclear_clause_fact_catalog.mjs?v=20260802-l4-l6-facts-001";
 import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core/classical/nuclear_clause_semantic_operations.mjs?v=20260802-l4-l6-operations-001";
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
-import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260810-canvas-grammar-facts-010";
+import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260811-canvas-fact-browser-012";
 import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260802-l58-lexeme-source-150";
 import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260806-class-c-claim-172";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
@@ -70,13 +70,13 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260806-class-c-claim-172";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260806-preterit-agentive-nemi-173";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-canvas-fact-browser-012d";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260806-class-c-claim-172";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260806-class-c-claim-172";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-canvas-fact-browser-012d";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260805-classical-sgr-parity-155";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-canvas-fact-browser-012";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],
@@ -163,6 +163,17 @@ export const RUNTIME_INSTALLERS = new Map([
 // without publishing them as public runtime controls. This is routing only:
 // the provider retains authority, and the consumer cannot add capabilities.
 const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
+    "src/ui/rendering/rendering.mjs": Object.freeze({
+        "src/core/classical/nuclear_semantic_owner_catalog.mjs": Object.freeze([
+            "listPreparedClassicalCanvasGrammarFactsForPresentation",
+            "presentPreparedClassicalCanvasGrammarFactForPresentation",
+            "isPreparedClassicalCanvasGrammarFactProjectionForPresentation",
+        ]),
+        "src/application/classical/clause_relation_controller.mjs": Object.freeze([
+            "presentPreparedClassicalLateCanvasGrammarFactForPresentation",
+            "isPreparedClassicalLateCanvasGrammarFactProjectionForPresentation",
+        ]),
+    }),
     "src/core/classical/particle_owner_catalog.mjs": Object.freeze({
         "src/core/classical/particle_grammar.mjs": Object.freeze([
             "getClassicalNahuatlParticleSourceEntries",

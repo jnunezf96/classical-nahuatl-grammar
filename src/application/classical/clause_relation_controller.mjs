@@ -2,7 +2,7 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260811-canvas-fact-browser-012";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";

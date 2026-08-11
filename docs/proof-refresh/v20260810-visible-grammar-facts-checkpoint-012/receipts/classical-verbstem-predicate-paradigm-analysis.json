@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-grammar-facts-checkpoint-012",
+  "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+  "projectRole": "normal-user-visible-grammar-fact-presentation",
+  "canonicalResultDigest": "sha256:3683a76e348f0252a16355b6f175d7399f46f5b9dc39c2541abaedacc63b3059",
+  "observations": [
+    {
+      "atomId": "ACI-P080-L040-C63CC85725",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p080-l040-c63cc85725:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:d49e418f8ff7e4635be1fdb29cd58e644a1c17eeaa3e2a70f98b08e0ffab1f0a",
+      "actualDigest": "sha256:d49e418f8ff7e4635be1fdb29cd58e644a1c17eeaa3e2a70f98b08e0ffab1f0a",
+      "canvasAnchorDigest": "sha256:64cad1f86dc0b2aa36bfc6a93083c9852bdc4f3673b7cf77276667502c125d3f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P080-L040-C63CC85725 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a26d322f83d3e76154a3e4281c8b3942749633c083600388a9b384e4a291d696",
+      "actualDigest": "sha256:a26d322f83d3e76154a3e4281c8b3942749633c083600388a9b384e4a291d696",
+      "canvasAnchorDigest": "sha256:e1c20c6dfa1e957542922cbab72950197bd297e2a53b2a71824be5afb73d5c83",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:027f58032b0058f301f174d18ee9b1eb63c981bebdb793c8aa5874018326c199",
+      "actualDigest": "sha256:027f58032b0058f301f174d18ee9b1eb63c981bebdb793c8aa5874018326c199",
+      "canvasAnchorDigest": "sha256:f424b23764e6c4aefefc3d5ff23399e9354dc7ac772ad09f35ffab12076478e3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:17232a48a8ff218d4cf66864b9bb0e85ad148307213f623d64d430b71a900935",
+      "actualDigest": "sha256:17232a48a8ff218d4cf66864b9bb0e85ad148307213f623d64d430b71a900935",
+      "canvasAnchorDigest": "sha256:ecdb7521989584259c74abb466a4214093c49ed212f7fcb26468f9ee44bb7e51",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:663f6d41192a0d76ac90a85b235cbe89d0361e2518054d01563ed71698ea196e",
+      "actualDigest": "sha256:663f6d41192a0d76ac90a85b235cbe89d0361e2518054d01563ed71698ea196e",
+      "canvasAnchorDigest": "sha256:d999b56ef088277bc8124b7604f623ce1497a2dfe30fd0f7f2d02b8259e0b87d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:485011ac84ec91238d8d75ca11a9fc0ab4e733c6e540afb889cf30be42dc5a5c",
+      "actualDigest": "sha256:485011ac84ec91238d8d75ca11a9fc0ab4e733c6e540afb889cf30be42dc5a5c",
+      "canvasAnchorDigest": "sha256:658dbfb56b82cdb2dffd978e89b2923afd4114b742356621a490a56bfe2ee966",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:c2407cf1af451c6c70f907946d2461eea7cf8531a87201cf58aecaff79c6c1b8",
+      "actualDigest": "sha256:c2407cf1af451c6c70f907946d2461eea7cf8531a87201cf58aecaff79c6c1b8",
+      "canvasAnchorDigest": "sha256:ebf432385c7db77ee44dcbbe438848bdef7eea7882812832e16ef79982ac0f79",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:5256f1954eb15ecae2fdc9a2f76cafa32387538e5001ca511cc6109fff696baf",
+      "actualDigest": "sha256:5256f1954eb15ecae2fdc9a2f76cafa32387538e5001ca511cc6109fff696baf",
+      "canvasAnchorDigest": "sha256:647646cda44269608524b11b896757c2c9a7f2bf30be7e0abf1db16513cb32d5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9c5d2c7b33ced43b0c587f6ad56518c50d34f3fae334f6924d30db764893ba79",
+      "actualDigest": "sha256:9c5d2c7b33ced43b0c587f6ad56518c50d34f3fae334f6924d30db764893ba79",
+      "canvasAnchorDigest": "sha256:38ed7d88015fbaa924fbc79b595b63b3e95db849c01d78f404def8409bf41faf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:95600aec0e63d138451c7a5dfbbc77e2aa2822fb412caa175a417c5ff65daec3",
+      "actualDigest": "sha256:95600aec0e63d138451c7a5dfbbc77e2aa2822fb412caa175a417c5ff65daec3",
+      "canvasAnchorDigest": "sha256:d6f09218ace5688265c7ce45b21d9c214bf6bbb9341e8c91e059e55f2a8fc860",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:cf80b02b9e963d61c7eed8f26437846b69749c3dcd486c51c9f3292040722730",
+      "actualDigest": "sha256:cf80b02b9e963d61c7eed8f26437846b69749c3dcd486c51c9f3292040722730",
+      "canvasAnchorDigest": "sha256:0ba51ad04ce58bda336ad37e1f27bc2b987d242fd603664b0d80678d43c7dfd7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:525cd423a4b779ff07b9abdf2865ff9143e75b700faba0434ee370f26c5cf1af",
+      "actualDigest": "sha256:525cd423a4b779ff07b9abdf2865ff9143e75b700faba0434ee370f26c5cf1af",
+      "canvasAnchorDigest": "sha256:72ee593a51d2770186421ae13ea8bea20f84bcc4ef4f14fa706ebdbab7afcf63",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f2512b06dee1aa41f8406dea77119290747581c5e88d4d006d8f1ffc1abf0c6d",
+      "actualDigest": "sha256:f2512b06dee1aa41f8406dea77119290747581c5e88d4d006d8f1ffc1abf0c6d",
+      "canvasAnchorDigest": "sha256:70fead1267aec2949dd43efbeab766a350fd172eba1adbd5927ea56c67bae06f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:5e83818ebb78208e46ff69f57a03846e51ee734979b0c0167ea8aeccb022f096",
+      "actualDigest": "sha256:5e83818ebb78208e46ff69f57a03846e51ee734979b0c0167ea8aeccb022f096",
+      "canvasAnchorDigest": "sha256:327f3ef9bfe58e0be8ab117a91f62b3047606e2485336f412518bf932a6a052f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f0dd8df9a14e3b498bb0b4a809077bde22f24590f189a3c7bbb60c342c71dfdd",
+      "actualDigest": "sha256:f0dd8df9a14e3b498bb0b4a809077bde22f24590f189a3c7bbb60c342c71dfdd",
+      "canvasAnchorDigest": "sha256:7650a7fc2ab529480c32efe1edf5598d13ce8043da3165b24c6f2fb56cdfcea8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:edd7691f615e69a9c6e1c06b579866e72db13647b5081a0d40ecbeaf688f901d",
+      "actualDigest": "sha256:edd7691f615e69a9c6e1c06b579866e72db13647b5081a0d40ecbeaf688f901d",
+      "canvasAnchorDigest": "sha256:9da1c7b42b8eb4ea3f9973d33c5cf7f915dc0ee63e62df8c8cb4d15f0e542264",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-07",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-07:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f9777d10dd4d9e78245c6de219cc8f8837fd4998a92cf0254f7f65988a08238a",
+      "actualDigest": "sha256:f9777d10dd4d9e78245c6de219cc8f8837fd4998a92cf0254f7f65988a08238a",
+      "canvasAnchorDigest": "sha256:c0182043510ee00ffa032224619f3aeec32ff365f51a5d0e0e53b81d566ef086",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-07 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:6512fcb0ff5cd21cc9f9d06a5405baec058cd6ab760a0e1230cef378d441289d",
+      "actualDigest": "sha256:6512fcb0ff5cd21cc9f9d06a5405baec058cd6ab760a0e1230cef378d441289d",
+      "canvasAnchorDigest": "sha256:5d24dbab4d1cda83a7f41c616f7515f0cb41ef7c1903aad4523799567c6fca6a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:90aff44fa174183deab5640a09225dd81552a2ac8ebf660139f43e76c12dacf6",
+      "actualDigest": "sha256:90aff44fa174183deab5640a09225dd81552a2ac8ebf660139f43e76c12dacf6",
+      "canvasAnchorDigest": "sha256:51a8df754aa78c024b0fe54256451c6d7c80a6a4f3d016ae7aa86dc88a9de154",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:103a2a983b9925452e52d82918519549d9dee550546a435c98f1e1009fcca387",
+      "actualDigest": "sha256:103a2a983b9925452e52d82918519549d9dee550546a435c98f1e1009fcca387",
+      "canvasAnchorDigest": "sha256:876ecd86114b65e6cc4dacf62d38eef6e7f1a6572336904134a3c12ac0517b3d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:261125daa45ce2a4ddee72f7f44231bc08cc90f2ebbfafdb53f7fea7bf3b3cde",
+      "actualDigest": "sha256:261125daa45ce2a4ddee72f7f44231bc08cc90f2ebbfafdb53f7fea7bf3b3cde",
+      "canvasAnchorDigest": "sha256:94507442c24be819f71c532f250022835a9ee331594ba854f49ff5d8fe9167ef",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a0db139cd43c0fe10b1f9a7d94c5a0f3b3dde2fbe78942b08991d7d72336052a",
+      "actualDigest": "sha256:a0db139cd43c0fe10b1f9a7d94c5a0f3b3dde2fbe78942b08991d7d72336052a",
+      "canvasAnchorDigest": "sha256:998f695aa8c94b2d26a8a2a8ad2e7bac8d177fa2d6d9d7ba7603d25251cdacf5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-07",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-07:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:45e4af96f2545d7a70098230e03f28d3b0f3aa57e18b6f4f3404172196f202e1",
+      "actualDigest": "sha256:45e4af96f2545d7a70098230e03f28d3b0f3aa57e18b6f4f3404172196f202e1",
+      "canvasAnchorDigest": "sha256:4229d8e13ed48dbc78cf43cf69875deb8d9a582ec22dc372c1a2f09b87db0e5f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-07 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-08",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-08:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:99568decf0e01ae66af26c66812f6e0b4aabd3be317411a97b23d87c85f8a688",
+      "actualDigest": "sha256:99568decf0e01ae66af26c66812f6e0b4aabd3be317411a97b23d87c85f8a688",
+      "canvasAnchorDigest": "sha256:f7caf777467490539c01f5300b4966e823ccc9cda968681f6fd96c3da0efbf21",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-08 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 24,
+    "passed": 24,
+    "failed": 0,
+    "mutationsRejected": 24
+  }
+}

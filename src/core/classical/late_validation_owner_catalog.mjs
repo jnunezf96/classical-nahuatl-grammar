@@ -75,7 +75,7 @@ import classical_late_grammar_nonactive_incorporated_means_instrument from "./nu
 import classical_late_grammar_textual_reanalysis_diagnostic from "./nuclear-owner-specs/classical-late-grammar-textual-reanalysis-diagnostic.mjs";
 import { createClassicalPersonalNameNncValidationSemanticOperationsApi } from "./personal_name_nnc_validation_semantic_operations.mjs";
 import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs";
-import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
+import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260811-canvas-fact-browser-012";
 const OWNER_SPECS = Object.freeze([
   classical_personal_name_nnc_source_opacity_analysis,
   classical_personal_name_nnc_historical_third_person_source,
@@ -157,7 +157,14 @@ export function createClassicalLateValidationOwnersApi(targetObject = globalThis
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalPersonalNameNncValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalLateGrammarValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(installationContext?.moduleDependencyCapabilities || {}));
-  return createRoutineSemanticOwnerMechanicsApi(semanticTarget, OWNER_SPECS);
+  const api = createRoutineSemanticOwnerMechanicsApi(semanticTarget, OWNER_SPECS);
+  return Object.freeze({
+    ...api,
+    presentPreparedClassicalLateCanvasGrammarFactForPresentation:
+      api.presentPreparedClassicalCanvasGrammarFact,
+    isPreparedClassicalLateCanvasGrammarFactProjectionForPresentation:
+      api.isPreparedClassicalCanvasGrammarFactProjection,
+  });
 }
 export function installClassicalLateValidationOwnersGlobals(targetObject = globalThis, installationContext = null) {
   const api = createClassicalLateValidationOwnersApi(targetObject, installationContext);

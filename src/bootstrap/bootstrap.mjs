@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260810-canvas-grammar-facts-010";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-canvas-fact-browser-012d";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260810-canvas-grammar-facts-010";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260810-canvas-grammar-facts-010";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260810-canvas-grammar-facts-010";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260810-canvas-grammar-facts-010";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260810-canvas-grammar-facts-010";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260810-canvas-grammar-facts-010";
+} from "../runtime/create_runtime.mjs?v=20260811-canvas-fact-browser-012d";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-canvas-fact-browser-012d";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-canvas-fact-browser-012d";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-canvas-fact-browser-012d";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-canvas-fact-browser-012d";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-canvas-fact-browser-012d";
 
 let browserBootstrapPromise = null;
 

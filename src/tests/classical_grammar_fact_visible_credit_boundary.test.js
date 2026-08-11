@@ -20,20 +20,20 @@ function run() {
         "src/ui/shell/classical_shell.mjs",
     ].map((relativePath) => fs.readFileSync(path.join(ROOT, relativePath), "utf8")).join("\n");
 
-    s.eq("runtime-ready grammar facts are not credited as visible completion", {
+    s.eq("only browser-delivered grammar facts receive visible completion credit", {
         activeVersion: manifest.version,
         activeExactObservations: manifest.counts.atoms,
         preparedStatus: manifest.preparedRuntimeFacts.status,
         preparedCount: manifest.preparedRuntimeFacts.atomCount,
         rollbackManifest: pointer.rollbackManifest,
-        uiConsumesGrammarFactProjection: /GrammarFactProjection|present\w+GrammarFact/u.test(userInterfaceSource),
+        uiConsumesGrammarFactProjection: /CanvasGrammarFactProjection|presentPreparedClassical/u.test(userInterfaceSource),
     }, {
-        activeVersion: "v20260810-visible-credit-correction-011",
-        activeExactObservations: 409,
+        activeVersion: "v20260810-visible-grammar-facts-checkpoint-012",
+        activeExactObservations: 909,
         preparedStatus: "prepared-runtime-ready-not-exactly-observed",
-        preparedCount: 1000,
-        rollbackManifest: "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
-        uiConsumesGrammarFactProjection: false,
+        preparedCount: 500,
+        rollbackManifest: "docs/proof-refresh/v20260810-visible-credit-correction-011/manifest.json",
+        uiConsumesGrammarFactProjection: true,
     });
     return s;
 }

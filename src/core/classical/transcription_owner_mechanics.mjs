@@ -34,7 +34,11 @@ import {
   getClassicalCanvasGrammarFactRecord,
   isClassicalCanvasGrammarFactRecord,
   listClassicalCanvasGrammarFactRecords,
-} from "./canvas_grammar_fact_registry.mjs?v=20260810-canvas-grammar-facts-010";
+} from "./canvas_grammar_fact_registry.mjs?v=20260811-canvas-fact-browser-012";
+import {
+  getClassicalCanvasGrammarFactPresentationRoute,
+  listClassicalCanvasGrammarFactPresentationRoutes,
+} from "./canvas_grammar_fact_presentation_routes.mjs?v=20260811-canvas-fact-browser-012";
 
 const freeze = Object.freeze;
 const CLEAR_BROAD_PROOF_SUFFIXES = freeze([
@@ -444,6 +448,61 @@ export function createRoutineSemanticOwnerMechanicsApi(
   for (const spec of preparedSpecs) {
     Object.assign(api, wrapOwnerApi(legacyApi, spec));
   }
+  function blockedPreparedGrammarFactProjection(reason = "prepared-canvas-grammar-fact-route-required") {
+    return deepFreeze({
+      kind: "classical-canvas-grammar-fact-projection",
+      authorizationStatus: "blocked",
+      blockReason: reason,
+      atomId: "",
+      semanticOwnerId: "",
+      canvasSection: "",
+      canvasSpan: "",
+      statement: "",
+      projectRole: "",
+      contentFingerprint: "",
+      grammarAuthority: false,
+      generationAuthority: false,
+    });
+  }
+  function presentPreparedClassicalCanvasGrammarFact(atomId = "") {
+    const route = getClassicalCanvasGrammarFactPresentationRoute(atomId);
+    if (!route) return blockedPreparedGrammarFactProjection();
+    const names = publicNames(route.prefix);
+    const ownerApi = [api, targetObject, targetObject?.window]
+      .find((candidate) => typeof candidate?.[names.build] === "function")
+      || null;
+    if (
+      typeof ownerApi?.[names.build] !== "function"
+      || typeof ownerApi?.[names.evaluate] !== "function"
+      || typeof ownerApi?.[names.presentGrammarFact] !== "function"
+      || typeof ownerApi?.[names.isGrammarFactProjection] !== "function"
+    ) return blockedPreparedGrammarFactProjection("prepared-canvas-grammar-fact-owner-api-required");
+    const source = ownerApi[names.build]({
+      analysisDomain: route.semanticOwnerId,
+      selection: route.selection,
+      requestedFacet: route.requestedFacet,
+      participantChoice: `${route.selection}:${route.requestedFacet}`,
+    });
+    const result = ownerApi[names.evaluate](source);
+    const projection = ownerApi[names.presentGrammarFact](result, route.atomId);
+    return ownerApi[names.isGrammarFactProjection](projection)
+      ? projection
+      : blockedPreparedGrammarFactProjection("authorized-canvas-grammar-fact-projection-required");
+  }
+  function isPreparedClassicalCanvasGrammarFactProjection(projection = null) {
+    const route = getClassicalCanvasGrammarFactPresentationRoute(projection?.atomId || "");
+    if (!route) return false;
+    const names = publicNames(route.prefix);
+    const ownerApi = [api, targetObject, targetObject?.window]
+      .find((candidate) => typeof candidate?.[names.isGrammarFactProjection] === "function")
+      || null;
+    return ownerApi?.[names.isGrammarFactProjection]?.(projection) === true;
+  }
+  function listPreparedClassicalCanvasGrammarFacts() {
+    return freeze(listClassicalCanvasGrammarFactPresentationRoutes()
+      .map((route) => getClassicalCanvasGrammarFactRecord(route.atomId))
+      .filter(isClassicalCanvasGrammarFactRecord));
+  }
   Object.assign(api, {
     getCanonicalGrammarFamilyForOwner,
     getCanonicalGrammarFamilyMetrics,
@@ -457,6 +516,11 @@ export function createRoutineSemanticOwnerMechanicsApi(
     getClassicalCanvasGrammarFactRecord,
     isClassicalCanvasGrammarFactRecord,
     listClassicalCanvasGrammarFactRecords,
+    getClassicalCanvasGrammarFactPresentationRoute,
+    listClassicalCanvasGrammarFactPresentationRoutes,
+    listPreparedClassicalCanvasGrammarFacts,
+    presentPreparedClassicalCanvasGrammarFact,
+    isPreparedClassicalCanvasGrammarFactProjection,
     getCanonicalProofAddress,
     listCanonicalProofAddresses,
     getRoutineSemanticEffectiveProofCoordinate,

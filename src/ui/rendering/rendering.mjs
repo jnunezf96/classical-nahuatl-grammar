@@ -39,6 +39,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     var ClassicalClauseRelationSelections = Object.create(null);
     var ClassicalClauseRelationStatusMessage = "";
     const ClassicalGrammarDependencyPresentationRoots = new WeakSet();
+    const ClassicalCanvasGrammarFactBrowserRoots = new WeakSet();
     var LastClassicalResultAnnouncementSignature = "";
     const CLASSICAL_RESULT_HEADING_ID = "classical-result-content-heading";
     const CLASSICAL_WHOLE_CANVAS_PANEL_RULE_REFS = Object.freeze([Object.freeze({
@@ -15965,7 +15966,128 @@ export function createUiRenderingApi(targetObject = globalThis) {
       resultRoot.appendChild(analysis);
     }
 
+    function getClassicalCanvasGrammarFactBrowserElements(documentObject = targetObject.document) {
+      if (!documentObject || typeof documentObject.getElementById !== "function") return null;
+      const root = documentObject.getElementById("classical-canvas-grammar-facts");
+      const query = documentObject.getElementById("classical-canvas-grammar-fact-query");
+      const matches = documentObject.getElementById("classical-canvas-grammar-fact-matches");
+      const show = documentObject.getElementById("classical-canvas-grammar-fact-show");
+      const output = documentObject.getElementById("classical-canvas-grammar-fact-output");
+      if (!root || !query || !matches || !show || !output) return null;
+      return { root, query, matches, show, output };
+    }
+    function getClassicalCanvasGrammarFactSearchText(record = null) {
+      return [
+        record?.atomId,
+        record?.canvasSection,
+        record?.canvasSpan,
+        record?.statement,
+        record?.semanticOwnerId,
+      ].filter(Boolean).join(" ").normalize("NFC").toLocaleLowerCase();
+    }
+    function syncClassicalCanvasGrammarFactBrowserMatches(queryValue = "") {
+      const elements = getClassicalCanvasGrammarFactBrowserElements();
+      if (!elements) return Object.freeze([]);
+      const query = String(queryValue || "").normalize("NFC").trim().toLocaleLowerCase();
+      const records = typeof targetObject.listPreparedClassicalCanvasGrammarFactsForPresentation === "function"
+        ? targetObject.listPreparedClassicalCanvasGrammarFactsForPresentation()
+        : [];
+      const filtered = records.filter((record) => (
+        !query || getClassicalCanvasGrammarFactSearchText(record).includes(query)
+      )).slice(0, 100);
+      const selectedAtomId = elements.matches.value;
+      elements.matches.replaceChildren();
+      filtered.forEach((record) => {
+        const option = targetObject.document.createElement("option");
+        option.value = record.atomId;
+        option.textContent = `${record.atomId} — ${record.canvasSection}`;
+        option.dataset.classicalCanvasGrammarFactStatement = record.statement;
+        elements.matches.appendChild(option);
+      });
+      if (filtered.some((record) => record.atomId === selectedAtomId)) {
+        elements.matches.value = selectedAtomId;
+      } else if (filtered.length) {
+        elements.matches.value = filtered[0].atomId;
+      }
+      elements.show.disabled = filtered.length === 0;
+      elements.root.dataset.classicalCanvasGrammarFactMatchCount = String(filtered.length);
+      return Object.freeze(filtered);
+    }
+    function renderClassicalCanvasGrammarFactProjection(
+      projection = null,
+      documentObject = targetObject.document,
+    ) {
+      const elements = getClassicalCanvasGrammarFactBrowserElements(documentObject);
+      if (!elements) return false;
+      const valid = [
+        targetObject.isPreparedClassicalCanvasGrammarFactProjectionForPresentation,
+        targetObject.isPreparedClassicalLateCanvasGrammarFactProjectionForPresentation,
+      ].some((validator) => (
+        typeof validator === "function" && validator(projection) === true
+      ));
+      if (!valid) {
+        elements.output.hidden = false;
+        elements.output.dataset.classicalCanvasGrammarFactVisible = "false";
+        delete elements.output.dataset.classicalCanvasGrammarFactAtomId;
+        delete elements.output.dataset.classicalCanvasGrammarFactOwnerId;
+        const statement = elements.output.querySelector("[data-classical-canvas-grammar-fact-statement]");
+        const source = elements.output.querySelector("[data-classical-canvas-grammar-fact-source]");
+        if (statement) statement.textContent = "This grammar fact is unavailable from its typed owner.";
+        if (source) source.textContent = "No conclusion about the grammatical Result is implied.";
+        return false;
+      }
+      elements.output.hidden = false;
+      elements.output.dataset.classicalCanvasGrammarFactVisible = "true";
+      elements.output.dataset.classicalCanvasGrammarFactAtomId = projection.atomId;
+      elements.output.dataset.classicalCanvasGrammarFactOwnerId = projection.semanticOwnerId;
+      elements.output.dataset.classicalCanvasGrammarFactProjectRole = projection.projectRole;
+      elements.output.dataset.classicalCanvasGrammarFactFingerprint = projection.contentFingerprint;
+      const heading = elements.output.querySelector("[data-classical-canvas-grammar-fact-heading]");
+      const statement = elements.output.querySelector("[data-classical-canvas-grammar-fact-statement]");
+      const source = elements.output.querySelector("[data-classical-canvas-grammar-fact-source]");
+      if (heading) heading.textContent = projection.canvasSection || "Canvas grammar fact";
+      if (statement) statement.textContent = projection.statement;
+      if (source) source.textContent = projection.canvasSpan
+        ? `Canvas source: ${projection.canvasSpan}`
+        : "Canvas source recorded in the atom inventory.";
+      return true;
+    }
+    function showSelectedClassicalCanvasGrammarFact() {
+      const elements = getClassicalCanvasGrammarFactBrowserElements();
+      if (!elements) return false;
+      const atomId = String(elements.matches.value || "").normalize("NFC").trim();
+      const candidates = [
+        targetObject.presentPreparedClassicalCanvasGrammarFactForPresentation,
+        targetObject.presentPreparedClassicalLateCanvasGrammarFactForPresentation,
+      ].filter((presenter) => typeof presenter === "function")
+        .map((presenter) => presenter(atomId));
+      const projection = candidates.find(
+        (candidate) => candidate?.authorizationStatus === "authorized",
+      ) || null;
+      if (!projection && elements.output?.dataset) {
+        elements.output.dataset.classicalCanvasGrammarFactBlockReasons = candidates
+          .map((candidate) => candidate?.blockReason || "missing-projection")
+          .join("|");
+      }
+      return renderClassicalCanvasGrammarFactProjection(projection);
+    }
+    function bindClassicalCanvasGrammarFactBrowser() {
+      const elements = getClassicalCanvasGrammarFactBrowserElements();
+      if (!elements) return false;
+      if (!ClassicalCanvasGrammarFactBrowserRoots.has(elements.root)) {
+        elements.query.addEventListener("input", () => {
+          syncClassicalCanvasGrammarFactBrowserMatches(elements.query.value);
+        });
+        elements.matches.addEventListener("dblclick", showSelectedClassicalCanvasGrammarFact);
+        elements.show.addEventListener("click", showSelectedClassicalCanvasGrammarFact);
+        ClassicalCanvasGrammarFactBrowserRoots.add(elements.root);
+      }
+      syncClassicalCanvasGrammarFactBrowserMatches(elements.query.value);
+      return true;
+    }
+
     function syncClassicalSourceGrammarResultSurface(surfaceFrame = null, resultRoot = null) {
+      bindClassicalCanvasGrammarFactBrowser();
       const inventory = targetObject.getClassicalSourceGrammarResultSurfaceInventory?.();
       if (!inventory) return false;
       // Several reusable owner views (clause relations and specialized NNCs)
@@ -23789,6 +23911,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
     api.getClassicalSgrMaterialOwnerResults =
       getClassicalSgrMaterialOwnerResults;
     api.getClassicalSgrOwnerIssuedProjection = getClassicalSgrOwnerIssuedProjection;
+    api.getClassicalCanvasGrammarFactBrowserElements =
+      getClassicalCanvasGrammarFactBrowserElements;
+    api.syncClassicalCanvasGrammarFactBrowserMatches =
+      syncClassicalCanvasGrammarFactBrowserMatches;
+    api.renderClassicalCanvasGrammarFactProjection =
+      renderClassicalCanvasGrammarFactProjection;
+    api.showSelectedClassicalCanvasGrammarFact =
+      showSelectedClassicalCanvasGrammarFact;
+    api.bindClassicalCanvasGrammarFactBrowser =
+      bindClassicalCanvasGrammarFactBrowser;
     api.syncClassicalSourceGrammarResultSurface = syncClassicalSourceGrammarResultSurface;
     api.getClassicalTranscriptionOwnerSegmentTokens =
       getClassicalTranscriptionOwnerSegmentTokens;
@@ -24039,8 +24171,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
     return api;
 }
 
-export function installUiRenderingGlobals(targetObject = globalThis) {
-    const api = createUiRenderingApi(targetObject);
+export function installUiRenderingGlobals(targetObject = globalThis, installationContext = null) {
+    const renderingTarget = Object.create(targetObject);
+    Object.defineProperties(
+      renderingTarget,
+      Object.getOwnPropertyDescriptors(
+        installationContext?.moduleDependencyCapabilities || {},
+      ),
+    );
+    const api = createUiRenderingApi(renderingTarget);
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
+    if (typeof targetObject.document !== "undefined") {
+      if (targetObject.document.readyState === "loading") {
+        targetObject.document.addEventListener(
+          "DOMContentLoaded",
+          api.bindClassicalCanvasGrammarFactBrowser,
+          { once: true },
+        );
+      } else {
+        api.bindClassicalCanvasGrammarFactBrowser();
+      }
+    }
     return api;
 }

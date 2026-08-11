@@ -1482,7 +1482,7 @@ import { createClassicalClauseComplementValidationSemanticOperationsApi } from "
 import { createClassicalClauseConjunctionValidationSemanticOperationsApi } from "./clause_conjunction_validation_semantic_operations.mjs";
 import { createClassicalComparisonValidationSemanticOperationsApi } from "./comparison_validation_semantic_operations.mjs";
 import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs";
-import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260810-canvas-grammar-facts-010";
+import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260811-canvas-fact-browser-012";
 const OWNER_SPECS = Object.freeze([
   classical_absolutive_nnc_formula_formation,
   classical_absolutive_nnc_subject_category_system,
@@ -2973,7 +2973,16 @@ export function createClassicalNuclearSemanticOwnersApi(targetObject = globalThi
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalComparisonValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalDenominalVncValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(installationContext?.moduleDependencyCapabilities || {}));
-  return createRoutineSemanticOwnerMechanicsApi(semanticTarget, OWNER_SPECS);
+  const api = createRoutineSemanticOwnerMechanicsApi(semanticTarget, OWNER_SPECS);
+  return Object.freeze({
+    ...api,
+    listPreparedClassicalCanvasGrammarFactsForPresentation:
+      api.listPreparedClassicalCanvasGrammarFacts,
+    presentPreparedClassicalCanvasGrammarFactForPresentation:
+      api.presentPreparedClassicalCanvasGrammarFact,
+    isPreparedClassicalCanvasGrammarFactProjectionForPresentation:
+      api.isPreparedClassicalCanvasGrammarFactProjection,
+  });
 }
 export function installClassicalNuclearSemanticOwnersGlobals(targetObject = globalThis, installationContext = null) {
   const api = createClassicalNuclearSemanticOwnersApi(targetObject, installationContext);

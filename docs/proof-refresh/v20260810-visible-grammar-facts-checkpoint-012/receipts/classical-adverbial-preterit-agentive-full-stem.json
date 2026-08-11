@@ -1,0 +1,645 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-grammar-facts-checkpoint-012",
+  "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+  "projectRole": "normal-user-visible-grammar-fact-presentation",
+  "canonicalResultDigest": "sha256:0bc9345a1f0be7f6e20c65fb73f888374bc2847d20e121440f6ce35c4cf57a4e",
+  "observations": [
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l023-d4a67467d8:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:93ef4a9f92ebdc87e5752a88330be34f69dc966b0de7d1f33e6f4375d3a12433",
+      "actualDigest": "sha256:93ef4a9f92ebdc87e5752a88330be34f69dc966b0de7d1f33e6f4375d3a12433",
+      "canvasAnchorDigest": "sha256:b934e4592f0ecd78bfb78daea3180261c4b1f86b8734b2e79cde1dfc113a5e2a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L023-D4A67467D8 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l023-d4a67467d8-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:40a0416f4919e764ca34626add7e412e98b2b887abf2aa16d5343734b0687541",
+      "actualDigest": "sha256:40a0416f4919e764ca34626add7e412e98b2b887abf2aa16d5343734b0687541",
+      "canvasAnchorDigest": "sha256:d5017f6737f96c1b92d2b6d3168accb502486fbcb3a8970ff56fe9556d136a16",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L023-D4A67467D8-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-09",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l027-e61024bf3c-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:bc6ef6bb21d4afb78a091caa63b5b51da09e674a361ddee366e4a19f4a7f08f0",
+      "actualDigest": "sha256:bc6ef6bb21d4afb78a091caa63b5b51da09e674a361ddee366e4a19f4a7f08f0",
+      "canvasAnchorDigest": "sha256:295a2ea1d5f01e8ca044aacd984d0a9938d0e6684dc6b3c217011608a5d40edc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L027-E61024BF3C-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-10",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l027-e61024bf3c-10:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:538bf0925fe9861301ddc0b8737d64e64001fd1bd460444e4a61535141c8e08b",
+      "actualDigest": "sha256:538bf0925fe9861301ddc0b8737d64e64001fd1bd460444e4a61535141c8e08b",
+      "canvasAnchorDigest": "sha256:d4415a8f2dd36dc990cd2cb97a2e448fde2b98f5544fcbdafe6c6d6204c6438d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L027-E61024BF3C-10 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:0e337fffe3c1f4a88b412ddf849f0d38978fa8ffdd4e885d069d7524d364a6bc",
+      "actualDigest": "sha256:0e337fffe3c1f4a88b412ddf849f0d38978fa8ffdd4e885d069d7524d364a6bc",
+      "canvasAnchorDigest": "sha256:0c7dd9a7259c655cc3dc9dedf797eff1c3d72886cbe1523efb2bae6891c86c12",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:c6ee2fdd4bcf4fe8a896101096110e49beb0d10e6cfa59a61313d1555db6c452",
+      "actualDigest": "sha256:c6ee2fdd4bcf4fe8a896101096110e49beb0d10e6cfa59a61313d1555db6c452",
+      "canvasAnchorDigest": "sha256:7396b97dec3f5bd22194a2e7165a81c482e91a223f0d07ce92673dca5ce7b15c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a96ccdef0c3b1f5d32d6d81bc816890bcb8d2ba55a0af7378c82e3232852b12a",
+      "actualDigest": "sha256:a96ccdef0c3b1f5d32d6d81bc816890bcb8d2ba55a0af7378c82e3232852b12a",
+      "canvasAnchorDigest": "sha256:052b9aa58dc9615e26f747a25fa83cd511509c285af17d2d2d9eb44a5522b71c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e2745ee9be7674636ff34469e0dbe823c835e1c5367c17375de61251333b7512",
+      "actualDigest": "sha256:e2745ee9be7674636ff34469e0dbe823c835e1c5367c17375de61251333b7512",
+      "canvasAnchorDigest": "sha256:f7ac81001270dcec2ff44fe4d19e821d3797d19cd7f1516af802ca5f5d0aa449",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-06",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-06:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:3a040bba0877848457f1a5ed1b86c63191859b26c66df730af27cef7e1b50996",
+      "actualDigest": "sha256:3a040bba0877848457f1a5ed1b86c63191859b26c66df730af27cef7e1b50996",
+      "canvasAnchorDigest": "sha256:0e07a712187da074135976bb21d065f01ee2b95a07a3efc08dbe352863a38699",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-06 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-08",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-08:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:460af0c1eda7c86d9e43d17956f8b5019f722adf5c1840bf657759fc0ba6f8ab",
+      "actualDigest": "sha256:460af0c1eda7c86d9e43d17956f8b5019f722adf5c1840bf657759fc0ba6f8ab",
+      "canvasAnchorDigest": "sha256:f6630db475d491f9c30b64fb57aa398c7d040d0aa20dfdec2b37510baf8c2f7c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-08 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-09",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:4a24fbf4b4597cae813b8f0412a31a07848666f16cb85be634f631f84a54bf73",
+      "actualDigest": "sha256:4a24fbf4b4597cae813b8f0412a31a07848666f16cb85be634f631f84a54bf73",
+      "canvasAnchorDigest": "sha256:c059687bdb467bbdc697167010d6953b775577f69569d4b712ac4d395e8096df",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-10",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-10:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9fde32da96c8d82c966a56922303b92bb07c73dad168ba468c172679013f2ead",
+      "actualDigest": "sha256:9fde32da96c8d82c966a56922303b92bb07c73dad168ba468c172679013f2ead",
+      "canvasAnchorDigest": "sha256:6608506ce5a8417460caf474be39c6c22adb790aecf97a22bf2f82b2387e5678",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-10 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-11",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:279ddd3bcc2c565a775280dee2d580170e6a6918a277e475af2f7ae1a3143f13",
+      "actualDigest": "sha256:279ddd3bcc2c565a775280dee2d580170e6a6918a277e475af2f7ae1a3143f13",
+      "canvasAnchorDigest": "sha256:69cf59530bc3a748cd11d6cb949bc8e31ffd3b92d18c35797d2a127a90783819",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-12",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-12:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:536e9c2f971771ae7b77508894cbf2b753f2747943a0a7177e745c23d731ff4d",
+      "actualDigest": "sha256:536e9c2f971771ae7b77508894cbf2b753f2747943a0a7177e745c23d731ff4d",
+      "canvasAnchorDigest": "sha256:b1d7e65c98fac63423602cc027449bb605b74b88197a381289091f2b8a7ce98e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-12 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:044858ce5b32d42b8925f70542cdf5ac94668baa8cb3befd91aeac55fe6c61e4",
+      "actualDigest": "sha256:044858ce5b32d42b8925f70542cdf5ac94668baa8cb3befd91aeac55fe6c61e4",
+      "canvasAnchorDigest": "sha256:c0bccff48288f49932303523f2d360f0f7c6d3ccdaf81565c792412b9cac2fda",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:acd4935ccac218517af2b00784ef7fb181a03e62c68e0e10837f533fa1d550e5",
+      "actualDigest": "sha256:acd4935ccac218517af2b00784ef7fb181a03e62c68e0e10837f533fa1d550e5",
+      "canvasAnchorDigest": "sha256:c6302f5fed08e7ba30196228762aceba18d44e8086c55a6b9ffeec302c38cf22",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:3e342edbae960b422e23c2c8284737ffb06d39e24a02042127a8778cd4e86526",
+      "actualDigest": "sha256:3e342edbae960b422e23c2c8284737ffb06d39e24a02042127a8778cd4e86526",
+      "canvasAnchorDigest": "sha256:2fd7367aa7a08dab8c6a92b9ca4717509ac9e21a02fb6998e71fa20ef184145f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:746f7bf132adfa383ab11e4f6470102c662e1b922cc161740f039aa43e973196",
+      "actualDigest": "sha256:746f7bf132adfa383ab11e4f6470102c662e1b922cc161740f039aa43e973196",
+      "canvasAnchorDigest": "sha256:ea2499c4a2747ed772157a27576a33e7b7b37594c424ea8e51ed8d6197909b11",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:82f93c9b8c0c0d3eb7cf4caf5dac5379fa7883c66cc7aee9bc2356dc88999bc7",
+      "actualDigest": "sha256:82f93c9b8c0c0d3eb7cf4caf5dac5379fa7883c66cc7aee9bc2356dc88999bc7",
+      "canvasAnchorDigest": "sha256:04a81e8112db15b06a47b9a7abeaa07f5787aa3788c0285e1bc6c7a4ff41330a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:54cee30ccfb7a06c9cd81bc69fc7e076f1f73354ccc7cc74762625f7b44e5a06",
+      "actualDigest": "sha256:54cee30ccfb7a06c9cd81bc69fc7e076f1f73354ccc7cc74762625f7b44e5a06",
+      "canvasAnchorDigest": "sha256:5e48a79f055a142363bd29eaa6864f2850e122bf347461ffe8fa744360016eef",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:876c034ab758cac19c8b4d815b6fe85b6e793766808d97f5aaf042036bace335",
+      "actualDigest": "sha256:876c034ab758cac19c8b4d815b6fe85b6e793766808d97f5aaf042036bace335",
+      "canvasAnchorDigest": "sha256:80e8edc0cf0fc2de56ac6da6a19200441df24ff6150c3e9fe11fc6adee1d73f9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:614b2f18fb9d703e0cfe186664eaef6d8038c6ee52793e1067bcc17df6d9ffa5",
+      "actualDigest": "sha256:614b2f18fb9d703e0cfe186664eaef6d8038c6ee52793e1067bcc17df6d9ffa5",
+      "canvasAnchorDigest": "sha256:abdca638fd8247e30d4f6a259e39f0e3868fc5c7a93bfbe018f785a943dacce3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:e1abea8037568da10469c9fec70f2016c98366a12774997692800a70ce694bd0",
+      "actualDigest": "sha256:e1abea8037568da10469c9fec70f2016c98366a12774997692800a70ce694bd0",
+      "canvasAnchorDigest": "sha256:ec3c25ae4a4ded299eb72a37c22a52befebf5da60347ce866ff92db2d7b30b6a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ea1093452e3c35da8312376d6422518cc7e29ece1e590992624651cb2d93586b",
+      "actualDigest": "sha256:ea1093452e3c35da8312376d6422518cc7e29ece1e590992624651cb2d93586b",
+      "canvasAnchorDigest": "sha256:e6685b74441d1eaded6017d5c08adc060d0e586f7031ba0b23320e7bec7c0265",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:3df5f06d629eb11bf6d8f800b0da4854a8fc3e1cd14cdb0b9ab636ca4bee6750",
+      "actualDigest": "sha256:3df5f06d629eb11bf6d8f800b0da4854a8fc3e1cd14cdb0b9ab636ca4bee6750",
+      "canvasAnchorDigest": "sha256:b91a5d135d5478a62452a0a0d6a92268a72ea48a78abbe45c98ee4018aaf9486",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:15004fe363d6fb8da92f86cbcb55e4b93d3f4c5d93368fe48a792d31c92d84e8",
+      "actualDigest": "sha256:15004fe363d6fb8da92f86cbcb55e4b93d3f4c5d93368fe48a792d31c92d84e8",
+      "canvasAnchorDigest": "sha256:fe3227c42ae293ce5ff0c51874b810040d31fd47622a5167208c19ac156b6894",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ab582fe6e814d3b2ec709812e368d613729d49fd52927ecfed14858687c6a5b0",
+      "actualDigest": "sha256:ab582fe6e814d3b2ec709812e368d613729d49fd52927ecfed14858687c6a5b0",
+      "canvasAnchorDigest": "sha256:0fa6c9d6d9281d442096465c8053e9438ddab6645f99e7aa7c0250a628cf3aab",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L025-0696726FB9-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l025-0696726fb9-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:57caae107832c39b32c7587cbc50e915f34847d6dd2ffa285a9037b5cf12fcc9",
+      "actualDigest": "sha256:57caae107832c39b32c7587cbc50e915f34847d6dd2ffa285a9037b5cf12fcc9",
+      "canvasAnchorDigest": "sha256:20580be93c86fd860ae97fce6281aca75401397879ff667869a40388c6096a45",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L025-0696726FB9-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L035-A6C951792C",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l035-a6c951792c:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:fa7daf460bceade53a0bfdf1f7ace9448e30793bfa3aa09bc6fef8a4c98c5616",
+      "actualDigest": "sha256:fa7daf460bceade53a0bfdf1f7ace9448e30793bfa3aa09bc6fef8a4c98c5616",
+      "canvasAnchorDigest": "sha256:a60877c81388819916b5e53e28211e89a5b8f4d7c1f48ca15095e692881e5353",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P350-L035-A6C951792C rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l007-7c7a4a8f4e-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:24bc95372fee017ec023e57e6623c1779e5eb7355abcca2887c80bfbc29a50a2",
+      "actualDigest": "sha256:24bc95372fee017ec023e57e6623c1779e5eb7355abcca2887c80bfbc29a50a2",
+      "canvasAnchorDigest": "sha256:04579da8f0b63c1f5bc14312a190c83ea3d401b0048af74cdb2cabcaba300760",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L007-7C7A4A8F4E-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l007-7c7a4a8f4e-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:feea3f53a5a022f3630022cf5b59bff31be421075b4d29e8c47aef9ddcf4f429",
+      "actualDigest": "sha256:feea3f53a5a022f3630022cf5b59bff31be421075b4d29e8c47aef9ddcf4f429",
+      "canvasAnchorDigest": "sha256:ea1fc186a22208f8277e99f48b9c35ef97d2dfef927356a7331aa637d80ac3aa",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L007-7C7A4A8F4E-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-11",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l010-217f30f355-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:66e45531e315ca2bf0611265bb59fc168cf6f501bbdadc570de624fa1ea85cfc",
+      "actualDigest": "sha256:66e45531e315ca2bf0611265bb59fc168cf6f501bbdadc570de624fa1ea85cfc",
+      "canvasAnchorDigest": "sha256:45f073dd2d1415faadb2011cdfb3f931f584c27c488d33097676e896b05f7494",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L010-217F30F355-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-12",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l010-217f30f355-12:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ce9f5f0f78c6980a954cf372a52664a8818bc5ccf2bb1453a22842a18c858c8a",
+      "actualDigest": "sha256:ce9f5f0f78c6980a954cf372a52664a8818bc5ccf2bb1453a22842a18c858c8a",
+      "canvasAnchorDigest": "sha256:241cfaf0e3bed34ba61e07dd438f5bf2a736010e2cc4c07ecc7617f173793932",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L010-217F30F355-12 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l013-22a4b04906-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:7c0fe060229836d6352fa4c5e1abb80ce11b639fb564e697a3131339f2d12149",
+      "actualDigest": "sha256:7c0fe060229836d6352fa4c5e1abb80ce11b639fb564e697a3131339f2d12149",
+      "canvasAnchorDigest": "sha256:a8545dddf95a44b5cf6edfa35b7c8b64784f7b11dd3e6f27dcb3c20d4dfdf0b4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L013-22A4B04906-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l013-22a4b04906-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:168c767ef7f0a5b4d4e3026b7867b22401acc0297cdb12feaf3683e741d5800f",
+      "actualDigest": "sha256:168c767ef7f0a5b4d4e3026b7867b22401acc0297cdb12feaf3683e741d5800f",
+      "canvasAnchorDigest": "sha256:391074985cdbeb8f2ff9235e027d24fa9d55af3060cfc89e263ca92527e2698e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P351-L013-22A4B04906-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 35,
+    "passed": 35,
+    "failed": 0,
+    "mutationsRejected": 35
+  }
+}

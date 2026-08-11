@@ -1,0 +1,447 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-visible-grammar-facts-checkpoint-012",
+  "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+  "projectRole": "normal-user-visible-grammar-fact-presentation",
+  "canonicalResultDigest": "sha256:e09b48b531e346a1d805f6085d86f3584030278b75fa2436ec74bd663e1e7b48",
+  "observations": [
+    {
+      "atomId": "ACI-P609-L020-733E9EA870",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p609-l020-733e9ea870:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:7f2e8a7b262b963eefa8d63d850b5cbf5b60a7e33a43b3ef7411178ec8bd8e3c",
+      "actualDigest": "sha256:7f2e8a7b262b963eefa8d63d850b5cbf5b60a7e33a43b3ef7411178ec8bd8e3c",
+      "canvasAnchorDigest": "sha256:2c443093c1650202586de30e249bd4843b04fee5245aebcf20c66d0abe5b2390",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P609-L020-733E9EA870 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P609-L038-A11F4EC810-11",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p609-l038-a11f4ec810-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:66758db2d9673b45f5507fe1cfcaf399922fe2d518246ffb9779d3a5797ce776",
+      "actualDigest": "sha256:66758db2d9673b45f5507fe1cfcaf399922fe2d518246ffb9779d3a5797ce776",
+      "canvasAnchorDigest": "sha256:3ccc341bb9ca9576342b8fa25dc4e4060bca59438ee7ed0abf58f7c880c3702b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P609-L038-A11F4EC810-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l014-58145cdfb8:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:3a1b2e9115acbb289e01ee4a5cd34e5dc2b9521f065260b7530b9e6d8c67e61c",
+      "actualDigest": "sha256:3a1b2e9115acbb289e01ee4a5cd34e5dc2b9521f065260b7530b9e6d8c67e61c",
+      "canvasAnchorDigest": "sha256:0369684ca1e5500d5295f9b68196761da360fd4c792dca45426906314f013556",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L014-58145CDFB8 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l014-58145cdfb8-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:596274225b157398a97f149504f5eaf5158f4aad9e4d49836ea027ab189bca5d",
+      "actualDigest": "sha256:596274225b157398a97f149504f5eaf5158f4aad9e4d49836ea027ab189bca5d",
+      "canvasAnchorDigest": "sha256:846684fa8e8e5fafb793b4a4331e582f72168cecab65d568acb18b348388bcdb",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L014-58145CDFB8-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8-05",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l014-58145cdfb8-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:462b933def4ad6df14cba6c507374ade1250e3dc3a7ac92daebdc5b70ffeb418",
+      "actualDigest": "sha256:462b933def4ad6df14cba6c507374ade1250e3dc3a7ac92daebdc5b70ffeb418",
+      "canvasAnchorDigest": "sha256:4af98af0728dc422800043c35f61ff72fc5c592dc1d20b65e33797ff344ea11b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L014-58145CDFB8-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l023-fd3d83aead-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:d504e0544f85f09f97521c07ac2f478093a31b2b1bd4b179ac686aef439dfb92",
+      "actualDigest": "sha256:d504e0544f85f09f97521c07ac2f478093a31b2b1bd4b179ac686aef439dfb92",
+      "canvasAnchorDigest": "sha256:1c9870973ff913d2cd98f9a5bd5903d0801779ec45352842edcd3034c7a2edee",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L023-FD3D83AEAD-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-10",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l023-fd3d83aead-10:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:bd43b56f051016b0fea524517ba445ce4bbb27e1ab04a48d57fb08ac505e8b02",
+      "actualDigest": "sha256:bd43b56f051016b0fea524517ba445ce4bbb27e1ab04a48d57fb08ac505e8b02",
+      "canvasAnchorDigest": "sha256:cfa883ca7b875789fc0678ebdb377c471485a63281d403dd22250d3676c11473",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L023-FD3D83AEAD-10 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-11",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l023-fd3d83aead-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f368a1bc4ef4b26e07acedc551d6a2b091188999c5c7bf964bb01ee30448813a",
+      "actualDigest": "sha256:f368a1bc4ef4b26e07acedc551d6a2b091188999c5c7bf964bb01ee30448813a",
+      "canvasAnchorDigest": "sha256:941498814b4f774e138b8a795902bb8824ac3eb6082f9339c13c9367fb7544d5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L023-FD3D83AEAD-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l035-c9ca464c64-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:79594153da58bce313b5b8c1da3935eb202fabe99441b43e9db46be29c5ae02c",
+      "actualDigest": "sha256:79594153da58bce313b5b8c1da3935eb202fabe99441b43e9db46be29c5ae02c",
+      "canvasAnchorDigest": "sha256:151c358f93ac0031ea1efe5bee72e9dadb6ed3c7ee091c4ddd8ce87541eab847",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L035-C9CA464C64-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-10",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l035-c9ca464c64-10:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:5c79f931df39415199cde7cb0527f2deff137a3bfff1ff45057cacb0e39726e4",
+      "actualDigest": "sha256:5c79f931df39415199cde7cb0527f2deff137a3bfff1ff45057cacb0e39726e4",
+      "canvasAnchorDigest": "sha256:93f7ac7995493b49126b3abe7ccc45f22b59bb876bc2efe63cfc6f1dec575923",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L035-C9CA464C64-10 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-11",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p610-l035-c9ca464c64-11:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:c094acbfdfe21ebf7401b2f2fed7e38bc3abfd6ce2aed9c9a2070bc98af68a0d",
+      "actualDigest": "sha256:c094acbfdfe21ebf7401b2f2fed7e38bc3abfd6ce2aed9c9a2070bc98af68a0d",
+      "canvasAnchorDigest": "sha256:795fe1c661e385b925e0cef04c6b202069673220ab7f33ba690ab0b50e58a697",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P610-L035-C9CA464C64-11 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l002-42fea79089-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f4ebf45b309baa208ef9e786ffecfa0b679a4ca5004b5f75f8b0e22a5a4eda21",
+      "actualDigest": "sha256:f4ebf45b309baa208ef9e786ffecfa0b679a4ca5004b5f75f8b0e22a5a4eda21",
+      "canvasAnchorDigest": "sha256:3ceadb93dda4c2ad5bab5fed37e479a78c186467aaa0ea94f629479ba31b4fff",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L002-42FEA79089-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-07",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l002-42fea79089-07:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:9ed645939c6d865101091ea121ab4f71bbb76bacd48a95dd4ffbc26d5f36cff0",
+      "actualDigest": "sha256:9ed645939c6d865101091ea121ab4f71bbb76bacd48a95dd4ffbc26d5f36cff0",
+      "canvasAnchorDigest": "sha256:f5b8c3748046b7a1fb3a4079de990f5f0d1f1510b2a3dc8c5d92a6141e0a1b1b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L002-42FEA79089-07 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-08",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l002-42fea79089-08:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:baf91128627080e3494382449214bc208869573eb20f5d7d3c953e874a644278",
+      "actualDigest": "sha256:baf91128627080e3494382449214bc208869573eb20f5d7d3c953e874a644278",
+      "canvasAnchorDigest": "sha256:21f43be32e4f3d2aed7456a3efb1ecf4ded89f4d8711b50eed2c2b6f4345f8d7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L002-42FEA79089-08 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L008-69D826EAFE-03",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l008-69d826eafe-03:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a8806d5b61e183b30f2cd1a5eff9fba81850de132306865ed6d923e16c309392",
+      "actualDigest": "sha256:a8806d5b61e183b30f2cd1a5eff9fba81850de132306865ed6d923e16c309392",
+      "canvasAnchorDigest": "sha256:b2d2bf301ec2480d6c5a52d3280cd92acf09e4d730d73b99009cdef3f92304b1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L008-69D826EAFE-03 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l013-149008b962:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:4469c4fb4fecbdb44543ce964fb81fd9417a069069f156ef222017540641bcb4",
+      "actualDigest": "sha256:4469c4fb4fecbdb44543ce964fb81fd9417a069069f156ef222017540641bcb4",
+      "canvasAnchorDigest": "sha256:9a56be132132ae18927b4e59639f992867e1c6b6690999417971c11f2050eb53",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L013-149008B962 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-02",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l013-149008b962-02:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:bc702f085eab83688275286406bdbd8de682b9efd866533e799192ff021f03e9",
+      "actualDigest": "sha256:bc702f085eab83688275286406bdbd8de682b9efd866533e799192ff021f03e9",
+      "canvasAnchorDigest": "sha256:0169ad6883a5e902ed76e51cec4aa42aa2074592f700ffb45d5cf2069b41aebe",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L013-149008B962-02 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l013-149008b962-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:a67afcb69639a29d26d7b3fbbdfb8e80cc66d5b530885637be11daaae8c601ab",
+      "actualDigest": "sha256:a67afcb69639a29d26d7b3fbbdfb8e80cc66d5b530885637be11daaae8c601ab",
+      "canvasAnchorDigest": "sha256:385fbad372d4611cfca1eaf1332f77a0c7fa62216df3ede46531b2787f576432",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L013-149008B962-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-05",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l013-149008b962-05:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:f79a2fd031e4dd73a5ad2ba23cb71a87521ee39bd6c9ef7d10cf6b298725e16f",
+      "actualDigest": "sha256:f79a2fd031e4dd73a5ad2ba23cb71a87521ee39bd6c9ef7d10cf6b298725e16f",
+      "canvasAnchorDigest": "sha256:67018e41dae0a491e9fa265e3fcee9b5e55a4960a57a2830a5cb6eebc8488520",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L013-149008B962-05 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L019-4AEED06354-09",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l019-4aeed06354-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:317c307a38f9200733c9385366a5b65fed9ccaf3d062b4b56c7cc39b02476d76",
+      "actualDigest": "sha256:317c307a38f9200733c9385366a5b65fed9ccaf3d062b4b56c7cc39b02476d76",
+      "canvasAnchorDigest": "sha256:76500f4355dcb665270ef003ef17a2df70fdd1d6411bd3dd648148f06529c474",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L019-4AEED06354-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L027-3EFFDC9A37-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l027-3effdc9a37-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ed2d1747d0e7ff9669363d12766d6184e6cb3ef5d4a9be2fff66cc0dade76b0f",
+      "actualDigest": "sha256:ed2d1747d0e7ff9669363d12766d6184e6cb3ef5d4a9be2fff66cc0dade76b0f",
+      "canvasAnchorDigest": "sha256:e5003eb0c0c3b9f4aeb204978fe5df0195ee914c9bac9556b37f976d2036d79e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L027-3EFFDC9A37-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L027-3EFFDC9A37-08",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l027-3effdc9a37-08:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:32dd8c3172180708d19fc30c8ee0ab897fa9b993e2a730bf968b4db66e1a641c",
+      "actualDigest": "sha256:32dd8c3172180708d19fc30c8ee0ab897fa9b993e2a730bf968b4db66e1a641c",
+      "canvasAnchorDigest": "sha256:5de848fb68c869741c0e38b27ae57faaa7cd7b78f2a726fe657f019335533d0e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L027-3EFFDC9A37-08 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L030-5E18E9CC56-04",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l030-5e18e9cc56-04:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:ece863563ac9f1800c085d61fc7b482b7cba9e0ef761ccdce92b67ecea1a486a",
+      "actualDigest": "sha256:ece863563ac9f1800c085d61fc7b482b7cba9e0ef761ccdce92b67ecea1a486a",
+      "canvasAnchorDigest": "sha256:b8a0909161e67c3765e2d3da735af207dc85b5f70bd6df17e4fe3ece35f9e497",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L030-5E18E9CC56-04 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P611-L030-5E18E9CC56-09",
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "normal-user-visible-grammar-fact-presentation",
+      "assertionId": "classical-personal-name-nnc-preterit-agentive-source:aci-p611-l030-5e18e9cc56-09:visible",
+      "canonicalPath": "visible Canvas grammar fact",
+      "expectedDigest": "sha256:54aa28c3ec7835a216519cab9f9813155a15de4bba74291765e860a332d7cd02",
+      "actualDigest": "sha256:54aa28c3ec7835a216519cab9f9813155a15de4bba74291765e860a332d7cd02",
+      "canvasAnchorDigest": "sha256:c66c57cdba9508c29fb0d94fe9f3861f094ddda8b5991cd436eb070aea58612a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint012_visible_grammar_fact.test.js",
+      "browserCanary": "browser-canary.json",
+      "mutation": {
+        "assertion": "ACI-P611-L030-5E18E9CC56-09 rejects a forged visible grammar fact projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 24,
+    "passed": 24,
+    "failed": 0,
+    "mutationsRejected": 24
+  }
+}
