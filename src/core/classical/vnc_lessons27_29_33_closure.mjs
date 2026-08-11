@@ -1696,6 +1696,10 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const optativeSeries = purposiveSeries.endsWith("-optative");
       baseRequest.mood = optativeSeries ? "optative" : "indicative";
       baseRequest.tense = optativeSeries ? "nonpast" : "present";
+      if (optativeSeries) {
+        baseRequest.sentenceType = "wish-sentence";
+        baseRequest.introductoryParticle = "mā";
+      }
       const externalDirectional = key(request.purposiveExternalDirectional || "none");
       if (externalDirectional !== "none") baseRequest.directionalPrefix = externalDirectional;
     }

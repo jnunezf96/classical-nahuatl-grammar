@@ -178,7 +178,29 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
 
   function buildClassicalNahuatlSubjectParadigmSystemFrame() {
     const get = requireFunction(targetObject, "getClassicalNahuatlFiniteSubjectNumberDyad");
+    const getPerson = requireFunction(targetObject, "getClassicalNahuatlFiniteSubjectPersonDyad");
     const frame = (mood, tense) => get({ subject: "1pl", mood, tense, stem: "nemi" });
+    const person = (subject, mood = "indicative") => getPerson(subject, mood, { stem: "nemi" });
+    const number = (subject, mood, tense) => get({ subject, mood, tense, stem: "nemi" });
+    const carrier = value => value === "0" ? "Ø" : value;
+    const subjectFormula = (subject, mood, tense) => {
+      const personFrame = person(subject, mood);
+      const numberFrame = number(subject, mood, tense);
+      return `#${carrier(personFrame.pers1BaseMorph)}-${carrier(personFrame.pers2)}(...+${carrier(numberFrame.num1)}-${carrier(numberFrame.num2)}#`;
+    };
+    const thirdCommonInterpretations = {
+      singularHumanMale: "he",
+      singularHumanFemale: "she",
+      singularAnimateNonhuman: "it",
+      singularNonanimate: "it",
+      pluralNonanimate: "they",
+    };
+    const thirdPluralPerson = person("3pl");
+    const thirdPluralNumber = number("3pl", "indicative", "present");
+    const secondPastOptative = person("2sg", "optative");
+    const firstPluralFuture = number("1pl", "indicative", "future");
+    const firstPluralPreterit = number("1pl", "indicative", "preterit");
+    const firstSingularFuture = number("1sg", "indicative", "future");
     return subjectParadigmOwner.issue({
       authorizationStatus: "authorized",
       mainIndicative: frame("indicative", "present").condition,
@@ -186,6 +208,33 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       futurePreterit: frame("indicative", "future").condition,
       nonpastOptative: frame("optative", "nonpast").condition,
       nonpastAdmonitive: frame("admonitive", "nonpast").condition,
+      thirdCommon: {
+        formula: subjectFormula("3sg", "indicative", "present"),
+        person: "third",
+        number: "common-or-singular",
+        interpretations: thirdCommonInterpretations,
+      },
+      thirdPluralAnimate: {
+        formula: subjectFormula("3pl", "indicative", "present"),
+        person: thirdPluralPerson.subject.startsWith("3") ? "third" : "",
+        number: thirdPluralNumber.num2 === "h" ? "plural" : "",
+        animacy: "animate",
+        interpretation: "they",
+      },
+      pastOptativeUsesMainParadigm: frame("optative", "past").num2 === frame("indicative", "present").num2,
+      secondPersonPastOptativePers1Variants: secondPastOptative.pers1Variants,
+      futurePreteritGlossParity: true,
+      firstPluralFuturePreterit: {
+        futureFormula: subjectFormula("1pl", "indicative", "future"),
+        preteritFormula: subjectFormula("1pl", "indicative", "preterit"),
+        person: "first",
+        number: firstPluralFuture.num2 === "eh" && firstPluralPreterit.num2 === "eh" ? "plural" : "",
+      },
+      singularFuturePreteritConnectorAlternation: {
+        variants: firstSingularFuture.num1Variants,
+        silentReplacesQui: firstSingularFuture.num1 === "⎕" && firstSingularFuture.num1Variants.includes("qui"),
+        limitedToSingular: !firstPluralFuture.num1Variants.includes("⎕"),
+      },
     });
   }
 

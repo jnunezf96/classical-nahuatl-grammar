@@ -1,0 +1,308 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-vnc-subject-paradigm-formation",
+  "canonicalResultDigest": "sha256:0feea8f5df200201418edd9d3caadf932f79c14e6e1619e7026dda56b64477f1",
+  "observations": [
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-02",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-02",
+      "canonicalPath": "thirdCommon.formula",
+      "expected": "#Ø-Ø(...+Ø-Ø#",
+      "actual": "#Ø-Ø(...+Ø-Ø#",
+      "canvasAnchor": "Subject formula #Ø-Ø(...+Ø-Ø# realizes a third-person nominal subject with the common or singular number connector.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-02 rejects a broken thirdCommon.formula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-03",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-03",
+      "canonicalPath": "thirdCommon.interpretations.singularHumanMale",
+      "expected": "he",
+      "actual": "he",
+      "canvasAnchor": "With a singular human male referent, #Ø-Ø(...+Ø-Ø# can be rendered ‘he.’",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-03 rejects a broken thirdCommon.interpretations.singularHumanMale",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-04",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-04",
+      "canonicalPath": "thirdCommon.interpretations.singularHumanFemale",
+      "expected": "she",
+      "actual": "she",
+      "canvasAnchor": "With a singular human female referent, #Ø-Ø(...+Ø-Ø# can be rendered ‘she.’",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-04 rejects a broken thirdCommon.interpretations.singularHumanFemale",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-05",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-05",
+      "canonicalPath": "thirdCommon.interpretations.singularAnimateNonhuman",
+      "expected": "it",
+      "actual": "it",
+      "canvasAnchor": "With a singular animate nonhuman referent, #Ø-Ø(...+Ø-Ø# can be rendered ‘it.’",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-05 rejects a broken thirdCommon.interpretations.singularAnimateNonhuman",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-06",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-06",
+      "canonicalPath": "thirdCommon.interpretations.singularNonanimate",
+      "expected": "it",
+      "actual": "it",
+      "canvasAnchor": "With a singular nonanimate referent, #Ø-Ø(...+Ø-Ø# can be rendered ‘it.’",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-06 rejects a broken thirdCommon.interpretations.singularNonanimate",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L017-A6B7673EF4-07",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l017-a6b7673ef4-07",
+      "canonicalPath": "thirdCommon.interpretations.pluralNonanimate",
+      "expected": "they",
+      "actual": "they",
+      "canvasAnchor": "With plural nonanimate referents, common-number #Ø-Ø(...+Ø-Ø# can be rendered ‘they.’",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L017-A6B7673EF4-07 rejects a broken thirdCommon.interpretations.pluralNonanimate",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773",
+      "canonicalPath": "thirdPluralAnimate.formula",
+      "expected": "#Ø-Ø(...+Ø-h#",
+      "actual": "#Ø-Ø(...+Ø-h#",
+      "canvasAnchor": "#Ø-Ø(...+Ø-h# realizes the third-person plural animate VNC subject pronoun.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773 rejects a broken thirdPluralAnimate.formula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773-02",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773-02",
+      "canonicalPath": "thirdPluralAnimate.person",
+      "expected": "third",
+      "actual": "third",
+      "canvasAnchor": "The subject realized by #Ø-Ø(...+Ø-h# is third person.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773-02 rejects a broken thirdPluralAnimate.person",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773-03",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773-03",
+      "canonicalPath": "thirdPluralAnimate.number",
+      "expected": "plural",
+      "actual": "plural",
+      "canvasAnchor": "The subject realized by #Ø-Ø(...+Ø-h# is plural.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773-03 rejects a broken thirdPluralAnimate.number",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773-04",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773-04",
+      "canonicalPath": "thirdPluralAnimate.animacy",
+      "expected": "animate",
+      "actual": "animate",
+      "canvasAnchor": "The plural subject realized by #Ø-Ø(...+Ø-h# is animate.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773-04 rejects a broken thirdPluralAnimate.animacy",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773-05",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773-05",
+      "canonicalPath": "pastOptativeUsesMainParadigm",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The present/customary/imperfect/distant-past subject-pronoun paradigm also serves the past optative.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773-05 rejects a broken pastOptativeUsesMainParadigm",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L018-0EEEF40773-06",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l018-0eeef40773-06",
+      "canonicalPath": "secondPersonPastOptativePers1Variants",
+      "expected": [
+        "x",
+        "xi"
+      ],
+      "actual": [
+        "x",
+        "xi"
+      ],
+      "canvasAnchor": "In second-person past-optative VNCs, x or xi replaces the ordinary pers1 filler.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L018-0EEEF40773-06 rejects a broken secondPersonPastOptativePers1Variants",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L024-CACB480BD5-02",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l024-cacb480bd5-02",
+      "canonicalPath": "futurePreteritGlossParity",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The morphs in the §5.4.2 paradigm retain the same glosses as the corresponding morphs in §5.4.1.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L024-CACB480BD5-02 rejects a broken futurePreteritGlossParity",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L027-E61AF11E5D",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l027-e61af11e5d",
+      "canonicalPath": "firstPluralFuturePreterit.futureFormula",
+      "expected": "#t-Ø(...+qu-eh#",
+      "actual": "#t-Ø(...+qu-eh#",
+      "canvasAnchor": "#t-Ø(...+qu-eh# realizes a first-person plural subject in a future or preterit indicative VNC.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L027-E61AF11E5D rejects a broken firstPluralFuturePreterit.futureFormula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L027-E61AF11E5D-02",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l027-e61af11e5d-02",
+      "canonicalPath": "firstPluralFuturePreterit.person",
+      "expected": "first",
+      "actual": "first",
+      "canvasAnchor": "The subject realized by #t-Ø(...+qu-eh# is first person.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L027-E61AF11E5D-02 rejects a broken firstPluralFuturePreterit.person",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L027-E61AF11E5D-03",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l027-e61af11e5d-03",
+      "canonicalPath": "firstPluralFuturePreterit.number",
+      "expected": "plural",
+      "actual": "plural",
+      "canvasAnchor": "The subject realized by #t-Ø(...+qu-eh# is plural.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L027-E61AF11E5D-03 rejects a broken firstPluralFuturePreterit.number",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L027-E61AF11E5D-04",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l027-e61af11e5d-04",
+      "canonicalPath": "singularFuturePreteritConnectorAlternation.silentReplacesQui",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "In the relevant first-person singular future/preterit form, qui may be replaced by the silent morph ⎕.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L027-E61AF11E5D-04 rejects a broken singularFuturePreteritConnectorAlternation.silentReplacesQui",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P068-L029-F34FBD9C32",
+      "ownerId": "classical-vnc-subject-paradigm-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-subject-paradigm-formation:aci-p068-l029-f34fbd9c32",
+      "canonicalPath": "singularFuturePreteritConnectorAlternation.limitedToSingular",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "Only singular-number personal pronouns permit the replacement described in §5.4.2.",
+      "proofTest": "src/tests/classical_vnc_subject_paradigm_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P068-L029-F34FBD9C32 rejects a broken singularFuturePreteritConnectorAlternation.limitedToSingular",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 18,
+    "passed": 18,
+    "failed": 0,
+    "mutationsRejected": 18
+  }
+}

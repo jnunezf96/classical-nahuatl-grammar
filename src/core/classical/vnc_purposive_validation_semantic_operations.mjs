@@ -30,6 +30,7 @@ function baseRequest(overrides = {}) {
 function compact(runtime, frame) {
   const operation = frame?.operationFrame || {};
   const facts = operation.operationFacts || {};
+  const slots = frame?.finalTypedVncSlotFrame?.slots || {};
   return {
     authorizationStatus: frame?.authorizationStatus || "blocked",
     blockReason: frame?.blockReason || "",
@@ -65,6 +66,9 @@ function compact(runtime, frame) {
     },
     predicateTense: frame?.finalTypedVncSlotFrame?.slots?.predicate?.tns || "",
     numberMorph: frame?.finalTypedVncSlotFrame?.slots?.number?.num2 || "",
+    subjectMorphs: [slots.subject?.pers1 || "", slots.subject?.pers2 || ""],
+    objectMorphs: (slots.prePredicate || []).map(slot => slot.carrier || ""),
+    predicateStem: slots.predicate?.stem || "",
     formulaRealization: frame?.formulaRealization || "",
     surfaceRealization: frame?.surfaceRealization || "",
     finiteAuthorizationStatus:
@@ -87,6 +91,32 @@ function evaluate(runtime, overrides = {}) {
       baseRequest(overrides),
     ),
   );
+}
+
+function canonicalTranscriptionFormula(formula = "") {
+  return String(formula).replaceAll("0", "Ø");
+}
+
+function buildParadigmExample(runtime, overrides, {
+  subjectRole,
+  purposeAction,
+  currentReading,
+  futureReading,
+  nonspecificNonhumanObject = false,
+}) {
+  const result = evaluate(runtime, overrides);
+  return deepFreeze({
+    ...result,
+    canonicalTranscriptionFormula: canonicalTranscriptionFormula(result.formulaRealization),
+    subjectRole,
+    purposeAction,
+    nonspecificNonhumanObject,
+    purposeRelation: "embedded-action-is-purpose-of-movement",
+    readings: {
+      ongoingMovement: currentReading,
+      futureMovement: futureReading,
+    },
+  });
 }
 
 function nonactiveOption(runtime, request) {
@@ -170,6 +200,48 @@ function buildProjection(runtime) {
         compoundEmbedClosureFrame: compoundSource,
       })),
     ),
+    paradigmAxisExamples: {
+      singFirstSingular: buildParadigmExample(runtime, {
+        sourceStem: "cuīca", sourceValence: "intransitive", verbClass: "A",
+        subject: "1sg", purposiveSeries: "outbound-nonpast-indicative",
+      }, {
+        subjectRole: { person: "first", number: "singular", animacy: "human" },
+        purposeAction: "sing",
+        currentReading: "I am going in order to sing",
+        futureReading: "I shall go in order to sing",
+      }),
+      singFirstPlural: buildParadigmExample(runtime, {
+        sourceStem: "cuīca", sourceValence: "intransitive", verbClass: "A",
+        subject: "1pl", purposiveSeries: "outbound-nonpast-indicative",
+      }, {
+        subjectRole: { person: "first", number: "plural", animacy: "human" },
+        purposeAction: "sing",
+        currentReading: "we are going in order to sing",
+        futureReading: "we shall go in order to sing",
+      }),
+      eatFirstSingular: buildParadigmExample(runtime, {
+        sourceStem: "cuā", sourceValence: "projective-nonhuman",
+        objectKind: "nonspecific-nonhuman", verbClass: "D",
+        subject: "1sg", purposiveSeries: "outbound-nonpast-indicative",
+      }, {
+        subjectRole: { person: "first", number: "singular", animacy: "human" },
+        purposeAction: "eat",
+        currentReading: "I am going in order to eat",
+        futureReading: "I shall go in order to eat",
+        nonspecificNonhumanObject: true,
+      }),
+      eatSecondPlural: buildParadigmExample(runtime, {
+        sourceStem: "cuā", sourceValence: "projective-nonhuman",
+        objectKind: "nonspecific-nonhuman", verbClass: "D",
+        subject: "2pl", purposiveSeries: "outbound-nonpast-indicative",
+      }, {
+        subjectRole: { person: "second", number: "plural", animacy: "human" },
+        purposeAction: "eat",
+        currentReading: "you plural are going in order to eat",
+        futureReading: "you plural will go in order to eat",
+        nonspecificNonhumanObject: true,
+      }),
+    },
   };
   const blockedCases = {
     unknownSeries: evaluate(runtime, { purposiveSeries: "invented-series" }),

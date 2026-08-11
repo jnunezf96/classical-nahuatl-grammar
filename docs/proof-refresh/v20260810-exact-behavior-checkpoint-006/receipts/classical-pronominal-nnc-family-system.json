@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-pronominal-nnc-family-system",
+  "canonicalResultDigest": "sha256:98e5d4dcbb66828fa98cf82a6808fac75b1328e9eb6f287f75baf3121b1e70f1",
+  "observations": [
+    {
+      "atomId": "ACI-P141-L005-7F2425F8BF",
+      "ownerId": "classical-pronominal-nnc-family-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-pronominal-nnc-family-system:aci-p141-l005-7f2425f8bf",
+      "canonicalPath": "pronominalFamilySystem.usualEnglishProjection",
+      "expected": "pronoun-word",
+      "actual": "pronoun-word",
+      "canvasAnchor": "Pronominal NNCs are usually translated into English with pronoun words.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P141-L005-7F2425F8BF rejects a broken pronominalFamilySystem.usualEnglishProjection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P141-L005-327BF4AB5E",
+      "ownerId": "classical-pronominal-nnc-family-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-pronominal-nnc-family-system:aci-p141-l005-327bf4ab5e",
+      "canonicalPath": "pronominalFamilySystem.nahuatlStructuralCategory",
+      "expected": "nominal-nuclear-clause",
+      "actual": "nominal-nuclear-clause",
+      "canvasAnchor": "Pronominal Nahuatl forms are structurally NNCs rather than counterparts of English pronoun words.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P141-L005-327BF4AB5E rejects a broken pronominalFamilySystem.nahuatlStructuralCategory",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

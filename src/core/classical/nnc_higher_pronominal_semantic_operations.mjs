@@ -26,6 +26,10 @@ function deepFreeze(value, seen = new WeakSet()) {
   return Object.freeze(value);
 }
 
+function canonicalTranscriptionFormula(formula = "") {
+  return String(formula).replaceAll("0", "Ø");
+}
+
 function blocked(recipeId, reason) {
   return deepFreeze({
     kind: "classical-nahuatl-higher-pronominal-nnc-validation-frame",
@@ -270,9 +274,53 @@ function buildRecipe(api, recipeId) {
   }
 
   const simple = (options) => pronominalFrame(api, options);
-  if (recipeId === "l16-personal-simple") return simple({ subtype: "personal-simple", subject: "1sg" });
-  if (recipeId === "l16-personal-simple-third") return simple({ subtype: "personal-simple", subject: "3sg" });
-  if (recipeId === "l16-personal-compound") return simple({ subtype: "personal-compound", subject: "1sg", numberVariant: "sounded" });
+  if (recipeId === "l16-personal-simple") {
+    const built = simple({ subtype: "personal-simple", subject: "1sg" });
+    built.pronominalFamilySystem = {
+      usualEnglishProjection: "pronoun-word",
+      nahuatlStructuralCategory: "nominal-nuclear-clause",
+      structurallyEquivalentToIsolatedEnglishPronoun: false,
+    };
+    return built;
+  }
+  if (recipeId === "l16-personal-simple-third") {
+    const built = simple({ subtype: "personal-simple", subject: "3sg" });
+    built.simplePersonalSystem = {
+      canonicalFormula: built.mainFrame.formulaRealization,
+      readings: {
+        singularHumanMale: "he is an entity",
+        singularHumanFemale: "she is an entity",
+        singularNonanimate: "it is an entity",
+        pluralNonanimate: "they are entities",
+      },
+      adverbialCollocationFinalMember: {
+        preferred: "eh",
+        licensedAlternative: "yeh",
+      },
+    };
+    return built;
+  }
+  if (recipeId === "l16-personal-compound") {
+    const sounded = simple({ subtype: "personal-compound", subject: "3sg", numberVariant: "sounded" });
+    const silent = simple({ subtype: "personal-compound", subject: "3sg", numberVariant: "silent" });
+    sounded.personalCompoundVariants = {
+      sounded: sounded.mainFrame,
+      silent: silent.mainFrame,
+    };
+    sounded.personalCompoundReadings = {
+      singularHumanMale: ["he is an entity", "he is the entity"],
+      singularHumanFemale: ["she is an entity", "she is the entity"],
+      singularNonanimate: ["it is an entity", "it is the entity"],
+      pluralNonanimate: ["they are entities", "they are the entities"],
+    };
+    sounded.translationValuesPreservedAcrossNumberVariants = true;
+    sounded.personalContextSystem = {
+      quenMachHuelSynonymousWithLesson11Construction: true,
+      supplementRepeatsBasicAffixalPersonInformation: true,
+      supplementalEnglishProjection: "emphatic-wordal-personal-pronoun",
+    };
+    return sounded;
+  }
   if (recipeId === "l16-personal-compound-plural") return simple({ subtype: "personal-compound", subject: "1pl", pluralConnector: "t-in" });
   if (recipeId === "l16-personal-derived") return simple({ subtype: "personal-compound-derived", subject: "3common", derivedPersonalStem: "yeh-yeh-huā" });
   if (recipeId === "l16-personal-doubled") return simple({ subtype: "personal-compound", subject: "1pl", doubledFirstPluralSelected: true, pluralConnector: "t-in" });
@@ -281,7 +329,28 @@ function buildRecipe(api, recipeId) {
     built.paradigmPlan = api.buildClassicalNahuatlPronominalParadigmPlan({ subtype: "personal-compound", thirdCommonVariant: "eh", enteredStem: "eh-huā" });
     return built;
   }
-  if (recipeId === "l16-tleh") return simple({ subtype: "interrogative", interrogativeKind: "tleh", subject: "3sg" });
+  if (recipeId === "l16-tleh") {
+    const built = simple({ subtype: "interrogative", interrogativeKind: "tleh", subject: "3sg" });
+    built.interrogativeSystem = {
+      tlehSubjectParadigm: Object.fromEntries(
+        ["1sg", "1pl", "2sg", "2pl", "3sg", "3pl"].map(subject => {
+          const frame = simple({ subtype: "interrogative", interrogativeKind: "tleh", subject }).mainFrame;
+          return [subject, { authorizationStatus: frame.authorizationStatus, formulaRealization: frame.formulaRealization }];
+        }),
+      ),
+    };
+    const acWithClause = simple({
+      subtype: "interrogative", interrogativeKind: "āc", subject: "3sg",
+      adjunctorInMode: "dependent-clause",
+    }).mainFrame;
+    built.interrogativeSystem.acWithDependentClause = {
+      principalClause: "āc",
+      adjunctClauseIntroducedBy: "in",
+      writingPolicy: acWithClause.contextSelectionRecord.adjunctorInFrame.writingPolicy,
+      traditionalSolidSpellingCannotOverrideClauseStructure: true,
+    };
+    return built;
+  }
   if (recipeId === "l16-tlehhua") return simple({ subtype: "interrogative", interrogativeKind: "tleh-huā", subject: "3sg", numberVariant: "sounded" });
   if (recipeId === "l16-ca-compound") return simple({ subtype: "interrogative", interrogativeKind: "cā", subject: "3sg", compoundInterrogativeStem: "cā-tl-eh", compoundInterrogativeEmbed: "cā", compoundInterrogativeMatrix: "tl-eh", compoundInterrogativeNumberClass: "zero" });
   if (recipeId === "l16-ac") return simple({ subtype: "interrogative", interrogativeKind: "āc", subject: "3sg" });
@@ -292,9 +361,20 @@ function buildRecipe(api, recipeId) {
   if (recipeId === "l16-tleh-noninitial") return simple({ subtype: "interrogative", interrogativeKind: "tleh", subject: "3sg", clauseInitial: false });
   if (recipeId === "l16-ac-negative") return simple({ subtype: "interrogative", interrogativeKind: "āc", subject: "3sg", polarity: "negative" });
   if (recipeId === "l16-demonstrative") return simple({ subtype: "demonstrative", demonstrative: "īn", subject: "3common" });
-  if (recipeId === "l16-demonstrative-plural") return simple({ subtype: "demonstrative", demonstrative: "ōn", subject: "3pl", pluralConnector: "silent-silent" });
+  if (recipeId === "l16-demonstrative-plural") {
+    const built = simple({ subtype: "demonstrative", demonstrative: "ōn", subject: "3pl", pluralConnector: "silent-silent" });
+    built.demonstrativeNumberVariants = ["inon", "ini", "ino"];
+    return built;
+  }
   if (recipeId === "l16-indefinite-someone") return simple({ subtype: "indefinite", indefiniteKind: "someone", subject: "3sg" });
-  if (recipeId === "l16-indefinite-something") return simple({ subtype: "indefinite", indefiniteKind: "something", subject: "3common" });
+  if (recipeId === "l16-indefinite-something") {
+    const built = simple({ subtype: "indefinite", indefiniteKind: "something", subject: "3common" });
+    built.indefiniteSomethingReference = {
+      referent: "nonspecific-nonhuman-thing",
+      existenceStatus: "questioned",
+    };
+    return built;
+  }
   if (recipeId === "l16-indefinite-human-special") return simple({ subtype: "indefinite", indefiniteKind: "something", subject: "3sg", subjectReferentCategory: "human", specialHumanUseSelected: true });
 
   const quantitiveRecipes = {
@@ -310,16 +390,90 @@ function buildRecipe(api, recipeId) {
     "l16-ixachi": { sourceStem: "ix-a-chi", embedStem: "ix-a", matrixFamily: "chī", matrixForm: "chi" },
   };
   if (quantitiveRecipes[recipeId]) {
-    return simple({ subtype: "quantitive", subject: "3common", quantitiveAuthority: quantitiveRecipes[recipeId] });
+    const built = simple({ subtype: "quantitive", subject: "3common", quantitiveAuthority: quantitiveRecipes[recipeId] });
+    const lexicalSystem = {
+      "l16-ixquich": {
+        sourceAlternants: ["ix-qui-ch"],
+        readings: ["a total amount or quantity", "all"],
+      },
+      "l16-quexquich": {
+        sourceAlternants: ["quē-x-qui-ch"],
+        readings: ["how large a total amount or quantity", "how much", "how many in general"],
+      },
+      "l16-miyequi": {
+        sourceAlternants: ["miya-qui", "miya-c", "miye-qui", "miye-c"],
+        readings: ["an abundant amount or quantity", "much", "many"],
+      },
+      "l16-cequi": {
+        sourceAlternants: ["ce-qui", "ce-c"],
+        readings: ["one or a certain amount or number", "one", "some", "part"],
+      },
+      "l16-izqui": {
+        sourceAlternants: ["iz-qui"],
+        readings: ["an equal amount or number", "as much", "as many", "so much", "so many"],
+      },
+      "l16-quezqui": {
+        sourceAlternants: ["quē-z-qui"],
+        readings: ["how large or full a number", "how many specifically", "how large a sum"],
+      },
+      "l16-aqui": {
+        sourceAlternants: ["a-qui"],
+        readings: ["a small amount or number", "a few"],
+      },
+      "l16-achi": {
+        sourceAlternants: ["a-chi"],
+        readings: ["a small amount or quantity", "a little"],
+      },
+      "l16-mochi": {
+        sourceAlternants: ["mo-chi", "mo-ch"],
+        readings: ["a full amount or number", "all"],
+      },
+      "l16-ixachi": {
+        sourceAlternants: ["ix-a-chi"],
+        readings: ["a very large amount or number", "much", "many"],
+      },
+    };
+    built.quantitiveLexicalSystem = lexicalSystem[recipeId];
+    built.quantitiveMatrixAllomorphSystem = {
+      longVowelFamilies: ["chī", "quī"],
+      chiiMorphs: ["chī", "chih", "chi", "ch"],
+      quiiMorphs: ["quī", "quih", "qui", "c"],
+      longVowelBeforePluralN: true,
+      glottalStopBeforeAffectiveMatrix: true,
+      shortVowelElsewhere: true,
+      vowellessMorphsIdiosyncratic: true,
+      deploymentFullyPredictable: false,
+    };
+    if (recipeId === "l16-ixquich") {
+      built.quantitivePhonology = { miyahuaLongABeforeWa: true };
+    }
+    return built;
   }
   if (recipeId === "l16-quantitive-internal-n") {
-    return simple({
+    const built = simple({
       subtype: "quantitive", subject: "1pl", pluralConnector: "t-in",
       quantitiveAuthority: {
         sourceStem: "miye-c", embedStem: "miye", matrixFamily: "quī",
         matrixForm: "c", predicatePluralization: "internal-n",
       },
     });
+    built.quantitiveInternalNumberSystem = {
+      matrixFamilies: ["quī", "chī"],
+      internalPluralSuffix: "n",
+      suffixPosition: "inside-pronominal-stem",
+      subjectPluralDyads: ["t-in", "⎕-⎕"],
+    };
+    built.quantitiveMatrixAllomorphSystem = {
+      longVowelFamilies: ["chī", "quī"],
+      chiiMorphs: ["chī", "chih", "chi", "ch"],
+      quiiMorphs: ["quī", "quih", "qui", "c"],
+      longVowelBeforePluralN: true,
+      glottalStopBeforeAffectiveMatrix: true,
+      shortVowelElsewhere: true,
+      vowellessMorphsIdiosyncratic: true,
+      deploymentFullyPredictable: false,
+    };
+    return built;
   }
   if (recipeId === "l16-moch-plain-plural") {
     return simple({
@@ -370,6 +524,13 @@ function projectFrame(recipeId, built) {
     contextSelectionRecord: cloneValue(built?.pronominalFrame?.contextSelectionRecord || null),
     discourseFrame: cloneValue(built?.pronominalFrame?.discourseFrame || null),
     adjunctorFrame: cloneValue(built?.adjunctorFrame || null),
+    adjunctorFusionSystem: built?.adjunctorFrame ? {
+      mode: built.adjunctorFrame.mode,
+      fusedSurface: built.adjunctorFrame.fusedSurface,
+      writingPolicy: built.adjunctorFrame.writingPolicy,
+      dependentClausePresent: built.adjunctorFrame.dependentClausePresent,
+      ellipsisSelected: built.adjunctorFrame.ellipsisSelected,
+    } : null,
     quantitiveAuthorityRecord: cloneValue(built?.quantitiveAuthorityRecord || null),
     quantitiveSourceAnalysis: cloneValue(built?.quantitiveSourceAnalysis || null),
     paradigmPlan: cloneValue(built?.paradigmPlan || null),
@@ -379,6 +540,41 @@ function projectFrame(recipeId, built) {
     analogicalContract: cloneValue(built?.higherFrame?.analogicalRestrictedUseContractFrame || null),
     reclassificationContract: cloneValue(built?.higherFrame?.reclassificationContractFrame || null),
     pronominalContract: cloneValue(built?.pronominalFrame?.lesson16GrammarContractFrame || null),
+    personalCompoundVariants: built?.personalCompoundVariants ? {
+      sounded: {
+        formulaRealization: canonicalTranscriptionFormula(built.personalCompoundVariants.sounded.formulaRealization),
+        numberVariant: built.personalCompoundVariants.sounded.numberFrame.numberVariant,
+      },
+      silent: {
+        formulaRealization: canonicalTranscriptionFormula(built.personalCompoundVariants.silent.formulaRealization),
+        numberVariant: built.personalCompoundVariants.silent.numberFrame.numberVariant,
+      },
+    } : null,
+    personalCompoundReadings: cloneValue(built?.personalCompoundReadings || null),
+    translationValuesPreservedAcrossNumberVariants:
+      built?.translationValuesPreservedAcrossNumberVariants === true,
+    interrogativeSystem: built?.interrogativeSystem ? {
+      tlehSubjectParadigm: Object.fromEntries(
+        Object.entries(built.interrogativeSystem.tlehSubjectParadigm).map(([subject, record]) => [subject, {
+          authorizationStatus: record.authorizationStatus,
+          formulaRealization: canonicalTranscriptionFormula(record.formulaRealization),
+        }]),
+      ),
+      acWithDependentClause: cloneValue(built.interrogativeSystem.acWithDependentClause),
+    } : null,
+    simplePersonalSystem: built?.simplePersonalSystem ? {
+      canonicalFormula: canonicalTranscriptionFormula(built.simplePersonalSystem.canonicalFormula),
+      readings: cloneValue(built.simplePersonalSystem.readings),
+      adverbialCollocationFinalMember: cloneValue(built.simplePersonalSystem.adverbialCollocationFinalMember),
+    } : null,
+    pronominalFamilySystem: cloneValue(built?.pronominalFamilySystem || null),
+    personalContextSystem: cloneValue(built?.personalContextSystem || null),
+    demonstrativeNumberVariants: cloneValue(built?.demonstrativeNumberVariants || null),
+    indefiniteSomethingReference: cloneValue(built?.indefiniteSomethingReference || null),
+    quantitivePhonology: cloneValue(built?.quantitivePhonology || null),
+    quantitiveLexicalSystem: cloneValue(built?.quantitiveLexicalSystem || null),
+    quantitiveMatrixAllomorphSystem: cloneValue(built?.quantitiveMatrixAllomorphSystem || null),
+    quantitiveInternalNumberSystem: cloneValue(built?.quantitiveInternalNumberSystem || null),
     typedSlotAuthority: main.proofFrame?.conclusion?.typedSlotAuthority === true
       || built?.higherFrame?.proofFrame?.conclusion?.typedSlotAuthority === true,
     formulaStringAuthority: false,

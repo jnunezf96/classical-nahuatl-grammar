@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-entitive-pronominal-subtype-system",
+  "canonicalResultDigest": "sha256:22dc1d6d746087151dcdd4e9e1610a4f743969f5893209f5418f23a87a71a069",
+  "observations": [
+    {
+      "atomId": "ACI-P163-L036-69F6FCD1F7-03",
+      "ownerId": "classical-entitive-pronominal-subtype-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-entitive-pronominal-subtype-system:aci-p163-l036-69f6fcd1f7-03",
+      "canonicalPath": "pronominalFamilySystem.structurallyEquivalentToIsolatedEnglishPronoun",
+      "expected": false,
+      "actual": false,
+      "canvasAnchor": "nehhuātl is not structurally equivalent to the isolated English pronoun I.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P163-L036-69F6FCD1F7-03 rejects a broken pronominalFamilySystem.structurallyEquivalentToIsolatedEnglishPronoun",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

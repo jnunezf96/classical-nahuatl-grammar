@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-personal-pronominal-context-formation",
+  "canonicalResultDigest": "sha256:762bd88b3141a1b1258176e796bc156ca113ee07e28324b940b019a7702bce2f",
+  "observations": [
+    {
+      "atomId": "ACI-P143-L024-DC4CC9D60E",
+      "ownerId": "classical-personal-pronominal-context-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-pronominal-context-formation:aci-p143-l024-dc4cc9d60e",
+      "canonicalPath": "personalContextSystem.quenMachHuelSynonymousWithLesson11Construction",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The quēn mach huel construction with a personal-pronominal NNC is synonymous with the construction presented in §11.4.6.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P143-L024-DC4CC9D60E rejects a broken personalContextSystem.quenMachHuelSynonymousWithLesson11Construction",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P144-L003-222ED155A4",
+      "ownerId": "classical-personal-pronominal-context-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-pronominal-context-formation:aci-p144-l003-222ed155a4",
+      "canonicalPath": "personalContextSystem.supplementRepeatsBasicAffixalPersonInformation",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "A personal-pronominal NNC used as a supplement repeats information already expressed by the basic affixal personal pronoun.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P144-L003-222ED155A4 rejects a broken personalContextSystem.supplementRepeatsBasicAffixalPersonInformation",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P144-L003-222ED155A4-02",
+      "ownerId": "classical-personal-pronominal-context-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-personal-pronominal-context-formation:aci-p144-l003-222ed155a4-02",
+      "canonicalPath": "personalContextSystem.supplementalEnglishProjection",
+      "expected": "emphatic-wordal-personal-pronoun",
+      "actual": "emphatic-wordal-personal-pronoun",
+      "canvasAnchor": "A supplemental personal-pronominal NNC is translated into English with an emphatic wordal personal pronoun.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P144-L003-222ED155A4-02 rejects a broken personalContextSystem.supplementalEnglishProjection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 3,
+    "passed": 3,
+    "failed": 0,
+    "mutationsRejected": 3
+  }
+}

@@ -59,6 +59,11 @@ function projectNncFrame(targetObject, frame, recipeId, expectedState) {
   const diagram = targetObject.buildClassicalNahuatlNncDiagrammaticFrame?.(
     frame.nncSlotFrame,
   );
+  const subjectShapes = contract?.leastCommonMultiple?.subjectPronounShapeInventory || [];
+  const requiredSubjectIdentities = [
+    "first-singular", "first-plural", "second-singular",
+    "second-plural", "third-singular-or-common", "third-plural",
+  ];
   return deepFreeze({
     kind: "classical-nahuatl-nnc-validation-operation-frame",
     authorizationStatus: frame.authorizationStatus,
@@ -81,7 +86,17 @@ function projectNncFrame(targetObject, frame, recipeId, expectedState) {
     contractDistinctionAxes: contract?.leastCommonMultiple?.distinctionAxes || [],
     contractSubjectInventory: contract?.leastCommonMultiple?.subjectPersonInventory || [],
     contractSubjectPronounShapeInventory:
-      contract?.leastCommonMultiple?.subjectPronounShapeInventory || [],
+      subjectShapes,
+    contractSubjectParadigmComplete: requiredSubjectIdentities.every(identity =>
+      subjectShapes.some(record => record.subjectIdentity === identity)),
+    contractSubjectEnglishEquivalents: {
+      "first-singular": ["I"],
+      "first-plural": ["we"],
+      "second-singular": ["you (singular)"],
+      "second-plural": ["you (plural)"],
+      "third-singular-or-common": ["he", "she", "it", "they"],
+      "third-plural": ["they"],
+    },
     contractNumberDyadInventory: contract?.leastCommonMultiple?.numberDyadInventory || [],
     contractPossessorStateShapeInventory:
       contract?.leastCommonMultiple?.possessorStateShapeInventory || [],

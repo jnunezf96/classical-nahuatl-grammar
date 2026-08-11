@@ -48,9 +48,9 @@
       "complete": true
     },
     "lessonGrammarExactBehaviorObserved": {
-      "numerator": 8429,
+      "numerator": 8514,
       "denominator": 18639,
-      "percent": 45.22,
+      "percent": 45.68,
       "complete": false
     },
     "applicationAxisClassification": {
@@ -502,31 +502,31 @@
     "exactProofs": {
       "retainedCanonicalCoordinates": 5347,
       "newIndividualAtomCoordinates": 13292,
-      "exactBehaviorObserved": 8429,
-      "linkOnlyInsufficient": 10210,
+      "exactBehaviorObserved": 8514,
+      "linkOnlyInsufficient": 10125,
       "totalOwnerLinked": 18639,
-      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-005/manifest.json",
-      "refreshedExactAtomCount": 168,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-006/manifest.json",
+      "refreshedExactAtomCount": 253,
       "executionObligations": {
         "canonical-rule-or-alternation": {
           "requiredBehavior": "perform-canonical-operation-or-alternation",
-          "linkOnlyInsufficient": 2071
+          "linkOnlyInsufficient": 2054
         },
         "derived-realization": {
           "requiredBehavior": "derive-canonical-realization",
-          "linkOnlyInsufficient": 723
+          "linkOnlyInsufficient": 714
         },
         "result-projection": {
           "requiredBehavior": "project-canonical-result",
-          "linkOnlyInsufficient": 2923
+          "linkOnlyInsufficient": 2891
         },
         "applicability-or-constraint": {
           "requiredBehavior": "enforce-applicability-or-constraint",
-          "linkOnlyInsufficient": 1385
+          "linkOnlyInsufficient": 1378
         },
         "source-structure-schema": {
           "requiredBehavior": "construct-or-validate-typed-source-structure",
-          "linkOnlyInsufficient": 3108
+          "linkOnlyInsufficient": 3088
         }
       }
     },
@@ -2538,132 +2538,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-02",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-03",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-04",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-05",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-06",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L017-A6B7673EF4-07",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773-02",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773-03",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773-04",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773-05",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L018-0EEEF40773-06",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L024-CACB480BD5-02",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L027-E61AF11E5D",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L027-E61AF11E5D-02",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L027-E61AF11E5D-03",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L027-E61AF11E5D-04",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P068-L029-F34FBD9C32",
-      "canonicalOwnerId": "classical-vnc-subject-paradigm-formation",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P074-L010-79A1F5AC90-03",
       "canonicalOwnerId": "classical-projective-object-formation",
       "uiRole": "canonical-rule-or-alternation",
@@ -3560,20 +3434,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P116-L033-7862336BFD",
-      "canonicalOwnerId": "classical-absolutive-subject-pronoun-paradigm",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P116-L035-0FFEC06FF8",
-      "canonicalOwnerId": "classical-absolutive-subject-pronoun-paradigm",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P117-L047-2185565374",
       "canonicalOwnerId": "classical-absolutive-nounstem-predicate-semantics",
       "uiRole": "applicability-or-constraint",
@@ -3606,20 +3466,6 @@
       "canonicalOwnerId": "classical-nnc-subject-predicate-number-compartment",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P121-L009-6F36DD17BE",
-      "canonicalOwnerId": "classical-possessive-subject-pronoun-paradigm",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P121-L011-6338924872",
-      "canonicalOwnerId": "classical-possessive-subject-pronoun-paradigm",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -4785,258 +4631,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L005-7F2425F8BF",
-      "canonicalOwnerId": "classical-pronominal-nnc-family-system",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L005-327BF4AB5E",
-      "canonicalOwnerId": "classical-pronominal-nnc-family-system",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L027-F428CA2C4E-02",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L027-F428CA2C4E-03",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L027-F428CA2C4E-04",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L027-F428CA2C4E-05",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P141-L027-F428CA2C4E-06",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L010-E2FD88C32D-02",
-      "canonicalOwnerId": "classical-simple-personal-pronominal-source-selection",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-02",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-03",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-04",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-05",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-06",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-07",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-08",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-09",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P142-L029-6625F350A5-10",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L003-B17C446543",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-02",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-03",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-04",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-05",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-06",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-07",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-08",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-09",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L007-2F0A19B5E9-10",
-      "canonicalOwnerId": "classical-compound-personal-pronominal-number-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P143-L024-DC4CC9D60E",
-      "canonicalOwnerId": "classical-personal-pronominal-context-formation",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L003-222ED155A4",
-      "canonicalOwnerId": "classical-personal-pronominal-context-formation",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L003-222ED155A4-02",
-      "canonicalOwnerId": "classical-personal-pronominal-context-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-02",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-03",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-04",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-05",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-06",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P144-L012-F0288997A4-07",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P144-L029-7260A69CCA-02",
       "canonicalOwnerId": "classical-pronominal-interrogative-discourse-deactivation",
       "uiRole": "source-structure-schema",
@@ -5072,27 +4666,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P145-L029-8BFA3914CD-02",
-      "canonicalOwnerId": "classical-interrogative-pronominal-source-system",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P146-L008-FAA8CA5738-02",
-      "canonicalOwnerId": "classical-demonstrative-pronominal-source-number",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P146-L025-8BFBD677DB-02",
-      "canonicalOwnerId": "classical-indefinite-pronominal-source-formation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P146-L025-8BFBD677DB-05",
       "canonicalOwnerId": "classical-particle-collocation-structure",
       "uiRole": "source-structure-schema",
@@ -5104,13 +4677,6 @@
       "canonicalOwnerId": "classical-particle-collocation-structure",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P147-L002-DBC633B763-04",
-      "canonicalOwnerId": "classical-quantitive-pronominal-source-inventory",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -6348,13 +5914,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P163-L036-69F6FCD1F7",
       "canonicalOwnerId": "classical-absolutive-nounstem-predicate-semantics",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P163-L036-69F6FCD1F7-03",
-      "canonicalOwnerId": "classical-entitive-pronominal-subtype-system",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
     },
@@ -16787,160 +16346,6 @@
       "canonicalOwnerId": "classical-purposive-movement-base-allomorphy",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L018-A4828FC0DC-02",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L018-A4828FC0DC-03",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L018-A4828FC0DC-04",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L018-A4828FC0DC-05",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-02",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-03",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-04",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-05",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-06",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-08",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-09",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-10",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P267-L030-5D96BD40A2-11",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-02",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-03",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-04",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-05",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-06",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-08",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-09",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-10",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L007-3A37BD42BF-11",
-      "canonicalOwnerId": "classical-purposive-paradigm-axis-system",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -73005,6 +72410,6 @@
     "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
     "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
-    "activeExactObservationPointer": "sha256:6ef52e687647bbb9f7e77a74d3874f26e043a6ae73a0a7f6ebd95a73eba911b4"
+    "activeExactObservationPointer": "sha256:f780e02cfa998a5dd7502872c2de147e2b187fc6378ff513a07c5395bd9f1c64"
   }
 }

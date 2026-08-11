@@ -1,0 +1,402 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-purposive-paradigm-axis-system",
+  "canonicalResultDigest": "sha256:0a2676bb1f196aa22cc26e39b2635ce0442c758d3dd233571ced4ab318e8d687",
+  "observations": [
+    {
+      "atomId": "ACI-P267-L018-A4828FC0DC-02",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l018-a4828fc0dc-02",
+      "canonicalPath": "contract.outboundTenseMeanings.1",
+      "expected": "past",
+      "actual": "past",
+      "canvasAnchor": "An outbound indicative purposive VNC can have past tense.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L018-A4828FC0DC-02 rejects a broken contract.outboundTenseMeanings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L018-A4828FC0DC-03",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l018-a4828fc0dc-03",
+      "canonicalPath": "contract.outboundTenseMeanings.0",
+      "expected": "nonpast",
+      "actual": "nonpast",
+      "canvasAnchor": "An outbound indicative purposive VNC can have nonpast tense.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L018-A4828FC0DC-03 rejects a broken contract.outboundTenseMeanings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L018-A4828FC0DC-04",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l018-a4828fc0dc-04",
+      "canonicalPath": "contract.inboundTenseMeanings.1",
+      "expected": "future",
+      "actual": "future",
+      "canvasAnchor": "An inbound indicative purposive VNC can have future tense.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L018-A4828FC0DC-04 rejects a broken contract.inboundTenseMeanings.1",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L018-A4828FC0DC-05",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l018-a4828fc0dc-05",
+      "canonicalPath": "contract.inboundTenseMeanings.0",
+      "expected": "nonfuture",
+      "actual": "nonfuture",
+      "canvasAnchor": "An inbound indicative purposive VNC can have nonfuture tense.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L018-A4828FC0DC-05 rejects a broken contract.inboundTenseMeanings.0",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-02",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-02",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstSingular.canonicalTranscriptionFormula",
+      "expected": "#ni-Ø(cuīca-⎕-t-ī-uh)Ø+Ø-Ø#",
+      "actual": "#ni-Ø(cuīca-⎕-t-ī-uh)Ø+Ø-Ø#",
+      "canvasAnchor": "Nicuīcatīuh has the internal form #ni-Ø(cuīca-⎕-t-ī-uh)Ø+Ø-Ø#.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-02 rejects a broken cases.paradigmAxisExamples.singFirstSingular.canonicalTranscriptionFormula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-03",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-03",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstSingular.subjectRole",
+      "expected": {
+        "person": "first",
+        "number": "singular",
+        "animacy": "human"
+      },
+      "actual": {
+        "person": "first",
+        "number": "singular",
+        "animacy": "human"
+      },
+      "canvasAnchor": "Ni- identifies a first-person singular human singer and goer.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-03 rejects a broken cases.paradigmAxisExamples.singFirstSingular.subjectRole",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-04",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-04",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstSingular.purposeRelation",
+      "expected": "embedded-action-is-purpose-of-movement",
+      "actual": "embedded-action-is-purpose-of-movement",
+      "canvasAnchor": "The embedded cuīca event supplies the purpose of the going event.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-04 rejects a broken cases.paradigmAxisExamples.singFirstSingular.purposeRelation",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-05",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-05",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstSingular.readings.ongoingMovement",
+      "expected": "I am going in order to sing",
+      "actual": "I am going in order to sing",
+      "canvasAnchor": "Nicuīcatīuh licenses the ongoing-motion reading ‘I am going in order to sing.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-05 rejects a broken cases.paradigmAxisExamples.singFirstSingular.readings.ongoingMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-06",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-06",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstSingular.readings.futureMovement",
+      "expected": "I shall go in order to sing",
+      "actual": "I shall go in order to sing",
+      "canvasAnchor": "Nicuīcatīuh also licenses the future-motion reading ‘I shall go in order to sing.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-06 rejects a broken cases.paradigmAxisExamples.singFirstSingular.readings.futureMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-08",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-08",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstPlural.canonicalTranscriptionFormula",
+      "expected": "#ti-Ø(cuīca-⎕-t-i-hui)Ø+Ø-h#",
+      "actual": "#ti-Ø(cuīca-⎕-t-i-hui)Ø+Ø-h#",
+      "canvasAnchor": "Ticuīcatihuih has the internal form #ti-Ø(cuīca-⎕-t-i-hui)Ø+Ø-h#.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-08 rejects a broken cases.paradigmAxisExamples.singFirstPlural.canonicalTranscriptionFormula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-09",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-09",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstPlural.subjectRole",
+      "expected": {
+        "person": "first",
+        "number": "plural",
+        "animacy": "human"
+      },
+      "actual": {
+        "person": "first",
+        "number": "plural",
+        "animacy": "human"
+      },
+      "canvasAnchor": "Ti- plus plural -h identifies first-person plural human singers and goers.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-09 rejects a broken cases.paradigmAxisExamples.singFirstPlural.subjectRole",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-10",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-10",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstPlural.readings.ongoingMovement",
+      "expected": "we are going in order to sing",
+      "actual": "we are going in order to sing",
+      "canvasAnchor": "Ticuīcatihuih licenses ‘we are going in order to sing.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-10 rejects a broken cases.paradigmAxisExamples.singFirstPlural.readings.ongoingMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P267-L030-5D96BD40A2-11",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p267-l030-5d96bd40a2-11",
+      "canonicalPath": "cases.paradigmAxisExamples.singFirstPlural.readings.futureMovement",
+      "expected": "we shall go in order to sing",
+      "actual": "we shall go in order to sing",
+      "canvasAnchor": "Ticuīcatihuih also licenses ‘we shall go in order to sing.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P267-L030-5D96BD40A2-11 rejects a broken cases.paradigmAxisExamples.singFirstPlural.readings.futureMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-02",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-02",
+      "canonicalPath": "cases.paradigmAxisExamples.eatFirstSingular.canonicalTranscriptionFormula",
+      "expected": "#ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#",
+      "actual": "#ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#",
+      "canvasAnchor": "Nitlacuātīuh has the internal form #ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-02 rejects a broken cases.paradigmAxisExamples.eatFirstSingular.canonicalTranscriptionFormula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-03",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-03",
+      "canonicalPath": "cases.paradigmAxisExamples.eatFirstSingular.subjectRole",
+      "expected": {
+        "person": "first",
+        "number": "singular",
+        "animacy": "human"
+      },
+      "actual": {
+        "person": "first",
+        "number": "singular",
+        "animacy": "human"
+      },
+      "canvasAnchor": "Ni- identifies a first-person singular human eater and goer.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-03 rejects a broken cases.paradigmAxisExamples.eatFirstSingular.subjectRole",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-04",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-04",
+      "canonicalPath": "cases.paradigmAxisExamples.eatFirstSingular.objectMorphs",
+      "expected": [
+        "tla"
+      ],
+      "actual": [
+        "tla"
+      ],
+      "canvasAnchor": "Tla- specifies nonspecific nonhuman food or an eating object.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-04 rejects a broken cases.paradigmAxisExamples.eatFirstSingular.objectMorphs",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-05",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-05",
+      "canonicalPath": "cases.paradigmAxisExamples.eatFirstSingular.readings.ongoingMovement",
+      "expected": "I am going in order to eat",
+      "actual": "I am going in order to eat",
+      "canvasAnchor": "Nitlacuātīuh licenses ‘I am going in order to eat.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-05 rejects a broken cases.paradigmAxisExamples.eatFirstSingular.readings.ongoingMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-06",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-06",
+      "canonicalPath": "cases.paradigmAxisExamples.eatFirstSingular.readings.futureMovement",
+      "expected": "I shall go in order to eat",
+      "actual": "I shall go in order to eat",
+      "canvasAnchor": "Nitlacuātīuh also licenses ‘I shall go in order to eat.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-06 rejects a broken cases.paradigmAxisExamples.eatFirstSingular.readings.futureMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-08",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-08",
+      "canonicalPath": "cases.paradigmAxisExamples.eatSecondPlural.canonicalTranscriptionFormula",
+      "expected": "#an-Ø+tla(cuā-⎕-t-i-hui)Ø+Ø-h#",
+      "actual": "#an-Ø+tla(cuā-⎕-t-i-hui)Ø+Ø-h#",
+      "canvasAnchor": "Antlacuātīhuih has the internal form #an-Ø+tla(cuā-⎕-t-ī-hui)Ø+Ø-h#.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-08 rejects a broken cases.paradigmAxisExamples.eatSecondPlural.canonicalTranscriptionFormula",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-09",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-09",
+      "canonicalPath": "cases.paradigmAxisExamples.eatSecondPlural.subjectRole",
+      "expected": {
+        "person": "second",
+        "number": "plural",
+        "animacy": "human"
+      },
+      "actual": {
+        "person": "second",
+        "number": "plural",
+        "animacy": "human"
+      },
+      "canvasAnchor": "An- plus plural -h identifies second-person plural human eaters and goers.",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-09 rejects a broken cases.paradigmAxisExamples.eatSecondPlural.subjectRole",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-10",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-10",
+      "canonicalPath": "cases.paradigmAxisExamples.eatSecondPlural.readings.ongoingMovement",
+      "expected": "you plural are going in order to eat",
+      "actual": "you plural are going in order to eat",
+      "canvasAnchor": "Antlacuātīhuih licenses ‘you plural are going in order to eat.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-10 rejects a broken cases.paradigmAxisExamples.eatSecondPlural.readings.ongoingMovement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P268-L007-3A37BD42BF-11",
+      "ownerId": "classical-purposive-paradigm-axis-system",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-paradigm-axis-system:aci-p268-l007-3a37bd42bf-11",
+      "canonicalPath": "cases.paradigmAxisExamples.eatSecondPlural.readings.futureMovement",
+      "expected": "you plural will go in order to eat",
+      "actual": "you plural will go in order to eat",
+      "canvasAnchor": "Antlacuātīhuih also licenses ‘you plural will go in order to eat.’",
+      "proofTest": "src/tests/classical_purposive_paradigm_axis_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L007-3A37BD42BF-11 rejects a broken cases.paradigmAxisExamples.eatSecondPlural.readings.futureMovement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 22,
+    "passed": 22,
+    "failed": 0,
+    "mutationsRejected": 22
+  }
+}

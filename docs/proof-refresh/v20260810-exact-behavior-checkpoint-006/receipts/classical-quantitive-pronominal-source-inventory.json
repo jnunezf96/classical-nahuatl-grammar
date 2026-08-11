@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-quantitive-pronominal-source-inventory",
+  "canonicalResultDigest": "sha256:c1882fef4407a8e6cd62fbee5d839e1656bedf6b29251640df813fef90d3c796",
+  "observations": [
+    {
+      "atomId": "ACI-P147-L002-DBC633B763-04",
+      "ownerId": "classical-quantitive-pronominal-source-inventory",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-quantitive-pronominal-source-inventory:aci-p147-l002-dbc633b763-04",
+      "canonicalPath": "quantitivePhonology.miyahuaLongABeforeWa",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The /a/ in miyā-hua-tl- is long before /wa/.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P147-L002-DBC633B763-04 rejects a broken quantitivePhonology.miyahuaLongABeforeWa",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-demonstrative-pronominal-source-number",
+  "canonicalResultDigest": "sha256:e9ccaeb24e0c208032399722e6830c4db97a2e8f99001d8f40a404d534398794",
+  "observations": [
+    {
+      "atomId": "ACI-P146-L008-FAA8CA5738-02",
+      "ownerId": "classical-demonstrative-pronominal-source-number",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-demonstrative-pronominal-source-number:aci-p146-l008-faa8ca5738-02",
+      "canonicalPath": "demonstrativeNumberVariants",
+      "expected": [
+        "inon",
+        "ini",
+        "ino"
+      ],
+      "actual": [
+        "inon",
+        "ini",
+        "ino"
+      ],
+      "canvasAnchor": "inon (and, therefore, also ini and ino).",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P146-L008-FAA8CA5738-02 rejects a broken demonstrativeNumberVariants",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

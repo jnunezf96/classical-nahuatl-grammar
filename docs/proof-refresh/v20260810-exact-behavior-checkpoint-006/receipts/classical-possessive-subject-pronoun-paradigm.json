@@ -1,0 +1,90 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-possessive-subject-pronoun-paradigm",
+  "canonicalResultDigest": "sha256:7800a44ca3dfcbf1f606467a72d1896642a0dcbf0ab38d7eb1d7963d72701d18",
+  "observations": [
+    {
+      "atomId": "ACI-P121-L009-6F36DD17BE",
+      "ownerId": "classical-possessive-subject-pronoun-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-possessive-subject-pronoun-paradigm:aci-p121-l009-6f36dd17be",
+      "canonicalPath": "the complete typed subject paradigm Result",
+      "expected": true,
+      "actual": true,
+      "canvasAnchor": "The nominative personal-pronoun fillers for the top-line subpositions of the possessive-state NNC formula form the complete paradigms summarized in §13.3.",
+      "proofTest": "src/tests/classical_nnc_subject_paradigm_projection_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P121-L009-6F36DD17BE rejects a broken subject paradigm projection",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P121-L011-6338924872",
+      "ownerId": "classical-possessive-subject-pronoun-paradigm",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-possessive-subject-pronoun-paradigm:aci-p121-l011-6338924872",
+      "canonicalPath": "the complete typed subject paradigm Result",
+      "expected": {
+        "first-singular": [
+          "I"
+        ],
+        "first-plural": [
+          "we"
+        ],
+        "second-singular": [
+          "you (singular)"
+        ],
+        "second-plural": [
+          "you (plural)"
+        ],
+        "third-singular-or-common": [
+          "he",
+          "she",
+          "it",
+          "they"
+        ],
+        "third-plural": [
+          "they"
+        ]
+      },
+      "actual": {
+        "first-singular": [
+          "I"
+        ],
+        "first-plural": [
+          "we"
+        ],
+        "second-singular": [
+          "you (singular)"
+        ],
+        "second-plural": [
+          "you (plural)"
+        ],
+        "third-singular-or-common": [
+          "he",
+          "she",
+          "it",
+          "they"
+        ],
+        "third-plural": [
+          "they"
+        ]
+      },
+      "canvasAnchor": "The English labels in the §13.3 possessive-state subject paradigm are automatic equivalents of the Nahuatl personal-pronoun formulas.",
+      "proofTest": "src/tests/classical_nnc_subject_paradigm_projection_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P121-L011-6338924872 rejects a broken subject paradigm projection",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 2,
+    "passed": 2,
+    "failed": 0,
+    "mutationsRejected": 2
+  }
+}

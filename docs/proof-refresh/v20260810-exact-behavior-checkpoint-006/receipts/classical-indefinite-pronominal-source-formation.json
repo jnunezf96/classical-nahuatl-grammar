@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-006",
+  "ownerId": "classical-indefinite-pronominal-source-formation",
+  "canonicalResultDigest": "sha256:9b7873a671bd968914318a6accacf378a3e4fac7ec96b5c7582cea80c13d71fa",
+  "observations": [
+    {
+      "atomId": "ACI-P146-L025-8BFBD677DB-02",
+      "ownerId": "classical-indefinite-pronominal-source-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-indefinite-pronominal-source-formation:aci-p146-l025-8bfbd677db-02",
+      "canonicalPath": "indefiniteSomethingReference",
+      "expected": {
+        "referent": "nonspecific-nonhuman-thing",
+        "existenceStatus": "questioned"
+      },
+      "actual": {
+        "referent": "nonspecific-nonhuman-thing",
+        "existenceStatus": "questioned"
+      },
+      "canvasAnchor": "Itlah identifies a nonspecific nonhuman thing whose existence is questioned.",
+      "proofTest": "src/tests/classical_pronominal_shared_owner_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P146-L025-8BFBD677DB-02 rejects a broken indefiniteSomethingReference",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}
