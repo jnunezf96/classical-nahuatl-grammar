@@ -1,0 +1,643 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-compound-nnc-yo-matrix",
+  "canonicalResultDigest": "sha256:23445ead142fbe1a03915952220ea932fc474b65666691ea28238eecf3c48216",
+  "observations": [
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:67421bacc1e97b4788c1eb97ae037d8afa6b1afd7b63233010e3b4656bacd317",
+      "actualDigest": "sha256:67421bacc1e97b4788c1eb97ae037d8afa6b1afd7b63233010e3b4656bacd317",
+      "canvasAnchorDigest": "sha256:12bd0d5b6aa9b2cb75e14c58faf5198bac3b23a40d7a1da8d84e953848b35f61",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-02",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ebf5b65efa2b32559d45851ba3db1bb6f058b5e29f976d361ba190bdde9971d0",
+      "actualDigest": "sha256:ebf5b65efa2b32559d45851ba3db1bb6f058b5e29f976d361ba190bdde9971d0",
+      "canvasAnchorDigest": "sha256:44d40671e35af9edcbc4e5206dd26867f2245713aa950e1f9d07fb3afa12458c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-03",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2bdf70ca4f61b5af1cc3ebea978b4eaf661a340287470bcc2411bd1dad7d85ea",
+      "actualDigest": "sha256:2bdf70ca4f61b5af1cc3ebea978b4eaf661a340287470bcc2411bd1dad7d85ea",
+      "canvasAnchorDigest": "sha256:f7541f767c8c6481bd41ee2e9b3b8aa9772468f6d7681c77ff6a4ec37924a39b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-06",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2cb69dfdfe77b94e2f5ad54b6cbd227bfd46f2224f5dc75db5d3a870ea80d7ab",
+      "actualDigest": "sha256:2cb69dfdfe77b94e2f5ad54b6cbd227bfd46f2224f5dc75db5d3a870ea80d7ab",
+      "canvasAnchorDigest": "sha256:75323ad1d8d89d87c6ab392b035cd13e1b20aba6f4f1bf198dc6100b33a57f30",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-07",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9dc82824809f6e24f6aadca03993f1abaa2a399713afa75b405e59683a664fbb",
+      "actualDigest": "sha256:9dc82824809f6e24f6aadca03993f1abaa2a399713afa75b405e59683a664fbb",
+      "canvasAnchorDigest": "sha256:f1e5e823d233817da50989ff6112db95b65b2f0c43cf44c83caaa58a98e3fa19",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-10",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4b017bbae88b864e13502f3c6b3c9bc5939d94371a97117eb26a1d83f0544c12",
+      "actualDigest": "sha256:4b017bbae88b864e13502f3c6b3c9bc5939d94371a97117eb26a1d83f0544c12",
+      "canvasAnchorDigest": "sha256:416f2df0bff0e4a0995970b9a2e82a633a3e6f205b0dcd62e6f5a078616df86f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-11",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c148552f4b1851f3eba8034071b16ee243823c39d215a0b14faf9aefadb41bf6",
+      "actualDigest": "sha256:c148552f4b1851f3eba8034071b16ee243823c39d215a0b14faf9aefadb41bf6",
+      "canvasAnchorDigest": "sha256:201106d8af030bcedf94949aeac02c2cb51f5c843179138ad9b1bbeaabfaa957",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-12",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3a57f3848bbf158c70bb661c394997347738107243c1c29011f98b7ee330d995",
+      "actualDigest": "sha256:3a57f3848bbf158c70bb661c394997347738107243c1c29011f98b7ee330d995",
+      "canvasAnchorDigest": "sha256:62b2095741b0ccadef532aaaff3002833971458f2068ec6e93513ef305c0f3c5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-13",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:96e9971a019ab6a9ae74f50eacd708c52d42de0b7a7affcbab49ce5210c833b0",
+      "actualDigest": "sha256:96e9971a019ab6a9ae74f50eacd708c52d42de0b7a7affcbab49ce5210c833b0",
+      "canvasAnchorDigest": "sha256:d1c21ec977ea40a0e7eea672d2828d61fee9a6e7135d7acf4bfe48ed9ac13734",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-14",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-14",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:369346b246f7037829932c8f69308e40d791320d545d0ad48011925564cf91d3",
+      "actualDigest": "sha256:369346b246f7037829932c8f69308e40d791320d545d0ad48011925564cf91d3",
+      "canvasAnchorDigest": "sha256:0a9a34dcbd6083f60920128c34cd88fa770c756893acc985a7ba9bef4d1d8252",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-14 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-15",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l005-da73b6471a-15",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dcde46e99aa4777cbf38f3876f82f38490e6ad744feed4b785fbc9f4929e4f66",
+      "actualDigest": "sha256:dcde46e99aa4777cbf38f3876f82f38490e6ad744feed4b785fbc9f4929e4f66",
+      "canvasAnchorDigest": "sha256:bad8d5d332c1ff4a8022d974971a4a97b7b74db62fac7c8e6da74d083815344e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L005-DA73B6471A-15 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a38905485b5277e9c28c66822f26046ae8f0eeffb127051ca717fb844f32f559",
+      "actualDigest": "sha256:a38905485b5277e9c28c66822f26046ae8f0eeffb127051ca717fb844f32f559",
+      "canvasAnchorDigest": "sha256:4e999d7fb8b153cef487b32d77d0d68470a9d15b0afd2bb870fe801157368585",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-02",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e2360d4f1db54235890769b6ff4e242f2135e77bf51067a83059eae47c28cc4c",
+      "actualDigest": "sha256:e2360d4f1db54235890769b6ff4e242f2135e77bf51067a83059eae47c28cc4c",
+      "canvasAnchorDigest": "sha256:95d5f875d98e21fb1290aa58013654435bf9cbc3cf1d6381fc3e670d714c23bf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-03",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9a85353274b53c5498df359e87f66f161e350840cbad02fd848ca16bbba72584",
+      "actualDigest": "sha256:9a85353274b53c5498df359e87f66f161e350840cbad02fd848ca16bbba72584",
+      "canvasAnchorDigest": "sha256:7b930203c5b9bccd871f47b11449678b56a626b3fb2337b83186d87175167e7e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-04",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1a00982c61f126d0a27d884d47efaa3a21a7bd937b684d1781bef7184cfc3956",
+      "actualDigest": "sha256:1a00982c61f126d0a27d884d47efaa3a21a7bd937b684d1781bef7184cfc3956",
+      "canvasAnchorDigest": "sha256:32593d2259851b62585e0a45130d06dbd248ebf590edb4607afe4408144baf9f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-05",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:45cd75133111341da8e0f81917d9990aed699cd602ea17bf72223697b28ba0a7",
+      "actualDigest": "sha256:45cd75133111341da8e0f81917d9990aed699cd602ea17bf72223697b28ba0a7",
+      "canvasAnchorDigest": "sha256:9e78ddc84a4374342fa6237fa39fe9f3e16d186164168887fc782db1aa389f8c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-07",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e943f1e77466060fe2d62edaf930ef0ef3e4a26628ed29c2e19549833978f07",
+      "actualDigest": "sha256:7e943f1e77466060fe2d62edaf930ef0ef3e4a26628ed29c2e19549833978f07",
+      "canvasAnchorDigest": "sha256:8ec1ed0e235c34b1bac7c598dc775073c899ce0aeb015c2cf74c2fcd9289337b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-08",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d033de36507c33f016694811eb7535131cf43adc14b4386b6bc9368410761ea7",
+      "actualDigest": "sha256:d033de36507c33f016694811eb7535131cf43adc14b4386b6bc9368410761ea7",
+      "canvasAnchorDigest": "sha256:f7b84bd3d0eac3179dcc9e496be2c347283e00bfbad1be8872ca1fae3da16a4b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-09",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:109d971affb6f0c2055f47372c6ec6e406cc79de344d554d02e5fece10802eed",
+      "actualDigest": "sha256:109d971affb6f0c2055f47372c6ec6e406cc79de344d554d02e5fece10802eed",
+      "canvasAnchorDigest": "sha256:abbb96d70c7017090a7d3f9577853e665b351ea4cd82ac8f965e62619d2403e8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-10",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8ec198bab8763614549dc2059edd021e288c2ac19a41f3c33ebebc1e3f3b33f0",
+      "actualDigest": "sha256:8ec198bab8763614549dc2059edd021e288c2ac19a41f3c33ebebc1e3f3b33f0",
+      "canvasAnchorDigest": "sha256:048fb91a0299faa05d1c021889bc1e988a0532a02a9c25f2db18e97f3fe3a38a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-11",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3d415ff65fcfd1eca6634cb5b8c808a9a4d66e44c7125ce12450c549882a204b",
+      "actualDigest": "sha256:3d415ff65fcfd1eca6634cb5b8c808a9a4d66e44c7125ce12450c549882a204b",
+      "canvasAnchorDigest": "sha256:d8bf9caec96f7436f2da70fc1ba4d8dd785795bf29b89d5c5ab6a598b5b56a76",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-12",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3eaba8069a271bc922217d5417217f1de633d2819d1f480c4c0a90a827fdd7c0",
+      "actualDigest": "sha256:3eaba8069a271bc922217d5417217f1de633d2819d1f480c4c0a90a827fdd7c0",
+      "canvasAnchorDigest": "sha256:9b63247d150fa6b6da043c8c87938e4f86fa8dcb374552684bb7f1da5a0a1c28",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-14",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-14",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b6af51f986a3a630cbf7eefac63334473c0d1da2d586dbc4a7edae3104a56de7",
+      "actualDigest": "sha256:b6af51f986a3a630cbf7eefac63334473c0d1da2d586dbc4a7edae3104a56de7",
+      "canvasAnchorDigest": "sha256:a54fc7e6bd0aa61619c28f577396e006d7950d38c64b70c3ea8f9c83ec7e7f58",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-14 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-15",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-15",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:98aeb4543a35f637544f0ecb07961ec9fb5992d92ec62850084073be37b0fa11",
+      "actualDigest": "sha256:98aeb4543a35f637544f0ecb07961ec9fb5992d92ec62850084073be37b0fa11",
+      "canvasAnchorDigest": "sha256:f41a11f33200b55a13b8b522604e4823ef30af8a481f3e1ce4b0ba1ec0702da8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-15 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-16",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-16",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bc2ca91247a96b2a542ea79f2e2706550bfd446b1a97de41cf2f2bdf72135799",
+      "actualDigest": "sha256:bc2ca91247a96b2a542ea79f2e2706550bfd446b1a97de41cf2f2bdf72135799",
+      "canvasAnchorDigest": "sha256:d5fbb96428ef5bf8c38b0456840a21eafb24156a52060a0ff550d197c053c66a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-16 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-17",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-17",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2fa646553a13fc6eb98b810b5f68309f54037a9eb87d2b219ef2868efa1f71d4",
+      "actualDigest": "sha256:2fa646553a13fc6eb98b810b5f68309f54037a9eb87d2b219ef2868efa1f71d4",
+      "canvasAnchorDigest": "sha256:52e83b70a0816d44240e3030159381edb85b60d7bbd590a6908dbebebaba9a50",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-17 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-18",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-18",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:db41e138d0770c66ad718c9868a5399e647ff12f6f2bd027f0f2aaba00940adc",
+      "actualDigest": "sha256:db41e138d0770c66ad718c9868a5399e647ff12f6f2bd027f0f2aaba00940adc",
+      "canvasAnchorDigest": "sha256:d9972d0d3d6d14f9507844777a134dc10fccd320d19328bc20071efd3e8f7257",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-18 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-19",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-19",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:53a6d5c2cb3da6a447fcd4dc52f177373a5b01d0f567fbd42b0275d6252d0425",
+      "actualDigest": "sha256:53a6d5c2cb3da6a447fcd4dc52f177373a5b01d0f567fbd42b0275d6252d0425",
+      "canvasAnchorDigest": "sha256:7a1d89f36af10b0b352f7627691d75992bb77f5cdc0f473206ab0c69cb11dcee",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-19 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-20",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-20",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f8315acf8a9bd9304b32545d10f8b00fc723410ace748c3c1a6595f91911ed28",
+      "actualDigest": "sha256:f8315acf8a9bd9304b32545d10f8b00fc723410ace748c3c1a6595f91911ed28",
+      "canvasAnchorDigest": "sha256:753f3205003545948036176c4cc43d97bda65d99de44e93d7cd5ea605e5c2b1f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-20 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-21",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-21",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:29fa23762eecf293fffe2cf7a850e86d8b243f903c3e3f204ce4f8bbf5e7e02f",
+      "actualDigest": "sha256:29fa23762eecf293fffe2cf7a850e86d8b243f903c3e3f204ce4f8bbf5e7e02f",
+      "canvasAnchorDigest": "sha256:779256a8a95da67dfa9493dadcd3243ac375e675a5db428ab9075e3fe15de63e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-21 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-23",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-23",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ffc1b205b85b0bf8dd0859fdcfd28e5f864cea1ec0f796ac84168ad533d970e0",
+      "actualDigest": "sha256:ffc1b205b85b0bf8dd0859fdcfd28e5f864cea1ec0f796ac84168ad533d970e0",
+      "canvasAnchorDigest": "sha256:d7fa13d820b76de6804e7562e1b780f4211f1927cbfdda24bdcf46ec115cb20a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-23 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-24",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-24",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c46e66d09e67b990d10e51c7c3ede301bfc240293d4f89c644d0c0c674d4de90",
+      "actualDigest": "sha256:c46e66d09e67b990d10e51c7c3ede301bfc240293d4f89c644d0c0c674d4de90",
+      "canvasAnchorDigest": "sha256:396c652c98941db113927f9bba02d81f9b0db14b82b5befde4ba1b7a327e15da",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-24 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-25",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-25",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4501b83734c6d073ca4b33af122840401478805aa217510d55a3ecb5ea44a3e9",
+      "actualDigest": "sha256:4501b83734c6d073ca4b33af122840401478805aa217510d55a3ecb5ea44a3e9",
+      "canvasAnchorDigest": "sha256:8656b40dcab9f4dbbe5adafb530d4bb454798ffee07ac385941d681dd470c380",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-25 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-26",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-26",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8c658648755da8f9d3bf2ca7a7ec3f1ea4572a74329056b1dbecc4fd1758df63",
+      "actualDigest": "sha256:8c658648755da8f9d3bf2ca7a7ec3f1ea4572a74329056b1dbecc4fd1758df63",
+      "canvasAnchorDigest": "sha256:194aeade5afff13c6d78aedab4f202aa045c35480cd2cd67e583edb496a53ca5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-26 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-27",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-27",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:70c264af209e3d19127d692bfeaa93798f32506ea589254189bb72c11483b51a",
+      "actualDigest": "sha256:70c264af209e3d19127d692bfeaa93798f32506ea589254189bb72c11483b51a",
+      "canvasAnchorDigest": "sha256:c26647bdbcb118b97e6af6129a6a0825d48d059e53d8c24d5009215eee57d8e9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-27 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-28",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-28",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f1a350edbdded8087f8483d3d3736dfba690c7d09ce2e593f093e8954cf614a2",
+      "actualDigest": "sha256:f1a350edbdded8087f8483d3d3736dfba690c7d09ce2e593f093e8954cf614a2",
+      "canvasAnchorDigest": "sha256:7235e4d158b44cb15b67b01af65127ee17d96fef0f4fcba5a86ec8dc21c263cd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-28 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-29",
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-yo-matrix:aci-p300-l018-d4d02dbc63-29",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:178f05996da36a607722eadd9f23b5544cdf6ac43bbe4f9768f4dc392fa27348",
+      "actualDigest": "sha256:178f05996da36a607722eadd9f23b5544cdf6ac43bbe4f9768f4dc392fa27348",
+      "canvasAnchorDigest": "sha256:defb29f997ed35281330cf0e87b636975d8a30de945a69590450d2b29194d902",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P300-L018-D4D02DBC63-29 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 37,
+    "passed": 37,
+    "failed": 0,
+    "mutationsRejected": 37
+  }
+}

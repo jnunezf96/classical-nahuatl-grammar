@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-relational-locative-n-imperfect-active-state",
+  "canonicalResultDigest": "sha256:05af39eb3ce6cca22cadec61d8e3acccb6dcbf7fa9850b27d3203ce41c5f0374",
+  "observations": [
+    {
+      "atomId": "ACI-P474-L018-7E4E9C43D5-04",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l018-7e4e9c43d5-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9c0a1ffc60cb0cb13e85543c2fd163aaa81696570202e62ae6f47472e3853868",
+      "actualDigest": "sha256:9c0a1ffc60cb0cb13e85543c2fd163aaa81696570202e62ae6f47472e3853868",
+      "canvasAnchorDigest": "sha256:12c4a30b2af1923795fb4c1dce8d00889472768c595892f1a6111ca2523419f9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L018-7E4E9C43D5-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-02",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3411362cb1dc44ed59773e96be952edc1eed8eb82e78e9a6ba27a8be9fadf8c7",
+      "actualDigest": "sha256:3411362cb1dc44ed59773e96be952edc1eed8eb82e78e9a6ba27a8be9fadf8c7",
+      "canvasAnchorDigest": "sha256:14c8e0a10237d30b54509ec659fe2d210e5a0e37292a29b430749446c763cd76",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-03",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cffab0f14f5b700fd36e354389163803e9661dbfff1198f017c64aed04959d16",
+      "actualDigest": "sha256:cffab0f14f5b700fd36e354389163803e9661dbfff1198f017c64aed04959d16",
+      "canvasAnchorDigest": "sha256:0fa87e529c62e9590b3d3f74cffb373f8065e742e472b9650e8b9d550c072a85",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-04",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9e21f06e32bd7725726a0670ff5c8d9c8da5678953d57cb3300c62509ecaa30c",
+      "actualDigest": "sha256:9e21f06e32bd7725726a0670ff5c8d9c8da5678953d57cb3300c62509ecaa30c",
+      "canvasAnchorDigest": "sha256:f7a24192095ad8d2e7c03e08e9e13d0284380a954eddeedc07c205e3f41ac885",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-05",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:15d333dea89ade2818a75682e01bb086a54d313e2fedcc08a31d43d3a1506ad4",
+      "actualDigest": "sha256:15d333dea89ade2818a75682e01bb086a54d313e2fedcc08a31d43d3a1506ad4",
+      "canvasAnchorDigest": "sha256:ba7272aba49bc40cebd4d3fe859fd6903b917ee601d2e5674eb2758e136368f6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-06",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e44d26ecdf518720d45e72488823a0618ae8f040f89a3aa0cb86d60f9a2f98d",
+      "actualDigest": "sha256:7e44d26ecdf518720d45e72488823a0618ae8f040f89a3aa0cb86d60f9a2f98d",
+      "canvasAnchorDigest": "sha256:58c52504db3b045a4a605725a8e71b664db824817200659f6b059bcb1c3e8948",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-07",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l021-fb381cd1c5-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:02e7ce3afa03c1fc0f90dce7143b58f9b9792df4c0e0873bb3f02390f8eb2ead",
+      "actualDigest": "sha256:02e7ce3afa03c1fc0f90dce7143b58f9b9792df4c0e0873bb3f02390f8eb2ead",
+      "canvasAnchorDigest": "sha256:a6962edf3d0a65d75583922d4b9013b35a5d23c42aa4f88866ea6eeed004ddb1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L021-FB381CD1C5-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L024-3AEA652F47-04",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l024-3aea652f47-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d4b0eb9f5e054600778e97b50ba45cd84ea5d87eba1a53986c85728aa103163f",
+      "actualDigest": "sha256:d4b0eb9f5e054600778e97b50ba45cd84ea5d87eba1a53986c85728aa103163f",
+      "canvasAnchorDigest": "sha256:d0f2764f8051df4a694a2ab15bae980c046d90bc18814d2fad4c61caff686524",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L024-3AEA652F47-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P474-L027-444734E366-05",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p474-l027-444734e366-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:86d59ba9ac3f25384c8afe39b738c154c707a3a7e1a230b76a90a817ea2926b1",
+      "actualDigest": "sha256:86d59ba9ac3f25384c8afe39b738c154c707a3a7e1a230b76a90a817ea2926b1",
+      "canvasAnchorDigest": "sha256:3ab32c48f9504a06e73954131ea2cf5b663d864c11be5f8d175937746351f5c0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P474-L027-444734E366-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:87b41075398dc7ffdfedae8cef3946eb8cef2027d653c300a60ddec0459152e2",
+      "actualDigest": "sha256:87b41075398dc7ffdfedae8cef3946eb8cef2027d653c300a60ddec0459152e2",
+      "canvasAnchorDigest": "sha256:b642b26d412f77873fc29bfc20b6d934402d7878513d42731bc37adba5511754",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-02",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:268bd2f390a814290a4f20551ff8c07e05b968fe09ec57e1b3ab80d1dae20293",
+      "actualDigest": "sha256:268bd2f390a814290a4f20551ff8c07e05b968fe09ec57e1b3ab80d1dae20293",
+      "canvasAnchorDigest": "sha256:ec9b6425381552485ed1a2860e5c5a93dc823b329f111fc520c1dd98657f1ca7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-03",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:54bf7afb4a23e212b0765947413ece31934d2225989b64634fb81e715f383831",
+      "actualDigest": "sha256:54bf7afb4a23e212b0765947413ece31934d2225989b64634fb81e715f383831",
+      "canvasAnchorDigest": "sha256:1ec161c0cc7bdaf151e376f5d681f025a845f6550eca082daf4200a2d899885e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-04",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a935105f6392a659db3beaddc550baafef8e4dcb6b46db871a034185ac1e54c4",
+      "actualDigest": "sha256:a935105f6392a659db3beaddc550baafef8e4dcb6b46db871a034185ac1e54c4",
+      "canvasAnchorDigest": "sha256:05ba062a0fe35cd9c263476d6111fec9d2cccb299af71a2472c5d8cc81fa918a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-05",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7b530195fca958b84c1f36c3093238342b448f17efc6b056e2ced6c79a103c56",
+      "actualDigest": "sha256:7b530195fca958b84c1f36c3093238342b448f17efc6b056e2ced6c79a103c56",
+      "canvasAnchorDigest": "sha256:0d4cc913055c74a2b348ac19e3cc0e40b68f38c957af1d4e81de1c5f34d0c101",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-06",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:94bbdd9e00b73ed2a6e9ac09d43d32c1782ddb7d3ab74e6627f94a994621324f",
+      "actualDigest": "sha256:94bbdd9e00b73ed2a6e9ac09d43d32c1782ddb7d3ab74e6627f94a994621324f",
+      "canvasAnchorDigest": "sha256:f6bba8fe16d9e00c03ee12b2d703c1fbe6bef420e1b8d575903fd328d3b0c11b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-07",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dce20cba7026b66d67c8c629bb162fcbfc36506124a47b859ec1ff532c59923c",
+      "actualDigest": "sha256:dce20cba7026b66d67c8c629bb162fcbfc36506124a47b859ec1ff532c59923c",
+      "canvasAnchorDigest": "sha256:34d4d20b27d0b482186274d4a906437b95a29aea41f7c7f76d3f2af739a9627f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-08",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l017-3630297b67-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:20bb9c0db28574c4652de61b4af8b08b0ed9aafdf2cf545ccb24257ed2a30c48",
+      "actualDigest": "sha256:20bb9c0db28574c4652de61b4af8b08b0ed9aafdf2cf545ccb24257ed2a30c48",
+      "canvasAnchorDigest": "sha256:fdb55ab2d25c4d85a7f6553c7f524c2c712a9c9d2d192272da48db8c8d5b7b19",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L017-3630297B67-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f04a0cead52683c12bf52a4692ab6fc91315c9c24fbe136b09006514a0bb4d2d",
+      "actualDigest": "sha256:f04a0cead52683c12bf52a4692ab6fc91315c9c24fbe136b09006514a0bb4d2d",
+      "canvasAnchorDigest": "sha256:e29fba81e174b73f189e659cbf282762b4d74e0a3d78e6f0c93cee1a26ebf862",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-02",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:70848c11e6cd2be480d41b24ac5b0f27d666265bd3df1bc8cb4164206b68a2b0",
+      "actualDigest": "sha256:70848c11e6cd2be480d41b24ac5b0f27d666265bd3df1bc8cb4164206b68a2b0",
+      "canvasAnchorDigest": "sha256:ee46ff651e4bf36e31419c68b4cfd90929fc42f31cd431d30be3592ee03b7ce6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-03",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8d6f0f9d644aebc3044b82d8a4f7e7b5f05fe6c0ecd97b764ef4aa7ad1cc56c7",
+      "actualDigest": "sha256:8d6f0f9d644aebc3044b82d8a4f7e7b5f05fe6c0ecd97b764ef4aa7ad1cc56c7",
+      "canvasAnchorDigest": "sha256:5ce86e6226ec6ed4cf3c0038ee5001927967216a826ffe4bab9e095642bde5c6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-04",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a53c0ae78cfb22b56cb3ff081d46d434ca3f807dc477d068c65c8d192a8aa068",
+      "actualDigest": "sha256:a53c0ae78cfb22b56cb3ff081d46d434ca3f807dc477d068c65c8d192a8aa068",
+      "canvasAnchorDigest": "sha256:050667dc894e03c00feee926f0d29764c65fe1d50bdd550d44182184ef4fdcc3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-05",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c10727576aef2f0b0238063a3d935dec9626674f15aa1fcb3c024fc39541ad0c",
+      "actualDigest": "sha256:c10727576aef2f0b0238063a3d935dec9626674f15aa1fcb3c024fc39541ad0c",
+      "canvasAnchorDigest": "sha256:7cc15d23fa37bf498c91cd6777abce4f8eb002b1263866a3e6cd2079d4c0adfc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-06",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8ce060403df472e7f2166e758cb06722648a72e77188e9326aa15e095eb56135",
+      "actualDigest": "sha256:8ce060403df472e7f2166e758cb06722648a72e77188e9326aa15e095eb56135",
+      "canvasAnchorDigest": "sha256:9ab18c3a346c64b92a329356ce70bae2edb3052c328fd985cbb34d1a007c4bfc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-10",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l021-73d3169902-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9bce1fb4831a5141edb2c5ae6935f9745fb40ae6b1cf30fc013724170e29ee05",
+      "actualDigest": "sha256:9bce1fb4831a5141edb2c5ae6935f9745fb40ae6b1cf30fc013724170e29ee05",
+      "canvasAnchorDigest": "sha256:522cfd1efa2e197feaf8dc92a9e1e4fc55660ee960ea1aa259cdaa8f60de6832",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L021-73D3169902-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P475-L026-62B0535FD5",
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-relational-locative-n-imperfect-active-state:aci-p475-l026-62b0535fd5",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:abf0518ea97e84d0b749a51461db7e7d15701364e60d2afa8e2a069cacf3bddf",
+      "actualDigest": "sha256:abf0518ea97e84d0b749a51461db7e7d15701364e60d2afa8e2a069cacf3bddf",
+      "canvasAnchorDigest": "sha256:b05644670247f29364bb140bd84a513a6bae106f1182fd1e17532b1a9b696ab6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P475-L026-62B0535FD5 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 25,
+    "passed": 25,
+    "failed": 0,
+    "mutationsRejected": 25
+  }
+}

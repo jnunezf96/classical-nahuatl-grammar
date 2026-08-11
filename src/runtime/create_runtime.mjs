@@ -29,7 +29,7 @@ import { installClassicalNahuatlTransitiveVncObjectGlobals } from "../core/class
 import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classical/nuclear_clause_fact_catalog.mjs?v=20260802-l4-l6-facts-001";
 import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core/classical/nuclear_clause_semantic_operations.mjs?v=20260802-l4-l6-operations-001";
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
-import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260810-atom-ledger-cleanup-009";
+import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260810-canvas-grammar-facts-010";
 import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260802-l58-lexeme-source-150";
 import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260806-class-c-claim-172";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260726-lessons2-58-one-system-094";

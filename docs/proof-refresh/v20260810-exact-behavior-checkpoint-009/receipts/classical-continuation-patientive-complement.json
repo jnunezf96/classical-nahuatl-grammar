@@ -1,0 +1,643 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-continuation-patientive-complement",
+  "canonicalResultDigest": "sha256:4619a767d9ee8890ce7263745b8fb47ef4d7fcd53b9034b7dd59efac80a66ce6",
+  "observations": [
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-05",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l002-a8ba0e23cc-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7340421e9527bfa001e3180dac044fa5ed0057afb61e3eba66b344a2ff9b7f62",
+      "actualDigest": "sha256:7340421e9527bfa001e3180dac044fa5ed0057afb61e3eba66b344a2ff9b7f62",
+      "canvasAnchorDigest": "sha256:25b62cbffcd04c52b92c638497256c50925be2fd92262c22f5b895d46425b4e5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L002-A8BA0E23CC-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-07",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l002-a8ba0e23cc-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2931497ce81e26c08abaf6ad4118bf55026fa4080b2da5938d57f4b0ce70607b",
+      "actualDigest": "sha256:2931497ce81e26c08abaf6ad4118bf55026fa4080b2da5938d57f4b0ce70607b",
+      "canvasAnchorDigest": "sha256:7a1f7f6d61f93aba854b9f1e601897d886458e3040731c15bfef6119e9bc52d5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L002-A8BA0E23CC-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-10",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l002-a8ba0e23cc-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:712aaad2cba7db0dc6f39a8a0ec6e0be0a6698d5b943c183a082cda363c26722",
+      "actualDigest": "sha256:712aaad2cba7db0dc6f39a8a0ec6e0be0a6698d5b943c183a082cda363c26722",
+      "canvasAnchorDigest": "sha256:3db0b48322d25a34a0faf04c2e6439a916506564ab8494669396704d7e971ed2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L002-A8BA0E23CC-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-05",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ebff151b25430e6ababaec5e479391dad442da9fdea0e6b8686df101785eacf7",
+      "actualDigest": "sha256:ebff151b25430e6ababaec5e479391dad442da9fdea0e6b8686df101785eacf7",
+      "canvasAnchorDigest": "sha256:c904f341194c7225bd32ad147dec2ddb2c5c9b726362c17b64d22470a8fe9d4b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-06",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d16ef1248f5af86f997225998ca0932496df71f5c35aa064269a74dbcc725565",
+      "actualDigest": "sha256:d16ef1248f5af86f997225998ca0932496df71f5c35aa064269a74dbcc725565",
+      "canvasAnchorDigest": "sha256:09e7621620d3c8f9b89686fb159ec6fd01875d7a0a6de59d1a18177e7c382362",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-08",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:53d15130c08c0aa0a6fd1baf79ed82023c9353834467b17dc675c48af5b9b235",
+      "actualDigest": "sha256:53d15130c08c0aa0a6fd1baf79ed82023c9353834467b17dc675c48af5b9b235",
+      "canvasAnchorDigest": "sha256:dc667abc1d0650bd9c7d8cbd287a19db83d36298c03d08be08c78962e8316d89",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-09",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3d495720b77e4b341c5434b2a8f471581437bfe2f69d3397a66167a283a4bd84",
+      "actualDigest": "sha256:3d495720b77e4b341c5434b2a8f471581437bfe2f69d3397a66167a283a4bd84",
+      "canvasAnchorDigest": "sha256:3a01b7f0a103f2dd9a9f1f44b2c12767b028a7fc177106a0f3e0f9fad33d87a7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-12",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7bc5d523d88cc7ed1743965b739397795bd551aac956ab8b2bf8dca8dc4ccb13",
+      "actualDigest": "sha256:7bc5d523d88cc7ed1743965b739397795bd551aac956ab8b2bf8dca8dc4ccb13",
+      "canvasAnchorDigest": "sha256:74446f9dfacd6aa7f59bf9f762842d269fd368fab64b703d614ce49adda90365",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-13",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l005-a45e352f31-13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b57eb821aa2ccab210a374fb85cca218b89fd1b3415c0314287975598ec383a5",
+      "actualDigest": "sha256:b57eb821aa2ccab210a374fb85cca218b89fd1b3415c0314287975598ec383a5",
+      "canvasAnchorDigest": "sha256:7724c9151e9977140c513951b06ba5ca3686bfbb3e2941b5f362e22026337d28",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L005-A45E352F31-13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l008-fa2a7e20d5",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3250c55bfbd35cd579bd09cc6f409db95e5d1ca03391b012e79c60c9428d0ab0",
+      "actualDigest": "sha256:3250c55bfbd35cd579bd09cc6f409db95e5d1ca03391b012e79c60c9428d0ab0",
+      "canvasAnchorDigest": "sha256:19fa8591eb3bfeeabd4ad4a52d05424c25bd7626017e3beab755ac2644da6027",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L008-FA2A7E20D5 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l008-fa2a7e20d5-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7bb5ff9d8196ee7f82af235f27d4f5b741c7df270b417470657c047522a52dbf",
+      "actualDigest": "sha256:7bb5ff9d8196ee7f82af235f27d4f5b741c7df270b417470657c047522a52dbf",
+      "canvasAnchorDigest": "sha256:4fe0824805b6a613f550a33d40dc81a7f5513058501a5e427def867caa1b4084",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L008-FA2A7E20D5-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5-03",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l008-fa2a7e20d5-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e79e02069c0574e91dd06835e22759b1c92a0419f008356484ee916dcf11986",
+      "actualDigest": "sha256:7e79e02069c0574e91dd06835e22759b1c92a0419f008356484ee916dcf11986",
+      "canvasAnchorDigest": "sha256:daf55bc6d17616f8eccf8061cc50f6dfbdfa1a94394201c9e4ec9900a606e0b9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L008-FA2A7E20D5-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L012-7475F2889D-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l012-7475f2889d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:835434ceffb29fdcc7a0c927747d6eee669359fba1cf5c2607e61e727405217e",
+      "actualDigest": "sha256:835434ceffb29fdcc7a0c927747d6eee669359fba1cf5c2607e61e727405217e",
+      "canvasAnchorDigest": "sha256:ee7a06a7410427601090548cb3c2d88f4bacf340305ae69584bf080252c5a279",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L012-7475F2889D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L012-7475F2889D-04",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l012-7475f2889d-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:211df05b653e18bbe3584ff3f07be000d0cba0dfe4b8b444544da4ccfa95aa3c",
+      "actualDigest": "sha256:211df05b653e18bbe3584ff3f07be000d0cba0dfe4b8b444544da4ccfa95aa3c",
+      "canvasAnchorDigest": "sha256:9f6d87640956e1e5ee10ab715996524a3458ed54f4f72c51c79e0ccbeea97c48",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L012-7475F2889D-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L024-CD4E87972C-06",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l024-cd4e87972c-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ac67371915d756a0659d2b7bcf4657ad39e97e5821dff78c45e4ceb6802c6381",
+      "actualDigest": "sha256:ac67371915d756a0659d2b7bcf4657ad39e97e5821dff78c45e4ceb6802c6381",
+      "canvasAnchorDigest": "sha256:7e1128b7713fc638fa6e10ce7c93f66007479218749870ad4671392b6ec2d787",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L024-CD4E87972C-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L024-CD4E87972C-07",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l024-cd4e87972c-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e338c97c2f0b971fcfe7b1e0a2457665d995571ec4655d06e3ca7dadea975c7e",
+      "actualDigest": "sha256:e338c97c2f0b971fcfe7b1e0a2457665d995571ec4655d06e3ca7dadea975c7e",
+      "canvasAnchorDigest": "sha256:bfd6de5a45cae70fca0a77dc681f9013e95cfe7414ceeb388c1496e2fc6d7547",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L024-CD4E87972C-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l029-3f505df5fd",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2891b7cb65fbf5412b1ecce8b53ba26aff889dbdc784c840fb4b1e5472299fba",
+      "actualDigest": "sha256:2891b7cb65fbf5412b1ecce8b53ba26aff889dbdc784c840fb4b1e5472299fba",
+      "canvasAnchorDigest": "sha256:6f23db5d54cff2d1a2d7bb3b6c7537f7bb60f837c3865462b84d2064ff4aa8dc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L029-3F505DF5FD rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD-04",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l029-3f505df5fd-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f1e97447936ac33f8b9c81a7bfb4d618e19316f3dcf060f80ab77e930ae357f8",
+      "actualDigest": "sha256:f1e97447936ac33f8b9c81a7bfb4d618e19316f3dcf060f80ab77e930ae357f8",
+      "canvasAnchorDigest": "sha256:39014c7d606f187118aec2520af6aeaa3bd28978898f3330c88a014eedbd443b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L029-3F505DF5FD-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD-05",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l029-3f505df5fd-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3462811dafca28b1880492fa069f416f53af2b8baa3ab1812c7c238407c841a2",
+      "actualDigest": "sha256:3462811dafca28b1880492fa069f416f53af2b8baa3ab1812c7c238407c841a2",
+      "canvasAnchorDigest": "sha256:ce3c8c2cb3e5671d6adea2aa3a1145669c9e2afd5c0690824abbc6c725ceacb5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L029-3F505DF5FD-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-04",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l034-92dce2559a-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7e4a96c148aafe9d6e55d81a8c92c9017b1afc45920c7a693382f5ef2c06b2b0",
+      "actualDigest": "sha256:7e4a96c148aafe9d6e55d81a8c92c9017b1afc45920c7a693382f5ef2c06b2b0",
+      "canvasAnchorDigest": "sha256:f43ee85d62ddff6129761ba01a860a4446b2765e9bee8305b429d74ca150aec1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L034-92DCE2559A-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-07",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l034-92dce2559a-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:78c37a118760f1cb512c60761617224d44cfa0930614c084c74994e10221b4f4",
+      "actualDigest": "sha256:78c37a118760f1cb512c60761617224d44cfa0930614c084c74994e10221b4f4",
+      "canvasAnchorDigest": "sha256:246f54be5c398bd82835b9f466368bd63740d7773c52e3c24cf5e32b12f9f739",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L034-92DCE2559A-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-11",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l034-92dce2559a-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:132c435df66de79c20755b364b676c92fbb17d6652d976e25b96748bcd9dba65",
+      "actualDigest": "sha256:132c435df66de79c20755b364b676c92fbb17d6652d976e25b96748bcd9dba65",
+      "canvasAnchorDigest": "sha256:fd23b7dcda926d65f3b83f972f56a5d0aaa324009eac3e1188bca3b7abc795c6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L034-92DCE2559A-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l037-733d6be9e3-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ba9c795a8e66a6893253c9733e2a0adc086543867d6d5ea6d794522452778602",
+      "actualDigest": "sha256:ba9c795a8e66a6893253c9733e2a0adc086543867d6d5ea6d794522452778602",
+      "canvasAnchorDigest": "sha256:cd7fff044133cdafa544149c41fc4d8da7a742f01176da6bd5716929bd1a3493",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L037-733D6BE9E3-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-03",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l037-733d6be9e3-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0169e3a3b929f721b04f7f88dbb56c9a0d49cd32252c95a8ebbc928b94403de3",
+      "actualDigest": "sha256:0169e3a3b929f721b04f7f88dbb56c9a0d49cd32252c95a8ebbc928b94403de3",
+      "canvasAnchorDigest": "sha256:79e91e0793a342acfe5c6767b76f2f62e3009e1264729d5730f45a65cab82589",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L037-733D6BE9E3-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-04",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l037-733d6be9e3-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0c31ef6fd25b6afc95cbb9add325cc4971c4a8031cbbc029ea3ccba80aae6990",
+      "actualDigest": "sha256:0c31ef6fd25b6afc95cbb9add325cc4971c4a8031cbbc029ea3ccba80aae6990",
+      "canvasAnchorDigest": "sha256:689ecbf9cf330056fdf32c5dff45f6b0d2085fa65df6e2618a4df67c0f2675b8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L037-733D6BE9E3-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-05",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l037-733d6be9e3-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1ee2e89a95ace8bdec45d796fbc8a9f584ce4dff1aaa739d9c6c296120c41803",
+      "actualDigest": "sha256:1ee2e89a95ace8bdec45d796fbc8a9f584ce4dff1aaa739d9c6c296120c41803",
+      "canvasAnchorDigest": "sha256:21f032313522ff9cb4efebf67555ae9869efe94540a960306c4732c94b66ef3a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L037-733D6BE9E3-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-06",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l037-733d6be9e3-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7ef7d307da98beeeb4bf694c1bb72a6c6e4dde7c2031399dbf7b5ddb338f4b16",
+      "actualDigest": "sha256:7ef7d307da98beeeb4bf694c1bb72a6c6e4dde7c2031399dbf7b5ddb338f4b16",
+      "canvasAnchorDigest": "sha256:a80d8596a5638ec8b8b7e443a1df49f421375e2764ab0d8c12337913ee34d441",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L037-733D6BE9E3-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l039-e968352f7e-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8ff951d4145ae1643ca93f845fc0ad4b88de8b87dc91155a4cde04266c8a6321",
+      "actualDigest": "sha256:8ff951d4145ae1643ca93f845fc0ad4b88de8b87dc91155a4cde04266c8a6321",
+      "canvasAnchorDigest": "sha256:99b1f4ff0f430c21e02ba5cb4e6e46411793b3acebbb01547e21ed9923cc9725",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L039-E968352F7E-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-03",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l039-e968352f7e-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:04a2666a10aa54be8dd5a8f527b7e21763a0be6deb7c554cb6d25dc836b39a24",
+      "actualDigest": "sha256:04a2666a10aa54be8dd5a8f527b7e21763a0be6deb7c554cb6d25dc836b39a24",
+      "canvasAnchorDigest": "sha256:cf6dca52ac5d1d054f7977a09f48ca2757b47c4b90869fc10cd710934d12356d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L039-E968352F7E-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-04",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l039-e968352f7e-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ca2ed19f3176e532ab7b3e2b6ed442f4ee285227069bb94d17dc9532575e7a0a",
+      "actualDigest": "sha256:ca2ed19f3176e532ab7b3e2b6ed442f4ee285227069bb94d17dc9532575e7a0a",
+      "canvasAnchorDigest": "sha256:c940dd9e05fef593f87d96d64d934aad88c99c4f54a67eab3688691d9b264562",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L039-E968352F7E-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-05",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l039-e968352f7e-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e52ece3213193b279fbcbeb9ecd8bccf7c33bae6c74f8f822bc9046dc04b4c28",
+      "actualDigest": "sha256:e52ece3213193b279fbcbeb9ecd8bccf7c33bae6c74f8f822bc9046dc04b4c28",
+      "canvasAnchorDigest": "sha256:c45f3d50d6e3eff3167aa3cfd3d805cf9a425f67588b65c959963df0a8052964",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L039-E968352F7E-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-06",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p406-l039-e968352f7e-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d99e2642721ac30acbaf9cf1bd689b67e05a6eeca78977745306bc322210fa81",
+      "actualDigest": "sha256:d99e2642721ac30acbaf9cf1bd689b67e05a6eeca78977745306bc322210fa81",
+      "canvasAnchorDigest": "sha256:ce9677f26a23fe75c89137c5f3d242a7f0cbb8aacf3f00607bbff48c33c5ba80",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P406-L039-E968352F7E-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p407-l011-a9ad6c35f8",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0e34bda522477e823187a2088a8ff2676187ae94eff041cb2a4edd1e3c5b1290",
+      "actualDigest": "sha256:0e34bda522477e823187a2088a8ff2676187ae94eff041cb2a4edd1e3c5b1290",
+      "canvasAnchorDigest": "sha256:ebf4e8689c0cf0303c1f9bd60b045b49131583f74d6f8a85fe64db37f2869a09",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P407-L011-A9AD6C35F8 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p407-l011-a9ad6c35f8-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:315f0f42fbe5f9347df56a1db73dd69ee554361e6f08a5ce30d1432f6a66f331",
+      "actualDigest": "sha256:315f0f42fbe5f9347df56a1db73dd69ee554361e6f08a5ce30d1432f6a66f331",
+      "canvasAnchorDigest": "sha256:c463be2c3129a7975bd00943d9032459a18b5fd3883aae59334fd53138edaa9f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P407-L011-A9AD6C35F8-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8-03",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p407-l011-a9ad6c35f8-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d3eb74f8ead9a70d329cbac863f362cdb6f14717a757bcfeda4ad2d09a510686",
+      "actualDigest": "sha256:d3eb74f8ead9a70d329cbac863f362cdb6f14717a757bcfeda4ad2d09a510686",
+      "canvasAnchorDigest": "sha256:35a94b761a3f8e7c739a139bd233f1426177af9ecce26b3cbb9ba1341a08359a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P407-L011-A9AD6C35F8-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P407-L016-16E2AC2AC1",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p407-l016-16e2ac2ac1",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:692b82e2ac96882d5d8d72f45eecbff3059416fef5949c8a20e4b85ac67ff05b",
+      "actualDigest": "sha256:692b82e2ac96882d5d8d72f45eecbff3059416fef5949c8a20e4b85ac67ff05b",
+      "canvasAnchorDigest": "sha256:afedb75e837a906ade3f85e0b735a60097cf168d0637fc972194865671943e42",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P407-L016-16E2AC2AC1 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P407-L016-16E2AC2AC1-02",
+      "ownerId": "classical-continuation-patientive-complement",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-continuation-patientive-complement:aci-p407-l016-16e2ac2ac1-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1d7f4c013b2400af6a2d45a0d2c2e5df5437d66b98da3ec3e75c685a80c8e0f6",
+      "actualDigest": "sha256:1d7f4c013b2400af6a2d45a0d2c2e5df5437d66b98da3ec3e75c685a80c8e0f6",
+      "canvasAnchorDigest": "sha256:94151a055a9a87facc74668650aee998fa4382e925f944326fe9fd88acc55ac4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P407-L016-16E2AC2AC1-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 37,
+    "passed": 37,
+    "failed": 0,
+    "mutationsRejected": 37
+  }
+}

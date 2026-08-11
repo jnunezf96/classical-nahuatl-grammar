@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-deverbal-action-compound-source",
+  "canonicalResultDigest": "sha256:c34cd914fec5de84a0e524e82acde5e1a980d3c62cbf0c8d31beb9c7a4d538a6",
+  "observations": [
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l002-5af344f7c2",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:804fc84649e2dde1410c2e12a43b675ad5668687284330a3e6536b51547bd7ea",
+      "actualDigest": "sha256:804fc84649e2dde1410c2e12a43b675ad5668687284330a3e6536b51547bd7ea",
+      "canvasAnchorDigest": "sha256:945e63d14c37c999ccc3174cdd87d7593cf3a5ab9958862237580e98ee89632f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L002-5AF344F7C2 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2-02",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l002-5af344f7c2-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f2e64fe0738319727792286d8f501611c45ad33362cc1724d634113310b0a44c",
+      "actualDigest": "sha256:f2e64fe0738319727792286d8f501611c45ad33362cc1724d634113310b0a44c",
+      "canvasAnchorDigest": "sha256:646240345b09d186c94b4cda010ed4261a1398819d8c17e88ae439373a106b0a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L002-5AF344F7C2-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2-03",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l002-5af344f7c2-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a67ea87f76b51a93e407d8acbd4cf64096a64f0358d518bdddf5675125f0f9fe",
+      "actualDigest": "sha256:a67ea87f76b51a93e407d8acbd4cf64096a64f0358d518bdddf5675125f0f9fe",
+      "canvasAnchorDigest": "sha256:8f8026bdcbbb1b4556dd0e65e16dbf05c5b8d4a55b7d07a62cb821106b2e3643",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L002-5AF344F7C2-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L006-B669EADB65",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l006-b669eadb65",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:781e059ded491dd2243d7b4d64d012c14cbefa7fd6f7b08e0894883435b2c8e7",
+      "actualDigest": "sha256:781e059ded491dd2243d7b4d64d012c14cbefa7fd6f7b08e0894883435b2c8e7",
+      "canvasAnchorDigest": "sha256:923864397c304eee61dd52e8d407c6df575aa7709dd063a8f0e2e9a88b3168bd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L006-B669EADB65 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L006-B669EADB65-02",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l006-b669eadb65-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d77572b39e50b3b76b82cb46a6555a22be34f9f14d81a3cd7823f6e70863defd",
+      "actualDigest": "sha256:d77572b39e50b3b76b82cb46a6555a22be34f9f14d81a3cd7823f6e70863defd",
+      "canvasAnchorDigest": "sha256:937da3451583a8e0fe6b73c5d4d59b92bec75aa42bbce220671ad47d49e16a4c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L006-B669EADB65-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-05",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l009-d75da04d53-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:de16dc80e2ecf2cef8afc61180a6367ba4980d9e6a4eb6fb32183125d29eec1d",
+      "actualDigest": "sha256:de16dc80e2ecf2cef8afc61180a6367ba4980d9e6a4eb6fb32183125d29eec1d",
+      "canvasAnchorDigest": "sha256:c097a2f207953de0ea3c869023e350fe3f982ac4cf4757c43f3e51fb08d8e035",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L009-D75DA04D53-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-06",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l009-d75da04d53-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d0fbc7bfe53193d8127dfc37ed620e6581374ed4fe3f011d1bca2eb5a8b5e3de",
+      "actualDigest": "sha256:d0fbc7bfe53193d8127dfc37ed620e6581374ed4fe3f011d1bca2eb5a8b5e3de",
+      "canvasAnchorDigest": "sha256:7a58e328730a26018aaceb67c673c7a03b32d080e444afeb3ffeeaee23ccbf4f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L009-D75DA04D53-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-07",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l009-d75da04d53-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:72001fd978f76b47fffa5624178897f8313878ba9069bf261c2c2c4fc562952d",
+      "actualDigest": "sha256:72001fd978f76b47fffa5624178897f8313878ba9069bf261c2c2c4fc562952d",
+      "canvasAnchorDigest": "sha256:b3ef2355c24d76579d1565392f3071561c3e2e0ce69afa9cf978aa8a3140c7c8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L009-D75DA04D53-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-02",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l012-eccb92dab2-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:529753a140390552d10999193541d8485cd0db86856ec97b70049c7e59574a9c",
+      "actualDigest": "sha256:529753a140390552d10999193541d8485cd0db86856ec97b70049c7e59574a9c",
+      "canvasAnchorDigest": "sha256:7682a1146ce9a5058b56673a6529845b15e27e0ae404b968ba380ee8dab751cd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L012-ECCB92DAB2-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-04",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l012-eccb92dab2-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:67b880796ac198f14a244d0f7fffc90e4dd4f3f4ea67435de46c0063b53124ae",
+      "actualDigest": "sha256:67b880796ac198f14a244d0f7fffc90e4dd4f3f4ea67435de46c0063b53124ae",
+      "canvasAnchorDigest": "sha256:7e25fcfe2bf627db8e9abf11fbd6c564f82718a10135adc59f2d7e1c3271e69a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L012-ECCB92DAB2-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-05",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l012-eccb92dab2-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f98d04475e463ea957af4623329d3b62b4626145681fd1a98e5907073c7f5268",
+      "actualDigest": "sha256:f98d04475e463ea957af4623329d3b62b4626145681fd1a98e5907073c7f5268",
+      "canvasAnchorDigest": "sha256:dfe12f737fb1adcd3ceb6e34e63054458dbc138434dccbcf2c43b50af95595d0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L012-ECCB92DAB2-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L014-44FFFA7F6F-03",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l014-44fffa7f6f-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:99f4294781966360a5ac5c8b068ff0d0fc8511057e5bffa99f9d2e71fe260d48",
+      "actualDigest": "sha256:99f4294781966360a5ac5c8b068ff0d0fc8511057e5bffa99f9d2e71fe260d48",
+      "canvasAnchorDigest": "sha256:b8d6b15e9c7212b1e878341c30a9640193dbc124e835492ff9e2feaf44c312e4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L014-44FFFA7F6F-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P375-L014-44FFFA7F6F-07",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p375-l014-44fffa7f6f-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:22a67161eff50346dc9d3164c6ea7b435704960ad8820079b7d733bb88d1f8c0",
+      "actualDigest": "sha256:22a67161eff50346dc9d3164c6ea7b435704960ad8820079b7d733bb88d1f8c0",
+      "canvasAnchorDigest": "sha256:2bd8c99b694a45b3a09bb21b2cb48389216c94c66446fc4ca8c881c4ea0ac963",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P375-L014-44FFFA7F6F-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L031-24B216CCA0-04",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l031-24b216cca0-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a571c83e8ab90e38519d938738f10f9f0e2836bec92ef76fd86347404c1167c6",
+      "actualDigest": "sha256:a571c83e8ab90e38519d938738f10f9f0e2836bec92ef76fd86347404c1167c6",
+      "canvasAnchorDigest": "sha256:54104b18c9ec66764d6bd530d6899c4d61a87483656c081d3cf729d755c4a526",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L031-24B216CCA0-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L031-24B216CCA0-09",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l031-24b216cca0-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f222caa4d04d1192c7b0f93b9729121996f5a43785298ea875687d0da83660c6",
+      "actualDigest": "sha256:f222caa4d04d1192c7b0f93b9729121996f5a43785298ea875687d0da83660c6",
+      "canvasAnchorDigest": "sha256:3f5be3b269019298b26f624ca975bd4d831ca3c85b169051ddf58610297968ba",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L031-24B216CCA0-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-04",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l034-3e5e774810-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:36e4a2025fca11e60c77570a827195c6a59431cae094a4aa7304a2d822f46259",
+      "actualDigest": "sha256:36e4a2025fca11e60c77570a827195c6a59431cae094a4aa7304a2d822f46259",
+      "canvasAnchorDigest": "sha256:362d039f610e92380561888542578dedb12a456a30634eb8c7bacecb0f1addaa",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L034-3E5E774810-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-06",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l034-3e5e774810-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:628e1848b1ea72335746aab7785d7aa4207b0dabf37196d9f0a944c0f2ce000c",
+      "actualDigest": "sha256:628e1848b1ea72335746aab7785d7aa4207b0dabf37196d9f0a944c0f2ce000c",
+      "canvasAnchorDigest": "sha256:d887edbef068d0ae9272fb11e9367ec520fdb7aa10ecff6a73f40c7ef1290b65",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L034-3E5E774810-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-09",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l034-3e5e774810-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b773fc0c552139b93e07ed5e01756064f4b2e1292cac4366fba358e5932a5bff",
+      "actualDigest": "sha256:b773fc0c552139b93e07ed5e01756064f4b2e1292cac4366fba358e5932a5bff",
+      "canvasAnchorDigest": "sha256:603f8e4300dbb269c540834fd3b1cd3b555579db58b476cf540fd34021dd7395",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L034-3E5E774810-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-05",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l036-dd117f3033-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:84855ead428e1fb2361cbc0c872bba3e0c3ac8cc2c0cd43cc0f401209c626f9b",
+      "actualDigest": "sha256:84855ead428e1fb2361cbc0c872bba3e0c3ac8cc2c0cd43cc0f401209c626f9b",
+      "canvasAnchorDigest": "sha256:5948aafc7b388ec7fa39b14d02997f93395db3e1080e9e9bf12c58df381eeec3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L036-DD117F3033-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-06",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l036-dd117f3033-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b03de586446e7f6d9d052a98b79d767cd3e9753b5e03d7ab3d72f4adefa8a64d",
+      "actualDigest": "sha256:b03de586446e7f6d9d052a98b79d767cd3e9753b5e03d7ab3d72f4adefa8a64d",
+      "canvasAnchorDigest": "sha256:c01b64ecb9b0c0546a60a54dcb101d44a09bfd1d1c4e7ddf75bd5ead46fc6c09",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L036-DD117F3033-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-07",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l036-dd117f3033-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5dd906426ca3e482105196a5e5c76eec6d7d83a4bc7796bbc969c452fd3360d2",
+      "actualDigest": "sha256:5dd906426ca3e482105196a5e5c76eec6d7d83a4bc7796bbc969c452fd3360d2",
+      "canvasAnchorDigest": "sha256:d67a50849934dcdb1c30bc9f0cdfc937360764ad0c80d9d91e06eaaa40de4348",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L036-DD117F3033-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-08",
+      "ownerId": "classical-deverbal-action-compound-source",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-deverbal-action-compound-source:aci-p376-l036-dd117f3033-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:15cd57c839066591c9a21df3eaed8b04936a17cc496fc8df4e1e583b513e6256",
+      "actualDigest": "sha256:15cd57c839066591c9a21df3eaed8b04936a17cc496fc8df4e1e583b513e6256",
+      "canvasAnchorDigest": "sha256:a7cae759e890dfdb4891da2f4dfa27a8cd24d4581c7bfca3693361a5a3a80708",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P376-L036-DD117F3033-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 22,
+    "passed": 22,
+    "failed": 0,
+    "mutationsRejected": 22
+  }
+}

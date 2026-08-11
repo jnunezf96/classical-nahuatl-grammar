@@ -1,0 +1,2124 @@
+{
+  "schemaVersion": 1,
+  "kind": "classical-canvas-grammar-fact-checkpoint-selection",
+  "checkpoint": "009",
+  "selectionRule": "largest pending read-only grammar-fact owners, owner-id tie break, atom-id order",
+  "counts": {
+    "registryFacts": 4320,
+    "selectedOwners": 18,
+    "selectedAtoms": 500
+  },
+  "sourceLedgerDigest": "sha256:61ec0e74d8c227d6d120336a32a56b9c3110f8c06b1614a87c2d996edcf4846a",
+  "owners": [
+    {
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "prefix": "ClassicalAdverbialAdjunctionParticleAdverbialCollocation",
+      "selection": "claim-p4675",
+      "requestedFacet": "p4675-there-are-many-lexicalized-collocations-in-which-a-particle"
+    },
+    {
+      "ownerId": "classical-compound-nnc-yo-matrix",
+      "prefix": "ClassicalCompoundNncYoMatrix",
+      "selection": "claim-p3112",
+      "requestedFacet": "p3112-this-is-a-deverbal-nounstem-whose-derivation-is-described"
+    },
+    {
+      "ownerId": "classical-continuation-patientive-complement",
+      "prefix": "ClassicalContinuationPatientiveComplement",
+      "selection": "claim-p3829",
+      "requestedFacet": "p3829-when-a-patientive-nounstem-is-incorporated-as-an-object"
+    },
+    {
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "prefix": "ClassicalAdverbialPreteritAgentiveFullStem",
+      "selection": "claim-p4204",
+      "requestedFacet": "p4204-other-root-plus-ya-verbs-use-the-full-stem"
+    },
+    {
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "prefix": "ClassicalDenominalVncTiAPossessionSingleSemantics",
+      "selection": "claim-p5068",
+      "requestedFacet": "p5068-a-type-one-causative-stem-from-a-ti-ofpossession"
+    },
+    {
+      "ownerId": "classical-patientive-perfective-active-core",
+      "prefix": "ClassicalPatientivePerfectiveActiveCore",
+      "selection": "claim-p3747",
+      "requestedFacet": "p3747-a-perlective-patientive-nounstem-has-a-perlective-active-verbstem"
+    },
+    {
+      "ownerId": "classical-denominal-vnc-ihui-ahui-semantics",
+      "prefix": "ClassicalDenominalVncIhuiAhuiSemantics",
+      "selection": "claim-p5140",
+      "requestedFacet": "p5140-the-meaning-of-the-resultant-verbstem-is-to-become"
+    },
+    {
+      "ownerId": "classical-continuation-patientive-compound",
+      "prefix": "ClassicalContinuationPatientiveCompound",
+      "selection": "claim-p3743",
+      "requestedFacet": "p3743-at-times-these-nahuatl-patientive-nounstems-can-be-translated"
+    },
+    {
+      "ownerId": "classical-patientive-passive-core",
+      "prefix": "ClassicalPatientivePassiveCore",
+      "selection": "claim-p3691",
+      "requestedFacet": "p3691-the-passive-patientive-nounstem-has-the-core-of-a"
+    },
+    {
+      "ownerId": "classical-type-two-tia-destockal-alternative",
+      "prefix": "ClassicalTypeTwoTiaDestockalAlternative",
+      "selection": "claim-p2430",
+      "requestedFacet": "p2430-certain-destockal-i-hui-a-hui-intransitive-verb-stems"
+    },
+    {
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "prefix": "ClassicalIncorporatedAdverbSupplementObject",
+      "selection": "claim-p3030",
+      "requestedFacet": "p3030-a-transitive-vnc-as-principal-clause-in-the-source"
+    },
+    {
+      "ownerId": "classical-patientive-human-source-tla",
+      "prefix": "ClassicalPatientiveHumanSourceTla",
+      "selection": "claim-p3721",
+      "requestedFacet": "p3721-a-final-a-in-the-active-voice-verbstem-is"
+    },
+    {
+      "ownerId": "classical-relational-locative-n-imperfect-active-state",
+      "prefix": "ClassicalRelationalLocativeNImperfectActiveState",
+      "selection": "claim-p4370",
+      "requestedFacet": "p4370-when-the-source-is-an-active-voice-vnc"
+    },
+    {
+      "ownerId": "classical-personal-name-nnc-preterit-agentive-source",
+      "prefix": "ClassicalPersonalNameNncPreteritAgentiveSource",
+      "selection": "claim-p5171",
+      "requestedFacet": "p5171-a-preterit-agentive-nnc-serves-as-the-stem"
+    },
+    {
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "prefix": "ClassicalVerbstemPredicateParadigmAnalysis",
+      "selection": "claim-p930",
+      "requestedFacet": "p930-they-cooperate-with-the-subject-pronouns-presented-in-5"
+    },
+    {
+      "ownerId": "classical-directional-semantics-analysis",
+      "prefix": "ClassicalDirectionalSemanticsAnalysis",
+      "selection": "claim-p989",
+      "requestedFacet": "p989-for-example-one-translates-both-naqui-and-nonaqui-as"
+    },
+    {
+      "ownerId": "classical-deverbal-action-compound-source",
+      "prefix": "ClassicalDeverbalActionCompoundSource",
+      "selection": "claim-p3656",
+      "requestedFacet": "p3656-further-remarks-may-be-made-concerning-deverbal-nounstems-formed"
+    },
+    {
+      "ownerId": "classical-patientive-imperfective-active-core",
+      "prefix": "ClassicalPatientiveImperfectiveActiveCore",
+      "selection": "claim-p3760",
+      "requestedFacet": "p3760-the-imperfective-patientive-nounstem-has-an-imperfective-active-stem"
+    }
+  ],
+  "atoms": [
+    {
+      "atomId": "ACI-P080-L040-C63CC85725",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-02",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-03",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-04",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-05",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-06",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-02",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-03",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-04",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-05",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-06",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-02",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-03",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-04",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-05",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-06",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-07",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-02",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-03",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-04",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-05",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-06",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-07",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-08",
+      "semanticOwnerId": "classical-verbstem-predicate-paradigm-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L003-A68E07F4BD-04",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L003-A68E07F4BD-05",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L011-598C7C3A55-02",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L011-598C7C3A55-03",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L011-598C7C3A55-04",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244-02",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244-03",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244-04",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244-05",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L013-1599BAE244-06",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-02",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-03",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-04",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-05",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-06",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-07",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L017-1B0C0447F4-08",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L021-8758507206-02",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L021-8758507206-03",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L021-8758507206-04",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P089-L021-8758507206-05",
+      "semanticOwnerId": "classical-directional-semantics-analysis"
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-03",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-04",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-05",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L020-76A31D543B-06",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-03",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-04",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-05",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-06",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-07",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P211-L022-620AC3A373-08",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-02",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-03",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-05",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-06",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-07",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-09",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-10",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-11",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-13",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-14",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-15",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-16",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-18",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-19",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-20",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P212-L002-C0A9DF1192-21",
+      "semanticOwnerId": "classical-type-two-tia-destockal-alternative"
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-02",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-04",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-06",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-04",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-06",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P287-L036-C894D113A0-11",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L002-555B394CB5-09",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L005-F89C85B0A8",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-04",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-02",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-04",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-06",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L031-66053E0692-09",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-02",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-04",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-03",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-06",
+      "semanticOwnerId": "classical-incorporated-adverb-supplement-object"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-02",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-03",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-06",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-07",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-10",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-11",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-12",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-13",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-14",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L005-DA73B6471A-15",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-02",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-03",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-04",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-05",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-07",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-08",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-09",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-10",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-11",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-12",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-14",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-15",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-16",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-17",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-18",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-19",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-20",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-21",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-23",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-24",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-25",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-26",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-27",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-28",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P300-L018-D4D02DBC63-29",
+      "semanticOwnerId": "classical-compound-nnc-yo-matrix"
+    },
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-09",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-10",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-03",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-06",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-08",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-09",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-10",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-11",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-12",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-02",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-03",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-02",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-03",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-02",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-03",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L025-0696726FB9-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P350-L035-A6C951792C",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-04",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-11",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-12",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-03",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-05",
+      "semanticOwnerId": "classical-adverbial-preterit-agentive-full-stem"
+    },
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2-02",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L002-5AF344F7C2-03",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L006-B669EADB65",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L006-B669EADB65-02",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-05",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-06",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L009-D75DA04D53-07",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-02",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-04",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L012-ECCB92DAB2-05",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L014-44FFFA7F6F-03",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P375-L014-44FFFA7F6F-07",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L031-24B216CCA0-04",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L031-24B216CCA0-09",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-04",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-06",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L034-3E5E774810-09",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-05",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-06",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-07",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P376-L036-DD117F3033-08",
+      "semanticOwnerId": "classical-deverbal-action-compound-source"
+    },
+    {
+      "atomId": "ACI-P378-L030-367C07B808",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P378-L030-367C07B808-02",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P378-L030-367C07B808-04",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P378-L037-F38BDF30AB",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P378-L037-F38BDF30AB-03",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L007-40D090EA07",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L007-40D090EA07-05",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L007-40D090EA07-06",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L014-5AD5A1A9B4",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L017-06574BE383-03",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L017-06574BE383-04",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L017-06574BE383-09",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L030-74ABBDC7F6",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L030-74ABBDC7F6-04",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L030-74ABBDC7F6-05",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L040-0C675611E4-04",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P379-L040-0C675611E4-08",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L004-3D141A2700-03",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L012-7AF6AD51C1-03",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L012-7AF6AD51C1-06",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L015-4A7429572B-03",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L015-4A7429572B-08",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L015-4A7429572B-09",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L019-67B363B16F-04",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L019-67B363B16F-09",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P380-L021-D61FB57D37",
+      "semanticOwnerId": "classical-patientive-passive-core"
+    },
+    {
+      "atomId": "ACI-P386-L010-88777B4841-02",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L022-BE6CEFF097-03",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L022-BE6CEFF097-05",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L025-4C702F15D6-03",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L025-4C702F15D6-05",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L025-4C702F15D6-06",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P386-L025-4C702F15D6-11",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L005-50F8B30EEE",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L005-50F8B30EEE-02",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L005-50F8B30EEE-03",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L005-50F8B30EEE-04",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L011-103F95FA19-04",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L011-103F95FA19-08",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L011-103F95FA19-09",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L013-7CEBB51ED5",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L013-7CEBB51ED5-03",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L013-7CEBB51ED5-05",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L013-7CEBB51ED5-06",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L018-DA63075C51",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L018-DA63075C51-02",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L018-DA63075C51-07",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L030-A76C6CB3D7",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P387-L030-A76C6CB3D7-02",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P388-L002-BD38CD35BB",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P388-L002-BD38CD35BB-05",
+      "semanticOwnerId": "classical-patientive-human-source-tla"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-03",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-04",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-05",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-06",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-07",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-08",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L019-106C0F3184-09",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-02",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-03",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-04",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-05",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-06",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L023-B32E53873F-07",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-03",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-04",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-05",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-06",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-07",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-08",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-09",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L025-4D9B57B9CD-10",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L029-688AF9F1FB-04",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L029-688AF9F1FB-05",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L029-688AF9F1FB-08",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L029-688AF9F1FB-09",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P390-L029-688AF9F1FB-10",
+      "semanticOwnerId": "classical-continuation-patientive-compound"
+    },
+    {
+      "atomId": "ACI-P391-L025-2D737AC492",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P391-L025-2D737AC492-04",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L002-F28FDD4283-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L013-98FAA391C8-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L019-3D346C1A0B",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L019-3D346C1A0B-04",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L019-3D346C1A0B-08",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L019-3D346C1A0B-10",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L026-15271633D9",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L030-791A67715E-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L030-791A67715E-06",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L030-791A67715E-09",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L032-F7A60C30EA-04",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L032-F7A60C30EA-08",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L035-ECE2B0D92D",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P392-L040-AF1B1F5260-02",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L009-7C3AC823DB-02",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L012-0B90E81B02-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L016-F9D5859E7E-02",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L016-F9D5859E7E-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L016-F9D5859E7E-06",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L020-B4FE290377",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P393-L023-2243ABEF41",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-09",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-10",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-11",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-12",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-13",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-16",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L005-30D6FC9E02-17",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L010-30A4A28E1C-04",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L010-30A4A28E1C-09",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L027-37C2F8DB15",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L027-37C2F8DB15-02",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L030-D1BC95BF3C",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P394-L030-D1BC95BF3C-03",
+      "semanticOwnerId": "classical-patientive-imperfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L014-5D98A872B8",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L014-5D98A872B8-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L014-5D98A872B8-04",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L030-5D4F285256-03",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L030-5D4F285256-09",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L030-5D4F285256-10",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P403-L030-5D4F285256-11",
+      "semanticOwnerId": "classical-patientive-perfective-active-core"
+    },
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-05",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-07",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L002-A8BA0E23CC-10",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-05",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-06",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-08",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-09",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-12",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L005-A45E352F31-13",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L008-FA2A7E20D5-03",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L012-7475F2889D-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L012-7475F2889D-04",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L024-CD4E87972C-06",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L024-CD4E87972C-07",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD-04",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L029-3F505DF5FD-05",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-04",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-07",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L034-92DCE2559A-11",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-03",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-04",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-05",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L037-733D6BE9E3-06",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-03",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-04",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-05",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P406-L039-E968352F7E-06",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P407-L011-A9AD6C35F8-03",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P407-L016-16E2AC2AC1",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P407-L016-16E2AC2AC1-02",
+      "semanticOwnerId": "classical-continuation-patientive-complement"
+    },
+    {
+      "atomId": "ACI-P474-L018-7E4E9C43D5-04",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-02",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-03",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-04",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-05",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-06",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L021-FB381CD1C5-07",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L024-3AEA652F47-04",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P474-L027-444734E366-05",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-02",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-03",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-04",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-05",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-06",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-07",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L017-3630297B67-08",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-02",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-03",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-04",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-05",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-06",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L021-73D3169902-10",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P475-L026-62B0535FD5",
+      "semanticOwnerId": "classical-relational-locative-n-imperfect-active-state"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-04",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-06",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-07",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-09",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-10",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-12",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-13",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-15",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-17",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-19",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-20",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-23",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-24",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-03",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-04",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-05",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-06",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-07",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-08",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-09",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-10",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-13",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-05",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-07",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L018-5950A6C0C4",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L018-5950A6C0C4-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-03",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-04",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-02",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-04",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-05",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-06",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-07",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-09",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-10",
+      "semanticOwnerId": "classical-adverbial-adjunction-particle-adverbial-collocation"
+    },
+    {
+      "atomId": "ACI-P594-L022-15FC7E528E-10",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L024-50842542F5-09",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-03",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-05",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-06",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-07",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-08",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P594-L036-B4FDE6D7D0-09",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L006-D86C20FF16-09",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L018-EB6FF7EB32-08",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L024-63822797A1",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L024-63822797A1-02",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L029-53CB3097DE-09",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L029-53CB3097DE-11",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L030-3105AA389C",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-02",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-04",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-05",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-08",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-09",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-11",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-12",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-13",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-14",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-15",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-16",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-17",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-03",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-05",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-08",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P596-L002-9D55BA09D5-02",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P596-L002-9D55BA09D5-03",
+      "semanticOwnerId": "classical-denominal-vnc-ti-a-possession-single-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L019-C67A35AFA6-02",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L019-C67A35AFA6-04",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L019-C67A35AFA6-06",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L019-C67A35AFA6-08",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L023-873D225157-08",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-09",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-10",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-11",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-12",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-13",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-14",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-15",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-16",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-17",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L025-67FBD75041-18",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L033-D8DC8EA5CC-02",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L033-D8DC8EA5CC-03",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L033-D8DC8EA5CC-04",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L033-D8DC8EA5CC-05",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L033-D8DC8EA5CC-06",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L038-83CCE288BC-02",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L038-83CCE288BC-03",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L038-83CCE288BC-04",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L038-83CCE288BC-05",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L040-863FB6706D",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L040-863FB6706D-03",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L040-863FB6706D-04",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P605-L040-863FB6706D-05",
+      "semanticOwnerId": "classical-denominal-vnc-ihui-ahui-semantics"
+    },
+    {
+      "atomId": "ACI-P609-L020-733E9EA870",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P609-L038-A11F4EC810-11",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L014-58145CDFB8-05",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-10",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L023-FD3D83AEAD-11",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-10",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P610-L035-C9CA464C64-11",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-07",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L002-42FEA79089-08",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L008-69D826EAFE-03",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-02",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L013-149008B962-05",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L019-4AEED06354-09",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L027-3EFFDC9A37-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L027-3EFFDC9A37-08",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L030-5E18E9CC56-04",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    },
+    {
+      "atomId": "ACI-P611-L030-5E18E9CC56-09",
+      "semanticOwnerId": "classical-personal-name-nnc-preterit-agentive-source"
+    }
+  ]
+}

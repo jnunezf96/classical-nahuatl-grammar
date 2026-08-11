@@ -1,0 +1,439 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-incorporated-adverb-supplement-object",
+  "canonicalResultDigest": "sha256:bd71da6075d3db925d93fad12540bc993ef63e66008df86dd6deef96a42be120",
+  "observations": [
+    {
+      "atomId": "ACI-P287-L006-4158BBF940",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cabbfd65a482e728898a3d80d5eb9a4aabc576c95df7bcd6d9abc0324b0ec78c",
+      "actualDigest": "sha256:cabbfd65a482e728898a3d80d5eb9a4aabc576c95df7bcd6d9abc0324b0ec78c",
+      "canvasAnchorDigest": "sha256:7f76ca7fc5ee46cab4ac4908fcc069a9400b86dff3082796ecec64550b3e0630",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c69fac217518c57709e50198bdad2720b899a5dce525daa1c445d46b50e17083",
+      "actualDigest": "sha256:c69fac217518c57709e50198bdad2720b899a5dce525daa1c445d46b50e17083",
+      "canvasAnchorDigest": "sha256:6f762d19eb64aadee1dec0f3327f5e5f97e24d2304c8bd7207db564904b14a7f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L006-4158BBF940-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l006-4158bbf940-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:28914c0d363a731b4c78ffba12ebeba483886bdd041f56134d1b6e3c57c0a2e9",
+      "actualDigest": "sha256:28914c0d363a731b4c78ffba12ebeba483886bdd041f56134d1b6e3c57c0a2e9",
+      "canvasAnchorDigest": "sha256:7609e113fa42c6221e78d6d6329016a21f5f86e41f946456698126dbc5da04d2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L006-4158BBF940-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d0247df3334536fc16925a30884b367b58d2df1250b81a4b4d7e2a14888773e0",
+      "actualDigest": "sha256:d0247df3334536fc16925a30884b367b58d2df1250b81a4b4d7e2a14888773e0",
+      "canvasAnchorDigest": "sha256:3c9fc8644e50bb218aad16938d95e9967a042aa2b92ae9dd53053f3e24b90439",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2d7534155e93ef8fc82a0ee987b5e85984ed03a0dae426b720cf9dd7c72a24a3",
+      "actualDigest": "sha256:2d7534155e93ef8fc82a0ee987b5e85984ed03a0dae426b720cf9dd7c72a24a3",
+      "canvasAnchorDigest": "sha256:d922448eb44e5cf3343f927d991ac59c9229d5f50ca677cb585034074681d301",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L024-1CFDFB7DFA-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l024-1cfdfb7dfa-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7685a13b32e7461efb5adbde24cfc40fd3e73f25b425c03c0f8d4ee5f8d29d55",
+      "actualDigest": "sha256:7685a13b32e7461efb5adbde24cfc40fd3e73f25b425c03c0f8d4ee5f8d29d55",
+      "canvasAnchorDigest": "sha256:94f75883abf4b815f359aa74557467c4960b33122077bba4249127426d9b71b7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L024-1CFDFB7DFA-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:845a24dfdd058c5681690d7cdceab2a8565911bb2c241c535262c09dc583cdc8",
+      "actualDigest": "sha256:845a24dfdd058c5681690d7cdceab2a8565911bb2c241c535262c09dc583cdc8",
+      "canvasAnchorDigest": "sha256:692919028ac2c0d4c1dc22b8d6b10472e32f04a43f89e9aa3adf1b0624bd612c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8abfd164722071f003ab8590713ad9caec249844499550cbee266f68b34ffd34",
+      "actualDigest": "sha256:8abfd164722071f003ab8590713ad9caec249844499550cbee266f68b34ffd34",
+      "canvasAnchorDigest": "sha256:aefc1d22343b43b9b6df18201972f14b58576a85f001d487f82de704dcd45b5c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L028-6A1F97F07C-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l028-6a1f97f07c-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9873dbf21ad1f1278ee51d5c085e922943861351be55d458a8a4a2911ac31391",
+      "actualDigest": "sha256:9873dbf21ad1f1278ee51d5c085e922943861351be55d458a8a4a2911ac31391",
+      "canvasAnchorDigest": "sha256:0a850f871a0495db1753441eeb3ed10e50d255879c67acbfc4978138bc2ef7b2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L028-6A1F97F07C-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P287-L036-C894D113A0-11",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p287-l036-c894d113a0-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:53db4c730bef79cbdb316c85f61dc8479c89548ed5039476b275fc5c825c6338",
+      "actualDigest": "sha256:53db4c730bef79cbdb316c85f61dc8479c89548ed5039476b275fc5c825c6338",
+      "canvasAnchorDigest": "sha256:82c5fd8f8c4a00479e5f6d5d8dbc06d1c14cc09833609dd0a1f288e131bb3635",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P287-L036-C894D113A0-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L002-555B394CB5-09",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l002-555b394cb5-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d3c8cbab990666e1c70dc205b32dd29f519938245b24ccbab6da67e771fa8467",
+      "actualDigest": "sha256:d3c8cbab990666e1c70dc205b32dd29f519938245b24ccbab6da67e771fa8467",
+      "canvasAnchorDigest": "sha256:c2a324e82f1633c75771918f01c39119b442b46062c495a998415b50edb230ea",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L002-555B394CB5-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L005-F89C85B0A8",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l005-f89c85b0a8",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2b0e5f98a402e68bfed5c43c21742c83d6bd37172e3ace6f5805060b6a469853",
+      "actualDigest": "sha256:2b0e5f98a402e68bfed5c43c21742c83d6bd37172e3ace6f5805060b6a469853",
+      "canvasAnchorDigest": "sha256:9c4c3cf08a0b531fe0113c8c2905347454908c4b58ec9dac50e2daefd91598fd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L005-F89C85B0A8 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e5f16962b5894c9a6789392fb98391b360948c98c65fec1a5231c0257958f0ba",
+      "actualDigest": "sha256:e5f16962b5894c9a6789392fb98391b360948c98c65fec1a5231c0257958f0ba",
+      "canvasAnchorDigest": "sha256:cec8a94a5e2e8edc9d46c8348619c57dd6ee6d229c15b51f5c1fca6d625028ce",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:587720efade4e0a38756ad75f8bd458d1a6ee1161a7763643ec0a2690b34652c",
+      "actualDigest": "sha256:587720efade4e0a38756ad75f8bd458d1a6ee1161a7763643ec0a2690b34652c",
+      "canvasAnchorDigest": "sha256:338652f3447a6838c7ce4d3b0eab3d7bbff12903e25bc1baecaf458f5b29b4c2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L015-3B46DDDD76-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l015-3b46dddd76-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:05b4c9487fb27d73252d24718b8ad3b69db1e271d4b8dc01ef271c014791c8a6",
+      "actualDigest": "sha256:05b4c9487fb27d73252d24718b8ad3b69db1e271d4b8dc01ef271c014791c8a6",
+      "canvasAnchorDigest": "sha256:5d196326bd632c08fc117be4ad8d2d1ef2030c0a940085d64cfd98316a9b3a74",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L015-3B46DDDD76-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dc94c4833bf086a1e1fbddea0974f03c17bbec2feef614c39863d0f290c1c743",
+      "actualDigest": "sha256:dc94c4833bf086a1e1fbddea0974f03c17bbec2feef614c39863d0f290c1c743",
+      "canvasAnchorDigest": "sha256:dd230f940e129cd1ab1169cce631f4d03913bdad598ad8c6b25edc5852b01236",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:040de0284973f2a8fc203847129e891d3428f3632556b9ee3f85c4e58f69d4d1",
+      "actualDigest": "sha256:040de0284973f2a8fc203847129e891d3428f3632556b9ee3f85c4e58f69d4d1",
+      "canvasAnchorDigest": "sha256:b1420189dd47bed17594112ff2dacf337341db32c89bafe859c5674ab8f671b5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5fb85c782c46f0d89f9961ed8f3ae49b4633054c943b57d960377728b6066c9d",
+      "actualDigest": "sha256:5fb85c782c46f0d89f9961ed8f3ae49b4633054c943b57d960377728b6066c9d",
+      "canvasAnchorDigest": "sha256:df782c3249e9719b0e44deaa28e45190808b01f61ab89bc640e8c730fb8f33b7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L021-A10F9CDF5A-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l021-a10f9cdf5a-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3fdd48c3dd9dab5da49857f94599d0a967567efb0f73092aace6187536a3faa7",
+      "actualDigest": "sha256:3fdd48c3dd9dab5da49857f94599d0a967567efb0f73092aace6187536a3faa7",
+      "canvasAnchorDigest": "sha256:e1d659acb79f9ead1eb24489be492d86f39db97b0955cffac5af5a7166d743b2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L021-A10F9CDF5A-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L031-66053E0692-09",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l031-66053e0692-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9435ad25cb6edf4ad0fd78370acce57fdc7f0b71c7437881e76d46c9ca57e332",
+      "actualDigest": "sha256:9435ad25cb6edf4ad0fd78370acce57fdc7f0b71c7437881e76d46c9ca57e332",
+      "canvasAnchorDigest": "sha256:38d521251f3d9c0d3d5660d8c8c3707c910c98a68ce9169bf874c0e638da98a2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L031-66053E0692-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-02",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l033-ac4116496d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cb3dd55aa2a6942d637e5f50b4a00e1e6648d1721fb9ec246a3df83561269094",
+      "actualDigest": "sha256:cb3dd55aa2a6942d637e5f50b4a00e1e6648d1721fb9ec246a3df83561269094",
+      "canvasAnchorDigest": "sha256:57710fca02010f8085aac66e2e1aa88625ae49ee38cc9214a75812ab5867f125",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L033-AC4116496D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L033-AC4116496D-04",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l033-ac4116496d-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bcccc90946ecdd95888b01ca887a84b2d32e2cfbec328deb463822d6e0f0f199",
+      "actualDigest": "sha256:bcccc90946ecdd95888b01ca887a84b2d32e2cfbec328deb463822d6e0f0f199",
+      "canvasAnchorDigest": "sha256:d33fe78c01d4596052877ce082aedd511753d7adbc6fc20ca09cbacfd5cce65f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L033-AC4116496D-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:fa7ab0384fe4fabb955e2365b1aa9baa014cab71f05f8dcfe84d27b4ab0b17cc",
+      "actualDigest": "sha256:fa7ab0384fe4fabb955e2365b1aa9baa014cab71f05f8dcfe84d27b4ab0b17cc",
+      "canvasAnchorDigest": "sha256:df08abec3908f0b82af143499192aa00b0a3efc93a41d9852bc7fa2e2aea2d11",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-03",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:93c9af72854a35f53f53786ecbe88550a3111770f21ed49b47782d62422c2185",
+      "actualDigest": "sha256:93c9af72854a35f53f53786ecbe88550a3111770f21ed49b47782d62422c2185",
+      "canvasAnchorDigest": "sha256:4681234a029e40ba0d1d3ab2831fe2c758ec621043edb83f81dacf9a93338a37",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P288-L039-8838B8D44E-06",
+      "ownerId": "classical-incorporated-adverb-supplement-object",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-adverb-supplement-object:aci-p288-l039-8838b8d44e-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6e59edc15749015c58d0e590780250aef97e30368e12391ed7bd81153c2f69f9",
+      "actualDigest": "sha256:6e59edc15749015c58d0e590780250aef97e30368e12391ed7bd81153c2f69f9",
+      "canvasAnchorDigest": "sha256:4fcf1fb33fe3f2d59e10de054051d0c9024345393eebeab7d208c689e0c94e21",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P288-L039-8838B8D44E-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 25,
+    "passed": 25,
+    "failed": 0,
+    "mutationsRejected": 25
+  }
+}

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-atom-ledger-cleanup-009";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260810-canvas-grammar-facts-010";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

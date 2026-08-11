@@ -1,0 +1,558 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+  "canonicalResultDigest": "sha256:cdb677abe0f73feaef8965d104b9bf493ab1c2774ce9f3e8a0da2a05d22e2e64",
+  "observations": [
+    {
+      "atomId": "ACI-P594-L022-15FC7E528E-10",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l022-15fc7e528e-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:480c62164741c00ad2ab5719aca0d967e63371839b491bb046af10810d2d7f00",
+      "actualDigest": "sha256:480c62164741c00ad2ab5719aca0d967e63371839b491bb046af10810d2d7f00",
+      "canvasAnchorDigest": "sha256:a267874a4bc3251fd093f96a7f04ef893710a60a99f35bc78ad7f9ac1271af61",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L022-15FC7E528E-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L024-50842542F5-09",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l024-50842542f5-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9d08588d739b933a4ad591e60fe48b237963d1ac9bd2022d7552bc2ad7b19f2f",
+      "actualDigest": "sha256:9d08588d739b933a4ad591e60fe48b237963d1ac9bd2022d7552bc2ad7b19f2f",
+      "canvasAnchorDigest": "sha256:b43d46cf993a7be9b42085b95ea3b441216e1a37884adab54911ffd4d49ac97c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L024-50842542F5-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-03",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l032-ce8d85efc0-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3b6dc47acd4f6b991298e267ba842edb619dc0761696965eb1360424b022ab3a",
+      "actualDigest": "sha256:3b6dc47acd4f6b991298e267ba842edb619dc0761696965eb1360424b022ab3a",
+      "canvasAnchorDigest": "sha256:7243c59174d4838517608ff098b5241f7273c430c086fb1c429373d9ddcd598d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L032-CE8D85EFC0-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-05",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l032-ce8d85efc0-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3f984f3261b2b59de6c5ff5d0f727f86767d2d7e67e87082e1dcfebe2b2e1f6c",
+      "actualDigest": "sha256:3f984f3261b2b59de6c5ff5d0f727f86767d2d7e67e87082e1dcfebe2b2e1f6c",
+      "canvasAnchorDigest": "sha256:0db6a6403df04575976738a28bd92de2850128834ce8e28583f2a03ff1ae3734",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L032-CE8D85EFC0-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-06",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l032-ce8d85efc0-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9e7f83c80945d9a828fc92636e3cee6dfff14e0fec252946ed7fe6465cbca265",
+      "actualDigest": "sha256:9e7f83c80945d9a828fc92636e3cee6dfff14e0fec252946ed7fe6465cbca265",
+      "canvasAnchorDigest": "sha256:312b1e6f5df592a721c91dda295220b5cf20605e0024641733a46f1eb592e189",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L032-CE8D85EFC0-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-07",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l032-ce8d85efc0-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0d4602fc24c97fc58f44026081564d8de6a43dab909a85e3137ad343e143b422",
+      "actualDigest": "sha256:0d4602fc24c97fc58f44026081564d8de6a43dab909a85e3137ad343e143b422",
+      "canvasAnchorDigest": "sha256:7d844e9f3c39149c5ca330c9b5d62f3f970cbca4818cea9ca3eb750ab666e804",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L032-CE8D85EFC0-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L032-CE8D85EFC0-08",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l032-ce8d85efc0-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3f2d23ea10bba1cc343f3fad447e1191fd2c36bf4a43b6b2b84bdd5c4f434898",
+      "actualDigest": "sha256:3f2d23ea10bba1cc343f3fad447e1191fd2c36bf4a43b6b2b84bdd5c4f434898",
+      "canvasAnchorDigest": "sha256:6103554f5a532888181deb2c0358b99f9d7abf8cf20733781fa4b6a5e4aa0f65",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L032-CE8D85EFC0-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P594-L036-B4FDE6D7D0-09",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p594-l036-b4fde6d7d0-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:53eaac1eabfc2353046c97d3ba11de12cd2721e1d37f5c2bd4d03fe0330acd01",
+      "actualDigest": "sha256:53eaac1eabfc2353046c97d3ba11de12cd2721e1d37f5c2bd4d03fe0330acd01",
+      "canvasAnchorDigest": "sha256:b244f13f2b1bab9d60543bacae70b0b685c219d44baaf6b8cf0d08e014f23eda",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P594-L036-B4FDE6D7D0-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L006-D86C20FF16-09",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l006-d86c20ff16-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d1d62263002d93090d86d04c86e18ba4595c35503cf1ba9913f978cb3d0f01e0",
+      "actualDigest": "sha256:d1d62263002d93090d86d04c86e18ba4595c35503cf1ba9913f978cb3d0f01e0",
+      "canvasAnchorDigest": "sha256:c3a048c1c4eb8b991d93726cef939fef8265ec7ad53b41f9c7cd8b0d3492bfc4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L006-D86C20FF16-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L018-EB6FF7EB32-08",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l018-eb6ff7eb32-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:80e53336eeac6d65a78ca5e807308e0d0106c733a7052427446a4cff23859db0",
+      "actualDigest": "sha256:80e53336eeac6d65a78ca5e807308e0d0106c733a7052427446a4cff23859db0",
+      "canvasAnchorDigest": "sha256:31878c1e3b41b6b2b42343c57a765f20bf8c6dcbb2a5a2670cf3dd0bcc806dd3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L018-EB6FF7EB32-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L024-63822797A1",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l024-63822797a1",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a0fbf8fdfefd19513ac9c5a7eb70e49d6da3de50b813215ac18fae085eec6e7d",
+      "actualDigest": "sha256:a0fbf8fdfefd19513ac9c5a7eb70e49d6da3de50b813215ac18fae085eec6e7d",
+      "canvasAnchorDigest": "sha256:b0e9fa8e189773396877894a8820f14de60c0b12501ca6be6a985062ec54265f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L024-63822797A1 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L024-63822797A1-02",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l024-63822797a1-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:70c58eac0947aea9b22333c353133c647e7ff0669e85fbba4fbeec7711181cd1",
+      "actualDigest": "sha256:70c58eac0947aea9b22333c353133c647e7ff0669e85fbba4fbeec7711181cd1",
+      "canvasAnchorDigest": "sha256:8cae2de4b6840516f3534863da7fd554850932d1e9ff89587be455e23689b033",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L024-63822797A1-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L029-53CB3097DE-09",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l029-53cb3097de-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:898d38465e328f1c881a2513a3d37e9e4c89ea971effdfdf78e2debf7f743211",
+      "actualDigest": "sha256:898d38465e328f1c881a2513a3d37e9e4c89ea971effdfdf78e2debf7f743211",
+      "canvasAnchorDigest": "sha256:1e2e14a60abbb019e1fe27bae4be33fad7e3946384468d2820129f2a7dc5e93f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L029-53CB3097DE-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L029-53CB3097DE-11",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l029-53cb3097de-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b50a4b4c72a3a7e6f8925bd57000bbbda8b305b8f70398a08589ac2b6b4c3284",
+      "actualDigest": "sha256:b50a4b4c72a3a7e6f8925bd57000bbbda8b305b8f70398a08589ac2b6b4c3284",
+      "canvasAnchorDigest": "sha256:e2215a53457aeee662a7819eec25bb3d15ef0fcf603849d0788b90743e125fbd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L029-53CB3097DE-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L030-3105AA389C",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l030-3105aa389c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5d20f99ef4584bc90aaedc718242228341107cb4d64bde01fa3cf49e79a7155f",
+      "actualDigest": "sha256:5d20f99ef4584bc90aaedc718242228341107cb4d64bde01fa3cf49e79a7155f",
+      "canvasAnchorDigest": "sha256:c877ef794cca9f164e5946c7ca05edec9e0a3ad4a1b5eb97a4edc8a8eae627af",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L030-3105AA389C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-02",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f868e099d665b2ebf02d1facfc972146db9da8ac1cf072c20632b8404b98ed19",
+      "actualDigest": "sha256:f868e099d665b2ebf02d1facfc972146db9da8ac1cf072c20632b8404b98ed19",
+      "canvasAnchorDigest": "sha256:15602f16a1446f199d1fdcd4009de067e59595d5e8c2c3062615890b2eb74d3e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-04",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:21da3ac99b3dd157ee6b5609bb3ba8f316705a3cf7ba861aea4921087cec2e21",
+      "actualDigest": "sha256:21da3ac99b3dd157ee6b5609bb3ba8f316705a3cf7ba861aea4921087cec2e21",
+      "canvasAnchorDigest": "sha256:9ff6d1729e56164afb13342f2a379d845aca95e2bfb4fc577a3b72dcaceb363b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-05",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:eb5ee2512403025328407adba38d85146c77295f8e2d87b4ff6616dc03ced987",
+      "actualDigest": "sha256:eb5ee2512403025328407adba38d85146c77295f8e2d87b4ff6616dc03ced987",
+      "canvasAnchorDigest": "sha256:0cd612e3f05352608bc40f7d516f28c4bffb1995f684690f99938e01a980a1d7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-08",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3eee07044ac3cb09640e566b1e98d90a88a2689a2cbef76945299f90b974a76f",
+      "actualDigest": "sha256:3eee07044ac3cb09640e566b1e98d90a88a2689a2cbef76945299f90b974a76f",
+      "canvasAnchorDigest": "sha256:c76c720ea49bfcbb310b370b795964b43dd1b6bd70cdbb6a65583acb157ed6be",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-09",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:59d1c3226fa9eb23539224f03ff632bac3a982d0ae9772c0b16816bd63993958",
+      "actualDigest": "sha256:59d1c3226fa9eb23539224f03ff632bac3a982d0ae9772c0b16816bd63993958",
+      "canvasAnchorDigest": "sha256:52d78ec2664b622981038940301561a93d2a1de243879ef935b2c3c8b0d45d56",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-11",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8b74a24a9038e3cca6bd931bbf3dc20b50c7770a7e4913845c154beb5882668e",
+      "actualDigest": "sha256:8b74a24a9038e3cca6bd931bbf3dc20b50c7770a7e4913845c154beb5882668e",
+      "canvasAnchorDigest": "sha256:ea57c7ea0fbd85bc2b87cfed65cc281e5f31dce2e48ea0602721f7d8201555cf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-12",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:086b3382a8ddb08fd9b89404d79c1eb53ec84889ea94c019eb5d706ba4d9fced",
+      "actualDigest": "sha256:086b3382a8ddb08fd9b89404d79c1eb53ec84889ea94c019eb5d706ba4d9fced",
+      "canvasAnchorDigest": "sha256:4db1429450bd628ae68052bf8b391dbc7cb21953538ab0deb3e1e55f2d095145",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-13",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:12a9379da9516300cec1834558d02f71c98d2ae68cbd4db4e11b4cb900a7163d",
+      "actualDigest": "sha256:12a9379da9516300cec1834558d02f71c98d2ae68cbd4db4e11b4cb900a7163d",
+      "canvasAnchorDigest": "sha256:6c71ce96a017873c0f3c0b7d8eb7137b3c6f83431b7727f12a014752518585bc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-14",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-14",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:24b923cff880ca086fec01ce699e18fc8aaa98b83ff01ff08c0babd44ac4cdac",
+      "actualDigest": "sha256:24b923cff880ca086fec01ce699e18fc8aaa98b83ff01ff08c0babd44ac4cdac",
+      "canvasAnchorDigest": "sha256:458de3474dcbd3b7d99dfae0b92e14350ade3e4ea74a4cf9efe5238dcbc8f413",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-14 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-15",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-15",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bde5173389403236844376d21368797b822e010973dc77e53edc9f64a1b245b5",
+      "actualDigest": "sha256:bde5173389403236844376d21368797b822e010973dc77e53edc9f64a1b245b5",
+      "canvasAnchorDigest": "sha256:c0171430e6a2a26ace1ca016049d4dbef2e1d536e64360e0bf8d6737a45b15de",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-15 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-16",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-16",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:df82d8499f7060ee931104b1276e7966b0ada17b0a04dcdb464e9c4af2d67d8c",
+      "actualDigest": "sha256:df82d8499f7060ee931104b1276e7966b0ada17b0a04dcdb464e9c4af2d67d8c",
+      "canvasAnchorDigest": "sha256:703127f4f0df38f98ed08134d966359d9372b6feac013257c573c3bf748f4f04",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-16 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L037-2546ECC843-17",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l037-2546ecc843-17",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ebca113018734270c8f1396fb3d4e0a6cb4874dd2e59d5358cf064944479c24b",
+      "actualDigest": "sha256:ebca113018734270c8f1396fb3d4e0a6cb4874dd2e59d5358cf064944479c24b",
+      "canvasAnchorDigest": "sha256:8e7a28d04fc850a25d6b6ec0639ac41705656c0a4f24312b71bd5448d6fa70f3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L037-2546ECC843-17 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-03",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l042-db0c51617c-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a356b957d806a108aed899d614c53f0277269ec21a9d1d1037e382ebccaf99b3",
+      "actualDigest": "sha256:a356b957d806a108aed899d614c53f0277269ec21a9d1d1037e382ebccaf99b3",
+      "canvasAnchorDigest": "sha256:a07214510c2da14e3b5ad6ff50d6bcfbb9de6a6ad858fc406c592671a3e04682",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L042-DB0C51617C-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-05",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l042-db0c51617c-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2a352b36a48a6e66f47294b4ff187ac4b35c2c69f4f6c64feae798ab6cde2521",
+      "actualDigest": "sha256:2a352b36a48a6e66f47294b4ff187ac4b35c2c69f4f6c64feae798ab6cde2521",
+      "canvasAnchorDigest": "sha256:97fc22f54aafd28cbd7518adc3dc65b7ed4389afdc4dbe708e0675735fef6f3d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L042-DB0C51617C-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P595-L042-DB0C51617C-08",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p595-l042-db0c51617c-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5788e1d117cd6228c8cbb1204b49a36505d1ac42d6f1862d21771b139af20594",
+      "actualDigest": "sha256:5788e1d117cd6228c8cbb1204b49a36505d1ac42d6f1862d21771b139af20594",
+      "canvasAnchorDigest": "sha256:3aca16d1f569ecb82d426acb50f4b7419f9dcebd63816704a66c446d0328743c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P595-L042-DB0C51617C-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P596-L002-9D55BA09D5-02",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p596-l002-9d55ba09d5-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0c6af604456f79f63cb5472b66811100ac9c75f5889545ad2a68ac0c9ef7f914",
+      "actualDigest": "sha256:0c6af604456f79f63cb5472b66811100ac9c75f5889545ad2a68ac0c9ef7f914",
+      "canvasAnchorDigest": "sha256:cbb4afa5f98b46b5a4c466dc40e594dc91718b523e077623dd8d939fef862aeb",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P596-L002-9D55BA09D5-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P596-L002-9D55BA09D5-03",
+      "ownerId": "classical-denominal-vnc-ti-a-possession-single-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-a-possession-single-semantics:aci-p596-l002-9d55ba09d5-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:2fe9152d2658f017e27bd7f30625c34bfbdd24cd5dfa86c082e40ba3bce7ae2f",
+      "actualDigest": "sha256:2fe9152d2658f017e27bd7f30625c34bfbdd24cd5dfa86c082e40ba3bce7ae2f",
+      "canvasAnchorDigest": "sha256:bd3ab66a76d67ac1d1231308aaf0b580ef5ec7f65b696f131d533cc8f90b31dc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P596-L002-9D55BA09D5-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 32,
+    "passed": 32,
+    "failed": 0,
+    "mutationsRejected": 32
+  }
+}

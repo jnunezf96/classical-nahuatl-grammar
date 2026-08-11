@@ -1,0 +1,728 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+  "canonicalResultDigest": "sha256:cebfea1fca85744b45fbe9a68c2ec326915d5cbab531bd36f6284470fb7d1220",
+  "observations": [
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:51764ddae117b51e62e722a0b264656d084f29b9a89a2abfe4960bca8bdd45e8",
+      "actualDigest": "sha256:51764ddae117b51e62e722a0b264656d084f29b9a89a2abfe4960bca8bdd45e8",
+      "canvasAnchorDigest": "sha256:4805225bb0c53a348c7d421c9bb69cd3cb6046636c5b0e37f90d6defa8500f4d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-04",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:06d7802bdedfac521e1387a2a0f72ea8527eccc360c934153ab7df45bc3f72ff",
+      "actualDigest": "sha256:06d7802bdedfac521e1387a2a0f72ea8527eccc360c934153ab7df45bc3f72ff",
+      "canvasAnchorDigest": "sha256:5b736e49ae0d7d25d3bfb090e738abe83a931a39f43537106cdbc92a95a1378f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-06",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c17c53a60ac86bc51b4d56e5a3d344da476e426b3793caa3f43a1aab9152df2c",
+      "actualDigest": "sha256:c17c53a60ac86bc51b4d56e5a3d344da476e426b3793caa3f43a1aab9152df2c",
+      "canvasAnchorDigest": "sha256:6e72cb0ed7557769ac4adf757db3f20bea1950a0aa565033fb5a282139e21108",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-07",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:09630f95c940e14e2610b34bf5e559f83da642b0da82b0c1d668ab2901a3ca9e",
+      "actualDigest": "sha256:09630f95c940e14e2610b34bf5e559f83da642b0da82b0c1d668ab2901a3ca9e",
+      "canvasAnchorDigest": "sha256:eb728e60f1d353cb86ad5e4c97ea46399ea76ba1e426f5da7a6086c2604ec14e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-09",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a9c4a5b87b54b043b304abe30b36bde7628a4e4a15cf0145255eb7652ec7c61b",
+      "actualDigest": "sha256:a9c4a5b87b54b043b304abe30b36bde7628a4e4a15cf0145255eb7652ec7c61b",
+      "canvasAnchorDigest": "sha256:f891a981476485ded8acedf61501a20821f4239346360b3bad8ac408916c2a3b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-10",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cd830ea7935403436649a3bd0e4ce90348aaa625ee7f1afb758e4fbe2a22c695",
+      "actualDigest": "sha256:cd830ea7935403436649a3bd0e4ce90348aaa625ee7f1afb758e4fbe2a22c695",
+      "canvasAnchorDigest": "sha256:d1b8153ade40c0ef518e24fb85113037281630793956f5493d471b96b3b7da07",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-12",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cb6c584104810376e3a4a6944d9da0dc10a4c4e824fb9388f69d77d9f40a6a7f",
+      "actualDigest": "sha256:cb6c584104810376e3a4a6944d9da0dc10a4c4e824fb9388f69d77d9f40a6a7f",
+      "canvasAnchorDigest": "sha256:4585b7796cfda0a025998488a5ef971d5df7b0e2a1c6f136f8d50d29e1461b94",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-13",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:516506ea3dfe09a819ee1732e1b14faa10c155954f01981eb8f9b258ebcbf160",
+      "actualDigest": "sha256:516506ea3dfe09a819ee1732e1b14faa10c155954f01981eb8f9b258ebcbf160",
+      "canvasAnchorDigest": "sha256:6560c00012f5a7ebcedd77b5b4616daba7c76defd78d815ba7b7eacf351cb68b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-15",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-15",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7f70e9a07042e95b7ef89c65a6fd37e728213f366d0ce62c24fdc4bb40cbc519",
+      "actualDigest": "sha256:7f70e9a07042e95b7ef89c65a6fd37e728213f366d0ce62c24fdc4bb40cbc519",
+      "canvasAnchorDigest": "sha256:ee69cc612e89543fbcbbb8d8dfc68192f97901afbf567489a6c7f93b1770fcc9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-15 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-17",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-17",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6fcba0f147ee79404a25f74e21575197bb9803a733c0916b8bbf3ea1f93d361b",
+      "actualDigest": "sha256:6fcba0f147ee79404a25f74e21575197bb9803a733c0916b8bbf3ea1f93d361b",
+      "canvasAnchorDigest": "sha256:375ce8f2b160dcf03b2910cc95302037bb3d385464b6e9a6a1f6db80fb9f1403",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-17 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-19",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-19",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:10ef87bad9fc8a40c4d189e3694ee739123da8f05db74c3c3cd630732fead117",
+      "actualDigest": "sha256:10ef87bad9fc8a40c4d189e3694ee739123da8f05db74c3c3cd630732fead117",
+      "canvasAnchorDigest": "sha256:70f884650f68cf6fe90d6e1f9a0938adaebdaa5e7209ddfda8a3a0218c5479cd",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-19 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-20",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-20",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d64e86c2a4802ae15629841d7d5b867a47641f841ff7b31315679bd61067eac0",
+      "actualDigest": "sha256:d64e86c2a4802ae15629841d7d5b867a47641f841ff7b31315679bd61067eac0",
+      "canvasAnchorDigest": "sha256:3f9e66b29f83a9180c900c73e2e33ecfe596921d4369244a2116746938f8f0ad",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-20 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-23",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-23",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b303332c7d5ac0d8ba56ca9a977ac7bba4298995f4db3b61d13778987566b1f1",
+      "actualDigest": "sha256:b303332c7d5ac0d8ba56ca9a977ac7bba4298995f4db3b61d13778987566b1f1",
+      "canvasAnchorDigest": "sha256:5c6e035d1ce261c7c1b9b1f46b37eabe14d100a93f5e5fb8ac9c577b080e2a91",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-23 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L031-9E7DC06ED6-24",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l031-9e7dc06ed6-24",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:fc8777e6f7c9c0c4c4d6b5758b2b205ce9d1546c51302d469ede55fcee382413",
+      "actualDigest": "sha256:fc8777e6f7c9c0c4c4d6b5758b2b205ce9d1546c51302d469ede55fcee382413",
+      "canvasAnchorDigest": "sha256:d331dc854519b759c43df849f4a63a5c1541fb2dc6d592f6c6a720b7a42940f0",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L031-9E7DC06ED6-24 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1473849f1b679f8f5f14dcb8ef566b872346b04675c84a7d10fe97a73142f9c7",
+      "actualDigest": "sha256:1473849f1b679f8f5f14dcb8ef566b872346b04675c84a7d10fe97a73142f9c7",
+      "canvasAnchorDigest": "sha256:f0b74892ef15f3db166f9b7502b4beaaae5bf61174c53dec5815543f41e3ffaf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f00a316ccd87bd2394c306fc8087c84e23a6a15b226ddb77bc0180e37e3d6b2d",
+      "actualDigest": "sha256:f00a316ccd87bd2394c306fc8087c84e23a6a15b226ddb77bc0180e37e3d6b2d",
+      "canvasAnchorDigest": "sha256:12f48d8db791f8bca06b3d8453bb851bacf2e83b821d877c9486744a42d76f5e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-03",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7426e7a485e7aea8b8731a389b3380b4cd84039158345cc41ba27d4177407bb4",
+      "actualDigest": "sha256:7426e7a485e7aea8b8731a389b3380b4cd84039158345cc41ba27d4177407bb4",
+      "canvasAnchorDigest": "sha256:701db5a1baea6d71e43101ce55db4b0bd00dceece4285c290881e3f8f9fede36",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-04",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4dedd31507b3dfc4b9c4d03e41dab85fc61608a7ed1df6a6995a997668d37d20",
+      "actualDigest": "sha256:4dedd31507b3dfc4b9c4d03e41dab85fc61608a7ed1df6a6995a997668d37d20",
+      "canvasAnchorDigest": "sha256:cf06a75b00be69af6ce4eeb81eb9f4157cc82fc690e65d8013d11844e755cf23",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-05",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:77c9f277a3cb759a758d5e80335c833d19a3d81465f4d5022c297c4f2b17a88c",
+      "actualDigest": "sha256:77c9f277a3cb759a758d5e80335c833d19a3d81465f4d5022c297c4f2b17a88c",
+      "canvasAnchorDigest": "sha256:1728d32dbf10850d631b9f43bf92016837b887433a25929ba2c452e9c3bfb652",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-06",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:53abf89d0ddbc3a7a014b91165989e62323511332578da4a5697c5a631104341",
+      "actualDigest": "sha256:53abf89d0ddbc3a7a014b91165989e62323511332578da4a5697c5a631104341",
+      "canvasAnchorDigest": "sha256:318b77b560643038b1d437043d1f0f85f4ead752c07705832196a6ed1475fba6",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-07",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0083ddcbb3e580bfb55186eefd554745d0d9ed00f23af2cdfadc1ae475b183d5",
+      "actualDigest": "sha256:0083ddcbb3e580bfb55186eefd554745d0d9ed00f23af2cdfadc1ae475b183d5",
+      "canvasAnchorDigest": "sha256:d6a1f5d4d34c7384d6ee76cd75fb9f6768e6a7637d55b6a8396e453afeebe1f4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-08",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:04c07188efec910ffe0e97158ff7259a43be18b9ebcdbf179af7f78c5bff4085",
+      "actualDigest": "sha256:04c07188efec910ffe0e97158ff7259a43be18b9ebcdbf179af7f78c5bff4085",
+      "canvasAnchorDigest": "sha256:c6c00f0efa2e944a07db12b54f54894fbd596df784363c9e159b8ee0e8b084a1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-09",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:96034c84ac611f5f28e1e15e6ed67d88a679deb93f2623f7971d7866e49c3ce2",
+      "actualDigest": "sha256:96034c84ac611f5f28e1e15e6ed67d88a679deb93f2623f7971d7866e49c3ce2",
+      "canvasAnchorDigest": "sha256:083402cb3afc4cdad1cefd83409ee10999d99946f59c8686977df64dded9a896",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-10",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:09b462ab008d53fa50ec80dcc0177a4559a1ce7b1c90097f68646c1c803d2f5d",
+      "actualDigest": "sha256:09b462ab008d53fa50ec80dcc0177a4559a1ce7b1c90097f68646c1c803d2f5d",
+      "canvasAnchorDigest": "sha256:f10daeac6c22924e63c41ba3a9bde456b2b11b14a81fdc7a812e297a035d3acc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P531-L035-4C8812042A-13",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p531-l035-4c8812042a-13",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c439e43a8dbf8a2bce363ceb7a0ef5457f3e0245fbdeab245069401b2da1978a",
+      "actualDigest": "sha256:c439e43a8dbf8a2bce363ceb7a0ef5457f3e0245fbdeab245069401b2da1978a",
+      "canvasAnchorDigest": "sha256:acc80c93917ddeec89193fdfab88d81d7f4bad09e2b0e0c9435a65e42eb89df4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L035-4C8812042A-13 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l004-114213395e-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d2f1ad4634e1b3137f195bd12e9ea91eae3240a15647bf8ac8e234c3ee0deef6",
+      "actualDigest": "sha256:d2f1ad4634e1b3137f195bd12e9ea91eae3240a15647bf8ac8e234c3ee0deef6",
+      "canvasAnchorDigest": "sha256:c40e03ca6a486427b25aa8a9e8cd1b9d056d868ed696c37fcf8b7c06456d49d8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L004-114213395E-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-05",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l004-114213395e-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:be25f5b0e61d0f8f7d201626009212e6ea83fd8dc061bc00bcc9037510a0df96",
+      "actualDigest": "sha256:be25f5b0e61d0f8f7d201626009212e6ea83fd8dc061bc00bcc9037510a0df96",
+      "canvasAnchorDigest": "sha256:b8b154295ac3363f7dd837c9f447434655e3a2912794c87060e873e8b89a5a2e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L004-114213395E-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L004-114213395E-07",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l004-114213395e-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:cc64e985564cdfbaf346c4bc73f306cf32b3056af0de29d1abf1ee99f800cf75",
+      "actualDigest": "sha256:cc64e985564cdfbaf346c4bc73f306cf32b3056af0de29d1abf1ee99f800cf75",
+      "canvasAnchorDigest": "sha256:e60a781058b3a655e060da67d08d1c56087a9842a87be9b824d7eda0dd603508",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L004-114213395E-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L018-5950A6C0C4",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l018-5950a6c0c4",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:81321fda471d713bce56d97654b47fea5b2c807ba3690875af35cff113e3deb2",
+      "actualDigest": "sha256:81321fda471d713bce56d97654b47fea5b2c807ba3690875af35cff113e3deb2",
+      "canvasAnchorDigest": "sha256:db6a79b29d05eb8cb7fd87ebce007e279428fe3ada1535a9add375505c4b6933",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L018-5950A6C0C4 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L018-5950A6C0C4-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l018-5950a6c0c4-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:10269dabf5274fd5cf10b2bedfdef0424fc21543f3e4931db747d1c2e59c9dbb",
+      "actualDigest": "sha256:10269dabf5274fd5cf10b2bedfdef0424fc21543f3e4931db747d1c2e59c9dbb",
+      "canvasAnchorDigest": "sha256:a161fef82058b02c48c18ce13a69efb351bf2aa9f9e59d0d1dbc984f32ae3e6c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L018-5950A6C0C4-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l020-b80ebd03ca",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1c5718fc72f7fdabeb241fa02d502a218aa7ab301e78f89c7110d096558e8485",
+      "actualDigest": "sha256:1c5718fc72f7fdabeb241fa02d502a218aa7ab301e78f89c7110d096558e8485",
+      "canvasAnchorDigest": "sha256:3b8af4080150dc5d562a1601b71e5bebd833fa6d87b32b6bf85b9846feb3f530",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L020-B80EBD03CA rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l020-b80ebd03ca-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8f3a2b95251d3cff920863207c5cbdd864336a15d99d1010282967c0203b7297",
+      "actualDigest": "sha256:8f3a2b95251d3cff920863207c5cbdd864336a15d99d1010282967c0203b7297",
+      "canvasAnchorDigest": "sha256:66786e76015060797884249e620e1a7c77d16e14fbab494cb1e233bc11e8e8bc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L020-B80EBD03CA-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-03",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l020-b80ebd03ca-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bc9d31b547a348a84fca010665148246636df352885c29644214fc8a171d19de",
+      "actualDigest": "sha256:bc9d31b547a348a84fca010665148246636df352885c29644214fc8a171d19de",
+      "canvasAnchorDigest": "sha256:a7518090f3fb29df0e385c5eaa0732251b880117977da3f3f4f9319916b88984",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L020-B80EBD03CA-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L020-B80EBD03CA-04",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l020-b80ebd03ca-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e82a840883719306498f29159ab97581c2411627ea36d2bcc6afb669f86558be",
+      "actualDigest": "sha256:e82a840883719306498f29159ab97581c2411627ea36d2bcc6afb669f86558be",
+      "canvasAnchorDigest": "sha256:d4d3a6adba805635ba52b40db0e82a4a9c79fbd26affbefdaf607f44a88019e2",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L020-B80EBD03CA-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:e66bef33f116421d1d32e7c4288c894bcb31f3653b8c2b11189a356119e94a24",
+      "actualDigest": "sha256:e66bef33f116421d1d32e7c4288c894bcb31f3653b8c2b11189a356119e94a24",
+      "canvasAnchorDigest": "sha256:a99d8da81a2a8f98848f356fc465db92ae064d3939024058495bb2ed5b5888eb",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-02",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:d7e920b4129a154abf29e64236b5facef2b8d49558bcab7a97593d66a0d59806",
+      "actualDigest": "sha256:d7e920b4129a154abf29e64236b5facef2b8d49558bcab7a97593d66a0d59806",
+      "canvasAnchorDigest": "sha256:878ed0c098194817994aa812cfa0f6909dfd9832227fbbf673b77b86667aeb63",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-04",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:506e1fbe3f13f6ddd1f3fa10f9a046f70425707321027ade352b547d6d3ffb38",
+      "actualDigest": "sha256:506e1fbe3f13f6ddd1f3fa10f9a046f70425707321027ade352b547d6d3ffb38",
+      "canvasAnchorDigest": "sha256:89814105ef9f17498633596d7d4ada4e7586113c591d02f06666d402a53c998b",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-05",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:40c22591b214a02c0d1a3276c4c3536725ddfcadf624a09d295e49b78221e7e1",
+      "actualDigest": "sha256:40c22591b214a02c0d1a3276c4c3536725ddfcadf624a09d295e49b78221e7e1",
+      "canvasAnchorDigest": "sha256:af38390073bff612589e139160638d077f3ae5614927ab965369c92e9586eb44",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-06",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:54641103ad927b453fcc0d99815902a42521833c5844ac77b8d134438cd42652",
+      "actualDigest": "sha256:54641103ad927b453fcc0d99815902a42521833c5844ac77b8d134438cd42652",
+      "canvasAnchorDigest": "sha256:67cd583034fe8c107b54b9499a6509590d9e635b752d7657d371488b7473a34f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-07",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:758cfdbca380ba371dc63544f9e8e53a69b772568fc28192289f5daf8c413f62",
+      "actualDigest": "sha256:758cfdbca380ba371dc63544f9e8e53a69b772568fc28192289f5daf8c413f62",
+      "canvasAnchorDigest": "sha256:e9316345d7c80afc3d5d8b412087363be901c102bf42e98a8526bd1bf57730ac",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-09",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4647a0646207214fa0d5027082362b244c6dca07c1650bd14eb28f4d20e981ce",
+      "actualDigest": "sha256:4647a0646207214fa0d5027082362b244c6dca07c1650bd14eb28f4d20e981ce",
+      "canvasAnchorDigest": "sha256:7ff162fd28ddaa0a46c33aa363f87dc6f8e52232a317cc9e222ce614012a839e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P532-L022-D2AE5E2761-10",
+      "ownerId": "classical-adverbial-adjunction-particle-adverbial-collocation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-particle-adverbial-collocation:aci-p532-l022-d2ae5e2761-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1cae8963ec10f5739ce6d3496b8ed0cf7ca820772a721f026a73930be00af627",
+      "actualDigest": "sha256:1cae8963ec10f5739ce6d3496b8ed0cf7ca820772a721f026a73930be00af627",
+      "canvasAnchorDigest": "sha256:437cb7f184b17ea178f45ca1f7652420168ceab95d5a538615b20fa8ff04a4d1",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L022-D2AE5E2761-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 42,
+    "passed": 42,
+    "failed": 0,
+    "mutationsRejected": 42
+  }
+}

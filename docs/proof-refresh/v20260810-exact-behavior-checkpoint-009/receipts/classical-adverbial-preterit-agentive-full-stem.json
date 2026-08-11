@@ -1,0 +1,609 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+  "canonicalResultDigest": "sha256:29397e2103b6b6cdff93c2c1922d0541d168dc9cde9b166a72c81fcf66ad9429",
+  "observations": [
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l023-d4a67467d8",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c71ff579b0ef3839b0e3cde4aa0319145d1a298e1c6f1ef9fd4ec0e96877069f",
+      "actualDigest": "sha256:c71ff579b0ef3839b0e3cde4aa0319145d1a298e1c6f1ef9fd4ec0e96877069f",
+      "canvasAnchorDigest": "sha256:b934e4592f0ecd78bfb78daea3180261c4b1f86b8734b2e79cde1dfc113a5e2a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L023-D4A67467D8 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L023-D4A67467D8-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l023-d4a67467d8-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:466f7c964b291ada464b6e442378dea3c3a0c77d0500484c13ccaa7a53598b78",
+      "actualDigest": "sha256:466f7c964b291ada464b6e442378dea3c3a0c77d0500484c13ccaa7a53598b78",
+      "canvasAnchorDigest": "sha256:d5017f6737f96c1b92d2b6d3168accb502486fbcb3a8970ff56fe9556d136a16",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L023-D4A67467D8-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-09",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l027-e61024bf3c-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:02697bd8b0d4d9109061a657a4b84cad70a6295c3ced12076afa8c560e7344e9",
+      "actualDigest": "sha256:02697bd8b0d4d9109061a657a4b84cad70a6295c3ced12076afa8c560e7344e9",
+      "canvasAnchorDigest": "sha256:295a2ea1d5f01e8ca044aacd984d0a9938d0e6684dc6b3c217011608a5d40edc",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L027-E61024BF3C-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L027-E61024BF3C-10",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l027-e61024bf3c-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c4d3291f05355bce62a41376f75ce90ca2bc015e16388a2dcd1d8e84e5735bc5",
+      "actualDigest": "sha256:c4d3291f05355bce62a41376f75ce90ca2bc015e16388a2dcd1d8e84e5735bc5",
+      "canvasAnchorDigest": "sha256:d4415a8f2dd36dc990cd2cb97a2e448fde2b98f5544fcbdafe6c6d6204c6438d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L027-E61024BF3C-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6997011e74505e30fbf17d36cbdb158826e60aa4efca740b0998ca126da4c444",
+      "actualDigest": "sha256:6997011e74505e30fbf17d36cbdb158826e60aa4efca740b0998ca126da4c444",
+      "canvasAnchorDigest": "sha256:0c7dd9a7259c655cc3dc9dedf797eff1c3d72886cbe1523efb2bae6891c86c12",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9d6f54b156c421472e66aa250de65297ffab9c0ea75e8707e60de1e09b2eb263",
+      "actualDigest": "sha256:9d6f54b156c421472e66aa250de65297ffab9c0ea75e8707e60de1e09b2eb263",
+      "canvasAnchorDigest": "sha256:7396b97dec3f5bd22194a2e7165a81c482e91a223f0d07ce92673dca5ce7b15c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:499c2b53bf61e13688a6fa983e20a6a53ee01d213cd3b344039415dcbfd07a8c",
+      "actualDigest": "sha256:499c2b53bf61e13688a6fa983e20a6a53ee01d213cd3b344039415dcbfd07a8c",
+      "canvasAnchorDigest": "sha256:052b9aa58dc9615e26f747a25fa83cd511509c285af17d2d2d9eb44a5522b71c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:643f88bfabedfaf037a7c8e129928cf409bc5784c4fda778a5f5becf943b1e7a",
+      "actualDigest": "sha256:643f88bfabedfaf037a7c8e129928cf409bc5784c4fda778a5f5becf943b1e7a",
+      "canvasAnchorDigest": "sha256:f7ac81001270dcec2ff44fe4d19e821d3797d19cd7f1516af802ca5f5d0aa449",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-06",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3a464b84e19b657c037e553703cfedea9c4276e43ecd7643bbb350a796b9a59f",
+      "actualDigest": "sha256:3a464b84e19b657c037e553703cfedea9c4276e43ecd7643bbb350a796b9a59f",
+      "canvasAnchorDigest": "sha256:0e07a712187da074135976bb21d065f01ee2b95a07a3efc08dbe352863a38699",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-08",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:9bb96cbcc60ec28f8dbd5d1c420696565f64baf68d13b02808f11528e4013e76",
+      "actualDigest": "sha256:9bb96cbcc60ec28f8dbd5d1c420696565f64baf68d13b02808f11528e4013e76",
+      "canvasAnchorDigest": "sha256:f6630db475d491f9c30b64fb57aa398c7d040d0aa20dfdec2b37510baf8c2f7c",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-09",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-09",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c11a8e0e90f62793ee2e1e5bb8fae7708470032e2ad6b906f1b78e95959e9d79",
+      "actualDigest": "sha256:c11a8e0e90f62793ee2e1e5bb8fae7708470032e2ad6b906f1b78e95959e9d79",
+      "canvasAnchorDigest": "sha256:c059687bdb467bbdc697167010d6953b775577f69569d4b712ac4d395e8096df",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-09 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-10",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-10",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:90560bbcecfa20eb4c710b65bd77d9e7b3fbdb60e498a7b0df94d4fe09020806",
+      "actualDigest": "sha256:90560bbcecfa20eb4c710b65bd77d9e7b3fbdb60e498a7b0df94d4fe09020806",
+      "canvasAnchorDigest": "sha256:6608506ce5a8417460caf474be39c6c22adb790aecf97a22bf2f82b2387e5678",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-10 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-11",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ab14fdb2e7d398e6a8ab58b47a8ed8f623486c4514352c5652ced92d14bf991f",
+      "actualDigest": "sha256:ab14fdb2e7d398e6a8ab58b47a8ed8f623486c4514352c5652ced92d14bf991f",
+      "canvasAnchorDigest": "sha256:69cf59530bc3a748cd11d6cb949bc8e31ffd3b92d18c35797d2a127a90783819",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P349-L031-BE4FE705AC-12",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p349-l031-be4fe705ac-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a85cf7e3eb5758ac966f308d0cd2b5fbb5f99524bf28a8d399f7983104efbf34",
+      "actualDigest": "sha256:a85cf7e3eb5758ac966f308d0cd2b5fbb5f99524bf28a8d399f7983104efbf34",
+      "canvasAnchorDigest": "sha256:b1d7e65c98fac63423602cc027449bb605b74b88197a381289091f2b8a7ce98e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P349-L031-BE4FE705AC-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1acd030cb2b10a82d33dbf066b1f8da26828b974ad4f728cfc548c72e9bc1c87",
+      "actualDigest": "sha256:1acd030cb2b10a82d33dbf066b1f8da26828b974ad4f728cfc548c72e9bc1c87",
+      "canvasAnchorDigest": "sha256:c0bccff48288f49932303523f2d360f0f7c6d3ccdaf81565c792412b9cac2fda",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b2ad633e61c62a9780e46ea71443f270baf1e487404fad326b922ce76174c6da",
+      "actualDigest": "sha256:b2ad633e61c62a9780e46ea71443f270baf1e487404fad326b922ce76174c6da",
+      "canvasAnchorDigest": "sha256:c6302f5fed08e7ba30196228762aceba18d44e8086c55a6b9ffeec302c38cf22",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L005-20950C732D-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l005-20950c732d-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:0a72441bae03215e5ad5ea12d6cfbcd7aa09f9940de8b16613582e5f89a1daa2",
+      "actualDigest": "sha256:0a72441bae03215e5ad5ea12d6cfbcd7aa09f9940de8b16613582e5f89a1daa2",
+      "canvasAnchorDigest": "sha256:2fd7367aa7a08dab8c6a92b9ca4717509ac9e21a02fb6998e71fa20ef184145f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L005-20950C732D-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:435eb67dbc36a4e3ff8bfe9073c26654b7cc2a594c1f5665352b3b0cc8cd3ee2",
+      "actualDigest": "sha256:435eb67dbc36a4e3ff8bfe9073c26654b7cc2a594c1f5665352b3b0cc8cd3ee2",
+      "canvasAnchorDigest": "sha256:ea2499c4a2747ed772157a27576a33e7b7b37594c424ea8e51ed8d6197909b11",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b4a0980eb6d248cf6958a7ba80bd61be9d514a7040a0a8eb8fdb34c6830e79ab",
+      "actualDigest": "sha256:b4a0980eb6d248cf6958a7ba80bd61be9d514a7040a0a8eb8fdb34c6830e79ab",
+      "canvasAnchorDigest": "sha256:04a81e8112db15b06a47b9a7abeaa07f5787aa3788c0285e1bc6c7a4ff41330a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c3291717ce273c96b867233bbac4149d82d3b14ed59e7cabc5bbc639b4661dd7",
+      "actualDigest": "sha256:c3291717ce273c96b867233bbac4149d82d3b14ed59e7cabc5bbc639b4661dd7",
+      "canvasAnchorDigest": "sha256:5e48a79f055a142363bd29eaa6864f2850e122bf347461ffe8fa744360016eef",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:848650cd719d1ee96cf385506d7a34c17fa8996226fd84304e01ffe499ddba82",
+      "actualDigest": "sha256:848650cd719d1ee96cf385506d7a34c17fa8996226fd84304e01ffe499ddba82",
+      "canvasAnchorDigest": "sha256:80e8edc0cf0fc2de56ac6da6a19200441df24ff6150c3e9fe11fc6adee1d73f9",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L016-C7F7FBA413-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l016-c7f7fba413-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:254846710c7be1b74a848f48eab9ce7a22cb95d6cd365640ca1f8491f0b0cbf6",
+      "actualDigest": "sha256:254846710c7be1b74a848f48eab9ce7a22cb95d6cd365640ca1f8491f0b0cbf6",
+      "canvasAnchorDigest": "sha256:abdca638fd8247e30d4f6a259e39f0e3868fc5c7a93bfbe018f785a943dacce3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L016-C7F7FBA413-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:78c5b34e9324fa2a88794886d16f21f52f3eb896ef3d029964bcff5553b67771",
+      "actualDigest": "sha256:78c5b34e9324fa2a88794886d16f21f52f3eb896ef3d029964bcff5553b67771",
+      "canvasAnchorDigest": "sha256:ec3c25ae4a4ded299eb72a37c22a52befebf5da60347ce866ff92db2d7b30b6a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-02",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:170a6cde712cbb0ed67c9c94d2112f81ec50266303d6d3820c53b38922b90e8c",
+      "actualDigest": "sha256:170a6cde712cbb0ed67c9c94d2112f81ec50266303d6d3820c53b38922b90e8c",
+      "canvasAnchorDigest": "sha256:e6685b74441d1eaded6017d5c08adc060d0e586f7031ba0b23320e7bec7c0265",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:57d063beb8c5c97acc7b3fbe864519d7653972496fa833f008ee391f1f0a3b88",
+      "actualDigest": "sha256:57d063beb8c5c97acc7b3fbe864519d7653972496fa833f008ee391f1f0a3b88",
+      "canvasAnchorDigest": "sha256:b91a5d135d5478a62452a0a0d6a92268a72ea48a78abbe45c98ee4018aaf9486",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:b71ee31eb3795380b9c1f32ddda8d727e56d62885863e94b955bcbbc4624b133",
+      "actualDigest": "sha256:b71ee31eb3795380b9c1f32ddda8d727e56d62885863e94b955bcbbc4624b133",
+      "canvasAnchorDigest": "sha256:fe3227c42ae293ce5ff0c51874b810040d31fd47622a5167208c19ac156b6894",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L021-8093D58274-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l021-8093d58274-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:7879299f0eeb215dbf02a95ac6e335496fb31a4190c27de5862b5b8c853aa15e",
+      "actualDigest": "sha256:7879299f0eeb215dbf02a95ac6e335496fb31a4190c27de5862b5b8c853aa15e",
+      "canvasAnchorDigest": "sha256:0fa6c9d6d9281d442096465c8053e9438ddab6645f99e7aa7c0250a628cf3aab",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L021-8093D58274-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L025-0696726FB9-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l025-0696726fb9-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:387f5f78e11a2e4c19feb31064f028cc2d4231712f6db92541374648dab20347",
+      "actualDigest": "sha256:387f5f78e11a2e4c19feb31064f028cc2d4231712f6db92541374648dab20347",
+      "canvasAnchorDigest": "sha256:20580be93c86fd860ae97fce6281aca75401397879ff667869a40388c6096a45",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L025-0696726FB9-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P350-L035-A6C951792C",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p350-l035-a6c951792c",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c9679db655ce26b04364cee1b2272e794fc920fbd477d7ab1370e1602bad5ef7",
+      "actualDigest": "sha256:c9679db655ce26b04364cee1b2272e794fc920fbd477d7ab1370e1602bad5ef7",
+      "canvasAnchorDigest": "sha256:a60877c81388819916b5e53e28211e89a5b8f4d7c1f48ca15095e692881e5353",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P350-L035-A6C951792C rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-04",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l007-7c7a4a8f4e-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:1e0beab0eb67cb383c727d15262f5fa566d83d505717aa787a7c3005d008ea5e",
+      "actualDigest": "sha256:1e0beab0eb67cb383c727d15262f5fa566d83d505717aa787a7c3005d008ea5e",
+      "canvasAnchorDigest": "sha256:04579da8f0b63c1f5bc14312a190c83ea3d401b0048af74cdb2cabcaba300760",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L007-7C7A4A8F4E-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L007-7C7A4A8F4E-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l007-7c7a4a8f4e-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c8adefd0174bc2641c947d34a7951e1d308342a81e408187db947e8ecc3aefe5",
+      "actualDigest": "sha256:c8adefd0174bc2641c947d34a7951e1d308342a81e408187db947e8ecc3aefe5",
+      "canvasAnchorDigest": "sha256:ea1fc186a22208f8277e99f48b9c35ef97d2dfef927356a7331aa637d80ac3aa",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L007-7C7A4A8F4E-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-11",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l010-217f30f355-11",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:718fb1c820ee17bc91b1c46993b1f4a4c317113f077d56dc03eba2223c9dce58",
+      "actualDigest": "sha256:718fb1c820ee17bc91b1c46993b1f4a4c317113f077d56dc03eba2223c9dce58",
+      "canvasAnchorDigest": "sha256:45f073dd2d1415faadb2011cdfb3f931f584c27c488d33097676e896b05f7494",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L010-217F30F355-11 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L010-217F30F355-12",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l010-217f30f355-12",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c61b9b726b7f5c0189d6781203cda560316046dd23475adc5fe3eeba3e51b975",
+      "actualDigest": "sha256:c61b9b726b7f5c0189d6781203cda560316046dd23475adc5fe3eeba3e51b975",
+      "canvasAnchorDigest": "sha256:241cfaf0e3bed34ba61e07dd438f5bf2a736010e2cc4c07ecc7617f173793932",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L010-217F30F355-12 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-03",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l013-22a4b04906-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:abda6679c1073b31731794ce2cd7177d78ecab7018a9cfda5d75d11ae31c70de",
+      "actualDigest": "sha256:abda6679c1073b31731794ce2cd7177d78ecab7018a9cfda5d75d11ae31c70de",
+      "canvasAnchorDigest": "sha256:a8545dddf95a44b5cf6edfa35b7c8b64784f7b11dd3e6f27dcb3c20d4dfdf0b4",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L013-22A4B04906-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P351-L013-22A4B04906-05",
+      "ownerId": "classical-adverbial-preterit-agentive-full-stem",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-preterit-agentive-full-stem:aci-p351-l013-22a4b04906-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4e8a11c7e46d1cdbaa56d2a80303697482dc1e56ffb2c5756a835281ba7fbd1b",
+      "actualDigest": "sha256:4e8a11c7e46d1cdbaa56d2a80303697482dc1e56ffb2c5756a835281ba7fbd1b",
+      "canvasAnchorDigest": "sha256:391074985cdbeb8f2ff9235e027d24fa9d55af3060cfc89e263ca92527e2698e",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P351-L013-22A4B04906-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 35,
+    "passed": 35,
+    "failed": 0,
+    "mutationsRejected": 35
+  }
+}

@@ -29,6 +29,12 @@ import {
   listRoutineSemanticFamilies,
   registerRoutineSemanticFamilyBinding,
 } from "./routine_semantic_family_registry.mjs";
+import {
+  fingerprintClassicalCanvasGrammarFact,
+  getClassicalCanvasGrammarFactRecord,
+  isClassicalCanvasGrammarFactRecord,
+  listClassicalCanvasGrammarFactRecords,
+} from "./canvas_grammar_fact_registry.mjs?v=20260810-canvas-grammar-facts-010";
 
 const freeze = Object.freeze;
 const CLEAR_BROAD_PROOF_SUFFIXES = freeze([
@@ -238,6 +244,8 @@ function publicNames(prefix) {
     isResult: `is${prefix}Result`,
     getEvidence: `get${prefix}ExecutionEvidence`,
     isEvidence: `is${prefix}ExecutionEvidence`,
+    presentGrammarFact: `present${prefix}GrammarFact`,
+    isGrammarFactProjection: `is${prefix}GrammarFactProjection`,
   });
 }
 
@@ -260,6 +268,7 @@ function wrapOwnerApi(legacyApi, spec) {
   const legacyResultsByResult = new WeakMap();
   const evidenceByResult = new WeakMap();
   const legacyEvidenceByEvidence = new WeakMap();
+  const issuedGrammarFactProjections = new WeakSet();
 
   function evaluate(source = null) {
     const legacyResult = legacyEvaluate(source);
@@ -342,6 +351,56 @@ function wrapOwnerApi(legacyApi, spec) {
     );
   }
 
+  function presentGrammarFact(result = null, atomId = "") {
+    const record = getClassicalCanvasGrammarFactRecord(atomId);
+    const reason = !isResult(result)
+      ? "owner-issued-authorized-result-required"
+      : result.authorizationStatus !== "authorized"
+        ? "authorized-owner-result-required"
+        : !record
+          ? "registered-canvas-grammar-fact-required"
+          : !isClassicalCanvasGrammarFactRecord(record)
+            ? "intact-canvas-grammar-fact-required"
+            : record.semanticOwnerId !== spec.ownerId
+              ? "matching-semantic-owner-required"
+              : "";
+    const projection = deepFreeze({
+      kind: "classical-canvas-grammar-fact-projection",
+      authorizationStatus: reason ? "blocked" : "authorized",
+      blockReason: reason,
+      atomId: reason ? "" : record.atomId,
+      semanticOwnerId: reason ? "" : record.semanticOwnerId,
+      canvasSection: reason ? "" : record.canvasSection,
+      canvasSpan: reason ? "" : record.canvasSpan,
+      statement: reason ? "" : record.statement,
+      projectRole: reason ? "" : record.projectRole,
+      contentFingerprint: reason ? "" : record.contentFingerprint,
+      grammarAuthority: false,
+      generationAuthority: false,
+      evidencePolicy: deepFreeze({
+        evidenceAuthorizesGrammar: false,
+        evidenceAbsenceBlocksResult: false,
+        examplesWhitelistRealization: false,
+        explanationAuthorizesGeneration: false,
+      }),
+    });
+    if (!reason) issuedGrammarFactProjections.add(projection);
+    return projection;
+  }
+
+  function isGrammarFactProjection(projection = null) {
+    return Boolean(
+      projection
+      && issuedGrammarFactProjections.has(projection)
+      && projection.kind === "classical-canvas-grammar-fact-projection"
+      && projection.authorizationStatus === "authorized"
+      && projection.semanticOwnerId === spec.ownerId
+      && projection.grammarAuthority === false
+      && projection.generationAuthority === false
+      && Object.isFrozen(projection)
+    );
+  }
+
   return freeze({
     [names.build]: legacyBuild,
     [names.isSource]: legacyIsSource,
@@ -349,6 +408,8 @@ function wrapOwnerApi(legacyApi, spec) {
     [names.isResult]: isResult,
     [names.getEvidence]: getEvidence,
     [names.isEvidence]: isEvidence,
+    [names.presentGrammarFact]: presentGrammarFact,
+    [names.isGrammarFactProjection]: isGrammarFactProjection,
   });
 }
 
@@ -392,6 +453,10 @@ export function createRoutineSemanticOwnerMechanicsApi(
     isRoutineSemanticFamilyRecord,
     listCanonicalGrammarFamilies,
     listRoutineSemanticFamilies,
+    fingerprintClassicalCanvasGrammarFact,
+    getClassicalCanvasGrammarFactRecord,
+    isClassicalCanvasGrammarFactRecord,
+    listClassicalCanvasGrammarFactRecords,
     getCanonicalProofAddress,
     listCanonicalProofAddresses,
     getRoutineSemanticEffectiveProofCoordinate,

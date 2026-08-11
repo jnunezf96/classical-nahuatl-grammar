@@ -1,0 +1,422 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-009",
+  "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+  "canonicalResultDigest": "sha256:7db2369574d5ee9bdf1fddfdd798a1fe18f25e0ae04395b574e07915f4b6c002",
+  "observations": [
+    {
+      "atomId": "ACI-P080-L040-C63CC85725",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p080-l040-c63cc85725",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:83a1f9d6b5773483cbd9f1d1f813512595029a83340baad33d48d272ea6dfc08",
+      "actualDigest": "sha256:83a1f9d6b5773483cbd9f1d1f813512595029a83340baad33d48d272ea6dfc08",
+      "canvasAnchorDigest": "sha256:64cad1f86dc0b2aa36bfc6a93083c9852bdc4f3673b7cf77276667502c125d3f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P080-L040-C63CC85725 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:f9e4a6f218d09b7f532fc0fbb048acad0612a2c4d960fc4325a3e0648c76e855",
+      "actualDigest": "sha256:f9e4a6f218d09b7f532fc0fbb048acad0612a2c4d960fc4325a3e0648c76e855",
+      "canvasAnchorDigest": "sha256:e1c20c6dfa1e957542922cbab72950197bd297e2a53b2a71824be5afb73d5c83",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:859e22685dc89d6a0985286a45269b68c916fab42b68444bdb3f674c47b6cfd7",
+      "actualDigest": "sha256:859e22685dc89d6a0985286a45269b68c916fab42b68444bdb3f674c47b6cfd7",
+      "canvasAnchorDigest": "sha256:f424b23764e6c4aefefc3d5ff23399e9354dc7ac772ad09f35ffab12076478e3",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:5653c34578e77ea15bf7e13a7d3ef7ff6292df3d195e4361c676a09e1bd17f07",
+      "actualDigest": "sha256:5653c34578e77ea15bf7e13a7d3ef7ff6292df3d195e4361c676a09e1bd17f07",
+      "canvasAnchorDigest": "sha256:ecdb7521989584259c74abb466a4214093c49ed212f7fcb26468f9ee44bb7e51",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a5bf623e60700d126e2362d2eaf7108c8ab46246fd5ef3dfad67f3498db9f472",
+      "actualDigest": "sha256:a5bf623e60700d126e2362d2eaf7108c8ab46246fd5ef3dfad67f3498db9f472",
+      "canvasAnchorDigest": "sha256:d999b56ef088277bc8124b7604f623ce1497a2dfe30fd0f7f2d02b8259e0b87d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P081-L033-E5A654F673-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p081-l033-e5a654f673-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:244fc52d48f728c635994d89d147ae66e890cc16856b060071ddfe5fce06f281",
+      "actualDigest": "sha256:244fc52d48f728c635994d89d147ae66e890cc16856b060071ddfe5fce06f281",
+      "canvasAnchorDigest": "sha256:658dbfb56b82cdb2dffd978e89b2923afd4114b742356621a490a56bfe2ee966",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P081-L033-E5A654F673-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:04235ca817833a04ce19f68da86dbaf51cd32040d858a211c876b13997b0894f",
+      "actualDigest": "sha256:04235ca817833a04ce19f68da86dbaf51cd32040d858a211c876b13997b0894f",
+      "canvasAnchorDigest": "sha256:ebf432385c7db77ee44dcbbe438848bdef7eea7882812832e16ef79982ac0f79",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:3e41a0fa4837a1a7dc97461408065e068b0766e332600dc46af8a840dd8e9931",
+      "actualDigest": "sha256:3e41a0fa4837a1a7dc97461408065e068b0766e332600dc46af8a840dd8e9931",
+      "canvasAnchorDigest": "sha256:647646cda44269608524b11b896757c2c9a7f2bf30be7e0abf1db16513cb32d5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:4a6f47a29229fa68c25abaf78cbf6a74b513f5a5d3671fd9494a6c9ae009c7fc",
+      "actualDigest": "sha256:4a6f47a29229fa68c25abaf78cbf6a74b513f5a5d3671fd9494a6c9ae009c7fc",
+      "canvasAnchorDigest": "sha256:38ed7d88015fbaa924fbc79b595b63b3e95db849c01d78f404def8409bf41faf",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8ad291dcd0f6e06361cfb56a926106f0ed34973bec31b34b2c310e0d47332d3f",
+      "actualDigest": "sha256:8ad291dcd0f6e06361cfb56a926106f0ed34973bec31b34b2c310e0d47332d3f",
+      "canvasAnchorDigest": "sha256:d6f09218ace5688265c7ce45b21d9c214bf6bbb9341e8c91e059e55f2a8fc860",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P083-L027-9B2FF7878D-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p083-l027-9b2ff7878d-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:6fede51172d1a6d4fac9e13d135189ce99fabed1cec68e86023b94d098060fec",
+      "actualDigest": "sha256:6fede51172d1a6d4fac9e13d135189ce99fabed1cec68e86023b94d098060fec",
+      "canvasAnchorDigest": "sha256:0ba51ad04ce58bda336ad37e1f27bc2b987d242fd603664b0d80678d43c7dfd7",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P083-L027-9B2FF7878D-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:94d43365d0ab782bea9f87189c1bf06e509d63f67dba45d9242d4458b882d6cb",
+      "actualDigest": "sha256:94d43365d0ab782bea9f87189c1bf06e509d63f67dba45d9242d4458b882d6cb",
+      "canvasAnchorDigest": "sha256:72ee593a51d2770186421ae13ea8bea20f84bcc4ef4f14fa706ebdbab7afcf63",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:bced9474d130a4f328981106303d53457f871150806872b209b4dca19c551a89",
+      "actualDigest": "sha256:bced9474d130a4f328981106303d53457f871150806872b209b4dca19c551a89",
+      "canvasAnchorDigest": "sha256:70fead1267aec2949dd43efbeab766a350fd172eba1adbd5927ea56c67bae06f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:ddb5751e1413e252f9af94a89caa9f8f92a036367de35b158c5ba4a5f3c8a2ec",
+      "actualDigest": "sha256:ddb5751e1413e252f9af94a89caa9f8f92a036367de35b158c5ba4a5f3c8a2ec",
+      "canvasAnchorDigest": "sha256:327f3ef9bfe58e0be8ab117a91f62b3047606e2485336f412518bf932a6a052f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:31b169d5c9b9bd5d71583ba6d8c744b958c7367efa543b251e534207e99ef38f",
+      "actualDigest": "sha256:31b169d5c9b9bd5d71583ba6d8c744b958c7367efa543b251e534207e99ef38f",
+      "canvasAnchorDigest": "sha256:7650a7fc2ab529480c32efe1edf5598d13ce8043da3165b24c6f2fb56cdfcea8",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:a2012bfe1d30cb580ea8e265c4843bb6c09a342e5248a7334c080d3932576fc2",
+      "actualDigest": "sha256:a2012bfe1d30cb580ea8e265c4843bb6c09a342e5248a7334c080d3932576fc2",
+      "canvasAnchorDigest": "sha256:9da1c7b42b8eb4ea3f9973d33c5cf7f915dc0ee63e62df8c8cb4d15f0e542264",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L028-CE983AE999-07",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l028-ce983ae999-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:18fff9e271a24b2b8b2d3df40b6a9b3f963246fc06501ade14edb8db7efaaa76",
+      "actualDigest": "sha256:18fff9e271a24b2b8b2d3df40b6a9b3f963246fc06501ade14edb8db7efaaa76",
+      "canvasAnchorDigest": "sha256:c0182043510ee00ffa032224619f3aeec32ff365f51a5d0e0e53b81d566ef086",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L028-CE983AE999-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-02",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-02",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:dbab962a72ab3e2d4b3c65781a64086c23de4080081b2ebe3e22d0724b53772d",
+      "actualDigest": "sha256:dbab962a72ab3e2d4b3c65781a64086c23de4080081b2ebe3e22d0724b53772d",
+      "canvasAnchorDigest": "sha256:5d24dbab4d1cda83a7f41c616f7515f0cb41ef7c1903aad4523799567c6fca6a",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-02 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-03",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-03",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:8622d282b1590e88564bf5a736b7a6e5ff94c2bc83c72f7c85deb47950b11b70",
+      "actualDigest": "sha256:8622d282b1590e88564bf5a736b7a6e5ff94c2bc83c72f7c85deb47950b11b70",
+      "canvasAnchorDigest": "sha256:51a8df754aa78c024b0fe54256451c6d7c80a6a4f3d016ae7aa86dc88a9de154",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-03 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-04",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-04",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:c534cec90cf1a215479c76d755d2219cb97852940407d2e93fe6df16808fe6d7",
+      "actualDigest": "sha256:c534cec90cf1a215479c76d755d2219cb97852940407d2e93fe6df16808fe6d7",
+      "canvasAnchorDigest": "sha256:876ecd86114b65e6cc4dacf62d38eef6e7f1a6572336904134a3c12ac0517b3d",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-04 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-05",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-05",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:85552484808115589705db77072bdbe0c812f14c55cb7b57500f6223788347d3",
+      "actualDigest": "sha256:85552484808115589705db77072bdbe0c812f14c55cb7b57500f6223788347d3",
+      "canvasAnchorDigest": "sha256:94507442c24be819f71c532f250022835a9ee331594ba854f49ff5d8fe9167ef",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-05 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-06",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-06",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:91475ffdd2db2bc04c538b0b5ddeb130e05d6dc50350e7a2d0161e01ea89caa7",
+      "actualDigest": "sha256:91475ffdd2db2bc04c538b0b5ddeb130e05d6dc50350e7a2d0161e01ea89caa7",
+      "canvasAnchorDigest": "sha256:998f695aa8c94b2d26a8a2a8ad2e7bac8d177fa2d6d9d7ba7603d25251cdacf5",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-06 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-07",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-07",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:00716297142b1a9f6d234d2462da04969c7c0531b6bdf9ce154993312a18dbc7",
+      "actualDigest": "sha256:00716297142b1a9f6d234d2462da04969c7c0531b6bdf9ce154993312a18dbc7",
+      "canvasAnchorDigest": "sha256:4229d8e13ed48dbc78cf43cf69875deb8d9a582ec22dc372c1a2f09b87db0e5f",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-07 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    },
+    {
+      "atomId": "ACI-P084-L030-756FE87980-08",
+      "ownerId": "classical-verbstem-predicate-paradigm-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-verbstem-predicate-paradigm-analysis:aci-p084-l030-756fe87980-08",
+      "canonicalPath": "its exact read-only grammar fact",
+      "expectedDigest": "sha256:afb76885f4442ce77a762caa4f3e295e8ab76e5fa092a28ee12b7da57c6c18f7",
+      "actualDigest": "sha256:afb76885f4442ce77a762caa4f3e295e8ab76e5fa092a28ee12b7da57c6c18f7",
+      "canvasAnchorDigest": "sha256:f7caf777467490539c01f5300b4966e823ccc9cda968681f6fd96c3da0efbf21",
+      "canvasAnchorReference": "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
+      "proofTest": "src/tests/classical_checkpoint009_grammar_fact_projection.test.js",
+      "mutation": {
+        "assertion": "ACI-P084-L030-756FE87980-08 rejects a mutation of its exact grammar statement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 24,
+    "passed": 24,
+    "failed": 0,
+    "mutationsRejected": 24
+  }
+}
