@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-impersonal-nonspecific-object-retention",
+  "canonicalResultDigest": "sha256:35ad9cecde85842ee69b0120cbb7fddbd223c69c6aa515fa2d322dbbf3896852",
+  "observations": [
+    {
+      "atomId": "ACI-P188-L009-A409CB5183-02",
+      "ownerId": "classical-impersonal-nonspecific-object-retention",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-impersonal-nonspecific-object-retention:aci-p188-l009-a409cb5183-02",
+      "canonicalPath": "nonspecific human object retention in the impersonal",
+      "expected": {
+        "value": "#0-0+tē(tla-zo-h-tla-lo)0+0-0#"
+      },
+      "actual": {
+        "value": "#0-0+tē(tla-zo-h-tla-lo)0+0-0#"
+      },
+      "canvasAnchor": "Tētlazohtlalo has the internal form #Ø-Ø+tē(tla-zo-h-tla-lo)Ø+Ø-Ø#.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P188-L009-A409CB5183-02 rejects a mutation of nonspecific human object retention in the impersonal",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

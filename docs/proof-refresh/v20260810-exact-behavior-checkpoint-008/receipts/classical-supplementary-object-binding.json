@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-supplementary-object-binding",
+  "canonicalResultDigest": "sha256:0ed3359ffc162501ce6f38215facec88e02e5ace0911b099cf47fbac7935ab2a",
+  "observations": [
+    {
+      "atomId": "ACI-P156-L005-BDB8D8BC91-04",
+      "ownerId": "classical-supplementary-object-binding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supplementary-object-binding:aci-p156-l005-bdb8d8bc91-04",
+      "canonicalPath": "the supplement binding to an object head",
+      "expected": {
+        "value": "object"
+      },
+      "actual": {
+        "value": "object"
+      },
+      "canvasAnchor": "NiPetoloh functions as the supplementary object of nēchitta.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P156-L005-BDB8D8BC91-04 rejects a mutation of the supplement binding to an object head",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

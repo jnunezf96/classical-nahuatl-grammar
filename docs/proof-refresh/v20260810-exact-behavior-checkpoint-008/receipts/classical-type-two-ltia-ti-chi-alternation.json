@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-type-two-ltia-ti-chi-alternation",
+  "canonicalResultDigest": "sha256:1c62c8dac73ee207fc3f209d16aa774814d0aa3d71538e4086ae13c02b075260",
+  "observations": [
+    {
+      "atomId": "ACI-P214-L017-334A9874AF-05",
+      "ownerId": "classical-type-two-ltia-ti-chi-alternation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-ltia-ti-chi-alternation:aci-p214-l017-334a9874af-05",
+      "canonicalPath": "the machiltiā target stem",
+      "expected": {
+        "value": "machi-l-tiā"
+      },
+      "actual": {
+        "value": "machi-l-tiā"
+      },
+      "canvasAnchor": "Replacing the final /oː/ of *(machi-lō) with tiā derives tē+tla-(machi-l-tiā).",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P214-L017-334A9874AF-05 rejects a mutation of the machiltiā target stem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-speech-complement-supplementation",
+  "canonicalResultDigest": "sha256:d5fda37ebaa53f665d07ce280fef6989a071cee3ac1d1475f941a93ed23044df",
+  "observations": [
+    {
+      "atomId": "ACI-P169-L018-01BDC9D5AE-02",
+      "ownerId": "classical-speech-complement-supplementation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-speech-complement-supplementation:aci-p169-l018-01bdc9d5ae-02",
+      "canonicalPath": "the quoted clause as supplementary object",
+      "expected": {
+        "value": "object"
+      },
+      "actual": {
+        "value": "object"
+      },
+      "canvasAnchor": "The adjoined quote functions as the supplementary object of principal conihtoh.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P169-L018-01BDC9D5AE-02 rejects a mutation of the quoted clause as supplementary object",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

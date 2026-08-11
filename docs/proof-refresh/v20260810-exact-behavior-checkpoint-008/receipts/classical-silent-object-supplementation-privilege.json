@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-silent-object-supplementation-privilege",
+  "canonicalResultDigest": "sha256:e5f5d4c3a9abbedf8e539841a1baa01032cdd02b03de3ab6e9c1cc700b4957bd",
+  "observations": [
+    {
+      "atomId": "ACI-P213-L005-5A112863FE-06",
+      "ownerId": "classical-silent-object-supplementation-privilege",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-silent-object-supplementation-privilege:aci-p213-l005-5a112863fe-06",
+      "canonicalPath": "a grammatically present silent specific object",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "The silent specific shuntline object is a licensed grammatical realization; its lack of overt phonological evidence does not mean that the object result is absent.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P213-L005-5A112863FE-06 rejects a mutation of a grammatically present silent specific object",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-negative-command-formation",
+  "canonicalResultDigest": "sha256:99045ba3b01f92d069bc5abbe18dd0a4b59a31311e1141754036659cb33e5814",
+  "observations": [
+    {
+      "atomId": "ACI-P170-L017-34A93CB771-04",
+      "ownerId": "classical-negative-command-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-negative-command-formation:aci-p170-l017-34a93cb771-04",
+      "canonicalPath": "the negative-command transformation",
+      "expected": {
+        "value": "brusque-command-keeps-ah"
+      },
+      "actual": {
+        "value": "brusque-command-keeps-ah"
+      },
+      "canvasAnchor": "Ahmō xinēchchīhualti is a negative command.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P170-L017-34A93CB771-04 rejects a mutation of the negative-command transformation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

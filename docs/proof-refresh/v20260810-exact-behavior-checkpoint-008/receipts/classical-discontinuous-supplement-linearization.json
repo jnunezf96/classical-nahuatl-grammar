@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-discontinuous-supplement-linearization",
+  "canonicalResultDigest": "sha256:7b808dd9435a8341086153afcafa86b64416b498eb8f3f5fa841c1cb0d0aa72b",
+  "observations": [
+    {
+      "atomId": "ACI-P160-L008-F169AFC15E-02",
+      "ownerId": "classical-discontinuous-supplement-linearization",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-discontinuous-supplement-linearization:aci-p160-l008-f169afc15e-02",
+      "canonicalPath": "discontinuous supplement order",
+      "expected": {
+        "value": "discontinuous"
+      },
+      "actual": {
+        "value": "discontinuous"
+      },
+      "canvasAnchor": "In cocoxqui ōhuetz in itozqui., in cocoxqui and in itozqui form the separated members of a discontinuous supplementation structure.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P160-L008-F169AFC15E-02 rejects a mutation of discontinuous supplement order",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

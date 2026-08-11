@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-ac-pronominal-plural-cooperation",
+  "canonicalResultDigest": "sha256:14a7fb5804c144b332f2551bb6b88739af9f555b18dba8be2d8375fbab538885",
+  "observations": [
+    {
+      "atomId": "ACI-P166-L036-AB86455CD4",
+      "ownerId": "classical-ac-pronominal-plural-cooperation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ac-pronominal-plural-cooperation:aci-p166-l036-ab86455cd4",
+      "canonicalPath": "āc as a supplementary subject",
+      "expected": {
+        "value": "subject"
+      },
+      "actual": {
+        "value": "subject"
+      },
+      "canvasAnchor": "In Āc tihqueh?, clause āc functions as a supplementary subject.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P166-L036-AB86455CD4 rejects a mutation of āc as a supplementary subject",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

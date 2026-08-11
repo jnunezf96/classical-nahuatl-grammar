@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-ihca-compound-matrix-formation",
+  "canonicalResultDigest": "sha256:924b03469b7fcf6b2e44111b80133cde41e109521fbf744fc04b0366c89b7ef2",
+  "observations": [
+    {
+      "atomId": "ACI-P256-L030-4950FDC4CC-02",
+      "ownerId": "classical-ihca-compound-matrix-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-ihca-compound-matrix-formation:aci-p256-l030-4950fdc4cc-02",
+      "canonicalPath": "ihca as an intransitive compound matrix",
+      "expected": {
+        "value": "chōca-t-ih-ca"
+      },
+      "actual": {
+        "value": "chōca-t-ih-ca"
+      },
+      "canvasAnchor": "As a matrix, (ihca) means ‘to stand while doing something.’",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P256-L030-4950FDC4CC-02 rejects a mutation of ihca as an intransitive compound matrix",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

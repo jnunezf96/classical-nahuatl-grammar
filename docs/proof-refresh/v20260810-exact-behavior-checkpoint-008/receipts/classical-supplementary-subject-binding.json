@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-supplementary-subject-binding",
+  "canonicalResultDigest": "sha256:d1fbb67dac2e5951a5f1f6194718bfeb247713ca33434af0b54b5340492362c2",
+  "observations": [
+    {
+      "atomId": "ACI-P153-L002-C48230781E-03",
+      "ownerId": "classical-supplementary-subject-binding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supplementary-subject-binding:aci-p153-l002-c48230781e-03",
+      "canonicalPath": "subject coreference across principal and supplement",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "First-person-singular subject of supplement niPetoloh is coreferential with the first-person-singular subject of principal nicuīca.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P153-L002-C48230781E-03 rejects a mutation of subject coreference across principal and supplement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

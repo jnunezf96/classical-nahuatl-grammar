@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-principal-adverbial-construction",
+  "canonicalResultDigest": "sha256:1fb3d6a12d6b6ba8232eac858b2b49115ea5b7e1c22dbf5762c5f503d711261d",
+  "observations": [
+    {
+      "atomId": "ACI-P535-L017-3DF2A701D7",
+      "ownerId": "classical-adverbial-adjunction-principal-adverbial-construction",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-principal-adverbial-construction:aci-p535-l017-3df2a701d7",
+      "canonicalPath": "an adverbial clause functioning as the principal unit",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "In this construction, the adverbial unit does not function as the adjunct.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P535-L017-3DF2A701D7 rejects a mutation of an adverbial clause functioning as the principal unit",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

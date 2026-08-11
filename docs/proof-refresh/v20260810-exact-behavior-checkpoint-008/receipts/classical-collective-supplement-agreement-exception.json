@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-collective-supplement-agreement-exception",
+  "canonicalResultDigest": "sha256:b6db75f60a912c19c3150ae601d6805d4124fa8f05a9f5c957bf86fe5b891a02",
+  "observations": [
+    {
+      "atomId": "ACI-P160-L018-06B6781A68-04",
+      "ownerId": "classical-collective-supplement-agreement-exception",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-collective-supplement-agreement-exception:aci-p160-l018-06b6781a68-04",
+      "canonicalPath": "the collective agreement exception",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "With a collective NNC, a supplement and its head may lack grammatical agreement.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P160-L018-06B6781A68-04 rejects a mutation of the collective agreement exception",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

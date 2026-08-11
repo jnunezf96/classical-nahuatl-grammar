@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-incorporated-complement-considering",
+  "canonicalResultDigest": "sha256:ecd02f35012c66134e2fe4717dddeadeb457f1fe26157573b8129d0acec1abe4",
+  "observations": [
+    {
+      "atomId": "ACI-P289-L031-A4FE9FC1EF",
+      "ownerId": "classical-incorporated-complement-considering",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-incorporated-complement-considering:aci-p289-l031-a4fe9fc1ef",
+      "canonicalPath": "the incorporated complement considering relation",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "A common incorporated-object-complement compound VNC presents an entity as being considered to be such and such.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P289-L031-A4FE9FC1EF rejects a mutation of the incorporated complement considering relation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

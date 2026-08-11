@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-compound-nnc-conjunctive",
+  "canonicalResultDigest": "sha256:85165eff75b4a2974cebdf89f4063fa03faa358b0cf7f01d08f03b526c3137d7",
+  "observations": [
+    {
+      "atomId": "ACI-P250-L026-C4A6D6EB0F",
+      "ownerId": "classical-compound-nnc-conjunctive",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-conjunctive:aci-p250-l026-c4a6d6eb0f",
+      "canonicalPath": "the conjunctive compound operation",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "A conjunctive compound contains two conjunct subpositions.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P250-L026-C4A6D6EB0F rejects a mutation of the conjunctive compound operation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

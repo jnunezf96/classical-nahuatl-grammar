@@ -14,7 +14,7 @@ This report deliberately has no weighted overall percentage. An atom-to-owner li
 | lessonAtomForceClassification | 28540 | 28540 | 100.00% | complete |
 | lessonNonGrammarAccounting | 9901 | 9901 | 100.00% | complete |
 | lessonGrammarOwnerLinked | 18639 | 18639 | 100.00% | complete |
-| lessonGrammarExactBehaviorObserved | 5706 | 18639 | 30.61% | incomplete |
+| lessonGrammarExactBehaviorObserved | 5756 | 18639 | 30.88% | incomplete |
 | applicationAxisClassification | 184 | 184 | 100.00% | complete |
 | genuineChoiceCanvasProvenance | 58 | 58 | 100.00% | complete |
 | genuineChoiceLiveDeclarations | 18 | 58 | 31.03% | incomplete |
@@ -22,9 +22,9 @@ This report deliberately has no weighted overall percentage. An atom-to-owner li
 
 ## Exact behavior rule
 
-Lessons 1–58 contain **18,639** grammar-bearing atoms. All have owner links, but only **5,706** currently have an acceptable exact-behavior observation.
+Lessons 1–58 contain **18,639** grammar-bearing atoms. All have owner links, but only **5,756** currently have an acceptable exact-behavior observation.
 
-The remaining **12,933** use non-generative assertion coordinates where the canonical engine must instead be observed performing, deriving, projecting, enforcing, constructing, or validating the atom-specific behavior.
+The remaining **12,883** use non-generative assertion coordinates where the canonical engine must instead be observed performing, deriving, projecting, enforcing, constructing, or validating the atom-specific behavior.
 
 A legitimately read-only grammar fact may remain non-generative only when a test observes its exact typed value. Evidence, analysis, and documentary material never authorize or block grammar.
 

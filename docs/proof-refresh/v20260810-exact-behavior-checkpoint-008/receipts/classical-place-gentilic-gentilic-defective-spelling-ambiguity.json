@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-place-gentilic-gentilic-defective-spelling-ambiguity",
+  "canonicalResultDigest": "sha256:aa43003c49ee5d81cdd20afc36f9adffc317b721a6f9ef7e5919690b86651b2c",
+  "observations": [
+    {
+      "atomId": "ACI-P523-L009-87120F7709",
+      "ownerId": "classical-place-gentilic-gentilic-defective-spelling-ambiguity",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-place-gentilic-gentilic-defective-spelling-ambiguity:aci-p523-l009-87120f7709",
+      "canonicalPath": "defective spelling not selecting a formation",
+      "expected": {
+        "value": false
+      },
+      "actual": {
+        "value": false
+      },
+      "canvasAnchor": "The defective spelling under discussion is compatible with place-name Ayohtlān.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P523-L009-87120F7709 rejects a mutation of defective spelling not selecting a formation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

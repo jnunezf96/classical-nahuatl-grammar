@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-single-object-applicative-transform",
+  "canonicalResultDigest": "sha256:aa47e2c5cbb9bd56550b684106c27d67dbfaa1d1000103aeb7aeea388b6365d5",
+  "observations": [
+    {
+      "atomId": "ACI-P229-L013-040F89FE83-06",
+      "ownerId": "classical-single-object-applicative-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-single-object-applicative-transform:aci-p229-l013-040f89fe83-06",
+      "canonicalPath": "the irregular related applicative formation",
+      "expected": {
+        "value": "tlatz-i-l-huiā"
+      },
+      "actual": {
+        "value": "tlatz-i-l-huiā"
+      },
+      "canvasAnchor": "An irregular related formation tla-(tlatz-i-l-huiā) also exists.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P229-L013-040F89FE83-06 rejects a mutation of the irregular related applicative formation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

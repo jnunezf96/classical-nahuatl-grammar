@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-compound-nnc-distributive",
+  "canonicalResultDigest": "sha256:b8fd3988f7b05733ae4e206529617aadbdb85e791c7b2ef994201edc939cd02e",
+  "observations": [
+    {
+      "atomId": "ACI-P303-L022-BCA7BCE0B5",
+      "ownerId": "classical-compound-nnc-distributive",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-compound-nnc-distributive:aci-p303-l022-bca7bce0b5",
+      "canonicalPath": "distributive derivation on a compound embed",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "In a compound nounstem, distributive meaning is expressed by derivation on the embed stem.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P303-L022-BCA7BCE0B5 rejects a mutation of distributive derivation on a compound embed",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

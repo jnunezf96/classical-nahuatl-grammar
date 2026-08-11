@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-place-gentilic-extension-title",
+  "canonicalResultDigest": "sha256:23ba7597a8ebf4680a0caf83c28dfe9d7a87d9465b07b64dc74100394a80d039",
+  "observations": [
+    {
+      "atomId": "ACI-P525-L029-800B09F748",
+      "ownerId": "classical-place-gentilic-extension-title",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-place-gentilic-extension-title:aci-p525-l029-800b09f748",
+      "canonicalPath": "the place-linked title extension",
+      "expected": {
+        "value": "extension/title"
+      },
+      "actual": {
+        "value": "extension/title"
+      },
+      "canvasAnchor": "A gentilic-derived administrative or military title denotes a human title bearer formally linked to a place by official order.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P525-L029-800B09F748 rejects a mutation of the place-linked title extension",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

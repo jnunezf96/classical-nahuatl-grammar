@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-impersonal-reflexive-ne-retention",
+  "canonicalResultDigest": "sha256:7ca88cefca55b7eff0539838437fb9a323564bd1b1fd50b6b1f4e41dd037d4d4",
+  "observations": [
+    {
+      "atomId": "ACI-P188-L021-3653DD917F-02",
+      "ownerId": "classical-impersonal-reflexive-ne-retention",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-impersonal-reflexive-ne-retention:aci-p188-l021-3653dd917f-02",
+      "canonicalPath": "reflexive ne retention in the impersonal",
+      "expected": {
+        "value": "#0-0+ne(zahua-lo)0+0-0#"
+      },
+      "actual": {
+        "value": "#0-0+ne(zahua-lo)0+0-0#"
+      },
+      "canvasAnchor": "Nezahualo has the morphological realization #Ø-Ø+ne(zahua-lo)Ø+Ø-Ø#.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P188-L021-3653DD917F-02 rejects a mutation of reflexive ne retention in the impersonal",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

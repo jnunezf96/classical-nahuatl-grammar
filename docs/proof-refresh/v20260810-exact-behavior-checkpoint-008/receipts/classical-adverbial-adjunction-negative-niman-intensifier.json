@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-negative-niman-intensifier",
+  "canonicalResultDigest": "sha256:0448fdd90fe744f7c6cca29c4e91e25dd7bcd5cda4b5459e5f2e1940b17ba499",
+  "observations": [
+    {
+      "atomId": "ACI-P533-L005-186002BDE9-02",
+      "ownerId": "classical-adverbial-adjunction-negative-niman-intensifier",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-negative-niman-intensifier:aci-p533-l005-186002bde9-02",
+      "canonicalPath": "niman intensifying negative scope",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "niman ahmō can mean ‘absolutely not.’",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P533-L005-186002BDE9-02 rejects a mutation of niman intensifying negative scope",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

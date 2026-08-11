@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-tla-object-pronoun-reduplication",
+  "canonicalResultDigest": "sha256:1dbb78811258bfe9a5d322087794ef7193814529c14eedddc75e2cbcef0b2fac",
+  "observations": [
+    {
+      "atomId": "ACI-P245-L040-2E226BDA67-07",
+      "ownerId": "classical-tla-object-pronoun-reduplication",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-tla-object-pronoun-reduplication:aci-p245-l040-2e226bda67-07",
+      "canonicalPath": "the independently reduplicated event-and-object stem",
+      "expected": {
+        "value": "tlah-tla-coh-cōhua"
+      },
+      "actual": {
+        "value": "tlah-tla-coh-cōhua"
+      },
+      "canvasAnchor": "Additional reduplication derives (tlah-tla-coh-cōhua) and distributes the shopping event over multiple occasions.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P245-L040-2E226BDA67-07 rejects a mutation of the independently reduplicated event-and-object stem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-denominal-vnc-temporal-tia-category",
+  "canonicalResultDigest": "sha256:45bf0abf419ad852a5d05dec95bcb06611fb88dc4ff83daeac8413d01b423fe0",
+  "observations": [
+    {
+      "atomId": "ACI-P600-L004-B9DC1212E1",
+      "ownerId": "classical-denominal-vnc-temporal-tia-category",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-temporal-tia-category:aci-p600-l004-b9dc1212e1",
+      "canonicalPath": "the intransitive temporal tia category",
+      "expected": {
+        "value": 0
+      },
+      "actual": {
+        "value": 0
+      },
+      "canvasAnchor": "The intransitive temporal suffix tiā forms a construction distinct from the previously described /tiaː/ stem formations.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P600-L004-B9DC1212E1 rejects a mutation of the intransitive temporal tia category",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

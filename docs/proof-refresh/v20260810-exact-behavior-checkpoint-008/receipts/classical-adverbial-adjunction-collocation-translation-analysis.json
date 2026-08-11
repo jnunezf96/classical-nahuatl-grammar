@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-collocation-translation-analysis",
+  "canonicalResultDigest": "sha256:27b8ad47c6e899c111da0384afa3028aedd2e09de2169db03f3b8e0a5f7ee0b3",
+  "observations": [
+    {
+      "atomId": "ACI-P532-L025-6F5FA2D2EB-07",
+      "ownerId": "classical-adverbial-adjunction-collocation-translation-analysis",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-collocation-translation-analysis:aci-p532-l025-6f5fa2d2eb-07",
+      "canonicalPath": "solid spelling not authorizing syntactic fusion",
+      "expected": {
+        "value": false
+      },
+      "actual": {
+        "value": false
+      },
+      "canvasAnchor": "Traditional solid spelling is documentary and does not by itself authorize morphological or syntactic fusion.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P532-L025-6F5FA2D2EB-07 rejects a mutation of solid spelling not authorizing syntactic fusion",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

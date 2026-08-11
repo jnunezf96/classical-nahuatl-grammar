@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-double-object-applicative-transform",
+  "canonicalResultDigest": "sha256:2109cef263b26c7350a1ee23634d2c42e18b06399b888f87eb41a9c74dd5c9c2",
+  "observations": [
+    {
+      "atomId": "ACI-P227-L026-7875BF00DF-04",
+      "ownerId": "classical-double-object-applicative-transform",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-double-object-applicative-transform:aci-p227-l026-7875bf00df-04",
+      "canonicalPath": "the chīhuiā applicative target",
+      "expected": {
+        "value": "chīhu-iā"
+      },
+      "actual": {
+        "value": "chīhu-iā"
+      },
+      "canvasAnchor": "Applicative -iā derives tē-(tla-chīhu-iā) and introduces a nonspecific human affected object tē-.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P227-L026-7875BF00DF-04 rejects a mutation of the chīhuiā applicative target",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

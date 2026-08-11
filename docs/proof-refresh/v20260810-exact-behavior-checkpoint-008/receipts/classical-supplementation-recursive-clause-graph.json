@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-supplementation-recursive-clause-graph",
+  "canonicalResultDigest": "sha256:b2b888c9189b9e31bcd594a5fdac9910fa4edb7e04a91e4c4a775901f95fdf7d",
+  "observations": [
+    {
+      "atomId": "ACI-P154-L029-4954F58738-02",
+      "ownerId": "classical-supplementation-recursive-clause-graph",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supplementation-recursive-clause-graph:aci-p154-l029-4954f58738-02",
+      "canonicalPath": "recursive supplementation producing three clause nodes",
+      "expected": {
+        "value": 3
+      },
+      "actual": {
+        "value": 3
+      },
+      "canvasAnchor": "An adjunctive transformation may be applied repeatedly.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P154-L029-4954F58738-02 rejects a mutation of recursive supplementation producing three clause nodes",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

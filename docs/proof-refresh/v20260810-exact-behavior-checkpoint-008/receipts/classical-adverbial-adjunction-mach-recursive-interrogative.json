@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-mach-recursive-interrogative",
+  "canonicalResultDigest": "sha256:acd74fa5a3486a382d94e7e9efd0f77b6bad7c2425ec4ec1f0177e8e03e56112",
+  "observations": [
+    {
+      "atomId": "ACI-P531-L005-F5369AF9B4",
+      "ownerId": "classical-adverbial-adjunction-mach-recursive-interrogative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-mach-recursive-interrogative:aci-p531-l005-f5369af9b4",
+      "canonicalPath": "an interrogative NNC modifying a mach structure",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "When an inherently interrogative NNC modifies an adverbial-modification structure containing mach, the resulting question carries exasperation or amazement.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P531-L005-F5369AF9B4 rejects a mutation of an interrogative NNC modifying a mach structure",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

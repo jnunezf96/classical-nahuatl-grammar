@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-place-gentilic-gentilic-ca-pan-eca",
+  "canonicalResultDigest": "sha256:0352ce7c0515d79e75be0558577516d851721a53f232f85da5c38cfecce8745f",
+  "observations": [
+    {
+      "atomId": "ACI-P521-L002-1A75BED69C",
+      "ownerId": "classical-place-gentilic-gentilic-ca-pan-eca",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-place-gentilic-gentilic-ca-pan-eca:aci-p521-l002-1a75bed69c",
+      "canonicalPath": "the pan-eca gentilic construction",
+      "expected": {
+        "value": "gentilic/ca-pan-eca"
+      },
+      "actual": {
+        "value": "gentilic/ca-pan-eca"
+      },
+      "canvasAnchor": "Gentilic nounstems containing (...-pan-ē-ca)-tl- are structurally distinct from associated-entity nounstems containing (...-pan-ca)-tl-.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P521-L002-1A75BED69C rejects a mutation of the pan-eca gentilic construction",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

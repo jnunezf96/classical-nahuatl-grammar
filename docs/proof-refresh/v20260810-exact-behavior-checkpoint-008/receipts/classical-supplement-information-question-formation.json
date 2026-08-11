@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-supplement-information-question-formation",
+  "canonicalResultDigest": "sha256:7a5a81e5add5b153c5284e8a5e4b9d7c251a6edaa731f71c2a6bbb68eb1ea968",
+  "observations": [
+    {
+      "atomId": "ACI-P156-L034-E86A8277DE",
+      "ownerId": "classical-supplement-information-question-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supplement-information-question-formation:aci-p156-l034-e86a8277de",
+      "canonicalPath": "the interrogative supplement's required position",
+      "expected": {
+        "value": "sentence-initial"
+      },
+      "actual": {
+        "value": "sentence-initial"
+      },
+      "canvasAnchor": "An entity information question is formed by replacing a supplement in a corresponding yes-or-no question with an interrogative pronominal NNC.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P156-L034-E86A8277DE rejects a mutation of the interrogative supplement's required position",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

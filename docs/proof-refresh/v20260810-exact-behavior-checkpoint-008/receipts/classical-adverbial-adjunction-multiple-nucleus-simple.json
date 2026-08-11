@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-multiple-nucleus-simple",
+  "canonicalResultDigest": "sha256:555569ba98282b568a1013feff353030026d0bc68e25d4833abd86641756d5d7",
+  "observations": [
+    {
+      "atomId": "ACI-P529-L011-F6A4EF7BE2",
+      "ownerId": "classical-adverbial-adjunction-multiple-nucleus-simple",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-multiple-nucleus-simple:aci-p529-l011-f6a4ef7be2",
+      "canonicalPath": "multiple nucleus units inside simple adverbial modification",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "A multiple-nucleus simple structure of adverbial modification may contain a structure of adjectival modification.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P529-L011-F6A4EF7BE2 rejects a mutation of multiple nucleus units inside simple adverbial modification",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

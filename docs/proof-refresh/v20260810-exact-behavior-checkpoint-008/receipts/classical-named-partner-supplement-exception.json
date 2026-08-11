@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-named-partner-supplement-exception",
+  "canonicalResultDigest": "sha256:2306fcb008a44b6962805c777581ce2e71acbf5595e353de0027e3bf6cad6021",
+  "observations": [
+    {
+      "atomId": "ACI-P160-L034-E885F2EC01-02",
+      "ownerId": "classical-named-partner-supplement-exception",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-named-partner-supplement-exception:aci-p160-l034-e885f2ec01-02",
+      "canonicalPath": "the named-partner agreement exception",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "In Cuix ye ōantlacuahqueh in mocnīuh?, the plural subject of ōantlacuahqueh includes the second-person addressee group and the third-person friend named by in mocnīuh.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P160-L034-E885F2EC01-02 rejects a mutation of the named-partner agreement exception",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

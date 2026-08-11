@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-derived-nonanimate-possessive-reference",
+  "canonicalResultDigest": "sha256:d87f446d4742b5b465e7b948261ef79c47228ff948806c68f212ea4f2bd4c9c1",
+  "observations": [
+    {
+      "atomId": "ACI-P136-L032-C0EF66F166",
+      "ownerId": "classical-derived-nonanimate-possessive-reference",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-derived-nonanimate-possessive-reference:aci-p136-l032-c0ef66f166",
+      "canonicalPath": "common subject number in derived nonanimate possessives",
+      "expected": {
+        "value": "common"
+      },
+      "actual": {
+        "value": "common"
+      },
+      "canvasAnchor": "In a possessive-state NNC formed on a distributive/varietal or affinity nonanimate stem, the subject's number dyad reports common number.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P136-L032-C0EF66F166 rejects a mutation of common subject number in derived nonanimate possessives",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

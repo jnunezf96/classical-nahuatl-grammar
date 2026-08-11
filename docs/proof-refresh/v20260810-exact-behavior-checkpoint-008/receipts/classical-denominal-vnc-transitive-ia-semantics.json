@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-denominal-vnc-transitive-ia-semantics",
+  "canonicalResultDigest": "sha256:98dd5a8560e652a947c2979fe9e994f3c496188fa2567940c09fa22dc33ac608",
+  "observations": [
+    {
+      "atomId": "ACI-P606-L006-3258AD3BB2-02",
+      "ownerId": "classical-denominal-vnc-transitive-ia-semantics",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-transitive-ia-semantics:aci-p606-l006-3258ad3bb2-02",
+      "canonicalPath": "the transitive i-a denominal operation",
+      "expected": {
+        "value": "transitive-i-a"
+      },
+      "actual": {
+        "value": "transitive-i-a"
+      },
+      "canvasAnchor": "The resultant stem can mean ‘to cause a human object or someone to have the nounstem entity.’",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P606-L006-3258AD3BB2-02 rejects a mutation of the transitive i-a denominal operation",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

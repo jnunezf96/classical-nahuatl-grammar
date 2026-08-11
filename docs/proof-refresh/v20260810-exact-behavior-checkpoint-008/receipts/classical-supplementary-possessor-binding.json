@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-supplementary-possessor-binding",
+  "canonicalResultDigest": "sha256:16099c282e91bb1b1f7bc35526bf6164c0af3e1ddaae5fa782132f1765550fd4",
+  "observations": [
+    {
+      "atomId": "ACI-P138-L018-AD36D954FB",
+      "ownerId": "classical-supplementary-possessor-binding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-supplementary-possessor-binding:aci-p138-l018-ad36d954fb",
+      "canonicalPath": "the supplementary possessor role",
+      "expected": {
+        "value": "possessor"
+      },
+      "actual": {
+        "value": "possessor"
+      },
+      "canvasAnchor": "Nahuatl permits supplementary possessors.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P138-L018-AD36D954FB rejects a mutation of the supplementary possessor role",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

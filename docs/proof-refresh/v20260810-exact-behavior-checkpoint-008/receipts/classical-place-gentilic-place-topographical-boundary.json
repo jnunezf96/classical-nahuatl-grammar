@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-place-gentilic-place-topographical-boundary",
+  "canonicalResultDigest": "sha256:32428bdaca3798c3ed577b5752cae3605a2aa935b1dcd4e87c9f241b8e01ea17",
+  "observations": [
+    {
+      "atomId": "ACI-P510-L002-20DAAD87CF",
+      "ownerId": "classical-place-gentilic-place-topographical-boundary",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-place-gentilic-place-topographical-boundary:aci-p510-l002-20daad87cf",
+      "canonicalPath": "a topographical name not automatically being a place name",
+      "expected": {
+        "value": false
+      },
+      "actual": {
+        "value": false
+      },
+      "canvasAnchor": "Nahuatl grammatically distinguishes a topographical-feature name from a place-name based on that feature.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P510-L002-20DAAD87CF rejects a mutation of a topographical name not automatically being a place name",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

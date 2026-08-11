@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-demonstrative-supplementation",
+  "canonicalResultDigest": "sha256:170ce513e3c8d886ba95181d978970b7a736b9919a786bf938d6105b5770ff0d",
+  "observations": [
+    {
+      "atomId": "ACI-P155-L009-41781D3577-05",
+      "ownerId": "classical-demonstrative-supplementation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-demonstrative-supplementation:aci-p155-l009-41781d3577-05",
+      "canonicalPath": "the demonstrative supplementary-subject role",
+      "expected": {
+        "value": "subject"
+      },
+      "actual": {
+        "value": "subject"
+      },
+      "canvasAnchor": "Pronominal NNC īn functions as the supplementary subject of Yehhuātl.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P155-L009-41781D3577-05 rejects a mutation of the demonstrative supplementary-subject role",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

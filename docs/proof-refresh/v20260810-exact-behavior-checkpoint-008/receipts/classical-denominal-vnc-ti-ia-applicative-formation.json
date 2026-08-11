@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-denominal-vnc-ti-ia-applicative-formation",
+  "canonicalResultDigest": "sha256:29eea02b5c50f1292b2cd62ed7215a5f131a3ea78b12315d90c0d7b95c8bf96b",
+  "observations": [
+    {
+      "atomId": "ACI-P599-L033-9B0E50C2A8",
+      "ownerId": "classical-denominal-vnc-ti-ia-applicative-formation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-ti-ia-applicative-formation:aci-p599-l033-9b0e50c2a8",
+      "canonicalPath": "applicative ti-ia adding one object",
+      "expected": {
+        "value": 1
+      },
+      "actual": {
+        "value": 1
+      },
+      "canvasAnchor": "Applicative t-iā must be distinguished from first-type causative ti-ā.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P599-L033-9B0E50C2A8 rejects a mutation of applicative ti-ia adding one object",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-denominal-ti-lia-causative",
+  "canonicalResultDigest": "sha256:f45ccef571428b094dc1e4a65ec4adc96283642739dd5baa6eab54e2d20e97ed",
+  "observations": [
+    {
+      "atomId": "ACI-P215-L009-93A3E85F7F-04",
+      "ownerId": "classical-denominal-ti-lia-causative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-ti-lia-causative:aci-p215-l009-93a3e85f7f-04",
+      "canonicalPath": "the denominal mazātiliā causative target",
+      "expected": {
+        "value": "mazā-ti-liā"
+      },
+      "actual": {
+        "value": "mazā-ti-liā"
+      },
+      "canvasAnchor": "Causative liā derives tē-(mazā-ti-liā) from the ti-final denominal source (mazā-ti).",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P215-L009-93A3E85F7F-04 rejects a mutation of the denominal mazātiliā causative target",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

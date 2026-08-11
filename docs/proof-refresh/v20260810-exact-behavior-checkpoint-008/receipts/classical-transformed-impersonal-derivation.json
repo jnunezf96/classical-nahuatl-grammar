@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-transformed-impersonal-derivation",
+  "canonicalResultDigest": "sha256:1b6d207ee5bcc03bd1632644a52c86dcdb443a3470210ce3ef851ee76992d7f4",
+  "observations": [
+    {
+      "atomId": "ACI-P190-L013-B5096F7ABD-04",
+      "ownerId": "classical-transformed-impersonal-derivation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-transformed-impersonal-derivation:aci-p190-l013-b5096f7abd-04",
+      "canonicalPath": "the derived tla-impersonal stem",
+      "expected": {
+        "value": "tla-cue-cuech-ca"
+      },
+      "actual": {
+        "value": "tla-cue-cuech-ca"
+      },
+      "canvasAnchor": "Prefixing derivational tla- to (cue-cuech-ca) produces the impersonal stem (tla-cue-cuech-ca).",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P190-L013-B5096F7ABD-04 rejects a mutation of the derived tla-impersonal stem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

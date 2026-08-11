@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-root-final-l-oa-huia-applicative",
+  "canonicalResultDigest": "sha256:9d9840c71dbc8f4a58e2e5b66cfd0ea4538ef50074f1275ea1ebe749a4495c65",
+  "observations": [
+    {
+      "atomId": "ACI-P233-L023-5910A6893A-04",
+      "ownerId": "classical-root-final-l-oa-huia-applicative",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-root-final-l-oa-huia-applicative:aci-p233-l023-5910a6893a-04",
+      "canonicalPath": "the ihtalhuiā applicative target",
+      "expected": {
+        "value": "iht-a-l-huiā"
+      },
+      "actual": {
+        "value": "iht-a-l-huiā"
+      },
+      "canvasAnchor": "Applicative l-huiā derives tē+tlā-(iht-a-l-huiā) and introduces a nonspecific human relational object tē-.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P233-L023-5910A6893A-04 rejects a mutation of the ihtalhuiā applicative target",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-vnc-supplementary-possessor-binding",
+  "canonicalResultDigest": "sha256:975e16e774c14622c576f6a45f627a12104574f1c9651b7390da724db46d5c3e",
+  "observations": [
+    {
+      "atomId": "ACI-P165-L039-C65763AB07-03",
+      "ownerId": "classical-vnc-supplementary-possessor-binding",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-vnc-supplementary-possessor-binding:aci-p165-l039-c65763ab07-03",
+      "canonicalPath": "the VNC supplementary possessor binding",
+      "expected": {
+        "value": "possessor"
+      },
+      "actual": {
+        "value": "possessor"
+      },
+      "canvasAnchor": "Subject of supplementary possessor xoxōhuixtihcac has possessor pronoun ī-Ø in ītōcā as its head.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P165-L039-C65763AB07-03 rejects a mutation of the VNC supplementary possessor binding",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

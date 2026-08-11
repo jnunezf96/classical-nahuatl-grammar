@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-purposive-movement-base-allomorphy",
+  "canonicalResultDigest": "sha256:044b3b9a1f7c4dc218a419499c4846a56d4009cbfb2ca14e4bd9bcd13cb2e8b8",
+  "observations": [
+    {
+      "atomId": "ACI-P268-L033-EAB29C30B7-05",
+      "ownerId": "classical-purposive-movement-base-allomorphy",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-purposive-movement-base-allomorphy:aci-p268-l033-eab29c30b7-05",
+      "canonicalPath": "the exact purposive nitlacuātīuh formula",
+      "expected": {
+        "value": "#ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#"
+      },
+      "actual": {
+        "value": "#ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#"
+      },
+      "canvasAnchor": "Purposive nitlacuātīuh has the morphological realization #ni-Ø+tla(cuā-⎕-t-ī-uh)Ø+Ø-Ø#.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P268-L033-EAB29C30B7-05 rejects a mutation of the exact purposive nitlacuātīuh formula",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

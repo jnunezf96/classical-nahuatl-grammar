@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-type-two-ltia-ni-na-alternation",
+  "canonicalResultDigest": "sha256:7047ae17765e35453dd3c2f669cb95c22d32a32f4f2c5fea90087f9ce1c29eff",
+  "observations": [
+    {
+      "atomId": "ACI-P212-L013-323B7985E5-05",
+      "ownerId": "classical-type-two-ltia-ni-na-alternation",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-type-two-ltia-ni-na-alternation:aci-p212-l013-323b7985e5-05",
+      "canonicalPath": "the cualāni nonactive-to-causative replacement",
+      "expected": {
+        "value": "cual-ā-n-tiā"
+      },
+      "actual": {
+        "value": "cual-ā-n-tiā"
+      },
+      "canvasAnchor": "Replacing nonactive -ō with causative -tiā derives tē-(cual-ā-n-tiā).",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P212-L013-323B7985E5-05 rejects a mutation of the cualāni nonactive-to-causative replacement",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

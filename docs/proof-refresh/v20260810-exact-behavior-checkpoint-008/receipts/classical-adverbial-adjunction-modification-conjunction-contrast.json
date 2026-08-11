@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-adverbial-adjunction-modification-conjunction-contrast",
+  "canonicalResultDigest": "sha256:d0eab549712abc060fcdaa2fc16ec2a2b41c6751f307a9599448818a2bf97096",
+  "observations": [
+    {
+      "atomId": "ACI-P535-L002-B95FE8BD34-02",
+      "ownerId": "classical-adverbial-adjunction-modification-conjunction-contrast",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-adverbial-adjunction-modification-conjunction-contrast:aci-p535-l002-b95fe8bd34-02",
+      "canonicalPath": "modification remaining distinct from conjunction",
+      "expected": {
+        "value": true
+      },
+      "actual": {
+        "value": true
+      },
+      "canvasAnchor": "mōztla huiptla is a conjunctional collocation rather than a structure of modification.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P535-L002-B95FE8BD34-02 rejects a mutation of modification remaining distinct from conjunction",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

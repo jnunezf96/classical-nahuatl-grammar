@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "version": "v20260810-exact-behavior-checkpoint-008",
+  "ownerId": "classical-denominal-vnc-included-possessor-pronoun",
+  "canonicalResultDigest": "sha256:1bee54473824df2795edfee211a55a8a117de57219f1801c2b981f35388f855f",
+  "observations": [
+    {
+      "atomId": "ACI-P590-L009-05C642C95D-02",
+      "ownerId": "classical-denominal-vnc-included-possessor-pronoun",
+      "status": "EXACTLY_OBSERVED",
+      "obligation": "observe-canonical-grammar-behavior",
+      "assertionId": "classical-denominal-vnc-included-possessor-pronoun:aci-p590-l009-05c642c95d-02",
+      "canonicalPath": "an included possessor inside a derived ti verbstem",
+      "expected": {
+        "value": "included-possessor-ti"
+      },
+      "actual": {
+        "value": "included-possessor-ti"
+      },
+      "canvasAnchor": "First-person singular possessor n-o may be included inside the derived ti verbstem.",
+      "proofTest": "src/tests/classical_checkpoint008_role_exact.test.js",
+      "mutation": {
+        "assertion": "ACI-P590-L009-05C642C95D-02 rejects a mutation of an included possessor inside a derived ti verbstem",
+        "rejected": true
+      }
+    }
+  ],
+  "counts": {
+    "atoms": 1,
+    "passed": 1,
+    "failed": 0,
+    "mutationsRejected": 1
+  }
+}

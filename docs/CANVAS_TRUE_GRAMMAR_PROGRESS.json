@@ -48,9 +48,9 @@
       "complete": true
     },
     "lessonGrammarExactBehaviorObserved": {
-      "numerator": 5706,
+      "numerator": 5756,
       "denominator": 18639,
-      "percent": 30.61,
+      "percent": 30.88,
       "complete": false
     },
     "applicationAxisClassification": {
@@ -502,35 +502,35 @@
     "exactProofs": {
       "retainedCanonicalCoordinates": 5347,
       "newIndividualAtomCoordinates": 13292,
-      "exactBehaviorObserved": 5706,
-      "linkOnlyInsufficient": 12933,
+      "exactBehaviorObserved": 5756,
+      "linkOnlyInsufficient": 12883,
       "totalOwnerLinked": 18639,
-      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-007/manifest.json",
-      "refreshedExactAtomCount": 359,
+      "activeExactObservationManifest": "docs/proof-refresh/v20260810-exact-behavior-checkpoint-008/manifest.json",
+      "refreshedExactAtomCount": 409,
       "executionObligations": {
         "canonical-rule-or-alternation": {
           "requiredBehavior": "perform-canonical-operation-or-alternation",
-          "linkOnlyInsufficient": 2032
+          "linkOnlyInsufficient": 2024
         },
         "derived-realization": {
           "requiredBehavior": "derive-canonical-realization",
-          "linkOnlyInsufficient": 703
+          "linkOnlyInsufficient": 701
         },
         "result-projection": {
           "requiredBehavior": "project-canonical-result",
-          "linkOnlyInsufficient": 2875
+          "linkOnlyInsufficient": 2871
         },
         "applicability-or-constraint": {
           "requiredBehavior": "enforce-applicability-or-constraint",
-          "linkOnlyInsufficient": 1353
+          "linkOnlyInsufficient": 1346
         },
         "source-structure-schema": {
           "requiredBehavior": "construct-or-validate-typed-source-structure",
-          "linkOnlyInsufficient": 3080
+          "linkOnlyInsufficient": 3061
         },
         "read-only-grammar-fact": {
           "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation",
-          "linkOnlyInsufficient": 2890
+          "linkOnlyInsufficient": 2880
         }
       }
     },
@@ -5216,13 +5216,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P122-L033-AD59D5E8AD-02",
-      "canonicalOwnerId": "classical-possessor-number-boundary-formation",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P122-L033-AD59D5E8AD-03",
       "canonicalOwnerId": "classical-possessor-number-boundary-formation",
       "uiRole": "derived-realization",
@@ -6287,13 +6280,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P136-L032-C0EF66F166",
-      "canonicalOwnerId": "classical-derived-nonanimate-possessive-reference",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P136-L032-AF0F2C5445",
       "canonicalOwnerId": "classical-derived-nonanimate-possessive-reference",
       "uiRole": "result-projection",
@@ -6438,13 +6424,6 @@
       "canonicalOwnerId": "classical-tl-two-a-to-one-a-reclassification",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P138-L018-AD36D954FB",
-      "canonicalOwnerId": "classical-supplementary-possessor-binding",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -6917,13 +6896,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P153-L002-C48230781E-03",
-      "canonicalOwnerId": "classical-supplementary-subject-binding",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P153-L002-C48230781E-04",
       "canonicalOwnerId": "classical-supplementary-subject-binding",
       "uiRole": "canonical-rule-or-alternation",
@@ -7033,13 +7005,6 @@
       "canonicalOwnerId": "classical-supplementary-possessor-binding",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P154-L029-4954F58738-02",
-      "canonicalOwnerId": "classical-supplementation-recursive-clause-graph",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -7253,24 +7218,10 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P155-L009-41781D3577-05",
-      "canonicalOwnerId": "classical-demonstrative-supplementation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P155-L023-D6823F22B9",
       "canonicalOwnerId": "classical-supplement-free-constituent-order",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P155-L026-B44836033B",
-      "canonicalOwnerId": "classical-supplement-topic-linearization",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -7365,13 +7316,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P156-L005-BDB8D8BC91-04",
-      "canonicalOwnerId": "classical-supplementary-object-binding",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P156-L005-BDB8D8BC91-05",
       "canonicalOwnerId": "classical-supplementary-object-binding",
       "uiRole": "source-structure-schema",
@@ -7460,13 +7404,6 @@
       "canonicalOwnerId": "classical-supplementation-recursive-clause-graph",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P156-L034-E86A8277DE",
-      "canonicalOwnerId": "classical-supplement-information-question-formation",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -7729,13 +7666,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P160-L008-F169AFC15E-02",
-      "canonicalOwnerId": "classical-discontinuous-supplement-linearization",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P160-L013-57205D3DB2-02",
       "canonicalOwnerId": "classical-discontinuous-supplement-linearization",
       "uiRole": "source-structure-schema",
@@ -7806,13 +7736,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P160-L018-06B6781A68-04",
-      "canonicalOwnerId": "classical-collective-supplement-agreement-exception",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P160-L026-4900701850-02",
       "canonicalOwnerId": "classical-collective-supplement-agreement-exception",
       "uiRole": "result-projection",
@@ -7843,13 +7766,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P160-L026-4900701850-06",
       "canonicalOwnerId": "classical-collective-supplement-agreement-exception",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P160-L034-E885F2EC01-02",
-      "canonicalOwnerId": "classical-named-partner-supplement-exception",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
@@ -7908,13 +7824,6 @@
       "canonicalOwnerId": "classical-male-bonding-supplement-exception",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P161-L008-D74BE1E7E3-03",
-      "canonicalOwnerId": "classical-male-bonding-supplement-exception",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -8464,13 +8373,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P165-L039-C65763AB07-03",
-      "canonicalOwnerId": "classical-vnc-supplementary-possessor-binding",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P166-L005-43AE174A20-02",
       "canonicalOwnerId": "classical-vnc-supplementary-possessor-binding",
       "uiRole": "source-structure-schema",
@@ -8615,13 +8517,6 @@
       "canonicalOwnerId": "classical-ac-pronominal-plural-cooperation",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P166-L036-AB86455CD4",
-      "canonicalOwnerId": "classical-ac-pronominal-plural-cooperation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -9073,13 +8968,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P169-L018-01BDC9D5AE-02",
-      "canonicalOwnerId": "classical-speech-complement-supplementation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P169-L018-01BDC9D5AE-03",
       "canonicalOwnerId": "classical-speech-complement-supplementation",
       "uiRole": "source-structure-schema",
@@ -9257,13 +9145,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P170-L017-34A93CB771-03",
       "canonicalOwnerId": "classical-causative-participant-transform",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P170-L017-34A93CB771-04",
-      "canonicalOwnerId": "classical-negative-command-formation",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
@@ -11278,13 +11159,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P188-L009-A409CB5183-02",
-      "canonicalOwnerId": "classical-impersonal-nonspecific-object-retention",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P188-L009-A409CB5183-03",
       "canonicalOwnerId": "classical-impersonal-nonspecific-object-retention",
       "uiRole": "source-structure-schema",
@@ -11464,13 +11338,6 @@
       "canonicalOwnerId": "classical-impersonal-nonspecific-object-retention",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P188-L021-3653DD917F-02",
-      "canonicalOwnerId": "classical-impersonal-reflexive-ne-retention",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -11737,13 +11604,6 @@
       "canonicalOwnerId": "classical-transformed-impersonal-derivation",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P190-L013-B5096F7ABD-04",
-      "canonicalOwnerId": "classical-transformed-impersonal-derivation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -12570,13 +12430,6 @@
       "canonicalOwnerId": "classical-type-one-final-a-replacement",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P200-L010-EB2EFD3CFA-04",
-      "canonicalOwnerId": "classical-type-one-final-a-replacement",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -13819,13 +13672,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P212-L013-323B7985E5-05",
-      "canonicalOwnerId": "classical-type-two-ltia-ni-na-alternation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P212-L013-323B7985E5-06",
       "canonicalOwnerId": "classical-type-two-ltia-ni-na-alternation",
       "uiRole": "source-structure-schema",
@@ -14015,13 +13861,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P213-L005-5A112863FE-06",
-      "canonicalOwnerId": "classical-silent-object-supplementation-privilege",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P213-L014-02D69B3173-02",
       "canonicalOwnerId": "classical-type-two-ltia-source-system",
       "uiRole": "result-projection",
@@ -14086,13 +13925,6 @@
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P214-L017-334A9874AF-04",
-      "canonicalOwnerId": "classical-type-two-ltia-ti-chi-alternation",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P214-L017-334A9874AF-05",
       "canonicalOwnerId": "classical-type-two-ltia-ti-chi-alternation",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
@@ -14362,13 +14194,6 @@
       "canonicalOwnerId": "classical-denominal-ti-lia-causative",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P215-L009-93A3E85F7F-04",
-      "canonicalOwnerId": "classical-denominal-ti-lia-causative",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -16325,13 +16150,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P227-L026-7875BF00DF-04",
-      "canonicalOwnerId": "classical-double-object-applicative-transform",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P227-L026-7875BF00DF-05",
       "canonicalOwnerId": "classical-double-object-applicative-transform",
       "uiRole": "derived-realization",
@@ -16819,13 +16637,6 @@
       "canonicalOwnerId": "classical-single-object-applicative-transform",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P229-L013-040F89FE83-06",
-      "canonicalOwnerId": "classical-single-object-applicative-transform",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -17418,13 +17229,6 @@
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P233-L023-5910A6893A-03",
-      "canonicalOwnerId": "classical-root-final-l-oa-huia-applicative",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P233-L023-5910A6893A-04",
       "canonicalOwnerId": "classical-root-final-l-oa-huia-applicative",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
@@ -18614,13 +18418,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P245-L040-2E226BDA67-07",
-      "canonicalOwnerId": "classical-tla-object-pronoun-reduplication",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P245-L040-2E226BDA67-08",
       "canonicalOwnerId": "classical-tla-object-pronoun-reduplication",
       "uiRole": "result-projection",
@@ -19363,13 +19160,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P250-L026-C4A6D6EB0F",
-      "canonicalOwnerId": "classical-compound-nnc-conjunctive",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P250-L026-C4A6D6EB0F-02",
       "canonicalOwnerId": "classical-compound-nnc-conjunctive",
       "uiRole": "applicability-or-constraint",
@@ -19986,13 +19776,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P256-L030-4950FDC4CC-02",
-      "canonicalOwnerId": "classical-ihca-compound-matrix-formation",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P256-L030-4950FDC4CC-03",
       "canonicalOwnerId": "classical-ihca-compound-matrix-formation",
       "uiRole": "canonical-rule-or-alternation",
@@ -20039,13 +19822,6 @@
       "canonicalOwnerId": "classical-o-compound-matrix-formation",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P257-L021-64B1D00CD1",
-      "canonicalOwnerId": "classical-quiza-compound-matrix-formation",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -20823,13 +20599,6 @@
       "canonicalOwnerId": "classical-purposive-movement-base-allomorphy",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P268-L033-EAB29C30B7-05",
-      "canonicalOwnerId": "classical-purposive-movement-base-allomorphy",
-      "uiRole": "derived-realization",
-      "requiredBehavior": "derive-canonical-realization"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -25474,13 +25243,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P289-L031-A4FE9FC1EF",
-      "canonicalOwnerId": "classical-incorporated-complement-considering",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P289-L031-A4FE9FC1EF-02",
       "canonicalOwnerId": "classical-incorporated-complement-considering",
       "uiRole": "result-projection",
@@ -27396,13 +27158,6 @@
       "canonicalOwnerId": "classical-compound-nnc-fellowship",
       "uiRole": "source-structure-schema",
       "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P303-L022-BCA7BCE0B5",
-      "canonicalOwnerId": "classical-compound-nnc-distributive",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -63414,13 +63169,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P510-L002-20DAAD87CF",
-      "canonicalOwnerId": "classical-place-gentilic-place-topographical-boundary",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P510-L002-20DAAD87CF-06",
       "canonicalOwnerId": "classical-place-gentilic-place-topographical-boundary",
       "uiRole": "applicability-or-constraint",
@@ -65059,13 +64807,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P521-L002-1A75BED69C",
-      "canonicalOwnerId": "classical-place-gentilic-gentilic-ca-pan-eca",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P521-L002-1A75BED69C-02",
       "canonicalOwnerId": "classical-place-gentilic-gentilic-ca-pan-eca",
       "uiRole": "derived-realization",
@@ -65285,13 +65026,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P523-L003-5DF363EB56-06",
       "canonicalOwnerId": "classical-place-gentilic-gentilic-alternative-route",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P523-L009-87120F7709",
-      "canonicalOwnerId": "classical-place-gentilic-gentilic-defective-spelling-ambiguity",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
     },
@@ -65780,13 +65514,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P525-L029-800B09F748",
-      "canonicalOwnerId": "classical-place-gentilic-extension-title",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P525-L029-800B09F748-02",
       "canonicalOwnerId": "classical-place-gentilic-extension-title",
       "uiRole": "source-structure-schema",
@@ -66235,13 +65962,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P529-L011-F6A4EF7BE2",
-      "canonicalOwnerId": "classical-adverbial-adjunction-multiple-nucleus-simple",
-      "uiRole": "canonical-rule-or-alternation",
-      "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P529-L011-F6A4EF7BE2-02",
       "canonicalOwnerId": "classical-adverbial-adjunction-multiple-nucleus-simple",
       "uiRole": "canonical-rule-or-alternation",
@@ -66601,13 +66321,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P530-L035-E336EBFEBA-06",
       "canonicalOwnerId": "classical-adverbial-adjunction-cuix-recursive-interrogative",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P531-L005-F5369AF9B4",
-      "canonicalOwnerId": "classical-adverbial-adjunction-mach-recursive-interrogative",
       "uiRole": "result-projection",
       "requiredBehavior": "project-canonical-result"
     },
@@ -67432,13 +67145,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P532-L025-6F5FA2D2EB-07",
-      "canonicalOwnerId": "classical-adverbial-adjunction-collocation-translation-analysis",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P532-L027-EE425E7D98",
       "canonicalOwnerId": "classical-adverbial-adjunction-intensifier-inventory-analysis",
       "uiRole": "read-only-grammar-fact",
@@ -67462,13 +67168,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P532-L027-EE425E7D98-04",
       "canonicalOwnerId": "classical-adverbial-adjunction-intensifier-inventory-analysis",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P533-L005-186002BDE9-02",
-      "canonicalOwnerId": "classical-adverbial-adjunction-negative-niman-intensifier",
       "uiRole": "read-only-grammar-fact",
       "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
@@ -67726,13 +67425,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P535-L002-B95FE8BD34-02",
-      "canonicalOwnerId": "classical-adverbial-adjunction-modification-conjunction-contrast",
-      "uiRole": "source-structure-schema",
-      "requiredBehavior": "construct-or-validate-typed-source-structure"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P535-L002-B95FE8BD34-03",
       "canonicalOwnerId": "classical-adverbial-adjunction-modification-conjunction-contrast",
       "uiRole": "result-projection",
@@ -67798,13 +67490,6 @@
       "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P535-L008-372F707121-08",
       "canonicalOwnerId": "classical-adverbial-adjunction-both-sides-recursion",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P535-L017-3DF2A701D7",
-      "canonicalOwnerId": "classical-adverbial-adjunction-principal-adverbial-construction",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
     },
@@ -80004,13 +79689,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P585-L029-64F86C487F",
-      "canonicalOwnerId": "classical-denominal-vnc-ya-root-rank-source",
-      "uiRole": "result-projection",
-      "requiredBehavior": "project-canonical-result"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P585-L036-764638B4DE-02",
       "canonicalOwnerId": "classical-denominal-vnc-ya-root-rank-source",
       "uiRole": "read-only-grammar-fact",
@@ -80813,13 +80491,6 @@
       "canonicalOwnerId": "classical-denominal-vnc-included-possessor-source-contrast",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P590-L009-05C642C95D-02",
-      "canonicalOwnerId": "classical-denominal-vnc-included-possessor-pronoun",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -82951,13 +82622,6 @@
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P599-L033-9B0E50C2A8",
-      "canonicalOwnerId": "classical-denominal-vnc-ti-ia-applicative-formation",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
       "id": "ACI-P599-L033-9B0E50C2A8-02",
       "canonicalOwnerId": "classical-denominal-vnc-ti-ia-applicative-formation",
       "uiRole": "applicability-or-constraint",
@@ -83004,13 +82668,6 @@
       "canonicalOwnerId": "classical-denominal-vnc-ti-ia-applicative-formation",
       "uiRole": "canonical-rule-or-alternation",
       "requiredBehavior": "perform-canonical-operation-or-alternation"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P600-L004-B9DC1212E1",
-      "canonicalOwnerId": "classical-denominal-vnc-temporal-tia-category",
-      "uiRole": "applicability-or-constraint",
-      "requiredBehavior": "enforce-applicability-or-constraint"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -84446,13 +84103,6 @@
       "canonicalOwnerId": "classical-denominal-vnc-transitive-ia-source",
       "uiRole": "applicability-or-constraint",
       "requiredBehavior": "enforce-applicability-or-constraint"
-    },
-    {
-      "kind": "atom-link-without-exact-canonical-behavior-proof",
-      "id": "ACI-P606-L006-3258AD3BB2-02",
-      "canonicalOwnerId": "classical-denominal-vnc-transitive-ia-semantics",
-      "uiRole": "read-only-grammar-fact",
-      "requiredBehavior": "supply-or-present-exact-grammar-fact-or-explanation"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -92070,6 +91720,6 @@
     "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
     "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
-    "activeExactObservationPointer": "sha256:a5c320635c022bb6379799c5e70625f65ef900ea1de14f713dcd19c56f731a43"
+    "activeExactObservationPointer": "sha256:8e3563eeb4801b41fff9f9099dd697b13c4e9d040f645b57154f356d24aa9d4f"
   }
 }
