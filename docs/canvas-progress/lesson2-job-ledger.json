@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 384,
-    "exactlyImplementedWritingJobs": 341,
-    "writingJobsAwaitingExactObservation": 43,
+    "exactlyImplementedWritingJobs": 372,
+    "writingJobsAwaitingExactObservation": 12,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 155,
@@ -11104,10 +11104,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L018-1E441CC94C",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L018-1E441CC94C-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11133,10 +11133,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L019-8CDDF22229",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L019-8CDDF22229-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11162,10 +11162,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11191,10 +11191,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-02",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11220,10 +11220,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-03",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11249,10 +11249,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-04",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-04-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11278,10 +11278,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-05",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-05-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11307,10 +11307,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-06",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-06-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11336,10 +11336,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-07",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-07-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11365,10 +11365,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-08",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-08-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11394,10 +11394,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-09",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-09-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11423,10 +11423,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-10",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L020-2762BDE311-10-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11539,10 +11539,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11568,10 +11568,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-02",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11597,10 +11597,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-03",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11626,10 +11626,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-04",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-04-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11655,10 +11655,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-05",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-05-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11684,10 +11684,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-06",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-06-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11713,10 +11713,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-07",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-07-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11742,10 +11742,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-08",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-08-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11771,10 +11771,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-09",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-09-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11800,10 +11800,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-10",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-10-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11829,10 +11829,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-11",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-11-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11858,10 +11858,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-12",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-12-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11887,10 +11887,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-13",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-13-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11916,10 +11916,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-14",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-14-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11945,10 +11945,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-15",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-15-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -11974,10 +11974,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-16",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-16-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12003,10 +12003,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-17",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L030-AF1F6BDC65-17-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12061,10 +12061,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L036-567BAC1121",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L036-567BAC1121-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -12090,10 +12090,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "regressive-assimilation-example-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L037-714FF652AC",
+      "mutationTest": "src/tests/classical_lesson2_regressive_examples_jobs.test.js#ACI-P049-L037-714FF652AC-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

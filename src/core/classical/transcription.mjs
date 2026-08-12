@@ -2477,7 +2477,48 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       const dissimilation = processKind === "dissimilation";
       const outcome = getClassicalNahuatlAssimilationRuleOutcome(selectedRule, leftConsonant, rightConsonant);
       const requestedSpellingMatches = !requestedSpelling || !outcome.outputSpelling || requestedSpelling === outcome.outputSpelling;
-      const authorized = grammaticalConstruction && Boolean(selectedRule) && (unlikeConsonants || dissimilation) && requestedSpellingMatches && Boolean(outcome.outputSound || outcome.outputSpelling);
+      const sourceLeftMorpheme = normalizeClassicalNahuatlOrthographyInput(options.sourceLeftMorpheme || "");
+      const sourceRightMorpheme = normalizeClassicalNahuatlOrthographyInput(options.sourceRightMorpheme || "");
+      const spellingStyle = normalizeClassicalNahuatlOrthographyInput(options.spellingStyle || "fully-assimilated");
+      const permittedSpellingStyles = new Set([
+        "source-preserving", "fully-assimilated",
+        "unreleased-t-plus-right", "contracted",
+      ]);
+      const surfaceConsonants = ["tz", "ch", "tl", "qu", "cu", "hu", "uh", "c", "m", "n", "p", "s", "z", "x", "y", "w", "l", "t"];
+      const leftSurfaceConsonant = surfaceConsonants.find(item => sourceLeftMorpheme.endsWith(item)) || "";
+      const rightSurfaceConsonant = surfaceConsonants.find(item => sourceRightMorpheme.startsWith(item)) || "";
+      const morphsComplete = Boolean(sourceLeftMorpheme && sourceRightMorpheme);
+      let realizedLeftMorpheme = sourceLeftMorpheme;
+      let realizedRightMorpheme = sourceRightMorpheme;
+      if (morphsComplete && spellingStyle !== "source-preserving") {
+        const leftBase = leftSurfaceConsonant
+          ? sourceLeftMorpheme.slice(0, -leftSurfaceConsonant.length)
+          : sourceLeftMorpheme;
+        const dominantLeftSpelling = isClassicalNahuatlNasal(leftConsonant)
+          ? rightConsonant === "s" ? "z" : rightSurfaceConsonant
+          : rightSurfaceConsonant;
+        realizedLeftMorpheme = spellingStyle === "fully-assimilated"
+          ? `${leftBase}${dominantLeftSpelling}`
+          : spellingStyle === "unreleased-t-plus-right"
+            ? `${leftBase}t`
+            : leftBase;
+      }
+      if (options.omitIntervocalicY === true) {
+        realizedRightMorpheme = realizedRightMorpheme.replace(/iya$/u, "ia");
+      }
+      const joiner = options.joinWithSpace === true ? " " : "";
+      const outputForm = morphsComplete
+        ? `${realizedLeftMorpheme}${joiner}${realizedRightMorpheme}`
+        : "";
+      const requestedOutputForm = normalizeClassicalNahuatlOrthographyInput(options.requestedOutputForm || "");
+      const requestedOutputMatches = !requestedOutputForm || requestedOutputForm === outputForm;
+      const authorized = grammaticalConstruction
+        && Boolean(selectedRule)
+        && (unlikeConsonants || dissimilation)
+        && requestedSpellingMatches
+        && requestedOutputMatches
+        && (!morphsComplete || permittedSpellingStyles.has(spellingStyle))
+        && Boolean(outcome.outputSound || outcome.outputSpelling);
       const releaseFeatureLost = outcome.outputSpelling === "tztz" || outcome.outputSpelling === "chch";
       let blockReason = "";
       if (!authorized) {
@@ -2518,6 +2559,14 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         selectedRule: copyClassicalNahuatlLesson2AssimilationRule(selectedRule),
         outputSound: authorized ? outcome.outputSound : "",
         outputSpelling: authorized ? outcome.outputSpelling : "",
+        sourceLeftMorpheme,
+        sourceRightMorpheme,
+        spellingStyle,
+        traditionalSourceSpellingRetained: spellingStyle === "source-preserving",
+        realizedLeftMorpheme: authorized ? realizedLeftMorpheme : "",
+        realizedRightMorpheme: authorized ? realizedRightMorpheme : "",
+        outputForm: authorized ? outputForm : "",
+        requestedOutputForm,
         requestedSpelling,
         releaseFeatureLost: authorized ? releaseFeatureLost : false,
         releasePronunciation: authorized ? outcome.releasePronunciation || "" : "",
@@ -2569,6 +2618,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           selectedRuleId: authorized ? selectedRule?.id || "" : "",
           outputSound: authorized ? outcome.outputSound : "",
           outputSpelling: authorized ? outcome.outputSpelling : "",
+          outputForm: authorized ? outputForm : "",
           releasePronunciation: authorized ? outcome.releasePronunciation || "" : "",
           lowFrequency: selectedRule?.lowFrequency === true,
           optional: selectedRule?.optional === true
