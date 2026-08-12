@@ -69,7 +69,7 @@ function run(ctx) {
         grammarParts: ["tenam", "ca"],
         written: "tenanca",
         candidate: "tenanca",
-        status: "lesson2-owned-compound-writing",
+        status: "lesson2-application-writing-complete",
         valid: true,
     });
 

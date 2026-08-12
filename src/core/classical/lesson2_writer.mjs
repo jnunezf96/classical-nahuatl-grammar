@@ -58,23 +58,31 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
   const issuedResults = new WeakMap();
 
   function issueClassicalNahuatlLesson2WritingSource(specification = {}) {
-    const allowedKeys = new Set(["parts", "boundaryKind"]);
+    const allowedKeys = new Set(["parts", "boundaryKind", "terminal"]);
     const hasForbiddenField = !specification
       || typeof specification !== "object"
       || Reflect.ownKeys(specification).some(key => !allowedKeys.has(String(key)));
     const rawParts = Array.isArray(specification?.parts)
       ? specification.parts
       : [];
-    const parts = rawParts.map(part => Object.freeze({
-      role: String(part?.role || "morph"),
-      value: cleanPart(part?.value),
-      supportiveI: String(part?.supportiveI || ""),
-    }));
+    const parts = rawParts.map(part => {
+      const joinAfter = String(part?.joinAfter || "");
+      return Object.freeze({
+        role: String(part?.role || "morph"),
+        value: cleanPart(part?.value),
+        supportiveI: String(part?.supportiveI || ""),
+        ...(joinAfter ? { joinAfter } : {}),
+      });
+    });
+    const terminal = String(specification?.terminal || "");
+    const separatorsAuthorized = parts.every(part => (
+      ["", " ", ", ", "; ", ": "].includes(part.joinAfter || "")
+    )) && ["", ".", "!", "?"].includes(terminal);
     const authorized = !hasForbiddenField && parts.length > 0 && parts.every(part => (
       part.value
       && !/[\s#()]/u.test(part.value)
       && !targetObject.getInvalidClassicalNahuatlGraphemes(part.value).length
-    ));
+    )) && separatorsAuthorized;
     const source = Object.freeze({
       kind: "classical-nahuatl-lesson2-writing-source",
       version: 1,
@@ -86,6 +94,7 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
           : "lesson2-ordered-grammatical-parts-required",
       parts: Object.freeze(parts),
       boundaryKind: String(specification?.boundaryKind || "morph"),
+      terminal,
       orderedGrammarPartsOnly: true,
       callerSuppliedSurfaceAuthority: false,
       formulaStringAuthority: false,
@@ -137,6 +146,18 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
     for (let index = 0; index < realizedParts.length - 1; index += 1) {
       const left = realizedParts[index];
       const right = realizedParts[index + 1];
+      if (source.parts[index]?.joinAfter) {
+        boundaryActions.push(Object.freeze({
+          boundaryIndex: index,
+          status: "separate-vocable-boundary",
+          sourceLeft: left,
+          sourceRight: right,
+          resultLeft: left,
+          resultRight: right,
+          ruleId: "",
+        }));
+        continue;
+      }
       const leftSpelling = boundarySpelling(left, "left");
       const rightSpelling = boundarySpelling(right, "right");
       const leftSound = boundarySound(
@@ -207,7 +228,9 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
           : "not-yet-centralized",
       })
     )));
-    const surface = realizedParts.join("");
+    const surface = realizedParts.map((part, index) => (
+      `${part}${source.parts[index]?.joinAfter || ""}`
+    )).join("") + source.terminal;
     const result = Object.freeze({
       kind: "classical-nahuatl-lesson2-written-result",
       version: 1,

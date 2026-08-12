@@ -37,6 +37,27 @@ function run(ctx) {
         operationId: "concept:classification",
         args: [{ candidate: "morpheme", category: "morpheme" }],
     });
+    const vnc = request({
+        operationId: "vnc:application",
+        args: [{
+            sourceStem: "chihua",
+            verbClass: "A",
+            sourceValence: "specific-projective",
+            subject: "1sg",
+            objectKind: "specific-projective",
+            objectPerson: "3sg",
+            requestedDerivation: "direct",
+            requestedVoice: "active",
+            mood: "indicative",
+            tense: "present",
+            outputKind: "single",
+        }],
+    });
+    const particleSource = ctx.buildClassicalNahuatlParticleSourceFrame("l3-in");
+    const particle = request({
+        operationId: "particle:result",
+        args: [particleSource],
+    });
 
     s.eq("all normal compound writing enters every Lesson 2 family before Result", {
         authorized: compound.authorizationStatus,
@@ -59,8 +80,8 @@ function run(ctx) {
         required: true,
         entered: true,
         families: 12,
-        everyFamilyEntered: false,
-        status: "lesson2-owned-compound-writing",
+        everyFamilyEntered: true,
+        status: "lesson2-application-writing-complete",
         enforced: true,
     });
 
@@ -88,6 +109,60 @@ function run(ctx) {
         required: false,
         entered: false,
         allFamiliesRouted: false,
+    });
+
+    s.eq("ordinary VNC and particle Results use the same Lesson 2 pipeline", {
+        vnc: {
+            status: vnc.authorizationStatus,
+            surface: vnc.canonicalResult?.resultFrame?.surfaceRealization,
+            outputs: vnc.lesson2WritingOutputs?.map(output => [
+                output.surface,
+                output.mode,
+                output.authorizationStatus,
+            ]),
+            complete: vnc.lesson2WritingPass?.allTwelveFamiliesRouted,
+        },
+        particle: {
+            status: particle.authorizationStatus,
+            surface: particle.canonicalResult?.surface,
+            outputs: particle.lesson2WritingOutputs?.map(output => [
+                output.surface,
+                output.mode,
+                output.authorizationStatus,
+            ]),
+            complete: particle.lesson2WritingPass?.allTwelveFamiliesRouted,
+        },
+    }, {
+        vnc: {
+            status: "authorized",
+            surface: "nicchihua",
+            outputs: [["nicchihua", "lesson2-writer", "authorized"]],
+            complete: true,
+        },
+        particle: {
+            status: "authorized",
+            surface: "in",
+            outputs: [["in", "lesson2-writer", "authorized"]],
+            complete: true,
+        },
+    });
+
+    const brokenVncSource = ctx.issueClassicalNahuatlLesson2WritingSource({
+        parts: [
+            { role: "subject", value: "ni" },
+            { role: "predicate", value: "chihua" },
+        ],
+        boundaryKind: "typed-ordered-morphemes",
+    });
+    const brokenVnc = ctx.writeClassicalNahuatlLesson2Result(brokenVncSource);
+    s.eq("removing a required grammar part fails the exact Lesson 2 Result", {
+        broken: brokenVnc.surface,
+        canonical: vnc.lesson2WrittenResult?.surface,
+        exact: brokenVnc.surface === vnc.lesson2WrittenResult?.surface,
+    }, {
+        broken: "nichihua",
+        canonical: "nicchihua",
+        exact: false,
     });
 
     s.eq("the application accepts only its issued results with the required pass", {

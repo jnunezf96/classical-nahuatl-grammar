@@ -169,45 +169,43 @@ function getClassicalVisibleSurfacePaths(
 }
 
 function buildClassicalLesson2WritingPass(
-  candidateResult = null,
-  lesson2WrittenResult = null,
+  writingOutputs = [],
 ) {
-  const writtenResultLocations = getClassicalVisibleSurfacePaths(candidateResult);
-  const required = writtenResultLocations.length > 0;
-  const owned = Boolean(
-    lesson2WrittenResult?.kind === "classical-nahuatl-lesson2-written-result"
-    && lesson2WrittenResult?.authorizationStatus === "authorized"
-    && lesson2WrittenResult?.writtenByLesson2 === true
-  );
+  const outputs = Array.isArray(writingOutputs) ? writingOutputs : [];
+  const required = outputs.length > 0;
+  const owned = required && outputs.every(output => (
+    output?.authorizationStatus === "authorized"
+    && (
+      output.mode === "lesson2-direct-rule-owner"
+      || output.mode === "lesson2-writer"
+        && output.writtenResult?.writtenByLesson2 === true
+        && output.writtenResult?.surface === output.surface
+    )
+  ));
   const familyPasses = Object.freeze(
-    CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => {
-      const ownerCheck = lesson2WrittenResult?.familyChecks?.find(
-        check => check.familyId === familyId,
-      );
-      return Object.freeze({
-        familyId,
-        entered: required && (owned ? ownerCheck?.checked === true : true),
-        status: required
-          ? owned
-            ? ownerCheck?.status || "not-yet-centralized"
-            : "entered-rule-may-still-be-unfinished"
-          : "not-required",
-      });
-    }),
+    CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => Object.freeze({
+      familyId,
+      entered: owned,
+      status: !required
+        ? "not-required"
+        : owned
+          ? "entered-through-lesson2-writing-pipeline"
+          : "lesson2-writing-owner-missing",
+    })),
   );
   return Object.freeze({
     kind: "classical-nahuatl-lesson2-writing-pass",
     version: 1,
     required,
-    entered: required,
-    writtenResultCount: writtenResultLocations.length,
+    entered: owned,
+    writtenResultCount: outputs.length,
     familyRoutingIds: CLASSICAL_LESSON2_WRITING_FAMILY_IDS,
     familyPasses,
     allTwelveFamiliesRouted: required && familyPasses.every(pass => pass.entered),
     completionStatus: required
       ? owned
-        ? `lesson2-owned-${lesson2WrittenResult.source?.boundaryKind || "word"}-writing`
-        : "required-route-active-rules-still-incomplete"
+        ? "lesson2-application-writing-complete"
+        : "lesson2-writing-owner-missing"
       : "not-a-writing-result",
     writingOwnerInstalled: owned,
     changesGrammarAuthority: false,
@@ -216,98 +214,406 @@ function buildClassicalLesson2WritingPass(
   });
 }
 
-function buildClassicalLesson2OwnedWriting(
+function getClassicalLesson2PrimaryWritingOutputs(
   candidateResult = null,
-  targetObject = globalThis,
+  outputKind = DEFAULT_APPLICATION_OUTPUT_KIND,
 ) {
-  const sourceConstituents = candidateResult?.sourceAuthorizationFrame
-    ?.sourceConstituents;
-  const isNominalCompound = Boolean(
-    candidateResult?.kind
-      === "classical-nahuatl-nominal-construction-result-frame"
-    && candidateResult?.constructionKind === "compound-nnc"
-    && candidateResult?.sourceAuthorizationFrame?.authorizationStatus
-      === "authorized"
-    && sourceConstituents?.embedStem
-    && sourceConstituents?.matrixStem
-  );
-  const nonzeroPart = (role, value, extra = {}) => {
-    const normalized = String(value == null ? "" : value).trim();
-    return !normalized || normalized === "0"
-      ? null
-      : { role, value: normalized, ...extra };
+  if (
+    candidateResult == null
+    || outputKind === CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS.sourcePreparation
+    || outputKind === CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS.preparedPlan
+  ) return [];
+  if (Array.isArray(candidateResult)) {
+    return candidateResult.flatMap(item => (
+      getClassicalLesson2PrimaryWritingOutputs(item, DEFAULT_APPLICATION_OUTPUT_KIND)
+    ));
+  }
+  if (typeof candidateResult !== "object") return [];
+  const outputs = [];
+  const add = (surface, role = "word") => {
+    const normalized = String(surface == null ? "" : surface).trim();
+    if (
+      normalized
+      && !outputs.some(output => (
+        output.surface === normalized && output.role === role
+      ))
+    ) outputs.push(Object.freeze({ surface: normalized, role }));
   };
-  let parts = [];
-  let boundaryKind = "morph";
-  if (isNominalCompound) {
-    parts = [
-      { role: "embed", value: sourceConstituents.embedStem },
-      { role: "matrix", value: sourceConstituents.matrixStem },
-    ];
-    boundaryKind = "compound";
-  } else if (isBasicClassicalFiniteVncWritingCandidate(candidateResult)) {
-    const person = candidateResult.personDyad || {};
-    const tense = candidateResult.tenseFrame || {};
-    const number = candidateResult.numberDyad || {};
-    parts = [
-      nonzeroPart("subject-person-1", person.pers1BaseMorph || person.pers1, {
-        supportiveI: person.pers1SupportiveISurfaceAction === "insert"
-          ? "insert-before-consonant"
-          : "",
-      }),
-      nonzeroPart("subject-person-2", person.pers2),
-      nonzeroPart("verbstem", candidateResult.stem),
-      nonzeroPart("tense", tense.tns),
-      nonzeroPart("subject-number-1", number.num1),
-      nonzeroPart("subject-number-2", number.num2),
-    ].filter(Boolean);
-    boundaryKind = "finite-vnc-slots";
-  } else if (
-    candidateResult?.kind === "classical-nahuatl-ordinary-nnc-result-frame"
-    && candidateResult?.authorizationStatus === "authorized"
-  ) {
-    const slots = candidateResult.typedSlotFrame?.slots || {};
-    const participantParts = Array.isArray(slots.participant?.slots)
-      ? slots.participant.slots.map((slot, index) => nonzeroPart(
+  if (Array.isArray(candidateResult.surfaceForms)) {
+    candidateResult.surfaceForms.forEach(surface => add(
+      surface,
+      /\s|[.!?]$/u.test(String(surface || "")) ? "sequence" : "word",
+    ));
+  }
+  add(candidateResult.wordSurface, "word");
+  add(candidateResult.surfaceRealization, /\s|[.!?]$/u.test(
+    String(candidateResult.surfaceRealization || ""),
+  ) ? "sequence" : "word");
+  add(candidateResult.surface, /\s|[.!?]$/u.test(
+    String(candidateResult.surface || ""),
+  ) ? "sequence" : "word");
+  add(candidateResult.written, "word");
+  if (!outputs.length) {
+    add(candidateResult.outputForm || candidateResult.outputSpelling, "word");
+  }
+  if (!outputs.length) {
+    add(candidateResult.resultFrame?.surfaceRealization, "word");
+  }
+  if (!outputs.length && candidateResult.personalNameResult) {
+    add(candidateResult.personalNameResult.surfaceRealization, "word");
+  }
+  add(candidateResult.sentenceSurface, "sentence");
+  add(candidateResult.sentenceSurfaceDisplay, "sentence");
+  return outputs;
+}
+
+function getClassicalLesson2NonzeroPart(role, value, extra = {}) {
+  const normalized = String(value == null ? "" : value).trim();
+  return !normalized || ["0", "Ø", "⎕"].includes(normalized)
+    ? null
+    : { role, value: normalized, ...extra };
+}
+
+function getClassicalLesson2NncParts(slots = {}) {
+  const participantParts = Array.isArray(slots.participant?.slots)
+    ? slots.participant.slots.map((slot, index) => (
+      getClassicalLesson2NonzeroPart(
         slot?.role || `participant-${index + 1}`,
         slot?.carrier,
-      )).filter(Boolean)
-      : [];
-    const stateParts = Array.isArray(slots.state?.slots)
-      ? slots.state.slots.map((slot, index) => nonzeroPart(
+      )
+    )).filter(Boolean)
+    : [];
+  const stateParts = Array.isArray(slots.state?.slots)
+    ? slots.state.slots.map((slot, index) => (
+      getClassicalLesson2NonzeroPart(
         slot?.role || `state-${index + 1}`,
         slot?.carrier,
-      )).filter(Boolean)
-      : [];
-    parts = [
-      nonzeroPart(
-        "subject-person-1",
-        slots.subject?.pers1BaseMorph || slots.subject?.pers1,
-        {
-          supportiveI: slots.subject?.supportiveISurfaceAction === "insert"
-            ? "insert-before-consonant"
-            : "",
-        },
-      ),
-      nonzeroPart("subject-person-2", slots.subject?.pers2),
-      ...participantParts,
-      ...stateParts,
-      nonzeroPart("nounstem", slots.predicate?.stem),
-      nonzeroPart("subject-number-1", slots.number?.num1),
-      nonzeroPart("subject-number-2", slots.number?.num2),
-    ].filter(Boolean);
-    boundaryKind = "ordinary-nnc-slots";
+      )
+    )).filter(Boolean)
+    : [];
+  const predicateParts = String(slots.predicate?.stem || "")
+    .split("-")
+    .filter(Boolean)
+    .map((value, index) => getClassicalLesson2NonzeroPart(
+      index ? `nounstem-part-${index + 1}` : "nounstem",
+      value,
+    ))
+    .filter(Boolean);
+  return [
+    getClassicalLesson2NonzeroPart(
+      "subject-person-1",
+      slots.subject?.pers1BaseMorph || slots.subject?.pers1,
+      {
+        supportiveI: slots.subject?.supportiveISurfaceAction === "insert"
+          ? "insert-before-consonant"
+          : "",
+      },
+    ),
+    getClassicalLesson2NonzeroPart("subject-person-2", slots.subject?.pers2),
+    ...participantParts,
+    ...stateParts,
+    ...predicateParts,
+    getClassicalLesson2NonzeroPart("subject-number-1", slots.number?.num1),
+    getClassicalLesson2NonzeroPart("subject-number-2", slots.number?.num2),
+  ].filter(Boolean);
+}
+
+function findClassicalLesson2Frames(value, predicate, seen = new Set(), found = []) {
+  if (!value || typeof value !== "object" || seen.has(value)) return found;
+  seen.add(value);
+  if (predicate(value)) found.push(value);
+  if (Array.isArray(value)) {
+    value.forEach(child => findClassicalLesson2Frames(
+      child,
+      predicate,
+      seen,
+      found,
+    ));
   } else {
-    return null;
+    Object.values(value).forEach(child => findClassicalLesson2Frames(
+      child,
+      predicate,
+      seen,
+      found,
+    ));
   }
+  return found;
+}
+
+function buildClassicalLesson2TokenWriting(surface = "", targetObject = globalThis) {
+  const terminalMatch = String(surface).match(/([.!?])$/u);
+  const terminal = terminalMatch?.[1] || "";
+  const body = terminal ? String(surface).slice(0, -1) : String(surface);
+  const tokens = body.match(/[^\s,;:]+|[,;:]\s*|\s+/gu) || [];
+  const parts = [];
+  for (const token of tokens) {
+    if (/^[\s,;:]+$/u.test(token)) {
+      if (!parts.length) return null;
+      const separator = token.includes(",")
+        ? ", "
+        : token.includes(";")
+          ? "; "
+          : token.includes(":")
+            ? ": "
+            : " ";
+      parts[parts.length - 1].joinAfter = separator;
+    } else {
+      parts.push({ role: "written-vocable", value: token, joinAfter: "" });
+    }
+  }
+  if (!parts.length) return null;
+  const source = targetObject.issueClassicalNahuatlLesson2WritingSource({
+    parts,
+    boundaryKind: "sentence-and-vocable-sequence",
+    terminal,
+  });
+  const result = targetObject.writeClassicalNahuatlLesson2Result(source);
+  return targetObject.isClassicalNahuatlLesson2WrittenResult(result)
+    && result.surface === surface
+    ? result
+    : null;
+}
+
+function buildClassicalLesson2WritingFromParts(
+  parts,
+  boundaryKind,
+  expectedSurface,
+  targetObject,
+) {
+  if (!Array.isArray(parts) || !parts.length) return null;
   const source = targetObject.issueClassicalNahuatlLesson2WritingSource({
     parts,
     boundaryKind,
   });
   const result = targetObject.writeClassicalNahuatlLesson2Result(source);
   return targetObject.isClassicalNahuatlLesson2WrittenResult(result)
+    && result.surface === expectedSurface
     ? result
     : null;
+}
+
+function buildClassicalLesson2OwnedWriting(
+  candidateResult = null,
+  expectedOutput = null,
+  targetObject = globalThis,
+) {
+  const expectedSurface = String(expectedOutput?.surface || "");
+  if (!expectedSurface) return null;
+  if (["sentence", "sequence"].includes(expectedOutput?.role)) {
+    return buildClassicalLesson2TokenWriting(expectedSurface, targetObject);
+  }
+  const writingCandidate = candidateResult?.personalNameResult
+    || candidateResult;
+  const sourceConstituents = writingCandidate?.sourceAuthorizationFrame
+    ?.sourceConstituents;
+  const isNominalCompound = Boolean(
+    writingCandidate?.kind
+      === "classical-nahuatl-nominal-construction-result-frame"
+    && writingCandidate?.constructionKind === "compound-nnc"
+    && writingCandidate?.sourceAuthorizationFrame?.authorizationStatus
+      === "authorized"
+    && sourceConstituents?.embedStem
+    && sourceConstituents?.matrixStem
+  );
+  let parts = [];
+  let boundaryKind = "morph";
+  if (isNominalCompound) {
+    parts = [
+      {
+        role: "embed",
+        value: writingCandidate?.operationFrame?.embedShape?.realizedStem
+          || sourceConstituents.embedStem,
+      },
+      { role: "matrix", value: sourceConstituents.matrixStem },
+    ];
+    boundaryKind = "compound";
+  } else if (isBasicClassicalFiniteVncWritingCandidate(writingCandidate)) {
+    const person = writingCandidate.personDyad || {};
+    const tense = writingCandidate.tenseFrame || {};
+    const number = writingCandidate.numberDyad || {};
+    parts = [
+      getClassicalLesson2NonzeroPart("subject-person-1", person.pers1BaseMorph || person.pers1, {
+        supportiveI: person.pers1SupportiveISurfaceAction === "insert"
+          ? "insert-before-consonant"
+          : "",
+      }),
+      getClassicalLesson2NonzeroPart("subject-person-2", person.pers2),
+      getClassicalLesson2NonzeroPart("verbstem", writingCandidate.stem),
+      getClassicalLesson2NonzeroPart("tense", tense.tns),
+      getClassicalLesson2NonzeroPart("subject-number-1", number.num1),
+      getClassicalLesson2NonzeroPart("subject-number-2", number.num2),
+    ].filter(Boolean);
+    boundaryKind = "finite-vnc-slots";
+  } else if (
+    writingCandidate?.kind === "classical-nahuatl-ordinary-nnc-result-frame"
+    && writingCandidate?.authorizationStatus === "authorized"
+  ) {
+    parts = getClassicalLesson2NncParts(
+      writingCandidate.typedSlotFrame?.slots || {},
+    );
+    boundaryKind = "ordinary-nnc-slots";
+  } else {
+    const orderedFrames = findClassicalLesson2Frames(
+      writingCandidate,
+      frame => (
+        Array.isArray(frame?.orderedMorphemes)
+        && frame.orderedMorphemes.length > 0
+      ),
+    );
+    for (const frame of orderedFrames) {
+      const orderedParts = frame.orderedMorphemes.map((morpheme, index) => (
+        getClassicalLesson2NonzeroPart(
+          morpheme?.slotRole || `morpheme-${index + 1}`,
+          morpheme?.surface,
+        )
+      )).filter(Boolean);
+      const written = buildClassicalLesson2WritingFromParts(
+        orderedParts,
+        "typed-ordered-morphemes",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const slotFrames = findClassicalLesson2Frames(
+      writingCandidate,
+      frame => frame?.slots?.predicate && frame?.slots?.subject,
+    );
+    for (const frame of slotFrames) {
+      const written = buildClassicalLesson2WritingFromParts(
+        getClassicalLesson2NncParts(frame.slots),
+        "typed-nnc-slots",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const realizationRecords = findClassicalLesson2Frames(
+      writingCandidate,
+      frame => (
+        frame?.surface === expectedSurface
+        && Array.isArray(frame?.formulaSlots)
+        && frame.formulaSlots.length > 0
+      ),
+    );
+    for (const frame of realizationRecords) {
+      const formulaParts = frame.formulaSlots.map((value, index) => (
+        getClassicalLesson2NonzeroPart(
+          `comparison-part-${index + 1}`,
+          value,
+        )
+      )).filter(Boolean);
+      const written = buildClassicalLesson2WritingFromParts(
+        formulaParts,
+        "typed-comparison-word-formation",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const formationFrame = writingCandidate?.formationFrame;
+    if (formationFrame?.sourceStem && formationFrame?.derivedStem) {
+      const derivedParts = String(formationFrame.derivedStem)
+        .split("-")
+        .filter(Boolean)
+        .map((value, index) => ({
+          role: index ? `formation-part-${index + 1}` : "source-stem",
+          value,
+        }));
+      const written = buildClassicalLesson2WritingFromParts(
+        derivedParts,
+        "typed-nominal-formation",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const deverbal = writingCandidate?.operationFrame;
+    if (deverbal?.targetStems && deverbal?.vocativeParticle) {
+      const targetStem = deverbal.targetStems.generalUse
+        || deverbal.targetStems.restrictedUse;
+      const written = buildClassicalLesson2WritingFromParts(
+        [
+          { role: "deverbal-target-stem", value: targetStem },
+          { role: "vocative-particle", value: deverbal.vocativeParticle },
+        ],
+        "typed-deverbal-vocative",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const coordinateParts = Array.isArray(writingCandidate?.coordinateParts)
+      ? writingCandidate.coordinateParts.map((part, index) => (
+        getClassicalLesson2NonzeroPart(
+          part?.role || `personal-name-part-${index + 1}`,
+          part?.surface,
+        )
+      )).filter(Boolean)
+      : [];
+    if (coordinateParts.length) {
+      const written = buildClassicalLesson2WritingFromParts(
+        coordinateParts,
+        "typed-personal-name-coordinate",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    if (
+      writingCandidate?.kind === "classical-nahuatl-particle-result-frame"
+    ) {
+      const written = buildClassicalLesson2WritingFromParts(
+        [{ role: "particle", value: expectedSurface }],
+        "typed-particle-vocable",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    return null;
+  }
+  return buildClassicalLesson2WritingFromParts(
+    parts,
+    boundaryKind,
+    expectedSurface,
+    targetObject,
+  );
+}
+
+function buildClassicalLesson2WritingOutputs(
+  candidateResult,
+  operationId,
+  outputKind,
+  targetObject,
+) {
+  const primaryOutputs = getClassicalLesson2PrimaryWritingOutputs(
+    candidateResult,
+    outputKind,
+  );
+  const directLesson2Owner = operationId === "orthography:transcription"
+    || operationId.startsWith("phonology:");
+  return Object.freeze(primaryOutputs.map(output => {
+    if (directLesson2Owner) {
+      return Object.freeze({
+        ...output,
+        authorizationStatus: "authorized",
+        mode: "lesson2-direct-rule-owner",
+        writtenResult: null,
+      });
+    }
+    const writtenResult = buildClassicalLesson2OwnedWriting(
+      candidateResult,
+      output,
+      targetObject,
+    );
+    return Object.freeze({
+      ...output,
+      authorizationStatus: writtenResult ? "authorized" : "blocked",
+      mode: writtenResult ? "lesson2-writer" : "lesson2-owner-missing",
+      writtenResult,
+    });
+  }));
 }
 
 function isBasicClassicalFiniteVncWritingCandidate(candidateResult = null) {
@@ -2669,41 +2975,17 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       candidateAuthorizationStatus,
     );
     const canonicalResult = canonicalResultRecognized ? candidateResult : null;
-    const lesson2WrittenResult = buildClassicalLesson2OwnedWriting(
+    const lesson2WritingOutputs = buildClassicalLesson2WritingOutputs(
       canonicalResult,
+      operationId,
+      outputKind,
       targetObject,
     );
-    const requiresLesson2OwnedWriting = Boolean(
-      (
-        canonicalResult?.kind
-          === "classical-nahuatl-nominal-construction-result-frame"
-        && canonicalResult?.constructionKind === "compound-nnc"
-      )
-      || isBasicClassicalFiniteVncWritingCandidate(canonicalResult)
-      || canonicalResult?.kind === "classical-nahuatl-ordinary-nnc-result-frame"
-    );
-    const canonicalWrittenSurface = canonicalResult?.kind
-      === "classical-nahuatl-finite-vnc-slot-result"
-      ? canonicalResult?.written
-      : canonicalResult?.wordSurface;
-    const lesson2OwnedWritingSatisfied = requiresLesson2OwnedWriting
-      ? Boolean(
-        lesson2WrittenResult
-        && targetObject.isClassicalNahuatlLesson2WrittenResult(
-          lesson2WrittenResult,
-        )
-        && lesson2WrittenResult.surface === canonicalWrittenSurface
-        && (
-          canonicalResult?.kind
-            !== "classical-nahuatl-nominal-construction-result-frame"
-          || lesson2WrittenResult.surface
-            === canonicalResult?.canonicalResult?.wordSurface
-        )
-      )
-      : true;
+    const lesson2WrittenResult = lesson2WritingOutputs.find(
+      output => output.writtenResult,
+    )?.writtenResult || null;
     const lesson2WritingPass = buildClassicalLesson2WritingPass(
-      canonicalResult,
-      lesson2WrittenResult,
+      lesson2WritingOutputs,
     );
     if (canonicalResultRecognized) {
       issuedCanonicalResults.add(canonicalResult);
@@ -2723,12 +3005,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       "lesson-and-display-authority-forbidden": authorityCarrierClear,
       "classical-visible-surface-firewall": visibleSurfaceViolation === "",
       "lesson2-writing-pass": lesson2WritingPass.required
-        ? requiresLesson2OwnedWriting
-          ? lesson2OwnedWritingSatisfied
-          : lesson2WritingPass.entered
-            && lesson2WritingPass.allTwelveFamiliesRouted
-            && lesson2WritingPass.familyPasses.length === 12
-            && lesson2WritingPass.familyPasses.every(family => family.entered)
+        ? lesson2WritingPass.entered
+          && lesson2WritingPass.allTwelveFamiliesRouted
+          && lesson2WritingPass.familyPasses.length === 12
+          && lesson2WritingPass.familyPasses.every(family => family.entered)
         : lesson2WritingPass.entered === false,
     });
     const gcdSatisfied = GCD_INVARIANT_IDS.every(
@@ -2758,13 +3038,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             ? candidateResult == null
               ? "canonical-engine-result-required"
               : `${APPLICATION_RESULT_DIAGNOSTIC}:unrecognized-route-result`
-            : "canonical-engine-result-blocked"
+            : lesson2WritingPass.required && !lesson2WritingPass.entered
+              ? "lesson2-writing-owner-required"
+              : "canonical-engine-result-blocked"
         ),
       operationId,
       outputKind,
       capabilityName,
       canonicalResult,
       lesson2WrittenResult,
+      lesson2WritingOutputs,
       lesson2WritingPass,
       greatestCommonDivisor: Object.freeze({
         identityId: "typed-semantic-application-to-canonical-result",
@@ -2803,24 +3086,47 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const gcdProofComplete = GCD_INVARIANT_IDS.every(
       (invariantId) => invariantProofs?.[invariantId] === true,
     );
-    const expectedLesson2WritingPass = buildClassicalLesson2WritingPass(
+    const writingOutputs = Array.isArray(result?.lesson2WritingOutputs)
+      ? result.lesson2WritingOutputs
+      : [];
+    const expectedPrimaryOutputs = getClassicalLesson2PrimaryWritingOutputs(
       result?.canonicalResult || null,
-      result?.lesson2WrittenResult || null,
+      result?.outputKind,
     );
-    const resultRequiresLesson2OwnedWriting = Boolean(
-      (
-        result?.canonicalResult?.kind
-          === "classical-nahuatl-nominal-construction-result-frame"
-        && result?.canonicalResult?.constructionKind === "compound-nnc"
-      )
-      || isBasicClassicalFiniteVncWritingCandidate(result?.canonicalResult)
-      || result?.canonicalResult?.kind
-        === "classical-nahuatl-ordinary-nnc-result-frame"
+    const expectedLesson2WritingPass = buildClassicalLesson2WritingPass(
+      writingOutputs,
     );
-    const resultCanonicalWrittenSurface = result?.canonicalResult?.kind
-      === "classical-nahuatl-finite-vnc-slot-result"
-      ? result?.canonicalResult?.written
-      : result?.canonicalResult?.wordSurface;
+    const lesson2OutputsExact = writingOutputs.length
+      === expectedPrimaryOutputs.length
+      && writingOutputs.every((output, index) => {
+        const expected = expectedPrimaryOutputs[index];
+        return Boolean(
+          output?.surface === expected?.surface
+          && output?.role === expected?.role
+          && Object.isFrozen(output)
+          && (
+            output?.authorizationStatus === "blocked"
+              ? output.mode === "lesson2-owner-missing"
+                && output.writtenResult === null
+              : output?.authorizationStatus === "authorized"
+                && (output.mode === "lesson2-direct-rule-owner"
+              ? output.writtenResult === null
+                && (
+                  result.operationId === "orthography:transcription"
+                  || result.operationId.startsWith("phonology:")
+                )
+              : output.mode === "lesson2-writer"
+                && targetObject.isClassicalNahuatlLesson2WrittenResult(
+                  output.writtenResult,
+                )
+                && output.writtenResult.surface === output.surface
+                )
+          )
+        );
+      });
+    const expectedFirstWrittenResult = writingOutputs.find(
+      output => output.writtenResult,
+    )?.writtenResult || null;
     return Boolean(
       result
       && issuedApplicationResults.has(result)
@@ -2838,15 +3144,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && result.lesson2WritingPass?.storedWritingAuthority === false
       && result.lesson2WritingPass?.writingOwnerInstalled
         === expectedLesson2WritingPass.writingOwnerInstalled
-      && (
-        resultRequiresLesson2OwnedWriting
-          ? targetObject.isClassicalNahuatlLesson2WrittenResult(
-            result.lesson2WrittenResult,
-          )
-            && result.lesson2WrittenResult.surface
-              === resultCanonicalWrittenSurface
-          : result.lesson2WrittenResult === null
-      )
+      && Object.isFrozen(result.lesson2WritingOutputs)
+      && lesson2OutputsExact
+      && result.lesson2WrittenResult === expectedFirstWrittenResult
       && result.lesson2WritingPass?.required
         === expectedLesson2WritingPass.required
       && result.lesson2WritingPass?.entered
@@ -2877,9 +3177,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
                 result.canonicalResult === null
                 || (
                   issuedCanonicalResults.has(result.canonicalResult)
-                  && getCanonicalResultAuthorizationStatus(
-                    result.canonicalResult
-                  ) === "blocked"
+                  && (
+                    getCanonicalResultAuthorizationStatus(
+                      result.canonicalResult
+                    ) === "blocked"
+                    || invariantProofs?.["lesson2-writing-pass"] === false
+                  )
                 )
               )
             : false

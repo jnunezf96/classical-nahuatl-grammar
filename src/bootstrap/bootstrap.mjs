@@ -1,10 +1,10 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-noun-supportive-i-068";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-lesson2-complete-writing-pipeline-069";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-lesson2-noun-supportive-i-068";
+} from "../runtime/create_runtime.mjs?v=20260812-lesson2-complete-writing-pipeline-069";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-required-writing-pass-058";

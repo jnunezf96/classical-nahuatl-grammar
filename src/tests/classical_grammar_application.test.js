@@ -365,6 +365,7 @@ function run(ctx) {
                     "no-renderer-fallback",
                     "lesson-and-display-authority-forbidden",
                     "classical-visible-surface-firewall",
+                    "lesson2-writing-pass",
                 ],
             },
             lcmAxisCount: inventory.leastCommonMultiple.axisCount,
@@ -427,6 +428,7 @@ function run(ctx) {
                 "no-renderer-fallback": true,
                 "lesson-and-display-authority-forbidden": true,
                 "classical-visible-surface-firewall": true,
+                "lesson2-writing-pass": true,
             },
             selectedAxes: [
                 "transcription-source",
@@ -1410,6 +1412,7 @@ function run(ctx) {
                 "no-renderer-fallback": false,
                 "lesson-and-display-authority-forbidden": true,
                 "classical-visible-surface-firewall": true,
+                "lesson2-writing-pass": true,
             },
             capabilityCalls: 0,
         }
