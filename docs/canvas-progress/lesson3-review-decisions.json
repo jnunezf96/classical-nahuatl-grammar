@@ -14,6 +14,18 @@
     "lesson3-clause-introducing-particles": {
       "status": "ACCEPTED",
       "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties."
+    },
+    "lesson3-adjunctor-in": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Unify optional adjunction with the existing clause relation system and keep translation non-authorizing."
+    },
+    "lesson3-conjunctor-auh": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep one Nahuatl conjunction choice while allowing context-sensitive interpretation."
+    },
+    "lesson3-adverbial-particles": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make lexical choice user-facing only where meaning is genuinely intended; keep realization automatic."
     }
   }
 }

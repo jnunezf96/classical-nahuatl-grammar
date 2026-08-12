@@ -20,6 +20,21 @@ export const LESSON3_READER_GUIDANCE_GROUPS = freeze([
     "Use each clause introducer for its own force",
     "Read ca, cuix, tlā, mā, and ō as clause introducers with different meanings. The English wording helps explain the force, but the Nahuatl particle and its place before the clause remain the grammatical structure.",
   ),
+  idea(
+    "lesson3-adjunctor-in",
+    "Read in as an adjunctor, not an article",
+    "The particle in can mark one item or a longer unit as adjoined, and its use is usually optional. English may translate it as the, a, who, that, when, or something else, but those English words do not make in a determiner.",
+  ),
+  idea(
+    "lesson3-conjunctor-auh",
+    "Use context to read auh",
+    "The particle auh joins sentence units. English may use and or but according to the context, while Nahuatl keeps the same conjunctor.",
+  ),
+  idea(
+    "lesson3-adverbial-particles",
+    "Read adverbial particles with their tense and position",
+    "Use each adverbial particle's own meaning and sentence position. Let tense distinguish readings such as ye 'already' or 'soon' and quin 'just now' or 'presently'; keep bound ō# attached to a licensed past form.",
+  ),
 ]);
 
 export function isLesson3ReaderGuidanceExact(candidate = []) {

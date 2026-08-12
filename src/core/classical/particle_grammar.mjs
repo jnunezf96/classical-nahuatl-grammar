@@ -847,6 +847,9 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
       if (!requested && !lookup) {
         return [];
       }
+      if (requested.normalize("NFC") === "āc") {
+        return [];
+      }
       return getClassicalNahuatlParticleSourceEntries().filter(entry => entry.id === requested || entry.lookupKeys.includes(lookup));
     }
     function findClassicalNahuatlLesson3ParticleEntry(candidate = "") {
@@ -1891,7 +1894,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     }
     const CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS = Object.freeze([]);
     const CLASSICAL_NAHUATL_SPECIALIZED_ADVERBIAL_PARTICLE_IDS = Object.freeze([
-      "l3-o-antecessive"
+      "l3-o-antecessive",
+      "l3-zo"
     ]);
     const CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS = Object.freeze({
       "l3-o-behold": "l3-otzin",
@@ -1956,6 +1960,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && frame.particleResultFrame === receipt.particleResultFrame
         && frame.formulaProjection === receipt.formulaProjection
         && frame.writtenProjection === receipt.writtenProjection
+        && frame.contextualMeaningFrame === receipt.contextualMeaningFrame
+        && frame.tense === receipt.tense
         && frame.nuclearClauseKind === receipt.nuclearClauseKind
         && frame.consumedNuclearFormula === receipt.consumedNuclearFormula
         && frame.consumedNuclearSurface === receipt.consumedNuclearSurface
@@ -2027,6 +2033,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         particleResultFrame: issued.particleResultFrame,
         formulaProjection: issued.formulaProjection,
         writtenProjection: issued.writtenProjection,
+        contextualMeaningFrame: issued.contextualMeaningFrame,
+        tense: issued.tense,
         nuclearClauseKind: issued.nuclearClauseKind,
         consumedNuclearFormula: issued.consumedNuclearFormula,
         consumedNuclearSurface: issued.consumedNuclearSurface,
@@ -2052,7 +2060,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           sentenceFormulaInitialCapitalization: "syntactic-sentence-initial",
           sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
           canonicalInputKind: "issued-classical-nahuatl-particle-sentence-layer-frame",
-          canonicalInputFrame: priorSentenceFrame
+          canonicalInputFrame: priorSentenceFrame,
+          tense: priorSentenceFrame.tense || ""
         };
       }
       const suppliedNuclearResult =
@@ -2077,7 +2086,11 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           sentenceSurfaceInitialCapitalization:
             suppliedNuclearResult.sentenceSurfaceInitialCapitalization,
           canonicalInputKind: "classical-nahuatl-vnc-sentence-result-frame",
-          canonicalInputFrame: suppliedNuclearResult
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: String(
+            suppliedNuclearResult.canonicalSourceFrame?.normalizedRequest?.tense
+            || ""
+          )
         };
       }
       if (
@@ -2105,7 +2118,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           sentenceFormulaInitialCapitalization: "syntactic-sentence-initial",
           sentenceSurfaceInitialCapitalization: "syntactic-sentence-initial",
           canonicalInputKind: "issued-classical-nahuatl-nnc-sentence-surface-frame",
-          canonicalInputFrame: suppliedNuclearResult
+          canonicalInputFrame: suppliedNuclearResult,
+          tense: ""
         };
       }
       return {
@@ -2119,8 +2133,36 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         sentenceFormulaInitialCapitalization: "preserve",
         sentenceSurfaceInitialCapitalization: "preserve",
         canonicalInputKind: "",
-        canonicalInputFrame: null
+        canonicalInputFrame: null,
+        tense: ""
       };
+    }
+    function buildClassicalNahuatlAdverbialContextualMeaningFrame(
+      entry = null,
+      tense = ""
+    ) {
+      const normalizedTense = String(tense || "").trim().toLowerCase();
+      const past = ["past", "preterit", "imperfect", "past-optative"]
+        .includes(normalizedTense);
+      const future = normalizedTense === "future";
+      const tenseRequired = entry?.id === "l3-quin";
+      const licensed = !tenseRequired || past || future;
+      const contextualMeaning = entry?.id === "l3-ye"
+        ? future ? "soon" : "already"
+        : entry?.id === "l3-quin"
+          ? past ? "just now" : future ? "presently" : ""
+          : entry?.meanings?.[0] || "";
+      return freezeClassicalNahuatlLesson3ParticleResult({
+        kind: "classical-nahuatl-adverbial-contextual-meaning-frame",
+        particleId: entry?.id || "",
+        tense: normalizedTense,
+        tenseRequired,
+        licensed,
+        contextualMeaning,
+        meaningDerivedByApplication: true,
+        userSelectableMeaningVariant: false,
+        translationAuthority: false
+      });
     }
     function buildClassicalNahuatlSentenceAdverbialLayerFrame(options = {}) {
       if (!options || typeof options !== "object") {
@@ -2167,6 +2209,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         : value;
       const clauseKindAllowed = canonicalInput.authorizationStatus === "authorized"
         && (nuclearClauseKind === "vnc" || nuclearClauseKind === "nnc");
+      const tense = canonicalInput.tense || "";
       const inventoryEntry = adverbialOmitted
         ? null
         : getClassicalNahuatlParticleSourceEntries()
@@ -2179,6 +2222,14 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
       const particleResultFrame = particleSourceAuthorized
         ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
         : null;
+      const contextualMeaningFrame = selectedEntry
+        ? buildClassicalNahuatlAdverbialContextualMeaningFrame(
+            selectedEntry,
+            tense
+          )
+        : null;
+      const contextualMeaningLicensed = !contextualMeaningFrame
+        || contextualMeaningFrame.licensed === true;
       const authorized = !adverbialOmitted
         && !unexpectedOptionKey
         && !authorityPath
@@ -2186,6 +2237,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && clauseKindAllowed
         && Boolean(nuclearFormula)
         && Boolean(selectedEntry)
+        && contextualMeaningLicensed
         && isClassicalNahuatlParticleResultFrame(particleResultFrame);
       const blocked = !adverbialOmitted && !authorized;
       const sourceForm = authorized ? particleResultFrame.surface : "";
@@ -2244,6 +2296,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
               ? "sentence-adverbial-requires-authorized-nuclear-formula"
               : !inventoryEntry || !selectedEntry
                 ? "sentence-adverbial-not-in-composable-particle-inventory"
+                : !contextualMeaningLicensed
+                  ? "classical-adverbial-tense-context-not-licensed"
                 : "sentence-adverbial-not-authorized"
           : "",
         particleSourceFrame:
@@ -2257,6 +2311,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         sequenceRole: "adverbial-modifier",
         sequenceOrder: "before-consumed-sentence",
         sequenceOrderAuthority: "typed-placement-fact",
+        tense,
+        contextualMeaningFrame,
         nuclearClauseKind,
         canonicalInputKind: canonicalInput.canonicalInputKind,
         canonicalInputFrame: authorized ? canonicalInput.canonicalInputFrame : null,

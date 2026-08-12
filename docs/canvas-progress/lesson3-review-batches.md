@@ -51,8 +51,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user may choose optional explicit adjunction; the application keeps in out of a determiner slot and preserves the nuclear clause.
 - Control policy: Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.
 - Proposal: Unify optional adjunction with the existing clause relation system and keep translation non-authorizing.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/20
+- Status: ACCEPTED
+- Exactly observed: 20/20
 
 ## Batch 2, Group 5: The conjunctor auh
 
@@ -64,8 +64,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the intended relation; the application supplies licensed placement and Result structure.
 - Control policy: Reuse the clause-relation choice; do not make English and versus but a second grammatical control unless Canvas requires a distinct Nahuatl choice.
 - Proposal: Keep one Nahuatl conjunction choice while allowing context-sensitive interpretation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/1
+- Status: ACCEPTED
+- Exactly observed: 1/1
 
 ## Batch 2, Group 6: Adverbial particles
 
@@ -77,8 +77,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the intended meaning or discourse contribution; the application enforces attachment, tense, and placement.
 - Control policy: Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.
 - Proposal: Make lexical choice user-facing only where meaning is genuinely intended; keep realization automatic.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/27
+- Status: ACCEPTED
+- Exactly observed: 27/27
 
 ## Batch 3, Group 7: Interjections and the vocative particle
 
