@@ -1202,7 +1202,7 @@ export function createUiPanelsContext(targetObject = globalThis) {
         } of subjectSelections) {
           const availabilityKey = ["active-availability", availabilityMemoContext, verb || "", tenseValue || "", selection.subjectPrefix || "", selection.subjectSuffix || "", objectPrefix || ""].join("|");
           const availabilityRecord = shouldUseAvailabilityMemo && availabilityMemo.has(availabilityKey) ? availabilityMemo.get(availabilityKey) : (() => {
-            const result = targetObject.getCachedSilentGenerateWord({
+            const result = targetObject.getCachedSilentNuclearClauseSurface({
               silent: true,
               skipValidation: true,
               override: {
@@ -1278,7 +1278,7 @@ export function createUiPanelsContext(targetObject = globalThis) {
           overridePayload.subjectSuffix = subjectOverride.pers2;
           overridePayload.preservePassiveSubject = true;
         }
-        const result = targetObject.getCachedSilentGenerateWord({
+        const result = targetObject.getCachedSilentNuclearClauseSurface({
           silent: true,
           skipValidation: true,
           allowPassiveObject,

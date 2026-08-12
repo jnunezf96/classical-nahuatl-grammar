@@ -45,7 +45,7 @@ import { installNonactiveDerivationGlobals } from "../core/derivation/nonactive.
 import { installGrammarContractRegistryGlobals } from "../core/grammar/contract_registry.mjs?v=20260726-transcription-route-109";
 import { installGrammarFrameGlobals } from "../core/grammar/frame.mjs?v=20260811-grammar-owned-unit-routes-026";
 import { installMorphologySupportGlobals } from "../core/generation/morphology_support.mjs?v=20260726-lessons2-58-one-system-094";
-import { installGenerationEngineGlobals } from "../core/generation/engine.mjs?v=20260728-relational-owner-110";
+import { installGenerationEngineGlobals } from "../core/generation/engine.mjs?v=20260811-classical-runtime-only-056";
 import { installMorphologyEngineGlobals } from "../core/generation/morphology_engine.mjs?v=20260726-lessons2-58-one-system-094";
 import { installGenerationValencyGlobals } from "../core/generation/valency.mjs?v=20260726-lessons2-58-one-system-094";
 import { installGenerationRequestGlobals } from "../core/generation/request.mjs?v=20260726-lessons2-58-one-system-094";
@@ -64,19 +64,19 @@ import { installPreteritEngineGlobals } from "../core/preterit/engine.mjs?v=2026
 import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260726-lessons2-58-one-system-094";
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260726-lessons2-58-one-system-094";
-import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260726-lessons2-58-one-system-094";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-retired-nawat-result-055";
+import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260811-classical-runtime-only-056";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-classical-runtime-only-056";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson-route-read-only-025";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-retired-nawat-result-055";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-classical-runtime-only-056";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-retired-nawat-result-055";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-classical-runtime-only-056";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-grammar-owned-unit-routes-026";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-classical-runtime-only-056";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],

@@ -1082,10 +1082,6 @@ export function createVncApi(targetObject = globalThis) {
         }
       });
     }
-    function generateWord(options = {}) {
-      return generateNuclearClauseSurface(options);
-    }
-
     const api = {};
     Object.defineProperty(api, "VNC_LESSON5_VALIDATION_REFS", {
         configurable: true,
@@ -1264,7 +1260,6 @@ export function createVncApi(targetObject = globalThis) {
     api.getVncTlaFusionFrame = getVncTlaFusionFrame;
     api.getVerbstemSubsectionInventory = getVerbstemSubsectionInventory;
     api.generateNuclearClauseSurface = generateNuclearClauseSurface;
-    api.generateWord = generateWord;
     return api;
 }
 

@@ -13,7 +13,6 @@ export function createGenerationRequestModule(targetObject = globalThis) {
       tensePosition: "tiempo",
       possessor: "poseedor"
     });
-    const GENERATE_WORD_ANDREWS_SLOT_KEYS = NUCLEAR_CLAUSE_SURFACE_ANDREWS_SLOT_KEYS;
     const CNV_FORMULA_SLOT_KEYS = Object.freeze(["pers1", "pers2", "va1", "va2", "base", "tns", "num1", "num2"]);
     const NUCLEAR_CLAUSE_SURFACE_UI_SLOT_KEYS = CNV_FORMULA_SLOT_KEYS;
     const NUCLEAR_CLAUSE_SURFACE_UI_TO_CNV_SLOT_BRIDGE = Object.freeze({
@@ -104,18 +103,12 @@ export function createGenerationRequestModule(targetObject = globalThis) {
     function normalizeNuclearClauseSurfaceSlotValue(value = "") {
       return String(value ?? "");
     }
-    function normalizeGenerateWordSlotValue(value = "") {
-      return normalizeNuclearClauseSurfaceSlotValue(value);
-    }
     function resolveNuclearClauseSurfaceSlotInputValue(source = null, key = "", fallback = "") {
       const input = source && typeof source === "object" ? source : {};
       if (Object.prototype.hasOwnProperty.call(input, key)) {
         return normalizeNuclearClauseSurfaceSlotValue(input[key]);
       }
       return normalizeNuclearClauseSurfaceSlotValue(fallback);
-    }
-    function resolveGenerateWordSlotInputValue(source = null, key = "", fallback = "") {
-      return resolveNuclearClauseSurfaceSlotInputValue(source, key, fallback);
     }
     function normalizeNuclearClauseSurfaceFormulaPositions(posicionesFormula = null, fallbackPosicionesFormula = {}, options = {}) {
       const fallback = fallbackPosicionesFormula && typeof fallbackPosicionesFormula === "object" ? fallbackPosicionesFormula : {};
@@ -139,9 +132,6 @@ export function createGenerationRequestModule(targetObject = globalThis) {
       }
       return normalized;
     }
-    function normalizeGenerateWordPosicionesFormula(posicionesFormula = null, fallbackPosicionesFormula = {}, options = {}) {
-      return normalizeNuclearClauseSurfaceFormulaPositions(posicionesFormula, fallbackPosicionesFormula, options);
-    }
     function buildNuclearClauseSurfaceEntradasInternasFromPosicionesFormula(posicionesFormula = null, fallbackPosicionesFormula = {}) {
       const source = normalizeNuclearClauseSurfaceFormulaPositions(posicionesFormula, fallbackPosicionesFormula);
       return {
@@ -156,9 +146,6 @@ export function createGenerationRequestModule(targetObject = globalThis) {
         reflexivo: source[NUCLEAR_CLAUSE_SURFACE_ANDREWS_SLOT_KEYS.reflexive] || "",
         tiempo: source[NUCLEAR_CLAUSE_SURFACE_ANDREWS_SLOT_KEYS.tensePosition] || ""
       };
-    }
-    function buildGenerateWordEntradasInternasFromPosicionesFormula(posicionesFormula = null, fallbackPosicionesFormula = {}) {
-      return buildNuclearClauseSurfaceEntradasInternasFromPosicionesFormula(posicionesFormula, fallbackPosicionesFormula);
     }
     function splitNuclearClauseSurfaceFormulaSubslots(value = "") {
       const normalized = String(value || "").trim();
@@ -395,9 +382,6 @@ export function createGenerationRequestModule(targetObject = globalThis) {
         slots
       };
     }
-    function buildGenerateWordSlotNameBridge(posicionesFormula = null, fallbackPosicionesFormula = {}) {
-      return buildNuclearClauseSurfaceSlotNameBridge(posicionesFormula, fallbackPosicionesFormula);
-    }
     function getNuclearClauseSurfacePosicionesFormulaFromControls({
       override,
       pers1Control = null,
@@ -430,9 +414,6 @@ export function createGenerationRequestModule(targetObject = globalThis) {
       });
       return positions;
     }
-    function getGenerateWordPosicionesFormulaFromControls(options = {}) {
-      return getNuclearClauseSurfacePosicionesFormulaFromControls(options);
-    }
     function getNuclearClauseSurfacePosicionesFormula(options = {}) {
       const override = options?.override && typeof options.override === "object" ? options.override : null;
       const explicitFormula = options?.posicionesFormula && typeof options.posicionesFormula === "object" ? options.posicionesFormula : override?.posicionesFormula && typeof override.posicionesFormula === "object" ? override.posicionesFormula : null;
@@ -444,16 +425,10 @@ export function createGenerationRequestModule(targetObject = globalThis) {
       }
       return fallbackPosicionesFormula;
     }
-    function getGenerateWordPosicionesFormula(options = {}) {
-      return getNuclearClauseSurfacePosicionesFormula(options);
-    }
     function normalizeNuclearClauseSurfaceOptions(options = {}) {
       return options && typeof options === "object" ? {
         ...options
       } : {};
-    }
-    function normalizeGenerateWordOptions(options = {}) {
-      return normalizeNuclearClauseSurfaceOptions(options);
     }
     function canReusePreParsedVerb({
       parsedVerb = null,
@@ -471,20 +446,11 @@ export function createGenerationRequestModule(targetObject = globalThis) {
     function sanitizeNuclearClauseSurfaceOptions(options = {}) {
       return normalizeNuclearClauseSurfaceOptions(options);
     }
-    function sanitizeGenerateWordOptions(options = {}) {
-      return sanitizeNuclearClauseSurfaceOptions(options);
-    }
-
     const api = {};
     Object.defineProperty(api, "NUCLEAR_CLAUSE_SURFACE_ANDREWS_SLOT_KEYS", {
         configurable: true,
         enumerable: true,
         get() { return NUCLEAR_CLAUSE_SURFACE_ANDREWS_SLOT_KEYS; },
-    });
-    Object.defineProperty(api, "GENERATE_WORD_ANDREWS_SLOT_KEYS", {
-        configurable: true,
-        enumerable: true,
-        get() { return GENERATE_WORD_ANDREWS_SLOT_KEYS; },
     });
     Object.defineProperty(api, "CNV_FORMULA_SLOT_KEYS", {
         configurable: true,
@@ -557,29 +523,20 @@ export function createGenerationRequestModule(targetObject = globalThis) {
         get() { return NUCLEAR_CLAUSE_SURFACE_NONPAST_OPTATIVE_NUM2_OPTIONS; },
     });
     api.normalizeNuclearClauseSurfaceSlotValue = normalizeNuclearClauseSurfaceSlotValue;
-    api.normalizeGenerateWordSlotValue = normalizeGenerateWordSlotValue;
     api.resolveNuclearClauseSurfaceSlotInputValue = resolveNuclearClauseSurfaceSlotInputValue;
-    api.resolveGenerateWordSlotInputValue = resolveGenerateWordSlotInputValue;
     api.normalizeNuclearClauseSurfaceFormulaPositions = normalizeNuclearClauseSurfaceFormulaPositions;
-    api.normalizeGenerateWordPosicionesFormula = normalizeGenerateWordPosicionesFormula;
     api.buildNuclearClauseSurfaceEntradasInternasFromPosicionesFormula = buildNuclearClauseSurfaceEntradasInternasFromPosicionesFormula;
-    api.buildGenerateWordEntradasInternasFromPosicionesFormula = buildGenerateWordEntradasInternasFromPosicionesFormula;
     api.splitNuclearClauseSurfaceFormulaSubslots = splitNuclearClauseSurfaceFormulaSubslots;
     api.resolveNuclearClauseSurfaceFormulaObjectFrame = resolveNuclearClauseSurfaceFormulaObjectFrame;
     api.resolveNuclearClauseSurfaceProfileConnector = resolveNuclearClauseSurfaceProfileConnector;
     api.resolveNuclearClauseSurfaceFormulaNumberValues = resolveNuclearClauseSurfaceFormulaNumberValues;
     api.buildNuclearClauseSurfaceAndrewsFormulaPath = buildNuclearClauseSurfaceAndrewsFormulaPath;
     api.buildNuclearClauseSurfaceSlotNameBridge = buildNuclearClauseSurfaceSlotNameBridge;
-    api.buildGenerateWordSlotNameBridge = buildGenerateWordSlotNameBridge;
     api.getNuclearClauseSurfacePosicionesFormulaFromControls = getNuclearClauseSurfacePosicionesFormulaFromControls;
-    api.getGenerateWordPosicionesFormulaFromControls = getGenerateWordPosicionesFormulaFromControls;
     api.getNuclearClauseSurfacePosicionesFormula = getNuclearClauseSurfacePosicionesFormula;
-    api.getGenerateWordPosicionesFormula = getGenerateWordPosicionesFormula;
     api.normalizeNuclearClauseSurfaceOptions = normalizeNuclearClauseSurfaceOptions;
-    api.normalizeGenerateWordOptions = normalizeGenerateWordOptions;
     api.canReusePreParsedVerb = canReusePreParsedVerb;
     api.sanitizeNuclearClauseSurfaceOptions = sanitizeNuclearClauseSurfaceOptions;
-    api.sanitizeGenerateWordOptions = sanitizeGenerateWordOptions;
     return api;
 }
 

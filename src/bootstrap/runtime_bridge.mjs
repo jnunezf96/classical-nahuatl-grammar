@@ -1,6 +1,6 @@
 import { cloneStaticRuntimePaths } from "./runtime_paths.mjs?v=20260726-lessons2-58-one-system-094";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
-import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260811-retired-nawat-result-055";
+import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260811-classical-runtime-only-056";
 
 export function installRuntimeBridge(globalObject = globalThis, runtime = {}) {
     if (!globalObject || typeof globalObject !== "object") {

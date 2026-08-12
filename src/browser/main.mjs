@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-retired-nawat-result-055";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-classical-runtime-only-056";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

@@ -347,36 +347,36 @@ function run(ctx) {
         null
     );
     s.eq(
-        "Classical URL schema rejects old Nawat entrada links",
+        "Classical URL schema rejects the retired entrada link family",
         ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(kawi)/screen/output/tr/intransitive"),
         null
     );
-    const retiredNawatLocation = {
+    const retiredLegacyLocation = {
         hash: "#entrada/v3/verb/(kawi)/screen/output/tr/intransitive",
         pathname: "/",
         search: "",
     };
-    let retiredNawatReplacement = "";
+    let retiredLegacyReplacement = "";
     const retiredVerb = ctx.document.getElementById("verb");
     const retiredWholeStem = ctx.document.getElementById("classical-source-whole");
     const retiredResult = ctx.document.getElementById("classical-rule-logic-surface");
     retiredVerb.value = "(kawi)";
     retiredWholeStem.value = "kawi";
-    retiredResult.innerHTML = "old Nawat Result";
+    retiredResult.innerHTML = "retired Result";
     retiredResult.hidden = false;
-    const retiredNawatApplied = ctx.applyEntradaUrlSegmentsFromLocation({
-        location: retiredNawatLocation,
+    const retiredLegacyApplied = ctx.applyEntradaUrlSegmentsFromLocation({
+        location: retiredLegacyLocation,
         history: {
             replaceState(_state, _title, value) {
-                retiredNawatReplacement = value;
+                retiredLegacyReplacement = value;
             },
         },
     });
     s.eq(
-        "opening an old Nawat link clears it without restoring its state",
+        "opening a retired link clears it without restoring its state or Result",
         {
-            applied: retiredNawatApplied,
-            replacement: retiredNawatReplacement,
+            applied: retiredLegacyApplied,
+            replacement: retiredLegacyReplacement,
             verb: retiredVerb.value,
             stem: retiredWholeStem.value,
             result: retiredResult.innerHTML,
@@ -389,6 +389,25 @@ function run(ctx) {
             stem: "",
             result: "",
             resultHidden: true,
+        }
+    );
+    s.eq(
+        "retired generic Result builders and helpers are not callable",
+        {
+            retiredNames: Object.getOwnPropertyNames(ctx).filter(
+                name => /generateword/iu.test(name)
+            ),
+            classicalBuilder: typeof ctx.generateNuclearClauseSurface,
+            classicalExecutor: typeof ctx.executeNuclearClauseSurfaceRequest,
+            classicalCache: typeof ctx.getCachedSilentNuclearClauseSurface,
+            compatibilityName: ctx.NUCLEAR_CLAUSE_SURFACE_ENGINE?.compatibilityGenerateFunction,
+        },
+        {
+            retiredNames: [],
+            classicalBuilder: "function",
+            classicalExecutor: "function",
+            classicalCache: "function",
+            compatibilityName: undefined,
         }
     );
     s.eq(

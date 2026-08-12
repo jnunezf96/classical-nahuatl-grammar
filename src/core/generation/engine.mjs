@@ -8,7 +8,6 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
     const NUCLEAR_CLAUSE_SURFACE_ENGINE = Object.freeze({
       canonicalGenerateFunction: "generateNuclearClauseSurface",
       canonicalExecuteFunction: "executeNuclearClauseSurfaceRequest",
-      compatibilityGenerateFunction: "generateWord",
       generatedUnit: "nuclear-clause-surface"
     });
     const FUNCTION_USE_VALENCE_OBJECT_GATE_DIAGNOSTIC_ID = "function-use-valence-object-frame-unfixed";
@@ -435,7 +434,6 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
       };
     }
     const NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE = "La generacion no produjo una forma.";
-    const GENERATE_WORD_NO_OUTPUT_MESSAGE = NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE;
     const NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY = "nuclear-clause-surface";
     const NUCLEAR_CLAUSE_SURFACE_ROUTE_BLOCKED_ID = "nuclear-clause-surface-route-blocked";
     const LESSON6_DIRECT_CLASSICAL_OBJECT_DYAD_BY_PREFIX = Object.freeze({
@@ -2663,7 +2661,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
     }
     function buildNuclearClauseSurfaceDiagnosticEntry({
       id = NUCLEAR_CLAUSE_SURFACE_ROUTE_BLOCKED_ID,
-      message = GENERATE_WORD_NO_OUTPUT_MESSAGE,
+      message = NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
       severity = "error",
       failedLayer = "route",
       contractLayer = "routeContract",
@@ -2675,7 +2673,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
         id: normalizedId,
         code: normalizedId.toUpperCase().replace(/-/g, "_"),
         severity: String(severity || "error"),
-        message: String(message || GENERATE_WORD_NO_OUTPUT_MESSAGE).trim(),
+        message: String(message || NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE).trim(),
         failedLayer: String(failedLayer || "route").trim(),
         contractLayer: String(contractLayer || "routeContract").trim(),
         routeFamily: String(routeFamily || NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY).trim(),
@@ -3552,7 +3550,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
     }
     function buildNuclearClauseSurfaceBlockedResult({
       result = null,
-      message = GENERATE_WORD_NO_OUTPUT_MESSAGE,
+      message = NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
       diagnosticId = NUCLEAR_CLAUSE_SURFACE_ROUTE_BLOCKED_ID,
       routeFamily = NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY,
       routeStage = "validate",
@@ -3632,75 +3630,6 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
       return attachNuclearClauseSurfaceContractProperties(resultPayload, resultContract, grammarFrame, {
         enumerable: enumerableContract
       });
-    }
-    function resolveGenerateWordUiHook(uiHooks = null, key = "") {
-      return resolveNuclearClauseSurfaceUiHook(uiHooks, key);
-    }
-    function normalizeGenerateWordContractSurface(value = "") {
-      return normalizeNuclearClauseSurfaceContractSurface(value);
-    }
-    function splitGenerateWordContractSurfaceText(value = "") {
-      return splitNuclearClauseSurfaceContractText(value);
-    }
-    function getGenerateWordResultFrame(result = null) {
-      return getNuclearClauseSurfaceResultFrame(result);
-    }
-    function getGenerateWordResultFramePayload(result = null) {
-      return getNuclearClauseSurfaceResultFramePayload(result);
-    }
-    function resolveGenerateWordContractSurface(result = null) {
-      return resolveNuclearClauseSurfaceContractSurface(result);
-    }
-    function resolveGenerateWordResultFrameSurface(result = null) {
-      return resolveNuclearClauseSurfaceResultFrameSurface(result);
-    }
-    function resolveGenerateWordNominalConnectorSurface(connector = null, fallbackSurface = "") {
-      return resolveNuclearClauseSurfaceNominalConnectorSurface(connector, fallbackSurface);
-    }
-    function resolveGenerateWordNominalConnectorDisplaySurface(connector = null, fallbackSurface = "") {
-      return resolveNuclearClauseSurfaceNominalConnectorDisplaySurface(connector, fallbackSurface);
-    }
-    function resolveGenerateWordFrameSourceInput(options = {}) {
-      return resolveNuclearClauseSurfaceFrameSourceInput(options);
-    }
-    function buildGenerateWordDiagnosticEntry(options = {}) {
-      return buildNuclearClauseSurfaceDiagnosticEntry(options);
-    }
-    function getGenerateWordFailedLayerContract(routeStage = "") {
-      return getNuclearClauseSurfaceFailedLayerContract(routeStage);
-    }
-    function normalizeGenerateWordDiagnosticEntries(diagnostics = [], fallbackDiagnostic = null) {
-      return normalizeNuclearClauseSurfaceDiagnosticEntries(diagnostics, fallbackDiagnostic);
-    }
-    function resolveGenerateWordUnitKind(resolvedTenseMode = "", tense = "") {
-      return resolveNuclearClauseSurfaceUnitKind(resolvedTenseMode, tense);
-    }
-    function isGenerateWordGrammarFrameCandidate(value = null) {
-      return isNuclearClauseSurfaceGrammarFrameCandidate(value);
-    }
-    function getGenerateWordOverrideSourceGrammarFrame(override = null) {
-      return getNuclearClauseSurfaceOverrideSourceGrammarFrame(override);
-    }
-    function getGenerateWordSourceEvidenceBoundaries(value = null) {
-      return getNuclearClauseSurfaceSourceEvidenceBoundaries(value);
-    }
-    function mergeGenerateWordSourceEvidence(primary = null, fallback = null) {
-      return mergeNuclearClauseSurfaceSourceEvidence(primary, fallback);
-    }
-    function buildGenerateWordOverrideSourceEvidence(override = null) {
-      return buildNuclearClauseSurfaceOverrideSourceEvidence(override);
-    }
-    function buildGenerateWordGrammarFrame(options = {}) {
-      return buildNuclearClauseSurfaceGrammarFrame(options);
-    }
-    function buildGenerateWordResultContract(resultPayload = null, grammarFrame = null) {
-      return buildNuclearClauseSurfaceResultContract(resultPayload, grammarFrame);
-    }
-    function attachGenerateWordContractProperties(resultPayload = null, resultContract = null, grammarFrame = null, options = {}) {
-      return attachNuclearClauseSurfaceContractProperties(resultPayload, resultContract, grammarFrame, options);
-    }
-    function buildGenerateWordBlockedResult(options = {}) {
-      return buildNuclearClauseSurfaceBlockedResult(options);
     }
     function buildGeneratedNuclearClauseShellMetadata({
       resolvedTenseMode = "",
@@ -5505,7 +5434,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
           routeRankingAllowed: false,
           valencyObjectSlotGate
         },
-        message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+        message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
         diagnosticId: valencyObjectSlotGate?.diagnosticId || "generation-valency-object-slot-frame-unfixed",
         routeFamily,
         routeStage: valencyObjectSlotGate?.routeStage || "generation-valency-object-slot-gate",
@@ -5962,7 +5891,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             routeRankingAllowed: false,
             valencyObjectSlotGate: boundMarkerSlotOverrides.valencyObjectSlotGate || null
           },
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: boundMarkerSlotOverrides.diagnosticId || "generation-valency-object-slot-frame-unfixed",
           routeFamily: "generation-valency",
           routeStage: boundMarkerSlotOverrides.routeStage || "generation-valency-object-slot-gate",
@@ -6014,7 +5943,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
               routeRankingAllowed: false,
               valencyObjectSlotGate: impersonalTaPrefixSlotGate
             },
-            message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+            message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
             diagnosticId: impersonalTaPrefixSlotGate.diagnosticId || "generation-valency-object-slot-frame-unfixed",
             routeFamily: "generation-valency",
             routeStage: impersonalTaPrefixSlotGate.routeStage || "generation-valency-object-slot-gate",
@@ -6189,7 +6118,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
       if (forwardDerivations.noStemMask) {
         return buildNuclearClauseSurfaceBlockedResult({
           result: forwardDerivations.noStemMask,
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: "nuclear-clause-surface-forward-derivation-no-stem",
           routeFamily: "forward-derivation",
           routeStage: "no-stem-mask",
@@ -6238,7 +6167,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             routeRankingAllowed: false,
             canonicalNonactiveStemFrame
           },
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: canonicalNonactiveStemFrame.blockReason,
           routeFamily: "canonical-nonactive-derivation",
           routeStage: "lesson20-owner-record",
@@ -6332,7 +6261,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             routeRankingAllowed: false,
             valencyObjectSlotGate: passiveValencyAdjustments.valencyObjectSlotGate || null
           },
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: passiveValencyAdjustments.diagnosticId || "generation-valency-object-slot-frame-unfixed",
           routeFamily: "generation-valency",
           routeStage: passiveValencyAdjustments.routeStage || "generation-valency-object-slot-gate",
@@ -6512,7 +6441,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
               routeRankingAllowed: false,
               valencyObjectSlotGate: passiveOverrides.valencyObjectSlotGate || null
             },
-            message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+            message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
             diagnosticId: passiveOverrides.diagnosticId || "generation-valency-object-slot-frame-unfixed",
             routeFamily: "generation-valency",
             routeStage: passiveOverrides.routeStage || "generation-valency-object-slot-gate",
@@ -6561,7 +6490,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             routeRankingAllowed: false,
             valencyObjectSlotGate: reflexiveUpdate.valencyObjectSlotGate || null
           },
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: reflexiveUpdate.diagnosticId || "generation-valency-object-slot-frame-unfixed",
           routeFamily: "generation-valency",
           routeStage: reflexiveUpdate.routeStage || "generation-valency-object-slot-gate",
@@ -6952,7 +6881,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             ...appliedMorphology,
             error: true
           },
-          message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+          message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
           diagnosticId: appliedMorphology.valencyObjectSlotGate?.diagnosticId || "nuclear-clause-surface-morphology-application-blocked",
           routeFamily: NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY,
           routeStage: appliedMorphology.valencyObjectSlotGate?.routeStage || "morphology-application",
@@ -7051,7 +6980,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
             result: {
               error: true
             },
-            message: GENERATE_WORD_NO_OUTPUT_MESSAGE,
+            message: NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE,
             diagnosticId: "nuclear-clause-surface-patientivo-possessive-suffix-blocked",
             routeFamily: NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY,
             routeStage: "patientivo-possessive-suffix",
@@ -7723,11 +7652,6 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
         enumerable: true,
         get() { return NUCLEAR_CLAUSE_SURFACE_NO_OUTPUT_MESSAGE; },
     });
-    Object.defineProperty(api, "GENERATE_WORD_NO_OUTPUT_MESSAGE", {
-        configurable: true,
-        enumerable: true,
-        get() { return GENERATE_WORD_NO_OUTPUT_MESSAGE; },
-    });
     Object.defineProperty(api, "NUCLEAR_CLAUSE_SURFACE_ROUTE_FAMILY", {
         configurable: true,
         enumerable: true,
@@ -7854,28 +7778,6 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
     api.stripGeneratedVncFormulaTenseSuffix = stripGeneratedVncFormulaTenseSuffix;
     api.resolveGeneratedVncFormulaPers1BeforeInflection = resolveGeneratedVncFormulaPers1BeforeInflection;
     api.buildNuclearClauseSurfaceBlockedResult = buildNuclearClauseSurfaceBlockedResult;
-    api.resolveGenerateWordUiHook = resolveGenerateWordUiHook;
-    api.normalizeGenerateWordContractSurface = normalizeGenerateWordContractSurface;
-    api.splitGenerateWordContractSurfaceText = splitGenerateWordContractSurfaceText;
-    api.getGenerateWordResultFrame = getGenerateWordResultFrame;
-    api.getGenerateWordResultFramePayload = getGenerateWordResultFramePayload;
-    api.resolveGenerateWordContractSurface = resolveGenerateWordContractSurface;
-    api.resolveGenerateWordResultFrameSurface = resolveGenerateWordResultFrameSurface;
-    api.resolveGenerateWordNominalConnectorSurface = resolveGenerateWordNominalConnectorSurface;
-    api.resolveGenerateWordNominalConnectorDisplaySurface = resolveGenerateWordNominalConnectorDisplaySurface;
-    api.resolveGenerateWordFrameSourceInput = resolveGenerateWordFrameSourceInput;
-    api.buildGenerateWordDiagnosticEntry = buildGenerateWordDiagnosticEntry;
-    api.getGenerateWordFailedLayerContract = getGenerateWordFailedLayerContract;
-    api.normalizeGenerateWordDiagnosticEntries = normalizeGenerateWordDiagnosticEntries;
-    api.resolveGenerateWordUnitKind = resolveGenerateWordUnitKind;
-    api.isGenerateWordGrammarFrameCandidate = isGenerateWordGrammarFrameCandidate;
-    api.getGenerateWordOverrideSourceGrammarFrame = getGenerateWordOverrideSourceGrammarFrame;
-    api.getGenerateWordSourceEvidenceBoundaries = getGenerateWordSourceEvidenceBoundaries;
-    api.mergeGenerateWordSourceEvidence = mergeGenerateWordSourceEvidence;
-    api.buildGenerateWordOverrideSourceEvidence = buildGenerateWordOverrideSourceEvidence;
-    api.buildGenerateWordGrammarFrame = buildGenerateWordGrammarFrame;
-    api.buildGenerateWordResultContract = buildGenerateWordResultContract;
-    api.buildGenerateWordBlockedResult = buildGenerateWordBlockedResult;
     api.buildGeneratedNuclearClauseShellMetadata = buildGeneratedNuclearClauseShellMetadata;
     api.buildGeneratedVncValencyFrameMetadata = buildGeneratedVncValencyFrameMetadata;
     api.buildGeneratedDerivedVoiceFrameMetadata = buildGeneratedDerivedVoiceFrameMetadata;

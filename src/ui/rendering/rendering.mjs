@@ -18465,7 +18465,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return null;
       }
       const resolvedObjectPrefix = typeof objectPrefix === "string" ? objectPrefix : targetObject.getCurrentObjectPrefix();
-      const silentResult = targetObject.getCachedSilentGenerateWord({
+      const silentResult = targetObject.getCachedSilentNuclearClauseSurface({
         silent: true,
         skipValidation: true,
         allowPassiveObject: targetObject.getCombinedMode() === targetObject.COMBINED_MODE.nonactive,
@@ -20836,7 +20836,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         const subjectPers1 = subjectOverride?.pers1 || "";
         const subjectPers2 = subjectOverride?.pers2 || "";
-        const result = targetObject.getCachedSilentGenerateWord({
+        const result = targetObject.getCachedSilentNuclearClauseSurface({
           silent: true,
           skipValidation: true,
           allowPassiveObject: isDirectGroup && allowObjectToggle,
@@ -21594,7 +21594,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const generatedIndirectMarker = shouldEnforceValence4Matrix ? targetObject.collapseSilentSpecificForDisplay(rawIndirectMarker) : rawIndirectMarker;
         const generatedThirdMarker = shouldEnforceValence4Matrix ? targetObject.collapseSilentSpecificForDisplay(rawThirdMarker) : rawThirdMarker;
         const controllerForValidation = grammarConstraintState.controllerPrefix || "";
-        const result = targetObject.getCachedSilentGenerateWord({
+        const result = targetObject.getCachedSilentNuclearClauseSurface({
           silent: true,
           skipValidation: true,
           override: {
@@ -21696,7 +21696,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         const subjectPers1 = subjectOverride?.pers1 || "";
         const subjectPers2 = subjectOverride?.pers2 || "";
-        const result = targetObject.getCachedSilentGenerateWord({
+        const result = targetObject.getCachedSilentNuclearClauseSurface({
           silent: true,
           skipValidation: true,
           allowPassiveObject: isDirectGroup && allowObjectToggle,
@@ -23185,7 +23185,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const evaluateForOwnership = resolvedPatientivoOwnership => {
           const nominalDerivationMode = targetObject.getNominalDerivationModeForTense(tenseValue);
           const predicateNominalDerivationMode = isPredicateNominal && predicateNominalSourceMode === targetObject.COMBINED_MODE.nonactive ? targetObject.DERIVATION_MODE.nonactive : nominalDerivationMode;
-          let result = targetObject.getCachedSilentGenerateWord({
+          let result = targetObject.getCachedSilentNuclearClauseSurface({
               silent: true,
               skipValidation: true,
               override: {

@@ -5430,10 +5430,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           : null);
       const snapshot = readEntradaUrlStateSnapshotFromLocation(sourceLocation);
       if (!snapshot) {
-        const retiredNawatHash = /^#entrada(?:\/|$)/u.test(
+        const retiredLegacyHash = /^#entrada(?:\/|$)/u.test(
           String(sourceLocation?.hash || "")
         );
-        if (retiredNawatHash) {
+        if (retiredLegacyHash) {
           const historyObject = options.history
             || targetObject.window?.history;
           const cleanUrl = `${sourceLocation?.pathname || ""}${sourceLocation?.search || ""}`;
@@ -5454,7 +5454,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           ClassicalSourcePartsCommittedSignature = "";
           setClassicalSourcePartsPendingState(false);
           targetObject.clearClassicalVncResultSourceContinuation?.(
-            "retired-nawat-url"
+            "retired-legacy-url"
           );
           targetObject.clearClassicalRuleLogicSurfaceBlock?.();
           const resultBlock = targetObject.document?.getElementById?.(
@@ -11075,7 +11075,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       ];
       return keyParts.join("|");
     }
-    function getCachedSilentGenerateWord(options = {}) {
+    function getCachedSilentNuclearClauseSurface(options = {}) {
       if (!options || options.silent !== true) {
         return targetObject.generateNuclearClauseSurface(options);
       }
@@ -12323,7 +12323,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.scheduleVerbInputRefresh = scheduleVerbInputRefresh;
     api.resolveSilentGenerationTiCausativeClass = resolveSilentGenerationTiCausativeClass;
     api.buildSilentGenerationCacheKey = buildSilentGenerationCacheKey;
-    api.getCachedSilentGenerateWord = getCachedSilentGenerateWord;
+    api.getCachedSilentNuclearClauseSurface = getCachedSilentNuclearClauseSurface;
     api.applyVerbInputReplacement = applyVerbInputReplacement;
     Object.defineProperty(api, "VERB_INPUT_MODE", {
         configurable: true,
