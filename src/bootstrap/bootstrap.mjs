@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-lesson3-groups-4-6-072";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-lesson3-groups-7-9-073";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260812-lesson3-groups-4-6-072";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-lesson3-groups-4-6-072";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-lesson3-groups-4-6-072";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-lesson3-groups-4-6-072";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson3-groups-4-6-072";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-lesson3-groups-4-6-072";
+} from "../runtime/create_runtime.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-lesson3-groups-7-9-073";
 
 let browserBootstrapPromise = null;
 

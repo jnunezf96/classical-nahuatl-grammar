@@ -73,7 +73,7 @@ function run(ctx = {}) {
         ["ACI-P054-L006-456782D2B7-02", [2]],
         ["ACI-P054-L008-317762E402", ["required"]],
         ["ACI-P054-L008-7324BF122B", ["preceding-nominal-nuclear-clause"]],
-        ["ACI-P054-L011-283E5406D4", ["e", "obligatory"]],
+        ["ACI-P054-L011-283E5406D4", ["é", "obligatory"]],
         ["ACI-P054-L012-9E29E630D8", [true]],
         ["ACI-P054-L012-6B6ED9C941", ["attracts-stress", "required-unique-item"]],
         ["ACI-P054-L016-5836E6F329", [true]],

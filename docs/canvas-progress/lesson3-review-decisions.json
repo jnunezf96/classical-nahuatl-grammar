@@ -26,6 +26,18 @@
     "lesson3-adverbial-particles": {
       "status": "ACCEPTED",
       "acceptedJob": "Make lexical choice user-facing only where meaning is genuinely intended; keep realization automatic."
+    },
+    "lesson3-interjections-and-vocative": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Separate genuine expressive choice from automatic vocative realization."
+    },
+    "lesson3-negative-particle-prefixes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make negative-prefix selection an application duty governed by the sentence environment."
+    },
+    "lesson3-particle-collocations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat Lesson 3 itself as the particle sequence pipeline rather than concatenating interface labels."
     }
   }
 }

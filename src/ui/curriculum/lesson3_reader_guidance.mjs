@@ -35,6 +35,21 @@ export const LESSON3_READER_GUIDANCE_GROUPS = freeze([
     "Read adverbial particles with their tense and position",
     "Use each adverbial particle's own meaning and sentence position. Let tense distinguish readings such as ye 'already' or 'soon' and quin 'just now' or 'presently'; keep bound ō# attached to a licensed past form.",
   ),
+  idea(
+    "lesson3-interjections-and-vocative",
+    "Read interjections through speaker and situation",
+    "Use the situation, expressive force, repetition, and any speaker restriction to identify an interjection. Keep the stressed vocative e attached to the name or nominal expression before it.",
+  ),
+  idea(
+    "lesson3-negative-particle-prefixes",
+    "Recover the negative prefix from its environment",
+    "Read ah# and ca# as the same negative job in different environments. Use the preceding mā, tlā, or mah and the kind of sentence to recover the right form, and attach the negative prefix to the item on its right.",
+  ),
+  idea(
+    "lesson3-particle-collocations",
+    "Read particle combinations in their fixed order",
+    "Keep the members separate and in their witnessed order while reading the combination as one grammatical unit. Its full meaning may not be predictable from the individual particles, and English words such as and or but need not belong to any one member.",
+  ),
 ]);
 
 export function isLesson3ReaderGuidanceExact(candidate = []) {

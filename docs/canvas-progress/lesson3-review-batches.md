@@ -90,8 +90,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the intended interjection or direct address; the application enforces speaker restrictions, attachment, repetition limits, and accent.
 - Control policy: Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.
 - Proposal: Separate genuine expressive choice from automatic vocative realization.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/24
+- Status: ACCEPTED
+- Exactly observed: 24/24
 
 ## Batch 3, Group 8: Negative particle prefixes
 
@@ -103,8 +103,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses negation and intended construction; the application chooses ah# versus ca# and performs the boundary changes.
 - Control policy: Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.
 - Proposal: Make negative-prefix selection an application duty governed by the sentence environment.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/26
+- Status: ACCEPTED
+- Exactly observed: 26/26
 
 ## Batch 3, Group 9: Particle collocations
 
@@ -116,8 +116,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the intended combined meaning or construction; the application builds the licensed sequence and order.
 - Control policy: Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.
 - Proposal: Treat Lesson 3 itself as the particle sequence pipeline rather than concatenating interface labels.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/62
+- Status: ACCEPTED
+- Exactly observed: 62/62
 
 ## Batch 4, Group 10: Honorificized particles
 

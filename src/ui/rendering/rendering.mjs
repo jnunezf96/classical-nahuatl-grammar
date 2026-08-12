@@ -3535,6 +3535,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? targetObject.requestClassicalSentenceParticleFrame({
           particleId: normalizedParticleId,
           honorificized: requestedSentenceParticleHonorificized,
+          speakerGender: String(
+            targetObject.document?.getElementById?.(
+              "classical-source-context-speaker-gender"
+            )?.value || "unspecified"
+          ),
           ...(adverbialLayerFrame?.authorizationStatus === "authorized"
             ? { consumedSentenceFrame: adverbialLayerFrame }
             : { nuclearResultFrame: canonicalNuclearResultFrame })

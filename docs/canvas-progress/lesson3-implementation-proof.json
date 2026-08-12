@@ -31,6 +31,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson3_groups_4_6_jobs.test.js",
       "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-interjections-and-vocative": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-negative-particle-prefixes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-particle-collocations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
     }
   }
 }

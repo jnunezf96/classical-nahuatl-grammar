@@ -13,6 +13,7 @@ export function createClassicalNahuatlParticlesApi(
     const issuedParticleResultFrames = new WeakMap();
     const issuedParticleLexicalFactFrames = new WeakMap();
     const issuedParticleStructuralRoleFrames = new WeakMap();
+    const issuedNegativeParticleSelectionFrames = new WeakMap();
     const issuedParticleHonorificSourceFrames = new WeakMap();
     const issuedParticleHonorificResultFrames = new WeakMap();
     const grammarFrameOwnerCapability =
@@ -48,6 +49,7 @@ export function createClassicalNahuatlParticlesApi(
       "l58-tia-ye-cuel-eh": "haste-collocation"
     });
     const CLASSICAL_NAHUATL_PARTICLE_SEGMENTS_BY_ID = Object.freeze({
+      "l3-ax": Object.freeze(["ax", "ax"]),
       "l3-e-vocative": Object.freeze(["#e"]),
       "l3-ah-negative": Object.freeze(["ah#"]),
       "l3-ca-negative": Object.freeze(["ca#"]),
@@ -92,6 +94,7 @@ export function createClassicalNahuatlParticlesApi(
       "l58-tia-ye-cuel-eh": Object.freeze(["tiā", "ye", "cuēl", "eh"])
     });
     const CLASSICAL_NAHUATL_PARTICLE_CONTEXTUAL_VARIANTS_BY_ID = Object.freeze({
+      "l3-ax": Object.freeze(["ax ax ax"]),
       "l58-oc-eh": Object.freeze(["oc yeh"]),
       "l58-tia-oc-eh": Object.freeze(["tiā oc yeh"]),
       "l58-ma-oc-eh": Object.freeze(["mā oc yeh"]),
@@ -103,7 +106,8 @@ export function createClassicalNahuatlParticlesApi(
       "l58-tia-ye-cuel-eh": Object.freeze(["tiā ye cuēl yeh"])
     });
     const CLASSICAL_NAHUATL_PARTICLE_WRITTEN_BY_ID = Object.freeze({
-      "l3-e-vocative": "e",
+      "l3-e-vocative": "é",
+      "l3-ax": "ax ax",
       "l58-mah-ca": "mah ca"
     });
     const CLASSICAL_NAHUATL_PARTICLE_SENTENCE_ADJUNCTION_UNPROVED_IDS =
@@ -975,6 +979,101 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && frame.userSelectableRestriction === false
         && Object.isFrozen(frame));
     }
+    function selectClassicalNahuatlNegativeParticleFrame(request = {}) {
+      const allowedKeys = new Set([
+        "polarity",
+        "precedingParticleId",
+        "sentenceKind"
+      ]);
+      const unexpectedKey = Reflect.ownKeys(request || {})
+        .map(String)
+        .find(key => !allowedKeys.has(key));
+      const polarity = String(request?.polarity || "negative").trim();
+      const precedingParticleId = String(
+        request?.precedingParticleId || ""
+      ).trim();
+      const sentenceKind = String(request?.sentenceKind || "statement").trim();
+      const caContext = ["l3-ma", "l3-tla", "l3-mah"]
+        .includes(precedingParticleId)
+        && sentenceKind !== "admonition";
+      const selectedParticleId = caContext
+        ? "l3-ca-negative"
+        : "l3-ah-negative";
+      const precedingSourceFrame = caContext
+        ? buildClassicalNahuatlParticleSourceFrame(precedingParticleId)
+        : null;
+      const sourceFrame = buildClassicalNahuatlParticleSourceFrame(
+        selectedParticleId
+      );
+      const particleResultFrame = unexpectedKey || polarity !== "negative"
+        ? null
+        : buildClassicalNahuatlParticleResultFrame(sourceFrame, caContext
+          ? { precedingParticleSourceFrame: precedingSourceFrame }
+          : {});
+      const authorized = !unexpectedKey
+        && polarity === "negative"
+        && isClassicalNahuatlParticleResultFrame(particleResultFrame);
+      const frame = freezeClassicalNahuatlLesson3ParticleResult({
+        kind: "classical-nahuatl-negative-particle-selection-frame",
+        version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized
+          ? ""
+          : unexpectedKey
+            ? `classical-negative-particle-option-forbidden:${unexpectedKey}`
+            : polarity !== "negative"
+              ? "classical-negative-particle-negative-intent-required"
+              : particleResultFrame?.blockReason
+                || "classical-negative-particle-result-required",
+        polarity,
+        precedingParticleId,
+        sentenceKind,
+        selectedParticleId: authorized ? selectedParticleId : "",
+        selectionRule: caContext
+          ? "ca-after-ma-tla-or-mah"
+          : sentenceKind === "admonition" && precedingParticleId === "l3-ma"
+            ? "ah-after-ma-in-admonition"
+            : "ah-elsewhere",
+        sourceFrame: authorized ? sourceFrame : null,
+        precedingSourceFrame: authorized ? precedingSourceFrame : null,
+        particleResultFrame: authorized ? particleResultFrame : null,
+        formula: authorized ? particleResultFrame.formula : "",
+        surface: authorized ? particleResultFrame.surface : "",
+        selectedByApplication: true,
+        userSelectableAllomorph: false,
+        callerSuppliedSurfaceAuthority: false,
+        callerSuppliedFormulaAuthority: false
+      });
+      issuedNegativeParticleSelectionFrames.set(frame, Object.freeze({
+        authorized,
+        sourceFrame: frame.sourceFrame,
+        precedingSourceFrame: frame.precedingSourceFrame,
+        particleResultFrame: frame.particleResultFrame,
+        selectedParticleId: frame.selectedParticleId,
+        formula: frame.formula,
+        surface: frame.surface
+      }));
+      return frame;
+    }
+    function isClassicalNahuatlNegativeParticleSelectionFrame(frame = null) {
+      const receipt = frame && typeof frame === "object"
+        ? issuedNegativeParticleSelectionFrames.get(frame)
+        : null;
+      return Boolean(receipt
+        && frame.kind === "classical-nahuatl-negative-particle-selection-frame"
+        && frame.authorizationStatus === (receipt.authorized ? "authorized" : "blocked")
+        && frame.sourceFrame === receipt.sourceFrame
+        && frame.precedingSourceFrame === receipt.precedingSourceFrame
+        && frame.particleResultFrame === receipt.particleResultFrame
+        && frame.selectedParticleId === receipt.selectedParticleId
+        && frame.formula === receipt.formula
+        && frame.surface === receipt.surface
+        && frame.selectedByApplication === true
+        && frame.userSelectableAllomorph === false
+        && frame.callerSuppliedSurfaceAuthority === false
+        && frame.callerSuppliedFormulaAuthority === false
+        && Object.isFrozen(frame));
+    }
     function freezeClassicalNahuatlLesson3ParticleResult(value, seen = new Set()) {
       if (!value || typeof value !== "object" || Object.isFrozen(value) || seen.has(value)) {
         return value;
@@ -1185,6 +1284,17 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
             untranslatedWhenPerfectRenderingUnwarranted: true,
           })
         : null;
+      const speakerProfile = entry.id === "l3-e-vocative"
+        ? freezeClassicalNahuatlLesson3ParticleResult({
+            requiredSpeakerGender: "male",
+            restrictionEnforcedByApplication: true,
+          })
+        : entry.id === "l3-no-interjection"
+          ? freezeClassicalNahuatlLesson3ParticleResult({
+              requiredSpeakerGender: "female",
+              restrictionEnforcedByApplication: true,
+            })
+          : null;
       const frame = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-lexical-fact-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -1208,6 +1318,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         adjunctorProfile,
         vocativeProfile,
         antecessiveProfile,
+        speakerProfile,
         readOnly: true,
         userSelectable: false,
         generationAuthority: false,
@@ -1225,6 +1336,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           usageFacts: frame.usageFacts,
           adjunctorProfile: frame.adjunctorProfile,
           vocativeProfile: frame.vocativeProfile,
+          speakerProfile: frame.speakerProfile,
         })
       );
       return frame;
@@ -1245,6 +1357,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && frame.usageFacts === receipt.usageFacts
         && frame.adjunctorProfile === receipt.adjunctorProfile
         && frame.vocativeProfile === receipt.vocativeProfile
+        && frame.speakerProfile === receipt.speakerProfile
         && frame.invariant === true
         && frame.paradigmatic === false
         && frame.readOnly === true
@@ -1303,7 +1416,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           )) || "";
       const authorityPath =
         findClassicalNahuatlLesson3ExternalAuthorityPath(options);
-      const allowedOptionKeys = new Set(["precedingParticleSourceFrame", "structuralRole"]);
+      const allowedOptionKeys = new Set(["precedingParticleSourceFrame", "structuralRole", "speakerGender"]);
       const unexpectedOptionKey = Reflect.ownKeys(options)
         .map(String)
         .find(key => !allowedOptionKeys.has(key));
@@ -1348,6 +1461,15 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           isClassicalNahuatlParticleStructuralRoleFrame(structuralRoleFrame)
           && structuralRoleFrame.permitted
         );
+      const requestedSpeakerGender = String(options.speakerGender || "").trim();
+      const requiredSpeakerGender = entry?.id === "l3-e-vocative"
+        ? "male"
+        : entry?.id === "l3-no-interjection"
+          ? "female"
+          : "";
+      const speakerContextLicensed = !requiredSpeakerGender
+        || !requestedSpeakerGender
+        || requestedSpeakerGender === requiredSpeakerGender;
       const formulaSegments = entry
         ? Array.from(entry.formulaSegments || [])
         : [];
@@ -1388,6 +1510,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && !unexpectedOptionKey
         && caContextLicensed
         && structuralRoleLicensed
+        && speakerContextLicensed
         && isClassicalNahuatlParticleLexicalFactFrame(lexicalFactFrame)
         && !missingCapability
       );
@@ -1411,6 +1534,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
                       ? "classical-particle-ca-context-mismatch"
                       : !structuralRoleLicensed
                         ? `classical-particle-structural-role-not-licensed:${String(options.structuralRole || "")}`
+                        : !speakerContextLicensed
+                          ? `classical-particle-speaker-context-required:${requiredSpeakerGender}`
                       : missingCapability
                         ? `classical-lesson3-particle-result-capability-required:${missingCapability}`
                         : "classical-particle-lexical-authorization-required",
@@ -1904,8 +2029,18 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     function getClassicalNahuatlSentenceParticleEntries() {
       const seen = new Set();
       return getClassicalNahuatlParticleSourceEntries().filter(entry => {
-        const composable = entry.clauseComposable === true
-          && !CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS.includes(entry.id);
+        const directlySelectableInterjection = entry.functionScope === "interjection"
+          && entry.id !== "l3-e-vocative";
+        const directlySelectableNegative = entry.functionScope === "negation"
+          && !["l3-ah-negative", "l3-ca-negative"].includes(entry.id);
+        const directlySelectableCollocation = entry.functionScope === "collocation"
+          && entry.curriculumCoordinate === "3.4";
+        const composable = (
+          entry.clauseComposable === true
+          || directlySelectableInterjection
+          || directlySelectableNegative
+          || directlySelectableCollocation
+        ) && !CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS.includes(entry.id);
         if (!composable || !entry.id || seen.has(entry.id)) {
           return false;
         }
@@ -2346,7 +2481,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         "particleSourceFrame",
         "nuclearResultFrame",
         "consumedSentenceFrame",
-        "honorificized"
+        "honorificized",
+        "speakerGender"
       ]);
       const unexpectedOptionKey = Reflect.ownKeys(options)
         .map(String)
@@ -2369,6 +2505,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         ? particleSourceFrame.particleId
         : "";
       const honorificizedRequested = options.honorificized === true;
+      const speakerGender = String(options.speakerGender || "unspecified").trim();
       const canonicalInput =
         resolveClassicalNahuatlParticleCanonicalSentenceInput(options);
       const nuclearClauseKind = canonicalInput.nuclearClauseKind;
@@ -2392,7 +2529,12 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         : getClassicalNahuatlParticleSourceEntries()
           .find(entry => entry.id === requestedParticleId) || null;
       const specializedSentenceControlOwnsEntry = CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS.includes(inventoryEntry?.id);
-      const placementAuthorized = inventoryEntry?.placement?.scope === "clause-initial";
+      const placementAuthorized = [
+        "clause-initial",
+        "independent-utterance",
+        "collocation-sequence",
+        "floating"
+      ].includes(inventoryEntry?.placement?.scope);
       const baseSelectedEntry = !specializedSentenceControlOwnsEntry && placementAuthorized
         ? findClassicalNahuatlSentenceParticleEntry(requestedParticleId)
         : null;
@@ -2418,6 +2560,13 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
             .find(entry => entry.id === particleResultFrame.particleId)
             || null
           : null;
+      const requiredSpeakerGender = selectedEntry?.id === "l3-no-interjection"
+        ? "female"
+        : "";
+      const speakerContextLicensed = !requiredSpeakerGender
+        || speakerGender === requiredSpeakerGender;
+      const independentUtterance = selectedEntry?.placement?.scope
+        === "independent-utterance";
       const authorized = !particleOmitted
         && !unexpectedOptionKey
         && !authorityPath
@@ -2427,15 +2576,20 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && Boolean(selectedEntry)
         && Boolean(particleResultFrame)
         && placementAuthorized
+        && speakerContextLicensed
         && honorificizedAuthorized;
       const blocked = !particleOmitted && !authorized;
       const sourceForm = authorized ? particleResultFrame.surface : "";
       const formulaParticle = authorized ? particleResultFrame.formula : "";
       const sentenceFormulaDisplay = authorized
-        ? `${formulaParticle} ${embeddedSentenceFormula}`
+        ? independentUtterance
+          ? formulaParticle
+          : `${formulaParticle} ${embeddedSentenceFormula}`
         : "";
       const sentenceSurfaceDisplay = authorized
-        ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
+        ? independentUtterance
+          ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)}`
+          : `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
         : "";
       const formulaProjection = authorized ? Object.freeze({
         kind: "classical-nahuatl-sentence-particle-formula-projection",
@@ -2481,6 +2635,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
               ? "sentence-particle-requires-authorized-nuclear-formula"
               : inventoryEntry && !placementAuthorized
                 ? "sentence-particle-placement-not-realizable-by-sentence-initial-control"
+                : !speakerContextLicensed
+                  ? `sentence-particle-speaker-context-required:${requiredSpeakerGender}`
                 : specializedSentenceControlOwnsEntry
                   ? "sentence-particle-has-specialized-sentence-control"
                   : honorificizedRequested && !honorificizedAuthorized
@@ -2507,6 +2663,10 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         functionClass: selectedEntry?.functionClass || null,
         placement: selectedEntry?.placement || null,
         placementAuthorized,
+        speakerGender,
+        requiredSpeakerGender,
+        speakerContextLicensed,
+        independentUtterance,
         gloss: selectedEntry?.gloss || "",
         nuclearClauseKind,
         canonicalInputKind: canonicalInput.canonicalInputKind,
@@ -2558,6 +2718,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         buildClassicalNahuatlParticleResultFrame,
         isClassicalNahuatlParticleResultFrame,
         isClassicalNahuatlParticleStructuralRoleFrame,
+        selectClassicalNahuatlNegativeParticleFrame,
+        isClassicalNahuatlNegativeParticleSelectionFrame,
         buildClassicalNahuatlParticleHonorificSourceFrame,
         isClassicalNahuatlParticleHonorificSourceFrame,
         evaluateClassicalNahuatlParticleHonorificFormation,
@@ -2656,6 +2818,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     api.buildClassicalNahuatlParticleResultFrame = buildClassicalNahuatlParticleResultFrame;
     api.isClassicalNahuatlParticleResultFrame = isClassicalNahuatlParticleResultFrame;
     api.isClassicalNahuatlParticleStructuralRoleFrame = isClassicalNahuatlParticleStructuralRoleFrame;
+    api.selectClassicalNahuatlNegativeParticleFrame = selectClassicalNahuatlNegativeParticleFrame;
+    api.isClassicalNahuatlNegativeParticleSelectionFrame = isClassicalNahuatlNegativeParticleSelectionFrame;
     api.buildClassicalNahuatlParticleHonorificSourceFrame = buildClassicalNahuatlParticleHonorificSourceFrame;
     api.isClassicalNahuatlParticleHonorificSourceFrame = isClassicalNahuatlParticleHonorificSourceFrame;
     api.evaluateClassicalNahuatlParticleHonorificFormation = evaluateClassicalNahuatlParticleHonorificFormation;

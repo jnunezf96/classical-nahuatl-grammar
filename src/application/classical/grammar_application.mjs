@@ -916,6 +916,15 @@ const ROUTE_DEFINITIONS = Object.freeze({
       "particle-semantic-marker",
     ]),
   }),
+  "particle:negative-selection": Object.freeze({
+    capabilityName: "selectClassicalNahuatlNegativeParticleFrame",
+    axisIds: Object.freeze([
+      "polarity",
+      "preceding-particle",
+      "sentence-kind",
+      "negative-particle-selection",
+    ]),
+  }),
   "vnc:source-selection": Object.freeze({
     capabilityName: "buildClassicalNahuatlFuenteSourceSelectionFrame",
     axisIds: Object.freeze(["source-stem", "embed-matrix-structure", "source-selection"]),
@@ -1202,6 +1211,12 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "particle-function": "lexical-fact",
     "particle-placement": "lexical-fact",
     "particle-semantic-marker": "lexical-fact",
+  }),
+  "particle:negative-selection": defineAxisSemanticFactRoles({
+    polarity: "user-choice",
+    "preceding-particle": "contextual-fact",
+    "sentence-kind": "user-choice",
+    "negative-particle-selection": "derived-fact",
   }),
   "vnc:nuclear-clause": defineAxisSemanticFactRoles({
     "basal-unit": "derived-fact",
@@ -1608,6 +1623,9 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
   ),
   "particle:result": defineCanonicalResultContract(
     "classical-nahuatl-particle-result-frame",
+  ),
+  "particle:negative-selection": defineCanonicalResultContract(
+    "classical-nahuatl-negative-particle-selection-frame",
   ),
   "vnc:source-selection": defineCanonicalResultContract(
     "classical-nahuatl-verbstem-fuente-source-selection-frame",
@@ -2094,6 +2112,7 @@ const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
   "isClassicalNahuatlOrderedVoiceVncApplicationFrame",
   "isClassicalNahuatlIssuedParticleSentenceLayerFrame",
   "isClassicalNahuatlParticleResultFrame",
+  "isClassicalNahuatlNegativeParticleSelectionFrame",
   "isClassicalNahuatlLexicalSelectionRecord",
   "isClassicalNahuatlStemOperationRecord",
   "isClassicalNahuatlPossessorReduplicationSelection",
@@ -2292,6 +2311,9 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
   ]),
   "particle:result": Object.freeze([
     "isClassicalNahuatlParticleResultFrame",
+  ]),
+  "particle:negative-selection": Object.freeze([
+    "isClassicalNahuatlNegativeParticleSelectionFrame",
   ]),
   "vnc:source-selection": Object.freeze([
     "isClassicalNahuatlFuenteSourceSelectionFrame",
@@ -3414,6 +3436,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     );
   }
 
+  function requestClassicalNegativeParticleSelection(selections = {}) {
+    return requestCanonicalResult(
+      "particle:negative-selection",
+      [selections],
+    );
+  }
+
   function issueClassicalLinguisticUnitCompositionSource(request = {}) {
     const resolvedBuilder = resolveCanonicalCallableCapability(
       targetObject,
@@ -3915,6 +3944,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     requestClassicalSentenceAdverbialFrame,
     requestClassicalSentenceParticleFrame,
     requestClassicalParticleResult,
+    requestClassicalNegativeParticleSelection,
     issueClassicalLinguisticUnitCompositionSource,
     issueClassicalLinguisticStructureRecursionSource,
     issueClassicalDiscontinuousUnitAdmissibilitySource,

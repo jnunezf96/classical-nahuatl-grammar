@@ -8042,7 +8042,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const groupLabels = new Map([
         ["clause-introducer", "Clause introducers"],
         ["adjunctor", "Adjunctors"],
-        ["conjunctor", "Conjunctors"]
+        ["conjunctor", "Conjunctors"],
+        ["interjection", "Interjections"],
+        ["negation", "Negative expressions"],
+        ["collocation", "Particle combinations"]
       ]);
       const groups = new Map();
       entries.forEach(entry => {
@@ -8056,7 +8059,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
         const option = targetObject.document.createElement("option");
         option.value = entry.id;
-        option.textContent = entry.sourceForm;
+        option.textContent = [entry.sourceForm, entry.gloss]
+          .filter(Boolean)
+          .join(" · ");
         option.dataset.classicalParticleFunctionScope = entry.functionScope || "";
         option.dataset.classicalParticlePlacement = entry.placement?.scope || "";
         option.dataset.classicalAuthorityRole = "typed-lesson3-inventory-choice";
