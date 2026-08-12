@@ -46,6 +46,11 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson3_groups_7_9_jobs.test.js",
       "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-honorificized-particles": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_group_10_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
     }
   }
 }

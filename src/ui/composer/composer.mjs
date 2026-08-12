@@ -4648,11 +4648,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       next.sentence.particle = sentenceParticleEntry?.id || "none";
       const requestedSentenceParticleHonorificized = normalizeEntradaUrlBoolean(sentenceSource.particleHonorificized);
-      if (requestedSentenceParticleHonorificized && !["l3-o-behold", "l3-auh-conjunctor"].includes(next.sentence.particle)) {
+      if (requestedSentenceParticleHonorificized && !["l3-o-behold", "l3-auh-interjection", "l3-ca-no-zo"].includes(next.sentence.particle)) {
         sentenceInvalidFields.push("particleHonorificized");
       }
       next.sentence.particleHonorificized = requestedSentenceParticleHonorificized
-        && ["l3-o-behold", "l3-auh-conjunctor"].includes(next.sentence.particle);
+        && ["l3-o-behold", "l3-auh-interjection", "l3-ca-no-zo"].includes(next.sentence.particle);
       const requestedSentenceAdverbial = String(sentenceSource.adverbial || "none").trim();
       const sentenceAdverbialEntry = requestedSentenceAdverbial === "none"
         ? null

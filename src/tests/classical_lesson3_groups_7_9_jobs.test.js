@@ -316,7 +316,7 @@ function run(ctx = {}) {
     }, {
         interjections: 19,
         negativeExpressions: ["l3-ahzo", "l3-ma-cazo", "l3-ahtel", "l3-aya", "l3-ma-caye", "l3-ma-caya", "l3-ahoc", "l3-ayoc", "l3-aoc", "l3-ma-caoc", "l3-ahno", "l3-ma-cano"],
-        collocations: 34,
+        collocations: 35,
         rawPredictableNegativesExposed: [],
     });
     return s;

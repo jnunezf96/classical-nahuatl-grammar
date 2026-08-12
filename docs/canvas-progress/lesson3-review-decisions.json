@@ -38,6 +38,10 @@
     "lesson3-particle-collocations": {
       "status": "ACCEPTED",
       "acceptedJob": "Treat Lesson 3 itself as the particle sequence pipeline rather than concatenating interface labels."
+    },
+    "lesson3-honorificized-particles": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form."
     }
   }
 }

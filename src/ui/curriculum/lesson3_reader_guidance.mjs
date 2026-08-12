@@ -50,6 +50,11 @@ export const LESSON3_READER_GUIDANCE_GROUPS = freeze([
     "Read particle combinations in their fixed order",
     "Keep the members separate and in their witnessed order while reading the combination as one grammatical unit. Its full meaning may not be predictable from the individual particles, and English words such as and or but need not belong to any one member.",
   ),
+  idea(
+    "lesson3-honorificized-particles",
+    "Recognize honorific meaning on a particle combination",
+    "Read tzin on a single particle or on the final member of a particle combination as making the particle expression honorific. The English translation may state the basic meaning without fully showing the respect or esteem carried by the Nahuatl form.",
+  ),
 ]);
 
 export function isLesson3ReaderGuidanceExact(candidate = []) {

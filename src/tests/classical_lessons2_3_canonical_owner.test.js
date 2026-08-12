@@ -631,8 +631,12 @@ function run(ctx) {
         nuclearResultFrame: clauseResult,
         honorificized: false,
     });
+    const auhInterjectionSource =
+        ctx.buildClassicalNahuatlParticleSourceFrame(
+            "l3-auh-interjection"
+        );
     const honorificSentence = ctx.requestClassicalSentenceParticleFrame({
-        particleSourceFrame: auhSource,
+        particleSourceFrame: auhInterjectionSource,
         nuclearResultFrame: clauseResult,
         honorificized: true,
     });
@@ -679,10 +683,10 @@ function run(ctx) {
             ],
             honorific: [
                 "authorized",
-                "auh + tzin",
+                "āuh + tzin",
                 "āuhtzin",
-                "auh + tzin #ni-0(tēuc)tli-0#.",
-                "Āuhtzin nitēuctli.",
+                "āuh + tzin",
+                "Āuhtzin",
             ],
         }
     );

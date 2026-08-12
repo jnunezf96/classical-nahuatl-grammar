@@ -1607,7 +1607,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? overrides.sentenceParticleHonorific === true
           : targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific")?.checked === true;
       const requestedSentenceParticleHonorificized = rawRequestedSentenceParticleHonorificized
-        && (explicitSentenceParticleHonorificized || ["l3-o-behold", "l3-auh-conjunctor"].includes(requestedSentenceParticleId));
+        && (explicitSentenceParticleHonorificized || ["l3-o-behold", "l3-auh-interjection", "l3-ca-no-zo"].includes(requestedSentenceParticleId));
       const rawRequestedSentenceAdverbialId = String(overrides.sentenceAdverbialId || overrides.sentenceAdverbial || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-adverbial", "none") || "none").trim();
       const requestedSentenceAdverbialId = rawRequestedSentenceAdverbialId === "none"
         || typeof targetObject.findClassicalNahuatlSentenceAdverbialEntry === "function"
@@ -8084,7 +8084,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-sentence-surface": capabilities.sentenceSurface === true
           || nncSupportsSharedSentenceControls,
         "classical-rule-logic-sentence-particle": basalUnit === "vnc" || basalUnit === "nnc",
-        "classical-rule-logic-sentence-particle-honorific": ["l3-o-behold", "l3-auh-conjunctor"].includes(surfaceFrame.state?.requestedSentenceParticleId),
+        "classical-rule-logic-sentence-particle-honorific": ["l3-o-behold", "l3-auh-interjection", "l3-ca-no-zo"].includes(surfaceFrame.state?.requestedSentenceParticleId),
         "classical-rule-logic-sentence-adverbial": basalUnit === "vnc" || basalUnit === "nnc",
         "classical-rule-logic-introductory-particle": capabilities.introductoryParticle === true,
         "classical-rule-logic-preface-particle": capabilities.prefaceParticle === true && introductoryParticle !== "none",

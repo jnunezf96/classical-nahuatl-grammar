@@ -6061,7 +6061,7 @@ function run(ctx = {}) {
                     input: "(chōca)",
                     derivationType: "direct",
                     sentence: {
-                        particle: "l3-auh-conjunctor",
+                        particle: "l3-auh-interjection",
                         particleHonorificized: true,
                         adverbial: "l3-oc",
                         polarity: "negative",
@@ -6100,7 +6100,7 @@ function run(ctx = {}) {
                     directOmitsStaleCapsule: !directWithStaleCapsule.includes("/v/"),
                     directParadigmSegment: directParadigm.includes("/vnc-output/paradigm"),
                     directParadigmRoundTrip: ctx.parseEntradaUrlSegmentString(directParadigm)?.vncOutputScope || "",
-                    directSentenceUsesNamedSegments: directSentenceHash.includes("/sentence-particle/l3-auh-conjunctor")
+                    directSentenceUsesNamedSegments: directSentenceHash.includes("/sentence-particle/l3-auh-interjection")
                         && directSentenceHash.includes("/sentence-honorific/1")
                         && directSentenceHash.includes("/sentence-adverbial/l3-oc")
                         && !directSentenceHash.includes("/sentence-adverbial-position/")
@@ -6162,7 +6162,7 @@ function run(ctx = {}) {
             directParadigmRoundTrip: "paradigm",
             directSentenceUsesNamedSegments: true,
             directSentenceRoundTrip: {
-                particle: "l3-auh-conjunctor",
+                particle: "l3-auh-interjection",
                 particleHonorificized: true,
                 adverbial: "l3-oc",
                 polarity: "negative",
@@ -9197,7 +9197,7 @@ function run(ctx = {}) {
                     vncOutputScope: "single",
                     sentenceNegativeMode: "positive",
                     sentenceSurfaceMode: "question-cuix",
-                    sentenceParticleId: "l3-auh-conjunctor",
+                    sentenceParticleId: "l3-auh-interjection",
                     sentenceParticleHonorificized: true,
                     sentenceAdverbialId: "l3-oc",
                 });
@@ -9251,8 +9251,8 @@ function run(ctx = {}) {
                 sentenceFormula: "in #ni-0(chōca)0+0-0#.",
                 sentenceSurface: "In nichōca.",
                 ancaMiquiSentenceSurface: "Anca nāmiqui.",
-                    layeredParticleFormula: "auh + tzin oc cuix #n-0(ā-miqui)0+0-0#?",
-                layeredParticleSurface: "Āuhtzin oc cuix nāmiqui?",
+                    layeredParticleFormula: "āuh + tzin",
+                layeredParticleSurface: "Āuhtzin",
                 sentenceSurfacePresent: true,
                 diagramAuthority: "typed-vnc-slots",
                 diagramRoles: ["Subject", "Core", "Tense"],

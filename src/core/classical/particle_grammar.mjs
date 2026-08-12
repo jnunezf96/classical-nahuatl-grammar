@@ -559,6 +559,7 @@ l3-ahca-zo|ahca zo|collocation|collocation-sequence|3.4
 l3-ahzo-ca|ahzo ca|collocation|collocation-sequence|3.4
 l3-ahca-zo-ah|ahca zo ah#|collocation|collocation-sequence|3.4
 l3-ahzo-ca-ah|ahzo ca ah#|collocation|collocation-sequence|3.4
+l3-ca-no-zo|ca no zo|collocation|collocation-sequence|3.5
 l3-otzin|ōtzin|honorificized|floating|3.5
 l3-auhtzin|āuhtzin|honorificized|floating|3.5
 l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
@@ -673,6 +674,7 @@ l3-ahca-zo|perhaps; maybe|collocational ca is equivalent to zā
 l3-ahzo-ca|perhaps; maybe|collocational ca is equivalent to zā
 l3-ahca-zo-ah|perhaps not; maybe not|collocational ca is equivalent to zā
 l3-ahzo-ca-ah|perhaps not; maybe not|collocational ca is equivalent to zā
+l3-ca-no-zo|thus it is|base collocation licensed for particle honorificization
 l3-otzin|behold|honorificized single particle
 l3-auhtzin|good; good|honorificized single particle
 l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its final member
@@ -2024,7 +2026,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     ]);
     const CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS = Object.freeze({
       "l3-o-behold": "l3-otzin",
-      "l3-auh-conjunctor": "l3-auhtzin"
+      "l3-auh-interjection": "l3-auhtzin",
+      "l3-ca-no-zo": "l3-ca-no-zotzin"
     });
     function getClassicalNahuatlSentenceParticleEntries() {
       const seen = new Set();
@@ -2034,7 +2037,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         const directlySelectableNegative = entry.functionScope === "negation"
           && !["l3-ah-negative", "l3-ca-negative"].includes(entry.id);
         const directlySelectableCollocation = entry.functionScope === "collocation"
-          && entry.curriculumCoordinate === "3.4";
+          && (entry.curriculumCoordinate === "3.4" || entry.id === "l3-ca-no-zo");
         const composable = (
           entry.clauseComposable === true
           || directlySelectableInterjection
@@ -2074,6 +2077,10 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         entry.id === requested || entry.lookupKeys.includes(lookup)
       )) || null;
     }
+    function isClassicalNahuatlSentenceParticleOutputFrame(frame = null) {
+      return isClassicalNahuatlParticleResultFrame(frame)
+        || isClassicalNahuatlParticleHonorificResultFrame(frame);
+    }
     function isClassicalNahuatlIssuedParticleSentenceLayerFrame(frame = null) {
       const receipt = frame && typeof frame === "object"
         ? issuedParticleSentenceLayerFrames.get(frame)
@@ -2109,7 +2116,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
               && isClassicalNahuatlParticleSourceFrame(
                 frame.particleSourceFrame
               )
-              && isClassicalNahuatlParticleResultFrame(
+              && isClassicalNahuatlSentenceParticleOutputFrame(
                 frame.particleResultFrame
               )
               && frame.canonicalInputFrame
@@ -2539,33 +2546,42 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         ? findClassicalNahuatlSentenceParticleEntry(requestedParticleId)
         : null;
       const honorificizedEntryId = honorificizedRequested ? CLASSICAL_NAHUATL_SENTENCE_PARTICLE_HONORIFIC_IDS[baseSelectedEntry?.id] || "" : "";
-      const selectedSourceFrame = honorificizedEntryId
-        ? buildClassicalNahuatlParticleSourceFrame(honorificizedEntryId)
-        : particleSourceFrame;
-      const particleResultFrame = isClassicalNahuatlParticleSourceFrame(
-        selectedSourceFrame
-      ) ? buildClassicalNahuatlParticleResultFrame(
-        selectedSourceFrame
-      ) : null;
+      const honorificSourceFrame = honorificizedEntryId
+        ? buildClassicalNahuatlParticleHonorificSourceFrame({
+            targetId: honorificizedEntryId
+          })
+        : null;
+      const particleResultFrame = honorificizedEntryId
+        ? evaluateClassicalNahuatlParticleHonorificFormation(
+            honorificSourceFrame
+          )
+        : particleSourceAuthorized
+          ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
+          : null;
       const honorificizedAuthorized = !honorificizedRequested
         || Boolean(
           honorificizedEntryId
-          && isClassicalNahuatlParticleResultFrame(
+          && isClassicalNahuatlParticleHonorificResultFrame(
             particleResultFrame
           )
         );
       const selectedEntry =
-        isClassicalNahuatlParticleResultFrame(particleResultFrame)
+        isClassicalNahuatlSentenceParticleOutputFrame(particleResultFrame)
           ? getClassicalNahuatlParticleSourceEntries()
-            .find(entry => entry.id === particleResultFrame.particleId)
+            .find(entry => entry.id === (
+              honorificizedEntryId || particleResultFrame.particleId
+            ))
             || null
           : null;
-      const requiredSpeakerGender = selectedEntry?.id === "l3-no-interjection"
+      const syntacticEntry = honorificizedEntryId
+        ? baseSelectedEntry
+        : selectedEntry;
+      const requiredSpeakerGender = syntacticEntry?.id === "l3-no-interjection"
         ? "female"
         : "";
       const speakerContextLicensed = !requiredSpeakerGender
         || speakerGender === requiredSpeakerGender;
-      const independentUtterance = selectedEntry?.placement?.scope
+      const independentUtterance = syntacticEntry?.placement?.scope
         === "independent-utterance";
       const authorized = !particleOmitted
         && !unexpectedOptionKey
@@ -2641,7 +2657,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
                   ? "sentence-particle-has-specialized-sentence-control"
                   : honorificizedRequested && !honorificizedAuthorized
                     ? "sentence-particle-honorificization-not-witnessed"
-                    : !isClassicalNahuatlParticleResultFrame(
+                    : !isClassicalNahuatlSentenceParticleOutputFrame(
                         particleResultFrame
                       )
                       ? particleResultFrame?.blockReason
@@ -2652,6 +2668,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           particleSourceAuthorized ? particleSourceFrame : null,
         particleResultFrame:
           authorized ? particleResultFrame : null,
+        honorificSourceFrame:
+          honorificizedAuthorized ? honorificSourceFrame : null,
         selectedEntry,
         baseSelectedEntry,
         specializedSentenceControlOwnsEntry,
@@ -2659,9 +2677,9 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         honorificizedAuthorized,
         honorificizedEntryId,
         sourceForm,
-        functionScope: selectedEntry?.functionScope || "",
-        functionClass: selectedEntry?.functionClass || null,
-        placement: selectedEntry?.placement || null,
+        functionScope: syntacticEntry?.functionScope || "",
+        functionClass: syntacticEntry?.functionClass || null,
+        placement: syntacticEntry?.placement || null,
         placementAuthorized,
         speakerGender,
         requiredSpeakerGender,

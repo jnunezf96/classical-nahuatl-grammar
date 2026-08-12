@@ -18,11 +18,11 @@ function run(ctx = {}) {
         panel.indexOf('id="classical-canvas-grammar-facts"')
     );
 
-    s.eq("all accepted Lesson 3 atoms point to one of nine collapsed reading ideas", {
+    s.eq("all accepted Lesson 3 atoms point to one of ten collapsed reading ideas", {
         accepted: accepted.length,
         ideas: ideas.length,
         missing: accepted.filter((record) => !ideas.some((idea) => idea.ideaId === record.reviewGroupId)).map((record) => record.atomId),
-    }, { accepted: 197, ideas: 9, missing: [] });
+    }, { accepted: 204, ideas: 10, missing: [] });
 
     for (const idea of ideas) {
         s.ok(`${idea.ideaId} is visible in the Lesson 3 reading guide`,

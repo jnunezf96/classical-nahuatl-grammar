@@ -16,10 +16,10 @@
     "batches": 4,
     "proposedBoth": 176,
     "proposedReadingOnly": 28,
-    "acceptedAtoms": 197,
+    "acceptedAtoms": 204,
     "declinedAtoms": 0,
-    "awaitingReview": 7,
-    "implementationCredit": 197
+    "awaitingReview": 0,
+    "implementationCredit": 204
   },
   "groups": [
     {
@@ -209,8 +209,8 @@
       "readingJob": "Help the reader recognize the honorific formation and its social meaning.",
       "decisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "controlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 7
     }
   ],
   "records": [
@@ -4561,14 +4561,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L018-19FD991827",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L018-19FD991827",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L018-19FD991827",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L018-19FD991827"
     },
     {
       "atomId": "ACI-P059-L020-A5401273B0",
@@ -4583,14 +4583,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L020-A5401273B0",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L020-A5401273B0",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L020-A5401273B0",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L020-A5401273B0"
     },
     {
       "atomId": "ACI-P059-L021-7061D7CA2C",
@@ -4605,14 +4605,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L021-7061D7CA2C",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L021-7061D7CA2C",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L021-7061D7CA2C",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L021-7061D7CA2C"
     },
     {
       "atomId": "ACI-P059-L022-1AAA138A0C",
@@ -4627,14 +4627,14 @@
       "proposedReaderJob": "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L022-1AAA138A0C",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L022-1AAA138A0C"
     },
     {
       "atomId": "ACI-P059-L024-6A5F7EF59E",
@@ -4649,14 +4649,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L024-6A5F7EF59E",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L024-6A5F7EF59E",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L024-6A5F7EF59E",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L024-6A5F7EF59E"
     },
     {
       "atomId": "ACI-P059-L025-64943B2196",
@@ -4671,14 +4671,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L025-64943B2196",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L025-64943B2196",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L025-64943B2196",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L025-64943B2196"
     },
     {
       "atomId": "ACI-P059-L026-BB2A070E1D",
@@ -4693,14 +4693,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Route particle honorificization through the shared grammar operation instead of a special display-only form.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#ACI-P059-L026-BB2A070E1D",
+      "writingMutationTest": "src/tests/classical_lesson3_group_10_jobs.test.js#mutation:ACI-P059-L026-BB2A070E1D",
+      "readerGuidanceIdeaId": "lesson3-honorificized-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P059-L026-BB2A070E1D",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P059-L026-BB2A070E1D"
     }
   ]
 }

@@ -66,9 +66,9 @@ function run() {
     }, {
         both: 176,
         readingOnly: 28,
-        awaiting: 7,
-        accepted: 197,
-        credit: 197,
+        awaiting: 0,
+        accepted: 204,
+        credit: 204,
         falseCredit: [],
     });
 

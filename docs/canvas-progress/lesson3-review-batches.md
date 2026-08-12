@@ -129,6 +129,6 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.
 - Control policy: Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.
 - Proposal: Route particle honorificization through the shared grammar operation instead of a special display-only form.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/7
+- Status: ACCEPTED
+- Exactly observed: 7/7
 
