@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-sound-source-transcription-057";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-required-writing-pass-058";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

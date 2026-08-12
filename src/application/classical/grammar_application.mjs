@@ -38,7 +38,14 @@ const CLASSICAL_VISIBLE_SURFACE_KEYS = Object.freeze(new Set([
   "surfaceForms",
   "surfaceRealization",
   "surfaceDisplay",
+  "canonicalSurface",
+  "displaySurface",
   "finiteSurface",
+  "outputForm",
+  "outputSpelling",
+  "printedSurface",
+  "realizedSolidStem",
+  "resultSurface",
   "wordSurface",
   "wordRealization",
   "sentenceSurface",
@@ -46,6 +53,20 @@ const CLASSICAL_VISIBLE_SURFACE_KEYS = Object.freeze(new Set([
   "sentenceSurfaceDisplay",
 ]));
 const CLASSICAL_FORBIDDEN_VISIBLE_GRAPHEME_PATTERN = /[wk]/iu;
+const CLASSICAL_LESSON2_WRITING_FAMILY_IDS = Object.freeze([
+  "sound-and-spelling",
+  "internal-stem-boundaries",
+  "syllables-and-supportive-i",
+  "stress",
+  "long-consonants",
+  "progressive-assimilation",
+  "regressive-assimilation-and-dissimilation",
+  "consonant-loss",
+  "other-consonant-changes",
+  "vowel-elision",
+  "long-vowel-to-glottal-stop",
+  "sentence-prosody",
+]);
 
 const GCD_INVARIANT_IDS = Object.freeze([
   "canonical-runtime-installation",
@@ -57,6 +78,7 @@ const GCD_INVARIANT_IDS = Object.freeze([
   "no-renderer-fallback",
   "lesson-and-display-authority-forbidden",
   "classical-visible-surface-firewall",
+  "lesson2-writing-pass",
 ]);
 
 function getClassicalVisibleSurfaceViolation(
@@ -109,6 +131,69 @@ function assertClassicalVisibleSurfaceResult(value) {
     throw new Error(`${CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC}:${violation}`);
   }
   return value;
+}
+
+function getClassicalVisibleSurfacePaths(
+  value,
+  path = "$",
+  seen = new Set(),
+  visibleSurfaceCollection = false,
+  paths = [],
+) {
+  if (visibleSurfaceCollection && typeof value === "string") {
+    paths.push(path);
+    return paths;
+  }
+  if (!value || typeof value !== "object" || seen.has(value)) return paths;
+  seen.add(value);
+  if (Array.isArray(value)) {
+    value.forEach((child, index) => getClassicalVisibleSurfacePaths(
+      child,
+      `${path}[${index}]`,
+      seen,
+      visibleSurfaceCollection,
+      paths,
+    ));
+    return paths;
+  }
+  Object.entries(value).forEach(([key, child]) => {
+    getClassicalVisibleSurfacePaths(
+      child,
+      `${path}.${key}`,
+      seen,
+      visibleSurfaceCollection || CLASSICAL_VISIBLE_SURFACE_KEYS.has(key),
+      paths,
+    );
+  });
+  return paths;
+}
+
+function buildClassicalLesson2WritingPass(candidateResult = null) {
+  const writtenResultLocations = getClassicalVisibleSurfacePaths(candidateResult);
+  const required = writtenResultLocations.length > 0;
+  const familyPasses = Object.freeze(
+    CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => Object.freeze({
+      familyId,
+      entered: required,
+      status: required ? "entered-rule-may-still-be-unfinished" : "not-required",
+    })),
+  );
+  return Object.freeze({
+    kind: "classical-nahuatl-lesson2-writing-pass",
+    version: 1,
+    required,
+    entered: required,
+    writtenResultCount: writtenResultLocations.length,
+    familyRoutingIds: CLASSICAL_LESSON2_WRITING_FAMILY_IDS,
+    familyPasses,
+    allTwelveFamiliesRouted: required,
+    completionStatus: required
+      ? "required-route-active-rules-still-incomplete"
+      : "not-a-writing-result",
+    changesGrammarAuthority: false,
+    lessonMetadataAuthority: false,
+    storedWritingAuthority: false,
+  });
 }
 
 const ROUTE_DEFINITIONS = Object.freeze({
@@ -2381,6 +2466,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       candidateAuthorizationStatus,
     );
     const canonicalResult = canonicalResultRecognized ? candidateResult : null;
+    const lesson2WritingPass = buildClassicalLesson2WritingPass(canonicalResult);
     if (canonicalResultRecognized) {
       issuedCanonicalResults.add(canonicalResult);
     }
@@ -2398,6 +2484,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       "no-renderer-fallback": noRendererFallback,
       "lesson-and-display-authority-forbidden": authorityCarrierClear,
       "classical-visible-surface-firewall": visibleSurfaceViolation === "",
+      "lesson2-writing-pass": lesson2WritingPass.required
+        ? lesson2WritingPass.entered
+          && lesson2WritingPass.allTwelveFamiliesRouted
+          && lesson2WritingPass.familyPasses.length === 12
+          && lesson2WritingPass.familyPasses.every(family => family.entered)
+        : lesson2WritingPass.entered === false,
     });
     const gcdSatisfied = GCD_INVARIANT_IDS.every(
       (invariantId) => invariantProofs[invariantId] === true,
@@ -2432,6 +2524,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       outputKind,
       capabilityName,
       canonicalResult,
+      lesson2WritingPass,
       greatestCommonDivisor: Object.freeze({
         identityId: "typed-semantic-application-to-canonical-result",
         invariantIds: GCD_INVARIANT_IDS,
@@ -2469,6 +2562,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     const gcdProofComplete = GCD_INVARIANT_IDS.every(
       (invariantId) => invariantProofs?.[invariantId] === true,
     );
+    const expectedLesson2WritingPass = buildClassicalLesson2WritingPass(
+      result?.canonicalResult || null,
+    );
     return Boolean(
       result
       && issuedApplicationResults.has(result)
@@ -2476,6 +2572,29 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && result.version === 1
       && ROUTE_DEFINITIONS[result.operationId]
       && outputContract
+      && result.lesson2WritingPass?.kind
+        === "classical-nahuatl-lesson2-writing-pass"
+      && result.lesson2WritingPass?.version === 1
+      && result.lesson2WritingPass?.familyRoutingIds
+        === CLASSICAL_LESSON2_WRITING_FAMILY_IDS
+      && result.lesson2WritingPass?.changesGrammarAuthority === false
+      && result.lesson2WritingPass?.lessonMetadataAuthority === false
+      && result.lesson2WritingPass?.storedWritingAuthority === false
+      && result.lesson2WritingPass?.required
+        === expectedLesson2WritingPass.required
+      && result.lesson2WritingPass?.entered
+        === expectedLesson2WritingPass.entered
+      && result.lesson2WritingPass?.allTwelveFamiliesRouted
+        === expectedLesson2WritingPass.allTwelveFamiliesRouted
+      && result.lesson2WritingPass?.familyPasses?.length === 12
+      && result.lesson2WritingPass.familyPasses.every((familyPass, index) => (
+        familyPass?.familyId === CLASSICAL_LESSON2_WRITING_FAMILY_IDS[index]
+        && familyPass?.entered === result.lesson2WritingPass.required
+        && Object.isFrozen(familyPass)
+      ))
+      && result.lesson2WritingPass?.writtenResultCount
+        === expectedLesson2WritingPass.writtenResultCount
+      && Object.isFrozen(result.lesson2WritingPass)
       && result.capabilityName === outputContract.capabilityName
       && (
         result.authorizationStatus === "authorized"
