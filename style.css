@@ -17064,6 +17064,58 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   min-height: 2.5rem;
 }
 
+.classical-transcription-keyboard {
+  margin-top: 0.55rem;
+  font-size: 0.74rem;
+}
+
+.classical-transcription-keyboard > summary {
+  width: fit-content;
+  cursor: pointer;
+  font-weight: 650;
+}
+
+.classical-transcription-keyboard > p {
+  margin: 0.4rem 0;
+  color: var(--muted-color, #68645d);
+}
+
+.classical-transcription-keyboard__group {
+  display: grid;
+  gap: 0.3rem;
+  margin-top: 0.45rem;
+}
+
+.classical-transcription-keyboard__group > span {
+  color: var(--muted-color, #68645d);
+  font-weight: 650;
+}
+
+.classical-transcription-keyboard__keys {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.classical-transcription-keyboard__key {
+  min-width: 2.45rem;
+  min-height: 2.2rem;
+  padding: 0.3rem 0.55rem;
+  border: 1px solid var(--border-color, #d8d4cb);
+  border-radius: 0.45rem;
+  background: var(--surface-color, #fff);
+  color: inherit;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.classical-transcription-keyboard__key:hover,
+.classical-transcription-keyboard__key:focus-visible {
+  border-color: var(--accent-color, #76523e);
+  background: var(--surface-hover, #f0ece4);
+}
+
 .classical-transcription-source__optional-controls {
   display: grid;
   gap: 0.55rem;

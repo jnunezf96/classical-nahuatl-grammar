@@ -209,6 +209,51 @@ function run(ctx = {}) {
         }
     );
 
+    suite.eq(
+        "the optional sound keyboard is owner-filtered and never limits typed input",
+        {
+            keyboard: countLiteral(
+                shell,
+                'id="classical-transcription-keyboard"'
+            ),
+            vowelKeys: Object.keys(
+                ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
+            ).length,
+            consonantKeys: Object.keys(
+                ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
+            ).length,
+            ownerFiltered:
+                shell.includes(
+                    "CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS"
+                )
+                && shell.includes(
+                    "CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS"
+                )
+                && shell.includes("ownerVowels.has(token)")
+                && shell.includes("ownerConsonants.has(token)"),
+            insertsAtCaret:
+                shell.includes("input.selectionStart")
+                && shell.includes("input.selectionEnd")
+                && shell.includes("input.setSelectionRange"),
+            typingRemainsOpen:
+                shell.includes("You can still type or edit anything.")
+                && !shell.includes("classicalTranscriptionKeyboardOnly"),
+            displayDoesNotAuthorize:
+                shell.includes(
+                    'button.dataset.classicalGrammarAuthority = "false"'
+                ),
+        },
+        {
+            keyboard: 1,
+            vowelKeys: 8,
+            consonantKeys: 15,
+            ownerFiltered: true,
+            insertsAtCaret: true,
+            typingRemainsOpen: true,
+            displayDoesNotAuthorize: true,
+        }
+    );
+
     const installSlice = functionSlice(
         shell,
         "installClassicalTranscriptionSourcePresentation",

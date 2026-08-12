@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-optional-result-controls-048";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-transcription-keyboard-050";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

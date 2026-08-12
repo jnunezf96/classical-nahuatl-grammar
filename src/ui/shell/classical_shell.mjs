@@ -1285,6 +1285,22 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         >Apply transcription</button>
                       </div>
                       <p id="classical-transcription-source-help">Separate segments with spaces; use | between constituents in one stress group.</p>
+                      <details id="classical-transcription-keyboard" class="classical-transcription-keyboard">
+                        <summary>Sound keyboard</summary>
+                        <p>Click a sound to add it to Segments. You can still type or edit anything.</p>
+                        <div class="classical-transcription-keyboard__group" aria-label="Vowels">
+                          <span>Vowels</span>
+                          <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
+                        </div>
+                        <div class="classical-transcription-keyboard__group" aria-label="Consonants">
+                          <span>Consonants</span>
+                          <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
+                        </div>
+                        <div class="classical-transcription-keyboard__group" aria-label="Structure">
+                          <span>Structure</span>
+                          <div id="classical-transcription-keyboard-structure" class="classical-transcription-keyboard__keys"></div>
+                        </div>
+                      </details>
                       <div
                         id="classical-transcription-optional-controls"
                         class="classical-transcription-source__optional-controls"
@@ -3434,6 +3450,9 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const status = documentObject?.getElementById?.(
         "classical-transcription-source-status"
       ) || null;
+      const keyboard = documentObject?.getElementById?.(
+        "classical-transcription-keyboard"
+      ) || null;
       if (!root || !input || !applyButton || !status) return false;
       if (root.dataset.classicalTranscriptionSourceBound === "true") {
         return true;
@@ -3449,6 +3468,106 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         event?.preventDefault?.();
         targetObject.applyClassicalTranscriptionSource?.(input.value);
       };
+      const populateSoundKeyboard = () => {
+        if (!keyboard) return false;
+        const vowelRoot = documentObject.getElementById(
+          "classical-transcription-keyboard-vowels"
+        );
+        const consonantRoot = documentObject.getElementById(
+          "classical-transcription-keyboard-consonants"
+        );
+        const structureRoot = documentObject.getElementById(
+          "classical-transcription-keyboard-structure"
+        );
+        if (!vowelRoot || !consonantRoot || !structureRoot) return false;
+        const ownerVowels = new Set(Object.keys(
+          targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
+        ));
+        const ownerConsonants = new Set(Object.keys(
+          targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
+        ));
+        if (!ownerVowels.size || !ownerConsonants.size) return false;
+        const makeKey = token => {
+          const button = documentObject.createElement("button");
+          button.type = "button";
+          button.className = "classical-transcription-keyboard__key";
+          button.dataset.classicalTranscriptionToken = token;
+          button.dataset.classicalGrammarAuthority = "false";
+          button.setAttribute("aria-label", `Insert ${token}`);
+          button.textContent = token;
+          return button;
+        };
+        const vowelOrder = ["a", "ā", "e", "ē", "i", "ī", "o", "ō"];
+        const consonantOrder = [
+          "/l/", "/n/", "/m/", "/s/", "/š/", "/y/", "/w/", "/p/",
+          "/t/", "/k/", "/kʷ/", "/ʔ/", "/λ/", "/¢/", "/č/"
+        ];
+        vowelRoot.replaceChildren(
+          ...vowelOrder.filter(token => ownerVowels.has(token)).map(makeKey)
+        );
+        consonantRoot.replaceChildren(
+          ...consonantOrder
+            .filter(token => ownerConsonants.has(token))
+            .map(makeKey)
+        );
+        structureRoot.replaceChildren(makeKey("|"));
+        keyboard.dataset.classicalTranscriptionKeyboardReady = "true";
+        return true;
+      };
+      const insertSoundToken = token => {
+        const value = String(input.value || "");
+        const start = Number.isInteger(input.selectionStart)
+          ? input.selectionStart
+          : value.length;
+        const end = Number.isInteger(input.selectionEnd)
+          ? input.selectionEnd
+          : start;
+        const before = value.slice(0, start);
+        const after = value.slice(end);
+        if (token === "|") {
+          const cleanBefore = before.trimEnd();
+          const cleanAfter = after.trimStart();
+          const prefix = cleanBefore ? `${cleanBefore} | ` : "| ";
+          input.value = `${prefix}${cleanAfter}`;
+          const caret = prefix.length;
+          input.setSelectionRange?.(caret, caret);
+          input.focus?.();
+          markPending();
+          return;
+        }
+        const leftSpace = before && !/[\s|]$/u.test(before) ? " " : "";
+        const rightSpace = after && !/^[\s|]/u.test(after) ? " " : "";
+        const insertion = `${leftSpace}${token}${rightSpace}`;
+        input.value = `${before}${insertion}${after}`;
+        const caret = before.length + insertion.length;
+        input.setSelectionRange?.(caret, caret);
+        input.focus?.();
+        markPending();
+      };
+      keyboard?.addEventListener("click", event => {
+        const button = event.target?.closest?.(
+          "[data-classical-transcription-token]"
+        );
+        if (!button || !keyboard.contains(button)) return;
+        const token = String(
+          button.dataset.classicalTranscriptionToken || ""
+        );
+        const ownerTokens = new Set([
+          ...Object.keys(
+            targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
+          ),
+          ...Object.keys(
+            targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
+          ),
+          "|"
+        ]);
+        if (!ownerTokens.has(token)) return;
+        event.preventDefault();
+        insertSoundToken(token);
+      });
+      if (!populateSoundKeyboard()) {
+        targetObject.setTimeout?.(populateSoundKeyboard, 0);
+      }
       input.addEventListener("input", markPending);
       input.addEventListener("change", markPending);
       input.addEventListener("keydown", event => {
