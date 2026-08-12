@@ -31,6 +31,20 @@ const APPLICATION_OWNED_OPEN_INPUT_ATOM_IDS = Object.freeze([
 ]);
 const APPLICATION_OWNED_OPEN_INPUT_ATOMS = new Set(APPLICATION_OWNED_OPEN_INPUT_ATOM_IDS);
 
+const LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS = Object.freeze([
+  "ACI-P050-L022-A33747C200",
+  "ACI-P050-L025-12876984C1",
+  "ACI-P050-L027-6ECB43F0B4",
+  "ACI-P050-L031-20EA88210A",
+  "ACI-P050-L033-8ED17977BE",
+  "ACI-P050-L035-9EFC19B9DD",
+  "ACI-P051-L024-FA7BB4A79C",
+  "ACI-P052-L010-C54302F544",
+  "ACI-P052-L014-75267806EC",
+  "ACI-P052-L017-66E82EE5B5",
+  "ACI-P052-L020-B62AAD1010",
+]);
+
 const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   "ACI-P039-L004-E7E01D8587-02": Object.freeze({
     observationKind: "sigeme-retained-in-formula",
@@ -246,6 +260,11 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   ...Object.fromEntries([
     "ACI-P052-L032-D1B1B21011", "ACI-P052-L035-9FDE253771", "ACI-P052-L035-48D4C08DCF", "ACI-P052-L038-6C1A02F633", "ACI-P052-L039-740017072D", "ACI-P052-L040-17C6C030DE",
   ].map(atomId => [atomId, Object.freeze({ observationKind: "application-owned-open-input-compound-result", observationTest: `src/tests/classical_lesson2_ui_obligation_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_ui_obligation_jobs.test.js#${atomId}-broken-result` })])),
+  ...Object.fromEntries(LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS.map(atomId => [atomId, Object.freeze({
+    observationKind: "contextual-user-choice-changes-canonical-lesson2-result",
+    observationTest: `src/tests/classical_lesson2_optional_result_controls.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_optional_result_controls.test.js#${atomId}-broken-result-or-control`,
+  })])),
 });
 
 const JOB_FAMILIES = Object.freeze([
@@ -375,6 +394,14 @@ const READING_ONLY_EVIDENCE_IDS = new Set([
 ]);
 
 const DECISION_POLICIES = Object.freeze({
+  ...Object.fromEntries(LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS.map(atomId => [atomId, Object.freeze({
+    decisionOwner: "USER_WHEN_CANVAS_LICENSES_MORE_THAN_ONE_RESULT",
+    userInterferenceRequired: true,
+    uiControlPolicy: atomId === "ACI-P052-L020-B62AAD1010"
+      ? "SHOW_CONTEXTUAL_ELISION_CHECKBOX"
+      : "SHOW_CONTEXTUAL_OPTIONAL_RESULT_CHOICE",
+    requiredUserInformation: "WHICH_LICENSED_RESULT_TO_WRITE",
+  })])),
   "ACI-P047-L009-EF940827EC": Object.freeze({
     decisionOwner: "USER_ONLY_IF_APPLICATION_DOES_NOT_KNOW",
     userInterferenceRequired: false,

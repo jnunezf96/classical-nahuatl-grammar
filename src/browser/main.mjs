@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-supportive-i-checkbox-041";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-optional-result-controls-048";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

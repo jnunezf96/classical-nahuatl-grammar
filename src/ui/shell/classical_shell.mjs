@@ -1284,7 +1284,24 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           aria-keyshortcuts="Enter"
                         >Apply transcription</button>
                       </div>
-                      <p id="classical-transcription-source-help">Separate segments with spaces; use | between constituents.</p>
+                      <p id="classical-transcription-source-help">Separate segments with spaces; use | between constituents in one stress group.</p>
+                      <div
+                        id="classical-transcription-optional-controls"
+                        class="classical-transcription-source__optional-controls"
+                        aria-label="Optional Lesson 2 Result choices"
+                        hidden
+                      >
+                        <label id="classical-transcription-optional-result-field" class="classical-rule-control" hidden>
+                          <span class="classical-rule-control__label">Optional Result change</span>
+                          <select id="classical-transcription-optional-result" data-classical-rule-logic-control="lesson2-optional-result">
+                            <option value="ordinary" selected>Keep the ordinary Result</option>
+                          </select>
+                        </label>
+                        <label id="classical-transcription-elision-field" class="classical-rule-control classical-rule-control--checkbox" hidden>
+                          <span class="classical-rule-control__label">Elide vowel</span>
+                          <input id="classical-transcription-elision" type="checkbox" data-classical-checked-value="elide" data-classical-unchecked-value="keep" />
+                        </label>
+                      </div>
                       <p
                         id="classical-transcription-source-status"
                         role="status"

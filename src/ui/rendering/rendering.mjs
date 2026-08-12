@@ -40,6 +40,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     var ClassicalClauseRelationStatusMessage = "";
     const ClassicalGrammarDependencyPresentationRoots = new WeakSet();
     const ClassicalCanvasGrammarFactBrowserRoots = new WeakSet();
+    const ClassicalTranscriptionOptionalControlRoots = new WeakSet();
+    const ClassicalTranscriptionOptionalChoices = new Map();
+    var ActiveClassicalTranscriptionBaselineApplication = null;
+    var ActiveClassicalTranscriptionParsedSource = null;
     var LastClassicalResultAnnouncementSignature = "";
     const CLASSICAL_RESULT_HEADING_ID = "classical-result-content-heading";
     const CLASSICAL_WHOLE_CANVAS_PANEL_RULE_REFS = Object.freeze([Object.freeze({
@@ -16310,6 +16314,348 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (analysis) analysis.open = true;
       return true;
     }
+    const CLASSICAL_LESSON2_BOUNDARY_SOUND_BY_SEGMENT = Object.freeze({
+      "/l/": "l", "/n/": "n", "/m/": "m", "/š/": "x",
+      "/y/": "y", "/p/": "p", "/t/": "t", "/ʔ/": "glottal",
+      "/λ/": "tl", "/¢/": "tz", "/č/": "ch", "/k/": "k",
+      "/s/": "s", "/w/": "w", "/kʷ/": "kw"
+    });
+    function getClassicalLesson2BoundarySound(segment = "") {
+      return CLASSICAL_LESSON2_BOUNDARY_SOUND_BY_SEGMENT[segment] || "";
+    }
+    function executeClassicalLesson2OptionalOperation(operationId = "", args = []) {
+      const result = targetObject.executeClassicalGrammarApplicationRequest?.({
+        operationId,
+        outputKind: "scalar",
+        args
+      }) || null;
+      return Boolean(
+        targetObject.isClassicalGrammarApplicationResult?.(result)
+        && result.authorizationStatus === "authorized"
+        && targetObject.isClassicalNahuatlTranscriptionAnalysisFrame?.(
+          result.canonicalResult
+        )
+      ) ? result : null;
+    }
+    function transcribeClassicalLesson2Constituents(constituents = []) {
+      return constituents.map(constituent => {
+        if (!constituent?.segments?.length) return "";
+        const source = targetObject.issueClassicalTranscriptionSourceFrame?.([
+          { segments: Array.from(constituent.segments) }
+        ]);
+        const result = source && targetObject.executeClassicalGrammarApplicationRequest?.({
+          operationId: "orthography:transcription",
+          outputKind: "scalar",
+          args: [source]
+        });
+        return targetObject.isClassicalNahuatlTranscriptionFrame?.(
+          result?.canonicalResult
+        ) ? result.canonicalResult.surface : "";
+      });
+    }
+    function composeClassicalLesson2BoundarySurface(
+      parsed = null,
+      outputSpelling = "",
+      preserveRightBoundary = false
+    ) {
+      const constituents = parsed?.constituents || [];
+      if (constituents.length < 2 || !outputSpelling) return "";
+      const boundaryIndex = 0;
+      const left = Array.from(constituents[boundaryIndex]?.segments || []);
+      const right = Array.from(constituents[boundaryIndex + 1]?.segments || []);
+      if (!left.length || !right.length) return "";
+      const before = transcribeClassicalLesson2Constituents(
+        constituents.slice(0, boundaryIndex)
+      ).join("");
+      const after = transcribeClassicalLesson2Constituents(
+        constituents.slice(boundaryIndex + 2)
+      ).join("");
+      const leftRemainder = transcribeClassicalLesson2Constituents([
+        { segments: left.slice(0, -1) }
+      ])[0] || "";
+      const rightRemainder = transcribeClassicalLesson2Constituents([
+        { segments: preserveRightBoundary ? right : right.slice(1) }
+      ])[0] || "";
+      return `${before}${leftRemainder}${outputSpelling}${rightRemainder}${after}`;
+    }
+    function buildClassicalLesson2ElisionChoice(parsed = null) {
+      const constituents = parsed?.constituents || [];
+      if (constituents.length < 2) return null;
+      const surfaces = transcribeClassicalLesson2Constituents(constituents);
+      const leftSegments = Array.from(constituents[0]?.segments || []);
+      const rightSegments = Array.from(constituents[1]?.segments || []);
+      const shortVowels = new Set(["a", "e", "i", "o"]);
+      let sourceMorpheme = "";
+      let targetMorpheme = "";
+      let position = "";
+      if (shortVowels.has(rightSegments[0])) {
+        sourceMorpheme = surfaces[1] || "";
+        targetMorpheme = sourceMorpheme.slice(1);
+        position = "initial";
+      } else if (shortVowels.has(leftSegments[leftSegments.length - 1])) {
+        sourceMorpheme = surfaces[0] || "";
+        targetMorpheme = sourceMorpheme.slice(0, -1);
+        position = "final";
+      }
+      if (!sourceMorpheme || !targetMorpheme || !position) return null;
+      const applicationResult = executeClassicalLesson2OptionalOperation(
+        "phonology:vowel-elision",
+        [{
+          sourceMorpheme,
+          targetMorpheme,
+          vowelLength: "short",
+          stressGroupCombination: true
+        }]
+      );
+      if (!applicationResult) return null;
+      const output = applicationResult.canonicalResult.surface || "";
+      const surface = position === "initial"
+        ? `${surfaces[0] || ""}${output}${surfaces.slice(2).join("")}`
+        : `${output}${surfaces.slice(1).join("")}`;
+      return surface ? { applicationResult, surface } : null;
+    }
+    function buildClassicalLesson2OptionalBoundaryChoices(parsed = null) {
+      const constituents = parsed?.constituents || [];
+      const leftSegments = Array.from(constituents[0]?.segments || []);
+      const rightSegments = Array.from(constituents[1]?.segments || []);
+      const leftSegment = leftSegments[leftSegments.length - 1] || "";
+      const rightSegment = rightSegments[0] || "";
+      const leftConsonant = getClassicalLesson2BoundarySound(leftSegment);
+      const rightConsonant = getClassicalLesson2BoundarySound(rightSegment);
+      const rightVowel = ["a", "ā", "e", "ē", "i", "ī", "o", "ō"]
+        .includes(rightSegment)
+        ? rightSegment.replace(/ā/gu, "a").replace(/ē/gu, "e")
+          .replace(/ī/gu, "i").replace(/ō/gu, "o")
+        : "";
+      const candidates = [];
+      if (leftConsonant === "kw" && rightConsonant === "k") {
+        const delabialization = executeClassicalLesson2OptionalOperation(
+          "phonology:consonant-shift",
+          [{
+            sourceConsonant: "kw",
+            position: "exposed",
+            grammaticalConstruction: true
+          }]
+        );
+        const dissimilation = executeClassicalLesson2OptionalOperation(
+          "phonology:assimilation",
+          [{
+            leftConsonant: "k",
+            rightConsonant: "k",
+            grammaticalConstruction: true
+          }]
+        );
+        if (delabialization) {
+          candidates.push({
+            id: delabialization.canonicalResult.selectedRuleId,
+            label: "Use cc",
+            applicationResult: delabialization,
+            dependencyResults: [delabialization],
+            surface: composeClassicalLesson2BoundarySurface(parsed, "cc")
+          });
+        }
+        if (delabialization && dissimilation) {
+          candidates.push({
+            id: dissimilation.canonicalResult.selectedRuleId,
+            label: "Use hc",
+            applicationResult: dissimilation,
+            dependencyResults: [delabialization, dissimilation],
+            surface: composeClassicalLesson2BoundarySurface(parsed, "hc")
+          });
+        }
+      }
+      const add = (operationId, options) => {
+        const applicationResult = executeClassicalLesson2OptionalOperation(
+          operationId,
+          [options]
+        );
+        const result = applicationResult?.canonicalResult || null;
+        if (!result || !(result.optional === true || result.rare === true)) return;
+        const outputSpelling = String(
+          result.outputSpelling || result.outputForm || ""
+        ).trim();
+        const surface = rightConsonant || rightVowel
+          ? composeClassicalLesson2BoundarySurface(
+            parsed,
+            outputSpelling,
+            result.selectedRuleId === "cn-l2-213-rare-glottal-nonfinal-t"
+          )
+          : `${transcribeClassicalLesson2Constituents([
+            { segments: leftSegments.slice(0, -1) }
+          ])[0] || ""}${outputSpelling}`;
+        if (!outputSpelling || !surface) return;
+        candidates.push({
+          id: result.selectedRuleId,
+          label: `Use ${outputSpelling}`,
+          applicationResult,
+          surface
+        });
+      };
+      if (leftConsonant && rightConsonant) {
+        add("phonology:assimilation", {
+          leftConsonant, rightConsonant, grammaticalConstruction: true
+        });
+        add("phonology:consonant-loss", {
+          leftConsonant, rightConsonant, grammaticalConstruction: true
+        });
+      }
+      if (leftConsonant === "glottal" && rightVowel) {
+        add("phonology:consonant-shift", {
+          sourceConsonant: "glottal",
+          followingVowel: rightVowel,
+          position: "nonfinal",
+          grammaticalConstruction: true
+        });
+      }
+      if (["kw", "t"].includes(leftConsonant) && !rightConsonant && !rightVowel) {
+        add("phonology:consonant-shift", {
+          sourceConsonant: leftConsonant,
+          position: "exposed",
+          grammaticalConstruction: true
+        });
+      }
+      if (leftConsonant === "glottal" && rightSegment) {
+        add("phonology:consonant-shift", {
+          sourceConsonant: "glottal",
+          position: "nonfinal",
+          grammaticalConstruction: true
+        });
+      }
+      return candidates;
+    }
+    function renderClassicalLesson2OptionalResultChoice(choice = null) {
+      const applicationResult = choice?.applicationResult || null;
+      const capture = targetObject.captureClassicalGrammarApplicationResult?.(
+        applicationResult,
+        "source-grammar-result-lesson2-optional-surface"
+      );
+      if (
+        !choice?.surface
+        || !targetObject.isClassicalGrammarApplicationResultCapture?.(
+          capture,
+          "source-grammar-result-lesson2-optional-surface"
+        )
+        || !targetObject.isClassicalNahuatlTranscriptionAnalysisFrame?.(
+          capture.canonicalResult
+        )
+      ) return false;
+      const block = targetObject.document?.getElementById?.(
+        "classical-rule-logic-surface"
+      );
+      if (!block) return false;
+      const result = capture.canonicalResult;
+      ActiveClassicalRuleLogicSurfaceFrame = result;
+      exposeClassicalRuleLogicSurfaceFrameToBrowser(result);
+      setClassicalTranscriptionGrammarMode(true);
+      block.hidden = false;
+      block.replaceChildren();
+      block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
+      block.dataset.classicalNahuatlSurfaceVisible = "true";
+      block.dataset.classicalNahuatlSurfaceStatus = "authorized";
+      block.dataset.classicalSgrStandaloneOperation = capture.operationId;
+      block.dataset.classicalLesson2OptionalRule = result.selectedRuleId || "";
+      applyClassicalResultRootSemantics(block, "authorized");
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__heading";
+      const title = targetObject.document.createElement("h3");
+      title.id = CLASSICAL_RESULT_HEADING_ID;
+      title.className = "classical-rule-surface__title";
+      title.dataset.classicalResultHeading = "true";
+      title.textContent = "Optional Lesson 2 Result";
+      heading.append(title);
+      const answer = targetObject.document.createElement("section");
+      answer.className = "grammar-inspector__section";
+      answer.dataset.classicalLesson2OptionalResult = "canonical";
+      answer.dataset.classicalGrammarAuthority = "false";
+      markClassicalResultPrimaryAnswer(answer);
+      const answerTitle = targetObject.document.createElement("h4");
+      answerTitle.textContent = "Classical Nahuatl";
+      const surface = targetObject.document.createElement("strong");
+      surface.className = "classical-rule-surface__sentence-surface";
+      surface.dataset.classicalLesson2OptionalSurface = "canonical-result";
+      surface.dataset.classicalGrammarAuthority = "false";
+      surface.textContent = choice.surface;
+      answer.append(answerTitle, surface);
+      block.append(heading, answer);
+      syncClassicalSourceGrammarResultSurface(result, block);
+      return true;
+    }
+    function renderSelectedClassicalLesson2OptionalResult() {
+      const select = targetObject.document?.getElementById?.(
+        "classical-transcription-optional-result"
+      );
+      const elision = targetObject.document?.getElementById?.(
+        "classical-transcription-elision"
+      );
+      if (elision?.checked === true) {
+        const choice = ClassicalTranscriptionOptionalChoices.get("elision");
+        return renderClassicalLesson2OptionalResultChoice(choice);
+      }
+      const selected = String(select?.value || "ordinary");
+      if (selected === "ordinary") {
+        return renderClassicalTranscriptionSurfaceBlock(
+          ActiveClassicalTranscriptionBaselineApplication
+        );
+      }
+      return renderClassicalLesson2OptionalResultChoice(
+        ClassicalTranscriptionOptionalChoices.get(selected)
+      );
+    }
+    function syncClassicalLesson2OptionalResultControls(parsed = null) {
+      const root = targetObject.document?.getElementById?.(
+        "classical-transcription-optional-controls"
+      );
+      const selectField = targetObject.document?.getElementById?.(
+        "classical-transcription-optional-result-field"
+      );
+      const select = targetObject.document?.getElementById?.(
+        "classical-transcription-optional-result"
+      );
+      const elisionField = targetObject.document?.getElementById?.(
+        "classical-transcription-elision-field"
+      );
+      const elision = targetObject.document?.getElementById?.(
+        "classical-transcription-elision"
+      );
+      if (!root || !select || !elision) return false;
+      ClassicalTranscriptionOptionalChoices.clear();
+      const boundaryChoices = buildClassicalLesson2OptionalBoundaryChoices(parsed);
+      const elisionChoice = buildClassicalLesson2ElisionChoice(parsed);
+      select.replaceChildren();
+      const ordinary = targetObject.document.createElement("option");
+      ordinary.value = "ordinary";
+      ordinary.textContent = "Keep the ordinary Result";
+      ordinary.selected = true;
+      select.append(ordinary);
+      boundaryChoices.forEach((choice, index) => {
+        const key = `choice-${index + 1}`;
+        ClassicalTranscriptionOptionalChoices.set(key, choice);
+        const option = targetObject.document.createElement("option");
+        option.value = key;
+        option.textContent = choice.label;
+        option.dataset.classicalOwnerRuleId = choice.id;
+        select.append(option);
+      });
+      if (elisionChoice) {
+        ClassicalTranscriptionOptionalChoices.set("elision", elisionChoice);
+      }
+      selectField.hidden = boundaryChoices.length === 0;
+      elisionField.hidden = !elisionChoice;
+      elision.checked = false;
+      root.hidden = boundaryChoices.length === 0 && !elisionChoice;
+      if (!ClassicalTranscriptionOptionalControlRoots.has(root)) {
+        select.addEventListener("change", () => {
+          if (select.value !== "ordinary") elision.checked = false;
+          renderSelectedClassicalLesson2OptionalResult();
+        });
+        elision.addEventListener("change", () => {
+          if (elision.checked) select.value = "ordinary";
+          renderSelectedClassicalLesson2OptionalResult();
+        });
+        ClassicalTranscriptionOptionalControlRoots.add(root);
+      }
+      return true;
+    }
     function applyClassicalTranscriptionSource(value = "") {
       if (
         typeof targetObject.issueClassicalTranscriptionSourceFrame
@@ -16373,6 +16719,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         });
         return null;
       }
+      ActiveClassicalTranscriptionBaselineApplication = applicationResult;
+      ActiveClassicalTranscriptionParsedSource = parsed;
+      syncClassicalLesson2OptionalResultControls(parsed);
       updateClassicalTranscriptionSourceStatus({
         state: "committed",
         sourceText: parsed.sourceText,

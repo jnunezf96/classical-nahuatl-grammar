@@ -17064,6 +17064,20 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   min-height: 2.5rem;
 }
 
+.classical-transcription-source__optional-controls {
+  display: grid;
+  gap: 0.55rem;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-color, #d8d4cb);
+}
+
+.classical-transcription-source__optional-controls[hidden],
+#classical-transcription-optional-result-field[hidden],
+#classical-transcription-elision-field[hidden] {
+  display: none !important;
+}
+
 #classical-transcription-source-help,
 #classical-transcription-source-status {
   margin: 0.45rem 0 0;

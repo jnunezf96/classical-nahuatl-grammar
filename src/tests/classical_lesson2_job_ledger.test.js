@@ -79,9 +79,21 @@ function run() {
             || record.openInputPolicy !== "ACCEPT_ANY_USER_SUPPLIED_FORM")
         .map(record => record.atomId), []);
 
-    s.eq("only unknown information can request user interference in this batch", jobs.records
+    s.eq("only genuine Canvas-licensed alternatives request user interference in this batch", jobs.records
         .filter(record => record.userInterferenceRequired === true)
-        .map(record => record.atomId), []);
+        .map(record => record.atomId), [
+        "ACI-P050-L022-A33747C200",
+        "ACI-P050-L025-12876984C1",
+        "ACI-P050-L027-6ECB43F0B4",
+        "ACI-P050-L031-20EA88210A",
+        "ACI-P050-L033-8ED17977BE",
+        "ACI-P050-L035-9EFC19B9DD",
+        "ACI-P051-L024-FA7BB4A79C",
+        "ACI-P052-L010-C54302F544",
+        "ACI-P052-L014-75267806EC",
+        "ACI-P052-L017-66E82EE5B5",
+        "ACI-P052-L020-B62AAD1010",
+    ]);
 
     s.eq("the reviewed UI decisions distinguish choice from application duty", [
         "ACI-P047-L009-EF940827EC",
@@ -141,8 +153,8 @@ function run() {
             .map(record => record.atomId),
     }, {
         writingJobs: 384,
-        exactlyImplemented: 200,
-        awaiting: 184,
+        exactlyImplemented: 202,
+        awaiting: 182,
         creditedWithoutProof: [],
     });
 
