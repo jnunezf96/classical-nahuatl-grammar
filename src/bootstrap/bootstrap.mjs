@@ -4,8 +4,8 @@ import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-classical-runtime-only-056";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-classical-runtime-only-056";
+} from "../runtime/create_runtime.mjs?v=20260811-sound-source-transcription-057";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-sound-source-transcription-057";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-classical-runtime-only-056";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-classical-runtime-only-056";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-classical-runtime-only-056";

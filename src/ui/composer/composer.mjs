@@ -8777,11 +8777,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         );
         return false;
       }
+      const {
+        wholeInput,
+        embedInput,
+        matrixInput
+      } = getClassicalSourcePartControlElements();
+      // Keep sound tokens intact until Lesson 2 has examined the complete
+      // environment. Embed and matrix remain distinct neighboring
+      // constituents, but are sent through one transcription request.
       const phonologicalStem = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-        ? [sourceState.sourceEmbedStem, sourceState.sourceMatrixStem]
+        ? [embedInput?.value, matrixInput?.value]
             .filter(Boolean)
+            .map(value => String(value).normalize("NFC").trim())
             .join(" | ")
-        : sourceState.sourceWholeStem;
+        : String(wholeInput?.value || "").normalize("NFC").trim();
       if (
         /\/[^/]+\//u.test(phonologicalStem)
         && typeof targetObject.applyClassicalTranscriptionSource === "function"

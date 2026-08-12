@@ -806,6 +806,50 @@ function run(ctx = {}) {
         }
     );
     suite.eq(
+        "Lesson 2 writes the whole sound sequence and the same Embed plus Matrix boundary as iucci",
+        (() => {
+            const realize = (sourceText) => {
+                const parsed = ctx.parseClassicalTranscriptionSourceInput(
+                    sourceText
+                );
+                const application =
+                    ctx.executeClassicalGrammarApplicationRequest({
+                        operationId: "orthography:transcription",
+                        outputKind: "scalar",
+                        args: [
+                            ctx.buildClassicalNahuatlTranscriptionSourceFrame({
+                                constituents: parsed.constituents,
+                            }),
+                        ],
+                    });
+                return {
+                    status: application.authorizationStatus,
+                    constituents: application.canonicalResult?.sourceFrame
+                        ?.constituents?.map(
+                            constituent => constituent.segments
+                        ),
+                    result: application.canonicalResult?.surface,
+                };
+            };
+            return {
+                whole: realize("i /kʷ/ /s/ i"),
+                embedMatrix: realize("i /kʷ/ | /s/ i"),
+            };
+        })(),
+        {
+            whole: {
+                status: "authorized",
+                constituents: [["i", "/kʷ/", "/s/", "i"]],
+                result: "iucci",
+            },
+            embedMatrix: {
+                status: "authorized",
+                constituents: [["i", "/kʷ/"], ["/s/", "i"]],
+                result: "iucci",
+            },
+        }
+    );
+    suite.eq(
         "empty, visible-result, and unknown-token input cannot replace the committed Result",
         {
             visibleStringRejected:
