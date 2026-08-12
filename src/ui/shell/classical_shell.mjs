@@ -545,6 +545,78 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           />
                         </label>
                       </div>
+                      <details
+                        class="classical-transcription-source classical-source-parts__sounds"
+                        id="classical-transcription-source"
+                        data-classical-source-operation="orthography:transcription"
+                        data-classical-source-authorizes="typed-phonological-constituents-only"
+                        data-classical-source-commit-state="waiting"
+                      >
+                        <summary id="classical-transcription-source-heading">Stem sounds</summary>
+                        <div class="classical-transcription-source__row">
+                          <label class="classical-transcription-source__field" for="classical-transcription-source-input">
+                            <span id="classical-transcription-source-label">Sounds in the stem</span>
+                            <input
+                              type="text"
+                              id="classical-transcription-source-input"
+                              autocomplete="off"
+                              autocorrect="off"
+                              autocapitalize="none"
+                              spellcheck="false"
+                              placeholder="/k/ a /l/"
+                              aria-describedby="classical-transcription-source-help classical-transcription-source-status"
+                              data-classical-source-input-role="typed-phonological-constituents"
+                            />
+                          </label>
+                          <button
+                            type="button"
+                            id="classical-transcription-source-apply"
+                            class="verb-entry-apply-button"
+                            aria-label="Use these sounds in Grammar and Result"
+                            aria-keyshortcuts="Enter"
+                          >Use sounds</button>
+                        </div>
+                        <p id="classical-transcription-source-help">Separate sounds with spaces. For Embed + matrix, use | between the two stems.</p>
+                        <details id="classical-transcription-keyboard" class="classical-transcription-keyboard">
+                          <summary>Sound keyboard</summary>
+                          <p>Click a sound to add it. You can still type or edit anything.</p>
+                          <div class="classical-transcription-keyboard__group" aria-label="Vowels">
+                            <span>Vowels</span>
+                            <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
+                          </div>
+                          <div class="classical-transcription-keyboard__group" aria-label="Consonants">
+                            <span>Consonants</span>
+                            <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
+                          </div>
+                          <div class="classical-transcription-keyboard__group" aria-label="Structure">
+                            <span>Structure</span>
+                            <div id="classical-transcription-keyboard-structure" class="classical-transcription-keyboard__keys"></div>
+                          </div>
+                        </details>
+                        <div
+                          id="classical-transcription-optional-controls"
+                          class="classical-transcription-source__optional-controls"
+                          aria-label="Optional Lesson 2 Result choices"
+                          hidden
+                        >
+                          <label id="classical-transcription-optional-result-field" class="classical-rule-control" hidden>
+                            <span class="classical-rule-control__label">Optional Result change</span>
+                            <select id="classical-transcription-optional-result" data-classical-rule-logic-control="lesson2-optional-result">
+                              <option value="ordinary" selected>Keep the ordinary Result</option>
+                            </select>
+                          </label>
+                          <label id="classical-transcription-elision-field" class="classical-rule-control classical-rule-control--checkbox" hidden>
+                            <span class="classical-rule-control__label">Elide vowel</span>
+                            <input id="classical-transcription-elision" type="checkbox" data-classical-checked-value="elide" data-classical-unchecked-value="keep" />
+                          </label>
+                        </div>
+                        <p
+                          id="classical-transcription-source-status"
+                          role="status"
+                          aria-live="polite"
+                          data-classical-status-authority="false"
+                        >Enter sounds only when you need to show their written Result.</p>
+                      </details>
                       <div
                         class="classical-source-commit-status"
                         id="classical-source-commit-status"
@@ -1253,78 +1325,6 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         </div>
                       </div>
                     </section>
-                    <details
-                      class="classical-transcription-source"
-                      id="classical-transcription-source"
-                      data-classical-source-operation="orthography:transcription"
-                      data-classical-source-authorizes="typed-phonological-constituents-only"
-                      data-classical-source-commit-state="waiting"
-                    >
-                      <summary>Phonological source</summary>
-                      <div class="classical-transcription-source__row">
-                        <label class="classical-transcription-source__field" for="classical-transcription-source-input">
-                          <span>Segments</span>
-                          <input
-                            type="text"
-                            id="classical-transcription-source-input"
-                            autocomplete="off"
-                            autocorrect="off"
-                            autocapitalize="none"
-                            spellcheck="false"
-                            placeholder="/k/ a /l/"
-                            aria-describedby="classical-transcription-source-help classical-transcription-source-status"
-                            data-classical-source-input-role="typed-phonological-constituents"
-                          />
-                        </label>
-                        <button
-                          type="button"
-                          id="classical-transcription-source-apply"
-                          class="verb-entry-apply-button"
-                          aria-label="Apply phonological source to Grammar and Result"
-                          aria-keyshortcuts="Enter"
-                        >Apply transcription</button>
-                      </div>
-                      <p id="classical-transcription-source-help">Separate segments with spaces; use | between constituents in one stress group.</p>
-                      <details id="classical-transcription-keyboard" class="classical-transcription-keyboard">
-                        <summary>Sound keyboard</summary>
-                        <p>Click a sound to add it to Segments. You can still type or edit anything.</p>
-                        <div class="classical-transcription-keyboard__group" aria-label="Vowels">
-                          <span>Vowels</span>
-                          <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
-                        </div>
-                        <div class="classical-transcription-keyboard__group" aria-label="Consonants">
-                          <span>Consonants</span>
-                          <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
-                        </div>
-                        <div class="classical-transcription-keyboard__group" aria-label="Structure">
-                          <span>Structure</span>
-                          <div id="classical-transcription-keyboard-structure" class="classical-transcription-keyboard__keys"></div>
-                        </div>
-                      </details>
-                      <div
-                        id="classical-transcription-optional-controls"
-                        class="classical-transcription-source__optional-controls"
-                        aria-label="Optional Lesson 2 Result choices"
-                        hidden
-                      >
-                        <label id="classical-transcription-optional-result-field" class="classical-rule-control" hidden>
-                          <span class="classical-rule-control__label">Optional Result change</span>
-                          <select id="classical-transcription-optional-result" data-classical-rule-logic-control="lesson2-optional-result">
-                            <option value="ordinary" selected>Keep the ordinary Result</option>
-                          </select>
-                        </label>
-                        <label id="classical-transcription-elision-field" class="classical-rule-control classical-rule-control--checkbox" hidden>
-                          <span class="classical-rule-control__label">Elide vowel</span>
-                          <input id="classical-transcription-elision" type="checkbox" data-classical-checked-value="elide" data-classical-unchecked-value="keep" />
-                        </label>
-                      </div>
-                      <p
-                        id="classical-transcription-source-status"
-                        role="status"
-                        aria-live="polite"
-                        data-classical-status-authority="false"
-                      >Enter explicit phonological segments.</p>
-                    </details>
                     <section
                       class="classical-source-continuation"
                       id="classical-source-continuation"
@@ -3453,6 +3453,15 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const keyboard = documentObject?.getElementById?.(
         "classical-transcription-keyboard"
       ) || null;
+      const sourceParts = documentObject?.getElementById?.(
+        "classical-source-parts"
+      ) || null;
+      const heading = documentObject?.getElementById?.(
+        "classical-transcription-source-heading"
+      ) || null;
+      const label = documentObject?.getElementById?.(
+        "classical-transcription-source-label"
+      ) || null;
       if (!root || !input || !applyButton || !status) return false;
       if (root.dataset.classicalTranscriptionSourceBound === "true") {
         return true;
@@ -3461,8 +3470,23 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         root.dataset.classicalSourceCommitState = "pending";
         input.setAttribute("aria-invalid", "false");
         status.textContent = root.dataset.classicalCommittedSource
-          ? "Edits are pending. Grammar and Result still use the committed phonological Source."
-          : "Apply the explicit segments to build Grammar and Result.";
+          ? "Sound edits are pending. Grammar and Result still use the sounds you last applied."
+          : "Use the sounds to build the written Result.";
+      };
+      const syncSoundEntryMode = () => {
+        const embedMatrix = sourceParts?.dataset?.classicalSourcePartsMode
+          === "embed-matrix";
+        if (heading) {
+          heading.textContent = embedMatrix
+            ? "Embed + matrix sounds"
+            : "Stem sounds";
+        }
+        if (label) {
+          label.textContent = embedMatrix
+            ? "Sounds in the embed and matrix"
+            : "Sounds in the stem";
+        }
+        input.placeholder = embedMatrix ? "/k/ a | /l/ i" : "/k/ a /l/";
       };
       const applySource = event => {
         event?.preventDefault?.();
@@ -3576,6 +3600,17 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         }
       });
       applyButton.addEventListener("click", applySource);
+      Array.from(
+        sourceParts?.querySelectorAll?.(
+          "[data-classical-source-parts-kind]"
+        ) || []
+      ).forEach(button => button.addEventListener("click", () => {
+        targetObject.queueMicrotask?.(syncSoundEntryMode);
+        if (typeof targetObject.queueMicrotask !== "function") {
+          targetObject.setTimeout?.(syncSoundEntryMode, 0);
+        }
+      }));
+      syncSoundEntryMode();
       root.dataset.classicalTranscriptionSourceBound = "true";
       return true;
     }

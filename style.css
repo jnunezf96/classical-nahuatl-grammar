@@ -17029,11 +17029,15 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
 }
 
 .classical-transcription-source {
-  margin-top: 0.75rem;
+  margin: 0.7rem 0 0;
   padding: 0.65rem 0.75rem;
   border: 1px solid var(--border-color, #d8d4cb);
   border-radius: 0.65rem;
   background: var(--surface-muted, #f7f5f0);
+}
+
+.classical-source-parts__sounds {
+  grid-column: 1 / -1;
 }
 
 .classical-transcription-source > summary {

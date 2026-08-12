@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-transcription-keyboard-050";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-stem-sounds-051";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

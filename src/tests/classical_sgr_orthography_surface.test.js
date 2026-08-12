@@ -163,7 +163,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "orthography has one minimal typed Source initiation contract",
+        "sound entry is inside the one Stem structure",
         {
             operationRoot: countLiteral(
                 shell,
@@ -197,6 +197,14 @@ function run(ctx = {}) {
                     'aria-describedby="classical-transcription-source-help classical-transcription-source-status"'
                 )
                 && shell.includes('aria-live="polite"'),
+            insideStemStructure:
+                shell.indexOf('id="classical-source-parts"')
+                    < shell.indexOf('id="classical-transcription-source"')
+                && shell.indexOf('id="classical-transcription-source"')
+                    < shell.indexOf('id="classical-source-commit-status"'),
+            noSecondVisibleSource:
+                !shell.includes("Phonological source")
+                && !shell.includes("Apply transcription"),
         },
         {
             operationRoot: 1,
@@ -206,6 +214,8 @@ function run(ctx = {}) {
             exactOperation: true,
             typedConstituentsOnly: true,
             accessibleStatus: true,
+            insideStemStructure: true,
+            noSecondVisibleSource: true,
         }
     );
 
@@ -260,14 +270,14 @@ function run(ctx = {}) {
         "installClassicalWorkbenchPresentation"
     );
     suite.eq(
-        "Enter and Apply share the same pending-versus-committed Source path",
+        "Enter and Use sounds share the same pending-versus-committed path",
         {
             pendingDoesNotExecute:
                 installSlice.includes(
                     'root.dataset.classicalSourceCommitState = "pending"'
                 )
                 && installSlice.includes(
-                    "Grammar and Result still use the committed phonological Source."
+                    "Grammar and Result still use the sounds you last applied."
                 ),
             sharedApply:
                 installSlice.includes(
@@ -479,7 +489,7 @@ function run(ctx = {}) {
                 grammarAuthority: "false",
             }],
             analysisLabels: [
-                "phonological source",
+                "stem sounds",
                 "contextual realization",
                 "boundary realization",
             ],
@@ -675,7 +685,7 @@ function run(ctx = {}) {
                 ownerTokensOnly: "true",
                 inputInvalid: "false",
                 sourceStatus:
-                    "/k/ a /l/ is the committed phonological Source.",
+                    "/k/ a /l/ is the sound structure now used by Grammar and Result.",
             },
             resultOperation: "orthography:transcription",
             resultAuthority: "canonical-only",
@@ -693,7 +703,7 @@ function run(ctx = {}) {
                 ownerIssued: "true",
                 grammarAuthority: "false",
                 labels: [
-                    "phonological source",
+                    "stem sounds",
                     "contextual realization",
                     "boundary realization",
                 ],

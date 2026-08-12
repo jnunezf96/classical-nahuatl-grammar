@@ -15800,7 +15800,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         add("Facts", result.facts);
         add("Restrictions", result.restrictions);
       } else if (operationId === "orthography:transcription") {
-        add("Phonological source", result.formulaProjection?.formula);
+        add("Stem sounds", result.formulaProjection?.formula);
         add("Contextual realization", result.writtenProjection?.surface);
         add(
           "Boundary realization",
@@ -16725,7 +16725,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       updateClassicalTranscriptionSourceStatus({
         state: "committed",
         sourceText: parsed.sourceText,
-        message: `${parsed.sourceText} is the committed phonological Source.`
+        message: `${parsed.sourceText} is the sound structure now used by Grammar and Result.`
       });
       targetObject.setLeftPanelStackMode?.("output");
       return applicationResult;
