@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-direct-sound-keyboard-052";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-classical-url-v1-054";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-direct-sound-keyboard-052";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-direct-sound-keyboard-052";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-direct-sound-keyboard-052";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-direct-sound-keyboard-052";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-direct-sound-keyboard-052";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-direct-sound-keyboard-052";
+} from "../runtime/create_runtime.mjs?v=20260811-classical-url-v1-054";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-classical-url-v1-054";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-classical-url-v1-054";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-classical-url-v1-054";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-classical-url-v1-054";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-classical-url-v1-054";
 
 let browserBootstrapPromise = null;
 

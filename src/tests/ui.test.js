@@ -4102,7 +4102,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#entrada/v3/verb/(chol-o-a)/tr/intransitive/a-stem/choloa",
+                    hash: "#classical/v1/verb/(chol-o-a)/tr/intransitive/a-stem/choloa",
                 };
                 testDocument.getElementById = function getElementById(id) {
                         if (id === "verb") {
@@ -4197,7 +4197,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#entrada/v3/verb/(tom-a)/tr/intransitive/a-embed/tom/a-stem/a",
+                    hash: "#classical/v1/verb/(tom-a)/tr/intransitive/a-embed/tom/a-stem/a",
                 };
                 testDocument.body = {
                     classList: {
@@ -4232,7 +4232,7 @@ function run(ctx = {}) {
                     });
                     const readout = ctx.getClassicalSourceReadoutFrame("vnc");
                     currentVerbValue = "(chico-mati)";
-                    testWindow.location.hash = "#entrada/v3/verb/(chico-mati)/tr/intransitive/a-embed/chico/a-stem/mati";
+                    testWindow.location.hash = "#classical/v1/verb/(chico-mati)/tr/intransitive/a-embed/chico/a-stem/mati";
                     const chicoReadout = ctx.getClassicalSourceReadoutFrame("vnc");
                     return {
                         parsedSlotAEmbed: parsed.slotAEmbed || "",
@@ -4334,7 +4334,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#entrada/v3/verb/(ixchihua)/tr/intransitive",
+                    hash: "#classical/v1/verb/(ixchihua)/tr/intransitive",
                 };
                 const elements = {
                     verb: { value: "(ixchihua)" },
@@ -4443,7 +4443,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#entrada/v3/verb/(huel-iht-o-a)/tr/intransitive/a-embed/huel/a-stem/iht-o-a",
+                    hash: "#classical/v1/verb/(huel-iht-o-a)/tr/intransitive/a-embed/huel/a-stem/iht-o-a",
                 };
                 const elements = {
                     verb: { value: "(huel-iht-o-a)" },
@@ -4588,7 +4588,7 @@ function run(ctx = {}) {
                 testWindow.location = {
                     pathname: "/index.html",
                     search: "?verify=fuente-source-parts-url",
-                    hash: "#entrada/v3/verb/(ixchihua)/tr/intransitive/a-stem/ixchihua",
+                    hash: "#classical/v1/verb/(ixchihua)/tr/intransitive/a-stem/ixchihua",
                 };
                 testWindow.history = {
                     replaceState(_state, _title, url) {
@@ -5032,7 +5032,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#entrada/v3/verb/(ix-mati)/tr/intransitive/a-embed/ix/a-stem/mati",
+                    hash: "#classical/v1/verb/(ix-mati)/tr/intransitive/a-embed/ix/a-stem/mati",
                 };
                 testDocument.getElementById = function getElementById(id) {
                     if (id === "verb") {
@@ -6078,12 +6078,12 @@ function run(ctx = {}) {
                     board: "ordinary-nnc",
                     sentence: { surface: "wish" },
                 });
-                const invalidSentenceParticle = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(chōca)/sentence-particle/l3-mec");
-                const invalidSentenceAdverbial = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(chōca)/sentence-adverbial/l3-hui");
-                const invalidSentenceHonorific = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(chōca)/sentence-particle/l3-anca/sentence-honorific/1");
-                const legacyAdverbialPosition = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(chōca)/sentence-adverbial/l3-oc/sentence-adverbial-position/after-clause");
-                const malformedCapsule = ctx.parseEntradaUrlSegmentString("#entrada/v3/derivation/causative/v/zz.42.bad.11.42");
-                const unknownDerivation = ctx.parseEntradaUrlSegmentString("#entrada/v3/derivation/fabricated/v/11.42");
+                const invalidSentenceParticle = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-particle/l3-mec");
+                const invalidSentenceAdverbial = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-adverbial/l3-hui");
+                const invalidSentenceHonorific = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-particle/l3-anca/sentence-honorific/1");
+                const legacyAdverbialPosition = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-adverbial/l3-oc/sentence-adverbial-position/after-clause");
+                const malformedCapsule = ctx.parseEntradaUrlSegmentString("#classical/v1/derivation/causative/v/zz.42.bad.11.42");
+                const unknownDerivation = ctx.parseEntradaUrlSegmentString("#classical/v1/derivation/fabricated/v/11.42");
                 return {
                     resultSegment: resultHash.includes("/screen/output"),
                     resultPanel: ctx.parseEntradaUrlSegmentString(resultHash)?.panel || "",
@@ -12165,7 +12165,7 @@ function run(ctx = {}) {
             ? (() => {
                 const previousWindow = ctx.window;
                 const previousComposerState = ctx.VerbComposerState;
-                ctx.window = { location: { hash: "#entrada/v3/verb/(nemi)/tr/transitive" } };
+                ctx.window = { location: { hash: "#classical/v1/verb/(nemi)/tr/transitive" } };
                 ctx.VerbComposerState = { transitivity: "bitransitive" };
                 try {
                     const selection = ctx.getClassicalRuleLogicSourceTransitivitySelectionFrame({

@@ -5424,8 +5424,25 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return true;
     }
     function applyEntradaUrlSegmentsFromLocation(options = {}) {
-      const snapshot = readEntradaUrlStateSnapshotFromLocation(options.location || null);
+      const sourceLocation = options.location
+        || (typeof targetObject.window !== "undefined"
+          ? targetObject.window.location
+          : null);
+      const snapshot = readEntradaUrlStateSnapshotFromLocation(sourceLocation);
       if (!snapshot) {
+        const retiredNawatHash = /^#entrada(?:\/|$)/u.test(
+          String(sourceLocation?.hash || "")
+        );
+        if (retiredNawatHash) {
+          const historyObject = options.history
+            || targetObject.window?.history;
+          const cleanUrl = `${sourceLocation?.pathname || ""}${sourceLocation?.search || ""}`;
+          if (typeof historyObject?.replaceState === "function") {
+            historyObject.replaceState(null, "", cleanUrl || "/");
+          } else if (sourceLocation) {
+            sourceLocation.hash = "";
+          }
+        }
         return false;
       }
       return applyEntradaUrlStateSnapshot(snapshot, options);
@@ -11317,8 +11334,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     };
     var COMPOSER_SLOT_KEYS = ["a", "b", "c"];
     var COMPOSER_SLOT_KEY_BY_TRANSITIVITY = GENERATION_SOURCE_SLOT_BY_TRANSITIVITY;
-    var ENTRADA_URL_SEGMENT_PREFIX = "entrada";
-    var ENTRADA_URL_SEGMENT_VERSION = "v3";
+    var ENTRADA_URL_SEGMENT_PREFIX = "classical";
+    var ENTRADA_URL_SEGMENT_VERSION = "v1";
     // Positional option indexes keep the share URL short. Versioned capsules
     // fail closed when their control-coordinate schema no longer matches.
     var ENTRADA_URL_DERIVED_VNC_CONTROL_SPECS = Object.freeze([

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-direct-sound-keyboard-052";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-classical-url-v1-054";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

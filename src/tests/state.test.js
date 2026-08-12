@@ -347,9 +347,39 @@ function run(ctx) {
         null
     );
     s.eq(
+        "Classical URL schema rejects old Nawat entrada links",
+        ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(kawi)/screen/output/tr/intransitive"),
+        null
+    );
+    const retiredNawatLocation = {
+        hash: "#entrada/v3/verb/(kawi)/screen/output/tr/intransitive",
+        pathname: "/",
+        search: "",
+    };
+    let retiredNawatReplacement = "";
+    const retiredNawatApplied = ctx.applyEntradaUrlSegmentsFromLocation({
+        location: retiredNawatLocation,
+        history: {
+            replaceState(_state, _title, value) {
+                retiredNawatReplacement = value;
+            },
+        },
+    });
+    s.eq(
+        "opening an old Nawat link clears it without restoring its state",
+        {
+            applied: retiredNawatApplied,
+            replacement: retiredNawatReplacement,
+        },
+        {
+            applied: false,
+            replacement: "/",
+        }
+    );
+    s.eq(
         "entrada URL segments round-trip V controls and normalize the retired S-to-V board closed",
         {
-            hashPrefix: composerEntradaHash.startsWith("#entrada/v3/"),
+            hashPrefix: composerEntradaHash.startsWith("#classical/v1/"),
             board: parsedComposerEntrada.board,
             input: parsedComposerEntrada.input,
             transitivity: parsedComposerEntrada.transitivity,
@@ -429,23 +459,23 @@ function run(ctx) {
             invalid: canonicalSecondaryEntrada.invalidComposerFields,
         },
         {
-            hash: "#entrada/v3/tr/bitransitive/val-c/t%C4%93ht%C4%93%2Btlahtla",
+            hash: "#classical/v1/tr/bitransitive/val-c/t%C4%93ht%C4%93%2Btlahtla",
             valenceSecondary: "tēhtē+tlahtla",
             invalid: [],
         }
     );
     const rejectedComposerEntradaRoutes = [
-        ["#entrada/v3/val-b/ta", "valence"],
-        ["#entrada/v3/val-b/tajta", "valence"],
-        ["#entrada/v3/val-b/te", "valence"],
-        ["#entrada/v3/val-b/tejte", "valence"],
-        ["#entrada/v3/val-b/mu", "valence"],
-        ["#entrada/v3/val-b/mujmu", "valence"],
-        ["#entrada/v3/dir/wal", "directionalPrefix"],
-        ["#entrada/v3/dir/w", "directionalPrefix"],
-        ["#entrada/v3/dir/kw", "directionalPrefix"],
-        ["#entrada/v3/dir/k", "directionalPrefix"],
-        ["#entrada/v3/verb/%5Bwal%5D%2Fix%2F(ta)-mati", "input"],
+        ["#classical/v1/val-b/ta", "valence"],
+        ["#classical/v1/val-b/tajta", "valence"],
+        ["#classical/v1/val-b/te", "valence"],
+        ["#classical/v1/val-b/tejte", "valence"],
+        ["#classical/v1/val-b/mu", "valence"],
+        ["#classical/v1/val-b/mujmu", "valence"],
+        ["#classical/v1/dir/wal", "directionalPrefix"],
+        ["#classical/v1/dir/w", "directionalPrefix"],
+        ["#classical/v1/dir/kw", "directionalPrefix"],
+        ["#classical/v1/dir/k", "directionalPrefix"],
+        ["#classical/v1/verb/%5Bwal%5D%2Fix%2F(ta)-mati", "input"],
     ].map(([route, field]) => {
         const parsed = ctx.parseEntradaUrlSegmentString(route);
         return {
@@ -523,7 +553,7 @@ function run(ctx) {
                 wrappedStem: "zōmā",
             }
         );
-        const staleClassicalRoute = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/-(z%C5%8Dm%C4%81)/tr/transitive/b-stem/zm");
+        const staleClassicalRoute = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/-(z%C5%8Dm%C4%81)/tr/transitive/b-stem/zm");
         ctx.applyEntradaUrlStateSnapshot(staleClassicalRoute, {
             triggerGenerate: false,
             immediateRefresh: false,
@@ -730,7 +760,7 @@ function run(ctx) {
     );
 
     const forgedTransitivitySnapshot = ctx.parseEntradaUrlSegmentString(
-        "#entrada/v3/verb/(nemi)/tr/fabricated/a-stem/forged"
+        "#classical/v1/verb/(nemi)/tr/fabricated/a-stem/forged"
     );
     const previousComposerTransitivity = ctx.VerbComposerState.transitivity;
     ctx.VerbComposerState.transitivity = ctx.COMPOSER_TRANSITIVITY.transitive;
@@ -760,12 +790,12 @@ function run(ctx) {
     s.eq(
         "Entrada source-transitivity aliases normalize to canonical full tokens",
         ["vi", "vt", "vb"].map((alias) => {
-            const snapshot = ctx.parseEntradaUrlSegmentString(`#entrada/v3/verb/(nemi)/tr/${alias}`);
+            const snapshot = ctx.parseEntradaUrlSegmentString(`#classical/v1/verb/(nemi)/tr/${alias}`);
             return [snapshot.transitivity, snapshot.sourceTransitivitySelectionFrame?.sourceSlotKey];
         }),
         [["intransitive", "a"], ["transitive", "b"], ["bitransitive", "c"]]
     );
-    const forgedOrdinaryClass = ctx.parseEntradaUrlSegmentString("#entrada/v3/board/ordinary-nnc/s-enabled/1/s-class/fabricated");
+    const forgedOrdinaryClass = ctx.parseEntradaUrlSegmentString("#classical/v1/board/ordinary-nnc/s-enabled/1/s-class/fabricated");
     s.eq(
         "Entrada discards the retired ordinary-NNC board and forged lexical carrier",
         {
@@ -784,7 +814,7 @@ function run(ctx) {
             applied: true,
         }
     );
-    const forgedClassicalClass = ctx.parseEntradaUrlSegmentString("#entrada/v3/cn/1/cn-class/fabricated");
+    const forgedClassicalClass = ctx.parseEntradaUrlSegmentString("#classical/v1/cn/1/cn-class/fabricated");
     s.eq(
         "Entrada ignores a retired forged Classical noun-class segment",
         {
@@ -808,8 +838,8 @@ function run(ctx) {
             applied: true,
         }
     );
-    const forgedNncOutputScope = ctx.parseEntradaUrlSegmentString("#entrada/v3/cn/1/cn-output/fabricated");
-    const forgedVncOutputScope = ctx.parseEntradaUrlSegmentString("#entrada/v3/verb/(nemi)/vnc-output/fabricated");
+    const forgedNncOutputScope = ctx.parseEntradaUrlSegmentString("#classical/v1/cn/1/cn-output/fabricated");
+    const forgedVncOutputScope = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(nemi)/vnc-output/fabricated");
     s.eq(
         "Entrada retains malformed explicit NNC and VNC output scope as blocked",
         {
