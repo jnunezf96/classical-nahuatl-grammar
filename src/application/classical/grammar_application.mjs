@@ -280,7 +280,15 @@ function buildClassicalLesson2OwnedWriting(
       )).filter(Boolean)
       : [];
     parts = [
-      nonzeroPart("subject-person-1", slots.subject?.pers1),
+      nonzeroPart(
+        "subject-person-1",
+        slots.subject?.pers1BaseMorph || slots.subject?.pers1,
+        {
+          supportiveI: slots.subject?.supportiveISurfaceAction === "insert"
+            ? "insert-before-consonant"
+            : "",
+        },
+      ),
       nonzeroPart("subject-person-2", slots.subject?.pers2),
       ...participantParts,
       ...stateParts,

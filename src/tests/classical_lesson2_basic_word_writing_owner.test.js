@@ -61,16 +61,27 @@ function run(ctx) {
     s.eq("a basic noun gives Lesson 2 the person, stem, and number parts", {
         authorized: noun.authorizationStatus,
         parts: noun.lesson2WrittenResult?.source?.parts,
+        supportiveI: noun.lesson2WrittenResult?.supportiveVowelActions,
         written: noun.lesson2WrittenResult?.surface,
         expected: noun.canonicalResult?.wordSurface,
         valid: ctx.isClassicalGrammarApplicationResult(noun),
     }, {
         authorized: "authorized",
         parts: [
-            { role: "subject-person-1", value: "ni", supportiveI: "" },
+            {
+                role: "subject-person-1",
+                value: "n",
+                supportiveI: "insert-before-consonant",
+            },
             { role: "nounstem", value: "mich", supportiveI: "" },
             { role: "subject-number-1", value: "in", supportiveI: "" },
         ],
+        supportiveI: [{
+            partIndex: 0,
+            status: "applied",
+            source: "n",
+            result: "ni",
+        }],
         written: "nimichin",
         expected: "nimichin",
         valid: true,
@@ -92,6 +103,23 @@ function run(ctx) {
         exactSurface: false,
     });
 
+    const brokenNounSource = ctx.issueClassicalNahuatlLesson2WritingSource({
+        parts: [
+            { role: "subject-person-1", value: "n" },
+            { role: "nounstem", value: "mich" },
+            { role: "subject-number-1", value: "in" },
+        ],
+        boundaryKind: "ordinary-nnc-slots",
+    });
+    const brokenNoun = ctx.writeClassicalNahuatlLesson2Result(brokenNounSource);
+    s.eq("breaking noun supportive i changes the Result and fails the exact check", {
+        brokenSurface: brokenNoun.surface,
+        exactSurface: brokenNoun.surface === noun.lesson2WrittenResult?.surface,
+    }, {
+        brokenSurface: "mmichin",
+        exactSurface: false,
+    });
+
     s.eq("basic word Results record only the Lesson 2 families they really use", {
         verb: verb.lesson2WrittenResult?.ownedWritingFamilyIds,
         noun: noun.lesson2WrittenResult?.ownedWritingFamilyIds,
@@ -101,7 +129,11 @@ function run(ctx) {
             "internal-stem-boundaries",
             "syllables-and-supportive-i",
         ],
-        noun: ["sound-and-spelling", "internal-stem-boundaries"],
+        noun: [
+            "sound-and-spelling",
+            "internal-stem-boundaries",
+            "syllables-and-supportive-i",
+        ],
     });
 
     return s;

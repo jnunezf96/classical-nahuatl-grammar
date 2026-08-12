@@ -1515,6 +1515,8 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         pers1BaseMorph: canonicalFinitePersonFrame?.pers1BaseMorph || pers1,
         supportiveVowelPresent: canonicalFinitePersonFrame?.pers1SupportiveVowelPresent === true,
         supportiveISurfacePolicy: canonicalFinitePersonFrame?.pers1SupportiveISurfacePolicy || "conditional-support-vowel-boundary-action",
+        supportiveISurfaceAction: canonicalFinitePersonFrame?.pers1SupportiveISurfaceAction || "not-needed",
+        supportiveISurfaceReason: canonicalFinitePersonFrame?.pers1SupportiveISurfaceReason || "not-needed",
         xXiAllowed: false,
         case: "nominative",
         formulaRegion: "subject",
@@ -2559,7 +2561,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           subject: {
             pers1: complete ? personFrame.pers1 : "",
             pers2: complete ? personFrame.pers2 : "",
-            subject: personFrame?.subject || ""
+            subject: personFrame?.subject || "",
+            pers1BaseMorph: complete ? personFrame.pers1BaseMorph : "",
+            supportiveISurfacePolicy: complete ? personFrame.supportiveISurfacePolicy : "",
+            supportiveISurfaceAction: complete ? personFrame.supportiveISurfaceAction : "",
+            supportiveISurfaceReason: complete ? personFrame.supportiveISurfaceReason : ""
           },
           participant: {
             arity: participantArity,
