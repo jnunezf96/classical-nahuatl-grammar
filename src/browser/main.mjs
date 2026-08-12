@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-required-writing-pass-058";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-carrier-writing-059";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

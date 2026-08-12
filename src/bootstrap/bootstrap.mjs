@@ -4,7 +4,7 @@ import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-lesson2-required-writing-pass-058";
+} from "../runtime/create_runtime.mjs?v=20260811-lesson2-carrier-writing-059";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-required-writing-pass-058";

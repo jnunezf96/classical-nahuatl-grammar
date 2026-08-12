@@ -4323,6 +4323,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
             segment,
             carrier,
             lexicalOrDerivedFact: true,
+            canonicalWritingModelInput: true,
             userSelectable: false,
             generationAuthority: false,
           }));
@@ -4347,6 +4348,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS,
         selectedCarriers: Object.freeze(selectedCarriers),
         readOnly: true,
+        canonicalWritingModel: true,
+        writesOrConstrainsResult: true,
         userSelectable: false,
         generationAuthority: false,
         paradigmatic: false,
@@ -4387,6 +4390,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         && frame.sigemeCarriers
           === CLASSICAL_NAHUATL_TRANSCRIPTION_SIGEME_CARRIERS
         && frame.readOnly === true
+        && frame.canonicalWritingModel === true
+        && frame.writesOrConstrainsResult === true
         && frame.userSelectable === false
         && frame.generationAuthority === false
         && frame.paradigmatic === false
@@ -4403,69 +4408,93 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         .join("-")})#`;
     }
     function projectClassicalNahuatlTranscriptionWritten(
-      sourceFrame = null
+      sourceFrame = null,
+      carrierFrame = null
     ) {
       const receipt = sourceFrame && typeof sourceFrame === "object"
         ? issuedClassicalNahuatlTranscriptionSources.get(sourceFrame)
         : null;
-      if (!receipt) return "";
+      const canonicalCarrierFrame = carrierFrame
+        || buildClassicalNahuatlTranscriptionCarrierFrame(sourceFrame);
+      if (
+        !receipt
+        || !isClassicalNahuatlTranscriptionCarrierFrame(
+          canonicalCarrierFrame
+        )
+        || canonicalCarrierFrame.sourceFrame !== sourceFrame
+      ) return "";
       const contextByCoordinate = new Map(
         receipt.contextualRealizations.map(context => [
           `${context.constituentIndex}:${context.segmentIndex}`,
           context
         ])
       );
+      const carrierByCoordinate = new Map(
+        canonicalCarrierFrame.selectedCarriers.map(selected => [
+          `${selected.constituentIndex}:${selected.segmentIndex}`,
+          selected.carrier,
+        ])
+      );
       return sourceFrame.constituents.map(
         (constituent, constituentIndex) => constituent.segments.map(
           (segment, segmentIndex) => {
-            if (segment === "\u2395") {
-              return "";
-            }
-            if (isClassicalNahuatlTranscriptionVowel(segment)) {
-              return segment;
+            const coordinate = `${constituentIndex}:${segmentIndex}`;
+            const carrier = carrierByCoordinate.get(coordinate);
+            if (!carrier) return "";
+            if (segment === "\u2395") return carrier.surface;
+            if (typeof carrier.grapheme === "string") {
+              return carrier.grapheme;
             }
             if (
-              Object.prototype.hasOwnProperty.call(
-                CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_SPELLINGS,
-                segment
-              )
+              carrier.spellingByPhone
+              && typeof carrier.regularPhone === "string"
             ) {
-              return CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_SPELLINGS[
-                segment
-              ];
+              return carrier.spellingByPhone[carrier.regularPhone] || "";
             }
             const context = contextByCoordinate.get(
-              `${constituentIndex}:${segmentIndex}`
+              coordinate
             );
             if (!context) return "";
             if (segment === "/k/") {
-              return (
+              const key = (
                 context.followingVowel === "e"
                 || context.followingVowel === "i"
-              ) ? "qu" : "c";
+              ) ? "before-e-or-i" : (
+                context.position === "syllable-final"
+                  ? "syllable-final"
+                  : "before-a-or-o"
+              );
+              return carrier.spellings[key] || "";
             }
             if (segment === "/s/") {
-              return (
+              const key = (
                 context.position === "syllable-initial"
                 && (
                   context.followingVowel === "e"
                   || context.followingVowel === "i"
                 )
-              ) ? "c" : "z";
+              ) ? "before-e-or-i" : (
+                context.position === "syllable-final"
+                  ? "syllable-final"
+                  : "before-a-or-o"
+              );
+              return carrier.spellings[key] || "";
             }
             if (segment === "/w/") {
-              return context.position === "syllable-initial"
-                ? "hu"
-                : "uh";
+              const key = context.position === "syllable-initial"
+                ? "syllable-initial"
+                : "syllable-final";
+              return carrier.spellings[key] || "";
             }
             if (segment === "/kʷ/") {
-              return (
+              const key = (
                 context.position === "syllable-initial"
                 || (
                   context.position === "stem-final-open-transition"
                   && Boolean(context.followingVowel)
                 )
-              ) ? "cu" : "uc";
+              ) ? "syllable-initial" : "syllable-final";
+              return carrier.spellings[key] || "";
             }
             return "";
           }
@@ -4545,11 +4574,12 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       const formula = projectClassicalNahuatlTranscriptionFormula(
         sourceFrame
       );
-      const surface = projectClassicalNahuatlTranscriptionWritten(
-        sourceFrame
-      );
       const carrierFrame =
         buildClassicalNahuatlTranscriptionCarrierFrame(sourceFrame);
+      const surface = projectClassicalNahuatlTranscriptionWritten(
+        sourceFrame,
+        carrierFrame
+      );
       if (
         !formula
         || !surface
