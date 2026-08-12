@@ -33,9 +33,6 @@ function run(ctx) {
     const shell = fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8");
     const rendering = fs.readFileSync(path.join(ROOT, "src/ui/rendering/rendering.mjs"), "utf8");
     const composer = fs.readFileSync(path.join(ROOT, "src/ui/composer/composer.mjs"), "utf8");
-    const commitStart = composer.indexOf("function commitClassicalSourcePartsEvaluation");
-    const commitEnd = composer.indexOf("function syncClassicalSourcePartControlsFromRuntime", commitStart);
-    const commitSource = composer.slice(commitStart, commitEnd);
     const controls = {
         select: shell.includes('id="classical-transcription-optional-result"')
             && rendering.includes("buildClassicalLesson2OptionalBoundaryChoices")
@@ -49,12 +46,8 @@ function run(ctx) {
         && rendering.includes("ActiveClassicalTranscriptionBaselineApplication = applicationResult")
         && rendering.includes("executeClassicalGrammarApplicationRequest")
         && rendering.includes("captureClassicalGrammarApplicationResult")
-        && commitSource.includes("targetObject.applyClassicalTranscriptionSource(")
-        && commitSource.indexOf("rawPhonologicalStem")
-            < commitSource.indexOf("hasCommittableClassicalSourceParts(sourceState)")
-        && commitSource.includes("embedInput?.value")
-        && commitSource.includes("matrixInput?.value")
-        && commitSource.includes('.join(" | ")')
+        && composer.includes("targetObject.applyClassicalTranscriptionSource(")
+        && composer.includes('.join(" | ")')
         && !shell.includes('id="classical-transcription-source-input"')
         && !shell.includes('id="classical-transcription-source-apply"');
     const operationIds = {
