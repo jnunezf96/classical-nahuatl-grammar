@@ -60,7 +60,7 @@ function run(ctx) {
         entered: true,
         families: 12,
         everyFamilyEntered: true,
-        status: "required-route-active-rules-still-incomplete",
+        status: "lesson2-owned-written-result",
         enforced: true,
     });
 

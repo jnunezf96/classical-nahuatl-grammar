@@ -168,14 +168,24 @@ function getClassicalVisibleSurfacePaths(
   return paths;
 }
 
-function buildClassicalLesson2WritingPass(candidateResult = null) {
+function buildClassicalLesson2WritingPass(
+  candidateResult = null,
+  lesson2WrittenResult = null,
+) {
   const writtenResultLocations = getClassicalVisibleSurfacePaths(candidateResult);
   const required = writtenResultLocations.length > 0;
+  const owned = Boolean(
+    lesson2WrittenResult?.kind === "classical-nahuatl-lesson2-written-result"
+    && lesson2WrittenResult?.authorizationStatus === "authorized"
+    && lesson2WrittenResult?.writtenByLesson2 === true
+  );
   const familyPasses = Object.freeze(
     CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => Object.freeze({
       familyId,
       entered: required,
-      status: required ? "entered-rule-may-still-be-unfinished" : "not-required",
+      status: required
+        ? owned ? "checked-by-lesson2-owner" : "entered-rule-may-still-be-unfinished"
+        : "not-required",
     })),
   );
   return Object.freeze({
@@ -188,12 +198,42 @@ function buildClassicalLesson2WritingPass(candidateResult = null) {
     familyPasses,
     allTwelveFamiliesRouted: required,
     completionStatus: required
-      ? "required-route-active-rules-still-incomplete"
+      ? owned ? "lesson2-owned-written-result" : "required-route-active-rules-still-incomplete"
       : "not-a-writing-result",
+    writingOwnerInstalled: owned,
     changesGrammarAuthority: false,
     lessonMetadataAuthority: false,
     storedWritingAuthority: false,
   });
+}
+
+function buildClassicalLesson2OwnedWriting(
+  candidateResult = null,
+  targetObject = globalThis,
+) {
+  const sourceConstituents = candidateResult?.sourceAuthorizationFrame
+    ?.sourceConstituents;
+  const isNominalCompound = Boolean(
+    candidateResult?.kind
+      === "classical-nahuatl-nominal-construction-result-frame"
+    && candidateResult?.constructionKind === "compound-nnc"
+    && candidateResult?.sourceAuthorizationFrame?.authorizationStatus
+      === "authorized"
+    && sourceConstituents?.embedStem
+    && sourceConstituents?.matrixStem
+  );
+  if (!isNominalCompound) return null;
+  const source = targetObject.issueClassicalNahuatlLesson2WritingSource({
+    parts: [
+      { role: "embed", value: sourceConstituents.embedStem },
+      { role: "matrix", value: sourceConstituents.matrixStem },
+    ],
+    boundaryKind: "compound",
+  });
+  const result = targetObject.writeClassicalNahuatlLesson2Result(source);
+  return targetObject.isClassicalNahuatlLesson2WrittenResult(result)
+    ? result
+    : null;
 }
 
 const ROUTE_DEFINITIONS = Object.freeze({
@@ -2544,7 +2584,30 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       candidateAuthorizationStatus,
     );
     const canonicalResult = canonicalResultRecognized ? candidateResult : null;
-    const lesson2WritingPass = buildClassicalLesson2WritingPass(canonicalResult);
+    const lesson2WrittenResult = buildClassicalLesson2OwnedWriting(
+      canonicalResult,
+      targetObject,
+    );
+    const requiresLesson2OwnedWriting = Boolean(
+      canonicalResult?.kind
+        === "classical-nahuatl-nominal-construction-result-frame"
+      && canonicalResult?.constructionKind === "compound-nnc"
+    );
+    const lesson2OwnedWritingSatisfied = requiresLesson2OwnedWriting
+      ? Boolean(
+        lesson2WrittenResult
+        && targetObject.isClassicalNahuatlLesson2WrittenResult(
+          lesson2WrittenResult,
+        )
+        && lesson2WrittenResult.surface === canonicalResult?.wordSurface
+        && lesson2WrittenResult.surface
+          === canonicalResult?.canonicalResult?.wordSurface
+      )
+      : true;
+    const lesson2WritingPass = buildClassicalLesson2WritingPass(
+      canonicalResult,
+      lesson2WrittenResult,
+    );
     if (canonicalResultRecognized) {
       issuedCanonicalResults.add(canonicalResult);
     }
@@ -2567,6 +2630,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           && lesson2WritingPass.allTwelveFamiliesRouted
           && lesson2WritingPass.familyPasses.length === 12
           && lesson2WritingPass.familyPasses.every(family => family.entered)
+          && lesson2OwnedWritingSatisfied
         : lesson2WritingPass.entered === false,
     });
     const gcdSatisfied = GCD_INVARIANT_IDS.every(
@@ -2602,6 +2666,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       outputKind,
       capabilityName,
       canonicalResult,
+      lesson2WrittenResult,
       lesson2WritingPass,
       greatestCommonDivisor: Object.freeze({
         identityId: "typed-semantic-application-to-canonical-result",
@@ -2642,6 +2707,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     );
     const expectedLesson2WritingPass = buildClassicalLesson2WritingPass(
       result?.canonicalResult || null,
+      result?.lesson2WrittenResult || null,
+    );
+    const resultRequiresLesson2OwnedWriting = Boolean(
+      result?.canonicalResult?.kind
+        === "classical-nahuatl-nominal-construction-result-frame"
+      && result?.canonicalResult?.constructionKind === "compound-nnc"
     );
     return Boolean(
       result
@@ -2658,6 +2729,17 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && result.lesson2WritingPass?.changesGrammarAuthority === false
       && result.lesson2WritingPass?.lessonMetadataAuthority === false
       && result.lesson2WritingPass?.storedWritingAuthority === false
+      && result.lesson2WritingPass?.writingOwnerInstalled
+        === expectedLesson2WritingPass.writingOwnerInstalled
+      && (
+        resultRequiresLesson2OwnedWriting
+          ? targetObject.isClassicalNahuatlLesson2WrittenResult(
+            result.lesson2WrittenResult,
+          )
+            && result.lesson2WrittenResult.surface
+              === result.canonicalResult?.wordSurface
+          : result.lesson2WrittenResult === null
+      )
       && result.lesson2WritingPass?.required
         === expectedLesson2WritingPass.required
       && result.lesson2WritingPass?.entered
@@ -3469,9 +3551,19 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   return api;
 }
 
-export function installClassicalGrammarApplicationGlobals(targetObject = globalThis) {
-  const api = createClassicalGrammarApplicationApi(targetObject);
+export function installClassicalGrammarApplicationGlobals(
+  targetObject = globalThis,
+  installationContext = {},
+) {
+  const applicationTarget = Object.create(targetObject);
+  Object.defineProperties(
+    applicationTarget,
+    Object.getOwnPropertyDescriptors(
+      installationContext?.moduleDependencyCapabilities || {},
+    ),
+  );
+  const api = createClassicalGrammarApplicationApi(applicationTarget);
   Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
-  captureCanonicalApplicationState(targetObject, api);
+  captureCanonicalApplicationState(applicationTarget, api);
   return api;
 }
