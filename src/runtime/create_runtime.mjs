@@ -1,6 +1,6 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-writing-owner-066";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-basic-words-067";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260726-lessons2-58-one-system-094";
@@ -10,7 +10,7 @@ import { installAdverbialAdjunctionGlobals } from "../core/clause/adjunction/adj
 import { installClassicalNahuatlProfileWallGlobals } from "../core/classical/profile_wall.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlSourceStemInventoryGlobals } from "../core/classical/source_stem_inventory.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlTranscriptionGlobals } from "../core/classical/transcription.mjs?v=20260811-lesson2-writing-complete-065";
-import { installClassicalNahuatlLesson2WriterGlobals } from "../core/classical/lesson2_writer.mjs?v=20260811-lesson2-writing-owner-066";
+import { installClassicalNahuatlLesson2WriterGlobals } from "../core/classical/lesson2_writer.mjs?v=20260811-lesson2-basic-words-067";
 import { installClassicalTranscriptionSemanticOwnersGlobals } from "../core/classical/transcription_owner_catalog.mjs?v=20260802-l58-transcription-owners-001";
 import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260726-transcription-route-109";
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";

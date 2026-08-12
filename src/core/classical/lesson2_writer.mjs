@@ -68,6 +68,7 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
     const parts = rawParts.map(part => Object.freeze({
       role: String(part?.role || "morph"),
       value: cleanPart(part?.value),
+      supportiveI: String(part?.supportiveI || ""),
     }));
     const authorized = !hasForbiddenField && parts.length > 0 && parts.every(part => (
       part.value
@@ -119,7 +120,19 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
         surface: "",
       });
     }
-    const realizedParts = source.parts.map(part => part.value);
+    const supportiveVowelActions = [];
+    const realizedParts = source.parts.map((part, index) => {
+      if (part.supportiveI !== "insert-before-consonant") return part.value;
+      const following = source.parts[index + 1]?.value || "";
+      const insert = Boolean(following && !/^[aāeēiīoō]/u.test(following));
+      supportiveVowelActions.push(Object.freeze({
+        partIndex: index,
+        status: insert ? "applied" : "checked-not-applicable",
+        source: part.value,
+        result: insert ? `${part.value}i` : part.value,
+      }));
+      return insert ? `${part.value}i` : part.value;
+    });
     const boundaryActions = [];
     for (let index = 0; index < realizedParts.length - 1; index += 1) {
       const left = realizedParts[index];
@@ -175,6 +188,9 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
     const ownedFamilyIds = new Set([
       "sound-and-spelling",
       "internal-stem-boundaries",
+      ...(supportiveVowelActions.length
+        ? ["syllables-and-supportive-i"]
+        : []),
       ...(appliedRuleIds.some(ruleId => ruleId.includes("-210-"))
         ? ["progressive-assimilation"]
         : []),
@@ -201,6 +217,7 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
       surface,
       realizedParts: Object.freeze(realizedParts),
       boundaryActions: Object.freeze(boundaryActions),
+      supportiveVowelActions: Object.freeze(supportiveVowelActions),
       familyChecks,
       ownedWritingFamilyIds: Object.freeze([...ownedFamilyIds]),
       remainingWritingFamilyIds: Object.freeze(

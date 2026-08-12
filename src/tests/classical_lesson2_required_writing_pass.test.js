@@ -60,7 +60,7 @@ function run(ctx) {
         entered: true,
         families: 12,
         everyFamilyEntered: false,
-        status: "lesson2-owned-compound-boundary-writing",
+        status: "lesson2-owned-compound-writing",
         enforced: true,
     });
 
