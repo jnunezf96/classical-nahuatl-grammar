@@ -5442,6 +5442,35 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           } else if (sourceLocation) {
             sourceLocation.hash = "";
           }
+          [
+            "verb",
+            "classical-source-whole",
+            "classical-source-embed",
+            "classical-source-matrix"
+          ].forEach(id => {
+            const input = targetObject.document?.getElementById?.(id);
+            if (input) input.value = "";
+          });
+          ClassicalSourcePartsCommittedSignature = "";
+          setClassicalSourcePartsPendingState(false);
+          targetObject.clearClassicalVncResultSourceContinuation?.(
+            "retired-nawat-url"
+          );
+          targetObject.clearClassicalRuleLogicSurfaceBlock?.();
+          const resultBlock = targetObject.document?.getElementById?.(
+            "classical-rule-logic-surface"
+          );
+          if (resultBlock) {
+            resultBlock.replaceChildren?.();
+            resultBlock.innerHTML = "";
+            resultBlock.hidden = true;
+            if (resultBlock.dataset) {
+              delete resultBlock.dataset.classicalNahuatlSurfaceVisible;
+              delete resultBlock.dataset.classicalNahuatlSurfaceStatus;
+              delete resultBlock.dataset.classicalNahuatlSurfaceFormula;
+            }
+          }
+          targetObject.setLeftPanelStackMode?.("inputs");
         }
         return false;
       }

@@ -357,6 +357,13 @@ function run(ctx) {
         search: "",
     };
     let retiredNawatReplacement = "";
+    const retiredVerb = ctx.document.getElementById("verb");
+    const retiredWholeStem = ctx.document.getElementById("classical-source-whole");
+    const retiredResult = ctx.document.getElementById("classical-rule-logic-surface");
+    retiredVerb.value = "(kawi)";
+    retiredWholeStem.value = "kawi";
+    retiredResult.innerHTML = "old Nawat Result";
+    retiredResult.hidden = false;
     const retiredNawatApplied = ctx.applyEntradaUrlSegmentsFromLocation({
         location: retiredNawatLocation,
         history: {
@@ -370,10 +377,18 @@ function run(ctx) {
         {
             applied: retiredNawatApplied,
             replacement: retiredNawatReplacement,
+            verb: retiredVerb.value,
+            stem: retiredWholeStem.value,
+            result: retiredResult.innerHTML,
+            resultHidden: retiredResult.hidden,
         },
         {
             applied: false,
             replacement: "/",
+            verb: "",
+            stem: "",
+            result: "",
+            resultHidden: true,
         }
     );
     s.eq(
