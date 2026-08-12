@@ -385,6 +385,10 @@ const ROUTE_DEFINITIONS = Object.freeze({
     capabilityName: "buildClassicalNahuatlConsonantPhoneShiftFrame",
     axisIds: Object.freeze(["source-consonant", "phonological-environment", "shift-result"]),
   }),
+  "phonology:phone-source-assignment": Object.freeze({
+    capabilityName: "buildClassicalNahuatlPhoneSourceAssignmentFrame",
+    axisIds: Object.freeze(["morphemic-source", "underlying-phoneme", "realized-phone", "written-result"]),
+  }),
   "phonology:vowel-elision": Object.freeze({
     capabilityName: "buildClassicalNahuatlVowelElisionFrame",
     axisIds: Object.freeze(["source-morpheme", "stress-group-environment", "elided-result"]),
@@ -707,6 +711,12 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "transcription-source": "lexical-fact",
     "phonological-boundary": "boundary-conditioned-fact",
     "orthographic-realization": "boundary-conditioned-fact",
+  }),
+  "phonology:phone-source-assignment": defineAxisSemanticFactRoles({
+    "morphemic-source": "lexical-fact",
+    "underlying-phoneme": "lexical-fact",
+    "realized-phone": "boundary-conditioned-fact",
+    "written-result": "derived-fact",
   }),
   "sentence:adverbial-adjunction": defineAxisSemanticFactRoles({
     "sentence-adverbial": "lexical-fact",
@@ -1077,6 +1087,9 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
     "classical-nahuatl-transcription-analysis-frame",
   ),
   "phonology:consonant-shift": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:phone-source-assignment": defineCanonicalResultContract(
     "classical-nahuatl-transcription-analysis-frame",
   ),
   "phonology:vowel-elision": defineCanonicalResultContract(
@@ -1743,6 +1756,9 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:consonant-shift": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:phone-source-assignment": Object.freeze([
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:vowel-elision": Object.freeze([

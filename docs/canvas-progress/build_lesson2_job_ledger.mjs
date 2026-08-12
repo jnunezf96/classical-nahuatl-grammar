@@ -46,6 +46,19 @@ const LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS = Object.freeze([
 ]);
 
 const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
+  ...Object.fromEntries([
+    "ACI-P039-L015-D741EB618B",
+    "ACI-P039-L015-D741EB618B-02",
+    "ACI-P039-L015-D741EB618B-03",
+    "ACI-P039-L025-A0793B2361",
+    "ACI-P039-L027-566A4F635F",
+    "ACI-P039-L029-9E1CE576E7",
+    "ACI-P039-L029-9E1CE576E7-02",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "phoneme-phone-source-writing-result",
+    observationTest: `src/tests/classical_lesson2_spelling_source_jobs.test.js#${atomId}`,
+    mutationTest: "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
+  })])),
   "ACI-P039-L004-E7E01D8587-02": Object.freeze({
     observationKind: "sigeme-retained-in-formula",
     observationTest: "src/tests/classical_lesson2_sigeme_result.test.js#normal-application",

@@ -2925,6 +2925,125 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         }
       };
     }
+    function normalizeClassicalNahuatlPhoneSymbol(value = "") {
+      return String(value == null ? "" : value)
+        .normalize("NFC")
+        .trim()
+        .replace(/^\[|\]$/gu, "");
+    }
+    function getClassicalNahuatlPhoneSpelling(phone = "") {
+      return ({
+        "l": "l", "l̥": "l", "n": "n", "n̥": "n", "ŋ": "n",
+        "m": "m", "s": "z", "š": "x", "y": "y", "w": "hu",
+        "w̥": "uh", "β": "hu", "ɸ": "uh", "p": "p", "t": "t",
+        "k": "c", "kʷ": "cu", "kʷ̥": "uc", "ʔ": "h", "h": "h",
+        "λ": "tl", "λ̥": "tl", "¢": "tz", "č": "ch",
+      })[normalizeClassicalNahuatlPhoneSymbol(phone)] || "";
+    }
+    function buildClassicalNahuatlPhoneSourceAssignmentMechanicsFrame(
+      options = {}
+    ) {
+      const underlyingPhoneme = normalizeClassicalNahuatlTranscriptionSegment(
+        options.underlyingPhoneme || options.phoneme
+      );
+      const realizedPhone = normalizeClassicalNahuatlPhoneSymbol(
+        options.realizedPhone || options.phone
+      );
+      const rawSourceSegments = Array.isArray(options.morphemicSourceSegments)
+        ? options.morphemicSourceSegments
+        : [];
+      const morphemicSourceSegments = rawSourceSegments.map(
+        normalizeClassicalNahuatlTranscriptionSegment
+      );
+      const carrier =
+        CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS[underlyingPhoneme]
+        || CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS[
+          underlyingPhoneme
+        ]
+        || null;
+      const phoneBelongsToRepertory = Boolean(
+        carrier?.phones?.includes(realizedPhone)
+      );
+      const sourceContainsPhoneme = Boolean(
+        underlyingPhoneme
+        && morphemicSourceSegments.includes(underlyingPhoneme)
+      );
+      const sourceIsTyped = Boolean(
+        rawSourceSegments.length
+        && morphemicSourceSegments.every(Boolean)
+      );
+      const outputSpelling = getClassicalNahuatlPhoneSpelling(realizedPhone);
+      const requestedSpelling = normalizeClassicalNahuatlOrthographyInput(
+        options.requestedSpelling
+      );
+      const requestedSpellingMatches = Boolean(
+        !requestedSpelling || requestedSpelling === outputSpelling
+      );
+      const authorized = Boolean(
+        carrier
+        && sourceIsTyped
+        && phoneBelongsToRepertory
+        && sourceContainsPhoneme
+        && outputSpelling
+        && requestedSpellingMatches
+      );
+      const regularOwner = Object.values(
+        CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS
+      ).find(candidate => (
+        candidate.segment !== underlyingPhoneme
+        && candidate.phones?.[0] === realizedPhone
+      ))?.segment || "";
+      let blockReason = "";
+      if (!authorized) {
+        blockReason = !carrier
+          ? "known-underlying-phoneme-required"
+          : !sourceIsTyped
+            ? "typed-morphemic-source-required"
+            : !phoneBelongsToRepertory
+              ? "phone-not-in-phoneme-repertory"
+              : !sourceContainsPhoneme
+                ? "morphemic-source-does-not-support-phoneme-assignment"
+                : !outputSpelling
+                  ? "phone-spelling-not-known"
+                  : "requested-spelling-conflicts-with-source-assignment";
+      }
+      return {
+        kind: "classical-nahuatl-phone-source-assignment-frame",
+        version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
+        operationId: "cn-l2-phone-source-assignment",
+        underlyingPhoneme,
+        realizedPhone,
+        morphemicSourceSegments,
+        phoneBelongsToRepertory,
+        sourceContainsPhoneme,
+        assignmentBasis: authorized
+          ? CLASSICAL_NAHUATL_TRANSCRIPTION_SYSTEM_FACTS
+            .phoneToPhonemeDisambiguation
+          : "",
+        samePhoneIsRegularForAnotherPhoneme: Boolean(regularOwner),
+        regularOwnerOfSamePhone: regularOwner,
+        outputSound: authorized ? realizedPhone : "",
+        outputSpelling: authorized ? outputSpelling : "",
+        requestedSpelling,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason,
+        premises: [{
+          layer: "morphemic-source",
+          passed: sourceContainsPhoneme,
+          rule: "An irregular phone remains assigned to the phoneme shown by its morphemic source.",
+        }, {
+          layer: "phonic-repertory",
+          passed: phoneBelongsToRepertory,
+          rule: "The realized phone must belong to that phoneme's repertory.",
+        }],
+        conclusion: {
+          authorized,
+          underlyingPhoneme: authorized ? underlyingPhoneme : "",
+          realizedPhone: authorized ? realizedPhone : "",
+          outputSpelling: authorized ? outputSpelling : "",
+        },
+      };
+    }
     function buildClassicalNahuatlVowelElisionMechanicsFrame(options = {}) {
       const requestedRuleId = normalizeClassicalNahuatlOrthographyInput(options.ruleId);
       const sourceMorpheme = normalizeClassicalNahuatlOrthographyInput(
@@ -3593,7 +3712,9 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         ? frame.sounds
         : Array.isArray(frame.sourceSegments)
           ? frame.sourceSegments
-          : [];
+          : Array.isArray(frame.morphemicSourceSegments)
+            ? frame.morphemicSourceSegments
+            : [];
       if (directSegments.length) {
         return directSegments.map((value, index) => Object.freeze({
           role: `segment-${index + 1}`,
@@ -3979,6 +4100,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
         buildClassicalNahuatlConsonantPhoneShiftMechanicsFrame,
         "consonant-phone-shift",
+        args
+      );
+    }
+    function buildClassicalNahuatlPhoneSourceAssignmentFrame(...args) {
+      return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
+        buildClassicalNahuatlPhoneSourceAssignmentMechanicsFrame,
+        "phone-source-assignment",
         args
       );
     }
@@ -4981,6 +5109,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     api.normalizeClassicalNahuatlExposedPosition = normalizeClassicalNahuatlExposedPosition;
     api.findClassicalNahuatlLesson2ConsonantPhoneShiftRule = findClassicalNahuatlLesson2ConsonantPhoneShiftRule;
     api.buildClassicalNahuatlConsonantPhoneShiftFrame = buildClassicalNahuatlConsonantPhoneShiftFrame;
+    api.buildClassicalNahuatlPhoneSourceAssignmentFrame = buildClassicalNahuatlPhoneSourceAssignmentFrame;
     api.buildClassicalNahuatlVowelElisionFrame = buildClassicalNahuatlVowelElisionFrame;
     api.buildClassicalNahuatlLongVowelGlottalFrame = buildClassicalNahuatlLongVowelGlottalFrame;
     api.buildClassicalNahuatlProsodicContourFrame = buildClassicalNahuatlProsodicContourFrame;

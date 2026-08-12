@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 384,
-    "exactlyImplementedWritingJobs": 202,
-    "writingJobsAwaitingExactObservation": 182,
+    "exactlyImplementedWritingJobs": 209,
+    "writingJobsAwaitingExactObservation": 175,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 155,
@@ -530,10 +530,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L015-D741EB618B",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -559,10 +559,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L015-D741EB618B-02",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -588,10 +588,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L015-D741EB618B-03",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -981,10 +981,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L025-A0793B2361",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1010,10 +1010,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L027-566A4F635F",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1039,10 +1039,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L029-9E1CE576E7",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1068,10 +1068,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "phoneme-phone-source-writing-result",
+      "observationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#ACI-P039-L029-9E1CE576E7-02",
+      "mutationTest": "src/tests/classical_lesson2_spelling_source_jobs.test.js#broken-source-environment-phone-or-writing",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
