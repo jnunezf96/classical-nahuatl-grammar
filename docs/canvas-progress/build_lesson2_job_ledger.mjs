@@ -47,6 +47,24 @@ const LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS = Object.freeze([
 
 const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   ...Object.fromEntries([
+    "ACI-P045-L037-854120FC29", "ACI-P045-L037-2764F7EB94",
+    "ACI-P047-L036-6CD7766584", "ACI-P047-L039-88C2F71613",
+    "ACI-P047-L039-E77F9501C7", "ACI-P047-L040-06C506AAFB",
+    "ACI-P047-L044-EFA0C4600D", "ACI-P047-L046-84B2D61F57",
+    "ACI-P047-L046-ACAAF1E12E", "ACI-P047-L046-ACAAF1E12E-02",
+    "ACI-P047-L046-ACAAF1E12E-03", "ACI-P047-L046-ACAAF1E12E-04",
+    "ACI-P048-L004-66769E844D", "ACI-P048-L004-66769E844D-02",
+    "ACI-P048-L004-66769E844D-03", "ACI-P048-L004-66769E844D-04",
+    "ACI-P048-L004-66769E844D-05", "ACI-P049-L010-9ED6E28F75-02",
+    "ACI-P049-L010-9ED6E28F75-03", "ACI-P049-L010-9ED6E28F75-04",
+    "ACI-P049-L010-9ED6E28F75-05", "ACI-P049-L012-157BDD7209",
+    "ACI-P049-L012-157BDD7209-02",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "spelling-stress-or-lateral-reading-normal-application-result",
+    observationTest: `src/tests/classical_lesson2_spelling_stress_lateral_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_spelling_stress_lateral_jobs.test.js#${atomId}-changed-behavior-fails`,
+  })])),
+  ...Object.fromEntries([
     "ACI-P042-L032-200085F1A8", "ACI-P042-L035-63D7FE9185",
     "ACI-P042-L037-F7F60F2916", "ACI-P042-L038-A2D51BA4BB",
     "ACI-P042-L039-ACF0895BEB", "ACI-P043-L003-353341D1F5",

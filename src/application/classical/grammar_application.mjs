@@ -357,6 +357,18 @@ const ROUTE_DEFINITIONS = Object.freeze({
     capabilityName: "buildClassicalNahuatlSyllableStructureFrame",
     axisIds: Object.freeze(["written-vocable", "vowel-centers", "syllable-boundaries"]),
   }),
+  "phonology:stress": Object.freeze({
+    capabilityName: "buildClassicalNahuatlStressFrame",
+    axisIds: Object.freeze(["written-vocable", "stress-group", "stressed-syllable"]),
+  }),
+  "phonology:spelling-change": Object.freeze({
+    capabilityName: "buildClassicalNahuatlSpellingChangeFrame",
+    axisIds: Object.freeze(["source-segment", "phonological-environment", "written-result"]),
+  }),
+  "phonology:lateral-reading": Object.freeze({
+    capabilityName: "buildClassicalNahuatlLateralReadingFrame",
+    axisIds: Object.freeze(["written-vocable", "intended-meaning", "phonological-length", "written-result"]),
+  }),
   "phonology:supportive-vowel": Object.freeze({
     capabilityName: "buildClassicalNahuatlSupportiveVowelFrame",
     axisIds: Object.freeze(["source-segments", "pronounceability", "supportive-i-realization"]),
@@ -726,6 +738,22 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "source-segment": "lexical-fact",
     "phonic-repertory": "lexical-fact",
     "phonological-environment": "boundary-conditioned-fact",
+    "written-result": "derived-fact",
+  }),
+  "phonology:stress": defineAxisSemanticFactRoles({
+    "written-vocable": "lexical-fact",
+    "stress-group": "boundary-conditioned-fact",
+    "stressed-syllable": "derived-fact",
+  }),
+  "phonology:spelling-change": defineAxisSemanticFactRoles({
+    "source-segment": "lexical-fact",
+    "phonological-environment": "boundary-conditioned-fact",
+    "written-result": "derived-fact",
+  }),
+  "phonology:lateral-reading": defineAxisSemanticFactRoles({
+    "written-vocable": "lexical-fact",
+    "intended-meaning": "contextual-fact",
+    "phonological-length": "derived-fact",
     "written-result": "derived-fact",
   }),
   "sentence:adverbial-adjunction": defineAxisSemanticFactRoles({
@@ -1103,6 +1131,15 @@ const CANONICAL_RESULT_CONTRACTS = Object.freeze({
     "classical-nahuatl-transcription-analysis-frame",
   ),
   "phonology:segment-realization": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:stress": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:spelling-change": defineCanonicalResultContract(
+    "classical-nahuatl-transcription-analysis-frame",
+  ),
+  "phonology:lateral-reading": defineCanonicalResultContract(
     "classical-nahuatl-transcription-analysis-frame",
   ),
   "phonology:vowel-elision": defineCanonicalResultContract(
@@ -1775,6 +1812,15 @@ const AUTHORIZED_RESULT_VALIDATOR_NAMES = Object.freeze({
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:segment-realization": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:stress": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:spelling-change": Object.freeze([
+    "isClassicalNahuatlTranscriptionAnalysisFrame",
+  ]),
+  "phonology:lateral-reading": Object.freeze([
     "isClassicalNahuatlTranscriptionAnalysisFrame",
   ]),
   "phonology:vowel-elision": Object.freeze([

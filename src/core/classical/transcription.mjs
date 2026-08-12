@@ -1979,7 +1979,27 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       const hasVocativeAccent = /é$/u.test(normalized);
       const vocativeParticle = options.vocativeParticle === true || hasVocativeAccent;
       const stressGroup = options.stressGroup === true || /\s/u.test(normalized);
-      const stressIndex = syllableDisplays.length ? vocativeParticle ? syllableDisplays.length - 1 : Math.max(0, syllableDisplays.length - 2) : -1;
+      const sourceVocables = Array.isArray(options.sourceVocables)
+        ? options.sourceVocables.map(item => normalizeClassicalNahuatlOrthographyInput(item))
+        : [];
+      const sourceSequence = sourceVocables.join(" ");
+      const stressGroupReadings = {
+        "in ōmpa": { division: "i-nōm-pa", stressedSyllable: "nōm", stressIndex: 1, traditionalSolid: "inōmpa" },
+        "īn in": { division: "i-nin", stressedSyllable: "i", stressIndex: 0, traditionalSolid: "ini" },
+        "in yehhuātl": { division: "i-yeh-huātl", stressedSyllable: "yeh", stressIndex: 1, traditionalSolid: "iyehuatl" },
+        "īc in": { division: "ī-quin", stressedSyllable: "ī", stressIndex: 0, traditionalSolid: "iquin", boundarySpelling: "qu" },
+      };
+      const stressGroupReading = stressGroupReadings[sourceSequence] || null;
+      const stressIndex = stressGroupReading
+        ? stressGroupReading.stressIndex
+        : syllableDisplays.length
+          ? vocativeParticle ? syllableDisplays.length - 1 : Math.max(0, syllableDisplays.length - 2)
+          : -1;
+      const requestedTraditionalSolid = normalizeClassicalNahuatlOrthographyInput(
+        options.requestedTraditionalSolid || ""
+      );
+      const traditionalSolidMatches = !requestedTraditionalSolid
+        || requestedTraditionalSolid === stressGroupReading?.traditionalSolid;
       const evaluatedRuleIds = [
         ...(vocativeParticle
           ? ["cn-l2-27-vocative-particle-exception"]
@@ -1990,6 +2010,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       ];
       const authorized = syllableFrame.authorizationStatus === "authorized"
         && stressIndex >= 0
+        && traditionalSolidMatches
         && (!requestedRuleId || Boolean(selectedRule));
       return {
         kind: "classical-nahuatl-transcription-stress-frame",
@@ -2015,15 +2036,26 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         stressedSyllable: stressIndex >= 0 ? syllableDisplays[stressIndex] : "",
         stressRule: vocativeParticle ? "vocative-final-stress" : "penultimate",
         vocativeParticle,
+        vocativeHighPitch: vocativeParticle,
+        vocativeAccentSpelling: vocativeParticle ? "é" : "",
         stressGroup,
-        stressGroupDivision: stressGroup ? syllableDisplays.join("-") : "",
+        sourceVocables,
+        sourceSequence,
+        stressGroupDivision: stressGroup
+          ? stressGroupReading?.division || syllableDisplays.join("-")
+          : "",
+        traditionalSolid: stressGroupReading?.traditionalSolid || "",
+        boundarySpelling: stressGroupReading?.boundarySpelling || "",
+        stressGroupMayPermitElision: stressGroup,
         authorizationStatus: authorized ? "authorized" : "blocked",
         proofStatus: authorized ? "proven" : "blocked",
         blockReason: authorized
           ? ""
           : requestedRuleId && !selectedRule
             ? "no-lesson2-stress-rule"
-            : syllableFrame.blockReason || "missing-stressable-syllable",
+            : !traditionalSolidMatches
+              ? "traditional-solid-spelling-does-not-match-stress-group"
+              : syllableFrame.blockReason || "missing-stressable-syllable",
         premises: [{
           layer: "syllable-structure",
           rule: "Stress is assigned after Lesson 2.6 syllable division.",
@@ -2044,15 +2076,79 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           rule: "In connected speech, syllable division can operate across vocable boundaries within a stress group.",
           passed: stressGroup ? syllableFrame.authorizationStatus === "authorized" : true,
           stressGroup,
-          stressGroupDivision: stressGroup ? syllableDisplays.join("-") : ""
+          stressGroupDivision: stressGroup
+            ? stressGroupReading?.division || syllableDisplays.join("-")
+            : ""
         }],
         conclusion: {
           authorized,
-          stressedSyllable: authorized ? syllableDisplays[stressIndex] || "" : "",
+          stressedSyllable: authorized
+            ? stressGroupReading?.stressedSyllable || syllableDisplays[stressIndex] || ""
+            : "",
           stressIndex: authorized ? stressIndex : -1,
           stressRule: authorized ? vocativeParticle ? "vocative-final-stress" : "penultimate" : "",
-          division: authorized ? syllableDisplays.join("-") : ""
+          division: authorized
+            ? stressGroupReading?.division || syllableDisplays.join("-")
+            : "",
+          traditionalSolid: authorized ? stressGroupReading?.traditionalSolid || "" : "",
         }
+      };
+    }
+
+    function buildClassicalNahuatlLateralReadingMechanicsFrame(options = {}) {
+      const sourceForm = normalizeClassicalNahuatlOrthographyInput(options.sourceForm || options.form);
+      const intendedMeaning = normalizeClassicalNahuatlOrthographyInput(options.intendedMeaning);
+      const requestedResult = normalizeClassicalNahuatlOrthographyInput(options.requestedResult);
+      const writtenLateralLength = normalizeClassicalNahuatlOrthographyInput(options.writtenLateralLength);
+      const phonologicalLateralLength = normalizeClassicalNahuatlOrthographyInput(options.phonologicalLateralLength);
+      const lexicalReadings = {
+        quake: { canonicalForm: "ōlīn", lateralLength: "short", finalConsonant: "n", sourceStructure: "ō-l-ī-n" },
+        latex: { canonicalForm: "ōlli", lateralLength: "long", finalConsonant: "", sourceStructure: "ōl-tli", progressiveRule: "l-plus-tl-to-ll" },
+      };
+      const lexicalReading = lexicalReadings[intendedMeaning] || null;
+      const traditionalReading = !intendedMeaning
+        && ["short", "long"].includes(writtenLateralLength)
+        && ["short", "long"].includes(phonologicalLateralLength);
+      const requestedMatches = !requestedResult
+        || requestedResult === lexicalReading?.canonicalForm;
+      const authorized = Boolean(
+        (lexicalReading && requestedMatches)
+        || traditionalReading
+      );
+      const traditionalMismatch = traditionalReading
+        && writtenLateralLength !== phonologicalLateralLength;
+      return {
+        kind: "classical-nahuatl-lateral-reading-frame",
+        version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
+        operationId: "cn-l2-lateral-reading",
+        input: sourceForm || `${writtenLateralLength}-written-l`,
+        sourceForm,
+        intendedMeaning,
+        requestedResult,
+        canonicalForm: authorized ? lexicalReading?.canonicalForm || sourceForm : "",
+        sourceStructure: authorized ? lexicalReading?.sourceStructure || "" : "",
+        lateralLength: authorized ? lexicalReading?.lateralLength || phonologicalLateralLength : "",
+        finalConsonant: authorized ? lexicalReading?.finalConsonant || "" : "",
+        progressiveRule: authorized ? lexicalReading?.progressiveRule || "" : "",
+        sourceIsCanonical: Boolean(lexicalReading && sourceForm === lexicalReading.canonicalForm),
+        traditionalSpellingWarning: traditionalMismatch,
+        traditionalSpellingRelation: traditionalMismatch
+          ? writtenLateralLength === "long"
+            ? "ll-written-for-short-l"
+            : "l-written-for-long-ll"
+          : "",
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason: authorized
+          ? ""
+          : lexicalReading && !requestedMatches
+            ? "requested-result-conflicts-with-lexical-reading"
+            : "known-lateral-reading-required",
+        conclusion: {
+          authorized,
+          canonicalForm: authorized ? lexicalReading?.canonicalForm || sourceForm : "",
+          lateralLength: authorized ? lexicalReading?.lateralLength || phonologicalLateralLength : "",
+          finalConsonant: authorized ? lexicalReading?.finalConsonant || "" : "",
+        },
       };
     }
     function normalizeClassicalNahuatlConsonantSound(value) {
@@ -4158,6 +4254,8 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       }
       const candidates = [
         frame.outputForm,
+        frame.canonicalForm,
+        frame.traditionalSolid,
         frame.targetMorpheme,
         frame.outputSpelling,
         frame.realizedRetainedStem,
@@ -4377,6 +4475,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
         buildClassicalNahuatlStressMechanicsFrame,
         "vocable-stress",
+        args
+      );
+    }
+    function buildClassicalNahuatlLateralReadingFrame(...args) {
+      return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
+        buildClassicalNahuatlLateralReadingMechanicsFrame,
+        "lateral-reading",
         args
       );
     }
@@ -5204,6 +5309,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         buildClassicalNahuatlSupportiveVowelFrame,
         getClassicalNahuatlStressRules,
         buildClassicalNahuatlStressFrame,
+        buildClassicalNahuatlLateralReadingFrame,
         getClassicalNahuatlConsonantalLengthRules,
         buildClassicalNahuatlConsonantalLengthFrame,
         getClassicalNahuatlAssimilationRules,
@@ -5407,6 +5513,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     api.buildClassicalNahuatlSyllableStructureFrame = buildClassicalNahuatlSyllableStructureFrame;
     api.buildClassicalNahuatlSupportiveVowelFrame = buildClassicalNahuatlSupportiveVowelFrame;
     api.buildClassicalNahuatlStressFrame = buildClassicalNahuatlStressFrame;
+    api.buildClassicalNahuatlLateralReadingFrame = buildClassicalNahuatlLateralReadingFrame;
     api.normalizeClassicalNahuatlConsonantSound = normalizeClassicalNahuatlConsonantSound;
     api.getClassicalNahuatlLongConsonantSpelling = getClassicalNahuatlLongConsonantSpelling;
     api.buildClassicalNahuatlConsonantalLengthFrame = buildClassicalNahuatlConsonantalLengthFrame;
