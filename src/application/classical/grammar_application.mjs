@@ -180,13 +180,20 @@ function buildClassicalLesson2WritingPass(
     && lesson2WrittenResult?.writtenByLesson2 === true
   );
   const familyPasses = Object.freeze(
-    CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => Object.freeze({
-      familyId,
-      entered: required,
-      status: required
-        ? owned ? "checked-by-lesson2-owner" : "entered-rule-may-still-be-unfinished"
-        : "not-required",
-    })),
+    CLASSICAL_LESSON2_WRITING_FAMILY_IDS.map(familyId => {
+      const ownerCheck = lesson2WrittenResult?.familyChecks?.find(
+        check => check.familyId === familyId,
+      );
+      return Object.freeze({
+        familyId,
+        entered: required && (owned ? ownerCheck?.checked === true : true),
+        status: required
+          ? owned
+            ? ownerCheck?.status || "not-yet-centralized"
+            : "entered-rule-may-still-be-unfinished"
+          : "not-required",
+      });
+    }),
   );
   return Object.freeze({
     kind: "classical-nahuatl-lesson2-writing-pass",
@@ -196,9 +203,9 @@ function buildClassicalLesson2WritingPass(
     writtenResultCount: writtenResultLocations.length,
     familyRoutingIds: CLASSICAL_LESSON2_WRITING_FAMILY_IDS,
     familyPasses,
-    allTwelveFamiliesRouted: required,
+    allTwelveFamiliesRouted: required && familyPasses.every(pass => pass.entered),
     completionStatus: required
-      ? owned ? "lesson2-owned-written-result" : "required-route-active-rules-still-incomplete"
+      ? owned ? "lesson2-owned-compound-boundary-writing" : "required-route-active-rules-still-incomplete"
       : "not-a-writing-result",
     writingOwnerInstalled: owned,
     changesGrammarAuthority: false,
@@ -2626,11 +2633,12 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       "lesson-and-display-authority-forbidden": authorityCarrierClear,
       "classical-visible-surface-firewall": visibleSurfaceViolation === "",
       "lesson2-writing-pass": lesson2WritingPass.required
-        ? lesson2WritingPass.entered
-          && lesson2WritingPass.allTwelveFamiliesRouted
-          && lesson2WritingPass.familyPasses.length === 12
-          && lesson2WritingPass.familyPasses.every(family => family.entered)
-          && lesson2OwnedWritingSatisfied
+        ? requiresLesson2OwnedWriting
+          ? lesson2OwnedWritingSatisfied
+          : lesson2WritingPass.entered
+            && lesson2WritingPass.allTwelveFamiliesRouted
+            && lesson2WritingPass.familyPasses.length === 12
+            && lesson2WritingPass.familyPasses.every(family => family.entered)
         : lesson2WritingPass.entered === false,
     });
     const gcdSatisfied = GCD_INVARIANT_IDS.every(
@@ -2749,7 +2757,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && result.lesson2WritingPass?.familyPasses?.length === 12
       && result.lesson2WritingPass.familyPasses.every((familyPass, index) => (
         familyPass?.familyId === CLASSICAL_LESSON2_WRITING_FAMILY_IDS[index]
-        && familyPass?.entered === result.lesson2WritingPass.required
+        && familyPass?.entered
+          === expectedLesson2WritingPass.familyPasses[index]?.entered
+        && familyPass?.status
+          === expectedLesson2WritingPass.familyPasses[index]?.status
         && Object.isFrozen(familyPass)
       ))
       && result.lesson2WritingPass?.writtenResultCount

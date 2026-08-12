@@ -38,7 +38,8 @@ function run(ctx) {
         surface: written.surface,
         action: written.boundaryActions?.[0]?.status,
         rule: written.boundaryActions?.[0]?.ruleId,
-        families: written.familyChecks?.length,
+        ownedFamilies: written.ownedWritingFamilyIds,
+        remainingFamilies: written.remainingWritingFamilyIds?.length,
         valid: ctx.isClassicalNahuatlLesson2WrittenResult(written),
     }, {
         source: "authorized",
@@ -46,7 +47,12 @@ function run(ctx) {
         surface: "tenanca",
         action: "applied",
         rule: "cn-l2-211-regressive-m-partial",
-        families: 12,
+        ownedFamilies: [
+            "sound-and-spelling",
+            "internal-stem-boundaries",
+            "regressive-assimilation-and-dissimilation",
+        ],
+        remainingFamilies: 9,
         valid: true,
     });
 
@@ -63,7 +69,7 @@ function run(ctx) {
         grammarParts: ["tenam", "ca"],
         written: "tenanca",
         candidate: "tenanca",
-        status: "lesson2-owned-written-result",
+        status: "lesson2-owned-compound-boundary-writing",
         valid: true,
     });
 

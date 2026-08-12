@@ -169,8 +169,27 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
         ruleId: frame.selectedRuleId,
       }));
     }
+    const appliedRuleIds = boundaryActions
+      .filter(action => action.status === "applied" && action.ruleId)
+      .map(action => action.ruleId);
+    const ownedFamilyIds = new Set([
+      "sound-and-spelling",
+      "internal-stem-boundaries",
+      ...(appliedRuleIds.some(ruleId => ruleId.includes("-210-"))
+        ? ["progressive-assimilation"]
+        : []),
+      ...(appliedRuleIds.some(ruleId => ruleId.includes("-211-"))
+        ? ["regressive-assimilation-and-dissimilation"]
+        : []),
+    ]);
     const familyChecks = Object.freeze(LESSON2_WRITING_FAMILIES.map(familyId => (
-      Object.freeze({ familyId, checked: true })
+      Object.freeze({
+        familyId,
+        checked: ownedFamilyIds.has(familyId),
+        status: ownedFamilyIds.has(familyId)
+          ? "performed-by-lesson2-owner"
+          : "not-yet-centralized",
+      })
     )));
     const surface = realizedParts.join("");
     const result = Object.freeze({
@@ -183,7 +202,11 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
       realizedParts: Object.freeze(realizedParts),
       boundaryActions: Object.freeze(boundaryActions),
       familyChecks,
-      allWritingFamiliesChecked: familyChecks.length === 12,
+      ownedWritingFamilyIds: Object.freeze([...ownedFamilyIds]),
+      remainingWritingFamilyIds: Object.freeze(
+        LESSON2_WRITING_FAMILIES.filter(familyId => !ownedFamilyIds.has(familyId)),
+      ),
+      allWritingFamiliesChecked: familyChecks.every(check => check.checked),
       writtenByLesson2: true,
       callerSuppliedSurfaceAuthority: false,
       formulaStringAuthority: false,
@@ -205,8 +228,10 @@ export function createClassicalNahuatlLesson2WriterApi(targetObject = globalThis
       && result.source === receipt.source
       && result.surface === receipt.surface
       && result.writtenByLesson2 === true
-      && result.allWritingFamiliesChecked === true
       && result.familyChecks?.length === 12
+      && result.ownedWritingFamilyIds?.length >= 2
+      && result.remainingWritingFamilyIds?.length
+        === 12 - result.ownedWritingFamilyIds.length
       && result.callerSuppliedSurfaceAuthority === false
       && result.formulaStringAuthority === false
       && result.lessonMetadataAuthority === false

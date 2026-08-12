@@ -59,8 +59,8 @@ function run(ctx) {
         required: true,
         entered: true,
         families: 12,
-        everyFamilyEntered: true,
-        status: "lesson2-owned-written-result",
+        everyFamilyEntered: false,
+        status: "lesson2-owned-compound-boundary-writing",
         enforced: true,
     });
 
