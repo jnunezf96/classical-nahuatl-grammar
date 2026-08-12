@@ -1592,8 +1592,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const explicitSentenceSurfaceMode = Object.prototype.hasOwnProperty.call(overrides, "sentenceSurfaceMode")
         || Object.prototype.hasOwnProperty.call(overrides, "sentenceMode");
       const requestedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(overrides.sentenceSurfaceMode || overrides.sentenceMode || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-surface", "statement"));
-      const requestedSentenceNegativeMode = normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(overrides.polarityMode || overrides.polarity || overrides.sentenceNegativeMode || overrides.negativeMode || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-polarity", getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-negative", "positive")));
-      const rawRequestedSentenceParticleId = String(overrides.sentenceParticleId || overrides.sentenceParticle || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-particle", "none") || "none").trim();
+      const rawRequestedParticleCombinationShortcutId = String(overrides.particleCombinationShortcutId || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-particle-combination-shortcut", "none") || "none").trim();
+      const particleCombinationShortcutEntry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+        ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(rawRequestedParticleCombinationShortcutId)
+        : null;
+      const requestedParticleCombinationShortcutId = particleCombinationShortcutEntry?.shortcutId || "none";
+      const requestedSentenceNegativeMode = normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(particleCombinationShortcutEntry?.polarity || overrides.polarityMode || overrides.polarity || overrides.sentenceNegativeMode || overrides.negativeMode || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-polarity", getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-negative", "positive")));
+      const effectiveSentenceNegativeMode = particleCombinationShortcutEntry?.consumesSelectedPolarity
+        ? "positive"
+        : requestedSentenceNegativeMode;
+      const rawRequestedSentenceParticleId = String(particleCombinationShortcutEntry?.particleId || overrides.sentenceParticleId || overrides.sentenceParticle || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-particle", "none") || "none").trim();
       const requestedSentenceParticleId = rawRequestedSentenceParticleId === "none"
         || typeof targetObject.findClassicalNahuatlSentenceParticleEntry === "function"
           && targetObject.findClassicalNahuatlSentenceParticleEntry(rawRequestedSentenceParticleId)
@@ -1608,7 +1616,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific")?.checked === true;
       const requestedSentenceParticleHonorificized = rawRequestedSentenceParticleHonorificized
         && (explicitSentenceParticleHonorificized || ["l3-o-behold", "l3-auh-interjection", "l3-ca-no-zo"].includes(requestedSentenceParticleId));
-      const rawRequestedSentenceAdverbialId = String(overrides.sentenceAdverbialId || overrides.sentenceAdverbial || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-adverbial", "none") || "none").trim();
+      const rawRequestedSentenceAdverbialId = String(particleCombinationShortcutEntry?.adverbialId || overrides.sentenceAdverbialId || overrides.sentenceAdverbial || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-adverbial", "none") || "none").trim();
       const requestedSentenceAdverbialId = rawRequestedSentenceAdverbialId === "none"
         || typeof targetObject.findClassicalNahuatlSentenceAdverbialEntry === "function"
           && targetObject.findClassicalNahuatlSentenceAdverbialEntry(rawRequestedSentenceAdverbialId)
@@ -1623,7 +1631,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         tense: selectedTense,
         subject,
         sentenceSurfaceMode: requestedSentenceSurfaceMode,
-        polarityMode: requestedSentenceNegativeMode,
+        polarityMode: effectiveSentenceNegativeMode,
         introductoryParticle: requestedIntroductoryParticle,
         prefaceParticle: requestedPrefaceParticle,
         introductoryModifier: requestedIntroductoryModifier,
@@ -1963,7 +1971,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         adverbPosition: String(overrides.adverbPosition || "").trim(),
         sentenceSurfaceMode,
         sentenceNegativeMode,
-        polarityMode: sentenceNegativeMode,
+        polarityMode: requestedSentenceNegativeMode,
+        requestedParticleCombinationShortcutId,
+        particleCombinationShortcutEntry,
         requestedSentenceParticleId,
         requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId,
@@ -3445,6 +3455,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function buildClassicalFinalSentenceDisplayProjection({
       basalUnit = "",
+      requestedParticleCombinationShortcutId = "none",
       requestedSentenceParticleId = "none",
       requestedSentenceParticleHonorificized = false,
       requestedSentenceAdverbialId = "none",
@@ -3488,10 +3499,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? canonicalNuclearResultFrame.sentenceFormulaAttachment
           : sentenceFormulaAttachment || ""
       ).trim();
+      const shortcutEntry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+        ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(requestedParticleCombinationShortcutId)
+        : null;
       const normalizedAdverbialId = String(requestedSentenceAdverbialId || "none").trim().toLowerCase();
       const normalizedParticleId = String(requestedSentenceParticleId || "none").trim().toLowerCase();
       const adverbialRequested =
-        !["", "none"].includes(normalizedAdverbialId);
+        !["", "none"].includes(normalizedAdverbialId)
+        && !(shortcutEntry?.consumesSelectedAdverbial && shortcutEntry.adverbialId === requestedSentenceAdverbialId);
       const particleRequested =
         !["", "none"].includes(normalizedParticleId)
         || requestedSentenceParticleHonorificized === true;
@@ -3946,6 +3961,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sentenceAuthorized = sentenceFrame?.authorizationStatus === "authorized";
       const finalizedSentence = buildClassicalFinalSentenceDisplayProjection({
         basalUnit: "nnc",
+        requestedParticleCombinationShortcutId: state.requestedParticleCombinationShortcutId,
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,
@@ -4101,6 +4117,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const selectedFormula = finiteSurfaceFrame.formulaRealization;
       const finalizedSentence = buildClassicalFinalSentenceDisplayProjection({
         basalUnit: "vnc",
+        requestedParticleCombinationShortcutId: state.requestedParticleCombinationShortcutId,
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,
@@ -4224,6 +4241,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const finalizedSentence =
           buildClassicalFinalSentenceDisplayProjection({
             basalUnit: "nnc",
+            requestedParticleCombinationShortcutId:
+              sourceState.requestedParticleCombinationShortcutId,
             requestedSentenceParticleId:
               sourceState.requestedSentenceParticleId,
             requestedSentenceParticleHonorificized:
@@ -4457,6 +4476,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sentenceFrame = scalarFrame.sentenceFrame;
         const finalizedSentence = buildClassicalFinalSentenceDisplayProjection({
           basalUnit: "nnc",
+          requestedParticleCombinationShortcutId:
+            sourceState.requestedParticleCombinationShortcutId,
           requestedSentenceParticleId:
             sourceState.requestedSentenceParticleId,
           requestedSentenceParticleHonorificized:
@@ -5416,6 +5437,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       let sentenceSurfaceDisplay = authorizationStatus === "authorized" ? provisionalSentenceSurfaceDisplay : "";
       const finalizedSentenceDisplay = buildClassicalFinalSentenceDisplayProjection({
         basalUnit: state.basalUnit,
+        requestedParticleCombinationShortcutId: state.requestedParticleCombinationShortcutId,
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,

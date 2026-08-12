@@ -2766,6 +2766,19 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                       <label
                         class="classical-rule-control classical-rule-control--result-surface"
                         data-classical-rule-logic-result-surface-control="true"
+                        data-classical-vnc-authority-order="sentence-combination-shortcut"
+                        data-classical-nnc-authority-order="sentence-combination-shortcut"
+                      >
+                        <span class="classical-rule-control__label">Quick combination</span>
+                        <select
+                          id="classical-rule-logic-particle-combination-shortcut"
+                          data-classical-rule-logic-control="particle-combination-shortcut"
+                          data-classical-result-scope="sentence-particle-combination-shortcut"
+                        ></select>
+                      </label>
+                      <label
+                        class="classical-rule-control classical-rule-control--result-surface"
+                        data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-particle"
                         data-classical-nnc-authority-order="sentence-particle"
                       >

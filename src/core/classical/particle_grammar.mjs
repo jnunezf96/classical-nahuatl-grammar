@@ -2096,6 +2096,75 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         entry.id === requested || entry.lookupKeys.includes(lookup)
       )) || null;
     }
+    const CLASSICAL_NAHUATL_PARTICLE_SHORTCUT_ADVERBIAL_IDS = Object.freeze({
+      mec: "l3-mec",
+      nee: "l3-nee",
+      "tēl": "l3-tel",
+      oc: "l3-oc",
+      zan: "l3-zan",
+      "zā": "l3-za",
+      ye: "l3-ye",
+      no: "l3-no-adverbial",
+      "nō": "l3-no-adverbial",
+      quin: "l3-quin",
+      ach: "l3-ach",
+      at: "l3-at",
+      ac: "l3-ac"
+    });
+    function getClassicalNahuatlParticleCombinationShortcutEntries() {
+      return getClassicalNahuatlSentenceParticleEntries()
+        .filter(entry => ["negation", "collocation"].includes(entry.functionScope))
+        .map(entry => {
+          const formulaSegments = Array.from(entry.formulaSegments || []);
+          const polarity = formulaSegments.some(segment => ["ah#", "ca#"].includes(segment))
+            ? "negative"
+            : "positive";
+          const adverbialSegment = formulaSegments.find(segment => (
+            Object.prototype.hasOwnProperty.call(
+              CLASSICAL_NAHUATL_PARTICLE_SHORTCUT_ADVERBIAL_IDS,
+              segment
+            )
+          )) || "";
+          const adverbialId = adverbialSegment
+            ? CLASSICAL_NAHUATL_PARTICLE_SHORTCUT_ADVERBIAL_IDS[adverbialSegment]
+            : "none";
+          let adverbialConsumed = false;
+          const particleChoiceSegments = formulaSegments.filter(segment => {
+            if (["ah#", "ca#"].includes(segment)) return false;
+            if (!adverbialConsumed && segment === adverbialSegment) {
+              adverbialConsumed = true;
+              return false;
+            }
+            return true;
+          });
+          const particleChoice = particleChoiceSegments.join(" ");
+          return Object.freeze({
+            kind: "classical-nahuatl-particle-combination-shortcut-entry",
+            shortcutId: entry.id,
+            particleId: entry.id,
+            sourceForm: entry.sourceForm,
+            gloss: entry.gloss,
+            polarity,
+            adverbialId,
+            particleChoice,
+            particleChoiceSegments: Object.freeze(particleChoiceSegments),
+            choiceSummary: [particleChoice, adverbialSegment, polarity]
+              .filter(Boolean)
+              .join(" + "),
+            formulaSegments: Object.freeze(formulaSegments),
+            consumesSelectedPolarity: polarity === "negative",
+            consumesSelectedAdverbial: adverbialId !== "none",
+            shortcutIsGrammarAuthority: false,
+            canonicalParticleResultRemainsAuthority: true
+          });
+        });
+    }
+    function findClassicalNahuatlParticleCombinationShortcutEntry(candidate = "") {
+      const requested = String(candidate == null ? "" : candidate).trim();
+      return getClassicalNahuatlParticleCombinationShortcutEntries().find(entry => (
+        entry.shortcutId === requested
+      )) || null;
+    }
     function getClassicalNahuatlSentenceAdverbialEntries() {
       const seen = new Set();
       return getClassicalNahuatlParticleSourceEntries().filter(entry => {
@@ -2782,6 +2851,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         isClassicalNahuatlParticleHonorificResultFrame,
         getClassicalNahuatlSentenceParticleEntries,
         findClassicalNahuatlSentenceParticleEntry,
+        getClassicalNahuatlParticleCombinationShortcutEntries,
+        findClassicalNahuatlParticleCombinationShortcutEntry,
         buildClassicalNahuatlSentenceParticleLayerFrame,
         isClassicalNahuatlIssuedParticleSentenceLayerFrame,
         getClassicalNahuatlParticleGroups,
@@ -2882,6 +2953,8 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     api.isClassicalNahuatlParticleHonorificResultFrame = isClassicalNahuatlParticleHonorificResultFrame;
     api.getClassicalNahuatlSentenceParticleEntries = getClassicalNahuatlSentenceParticleEntries;
     api.findClassicalNahuatlSentenceParticleEntry = findClassicalNahuatlSentenceParticleEntry;
+    api.getClassicalNahuatlParticleCombinationShortcutEntries = getClassicalNahuatlParticleCombinationShortcutEntries;
+    api.findClassicalNahuatlParticleCombinationShortcutEntry = findClassicalNahuatlParticleCombinationShortcutEntry;
     api.buildClassicalNahuatlSentenceParticleLayerFrame = buildClassicalNahuatlSentenceParticleLayerFrame;
     api.isClassicalNahuatlIssuedParticleSentenceLayerFrame = isClassicalNahuatlIssuedParticleSentenceLayerFrame;
     api.getClassicalNahuatlSentenceAdverbialEntries = getClassicalNahuatlSentenceAdverbialEntries;

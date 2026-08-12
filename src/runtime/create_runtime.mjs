@@ -12,7 +12,7 @@ import { installClassicalNahuatlSourceStemInventoryGlobals } from "../core/class
 import { installClassicalNahuatlTranscriptionGlobals } from "../core/classical/transcription.mjs?v=20260811-lesson2-writing-complete-065";
 import { installClassicalNahuatlLesson2WriterGlobals } from "../core/classical/lesson2_writer.mjs?v=20260812-lesson2-complete-writing-pipeline-069";
 import { installClassicalTranscriptionSemanticOwnersGlobals } from "../core/classical/transcription_owner_catalog.mjs?v=20260802-l58-transcription-owners-001";
-import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260812-lesson3-uncontradicted-075";
+import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260812-particle-shortcuts-081";
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";
 import { installClassicalNahuatlNuclearClauseGlobals } from "../core/classical/nuclear_clause_source.mjs?v=20260801-pre-l58-gates-118";
 import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260811-lesson1-multigroup-024";
@@ -66,18 +66,18 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260726-l
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260726-lessons2-58-one-system-094";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260811-classical-runtime-only-056";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-lesson3-uncontradicted-075";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-particle-shortcuts-081";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-lesson3-uncontradicted-075";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-particle-shortcuts-081";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson3-uncontradicted-075";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-particle-shortcuts-081";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260812-lesson3-groups-7-9-073";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260812-particle-shortcuts-081";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],

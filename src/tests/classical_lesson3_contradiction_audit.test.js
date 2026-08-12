@@ -171,6 +171,29 @@ function run(ctx = {}) {
         exact: ledger.records.filter((record) => record.implementationCredit === "EXACTLY_OBSERVED").length,
     }, { total: 204, accepted: 204, exact: 204 });
 
+    const ahzoZanShortcut =
+        ctx.findClassicalNahuatlParticleCombinationShortcutEntry("l3-ahzo-zan");
+    const ahzoZanResult = ctx.buildClassicalRuleLogicSurfaceFrame({
+        ...baseVnc,
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        particleCombinationShortcutId: "l3-ahzo-zan",
+    });
+    s.eq("zo plus zan plus negative selects the exact canonical combination", {
+        choiceSummary: ahzoZanShortcut.choiceSummary,
+        particle: ahzoZanShortcut.particleChoice,
+        adverbial: ahzoZanShortcut.adverbialId,
+        polarity: ahzoZanShortcut.polarity,
+        surface: ahzoZanResult.sentenceSurfaceDisplay,
+    }, {
+        choiceSummary: "zo + zan + negative",
+        particle: "zo",
+        adverbial: "l3-zan",
+        polarity: "negative",
+        surface: "Ahzo zan ninemi.",
+    });
+
     for (const [id, expectedFormula] of formulaRows) {
         s.no(`${id} rejects a collapsed formula mutation`,
             particle(id).formula === expectedFormula.replace(/ \+ /gu, ""));
@@ -179,6 +202,14 @@ function run(ctx = {}) {
         negative("l3-ma", "statement")[1] === "l3-ca-negative");
     s.no("honorific formation rejects the old short-vowel mutation",
         honorificResults[1].formula === "auh + tzin");
+    s.no("the exact shortcut observation rejects a missing combination",
+        ctx.buildClassicalRuleLogicSurfaceFrame({
+            ...baseVnc,
+            subject: "1sg",
+            mood: "indicative",
+            tense: "present",
+            particleCombinationShortcutId: "missing-combination",
+        }).sentenceSurfaceDisplay === "Ahzo zan ninemi.");
 
     return s;
 }

@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-broad-boundaries-076";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-particle-shortcuts-081";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260812-broad-boundaries-076";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-broad-boundaries-076";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-broad-boundaries-076";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-broad-boundaries-076";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-broad-boundaries-076";
+} from "../runtime/create_runtime.mjs?v=20260812-particle-shortcuts-081";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-particle-shortcuts-081";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-particle-shortcuts-081";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-particle-shortcuts-081";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-particle-shortcuts-081";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-particle-shortcuts-081";
 
 let browserBootstrapPromise = null;
 

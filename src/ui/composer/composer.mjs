@@ -4448,6 +4448,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         derivedVnc: "",
         vncOutputScope: "single",
         sentence: {
+          combination: "none",
           particle: "none",
           particleHonorificized: false,
           adverbial: "none",
@@ -4638,6 +4639,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return fallback;
       };
       const requestedSentenceParticle = String(sentenceSource.particle || "none").trim();
+      const requestedSentenceCombination = String(sentenceSource.combination || "none").trim();
+      const sentenceCombinationEntry = requestedSentenceCombination === "none"
+        ? null
+        : typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+          ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(requestedSentenceCombination)
+          : null;
+      if (requestedSentenceCombination !== "none" && !sentenceCombinationEntry) {
+        sentenceInvalidFields.push("combination");
+      }
+      next.sentence.combination = sentenceCombinationEntry?.shortcutId || "none";
       const sentenceParticleEntry = requestedSentenceParticle === "none"
         ? null
         : typeof targetObject.findClassicalNahuatlSentenceParticleEntry === "function"
@@ -4805,6 +4816,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           ? targetObject.document.getElementById("classical-rule-logic-vnc-output-scope")?.value ?? "single"
           : "single",
         sentence: {
+          combination: targetObject.document.getElementById("classical-rule-logic-particle-combination-shortcut")?.value || "none",
           particle: targetObject.document.getElementById("classical-rule-logic-sentence-particle")?.value || "none",
           particleHonorificized: targetObject.document.getElementById("classical-rule-logic-sentence-particle-honorific")?.checked === true,
           adverbial: targetObject.document.getElementById("classical-rule-logic-sentence-adverbial")?.value || "none",
@@ -5207,6 +5219,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return false;
       }
       const valuesByField = {
+        sentenceCombination: ["classical-rule-logic-particle-combination-shortcut", snapshot.sentence?.combination],
         sentenceParticle: ["classical-rule-logic-sentence-particle", snapshot.sentence?.particle],
         sentenceParticleHonorificized: ["classical-rule-logic-sentence-particle-honorific", snapshot.sentence?.particleHonorificized],
         sentenceAdverbial: ["classical-rule-logic-sentence-adverbial", snapshot.sentence?.adverbial],
@@ -5243,6 +5256,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           changed = true;
         }
       });
+      if (hasEntradaUrlExplicitField(snapshot, "sentenceCombination")
+        && snapshot.sentence?.combination !== "none") {
+        changed = applyClassicalParticleCombinationShortcut(
+          snapshot.sentence?.combination
+        ) || changed;
+      }
       return changed;
     }
     function applyEntradaUrlStateSnapshot(snapshot = null, options = {}) {
@@ -8070,6 +8089,69 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       control.value = Array.from(control.options || []).some(option => option.value === selectedValue) ? selectedValue : "none";
       return true;
     }
+    function populateClassicalParticleCombinationShortcutControl() {
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+      const entries = typeof targetObject.getClassicalNahuatlParticleCombinationShortcutEntries === "function"
+        ? targetObject.getClassicalNahuatlParticleCombinationShortcutEntries()
+        : [];
+      if (!control || !Array.isArray(entries)) return false;
+      const selectedValue = String(control.value || "none");
+      Array.from(control.children || []).forEach(child => child.remove());
+      const noneOption = targetObject.document.createElement("option");
+      noneOption.value = "none";
+      noneOption.textContent = "Choose a combination";
+      control.appendChild(noneOption);
+      const negativeGroup = targetObject.document.createElement("optgroup");
+      negativeGroup.label = "Negative forms";
+      const combinationGroup = targetObject.document.createElement("optgroup");
+      combinationGroup.label = "Particle combinations";
+      entries.forEach(entry => {
+        const option = targetObject.document.createElement("option");
+        option.value = entry.shortcutId;
+        option.textContent = `${entry.choiceSummary} → ${entry.sourceForm}`;
+        option.title = entry.gloss || "";
+        option.dataset.classicalAuthorityRole = "non-authorizing-lesson3-shortcut";
+        (entry.polarity === "negative" ? negativeGroup : combinationGroup).appendChild(option);
+      });
+      if (negativeGroup.children.length) control.appendChild(negativeGroup);
+      if (combinationGroup.children.length) control.appendChild(combinationGroup);
+      control.value = Array.from(control.options || []).some(option => option.value === selectedValue)
+        ? selectedValue
+        : "none";
+      return true;
+    }
+    function applyClassicalParticleCombinationShortcut(shortcutId = "none") {
+      const entry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+        ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(shortcutId)
+        : null;
+      if (!entry) return false;
+      const particleControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle");
+      const adverbialControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-adverbial");
+      const polarityControl = targetObject.document?.getElementById?.("classical-rule-logic-polarity");
+      if (particleControl) {
+        Array.from(particleControl.options || []).forEach(option => {
+          if (option.dataset.classicalShortcutOriginalText) {
+            option.textContent = option.dataset.classicalShortcutOriginalText;
+            delete option.dataset.classicalShortcutOriginalText;
+          }
+        });
+        particleControl.value = entry.particleId;
+        const selectedOption = particleControl.selectedOptions?.[0];
+        if (selectedOption && entry.particleChoice) {
+          selectedOption.dataset.classicalShortcutOriginalText = selectedOption.textContent;
+          selectedOption.textContent = entry.particleChoice;
+        }
+      }
+      if (adverbialControl) adverbialControl.value = entry.adverbialId;
+      if (polarityControl) polarityControl.value = entry.polarity;
+      targetObject.document?.querySelectorAll?.('[data-classical-segment-control="classical-rule-logic-polarity"]')
+        ?.forEach(button => {
+          const active = button.dataset.classicalSegmentValue === entry.polarity;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      return true;
+    }
     function populateClassicalSentenceAdverbialControl() {
       const control = targetObject.document?.getElementById?.("classical-rule-logic-sentence-adverbial");
       const entries = typeof targetObject.getClassicalNahuatlSentenceAdverbialEntries === "function"
@@ -10310,6 +10392,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     function initVerbScreenCalculator() {
       populateClassicalSentenceParticleControl();
       populateClassicalSentenceAdverbialControl();
+      populateClassicalParticleCombinationShortcutControl();
+      applyEntradaUrlSegmentsFromLocation({
+        triggerGenerate: false,
+        immediateRefresh: false
+      });
       const {
         ansButton,
         modeButton,
@@ -10349,6 +10436,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           return;
         }
         control.addEventListener("change", () => {
+          const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+          if (control.id === "classical-rule-logic-particle-combination-shortcut") {
+            applyClassicalParticleCombinationShortcut(control.value);
+          } else if (shortcutControl && [
+            "classical-rule-logic-sentence-particle",
+            "classical-rule-logic-sentence-adverbial",
+            "classical-rule-logic-polarity"
+          ].includes(control.id)) {
+            shortcutControl.value = "none";
+          }
           if (control.id === "classical-construction-operation") {
             syncClassicalConstructionSourceUnitAvailability(
               getClassicalBasalUnitFromRuntime()
@@ -11412,6 +11509,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       { id: "classical-rule-logic-sentence-particle", defaultValue: "none", legacySentence: true },
       { id: "classical-rule-logic-sentence-particle-honorific", defaultValue: false, type: "checkbox", legacySentence: true },
       { id: "classical-rule-logic-sentence-adverbial", defaultValue: "none", legacySentence: true },
+      { id: "classical-rule-logic-particle-combination-shortcut", defaultValue: "none", legacySentence: true },
       { id: "classical-rule-logic-causative-result-subject", defaultValue: "3sg" }
     ]);
     var ENTRADA_URL_SEGMENT_SCHEMA = Object.freeze([{
@@ -11450,6 +11548,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       segment: "vnc-output",
       path: ["vncOutputScope"],
       defaultValue: "single"
+    }, {
+      key: "sentenceCombination",
+      segment: "sentence-combination",
+      path: ["sentence", "combination"],
+      defaultValue: "none"
     }, {
       key: "sentenceParticle",
       segment: "sentence-particle",

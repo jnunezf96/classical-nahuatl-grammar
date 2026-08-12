@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-broad-boundaries-076";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-particle-shortcuts-081";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
