@@ -1,0 +1,6 @@
+{
+  "schemaVersion": 1,
+  "lesson": 3,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {}
+}

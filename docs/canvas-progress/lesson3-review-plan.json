@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "lesson": 3,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson3-particle-structure-and-identity",
+      "title": "Particle structure and identity",
+      "sections": ["§3.1"],
+      "writingJob": "Keep a particle monomorphemic and preserve its typed identity, attachment, spelling, and exceptional structure.",
+      "readingJob": "Help the reader recognize particles, attachment marks, stress, and uncertain historical analyses.",
+      "decisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
+      "controlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
+      "proposal": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing."
+    },
+    {
+      "groupId": "lesson3-particle-use-and-structural-limits",
+      "title": "Particle use and structural limits",
+      "sections": ["§3.2"],
+      "writingJob": "Allow particles in their licensed functions and block them from unlicensed matrix, principal-clause, or compound roles.",
+      "readingJob": "Guide recognition of adverbial, exclamatory, independent, and embedded particle uses.",
+      "decisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
+      "controlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
+      "proposal": "Make particle rank and function affect normal application behavior, not merely a label or explanation."
+    },
+    {
+      "groupId": "lesson3-clause-introducing-particles",
+      "title": "Clause-introducing particles",
+      "sections": ["§3.2.1"],
+      "writingJob": "Offer the licensed clause introducers and place each before the clause with its own force and applicability.",
+      "readingJob": "Guide the interpretation of ca, cuix, tlā, mā, and ō without replacing Nahuatl structure with an English label.",
+      "decisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
+      "controlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
+      "proposal": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties."
+    },
+    {
+      "groupId": "lesson3-adjunctor-in",
+      "title": "The adjunctor in",
+      "sections": ["§3.2.2"],
+      "writingJob": "Use optional in to mark an adjoined unit without treating it as a determiner.",
+      "readingJob": "Help the reader recover adjunction and resist English article-based analysis.",
+      "decisionSplit": "The user may choose optional explicit adjunction; the application keeps in out of a determiner slot and preserves the nuclear clause.",
+      "controlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
+      "proposal": "Unify optional adjunction with the existing clause relation system and keep translation non-authorizing."
+    },
+    {
+      "groupId": "lesson3-conjunctor-auh",
+      "title": "The conjunctor auh",
+      "sections": ["§3.2.3"],
+      "writingJob": "Offer auh for its licensed conjunction relation and place it between the related sentence units.",
+      "readingJob": "Guide the contextual reading of auh as and or but.",
+      "decisionSplit": "The user chooses the intended relation; the application supplies licensed placement and Result structure.",
+      "controlPolicy": "Reuse the clause-relation choice; do not make English and versus but a second grammatical control unless Canvas requires a distinct Nahuatl choice.",
+      "proposal": "Keep one Nahuatl conjunction choice while allowing context-sensitive interpretation."
+    },
+    {
+      "groupId": "lesson3-adverbial-particles",
+      "title": "Adverbial particles",
+      "sections": ["§3.2.4"],
+      "writingJob": "Offer adverbial particles with their licensed meanings, attachment, tense restrictions, and placement.",
+      "readingJob": "Guide contextual meanings and distinguish bound particles from similar-looking independent forms.",
+      "decisionSplit": "The user chooses the intended meaning or discourse contribution; the application enforces attachment, tense, and placement.",
+      "controlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
+      "proposal": "Make lexical choice user-facing only where meaning is genuinely intended; keep realization automatic."
+    },
+    {
+      "groupId": "lesson3-interjections-and-vocative",
+      "title": "Interjections and the vocative particle",
+      "sections": ["§3.2.5"],
+      "writingJob": "Generate licensed interjections and the bound vocative particle with speaker, repetition, attachment, and stress requirements.",
+      "readingJob": "Guide emotional force, speaker restrictions, repetition, and direct address.",
+      "decisionSplit": "The user chooses the intended interjection or direct address; the application enforces speaker restrictions, attachment, repetition limits, and accent.",
+      "controlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
+      "proposal": "Separate genuine expressive choice from automatic vocative realization."
+    },
+    {
+      "groupId": "lesson3-negative-particle-prefixes",
+      "title": "Negative particle prefixes",
+      "sections": ["§3.3"],
+      "writingJob": "Select ah# or ca# by grammatical environment, attach it to the following particle, and preserve licensed lexicalized combinations.",
+      "readingJob": "Help the reader recover negation, attachment, complementary distribution, and resulting lexical meanings.",
+      "decisionSplit": "The user chooses negation and intended construction; the application chooses ah# versus ca# and performs the boundary changes.",
+      "controlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
+      "proposal": "Make negative-prefix selection an application duty governed by the sentence environment."
+    },
+    {
+      "groupId": "lesson3-particle-collocations",
+      "title": "Particle collocations",
+      "sections": ["§3.4"],
+      "writingJob": "Build licensed multi-particle sequences in fixed order, preserve separate writing, and handle lexicalized meanings and stress-group behavior.",
+      "readingJob": "Help the reader recover the members, order, attachment, and contextual meaning of a collocation.",
+      "decisionSplit": "The user chooses the intended combined meaning or construction; the application builds the licensed sequence and order.",
+      "controlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
+      "proposal": "Treat Lesson 3 itself as the particle sequence pipeline rather than concatenating interface labels."
+    },
+    {
+      "groupId": "lesson3-honorificized-particles",
+      "title": "Honorificized particles",
+      "sections": ["§3.5"],
+      "writingJob": "Derive licensed honorificized particles through the canonical honorific operation and preserve their Result meaning and placement.",
+      "readingJob": "Help the reader recognize the honorific formation and its social meaning.",
+      "decisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
+      "controlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
+      "proposal": "Route particle honorificization through the shared grammar operation instead of a special display-only form."
+    }
+  ]
+}
+
