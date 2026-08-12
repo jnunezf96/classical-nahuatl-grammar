@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 384,
-    "exactlyImplementedWritingJobs": 264,
-    "writingJobsAwaitingExactObservation": 120,
+    "exactlyImplementedWritingJobs": 318,
+    "writingJobsAwaitingExactObservation": 66,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 155,
@@ -3844,10 +3844,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L032-200085F1A8",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L032-200085F1A8-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3957,10 +3957,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L035-63D7FE9185",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L035-63D7FE9185-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4014,10 +4014,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L037-F7F60F2916",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L037-F7F60F2916-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4043,10 +4043,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L038-A2D51BA4BB",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L038-A2D51BA4BB-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4072,10 +4072,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L039-ACF0895BEB",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P042-L039-ACF0895BEB-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4101,10 +4101,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L003-353341D1F5",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L003-353341D1F5-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4130,10 +4130,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L004-F2E29DEABA",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L004-F2E29DEABA-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4383,10 +4383,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L009-8A8A8CF899",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L009-8A8A8CF899-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4412,10 +4412,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L010-2CCAB7C51B",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L010-2CCAB7C51B-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4585,10 +4585,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L019-15C0490C69",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L019-15C0490C69-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4614,10 +4614,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L020-A07915A2FD",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L020-A07915A2FD-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4643,10 +4643,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L020-A07915A2FD-02",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L020-A07915A2FD-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4759,10 +4759,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L027-98A44BD022-02",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L027-98A44BD022-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -4928,10 +4928,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L034-AB18229A6C",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L034-AB18229A6C-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5013,10 +5013,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L038-8B0190F494",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L038-8B0190F494-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5042,10 +5042,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L039-3329EAB5F5",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P043-L039-3329EAB5F5-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5155,10 +5155,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L004-D360BDABAF",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L004-D360BDABAF-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5184,10 +5184,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L005-D667DCBE75",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L005-D667DCBE75-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5241,10 +5241,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L008-C4AD6FC5E4",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L008-C4AD6FC5E4-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5298,10 +5298,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L009-A973F5B96F",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L009-A973F5B96F-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5327,10 +5327,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L009-A973F5B96F-02",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L009-A973F5B96F-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5356,10 +5356,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L011-8D096DB6AB",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L011-8D096DB6AB-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5385,10 +5385,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L012-80135184B8",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L012-80135184B8-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5414,10 +5414,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L014-144263341A",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L014-144263341A-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5471,10 +5471,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L017-D45B9DF812",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L017-D45B9DF812-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5500,10 +5500,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L017-2985B8B7F5",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L017-2985B8B7F5-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5529,10 +5529,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L019-A1ABA633CB",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L019-A1ABA633CB-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5558,10 +5558,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L021-561E724BF9",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L021-561E724BF9-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5587,10 +5587,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L023-01709339AE",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L023-01709339AE-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5616,10 +5616,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L024-9D5908F96D",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L024-9D5908F96D-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5701,10 +5701,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L025-8730E52478",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L025-8730E52478-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5730,10 +5730,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L029-4CEF656946",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L029-4CEF656946-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5875,10 +5875,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L034-DCC310EE8E",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L034-DCC310EE8E-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5933,10 +5933,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L036-68347FAA55",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L036-68347FAA55-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -5991,10 +5991,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L038-2D143BDBE9",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L038-2D143BDBE9-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6020,10 +6020,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L039-D582A407B2",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P044-L039-D582A407B2-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6162,10 +6162,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L006-172CAF6951",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L006-172CAF6951-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6219,10 +6219,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L008-A9CE40A048",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L008-A9CE40A048-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6248,10 +6248,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L009-59162348AA",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L009-59162348AA-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6277,10 +6277,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L010-20552CDB77",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L010-20552CDB77-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6306,10 +6306,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L011-5FE4F29714",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L011-5FE4F29714-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6335,10 +6335,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L012-5A5BF547DB",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L012-5A5BF547DB-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6364,10 +6364,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L013-E5A3BAC717",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L013-E5A3BAC717-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6393,10 +6393,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L014-1EE4F3B953",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L014-1EE4F3B953-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6506,10 +6506,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L015-896059A9A2-03",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L015-896059A9A2-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6563,10 +6563,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L019-700DDA618F",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L019-700DDA618F-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6592,10 +6592,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L020-F601244A8E",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L020-F601244A8E-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6621,10 +6621,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L021-356443CB33",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L021-356443CB33-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6706,10 +6706,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L025-E803B9B8AC",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L025-E803B9B8AC-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6735,10 +6735,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6764,10 +6764,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B-02",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6793,10 +6793,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B-03",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L026-3EB969809B-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6822,10 +6822,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L028-04AAC6D1B7",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L028-04AAC6D1B7-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -6967,10 +6967,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "fricative-stop-or-affricate-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L034-7609BEDD16",
+      "mutationTest": "src/tests/classical_lesson2_fricative_stop_affricate_jobs.test.js#ACI-P045-L034-7609BEDD16-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

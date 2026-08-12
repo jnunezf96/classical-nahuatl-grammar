@@ -3048,6 +3048,34 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     function buildClassicalNahuatlSegmentRealizationMechanicsFrame(
       options = {}
     ) {
+      const writtenSequence = String(options.writtenSequence || "").trim();
+      if (writtenSequence === "chu") {
+        const sourcePhonemes = Array.isArray(options.sourcePhonemes)
+          ? options.sourcePhonemes.map(normalizeClassicalNahuatlTranscriptionSegment)
+          : [];
+        const authorized = sourcePhonemes.length === 2
+          && sourcePhonemes[0] === "/k/"
+          && sourcePhonemes[1] === "/w/";
+        return {
+          kind: "classical-nahuatl-segment-realization-frame",
+          version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
+          operationId: "cn-l2-segment-realization",
+          input: writtenSequence,
+          writtenSequence,
+          sourcePhonemes,
+          singlePhoneme: false,
+          contrastedSinglePhoneme: "/kʷ/",
+          outputSound: authorized ? "/k/+/w/" : "",
+          outputSpelling: authorized ? "chu" : "",
+          authorizationStatus: authorized ? "authorized" : "blocked",
+          blockReason: authorized ? "" : "chu-requires-k-plus-w-sequence",
+          conclusion: {
+            authorized,
+            sourcePhonemes: authorized ? sourcePhonemes : [],
+            outputSpelling: authorized ? "chu" : "",
+          },
+        };
+      }
       const segment = normalizeClassicalNahuatlTranscriptionSegment(
         options.segment || options.phoneme
       );
@@ -3150,6 +3178,115 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
               ? ["utterance-final", "vocable-final"].includes(environment)
               : phone === "n";
         outputSpelling = phone === "m" ? "m" : "n";
+      } else if (allowed && segment === "/s/") {
+        allowed = phone === "s"
+          || (phone === "š" && options.morphologicalProcess === true);
+        outputSpelling = phone === "š"
+          ? "x"
+          : position === "syllable-final"
+            || ["a", "o"].includes(String(options.followingVowel || ""))
+            ? "z"
+            : ["e", "i"].includes(String(options.followingVowel || ""))
+              ? "c"
+              : "";
+      } else if (allowed && segment === "/š/") {
+        allowed = phone === "š";
+        outputSpelling = "x";
+      } else if (allowed && segment === "/y/") {
+        allowed = phone === "y"
+          ? position !== "vocable-final"
+          : ["š", "s"].includes(phone)
+            ? position === "vocable-final"
+            : phone === "l" && options.morphologicalProcess === true;
+        const omitted = options.omitFrequentY === true
+          && ["iya", "ayi"].includes(String(options.sequence || ""));
+        outputSpelling = omitted ? "" : phone === "š" ? "x" : phone === "s" ? "z" : phone;
+        if (allowed && omitted) outputSpelling = "∅";
+      } else if (allowed && segment === "/w/") {
+        const speakerVariant = String(options.speakerVariant || "");
+        const speakerLicensed = ["m", "p"].includes(phone)
+          ? options.morphologicalProcess === true
+          : speakerVariant
+          ? carrier.speakerVariants?.[speakerVariant]?.includes(phone)
+          : ["w", "w̥", "β", "ɸ"].includes(phone);
+        allowed = speakerLicensed
+          && (["w", "β"].includes(phone)
+            ? position === "syllable-initial"
+            : ["w̥", "ɸ"].includes(phone)
+              ? position === "syllable-final"
+              : options.morphologicalProcess === true)
+          && (options.owaOaAmbiguous !== true
+            || String(options.lexicalChoice || "") === "owa");
+        const omitOwa = options.omitFrequentW === true
+          && String(options.sequence || "") === "owā";
+        outputSpelling = omitOwa
+          ? "∅"
+          : ["w", "β"].includes(phone)
+            ? "hu"
+            : ["w̥", "ɸ"].includes(phone)
+              ? "uh"
+              : phone;
+      } else if (allowed && segment === "/p/") {
+        allowed = phone === "p";
+        outputSpelling = "p";
+      } else if (allowed && segment === "/t/") {
+        allowed = phone === "t"
+          || (["č", "h"].includes(phone)
+            && options.morphologicalProcess === true);
+        outputSpelling = phone === "č" ? "ch" : phone === "h" ? "h" : "t";
+      } else if (allowed && segment === "/k/") {
+        allowed = phone === "k"
+          || (phone === "h" && options.morphologicalProcess === true);
+        outputSpelling = phone === "h"
+          ? "h"
+          : position === "syllable-final"
+            || ["a", "o"].includes(String(options.followingVowel || ""))
+            ? "c"
+            : ["e", "i"].includes(String(options.followingVowel || ""))
+              ? "qu"
+              : "";
+      } else if (allowed && segment === "/kʷ/") {
+        allowed = phone === "kʷ"
+          ? position === "syllable-initial"
+          : phone === "kʷ̥"
+            ? position === "syllable-final"
+            : phone === "k"
+              ? position === "syllable-final" && options.optionalDelabialization === true
+              : phone === "h" && options.morphologicalProcess === true;
+        outputSpelling = phone === "kʷ" ? "cu" : phone === "kʷ̥" ? "uc" : phone === "k" ? "c" : "h";
+      } else if (allowed && segment === "/ʔ/") {
+        const followsShortVowel = options.precedingVowelQuantity === "short";
+        const initialLicensed = position !== "vocable-initial"
+          || options.phonemic === false;
+        allowed = initialLicensed
+          && (position === "vocable-initial" || followsShortVowel)
+          && (phone === "ʔ"
+            ? position === "utterance-final" || position === "vocable-initial"
+            : phone === "h"
+              ? position !== "utterance-final"
+                || options.dialectalAlternative === true
+              : phone === "y" && options.morphologicalProcess === true);
+        outputSpelling = "h";
+      } else if (allowed && segment === "/λ/") {
+        allowed = phone === "λ"
+          ? position === "syllable-initial"
+          : phone === "λ̥"
+            ? position === "syllable-final"
+            : ["t", "l"].includes(phone)
+              ? options.morphologicalProcess === true
+              : phone === "č"
+                && options.morphologicalProcess === true
+                && options.underlyingT === true;
+        outputSpelling = phone === "č" ? "ch" : phone === "l" ? "l" : phone === "t" ? "t" : "tl";
+      } else if (allowed && segment === "/¢/") {
+        allowed = phone === "¢"
+          || (phone === "č" && options.irregularSourceLicensed === true);
+        outputSpelling = phone === "č" ? "ch" : "tz";
+      } else if (allowed && segment === "/č/") {
+        allowed = phone === "č"
+          || (["¢", "p"].includes(phone)
+            && options.irregularSourceLicensed === true);
+        outputSpelling = phone === "¢" ? "tz" : phone === "p" ? "p" : "ch";
       } else if (allowed) {
         outputSpelling = carrier.grapheme
           || carrier.spellingByPhone?.[phone]
@@ -3185,6 +3322,17 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         realizationClass,
         lexicalVariantLicensed: options.lexicalVariantLicensed === true,
         spellingReflectsVariant: options.spellingReflectsVariant === true,
+        morphologicalProcess: options.morphologicalProcess === true,
+        irregularSourceLicensed: options.irregularSourceLicensed === true,
+        optionalDelabialization: options.optionalDelabialization === true,
+        underlyingT: options.underlyingT === true,
+        speakerVariant: String(options.speakerVariant || ""),
+        precedingVowelQuantity: String(options.precedingVowelQuantity || ""),
+        phonemic: options.phonemic !== false,
+        dialectalAlternative: options.dialectalAlternative === true,
+        followingVowel: String(options.followingVowel || ""),
+        sequence: String(options.sequence || ""),
+        lexicalChoice: String(options.lexicalChoice || ""),
         prefix: options.prefix === true,
         finalLicense: String(options.finalLicense || ""),
         vocable: String(options.vocable || ""),

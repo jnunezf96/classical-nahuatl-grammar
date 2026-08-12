@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-segment-realization-061";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-consonant-realization-062";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
