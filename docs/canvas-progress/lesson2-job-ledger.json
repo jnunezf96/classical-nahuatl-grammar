@@ -10,8 +10,8 @@
     "pendingUserReview": 0,
     "unassignedJobs": 0,
     "writingJobs": 384,
-    "exactlyImplementedWritingJobs": 209,
-    "writingJobsAwaitingExactObservation": 175,
+    "exactlyImplementedWritingJobs": 264,
+    "writingJobsAwaitingExactObservation": 120,
     "byDirectionClass": {
       "WRITING_ONLY": 0,
       "READING_ONLY": 155,
@@ -1461,10 +1461,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L014-ADEC9EA5BA",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L014-ADEC9EA5BA-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1574,10 +1574,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L019-FC803B7069",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L019-FC803B7069-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1659,10 +1659,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L023-C01CE1CCD4",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L023-C01CE1CCD4-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1688,10 +1688,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L025-9DA46515D8",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L025-9DA46515D8-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1717,10 +1717,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L026-0DC2748F9B",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L026-0DC2748F9B-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1746,10 +1746,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L027-FCF284FAA9",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L027-FCF284FAA9-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1915,10 +1915,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L032-E41AC9D0AC",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L032-E41AC9D0AC-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1944,10 +1944,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L032-1D7BCC5D92",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L032-1D7BCC5D92-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -1973,10 +1973,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L035-7F8DE8FC07",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L035-7F8DE8FC07-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2002,10 +2002,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L036-921E01756F",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L036-921E01756F-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2031,10 +2031,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L036-921E01756F-02",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L036-921E01756F-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2060,10 +2060,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L038-0AA640AA81",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L038-0AA640AA81-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2089,10 +2089,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L038-8C88669247",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P040-L038-8C88669247-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2174,10 +2174,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L002-78798DC5FC",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L002-78798DC5FC-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2203,10 +2203,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L003-48A7223707",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L003-48A7223707-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2232,10 +2232,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L004-E95528412D",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L004-E95528412D-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2261,10 +2261,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L005-C43BD63F9E",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L005-C43BD63F9E-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2290,10 +2290,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L009-E5AD8FE012",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L009-E5AD8FE012-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2319,10 +2319,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L010-B352453433",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L010-B352453433-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2348,10 +2348,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L011-0D176C149F",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L011-0D176C149F-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2377,10 +2377,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2406,10 +2406,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-02",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2435,10 +2435,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-03",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2464,10 +2464,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-04",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L012-FA117920E0-04-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2493,10 +2493,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L016-DA8C78CE97",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L016-DA8C78CE97-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2522,10 +2522,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L017-0C157E8D2C",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L017-0C157E8D2C-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2579,10 +2579,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L020-B5F8BE761D",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L020-B5F8BE761D-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2608,10 +2608,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L021-915EC47ED6",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L021-915EC47ED6-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2665,10 +2665,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L023-A9E8878B46",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L023-A9E8878B46-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2694,10 +2694,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L027-483A400CB1",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L027-483A400CB1-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2723,10 +2723,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L028-D0711ABC8B",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L028-D0711ABC8B-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2838,10 +2838,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L034-80C5D44F54",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L034-80C5D44F54-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2895,10 +2895,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L036-A2AE8FEE10",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L036-A2AE8FEE10-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2924,10 +2924,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L037-89AA1E5A6B",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L037-89AA1E5A6B-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2953,10 +2953,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L038-618E249004",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L038-618E249004-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -2982,10 +2982,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L039-94EE686CE3",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L039-94EE686CE3-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3011,10 +3011,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L040-3B46F87E44",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L040-3B46F87E44-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3040,10 +3040,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L041-0A5390ED12",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L041-0A5390ED12-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3069,10 +3069,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L042-A746F8CF58",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P041-L042-A746F8CF58-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3098,10 +3098,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L002-487133CBD3",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L002-487133CBD3-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3183,10 +3183,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L007-76FBE35B6A",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L007-76FBE35B6A-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3240,10 +3240,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L009-0B04C64A1A",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L009-0B04C64A1A-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3269,10 +3269,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L010-3F0BBCCCFF",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L010-3F0BBCCCFF-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3298,10 +3298,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L012-1D19FE24D3",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L012-1D19FE24D3-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3327,10 +3327,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L013-3D25C97C65",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L013-3D25C97C65-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3356,10 +3356,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L014-CE62BAD7C6",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L014-CE62BAD7C6-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3413,10 +3413,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L017-06B8F9C50D",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L017-06B8F9C50D-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3442,10 +3442,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L019-29E356C10F",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L019-29E356C10F-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3471,10 +3471,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L020-51448F6307",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L020-51448F6307-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3500,10 +3500,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L020-01D4D9B115",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L020-01D4D9B115-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3614,10 +3614,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L024-20B24DB455",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L024-20B24DB455-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3672,10 +3672,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-02",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-02-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3701,10 +3701,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-03",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-03-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3730,10 +3730,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-04",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-04-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {
@@ -3759,10 +3759,10 @@
       "uiControlPolicy": "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       "requiredUserInformation": "",
       "openInputPolicy": "ACCEPT_ANY_USER_SUPPLIED_FORM",
-      "writingImplementationStatus": "ACCEPTED_JOB_NOT_YET_EXACTLY_OBSERVED",
-      "observationKind": "",
-      "observationTest": "",
-      "mutationTest": "",
+      "writingImplementationStatus": "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR",
+      "observationKind": "vowel-or-sonorant-normal-application-result",
+      "observationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-05",
+      "mutationTest": "src/tests/classical_lesson2_vowel_sonorant_jobs.test.js#ACI-P042-L027-CD2308A77F-05-changed-behavior-fails",
       "acceptanceStatus": "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
     },
     {

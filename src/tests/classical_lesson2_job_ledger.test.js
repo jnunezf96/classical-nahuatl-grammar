@@ -153,8 +153,8 @@ function run() {
             .map(record => record.atomId),
     }, {
         writingJobs: 384,
-        exactlyImplemented: 209,
-        awaiting: 175,
+        exactlyImplemented: 264,
+        awaiting: 120,
         creditedWithoutProof: [],
     });
 

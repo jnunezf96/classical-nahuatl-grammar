@@ -2933,6 +2933,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     }
     function getClassicalNahuatlPhoneSpelling(phone = "") {
       return ({
+        "a": "a",
         "l": "l", "l̥": "l", "n": "n", "n̥": "n", "ŋ": "n",
         "m": "m", "s": "z", "š": "x", "y": "y", "w": "hu",
         "w̥": "uh", "β": "hu", "ɸ": "uh", "p": "p", "t": "t",
@@ -3040,6 +3041,168 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           authorized,
           underlyingPhoneme: authorized ? underlyingPhoneme : "",
           realizedPhone: authorized ? realizedPhone : "",
+          outputSpelling: authorized ? outputSpelling : "",
+        },
+      };
+    }
+    function buildClassicalNahuatlSegmentRealizationMechanicsFrame(
+      options = {}
+    ) {
+      const segment = normalizeClassicalNahuatlTranscriptionSegment(
+        options.segment || options.phoneme
+      );
+      const phone = normalizeClassicalNahuatlPhoneSymbol(
+        options.phone || options.realizedPhone
+      );
+      const position = String(options.position || "").trim();
+      const environment = String(options.environment || "").trim();
+      const realizationClass = String(
+        options.realizationClass || "regular"
+      ).trim();
+      const carrier =
+        CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS[segment]
+        || CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS[segment]
+        || null;
+      const vowel = isClassicalNahuatlTranscriptionVowel(segment);
+      let allowed = Boolean(carrier?.phones?.includes(phone));
+      let outputSpelling = "";
+      let blockReason = "";
+      if (allowed && vowel) {
+        const long = carrier.quantity === "long";
+        const raised = carrier.raisedVariant === phone
+          || carrier.raisedVariants?.includes(phone);
+        const lowered = carrier.loweredVariant === phone;
+        const shortBeforeGlottal = long
+          && environment === "before-glottal-stop"
+          && !phone.includes(":")
+          && !phone.includes("·");
+        const unmarkedLongPhone = long
+          && !phone.includes(":")
+          && !phone.includes("·");
+        const finalFullLong = long
+          && realizationClass === "full"
+          && position === "vocable-final";
+        const finalLicense = [
+          "ephemeral-source-final-vowel-deleted-by-morphology",
+          "adverbialized-nominal-final-ca",
+          "licensed-monosyllabic-vocable",
+        ].includes(String(options.finalLicense || ""));
+        const monosyllabicLicensed = options.finalLicense
+          !== "licensed-monosyllabic-vocable"
+          || CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_SYSTEM_FACTS
+            .licensedMonosyllabicFullLongFinalVocables
+            .includes(String(options.vocable || ""));
+        allowed = allowed
+          && (!raised || options.lexicalVariantLicensed === true
+            || carrier.raisedVariantEnvironments?.includes(environment))
+          && (!lowered || options.lexicalVariantLicensed === true)
+          && (!(options.variantId === "ya")
+            || (segment === "e" && phone === "a"
+              && String(options.vocable || "") === "aya"))
+          && (!(segment === "o" || segment === "ō")
+            || !raised || options.prefix !== true)
+          && (!shortBeforeGlottal || environment === "before-glottal-stop")
+          && (!unmarkedLongPhone
+            || environment === "before-glottal-stop")
+          && (!finalFullLong || finalLicense)
+          && monosyllabicLicensed
+          && (!(realizationClass === "reduced-long")
+            || (long && phone.includes("·")))
+          && (!(realizationClass === "reduced-short")
+            || (!long && position === "vocable-final"))
+          && (!(realizationClass === "full")
+            || position !== "vocable-final" || finalLicense);
+        outputSpelling = carrier.grapheme;
+        if (
+          lowered
+          && options.spellingReflectsVariant === true
+        ) {
+          outputSpelling = getClassicalNahuatlPhoneSpelling(phone);
+        }
+        if (
+          realizationClass === "reduced-long"
+          || shortBeforeGlottal
+        ) {
+          outputSpelling = carrier.lengthPair;
+        }
+      } else if (allowed && segment === "/l/") {
+        allowed = position !== "vocable-initial"
+          && (phone !== "l̥" || position === "syllable-final");
+        outputSpelling = "l";
+      } else if (allowed && segment === "/n/") {
+        allowed = phone === "ŋ"
+          ? ["before-k", "before-kw"].includes(environment)
+          : phone === "n̥"
+            ? ["utterance-final", "vocable-final", "before-w", "before-y"]
+              .includes(environment)
+            : phone === "m"
+              ? environment === "assimilation-to-m"
+              : true;
+        outputSpelling = phone === "m" ? "m" : "n";
+      } else if (allowed && segment === "/m/") {
+        allowed = phone === "m"
+          ? position !== "vocable-final"
+            && ["before-vowel", "before-p", "before-m"]
+              .includes(environment)
+          : phone === "ŋ"
+            ? ["before-k", "before-kw"].includes(environment)
+            : phone === "n̥"
+              ? ["utterance-final", "vocable-final"].includes(environment)
+              : phone === "n";
+        outputSpelling = phone === "m" ? "m" : "n";
+      } else if (allowed) {
+        outputSpelling = carrier.grapheme
+          || carrier.spellingByPhone?.[phone]
+          || getClassicalNahuatlPhoneSpelling(phone);
+      }
+      if (!carrier) blockReason = "known-segment-required";
+      else if (!carrier.phones?.includes(phone)) {
+        blockReason = "phone-not-in-segment-repertory";
+      } else if (!allowed) {
+        blockReason = "phone-not-licensed-in-environment";
+      } else if (!outputSpelling) {
+        blockReason = "segment-spelling-not-known";
+      }
+      const authorized = Boolean(allowed && outputSpelling);
+      return {
+        kind: "classical-nahuatl-segment-realization-frame",
+        version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
+        operationId: "cn-l2-segment-realization",
+        segment,
+        phone,
+        segmentClass: carrier?.class || (vowel ? "vowel" : ""),
+        quantity: carrier?.quantity || "",
+        lengthPair: carrier?.lengthPair || "",
+        phonicRepertory: carrier?.phones || Object.freeze([]),
+        variantStatus: carrier?.loweredVariant === phone
+          ? "rare-lexical"
+          : carrier?.raisedVariant === phone
+            || carrier?.raisedVariants?.includes(phone)
+            ? "conditioned-optional"
+            : "regular-or-reduced",
+        position,
+        environment,
+        realizationClass,
+        lexicalVariantLicensed: options.lexicalVariantLicensed === true,
+        spellingReflectsVariant: options.spellingReflectsVariant === true,
+        prefix: options.prefix === true,
+        finalLicense: String(options.finalLicense || ""),
+        vocable: String(options.vocable || ""),
+        outputSound: authorized ? phone : "",
+        outputSpelling: authorized ? outputSpelling : "",
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason,
+        premises: [{
+          layer: "phonic-repertory",
+          passed: Boolean(carrier?.phones?.includes(phone)),
+        }, {
+          layer: "environment",
+          passed: allowed,
+        }],
+        conclusion: {
+          authorized,
+          segment: authorized ? segment : "",
+          phone: authorized ? phone : "",
           outputSpelling: authorized ? outputSpelling : "",
         },
       };
@@ -3732,6 +3895,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         ["source-consonant", frame.sourceConsonant],
         ["stem-final-phoneme", frame.stemFinalPhoneme],
         ["phoneme", frame.phoneme],
+        ["segment", frame.segment],
         ["following-vowel", frame.followingVowel],
         ["source-morpheme", frame.sourceMorpheme],
         ["morpheme", frame.morpheme],
@@ -4107,6 +4271,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
         buildClassicalNahuatlPhoneSourceAssignmentMechanicsFrame,
         "phone-source-assignment",
+        args
+      );
+    }
+    function buildClassicalNahuatlSegmentRealizationFrame(...args) {
+      return buildClassicalNahuatlTranscriptionAnalysisFromBuilder(
+        buildClassicalNahuatlSegmentRealizationMechanicsFrame,
+        "segment-realization",
         args
       );
     }
@@ -5110,6 +5281,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     api.findClassicalNahuatlLesson2ConsonantPhoneShiftRule = findClassicalNahuatlLesson2ConsonantPhoneShiftRule;
     api.buildClassicalNahuatlConsonantPhoneShiftFrame = buildClassicalNahuatlConsonantPhoneShiftFrame;
     api.buildClassicalNahuatlPhoneSourceAssignmentFrame = buildClassicalNahuatlPhoneSourceAssignmentFrame;
+    api.buildClassicalNahuatlSegmentRealizationFrame = buildClassicalNahuatlSegmentRealizationFrame;
     api.buildClassicalNahuatlVowelElisionFrame = buildClassicalNahuatlVowelElisionFrame;
     api.buildClassicalNahuatlLongVowelGlottalFrame = buildClassicalNahuatlLongVowelGlottalFrame;
     api.buildClassicalNahuatlProsodicContourFrame = buildClassicalNahuatlProsodicContourFrame;

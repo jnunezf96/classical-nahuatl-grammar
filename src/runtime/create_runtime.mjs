@@ -1,6 +1,6 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260811-lesson1-multigroup-024";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-source-assignment-060";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260811-lesson2-segment-realization-061";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260726-lessons2-58-one-system-094";
@@ -9,7 +9,7 @@ import { installComboValidationGlobals } from "../core/agreement/combo_validatio
 import { installAdverbialAdjunctionGlobals } from "../core/clause/adjunction/adjunction.mjs?v=20260728-lessons51-53-owner-115";
 import { installClassicalNahuatlProfileWallGlobals } from "../core/classical/profile_wall.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlSourceStemInventoryGlobals } from "../core/classical/source_stem_inventory.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalNahuatlTranscriptionGlobals } from "../core/classical/transcription.mjs?v=20260811-lesson2-source-assignment-060";
+import { installClassicalNahuatlTranscriptionGlobals } from "../core/classical/transcription.mjs?v=20260811-lesson2-segment-realization-061";
 import { installClassicalTranscriptionSemanticOwnersGlobals } from "../core/classical/transcription_owner_catalog.mjs?v=20260802-l58-transcription-owners-001";
 import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260726-transcription-route-109";
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";
@@ -76,7 +76,7 @@ import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=2026
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260811-classical-runtime-only-056";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-lesson2-source-assignment-060";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260811-lesson2-segment-realization-061";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],
@@ -267,6 +267,7 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
             "buildClassicalNahuatlAssimilationFrame",
             "buildClassicalNahuatlConsonantPhoneShiftFrame",
             "buildClassicalNahuatlPhoneSourceAssignmentFrame",
+            "buildClassicalNahuatlSegmentRealizationFrame",
             "buildClassicalNahuatlSpellingChangeFrame",
         ]),
         "src/core/classical/vnc_semantic_operations.mjs": Object.freeze([
