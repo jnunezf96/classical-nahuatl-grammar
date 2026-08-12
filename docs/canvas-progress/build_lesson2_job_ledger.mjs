@@ -47,6 +47,18 @@ const LESSON2_CONTEXTUAL_USER_CHOICE_ATOM_IDS = Object.freeze([
 
 const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   ...Object.fromEntries([
+    "ACI-P049-L039-246AED30B6", "ACI-P050-L005-9FF09A5DC2",
+    "ACI-P050-L006-E010CDBA9F", "ACI-P050-L007-29AE5C2977",
+    "ACI-P050-L008-AAB0B09006", "ACI-P050-L009-0F31D4C5C8",
+    "ACI-P050-L010-5D9096C6B3", "ACI-P050-L012-98FD2CCC6F",
+    "ACI-P050-L015-7913C1CB36", "ACI-P050-L019-4509698520",
+    "ACI-P050-L024-55CD4D646B", "ACI-P050-L026-8BDE89138D",
+  ].map(atomId => [atomId, Object.freeze({
+    observationKind: "final-regressive-assimilation-normal-application-result",
+    observationTest: `src/tests/classical_lesson2_final_regressive_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_final_regressive_jobs.test.js#${atomId}-changed-behavior-fails`,
+  })])),
+  ...Object.fromEntries([
     "ACI-P049-L018-1E441CC94C", "ACI-P049-L019-8CDDF22229",
     "ACI-P049-L020-2762BDE311", "ACI-P049-L020-2762BDE311-02",
     "ACI-P049-L020-2762BDE311-03", "ACI-P049-L020-2762BDE311-04",
@@ -624,9 +636,11 @@ function buildLedger() {
       observationKind: exactImplementation?.observationKind || "",
       observationTest: exactImplementation?.observationTest || "",
       mutationTest: exactImplementation?.mutationTest || "",
-      acceptanceStatus: ACCEPTED_JOB_FAMILIES.has(family)
-        ? "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
-        : "PROPOSED_AWAITING_USER_REVIEW",
+      acceptanceStatus: exactImplementation
+        ? "ACCEPTED_AND_EXACTLY_IMPLEMENTED"
+        : ACCEPTED_JOB_FAMILIES.has(family)
+          ? "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
+          : "PROPOSED_AWAITING_USER_REVIEW",
     };
   });
 
@@ -639,6 +653,7 @@ function buildLedger() {
 
   const acceptedJobs = records.filter((record) => (
     record.acceptanceStatus === "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
+      || record.acceptanceStatus === "ACCEPTED_AND_EXACTLY_IMPLEMENTED"
   )).length;
   const exactlyImplementedWritingJobs = records.filter((record) => (
     record.writingImplementationStatus

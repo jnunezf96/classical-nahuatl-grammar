@@ -1,10 +1,10 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-regressive-examples-064";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260811-lesson2-writing-complete-065";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260811-lesson2-regressive-examples-064";
+} from "../runtime/create_runtime.mjs?v=20260811-lesson2-writing-complete-065";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260811-lesson2-required-writing-pass-058";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260811-lesson2-required-writing-pass-058";

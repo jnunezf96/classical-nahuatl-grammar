@@ -112,11 +112,15 @@ function run() {
         accepted: jobs.counts.acceptedJobs,
         pending: jobs.counts.pendingUserReview,
         acceptedFamilies: [...new Set(jobs.records
-            .filter(record => record.acceptanceStatus === "ACCEPTED_JOB_NOT_YET_IMPLEMENTED")
+            .filter(record => [
+              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
+              "ACCEPTED_AND_EXACTLY_IMPLEMENTED",
+            ].includes(record.acceptanceStatus))
             .map(record => record.jobFamily))],
         wrongStatus: jobs.records
             .filter(record => ![
-                "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
+              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
+              "ACCEPTED_AND_EXACTLY_IMPLEMENTED",
                 "PROPOSED_AWAITING_USER_REVIEW",
             ].includes(record.acceptanceStatus))
             .map(record => record.atomId),
@@ -153,8 +157,8 @@ function run() {
             .map(record => record.atomId),
     }, {
         writingJobs: 384,
-        exactlyImplemented: 372,
-        awaiting: 12,
+        exactlyImplemented: 384,
+        awaiting: 0,
         creditedWithoutProof: [],
     });
 

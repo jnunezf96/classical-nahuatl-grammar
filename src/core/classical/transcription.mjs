@@ -2494,9 +2494,16 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         const leftBase = leftSurfaceConsonant
           ? sourceLeftMorpheme.slice(0, -leftSurfaceConsonant.length)
           : sourceLeftMorpheme;
-        const dominantLeftSpelling = isClassicalNahuatlNasal(leftConsonant)
-          ? rightConsonant === "s" ? "z" : rightSurfaceConsonant
-          : rightSurfaceConsonant;
+        const dominantLeftSpelling = leftConsonant === "m"
+          && ["t", "tl", "tz", "ch", "k", "kw"].includes(rightConsonant)
+          ? "n"
+          : leftConsonant === "n" && rightConsonant === "p"
+            ? "m"
+          : isClassicalNahuatlNasal(leftConsonant)
+            ? rightConsonant === "s" ? "z" : rightSurfaceConsonant
+            : dissimilation
+              ? "h"
+              : rightSurfaceConsonant;
         realizedLeftMorpheme = spellingStyle === "fully-assimilated"
           ? `${leftBase}${dominantLeftSpelling}`
           : spellingStyle === "unreleased-t-plus-right"
