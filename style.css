@@ -17028,44 +17028,11 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   color: #76523e;
 }
 
-.classical-transcription-source {
-  margin: 0.7rem 0 0;
-  padding: 0.65rem 0.75rem;
-  border: 1px solid var(--border-color, #d8d4cb);
-  border-radius: 0.65rem;
-  background: var(--surface-muted, #f7f5f0);
-}
-
-.classical-source-parts__sounds {
+.classical-source-parts__keyboard {
   grid-column: 1 / -1;
-}
-
-.classical-transcription-source > summary {
-  cursor: pointer;
-  font-size: 0.84rem;
-  font-weight: 650;
-}
-
-.classical-transcription-source__row {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 0.6rem;
-  align-items: end;
   margin-top: 0.65rem;
-}
-
-.classical-transcription-source__field {
-  display: grid;
-  gap: 0.3rem;
-  min-width: 0;
-  font-size: 0.76rem;
-  font-weight: 650;
-}
-
-.classical-transcription-source__field input {
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 2.5rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid var(--border-color, #d8d4cb);
 }
 
 .classical-transcription-keyboard {
@@ -17073,9 +17040,8 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   font-size: 0.74rem;
 }
 
-.classical-transcription-keyboard > summary {
-  width: fit-content;
-  cursor: pointer;
+.classical-transcription-keyboard__title {
+  display: block;
   font-weight: 650;
 }
 
@@ -17134,29 +17100,11 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   display: none !important;
 }
 
-#classical-transcription-source-help,
-#classical-transcription-source-status {
-  margin: 0.45rem 0 0;
-  color: var(--muted-color, #68645d);
-  font-size: 0.72rem;
-}
-
-.classical-transcription-source[data-classical-source-commit-state="invalid"]
-  #classical-transcription-source-status {
-  color: var(--danger-color, #8d2525);
-}
-
 #classical-authority-panel[data-classical-sgr-mode="transcription"]
   .calc-operators,
 #classical-authority-panel[data-classical-sgr-mode="transcription"]
   #tense-tabs {
   display: none;
-}
-
-@media (max-width: 640px) {
-  .classical-transcription-source__row {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* Shared Source → Grammar → Result type hierarchy. */

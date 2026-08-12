@@ -33,6 +33,9 @@ function createProbeElement(tagName = "div") {
         value: "",
         textContent: "",
         parentNode: null,
+        selectionStart: 0,
+        selectionEnd: 0,
+        _listeners: new Map(),
         classList: {
             add() {},
             remove() {},
@@ -91,11 +94,34 @@ function createProbeElement(tagName = "div") {
         querySelectorAll() {
             return [];
         },
-        closest() {
-            return null;
+        closest(selector) {
+            return selector === "[data-classical-transcription-token]"
+                && this.dataset.classicalTranscriptionToken
+                ? this
+                : null;
         },
-        addEventListener() {},
+        addEventListener(type, listener) {
+            const listeners = this._listeners.get(type) || [];
+            listeners.push(listener);
+            this._listeners.set(type, listeners);
+        },
         removeEventListener() {},
+        dispatchEvent(event) {
+            (this._listeners.get(event?.type) || []).forEach(listener => (
+                listener.call(this, event)
+            ));
+            return true;
+        },
+        contains(node) {
+            return node === this || collectProbeNodes(
+                this,
+                candidate => candidate === node
+            ).length > 0;
+        },
+        setSelectionRange(start, end) {
+            this.selectionStart = start;
+            this.selectionEnd = end;
+        },
         focus() {},
     };
     Object.defineProperty(element, "innerHTML", {
@@ -163,59 +189,36 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "sound entry is inside the one Stem structure",
+        "the sound keyboard uses the real Stem fields without a second Source",
         {
-            operationRoot: countLiteral(
+            secondSource: countLiteral(
                 shell,
                 'id="classical-transcription-source"'
             ),
-            input: countLiteral(
+            secondInput: countLiteral(
                 shell,
                 'id="classical-transcription-source-input"'
             ),
-            apply: countLiteral(
+            secondApply: countLiteral(
                 shell,
                 'id="classical-transcription-source-apply"'
             ),
-            status: countLiteral(
-                shell,
-                'id="classical-transcription-source-status"'
-            ),
-            exactOperation:
-                shell.includes(
-                    'data-classical-source-operation="orthography:transcription"'
-                ),
-            typedConstituentsOnly:
-                shell.includes(
-                    'data-classical-source-authorizes="typed-phonological-constituents-only"'
-                )
-                && shell.includes(
-                    'data-classical-source-input-role="typed-phonological-constituents"'
-                ),
-            accessibleStatus:
-                shell.includes(
-                    'aria-describedby="classical-transcription-source-help classical-transcription-source-status"'
-                )
-                && shell.includes('aria-live="polite"'),
             insideStemStructure:
                 shell.indexOf('id="classical-source-parts"')
-                    < shell.indexOf('id="classical-transcription-source"')
-                && shell.indexOf('id="classical-transcription-source"')
+                    < shell.indexOf('id="classical-transcription-keyboard"')
+                && shell.indexOf('id="classical-transcription-keyboard"')
                     < shell.indexOf('id="classical-source-commit-status"'),
-            noSecondVisibleSource:
-                !shell.includes("Phonological source")
-                && !shell.includes("Apply transcription"),
+            realTargets:
+                shell.includes('id="classical-source-whole"')
+                && shell.includes('id="classical-source-embed"')
+                && shell.includes('id="classical-source-matrix"'),
         },
         {
-            operationRoot: 1,
-            input: 1,
-            apply: 1,
-            status: 1,
-            exactOperation: true,
-            typedConstituentsOnly: true,
-            accessibleStatus: true,
+            secondSource: 0,
+            secondInput: 0,
+            secondApply: 0,
             insideStemStructure: true,
-            noSecondVisibleSource: true,
+            realTargets: true,
         }
     );
 
@@ -246,7 +249,7 @@ function run(ctx = {}) {
                 && shell.includes("input.selectionEnd")
                 && shell.includes("input.setSelectionRange"),
             typingRemainsOpen:
-                shell.includes("You can still type or edit anything.")
+                shell.includes("You can still type anything.")
                 && !shell.includes("classicalTranscriptionKeyboardOnly"),
             displayDoesNotAuthorize:
                 shell.includes(
@@ -270,23 +273,26 @@ function run(ctx = {}) {
         "installClassicalWorkbenchPresentation"
     );
     suite.eq(
-        "Enter and Use sounds share the same pending-versus-committed path",
+        "keyboard clicks type into the active real Stem field",
         {
-            pendingDoesNotExecute:
+            directStemTargets:
                 installSlice.includes(
-                    'root.dataset.classicalSourceCommitState = "pending"'
+                    '"classical-source-whole"'
                 )
                 && installSlice.includes(
-                    "Grammar and Result still use the sounds you last applied."
-                ),
-            sharedApply:
-                installSlice.includes(
-                    "targetObject.applyClassicalTranscriptionSource?.(input.value)"
+                    '"classical-source-embed"'
                 )
-                && installSlice.includes('event.key === "Enter"')
                 && installSlice.includes(
-                    'applyButton.addEventListener("click", applySource)'
+                    '"classical-source-matrix"'
                 ),
+            focusedEmbedOrMatrix:
+                installSlice.includes("activeInput === matrixInput")
+                && installSlice.includes('input.addEventListener("focus"'),
+            directInsertion:
+                installSlice.includes('input.value = `${before}${insertion}${after}`')
+                && installSlice.includes('sourceParts.dataset.classicalSourceCommitState = "pending"'),
+            noSeparateApply:
+                !installSlice.includes("applyClassicalTranscriptionSource"),
             shellOwnsNoGrammarExecution:
                 !installSlice.includes("executeClassicalGrammarApplicationRequest")
                 && !installSlice.includes(
@@ -294,9 +300,91 @@ function run(ctx = {}) {
                 ),
         },
         {
-            pendingDoesNotExecute: true,
-            sharedApply: true,
+            directStemTargets: true,
+            focusedEmbedOrMatrix: true,
+            directInsertion: true,
+            noSeparateApply: true,
             shellOwnsNoGrammarExecution: true,
+        }
+    );
+
+    const keyboard = createProbeElement("div");
+    const vowelKeys = createProbeElement("div");
+    const consonantKeys = createProbeElement("div");
+    keyboard.append(vowelKeys, consonantKeys);
+    const sourceParts = createProbeElement("div");
+    sourceParts.dataset.classicalSourcePartsMode = "whole-stem";
+    const wholeInput = createProbeElement("input");
+    wholeInput.id = "classical-source-whole";
+    wholeInput.value = "ca";
+    wholeInput.selectionStart = 2;
+    wholeInput.selectionEnd = 2;
+    const embedInput = createProbeElement("input");
+    embedInput.id = "classical-source-embed";
+    const matrixInput = createProbeElement("input");
+    matrixInput.id = "classical-source-matrix";
+    matrixInput.value = "ti";
+    matrixInput.selectionStart = 2;
+    matrixInput.selectionEnd = 2;
+    const wholeMode = createProbeElement("button");
+    wholeMode.dataset.classicalSourcePartsKind = "whole-stem";
+    const embedMatrixMode = createProbeElement("button");
+    embedMatrixMode.dataset.classicalSourcePartsKind = "embed-matrix";
+    sourceParts.querySelectorAll = selector => (
+        selector === "[data-classical-source-parts-kind]"
+            ? [wholeMode, embedMatrixMode]
+            : []
+    );
+    const directKeyboardProbe = withProbeDocument(
+        ctx,
+        new Map([
+            ["classical-transcription-keyboard", keyboard],
+            ["classical-transcription-keyboard-vowels", vowelKeys],
+            ["classical-transcription-keyboard-consonants", consonantKeys],
+            ["classical-source-parts", sourceParts],
+            ["classical-source-whole", wholeInput],
+            ["classical-source-embed", embedInput],
+            ["classical-source-matrix", matrixInput],
+        ]),
+        () => {
+            const installed = ctx.installClassicalTranscriptionSourcePresentation();
+            const longAKey = vowelKeys.children.find(key => key.textContent === "ā");
+            keyboard.dispatchEvent({
+                type: "click",
+                target: longAKey,
+                preventDefault() {},
+            });
+            sourceParts.dataset.classicalSourcePartsMode = "embed-matrix";
+            embedMatrixMode.dispatchEvent({ type: "click" });
+            matrixInput.dispatchEvent({ type: "focus" });
+            const tlaKey = consonantKeys.children.find(
+                key => key.textContent === "/λ/"
+            );
+            keyboard.dispatchEvent({
+                type: "click",
+                target: tlaKey,
+                preventDefault() {},
+            });
+            return {
+                installed,
+                whole: wholeInput.value,
+                embed: embedInput.value,
+                matrix: matrixInput.value,
+                target: keyboard.dataset.classicalTranscriptionTarget,
+                state: sourceParts.dataset.classicalSourceCommitState,
+            };
+        }
+    );
+    suite.eq(
+        "a click writes directly to Stem, then to the focused Matrix",
+        directKeyboardProbe,
+        {
+            installed: true,
+            whole: "ca ā",
+            embed: "",
+            matrix: "ti /λ/",
+            target: "classical-source-matrix",
+            state: "pending",
         }
     );
 

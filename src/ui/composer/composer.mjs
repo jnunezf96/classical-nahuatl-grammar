@@ -8731,6 +8731,27 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         );
         return false;
       }
+      const phonologicalStem = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+        ? [sourceState.sourceEmbedStem, sourceState.sourceMatrixStem]
+            .filter(Boolean)
+            .join(" | ")
+        : sourceState.sourceWholeStem;
+      if (
+        /\/[^/]+\//u.test(phonologicalStem)
+        && typeof targetObject.applyClassicalTranscriptionSource === "function"
+      ) {
+        const result = targetObject.applyClassicalTranscriptionSource(
+          phonologicalStem
+        );
+        if (result) {
+          ClassicalSourcePartsCommittedSignature =
+            getClassicalSourcePartsEvaluationSignature();
+          setClassicalSourcePartsPendingState(false);
+          syncClassicalSourcePartsToEntradaUrl();
+          return true;
+        }
+        return false;
+      }
       const signature = getClassicalSourcePartsEvaluationSignature();
       if (options.force !== true && signature === ClassicalSourcePartsCommittedSignature) {
         setClassicalSourcePartsPendingState(false);

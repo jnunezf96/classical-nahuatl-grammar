@@ -545,78 +545,40 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           />
                         </label>
                       </div>
-                      <details
-                        class="classical-transcription-source classical-source-parts__sounds"
-                        id="classical-transcription-source"
-                        data-classical-source-operation="orthography:transcription"
-                        data-classical-source-authorizes="typed-phonological-constituents-only"
-                        data-classical-source-commit-state="waiting"
+                      <div
+                        id="classical-transcription-keyboard"
+                        class="classical-transcription-keyboard classical-source-parts__keyboard"
+                        aria-label="Sound keyboard for the active stem field"
+                        data-classical-source-authorizes="none"
                       >
-                        <summary id="classical-transcription-source-heading">Stem sounds</summary>
-                        <div class="classical-transcription-source__row">
-                          <label class="classical-transcription-source__field" for="classical-transcription-source-input">
-                            <span id="classical-transcription-source-label">Sounds in the stem</span>
-                            <input
-                              type="text"
-                              id="classical-transcription-source-input"
-                              autocomplete="off"
-                              autocorrect="off"
-                              autocapitalize="none"
-                              spellcheck="false"
-                              placeholder="/k/ a /l/"
-                              aria-describedby="classical-transcription-source-help classical-transcription-source-status"
-                              data-classical-source-input-role="typed-phonological-constituents"
-                            />
-                          </label>
-                          <button
-                            type="button"
-                            id="classical-transcription-source-apply"
-                            class="verb-entry-apply-button"
-                            aria-label="Use these sounds in Grammar and Result"
-                            aria-keyshortcuts="Enter"
-                          >Use sounds</button>
+                        <span class="classical-transcription-keyboard__title">Sound keyboard</span>
+                        <p>Click a sound to type it directly into Stem, Embed, or Matrix. You can still type anything.</p>
+                        <div class="classical-transcription-keyboard__group" aria-label="Vowels">
+                          <span>Vowels</span>
+                          <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
                         </div>
-                        <p id="classical-transcription-source-help">Separate sounds with spaces. For Embed + matrix, use | between the two stems.</p>
-                        <details id="classical-transcription-keyboard" class="classical-transcription-keyboard">
-                          <summary>Sound keyboard</summary>
-                          <p>Click a sound to add it. You can still type or edit anything.</p>
-                          <div class="classical-transcription-keyboard__group" aria-label="Vowels">
-                            <span>Vowels</span>
-                            <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
-                          </div>
-                          <div class="classical-transcription-keyboard__group" aria-label="Consonants">
-                            <span>Consonants</span>
-                            <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
-                          </div>
-                          <div class="classical-transcription-keyboard__group" aria-label="Structure">
-                            <span>Structure</span>
-                            <div id="classical-transcription-keyboard-structure" class="classical-transcription-keyboard__keys"></div>
-                          </div>
-                        </details>
-                        <div
-                          id="classical-transcription-optional-controls"
-                          class="classical-transcription-source__optional-controls"
-                          aria-label="Optional Lesson 2 Result choices"
-                          hidden
-                        >
-                          <label id="classical-transcription-optional-result-field" class="classical-rule-control" hidden>
-                            <span class="classical-rule-control__label">Optional Result change</span>
-                            <select id="classical-transcription-optional-result" data-classical-rule-logic-control="lesson2-optional-result">
-                              <option value="ordinary" selected>Keep the ordinary Result</option>
-                            </select>
-                          </label>
-                          <label id="classical-transcription-elision-field" class="classical-rule-control classical-rule-control--checkbox" hidden>
-                            <span class="classical-rule-control__label">Elide vowel</span>
-                            <input id="classical-transcription-elision" type="checkbox" data-classical-checked-value="elide" data-classical-unchecked-value="keep" />
-                          </label>
+                        <div class="classical-transcription-keyboard__group" aria-label="Consonants">
+                          <span>Consonants</span>
+                          <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
                         </div>
-                        <p
-                          id="classical-transcription-source-status"
-                          role="status"
-                          aria-live="polite"
-                          data-classical-status-authority="false"
-                        >Enter sounds only when you need to show their written Result.</p>
-                      </details>
+                      </div>
+                      <div
+                        id="classical-transcription-optional-controls"
+                        class="classical-transcription-source__optional-controls"
+                        aria-label="Optional Lesson 2 Result choices"
+                        hidden
+                      >
+                        <label id="classical-transcription-optional-result-field" class="classical-rule-control" hidden>
+                          <span class="classical-rule-control__label">Optional Result change</span>
+                          <select id="classical-transcription-optional-result" data-classical-rule-logic-control="lesson2-optional-result">
+                            <option value="ordinary" selected>Keep the ordinary Result</option>
+                          </select>
+                        </label>
+                        <label id="classical-transcription-elision-field" class="classical-rule-control classical-rule-control--checkbox" hidden>
+                          <span class="classical-rule-control__label">Elide vowel</span>
+                          <input id="classical-transcription-elision" type="checkbox" data-classical-checked-value="elide" data-classical-unchecked-value="keep" />
+                        </label>
+                      </div>
                       <div
                         class="classical-source-commit-status"
                         id="classical-source-commit-status"
@@ -3438,72 +3400,41 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     }
     function installClassicalTranscriptionSourcePresentation() {
       const documentObject = targetObject.document;
-      const root = documentObject?.getElementById?.(
-        "classical-transcription-source"
-      ) || null;
-      const input = documentObject?.getElementById?.(
-        "classical-transcription-source-input"
-      ) || null;
-      const applyButton = documentObject?.getElementById?.(
-        "classical-transcription-source-apply"
-      ) || null;
-      const status = documentObject?.getElementById?.(
-        "classical-transcription-source-status"
-      ) || null;
       const keyboard = documentObject?.getElementById?.(
         "classical-transcription-keyboard"
       ) || null;
       const sourceParts = documentObject?.getElementById?.(
         "classical-source-parts"
       ) || null;
-      const heading = documentObject?.getElementById?.(
-        "classical-transcription-source-heading"
+      const wholeInput = documentObject?.getElementById?.(
+        "classical-source-whole"
       ) || null;
-      const label = documentObject?.getElementById?.(
-        "classical-transcription-source-label"
+      const embedInput = documentObject?.getElementById?.(
+        "classical-source-embed"
       ) || null;
-      if (!root || !input || !applyButton || !status) return false;
-      if (root.dataset.classicalTranscriptionSourceBound === "true") {
+      const matrixInput = documentObject?.getElementById?.(
+        "classical-source-matrix"
+      ) || null;
+      const sourceInputs = [wholeInput, embedInput, matrixInput].filter(Boolean);
+      if (!keyboard || !sourceParts || sourceInputs.length !== 3) return false;
+      if (keyboard.dataset.classicalTranscriptionKeyboardBound === "true") {
         return true;
       }
-      const markPending = () => {
-        root.dataset.classicalSourceCommitState = "pending";
-        input.setAttribute("aria-invalid", "false");
-        status.textContent = root.dataset.classicalCommittedSource
-          ? "Sound edits are pending. Grammar and Result still use the sounds you last applied."
-          : "Use the sounds to build the written Result.";
-      };
-      const syncSoundEntryMode = () => {
-        const embedMatrix = sourceParts?.dataset?.classicalSourcePartsMode
-          === "embed-matrix";
-        if (heading) {
-          heading.textContent = embedMatrix
-            ? "Embed + matrix sounds"
-            : "Stem sounds";
+      let activeInput = wholeInput;
+      const getActiveInput = () => {
+        if (sourceParts.dataset.classicalSourcePartsMode !== "embed-matrix") {
+          return wholeInput;
         }
-        if (label) {
-          label.textContent = embedMatrix
-            ? "Sounds in the embed and matrix"
-            : "Sounds in the stem";
-        }
-        input.placeholder = embedMatrix ? "/k/ a | /l/ i" : "/k/ a /l/";
-      };
-      const applySource = event => {
-        event?.preventDefault?.();
-        targetObject.applyClassicalTranscriptionSource?.(input.value);
+        return activeInput === matrixInput ? matrixInput : embedInput;
       };
       const populateSoundKeyboard = () => {
-        if (!keyboard) return false;
         const vowelRoot = documentObject.getElementById(
           "classical-transcription-keyboard-vowels"
         );
         const consonantRoot = documentObject.getElementById(
           "classical-transcription-keyboard-consonants"
         );
-        const structureRoot = documentObject.getElementById(
-          "classical-transcription-keyboard-structure"
-        );
-        if (!vowelRoot || !consonantRoot || !structureRoot) return false;
+        if (!vowelRoot || !consonantRoot) return false;
         const ownerVowels = new Set(Object.keys(
           targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
         ));
@@ -3534,11 +3465,11 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
             .filter(token => ownerConsonants.has(token))
             .map(makeKey)
         );
-        structureRoot.replaceChildren(makeKey("|"));
         keyboard.dataset.classicalTranscriptionKeyboardReady = "true";
         return true;
       };
       const insertSoundToken = token => {
+        const input = getActiveInput();
         const value = String(input.value || "");
         const start = Number.isInteger(input.selectionStart)
           ? input.selectionStart
@@ -3548,26 +3479,26 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           : start;
         const before = value.slice(0, start);
         const after = value.slice(end);
-        if (token === "|") {
-          const cleanBefore = before.trimEnd();
-          const cleanAfter = after.trimStart();
-          const prefix = cleanBefore ? `${cleanBefore} | ` : "| ";
-          input.value = `${prefix}${cleanAfter}`;
-          const caret = prefix.length;
-          input.setSelectionRange?.(caret, caret);
-          input.focus?.();
-          markPending();
-          return;
-        }
-        const leftSpace = before && !/[\s|]$/u.test(before) ? " " : "";
-        const rightSpace = after && !/^[\s|]/u.test(after) ? " " : "";
+        const leftSpace = before && !/\s$/u.test(before) ? " " : "";
+        const rightSpace = after && !/^\s/u.test(after) ? " " : "";
         const insertion = `${leftSpace}${token}${rightSpace}`;
         input.value = `${before}${insertion}${after}`;
         const caret = before.length + insertion.length;
         input.setSelectionRange?.(caret, caret);
         input.focus?.();
-        markPending();
+        sourceParts.dataset.classicalSourceCommitState = "pending";
+        const InputEventConstructor = targetObject.Event
+          || targetObject.window?.Event;
+        if (typeof InputEventConstructor === "function") {
+          input.dispatchEvent?.(new InputEventConstructor("input", {
+            bubbles: true
+          }));
+        }
       };
+      sourceInputs.forEach(input => input.addEventListener("focus", () => {
+        activeInput = input;
+        keyboard.dataset.classicalTranscriptionTarget = input.id;
+      }));
       keyboard?.addEventListener("click", event => {
         const button = event.target?.closest?.(
           "[data-classical-transcription-token]"
@@ -3582,8 +3513,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           ),
           ...Object.keys(
             targetObject.CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS || {}
-          ),
-          "|"
+          )
         ]);
         if (!ownerTokens.has(token)) return;
         event.preventDefault();
@@ -3592,26 +3522,18 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       if (!populateSoundKeyboard()) {
         targetObject.setTimeout?.(populateSoundKeyboard, 0);
       }
-      input.addEventListener("input", markPending);
-      input.addEventListener("change", markPending);
-      input.addEventListener("keydown", event => {
-        if (event.key === "Enter" && !event.isComposing) {
-          applySource(event);
-        }
-      });
-      applyButton.addEventListener("click", applySource);
       Array.from(
         sourceParts?.querySelectorAll?.(
           "[data-classical-source-parts-kind]"
         ) || []
       ).forEach(button => button.addEventListener("click", () => {
-        targetObject.queueMicrotask?.(syncSoundEntryMode);
-        if (typeof targetObject.queueMicrotask !== "function") {
-          targetObject.setTimeout?.(syncSoundEntryMode, 0);
-        }
+        activeInput = button.dataset.classicalSourcePartsKind === "embed-matrix"
+          ? embedInput
+          : wholeInput;
+        keyboard.dataset.classicalTranscriptionTarget = activeInput.id;
       }));
-      syncSoundEntryMode();
-      root.dataset.classicalTranscriptionSourceBound = "true";
+      keyboard.dataset.classicalTranscriptionTarget = wholeInput.id;
+      keyboard.dataset.classicalTranscriptionKeyboardBound = "true";
       return true;
     }
     function installClassicalWorkbenchPresentation() {

@@ -32,6 +32,7 @@ function run(ctx) {
     const s = createSuite("classical_lesson2_optional_result_controls");
     const shell = fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8");
     const rendering = fs.readFileSync(path.join(ROOT, "src/ui/rendering/rendering.mjs"), "utf8");
+    const composer = fs.readFileSync(path.join(ROOT, "src/ui/composer/composer.mjs"), "utf8");
     const controls = {
         select: shell.includes('id="classical-transcription-optional-result"')
             && rendering.includes("buildClassicalLesson2OptionalBoundaryChoices")
@@ -44,7 +45,11 @@ function run(ctx) {
     const normalApplicationPath = rendering.includes("syncClassicalLesson2OptionalResultControls(parsed)")
         && rendering.includes("ActiveClassicalTranscriptionBaselineApplication = applicationResult")
         && rendering.includes("executeClassicalGrammarApplicationRequest")
-        && rendering.includes("captureClassicalGrammarApplicationResult");
+        && rendering.includes("captureClassicalGrammarApplicationResult")
+        && composer.includes("targetObject.applyClassicalTranscriptionSource(")
+        && composer.includes('.join(" | ")')
+        && !shell.includes('id="classical-transcription-source-input"')
+        && !shell.includes('id="classical-transcription-source-apply"');
     const operationIds = {
         assimilation: "phonology:assimilation",
         loss: "phonology:consonant-loss",
