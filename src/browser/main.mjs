@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-lesson2-complete-writing-pipeline-069";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-lesson2-uncontradicted-070";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

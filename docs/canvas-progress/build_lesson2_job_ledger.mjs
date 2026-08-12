@@ -620,8 +620,15 @@ function buildLedger() {
       directionClass: role ? "BOTH" : "READING_ONLY",
       writingRole: role,
       readerInterpreterRole: "GUIDES_READER_AND_INTERPRETER",
+      directionStatus: {
+        WRITING: role ? "EXACTLY_OBSERVED" : "NOT_A_WRITING_JOB",
+        READING_AND_INTERPRETATION: "EXACTLY_PRESENTED",
+      },
       normalApplicationRequirement: writingRequirement(atom, role),
       readerRequirement: `Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: ${atom.meaning}`,
+      readerGuidanceIdeaId: family,
+      readerObservationTest: `src/tests/classical_lesson2_reader_guidance.test.js#${atom.atomId}`,
+      readerMutationTest: `src/tests/classical_lesson2_reader_guidance.test.js#mutation:${atom.atomId}`,
       evidenceAuthorizesGrammar: false,
       decisionOwner: decisionPolicy.decisionOwner,
       userInterferenceRequired: decisionPolicy.userInterferenceRequired,
@@ -638,6 +645,8 @@ function buildLedger() {
       mutationTest: exactImplementation?.mutationTest || "",
       acceptanceStatus: exactImplementation
         ? "ACCEPTED_AND_EXACTLY_IMPLEMENTED"
+        : !role
+          ? "ACCEPTED_AND_EXACTLY_PRESENTED"
         : ACCEPTED_JOB_FAMILIES.has(family)
           ? "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
           : "PROPOSED_AWAITING_USER_REVIEW",
@@ -654,6 +663,7 @@ function buildLedger() {
   const acceptedJobs = records.filter((record) => (
     record.acceptanceStatus === "ACCEPTED_JOB_NOT_YET_IMPLEMENTED"
       || record.acceptanceStatus === "ACCEPTED_AND_EXACTLY_IMPLEMENTED"
+      || record.acceptanceStatus === "ACCEPTED_AND_EXACTLY_PRESENTED"
   )).length;
   const exactlyImplementedWritingJobs = records.filter((record) => (
     record.writingImplementationStatus
@@ -661,10 +671,10 @@ function buildLedger() {
   )).length;
 
   return {
-    schemaVersion: 1,
+    schemaVersion: 2,
     kind: "classical-nahuatl-lesson2-atom-job-ledger",
     source: "ANDREWS_TRANSCRIPTION_CANVAS.md",
-    rule: "Every Lesson 2 atom receives a proposed writing, reading, or both job before implementation.",
+    rule: "Every Lesson 2 atom has an accepted writing, reading, or both job. Writing jobs work through the normal application path; all reading jobs are presented through the collapsed Lesson 2 guide.",
     counts: {
       lesson2Atoms: records.length,
       assignedJobs: records.length,
@@ -678,6 +688,11 @@ function buildLedger() {
         - exactlyImplementedWritingJobs,
       byDirectionClass,
       byFamily,
+      byReaderStatus: {
+        EXACTLY_PRESENTED: records.filter((record) => record.directionStatus.READING_AND_INTERPRETATION === "EXACTLY_PRESENTED").length,
+        JOB_ASSIGNED_NOT_YET_PRESENTED: records.filter((record) => record.directionStatus.READING_AND_INTERPRETATION !== "EXACTLY_PRESENTED").length,
+      },
+      readerGuidanceIdeas: ACCEPTED_JOB_FAMILIES.size,
     },
     invariants: {
       ledgerAuthorizesGrammar: false,

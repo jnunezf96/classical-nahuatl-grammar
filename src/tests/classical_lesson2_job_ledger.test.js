@@ -69,7 +69,12 @@ function run() {
         .map(record => record.atomId), []);
 
     s.eq("every atom guides the reader without authorizing grammar", jobs.records
-        .filter(record => !record.readerRequirement || record.evidenceAuthorizesGrammar !== false)
+        .filter(record => !record.readerRequirement
+            || record.evidenceAuthorizesGrammar !== false
+            || record.directionStatus?.READING_AND_INTERPRETATION !== "EXACTLY_PRESENTED"
+            || record.readerGuidanceIdeaId !== record.jobFamily
+            || !record.readerObservationTest
+            || !record.readerMutationTest)
         .map(record => record.atomId), []);
 
     s.eq("every atom job names who decides and keeps user input open", jobs.records
@@ -113,14 +118,16 @@ function run() {
         pending: jobs.counts.pendingUserReview,
         acceptedFamilies: [...new Set(jobs.records
             .filter(record => [
-              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
               "ACCEPTED_AND_EXACTLY_IMPLEMENTED",
+              "ACCEPTED_AND_EXACTLY_PRESENTED",
+              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
             ].includes(record.acceptanceStatus))
             .map(record => record.jobFamily))],
         wrongStatus: jobs.records
             .filter(record => ![
-              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
               "ACCEPTED_AND_EXACTLY_IMPLEMENTED",
+              "ACCEPTED_AND_EXACTLY_PRESENTED",
+              "ACCEPTED_JOB_NOT_YET_IMPLEMENTED",
                 "PROPOSED_AWAITING_USER_REVIEW",
             ].includes(record.acceptanceStatus))
             .map(record => record.atomId),
@@ -142,6 +149,28 @@ function run() {
             "lesson2-sentence-prosody",
         ],
         wrongStatus: [],
+    });
+
+    s.eq("the ledger no longer contradicts completed writing work", jobs.records
+        .filter(record => record.writingImplementationStatus
+            === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR")
+        .filter(record => record.acceptanceStatus !== "ACCEPTED_AND_EXACTLY_IMPLEMENTED"
+            || record.directionStatus?.WRITING !== "EXACTLY_OBSERVED")
+        .map(record => record.atomId), []);
+
+    s.eq("the ledger no longer calls completed reading work unimplemented", {
+        readerStatus: jobs.counts.byReaderStatus,
+        staleReadingStatus: jobs.records
+            .filter(record => record.directionClass === "READING_ONLY")
+            .filter(record => record.acceptanceStatus
+                !== "ACCEPTED_AND_EXACTLY_PRESENTED")
+            .map(record => record.atomId),
+    }, {
+        readerStatus: {
+            EXACTLY_PRESENTED: 539,
+            JOB_ASSIGNED_NOT_YET_PRESENTED: 0,
+        },
+        staleReadingStatus: [],
     });
 
     s.eq("implementation credit requires normal application and mutation observations", {
