@@ -1418,8 +1418,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const explicitSourceValue = normalizeClassicalNahuatlMachinerySourceValue(overrides.stem || overrides.verb || "");
       const sourceValue = explicitSourceValue || getActiveClassicalRuleLogicSource("");
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
+      const sourceInitialIControl = typeof targetObject.document === "undefined"
+        ? null
+        : targetObject.document.getElementById("classical-vnc-source-initial-i-choice");
       const sourceInitialISelection = basalUnit === "vnc"
-        ? String(overrides.sourceInitialISelection || overrides.sourceInitialIKind || getClassicalRuleLogicSurfaceControlValue("classical-vnc-source-initial-i-choice", "") || "").trim()
+        ? String(
+          overrides.sourceInitialISelection
+          || overrides.sourceInitialIKind
+          || (sourceInitialIControl && sourceInitialIControl.disabled !== true
+            ? sourceInitialIControl.checked === true ? "supportive" : "real"
+            : "")
+          || ""
+        ).trim()
         : "";
       // sourceLexemeId is an actual #1 Source constituent. It is read only
       // from the visible Source control bound to this stem; rendering

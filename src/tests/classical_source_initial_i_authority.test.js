@@ -213,7 +213,7 @@ function run(ctx = {}) {
     );
 
     s.ok(
-        "#1 Source exposes real-by-default and optional alternatives for an unlisted initial-i verbstem",
+        "#1 Source exposes a supportive-i checkbox for an unlisted initial-i verbstem",
         (() => {
             const root = path.resolve(__dirname, "..", "..");
             const shell = fs.readFileSync(path.join(root, "src", "ui", "shell", "classical_shell.mjs"), "utf8");
@@ -222,11 +222,15 @@ function run(ctx = {}) {
             return shell.includes('id="classical-vnc-source-initial-i"')
                 && shell.includes('hidden aria-live="polite"')
                 && shell.includes('id="classical-vnc-source-initial-i-choice"')
-                && shell.includes('value="real">Real i (default)')
+                && shell.includes('type="checkbox"')
                 && shell.includes('value="supportive"')
-                && shell.includes('value="contextual"')
+                && shell.includes('data-classical-checked-value="supportive"')
+                && shell.includes('data-classical-unchecked-value="real"')
+                && shell.includes('>Supportive i</span>')
+                && !shell.includes('value="contextual">Context-sensitive i</option>')
                 && composer.includes("syncClassicalVncSourceInitialIFact")
                 && composer.includes("userChoiceApplies")
+                && composer.includes('choice?.checked === true ? "supportive" : "real"')
                 && composer.includes("sourceInitialISelection")
                 && stylesheet.includes("#classical-vnc-source-initial-i-choice-field[hidden]")
                 && stylesheet.includes("display: none !important;");

@@ -13061,6 +13061,20 @@ body.is-language-classical .classical-nnc-source-guide__field {
   min-width: 0;
 }
 
+body.is-language-classical .classical-nnc-source-guide__checkbox {
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  justify-self: start;
+  min-height: var(--classical-shell-control-height);
+  cursor: pointer;
+}
+
+body.is-language-classical .classical-nnc-source-guide__checkbox input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
 /* This source-owned classification is relevant only to an i-initial VNC
  * source. Preserve HTML's hidden state against the guide's grid layout. */
 body.is-language-classical #classical-vnc-source-initial-i-choice-field[hidden],

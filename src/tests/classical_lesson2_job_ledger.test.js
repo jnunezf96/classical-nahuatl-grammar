@@ -39,8 +39,8 @@ function run() {
 
     s.eq("the complete direction assignment is explicit", jobs.counts.byDirectionClass, {
         WRITING_ONLY: 0,
-        READING_ONLY: 141,
-        BOTH: 398,
+        READING_ONLY: 155,
+        BOTH: 384,
     });
 
     s.eq("all twelve reviewed Lesson 2 families are present", jobs.counts.byFamily, {
@@ -140,9 +140,9 @@ function run() {
                 || !record.mutationTest)
             .map(record => record.atomId),
     }, {
-        writingJobs: 398,
-        exactlyImplemented: 164,
-        awaiting: 234,
+        writingJobs: 384,
+        exactlyImplemented: 200,
+        awaiting: 184,
         creditedWithoutProof: [],
     });
 

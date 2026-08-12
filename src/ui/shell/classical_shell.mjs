@@ -310,13 +310,16 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         </select>
                       </label>
                       <p id="classical-vnc-source-initial-i" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
-                      <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field" hidden>
-                        <span class="classical-nnc-source-guide__label">Initial i in this source</span>
-                        <select id="classical-vnc-source-initial-i-choice" class="classical-nnc-source-guide__select" aria-describedby="classical-vnc-source-initial-i">
-                          <option value="real">Real i (default)</option>
-                          <option value="supportive">Supportive i</option>
-                          <option value="contextual">Context-sensitive i</option>
-                        </select>
+                      <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field classical-nnc-source-guide__checkbox" hidden>
+                        <input
+                          id="classical-vnc-source-initial-i-choice"
+                          type="checkbox"
+                          value="supportive"
+                          data-classical-checked-value="supportive"
+                          data-classical-unchecked-value="real"
+                          aria-describedby="classical-vnc-source-initial-i"
+                        />
+                        <span class="classical-nnc-source-guide__label">Supportive i</span>
                       </label>
                       <p id="classical-vnc-source-lexeme-fact" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
                       <label id="classical-vnc-source-lexeme-choice-field" class="classical-nnc-source-guide__field" hidden>

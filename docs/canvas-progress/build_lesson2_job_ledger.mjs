@@ -24,6 +24,13 @@ const ACCEPTED_JOB_FAMILIES = new Set([
   "lesson2-sentence-prosody",
 ]);
 
+const APPLICATION_OWNED_OPEN_INPUT_ATOM_IDS = Object.freeze([
+  "ACI-P050-L032-6A854B5881", "ACI-P050-L034-0CE6C057A3", "ACI-P050-L036-079BB77243", "ACI-P050-L037-A7ED68BC22", "ACI-P050-L041-5B4B525A12", "ACI-P051-L006-3F84F180F0", "ACI-P051-L008-420FE74E92", "ACI-P051-L008-420FE74E92-02", "ACI-P051-L008-420FE74E92-03", "ACI-P051-L008-420FE74E92-05", "ACI-P051-L008-420FE74E92-06", "ACI-P051-L008-420FE74E92-08", "ACI-P051-L015-986907F7FC", "ACI-P051-L018-ED7D149E28",
+  "ACI-P051-L026-7282155306", "ACI-P051-L027-097671FEE2", "ACI-P051-L028-D5624DC1DD", "ACI-P051-L031-10C9538B7D", "ACI-P051-L032-84D6EBBE58", "ACI-P051-L034-FE426CEED5", "ACI-P051-L035-BC67855BC4", "ACI-P051-L037-8EAA56F84F-02", "ACI-P052-L005-D67B7A0379", "ACI-P052-L006-A594137899", "ACI-P052-L008-B75C5EBB29", "ACI-P052-L012-28B57C1184", "ACI-P052-L013-5B3C52836A", "ACI-P052-L015-C8ECAEF1C6", "ACI-P052-L016-866D50CD91", "ACI-P052-L019-3D1FA677FB",
+  "ACI-P052-L022-B72E6F8124", "ACI-P052-L023-E395C0CE17", "ACI-P052-L024-D598542D29", "ACI-P052-L025-C3515708D9", "ACI-P052-L026-BBB86405FC", "ACI-P052-L031-9C69DED1C4",
+]);
+const APPLICATION_OWNED_OPEN_INPUT_ATOMS = new Set(APPLICATION_OWNED_OPEN_INPUT_ATOM_IDS);
+
 const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   "ACI-P039-L004-E7E01D8587-02": Object.freeze({
     observationKind: "sigeme-retained-in-formula",
@@ -226,6 +233,11 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   ...Object.fromEntries([
     "ACI-P052-L020-B62AAD1010", "ACI-P052-L021-547243D130", "ACI-P052-L027-342C84A888", "ACI-P052-L028-1D946166F0", "ACI-P052-L028-F3ABD9CFDA",
   ].map(atomId => [atomId, Object.freeze({ observationKind: "vowel-elision-application-result", observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-elision-result` })])),
+  ...Object.fromEntries(APPLICATION_OWNED_OPEN_INPUT_ATOM_IDS.map(atomId => [atomId, Object.freeze({
+    observationKind: "application-owned-open-input-phonology",
+    observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`,
+    mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-automatic-rule`,
+  })])),
   "ACI-P047-L009-EF940827EC": Object.freeze({
     observationKind: "conditional-open-input-user-choice",
     observationTest: "src/tests/classical_source_initial_i_authority.test.js#ACI-P047-L009-EF940827EC",
@@ -308,6 +320,20 @@ const READING_ONLY_GRAMMAR_IDS = new Set([
   "ACI-P048-L013-79A43748AD",
   "ACI-P048-L013-FA50C31933",
   "ACI-P048-L017-C013C1931E",
+  "ACI-P050-L042-3F8AE565F6",
+  "ACI-P050-L043-1F5C58F4D1",
+  "ACI-P050-L044-8B8D433285",
+  "ACI-P050-L045-8AC38655AB",
+  "ACI-P051-L008-420FE74E92-04",
+  "ACI-P051-L029-6AFB969F6C",
+  "ACI-P051-L029-6AFB969F6C-02",
+  "ACI-P051-L029-6AFB969F6C-03",
+  "ACI-P051-L029-6AFB969F6C-04",
+  "ACI-P051-L029-6AFB969F6C-05",
+  "ACI-P051-L029-6AFB969F6C-06",
+  "ACI-P051-L037-8EAA56F84F",
+  "ACI-P051-L037-8EAA56F84F-03",
+  "ACI-P051-L038-432665DF2C",
   "ACI-P053-L002-19416E3D57",
   "ACI-P053-L002-19416E3D57-02",
   "ACI-P053-L002-19416E3D57-03",
@@ -410,12 +436,19 @@ function buildLedger() {
     const role = writingRole(atom);
     if (!family) throw new Error(`No Lesson 2 family for ${atom.atomId}`);
     const exactImplementation = EXACTLY_IMPLEMENTED_WRITING_ATOMS[atom.atomId] || null;
-    const decisionPolicy = DECISION_POLICIES[atom.atomId] || Object.freeze({
+    const decisionPolicy = DECISION_POLICIES[atom.atomId] || (APPLICATION_OWNED_OPEN_INPUT_ATOMS.has(atom.atomId)
+      ? Object.freeze({
+        decisionOwner: "APPLICATION_FROM_OPEN_INPUT",
+        userInterferenceRequired: false,
+        uiControlPolicy: "NO_RESULT_CONTROL_AUTOMATIC_RULE",
+        requiredUserInformation: "SOURCE_FORM_OR_STRUCTURE",
+      })
+      : Object.freeze({
       decisionOwner: role ? "APPLICATION" : "NONE_FOR_WRITING",
       userInterferenceRequired: false,
       uiControlPolicy: "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
       requiredUserInformation: "",
-    });
+      }));
     return {
       atomId: atom.atomId,
       canvasSection: atom.canvasSection,

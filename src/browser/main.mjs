@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-lesson2-ui-obligations-040";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-supportive-i-checkbox-041";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

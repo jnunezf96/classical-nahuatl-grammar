@@ -8316,19 +8316,21 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         choice.disabled = !userChoiceApplies;
         if (userChoiceApplies) {
           if (root?.dataset?.classicalVncSourceInitialIChoiceStem !== sourceStem) {
-            choice.value = "real";
+            choice.checked = false;
           }
           if (root?.dataset) {
             root.dataset.classicalVncSourceInitialIChoiceStem = sourceStem;
           }
         } else {
-          choice.value = "";
+          choice.checked = false;
           if (root?.dataset) {
             delete root.dataset.classicalVncSourceInitialIChoiceStem;
           }
         }
       }
-      const selectedKind = String(choice?.value || "").trim();
+      const selectedKind = userChoiceApplies
+        ? choice?.checked === true ? "supportive" : "real"
+        : "";
       const kind = canonicalKind || (userChoiceApplies ? selectedKind : "not-applicable");
       const visible = initialI;
       if (root?.dataset) {
@@ -8343,7 +8345,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ? ""
         : canonicalKind
           ? `Initial i: ${canonicalKind === "contextual" ? "context-sensitive" : canonicalKind} (canonical source fact)`
-          : `Initial i: ${selectedKind === "contextual" ? "context-sensitive" : selectedKind || "real"}${selectedKind === "real" ? " (default source choice)" : " (source choice)"}`;
+          : `Initial i: ${selectedKind || "real"}${selectedKind === "real" ? " (default; check Supportive i only when intended)" : " (source choice)"}`;
       return visible;
     }
     function syncClassicalVncSourceGuide(unit = "") {
@@ -8690,7 +8692,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceEmbedStem: state.sourceEmbedStem,
         sourceMatrixStem: state.sourceMatrixStem,
         sourcePartsSource: state.sourcePartsSource,
-        sourceInitialISelection: getClassicalVncSourceGuideElements().initialIChoice?.value || "",
+        sourceInitialISelection: (() => {
+          const choice = getClassicalVncSourceGuideElements().initialIChoice;
+          return choice && choice.disabled !== true
+            ? choice.checked === true ? "supportive" : "real"
+            : "";
+        })(),
         sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || ""
       });
     }
