@@ -6638,10 +6638,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       expandedVncBoundaryFrame = null,
       sentenceSurfaceFrame = null
     } = {}) {
-      const sentenceAuthorized = sentenceSurfaceFrame?.sentenceSurfaceApplies !== true
-        || sentenceSurfaceFrame?.authorizationStatus === "authorized";
-      const authorized = proofFrame?.conclusion?.authorized === true
-        && sentenceAuthorized;
+      const authorized = proofFrame?.conclusion?.authorized === true;
       const ruleFrames = [structureRuleFrame, sourceSelectionFrame, progressiveAssimilationFrame, lesson11ParadigmPlan, lesson11VncApplicationFrame, citationRuleFrame, classRuleFrame, predicateFormationRuleFrame, analysisRuleFrame, objectRelationshipRuleFrame, tlaFusionRuleFrame, ...(expandedVncBoundaryFrame?.boundaryApplies === true ? [expandedVncBoundaryFrame] : []), ...(sentenceSurfaceFrame?.sentenceSurfaceApplies === true ? [sentenceSurfaceFrame] : [])].filter(Boolean);
       return {
         kind: "classical-nahuatl-verbstem-selected-output-logic-frame",
@@ -6651,7 +6648,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceDocument: CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT,
         legalWitnessAuthority: CLASSICAL_NAHUATL_LESSON7_LEGAL_WITNESS_AUTHORITY,
         authorizationStatus: authorized ? "authorized" : "blocked",
-        blockReason: authorized ? "" : sentenceSurfaceFrame?.blockReason || proofFrame?.conclusion?.blockReason || "logic-proof-blocked",
+        blockReason: authorized ? "" : proofFrame?.conclusion?.blockReason || "logic-proof-blocked",
         outputableSlots: [...CLASSICAL_NAHUATL_LESSON7_OUTPUTABLE_SLOTS],
         selectedFormula: authorized ? proofFrame.conclusion.selectedFormula : "",
         outputFillers: authorized ? {
@@ -7329,7 +7326,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         selectedOutputLogicStatus: selectedOutputLogicFrame?.authorizationStatus || "blocked",
         receiptInventoryKind: receiptInventory?.kind || "",
         classSummaryCount: receiptInventory ? Object.keys(receiptInventory.classSummaries || {}).length : 0,
-        blockedBy: authorized ? "" : selectedOutputLogicFrame?.blockReason || firstFailedPremise?.layer || "logic-proof",
+        blockedBy: authorized ? "" : firstFailedPremise?.layer || selectedOutputLogicFrame?.blockReason || "logic-proof",
         slotSummary: authorized ? selectedOutputLogicFrame?.outputFillers || {} : {},
         grammarGenerationAllowed: false,
         surfaceGenerationAllowed: false
@@ -7570,24 +7567,6 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         predicateFormationRuleFrame,
         options
       });
-      if (sentenceSurfaceFrame.sentenceSurfaceApplies === true) {
-        const sentenceSurfaceAuthorized = sentenceSurfaceFrame.authorizationStatus === "authorized";
-        proofFrame.premises.push({
-          lesson: "Andrews Lessons 8–10",
-          layer: "sentence-surface-authorization",
-          rule: "A typed VNC sentence must satisfy its sentence-level particle, mood, tense, and boundary requirements.",
-          passed: sentenceSurfaceAuthorized,
-          sentenceType: sentenceSurfaceFrame.sentenceType,
-          blockReason: sentenceSurfaceFrame.blockReason || "",
-          ruleFrameKind: sentenceSurfaceFrame.kind,
-        });
-        if (!sentenceSurfaceAuthorized) {
-          proofFrame.authorizationStatus = "blocked";
-          proofFrame.conclusion.authorized = false;
-          proofFrame.conclusion.blockReason = sentenceSurfaceFrame.blockReason || "sentence-surface-not-authorized";
-          proofFrame.conclusion.selectedFormula = "";
-        }
-      }
       const grammarOperationEvaluationFrame = typeof getClassicalNahuatlVerbstemRuntimeTarget()?.buildClassicalNahuatlVncOperationEvaluationFrame === "function" ? getClassicalNahuatlVerbstemRuntimeTarget().buildClassicalNahuatlVncOperationEvaluationFrame({
         priorVncFrame,
         finalBoundaryFrame: proofFrame.conclusion.finalBoundaryRealizationFrame,

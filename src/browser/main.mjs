@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-lesson3-uncontradicted-075";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-broad-boundaries-076";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

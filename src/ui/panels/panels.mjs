@@ -561,6 +561,7 @@ export function createUiPanelsContext(targetObject = globalThis) {
     function initializeClassicalNahuatlPublicRuntime() {
       const body = targetObject.document.body;
       if (body) {
+        body.classList.remove("is-language-nawat-pipil");
         body.classList.add("is-language-classical");
       }
       return applyClassicalNahuatlTabAuthorityDataset(body);

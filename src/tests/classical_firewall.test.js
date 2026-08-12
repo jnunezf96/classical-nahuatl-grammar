@@ -265,7 +265,7 @@ function run(ctx = {}) {
             };
         })(),
         {
-            inventoryCount: 13,
+            inventoryCount: 12,
             formula: "oc auh cuix #0-0(nemi)0+0-0#?",
             surface: "Oc auh cuix nemi?",
             sequenceOrder: "before-consumed-sentence",

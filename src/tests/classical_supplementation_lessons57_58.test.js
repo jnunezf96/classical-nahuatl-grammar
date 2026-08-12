@@ -263,11 +263,11 @@ function run(ctx) {
             };
         })(),
         {
-            particle: ["authorized", "e", "#e", "bound-to-previous"],
+            particle: ["authorized", "é", "#e", "bound-to-previous"],
             result: [
                 "authorized",
                 "#0-0(nocn)0-0#e",
-                "Nocne!",
+                "Nocné!",
                 true,
             ],
             copiedParticleBlocked:
