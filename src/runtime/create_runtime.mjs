@@ -15,7 +15,7 @@ import { installClassicalNahuatlParticlesGlobals } from "../core/classical/parti
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";
 import { installClassicalNahuatlNuclearClauseGlobals } from "../core/classical/nuclear_clause_source.mjs?v=20260801-pre-l58-gates-118";
 import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260811-lesson1-multigroup-024";
-import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20260806-class-c-claim-172";
+import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20260811-lesson2-ui-obligations-040";
 import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20260806-preterit-agentive-nemi-173";
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlAdverbialNuclearGlobals } from "../core/classical/adverbial_nuclear_grammar.mjs?v=20260806-class-c-claim-172";

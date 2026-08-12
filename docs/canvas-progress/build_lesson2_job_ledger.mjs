@@ -226,6 +226,14 @@ const EXACTLY_IMPLEMENTED_WRITING_ATOMS = Object.freeze({
   ...Object.fromEntries([
     "ACI-P052-L020-B62AAD1010", "ACI-P052-L021-547243D130", "ACI-P052-L027-342C84A888", "ACI-P052-L028-1D946166F0", "ACI-P052-L028-F3ABD9CFDA",
   ].map(atomId => [atomId, Object.freeze({ observationKind: "vowel-elision-application-result", observationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_loss_shift_elision_jobs.test.js#${atomId}-broken-elision-result` })])),
+  "ACI-P047-L009-EF940827EC": Object.freeze({
+    observationKind: "conditional-open-input-user-choice",
+    observationTest: "src/tests/classical_source_initial_i_authority.test.js#ACI-P047-L009-EF940827EC",
+    mutationTest: "src/tests/classical_source_initial_i_authority.test.js#ACI-P047-L009-EF940827EC-wrong-decision-owner",
+  }),
+  ...Object.fromEntries([
+    "ACI-P052-L032-D1B1B21011", "ACI-P052-L035-9FDE253771", "ACI-P052-L035-48D4C08DCF", "ACI-P052-L038-6C1A02F633", "ACI-P052-L039-740017072D", "ACI-P052-L040-17C6C030DE",
+  ].map(atomId => [atomId, Object.freeze({ observationKind: "application-owned-open-input-compound-result", observationTest: `src/tests/classical_lesson2_ui_obligation_jobs.test.js#${atomId}`, mutationTest: `src/tests/classical_lesson2_ui_obligation_jobs.test.js#${atomId}-broken-result` })])),
 });
 
 const JOB_FAMILIES = Object.freeze([
@@ -299,6 +307,7 @@ const READING_ONLY_GRAMMAR_IDS = new Set([
   "ACI-P048-L008-FBFB9145DF-11",
   "ACI-P048-L013-79A43748AD",
   "ACI-P048-L013-FA50C31933",
+  "ACI-P048-L017-C013C1931E",
   "ACI-P053-L002-19416E3D57",
   "ACI-P053-L002-19416E3D57-02",
   "ACI-P053-L002-19416E3D57-03",
@@ -339,6 +348,29 @@ const READING_ONLY_EVIDENCE_IDS = new Set([
   "ACI-P048-L008-FBFB9145DF-10",
 ]);
 
+const DECISION_POLICIES = Object.freeze({
+  "ACI-P047-L009-EF940827EC": Object.freeze({
+    decisionOwner: "USER_ONLY_IF_APPLICATION_DOES_NOT_KNOW",
+    userInterferenceRequired: false,
+    uiControlPolicy: "SHOW_ONLY_FOR_UNKNOWN_INITIAL_I_SOURCE",
+    requiredUserInformation: "INITIAL_I_SOURCE_STATUS",
+  }),
+  "ACI-P048-L017-C013C1931E": Object.freeze({
+    decisionOwner: "USER_PRONUNCIATION_CONTEXT",
+    userInterferenceRequired: false,
+    uiControlPolicy: "READING_OR_PRONUNCIATION_VIEW_ONLY",
+    requiredUserInformation: "",
+  }),
+  ...Object.fromEntries([
+    "ACI-P052-L032-D1B1B21011", "ACI-P052-L035-9FDE253771", "ACI-P052-L035-48D4C08DCF", "ACI-P052-L038-6C1A02F633", "ACI-P052-L039-740017072D", "ACI-P052-L040-17C6C030DE",
+  ].map(atomId => [atomId, Object.freeze({
+    decisionOwner: "APPLICATION_AFTER_USER_SUPPLIES_STRUCTURE",
+    userInterferenceRequired: false,
+    uiControlPolicy: "REUSE_OPEN_COMPOUND_EMBED_AND_MATRIX_INPUTS",
+    requiredUserInformation: "COMPOUND_EMBED_AND_MATRIX",
+  })])),
+});
+
 function jobFamily(section) {
   return JOB_FAMILIES.find(([, pattern]) => pattern.test(section))?.[0] || "";
 }
@@ -378,6 +410,12 @@ function buildLedger() {
     const role = writingRole(atom);
     if (!family) throw new Error(`No Lesson 2 family for ${atom.atomId}`);
     const exactImplementation = EXACTLY_IMPLEMENTED_WRITING_ATOMS[atom.atomId] || null;
+    const decisionPolicy = DECISION_POLICIES[atom.atomId] || Object.freeze({
+      decisionOwner: role ? "APPLICATION" : "NONE_FOR_WRITING",
+      userInterferenceRequired: false,
+      uiControlPolicy: "NO_NEW_CONTROL_UNLESS_A_LATER_EXACT_REVIEW_PROVES_ONE_IS_REQUIRED",
+      requiredUserInformation: "",
+    });
     return {
       atomId: atom.atomId,
       canvasSection: atom.canvasSection,
@@ -393,6 +431,11 @@ function buildLedger() {
       normalApplicationRequirement: writingRequirement(atom, role),
       readerRequirement: `Use this atom to guide pronunciation, reading, or interpretation without allowing the guidance to authorize the generated Result: ${atom.meaning}`,
       evidenceAuthorizesGrammar: false,
+      decisionOwner: decisionPolicy.decisionOwner,
+      userInterferenceRequired: decisionPolicy.userInterferenceRequired,
+      uiControlPolicy: decisionPolicy.uiControlPolicy,
+      requiredUserInformation: decisionPolicy.requiredUserInformation,
+      openInputPolicy: "ACCEPT_ANY_USER_SUPPLIED_FORM",
       writingImplementationStatus: exactImplementation
         ? "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR"
         : role
@@ -448,6 +491,9 @@ function buildLedger() {
       everyWritingJobRequiresNormalApplicationBehavior: true,
       everyAtomGuidesReadingOrChecksWriting: true,
       readerGuidanceDoesNotAuthorizeOrComposeResult: true,
+      userInputIsOpenNotWhitelisted: true,
+      noUserControlWithoutRequiredUnknownInformation: true,
+      applicationOwnsDeterminableGrammarResults: true,
       acceptedStatusRequiresUserReview: true,
     },
     records,

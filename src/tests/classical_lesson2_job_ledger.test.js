@@ -39,8 +39,8 @@ function run() {
 
     s.eq("the complete direction assignment is explicit", jobs.counts.byDirectionClass, {
         WRITING_ONLY: 0,
-        READING_ONLY: 140,
-        BOTH: 399,
+        READING_ONLY: 141,
+        BOTH: 398,
     });
 
     s.eq("all twelve reviewed Lesson 2 families are present", jobs.counts.byFamily, {
@@ -71,6 +71,30 @@ function run() {
     s.eq("every atom guides the reader without authorizing grammar", jobs.records
         .filter(record => !record.readerRequirement || record.evidenceAuthorizesGrammar !== false)
         .map(record => record.atomId), []);
+
+    s.eq("every atom job names who decides and keeps user input open", jobs.records
+        .filter(record => !record.decisionOwner
+            || typeof record.userInterferenceRequired !== "boolean"
+            || !record.uiControlPolicy
+            || record.openInputPolicy !== "ACCEPT_ANY_USER_SUPPLIED_FORM")
+        .map(record => record.atomId), []);
+
+    s.eq("only unknown information can request user interference in this batch", jobs.records
+        .filter(record => record.userInterferenceRequired === true)
+        .map(record => record.atomId), []);
+
+    s.eq("the reviewed UI decisions distinguish choice from application duty", [
+        "ACI-P047-L009-EF940827EC",
+        "ACI-P048-L017-C013C1931E",
+        "ACI-P052-L038-6C1A02F633",
+    ].map(atomId => {
+        const record = jobs.records.find(candidate => candidate.atomId === atomId);
+        return [record.decisionOwner, record.uiControlPolicy];
+    }), [
+        ["USER_ONLY_IF_APPLICATION_DOES_NOT_KNOW", "SHOW_ONLY_FOR_UNKNOWN_INITIAL_I_SOURCE"],
+        ["USER_PRONUNCIATION_CONTEXT", "READING_OR_PRONUNCIATION_VIEW_ONLY"],
+        ["APPLICATION_AFTER_USER_SUPPLIES_STRUCTURE", "REUSE_OPEN_COMPOUND_EMBED_AND_MATRIX_INPUTS"],
+    ]);
 
     s.eq("all twelve user-approved families are accepted", {
         accepted: jobs.counts.acceptedJobs,
@@ -108,10 +132,6 @@ function run() {
         writingJobs: jobs.counts.writingJobs,
         exactlyImplemented: jobs.counts.exactlyImplementedWritingJobs,
         awaiting: jobs.counts.writingJobsAwaitingExactObservation,
-        creditedIds: jobs.records
-            .filter(record => record.writingImplementationStatus
-                === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR")
-            .map(record => record.atomId),
         creditedWithoutProof: jobs.records
             .filter(record => record.writingImplementationStatus
                 === "EXACTLY_OBSERVED_NORMAL_APPLICATION_BEHAVIOR")
@@ -120,13 +140,9 @@ function run() {
                 || !record.mutationTest)
             .map(record => record.atomId),
     }, {
-        writingJobs: 399,
-        exactlyImplemented: 2,
-        awaiting: 397,
-        creditedIds: [
-            "ACI-P039-L004-E7E01D8587-02",
-            "ACI-P039-L004-E7E01D8587-03",
-        ],
+        writingJobs: 398,
+        exactlyImplemented: 164,
+        awaiting: 234,
         creditedWithoutProof: [],
     });
 

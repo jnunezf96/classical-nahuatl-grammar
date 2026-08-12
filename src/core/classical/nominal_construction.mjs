@@ -805,7 +805,11 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
   } else if (constructionKind === "compound-nnc") {
     if (embedStem === "ah") {
       embedLexicalRule = "negative-ah";
-    } else if (["mā", "teo"].includes(embedStem)) {
+    } else if (
+      (["huē", "hue"].includes(embedStem) && ["cāuh", "cauh"].includes(matrixStem))
+      || (["teō", "teo"].includes(embedStem) && matrixStem === "calli")
+      || (["māi", "mai"].includes(embedStem) && matrixStem === "pilli")
+    ) {
       embedLexicalRule = "glottalized-long-vowel";
     } else if (
       /h$/u.test(embedStem)
@@ -1625,7 +1629,12 @@ function realizeCompoundEmbed(source, matrixStem, lexicalFacts = {}) {
   if (!embedStem) return { authorizationStatus: "blocked", blockReason: "compound-nnc-embed-stem-required" };
   if (lexicalRule === "irregular-final-a-loss") embedStem = embedStem.replace(/a$/u, "");
   if (lexicalRule === "glottalized-long-vowel") {
-    embedStem = embedStem.replace(/([āēīōū])$/u, (_, vowel) => ({
+    const lesson215Allomorph = ({
+      huē: "hueh", hue: "hueh",
+      teō: "teoh", teo: "teoh",
+      māi: "mah", mai: "mah",
+    })[embedStem];
+    embedStem = lesson215Allomorph || embedStem.replace(/([āēīōū])$/u, (_, vowel) => ({
       ā: "ah", ē: "eh", ī: "ih", ō: "oh", ū: "uh",
     })[vowel]);
   }

@@ -233,6 +233,44 @@ function run(ctx = {}) {
         })()
     );
 
+    s.eq(
+        "ACI-P047-L009-EF940827EC: the UI asks only when an open-input initial i is unknown",
+        (() => {
+            const unlisted = ctx.normalizeClassicalNahuatlVncApplicationRequest({
+                sourceStem: "i-any-open-input",
+                sourceValence: "intransitive",
+                sourceInitialISelection: "supportive",
+            });
+            const known = ctx.normalizeClassicalNahuatlVncApplicationRequest({
+                sourceStem: "ī",
+                sourceValence: "transitive",
+                sourceInitialISelection: "supportive",
+            });
+            return {
+                unlistedKind: unlisted.sourceInitialIAnalysis?.kind || "",
+                unlistedSelectionAccepted: unlisted.sourceInitialIAnalysis?.userSelectionAccepted === true,
+                knownKind: known.sourceInitialIAnalysis?.kind || "",
+                knownSelectionAccepted: known.sourceInitialIAnalysis?.userSelectionAccepted === true,
+            };
+        })(),
+        {
+            unlistedKind: "supportive",
+            unlistedSelectionAccepted: true,
+            knownKind: "real",
+            knownSelectionAccepted: false,
+        }
+    );
+
+    s.eq(
+        "ACI-P047-L009-EF940827EC-wrong-decision-owner: a user choice cannot replace a known source fact",
+        ctx.normalizeClassicalNahuatlVncApplicationRequest({
+            sourceStem: "ī",
+            sourceValence: "transitive",
+            sourceInitialISelection: "supportive",
+        }).sourceInitialIAnalysis?.kind,
+        "real"
+    );
+
     return s;
 }
 
