@@ -30,7 +30,7 @@ const PARTICLES = Object.freeze({
     "l3-ahtel": ["ah# + tēl", "ahtēl", ["is it not clear", "it cannot be otherwise"]],
     "l3-aya": ["ah# + ye", "aya", ["not yet"]],
     "l3-ma-caye": ["mā + ca# + ye", "mā caye", ["if only not yet"]],
-    "l3-ma-caya": ["mā + ca# + ya", "mā caya", ["if only not yet"]],
+    "l3-ma-caya": ["mā + ca# + ye", "mā caya", ["if only not yet"]],
     "l3-ahoc": ["ah# + oc", "ahoc", ["no longer", "not any more", "not another"]],
     "l3-ayoc": ["ah# + yoc", "ayoc", ["no longer", "not any more", "not another"]],
     "l3-aoc": ["ah# + oc", "aoc", ["no longer", "not any more", "not another"]],

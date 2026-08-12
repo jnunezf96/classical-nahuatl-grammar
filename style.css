@@ -17162,3 +17162,141 @@ body.is-language-classical #classical-result-panel [data-classical-result-status
 body.is-language-classical #classical-source-panel .classical-source-context-controls__help {
   font-weight: 450;
 }
+.classical-particle-combination-builder {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.45rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(53, 105, 91, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.classical-built-in-particles {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.65rem;
+  border: 1px solid rgba(53, 105, 91, 0.16);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.42);
+}
+
+.classical-particle-combination-builder[hidden] {
+  display: none !important;
+}
+
+.classical-particle-combination-builder__parts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+  min-height: 2rem;
+}
+
+.classical-particle-combination-builder__field {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.classical-particle-combination-builder__field-label {
+  color: var(--ink-soft);
+  font-size: 0.68rem;
+}
+
+.classical-particle-combination-builder__empty {
+  color: var(--muted, #6b7280);
+}
+
+.classical-particle-combination-builder__choices {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
+}
+
+.classical-particle-combination-builder > .classical-rule-control__label,
+.classical-particle-combination-builder > .classical-rule-control__hint {
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-rule-logic-controls [data-classical-vnc-authority-order="sentence-particle-choice"],
+body.is-language-classical #classical-rule-logic-controls [data-classical-nnc-authority-order="sentence-particle-choice"] {
+  order: 41;
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-rule-logic-controls [data-classical-vnc-authority-order="sentence-particle-built-ins"],
+body.is-language-classical #classical-rule-logic-controls [data-classical-nnc-authority-order="sentence-particle-built-ins"] {
+  order: 41;
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-rule-logic-controls [data-classical-vnc-authority-order="sentence-combination-builder"],
+body.is-language-classical #classical-rule-logic-controls [data-classical-nnc-authority-order="sentence-combination-builder"] {
+  order: 42;
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-rule-logic-controls [data-classical-vnc-authority-order="sentence-particle"],
+body.is-language-classical #classical-rule-logic-controls [data-classical-nnc-authority-order="sentence-particle"] {
+  order: 43;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-rule-logic-controls .classical-rule-control--internal-canonical-particle {
+  display: none !important;
+}
+
+body.is-language-classical #classical-rule-logic-controls .classical-rule-control--internal-combination-input {
+  display: none !important;
+}
+
+body.is-language-classical #classical-rule-logic-controls [data-classical-vnc-authority-order="sentence-adverbial"],
+body.is-language-classical #classical-rule-logic-controls [data-classical-nnc-authority-order="sentence-adverbial"] {
+  order: 43;
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-particle-honorific"],
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-nnc-authority-order="sentence-particle-honorific"] {
+  order: 46;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-antecessive"] {
+  order: 46;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-polarity"],
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-nnc-authority-order="sentence-polarity"] {
+  order: 45;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-type"],
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-nnc-authority-order="sentence-type"] {
+  order: 45;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-introductory"] {
+  order: 47;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-before-introductory"] {
+  order: 48;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit] [data-classical-vnc-authority-order="sentence-after-introductory"] {
+  order: 49;
+}
+
+@media (max-width: 720px) {
+  .classical-particle-combination-builder,
+  .classical-particle-combination-builder__parts,
+  .classical-particle-combination-builder__choices {
+    grid-template-columns: 1fr;
+  }
+}

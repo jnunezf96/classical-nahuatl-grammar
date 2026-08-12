@@ -59,7 +59,7 @@ export function createClassicalNahuatlParticlesApi(
       "l3-ahtel": Object.freeze(["ah#", "tēl"]),
       "l3-aya": Object.freeze(["ah#", "ye"]),
       "l3-ma-caye": Object.freeze(["mā", "ca#", "ye"]),
-      "l3-ma-caya": Object.freeze(["mā", "ca#", "ya"]),
+      "l3-ma-caya": Object.freeze(["mā", "ca#", "ye"]),
       "l3-ahoc": Object.freeze(["ah#", "oc"]),
       "l3-ayoc": Object.freeze(["ah#", "yoc"]),
       "l3-aoc": Object.freeze(["ah#", "oc"]),

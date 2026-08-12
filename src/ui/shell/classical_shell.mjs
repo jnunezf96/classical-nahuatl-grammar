@@ -2763,24 +2763,51 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
 
                         />
                       </label>
-                      <label
-                        class="classical-rule-control classical-rule-control--result-surface"
-                        data-classical-rule-logic-result-surface-control="true"
-                        data-classical-vnc-authority-order="sentence-combination-shortcut"
-                        data-classical-nnc-authority-order="sentence-combination-shortcut"
-                      >
-                        <span class="classical-rule-control__label">Quick combination</span>
+                      <label hidden aria-hidden="true">
                         <select
                           id="classical-rule-logic-particle-combination-shortcut"
                           data-classical-rule-logic-control="particle-combination-shortcut"
                           data-classical-result-scope="sentence-particle-combination-shortcut"
                         ></select>
                       </label>
+                      <div
+                        id="classical-built-in-particles"
+                        class="classical-rule-control classical-rule-control--result-surface classical-built-in-particles"
+                        data-classical-vnc-authority-order="sentence-particle-built-ins"
+                        data-classical-nnc-authority-order="sentence-particle-built-ins"
+                      >
+                        <span class="classical-rule-control__label">Built-in particles</span>
+                        <select
+                          id="classical-built-in-particle"
+                          data-classical-built-in-particle="true"
+                          aria-label="Built-in particles"
+                        ></select>
+                      </div>
+                      <div
+                        id="classical-particle-matrix"
+                        class="classical-rule-control classical-rule-control--result-surface classical-particle-combination-builder"
+                        data-classical-rule-logic-result-surface-control="true"
+                        data-classical-vnc-authority-order="sentence-combination-builder"
+                        data-classical-nnc-authority-order="sentence-combination-builder"
+                      >
+                        <span class="classical-rule-control__label">Particles</span>
+                        <div
+                          id="classical-particle-matrix-slots"
+                          class="classical-particle-combination-builder__parts"
+                          aria-live="polite"
+                        ></div>
+                        <span
+                          id="classical-particle-matrix-status"
+                          class="classical-rule-control__hint"
+                        ></span>
+                      </div>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-canonical-particle"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-particle"
                         data-classical-nnc-authority-order="sentence-particle"
+                        hidden
+                        aria-hidden="true"
                       >
                         <span class="classical-rule-control__label">Particle</span>
                         <select
@@ -2807,12 +2834,12 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         />
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-canonical-particle"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-adverbial"
                         data-classical-nnc-authority-order="sentence-adverbial"
                       >
-                        <span class="classical-rule-control__label">Adverbial</span>
+                        <span class="classical-rule-control__label">Adverbial modifier</span>
                         <select
                           id="classical-rule-logic-sentence-adverbial"
                           data-classical-rule-logic-control="sentence-adverbial"
@@ -2836,7 +2863,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         </select>
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--checkbox classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--checkbox classical-rule-control--result-surface classical-rule-control--internal-combination-input"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-antecessive"
                       >
@@ -2907,7 +2934,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         </select>
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-combination-input"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-introductory"
                       >
@@ -2923,7 +2950,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         </select>
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-combination-input"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-before-introductory"
                       >
@@ -2939,7 +2966,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         </select>
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface"
+                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-combination-input"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-after-introductory"
                       >

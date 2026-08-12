@@ -8120,11 +8120,521 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         : "none";
       return true;
     }
+    const CLASSICAL_BUILT_IN_PARTICLE_CONTROL_ID = "classical-built-in-particle";
+    const CLASSICAL_BUILT_IN_PARTICLE_CATEGORIES = Object.freeze({
+      collocation: "Particle collocations",
+      negation: "Negativizing particles",
+      honorificized: "Honorificized particles"
+    });
+    const CLASSICAL_HONORIFICIZED_PARTICLE_BASES = Object.freeze({
+      "l3-otzin": "l3-o-behold",
+      "l3-auhtzin": "l3-auh-interjection",
+      "l3-ca-no-zotzin": "l3-ca-no-zo"
+    });
+    const CLASSICAL_HONORIFICIZED_PARTICLES_BY_BASE = Object.freeze(
+      Object.fromEntries(Object.entries(CLASSICAL_HONORIFICIZED_PARTICLE_BASES)
+        .map(([honorificizedId, baseId]) => [baseId, honorificizedId]))
+    );
+    function getClassicalBuiltInParticleEntries(category = "") {
+      const entries = (typeof targetObject.getClassicalNahuatlParticleEntries === "function"
+        ? targetObject.getClassicalNahuatlParticleEntries()
+        : []).filter(entry => entry.functionScope === category);
+      if (!["collocation", "negation"].includes(category)) return entries;
+      const selectableIds = new Set(getClassicalParticleCombinationShortcutEntries()
+        .map(entry => entry.shortcutId));
+      return entries.filter(entry => selectableIds.has(entry.id));
+    }
+    function populateClassicalBuiltInParticleControls() {
+      const control = targetObject.document?.getElementById?.(CLASSICAL_BUILT_IN_PARTICLE_CONTROL_ID);
+      if (!control) return false;
+      const selectedValue = String(control.value || "none");
+      Array.from(control.children || []).forEach(child => child.remove());
+      const none = targetObject.document.createElement("option");
+      none.value = "none";
+      none.textContent = "Choose a built-in particle";
+      control.appendChild(none);
+      Object.entries(CLASSICAL_BUILT_IN_PARTICLE_CATEGORIES).forEach(([category, label]) => {
+        const group = targetObject.document.createElement("optgroup");
+        group.label = label;
+        getClassicalBuiltInParticleEntries(category).forEach(entry => {
+          const option = targetObject.document.createElement("option");
+          option.value = entry.id;
+          option.textContent = [entry.sourceForm, entry.gloss].filter(Boolean).join(" · ");
+          option.dataset.classicalBuiltInParticleCategory = category;
+          option.dataset.classicalAuthorityRole = "non-authorizing-canonical-particle-picker";
+          group.appendChild(option);
+        });
+        control.appendChild(group);
+      });
+      control.value = Array.from(control.options || []).some(option => option.value === selectedValue)
+        ? selectedValue
+        : "none";
+      return true;
+    }
+    function setClassicalParticlePolarityControl(value = "positive") {
+      const control = targetObject.document?.getElementById?.("classical-rule-logic-polarity");
+      if (control) control.value = value;
+      targetObject.document?.querySelectorAll?.('[data-classical-segment-control="classical-rule-logic-polarity"]')
+        ?.forEach(button => {
+          const active = button.dataset.classicalSegmentValue === value;
+          button.classList.toggle("is-active", active);
+          button.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      return control;
+    }
+    function syncClassicalBuiltInParticleControls() {
+      const control = targetObject.document?.getElementById?.(CLASSICAL_BUILT_IN_PARTICLE_CONTROL_ID);
+      if (!control) return false;
+      control.value = "none";
+      const shortcutId = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut")?.value || "none";
+      const honorificized = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific")?.checked === true;
+      const baseId = shortcutId !== "none" ? shortcutId : ClassicalParticleMatrixIndividualId;
+      const honorificizedId = honorificized ? CLASSICAL_HONORIFICIZED_PARTICLES_BY_BASE[baseId] || "" : "";
+      if (honorificizedId && control.querySelector?.(`option[value="${honorificizedId}"]`)) {
+        control.value = honorificizedId;
+        return true;
+      }
+      const selectedEntry = (typeof targetObject.getClassicalNahuatlParticleEntries === "function"
+        ? targetObject.getClassicalNahuatlParticleEntries()
+        : []).find(entry => entry.id === shortcutId);
+      if (selectedEntry && control.querySelector?.(`option[value="${selectedEntry.id}"]`)) {
+        control.value = selectedEntry.id;
+      }
+      return true;
+    }
+    let ClassicalParticleCombinationDraftSegments = [];
+    let ClassicalParticleMatrixIndividualId = "none";
+    let ClassicalParticleMatrixIndividualKind = "particle";
+    function clearClassicalCombinationInternalInputs() {
+      [
+        "classical-rule-logic-introductory-particle",
+        "classical-rule-logic-preface-particle",
+        "classical-rule-logic-introductory-modifier"
+      ].forEach(id => {
+        const control = targetObject.document?.getElementById?.(id);
+        if (control) control.value = "none";
+      });
+      const antecessive = targetObject.document?.getElementById?.("classical-rule-logic-prefix-stack");
+      if (antecessive) antecessive.checked = false;
+      return true;
+    }
+    function getClassicalParticleCombinationSequenceSegments(entry = null) {
+      return Array.from(entry?.formulaSegments || [])
+        .filter(segment => !["ah#", "ca#"].includes(segment))
+        .map(segment => ({
+          "nō": "no",
+          yoc: "oc"
+        })[segment] || segment);
+    }
+    function getClassicalParticleCombinationShortcutEntries() {
+      return typeof targetObject.getClassicalNahuatlParticleCombinationShortcutEntries === "function"
+        ? targetObject.getClassicalNahuatlParticleCombinationShortcutEntries()
+        : [];
+    }
+    function classicalParticleCombinationStartsWith(sequence = [], prefix = []) {
+      return prefix.every((segment, index) => sequence[index] === segment);
+    }
+    function getClassicalParticleMatrixEntries() {
+      const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
+      return getClassicalParticleCombinationShortcutEntries()
+        .filter(entry => entry.polarity === polarity);
+    }
+    function getClassicalParticleMatrixIndividualEntries() {
+      const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
+      const tense = targetObject.document?.getElementById?.("classical-rule-logic-tense")?.value || "present";
+      const excludedIds = new Set([
+        "l3-ah-negative",
+        "l3-ca-negative",
+        "l3-cuix",
+        "l3-e-vocative"
+      ]);
+      if (polarity !== "negative") excludedIds.add("l3-zo");
+      if (!["preterit", "distant-past", "distant-past-as-past", "imperfect", "past"].includes(tense)) {
+        excludedIds.add("l3-o-antecessive");
+      }
+      return (typeof targetObject.getClassicalNahuatlParticleEntries === "function"
+        ? targetObject.getClassicalNahuatlParticleEntries()
+        : [])
+        .filter(entry => entry.formulaSegments?.length === 1 && !excludedIds.has(entry.id))
+        .map(entry => ({ ...entry, matrixKind: "particle" }));
+    }
+    function getClassicalParticleMatrixCombinationSegment(entry = null) {
+      if (entry?.id === "l3-no-adverbial") return "no";
+      return String(entry?.sourceForm || "");
+    }
+    function populateClassicalParticleMatrixSelect(select, choices, value, placeholder) {
+      Array.from(select.children || []).forEach(child => child.remove());
+      const none = targetObject.document.createElement("option");
+      none.value = "";
+      none.textContent = placeholder;
+      select.appendChild(none);
+      choices.forEach(choice => {
+        const option = targetObject.document.createElement("option");
+        option.value = choice;
+        option.textContent = choice;
+        select.appendChild(option);
+      });
+      select.value = choices.includes(value) ? value : "";
+    }
+    function resolveClassicalParticleMatrix() {
+      const entries = getClassicalParticleMatrixEntries();
+      const polarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
+      const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+      const particleControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle");
+      const adverbialControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-adverbial");
+      const exact = entries.filter(entry => {
+        const sequence = getClassicalParticleCombinationSequenceSegments(entry);
+        return sequence.length === ClassicalParticleCombinationDraftSegments.length
+          && classicalParticleCombinationStartsWith(sequence, ClassicalParticleCombinationDraftSegments);
+      });
+      if (polarity === "negative"
+        && ClassicalParticleMatrixIndividualId !== "none"
+        && ClassicalParticleCombinationDraftSegments.length === 1
+        && exact.length) {
+        if (shortcutControl) shortcutControl.value = exact[0].shortcutId;
+        applyClassicalParticleCombinationShortcut(exact[0].shortcutId);
+        return exact[0];
+      }
+      if (ClassicalParticleMatrixIndividualId !== "none"
+        && ClassicalParticleCombinationDraftSegments.length === 1) {
+        clearClassicalParticleCombinationAppliedResult();
+        if (shortcutControl) shortcutControl.value = "none";
+        if (ClassicalParticleMatrixIndividualKind === "adverbial") {
+          if (adverbialControl) adverbialControl.value = ClassicalParticleMatrixIndividualId;
+        } else if (particleControl?.querySelector?.(`option[value="${ClassicalParticleMatrixIndividualId}"]`)) {
+          particleControl.value = ClassicalParticleMatrixIndividualId;
+        } else if (adverbialControl?.querySelector?.(`option[value="${ClassicalParticleMatrixIndividualId}"]`)) {
+          adverbialControl.value = ClassicalParticleMatrixIndividualId;
+          ClassicalParticleMatrixIndividualKind = "adverbial";
+        } else if (["l3-ma", "l3-tla"].includes(ClassicalParticleMatrixIndividualId)) {
+          const mood = targetObject.document?.getElementById?.("classical-rule-logic-mood");
+          const introductory = targetObject.document?.getElementById?.("classical-rule-logic-introductory-particle");
+          if (mood) mood.value = "optative";
+          if (introductory) introductory.value = ClassicalParticleMatrixIndividualId === "l3-ma" ? "mā" : "tlā";
+        } else if (ClassicalParticleMatrixIndividualId === "l3-o-antecessive") {
+          const antecessive = targetObject.document?.getElementById?.("classical-rule-logic-prefix-stack");
+          if (antecessive) antecessive.checked = true;
+        }
+        return null;
+      }
+      if (exact.length) {
+        const chosen = exact.find(entry => entry.shortcutId === shortcutControl?.value) || exact[0];
+        if (shortcutControl) shortcutControl.value = chosen.shortcutId;
+        applyClassicalParticleCombinationShortcut(chosen.shortcutId);
+        return chosen;
+      }
+      clearClassicalParticleCombinationAppliedResult();
+      if (ClassicalParticleCombinationDraftSegments.length === 1 && particleControl) {
+        const segment = ClassicalParticleCombinationDraftSegments[0];
+        const entry = (typeof targetObject.getClassicalNahuatlSentenceParticleEntries === "function"
+          ? targetObject.getClassicalNahuatlSentenceParticleEntries()
+          : []).find(candidate => candidate.sourceForm === segment && candidate.formulaSegments?.length === 1);
+        if (entry) particleControl.value = entry.id;
+      }
+      return null;
+    }
+    function clearClassicalParticleCombinationAppliedResult() {
+      const quickControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+      const particleControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle");
+      const adverbialControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-adverbial");
+      if (quickControl) quickControl.value = "none";
+      if (particleControl) {
+        Array.from(particleControl.options || []).forEach(option => {
+          if (option.dataset.classicalShortcutOriginalText) {
+            option.textContent = option.dataset.classicalShortcutOriginalText;
+            delete option.dataset.classicalShortcutOriginalText;
+          }
+        });
+        particleControl.value = "none";
+      }
+      if (adverbialControl) adverbialControl.value = "none";
+      clearClassicalCombinationInternalInputs();
+      return particleControl;
+    }
+    function renderClassicalParticleCombinationBuilder() {
+      const parts = targetObject.document?.getElementById?.("classical-particle-matrix-slots");
+      const status = targetObject.document?.getElementById?.("classical-particle-matrix-status");
+      if (!parts || !status) return false;
+      const mood = targetObject.document?.getElementById?.("classical-rule-logic-mood")?.value || "indicative";
+      const tense = targetObject.document?.getElementById?.("classical-rule-logic-tense")?.value || "present";
+      const incompatibleIntroductory = ["l3-ma", "l3-tla"].includes(ClassicalParticleMatrixIndividualId)
+        && !["optative", "admonitive"].includes(mood);
+      const incompatibleAntecessive = ClassicalParticleMatrixIndividualId === "l3-o-antecessive"
+        && !["preterit", "distant-past", "distant-past-as-past", "imperfect", "past"].includes(tense);
+      if (incompatibleIntroductory || incompatibleAntecessive) {
+        ClassicalParticleCombinationDraftSegments = [];
+        ClassicalParticleMatrixIndividualId = "none";
+        ClassicalParticleMatrixIndividualKind = "particle";
+      }
+      const quickControl = targetObject.document.getElementById("classical-rule-logic-particle-combination-shortcut");
+      const selectedEntry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+        ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(quickControl?.value || "none")
+        : null;
+      if (selectedEntry) {
+        const selectedSegments = getClassicalParticleCombinationSequenceSegments(selectedEntry);
+        if (selectedSegments.join("\u0000") !== ClassicalParticleCombinationDraftSegments.join("\u0000")) {
+          ClassicalParticleCombinationDraftSegments = selectedSegments;
+          ClassicalParticleMatrixIndividualId = "none";
+          ClassicalParticleMatrixIndividualKind = "particle";
+        }
+      }
+      const entries = getClassicalParticleMatrixEntries();
+      const individualEntries = getClassicalParticleMatrixIndividualEntries();
+      const normalizedSegments = [];
+      ClassicalParticleCombinationDraftSegments.forEach((segment, index) => {
+        if (normalizedSegments.length !== index) return;
+        const prefix = normalizedSegments.slice();
+        const licensed = new Set();
+        entries.forEach(entry => {
+          const sequence = getClassicalParticleCombinationSequenceSegments(entry);
+          if (sequence.length > index && classicalParticleCombinationStartsWith(sequence, prefix)) {
+            licensed.add(sequence[index]);
+          }
+        });
+        if (index === 0) individualEntries.forEach(entry => {
+          licensed.add(getClassicalParticleMatrixCombinationSegment(entry));
+        });
+        if (licensed.has(segment)) normalizedSegments.push(segment);
+      });
+      ClassicalParticleCombinationDraftSegments = normalizedSegments;
+      const combinationSegments = normalizedSegments.slice();
+      Array.from(parts.children || []).forEach(child => child.remove());
+      const maxSlots = 4;
+      for (let index = 0; index < maxSlots; index += 1) {
+        if (index > 0 && combinationSegments.length < index) break;
+        const prefix = combinationSegments.slice(0, index);
+        const choices = new Set();
+        entries.forEach(entry => {
+          const sequence = getClassicalParticleCombinationSequenceSegments(entry);
+          if (sequence.length > index && classicalParticleCombinationStartsWith(sequence, prefix)) {
+            choices.add(sequence[index]);
+          }
+        });
+        const slotIndividualEntries = index === 0
+          ? individualEntries
+          : [];
+        slotIndividualEntries.forEach(entry => {
+          choices.add(getClassicalParticleMatrixCombinationSegment(entry));
+        });
+        const segment = combinationSegments[index] || "";
+        if (!choices.size && index > 0) break;
+        const field = targetObject.document.createElement("label");
+        field.className = "classical-particle-combination-builder__field";
+        const label = targetObject.document.createElement("span");
+        label.className = "classical-particle-combination-builder__field-label";
+        label.textContent = `Particle ${index + 1}`;
+        const select = targetObject.document.createElement("select");
+        select.className = "classical-particle-combination-builder__part-select";
+        select.dataset.combinationPartIndex = String(index);
+        if (index === 0) {
+          Array.from(select.children || []).forEach(child => child.remove());
+          const none = targetObject.document.createElement("option");
+          none.value = "";
+          none.textContent = "none";
+          select.appendChild(none);
+          const group = targetObject.document.createElement("optgroup");
+          group.label = "Individual particle options";
+          slotIndividualEntries.forEach(entry => {
+            const option = targetObject.document.createElement("option");
+            option.value = `${entry.matrixKind}:${entry.id}`;
+            option.textContent = [entry.sourceForm, entry.gloss].filter(Boolean).join(" · ");
+            option.dataset.particleSegment = getClassicalParticleMatrixCombinationSegment(entry);
+            option.dataset.particleKind = entry.matrixKind;
+            group.appendChild(option);
+          });
+          select.appendChild(group);
+          if (ClassicalParticleMatrixIndividualId !== "none") {
+            select.value = `${ClassicalParticleMatrixIndividualKind}:${ClassicalParticleMatrixIndividualId}`;
+          } else if (segment) {
+            const matching = slotIndividualEntries.find(entry => (
+              getClassicalParticleMatrixCombinationSegment(entry) === segment
+            ));
+            select.value = matching ? `${matching.matrixKind}:${matching.id}` : "";
+          }
+        } else {
+          populateClassicalParticleMatrixSelect(
+            select,
+            Array.from(choices),
+            segment,
+            "no additional particle"
+          );
+        }
+        field.append(label, select);
+        parts.appendChild(field);
+      }
+      const exactEntries = entries.filter(entry => {
+        const sequence = getClassicalParticleCombinationSequenceSegments(entry);
+        return sequence.length === combinationSegments.length
+          && classicalParticleCombinationStartsWith(sequence, combinationSegments);
+      });
+      const selectedIndividual = individualEntries.find(entry => (
+        entry.id === ClassicalParticleMatrixIndividualId
+      )) || null;
+      const selectedExactEntry = exactEntries.find(entry => entry.shortcutId === quickControl?.value)
+        || exactEntries[0]
+        || null;
+      if (exactEntries.length > 1) {
+        const field = targetObject.document.createElement("label");
+        field.className = "classical-particle-combination-builder__field";
+        const label = targetObject.document.createElement("span");
+        label.className = "classical-particle-combination-builder__field-label";
+        label.textContent = "Written form";
+        const select = targetObject.document.createElement("select");
+        select.className = "classical-particle-combination-builder__variant-select";
+        select.dataset.combinationVariant = "true";
+        exactEntries.forEach(entry => {
+          const option = targetObject.document.createElement("option");
+          option.value = entry.shortcutId;
+          option.textContent = entry.sourceForm;
+          select.appendChild(option);
+        });
+        select.value = selectedExactEntry?.shortcutId || exactEntries[0].shortcutId;
+        field.append(label, select);
+        parts.appendChild(field);
+      }
+      status.textContent = selectedExactEntry
+        ? [selectedExactEntry.sourceForm, selectedExactEntry.gloss].filter(Boolean).join(" · ")
+        : selectedIndividual && combinationSegments.length === 1
+          ? [selectedIndividual.sourceForm, selectedIndividual.gloss].filter(Boolean).join(" · ")
+        : combinationSegments.length
+          ? "Choose a licensed next particle."
+          : "Choose an individual particle. More choices appear only when a combination is licensed.";
+      syncClassicalBuiltInParticleControls();
+      return true;
+    }
+    function completeClassicalParticleCombinationDraft() {
+      const entries = getClassicalParticleCombinationShortcutEntries();
+      const currentPolarity = targetObject.document?.getElementById?.("classical-rule-logic-polarity")?.value || "positive";
+      const exactEntries = entries.filter(entry => {
+        const sequence = getClassicalParticleCombinationSequenceSegments(entry);
+        return sequence.length === ClassicalParticleCombinationDraftSegments.length
+          && classicalParticleCombinationStartsWith(sequence, ClassicalParticleCombinationDraftSegments);
+      });
+      const polarityMatches = exactEntries.filter(entry => entry.polarity === currentPolarity);
+      const candidates = polarityMatches.length ? polarityMatches : exactEntries;
+      if (candidates.length !== 1) return false;
+      const quickControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+      if (quickControl) quickControl.value = candidates[0].shortcutId;
+      applyClassicalParticleCombinationShortcut(candidates[0].shortcutId);
+      return true;
+    }
+    function initClassicalParticleCombinationBuilder() {
+      const root = targetObject.document?.getElementById?.("classical-particle-matrix");
+      if (!root || root.dataset.bound === "true") return false;
+      root.dataset.bound = "true";
+      root.addEventListener("change", event => {
+        const variantControl = event.target?.closest?.("[data-combination-variant]");
+        if (variantControl) {
+          const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+          if (shortcutControl) shortcutControl.value = variantControl.value;
+          applyClassicalParticleCombinationShortcut(variantControl.value);
+          renderClassicalParticleCombinationBuilder();
+          const particleControl = targetObject.document.getElementById("classical-rule-logic-sentence-particle");
+          refreshClassicalRuleLogicSurfaceFromControl(particleControl);
+          return;
+        }
+        const partControl = event.target?.closest?.("[data-combination-part-index]");
+        if (!partControl) return;
+        const index = Number(partControl.dataset.combinationPartIndex);
+        const rawValue = String(partControl.value || "");
+        const selectedOption = partControl.selectedOptions?.[0];
+        const isIndividual = rawValue.startsWith("particle:") || rawValue.startsWith("adverbial:");
+        const value = isIndividual
+          ? String(selectedOption?.dataset?.particleSegment || "")
+          : rawValue;
+        ClassicalParticleMatrixIndividualId = index === 0 && isIndividual
+          ? rawValue.slice(rawValue.indexOf(":") + 1)
+          : "none";
+        ClassicalParticleMatrixIndividualKind = index === 0 && isIndividual
+          ? String(selectedOption?.dataset?.particleKind || "particle")
+          : "particle";
+        ClassicalParticleCombinationDraftSegments = value
+          ? [...ClassicalParticleCombinationDraftSegments.slice(0, index), value]
+          : ClassicalParticleCombinationDraftSegments.slice(0, index);
+        if (index > 0) ClassicalParticleMatrixIndividualId = "none";
+        resolveClassicalParticleMatrix();
+        renderClassicalParticleCombinationBuilder();
+        const particleControl = targetObject.document.getElementById("classical-rule-logic-sentence-particle");
+        refreshClassicalRuleLogicSurfaceFromControl(particleControl);
+      });
+      renderClassicalParticleCombinationBuilder();
+      return true;
+    }
+    function applyClassicalBuiltInParticle(category = "", entryId = "none") {
+      const honorificControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle-honorific");
+      if (honorificControl) honorificControl.checked = false;
+      if (!entryId || entryId === "none") {
+        clearClassicalParticleCombinationAppliedResult();
+        ClassicalParticleCombinationDraftSegments = [];
+        ClassicalParticleMatrixIndividualId = "none";
+        ClassicalParticleMatrixIndividualKind = "particle";
+        renderClassicalParticleCombinationBuilder();
+        refreshClassicalRuleLogicSurfaceFromControl();
+        return true;
+      }
+      if (category === "honorificized") {
+        const baseId = CLASSICAL_HONORIFICIZED_PARTICLE_BASES[entryId] || "";
+        if (!baseId) return false;
+        const shortcut = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+          ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(baseId)
+          : null;
+        if (shortcut) {
+          const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+          if (shortcutControl) shortcutControl.value = shortcut.shortcutId;
+          applyClassicalParticleCombinationShortcut(shortcut.shortcutId);
+        } else {
+          const baseEntry = getClassicalParticleMatrixIndividualEntries().find(entry => entry.id === baseId);
+          if (!baseEntry) return false;
+          setClassicalParticlePolarityControl("positive");
+          ClassicalParticleMatrixIndividualId = baseEntry.id;
+          ClassicalParticleMatrixIndividualKind = baseEntry.matrixKind;
+          ClassicalParticleCombinationDraftSegments = [getClassicalParticleMatrixCombinationSegment(baseEntry)];
+          resolveClassicalParticleMatrix();
+        }
+        if (honorificControl) honorificControl.checked = true;
+      } else {
+        const shortcut = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
+          ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(entryId)
+          : null;
+        if (!shortcut) return false;
+        const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+        if (shortcutControl) shortcutControl.value = shortcut.shortcutId;
+        applyClassicalParticleCombinationShortcut(shortcut.shortcutId);
+      }
+      renderClassicalParticleCombinationBuilder();
+      const particleControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle");
+      refreshClassicalRuleLogicSurfaceFromControl(particleControl);
+      return true;
+    }
+    function initClassicalBuiltInParticleControls() {
+      const root = targetObject.document?.getElementById?.("classical-built-in-particles");
+      if (!root || root.dataset.bound === "true") return false;
+      root.dataset.bound = "true";
+      root.addEventListener("change", event => {
+        const control = event.target?.closest?.("[data-classical-built-in-particle]");
+        if (!control) return;
+        const category = control.selectedOptions?.[0]?.dataset?.classicalBuiltInParticleCategory || "";
+        applyClassicalBuiltInParticle(category, control.value || "none");
+      });
+      syncClassicalBuiltInParticleControls();
+      return true;
+    }
     function applyClassicalParticleCombinationShortcut(shortcutId = "none") {
       const entry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
         ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(shortcutId)
         : null;
       if (!entry) return false;
+      clearClassicalCombinationInternalInputs();
+      const combinationSegments = getClassicalParticleCombinationSequenceSegments(entry);
+      const moodControl = targetObject.document?.getElementById?.("classical-rule-logic-mood");
+      if (combinationSegments.length > 1
+        && combinationSegments.includes("mā")
+        && moodControl?.value === "optative") {
+        moodControl.value = "indicative";
+      }
+      ClassicalParticleMatrixIndividualId = "none";
+      ClassicalParticleMatrixIndividualKind = "particle";
+      ClassicalParticleCombinationDraftSegments = combinationSegments;
       const particleControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-particle");
       const adverbialControl = targetObject.document?.getElementById?.("classical-rule-logic-sentence-adverbial");
       const polarityControl = targetObject.document?.getElementById?.("classical-rule-logic-polarity");
@@ -10393,10 +10903,17 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       populateClassicalSentenceParticleControl();
       populateClassicalSentenceAdverbialControl();
       populateClassicalParticleCombinationShortcutControl();
+      populateClassicalBuiltInParticleControls();
+      initClassicalParticleCombinationBuilder();
+      initClassicalBuiltInParticleControls();
       applyEntradaUrlSegmentsFromLocation({
         triggerGenerate: false,
         immediateRefresh: false
       });
+      if ((targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut")?.value || "none") !== "none") {
+        clearClassicalCombinationInternalInputs();
+      }
+      renderClassicalParticleCombinationBuilder();
       const {
         ansButton,
         modeButton,
@@ -10445,6 +10962,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             "classical-rule-logic-polarity"
           ].includes(control.id)) {
             shortcutControl.value = "none";
+            if (control.id !== "classical-rule-logic-polarity") {
+              ClassicalParticleCombinationDraftSegments = [];
+            }
+          }
+          if (control.id === "classical-rule-logic-polarity"
+            && ClassicalParticleCombinationDraftSegments.length) {
+            resolveClassicalParticleMatrix();
           }
           if (control.id === "classical-construction-operation") {
             syncClassicalConstructionSourceUnitAvailability(
@@ -10466,6 +10990,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             syncClassicalVncSourceGuide();
           }
           refreshClassicalRuleLogicSurfaceFromControl(control);
+          renderClassicalParticleCombinationBuilder();
           if (control.closest?.("[data-classical-source-identity-controls]")) {
             syncClassicalSourceReadout(getClassicalBasalUnitFromRuntime());
           }
