@@ -360,7 +360,7 @@ function run(ctx) {
             sources: [true, true, true],
             optionIds: [
                 ["l3-ca", "ca", "ca"],
-                ["l3-cuix", "cuix", "cuix?"],
+                ["l3-cuix", "cuix", "cuix"],
                 ["l3-tla", "tla", "tlā"],
                 ["l3-ma", "ma", "mā"],
                 ["l3-e-vocative", "vocative-e", "#e"],

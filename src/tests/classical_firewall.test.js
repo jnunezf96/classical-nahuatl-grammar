@@ -172,6 +172,8 @@ function run(ctx = {}) {
                 nncSurface: nncLayer.sentenceSurfaceDisplay,
                 honorificFormula: honorificized.sentenceFormulaDisplay,
                 honorificSurface: honorificized.sentenceSurfaceDisplay,
+                honorificStatus: honorificized.authorizationStatus,
+                honorificReason: honorificized.blockReason,
                 formulaAuthority: vncLayer.formulaStringAuthority,
                 externalAuthorityAccepted:
                     vncLayer.callerSuppliedAuthorityAccepted,
@@ -195,9 +197,10 @@ function run(ctx = {}) {
             nncStatus: "authorized",
             nncFormula: "auh #ni-0(tēuc)tli-0#.",
             nncSurface: "Auh nitēuctli.",
-            honorificFormula:
-                "auh + tzin cuix #0-0(nemi)0+0-0#?",
-            honorificSurface: "Āuhtzin cuix nemi?",
+            honorificFormula: "",
+            honorificSurface: "",
+            honorificStatus: "blocked",
+            honorificReason: "sentence-particle-honorificization-not-witnessed",
             formulaAuthority: false,
             externalAuthorityAccepted: false,
             issued: true,

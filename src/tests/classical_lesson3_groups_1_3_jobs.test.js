@@ -96,7 +96,7 @@ function run(ctx = {}) {
 
     const clauseIntroducers = [
         ["ACI-P055-L006-14E2993193", "l3-ca", "ca", ["indeed", "in fact"]],
-        ["ACI-P055-L011-AB2D82A37B", "l3-cuix", "cuix?", ["perhaps", "perchance"]],
+        ["ACI-P055-L011-AB2D82A37B", "l3-cuix", "cuix", ["perhaps", "perchance"]],
         ["ACI-P055-L012-0DAB15A93F", "l3-tla", "tlā", ["if", "in the event that", "in case", "provided that"]],
         ["ACI-P055-L013-FC34FCAEDA", "l3-ma", "mā", ["if only", "would that"]],
         ["ACI-P055-L014-DBD44C3C73", "l3-o-behold", "ō", ["here is", "here are", "here you have", "behold"]],
@@ -140,11 +140,11 @@ function run(ctx = {}) {
             JSON.stringify(actual) === JSON.stringify(broken));
     }
 
-    s.eq("the normal particle control contains the five clause introducers and no om or iuh particle choice",
+    s.eq("the normal particle control omits choices already owned by the question and introductory-particle controls",
         ctx.getClassicalNahuatlSentenceParticleEntries()
             .filter((entry) => entry.functionScope === "clause-introducer")
             .map((entry) => entry.id),
-        ["l3-ca", "l3-cuix", "l3-tla", "l3-ma", "l3-o-behold"]);
+        ["l3-ca", "l3-o-behold"]);
     s.eq("nonparticles stay out of the particle source path", [
         ctx.requestClassicalParticleResult("om").authorizationStatus,
         ctx.requestClassicalParticleResult("iuh").authorizationStatus,

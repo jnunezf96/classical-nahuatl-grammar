@@ -412,6 +412,11 @@ function run(ctx) {
         ctx.buildClassicalNahuatlParticleResultFrame(caSource, {
             precedingParticleSourceFrame: maSource,
         });
+    const caSelected = ctx.requestClassicalNegativeParticleSelection({
+        polarity: "negative",
+        precedingParticleId: "l3-ma",
+        sentenceKind: "wish",
+    });
 
     s.eq(
         "particle:result licenses an exact lexical Source, preserves internal formula boundaries, and derives written form independently",
@@ -461,8 +466,9 @@ function run(ctx) {
                 ],
                 licensed: [
                     caLicensed.authorizationStatus,
-                    caLicensed.formula,
-                    caLicensed.surface,
+                    caLicensed.blockReason,
+                    caSelected.particleResultFrame.formula,
+                    caSelected.particleResultFrame.surface,
                 ],
             },
         },
@@ -480,13 +486,18 @@ function run(ctx) {
             ca: {
                 missing: [
                     "blocked",
-                    "classical-particle-ca-preceding-context-required",
+                    "classical-negative-particle-selection-required",
                 ],
                 mismatch: [
                     "blocked",
-                    "classical-particle-ca-context-mismatch",
+                    "classical-negative-particle-selection-required",
                 ],
-                licensed: ["authorized", "ca#", "ca"],
+                licensed: [
+                    "blocked",
+                    "classical-negative-particle-selection-required",
+                    "ca#",
+                    "ca",
+                ],
             },
         }
     );

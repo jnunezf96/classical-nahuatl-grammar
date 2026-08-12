@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "lesson": 3,
+  "status": "UNCONTRADICTED",
+  "grammarAuthority": "Andrews transcription",
+  "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "reportAuthority": false,
+  "resolvedCount": 6,
+  "unresolvedCount": 0,
+  "resolved": [
+    {
+      "id": "lesson3-hidden-particle-boundaries",
+      "resolution": "Canonical formulas keep the internal ah#, ca, zā, zo, and ye particle members visible even when traditional writing is solid."
+    },
+    {
+      "id": "lesson3-example-punctuation",
+      "resolution": "Canvas question marks, exclamation marks, and ellipses remain source witnesses; generated particle Results contain only grammatical particle material."
+    },
+    {
+      "id": "lesson3-duplicate-user-choices",
+      "resolution": "Cuix, mā, and tlā use their existing sentence controls and are not repeated in the general Particle control."
+    },
+    {
+      "id": "lesson3-negative-context",
+      "resolution": "The application chooses ca# after mah and after mā or tlā in wish or command sentences; it chooses ah# elsewhere and after mā in an admonition."
+    },
+    {
+      "id": "lesson3-negative-bypass",
+      "resolution": "Callers cannot directly choose ah# or ca#; the application chooses the allomorph, except that ah# remains licensed as the exceptional compound embed described in Lesson 3."
+    },
+    {
+      "id": "lesson3-honorific-bypass",
+      "resolution": "Stored honorificized entries cannot directly generate Results; the shared honorific operation derives ōtzin, āuhtzin, and ca no zotzin."
+    }
+  ],
+  "unresolved": []
+}

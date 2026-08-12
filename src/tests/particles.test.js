@@ -77,7 +77,7 @@ function run(ctx = {}) {
             result.surfaceStringAuthority,
         ]),
         [
-            ["l3-cuix", "authorized", "cuix?", "cuix", ["cuix"], false, true, false, false],
+            ["l3-cuix", "authorized", "cuix", "cuix", ["cuix"], false, true, false, false],
             ["l3-in", "authorized", "in", "in", ["in"], false, true, false, false],
             ["l3-mah", "authorized", "mah", "mah", ["mah"], false, true, false, false],
             ["l58-ahmo", "authorized", "ahmō", "ahmō", ["ahmō"], false, true, false, false],
@@ -224,7 +224,7 @@ function run(ctx = {}) {
             containsButMorph: false,
         },
         ahzaZo: {
-            formulaSegments: ["ahzā", "zo"],
+            formulaSegments: ["ah#", "zā", "zo"],
             meanings: ["perhaps", "maybe"],
         },
     });
