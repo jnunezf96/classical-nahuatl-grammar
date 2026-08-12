@@ -16,10 +16,10 @@
     "batches": 4,
     "proposedBoth": 176,
     "proposedReadingOnly": 28,
-    "acceptedAtoms": 0,
+    "acceptedAtoms": 37,
     "declinedAtoms": 0,
-    "awaitingReview": 204,
-    "implementationCredit": 0
+    "awaitingReview": 167,
+    "implementationCredit": 37
   },
   "groups": [
     {
@@ -38,7 +38,8 @@
       "readingJob": "Help the reader recognize particles, attachment marks, stress, and uncertain historical analyses.",
       "decisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "controlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 25
     },
     {
       "groupNumber": 2,
@@ -56,7 +57,8 @@
       "readingJob": "Guide recognition of adverbial, exclamatory, independent, and embedded particle uses.",
       "decisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "controlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 7
     },
     {
       "groupNumber": 3,
@@ -74,7 +76,8 @@
       "readingJob": "Guide the interpretation of ca, cuix, tlā, mā, and ō without replacing Nahuatl structure with an English label.",
       "decisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "controlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 5
     },
     {
       "groupNumber": 4,
@@ -92,7 +95,8 @@
       "readingJob": "Help the reader recover adjunction and resist English article-based analysis.",
       "decisionSplit": "The user may choose optional explicit adjunction; the application keeps in out of a determiner slot and preserves the nuclear clause.",
       "controlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 5,
@@ -110,7 +114,8 @@
       "readingJob": "Guide the contextual reading of auh as and or but.",
       "decisionSplit": "The user chooses the intended relation; the application supplies licensed placement and Result structure.",
       "controlPolicy": "Reuse the clause-relation choice; do not make English and versus but a second grammatical control unless Canvas requires a distinct Nahuatl choice.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 6,
@@ -128,7 +133,8 @@
       "readingJob": "Guide contextual meanings and distinguish bound particles from similar-looking independent forms.",
       "decisionSplit": "The user chooses the intended meaning or discourse contribution; the application enforces attachment, tense, and placement.",
       "controlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 7,
@@ -146,7 +152,8 @@
       "readingJob": "Guide emotional force, speaker restrictions, repetition, and direct address.",
       "decisionSplit": "The user chooses the intended interjection or direct address; the application enforces speaker restrictions, attachment, repetition limits, and accent.",
       "controlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 8,
@@ -164,7 +171,8 @@
       "readingJob": "Help the reader recover negation, attachment, complementary distribution, and resulting lexical meanings.",
       "decisionSplit": "The user chooses negation and intended construction; the application chooses ah# versus ca# and performs the boundary changes.",
       "controlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 9,
@@ -182,7 +190,8 @@
       "readingJob": "Help the reader recover the members, order, attachment, and contextual meaning of a collocation.",
       "decisionSplit": "The user chooses the intended combined meaning or construction; the application builds the licensed sequence and order.",
       "controlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     },
     {
       "groupNumber": 10,
@@ -200,7 +209,8 @@
       "readingJob": "Help the reader recognize the honorific formation and its social meaning.",
       "decisionSplit": "The user chooses honorific intent when socially meaningful; the application derives the licensed particle form.",
       "controlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW"
+      "reviewStatus": "AWAITING_USER_REVIEW",
+      "exactlyObserved": 0
     }
   ],
   "records": [
@@ -217,9 +227,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L003-DADB414F03",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L003-DADB414F03",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L003-DADB414F03",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L003-DADB414F03"
     },
     {
       "atomId": "ACI-P054-L005-08BA89BEA7",
@@ -234,9 +249,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L005-08BA89BEA7",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L005-08BA89BEA7",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L005-08BA89BEA7",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L005-08BA89BEA7"
     },
     {
       "atomId": "ACI-P054-L006-456782D2B7",
@@ -251,9 +271,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L006-456782D2B7",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L006-456782D2B7",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L006-456782D2B7",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L006-456782D2B7"
     },
     {
       "atomId": "ACI-P054-L006-456782D2B7-02",
@@ -268,9 +293,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L006-456782D2B7-02",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L006-456782D2B7-02",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L006-456782D2B7-02",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L006-456782D2B7-02"
     },
     {
       "atomId": "ACI-P054-L008-317762E402",
@@ -285,9 +315,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L008-317762E402",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L008-317762E402",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L008-317762E402",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L008-317762E402"
     },
     {
       "atomId": "ACI-P054-L008-7324BF122B",
@@ -302,9 +337,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L008-7324BF122B",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L008-7324BF122B",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L008-7324BF122B",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L008-7324BF122B"
     },
     {
       "atomId": "ACI-P054-L011-283E5406D4",
@@ -319,9 +359,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L011-283E5406D4",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L011-283E5406D4",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L011-283E5406D4",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L011-283E5406D4"
     },
     {
       "atomId": "ACI-P054-L012-9E29E630D8",
@@ -336,9 +381,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L012-9E29E630D8",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L012-9E29E630D8",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L012-9E29E630D8",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L012-9E29E630D8"
     },
     {
       "atomId": "ACI-P054-L012-6B6ED9C941",
@@ -353,9 +403,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L012-6B6ED9C941",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L012-6B6ED9C941",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L012-6B6ED9C941",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L012-6B6ED9C941"
     },
     {
       "atomId": "ACI-P054-L015-E700B3B5E8",
@@ -370,9 +425,14 @@
       "proposedReaderJob": "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L015-E700B3B5E8",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L015-E700B3B5E8"
     },
     {
       "atomId": "ACI-P054-L016-5836E6F329",
@@ -387,9 +447,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L016-5836E6F329",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L016-5836E6F329",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L016-5836E6F329",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L016-5836E6F329"
     },
     {
       "atomId": "ACI-P054-L016-5836E6F329-02",
@@ -404,9 +469,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L016-5836E6F329-02",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L016-5836E6F329-02",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L016-5836E6F329-02",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L016-5836E6F329-02"
     },
     {
       "atomId": "ACI-P054-L016-5836E6F329-03",
@@ -421,9 +491,14 @@
       "proposedReaderJob": "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L016-5836E6F329-03",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L016-5836E6F329-03"
     },
     {
       "atomId": "ACI-P054-L016-5836E6F329-04",
@@ -438,9 +513,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L016-5836E6F329-04",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L016-5836E6F329-04",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L016-5836E6F329-04",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L016-5836E6F329-04"
     },
     {
       "atomId": "ACI-P054-L016-5836E6F329-05",
@@ -455,9 +535,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L016-5836E6F329-05",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L016-5836E6F329-05",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L016-5836E6F329-05",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L016-5836E6F329-05"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D",
@@ -472,9 +557,14 @@
       "proposedReaderJob": "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-02",
@@ -489,9 +579,14 @@
       "proposedReaderJob": "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-02",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-02"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-03",
@@ -506,9 +601,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L017-1E47CCBD5D-03",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L017-1E47CCBD5D-03",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-03",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-03"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-04",
@@ -523,9 +623,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L017-1E47CCBD5D-04",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L017-1E47CCBD5D-04",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-04",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-04"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-05",
@@ -540,9 +645,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L017-1E47CCBD5D-05",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L017-1E47CCBD5D-05",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-05",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-05"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-06",
@@ -557,9 +667,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L017-1E47CCBD5D-06",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L017-1E47CCBD5D-06",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-06",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-06"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-07",
@@ -574,9 +689,14 @@
       "proposedReaderJob": "PRESERVE_SOURCE_REFERENCE_WITHOUT_AUTHORITY",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-07",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-07"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-08",
@@ -591,9 +711,14 @@
       "proposedReaderJob": "USE_AS_READING_OR_CHECKING_EVIDENCE_WITHOUT_AUTHORITY",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-08",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-08"
     },
     {
       "atomId": "ACI-P054-L017-1E47CCBD5D-09",
@@ -608,9 +733,14 @@
       "proposedReaderJob": "USE_AS_READING_OR_CHECKING_EVIDENCE_WITHOUT_AUTHORITY",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L017-1E47CCBD5D-09",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L017-1E47CCBD5D-09"
     },
     {
       "atomId": "ACI-P054-L021-83FB00D900",
@@ -625,9 +755,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user supplies or selects the intended particle; the application validates its structure and attachment.",
       "proposedControlPolicy": "Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L021-83FB00D900",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L021-83FB00D900",
+      "readerGuidanceIdeaId": "lesson3-particle-structure-and-identity",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L021-83FB00D900",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L021-83FB00D900"
     },
     {
       "atomId": "ACI-P054-L024-1FE8858464",
@@ -642,9 +777,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L024-1FE8858464",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L024-1FE8858464",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L024-1FE8858464",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L024-1FE8858464"
     },
     {
       "atomId": "ACI-P054-L025-0624917443",
@@ -659,9 +799,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L025-0624917443",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L025-0624917443",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L025-0624917443",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L025-0624917443"
     },
     {
       "atomId": "ACI-P054-L026-40A0D33D4C",
@@ -676,9 +821,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L026-40A0D33D4C",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L026-40A0D33D4C",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L026-40A0D33D4C",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L026-40A0D33D4C"
     },
     {
       "atomId": "ACI-P054-L026-69D42EEFD9",
@@ -693,9 +843,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L026-69D42EEFD9",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L026-69D42EEFD9",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L026-69D42EEFD9",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L026-69D42EEFD9"
     },
     {
       "atomId": "ACI-P054-L028-6FA07476B9",
@@ -710,9 +865,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P054-L028-6FA07476B9",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P054-L028-6FA07476B9",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P054-L028-6FA07476B9",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P054-L028-6FA07476B9"
     },
     {
       "atomId": "ACI-P055-L002-914BE57025",
@@ -727,9 +887,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L002-914BE57025",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L002-914BE57025",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L002-914BE57025",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L002-914BE57025"
     },
     {
       "atomId": "ACI-P055-L002-F7034A8A49",
@@ -744,9 +909,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.",
       "proposedControlPolicy": "Reuse construction and particle choices. Add no separate control for a restriction the application can check.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L002-F7034A8A49",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L002-F7034A8A49",
+      "readerGuidanceIdeaId": "lesson3-particle-use-and-structural-limits",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L002-F7034A8A49",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L002-F7034A8A49"
     },
     {
       "atomId": "ACI-P055-L006-14E2993193",
@@ -761,9 +931,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "proposedControlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L006-14E2993193",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L006-14E2993193",
+      "readerGuidanceIdeaId": "lesson3-clause-introducing-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L006-14E2993193",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L006-14E2993193"
     },
     {
       "atomId": "ACI-P055-L011-AB2D82A37B",
@@ -778,9 +953,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "proposedControlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L011-AB2D82A37B",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L011-AB2D82A37B",
+      "readerGuidanceIdeaId": "lesson3-clause-introducing-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L011-AB2D82A37B",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L011-AB2D82A37B"
     },
     {
       "atomId": "ACI-P055-L012-0DAB15A93F",
@@ -795,9 +975,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "proposedControlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L012-0DAB15A93F",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L012-0DAB15A93F",
+      "readerGuidanceIdeaId": "lesson3-clause-introducing-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L012-0DAB15A93F",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L012-0DAB15A93F"
     },
     {
       "atomId": "ACI-P055-L013-FC34FCAEDA",
@@ -812,9 +997,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "proposedControlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L013-FC34FCAEDA",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L013-FC34FCAEDA",
+      "readerGuidanceIdeaId": "lesson3-clause-introducing-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L013-FC34FCAEDA",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L013-FC34FCAEDA"
     },
     {
       "atomId": "ACI-P055-L014-DBD44C3C73",
@@ -829,9 +1019,14 @@
       "proposedReaderJob": "GUIDE_READING_AND_INTERPRETATION",
       "proposedDecisionSplit": "The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.",
       "proposedControlPolicy": "Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#ACI-P055-L014-DBD44C3C73",
+      "writingMutationTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js#mutation:ACI-P055-L014-DBD44C3C73",
+      "readerGuidanceIdeaId": "lesson3-clause-introducing-particles",
+      "readerObservationTest": "src/tests/classical_lesson3_reader_guidance.test.js#ACI-P055-L014-DBD44C3C73",
+      "readerMutationTest": "src/tests/classical_lesson3_reader_guidance.test.js#mutation:ACI-P055-L014-DBD44C3C73"
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F",
@@ -848,7 +1043,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-02",
@@ -865,7 +1065,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-03",
@@ -882,7 +1087,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-04",
@@ -899,7 +1109,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-05",
@@ -916,7 +1131,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-06",
@@ -933,7 +1153,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-07",
@@ -950,7 +1175,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-08",
@@ -967,7 +1197,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-09",
@@ -984,7 +1219,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-10",
@@ -1001,7 +1241,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-11",
@@ -1018,7 +1263,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-12",
@@ -1035,7 +1285,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-13",
@@ -1052,7 +1307,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-14",
@@ -1069,7 +1329,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-15",
@@ -1086,7 +1351,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-16",
@@ -1103,7 +1373,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-17",
@@ -1120,7 +1395,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P055-L016-EC4A61E09F-18",
@@ -1137,7 +1417,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L010-B5C02F73D2",
@@ -1154,7 +1439,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L013-0AB93ED9AA",
@@ -1171,7 +1461,12 @@
       "proposedControlPolicy": "Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L015-5DAE53297D",
@@ -1188,7 +1483,12 @@
       "proposedControlPolicy": "Reuse the clause-relation choice; do not make English and versus but a second grammatical control unless Canvas requires a distinct Nahuatl choice.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L017-12EF9D6DAD",
@@ -1205,7 +1505,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L018-DD5E88ED8C",
@@ -1222,7 +1527,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L020-C9B9EAEAE9",
@@ -1239,7 +1549,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L021-374442D32E",
@@ -1256,7 +1571,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L022-6F742655B5",
@@ -1273,7 +1593,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L023-6CCF356ADF",
@@ -1290,7 +1615,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38",
@@ -1307,7 +1637,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-02",
@@ -1324,7 +1659,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-03",
@@ -1341,7 +1681,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-04",
@@ -1358,7 +1703,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-05",
@@ -1375,7 +1725,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-06",
@@ -1392,7 +1747,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-07",
@@ -1409,7 +1769,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-08",
@@ -1426,7 +1791,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-09",
@@ -1443,7 +1813,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-10",
@@ -1460,7 +1835,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L024-EA0D75FF38-11",
@@ -1477,7 +1857,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L029-5D0AB4CA0C",
@@ -1494,7 +1879,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L030-1364B92E7F",
@@ -1511,7 +1901,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L033-01F85DA0CE",
@@ -1528,7 +1923,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L033-01F85DA0CE-02",
@@ -1545,7 +1945,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L034-BD5D01654A",
@@ -1562,7 +1967,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L035-2AED292FE4",
@@ -1579,7 +1989,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L035-2AED292FE4-02",
@@ -1596,7 +2011,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L035-2AED292FE4-03",
@@ -1613,7 +2033,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L035-2AED292FE4-04",
@@ -1630,7 +2055,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L035-2AED292FE4-05",
@@ -1647,7 +2077,12 @@
       "proposedControlPolicy": "Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L037-DCC9E4187C",
@@ -1664,7 +2099,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L038-AE8309CDD9",
@@ -1681,7 +2121,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L039-564D7EA4ED",
@@ -1698,7 +2143,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF",
@@ -1715,7 +2165,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-02",
@@ -1732,7 +2187,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-03",
@@ -1749,7 +2209,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-04",
@@ -1766,7 +2231,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-05",
@@ -1783,7 +2253,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-06",
@@ -1800,7 +2275,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P056-L040-9F2DD2E0DF-07",
@@ -1817,7 +2297,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L005-1DF84143A6",
@@ -1834,7 +2319,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L006-92D7836223",
@@ -1851,7 +2341,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L008-F1D2F3418D",
@@ -1868,7 +2363,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L009-5312507A59",
@@ -1885,7 +2385,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L011-FB997EC204",
@@ -1902,7 +2407,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L012-D8A4648B18",
@@ -1919,7 +2429,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L012-D8A4648B18-02",
@@ -1936,7 +2451,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L013-FA99B1ACAC",
@@ -1953,7 +2473,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L014-C232C17AC1",
@@ -1970,7 +2495,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L015-B24CCD4EC4",
@@ -1987,7 +2517,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L016-0AE2D09B52",
@@ -2004,7 +2539,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L017-CD7A87DD0D",
@@ -2021,7 +2561,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L018-3BDB784FC1",
@@ -2038,7 +2583,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L019-D544D192EC",
@@ -2055,7 +2605,12 @@
       "proposedControlPolicy": "Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L020-0F1964812D",
@@ -2072,7 +2627,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L021-F8C9506BBB",
@@ -2089,7 +2649,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L022-769ED90A06",
@@ -2106,7 +2671,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L023-C7FBC7F91A",
@@ -2123,7 +2693,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L023-C7FBC7F91A-02",
@@ -2140,7 +2715,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L023-C7FBC7F91A-03",
@@ -2157,7 +2737,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L023-C7FBC7F91A-04",
@@ -2174,7 +2759,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L023-C7FBC7F91A-05",
@@ -2191,7 +2781,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L027-655886AF4C",
@@ -2208,7 +2803,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L028-BF30A613C1",
@@ -2225,7 +2825,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L029-7BD2A9799E",
@@ -2242,7 +2847,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L029-7BD2A9799E-02",
@@ -2259,7 +2869,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L030-5805FF54ED",
@@ -2276,7 +2891,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L031-A74FD68C61",
@@ -2293,7 +2913,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L031-2D39C27074",
@@ -2310,7 +2935,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L032-02952202B2",
@@ -2327,7 +2957,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L032-33DFD92099",
@@ -2344,7 +2979,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L033-50DA5EDEC8",
@@ -2361,7 +3001,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L033-FD3C87A708",
@@ -2378,7 +3023,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L034-E19CB3D97E",
@@ -2395,7 +3045,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L036-B4C74714FB",
@@ -2412,7 +3067,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L037-22B42E90A8",
@@ -2429,7 +3089,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L038-0BB63A8964",
@@ -2446,7 +3111,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L039-3B4C9CC5D8",
@@ -2463,7 +3133,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P057-L041-001BD32072",
@@ -2480,7 +3155,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L002-6F48A55A15",
@@ -2497,7 +3177,12 @@
       "proposedControlPolicy": "Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L004-E971998280",
@@ -2514,7 +3199,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L005-35AF28C994",
@@ -2531,7 +3221,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L005-354F71BA15",
@@ -2548,7 +3243,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L007-B2FEBA3551",
@@ -2565,7 +3265,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L008-3D13DA366A",
@@ -2582,7 +3287,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L009-85D2B09AFF",
@@ -2599,7 +3309,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L009-722041D90B",
@@ -2616,7 +3331,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L009-48810DDA3B",
@@ -2633,7 +3353,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L012-5952A2206A",
@@ -2650,7 +3375,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L013-A6432D783C",
@@ -2667,7 +3397,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L015-7ADA1F848A",
@@ -2684,7 +3419,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L016-63BBD0495F",
@@ -2701,7 +3441,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L016-22F3013609",
@@ -2718,7 +3463,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L016-8256F545E5",
@@ -2735,7 +3485,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L019-8CE99FCFDA",
@@ -2752,7 +3507,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L020-4835B3189A",
@@ -2769,7 +3529,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L020-4835B3189A-02",
@@ -2786,7 +3551,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L020-4835B3189A-03",
@@ -2803,7 +3573,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L020-4835B3189A-04",
@@ -2820,7 +3595,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L020-4835B3189A-05",
@@ -2837,7 +3617,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L021-9EAF8D91D6",
@@ -2854,7 +3639,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L022-54A38AB312",
@@ -2871,7 +3661,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L022-C370B709CC",
@@ -2888,7 +3683,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L022-81B0784858",
@@ -2905,7 +3705,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L022-81B0784858-02",
@@ -2922,7 +3727,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L022-81B0784858-03",
@@ -2939,7 +3749,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L025-B7FF1E5CA5",
@@ -2956,7 +3771,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L026-C5DDB29CF8",
@@ -2973,7 +3793,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L027-9F98D48BC5",
@@ -2990,7 +3815,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L028-DAD27A5927",
@@ -3007,7 +3837,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L030-1F8C08D5AE",
@@ -3024,7 +3859,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L031-1AAD1ECA40",
@@ -3041,7 +3881,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L032-2FD6AC4CBA",
@@ -3058,7 +3903,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L033-390330D08C",
@@ -3075,7 +3925,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L033-F62ECD4EB3",
@@ -3092,7 +3947,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L033-78915222C5",
@@ -3109,7 +3969,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L035-E6E44F6A1C",
@@ -3126,7 +3991,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L036-E4FBCE59CB",
@@ -3143,7 +4013,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L037-20ACE3DE58",
@@ -3160,7 +4035,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L038-79A1482151",
@@ -3177,7 +4057,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L039-C9FE6FC0C8",
@@ -3194,7 +4079,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L040-5078A1255B",
@@ -3211,7 +4101,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L041-F9F188CF97",
@@ -3228,7 +4123,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P058-L041-F9F188CF97-02",
@@ -3245,7 +4145,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L002-E318DA0E85",
@@ -3262,7 +4167,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L004-9BC0D1603D",
@@ -3279,7 +4189,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L005-1C893EDF52",
@@ -3296,7 +4211,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L006-58024209BB",
@@ -3313,7 +4233,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L006-58024209BB-02",
@@ -3330,7 +4255,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L006-0D1731BD90",
@@ -3347,7 +4277,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L008-9F2D77B77A",
@@ -3364,7 +4299,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L009-C501C360B1",
@@ -3381,7 +4321,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L010-41CAD89B37",
@@ -3398,7 +4343,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L011-4D093ADEBC",
@@ -3415,7 +4365,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L012-C18B0D1531",
@@ -3432,7 +4387,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L012-8C4A02A648",
@@ -3449,7 +4409,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L014-084C4A984E",
@@ -3466,7 +4431,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L015-56DD8F5A6B",
@@ -3483,7 +4453,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L016-1FD716B5A2",
@@ -3500,7 +4475,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L016-29C88418FB",
@@ -3517,7 +4497,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L017-0900C585EE",
@@ -3534,7 +4519,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L017-9EABC66B4A",
@@ -3551,7 +4541,12 @@
       "proposedControlPolicy": "Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L018-19FD991827",
@@ -3568,7 +4563,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L020-A5401273B0",
@@ -3585,7 +4585,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L021-7061D7CA2C",
@@ -3602,7 +4607,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L022-1AAA138A0C",
@@ -3619,7 +4629,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L024-6A5F7EF59E",
@@ -3636,7 +4651,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L025-64943B2196",
@@ -3653,7 +4673,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     },
     {
       "atomId": "ACI-P059-L026-BB2A070E1D",
@@ -3670,7 +4695,12 @@
       "proposedControlPolicy": "Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.",
       "reviewStatus": "AWAITING_USER_REVIEW",
       "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED"
+      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "writingObservationTest": "",
+      "writingMutationTest": "",
+      "readerGuidanceIdeaId": "",
+      "readerObservationTest": "",
+      "readerMutationTest": ""
     }
   ]
 }

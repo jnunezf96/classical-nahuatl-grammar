@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 3,
+  "groups": {
+    "lesson3-particle-structure-and-identity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-particle-use-and-structural-limits": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    },
+    "lesson3-clause-introducing-particles": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson3_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson3_reader_guidance.test.js"
+    }
+  }
+}

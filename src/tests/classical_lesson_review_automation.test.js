@@ -53,22 +53,22 @@ function run() {
         firstBatchGroups: [1, 2, 3],
     });
 
-    s.eq("automation proposes direction without claiming implementation", {
+    s.eq("automation credits only accepted groups with exact working proof", {
         both: review.counts.proposedBoth,
         readingOnly: review.counts.proposedReadingOnly,
         awaiting: review.counts.awaitingReview,
         accepted: review.counts.acceptedAtoms,
         credit: review.counts.implementationCredit,
         falseCredit: review.records
-            .filter(record => record.implementationCredit
-                !== "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED")
+            .filter(record => record.reviewStatus !== "ACCEPTED")
+            .filter(record => record.implementationCredit === "EXACTLY_OBSERVED")
             .map(record => record.atomId),
     }, {
         both: 176,
         readingOnly: 28,
-        awaiting: 204,
-        accepted: 0,
-        credit: 0,
+        awaiting: 167,
+        accepted: 37,
+        credit: 37,
         falseCredit: [],
     });
 

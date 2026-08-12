@@ -1,6 +1,6 @@
 # Lesson 3 atom-job review batches
 
-All 204 atoms are included exactly once. These are proposals for review, not implementation credit.
+All 204 atoms are included exactly once. Unaccepted groups remain proposals; implementation credit appears only after accepted jobs pass their exact checks.
 
 ## Batch 1, Group 1: Particle structure and identity
 
@@ -12,7 +12,8 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - User/application split: The user supplies or selects the intended particle; the application validates its structure and attachment.
 - Control policy: Reuse the open particle source and existing particle choice. Do not expose syllable count, historical origin, or attachment mechanics as controls.
 - Proposal: Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing.
-- Status: AWAITING_USER_REVIEW
+- Status: ACCEPTED
+- Exactly observed: 25/25
 
 ## Batch 1, Group 2: Particle use and structural limits
 
@@ -24,7 +25,8 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - User/application split: The user chooses the intended construction; the application decides whether the chosen particle can fill that structural role.
 - Control policy: Reuse construction and particle choices. Add no separate control for a restriction the application can check.
 - Proposal: Make particle rank and function affect normal application behavior, not merely a label or explanation.
-- Status: AWAITING_USER_REVIEW
+- Status: ACCEPTED
+- Exactly observed: 7/7
 
 ## Batch 1, Group 3: Clause-introducing particles
 
@@ -36,7 +38,8 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - User/application split: The user chooses the intended clause force; the application limits the available particle choices and places the selected particle.
 - Control policy: Use one contextual clause-introducer choice. Do not create separate controls for spelling, position, or English translation.
 - Proposal: Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties.
-- Status: AWAITING_USER_REVIEW
+- Status: ACCEPTED
+- Exactly observed: 5/5
 
 ## Batch 2, Group 4: The adjunctor in
 
@@ -49,6 +52,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Reuse the clause-relation and particle paths. Never add a definite or indefinite article control for in.
 - Proposal: Unify optional adjunction with the existing clause relation system and keep translation non-authorizing.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/20
 
 ## Batch 2, Group 5: The conjunctor auh
 
@@ -61,6 +65,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Reuse the clause-relation choice; do not make English and versus but a second grammatical control unless Canvas requires a distinct Nahuatl choice.
 - Proposal: Keep one Nahuatl conjunction choice while allowing context-sensitive interpretation.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/1
 
 ## Batch 2, Group 6: Adverbial particles
 
@@ -73,6 +78,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Use a contextual particle choice. Derived attachment and tense compatibility stay automatic.
 - Proposal: Make lexical choice user-facing only where meaning is genuinely intended; keep realization automatic.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/27
 
 ## Batch 3, Group 7: Interjections and the vocative particle
 
@@ -85,6 +91,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Use a contextual interjection or vocative choice. Do not expose obligatory attachment or accent as controls.
 - Proposal: Separate genuine expressive choice from automatic vocative realization.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/24
 
 ## Batch 3, Group 8: Negative particle prefixes
 
@@ -97,6 +104,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Use one negation choice. Never ask the user to choose the predictable negative prefix or its automatic sound change.
 - Proposal: Make negative-prefix selection an application duty governed by the sentence environment.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/26
 
 ## Batch 3, Group 9: Particle collocations
 
@@ -109,6 +117,7 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Prefer one construction choice for a lexicalized collocation and reuse canonical particle choices for productive sequences. Never expose slot order as user work.
 - Proposal: Treat Lesson 3 itself as the particle sequence pipeline rather than concatenating interface labels.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/62
 
 ## Batch 4, Group 10: Honorificized particles
 
@@ -121,4 +130,5 @@ All 204 atoms are included exactly once. These are proposals for review, not imp
 - Control policy: Reuse the honorific choice only for particles that license it. Do not expose suffix selection or internal derivation as controls.
 - Proposal: Route particle honorificization through the shared grammar operation instead of a special display-only form.
 - Status: AWAITING_USER_REVIEW
+- Exactly observed: 0/7
 

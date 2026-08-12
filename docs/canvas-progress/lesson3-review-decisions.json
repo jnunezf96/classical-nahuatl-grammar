@@ -2,5 +2,18 @@
   "schemaVersion": 1,
   "lesson": 3,
   "rule": "Only the user's explicit accept or decline decision changes a review group status.",
-  "decisions": {}
+  "decisions": {
+    "lesson3-particle-structure-and-identity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use Lesson 3 as the canonical particle source model while keeping conjectural origins and missing evidence non-authorizing."
+    },
+    "lesson3-particle-use-and-structural-limits": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make particle rank and function affect normal application behavior, not merely a label or explanation."
+    },
+    "lesson3-clause-introducing-particles": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat clause introducers as genuine grammatical choices whose placement and compatibility are application duties."
+    }
+  }
 }
