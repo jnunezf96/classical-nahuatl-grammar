@@ -8724,24 +8724,23 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     }
     function commitClassicalSourcePartsEvaluation(options = {}) {
       const sourceState = getClassicalSourcePartControlState();
-      if (!hasCommittableClassicalSourceParts(sourceState)) {
-        const root = targetObject.document?.getElementById?.("classical-source-parts") || null;
-        setClassicalSourcePartsPendingState(
-          root?.dataset?.classicalSourceCommitState === "pending"
-        );
-        return false;
-      }
-      const phonologicalStem = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-        ? [sourceState.sourceEmbedStem, sourceState.sourceMatrixStem]
+      const {
+        wholeInput,
+        embedInput,
+        matrixInput
+      } = getClassicalSourcePartControlElements();
+      const rawPhonologicalStem = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+        ? [embedInput?.value, matrixInput?.value]
+            .map(value => String(value || "").trim())
             .filter(Boolean)
             .join(" | ")
-        : sourceState.sourceWholeStem;
+        : String(wholeInput?.value || "").trim();
       if (
-        /\/[^/]+\//u.test(phonologicalStem)
+        /\/[^/]+\//u.test(rawPhonologicalStem)
         && typeof targetObject.applyClassicalTranscriptionSource === "function"
       ) {
         const result = targetObject.applyClassicalTranscriptionSource(
-          phonologicalStem
+          rawPhonologicalStem
         );
         if (result) {
           ClassicalSourcePartsCommittedSignature =
@@ -8750,6 +8749,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           syncClassicalSourcePartsToEntradaUrl();
           return true;
         }
+        return false;
+      }
+      if (!hasCommittableClassicalSourceParts(sourceState)) {
+        const root = targetObject.document?.getElementById?.("classical-source-parts") || null;
+        setClassicalSourcePartsPendingState(
+          root?.dataset?.classicalSourceCommitState === "pending"
+        );
         return false;
       }
       const signature = getClassicalSourcePartsEvaluationSignature();

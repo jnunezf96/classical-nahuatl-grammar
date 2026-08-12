@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-direct-sound-keyboard-052";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260811-sound-before-cleanup-053";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
