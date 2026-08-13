@@ -88,9 +88,9 @@ function run(ctx = {}) {
 
     const css = fs.readFileSync(path.join(ROOT, "style.css"), "utf8");
     const rendering = fs.readFileSync(path.join(ROOT, "src/ui/rendering/rendering.mjs"), "utf8");
-    s.ok("the formula cue uses a light palette color, italics, and Times New Roman without a legend or underline",
+    s.ok("the formula cue keeps the formula color and uses italic Times New Roman without a legend or underline",
         css.includes(".classical-formula__derived-annotation.classical-formula__supportive-i")
-        && css.includes("color: #5b8f88")
+        && css.includes("color: inherit")
         && css.includes('font-family: "Times New Roman", Times, serif')
         && css.includes("font-style: italic")
         && !css.includes("text-decoration: underline dotted currentColor")
