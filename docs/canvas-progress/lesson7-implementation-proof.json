@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 7,
+  "groups": {
+    "lesson7-verbstem-structure": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-verbcore-citation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-class-basis": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    }
+  }
+}

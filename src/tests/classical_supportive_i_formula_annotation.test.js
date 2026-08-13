@@ -308,7 +308,7 @@ function run(ctx = {}) {
         && !rendering.includes("Italic color: supportive i added automatically"));
     s.ok("the Diagram view reuses the same exact Formula annotation authority",
         rendering.includes("function renderClassicalDiagramDerivedAnnotations(")
-        && rendering.includes("getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)")
+        && rendering.includes("getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame, grammarContext)")
         && rendering.includes("const diagramNotation = getClassicalGeneralFormulaAnnotations(text)")
         && rendering.includes("[...mapped, ...diagramNotation, ...diagramSlotJobs]")
         && rendering.includes("renderClassicalDiagramDerivedAnnotations(")

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-diagram-annotations-179";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-lesson7-groups1-3-180";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

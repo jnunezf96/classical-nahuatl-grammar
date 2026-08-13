@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "lesson": 7,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson7-verbstem-structure",
+      "title": "Verbstem structure and unified meaning",
+      "sections": ["§7.1"],
+      "writingJob": "Keep a monomorphemic or polymorphemic verbstem as one lexical predicate, preserve its internal morph boundaries, and never block the stem merely because an internal morph lacks an individual gloss.",
+      "readingJob": "Help the reader recognize internal morph boundaries while reading the verbstem and its translation as one meaningful whole.",
+      "decisionSplit": "The user supplies a whole or analyzed stem; the application preserves the typed internal structure and treats the complete stem as the lexical unit.",
+      "controlPolicy": "Do not add an internal-morph or gloss control. Typed hyphens remain internal boundaries, not separate stem slots.",
+      "userChoiceJob": "The user may type a whole or internally analyzed verbstem.",
+      "applicationJob": "The application preserves one verbstem, its internal morph boundaries, and its unified lexical meaning.",
+      "derivedCueJob": "The Formula and Diagram identify verbstem morphs and their internal boundaries.",
+      "proposal": "Preserve one verbstem with its real internal boundaries and unified meaning, even when an internal morph's separate meaning is unknown."
+    },
+    {
+      "groupId": "lesson7-verbcore-citation",
+      "title": "Verb citation and Valence",
+      "sections": ["§7.2"],
+      "writingJob": "Represent a cited verb as a verbcore whose Valence states the required intransitive, projective, reflexive, or reciprocal object relationship.",
+      "readingJob": "Guide the reader to recover a verb's required object relationship from its citation form instead of treating the stem as valence-free.",
+      "decisionSplit": "The user supplies the intended verb and object relationship when it is not already known; the application builds the matching citation structure and contextual carriers.",
+      "controlPolicy": "Reuse Valence and object meaning controls. Do not expose citation prefixes or zero carriers as raw choices.",
+      "userChoiceJob": "The user chooses Valence or object meaning only when the source does not already determine it.",
+      "applicationJob": "The application builds and preserves the required verbcore citation structure.",
+      "derivedCueJob": "The Formula and Diagram identify the object relationship, Valence carriers, and verbstem separately.",
+      "proposal": "Make every verb citation preserve its required Valence while keeping the exact carrier realization automatic."
+    },
+    {
+      "groupId": "lesson7-class-basis",
+      "title": "Basis of verbstem class",
+      "sections": ["§7.3"],
+      "writingJob": "Assign Class A, B, C, or D by the relation between the imperfective and perfective stem, especially the treatment of the imperfective stem's final vowel.",
+      "readingJob": "Explain that verbstem class names a real stem alternation rather than a spelling label.",
+      "decisionSplit": "A built-in stem supplies its lexical class automatically; the user supplies the class for an unknown stem when the grammar cannot predict it; the application uses the class to form the stem.",
+      "controlPolicy": "Keep the existing Stem class control available for unknown input, but do not ask for class when the selected built-in stem already determines it.",
+      "userChoiceJob": "The user supplies stem class only for genuinely unknown input whose class the grammar cannot determine.",
+      "applicationJob": "The application uses a known or supplied class to control the imperfective-perfective relation.",
+      "derivedCueJob": "The Formula and Diagram identify the active class and aspect on the realized verbstem.",
+      "proposal": "Use the stem's licensed class to control its imperfective-perfective relation and show that automatic work as a formula cue."
+    },
+    {
+      "groupId": "lesson7-perfective-class-forms",
+      "title": "Perfective forms of Classes A-D",
+      "sections": ["§7.3.1"],
+      "writingJob": "Form the licensed Class A, B, C, or D perfective stem, including deletion, replacement, addition, and silently present causative structure.",
+      "readingJob": "Help the reader recover the perfective operation and distinguish phonologically identical Class B outcomes with different morphology.",
+      "decisionSplit": "The stem class and lexical record determine the perfective operation; the application performs it.",
+      "controlPolicy": "Do not add deletion, glottal-stop, or silent-carrier controls.",
+      "proposal": "Make each verbstem class produce its exact perfective stem automatically."
+    },
+    {
+      "groupId": "lesson7-imperfective-class-forms",
+      "title": "Conditioned imperfective stem shapes",
+      "sections": ["§7.3.2"],
+      "writingJob": "Choose the licensed imperfective shape from class, mood, tense, number, and the following morphs.",
+      "readingJob": "Show why one lexical imperfective stem may appear in one, two, or four surface shapes.",
+      "decisionSplit": "The user chooses genuine mood, tense, and subject number; the application selects the conditioned stem shape.",
+      "controlPolicy": "Do not add a short, long, or truncated stem-shape control.",
+      "proposal": "Make imperfective stem shape an automatic consequence of the grammatical environment."
+    },
+    {
+      "groupId": "lesson7-class-b-perfective-changes",
+      "title": "Class B spelling and sound changes",
+      "sections": ["§7.4", "§7.4.1", "§7.4.2"],
+      "writingJob": "Apply every Class B final-vowel loss, spelling change, and resulting sound change through the ordinary Lesson 2 spelling path.",
+      "readingJob": "Help the reader recover the underlying stem and avoid misclassifying traditional oa and ia spellings as Class C.",
+      "decisionSplit": "The class operation triggers the change; the application spells and realizes it automatically.",
+      "controlPolicy": "Do not add spelling or sound-change controls.",
+      "proposal": "Send every Class B perfective through the common spelling and sound system."
+    },
+    {
+      "groupId": "lesson7-variable-class-membership",
+      "title": "Licensed variable class membership",
+      "sections": ["§7.5"],
+      "writingJob": "Preserve licensed Class A and Class B perfective alternatives for variable stems without turning evidence absence into no form.",
+      "readingJob": "Show both licensed class analyses and their perfective results.",
+      "decisionSplit": "The user may choose between genuinely licensed class alternatives; the application blocks unlicensed classes.",
+      "controlPolicy": "Filter the Stem class control to the licensed alternatives.",
+      "proposal": "Offer only genuine variable-class alternatives and generate the matching perfective."
+    },
+    {
+      "groupId": "lesson7-class-guidelines-one-four",
+      "title": "Class guidelines 1-4",
+      "sections": ["§7.6", "§7.6.1", "§7.6.2", "§7.6.3", "§7.6.4"],
+      "writingJob": "Apply the general class guidelines for monosyllables, final consonant clusters, final ka, and final tla while preserving stated exceptions and alternatives.",
+      "readingJob": "Present the guidelines as useful grammar, not as a claim that every perfective is predictable.",
+      "decisionSplit": "The application derives class where a rule determines it and asks for a class only where the source remains genuinely open.",
+      "controlPolicy": "Do not replace lexical class knowledge with blind shape guessing.",
+      "proposal": "Use the first four class guidelines wherever they truly determine or limit class."
+    },
+    {
+      "groupId": "lesson7-class-guidelines-five-eight",
+      "title": "Class guidelines 5-8",
+      "sections": ["§7.6.5", "§7.6.6", "§7.6.7", "§7.6.8"],
+      "writingJob": "Apply the change-of-state hua, ya, final o, and listed Class D guidelines with every licensed alternative and exception.",
+      "readingJob": "Help the reader connect semantic and final-shape conditions to the resulting class.",
+      "decisionSplit": "The application derives a determined class and preserves real alternatives; the user resolves only a genuinely open class choice.",
+      "controlPolicy": "Keep semantic and lexical conditions automatic where known.",
+      "proposal": "Use the remaining class guidelines as grammar rules rather than example whitelists."
+    },
+    {
+      "groupId": "lesson7-predicate-tables",
+      "title": "Stem class cooperation with tense",
+      "sections": ["§7.7", "§7.7.1", "§7.7.2", "§7.7.1 [2]", "§7.7.2 [2]", "§7.7.1 [3]", "§7.7.2 [3]", "§7.7.1 [4]", "§7.7.2 [4]", "§7.7.1 [5]", "§7.7.2 [5]"],
+      "writingJob": "Select the exact stem shape and tense carrier for every Class A-D mood-tense cell.",
+      "readingJob": "Guide the reader through the predicate tables by class, aspect, mood, tense, and stem shape.",
+      "decisionSplit": "The user chooses genuine mood and tense; the application selects aspect, stem shape, and tense carrier.",
+      "controlPolicy": "Do not expose table cells, aspect, or allomorphs as extra choices.",
+      "proposal": "Make the Lesson 7 predicate tables the automatic finite-formation path."
+    },
+    {
+      "groupId": "lesson7-analysis-translation",
+      "title": "Analysis and translation of complete VNCs",
+      "sections": ["§7.8", "§7.8.1", "§7.8.2", "§7.8.3", "§7.8.4"],
+      "writingJob": "Build a complete VNC with the obligatory Subject-Predicate division and preserve the exact class-conditioned predicate.",
+      "readingJob": "Guide linear and diagrammatic reading while preserving genuine ambiguities and the difference between carrier, content, function, and translation.",
+      "decisionSplit": "The user supplies grammatical choices; the application builds the complete VNC and both explanatory projections.",
+      "controlPolicy": "Do not make analysis format or translation wording authorize grammar.",
+      "proposal": "Use the canonical Result for both linear and diagrammatic Lesson 7 analysis."
+    },
+    {
+      "groupId": "lesson7-object-relationship-contrasts",
+      "title": "Object relationship contrasts",
+      "sections": ["§7.9", "§7.9.1.a", "§7.9.1.b", "§7.9.2.a", "§7.9.2.b"],
+      "writingJob": "Preserve distinct human/nonhuman projective, reflexive, and plural reciprocal readings and their exact valence structures.",
+      "readingJob": "Use subject and object context to distinguish singular reflexive from plural reflexive or reciprocal meanings.",
+      "decisionSplit": "The user chooses a genuine object relationship and referent; the application enforces its person, number, and humanness conditions.",
+      "controlPolicy": "Do not infer reciprocal meaning for singular subjects or collapse human and nonhuman object roles.",
+      "proposal": "Keep every Lesson 7 object relationship distinct in grammar and interpretation."
+    },
+    {
+      "groupId": "lesson7-tla-fusion",
+      "title": "Adverb plus tla fusion",
+      "sections": ["§7.10"],
+      "writingJob": "Distinguish an unfused transitive tla object from a licensed adverb-plus-tla derived intransitive stem and carry the selected structure into the Result.",
+      "readingJob": "Help the reader recognize when tla belongs inside a derived stem rather than occupying the object position.",
+      "decisionSplit": "The user supplies or selects the intended source structure; the application enforces the fusion and resulting valence.",
+      "controlPolicy": "Reuse typed Stem or Embed plus matrix structure; do not add a raw fusion-spelling control.",
+      "proposal": "Make tla fusion a typed derivational structure with a distinct intransitive Result."
+    }
+  ]
+}

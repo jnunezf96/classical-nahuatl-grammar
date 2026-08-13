@@ -58,12 +58,23 @@ for (const group of plan.groups) {
   }
 }
 
+const WRITING_PROJECT_ROLES = new Set([
+  "canonical-rule-or-alternation",
+  "applicability-or-constraint",
+  "derived-realization",
+  "source-structure-schema",
+  "result-projection",
+]);
+
 function proposedDirection(atom) {
+  if (lesson >= 7) {
+    return WRITING_PROJECT_ROLES.has(atom.projectRole) ? "BOTH" : "READING_ONLY";
+  }
   return atom.force === "grammar-bearing" ? "BOTH" : "READING_ONLY";
 }
 
 function proposedWritingJob(atom, group) {
-  if (atom.force !== "grammar-bearing") return "NOT_A_WRITING_JOB";
+  if (proposedDirection(atom) !== "BOTH") return "NOT_A_WRITING_JOB";
   if (group.writingJobsByCategory?.[atom.category]) {
     return group.writingJobsByCategory[atom.category];
   }
@@ -103,12 +114,16 @@ const records = atoms.map(atom => {
     meaning: atom.meaning,
     sourceForce: atom.force,
     sourceCategory: atom.category,
+    sourceProjectRole: atom.projectRole,
     reviewGroupId: group.groupId,
     proposedDirection: proposedDirection(atom),
     proposedWritingJob: proposedWritingJob(atom, group),
     proposedReaderJob: proposedReaderJob(atom),
     proposedDecisionSplit: group.decisionSplit,
     proposedControlPolicy: group.controlPolicy,
+    proposedUserChoiceJob: group.userChoiceJob || "NO_NEW_USER_CHOICE",
+    proposedApplicationJob: group.applicationJob || group.writingJob,
+    proposedDerivedCueJob: group.derivedCueJob || "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
     reviewStatus: decision?.status || "AWAITING_USER_REVIEW",
     acceptedJob: decision?.status === "ACCEPTED" ? decision.acceptedJob || group.proposal : "",
     implementationCredit: proofAccepted ? "EXACTLY_OBSERVED" : "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",

@@ -4891,6 +4891,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§5.5.1"]),
         atomIds: Object.freeze(["ACI-P069-L008-B53886AC27"])
       }),
+      "verbstem-class-and-structure": Object.freeze({
+        lessonSections: Object.freeze(["§7.1", "§7.3"]),
+        atomIds: Object.freeze([
+          "ACI-P076-L003-0B2E95869D",
+          "ACI-P076-L004-6824D748AE",
+          "ACI-P076-L010-81B7281C89",
+          "ACI-P076-L012-90944246E3-02",
+          "ACI-P077-L029-778C0D9D12",
+          "ACI-P077-L030-251E3FE06D",
+          "ACI-P077-L031-688A63867E"
+        ])
+      }),
       "nuclear-clause-boundary": Object.freeze({
         lessonSections: Object.freeze(["§4.4"]),
         atomIds: Object.freeze(["ACI-P061-L016-50C9F319DB", "ACI-P061-L017-65685DB703"])
@@ -5006,7 +5018,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
-    function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null) {
+    function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null, grammarContext = null) {
       const text = String(formula || "");
       const slots = typedSlotFrame?.slots || {};
       const annotations = [];
@@ -5147,11 +5159,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
         addAnnotation(stemStart, stemStart + 1, "stem-left-boundary", "stem boundary", "boundary", "stem-boundary");
         const stemContentStart = stemStart + 1;
         const stemContent = String(predicate.stem || "");
+        const stemClass = String(grammarContext?.classId || grammarContext?.verbClass || "").trim().toUpperCase();
+        const stemAspect = String(
+          grammarContext?.aspect
+          || grammarContext?.predicateFormationRuleFrame?.aspect
+          || ""
+        ).trim().toLowerCase();
+        const stemJobLabel = stemClass || stemContent.includes("-")
+          ? [
+            stemClass ? `Class ${stemClass}` : "",
+            stemAspect,
+            stemContent.includes("-") ? "verbstem morph" : "verbstem"
+          ].filter(Boolean).join(" ")
+          : "predicate stem";
+        const stemJobAuthority = stemClass || stemContent.includes("-")
+          ? "verbstem-class-and-structure"
+          : "predicate-stem";
         let stemPartStart = 0;
         Array.from(stemContent.matchAll(/[-+]/gu)).forEach(match => {
           const separatorIndex = Number(match.index);
           if (separatorIndex > stemPartStart) {
-            addAnnotation(stemContentStart + stemPartStart, stemContentStart + separatorIndex, "predicate-stem", "predicate stem", "carrier", "predicate-stem");
+            addAnnotation(stemContentStart + stemPartStart, stemContentStart + separatorIndex, "predicate-stem", stemJobLabel, "carrier", stemJobAuthority);
           }
           addAnnotation(
             stemContentStart + separatorIndex,
@@ -5164,7 +5192,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           stemPartStart = separatorIndex + 1;
         });
         if (stemPartStart < stemContent.length) {
-          addAnnotation(stemContentStart + stemPartStart, stemContentStart + stemContent.length, "predicate-stem", "predicate stem", "carrier", "predicate-stem");
+          addAnnotation(stemContentStart + stemPartStart, stemContentStart + stemContent.length, "predicate-stem", stemJobLabel, "carrier", stemJobAuthority);
         }
         addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const tenseStart = stemStart + stemToken.length;
@@ -5322,12 +5350,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       element.replaceChildren(...fragments);
       return Object.freeze([...renderedAnnotations]);
     }
-    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null) {
+    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null, grammarContext = null) {
       const text = String(formula || "");
       return renderClassicalDerivedAnnotationRanges(
         element,
         text,
-        getClassicalFormulaDerivedAnnotations(text, typedSlotFrame)
+        getClassicalFormulaDerivedAnnotations(text, typedSlotFrame, grammarContext)
       );
     }
     function renderClassicalGeneralFormulaAnnotations(element = null, formula = "") {
@@ -5360,7 +5388,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       expression = "",
       diagramRole = "",
       formula = "",
-      typedSlotFrame = null
+      typedSlotFrame = null,
+      grammarContext = null
     ) {
       const text = String(expression || "");
       const fullFormula = String(formula || "");
@@ -5370,7 +5399,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return Object.freeze([]);
       }
       let cursor = 0;
-      const mapped = getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)
+      const mapped = getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame, grammarContext)
         .filter(annotation => {
           if (
             annotation.role.includes("boundary")
@@ -17973,7 +18002,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       renderClassicalFormulaDerivedAnnotations(
         formula,
         specificLinearFormula,
-        specificLinearTypedSlotFrame
+        specificLinearTypedSlotFrame,
+        surfaceFrame.machineryFrame
       );
       const linearFormatSwitch = createFormulaSpecificitySwitch("Linear format", mode => {
         const showGeneral = mode === "general" && Boolean(generalLinearFormula);
@@ -17981,7 +18011,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
         formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
         if (showGeneral) renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula);
-        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame);
+        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame, surfaceFrame.machineryFrame);
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
       linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
@@ -18019,7 +18049,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             diagramRow.expression,
             diagramRow.role,
             specificLinearFormula,
-            specificLinearTypedSlotFrame
+            specificLinearTypedSlotFrame,
+            surfaceFrame.machineryFrame
           );
         } else {
           renderClassicalGeneralFormulaAnnotations(expression, diagramRow.expression);
@@ -18093,7 +18124,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       renderClassicalFormulaDerivedAnnotations(
         sentenceFormula,
         typedSentenceFormulaDisplay || "",
-        specificLinearTypedSlotFrame
+        specificLinearTypedSlotFrame,
+        surfaceFrame.machineryFrame
       );
       sentenceFormula.hidden = !typedSentenceFormulaDisplay;
       sentenceFormulaSection.hidden = fullParadigmActive || !typedSentenceFormulaDisplay;

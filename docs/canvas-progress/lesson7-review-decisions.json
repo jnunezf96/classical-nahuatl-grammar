@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "lesson": 7,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson7-verbstem-structure": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve one verbstem with its real internal boundaries and unified meaning, even when an internal morph's separate meaning is unknown."
+    },
+    "lesson7-verbcore-citation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make every verb citation preserve its required Valence while keeping the exact carrier realization automatic."
+    },
+    "lesson7-class-basis": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the stem's licensed class to control its imperfective-perfective relation and show that automatic work as a formula cue."
+    }
+  }
+}
