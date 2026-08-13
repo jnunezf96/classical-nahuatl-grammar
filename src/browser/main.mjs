@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-balanced-workbench-174";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-capture-result-176";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

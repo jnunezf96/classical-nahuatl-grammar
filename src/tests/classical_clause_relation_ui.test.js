@@ -48,14 +48,16 @@ function run(ctx) {
     );
 
     s.ok(
-        "one semantic Clause composition workflow mounts choices in Grammar and keeps only its canonical continuation in Result",
+        "one semantic Clause composition workflow mounts capture and choices in Result",
         rendering.includes('title.textContent = "Clause composition"')
         && rendering.includes('workflow.dataset.classicalClauseRelationWorkflow = "true"')
         && rendering.includes("createClassicalClauseRelationWorkflow(surfaceFrame)")
-        && rendering.includes("mountClassicalClauseRelationWorkflowInGrammar(")
+        && rendering.includes("mountClassicalClauseRelationWorkflowInResult(")
         && rendering.includes('"classical-grammar-continuation"')
         && rendering.includes('"classical-source-continuation"')
         && rendering.includes("continuationResult?.remove?.()")
+        && rendering.includes("sourceContent.replaceChildren()")
+        && rendering.includes("sourceHost.hidden = true")
         && !rendering.includes("body.appendChild(clauseRelationWorkflow)")
         && !workflow.includes("Lesson 49")
         && !workflow.includes("Lesson 50")

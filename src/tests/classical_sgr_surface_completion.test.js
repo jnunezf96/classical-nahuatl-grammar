@@ -114,7 +114,7 @@ function run(ctx = {}) {
     );
     const clauseWorkflowMount = functionSlice(
         rendering,
-        "mountClassicalClauseRelationWorkflowInGrammar"
+        "mountClassicalClauseRelationWorkflowInResult"
     );
     const personalNameOwnerInventory = functionSlice(
         rendering,

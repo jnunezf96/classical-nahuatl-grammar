@@ -3632,7 +3632,6 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
 
       markSection(grammarPanel.querySelector(":scope > .formula-controls-grid"), "primary-content");
       markSection(grammarPanel.querySelector(":scope > .classical-grammar-dependency-guidance"), "secondary-content");
-      markSection(grammarPanel.querySelector(":scope > .classical-grammar-continuation"), "separate-task");
       markSection(grammarPanel.querySelector(":scope > #tense-tabs"), "secondary-content");
 
       const resultTitle = resultPanel.querySelector(":scope > .panel-block-title");
@@ -3641,14 +3640,16 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const resultControls = resultPanel.querySelector(":scope > .output-result-controls");
       const resultScope = resultPanel.querySelector(":scope > .classical-result-scope-controls");
       const resultSurface = resultPanel.querySelector(":scope > .classical-rule-surface");
+      const resultContinuation = documentObject.getElementById("classical-grammar-continuation");
       const resultMeta = resultPanel.querySelector(":scope > .output-meta-strip");
       const resultParadigm = resultPanel.querySelector(":scope > #all-tense-conjugations");
-      [resultControls, resultScope, resultSurface, resultMeta, resultParadigm, resultActions]
+      [resultControls, resultScope, resultSurface, resultContinuation, resultMeta, resultParadigm, resultActions]
         .filter(Boolean)
         .forEach(element => resultPanel.appendChild(element));
       markSection(resultControls, "primary-controls");
       markSection(resultScope, "primary-controls");
       markSection(resultSurface, "primary-content");
+      markSection(resultContinuation, "separate-task");
       markSection(resultMeta, "secondary-content");
       markSection(resultParadigm, "secondary-content");
       markSection(resultActions, "actions");

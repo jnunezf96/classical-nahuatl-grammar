@@ -16061,10 +16061,11 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
 @media (min-width: 1025px) {
   body.is-language-classical .panel-grid[data-andrews-layout="source-authority-authorized-result"] {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    grid-template-areas:
-      "source grammar"
-      "result result";
+    grid-template-columns:
+      minmax(260px, 0.82fr)
+      minmax(280px, 0.98fr)
+      minmax(340px, 1.34fr);
+    grid-template-areas: "source grammar result";
     align-items: start;
     gap: clamp(12px, 1.35vw, 20px);
   }
@@ -17903,6 +17904,15 @@ body.is-language-classical #classical-workbench #classical-authority-panel
   box-shadow: none;
 }
 
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-grammar-continuation {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 body.is-language-classical #classical-workbench #classical-authority-panel
   .classical-grammar-continuation > .classical-clause-relation-workflow {
   gap: var(--workbench-section-gap);
@@ -17913,7 +17923,24 @@ body.is-language-classical #classical-workbench #classical-authority-panel
   box-shadow: none;
 }
 
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-grammar-continuation > .classical-clause-relation-workflow {
+  gap: var(--workbench-section-gap);
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
 body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-grammar-continuation .classical-rule-surface__format-heading {
+  padding: 12px 0 8px;
+  border-top: 1px solid var(--workbench-line);
+  border-bottom: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
   .classical-grammar-continuation .classical-rule-surface__format-heading {
   padding: 12px 0 8px;
   border-top: 1px solid var(--workbench-line);

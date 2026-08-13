@@ -13580,7 +13580,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const clauseRelationWorkflow =
         createClassicalClauseRelationWorkflow(frame);
       const clauseContinuationResult =
-        mountClassicalClauseRelationWorkflowInGrammar(
+        mountClassicalClauseRelationWorkflowInResult(
           clauseRelationWorkflow
         );
       block.append(
@@ -13981,7 +13981,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const clauseRelationWorkflow =
         createClassicalClauseRelationWorkflow(canonical);
       const clauseContinuationResult =
-        mountClassicalClauseRelationWorkflowInGrammar(
+        mountClassicalClauseRelationWorkflowInResult(
           clauseRelationWorkflow
         );
       if (clauseContinuationResult) {
@@ -14691,7 +14691,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       introduction.className = "classical-clause-relation-workflow__intro";
       introduction.dataset.classicalDisplayAuthority = "false";
       introduction.textContent =
-        "Choose how the Results captured in Source relate. Grammar will show only the choices that relation requires.";
+        "Choose how the captured Results relate. Grammar will show only the choices that relation requires.";
       workflow.appendChild(introduction);
 
       const currentResult =
@@ -15158,7 +15158,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return workflow;
     }
 
-    function mountClassicalClauseRelationWorkflowInGrammar(
+    function mountClassicalClauseRelationWorkflowInResult(
       workflow = null
     ) {
       if (typeof targetObject.document === "undefined") return null;
@@ -15176,26 +15176,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "[data-classical-clause-relation-canonical-result]"
       ) || null;
       continuationResult?.remove?.();
-      const sourceNodes = workflow ? [
-        workflow.querySelector(
-          "[data-classical-clause-relation-current-result]"
-        ),
-        workflow.querySelector(
-          "[data-classical-clause-relation-marker-result-choice]"
-        ),
-        workflow.querySelector(
-          "[data-classical-clause-relation-marker-result-status]"
-        ),
-        workflow.querySelector(
-          "[data-classical-clause-relation-capture-actions]"
-        ),
-        workflow.querySelector(
-          "[data-classical-clause-relation-captures]"
-        )
-      ].filter(Boolean) : [];
-      sourceContent.replaceChildren(...sourceNodes);
-      sourceHost.hidden = !sourceNodes.length;
-      sourceHost.setAttribute("aria-hidden", String(!sourceNodes.length));
+      sourceContent.replaceChildren();
+      sourceHost.hidden = true;
+      sourceHost.setAttribute("aria-hidden", "true");
       host.replaceChildren(...(workflow ? [workflow] : []));
       host.hidden = !workflow;
       host.setAttribute("aria-hidden", String(!workflow));
@@ -17970,7 +17953,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const clauseRelationWorkflow =
         createClassicalClauseRelationWorkflow(surfaceFrame);
       const clauseContinuationResult =
-        mountClassicalClauseRelationWorkflowInGrammar(
+        mountClassicalClauseRelationWorkflowInResult(
           clauseRelationWorkflow
         );
       if (derivationExplanation) {

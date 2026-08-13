@@ -322,7 +322,7 @@ assert.doesNotMatch(
 assert.match(shell, /function installClassicalPanelRhythm\(\)/u);
 assert.match(
   shell,
-  /\[resultControls, resultScope, resultSurface, resultMeta, resultParadigm, resultActions\][\s\S]+resultPanel\.appendChild\(element\)/u
+  /\[resultControls, resultScope, resultSurface, resultContinuation, resultMeta, resultParadigm, resultActions\][\s\S]+resultPanel\.appendChild\(element\)/u
 );
 assert.match(shell, /classicalPanelRhythm = "title-primary-secondary-actions"/u);
 assert.match(html, /id="classical-reader-guidance-toggle"[\s\S]+aria-controls="classical-reader-guidance-dialog"/u);
