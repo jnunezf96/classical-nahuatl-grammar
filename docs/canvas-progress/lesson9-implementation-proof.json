@@ -31,6 +31,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson9_groups_4_6_jobs.test.js",
       "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-second-person-commands": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-third-person-commands": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-first-person-exhortations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
     }
   }
 }

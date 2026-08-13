@@ -35,6 +35,21 @@ export const LESSON9_READER_GUIDANCE_GROUPS = freeze([
     "Read commands and exhortations as uses of the optative",
     "Classical Nahuatl has no separate imperative mood here. A nonpast optative can serve as a direct command with a second-person subject, an indirect command with a third-person subject, or an exhortation with a first-person subject. First and third person require mā or tlā; second person may omit it.",
   ),
+  idea(
+    "lesson9-second-person-commands",
+    "Read second-person optatives as direct commands",
+    "A second-person nonpast optative can stand alone as a plain direct command. Mā makes the command polite, and tlā makes it still more courteous. The same pattern applies to singular and plural subjects, while particles such as oc retain their own contribution.",
+  ),
+  idea(
+    "lesson9-third-person-commands",
+    "Read an introduced third-person optative as an indirect command",
+    "A third-person command uses mā or tlā with a nonpast optative. English may translate it with let, but this let gives a command and does not mean allow. A directional such as huāl remains part of the commanded VNC meaning.",
+  ),
+  idea(
+    "lesson9-first-person-exhortations",
+    "Read first-person optatives as self-encouragement",
+    "Mā with a first-person nonpast optative urges the speaker alone or a group including the speaker to act. English let me or let us expresses self-incitement, not permission. Tēl after mā adds encouragement despite doubt or reluctance.",
+  ),
 ]);
 
 export function isLesson9ReaderGuidanceExact(candidate = []) {

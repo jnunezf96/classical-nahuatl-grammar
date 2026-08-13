@@ -90,8 +90,8 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses second person and command use; the application realizes the optative command.
 - Control policy: Reuse Subject, Mood, sentence purpose, and Particles.
 - Proposal: Keep direct commands inside the common optative sentence system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/6
+- Status: ACCEPTED
+- Exactly observed: 6/6
 
 ## Batch 3, Group 8: Third-person commands
 
@@ -103,21 +103,21 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses third person and command use; the application requires and places the introductory particle.
 - Control policy: Reuse Subject, Mood, sentence purpose, and Particles.
 - Proposal: Enforce the sentence context required for third-person commands.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/3
+- Status: ACCEPTED
+- Exactly observed: 3/3
 
 ## Batch 3, Group 9: First-person exhortations
 
 - Sections: §9.7.3
 - Atoms: 12
-- Proposed direction: 7 both; 5 reading only
+- Proposed direction: 3 both; 9 reading only
 - Writing job: Build first-person exhortations with their required introductory particle and licensed strengthening.
 - Reading job: Use participant and particle context to identify exhortation force.
 - User/application split: The user chooses first person and exhortation use; the application supplies the licensed structure.
 - Control policy: Reuse Subject, Mood, sentence purpose, and Particles.
 - Proposal: Enforce the sentence context required for first-person exhortations.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 
 ## Batch 4, Group 10: Future commands
 

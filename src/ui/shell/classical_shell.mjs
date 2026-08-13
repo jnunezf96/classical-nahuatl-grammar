@@ -49,7 +49,7 @@ import {
   LESSON9_READER_GUIDANCE_GROUPS,
   isLesson9ReaderGuidanceExact,
   renderLesson9ReaderGuidance,
-} from "../curriculum/lesson9_reader_guidance.mjs?v=20260813-lesson9-groups4-6-002";
+} from "../curriculum/lesson9_reader_guidance.mjs?v=20260813-lesson9-groups7-9-003";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {

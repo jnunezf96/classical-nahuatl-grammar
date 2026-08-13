@@ -26,6 +26,18 @@
     "lesson9-command-exhortation-system": {
       "status": "ACCEPTED",
       "acceptedJob": "Use the optative rather than an imperative mood and derive direct command, indirect command, or exhortation force from the participant and sentence context."
+    },
+    "lesson9-second-person-commands": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use second-person nonpast optatives for direct commands, with mā or tlā available for politeness and omission allowed for a plain command."
+    },
+    "lesson9-third-person-commands": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use an introduced third-person nonpast optative for an indirect command and preserve any selected direction; interpret English let as command rather than permission."
+    },
+    "lesson9-first-person-exhortations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use mā with a first-person nonpast optative for singular or plural exhortation, and allow tēl after mā for encouragement despite doubt or reluctance."
     }
   }
 }

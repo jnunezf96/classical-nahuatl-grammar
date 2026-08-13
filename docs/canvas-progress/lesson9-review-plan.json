@@ -130,6 +130,7 @@
       "readingJob": "Recognize a direct command from its second-person optative shape and context.",
       "decisionSplit": "The user chooses second person and command use; the application realizes the optative command.",
       "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "writingAtomIds": [],
       "proposal": "Keep direct commands inside the common optative sentence system."
     },
     {
@@ -140,6 +141,7 @@
       "readingJob": "Use the introductory particle and context to identify indirect command force.",
       "decisionSplit": "The user chooses third person and command use; the application requires and places the introductory particle.",
       "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "writingAtomIds": [],
       "proposal": "Enforce the sentence context required for third-person commands."
     },
     {
@@ -150,6 +152,11 @@
       "readingJob": "Use participant and particle context to identify exhortation force.",
       "decisionSplit": "The user chooses first person and exhortation use; the application supplies the licensed structure.",
       "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "writingAtomIds": [
+        "ACI-P097-L038-0A37FD65EC-02",
+        "ACI-P097-L038-0A37FD65EC-03",
+        "ACI-P098-L004-ED076A178C"
+      ],
       "proposal": "Enforce the sentence context required for first-person exhortations."
     },
     {
