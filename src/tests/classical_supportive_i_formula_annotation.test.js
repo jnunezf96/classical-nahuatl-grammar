@@ -110,16 +110,16 @@ function run(ctx = {}) {
         presentation: annotation.presentation,
     }));
     s.eq("silent, changed, attached, and automatically chosen material receives exact hover jobs", allKinds, [
-        { text: "#", role: "right-attached-boundary", label: "attached to the word on its right", presentation: "attachment" },
-        { text: "n", role: "subject-person-carrier", label: "automatic subject person carrier", presentation: "carrier" },
+        { text: "#", role: "right-attached-boundary", label: "attaches right", presentation: "attachment" },
+        { text: "n", role: "subject-person-carrier", label: "subject person", presentation: "carrier" },
         { text: "i", role: "subject-supportive-i", label: "supportive i", presentation: "supportive-i" },
         { text: "0", role: "silent-nominative", label: "silent nominative", presentation: "silent" },
-        { text: "qu", role: "object-automatic-spelling", label: "automatic /k/ spelling", presentation: "automatic-change" },
-        { text: "0", role: "silent-object-carrier", label: "silent object carrier", presentation: "silent" },
+        { text: "qu", role: "object-automatic-spelling", label: "/k/ spelling", presentation: "automatic-change" },
+        { text: "0", role: "silent-object-carrier", label: "silent object", presentation: "silent" },
         { text: "0", role: "silent-tense", label: "silent tense", presentation: "silent" },
-        { text: "⎕", role: "silent-number-connector", label: "silent number connector", presentation: "silent" },
+        { text: "⎕", role: "silent-number-connector", label: "silent connector", presentation: "silent" },
         { text: "0", role: "silent-subject-number", label: "silent subject number", presentation: "silent" },
-        { text: "#", role: "left-attached-boundary", label: "attached to the word on its left", presentation: "attachment" },
+        { text: "#", role: "left-attached-boundary", label: "attaches left", presentation: "attachment" },
     ]);
     const prefixedFormula = "ah#zo #ni-0(mati)0+0-0#.";
     s.eq("a particle-internal attachment mark does not hide the later VNC annotations",
@@ -136,7 +136,7 @@ function run(ctx = {}) {
             label: annotation.label,
         })),
         [
-            { text: "#", role: "right-attached-boundary", label: "attached to the word on its right" },
+            { text: "#", role: "right-attached-boundary", label: "attaches right" },
             { text: "i", role: "subject-supportive-i", label: "supportive i" },
         ]);
 

@@ -4,10 +4,10 @@ import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260813-derived-formula-annotations-001";
+} from "../runtime/create_runtime.mjs?v=20260813-derived-formula-annotations-002";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-lesson6-complete-001";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-sound-result-116";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-derived-formula-annotations-001";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-derived-formula-annotations-002";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson6-complete-002";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-sound-result-116";
 

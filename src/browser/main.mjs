@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-derived-formula-annotations-001";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-derived-formula-annotations-002";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
