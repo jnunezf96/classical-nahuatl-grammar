@@ -4743,6 +4743,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       semanticSeriesLabel: "Admonitive forms",
       tenses: Object.freeze(["nonpast"])
     })]);
+    const CLASSICAL_VNC_OPTIONAL_SEMANTIC_TENSE_COLUMNS = Object.freeze(new Set([
+      "preterit-as-present",
+      "distant-past-as-past"
+    ]));
+    function getClassicalVncParadigmVisibleTenses(group = {}, rows = []) {
+      return Object.freeze((group.tenses || []).filter(tense => (
+        !CLASSICAL_VNC_OPTIONAL_SEMANTIC_TENSE_COLUMNS.has(tense)
+        || rows.some(row => row?.tense === tense && Boolean(row?.surface))
+      )));
+    }
     const CLASSICAL_VNC_FULL_PARADIGM_ENUMERATED_CONTROL_IDS = Object.freeze([
       "classical-rule-logic-subject",
       "classical-rule-logic-mood",
@@ -9811,10 +9821,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         smithGroups.forEach(group => {
           const groupRows = conjugationRows.filter(row => row.groupKey === group.key);
           if (!groupRows.length) return;
+          const visibleTenses = getClassicalVncParadigmVisibleTenses(group, groupRows);
           lines.push(`${moodLabels[group.mood] || group.mood} · ${group.semanticSeriesLabel || aspectLabels[group.aspect] || group.aspect}`);
-          lines.push(["Person", ...(group.tenses || []).map(tense => tenseLabels[tense] || tense)].join("\t"));
+          lines.push(["Person", ...visibleTenses.map(tense => tenseLabels[tense] || tense)].join("\t"));
           smithSubjects.forEach(subject => {
-            lines.push([subjectLabels[subject] || subject, ...(group.tenses || []).map(tense => groupRows.find(row => row.tense === tense && row.subject === subject)?.surface || "Unavailable")].join("\t"));
+            lines.push([subjectLabels[subject] || subject, ...visibleTenses.map(tense => groupRows.find(row => row.tense === tense && row.subject === subject)?.surface || "Unavailable")].join("\t"));
           });
           lines.push("");
         });
@@ -9858,7 +9869,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           personHeader.scope = "col";
           personHeader.textContent = "Person";
           headerRow.appendChild(personHeader);
-          (group.tenses || []).forEach(tense => {
+          const visibleTenses = getClassicalVncParadigmVisibleTenses(group, groupRows);
+          visibleTenses.forEach(tense => {
             const th = targetObject.document.createElement("th");
             th.scope = "col";
             th.textContent = tenseLabels[tense] || tense;
@@ -9872,7 +9884,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             rowHeading.scope = "row";
             rowHeading.textContent = subjectLabels[subject] || subject;
             tr.appendChild(rowHeading);
-            (group.tenses || []).forEach(tense => {
+            visibleTenses.forEach(tense => {
               const td = targetObject.document.createElement("td");
               td.dataset.classicalVncParadigmTense = tenseLabels[tense] || tense;
               const row = groupRows.find(candidate => candidate.tense === tense && candidate.subject === subject);
@@ -24192,6 +24204,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         get() { return CLASSICAL_VNC_PARADIGM_GROUPS; },
     });
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
+    api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;
     api.getClassicalVncParadigmMorphologicalAspect = getClassicalVncParadigmMorphologicalAspect;
     api.getClassicalVncFullParadigmControlContract = getClassicalVncFullParadigmControlContract;
     api.buildClassicalVncSmithOutputVisualFrame = buildClassicalVncSmithOutputVisualFrame;
