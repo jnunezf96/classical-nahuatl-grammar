@@ -14,6 +14,18 @@
     "lesson9-optative-indicative-contrast": {
       "status": "ACCEPTED",
       "acceptedJob": "Produce the optative and indicative form contrasts and use required introductory particles to resolve first- and third-person optatives whose form is otherwise ambiguous."
+    },
+    "lesson9-wish-sentences": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build wish sentences from optative VNCs with the chosen mā or tlā, time meaning, and licensed intensifying particles."
+    },
+    "lesson9-negative-wishes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform a wish with prefixal ca, require mā or tlā, and preserve the correct negative scope and writing boundary."
+    },
+    "lesson9-command-exhortation-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the optative rather than an imperative mood and derive direct command, indirect command, or exhortation force from the participant and sentence context."
     }
   }
 }

@@ -20,6 +20,21 @@ export const LESSON9_READER_GUIDANCE_GROUPS = freeze([
     "Use both form and sentence context to identify the mood",
     "Some optatives are visibly distinct from indicatives because of person, number, or stem form. Other forms are identical. When form alone is ambiguous, a first- or third-person optative requires an introductory particle, so the surrounding sentence identifies its optative use.",
   ),
+  idea(
+    "lesson9-wish-sentences",
+    "Read the kind and strength of a wish",
+    "Mā introduces an optative wish; tlā can introduce it more deferentially. A nonpast optative presents an open or possible wish, while a past optative can present a contrary-to-fact wish. Earlier-event ō narrows it to a past event. Cuēl, ye cuēl, ihyo, and ye can strengthen or color the wish in their licensed positions.",
+  ),
+  idea(
+    "lesson9-negative-wishes",
+    "Read ca as the negative of an introduced wish",
+    "A negative wish replaces the indicative with an optative, adds mā or tlā, and changes negative ah to prefixal ca. The grammar writes ca with the VNC it negates; traditional spelling may join it to mā, but the grammatical scope remains the same.",
+  ),
+  idea(
+    "lesson9-command-exhortation-system",
+    "Read commands and exhortations as uses of the optative",
+    "Classical Nahuatl has no separate imperative mood here. A nonpast optative can serve as a direct command with a second-person subject, an indirect command with a third-person subject, or an exhortation with a first-person subject. First and third person require mā or tlā; second person may omit it.",
+  ),
 ]);
 
 export function isLesson9ReaderGuidanceExact(candidate = []) {

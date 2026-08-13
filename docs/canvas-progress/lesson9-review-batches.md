@@ -45,27 +45,27 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §9.5
 - Atoms: 44
-- Proposed direction: 18 both; 26 reading only
+- Proposed direction: 12 both; 32 reading only
 - Writing job: Build licensed wish sentences with their introductory particles, time meanings, and intensifying particles.
 - Reading job: Guide open, contrary-to-fact, past-regret, and intensified wish readings.
 - User/application split: The user chooses the intended wish and available particles; the application orders them and enforces their meaning and compatibility.
 - Control policy: Reuse Mood, Tense, Particles, and sentence choices; do not expose formula slots.
 - Proposal: Compose wishes from genuine choices through one optative sentence path.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/44
+- Status: ACCEPTED
+- Exactly observed: 44/44
 
 ## Batch 2, Group 5: Negative wishes
 
 - Sections: §9.6
 - Atoms: 21
-- Proposed direction: 4 both; 17 reading only
+- Proposed direction: 5 both; 16 reading only
 - Writing job: Turn a licensed wish negative with the required ca structure and correct scope.
 - Reading job: Guide the reader through negative wish meaning and particle scope.
 - User/application split: The user chooses negative polarity; the application supplies and positions the licensed negative structure.
 - Control policy: Reuse Polarity and Particles; do not expose raw ca placement.
 - Proposal: Make negative wishes a grammatical transformation rather than manual particle assembly.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/21
+- Status: ACCEPTED
+- Exactly observed: 21/21
 
 ## Batch 2, Group 6: Commands and exhortations
 
@@ -77,8 +77,8 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses sentence purpose and participant; the application keeps the grammatical mood optative and supplies the required context.
 - Control policy: Do not add an imperative mood; reuse Mood, Subject, sentence purpose, and Particles.
 - Proposal: Build commands and exhortations from the optative system Andrews describes.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/10
+- Status: ACCEPTED
+- Exactly observed: 10/10
 
 ## Batch 3, Group 7: Second-person commands
 

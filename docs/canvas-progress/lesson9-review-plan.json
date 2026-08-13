@@ -79,6 +79,20 @@
       "readingJob": "Guide open, contrary-to-fact, past-regret, and intensified wish readings.",
       "decisionSplit": "The user chooses the intended wish and available particles; the application orders them and enforces their meaning and compatibility.",
       "controlPolicy": "Reuse Mood, Tense, Particles, and sentence choices; do not expose formula slots.",
+      "writingAtomIds": [
+        "ACI-P095-L022-17A5FC483D",
+        "ACI-P095-L024-544E1F2573",
+        "ACI-P095-L025-F02C9876CB",
+        "ACI-P095-L030-05672FE2F9",
+        "ACI-P096-L002-A0330C8813",
+        "ACI-P096-L011-02A2D0CD0B",
+        "ACI-P096-L011-D07C8D0427",
+        "ACI-P096-L015-B5530F1357",
+        "ACI-P096-L024-27C29C56F5-02",
+        "ACI-P096-L024-27C29C56F5-03",
+        "ACI-P096-L025-313573DD0F",
+        "ACI-P096-L030-ACCD8F5604"
+      ],
       "proposal": "Compose wishes from genuine choices through one optative sentence path."
     },
     {
@@ -89,6 +103,13 @@
       "readingJob": "Guide the reader through negative wish meaning and particle scope.",
       "decisionSplit": "The user chooses negative polarity; the application supplies and positions the licensed negative structure.",
       "controlPolicy": "Reuse Polarity and Particles; do not expose raw ca placement.",
+      "writingAtomIds": [
+        "ACI-P096-L032-C45EADCC64",
+        "ACI-P097-L004-9B41376753",
+        "ACI-P097-L005-0C9A5F96BF",
+        "ACI-P097-L005-0C9A5F96BF-02",
+        "ACI-P097-L006-4893D482A6"
+      ],
       "proposal": "Make negative wishes a grammatical transformation rather than manual particle assembly."
     },
     {
