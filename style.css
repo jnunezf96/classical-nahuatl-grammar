@@ -4314,6 +4314,34 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
 .classical-formula__derived-annotation {
   color: inherit;
   cursor: pointer;
+  border-radius: 3px;
+}
+
+.classical-formula__derived-annotation:focus-visible,
+.classical-formula__derived-annotation.is-clicked {
+  background: rgba(31, 69, 79, 0.12);
+  outline: 1px solid rgba(31, 69, 79, 0.35);
+  outline-offset: 1px;
+}
+
+.classical-formula__click-message {
+  position: fixed;
+  z-index: 2000;
+  max-width: min(260px, calc(100vw - 16px));
+  transform: translateX(-50%);
+  padding: 5px 8px;
+  border: 1px solid rgba(31, 69, 79, 0.2);
+  border-radius: 6px;
+  background: #fffdf8;
+  color: #1f454f;
+  box-shadow: 0 4px 14px rgba(29, 26, 21, 0.16);
+  font-family: var(--font-body, system-ui, sans-serif);
+  font-size: 0.78rem;
+  font-style: normal;
+  font-weight: 650;
+  line-height: 1.25;
+  text-align: center;
+  pointer-events: none;
 }
 
 .classical-formula__derived-annotation--supportive-i {

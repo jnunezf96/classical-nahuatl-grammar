@@ -5258,6 +5258,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return Object.freeze([...renderedAnnotations]);
       }
       const fragments = [];
+      const closeClickedAnnotation = () => {
+        targetObject.document?.querySelectorAll?.(".classical-formula__derived-annotation.is-clicked")?.forEach?.(candidate => {
+          candidate.classList.remove("is-clicked");
+          candidate.setAttribute("aria-expanded", "false");
+          candidate.removeAttribute("aria-describedby");
+        });
+        targetObject.document?.querySelector?.("[data-classical-formula-click-message]")?.remove?.();
+      };
+      const openClickedAnnotation = mark => {
+        const wasOpen = mark.classList.contains("is-clicked");
+        closeClickedAnnotation();
+        if (wasOpen) return;
+        const message = targetObject.document.createElement("span");
+        message.id = "classical-formula-click-message";
+        message.className = "classical-formula__click-message";
+        message.dataset.classicalFormulaClickMessage = "true";
+        message.setAttribute("role", "status");
+        message.textContent = mark.title;
+        targetObject.document.body.appendChild(message);
+        const rect = mark.getBoundingClientRect();
+        const viewportWidth = targetObject.innerWidth || targetObject.document.documentElement?.clientWidth || 0;
+        const left = Math.max(8, Math.min(rect.left + rect.width / 2, viewportWidth - 8));
+        message.style.left = `${left}px`;
+        message.style.top = `${Math.max(8, rect.bottom + 8)}px`;
+        mark.classList.add("is-clicked");
+        mark.setAttribute("aria-expanded", "true");
+        mark.setAttribute("aria-describedby", message.id);
+      };
       let cursor = 0;
       renderedAnnotations.forEach(annotation => {
         if (annotation.start > cursor) {
@@ -5270,6 +5298,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         mark.dataset.classicalDerivedAnnotationAtoms = annotation.atomIds.join("|");
         mark.title = annotation.label;
         mark.setAttribute("aria-label", annotation.label);
+        mark.setAttribute("role", "button");
+        mark.setAttribute("tabindex", "0");
+        mark.setAttribute("aria-expanded", "false");
+        mark.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          openClickedAnnotation(mark);
+        });
+        mark.addEventListener("keydown", event => {
+          if (["Enter", " "].includes(event.key)) {
+            event.preventDefault();
+            openClickedAnnotation(mark);
+          } else if (event.key === "Escape") {
+            closeClickedAnnotation();
+          }
+        });
         mark.textContent = renderedText.slice(annotation.start, annotation.end);
         fragments.push(mark);
         cursor = annotation.end;

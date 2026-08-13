@@ -317,6 +317,15 @@ function run(ctx = {}) {
         && rendering.includes("specificLinearTypedSlotFrame")
         && rendering.includes("classicalDerivedAnnotationLessons")
         && rendering.includes("classicalDerivedAnnotationAtoms"));
+    s.ok("every Formula and Diagram annotation can show its exact message by click or keyboard",
+        rendering.includes('mark.setAttribute("role", "button")')
+        && rendering.includes('mark.setAttribute("tabindex", "0")')
+        && rendering.includes('mark.addEventListener("click"')
+        && rendering.includes('mark.addEventListener("keydown"')
+        && rendering.includes('message.dataset.classicalFormulaClickMessage = "true"')
+        && rendering.includes('message.textContent = mark.title')
+        && css.includes(".classical-formula__derived-annotation.is-clicked")
+        && css.includes(".classical-formula__click-message"));
     s.no("the derived formula annotation is implemented as a user control",
         /id="[^"]*supportive-i-annotation[^"]*"/u.test(
             fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8")
