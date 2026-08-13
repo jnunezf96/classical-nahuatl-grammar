@@ -26,6 +26,18 @@
     "lesson10-class-c-admonitions": {
       "status": "ACCEPTED",
       "acceptedJob": "Build and interpret singular and plural Class C affirmative admonitions from the correct perfective stem."
+    },
+    "lesson10-class-d-admonitions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build Class D admonitions and preserve appropriate warning or advice interpretation for human and nonhuman subjects."
+    },
+    "lesson10-negative-admonitions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build negative admonitions with ah and obligatory mā nēn as a cancellation of warning, never as a prohibition or a Lesson 9 ca construction."
+    },
+    "lesson10-general-vnc-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve second-person x or xi and plural morphology as dependable contrasts among admonitive, optative, present, and preterit forms."
     }
   }
 }

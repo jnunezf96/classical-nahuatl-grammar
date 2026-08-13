@@ -90,8 +90,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application derives the form and participant applicability; the reader chooses an appropriate translation wording.
 - Control policy: No new control.
 - Proposal: Connect Class D and nonhuman admonitions to the shared system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/14
+- Status: ACCEPTED
+- Exactly observed: 14/14
 
 ## Batch 3, Group 8: Negative admonition sentences
 
@@ -103,8 +103,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses negative admonition; the application supplies ah, mā nēn, and the reversed caution meaning.
 - Control policy: Reuse Polarity, Mood, and Particles; do not add a separate negative-prefix selector.
 - Proposal: Keep Lesson 10 negative admonition distinct from Lesson 9 negative command.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/35
+- Status: ACCEPTED
+- Exactly observed: 35/35
 
 ## Batch 3, Group 9: General VNC contrasts
 
@@ -116,8 +116,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application generates the contrasts; the reading guide explains them.
 - Control policy: No new control.
 - Proposal: Expose genuine form contrasts without turning analysis into choices.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/3
+- Status: ACCEPTED
+- Exactly observed: 3/3
 
 ## Batch 4, Group 10: Class A contrast paradigm
 

@@ -35,6 +35,21 @@ export const LESSON10_READER_GUIDANCE_GROUPS = freeze([
     "Read the Class C perfective stem in an admonition",
     "A Class C admonitive uses its perfective stem, as in singular mā choloh and plural mā ancholohtin. Participant and number remain visible, and the meaning is positive caution rather than prohibition.",
   ),
+  idea(
+    "lesson10-class-d-admonitions",
+    "Read the Class D perfective stem and its subject",
+    "A Class D admonitive uses its perfective stem, as in mā nitlacuah and mā titlacuahtin. With a nonhuman subject, translate the sentence as advice or undesirability appropriate to that subject—not as a wish.",
+  ),
+  idea(
+    "lesson10-negative-admonitions",
+    "Read a negative admonition as cancellation of caution",
+    "A negative admonition has ah on the admonitive VNC and obligatory mā nēn before it. It recommends rejecting caution or being sure to act. It is not a prohibition, and it does not use the Lesson 9 negative-command prefix ca.",
+  ),
+  idea(
+    "lesson10-general-vnc-contrasts",
+    "Use person and number to distinguish the compared moods",
+    "Second-person optatives have x or xi in pers1, while admonitives do not. Plural subjects remain formally distinct across the admonitive, nonpast optative, present indicative, and preterit indicative comparison.",
+  ),
 ]);
 
 export function isLesson10ReaderGuidanceExact(candidate = []) {

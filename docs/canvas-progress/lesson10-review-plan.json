@@ -120,6 +120,10 @@
       "readingJob": "Guide Class D forms and nonhuman indirect-admonition translations without converting advice into a wish.",
       "decisionSplit": "The application derives the form and participant applicability; the reader chooses an appropriate translation wording.",
       "controlPolicy": "No new control.",
+      "writingAtomIds": [
+        "ACI-P101-L014-8DEBB28C45",
+        "ACI-P101-L017-76D6ED7F57"
+      ],
       "proposal": "Connect Class D and nonhuman admonitions to the shared system."
     },
     {
@@ -130,6 +134,25 @@
       "readingJob": "Guide the counter-caution meaning: be sure to act or reject caution.",
       "decisionSplit": "The user chooses negative admonition; the application supplies ah, mā nēn, and the reversed caution meaning.",
       "controlPolicy": "Reuse Polarity, Mood, and Particles; do not add a separate negative-prefix selector.",
+      "writingAtomIds": [
+        "ACI-P101-L023-A798BEA5C8",
+        "ACI-P101-L025-03F4F79346",
+        "ACI-P101-L033-E214411E9F-02",
+        "ACI-P101-L033-E214411E9F-03",
+        "ACI-P101-L033-E214411E9F-04",
+        "ACI-P101-L033-E214411E9F-05",
+        "ACI-P101-L035-8E4D508EFA-02",
+        "ACI-P101-L035-8E4D508EFA-03",
+        "ACI-P101-L035-8E4D508EFA-04",
+        "ACI-P101-L035-8E4D508EFA-05",
+        "ACI-P101-L035-B25CB80564",
+        "ACI-P102-L002-0ACE879B9E-02",
+        "ACI-P102-L002-0ACE879B9E-03",
+        "ACI-P102-L002-0ACE879B9E-04",
+        "ACI-P102-L002-0ACE879B9E-05",
+        "ACI-P102-L002-0ACE879B9E-06",
+        "ACI-P102-L006-F4578528FF"
+      ],
       "proposal": "Keep Lesson 10 negative admonition distinct from Lesson 9 negative command."
     },
     {
@@ -140,6 +163,10 @@
       "readingJob": "Use person and number to distinguish admonitive, optative, present, and preterit forms.",
       "decisionSplit": "The application generates the contrasts; the reading guide explains them.",
       "controlPolicy": "No new control.",
+      "writingAtomIds": [
+        "ACI-P102-L010-100661586C",
+        "ACI-P102-L012-6E13B8359B"
+      ],
       "proposal": "Expose genuine form contrasts without turning analysis into choices."
     },
     {
