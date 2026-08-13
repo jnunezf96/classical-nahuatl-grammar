@@ -47,7 +47,7 @@ function run(ctx = {}) {
             start: 2,
             end: 3,
             role: "subject-supportive-i",
-            label: "supportive i · added automatically for pronunciation",
+            label: "supportive i",
         }],
     });
     s.eq("the supportive i of third-person qui is marked", {
@@ -62,7 +62,7 @@ function run(ctx = {}) {
             start: 7,
             end: 8,
             role: "object-supportive-i",
-            label: "supportive i · added automatically for pronunciation",
+            label: "supportive i",
         }],
     });
     s.eq("real stem i and ordinary qu receive no supportive annotation",

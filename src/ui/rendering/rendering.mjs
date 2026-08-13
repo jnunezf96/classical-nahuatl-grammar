@@ -4821,7 +4821,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             start: carrierStart + subject.pers1.length - 1,
             end: carrierStart + subject.pers1.length,
             role: "subject-supportive-i",
-            label: "supportive i · added automatically for pronunciation"
+            label: "supportive i"
           }));
         }
       }
@@ -4841,7 +4841,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           start: iStart,
           end: iStart + 1,
           role: "object-supportive-i",
-          label: "supportive i · added automatically for pronunciation"
+          label: "supportive i"
         }));
       });
       return Object.freeze(annotations.sort((left, right) => left.start - right.start));
