@@ -190,6 +190,24 @@
       "readingJob": "Guide the reader through the predicate tables by class, aspect, mood, tense, and stem shape.",
       "decisionSplit": "The user chooses genuine mood and tense; the application selects aspect, stem shape, and tense carrier.",
       "controlPolicy": "Do not expose table cells, aspect, or allomorphs as extra choices.",
+      "writingAtomIds": [
+        "ACI-P080-L040-C63CC85725",
+        "ACI-P081-L005-E349B1462F",
+        "ACI-P081-L006-0FC5FE0ED5",
+        "ACI-P081-L009-2A0AC15965",
+        "ACI-P081-L009-58F241D767",
+        "ACI-P081-L019-6E8ED47C64",
+        "ACI-P081-L019-80C7966F4B",
+        "ACI-P081-L019-49E2C9C31D",
+        "ACI-P081-L032-F6E6248E63",
+        "ACI-P081-L033-E5A654F673-02",
+        "ACI-P081-L033-E5A654F673-03",
+        "ACI-P081-L033-E5A654F673-04",
+        "ACI-P081-L033-E5A654F673-05",
+        "ACI-P081-L033-E5A654F673-06",
+        "ACI-P082-L009-3C2642E7BB",
+        "ACI-P082-L024-29B3304BD7"
+      ],
       "proposal": "Make the Lesson 7 predicate tables the automatic finite-formation path."
     },
     {
@@ -200,6 +218,15 @@
       "readingJob": "Guide linear and diagrammatic reading while preserving genuine ambiguities and the difference between carrier, content, function, and translation.",
       "decisionSplit": "The user supplies grammatical choices; the application builds the complete VNC and both explanatory projections.",
       "controlPolicy": "Do not make analysis format or translation wording authorize grammar.",
+      "writingAtomIds": [
+        "ACI-P083-L003-3B124EED07",
+        "ACI-P085-L002-EB9197D776",
+        "ACI-P085-L003-6E0E0B43A7",
+        "ACI-P085-L003-6E0E0B43A7-02",
+        "ACI-P085-L010-D695025CCA",
+        "ACI-P085-L013-6899BC5E6B",
+        "ACI-P085-L016-CA62B21711"
+      ],
       "proposal": "Use the canonical Result for both linear and diagrammatic Lesson 7 analysis."
     },
     {
@@ -210,6 +237,29 @@
       "readingJob": "Use subject and object context to distinguish singular reflexive from plural reflexive or reciprocal meanings.",
       "decisionSplit": "The user chooses a genuine object relationship and referent; the application enforces its person, number, and humanness conditions.",
       "controlPolicy": "Do not infer reciprocal meaning for singular subjects or collapse human and nonhuman object roles.",
+      "writingAtomIds": [
+        "ACI-P085-L039-34663E0D60",
+        "ACI-P085-L041-E1B2B33CE4",
+        "ACI-P085-L045-B320BEFD1C",
+        "ACI-P085-L046-2ED1C60069",
+        "ACI-P085-L047-7996ED1D2C",
+        "ACI-P085-L048-E16A4B72AC",
+        "ACI-P085-L049-40DB9806C4",
+        "ACI-P086-L002-B58354DE3F",
+        "ACI-P086-L003-D41B7FE7E2",
+        "ACI-P086-L005-336D0005B5",
+        "ACI-P086-L007-336D0005B5",
+        "ACI-P086-L008-336D0005B5",
+        "ACI-P086-L011-AABB0EA37B",
+        "ACI-P086-L012-3BB77976D7",
+        "ACI-P086-L012-3BB77976D7-02",
+        "ACI-P086-L012-3BB77976D7-03",
+        "ACI-P086-L012-3BB77976D7-04",
+        "ACI-P086-L012-3BB77976D7-05",
+        "ACI-P086-L012-3BB77976D7-06",
+        "ACI-P086-L012-3BB77976D7-07",
+        "ACI-P086-L014-60D916D128"
+      ],
       "proposal": "Keep every Lesson 7 object relationship distinct in grammar and interpretation."
     },
     {

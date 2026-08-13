@@ -50,6 +50,21 @@ export const LESSON7_READER_GUIDANCE_GROUPS = freeze([
     "Combine form, meaning, and lexical class facts",
     "Change-of-state hua, final ya, final o or ō, and the listed Class D stems have distinct class rules. Meaning matters where Canvas says it matters, and a listed lexical membership is not replaced by surface guessing.",
   ),
+  idea(
+    "lesson7-predicate-tables",
+    "Read the predicate through class, mood, and tense",
+    "Mood and tense select a table cell. That cell supplies the aspect, the permitted stem shape, and the tense carrier. Similar-looking forms may therefore have different grammatical structures.",
+  ),
+  idea(
+    "lesson7-analysis-translation",
+    "Read one VNC in more than one helpful way",
+    "Every complete VNC has an obligatory Subject and Predicate. Linear Formula and Diagram show the same grammar from different viewpoints; neither display creates the Result or limits its possible translation.",
+  ),
+  idea(
+    "lesson7-object-relationship-contrasts",
+    "Read the object relationship before choosing a translation",
+    "Human tē and nonhuman tla relate to different specific-object systems. A singular reflexive is reflexive only; a plural reflexive can also be reciprocal. A grammatically singular nonhuman object may still refer to plural nonanimate things where Canvas licenses that reading.",
+  ),
 ]);
 
 export function isLesson7ReaderGuidanceExact(candidate = []) {

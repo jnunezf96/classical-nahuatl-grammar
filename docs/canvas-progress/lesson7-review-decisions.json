@@ -38,6 +38,18 @@
     "lesson7-class-guidelines-five-eight": {
       "status": "ACCEPTED",
       "acceptedJob": "Apply class guidelines five through eight automatically, using meaning conditions and exact lexical memberships where Canvas requires them."
+    },
+    "lesson7-predicate-tables": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the selected mood and tense to choose the exact class-conditioned stem and tense carrier automatically."
+    },
+    "lesson7-analysis-translation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build one complete VNC Result and let Linear Formula, Diagram, and reading guidance explain that same grammar without authorizing it."
+    },
+    "lesson7-object-relationship-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep human, nonhuman, reflexive, and reciprocal relationships distinct, including subject-number and referent-number conditions."
     }
   }
 }

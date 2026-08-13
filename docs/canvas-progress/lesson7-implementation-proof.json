@@ -46,6 +46,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson7_groups_7_9_jobs.test.js",
       "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-predicate-tables": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-analysis-translation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-object-relationship-contrasts": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
     }
   }
 }

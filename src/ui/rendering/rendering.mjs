@@ -4947,6 +4947,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P080-L030-A3103EEDD3"
         ])
       }),
+      "verbstem-predicate-table": Object.freeze({
+        lessonSections: Object.freeze(["§7.7", "§7.7.1", "§7.7.2"]),
+        atomIds: Object.freeze([
+          "ACI-P080-L040-C63CC85725",
+          "ACI-P081-L005-E349B1462F",
+          "ACI-P081-L006-0FC5FE0ED5",
+          "ACI-P081-L009-58F241D767",
+          "ACI-P081-L019-49E2C9C31D",
+          "ACI-P081-L033-E5A654F673-02",
+          "ACI-P081-L033-E5A654F673-03",
+          "ACI-P081-L033-E5A654F673-04",
+          "ACI-P081-L033-E5A654F673-05",
+          "ACI-P081-L033-E5A654F673-06",
+          "ACI-P082-L009-3C2642E7BB",
+          "ACI-P082-L024-29B3304BD7"
+        ])
+      }),
       "nuclear-clause-boundary": Object.freeze({
         lessonSections: Object.freeze(["§4.4"]),
         atomIds: Object.freeze(["ACI-P061-L016-50C9F319DB", "ACI-P061-L017-65685DB703"])
@@ -5254,9 +5271,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
           || stemOperationFrame?.classGuidelineRuleId
           || ""
         );
+        const predicateTableCell = String(
+          grammarContext?.predicateTableCell
+          || grammarContext?.predicateFormationRuleFrame?.predicateTableCell
+          || stemOperationFrame?.predicateTableCell
+          || ""
+        );
+        const predicateTableTense = String(
+          grammarContext?.tense
+          || grammarContext?.predicateFormationRuleFrame?.tense
+          || stemOperationFrame?.tense
+          || ""
+        ).trim().toLowerCase();
         const operationLabel = stemAspect === "perfective"
           ? perfectiveChangeLabels[String(stemOperationFrame?.changeRule || "")] || "perfective verbstem"
-          : imperfectiveShapeLabel || classGuidelineLabels[classGuidelineRuleId] || "";
+          : imperfectiveShapeLabel
+            || classGuidelineLabels[classGuidelineRuleId]
+            || (predicateTableCell && predicateTableTense ? `${predicateTableTense} ${stemAspect || "stem"}` : "");
         const stemJobLabel = stemClass || stemContent.includes("-")
           ? [
             stemClass ? `Class ${stemClass}` : "",
@@ -5271,7 +5302,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ? "verbstem-conditioned-imperfective"
               : classGuidelineRuleId
                 ? "verbstem-class-guideline"
-                : "verbstem-class-and-structure"
+                : predicateTableCell
+                  ? "verbstem-predicate-table"
+                  : "verbstem-class-and-structure"
           : "predicate-stem";
         let stemPartStart = 0;
         Array.from(stemContent.matchAll(/[-+]/gu)).forEach(match => {

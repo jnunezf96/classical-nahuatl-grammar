@@ -123,40 +123,40 @@ All 344 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §7.7, §7.7.1, §7.7.2, §7.7.1 [2], §7.7.2 [2], §7.7.1 [3], §7.7.2 [3], §7.7.1 [4], §7.7.2 [4], §7.7.1 [5], §7.7.2 [5]
 - Atoms: 32
-- Proposed direction: 0 both; 32 reading only
+- Proposed direction: 16 both; 16 reading only
 - Writing job: Select the exact stem shape and tense carrier for every Class A-D mood-tense cell.
 - Reading job: Guide the reader through the predicate tables by class, aspect, mood, tense, and stem shape.
 - User/application split: The user chooses genuine mood and tense; the application selects aspect, stem shape, and tense carrier.
 - Control policy: Do not expose table cells, aspect, or allomorphs as extra choices.
 - Proposal: Make the Lesson 7 predicate tables the automatic finite-formation path.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/32
+- Status: ACCEPTED
+- Exactly observed: 32/32
 
 ## Batch 4, Group 11: Analysis and translation of complete VNCs
 
 - Sections: §7.8, §7.8.1, §7.8.2, §7.8.3, §7.8.4
 - Atoms: 107
-- Proposed direction: 6 both; 101 reading only
+- Proposed direction: 7 both; 100 reading only
 - Writing job: Build a complete VNC with the obligatory Subject-Predicate division and preserve the exact class-conditioned predicate.
 - Reading job: Guide linear and diagrammatic reading while preserving genuine ambiguities and the difference between carrier, content, function, and translation.
 - User/application split: The user supplies grammatical choices; the application builds the complete VNC and both explanatory projections.
 - Control policy: Do not make analysis format or translation wording authorize grammar.
 - Proposal: Use the canonical Result for both linear and diagrammatic Lesson 7 analysis.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/107
+- Status: ACCEPTED
+- Exactly observed: 107/107
 
 ## Batch 4, Group 12: Object relationship contrasts
 
 - Sections: §7.9, §7.9.1.a, §7.9.1.b, §7.9.2.a, §7.9.2.b
 - Atoms: 21
-- Proposed direction: 0 both; 21 reading only
+- Proposed direction: 21 both; 0 reading only
 - Writing job: Preserve distinct human/nonhuman projective, reflexive, and plural reciprocal readings and their exact valence structures.
 - Reading job: Use subject and object context to distinguish singular reflexive from plural reflexive or reciprocal meanings.
 - User/application split: The user chooses a genuine object relationship and referent; the application enforces its person, number, and humanness conditions.
 - Control policy: Do not infer reciprocal meaning for singular subjects or collapse human and nonhuman object roles.
 - Proposal: Keep every Lesson 7 object relationship distinct in grammar and interpretation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/21
+- Status: ACCEPTED
+- Exactly observed: 21/21
 
 ## Batch 5, Group 13: Adverb plus tla fusion
 

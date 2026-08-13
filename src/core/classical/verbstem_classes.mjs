@@ -2165,7 +2165,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       if (compactKey === "a") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.a);
       }
-      if (compactKey === "ehua") {
+      if (["ē-hua", "ēhua"].includes(normalized)) {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.ehua);
       }
       if (compactKey === "mani") {
@@ -3847,6 +3847,22 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const selectedIndefiniteObjectSurface = selectedIndefiniteObject === "tē" ? "te" : selectedIndefiniteObject;
       const relatedSpecificObjectKinds = relationshipGroup === "human" ? ["mainline-reflexive", "n-o", "m-itz", "qu-0", "t-ēch", "am-ēch", "qu-im"] : relationshipGroup === "nonhuman" ? ["qu-0", "qu-im"] : [];
       const pluralReflexiveReciprocalPossible = Boolean(subjectNumber === "plural" && relationshipKind === "human-reflexive-reciprocal");
+      const selectedObjectInterpretations = relationshipKind === "human-reflexive-reciprocal"
+        ? pluralReflexiveReciprocalPossible ? ["reflexive", "reciprocal"] : ["reflexive"]
+        : [];
+      const grammaticalObjectNumber = relationshipKind === "human-reflexive-reciprocal" && subjectNumber
+        ? subjectNumber
+        : /pl$/u.test(objectPerson) ? "plural" : /sg$/u.test(objectPerson) ? "singular" : "common";
+      let selectedReferentNumberReadings = [];
+      if (["human-indefinite", "nonhuman-indefinite"].includes(relationshipKind)) {
+        selectedReferentNumberReadings = ["singular", "plural", "total"];
+      } else if (relationshipKind === "specific-human-projective") {
+        selectedReferentNumberReadings = grammaticalObjectNumber === "plural" ? ["plural"] : ["singular"];
+      } else if (relationshipKind === "specific-nonhuman-projective") {
+        selectedReferentNumberReadings = grammaticalObjectNumber === "plural" ? ["plural"] : ["singular", "plural-nonanimate"];
+      } else if (relationshipKind === "ambiguous-specific-projective") {
+        selectedReferentNumberReadings = grammaticalObjectNumber === "plural" ? ["plural"] : ["singular", "plural-nonanimate-if-nonhuman"];
+      }
       const witness = getClassicalNahuatlObjectRelationshipWitness(relationshipGroup);
       const applicableRules = getClassicalNahuatlApplicableObjectRelationshipRules(relationshipKind, relationshipGroup, subjectNumber);
       return {
@@ -3868,6 +3884,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         relationshipRange: selectedIndefiniteObject ? ["nonspecific", "vague", "total"] : [],
         objectRelationshipApplies: relationshipKind !== "not-applicable",
         pluralReflexiveReciprocalPossible,
+        selectedObjectInterpretations,
+        grammaticalObjectNumber,
+        selectedReferentNumberReadings,
         applicableObjectRelationshipRuleIds: applicableRules.map(rule => rule.id),
         evidencePolicy: Object.freeze({ examplesAuthorizeGeneration: false, evidenceAbsenceBlocksGeneration: false, typedGrammarAuthorizesUnlistedRealizations: true }),
         selectedObjectRelationshipRuleId: witness?.id || "",
@@ -6623,6 +6642,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           relatedSpecificObjectKinds: authorized ? objectRelationshipRuleFrame?.relatedSpecificObjectKinds || [] : [],
           relationshipRange: authorized ? objectRelationshipRuleFrame?.relationshipRange || [] : [],
           pluralReflexiveReciprocalPossible: authorized ? objectRelationshipRuleFrame?.pluralReflexiveReciprocalPossible === true : false,
+          selectedObjectInterpretations: authorized ? objectRelationshipRuleFrame?.selectedObjectInterpretations || [] : [],
+          grammaticalObjectNumber: authorized ? objectRelationshipRuleFrame?.grammaticalObjectNumber || "" : "",
+          selectedReferentNumberReadings: authorized ? objectRelationshipRuleFrame?.selectedReferentNumberReadings || [] : [],
           objectRelationshipActions: authorized ? objectRelationshipRuleFrame?.objectRelationshipActions || [] : [],
           objectRelationshipContradictionBlocked: authorized ? objectRelationshipRuleFrame?.objectRelationshipContradictionBlocked === true : false,
           objectRelationshipContradictionReason: authorized ? objectRelationshipRuleFrame?.objectRelationshipContradictionReason || "" : "",
@@ -7050,6 +7072,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
             relatedSpecificObjectKinds: proofFrame.conclusion.relatedSpecificObjectKinds,
             relationshipRange: proofFrame.conclusion.relationshipRange,
             pluralReflexiveReciprocalPossible: proofFrame.conclusion.pluralReflexiveReciprocalPossible,
+            selectedObjectInterpretations: proofFrame.conclusion.selectedObjectInterpretations,
+            grammaticalObjectNumber: proofFrame.conclusion.grammaticalObjectNumber,
+            selectedReferentNumberReadings: proofFrame.conclusion.selectedReferentNumberReadings,
             objectRelationshipActions: proofFrame.conclusion.objectRelationshipActions,
             collapseIndefiniteIntoSpecificAllowed: proofFrame.conclusion.collapseIndefiniteIntoSpecificAllowed
           } : {}),
@@ -7191,6 +7216,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           possibleIndefiniteObjects: proofFrame.conclusion.possibleIndefiniteObjects,
           relatedSpecificObjectKinds: proofFrame.conclusion.relatedSpecificObjectKinds,
           pluralReflexiveReciprocalPossible: proofFrame.conclusion.pluralReflexiveReciprocalPossible,
+          selectedObjectInterpretations: proofFrame.conclusion.selectedObjectInterpretations,
+          grammaticalObjectNumber: proofFrame.conclusion.grammaticalObjectNumber,
+          selectedReferentNumberReadings: proofFrame.conclusion.selectedReferentNumberReadings,
           objectRelationshipActions: proofFrame.conclusion.objectRelationshipActions,
           exactWitness: proofFrame.conclusion.selectedObjectRelationshipExactWitness
         }] : []), ...(proofFrame.conclusion.expandedVncBoundaryApplies ? [{
