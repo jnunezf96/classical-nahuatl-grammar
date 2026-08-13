@@ -3528,9 +3528,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           : start;
         const before = value.slice(0, start);
         const after = value.slice(end);
-        const leftSpace = before && !/\s$/u.test(before) ? " " : "";
-        const rightSpace = after && !/^\s/u.test(after) ? " " : "";
-        const insertion = `${leftSpace}${token}${rightSpace}`;
+        const insertion = token;
         input.value = `${before}${insertion}${after}`;
         const caret = before.length + insertion.length;
         input.setSelectionRange?.(caret, caret);

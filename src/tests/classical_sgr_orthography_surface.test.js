@@ -266,6 +266,68 @@ function run(ctx = {}) {
             displayDoesNotAuthorize: true,
         }
     );
+    const compactSoundResult =
+        ctx.buildClassicalNahuatlCompactTranscriptionFrame?.(
+            "i/kʷ//s/i"
+        );
+    suite.eq(
+        "the compact sound keyboard source reaches the Lesson 2 written Result",
+        {
+            status: compactSoundResult?.authorizationStatus,
+            formula: compactSoundResult?.formula,
+            surface: compactSoundResult?.surface,
+            typedFrame: ctx.isClassicalNahuatlTranscriptionFrame?.(
+                compactSoundResult
+            ),
+        },
+        {
+            status: "authorized",
+            formula: "#(i/kʷ//s/i)#",
+            surface: "iucci",
+            typedFrame: true,
+        }
+    );
+    const compoundVncResult = ctx.executeClassicalGrammarApplicationRequest?.({
+        operationId: "vnc:application",
+        args: [{
+            sourceStem: "tenam-ca",
+            sourceEmbedStem: "tenam",
+            sourceMatrixStem: "ca",
+            verbClass: "A",
+            sourceValence: "intransitive",
+            subject: "1sg",
+            requestedDerivation: "direct",
+            requestedVoice: "active",
+            mood: "indicative",
+            tense: "present",
+            outputKind: "single",
+        }],
+    });
+    suite.eq(
+        "VNC Embed plus Matrix is written by Lesson 2 before the normal Result",
+        {
+            status: compoundVncResult?.authorizationStatus,
+            writtenStem:
+                compoundVncResult?.canonicalResult?.normalizedRequest
+                    ?.sourceStem,
+            sourceSelection:
+                compoundVncResult?.canonicalResult?.resultFrame
+                    ?.sourceMachineryFrame?.sourceSelectionFrame
+                    ?.authorizationStatus,
+            surface:
+                compoundVncResult?.canonicalResult?.resultFrame
+                    ?.surfaceRealization,
+            writingMode:
+                compoundVncResult?.lesson2WritingOutputs?.[0]?.mode,
+        },
+        {
+            status: "authorized",
+            writtenStem: "tenanca",
+            sourceSelection: "authorized",
+            surface: "nitenanca",
+            writingMode: "lesson2-writer",
+        }
+    );
 
     const installSlice = functionSlice(
         shell,
@@ -356,10 +418,15 @@ function run(ctx = {}) {
             });
             sourceParts.dataset.classicalSourcePartsMode = "embed-matrix";
             embedMatrixMode.dispatchEvent({ type: "click" });
-            matrixInput.dispatchEvent({ type: "focus" });
             const tlaKey = consonantKeys.children.find(
                 key => key.textContent === "/λ/"
             );
+            keyboard.dispatchEvent({
+                type: "click",
+                target: tlaKey,
+                preventDefault() {},
+            });
+            matrixInput.dispatchEvent({ type: "focus" });
             keyboard.dispatchEvent({
                 type: "click",
                 target: tlaKey,
@@ -380,9 +447,9 @@ function run(ctx = {}) {
         directKeyboardProbe,
         {
             installed: true,
-            whole: "ca ā",
-            embed: "",
-            matrix: "ti /λ/",
+            whole: "caā",
+            embed: "/λ/",
+            matrix: "ti/λ/",
             target: "classical-source-matrix",
             state: "pending",
         }

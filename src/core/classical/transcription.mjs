@@ -5278,6 +5278,50 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       );
       return transcriptionFrame;
     }
+    function buildClassicalNahuatlCompactTranscriptionFrame(value = "") {
+      const compactSource = String(value || "").normalize("NFC").replace(/\s+/gu, "");
+      if (!compactSource.includes("/")) {
+        return buildBlockedClassicalNahuatlTranscriptionFrame(
+          null,
+          "classical-compact-transcription-consonant-token-required"
+        );
+      }
+      const segments = [];
+      for (let index = 0; index < compactSource.length;) {
+        if (compactSource[index] === "/") {
+          const end = compactSource.indexOf("/", index + 1);
+          if (end < 0) {
+            return buildBlockedClassicalNahuatlTranscriptionFrame(
+              null,
+              "classical-compact-transcription-token-unclosed"
+            );
+          }
+          const token = compactSource.slice(index, end + 1);
+          if (!CLASSICAL_NAHUATL_TRANSCRIPTION_CONSONANT_CARRIERS[token]) {
+            return buildBlockedClassicalNahuatlTranscriptionFrame(
+              null,
+              "classical-compact-transcription-token-not-licensed"
+            );
+          }
+          segments.push(token);
+          index = end + 1;
+          continue;
+        }
+        const token = compactSource[index];
+        if (!CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS[token]) {
+          return buildBlockedClassicalNahuatlTranscriptionFrame(
+            null,
+            "classical-compact-transcription-mixes-spelling-and-sound-source"
+          );
+        }
+        segments.push(token);
+        index += 1;
+      }
+      const sourceFrame = buildClassicalNahuatlTranscriptionSourceFrame({
+        constituents: [{ segments }]
+      });
+      return buildClassicalNahuatlTranscriptionFrame(sourceFrame);
+    }
     function isClassicalNahuatlTranscriptionFrame(frame = null) {
       const receipt = frame && typeof frame === "object"
         ? issuedClassicalNahuatlTranscriptionFrames.get(frame)
@@ -5614,6 +5658,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
     api.projectClassicalNahuatlTranscriptionFormula = projectClassicalNahuatlTranscriptionFormula;
     api.projectClassicalNahuatlTranscriptionWritten = projectClassicalNahuatlTranscriptionWritten;
     api.buildClassicalNahuatlTranscriptionFrame = buildClassicalNahuatlTranscriptionFrame;
+    api.buildClassicalNahuatlCompactTranscriptionFrame = buildClassicalNahuatlCompactTranscriptionFrame;
     api.isClassicalNahuatlTranscriptionFrame = isClassicalNahuatlTranscriptionFrame;
     api.getClassicalNahuatlFirewallRules = getClassicalNahuatlFirewallRules;
     api.installClassicalNahuatlTranscriptionClassicGlobals = installClassicalNahuatlTranscriptionClassicGlobals;

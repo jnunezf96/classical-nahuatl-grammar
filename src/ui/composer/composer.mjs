@@ -3328,7 +3328,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return getComposerEmbedTokens(value).join("/");
     }
     function normalizeClassicalFuenteSourcePartStem(value = "") {
-      return String(value || "").trim().replace(/^\((.*)\)$/u, "$1").trim().toLowerCase().replace(/\s+/gu, "").replace(/[^a-zāēīō0-]/gu, "").replace(/-{2,}/gu, "-").replace(/^-|-$/gu, "");
+      const rawSource = String(value || "").trim().replace(/^\((.*)\)$/u, "$1").trim().toLowerCase();
+      const transcriptionFrame = rawSource.includes("/")
+        && typeof targetObject.buildClassicalNahuatlCompactTranscriptionFrame === "function"
+        ? targetObject.buildClassicalNahuatlCompactTranscriptionFrame(rawSource)
+        : null;
+      const source = targetObject.isClassicalNahuatlTranscriptionFrame?.(transcriptionFrame)
+        && transcriptionFrame.authorizationStatus === "authorized"
+        ? transcriptionFrame.surface
+        : rawSource;
+      return source.replace(/\s+/gu, "").replace(/[^a-zāēīō0-]/gu, "").replace(/-{2,}/gu, "-").replace(/^-|-$/gu, "");
     }
     function normalizeComposerSecondaryValenceSurfaceToken(value) {
       const token = String(value || "").trim().toLowerCase().normalize("NFC");
@@ -9244,6 +9253,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         internalMorphs.hidden = true;
         internalMorphs.setAttribute("aria-hidden", "true");
       }
+      const constructionControl = targetObject.document?.getElementById?.(
+        "classical-construction-operation"
+      ) || null;
+      if (constructionControl
+        && getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc) {
+        if (embedMatrixEnabled && constructionControl.value === "none") {
+          constructionControl.value = "compound-nnc";
+          constructionControl.dataset.classicalSourcePartsDerivedOperation = "true";
+        } else if (!embedMatrixEnabled
+          && constructionControl.dataset.classicalSourcePartsDerivedOperation === "true") {
+          constructionControl.value = "none";
+          delete constructionControl.dataset.classicalSourcePartsDerivedOperation;
+        }
+      }
       const sourceInput = typeof targetObject.document !== "undefined" ? targetObject.document.getElementById("verb") : null;
       if (sourceInput) {
         sourceInput.readOnly = true;
@@ -9367,7 +9390,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       return pending;
     }
     function commitClassicalSourcePartsEvaluation(options = {}) {
-      const sourceState = getClassicalSourcePartControlState();
+      let sourceState = getClassicalSourcePartControlState();
       if (!hasCommittableClassicalSourceParts(sourceState)) {
         const root = targetObject.document?.getElementById?.("classical-source-parts") || null;
         setClassicalSourcePartsPendingState(
@@ -9380,31 +9403,24 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         embedInput,
         matrixInput
       } = getClassicalSourcePartControlElements();
-      // Keep sound tokens intact until Lesson 2 has examined the complete
-      // environment. Embed and matrix remain distinct neighboring
-      // constituents, but are sent through one transcription request.
-      const phonologicalStem = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-        ? [embedInput?.value, matrixInput?.value]
-            .filter(Boolean)
-            .map(value => String(value).normalize("NFC").trim())
-            .join(" | ")
-        : String(wholeInput?.value || "").normalize("NFC").trim();
-      if (
-        /\/[^/]+\//u.test(phonologicalStem)
-        && typeof targetObject.applyClassicalTranscriptionSource === "function"
-      ) {
-        const result = targetObject.applyClassicalTranscriptionSource(
-          phonologicalStem
-        );
-        if (result) {
-          ClassicalSourcePartsCommittedSignature =
-            getClassicalSourcePartsEvaluationSignature();
-          setClassicalSourcePartsPendingState(false);
-          syncClassicalSourcePartsToEntradaUrl();
-          return true;
+      const activeInputs = sourceState.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+        ? [embedInput, matrixInput]
+        : [wholeInput];
+      for (const input of activeInputs.filter(Boolean)) {
+        const soundSource = String(input.value || "").normalize("NFC").trim();
+        if (!/\/[^/]+\//u.test(soundSource)) continue;
+        const transcriptionFrame = typeof targetObject.buildClassicalNahuatlCompactTranscriptionFrame === "function"
+          ? targetObject.buildClassicalNahuatlCompactTranscriptionFrame(soundSource)
+          : null;
+        if (!targetObject.isClassicalNahuatlTranscriptionFrame?.(transcriptionFrame)
+          || transcriptionFrame.authorizationStatus !== "authorized") {
+          return false;
         }
-        return false;
+        input.dataset.classicalTranscriptionSoundSource = soundSource;
+        input.dataset.classicalTranscriptionWrittenResult = transcriptionFrame.surface;
+        input.value = transcriptionFrame.surface;
       }
+      sourceState = getClassicalSourcePartControlState();
       const signature = getClassicalSourcePartsEvaluationSignature();
       if (options.force !== true && signature === ClassicalSourcePartsCommittedSignature) {
         setClassicalSourcePartsPendingState(false);
@@ -9482,6 +9498,22 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const embed = normalizeClassicalFuenteSourcePartStem(embedStem);
       const matrix = normalizeClassicalFuenteSourcePartStem(matrixStem);
       if (embed && matrix) {
+        const writingSource = typeof targetObject.issueClassicalNahuatlLesson2WritingSource === "function"
+          ? targetObject.issueClassicalNahuatlLesson2WritingSource({
+              parts: [
+                { role: "embed", value: embed },
+                { role: "matrix", value: matrix }
+              ],
+              boundaryKind: "compound"
+            })
+          : null;
+        const writtenResult = typeof targetObject.writeClassicalNahuatlLesson2Result === "function"
+          ? targetObject.writeClassicalNahuatlLesson2Result(writingSource)
+          : null;
+        if (targetObject.isClassicalNahuatlLesson2WrittenResult?.(writtenResult)
+          && writtenResult.authorizationStatus === "authorized") {
+          return writtenResult.surface;
+        }
         return `${embed}-${matrix}`;
       }
       return embed || matrix || "";
@@ -10972,6 +11004,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             resolveClassicalParticleMatrix();
           }
           if (control.id === "classical-construction-operation") {
+            delete control.dataset.classicalSourcePartsDerivedOperation;
             syncClassicalConstructionSourceUnitAvailability(
               getClassicalBasalUnitFromRuntime()
             );
@@ -13771,8 +13804,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     return api;
 }
 
-export function installUiComposerGlobals(targetObject = globalThis) {
-    const api = createUiComposerRuntime(targetObject);
+export function installUiComposerGlobals(
+    targetObject = globalThis,
+    installationContext = {},
+) {
+    const composerTarget = Object.create(targetObject);
+    Object.defineProperties(
+      composerTarget,
+      Object.getOwnPropertyDescriptors(
+        installationContext?.moduleDependencyCapabilities || {},
+      ),
+    );
+    const api = createUiComposerRuntime(composerTarget);
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
     return api;
 }

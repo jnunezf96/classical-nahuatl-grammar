@@ -1909,12 +1909,31 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const typedPartsKey = explicitPartsComplete
         ? `${getClassicalNahuatlStructureLookupKey(explicitEmbedStem)}-${getClassicalNahuatlStructureLookupKey(explicitMatrixStem)}`
         : "";
+      const typedWritingSource = explicitPartsComplete
+        && typeof targetObject.issueClassicalNahuatlLesson2WritingSource === "function"
+        ? targetObject.issueClassicalNahuatlLesson2WritingSource({
+            parts: [
+              { role: "embed", value: explicitEmbedStem },
+              { role: "matrix", value: explicitMatrixStem },
+            ],
+            boundaryKind: "compound",
+          })
+        : null;
+      const typedWrittenResult = typedWritingSource
+        && typeof targetObject.writeClassicalNahuatlLesson2Result === "function"
+        ? targetObject.writeClassicalNahuatlLesson2Result(typedWritingSource)
+        : null;
+      const typedWrittenStemKey = typeof targetObject.isClassicalNahuatlLesson2WrittenResult === "function"
+        && targetObject.isClassicalNahuatlLesson2WrittenResult(typedWrittenResult)
+        ? getClassicalNahuatlStructureLookupKey(typedWrittenResult.surface)
+        : "";
       const typedPartsMatchStem = Boolean(
         explicitPartsComplete
         && normalizedStemKey
         && (
           typedPartsKey === normalizedStemKey
           || typedPartsKey.replace(/-/gu, "") === normalizedStemKey.replace(/-/gu, "")
+          || typedWrittenStemKey === normalizedStemKey
         )
       );
       const selectedSourceKind = requestedSelectionKind
@@ -8168,8 +8187,18 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     return api;
 }
 
-export function installClassicalNahuatlVerbstemClassesGlobals(targetObject = globalThis) {
-    const api = createClassicalNahuatlVerbstemClassesRuntime(targetObject);
+export function installClassicalNahuatlVerbstemClassesGlobals(
+    targetObject = globalThis,
+    installationContext = {},
+) {
+    const verbstemTarget = Object.create(targetObject);
+    Object.defineProperties(
+      verbstemTarget,
+      Object.getOwnPropertyDescriptors(
+        installationContext?.moduleDependencyCapabilities || {},
+      ),
+    );
+    const api = createClassicalNahuatlVerbstemClassesRuntime(verbstemTarget);
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
     return api;
 }

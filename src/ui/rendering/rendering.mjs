@@ -135,7 +135,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const wrappedStem = source.match(/^\((.*)\)$/u);
       if (wrappedStem) {
-        return wrappedStem[1].trim();
+        source = wrappedStem[1].trim();
+      }
+      if (source.includes("/")
+        && typeof targetObject.buildClassicalNahuatlCompactTranscriptionFrame === "function") {
+        const transcriptionFrame = targetObject.buildClassicalNahuatlCompactTranscriptionFrame(source);
+        if (targetObject.isClassicalNahuatlTranscriptionFrame?.(transcriptionFrame)
+          && transcriptionFrame.authorizationStatus === "authorized") {
+          return transcriptionFrame.surface;
+        }
       }
       return source;
     }

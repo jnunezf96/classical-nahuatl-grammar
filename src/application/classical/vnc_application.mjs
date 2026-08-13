@@ -326,6 +326,35 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         .normalize("NFC");
       return normalized === "_" ? "" : normalized;
     }
+    function writeClassicalNahuatlVncSourcePartsThroughLesson2(
+      sourceStem = "",
+      sourceEmbedStem = "",
+      sourceMatrixStem = "",
+    ) {
+      const fallbackStem = normalizeClassicalNahuatlVncApplicationStem(sourceStem);
+      const embedStem = normalizeClassicalNahuatlVncApplicationStem(sourceEmbedStem);
+      const matrixStem = normalizeClassicalNahuatlVncApplicationStem(sourceMatrixStem);
+      if (!embedStem || !matrixStem
+        || typeof targetObject.issueClassicalNahuatlLesson2WritingSource !== "function"
+        || typeof targetObject.writeClassicalNahuatlLesson2Result !== "function"
+        || typeof targetObject.isClassicalNahuatlLesson2WrittenResult !== "function") {
+        return fallbackStem;
+      }
+      const writingSource = targetObject.issueClassicalNahuatlLesson2WritingSource({
+        parts: [
+          { role: "embed", value: embedStem },
+          { role: "matrix", value: matrixStem },
+        ],
+        boundaryKind: "compound",
+      });
+      const writtenResult = targetObject.writeClassicalNahuatlLesson2Result(
+        writingSource,
+      );
+      return targetObject.isClassicalNahuatlLesson2WrittenResult(writtenResult)
+        && writtenResult.authorizationStatus === "authorized"
+        ? writtenResult.surface
+        : fallbackStem;
+    }
     function getClassicalNahuatlVncApplicationCausativeParticipantChoiceControls(operationFrame = null, normalizedRequest = {}) {
       const participantTransformFrame = operationFrame?.participantTransformFrame || null;
       const causativeObjectKindChoiceEligible = participantTransformFrame?.causativeObjectKindChoiceEligible === true;
@@ -907,7 +936,17 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       });
     }
     function normalizeClassicalNahuatlVncApplicationRequest(request = {}) {
-      const sourceStem = normalizeClassicalNahuatlVncApplicationStem(request.sourceStem || request.stem);
+      const sourceEmbedStem = normalizeClassicalNahuatlVncApplicationStem(
+        request.sourceEmbedStem || request.embedStem,
+      );
+      const sourceMatrixStem = normalizeClassicalNahuatlVncApplicationStem(
+        request.sourceMatrixStem || request.matrixStem,
+      );
+      const sourceStem = writeClassicalNahuatlVncSourcePartsThroughLesson2(
+        request.sourceStem || request.stem,
+        sourceEmbedStem,
+        sourceMatrixStem,
+      );
       const sourceLexemeId = normalizeClassicalNahuatlVncApplicationToken(
         request.sourceLexemeId,
       ).toLowerCase();
@@ -1022,8 +1061,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         directionalIttaContraction: sentenceOptions.directionalIttaContraction,
         incorporatedAdverb: sentenceOptions.incorporatedAdverb,
         adverbPosition: sentenceOptions.adverbPosition,
-        sourceEmbedStem: normalizeClassicalNahuatlVncApplicationStem(request.sourceEmbedStem || request.embedStem),
-        sourceMatrixStem: normalizeClassicalNahuatlVncApplicationStem(request.sourceMatrixStem || request.matrixStem),
+        sourceEmbedStem,
+        sourceMatrixStem,
         sentenceOptions,
         callerSuppliedDerivedAuthorityAllowed: false
       });
@@ -6043,8 +6082,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     return api;
 }
 
-export function installClassicalNahuatlVncApplicationGlobals(targetObject = globalThis) {
-    const api = createClassicalNahuatlVncApplicationModule(targetObject);
+export function installClassicalNahuatlVncApplicationGlobals(
+    targetObject = globalThis,
+    installationContext = {},
+) {
+    const applicationTarget = Object.create(targetObject);
+    Object.defineProperties(
+      applicationTarget,
+      Object.getOwnPropertyDescriptors(
+        installationContext?.moduleDependencyCapabilities || {},
+      ),
+    );
+    const api = createClassicalNahuatlVncApplicationModule(applicationTarget);
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
     return api;
 }
