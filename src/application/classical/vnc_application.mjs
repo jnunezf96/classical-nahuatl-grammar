@@ -1030,6 +1030,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         objectPerson: specificSourceObjectRequest
           ? normalizeClassicalNahuatlVncApplicationToken(specificSourceObjectRequest.objectPerson || request.objectPerson || request.object || "")
           : "",
+        objectInterpretation: normalizeClassicalNahuatlVncApplicationToken(request.objectInterpretation || "reflexive"),
         sourceObjectRequests,
         requestedDerivation,
         derivationType,
@@ -1267,6 +1268,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         objectKind: getClassicalNahuatlVncApplicationObjectKind(effectiveValence, normalizedRequest.objectKind),
         objectPerson: normalizedRequest.objectPerson,
         object: normalizedRequest.objectPerson,
+        objectInterpretation: normalizedRequest.objectInterpretation,
         initialVowelKind,
         silentSpecificObject: normalizedRequest.silentSpecificObject,
         tlaFusion: normalizedRequest.tlaFusion,

@@ -1891,6 +1891,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceValenceConflict: false,
         objectKind: String(overrides.objectKind || objectSelection.objectKind || "specific-projective").trim(),
         objectPerson: String(overrides.objectPerson || objectSelection.objectPerson || "3sg").trim(),
+        objectInterpretation: String(overrides.objectInterpretation || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-object-interpretation", "reflexive") || "reflexive").trim(),
         incorporatedAdverb: String(overrides.incorporatedAdverb || overrides.adverb || "").trim(),
         adverbPosition: String(overrides.adverbPosition || "").trim(),
         sentenceSurfaceMode,
@@ -2205,6 +2206,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceValence: state.valence,
         objectKind: getClassicalRuleLogicSurfaceObjectKind(state),
         objectPerson: state.objectPerson,
+        objectInterpretation: state.objectInterpretation,
         requestedDerivation: derivationTypeSelectionBlocked ? state.requestedDerivation : state.derivationType,
         derivationType: derivationTypeSelectionBlocked ? state.requestedDerivation : state.derivationType,
         derivationOptionId: state.requestedDerivationOptionId,
@@ -8025,6 +8027,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-nonactive-family": basalUnit === "vnc" && capabilities.nonactiveStem === true && nonactiveVoice && nonactiveInventory?.selectorRequired === true,
         "classical-rule-logic-valence": capabilities.valence === true,
         "classical-rule-logic-object": shouldShowClassicalRuleLogicObject(surfaceFrame),
+        "classical-rule-logic-object-interpretation": basalUnit === "vnc" && valence === "mainline-reflexive",
         "classical-rule-logic-tla-fusion": shouldShowClassicalRuleLogicTlaFusion(surfaceFrame),
         "classical-rule-logic-directional": capabilities.directionalLocative === true,
         "classical-rule-logic-prefix-stack": shouldShowClassicalRuleLogicPrefixStack(surfaceFrame) && surfaceFrame.machineryFrame?.lesson11ParadigmPlan?.paradigmTense !== "preterit-as-present",
@@ -8211,6 +8214,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         if (id === "classical-rule-logic-object") {
           wrapper.dataset.classicalRuleLogicGate = hide && isClassicalRuleLogicIntransitiveValence(valence) ? "canvas-intransitive-valence-vacates-object-position" : "";
+        }
+        if (id === "classical-rule-logic-object-interpretation") {
+          wrapper.dataset.classicalRuleLogicGate = hide ? "mainline-reflexive-meaning-not-applicable" : "canvas-reflexive-reciprocal-meaning-choice";
+          wrapper.dataset.classicalReciprocalRequiresPluralSubject = "true";
         }
         if (id === "classical-rule-logic-tla-fusion") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-tla-fusion-requires-projective-nonhuman-tla-object-source" : "canvas-tla-fusion-source-path-available";

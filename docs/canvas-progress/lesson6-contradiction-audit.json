@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 6,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 8,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "Object meaning is chosen by the user; objective case and prominence are derived by grammar.",
+    "ne, tē, tla, va1, and va2 are grammatical outputs rather than raw user controls.",
+    "c, qu, and qui are contextual realizations of the same third-person object morph.",
+    "Stem vowels in ca, tiqui, and que are not reassigned to the object carrier.",
+    "The tē/tla contrast is human versus nonhuman, not animate versus nonanimate.",
+    "English him, her, and it readings do not add grammatical gender to Nahuatl.",
+    "Reflexive object person and number are copied from the subject rather than independently selected.",
+    "Reciprocal meaning is allowed with plural subjects and blocked with singular subjects."
+  ]
+}

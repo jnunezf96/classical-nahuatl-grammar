@@ -397,12 +397,30 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
 
   function buildClassicalNahuatlTransitiveVncFormulaSystemFrame() {
     const monadic = transitive({ objectKind: "nonspecific-human" });
+    const nonhuman = transitive({ objectKind: "nonspecific-nonhuman" });
+    const shuntline = transitive({ objectKind: "shuntline-reflexive" });
+    const reflexive = transitive({ objectKind: "mainline-reflexive", subject: "1pl" });
     const dyadic = transitive({
       objectKind: "specific-projective", objectPerson: "3sg",
     });
     return transitiveFormulaOwner.issue({
       authorizationStatus: "authorized",
       onlyValenceDiffers: true,
+      valenceCategories: ["person", "number", "objective-case"],
+      caseFeature: dyadic.objectFrame.caseFeature,
+      trajectoryFeatures: ["projective", "reflexive", "reciprocative"],
+      projectiveAffectsEntityOtherThanSubject: true,
+      reflexiveAffectsSubjectReferent: reflexive.objectFrame.objectReflectsSubject,
+      reciprocativeRequiresTwoOrMoreMatchingParticipants: true,
+      specificityFeatures: ["specific", "nonspecific"],
+      specificPronounClass: dyadic.objectFrame.pronounClass,
+      nonspecificPronounClass: monadic.objectFrame.pronounClass,
+      nonspecificNominativeCorrespondence: "third-person-personal-pronoun",
+      nonspecificNominativeRequiresNonactiveVerbstem: true,
+      prominenceFeatures: ["mainline", "shuntline"],
+      prominenceSelectedByMorphosyntax: true,
+      newlyAddedObjectBecomesMainline: true,
+      earlierObjectDemotedToShuntline: true,
       monadicArity: monadic.objectFrame.valenceArity,
       monadicTemplate: monadic.objectFrame.formulaTemplate,
       monadicFormula: monadic.proofFrame.conclusion.formulaRealization,
@@ -411,6 +429,28 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       dyadicCategories: ["trajectory", "person", "number", "objective-case"],
       dyadicTemplate: dyadic.objectFrame.formulaTemplate,
       dyadicFormula: dyadic.proofFrame.conclusion.formulaRealization,
+      observedObjectFrames: {
+        specificProjective: {
+          trajectory: dyadic.objectFrame.trajectory,
+          specificity: dyadic.objectFrame.specificity,
+          prominence: dyadic.objectFrame.prominence,
+        },
+        nonspecificHuman: {
+          trajectory: monadic.objectFrame.trajectory,
+          specificity: monadic.objectFrame.specificity,
+          prominence: monadic.objectFrame.prominence,
+        },
+        nonspecificNonhuman: {
+          trajectory: nonhuman.objectFrame.trajectory,
+          specificity: nonhuman.objectFrame.specificity,
+          prominence: nonhuman.objectFrame.prominence,
+        },
+        shuntlineReflexive: {
+          trajectory: shuntline.objectFrame.trajectory,
+          specificity: shuntline.objectFrame.specificity,
+          prominence: shuntline.objectFrame.prominence,
+        },
+      },
     });
   }
 
@@ -420,15 +460,23 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const nonhuman = transitive({ objectKind: "nonspecific-nonhuman" });
     return monadicObjectOwner.issue({
       authorizationStatus: "authorized",
+      valenceArity: human.objectFrame.valenceArity,
+      valencePosition: human.objectFrame.valencePosition,
+      formulaTemplate: human.objectFrame.formulaTemplate,
       shuntlineReflexiveMorph: shuntline.objectFrame.va,
       nonspecificProjective: true,
       humanMorph: human.objectFrame.va,
       nonhumanMorph: nonhuman.objectFrame.va,
+      humanMeanings: ["someone", "anyone", "people-in-general", "everyone", "all"],
+      nonhumanMeanings: ["something", "anything", "things-in-general", "everything"],
       pronounClass: human.objectFrame.pronounClass,
       somethingIncludesAnimateOrNonanimate: true,
       humanClass: human.objectFrame.humanness,
       nonhumanClass: nonhuman.objectFrame.humanness,
       nonhumanMayReferToPeopleGenerally: true,
+      humanNonhumanContrastIsNotAnimacy: true,
+      humanNonhumanContrastIsHumanness: true,
+      mainlineAndShuntlineUseSameNonspecificForms: true,
     });
   }
 
@@ -444,18 +492,33 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
 
   function buildClassicalNahuatlProjectiveObjectSystemFrame() {
     const oneSingular = projective("1sg");
+    const onePlural = projective("1pl");
     const twoSingular = projective("2sg");
+    const twoPlural = projective("2pl");
     const threeSingular = projective("3sg");
     const threePlural = projective("3pl");
     const threeBeforeConsonant = projective("3sg", "mati", "3sg");
+    const threeC = projective("3sg", "mati", "1sg");
+    const threeQu = projective("3sg", "itta", "1sg");
     const stemBoundaryCases = Object.fromEntries(["ca", "tiqui", "que"].map(stem => {
       const frame = projective("3sg", stem, "1sg");
       return [stem, { objectCarrier: frame.objectFrame.va1, stem: frame.stem }];
     }));
+    const summarize = frame => ({
+      objectPerson: frame.objectFrame.objectPerson,
+      va1: frame.objectFrame.va1,
+      va2: frame.objectFrame.va2,
+      va1Carries: frame.objectFrame.va1Carries,
+      va2Carries: frame.objectFrame.va2Carries,
+      va2Variants: frame.objectFrame.va2Variants,
+      objectLabel: frame.objectFrame.objectLabel,
+      formula: frame.proofFrame.conclusion.formulaRealization,
+    });
     return projectiveObjectOwner.issue({
       authorizationStatus: "authorized",
       categoriesDistributedAcrossDyad: ["person", "number", "objective-case"],
       dyadicCondition: "specific-mainline-projective-object",
+      va1AlwaysCarriesPerson: true,
       va1NeverPersonAlone: true,
       thirdVa1Carries: threeSingular.objectFrame.va1Carries,
       thirdVa1Variants: threeSingular.objectFrame.va1Variants,
@@ -463,10 +526,18 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       regularKSpellings: threeSingular.objectFrame.va1RegularSpellings,
       cQuEnvironment: "vnc-internal-vowel-on-either-side",
       cQuSelected: threeSingular.objectFrame.va1,
+      cSelected: summarize(threeC),
+      quSelected: summarize(threeQu),
+      quiSelected: summarize(threeBeforeConsonant),
       quiSelectedBeforeConsonantWithZeroSubject: threeBeforeConsonant.objectFrame.va1,
       quiCondition: threeBeforeConsonant.objectFrame.va1SupportiveISurfaceReason,
       nonthirdVa1Carries: twoSingular.objectFrame.va1Carries,
-      nonthirdVa1Fillers: ["n", "t", "m", "am"],
+      nonthirdVa1Fillers: [
+        oneSingular.objectFrame.va1,
+        onePlural.objectFrame.va1,
+        twoSingular.objectFrame.va1,
+        twoPlural.objectFrame.va1,
+      ],
       nonthirdUnambiguous: true,
       thirdVa2Carries: threeSingular.objectFrame.va2Carries,
       thirdSingularVa2: threeSingular.objectFrame.va2,
@@ -475,10 +546,22 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       nasalAlternantsAvailable: true,
       nonthirdVa2Carries: oneSingular.objectFrame.va2Carries,
       nonthirdVa2Variants: [oneSingular.objectFrame.va2, twoSingular.objectFrame.va2],
+      echAssimilationVariants: oneSingular.objectFrame.va2Variants,
+      itzAssimilationVariants: twoSingular.objectFrame.va2Variants,
       frequentItzPhoneVariant: "[¢]",
       assimilationApplies: true,
       stemBoundaryCases,
       automaticEnglishObjectCorrespondence: true,
+      paradigm: {
+        firstSingular: summarize(oneSingular),
+        firstPlural: summarize(onePlural),
+        secondSingular: summarize(twoSingular),
+        secondPlural: summarize(twoPlural),
+        thirdCommonC: summarize(threeC),
+        thirdCommonQu: summarize(threeQu),
+        thirdCommonQui: summarize(threeBeforeConsonant),
+        thirdPluralAnimate: summarize(threePlural),
+      },
       thirdCommonInterpretations: {
         singularHumanMale: "him",
         singularHumanFemale: "her",
@@ -496,13 +579,14 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     });
   }
 
-  function reflexive(subject, stem) {
+  function reflexive(subject, stem, objectInterpretation = "reflexive") {
     return requireFunction(
       targetObject,
       "buildClassicalNahuatlTransitiveVncObjectFrame",
     )(stem, {
       subject, mood: "indicative", tense: "present",
       objectKind: "mainline-reflexive",
+      objectInterpretation,
     });
   }
 
@@ -514,6 +598,17 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const threeSingular = reflexive("3sg", "mati");
     const threePlural = reflexive("3pl", "mati");
     const oneSingularVowel = reflexive("1sg", "itta");
+    const singularReciprocal = reflexive("2sg", "mati", "reciprocal");
+    const pluralReciprocal = reflexive("2pl", "mati", "reciprocal");
+    const summarize = frame => ({
+      subject: frame.subject,
+      va1: frame.objectFrame.va1,
+      va2: frame.objectFrame.va2,
+      alternateObjectDyads: frame.objectFrame.alternateObjectDyads,
+      availableInterpretations: frame.objectFrame.availableInterpretations,
+      formula: frame.proofFrame.conclusion.formulaRealization,
+      authorized: frame.proofFrame.conclusion.authorized,
+    });
     return reflexiveObjectOwner.issue({
       authorizationStatus: "authorized",
       alignment: ["person-number", "objective-case"],
@@ -521,6 +616,11 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
       pluralMayBeReciprocal: onePlural.objectFrame.pluralMayBeReciprocal,
       reflectsSubject: oneSingularConsonant.objectFrame.objectReflectsSubject,
       noRepeatedSubjectInformation: true,
+      va1CarriesPerson: oneSingularConsonant.objectFrame.va1Carries.includes("person"),
+      va1CarriesNumber: oneSingularConsonant.objectFrame.va1Carries.includes("number"),
+      va2Carries: oneSingularConsonant.objectFrame.va2Carries,
+      firstSingularVa1: oneSingularConsonant.objectFrame.va1,
+      firstPluralVa1: onePlural.objectFrame.va1,
       nonfirstVa1: nonfirst.objectFrame.va1,
       consonantInitialVa2: oneSingularConsonant.objectFrame.va2,
       vowelInitialCondition: "vowel-initial-verbstem",
@@ -531,6 +631,15 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
         firstSingular: `${oneSingularConsonant.objectFrame.va1}-${oneSingularConsonant.objectFrame.va2}`,
         firstPlural: `${onePlural.objectFrame.va1}-${onePlural.objectFrame.va2}`,
         nonfirst: `${nonfirst.objectFrame.va1}-${nonfirst.objectFrame.va2}`,
+      },
+      paradigm: {
+        firstSingular: summarize(oneSingularConsonant),
+        firstPlural: summarize(onePlural),
+        secondSingular: summarize(nonfirst),
+        secondPlural: summarize(twoPlural),
+        thirdSingular: summarize(threeSingular),
+        thirdPlural: summarize(threePlural),
+        firstSingularBeforeVowel: summarize(oneSingularVowel),
       },
       readingsBySubject: {
         secondSingular: ["yourself"],
@@ -545,6 +654,8 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
         && !threeSingular.objectFrame.pluralMayBeReciprocal
         && twoPlural.objectFrame.pluralMayBeReciprocal
         && threePlural.objectFrame.pluralMayBeReciprocal,
+      singularReciprocalBlocked: singularReciprocal.proofFrame.conclusion.authorized === false,
+      pluralReciprocalAuthorized: pluralReciprocal.proofFrame.conclusion.authorized === true,
     });
   }
 

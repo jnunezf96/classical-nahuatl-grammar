@@ -12056,6 +12056,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       { id: "classical-rule-logic-nonactive-family", defaultValue: "" },
       { id: "classical-rule-logic-valence", defaultValue: "intransitive" },
       { id: "classical-rule-logic-object", defaultValue: "specific-projective:3sg" },
+      { id: "classical-rule-logic-object-interpretation", defaultValue: "reflexive" },
       { id: "classical-rule-logic-tla-fusion", defaultValue: false, type: "checkbox" },
       { id: "classical-rule-logic-directional", defaultValue: "none" },
       { id: "classical-rule-logic-prefix-stack", defaultValue: false, type: "checkbox", legacySentence: true },

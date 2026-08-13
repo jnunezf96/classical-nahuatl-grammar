@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "lesson": 6,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson6-object-category-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the object relation and referent genuine choices while the application derives objective case and prominence."
+    },
+    "lesson6-monadic-valence": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the monadic object meaning and make the application supply ne, tē, or tla."
+    },
+    "lesson6-dyadic-valence": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make specific object person and number genuine choices while the application builds the complete va1-va2 object."
+    },
+    "lesson6-third-person-va1": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the application derive c, qu, or qui from a third-person object and the actual VNC boundary."
+    },
+    "lesson6-projective-va1-va2": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make object person and number drive both object carriers and every licensed phonological variant."
+    },
+    "lesson6-projective-object-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the complete specific-object form and contextual interpretation automatic from the selected object participant."
+    },
+    "lesson6-reflexive-object-structure": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make a reflexive or licensed reciprocal choice copy the subject relation into the exact automatic object dyad."
+    },
+    "lesson6-reflexive-object-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the complete reflexive paradigm and block reciprocal meaning for every singular subject."
+    }
+  }
+}

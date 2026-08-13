@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "lesson": 6,
+  "groups": {
+    "lesson6-object-category-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-monadic-valence": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-dyadic-valence": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-third-person-va1": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-projective-va1-va2": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-projective-object-paradigm": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-reflexive-object-structure": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    },
+    "lesson6-reflexive-object-paradigm": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson6_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson6_reader_guidance.test.js"
+    }
+  }
+}

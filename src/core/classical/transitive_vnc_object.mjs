@@ -363,6 +363,10 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         gloss: "you-pl"
       })
     });
+    const CLASSICAL_NAHUATL_LESSON6_NONTHIRD_VA2_VARIANTS = Object.freeze({
+      "ēch": Object.freeze(["ēch", "etz", "et", "ez", "ex"]),
+      "itz": Object.freeze(["itz", "ich", "it", "i", "iz", "ix"])
+    });
     function getClassicalNahuatlTransitiveVncRuntimeTarget() {
       return typeof targetObject !== "undefined" && targetObject || (typeof globalThis !== "undefined" ? globalThis : null);
     }
@@ -766,6 +770,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       }
       const base = CLASSICAL_NAHUATL_LESSON6_PROJECTIVE_OBJECTS[normalizedObjectPerson];
       if (base) {
+        const va2Variants = CLASSICAL_NAHUATL_LESSON6_NONTHIRD_VA2_VARIANTS[base.va2]
+          || Object.freeze([base.va2]);
         return {
           kind: "classical-nahuatl-transitive-vnc-object-valence-frame",
           objectKind: "specific-projective",
@@ -777,7 +783,7 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
           va1: base.va1,
           va2: base.va2,
           va1Variants: [base.va1],
-          va2Variants: [base.va2],
+          va2Variants: Array.from(va2Variants),
           va1Carries: Array.from(base.va1Carries),
           va2Carries: Array.from(base.va2Carries),
           trajectory: "projective",
@@ -890,9 +896,13 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       subject = "3sg",
       stem = "",
       supportiveInitialI = false,
-      initialVowelKind = ""
+      initialVowelKind = "",
+      objectInterpretation = "reflexive"
     } = {}) {
       const normalizedSubject = normalizeClassicalNahuatlTransitiveVncSubject(subject);
+      const requestedInterpretation = String(objectInterpretation || "reflexive").trim().toLowerCase();
+      const pluralSubject = normalizedSubject.endsWith("pl");
+      const interpretationAuthorized = requestedInterpretation !== "reciprocal" || pluralSubject;
       const supportiveInitialIFrame = buildClassicalNahuatlTransitiveVncInitialSupportiveIFrame({
         stem,
         objectKind: "mainline-reflexive",
@@ -925,6 +935,9 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
         caseFeature: "objective",
         pronounClass: "personal-pronoun",
         pluralMayBeReciprocal: normalizedSubject.endsWith("pl"),
+        requestedInterpretation,
+        interpretationAuthorized,
+        availableInterpretations: pluralSubject ? ["reflexive", "reciprocal"] : ["reflexive"],
         objectReflectsSubject: true,
         objectRule: va2 === CLASSICAL_NAHUATL_LESSON6_SQUARE_ZERO ? "lesson-6.6.2-square-zero-before-vowel" : "lesson-6.6.2-o-before-consonant",
         stemRealization: supportiveInitialIFrame.stemRealization,
@@ -975,7 +988,8 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
           subject: options.subject,
           stem: options.stem,
           supportiveInitialI: options.supportiveInitialI === true,
-          initialVowelKind: options.initialVowelKind
+          initialVowelKind: options.initialVowelKind,
+          objectInterpretation: options.objectInterpretation || options.trajectoryMeaning || "reflexive"
         });
       }
       if (objectKind !== "specific-projective") {
@@ -1061,7 +1075,9 @@ export function createClassicalNahuatlTransitiveVncObjectRuntime(targetObject = 
       const baseRuleRefs = objectFrame?.valenceArity === "monadic" ? getClassicalNahuatlMonadicRules() : objectFrame?.objectKind === "mainline-reflexive" ? getClassicalNahuatlReflexiveRules() : getClassicalNahuatlDyadicProjectiveRules();
       const ruleRefs = [...baseRuleRefs, ...(objectFrame?.supportiveVowelFrame?.ruleRefs || []), ...(objectFrame?.initialSupportiveIFrame?.ruleRefs || [])];
       const hasMonadicFiller = objectFrame?.valenceArity === "monadic" && Boolean(objectFrame?.va);
-      const hasDyadicFiller = objectFrame?.valenceArity === "dyadic" && Boolean(objectFrame?.va1 && objectFrame?.va2);
+      const hasDyadicFiller = objectFrame?.valenceArity === "dyadic"
+        && Boolean(objectFrame?.va1 && objectFrame?.va2)
+        && objectFrame?.interpretationAuthorized !== false;
       return {
         kind: "classical-nahuatl-transitive-vnc-object-filler-rule-frame",
         lesson: "Andrews Lesson 6",

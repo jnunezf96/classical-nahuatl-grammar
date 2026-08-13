@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "lesson": 6,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson6-object-category-system",
+      "title": "Object categories and transitive Valence",
+      "sections": [
+        "§6.1"
+      ],
+      "writingJob": "Give a transitive VNC an objective Valence whose trajectory, specificity, and prominence determine the licensed object construction.",
+      "readingJob": "Help the reader distinguish projective, reflexive, and reciprocal objects; specific and nonspecific reference; and mainline versus shuntline prominence.",
+      "decisionSplit": "The user supplies a genuine object relation and referent; the application enforces objective case, nonactive cooperation, and any prominence change caused by later grammar.",
+      "controlPolicy": "Reuse transitivity, Valence, object, and voice choices. Prominence and objective case are application duties, not extra controls.",
+      "proposal": "Make the object relation and referent genuine choices while the application derives objective case and prominence."
+    },
+    {
+      "groupId": "lesson6-monadic-valence",
+      "title": "Monadic Valence: ne, tē, and tla",
+      "sections": [
+        "§6.2",
+        "§6.2.1",
+        "§6.2.2",
+        "§6.2.2.a",
+        "§6.2.2.b"
+      ],
+      "writingJob": "Build monadic Valence with one va slot and select ne, tē, or tla from the requested reflexive/reciprocal or nonspecific human/nonhuman object meaning.",
+      "readingJob": "Explain that tē contrasts human with nonhuman tla, not animate with nonanimate, and preserve the contextual people-reading of tla.",
+      "decisionSplit": "The user chooses the monadic object meaning; the application chooses its exact carrier and keeps the formula monadic.",
+      "controlPolicy": "Use one meaningful monadic-object choice. Do not make ne, tē, or tla raw spelling controls.",
+      "proposal": "Let the user choose the monadic object meaning and make the application supply ne, tē, or tla."
+    },
+    {
+      "groupId": "lesson6-dyadic-valence",
+      "title": "Dyadic specific projective Valence",
+      "sections": [
+        "§6.3"
+      ],
+      "writingJob": "Build a specific mainline projective object as va1-va2, jointly carrying trajectory, person, number, and objective case.",
+      "readingJob": "Show how the two object positions must be read together as one specific object pronoun.",
+      "decisionSplit": "The user chooses the specific object's person and number; the application derives va1, va2, objective case, and the dyadic formula.",
+      "controlPolicy": "Reuse the specific-object person and number choice. Do not expose va1 and va2 as separate controls.",
+      "proposal": "Make specific object person and number genuine choices while the application builds the complete va1-va2 object."
+    },
+    {
+      "groupId": "lesson6-third-person-va1",
+      "title": "Third-person projective va1",
+      "sections": [
+        "§6.4",
+        "§6.4.1",
+        "§6.4.1.a"
+      ],
+      "writingJob": "Realize third-person objective va1 as c, qu, or supportive-vowel qui according to the actual VNC boundary and subject environment.",
+      "readingJob": "Keep object-carrier vowels separate from stem vowels in ca, tiqui, que, and related forms.",
+      "decisionSplit": "The user chooses a third-person specific object; the application derives spelling, supportive i, and the exact carrier boundary.",
+      "controlPolicy": "Do not add c, qu, or qui controls.",
+      "proposal": "Make third-person object va1 an automatic boundary-conditioned realization."
+    },
+    {
+      "groupId": "lesson6-projective-va1-va2",
+      "title": "Nonthird va1 and projective va2",
+      "sections": [
+        "§6.4.1.b",
+        "§6.4.2",
+        "§6.4.2.a",
+        "§6.4.2.b"
+      ],
+      "writingJob": "Select nonthird va1 by person-number, select third-person va2 by number, and realize nonthird objective case with ēch or itz plus licensed assimilation.",
+      "readingJob": "Recover one object from both positions and recognize assimilated carriers without treating them as new pronouns.",
+      "decisionSplit": "The user chooses object person and number; the application derives both carriers and their phonological variants.",
+      "controlPolicy": "Do not expose va carriers or assimilation as user choices.",
+      "proposal": "Make object person and number drive every nonthird and third-plural va1-va2 realization."
+    },
+    {
+      "groupId": "lesson6-projective-object-paradigm",
+      "title": "Specific projective-object paradigm",
+      "sections": [
+        "§6.5"
+      ],
+      "writingJob": "Generate every specific projective-object dyad and its contextual human, animate, and number interpretation through one canonical paradigm.",
+      "readingJob": "Guide the reader from the complete dyad to me, us, you, him, her, it, or them without adding English gender to Nahuatl grammar.",
+      "decisionSplit": "The user chooses the object participant; the application derives the dyad, while referent context supplies the English interpretation.",
+      "controlPolicy": "Reuse object person, number, and applicable referent context. Do not add a paradigm picker.",
+      "proposal": "Make the complete projective-object paradigm automatic from the object participant choice."
+    },
+    {
+      "groupId": "lesson6-reflexive-object-structure",
+      "title": "Mainline reflexive and reciprocal structure",
+      "sections": [
+        "§6.6",
+        "§6.6.1",
+        "§6.6.2"
+      ],
+      "writingJob": "Copy the subject's person-number relation into mainline reflexive Valence, realize va1 as n, t, or m, and realize objective va2 as o or square-zero before a vowel.",
+      "readingJob": "Show why the object does not repeat all subject information and why only plural subjects can receive reciprocal interpretation.",
+      "decisionSplit": "The user chooses reflexive or, with a plural subject, reciprocal meaning; the application derives the matching object dyad and boundary form.",
+      "controlPolicy": "Reuse trajectory and subject choices. Do not expose n, t, m, o, or square-zero separately.",
+      "proposal": "Make reflexive and reciprocal objects agree automatically with the subject and the following stem boundary."
+    },
+    {
+      "groupId": "lesson6-reflexive-object-paradigm",
+      "title": "Reflexive and reciprocal object paradigm",
+      "sections": [
+        "§6.7"
+      ],
+      "writingJob": "Generate the full n-o, t-o, and m-o reflexive paradigm with square-zero boundary variants and block reciprocal readings for singular subjects.",
+      "readingJob": "Use subject context to distinguish yourself, himself, herself, itself, yourselves, themselves, and one another.",
+      "decisionSplit": "The user chooses a licensed reflexive or reciprocal meaning; the application derives the exact dyad and enforces the plural-only reciprocal rule.",
+      "controlPolicy": "Offer reciprocal only when subject number permits it; keep carrier variants automatic.",
+      "proposal": "Make the full reflexive paradigm automatic and make reciprocal availability depend on plural subject number."
+    }
+  ]
+}
