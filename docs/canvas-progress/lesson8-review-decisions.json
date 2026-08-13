@@ -1,0 +1,10 @@
+{
+  "schemaVersion": 1,
+  "lesson": 8,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson8-vnc-expansion-boundary": { "status": "ACCEPTED", "acceptedJob": "Keep direction or location inside the VNC and keep earlier-event and negative modifiers outside it." },
+    "lesson8-direction-location": { "status": "ACCEPTED", "acceptedJob": "Let the user choose the real direction or location while the application performs its position, spelling, and meaning work." },
+    "lesson8-antecessive-order": { "status": "ACCEPTED", "acceptedJob": "Offer optional earlier-event ō only with compatible past grammar and keep its scope outside the VNC." }
+  }
+}

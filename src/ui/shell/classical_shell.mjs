@@ -40,6 +40,11 @@ import {
   isLesson7ReaderGuidanceExact,
   renderLesson7ReaderGuidance,
 } from "../curriculum/lesson7_reader_guidance.mjs?v=20260813-lesson7-complete-005";
+import {
+  LESSON8_READER_GUIDANCE_GROUPS,
+  isLesson8ReaderGuidanceExact,
+  renderLesson8ReaderGuidance,
+} from "../curriculum/lesson8_reader_guidance.mjs?v=20260813-lesson8-groups1-3-001";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -3045,6 +3050,7 @@ ${renderLesson4ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson5ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson6ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson7ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson8ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -3794,6 +3800,8 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson6ReaderGuidanceExact = isLesson6ReaderGuidanceExact;
     api.LESSON7_READER_GUIDANCE_GROUPS = LESSON7_READER_GUIDANCE_GROUPS;
     api.isLesson7ReaderGuidanceExact = isLesson7ReaderGuidanceExact;
+    api.LESSON8_READER_GUIDANCE_GROUPS = LESSON8_READER_GUIDANCE_GROUPS;
+    api.isLesson8ReaderGuidanceExact = isLesson8ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;
