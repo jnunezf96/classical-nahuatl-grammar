@@ -1261,6 +1261,16 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         .map(segment => segment.replace(/^#|#$/gu, ""))
         .join(" ");
     }
+    function formatClassicalNahuatlParticleFormulaSegments(segments = []) {
+      return Array.from(segments || []).reduce((formula, rawSegment) => {
+        const segment = String(rawSegment || "");
+        if (!segment) return formula;
+        if (!formula) return segment;
+        const attachesToLeft = segment.startsWith("#");
+        const precedingAttachesRight = formula.endsWith("#");
+        return `${formula}${attachesToLeft || precedingAttachesRight ? "" : " "}${segment}`;
+      }, "");
+    }
     function buildClassicalNahuatlParticleLexicalFactFrame(entry = null) {
       if (!entry || !entry.id) {
         return null;
@@ -1532,7 +1542,9 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
           lexicalAvailabilityUserSelectable: false,
           callerSuppliedAuthorityAccepted: false
         });
-      const formula = formulaSegments.join(" + ");
+      const formula = formatClassicalNahuatlParticleFormulaSegments(
+        formulaSegments
+      );
       const writtenSurface = entry
         ? getClassicalNahuatlParticleWrittenSurface(entry)
         : "";
@@ -1985,7 +1997,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         Array.from(result.formulaSegments || []));
       if (formulaSegments.length) formulaSegments.push("tzin");
       const surface = basesAuthorized ? baseSurfaces.join(" ") : "";
-      const formula = basesAuthorized ? formulaSegments.join(" + ") : "";
+      const formula = basesAuthorized ? baseSurfaces.join(" ") : "";
       const result = freezeClassicalNahuatlLesson3ParticleResult({
         kind: "classical-nahuatl-particle-honorific-result-frame",
         version: CLASSICAL_NAHUATL_LESSON3_PARTICLES_VERSION,
@@ -2042,7 +2054,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
             )
             && frame.honorificMarker === "tzin"
             && frame.attachmentTarget === "final-particle-member"
-            && frame.formula.endsWith(" + tzin")
+            && frame.formula.endsWith("tzin")
             && frame.surface.endsWith("tzin")
             && frame.typedSourceAuthority === true
           : frame.formula === "" && frame.surface === "")
@@ -2704,15 +2716,25 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
       const blocked = !particleOmitted && !authorized;
       const sourceForm = authorized ? particleResultFrame.surface : "";
       const formulaParticle = authorized ? particleResultFrame.formula : "";
+      const rightAttachedToNucleus = authorized
+        && formulaParticle.trimEnd().endsWith("#");
+      const rightAttachedEmbeddedFormula = rightAttachedToNucleus
+        && embeddedSentenceFormula.startsWith("#")
+        ? embeddedSentenceFormula.slice(1)
+        : embeddedSentenceFormula;
       const sentenceFormulaDisplay = authorized
         ? independentUtterance
           ? formulaParticle
-          : `${formulaParticle} ${embeddedSentenceFormula}`
+          : rightAttachedToNucleus
+            ? `${formulaParticle}${rightAttachedEmbeddedFormula}`
+            : `${formulaParticle} ${embeddedSentenceFormula}`
         : "";
       const sentenceSurfaceDisplay = authorized
         ? independentUtterance
           ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)}`
-          : `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
+          : rightAttachedToNucleus
+            ? `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)}${embeddedSentenceSurface}`
+            : `${sourceForm.charAt(0).toUpperCase()}${sourceForm.slice(1)} ${embeddedSentenceSurface}`
         : "";
       const formulaProjection = authorized ? Object.freeze({
         kind: "classical-nahuatl-sentence-particle-formula-projection",
@@ -2792,6 +2814,10 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         requiredSpeakerGender,
         speakerContextLicensed,
         independentUtterance,
+        rightAttachedToNucleus,
+        sentenceBoundaryRelation: rightAttachedToNucleus
+          ? "particle-attached-to-nucleus-on-right"
+          : "separate-before-nucleus",
         gloss: selectedEntry?.gloss || "",
         nuclearClauseKind,
         canonicalInputKind: canonicalInput.canonicalInputKind,

@@ -477,12 +477,12 @@ function run(ctx) {
                 source: true,
                 sourceContainsOnlyLexemeIdentity: true,
                 result: true,
-                formula: "mā + zo",
+                formula: "mā zo",
                 written: "mā zo",
                 sourceBound: [true, true],
                 independent: [false, false],
             },
-            ahzo: ["ah# + zo", "ahzo"],
+            ahzo: ["ah#zo", "ahzo"],
             ca: {
                 missing: [
                     "blocked",
@@ -651,6 +651,16 @@ function run(ctx) {
         nuclearResultFrame: clauseResult,
         honorificized: true,
     });
+    const rightAttachedNegativeSource =
+        ctx.buildClassicalNahuatlParticleSourceFrame(
+            "l3-in-tla-ca"
+        );
+    const rightAttachedNegativeSentence =
+        ctx.requestClassicalSentenceParticleFrame({
+            particleSourceFrame: rightAttachedNegativeSource,
+            nuclearResultFrame: clauseResult,
+            honorificized: false,
+        });
 
     s.eq(
         "sentence:particle-adjunction composes independent projections only from owner-issued particle and clause Results",
@@ -679,6 +689,13 @@ function run(ctx) {
                 honorificSentence.sentenceFormulaDisplay,
                 honorificSentence.sentenceSurfaceDisplay,
             ],
+            rightAttachedNegative: [
+                rightAttachedNegativeSentence.authorizationStatus,
+                rightAttachedNegativeSentence.rightAttachedToNucleus,
+                rightAttachedNegativeSentence.sentenceBoundaryRelation,
+                rightAttachedNegativeSentence.sentenceFormulaDisplay,
+                rightAttachedNegativeSentence.sentenceSurfaceDisplay,
+            ],
         },
         {
             ordinary: [
@@ -694,10 +711,17 @@ function run(ctx) {
             ],
             honorific: [
                 "authorized",
-                "āuh + tzin",
                 "āuhtzin",
-                "āuh + tzin",
+                "āuhtzin",
+                "āuhtzin",
                 "Āuhtzin",
+            ],
+            rightAttachedNegative: [
+                "authorized",
+                true,
+                "particle-attached-to-nucleus-on-right",
+                "in tlā ca#ni-0(tēuc)tli-0#.",
+                "In tlā canitēuctli.",
             ],
         }
     );
@@ -787,8 +811,8 @@ function run(ctx) {
         "each particle coordinate is pointwise equivalent to the same scalar evaluator",
         scalarParticleCoordinates,
         [
-            ["mā + zo", "mā zo", "mā + zo", "mā zo", true],
-            ["in + tlā", "in tlā", "in + tlā", "in tlā", true],
+            ["mā zo", "mā zo", "mā zo", "mā zo", true],
+            ["in tlā", "in tlā", "in tlā", "in tlā", true],
             ["auh", "auh", "auh", "auh", true],
         ]
     );

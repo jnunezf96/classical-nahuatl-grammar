@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-particle-built-in-picker-102";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260812-particle-formula-104";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260812-particle-built-in-picker-102";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-particle-built-in-picker-102";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-particle-built-in-picker-102";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-particle-built-in-picker-102";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-particle-built-in-picker-102";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-particle-built-in-picker-102";
+} from "../runtime/create_runtime.mjs?v=20260812-particle-formula-104";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-particle-formula-104";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-particle-formula-104";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-particle-formula-104";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-particle-formula-104";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-particle-formula-104";
 
 let browserBootstrapPromise = null;
 

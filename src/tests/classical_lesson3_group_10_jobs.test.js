@@ -85,13 +85,13 @@ function run(ctx = {}) {
             "entire-collocation", "ca no zotzin",
         ]],
         ["ACI-P059-L024-6A5F7EF59E", [
-            "authorized", "l3-otzin", "ō + tzin", "ōtzin", ["behold"], "Ōtzin nemi",
+            "authorized", "l3-otzin", "ōtzin", "ōtzin", ["behold"], "Ōtzin nemi",
         ]],
         ["ACI-P059-L025-64943B2196", [
-            "authorized", "l3-auhtzin", "āuh + tzin", "āuhtzin", ["good", "good"], true, "Āuhtzin", "blocked",
+            "authorized", "l3-auhtzin", "āuhtzin", "āuhtzin", ["good", "good"], true, "Āuhtzin", "blocked",
         ]],
         ["ACI-P059-L026-BB2A070E1D", [
-            "authorized", "l3-ca-no-zotzin", "ca + nō + zo + tzin",
+            "authorized", "l3-ca-no-zotzin", "ca no zotzin",
             "ca no zotzin", ["thus it is"], ["l3-ca", "l3-no-adverbial", "l3-zo"],
             "Ca no zotzin nemi",
         ]],

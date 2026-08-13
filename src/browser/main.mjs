@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-particle-built-in-picker-102";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-particle-formula-104";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

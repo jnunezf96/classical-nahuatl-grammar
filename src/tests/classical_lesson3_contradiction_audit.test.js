@@ -19,24 +19,24 @@ function run(ctx = {}) {
     const particle = (id, options = {}) =>
         ctx.requestClassicalParticleResult(id, options);
     const formulaRows = [
-        ["l3-in-aya", "in + ah# + ye"],
-        ["l3-ahza-zo", "ah# + zā + zo"],
-        ["l3-ahza-zo-oc", "ah# + zā + zo + oc"],
-        ["l3-ahzo-za", "ah# + zo + zā"],
-        ["l3-ahzo-zan", "ah# + zo + zan"],
-        ["l3-ahzo-ma", "ah# + zo + mā"],
-        ["l3-ahca-zo", "ah# + ca + zo"],
-        ["l3-ahzo-ca", "ah# + zo + ca"],
-        ["l3-ahca-zo-ah", "ah# + ca + zo + ah#"],
+        ["l3-in-aya", "in ah#ye"],
+        ["l3-ahza-zo", "ah#zā zo"],
+        ["l3-ahza-zo-oc", "ah#zā zo oc"],
+        ["l3-ahzo-za", "ah#zo zā"],
+        ["l3-ahzo-zan", "ah#zo zan"],
+        ["l3-ahzo-ma", "ah#zo mā"],
+        ["l3-ahca-zo", "ah#ca zo"],
+        ["l3-ahzo-ca", "ah#zo ca"],
+        ["l3-ahca-zo-ah", "ah#ca zo ah#"],
     ];
     s.eq("solid spelling never hides the grammatical members in the formula",
         formulaRows.map(([id]) => [id, particle(id).formula]), formulaRows);
 
     const punctuationRows = [
         ["l3-cuix", "cuix?", "cuix", "cuix"],
-        ["l3-ahtel", "ahtēl?", "ahtēl", "ah# + tēl"],
-        ["l3-ihyo-ma", "ihyo mā ... !", "ihyo mā", "ihyo + mā"],
-        ["l3-ihyo-iyahua", "ihyo iyahua!", "ihyo iyahua", "ihyo + iyahua"],
+        ["l3-ahtel", "ahtēl?", "ahtēl", "ah#tēl"],
+        ["l3-ihyo-ma", "ihyo mā ... !", "ihyo mā", "ihyo mā"],
+        ["l3-ihyo-iyahua", "ihyo iyahua!", "ihyo iyahua", "ihyo iyahua"],
     ];
     const entries = new Map(ctx.getClassicalNahuatlParticleSourceEntries()
         .map((entry) => [entry.id, entry]));
@@ -148,9 +148,9 @@ function run(ctx = {}) {
             "classical-particle-honorific-formation-required",
         ]),
         generated: [
-            ["authorized", "ō + tzin", "ōtzin"],
-            ["authorized", "āuh + tzin", "āuhtzin"],
-            ["authorized", "ca + nō + zo + tzin", "ca no zotzin"],
+            ["authorized", "ōtzin", "ōtzin"],
+            ["authorized", "āuhtzin", "āuhtzin"],
+            ["authorized", "ca no zotzin", "ca no zotzin"],
         ],
     });
 
@@ -195,13 +195,13 @@ function run(ctx = {}) {
     });
 
     for (const [id, expectedFormula] of formulaRows) {
-        s.no(`${id} rejects a collapsed formula mutation`,
-            particle(id).formula === expectedFormula.replace(/ \+ /gu, ""));
+        s.no(`${id} rejects a lost grammatical boundary mutation`,
+            particle(id).formula === expectedFormula.replace(/[ #]/gu, ""));
     }
     s.no("negative context rejects a ca#-everywhere mutation",
         negative("l3-ma", "statement")[1] === "l3-ca-negative");
     s.no("honorific formation rejects the old short-vowel mutation",
-        honorificResults[1].formula === "auh + tzin");
+        honorificResults[1].formula === "auhtzin");
     s.no("the exact shortcut observation rejects a missing combination",
         ctx.buildClassicalRuleLogicSurfaceFrame({
             ...baseVnc,
@@ -210,6 +210,78 @@ function run(ctx = {}) {
             tense: "present",
             particleCombinationShortcutId: "missing-combination",
         }).sentenceSurfaceDisplay === "Ahzo zan ninemi.");
+
+    const lesson3Entries = ctx.getClassicalNahuatlParticleSourceEntries()
+        .filter((entry) => entry.curriculumCoordinate.startsWith("3."));
+    const normalLesson3Result = (entry) => {
+        if (entry.functionScope === "honorificized") {
+            return ctx.evaluateClassicalNahuatlParticleHonorificFormation(
+                ctx.buildClassicalNahuatlParticleHonorificSourceFrame({
+                    targetId: entry.id,
+                })
+            );
+        }
+        if (entry.id === "l3-ah-negative") {
+            return ctx.requestClassicalNegativeParticleSelection({
+                polarity: "negative",
+                precedingParticleId: "",
+                sentenceKind: "statement",
+            }).particleResultFrame;
+        }
+        if (entry.id === "l3-ca-negative") {
+            return ctx.requestClassicalNegativeParticleSelection({
+                polarity: "negative",
+                precedingParticleId: "l3-ma",
+                sentenceKind: "wish",
+            }).particleResultFrame;
+        }
+        return particle(entry.id, {
+            speakerGender: entry.id === "l3-e-vocative"
+                ? "male"
+                : entry.id === "l3-no-interjection"
+                    ? "female"
+                    : "",
+        });
+    };
+    const lesson3Results = lesson3Entries.map((entry) => [
+        entry.id,
+        normalLesson3Result(entry),
+    ]);
+    s.eq("all Lesson 3 options use the Lesson 3 sentence-formula notation", {
+        optionCount: lesson3Results.length,
+        blocked: lesson3Results
+            .filter(([, result]) => result.authorizationStatus !== "authorized")
+            .map(([id]) => id),
+        plusSignsBetweenParticles: lesson3Results
+            .filter(([, result]) => result.formula.includes(" + "))
+            .map(([id]) => id),
+        spacesAfterRightAttachment: lesson3Results
+            .filter(([, result]) => /#\s/u.test(result.formula))
+            .map(([id]) => id),
+        canaries: Object.fromEntries(
+            lesson3Results
+                .filter(([id]) => [
+                    "l3-e-vocative",
+                    "l3-ahzo",
+                    "l3-in-tla-ca",
+                    "l3-otzin",
+                    "l3-ca-no-zotzin",
+                ].includes(id))
+                .map(([id, result]) => [id, result.formula])
+        ),
+    }, {
+        optionCount: 95,
+        blocked: [],
+        plusSignsBetweenParticles: [],
+        spacesAfterRightAttachment: [],
+        canaries: {
+            "l3-e-vocative": "#e",
+            "l3-ahzo": "ah#zo",
+            "l3-in-tla-ca": "in tlā ca#",
+            "l3-otzin": "ōtzin",
+            "l3-ca-no-zotzin": "ca no zotzin",
+        },
+    });
 
     return s;
 }

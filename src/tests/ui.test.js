@@ -9251,7 +9251,7 @@ function run(ctx = {}) {
                 sentenceFormula: "in #ni-0(chōca)0+0-0#.",
                 sentenceSurface: "In nichōca.",
                 ancaMiquiSentenceSurface: "Anca nāmiqui.",
-                    layeredParticleFormula: "āuh + tzin",
+                    layeredParticleFormula: "āuhtzin",
                 layeredParticleSurface: "Āuhtzin",
                 sentenceSurfacePresent: true,
                 diagramAuthority: "typed-vnc-slots",
