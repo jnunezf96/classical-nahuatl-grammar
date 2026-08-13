@@ -66,7 +66,10 @@ const WRITING_PROJECT_ROLES = new Set([
   "result-projection",
 ]);
 
-function proposedDirection(atom) {
+function proposedDirection(atom, group = null) {
+  if (Array.isArray(group?.writingAtomIds)) {
+    return group.writingAtomIds.includes(atom.atomId) ? "BOTH" : "READING_ONLY";
+  }
   if (lesson >= 7) {
     return WRITING_PROJECT_ROLES.has(atom.projectRole) ? "BOTH" : "READING_ONLY";
   }
@@ -74,7 +77,7 @@ function proposedDirection(atom) {
 }
 
 function proposedWritingJob(atom, group) {
-  if (proposedDirection(atom) !== "BOTH") return "NOT_A_WRITING_JOB";
+  if (proposedDirection(atom, group) !== "BOTH") return "NOT_A_WRITING_JOB";
   if (group.writingJobsByCategory?.[atom.category]) {
     return group.writingJobsByCategory[atom.category];
   }
@@ -106,7 +109,7 @@ const records = atoms.map(atom => {
   const proofAccepted = decision?.status === "ACCEPTED"
     && groupProof?.status === "EXACTLY_OBSERVED"
     && Boolean(groupProof.readerTest)
-    && (proposedDirection(atom) === "READING_ONLY" || Boolean(groupProof.writingTest));
+    && (proposedDirection(atom, group) === "READING_ONLY" || Boolean(groupProof.writingTest));
   return {
     atomId: atom.atomId,
     canvasSection: atom.canvasSection,
@@ -116,7 +119,7 @@ const records = atoms.map(atom => {
     sourceCategory: atom.category,
     sourceProjectRole: atom.projectRole,
     reviewGroupId: group.groupId,
-    proposedDirection: proposedDirection(atom),
+    proposedDirection: proposedDirection(atom, group),
     proposedWritingJob: proposedWritingJob(atom, group),
     proposedReaderJob: proposedReaderJob(atom),
     proposedDecisionSplit: group.decisionSplit,
@@ -127,10 +130,10 @@ const records = atoms.map(atom => {
     reviewStatus: decision?.status || "AWAITING_USER_REVIEW",
     acceptedJob: decision?.status === "ACCEPTED" ? decision.acceptedJob || group.proposal : "",
     implementationCredit: proofAccepted ? "EXACTLY_OBSERVED" : "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-    writingObservationTest: proofAccepted && proposedDirection(atom) === "BOTH"
+    writingObservationTest: proofAccepted && proposedDirection(atom, group) === "BOTH"
       ? `${groupProof.writingTest}#${atom.atomId}`
       : "",
-    writingMutationTest: proofAccepted && proposedDirection(atom) === "BOTH"
+    writingMutationTest: proofAccepted && proposedDirection(atom, group) === "BOTH"
       ? `${groupProof.writingTest}#mutation:${atom.atomId}`
       : "",
     readerGuidanceIdeaId: proofAccepted ? group.groupId : "",

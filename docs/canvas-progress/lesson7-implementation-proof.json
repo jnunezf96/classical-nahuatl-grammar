@@ -16,6 +16,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson7_groups_1_3_jobs.test.js",
       "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-perfective-class-forms": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-imperfective-class-forms": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
+    },
+    "lesson7-class-b-perfective-changes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson7_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson7_reader_guidance.test.js"
     }
   }
 }

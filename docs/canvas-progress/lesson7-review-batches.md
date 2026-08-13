@@ -45,27 +45,27 @@ All 344 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §7.3.1
 - Atoms: 22
-- Proposed direction: 0 both; 22 reading only
+- Proposed direction: 15 both; 7 reading only
 - Writing job: Form the licensed Class A, B, C, or D perfective stem, including deletion, replacement, addition, and silently present causative structure.
 - Reading job: Help the reader recover the perfective operation and distinguish phonologically identical Class B outcomes with different morphology.
 - User/application split: The stem class and lexical record determine the perfective operation; the application performs it.
 - Control policy: Do not add deletion, glottal-stop, or silent-carrier controls.
 - Proposal: Make each verbstem class produce its exact perfective stem automatically.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/22
+- Status: ACCEPTED
+- Exactly observed: 22/22
 
 ## Batch 2, Group 5: Conditioned imperfective stem shapes
 
 - Sections: §7.3.2
 - Atoms: 17
-- Proposed direction: 6 both; 11 reading only
+- Proposed direction: 14 both; 3 reading only
 - Writing job: Choose the licensed imperfective shape from class, mood, tense, number, and the following morphs.
 - Reading job: Show why one lexical imperfective stem may appear in one, two, or four surface shapes.
 - User/application split: The user chooses genuine mood, tense, and subject number; the application selects the conditioned stem shape.
 - Control policy: Do not add a short, long, or truncated stem-shape control.
 - Proposal: Make imperfective stem shape an automatic consequence of the grammatical environment.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/17
+- Status: ACCEPTED
+- Exactly observed: 17/17
 
 ## Batch 2, Group 6: Class B spelling and sound changes
 
@@ -77,8 +77,8 @@ All 344 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The class operation triggers the change; the application spells and realizes it automatically.
 - Control policy: Do not add spelling or sound-change controls.
 - Proposal: Send every Class B perfective through the common spelling and sound system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/19
+- Status: ACCEPTED
+- Exactly observed: 19/19
 
 ## Batch 3, Group 7: Licensed variable class membership
 

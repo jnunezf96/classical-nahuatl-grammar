@@ -14,6 +14,18 @@
     "lesson7-class-basis": {
       "status": "ACCEPTED",
       "acceptedJob": "Use the stem's licensed class to control its imperfective-perfective relation and show that automatic work as a formula cue."
+    },
+    "lesson7-perfective-class-forms": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Form the correct Class A, B, C, or D perfective stem automatically and show the operation as a cue."
+    },
+    "lesson7-imperfective-class-forms": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Choose the correct imperfective stem shape from the grammatical surroundings, without asking the user to choose a shape."
+    },
+    "lesson7-class-b-perfective-changes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Send Class B perfectives through the common spelling and sound system automatically and show the resulting grammatical change."
     }
   }
 }

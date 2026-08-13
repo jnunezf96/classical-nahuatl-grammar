@@ -22,7 +22,7 @@ function run(ctx = {}) {
         accepted: accepted.length,
         ideas: ideas.length,
         missing: accepted.filter((record) => !ideas.some((idea) => idea.ideaId === record.reviewGroupId)).map((record) => record.atomId),
-    }, { accepted: 49, ideas: 3, missing: [] });
+    }, { accepted: 107, ideas: 6, missing: [] });
     for (const record of accepted) {
         const idea = ideas.find((candidate) => candidate.ideaId === record.reviewGroupId);
         s.ok(`${record.atomId} is presented through its accepted Lesson 7 reading job`,

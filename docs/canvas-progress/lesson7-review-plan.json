@@ -50,6 +50,23 @@
       "readingJob": "Help the reader recover the perfective operation and distinguish phonologically identical Class B outcomes with different morphology.",
       "decisionSplit": "The stem class and lexical record determine the perfective operation; the application performs it.",
       "controlPolicy": "Do not add deletion, glottal-stop, or silent-carrier controls.",
+      "writingAtomIds": [
+        "ACI-P077-L034-129B3476B9",
+        "ACI-P077-L034-C9FC13E941",
+        "ACI-P077-L037-0A725008FA",
+        "ACI-P077-L037-70A702939A",
+        "ACI-P078-L002-555C464C2C",
+        "ACI-P078-L005-BBD537CB70",
+        "ACI-P078-L007-717FC67116",
+        "ACI-P078-L008-157A9EB510",
+        "ACI-P078-L010-10ABF69777",
+        "ACI-P078-L016-A58FFEBCD0",
+        "ACI-P078-L017-0BE4C0B2F6",
+        "ACI-P078-L019-CCB86C1D00",
+        "ACI-P078-L020-9085273E3D",
+        "ACI-P078-L020-28ECB3FAE5",
+        "ACI-P078-L021-0B009A2BE2"
+      ],
       "proposal": "Make each verbstem class produce its exact perfective stem automatically."
     },
     {
@@ -60,6 +77,22 @@
       "readingJob": "Show why one lexical imperfective stem may appear in one, two, or four surface shapes.",
       "decisionSplit": "The user chooses genuine mood, tense, and subject number; the application selects the conditioned stem shape.",
       "controlPolicy": "Do not add a short, long, or truncated stem-shape control.",
+      "writingAtomIds": [
+        "ACI-P078-L022-E5B52E5319",
+        "ACI-P078-L022-44C895796A",
+        "ACI-P078-L025-3EB46D44CB",
+        "ACI-P078-L026-3508EFBB54",
+        "ACI-P078-L026-B96036FF58",
+        "ACI-P078-L027-33BA99C467",
+        "ACI-P078-L028-02BBEC0EDA",
+        "ACI-P078-L030-54B882354D",
+        "ACI-P078-L031-8FF5729A0A",
+        "ACI-P078-L032-1C1DCCF187",
+        "ACI-P078-L032-6A3E6E69C2",
+        "ACI-P078-L035-2BE782702A",
+        "ACI-P078-L035-2BE782702A-02",
+        "ACI-P078-L038-9168BCF5B9"
+      ],
       "proposal": "Make imperfective stem shape an automatic consequence of the grammatical environment."
     },
     {
@@ -70,6 +103,18 @@
       "readingJob": "Help the reader recover the underlying stem and avoid misclassifying traditional oa and ia spellings as Class C.",
       "decisionSplit": "The class operation triggers the change; the application spells and realizes it automatically.",
       "controlPolicy": "Do not add spelling or sound-change controls.",
+      "writingAtomIds": [
+        "ACI-P079-L002-5BB94156BF",
+        "ACI-P079-L006-7E12E75596",
+        "ACI-P079-L007-2EB7533D34",
+        "ACI-P079-L009-3B604C19CF",
+        "ACI-P079-L010-E474B22C50",
+        "ACI-P079-L011-ABD96847AF",
+        "ACI-P079-L012-9382D96669",
+        "ACI-P079-L013-8EDE98B463",
+        "ACI-P079-L013-A6420E1D99",
+        "ACI-P079-L014-A450A2C9BF"
+      ],
       "proposal": "Send every Class B perfective through the common spelling and sound system."
     },
     {

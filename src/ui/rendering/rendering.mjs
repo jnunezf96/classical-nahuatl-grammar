@@ -4892,7 +4892,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         atomIds: Object.freeze(["ACI-P069-L008-B53886AC27"])
       }),
       "verbstem-class-and-structure": Object.freeze({
-        lessonSections: Object.freeze(["§7.1", "§7.3"]),
+        lessonSections: Object.freeze(["§7.1", "§7.3", "§7.3.1", "§7.3.2", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
           "ACI-P076-L003-0B2E95869D",
           "ACI-P076-L004-6824D748AE",
@@ -4900,7 +4900,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P076-L012-90944246E3-02",
           "ACI-P077-L029-778C0D9D12",
           "ACI-P077-L030-251E3FE06D",
-          "ACI-P077-L031-688A63867E"
+          "ACI-P077-L031-688A63867E",
+          "ACI-P077-L034-129B3476B9",
+          "ACI-P078-L005-BBD537CB70",
+          "ACI-P078-L017-0BE4C0B2F6",
+          "ACI-P078-L020-9085273E3D",
+          "ACI-P078-L031-8FF5729A0A",
+          "ACI-P078-L035-2BE782702A",
+          "ACI-P078-L038-9168BCF5B9",
+          "ACI-P079-L006-7E12E75596",
+          "ACI-P079-L007-2EB7533D34",
+          "ACI-P079-L009-3B604C19CF",
+          "ACI-P079-L010-E474B22C50",
+          "ACI-P079-L011-ABD96847AF",
+          "ACI-P079-L012-9382D96669",
+          "ACI-P079-L014-A450A2C9BF"
         ])
       }),
       "nuclear-clause-boundary": Object.freeze({
@@ -5160,16 +5174,46 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const stemContentStart = stemStart + 1;
         const stemContent = String(predicate.stem || "");
         const stemClass = String(grammarContext?.classId || grammarContext?.verbClass || "").trim().toUpperCase();
+        const stemOperationFrame = grammarContext?.stemVariantFrame
+          || grammarContext?.predicateFormationRuleFrame?.stemVariantFrame
+          || grammarContext?.predicateFormationRuleFrame
+          || {};
         const stemAspect = String(
           grammarContext?.aspect
           || grammarContext?.predicateFormationRuleFrame?.aspect
+          || stemOperationFrame?.aspect
           || ""
         ).trim().toLowerCase();
+        const perfectiveChangeLabels = Object.freeze({
+          "class-a1-same-shape": "perfective keeps the stem",
+          "class-a2-same-or-short-vowel-alternant": "perfective keeps or shortens the last vowel",
+          "class-b-final-vowel-disappears": "perfective drops the last vowel",
+          "class-b-spelling-qu-to-c": "perfective changes qu to c",
+          "class-b-spelling-c-to-z": "perfective changes c to z",
+          "class-b-w-change-hu-to-uh": "perfective changes hu to uh",
+          "class-b-kw-change-cu-to-uc": "perfective changes cu to uc",
+          "class-b-m-to-n": "perfective changes m to n",
+          "class-b-y-to-s": "perfective changes y to z",
+          "class-b-y-to-x": "perfective changes y to x",
+          "class-c-final-a-replaced-by-h": "perfective replaces final ā with h",
+          "class-d-final-long-a-adds-h-and-shortens": "perfective adds h and shortens ā"
+        });
+        const imperfectiveShape = String(stemOperationFrame?.selectedImperfectiveShape || "");
+        const imperfectiveShapeLabel = imperfectiveShape && imperfectiveShape !== "basic-imperfective-shape"
+          ? imperfectiveShape.includes("truncated")
+            ? "conditioned truncated imperfective"
+            : imperfectiveShape.includes("short")
+              ? "conditioned short imperfective"
+              : "conditioned imperfective shape"
+          : "";
+        const operationLabel = stemAspect === "perfective"
+          ? perfectiveChangeLabels[String(stemOperationFrame?.changeRule || "")] || "perfective verbstem"
+          : imperfectiveShapeLabel;
         const stemJobLabel = stemClass || stemContent.includes("-")
           ? [
             stemClass ? `Class ${stemClass}` : "",
-            stemAspect,
-            stemContent.includes("-") ? "verbstem morph" : "verbstem"
+            operationLabel || stemAspect,
+            operationLabel ? "" : stemContent.includes("-") ? "verbstem morph" : "verbstem"
           ].filter(Boolean).join(" ")
           : "predicate stem";
         const stemJobAuthority = stemClass || stemContent.includes("-")
