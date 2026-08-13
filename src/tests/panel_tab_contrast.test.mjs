@@ -329,6 +329,10 @@ assert.match(
   css,
   /@media \(min-width: 1025px\)[\s\S]+align-items: stretch;[\s\S]+#panel-stack-pane-inputs > #container-inputs \{[\s\S]+height: 100%;/u
 );
+assert.match(
+  css,
+  /#panel-stack-pane-inputs > #container-inputs > \* \{[\s\S]+width: 100%;[\s\S]+classical-source-context-controls__grid \{[\s\S]+grid-template-columns: minmax\(0, 1fr\);[\s\S]+#classical-construction-operation-field \{[\s\S]+grid-column: 1 \/ -1;/u
+);
 assert.match(html, /id="classical-reader-guidance-toggle"[\s\S]+aria-controls="classical-reader-guidance-dialog"/u);
 assert.match(html, /<dialog[\s\S]+id="classical-reader-guidance-dialog"/u);
 assert.match(html, /data-classical-help-tab="reading"[\s\S]+data-classical-help-tab="facts"/u);

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-equal-panels-177";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-live-polish-178";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

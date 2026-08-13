@@ -16108,7 +16108,16 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
   body.is-language-classical #panel-stack-pane-inputs > #container-inputs > * {
     flex: 0 0 auto;
     align-self: start;
+    width: 100%;
     height: auto;
+  }
+
+  body.is-language-classical #classical-source-panel .classical-source-context-controls__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.is-language-classical #classical-source-panel #classical-construction-operation-field {
+    grid-column: 1 / -1;
   }
 
   body.is-language-classical .panel-stack-tabs {
