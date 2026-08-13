@@ -18,6 +18,8 @@ function run(ctx = {}) {
     const ledger = JSON.parse(fs.readFileSync(path.join(
         ROOT, "docs/canvas-progress/lesson4-review-ledger.json"
     ), "utf8"));
+    const shell = fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8");
+    const rendering = fs.readFileSync(path.join(ROOT, "src/ui/rendering/rendering.mjs"), "utf8");
     const request = (stem, options) => ctx.executeClassicalGrammarApplicationRequest({
         operationId: "vnc:nuclear-clause", args: [stem, options],
     }).canonicalResult;
@@ -40,7 +42,21 @@ function run(ctx = {}) {
         resolved: audit.resolvedCount,
         unresolved: audit.unresolvedCount,
         reportAuthority: audit.reportAuthority,
-    }, { status: "UNCONTRADICTED", resolved: 6, unresolved: 0, reportAuthority: false });
+    }, { status: "UNCONTRADICTED", resolved: 7, unresolved: 0, reportAuthority: false });
+    s.eq("speaker sex is not presented as ordinary Lesson 4 pronoun grammar", {
+        hiddenByDefault: /id="classical-source-context-speaker-sex-control"[\s\S]*?hidden/.test(shell),
+        narrowLabel: shell.includes("Speaker sex (vocative/interjection only)"),
+        onlyRelevantContexts: rendering.includes('basalUnit === "nnc"')
+            && rendering.includes('"l3-e-vocative"')
+            && rendering.includes('"l3-no-interjection"')
+            && rendering.includes("speakerSexContextApplicable"),
+        resetsWhenNotApplicable: rendering.includes('speakerSexContextControl.value = "unspecified"'),
+    }, {
+        hiddenByDefault: true,
+        narrowLabel: true,
+        onlyRelevantContexts: true,
+        resetsWhenNotApplicable: true,
+    });
     s.eq("all six formula shapes come from active grammar without a formula choice", {
         formulas: six.map((frame) => frame.formulaRealization),
         selectedBy: six.map((frame) => frame.structureFrame.selectedFormulaShape.selectedBy),

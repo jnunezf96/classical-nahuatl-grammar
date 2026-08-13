@@ -8257,6 +8257,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
         }
       });
+      const speakerSexContextControl = targetObject.document.getElementById(
+        "classical-source-context-speaker-gender"
+      );
+      const speakerSexContextWrapper = targetObject.document.getElementById(
+        "classical-source-context-speaker-sex-control"
+      );
+      const speakerSexRequiredByParticle = [
+        "l3-e-vocative",
+        "l3-no-interjection"
+      ].includes(String(surfaceFrame.state?.requestedSentenceParticleId || ""));
+      const speakerSexContextApplicable = basalUnit === "nnc"
+        || speakerSexRequiredByParticle;
+      if (speakerSexContextWrapper && speakerSexContextControl) {
+        speakerSexContextWrapper.hidden = !speakerSexContextApplicable;
+        speakerSexContextWrapper.setAttribute("aria-hidden", String(!speakerSexContextApplicable));
+        speakerSexContextWrapper.dataset.classicalContextApplicability = speakerSexRequiredByParticle
+          ? "required-by-selected-particle"
+          : basalUnit === "nnc"
+            ? "available-for-vocative-source"
+            : "not-applicable";
+        speakerSexContextControl.disabled = !speakerSexContextApplicable;
+        speakerSexContextControl.setAttribute("aria-disabled", String(!speakerSexContextApplicable));
+        if (!speakerSexContextApplicable) {
+          speakerSexContextControl.value = "unspecified";
+        }
+      }
       const nncActive = basalUnit === "nnc";
       const nncType = String(surfaceFrame.state?.nncType || "ordinary");
       const nncOptionContract = getClassicalNncAuthorityOptionContract(surfaceFrame.state);

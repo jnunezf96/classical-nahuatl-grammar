@@ -5,7 +5,7 @@
   "grammarAuthority": "Andrews transcription",
   "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
   "reportAuthority": false,
-  "resolvedCount": 6,
+  "resolvedCount": 7,
   "unresolvedCount": 0,
   "resolved": [
     {
@@ -31,6 +31,10 @@
     {
       "id": "lesson4-english-pronoun-transfer",
       "resolution": "Pronouns remain affixal and case-bound; person, animacy, humanness, number, and context govern interpretation, while English gender has no Nahuatl grammar authority."
+    },
+    {
+      "id": "lesson4-speaker-sex-pronoun-gender-conflation",
+      "resolution": "Speaker sex is hidden during ordinary VNC work and appears only where an NNC can serve as a vocative or a selected interjection requires it; it never becomes a Nahuatl pronoun gender feature."
     }
   ],
   "unresolved": []

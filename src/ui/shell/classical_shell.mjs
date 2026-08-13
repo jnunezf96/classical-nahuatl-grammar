@@ -648,8 +648,13 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         Speaker and participant context
                       </div>
                       <div class="classical-source-context-controls__grid">
-                        <label class="classical-rule-control">
-                          <span class="classical-rule-control__label">Speaker</span>
+                        <label
+                          class="classical-rule-control"
+                          id="classical-source-context-speaker-sex-control"
+                          data-classical-source-context-applicability="vocative-or-interjection"
+                          hidden
+                        >
+                          <span class="classical-rule-control__label">Speaker sex (vocative/interjection only)</span>
                           <select
                             id="classical-source-context-speaker-gender"
                             data-classical-source-context-constituent="speaker-gender"
