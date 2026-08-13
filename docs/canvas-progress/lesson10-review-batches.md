@@ -51,8 +51,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application derives Class A form; the user supplies the stem and participant.
 - Control policy: No new control.
 - Proposal: Connect Class A admonition forms to the shared admonitive system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 
 ## Batch 2, Group 5: Class B admonitions
 
@@ -64,8 +64,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application derives Class B form; the user supplies the stem and participant.
 - Control policy: No new control.
 - Proposal: Connect Class B admonition forms to the shared admonitive system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/13
+- Status: ACCEPTED
+- Exactly observed: 13/13
 
 ## Batch 2, Group 6: Class C admonitions
 
@@ -77,8 +77,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application derives Class C form; the user supplies the stem and participant.
 - Control policy: No new control.
 - Proposal: Connect Class C admonition forms to the shared admonitive system.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/14
+- Status: ACCEPTED
+- Exactly observed: 14/14
 
 ## Batch 3, Group 7: Class D and nonhuman admonitions
 

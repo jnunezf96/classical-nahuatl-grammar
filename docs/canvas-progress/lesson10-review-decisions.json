@@ -14,6 +14,18 @@
     "lesson10-affirmative-admonition-system": {
       "status": "ACCEPTED",
       "acceptedJob": "Build affirmative admonition sentences with obligatory mā, optional nēn, participant-based warning role, and no false prohibition or wish reading."
+    },
+    "lesson10-class-a-admonitions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build and interpret singular and plural Class A affirmative admonitions through the shared admonitive system."
+    },
+    "lesson10-class-b-admonitions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build and interpret singular and plural Class B affirmative admonitions with zero tense and the correct number shapes."
+    },
+    "lesson10-class-c-admonitions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build and interpret singular and plural Class C affirmative admonitions from the correct perfective stem."
     }
   }
 }

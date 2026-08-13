@@ -20,6 +20,21 @@ export const LESSON10_READER_GUIDANCE_GROUPS = freeze([
     "Read mā as the beginning of an admonition",
     "An affirmative admonition requires mā before the admonitive VNC. Nēn may strengthen it. A second-person subject gives a direct warning, third person an indirect warning, and first person a warning to oneself or one's group. The meaning must remain cautionary, not a prohibition or wish.",
   ),
+  idea(
+    "lesson10-class-a-admonitions",
+    "Read h as the Class A admonitive tense marker",
+    "A Class A admonitive uses h after the perfective stem. Singular has ⎕-Ø and plural has t-in or t-ih, as in mā nitzahtzih and mā tzahtzihtin. The sentence remains a positive warning even when English uses negative wording.",
+  ),
+  idea(
+    "lesson10-class-b-admonitions",
+    "Read the Class B perfective shape in an admonition",
+    "A Class B admonitive uses the perfective stem with zero tense. Singular mā tihuetz uses ⎕-Ø; plural mā tihuetztin uses t-in. Both positively warn the participant to beware or take care.",
+  ),
+  idea(
+    "lesson10-class-c-admonitions",
+    "Read the Class C perfective stem in an admonition",
+    "A Class C admonitive uses its perfective stem, as in singular mā choloh and plural mā ancholohtin. Participant and number remain visible, and the meaning is positive caution rather than prohibition.",
+  ),
 ]);
 
 export function isLesson10ReaderGuidanceExact(candidate = []) {

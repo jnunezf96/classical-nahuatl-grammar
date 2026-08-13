@@ -72,6 +72,9 @@
       "readingJob": "Use the Class A examples to recognize h and participant-number differences.",
       "decisionSplit": "The application derives Class A form; the user supplies the stem and participant.",
       "controlPolicy": "No new control.",
+      "writingAtomIds": [
+        "ACI-P100-L029-533F1A031C"
+      ],
       "proposal": "Connect Class A admonition forms to the shared admonitive system."
     },
     {
@@ -82,6 +85,15 @@
       "readingJob": "Use the Class B examples to recognize zero tense and admonitive number shapes.",
       "decisionSplit": "The application derives Class B form; the user supplies the stem and participant.",
       "controlPolicy": "No new control.",
+      "writingAtomIds": [
+        "ACI-P100-L033-A7AEE03A98-02",
+        "ACI-P100-L033-A7AEE03A98-03",
+        "ACI-P100-L033-A7AEE03A98-04",
+        "ACI-P100-L033-A7AEE03A98-05",
+        "ACI-P100-L033-A7AEE03A98-06",
+        "ACI-P100-L033-A7AEE03A98-07",
+        "ACI-P100-L035-06B4A02E58"
+      ],
       "proposal": "Connect Class B admonition forms to the shared admonitive system."
     },
     {
@@ -92,6 +104,12 @@
       "readingJob": "Use the Class C examples to recognize the perfective stem and warning meaning.",
       "decisionSplit": "The application derives Class C form; the user supplies the stem and participant.",
       "controlPolicy": "No new control.",
+      "writingAtomIds": [
+        "ACI-P101-L005-7E48FF280A",
+        "ACI-P101-L008-E43AF64242-02",
+        "ACI-P101-L008-E43AF64242-03",
+        "ACI-P101-L008-E43AF64242-04"
+      ],
       "proposal": "Connect Class C admonition forms to the shared admonitive system."
     },
     {
