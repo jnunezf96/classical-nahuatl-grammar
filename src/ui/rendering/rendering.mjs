@@ -4950,32 +4950,90 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
-    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null) {
+    function renderClassicalDerivedAnnotationRanges(element = null, text = "", annotations = []) {
       if (!element) return Object.freeze([]);
-      const text = String(formula || "");
-      const annotations = getClassicalFormulaDerivedAnnotations(text, typedSlotFrame);
-      if (!annotations.length || typeof targetObject.document?.createTextNode !== "function") {
-        element.textContent = text;
-        return annotations;
+      const renderedText = String(text || "");
+      const renderedAnnotations = Array.isArray(annotations) ? annotations : [];
+      if (!renderedAnnotations.length || typeof targetObject.document?.createTextNode !== "function") {
+        element.textContent = renderedText;
+        return Object.freeze([...renderedAnnotations]);
       }
       const fragments = [];
       let cursor = 0;
-      annotations.forEach(annotation => {
+      renderedAnnotations.forEach(annotation => {
         if (annotation.start > cursor) {
-          fragments.push(targetObject.document.createTextNode(text.slice(cursor, annotation.start)));
+          fragments.push(targetObject.document.createTextNode(renderedText.slice(cursor, annotation.start)));
         }
         const mark = targetObject.document.createElement(annotation.presentation === "supportive-i" ? "em" : "span");
         mark.className = `classical-formula__derived-annotation classical-formula__derived-annotation--${annotation.presentation}${annotation.presentation === "supportive-i" ? " classical-formula__supportive-i" : ""}`;
         mark.dataset.classicalDerivedAnnotation = annotation.role;
         mark.title = annotation.label;
         mark.setAttribute("aria-label", annotation.label);
-        mark.textContent = text.slice(annotation.start, annotation.end);
+        mark.textContent = renderedText.slice(annotation.start, annotation.end);
         fragments.push(mark);
         cursor = annotation.end;
       });
-      if (cursor < text.length) fragments.push(targetObject.document.createTextNode(text.slice(cursor)));
+      if (cursor < renderedText.length) fragments.push(targetObject.document.createTextNode(renderedText.slice(cursor)));
       element.replaceChildren(...fragments);
-      return annotations;
+      return Object.freeze([...renderedAnnotations]);
+    }
+    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null) {
+      const text = String(formula || "");
+      return renderClassicalDerivedAnnotationRanges(
+        element,
+        text,
+        getClassicalFormulaDerivedAnnotations(text, typedSlotFrame)
+      );
+    }
+    function getClassicalDiagramAnnotationFamily(annotationRole = "") {
+      const role = String(annotationRole || "");
+      if (role.includes("tense")) return "tense";
+      if (role.includes("number")) return "subject";
+      if (role.includes("object") || role.includes("reflexive") || role.startsWith("derived-carrier")) return "core";
+      if (role.includes("subject") || role.includes("nominative")) return "subject";
+      if (role.includes("boundary")) return "any";
+      return "";
+    }
+    function getClassicalDiagramRoleFamily(diagramRole = "") {
+      const role = String(diagramRole || "").trim().toLowerCase();
+      if (role.includes("tense")) return "tense";
+      if (role.includes("subject")) return "subject";
+      if (role.includes("core") || role.includes("object") || role.includes("valence")) return "core";
+      return "";
+    }
+    function renderClassicalDiagramDerivedAnnotations(
+      element = null,
+      expression = "",
+      diagramRole = "",
+      formula = "",
+      typedSlotFrame = null
+    ) {
+      const text = String(expression || "");
+      const fullFormula = String(formula || "");
+      const diagramFamily = getClassicalDiagramRoleFamily(diagramRole);
+      if (!element || !text || !fullFormula || !diagramFamily) {
+        if (element) element.textContent = text;
+        return Object.freeze([]);
+      }
+      let cursor = 0;
+      const mapped = getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)
+        .filter(annotation => {
+          const family = getClassicalDiagramAnnotationFamily(annotation.role);
+          return family === diagramFamily || family === "any";
+        })
+        .flatMap(annotation => {
+          const token = fullFormula.slice(annotation.start, annotation.end);
+          const start = token ? text.indexOf(token, cursor) : -1;
+          if (start < 0) return [];
+          cursor = start + token.length;
+          return [Object.freeze({
+            ...annotation,
+            start,
+            end: cursor,
+            diagramRole: String(diagramRole || "")
+          })];
+        });
+      return renderClassicalDerivedAnnotationRanges(element, text, mapped);
     }
     function buildClassicalVncSmithOutputVisualFrame({
       fixedSourceAnalysis = null,
@@ -17550,7 +17608,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         const expression = targetObject.document.createElement("code");
         expression.className = "classical-rule-surface__diagram-expression";
-        expression.textContent = diagramRow.expression;
+        renderClassicalDiagramDerivedAnnotations(
+          expression,
+          diagramRow.expression,
+          diagramRow.role,
+          specificLinearFormula,
+          specificLinearTypedSlotFrame
+        );
         const role = targetObject.document.createElement("span");
         role.className = "classical-rule-surface__diagram-role";
         role.textContent = diagramRow.role;
@@ -17562,15 +17626,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const predicateGroupFrame = surfaceFrame.diagrammaticFrame?.predicateGroup || null;
       const renderNuclearClauseDiagramRows = diagramRows => {
         nuclearClauseDiagramRows.replaceChildren();
+        const diagramUsesSpecificFormula = diagramRows === specificDiagramRows;
         const renderPlan = getClassicalNuclearClauseDiagramRenderPlan(diagramRows, predicateGroupFrame);
+        const appendDiagramRow = diagramRow => {
+          const row = createNuclearClauseDiagramRow(diagramRow);
+          if (!diagramUsesSpecificFormula) {
+            const expression = row.querySelector?.(".classical-rule-surface__diagram-expression");
+            if (expression) expression.textContent = diagramRow.expression;
+          }
+          return row;
+        };
         if (renderPlan.hasPredicateGroup) {
-          renderPlan.ungroupedRows.forEach(diagramRow => nuclearClauseDiagramRows.appendChild(createNuclearClauseDiagramRow(diagramRow)));
+          renderPlan.ungroupedRows.forEach(diagramRow => nuclearClauseDiagramRows.appendChild(appendDiagramRow(diagramRow)));
           const predicateGroup = targetObject.document.createElement("div");
           predicateGroup.className = "classical-rule-surface__diagram-predicate-group";
           predicateGroup.dataset.classicalNuclearClauseDiagramGroup = predicateGroupFrame.role;
           const predicateMembers = targetObject.document.createElement("div");
           predicateMembers.className = "classical-rule-surface__diagram-predicate-members";
-          renderPlan.groupedRows.forEach(diagramRow => predicateMembers.appendChild(createNuclearClauseDiagramRow(diagramRow)));
+          renderPlan.groupedRows.forEach(diagramRow => predicateMembers.appendChild(appendDiagramRow(diagramRow)));
           const predicateBrace = targetObject.document.createElement("span");
           predicateBrace.className = "classical-rule-surface__diagram-predicate-brace";
           predicateBrace.setAttribute("aria-hidden", "true");
@@ -17581,7 +17654,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           predicateGroup.append(predicateMembers, predicateBrace, predicateRole);
           nuclearClauseDiagramRows.appendChild(predicateGroup);
         } else {
-          renderPlan.ungroupedRows.forEach(diagramRow => nuclearClauseDiagramRows.appendChild(createNuclearClauseDiagramRow(diagramRow)));
+          renderPlan.ungroupedRows.forEach(diagramRow => nuclearClauseDiagramRows.appendChild(appendDiagramRow(diagramRow)));
         }
       };
       renderNuclearClauseDiagramRows(specificDiagramRows);
@@ -24371,6 +24444,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
     api.getClassicalFormulaDerivedAnnotations = getClassicalFormulaDerivedAnnotations;
     api.renderClassicalFormulaDerivedAnnotations = renderClassicalFormulaDerivedAnnotations;
+    api.renderClassicalDiagramDerivedAnnotations = renderClassicalDiagramDerivedAnnotations;
     api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;
     api.getClassicalVncParadigmMorphologicalAspect = getClassicalVncParadigmMorphologicalAspect;
     api.getClassicalVncFullParadigmControlContract = getClassicalVncFullParadigmControlContract;

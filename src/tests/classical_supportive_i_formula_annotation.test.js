@@ -152,6 +152,13 @@ function run(ctx = {}) {
         && !css.includes(".classical-formula__derived-annotation--supportive-i,\n.classical-formula__derived-annotation--silent")
         && !css.includes("text-decoration: underline dotted currentColor")
         && !rendering.includes("Italic color: supportive i added automatically"));
+    s.ok("the Diagram view reuses the same exact Formula annotation authority",
+        rendering.includes("function renderClassicalDiagramDerivedAnnotations(")
+        && rendering.includes("getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)")
+        && rendering.includes("renderClassicalDerivedAnnotationRanges(element, text, mapped)")
+        && rendering.includes("renderClassicalDiagramDerivedAnnotations(")
+        && rendering.includes("specificLinearFormula")
+        && rendering.includes("specificLinearTypedSlotFrame"));
     s.no("the derived formula annotation is implemented as a user control",
         /id="[^"]*supportive-i-annotation[^"]*"/u.test(
             fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8")
