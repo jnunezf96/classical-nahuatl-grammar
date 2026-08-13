@@ -4802,18 +4802,97 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalVncParadigmTypedSlotFrame(machineryFrame = null) {
       return machineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || machineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame || machineryFrame?.finalBoundaryRealizationFrame?.typedSlotFrame || null;
     }
+    const CLASSICAL_FORMULA_HOVER_AUTHORITIES = Object.freeze({
+      "subject-person": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.1"]),
+        atomIds: Object.freeze(["ACI-P066-L014-5F1BC4F2B7", "ACI-P066-L014-3FFC7C76D3"])
+      }),
+      "subject-person-sound-change": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.1", "§§2.10.5–2.10.6"]),
+        atomIds: Object.freeze(["ACI-P066-L029-F5311302DA-05"])
+      }),
+      "subject-supportive-i": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.1"]),
+        atomIds: Object.freeze(["ACI-P066-L028-2D04EA9809"])
+      }),
+      "subject-nominative": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.2"]),
+        atomIds: Object.freeze(["ACI-P066-L033-9298289CDF", "ACI-P066-L035-87CF77E36D-04"])
+      }),
+      "monadic-valence": Object.freeze({
+        lessonSections: Object.freeze(["§6.2"]),
+        atomIds: Object.freeze(["ACI-P072-L002-47F1830B99", "ACI-P072-L005-833314E443"])
+      }),
+      "object-person": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.1"]),
+        atomIds: Object.freeze(["ACI-P073-L008-4749BA79B8"])
+      }),
+      "object-supportive-i": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.1.a"]),
+        atomIds: Object.freeze(["ACI-P073-L011-66E6495050", "ACI-P073-L019-DF58E7CC8C"])
+      }),
+      "object-k-spelling": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.1.a", "Lesson 2"]),
+        atomIds: Object.freeze(["ACI-P073-L011-D2242C130D", "ACI-P073-L012-492E7ECA39"])
+      }),
+      "reflexive-object": Object.freeze({
+        lessonSections: Object.freeze(["§6.6", "§6.6.1"]),
+        atomIds: Object.freeze(["ACI-P074-L025-D628B6DB99", "ACI-P074-L028-B320257450"])
+      }),
+      "object-number": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.2.a"]),
+        atomIds: Object.freeze(["ACI-P073-L034-DB645E57A4", "ACI-P073-L035-3FCF0C9A26", "ACI-P073-L036-338347B74C"])
+      }),
+      "objective-case": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.2.b", "§6.6.2"]),
+        atomIds: Object.freeze(["ACI-P074-L005-77DB5DB5D1", "ACI-P074-L033-07E54C007A", "ACI-P074-L034-34199278E6"])
+      }),
+      "mood-tense": Object.freeze({
+        lessonSections: Object.freeze(["§5.5.2"]),
+        atomIds: Object.freeze(["ACI-P069-L030-1A258F89B6", "ACI-P070-L008-3B897B6D84"])
+      }),
+      "number-connector": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.3"]),
+        atomIds: Object.freeze(["ACI-P066-L038-E95A69E5E8", "ACI-P066-L038-044B926E52"])
+      }),
+      "subject-number": Object.freeze({
+        lessonSections: Object.freeze(["§5.3.4"]),
+        atomIds: Object.freeze(["ACI-P067-L031-47DF6EA054", "ACI-P067-L032-2DF66E2A0D"])
+      }),
+      "right-attachment": Object.freeze({
+        lessonSections: Object.freeze(["§3.2.4", "§3.3"]),
+        atomIds: Object.freeze(["ACI-P056-L024-EA0D75FF38-10", "ACI-P057-L021-F8C9506BBB"])
+      }),
+      "left-attachment": Object.freeze({
+        lessonSections: Object.freeze(["§3.2.5"]),
+        atomIds: Object.freeze(["ACI-P056-L040-9F2DD2E0DF-06"])
+      })
+    });
+    function getClassicalFormulaHoverAuthorities() {
+      return CLASSICAL_FORMULA_HOVER_AUTHORITIES;
+    }
     function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null) {
       const text = String(formula || "");
       const slots = typedSlotFrame?.slots || {};
       const annotations = [];
-      const addAnnotation = (start, end, role, label, presentation = "carrier") => {
+      const addAnnotation = (start, end, role, label, presentation = "carrier", authorityKey = "") => {
         if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > text.length) return;
-        annotations.push(Object.freeze({ start, end, role, label, presentation }));
+        const authority = CLASSICAL_FORMULA_HOVER_AUTHORITIES[authorityKey];
+        if (!authority) return;
+        annotations.push(Object.freeze({
+          start,
+          end,
+          role,
+          label,
+          presentation,
+          lessonSections: authority.lessonSections,
+          atomIds: authority.atomIds
+        }));
       };
-      const addCarrierAnnotation = (start, carrier, role, label, presentation = "carrier") => {
+      const addCarrierAnnotation = (start, carrier, role, label, presentation = "carrier", authorityKey = "") => {
         const value = String(carrier || "");
         if (!value || text.slice(start, start + value.length) !== value) return;
-        addAnnotation(start, start + value.length, role, label, presentation);
+        addAnnotation(start, start + value.length, role, label, presentation, authorityKey);
       };
       const isSilentCarrier = carrier => ["0", "⎕"].includes(String(carrier || ""));
       const subject = slots.subject || {};
@@ -4825,18 +4904,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const subjectPers1Start = nuclearStart + 1;
       const subjectPers2Start = subjectPers1Start + String(subject.pers1 || "").length + 1;
       if (isSilentCarrier(subject.pers1)) {
-        addCarrierAnnotation(subjectPers1Start, subject.pers1, "silent-subject-person", "silent subject person", "silent");
+        addCarrierAnnotation(subjectPers1Start, subject.pers1, "silent-subject-person", "silent subject person", "silent", "subject-person");
       } else if (subject.pers1 && subject.baseMorph && subject.pers1 === `${subject.baseMorph}i`) {
-        addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "automatic subject person carrier");
-        addCarrierAnnotation(subjectPers1Start + subject.baseMorph.length, "i", "subject-supportive-i", "supportive i", "supportive-i");
+        addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "subject person", "carrier", "subject-person");
+        addCarrierAnnotation(subjectPers1Start + subject.baseMorph.length, "i", "subject-supportive-i", "supportive i", "supportive-i", "subject-supportive-i");
       } else if (subject.pers1) {
         const subjectChange = subject.baseMorph && subject.baseMorph !== subject.pers1;
         addCarrierAnnotation(
           subjectPers1Start,
           subject.pers1,
           subjectChange ? "subject-automatic-sound-change" : "subject-person-carrier",
-          subjectChange ? "automatic subject sound change" : "automatic subject person carrier",
-          subjectChange ? "automatic-change" : "carrier"
+          subjectChange ? "subject person sound change" : "subject person",
+          subjectChange ? "automatic-change" : "carrier",
+          subjectChange ? "subject-person-sound-change" : "subject-person"
         );
       }
       if (subject.pers2) {
@@ -4844,8 +4924,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           subjectPers2Start,
           subject.pers2,
           isSilentCarrier(subject.pers2) ? "silent-nominative" : "subject-case-carrier",
-          isSilentCarrier(subject.pers2) ? "silent nominative" : "automatic subject case carrier",
-          isSilentCarrier(subject.pers2) ? "silent" : "carrier"
+          isSilentCarrier(subject.pers2) ? "silent nominative" : "nominative",
+          isSilentCarrier(subject.pers2) ? "silent" : "carrier",
+          "subject-nominative"
         );
       }
       let prePredicateCursor = subjectPers2Start + String(subject.pers2 || "").length;
@@ -4859,11 +4940,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const objectProfile = typedSlotFrame?.objectProfile || slot?.objectPositionFrame || {};
         const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
         if (slot?.kind === "monadic-valence") {
-          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "automatic object carrier");
+          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "object", "carrier", "monadic-valence");
           return;
         }
         if (slot?.kind !== "dyadic-valence") {
-          addCarrierAnnotation(carrierStart, carrier, `derived-carrier-${slotIndex + 1}`, "automatic grammatical carrier");
           return;
         }
         const identity = slot?.morphIdentityFrame;
@@ -4876,29 +4956,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const va1BaseLength = supportiveObjectI ? va1.length - 1 : va1.length;
         const silentVa1 = isSilentCarrier(va1);
         const va1Label = silentVa1
-          ? "silent object person carrier"
+          ? "silent object person"
           : reflexive
-          ? "reflexive object matching subject"
+          ? "reflexive object"
           : identity?.morphIdentity === "/k/"
-            ? "automatic /k/ spelling"
-            : "automatic object person carrier";
+            ? "/k/ spelling"
+            : "object person";
         addCarrierAnnotation(
           carrierStart,
           va1.slice(0, va1BaseLength),
           silentVa1 ? "silent-object-person" : reflexive ? "reflexive-object-carrier" : identity?.morphIdentity === "/k/" ? "object-automatic-spelling" : "object-person-carrier",
           va1Label,
-          silentVa1 ? "silent" : identity?.morphIdentity === "/k/" ? "automatic-change" : "carrier"
+          silentVa1 ? "silent" : identity?.morphIdentity === "/k/" ? "automatic-change" : "carrier",
+          reflexive ? "reflexive-object" : identity?.morphIdentity === "/k/" ? "object-k-spelling" : "object-person"
         );
         if (supportiveObjectI) {
-          addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i");
+          addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i", "object-supportive-i");
         }
         const va2Start = carrierStart + va1.length + 1;
+        const va2IsSilent = isSilentCarrier(va2);
         addCarrierAnnotation(
           va2Start,
           va2,
-          isSilentCarrier(va2) ? "silent-object-carrier" : "object-case-or-number-carrier",
-          isSilentCarrier(va2) ? "silent object carrier" : reflexive ? "automatic objective case carrier" : "automatic object number carrier",
-          isSilentCarrier(va2) ? "silent" : "carrier"
+          reflexive ? "objective-case-carrier" : "object-number-carrier",
+          reflexive ? (va2IsSilent ? "silent objective case" : "objective case") : (va2IsSilent ? "silent singular object number" : "object number"),
+          va2IsSilent ? "silent" : "carrier",
+          reflexive ? "objective-case" : "object-number"
         );
       });
       const predicate = slots.predicate || {};
@@ -4910,8 +4993,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           tenseStart,
           predicate.tns,
           isSilentCarrier(predicate.tns) ? "silent-tense" : "tense-carrier",
-          isSilentCarrier(predicate.tns) ? "silent tense" : "automatic tense carrier",
-          isSilentCarrier(predicate.tns) ? "silent" : "carrier"
+          isSilentCarrier(predicate.tns) ? "silent mood and tense" : "mood and tense",
+          isSilentCarrier(predicate.tns) ? "silent" : "carrier",
+          "mood-tense"
         );
         const number = slots.number || {};
         const num1Start = tenseStart + String(predicate.tns || "").length + 1;
@@ -4919,16 +5003,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           num1Start,
           number.num1,
           isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector",
-          isSilentCarrier(number.num1) ? "silent number connector" : "automatic number connector",
-          isSilentCarrier(number.num1) ? "silent" : "carrier"
+          isSilentCarrier(number.num1) ? "silent number connector" : "number connector",
+          isSilentCarrier(number.num1) ? "silent" : "carrier",
+          "number-connector"
         );
         const num2Start = num1Start + String(number.num1 || "").length + 1;
         addCarrierAnnotation(
           num2Start,
           number.num2,
           isSilentCarrier(number.num2) ? "silent-subject-number" : "subject-number-carrier",
-          isSilentCarrier(number.num2) ? "silent subject number" : "automatic subject number carrier",
-          isSilentCarrier(number.num2) ? "silent" : "carrier"
+          isSilentCarrier(number.num2) ? "silent subject number" : "subject number",
+          isSilentCarrier(number.num2) ? "silent" : "carrier",
+          "subject-number"
         );
       }
       const nuclearEnd = text.indexOf("#", nuclearStart + 1);
@@ -4939,14 +5025,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           /[\p{L}\p{M}]/u.test(text[boundaryStart - 1] || "")
           && /[\p{L}\p{M}]/u.test(text[boundaryStart + 1] || "")
         ) {
-          addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
+          addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attaches right", "attachment", "right-attachment");
         }
       });
       if (nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "")) {
-        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
+        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attaches right", "attachment", "right-attachment");
       }
       if (nuclearEnd >= 0 && /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "")) {
-        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attached to the word on its left", "attachment");
+        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attaches left", "attachment", "left-attachment");
       }
       return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
@@ -4967,6 +5053,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const mark = targetObject.document.createElement(annotation.presentation === "supportive-i" ? "em" : "span");
         mark.className = `classical-formula__derived-annotation classical-formula__derived-annotation--${annotation.presentation}${annotation.presentation === "supportive-i" ? " classical-formula__supportive-i" : ""}`;
         mark.dataset.classicalDerivedAnnotation = annotation.role;
+        mark.dataset.classicalDerivedAnnotationLessons = annotation.lessonSections.join("|");
+        mark.dataset.classicalDerivedAnnotationAtoms = annotation.atomIds.join("|");
         mark.title = annotation.label;
         mark.setAttribute("aria-label", annotation.label);
         mark.textContent = renderedText.slice(annotation.start, annotation.end);
@@ -24443,6 +24531,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     });
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
     api.getClassicalFormulaDerivedAnnotations = getClassicalFormulaDerivedAnnotations;
+    api.getClassicalFormulaHoverAuthorities = getClassicalFormulaHoverAuthorities;
     api.renderClassicalFormulaDerivedAnnotations = renderClassicalFormulaDerivedAnnotations;
     api.renderClassicalDiagramDerivedAnnotations = renderClassicalDiagramDerivedAnnotations;
     api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;
