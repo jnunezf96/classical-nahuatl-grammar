@@ -21,7 +21,7 @@ import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlAdverbialNuclearGlobals } from "../core/classical/adverbial_nuclear_grammar.mjs?v=20260806-class-c-claim-172";
 import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/nnc_lessons45_47_closure.mjs?v=20260728-relational-owner-110";
-import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?v=20260801-pre-l58-gates-120";
+import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?v=20260813-derived-formula-annotations-001";
 import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlVncLateOperationUiContractGlobals } from "../core/classical/vnc_late_operation_ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20260728-denominal-owner-path-114";
@@ -71,7 +71,7 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-paradigm-optional-columns-001";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-derived-formula-annotations-003";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson6-complete-002";

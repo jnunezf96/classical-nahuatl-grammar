@@ -4,12 +4,12 @@ import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260812-sound-result-116";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-clause-rhythm-173";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-clause-rhythm-173";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-clause-rhythm-173";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-clause-rhythm-173";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-clause-rhythm-173";
+} from "../runtime/create_runtime.mjs?v=20260813-balanced-workbench-174";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-balanced-workbench-174";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-balanced-workbench-174";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-balanced-workbench-174";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-balanced-workbench-174";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-balanced-workbench-174";
 
 let browserBootstrapPromise = null;
 

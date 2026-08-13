@@ -4311,6 +4311,16 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
   overflow-wrap: anywhere;
 }
 
+.classical-formula__derived-annotation {
+  color: inherit;
+  cursor: pointer;
+}
+
+.classical-formula__derived-annotation--supportive-i {
+  font-family: var(--font-title);
+  font-style: italic;
+  font-weight: 700;
+}
 .classical-rule-surface__diagram {
   color: #1f454f;
 }

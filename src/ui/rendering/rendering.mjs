@@ -4802,6 +4802,181 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalVncParadigmTypedSlotFrame(machineryFrame = null) {
       return machineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || machineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame || machineryFrame?.finalBoundaryRealizationFrame?.typedSlotFrame || null;
     }
+    function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null) {
+      const text = String(formula || "");
+      const slots = typedSlotFrame?.slots || {};
+      const annotations = [];
+      const addAnnotation = (start, end, role, label, presentation = "carrier") => {
+        if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > text.length) return;
+        annotations.push(Object.freeze({ start, end, role, label, presentation }));
+      };
+      const addCarrierAnnotation = (start, carrier, role, label, presentation = "carrier") => {
+        const value = String(carrier || "");
+        if (!value || text.slice(start, start + value.length) !== value) return;
+        addAnnotation(start, start + value.length, role, label, presentation);
+      };
+      const isSilentCarrier = carrier => ["0", "⎕"].includes(String(carrier || ""));
+      const subject = slots.subject || {};
+      const nuclearSignature = subject.pers1 && subject.pers2
+        ? `#${subject.pers1}-${subject.pers2}`
+        : "";
+      const nuclearStart = nuclearSignature ? text.indexOf(nuclearSignature) : text.indexOf("#");
+      if (nuclearStart < 0) return Object.freeze([]);
+      const subjectPers1Start = nuclearStart + 1;
+      const subjectPers2Start = subjectPers1Start + String(subject.pers1 || "").length + 1;
+      if (isSilentCarrier(subject.pers1)) {
+        addCarrierAnnotation(subjectPers1Start, subject.pers1, "silent-subject-person", "silent subject person", "silent");
+      } else if (subject.pers1 && subject.baseMorph && subject.pers1 === `${subject.baseMorph}i`) {
+        addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "automatic subject person carrier");
+        addCarrierAnnotation(subjectPers1Start + subject.baseMorph.length, "i", "subject-supportive-i", "supportive i", "supportive-i");
+      } else if (subject.pers1) {
+        const subjectChange = subject.baseMorph && subject.baseMorph !== subject.pers1;
+        addCarrierAnnotation(
+          subjectPers1Start,
+          subject.pers1,
+          subjectChange ? "subject-automatic-sound-change" : "subject-person-carrier",
+          subjectChange ? "automatic subject sound change" : "automatic subject person carrier",
+          subjectChange ? "automatic-change" : "carrier"
+        );
+      }
+      if (subject.pers2) {
+        addCarrierAnnotation(
+          subjectPers2Start,
+          subject.pers2,
+          isSilentCarrier(subject.pers2) ? "silent-nominative" : "subject-case-carrier",
+          isSilentCarrier(subject.pers2) ? "silent nominative" : "automatic subject case carrier",
+          isSilentCarrier(subject.pers2) ? "silent" : "carrier"
+        );
+      }
+      let prePredicateCursor = subjectPers2Start + String(subject.pers2 || "").length;
+      (slots.prePredicate || []).forEach((slot, slotIndex) => {
+        const carrier = String(slot?.formulaCarrier || slot?.carrier || (slot?.kind === "dyadic-valence" ? `${slot.va1}-${slot.va2}` : slot?.va) || "");
+        const token = `+${carrier}`;
+        const tokenStart = text.indexOf(token, prePredicateCursor);
+        if (tokenStart < 0) return;
+        const carrierStart = tokenStart + 1;
+        prePredicateCursor = carrierStart + carrier.length;
+        const objectProfile = typedSlotFrame?.objectProfile || slot?.objectPositionFrame || {};
+        const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
+        if (slot?.kind === "monadic-valence") {
+          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "automatic object carrier");
+          return;
+        }
+        if (slot?.kind !== "dyadic-valence") {
+          addCarrierAnnotation(carrierStart, carrier, `derived-carrier-${slotIndex + 1}`, "automatic grammatical carrier");
+          return;
+        }
+        const identity = slot?.morphIdentityFrame;
+        const va1 = String(slot.va1 || "");
+        const va2 = String(slot.va2 || "");
+        const supportiveObjectI = identity?.supportiveVowel === "i"
+          && identity?.supportiveVowelIsObjectIdentity === false
+          && identity?.supportiveSpelling === va1
+          && va1.endsWith("i");
+        const va1BaseLength = supportiveObjectI ? va1.length - 1 : va1.length;
+        const silentVa1 = isSilentCarrier(va1);
+        const va1Label = silentVa1
+          ? "silent object person carrier"
+          : reflexive
+          ? "reflexive object matching subject"
+          : identity?.morphIdentity === "/k/"
+            ? "automatic /k/ spelling"
+            : "automatic object person carrier";
+        addCarrierAnnotation(
+          carrierStart,
+          va1.slice(0, va1BaseLength),
+          silentVa1 ? "silent-object-person" : reflexive ? "reflexive-object-carrier" : identity?.morphIdentity === "/k/" ? "object-automatic-spelling" : "object-person-carrier",
+          va1Label,
+          silentVa1 ? "silent" : identity?.morphIdentity === "/k/" ? "automatic-change" : "carrier"
+        );
+        if (supportiveObjectI) {
+          addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i");
+        }
+        const va2Start = carrierStart + va1.length + 1;
+        addCarrierAnnotation(
+          va2Start,
+          va2,
+          isSilentCarrier(va2) ? "silent-object-carrier" : "object-case-or-number-carrier",
+          isSilentCarrier(va2) ? "silent object carrier" : reflexive ? "automatic objective case carrier" : "automatic object number carrier",
+          isSilentCarrier(va2) ? "silent" : "carrier"
+        );
+      });
+      const predicate = slots.predicate || {};
+      const stemToken = `(${String(predicate.stem || "")})`;
+      const stemStart = text.indexOf(stemToken, prePredicateCursor);
+      if (stemStart >= 0) {
+        const tenseStart = stemStart + stemToken.length;
+        addCarrierAnnotation(
+          tenseStart,
+          predicate.tns,
+          isSilentCarrier(predicate.tns) ? "silent-tense" : "tense-carrier",
+          isSilentCarrier(predicate.tns) ? "silent tense" : "automatic tense carrier",
+          isSilentCarrier(predicate.tns) ? "silent" : "carrier"
+        );
+        const number = slots.number || {};
+        const num1Start = tenseStart + String(predicate.tns || "").length + 1;
+        addCarrierAnnotation(
+          num1Start,
+          number.num1,
+          isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector",
+          isSilentCarrier(number.num1) ? "silent number connector" : "automatic number connector",
+          isSilentCarrier(number.num1) ? "silent" : "carrier"
+        );
+        const num2Start = num1Start + String(number.num1 || "").length + 1;
+        addCarrierAnnotation(
+          num2Start,
+          number.num2,
+          isSilentCarrier(number.num2) ? "silent-subject-number" : "subject-number-carrier",
+          isSilentCarrier(number.num2) ? "silent subject number" : "automatic subject number carrier",
+          isSilentCarrier(number.num2) ? "silent" : "carrier"
+        );
+      }
+      const nuclearEnd = text.indexOf("#", nuclearStart + 1);
+      Array.from(text.matchAll(/#/gu)).forEach(match => {
+        const boundaryStart = match.index;
+        if (boundaryStart === nuclearStart || boundaryStart === nuclearEnd) return;
+        if (
+          /[\p{L}\p{M}]/u.test(text[boundaryStart - 1] || "")
+          && /[\p{L}\p{M}]/u.test(text[boundaryStart + 1] || "")
+        ) {
+          addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
+        }
+      });
+      if (nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "")) {
+        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
+      }
+      if (nuclearEnd >= 0 && /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "")) {
+        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attached to the word on its left", "attachment");
+      }
+      return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
+    }
+    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null) {
+      if (!element) return Object.freeze([]);
+      const text = String(formula || "");
+      const annotations = getClassicalFormulaDerivedAnnotations(text, typedSlotFrame);
+      if (!annotations.length || typeof targetObject.document?.createTextNode !== "function") {
+        element.textContent = text;
+        return annotations;
+      }
+      const fragments = [];
+      let cursor = 0;
+      annotations.forEach(annotation => {
+        if (annotation.start > cursor) {
+          fragments.push(targetObject.document.createTextNode(text.slice(cursor, annotation.start)));
+        }
+        const mark = targetObject.document.createElement(annotation.presentation === "supportive-i" ? "em" : "span");
+        mark.className = `classical-formula__derived-annotation classical-formula__derived-annotation--${annotation.presentation}${annotation.presentation === "supportive-i" ? " classical-formula__supportive-i" : ""}`;
+        mark.dataset.classicalDerivedAnnotation = annotation.role;
+        mark.title = annotation.label;
+        mark.setAttribute("aria-label", annotation.label);
+        mark.textContent = text.slice(annotation.start, annotation.end);
+        fragments.push(mark);
+        cursor = annotation.end;
+      });
+      if (cursor < text.length) fragments.push(targetObject.document.createTextNode(text.slice(cursor)));
+      element.replaceChildren(...fragments);
+      return annotations;
+    }
     function buildClassicalVncSmithOutputVisualFrame({
       fixedSourceAnalysis = null,
       transitivityViews = [],
@@ -9930,7 +10105,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   row.conditionedParadigmCellFrame
                 );
                 const formula = targetObject.document.createElement("code");
-                formula.textContent = row.sentenceFormula || row.formula;
+                renderClassicalFormulaDerivedAnnotations(
+                  formula,
+                  row.sentenceFormula || row.formula,
+                  row.typedSlotFrame
+                );
                 if (["preterit-as-present", "distant-past-as-past"].includes(row.paradigmTense || row.tense)) {
                   const tenseIdentity = targetObject.document.createElement("span");
                   tenseIdentity.className = "classical-rule-surface__vnc-paradigm-tense-identity";
@@ -17344,13 +17523,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       formula.dataset.classicalFormulaAuthority = surfaceFrame.formulaAuthority || "";
       const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
-      formula.textContent = specificLinearFormula;
+      const specificLinearTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
+      renderClassicalFormulaDerivedAnnotations(
+        formula,
+        specificLinearFormula,
+        specificLinearTypedSlotFrame
+      );
       const linearFormatSwitch = createFormulaSpecificitySwitch("Linear format", mode => {
         const showGeneral = mode === "general" && Boolean(generalLinearFormula);
         linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral ? "general" : "specific";
         formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
         formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
-        formula.textContent = showGeneral ? generalLinearFormula : specificLinearFormula;
+        if (showGeneral) formula.textContent = generalLinearFormula;
+        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame);
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
       linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
@@ -17444,7 +17629,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       sentenceFormula.dataset.classicalSentenceStatus = surfaceFrame.sentenceSurfaceStatus || "";
       sentenceFormula.dataset.classicalSentenceParticlesBecomeFormulaSlots = String(surfaceFrame.sentenceParticlesBecomeFormulaSlots === true);
       const typedSentenceFormulaDisplay = singleNncElegantActive ? singleNncDisplayFrame.sentenceFormula : singleVncElegantActive ? singleVncDisplayFrame.sentenceFormula : surfaceFrame.sentenceFormulaDisplay;
-      sentenceFormula.textContent = typedSentenceFormulaDisplay || "";
+      renderClassicalFormulaDerivedAnnotations(
+        sentenceFormula,
+        typedSentenceFormulaDisplay || "",
+        specificLinearTypedSlotFrame
+      );
       sentenceFormula.hidden = !typedSentenceFormulaDisplay;
       sentenceFormulaSection.hidden = fullParadigmActive || !typedSentenceFormulaDisplay;
       sentenceFormulaSection.append(sentenceFormulaHeading, sentenceFormula);
@@ -24197,6 +24386,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         get() { return CLASSICAL_VNC_PARADIGM_GROUPS; },
     });
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
+    api.getClassicalFormulaDerivedAnnotations = getClassicalFormulaDerivedAnnotations;
+    api.renderClassicalFormulaDerivedAnnotations = renderClassicalFormulaDerivedAnnotations;
     api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;
     api.getClassicalVncParadigmMorphologicalAspect = getClassicalVncParadigmMorphologicalAspect;
     api.getClassicalVncFullParadigmControlContract = getClassicalVncFullParadigmControlContract;
