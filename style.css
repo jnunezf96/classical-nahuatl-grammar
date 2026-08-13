@@ -4553,6 +4553,21 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
   color: #4d3d1d;
 }
 
+.classical-formula__derived-annotation.classical-formula__supportive-i {
+  color: #a33f1f;
+  font-style: italic;
+  font-weight: 900;
+  text-decoration: underline dotted currentColor;
+  text-underline-offset: 0.18em;
+}
+
+.classical-formula__annotation-legend {
+  color: #7a3825;
+  font-size: 0.72rem;
+  font-style: italic;
+  font-weight: 720;
+}
+
 .classical-rule-surface__diagram {
   color: #1f454f;
 }

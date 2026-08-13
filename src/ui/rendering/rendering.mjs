@@ -4803,6 +4803,76 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalVncParadigmTypedSlotFrame(machineryFrame = null) {
       return machineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || machineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame || machineryFrame?.finalBoundaryRealizationFrame?.typedSlotFrame || null;
     }
+    function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null) {
+      const text = String(formula || "");
+      const slots = typedSlotFrame?.slots || {};
+      const annotations = [];
+      const subject = slots.subject || {};
+      const nuclearStart = text.indexOf("#");
+      if (
+        nuclearStart >= 0
+        && subject.pers1
+        && subject.baseMorph
+        && subject.pers1 === `${subject.baseMorph}i`
+      ) {
+        const carrierStart = nuclearStart + 1;
+        if (text.slice(carrierStart, carrierStart + subject.pers1.length) === subject.pers1) {
+          annotations.push(Object.freeze({
+            start: carrierStart + subject.pers1.length - 1,
+            end: carrierStart + subject.pers1.length,
+            role: "subject-supportive-i",
+            label: "supportive i · added automatically for pronunciation"
+          }));
+        }
+      }
+      (slots.prePredicate || []).forEach(slot => {
+        const identity = slot?.morphIdentityFrame;
+        if (
+          identity?.supportiveVowel !== "i"
+          || identity?.supportiveVowelIsObjectIdentity !== false
+          || identity?.supportiveSpelling !== slot?.va1
+          || !String(slot.va1 || "").endsWith("i")
+        ) return;
+        const carrier = `+${slot.va1}-${slot.va2}(`;
+        const carrierStart = text.indexOf(carrier, nuclearStart >= 0 ? nuclearStart : 0);
+        if (carrierStart < 0) return;
+        const iStart = carrierStart + 1 + slot.va1.length - 1;
+        annotations.push(Object.freeze({
+          start: iStart,
+          end: iStart + 1,
+          role: "object-supportive-i",
+          label: "supportive i · added automatically for pronunciation"
+        }));
+      });
+      return Object.freeze(annotations.sort((left, right) => left.start - right.start));
+    }
+    function renderClassicalFormulaDerivedAnnotations(element = null, formula = "", typedSlotFrame = null) {
+      if (!element) return Object.freeze([]);
+      const text = String(formula || "");
+      const annotations = getClassicalFormulaDerivedAnnotations(text, typedSlotFrame);
+      if (!annotations.length || typeof targetObject.document?.createTextNode !== "function") {
+        element.textContent = text;
+        return annotations;
+      }
+      const fragments = [];
+      let cursor = 0;
+      annotations.forEach(annotation => {
+        if (annotation.start > cursor) {
+          fragments.push(targetObject.document.createTextNode(text.slice(cursor, annotation.start)));
+        }
+        const mark = targetObject.document.createElement("em");
+        mark.className = "classical-formula__derived-annotation classical-formula__supportive-i";
+        mark.dataset.classicalDerivedAnnotation = annotation.role;
+        mark.title = annotation.label;
+        mark.setAttribute("aria-label", annotation.label);
+        mark.textContent = text.slice(annotation.start, annotation.end);
+        fragments.push(mark);
+        cursor = annotation.end;
+      });
+      if (cursor < text.length) fragments.push(targetObject.document.createTextNode(text.slice(cursor)));
+      element.replaceChildren(...fragments);
+      return annotations;
+    }
     function buildClassicalVncSmithOutputVisualFrame({
       fixedSourceAnalysis = null,
       transitivityViews = [],
@@ -9925,7 +9995,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   row.conditionedParadigmCellFrame
                 );
                 const formula = targetObject.document.createElement("code");
-                formula.textContent = row.sentenceFormula || row.formula;
+                renderClassicalFormulaDerivedAnnotations(
+                  formula,
+                  row.sentenceFormula || row.formula,
+                  row.typedSlotFrame
+                );
                 if (["preterit-as-present", "distant-past-as-past"].includes(row.paradigmTense || row.tense)) {
                   const tenseIdentity = targetObject.document.createElement("span");
                   tenseIdentity.className = "classical-rule-surface__vnc-paradigm-tense-identity";
@@ -17351,16 +17425,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
       formula.dataset.classicalFormulaAuthority = surfaceFrame.formulaAuthority || "";
       const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
-      formula.textContent = specificLinearFormula;
+      const specificLinearTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
+      const specificLinearAnnotations = renderClassicalFormulaDerivedAnnotations(
+        formula,
+        specificLinearFormula,
+        specificLinearTypedSlotFrame
+      );
       const linearFormatSwitch = createFormulaSpecificitySwitch("Linear format", mode => {
         const showGeneral = mode === "general" && Boolean(generalLinearFormula);
         linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral ? "general" : "specific";
         formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
         formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
-        formula.textContent = showGeneral ? generalLinearFormula : specificLinearFormula;
+        if (showGeneral) formula.textContent = generalLinearFormula;
+        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame);
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
       linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
+      if (specificLinearAnnotations.length) {
+        const annotationLegend = targetObject.document.createElement("small");
+        annotationLegend.className = "classical-formula__annotation-legend";
+        annotationLegend.textContent = "Italic color: supportive i added automatically";
+        linearFormatHeading.appendChild(annotationLegend);
+      }
       linearFormat.append(linearFormatHeading, formula);
       linearFormat.hidden = fullParadigmActive;
       const nuclearClauseDiagram = targetObject.document.createElement("section");
@@ -17451,7 +17537,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       sentenceFormula.dataset.classicalSentenceStatus = surfaceFrame.sentenceSurfaceStatus || "";
       sentenceFormula.dataset.classicalSentenceParticlesBecomeFormulaSlots = String(surfaceFrame.sentenceParticlesBecomeFormulaSlots === true);
       const typedSentenceFormulaDisplay = singleNncElegantActive ? singleNncDisplayFrame.sentenceFormula : singleVncElegantActive ? singleVncDisplayFrame.sentenceFormula : surfaceFrame.sentenceFormulaDisplay;
-      sentenceFormula.textContent = typedSentenceFormulaDisplay || "";
+      renderClassicalFormulaDerivedAnnotations(
+        sentenceFormula,
+        typedSentenceFormulaDisplay || "",
+        specificLinearTypedSlotFrame
+      );
       sentenceFormula.hidden = !typedSentenceFormulaDisplay;
       sentenceFormulaSection.hidden = fullParadigmActive || !typedSentenceFormulaDisplay;
       sentenceFormulaSection.append(sentenceFormulaHeading, sentenceFormula);
@@ -24204,6 +24294,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         get() { return CLASSICAL_VNC_PARADIGM_GROUPS; },
     });
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
+    api.getClassicalFormulaDerivedAnnotations = getClassicalFormulaDerivedAnnotations;
+    api.renderClassicalFormulaDerivedAnnotations = renderClassicalFormulaDerivedAnnotations;
     api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;
     api.getClassicalVncParadigmMorphologicalAspect = getClassicalVncParadigmMorphologicalAspect;
     api.getClassicalVncFullParadigmControlContract = getClassicalVncFullParadigmControlContract;
