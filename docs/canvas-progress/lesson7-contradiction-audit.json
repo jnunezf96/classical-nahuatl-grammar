@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "lesson": 7,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 9,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "A verbstem remains one lexical unit while preserving its real internal morph boundaries.",
+    "Valence is part of verb citation grammar; automatic carrier spelling is not a separate user choice.",
+    "Class choices are shown only when Canvas licenses more than one class; otherwise class behavior is automatic.",
+    "Perfective and imperfective stem shapes come from one class-conditioned system rather than competing rules.",
+    "The exact long-vowel stem e-hua may license A or B without colliding with the different stem e-hu-a.",
+    "Predicate table selection uses mood, tense, class, and subject context without creating duplicate controls.",
+    "Human, nonhuman, reflexive, and reciprocal relationships retain their separate grammatical and interpretive conditions.",
+    "Absence of a documentary example never blocks a grammatically licensed Result.",
+    "Typed source boundaries distinguish external object tla from stem-internal tla fusion and enforce the correct valence."
+  ]
+}

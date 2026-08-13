@@ -65,6 +65,11 @@ export const LESSON7_READER_GUIDANCE_GROUPS = freeze([
     "Read the object relationship before choosing a translation",
     "Human tē and nonhuman tla relate to different specific-object systems. A singular reflexive is reflexive only; a plural reflexive can also be reciprocal. A grammatically singular nonhuman object may still refer to plural nonanimate things where Canvas licenses that reading.",
   ),
+  idea(
+    "lesson7-tla-fusion",
+    "Read whether tla is an object or part of the stem",
+    "An unfused tla occupies the nonhuman object position of a transitive VNC. Through tla fusion, it moves inside a newly derived intransitive verbstem. An incorporated adverb before tla can reveal the fused boundary even when translation alone does not.",
+  ),
 ]);
 
 export function isLesson7ReaderGuidanceExact(candidate = []) {

@@ -5,11 +5,11 @@ import {
     attachRuntimeBindings,
     createRuntimeInstance,
 } from "../runtime/create_runtime.mjs?v=20260813-balanced-workbench-174";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-lesson7-groups10-12-183";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson7-groups10-12-183";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson7-groups10-12-183";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson7-groups10-12-183";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson7-groups10-12-183";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-lesson7-complete-184";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson7-complete-184";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson7-complete-184";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson7-complete-184";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson7-complete-184";
 
 let browserBootstrapPromise = null;
 

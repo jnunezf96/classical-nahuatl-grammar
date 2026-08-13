@@ -50,6 +50,10 @@
     "lesson7-object-relationship-contrasts": {
       "status": "ACCEPTED",
       "acceptedJob": "Keep human, nonhuman, reflexive, and reciprocal relationships distinct, including subject-number and referent-number conditions."
+    },
+    "lesson7-tla-fusion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the typed source structure to distinguish external object tla from stem-internal tla fusion, then enforce the derived intransitive Result without adding a raw spelling control."
     }
   }
 }

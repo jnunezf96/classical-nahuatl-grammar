@@ -270,6 +270,18 @@
       "readingJob": "Help the reader recognize when tla belongs inside a derived stem rather than occupying the object position.",
       "decisionSplit": "The user supplies or selects the intended source structure; the application enforces the fusion and resulting valence.",
       "controlPolicy": "Reuse typed Stem or Embed plus matrix structure; do not add a raw fusion-spelling control.",
+      "writingAtomIds": [
+        "ACI-P086-L015-81AD0E5E7C",
+        "ACI-P086-L017-E9D7702D11",
+        "ACI-P086-L019-7E6A7560AB-03",
+        "ACI-P086-L019-7E6A7560AB-04",
+        "ACI-P086-L025-CD621F315E",
+        "ACI-P086-L025-CD621F315E-02",
+        "ACI-P086-L025-CD621F315E-04",
+        "ACI-P086-L029-A115934947",
+        "ACI-P086-L029-FEF4AF9630",
+        "ACI-P086-L034-7F79A0347A"
+      ],
       "proposal": "Make tla fusion a typed derivational structure with a distinct intransitive Result."
     }
   ]

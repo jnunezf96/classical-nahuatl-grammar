@@ -162,12 +162,12 @@ All 344 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §7.10
 - Atoms: 26
-- Proposed direction: 9 both; 17 reading only
+- Proposed direction: 10 both; 16 reading only
 - Writing job: Distinguish an unfused transitive tla object from a licensed adverb-plus-tla derived intransitive stem and carry the selected structure into the Result.
 - Reading job: Help the reader recognize when tla belongs inside a derived stem rather than occupying the object position.
 - User/application split: The user supplies or selects the intended source structure; the application enforces the fusion and resulting valence.
 - Control policy: Reuse typed Stem or Embed plus matrix structure; do not add a raw fusion-spelling control.
 - Proposal: Make tla fusion a typed derivational structure with a distinct intransitive Result.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/26
+- Status: ACCEPTED
+- Exactly observed: 26/26
 
