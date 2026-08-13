@@ -16066,7 +16066,7 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
       minmax(280px, 0.98fr)
       minmax(340px, 1.34fr);
     grid-template-areas: "source grammar result";
-    align-items: start;
+    align-items: stretch;
     gap: clamp(12px, 1.35vw, 20px);
   }
 
@@ -16079,14 +16079,36 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
 
   body.is-language-classical #panel-stack-pane-inputs {
     grid-area: source;
+    height: 100%;
+    align-content: start;
+    grid-auto-rows: max-content;
   }
 
   body.is-language-classical #panel-stack-pane-tense {
     grid-area: grammar;
+    height: 100%;
+    align-content: start;
+    grid-auto-rows: max-content;
   }
 
   body.is-language-classical #container-tense-grid {
     grid-area: result;
+    height: 100%;
+    align-content: start;
+    grid-auto-rows: max-content;
+  }
+
+  body.is-language-classical #panel-stack-pane-inputs > #container-inputs {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+  }
+
+  body.is-language-classical #panel-stack-pane-inputs > #container-inputs > * {
+    flex: 0 0 auto;
+    align-self: start;
+    height: auto;
   }
 
   body.is-language-classical .panel-stack-tabs {

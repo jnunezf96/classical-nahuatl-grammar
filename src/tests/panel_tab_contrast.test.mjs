@@ -325,6 +325,10 @@ assert.match(
   /\[resultControls, resultScope, resultSurface, resultContinuation, resultMeta, resultParadigm, resultActions\][\s\S]+resultPanel\.appendChild\(element\)/u
 );
 assert.match(shell, /classicalPanelRhythm = "title-primary-secondary-actions"/u);
+assert.match(
+  css,
+  /@media \(min-width: 1025px\)[\s\S]+align-items: stretch;[\s\S]+#panel-stack-pane-inputs > #container-inputs \{[\s\S]+height: 100%;/u
+);
 assert.match(html, /id="classical-reader-guidance-toggle"[\s\S]+aria-controls="classical-reader-guidance-dialog"/u);
 assert.match(html, /<dialog[\s\S]+id="classical-reader-guidance-dialog"/u);
 assert.match(html, /data-classical-help-tab="reading"[\s\S]+data-classical-help-tab="facts"/u);
