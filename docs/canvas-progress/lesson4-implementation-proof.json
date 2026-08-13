@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "lesson": 4,
+  "groups": {
+    "lesson4-nuclear-clause-identity-and-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    },
+    "lesson4-vnc-and-nnc-kinds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    },
+    "lesson4-basic-formula-and-slots": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    },
+    "lesson4-vnc-nnc-structure-and-hierarchy": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    },
+    "lesson4-six-formula-shapes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    },
+    "lesson4-personal-pronoun-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson4_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson4_reader_guidance.test.js"
+    }
+  }
+}

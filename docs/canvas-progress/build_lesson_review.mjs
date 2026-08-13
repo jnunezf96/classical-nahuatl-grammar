@@ -64,6 +64,10 @@ function proposedDirection(atom) {
 
 function proposedWritingJob(atom, group) {
   if (atom.force !== "grammar-bearing") return "NOT_A_WRITING_JOB";
+  if (group.writingJobsByCategory?.[atom.category]) {
+    return group.writingJobsByCategory[atom.category];
+  }
+  if (lesson !== 3) return group.writingJob;
   if (atom.category === "LEX") return "SUPPLY_CANONICAL_PARTICLE_CHOICE_AND_MEANING";
   if (atom.category === "ALT") return "PRESERVE_A_LICENSED_ALTERNATIVE_WITHOUT_ASSUMING_WHO_CHOOSES";
   if (["CST", "DEP", "RUL", "REA", "SCH", "USE", "EXC"].includes(atom.category)) {
@@ -73,6 +77,10 @@ function proposedWritingJob(atom, group) {
 }
 
 function proposedReaderJob(atom) {
+  const group = groupBySection.get(atom.canvasSection);
+  if (group?.readerJobsByForce?.[atom.force]) {
+    return group.readerJobsByForce[atom.force];
+  }
   if (atom.force === "evidence") return "USE_AS_READING_OR_CHECKING_EVIDENCE_WITHOUT_AUTHORITY";
   if (atom.force === "documentary") return "PRESERVE_SOURCE_REFERENCE_WITHOUT_AUTHORITY";
   if (atom.force === "analysis") return "GUIDE_ANALYSIS_WITHOUT_AUTHORIZING_A_RESULT";

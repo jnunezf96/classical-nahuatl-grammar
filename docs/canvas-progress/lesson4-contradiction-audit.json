@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "lesson": 4,
+  "status": "UNCONTRADICTED",
+  "grammarAuthority": "Andrews transcription",
+  "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "reportAuthority": false,
+  "resolvedCount": 6,
+  "unresolvedCount": 0,
+  "resolved": [
+    {
+      "id": "lesson4-word-clause-conflation",
+      "resolution": "Every non-particle vocable follows nuclear-clause structure; an English one-word translation does not turn the Nahuatl form into a word."
+    },
+    {
+      "id": "lesson4-duplicate-kind-choice",
+      "resolution": "The predicate source selects VNC or NNC machinery; noun, adjective, and adverb predicates do not require an English copula or a duplicate clause-kind choice."
+    },
+    {
+      "id": "lesson4-display-only-formula",
+      "resolution": "The formula is projected from the same typed nuclear-clause structure used by the canonical Result; interface labels and stored formulas cannot choose grammar."
+    },
+    {
+      "id": "lesson4-flat-structure",
+      "resolution": "The application preserves stem-centered VNC and NNC organizational layers instead of treating the Result as flat string joining."
+    },
+    {
+      "id": "lesson4-formula-picker",
+      "resolution": "Dyadic, monadic, or vacant valence or state selects one of the six formulas automatically; the user never chooses a formula number."
+    },
+    {
+      "id": "lesson4-english-pronoun-transfer",
+      "resolution": "Pronouns remain affixal and case-bound; person, animacy, humanness, number, and context govern interpretation, while English gender has no Nahuatl grammar authority."
+    }
+  ],
+  "unresolved": []
+}

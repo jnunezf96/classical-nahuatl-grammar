@@ -20,6 +20,12 @@ const SOURCE_AUTHORITY_INVALID =
   "classical-nuclear-clause-source-authority-invalid";
 const OPERATION_INVALID =
   "classical-nuclear-clause-structure-operation-invalid";
+const NUCLEAR_CLAUSE_USE_ROLES = Object.freeze([
+  "simple-sentence",
+  "main-clause",
+  "dependent-clause",
+  "conjoined-clause",
+]);
 
 const FORBIDDEN_AUTHORITY_KEYS = Object.freeze(new Set([
   "activeLesson",
@@ -113,6 +119,10 @@ function resolveClauseKind(options = {}) {
   if (
     mode === "sustantivo"
     || mode === "noun"
+    || mode === "adjetivo"
+    || mode === "adjective"
+    || mode === "adverbio"
+    || mode === "adverb"
     || board === "ordinary-nnc"
     || board === "pronominal-nnc"
   ) {
@@ -126,6 +136,13 @@ function resolveClauseKind(options = {}) {
     return "verbal-nuclear-clause";
   }
   return "";
+}
+
+function resolveUsageRole(options = {}) {
+  const normalized = String(
+    options.usageRole || options.clauseUse || "simple-sentence",
+  ).trim().toLowerCase();
+  return NUCLEAR_CLAUSE_USE_ROLES.includes(normalized) ? normalized : "";
 }
 
 function resolveValenceArity(options = {}, transitivity = "") {
@@ -237,7 +254,8 @@ export function createClassicalNahuatlNuclearClauseRuntime(
     }
     const normalizedStem = normalizeStem(stem);
     const clauseKind = resolveClauseKind(options);
-    if (!normalizedStem || !clauseKind) {
+    const usageRole = resolveUsageRole(options);
+    if (!normalizedStem || !clauseKind || !usageRole) {
       throw new Error(SOURCE_INVALID);
     }
 
@@ -269,6 +287,7 @@ export function createClassicalNahuatlNuclearClauseRuntime(
       version: VERSION,
       stem: normalizedStem,
       clauseKind,
+      usageRole,
       ...(transitivity ? { transitivity } : {}),
       slotArity,
     });
@@ -299,6 +318,85 @@ export function createClassicalNahuatlNuclearClauseRuntime(
       selectedNuclearClauseKind: source.clauseKind,
       ...(source.transitivity ? { transitivity: source.transitivity } : {}),
       slotArity: source.slotArity,
+      structureFrame: freeze({
+        unitKind: "nuclear-clause",
+        excludedFormalClass: "particle",
+        requiredFunctions: freeze(["subject", "predicate"]),
+        formation: "stem-with-inflectional-affixes",
+        constituentOrder: "rigid",
+        entitiveFunctions: freeze(["subject", "object", "possessor"]),
+        entitiveExpression: "personal-pronoun-affixes-only",
+        expressionScope: "basic-nuclear",
+        useRoles: NUCLEAR_CLAUSE_USE_ROLES,
+        activeUseRole: source.usageRole,
+        nuclearClauseKinds: freeze([
+          "verbal-nuclear-clause",
+          "nominal-nuclear-clause",
+        ]),
+        predicateSourceKind: source.clauseKind === "verbal-nuclear-clause"
+          ? "verbal"
+          : "nominal-adjectival-or-adverbial",
+        stage1Formula: "Subject + Predicate",
+        stage1Diagram: freeze({
+          numerator: "Subject",
+          denominator: "Predicate",
+        }),
+        positionsRepresent: "informational-categories",
+        examplePositionCategories: freeze(["person", "number", "tense"]),
+        fillersRepresent: "morphemes-or-morphs",
+        formulaDerivedFromTypedStructure: true,
+        subjectStructure: freeze({
+          kind: "discontinuous-circumfix",
+          personPosition: "prefix",
+          numberPosition: "suffix",
+          formula: "#person+...+number#",
+        }),
+        predicateStructure: source.clauseKind === "verbal-nuclear-clause"
+          ? freeze({
+              components: freeze(["valence", "stem", "tense"]),
+              coreComponents: freeze(["valence", "stem"]),
+              formula: "#person+valence(STEM)tense+number#",
+            })
+          : freeze({
+              components: freeze(["state", "stem"]),
+              coreComponents: freeze(["state", "stem"]),
+              formula: "#person+state(STEM)number#",
+            }),
+        organizationalLayers: source.clauseKind === "verbal-nuclear-clause"
+          ? freeze([
+              "verbstem",
+              "verbcore=valence+stem",
+              "predicate=verbcore+tense",
+              "VNC=subject+predicate",
+            ])
+          : freeze([
+              "nounstem",
+              "nouncore=predicate=state+stem",
+              "NNC=subject+predicate",
+            ]),
+        stemIsFoundation: true,
+        positionComplexity: freeze({
+          person: "dyadic",
+          number: "dyadic",
+          tense: source.clauseKind === "verbal-nuclear-clause" ? "monadic" : "not-applicable",
+          predicatePosition: source.slotArity,
+          stem: "monadic-or-polyadic",
+        }),
+        selectedFormulaShape: freeze({
+          clauseKind: source.clauseKind,
+          predicatePositionArity: source.slotArity,
+          formula: projectStructuralFormula({
+            clauseKind: source.clauseKind,
+            slotArity: source.slotArity,
+            stem: source.stem,
+          }),
+          selectedBy: "active-typed-grammar",
+          userFormulaChoiceRequired: false,
+          implicitPositionPolicy: source.slotArity === "vacant"
+            ? "grammatically-present-but-not-written-as-a-position"
+            : "written-position-present",
+        }),
+      }),
       formulaSlots: slots,
       predicateFrame: freeze({
         kind: "classical-nahuatl-nuclear-predicate-structure",
@@ -363,6 +461,15 @@ export function createClassicalNahuatlNuclearClauseRuntime(
     const positionRole = String(
       options.positionRole || options.formulaRegion || "",
     ).trim().toLowerCase();
+    const personValue = String(options.person || "").trim().toLowerCase();
+    const person = personValue === "first" || personValue === "1" ? "first"
+      : personValue === "second" || personValue === "2" ? "second"
+        : personValue === "third" || personValue === "3" ? "third"
+          : "unspecified";
+    const requestedAnimacy = String(options.animacy || "").trim().toLowerCase();
+    const requestedHumanness = String(options.humanness || "").trim().toLowerCase();
+    const requestedNumber = String(options.number || "").trim().toLowerCase();
+    const referenceContext = String(options.referenceContext || "").trim();
     if (
       !["nominative", "objective", "possessive"].includes(pronounCase)
       || !clauseKind
@@ -398,6 +505,50 @@ export function createClassicalNahuatlNuclearClauseRuntime(
       ]),
       genderFeatureAllowed: false,
       formulaPositionsOnly: true,
+      personSystem: freeze({
+        features: freeze(["first", "second", "third"]),
+        firstRole: "speaker",
+        secondRole: "addressee",
+        thirdRole: "other",
+        selected: person,
+      }),
+      animacySystem: freeze({
+        features: freeze(["animate", "nonanimate"]),
+        culturallyClassifiedByNahuatl: true,
+        selected: requestedAnimacy || (person === "first" || person === "second" ? "animate" : "contextual"),
+      }),
+      humannessSystem: freeze({
+        features: freeze(["human", "nonhuman"]),
+        subcategoryOf: "animacy",
+        humanImpliesAnimate: true,
+        firstAndSecondInnatelyHuman: true,
+        selected: requestedHumanness || (person === "first" || person === "second" ? "human" : "contextual"),
+      }),
+      numberSystem: freeze({
+        animateFeatures: freeze(["singular", "plural"]),
+        nonanimateFeatures: freeze(["common"]),
+        commonMeaning: "one-or-more-indiscriminately",
+        thirdSingularAndCommonSameShape: true,
+        selected: requestedNumber || "contextual",
+      }),
+      caseSystem: freeze({
+        features: freeze(["nominative", "objective", "possessive"]),
+        selected: pronounCase,
+        nominativeOccursIn: freeze(["verbal-nuclear-clause", "nominal-nuclear-clause"]),
+        objectiveOccursIn: freeze(["verbal-nuclear-clause"]),
+        possessiveOccursIn: freeze(["nominal-nuclear-clause"]),
+      }),
+      referenceFrame: freeze({
+        variableReference: true,
+        modes: freeze(["deixis", "anaphora", "cataphora"]),
+        deicticCenter: "first-person-speaker",
+        secondPersonCounterpart: "addressee",
+        thirdPersonRequiresContext: person === "third" || person === "unspecified",
+        referenceContextSupplied: Boolean(referenceContext),
+        status: person === "third" || person === "unspecified"
+          ? referenceContext ? "context-supplied" : "context-required"
+          : "participant-anchored",
+      }),
       formulaSlots: freeze(
         pronounCase === "nominative"
           ? ["pers1", "pers2", "num1", "num2"]

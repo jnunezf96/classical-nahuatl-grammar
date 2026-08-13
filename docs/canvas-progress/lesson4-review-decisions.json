@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "lesson": 4,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson4-nuclear-clause-identity-and-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make nuclear-clause identity a foundation of every normal VNC and NNC Result, while keeping Andrews's terminology available to the reader."
+    },
+    "lesson4-vnc-and-nnc-kinds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the predicate source select the correct VNC or NNC machinery automatically."
+    },
+    "lesson4-basic-formula-and-slots": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use one typed slot structure to produce both the formula and the surface Result."
+    },
+    "lesson4-vnc-nnc-structure-and-hierarchy": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make VNC and NNC formulas direct views of the same typed structure that builds the Result."
+    },
+    "lesson4-six-formula-shapes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make formula selection an automatic result of the active VNC or NNC grammar, never a display-only label."
+    },
+    "lesson4-personal-pronoun-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the five pronoun categories govern normal VNC and NNC behavior while keeping contextual interpretation in the reading guide."
+    }
+  }
+}

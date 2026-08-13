@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "lesson": 4,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson4-nuclear-clause-identity-and-use",
+      "title": "What a nuclear clause is and where it can be used",
+      "sections": ["§4.1"],
+      "writingJob": "Build every non-particle vocable as a complete nuclear clause with a subject and a predicate, and allow that clause to serve as a sentence, main clause, dependent clause, or conjoined clause.",
+      "readingJob": "Help the reader recognize a nuclear clause as a clause rather than an English-style word and recover its subject and predicate.",
+      "decisionSplit": "The user supplies the intended content and construction; the application keeps non-particles inside nuclear-clause structure and supplies the required subject-predicate frame.",
+      "controlPolicy": "Do not add a word-versus-clause control. Particle versus nuclear-clause status follows the entered or selected source, while sentence and clause use reuses the normal sentence and clause choices.",
+      "proposal": "Make nuclear-clause identity a foundation of every normal VNC and NNC Result, while keeping Andrews's terminology available to the reader.",
+      "writingJobsByCategory": {
+        "EXC": "KEEP_PARTICLES_OUTSIDE_NUCLEAR_CLAUSE_INFLECTION",
+        "CST": "REQUIRE_SUBJECT_AND_PREDICATE_IN_EVERY_NUCLEAR_CLAUSE",
+        "SCH": "BUILD_THE_NUCLEAR_CLAUSE_AS_A_STEM_BASED_AFFIXAL_STRUCTURE",
+        "DEF": "CLASSIFY_NON_PARTICLE_VOCABLES_AS_NUCLEAR_CLAUSES",
+        "ALT": "ALLOW_THE_NUCLEAR_CLAUSE_IN_EACH_LICENSED_SENTENCE_OR_CLAUSE_ROLE"
+      }
+    },
+    {
+      "groupId": "lesson4-vnc-and-nnc-kinds",
+      "title": "Verbal and nominal nuclear clauses",
+      "sections": ["§4.2"],
+      "writingJob": "Choose the VNC path for a verbal predicate and the NNC path for a nominal, adjectival, or adverbial predicate, then preserve the different predicate structures in the formula and Result.",
+      "readingJob": "Help the reader identify whether a nuclear clause has a verbal or nominal predicate without importing an English copula into the Nahuatl form.",
+      "decisionSplit": "The user chooses or enters the intended predicate source; the application determines the matching VNC or NNC structure and does not ask for a duplicate clause-kind choice.",
+      "controlPolicy": "Reuse the verb and noun entry paths. Do not add an English copula control or a second VNC/NNC choice when the source already determines it.",
+      "proposal": "Make the predicate source select the correct VNC or NNC machinery automatically.",
+      "writingJobsByCategory": {
+        "PAR": "KEEP_VNC_AND_NNC_AS_THE_TWO_NUCLEAR_CLAUSE_KINDS",
+        "INV": "SELECT_VNC_OR_NNC_FROM_THE_PREDICATE_SOURCE",
+        "ALT": "ALLOW_EACH_LICENSED_VERBAL_NOMINAL_ADJECTIVAL_OR_ADVERBIAL_PREDICATE",
+        "EXA": "CHECK_THE_SELECTED_CLAUSE_KIND_AGAINST_AN_EXACT_CANVAS_EXAMPLE"
+      }
+    },
+    {
+      "groupId": "lesson4-basic-formula-and-slots",
+      "title": "The basic subject-predicate formula",
+      "sections": ["§4.3"],
+      "writingJob": "Represent every nuclear clause as Subject plus Predicate and keep each grammatical feature in its proper formula position and permitted filler set.",
+      "readingJob": "Show the reader how the Result divides into subject, predicate, positions, and fillers.",
+      "decisionSplit": "The user chooses genuine grammatical features; the application places their forms in the correct slots and shows the resulting formula.",
+      "controlPolicy": "Expose real choices such as person, number, tense, state, or valence only where applicable. Slot order and formula punctuation are application duties.",
+      "proposal": "Use one typed slot structure to produce both the formula and the surface Result.",
+      "writingJobsByCategory": {
+        "SCH": "BUILD_SUBJECT_PLUS_PREDICATE_AS_THE_BASE_FORMULA",
+        "PAR": "KEEP_POSITION_MEANINGS_DISTINCT_FROM_THEIR_FILLERS",
+        "INV": "PLACE_EACH_INFORMATION_CATEGORY_IN_ITS_AUTHORIZED_SLOT",
+        "EXA": "CHECK_THE_FORMULA_SPLIT_AGAINST_AN_EXACT_CANVAS_EXAMPLE"
+      }
+    },
+    {
+      "groupId": "lesson4-vnc-nnc-structure-and-hierarchy",
+      "title": "VNC and NNC structure and hierarchy",
+      "sections": ["§4.4", "§4.4.1", "§4.4.2", "§4.4.3", "§4.4.1 [2]", "§4.4.2 [2]", "§4.4.3 [2]", "§4.4.4"],
+      "writingJob": "Build the discontinuous subject around the predicate; build NNC predicates from state and nounstem; build VNC predicates from valence, verbstem, and tense; preserve every layer of the hierarchy.",
+      "readingJob": "Help the reader recover the subject, core, predicate, state, valence, tense, and stem-centered hierarchy from a completed form.",
+      "decisionSplit": "The user chooses applicable grammatical meanings; the application orders and joins the corresponding constituents and derives the formula hierarchy.",
+      "controlPolicy": "Reuse person, number, state, valence, tense, and source controls. Do not expose constituent order, circumfix assembly, hierarchy, or formula boundaries as choices.",
+      "proposal": "Make VNC and NNC formulas direct views of the same typed structure that builds the Result.",
+      "writingJobsByCategory": {
+        "INV": "ENFORCE_THE_REQUIRED_VNC_OR_NNC_CONSTITUENT_STRUCTURE",
+        "DEF": "KEEP_STATE_VALENCE_CORE_PREDICATE_AND_SUBJECT_ROLES_DISTINCT",
+        "SCH": "BUILD_THE_CANONICAL_LINEAR_AND_HIERARCHICAL_FORMULA",
+        "LEX": "USE_THE_CANONICAL_FORMULA_SYMBOL_OR_POSITION_MEANING",
+        "CST": "REQUIRE_PERSON_AND_NUMBER_AS_THE_DISCONTINUOUS_SUBJECT",
+        "DEP": "DERIVE_EACH_HIGHER_LAYER_FROM_THE_STEM_AND_ITS_DEPENDENCIES"
+      }
+    },
+    {
+      "groupId": "lesson4-six-formula-shapes",
+      "title": "The six VNC and NNC formula shapes",
+      "sections": ["§4.5", "§4.5.1", "§4.5.2", "§4.5.3", "§4.5.1 [2]", "§4.5.2 [2]", "§4.5.3 [2]"],
+      "writingJob": "Select the correct VNC or NNC formula automatically from dyadic, monadic, or vacant valence or state, while preserving dyadic person and number, monadic tense, and an open stem structure.",
+      "readingJob": "Help the reader identify the active formula, its subpositions, and why an implicit valence or state may be absent from the written formula.",
+      "decisionSplit": "The user supplies the grammatical construction and needed participants; the application derives which of the six formula shapes applies.",
+      "controlPolicy": "Do not add a formula-number picker. State and valence controls may express genuine choices, but dyadic, monadic, or vacant shape is derived from them.",
+      "proposal": "Make formula selection an automatic result of the active VNC or NNC grammar, never a display-only label.",
+      "writingJobsByCategory": {
+        "RUL": "SELECT_THE_CORRECT_FORMULA_SHAPE_FROM_ACTIVE_GRAMMAR",
+        "CST": "ENFORCE_THE_ALLOWED_SUBPOSITION_COUNT_FOR_EACH_POSITION",
+        "DEF": "KEEP_DYADIC_MONADIC_POLYADIC_AND_VACANT_DISTINCT",
+        "ALT": "PRESERVE_ALL_SIX_LICENSED_FORMULA_SHAPES",
+        "SCH": "RENDER_THE_SELECTED_FORMULA_WITH_CANONICAL_BOUNDARIES_AND_ABBREVIATIONS",
+        "INV": "KEEP_PERSON_NUMBER_TENSE_STATE_VALENCE_AND_STEM_IN_THEIR_ALLOWED_SHAPES",
+        "CON": "DERIVE_FORMULA_SHAPE_FROM_THE_CONSTRUCTION_RATHER_THAN_A_SEPARATE_CHOICE",
+        "REA": "OMIT_IMPLICIT_STATE_OR_VALENCE_WITHOUT_TREATING_IT_AS_NONEXISTENT"
+      }
+    },
+    {
+      "groupId": "lesson4-personal-pronoun-system",
+      "title": "Personal pronouns and reference",
+      "sections": ["§4.6"],
+      "writingJob": "Build personal pronouns only as affixes in the authorized person, number, objective, and possessive positions; preserve person, animacy, humanness, number, and case; leave contextual reference and English gender to interpretation.",
+      "readingJob": "Guide the reader through affixal pronouns, third-person ambiguity, common number, cultural animacy, case, deixis, anaphora, and cataphora.",
+      "decisionSplit": "The user chooses intended participants and any context the application truly needs; the application selects and places pronoun forms, enforces case and clause compatibility, and never invents an English gender distinction.",
+      "controlPolicy": "Reuse participant, person, number, animacy, humanness, object, possessor, and context choices only when they change grammar or meaning. Do not add gender, deixis terminology, or anaphora terminology as required controls.",
+      "proposal": "Make the five pronoun categories govern normal VNC and NNC behavior while keeping contextual interpretation in the reading guide.",
+      "writingJobsByCategory": {
+        "INV": "ENFORCE_THE_AFFIXAL_PERSONAL_PRONOUN_SYSTEM",
+        "CST": "REQUIRE_PERSON_ANIMACY_HUMANNESS_NUMBER_AND_CASE_INFORMATION",
+        "RUL": "SELECT_AND_PLACE_THE_PRONOUN_FORM_FROM_ITS_GRAMMATICAL_FEATURES",
+        "CON": "RESOLVE_CONTEXT_DEPENDENT_REFERENCE_WITHOUT_CHANGING_NAHUATL_STRUCTURE",
+        "LEX": "PRESERVE_THE_CANONICAL_PRONOUN_CATEGORY_OR_FEATURE",
+        "DEF": "KEEP_PERSON_ANIMACY_HUMANNESS_NUMBER_AND_CASE_DISTINCT",
+        "ALT": "ALLOW_THE_LICENSED_CONTEXTUAL_INTERPRETATIONS",
+        "REA": "KEEP_ENGLISH_GENDER_AND_NUMBER_TRANSLATION_NON_AUTHORIZING",
+        "USE": "LIMIT_EACH_CASE_FORM_TO_ITS_AUTHORIZED_VNC_OR_NNC_POSITION",
+        "SCH": "BUILD_THE_PRONOUN_AS_A_DISTRIBUTED_AFFIXAL_CONSTITUENT",
+        "DEP": "MAKE_REFERENCE_INTERPRETATION_DEPEND_ON_THE_SUPPLIED_CONTEXT"
+      }
+    }
+  ]
+}
