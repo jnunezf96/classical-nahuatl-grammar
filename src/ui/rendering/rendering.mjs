@@ -4843,6 +4843,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§6.4.1.a"]),
         atomIds: Object.freeze(["ACI-P073-L010-5017EF8378", "ACI-P073-L010-BEB9308E3D"])
       }),
+      "general-object-va1": Object.freeze({
+        lessonSections: Object.freeze(["§6.3", "§6.4.1"]),
+        atomIds: Object.freeze(["ACI-P072-L032-302FC5EE6C", "ACI-P073-L008-4749BA79B8"])
+      }),
+      "general-object-va2": Object.freeze({
+        lessonSections: Object.freeze(["§6.3", "§6.4.2"]),
+        atomIds: Object.freeze(["ACI-P072-L032-302FC5EE6C", "ACI-P073-L032-BE39FA5C91"])
+      }),
+      "general-state-st1": Object.freeze({
+        lessonSections: Object.freeze(["§13.5.1"]),
+        atomIds: Object.freeze(["ACI-P122-L017-5E31ECB3A5"])
+      }),
+      "general-state-st2": Object.freeze({
+        lessonSections: Object.freeze(["§13.5.2"]),
+        atomIds: Object.freeze(["ACI-P122-L027-E79982D0C8"])
+      }),
+      "general-state": Object.freeze({
+        lessonSections: Object.freeze(["§4.4", "§13.4"]),
+        atomIds: Object.freeze(["ACI-P061-L020-D8ECA637C0", "ACI-P121-L028-2FFEA58BF7"])
+      }),
       "reflexive-object": Object.freeze({
         lessonSections: Object.freeze(["§6.6", "§6.6.1"]),
         atomIds: Object.freeze(["ACI-P074-L025-D628B6DB99", "ACI-P074-L028-B320257450"])
@@ -4867,6 +4887,50 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§5.3.4"]),
         atomIds: Object.freeze(["ACI-P067-L031-47DF6EA054", "ACI-P067-L032-2DF66E2A0D"])
       }),
+      "predicate-stem": Object.freeze({
+        lessonSections: Object.freeze(["§5.5.1"]),
+        atomIds: Object.freeze(["ACI-P069-L008-B53886AC27"])
+      }),
+      "nuclear-clause-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§4.4"]),
+        atomIds: Object.freeze(["ACI-P061-L016-50C9F319DB", "ACI-P061-L017-65685DB703"])
+      }),
+      "position-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§4.4"]),
+        atomIds: Object.freeze(["ACI-P061-L017-65685DB703"])
+      }),
+      "nonsubject-constituents": Object.freeze({
+        lessonSections: Object.freeze(["§4.4"]),
+        atomIds: Object.freeze(["ACI-P061-L017-65685DB703"])
+      }),
+      "subposition-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§4.5"]),
+        atomIds: Object.freeze(["ACI-P062-L027-4EB4F1E6A9"])
+      }),
+      "stem-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§4.4"]),
+        atomIds: Object.freeze(["ACI-P061-L023-391D6DC1DC"])
+      }),
+      "stem-morph-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§7.1"]),
+        atomIds: Object.freeze(["ACI-P076-L011-65C1B6BAA4"])
+      }),
+      "stem-constituent-boundary": Object.freeze({
+        lessonSections: Object.freeze(["§42.10"]),
+        atomIds: Object.freeze(["ACI-P436-L031-11260BA381"])
+      }),
+      "statement-punctuation": Object.freeze({
+        lessonSections: Object.freeze(["§8.2", "§58.8"]),
+        atomIds: Object.freeze(["ACI-P090-L025-7E541086E8", "ACI-P641-L003-F1E5AA0CEE"])
+      }),
+      "question-punctuation": Object.freeze({
+        lessonSections: Object.freeze(["§8.6.1"]),
+        atomIds: Object.freeze(["ACI-P091-L033-4DB00A926D-02"])
+      }),
+      "exclamation-punctuation": Object.freeze({
+        lessonSections: Object.freeze(["§3.4"]),
+        atomIds: Object.freeze(["ACI-P059-L010-41CAD89B37", "ACI-P059-L011-4D093ADEBC"])
+      }),
       "right-attachment": Object.freeze({
         lessonSections: Object.freeze(["§3.2.4", "§3.3"]),
         atomIds: Object.freeze(["ACI-P056-L024-EA0D75FF38-10", "ACI-P057-L021-F8C9506BBB"])
@@ -4874,10 +4938,73 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "left-attachment": Object.freeze({
         lessonSections: Object.freeze(["§3.2.5"]),
         atomIds: Object.freeze(["ACI-P056-L040-9F2DD2E0DF-06"])
+      }),
+      "nuclear-right-attachment": Object.freeze({
+        lessonSections: Object.freeze(["§3.2.4", "§4.4"]),
+        atomIds: Object.freeze(["ACI-P056-L024-EA0D75FF38-10", "ACI-P061-L016-50C9F319DB"])
+      }),
+      "nuclear-left-attachment": Object.freeze({
+        lessonSections: Object.freeze(["§3.2.5", "§4.4"]),
+        atomIds: Object.freeze(["ACI-P056-L040-9F2DD2E0DF-06", "ACI-P061-L016-50C9F319DB"])
       })
     });
     function getClassicalFormulaHoverAuthorities() {
       return CLASSICAL_FORMULA_HOVER_AUTHORITIES;
+    }
+    function getClassicalGeneralFormulaAnnotations(formula = "") {
+      const text = String(formula || "");
+      const annotations = [];
+      const add = (start, end, role, label, presentation, authorityKey) => {
+        if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > text.length) return;
+        if (annotations.some(annotation => start < annotation.end && end > annotation.start)) return;
+        const authority = CLASSICAL_FORMULA_HOVER_AUTHORITIES[authorityKey];
+        if (!authority) return;
+        annotations.push(Object.freeze({
+          start,
+          end,
+          role,
+          label,
+          presentation,
+          lessonSections: authority.lessonSections,
+          atomIds: authority.atomIds
+        }));
+      };
+      [
+        Object.freeze({ token: "pers¹", role: "subject-person", label: "subject person", authorityKey: "subject-person" }),
+        Object.freeze({ token: "pers²", role: "subject-nominative", label: "nominative", authorityKey: "subject-nominative" }),
+        Object.freeze({ token: "va¹", role: "general-object-va1", label: "object person with case or number", authorityKey: "general-object-va1" }),
+        Object.freeze({ token: "va²", role: "general-object-va2", label: "object number or objective case", authorityKey: "general-object-va2" }),
+        Object.freeze({ token: "va", role: "general-monadic-object", label: "nonspecific or shuntline object", authorityKey: "monadic-valence" }),
+        Object.freeze({ token: "st¹", role: "general-state-st1", label: "possessor person with case or number", authorityKey: "general-state-st1" }),
+        Object.freeze({ token: "st²", role: "general-state-st2", label: "possessor number or possessive case", authorityKey: "general-state-st2" }),
+        Object.freeze({ token: "st", role: "general-state", label: "possession state", authorityKey: "general-state" }),
+        Object.freeze({ token: "STEM", role: "predicate-stem", label: "predicate stem", authorityKey: "predicate-stem" }),
+        Object.freeze({ token: "tns", role: "tense-carrier", label: "mood and tense", authorityKey: "mood-tense" }),
+        Object.freeze({ token: "num¹", role: "number-connector", label: "number connector", authorityKey: "number-connector" }),
+        Object.freeze({ token: "num²", role: "subject-number", label: "subject number", authorityKey: "subject-number" }),
+        Object.freeze({ token: "...", role: "nonsubject-constituents", label: "nonsubject constituents", authorityKey: "nonsubject-constituents" })
+      ].forEach(job => {
+        let cursor = 0;
+        while (cursor < text.length) {
+          const start = text.indexOf(job.token, cursor);
+          if (start < 0) break;
+          add(start, start + job.token.length, job.role, job.label, "carrier", job.authorityKey);
+          cursor = start + job.token.length;
+        }
+      });
+      Array.from(text.matchAll(/#/gu)).forEach(match => {
+        add(Number(match.index), Number(match.index) + 1, "nuclear-clause-boundary", "nuclear clause boundary", "boundary", "nuclear-clause-boundary");
+      });
+      Array.from(text.matchAll(/[+]/gu)).forEach(match => {
+        add(Number(match.index), Number(match.index) + 1, "position-boundary", "position boundary", "boundary", "position-boundary");
+      });
+      Array.from(text.matchAll(/-/gu)).forEach(match => {
+        add(Number(match.index), Number(match.index) + 1, "subposition-boundary", "subposition boundary", "boundary", "subposition-boundary");
+      });
+      Array.from(text.matchAll(/[()]/gu)).forEach(match => {
+        add(Number(match.index), Number(match.index) + 1, "stem-boundary", "stem boundary", "boundary", "stem-boundary");
+      });
+      return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
     function getClassicalFormulaDerivedAnnotations(formula = "", typedSlotFrame = null) {
       const text = String(formula || "");
@@ -4885,6 +5012,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const annotations = [];
       const addAnnotation = (start, end, role, label, presentation = "carrier", authorityKey = "") => {
         if (!Number.isInteger(start) || !Number.isInteger(end) || start < 0 || end <= start || end > text.length) return;
+        if (annotations.some(annotation => start < annotation.end && end > annotation.start)) return;
         const authority = CLASSICAL_FORMULA_HOVER_AUTHORITIES[authorityKey];
         if (!authority) return;
         annotations.push(Object.freeze({
@@ -4940,10 +5068,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
       (slots.prePredicate || []).forEach((slot, slotIndex) => {
         const carrier = String(slot?.formulaCarrier || slot?.carrier || (slot?.kind === "dyadic-valence" ? `${slot.va1}-${slot.va2}` : slot?.va) || "");
         const token = `+${carrier}`;
-        const tokenStart = text.indexOf(token, prePredicateCursor);
+        let tokenStart = text.indexOf(token, prePredicateCursor);
+        let realizedCarrier = carrier;
+        if (tokenStart < 0 && ["monadic-valence", "dyadic-valence"].includes(slot?.kind)) {
+          const candidateStart = text.indexOf("+", prePredicateCursor);
+          const candidateEnds = [text.indexOf("+", candidateStart + 1), text.indexOf("(", candidateStart + 1)]
+            .filter(candidate => candidate > candidateStart);
+          const candidateEnd = candidateEnds.length ? Math.min(...candidateEnds) : -1;
+          if (candidateStart >= 0 && candidateEnd > candidateStart + 1) {
+            tokenStart = candidateStart;
+            realizedCarrier = text.slice(candidateStart + 1, candidateEnd);
+          }
+        }
         if (tokenStart < 0) return;
         const carrierStart = tokenStart + 1;
-        prePredicateCursor = carrierStart + carrier.length;
+        prePredicateCursor = carrierStart + realizedCarrier.length;
         const objectProfile = slot?.objectPositionFrame || typedSlotFrame?.objectProfile || {};
         const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
         if (slot?.kind === "monadic-valence") {
@@ -4952,7 +5091,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "nonspecific-nonhuman": Object.freeze({ label: "nonspecific nonhuman object", authorityKey: "nonspecific-nonhuman-object" }),
             "shuntline-reflexive": Object.freeze({ label: "shuntline reflexive object", authorityKey: "shuntline-reflexive-object" })
           }[objectProfile.objectKind] || Object.freeze({ label: "monadic object", authorityKey: "monadic-valence" });
-          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, monadicJob.label, "carrier", monadicJob.authorityKey);
+          addCarrierAnnotation(carrierStart, realizedCarrier, `object-carrier-${slotIndex + 1}`, monadicJob.label, "carrier", monadicJob.authorityKey);
           return;
         }
         if (slot?.kind !== "dyadic-valence") {
@@ -4961,11 +5100,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const identity = slot?.morphIdentityFrame || slot?.objectPositionFrame?.morphIdentityFrame;
         const va1 = String(slot.va1 || "");
         const va2 = String(slot.va2 || "");
+        const [realizedVa1 = va1, ...realizedVa2Parts] = realizedCarrier.split("-");
+        const realizedVa2 = realizedVa2Parts.join("-") || va2;
         const supportiveObjectI = identity?.supportiveVowel === "i"
           && identity?.supportiveVowelIsObjectIdentity === false
           && identity?.supportiveSpelling === va1
           && va1.endsWith("i");
-        const va1BaseLength = supportiveObjectI ? va1.length - 1 : va1.length;
+        const va1BaseLength = supportiveObjectI && realizedVa1.endsWith("i") ? realizedVa1.length - 1 : realizedVa1.length;
         const silentVa1 = isSilentCarrier(va1);
         const thirdPersonObjectiveObject = !reflexive && (
           identity?.morphIdentity === "/k/"
@@ -4978,21 +5119,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : Object.freeze({ role: "object-person-number", label: "object person and number", authorityKey: "object-person-number" });
         addCarrierAnnotation(
           carrierStart,
-          va1.slice(0, va1BaseLength),
+          realizedVa1.slice(0, va1BaseLength),
           silentVa1 ? `silent-${va1Job.role}` : va1Job.role,
           silentVa1 ? `silent ${va1Job.label}` : va1Job.label,
           silentVa1 ? "silent" : "carrier",
           va1Job.authorityKey
         );
-        if (supportiveObjectI) {
-          addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i", "object-supportive-i");
+        if (supportiveObjectI && realizedVa1.endsWith("i")) {
+          addCarrierAnnotation(carrierStart + realizedVa1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i", "object-supportive-i");
         }
-        const va2Start = carrierStart + va1.length + 1;
-        const va2IsSilent = isSilentCarrier(va2);
+        const va2Start = carrierStart + realizedVa1.length + 1;
+        const va2IsSilent = isSilentCarrier(realizedVa2);
         const va2CarriesObjectiveCase = reflexive || !thirdPersonObjectiveObject;
         addCarrierAnnotation(
           va2Start,
-          va2,
+          realizedVa2,
           va2CarriesObjectiveCase ? "objective-case-carrier" : "object-number-carrier",
           va2CarriesObjectiveCase ? (va2IsSilent ? "silent objective case" : "objective case") : (va2IsSilent ? "silent singular object number" : "object number"),
           va2IsSilent ? "silent" : "carrier",
@@ -5003,6 +5144,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const stemToken = `(${String(predicate.stem || "")})`;
       const stemStart = text.indexOf(stemToken, prePredicateCursor);
       if (stemStart >= 0) {
+        addAnnotation(stemStart, stemStart + 1, "stem-left-boundary", "stem boundary", "boundary", "stem-boundary");
+        const stemContentStart = stemStart + 1;
+        const stemContent = String(predicate.stem || "");
+        let stemPartStart = 0;
+        Array.from(stemContent.matchAll(/[-+]/gu)).forEach(match => {
+          const separatorIndex = Number(match.index);
+          if (separatorIndex > stemPartStart) {
+            addAnnotation(stemContentStart + stemPartStart, stemContentStart + separatorIndex, "predicate-stem", "predicate stem", "carrier", "predicate-stem");
+          }
+          addAnnotation(
+            stemContentStart + separatorIndex,
+            stemContentStart + separatorIndex + 1,
+            match[0] === "+" ? "stem-constituent-boundary" : "stem-morph-boundary",
+            match[0] === "+" ? "stem constituent boundary" : "stem morph boundary",
+            "boundary",
+            match[0] === "+" ? "stem-constituent-boundary" : "stem-morph-boundary"
+          );
+          stemPartStart = separatorIndex + 1;
+        });
+        if (stemPartStart < stemContent.length) {
+          addAnnotation(stemContentStart + stemPartStart, stemContentStart + stemContent.length, "predicate-stem", "predicate stem", "carrier", "predicate-stem");
+        }
+        addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const tenseStart = stemStart + stemToken.length;
         addCarrierAnnotation(
           tenseStart,
@@ -5033,6 +5197,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
       }
       const nuclearEnd = text.indexOf("#", nuclearStart + 1);
+      addAnnotation(
+        nuclearStart,
+        nuclearStart + 1,
+        "nuclear-clause-left-boundary",
+        nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "") ? "nuclear clause boundary; attaches right" : "nuclear clause boundary",
+        "boundary",
+        nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "") ? "nuclear-right-attachment" : "nuclear-clause-boundary"
+      );
+      if (nuclearEnd >= 0) {
+        addAnnotation(
+          nuclearEnd,
+          nuclearEnd + 1,
+          "nuclear-clause-right-boundary",
+          /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "") ? "nuclear clause boundary; attaches left" : "nuclear clause boundary",
+          "boundary",
+          /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "") ? "nuclear-left-attachment" : "nuclear-clause-boundary"
+        );
+      }
       Array.from(text.matchAll(/#/gu)).forEach(match => {
         const boundaryStart = match.index;
         if (boundaryStart === nuclearStart || boundaryStart === nuclearEnd) return;
@@ -5043,11 +5225,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
           addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attaches right", "attachment", "right-attachment");
         }
       });
-      if (nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "")) {
-        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attaches right", "attachment", "right-attachment");
-      }
-      if (nuclearEnd >= 0 && /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "")) {
-        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attaches left", "attachment", "left-attachment");
+      Array.from(text.matchAll(/[+-]/gu)).forEach(match => {
+        const boundaryStart = Number(match.index);
+        if (stemStart >= 0 && boundaryStart > stemStart && boundaryStart < stemStart + stemToken.length - 1) return;
+        addAnnotation(
+          boundaryStart,
+          boundaryStart + 1,
+          match[0] === "+" ? "position-boundary" : "subposition-boundary",
+          match[0] === "+" ? "position boundary" : "subposition boundary",
+          "boundary",
+          match[0] === "+" ? "position-boundary" : "subposition-boundary"
+        );
+      });
+      const sentenceMark = text.match(/[.?!]$/u);
+      if (sentenceMark) {
+        const sentenceMarkStart = text.length - 1;
+        const sentenceJob = sentenceMark[0] === "?"
+          ? Object.freeze({ role: "question-punctuation", label: "question", authorityKey: "question-punctuation" })
+          : sentenceMark[0] === "!"
+            ? Object.freeze({ role: "exclamation-punctuation", label: "exclamation", authorityKey: "exclamation-punctuation" })
+            : Object.freeze({ role: "statement-punctuation", label: "statement", authorityKey: "statement-punctuation" });
+        addAnnotation(sentenceMarkStart, sentenceMarkStart + 1, sentenceJob.role, sentenceJob.label, "boundary", sentenceJob.authorityKey);
       }
       return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
@@ -5088,12 +5286,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
         getClassicalFormulaDerivedAnnotations(text, typedSlotFrame)
       );
     }
+    function renderClassicalGeneralFormulaAnnotations(element = null, formula = "") {
+      const text = String(formula || "");
+      return renderClassicalDerivedAnnotationRanges(
+        element,
+        text,
+        getClassicalGeneralFormulaAnnotations(text)
+      );
+    }
     function getClassicalDiagramAnnotationFamily(annotationRole = "") {
       const role = String(annotationRole || "");
       if (role.includes("tense")) return "tense";
       if (role.includes("number")) return "subject";
       if (role.includes("object") || role.includes("reflexive") || role.startsWith("derived-carrier")) return "core";
       if (role.includes("subject") || role.includes("nominative")) return "subject";
+      if (role === "predicate-stem" || role === "stem-left-boundary") return "core";
       if (role.includes("boundary")) return "any";
       return "";
     }
@@ -5121,8 +5328,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       let cursor = 0;
       const mapped = getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)
         .filter(annotation => {
+          if (
+            annotation.role.includes("boundary")
+            || annotation.role.includes("punctuation")
+            || annotation.role === "nonsubject-constituents"
+          ) return false;
           const family = getClassicalDiagramAnnotationFamily(annotation.role);
-          return family === diagramFamily || family === "any";
+          return family === diagramFamily;
         })
         .flatMap(annotation => {
           const token = fullFormula.slice(annotation.start, annotation.end);
@@ -5136,7 +5348,53 @@ export function createUiRenderingApi(targetObject = globalThis) {
             diagramRole: String(diagramRole || "")
           })];
         });
-      return renderClassicalDerivedAnnotationRanges(element, text, mapped);
+      const diagramNotation = getClassicalGeneralFormulaAnnotations(text)
+        .filter(annotation => (
+          annotation.role.includes("boundary")
+          || annotation.role === "nonsubject-constituents"
+        ))
+        .filter(annotation => !mapped.some(existing => (
+          annotation.start < existing.end && annotation.end > existing.start
+        )));
+      const diagramSlotJobs = [];
+      if (diagramFamily === "core") {
+        const objectProfile = typedSlotFrame?.objectProfile || {};
+        const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
+        (typedSlotFrame?.slots?.prePredicate || []).forEach(slot => {
+          if (slot?.kind !== "dyadic-valence") return;
+          const va1 = String(slot.va1 || "");
+          const va2 = String(slot.va2 || "");
+          const carrierStart = text.indexOf(`+${va1}-${va2}`);
+          if (carrierStart < 0) return;
+          const va2Start = carrierStart + va1.length + 2;
+          const thirdPersonObjectiveObject = !reflexive && (
+            slot?.morphIdentityFrame?.morphIdentity === "/k/"
+            || /^3/u.test(String(objectProfile.objectPerson || ""))
+          );
+          const va2CarriesObjectiveCase = reflexive || !thirdPersonObjectiveObject;
+          const authority = CLASSICAL_FORMULA_HOVER_AUTHORITIES[
+            va2CarriesObjectiveCase ? "objective-case" : "object-number"
+          ];
+          const candidate = Object.freeze({
+            start: va2Start,
+            end: va2Start + va2.length,
+            role: va2CarriesObjectiveCase ? "objective-case-carrier" : "object-number-carrier",
+            label: va2CarriesObjectiveCase ? "objective case" : "object number",
+            presentation: "carrier",
+            lessonSections: authority.lessonSections,
+            atomIds: authority.atomIds,
+            diagramRole: String(diagramRole || "")
+          });
+          if (![...mapped, ...diagramNotation, ...diagramSlotJobs].some(existing => (
+            candidate.start < existing.end && candidate.end > existing.start
+          ))) diagramSlotJobs.push(candidate);
+        });
+      }
+      return renderClassicalDerivedAnnotationRanges(
+        element,
+        text,
+        Object.freeze([...mapped, ...diagramNotation, ...diagramSlotJobs].sort((left, right) => left.start - right.start || left.end - right.end))
+      );
     }
     function buildClassicalVncSmithOutputVisualFrame({
       fixedSourceAnalysis = null,
@@ -17678,7 +17936,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral ? "general" : "specific";
         formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
         formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
-        if (showGeneral) formula.textContent = generalLinearFormula;
+        if (showGeneral) renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula);
         else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame);
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
@@ -17699,7 +17957,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       nuclearClauseDiagramTitleText.textContent = "Diagrammatic format";
       const nuclearClauseDiagramRows = targetObject.document.createElement("div");
       nuclearClauseDiagramRows.className = "classical-rule-surface__diagram-rows";
-      const createNuclearClauseDiagramRow = diagramRow => {
+      const createNuclearClauseDiagramRow = (diagramRow, useSpecificFormula = true) => {
         const row = targetObject.document.createElement("div");
         row.className = "classical-rule-surface__diagram-row";
         row.classList.toggle("classical-rule-surface__diagram-row--predicate", diagramRow.predicateMember === true);
@@ -17711,13 +17969,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         const expression = targetObject.document.createElement("code");
         expression.className = "classical-rule-surface__diagram-expression";
-        renderClassicalDiagramDerivedAnnotations(
-          expression,
-          diagramRow.expression,
-          diagramRow.role,
-          specificLinearFormula,
-          specificLinearTypedSlotFrame
-        );
+        if (useSpecificFormula) {
+          renderClassicalDiagramDerivedAnnotations(
+            expression,
+            diagramRow.expression,
+            diagramRow.role,
+            specificLinearFormula,
+            specificLinearTypedSlotFrame
+          );
+        } else {
+          renderClassicalGeneralFormulaAnnotations(expression, diagramRow.expression);
+        }
         const role = targetObject.document.createElement("span");
         role.className = "classical-rule-surface__diagram-role";
         role.textContent = diagramRow.role;
@@ -17732,11 +17994,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const diagramUsesSpecificFormula = diagramRows === specificDiagramRows;
         const renderPlan = getClassicalNuclearClauseDiagramRenderPlan(diagramRows, predicateGroupFrame);
         const appendDiagramRow = diagramRow => {
-          const row = createNuclearClauseDiagramRow(diagramRow);
-          if (!diagramUsesSpecificFormula) {
-            const expression = row.querySelector?.(".classical-rule-surface__diagram-expression");
-            if (expression) expression.textContent = diagramRow.expression;
-          }
+          const row = createNuclearClauseDiagramRow(diagramRow, diagramUsesSpecificFormula);
           return row;
         };
         if (renderPlan.hasPredicateGroup) {
@@ -24547,6 +24805,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     api.getClassicalVncParadigmTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame;
     api.getClassicalFormulaDerivedAnnotations = getClassicalFormulaDerivedAnnotations;
     api.getClassicalFormulaHoverAuthorities = getClassicalFormulaHoverAuthorities;
+    api.getClassicalGeneralFormulaAnnotations = getClassicalGeneralFormulaAnnotations;
     api.renderClassicalFormulaDerivedAnnotations = renderClassicalFormulaDerivedAnnotations;
     api.renderClassicalDiagramDerivedAnnotations = renderClassicalDiagramDerivedAnnotations;
     api.getClassicalVncParadigmVisibleTenses = getClassicalVncParadigmVisibleTenses;

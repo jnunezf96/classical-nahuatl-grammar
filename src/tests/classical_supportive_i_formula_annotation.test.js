@@ -58,6 +58,11 @@ function run(ctx = {}) {
         sourceValence: "mainline-reflexive",
         subject: "3sg",
     });
+    const assimilatedPluralObject = application(ctx, {
+        sourceValence: "specific-projective",
+        objectPerson: "3pl",
+        subject: "1pl",
+    });
 
     s.eq("subject supportive i is a derived formula annotation", {
         formula: subject.resultFrame.finiteSurfaceFrame.formulaRealization,
@@ -142,6 +147,63 @@ function run(ctx = {}) {
         [object, secondPersonObject, nonspecificHumanObject, nonspecificNonhumanObject, reflexiveObject]
             .flatMap((frame) => annotations(ctx, frame))
             .some((annotation) => /automatic|spelling|sound change/u.test(annotation.label)));
+    const assimilatedFormula = assimilatedPluralObject.resultFrame.finiteSurfaceFrame.formulaRealization;
+    const assimilatedAnnotations = annotations(ctx, assimilatedPluralObject);
+    s.eq("the final assimilated object form, stem, and every Andrews formula boundary receive jobs", {
+        formula: assimilatedFormula,
+        objectJobs: assimilatedAnnotations
+            .filter((annotation) => annotation.role.includes("object"))
+            .map((annotation) => ({
+                text: assimilatedFormula.slice(annotation.start, annotation.end),
+                label: annotation.label,
+            })),
+        uncovered: Array.from(assimilatedFormula).flatMap((character, index) =>
+            /\s/u.test(character)
+                || assimilatedAnnotations.some((annotation) => index >= annotation.start && index < annotation.end)
+                ? []
+                : [{ index, character }]),
+    }, {
+        formula: "#ti-0+qu-in(mati)0+0-h#",
+        objectJobs: [
+            { text: "qu", label: "third-person objective object" },
+            { text: "in", label: "object number" },
+        ],
+        uncovered: [],
+    });
+    const generalFormula = "#pers¹-pers²+va¹-va²(STEM)tns+num¹-num²#";
+    const generalAnnotations = ctx.getClassicalGeneralFormulaAnnotations(generalFormula);
+    s.eq("the General formula gives every position and boundary its Andrews job", {
+        jobs: generalAnnotations.map((annotation) => ({
+            text: generalFormula.slice(annotation.start, annotation.end),
+            label: annotation.label,
+        })),
+        uncovered: Array.from(generalFormula).flatMap((character, index) =>
+            /\s/u.test(character)
+                || generalAnnotations.some((annotation) => index >= annotation.start && index < annotation.end)
+                ? []
+                : [{ index, character }]),
+    }, {
+        jobs: [
+            { text: "#", label: "nuclear clause boundary" },
+            { text: "pers¹", label: "subject person" },
+            { text: "-", label: "subposition boundary" },
+            { text: "pers²", label: "nominative" },
+            { text: "+", label: "position boundary" },
+            { text: "va¹", label: "object person with case or number" },
+            { text: "-", label: "subposition boundary" },
+            { text: "va²", label: "object number or objective case" },
+            { text: "(", label: "stem boundary" },
+            { text: "STEM", label: "predicate stem" },
+            { text: ")", label: "stem boundary" },
+            { text: "tns", label: "mood and tense" },
+            { text: "+", label: "position boundary" },
+            { text: "num¹", label: "number connector" },
+            { text: "-", label: "subposition boundary" },
+            { text: "num²", label: "subject number" },
+            { text: "#", label: "nuclear clause boundary" },
+        ],
+        uncovered: [],
+    });
 
     const allKindsFormula = "ca#ni-0+qu-0(mati)0+⎕-0#e";
     const allKinds = ctx.getClassicalFormulaDerivedAnnotations(allKindsFormula, {
@@ -165,16 +227,24 @@ function run(ctx = {}) {
         presentation: annotation.presentation,
     }));
     s.eq("silent, changed, attached, and automatically chosen material receives exact hover jobs", allKinds, [
-        { text: "#", role: "right-attached-boundary", label: "attaches right", presentation: "attachment" },
+        { text: "#", role: "nuclear-clause-left-boundary", label: "nuclear clause boundary; attaches right", presentation: "boundary" },
         { text: "n", role: "subject-person-carrier", label: "subject person", presentation: "carrier" },
         { text: "i", role: "subject-supportive-i", label: "supportive i", presentation: "supportive-i" },
+        { text: "-", role: "subposition-boundary", label: "subposition boundary", presentation: "boundary" },
         { text: "0", role: "silent-nominative", label: "silent nominative", presentation: "silent" },
+        { text: "+", role: "position-boundary", label: "position boundary", presentation: "boundary" },
         { text: "qu", role: "third-person-objective-object", label: "third-person objective object", presentation: "carrier" },
+        { text: "-", role: "subposition-boundary", label: "subposition boundary", presentation: "boundary" },
         { text: "0", role: "object-number-carrier", label: "silent singular object number", presentation: "silent" },
+        { text: "(", role: "stem-left-boundary", label: "stem boundary", presentation: "boundary" },
+        { text: "mati", role: "predicate-stem", label: "predicate stem", presentation: "carrier" },
+        { text: ")", role: "stem-right-boundary", label: "stem boundary", presentation: "boundary" },
         { text: "0", role: "silent-tense", label: "silent mood and tense", presentation: "silent" },
+        { text: "+", role: "position-boundary", label: "position boundary", presentation: "boundary" },
         { text: "⎕", role: "silent-number-connector", label: "silent number connector", presentation: "silent" },
+        { text: "-", role: "subposition-boundary", label: "subposition boundary", presentation: "boundary" },
         { text: "0", role: "silent-subject-number", label: "silent subject number", presentation: "silent" },
-        { text: "#", role: "left-attached-boundary", label: "attaches left", presentation: "attachment" },
+        { text: "#", role: "nuclear-clause-right-boundary", label: "nuclear clause boundary; attaches left", presentation: "boundary" },
     ]);
     const prefixedFormula = "ah#zo #ni-0(mati)0+0-0#.";
     s.eq("a particle-internal attachment mark does not hide the later VNC annotations",
@@ -239,8 +309,10 @@ function run(ctx = {}) {
     s.ok("the Diagram view reuses the same exact Formula annotation authority",
         rendering.includes("function renderClassicalDiagramDerivedAnnotations(")
         && rendering.includes("getClassicalFormulaDerivedAnnotations(fullFormula, typedSlotFrame)")
-        && rendering.includes("renderClassicalDerivedAnnotationRanges(element, text, mapped)")
+        && rendering.includes("const diagramNotation = getClassicalGeneralFormulaAnnotations(text)")
+        && rendering.includes("[...mapped, ...diagramNotation, ...diagramSlotJobs]")
         && rendering.includes("renderClassicalDiagramDerivedAnnotations(")
+        && rendering.includes("renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula)")
         && rendering.includes("specificLinearFormula")
         && rendering.includes("specificLinearTypedSlotFrame")
         && rendering.includes("classicalDerivedAnnotationLessons")
