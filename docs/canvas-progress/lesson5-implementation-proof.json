@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "lesson": 5,
+  "groups": {
+    "lesson5-intransitive-vnc-structure": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-morph-carrier-and-spelling": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-subject-person-fillers": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-subject-case-filler": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-subject-number-connector": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-subject-number-suffix": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-subject-paradigms": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-verbstem-categories": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    },
+    "lesson5-mood-tense-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson5_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson5_reader_guidance.test.js"
+    }
+  }
+}

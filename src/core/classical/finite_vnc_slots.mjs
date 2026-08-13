@@ -333,6 +333,11 @@ export function createClassicalNahuatlFiniteVncRuntime(
       mood: normalizedMood,
       pers1,
       pers2: "0",
+      pers2Locus: "subject-case",
+      pers2Case: "nominative",
+      pers2CaseMorph: "0",
+      pers2CaseIsSilentlyPresent: true,
+      pers2CaseIsNotGrammaticalAbsence: true,
       pers1Variants: frozen(variants),
       pers1VariantRule: realizationCondition,
       pers1BaseMorph: baseMorph,
@@ -350,6 +355,26 @@ export function createClassicalNahuatlFiniteVncRuntime(
       optativeSecondPersonUsesX:
         normalizedMood === "optative"
         && (normalizedSubject === "2sg" || normalizedSubject === "2pl"),
+      morphCarrierAnalysis: frozen({
+        morphIdentity: baseMorph,
+        realizedCarrier: pers1,
+        carrierKind: pers1 === "0" ? "sigic" : "phonic",
+        morphAndCarrierAreDistinct: true,
+        supportiveVowelIsCarrierRealizationNotNewMorph: supportive,
+        regularVariantListedFirst: true,
+        repertoryNotation: frozen({
+          spellingVariants: "/",
+          morphicVariants: "~",
+        }),
+        spellingDoesNotCreateMorphIdentity: true,
+        canonicalContrastExample: frozen({
+          lexeme: "lord",
+          spellingVariantsOfOneMorph: frozen(["tēuc", "tēcu"]),
+          sharedMorphicCarrier: "te:kw",
+          distinctMorphicVariant: "tēe",
+          distinctVariantRealization: "delabialized-/kw/-as-[k]",
+        }),
+      }),
     });
     issuedPersonDyads.add(dyad);
     return dyad;
@@ -407,11 +432,13 @@ export function createClassicalNahuatlFiniteVncRuntime(
     mood = "",
     tense = "",
     stem = "",
+    verbClass = "",
   } = {}) {
     const normalizedSubject = normalizeSubject(subject);
     const normalizedMood = normalizeMood(mood);
     const normalizedTense = normalizeTense(tense, normalizedMood);
     const normalizedStem = normalizeStem(stem);
+    const normalizedVerbClass = normalizeToken(verbClass).toUpperCase();
     if (
       !normalizedSubject
       || !normalizedMood
@@ -448,26 +475,28 @@ export function createClassicalNahuatlFiniteVncRuntime(
       normalizedMood === "indicative"
       && normalizedTense === "preterit"
     ) {
+      const classAPreterit = normalizedVerbClass === "A"
+        || (!normalizedVerbClass && stemFinalSoundKind === "vowel");
       condition = "future-preterit-indicative";
       num1 = isPlural
         ? "qu"
-        : stemFinalSoundKind === "vowel"
+        : classAPreterit && stemFinalSoundKind === "vowel"
           ? "c"
           : SQUARE_ZERO;
       num2 = isPlural ? "eh" : "0";
       num1Variants = isPlural
         ? ["qu"]
-        : stemFinalSoundKind === "vowel"
+        : classAPreterit && stemFinalSoundKind === "vowel"
           ? ["c"]
           : [SQUARE_ZERO, "qui"];
       num2Variants = isPlural ? ["eh"] : ["0"];
       realizationCondition = isPlural
         ? "qu-before-plural-eh"
-        : stemFinalSoundKind === "vowel"
-          ? "c-after-vowel"
-          : "square-zero-replaces-qui-after-consonant";
+        : classAPreterit && stemFinalSoundKind === "vowel"
+          ? "c-after-class-a-preterit-vowel"
+          : "square-zero-replaces-qui-outside-class-a-vowel";
       alternateNumberDyads =
-        !isPlural && stemFinalSoundKind === "consonant" ? ["qui-0"] : [];
+        !isPlural && num1 === SQUARE_ZERO ? ["qui-0"] : [];
     } else if (
       normalizedMood === "optative"
       && normalizedTense === "nonpast"
@@ -508,6 +537,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       kind: NUMBER_DYAD_KIND,
       version: VERSION,
       subject: normalizedSubject,
+      verbClass: normalizedVerbClass || "not-specified",
       conditioningStem: normalizedStem,
       stemFinalSound: lastSound,
       stemFinalSoundKind,
@@ -522,6 +552,8 @@ export function createClassicalNahuatlFiniteVncRuntime(
         inKFamily && (num1 === "qui" || num1 === SQUARE_ZERO) ? "qu" : num1,
       num1SupportiveVowelPresent: supportiveVowelPresent,
       num1SupportiveVowel: supportiveVowelPresent ? "i" : "",
+      num1SupportiveVowelForQui: "i",
+      quiIsIrregularSupportiveVowelCarrier: true,
       num1SupportiveVowelSuppressedBySquareZero:
         supportiveVowelSuppressedBySquareZero,
       num1SupportiveISurfacePolicy:
@@ -543,6 +575,17 @@ export function createClassicalNahuatlFiniteVncRuntime(
           : lastSound,
       dyadRemainsSubjectConnector: true,
       tenseMorphDoesNotOwnNum1: true,
+      num1Locus: "subject-number-connector",
+      num1MediatesPredicateAndNum2: true,
+      preteritSingularCRequiresClassA:
+        normalizedMood !== "indicative"
+        || normalizedTense !== "preterit"
+        || isPlural
+        || num1 !== "c"
+        || normalizedVerbClass === "A"
+        || !normalizedVerbClass,
+      num2Locus: "definitive-subject-number",
+      num2IsDefinitiveNumberCarrier: true,
     });
     issuedNumberDyads.add(frame);
     return frame;
@@ -656,6 +699,7 @@ export function createClassicalNahuatlFiniteVncRuntime(
       mood: source.mood,
       tense: source.tense,
       stem: source.stem,
+      verbClass: source.verbClass,
     });
     const result = {
       kind: RESULT_KIND,

@@ -1414,7 +1414,7 @@ import classical_valence_neutral_applicative_identity from "./nuclear-owner-spec
 import classical_valence_neutral_pair_semantics from "./nuclear-owner-specs/classical-valence-neutral-pair-semantics.mjs";
 import classical_verbcore_citation_evidence_analysis from "./nuclear-owner-specs/classical-verbcore-citation-evidence-analysis.mjs";
 import classical_verbcore_citation_formation from "./nuclear-owner-specs/classical-verbcore-citation-formation.mjs";
-import classical_verbstem_category_system from "./nuclear-owner-specs/classical-verbstem-category-system.mjs";
+import classical_verbstem_category_system from "./nuclear-owner-specs/classical-verbstem-category-system.mjs?v=20260812-lesson5-operation-001";
 import classical_verbstem_class_taxonomy from "./nuclear-owner-specs/classical-verbstem-class-taxonomy.mjs";
 import classical_verbstem_domain_analysis from "./nuclear-owner-specs/classical-verbstem-domain-analysis.mjs";
 import classical_verbstem_final_vowel_category_system from "./nuclear-owner-specs/classical-verbstem-final-vowel-category-system.mjs";

@@ -8,7 +8,7 @@ import {
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-sound-result-116";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-sound-result-116";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-lesson4-uncontradict-119";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson4-uncontradict-119";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson5-complete-123";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-sound-result-116";
 
 let browserBootstrapPromise = null;

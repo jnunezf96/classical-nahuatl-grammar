@@ -4,8 +4,8 @@ const spec = {
   "operationId": "classical.verbstem.category.system.analyze",
   "inputContract": "complete-typed-classical-verbstem-category-system-source",
   "domain": "classical-verbstem-category-system",
-  "mode": "canonical-fact",
-  "canonicalActorId": "classical-verbstem-category-system",
+  "mode": "canonical-operation",
+  "canonicalActorId": "classical-nuclear-semantic-operations",
   "selections": [
     "claim-p733",
     "claim-p734",
@@ -75,6 +75,38 @@ const spec = {
       "canonicalPath": "semanticValue"
     }
   },
-  "collectionCapabilityName": "CLASSICAL_NAHUATL_NUCLEAR_FACT_RECORDS"
+  "collectionCapabilityName": "CLASSICAL_NAHUATL_NUCLEAR_FACT_RECORDS",
+  "executionFunctionName": "buildClassicalNahuatlVerbstemCategorySystemFrame",
+  "executionValidatorName": "isClassicalNahuatlVerbstemCategorySystemFrame",
+  "executionArgsBySelection": {
+    "claim-p733": [],
+    "claim-p734": [],
+    "claim-p735": [],
+    "claim-p736": [],
+    "claim-p737": [],
+    "claim-p738": [],
+    "claim-p739": [],
+    "claim-p740": [],
+    "claim-p741": [],
+    "claim-p742": [],
+    "claim-p743": [],
+    "claim-p744": [],
+    "claim-p745": []
+  },
+  "expectedCanonicalStatusBySelection": {
+    "claim-p733": "authorized",
+    "claim-p734": "authorized",
+    "claim-p735": "authorized",
+    "claim-p736": "authorized",
+    "claim-p737": "authorized",
+    "claim-p738": "authorized",
+    "claim-p739": "authorized",
+    "claim-p740": "authorized",
+    "claim-p741": "authorized",
+    "claim-p742": "authorized",
+    "claim-p743": "authorized",
+    "claim-p744": "authorized",
+    "claim-p745": "authorized"
+  }
 };
 export default Object.freeze(spec);

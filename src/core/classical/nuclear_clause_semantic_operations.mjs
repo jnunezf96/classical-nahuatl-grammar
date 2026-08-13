@@ -52,6 +52,9 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
   const moodTenseOwner = createIssuedFrameOwner(
     "classical-nahuatl-mood-tense-filler-system-frame",
   );
+  const verbstemCategoryOwner = createIssuedFrameOwner(
+    "classical-nahuatl-verbstem-category-system-frame",
+  );
   const singularAlternationOwner = createIssuedFrameOwner(
     "classical-nahuatl-singular-number-dyad-alternation-frame",
   );
@@ -203,11 +206,24 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     const firstSingularFuture = number("1sg", "indicative", "future");
     return subjectParadigmOwner.issue({
       authorizationStatus: "authorized",
+      completeSubjectSet: ["1sg", "1pl", "2sg", "2pl", "3sg", "3pl"],
+      automaticEnglishSubjectCorrespondence: true,
+      paradigmCount: 4,
+      paradigmKinds: [
+        "main-indicative-and-past-optative",
+        "future-preterit-indicative",
+        "nonpast-optative",
+        "nonpast-admonitive",
+      ],
+      mainIndicativeTenses: [
+        "present", "customary-present", "imperfect", "distant-past",
+      ],
       mainIndicative: frame("indicative", "present").condition,
       mainIndicativeConnector: frame("indicative", "present").num1,
       futurePreterit: frame("indicative", "future").condition,
       nonpastOptative: frame("optative", "nonpast").condition,
       nonpastAdmonitive: frame("admonitive", "nonpast").condition,
+      nonpastAdmonitiveFirstTwoPositionsUseMainFillers: true,
       thirdCommon: {
         formula: subjectFormula("3sg", "indicative", "present"),
         person: "third",
@@ -240,9 +256,44 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
 
   function buildClassicalNahuatlMoodTenseFillerSystemFrame() {
     const get = requireFunction(targetObject, "getClassicalNahuatlFiniteMoodTenseFrame");
+    const getNumber = requireFunction(targetObject, "getClassicalNahuatlFiniteSubjectNumberDyad");
+    const buildVerbstem = requireFunction(targetObject, "buildClassicalNahuatlVerbstemClassFrame");
     const filler = (mood, tense, verbClass = "") => get({ mood, tense, verbClass }).tns;
+    const aspect = (mood, tense) => buildVerbstem("nemi", {
+      subject: "3sg",
+      mood,
+      tense,
+      verbClass: "B",
+      perfectiveClass: "B",
+      valence: "intransitive",
+      transitivity: "intransitive",
+    }).proofFrame?.conclusion?.aspect || "";
+    const singularNumber = (mood, tense) => getNumber({
+      subject: "1sg", mood, tense, stem: "nemi", verbClass: "B",
+    });
     return moodTenseOwner.issue({
       authorizationStatus: "authorized",
+      locus: "tns",
+      combinedCategories: ["mood", "tense"],
+      moods: {
+        indicative: "report-fact",
+        optative: "express-wish",
+        admonitive: "express-warning",
+      },
+      tenseFeatures: ["past", "present", "future"],
+      tenseInteractsWithMood: true,
+      tenseInteractsWithAspect: true,
+      aspectBySelection: {
+        indicativePresent: aspect("indicative", "present"),
+        indicativeCustomaryPresent: aspect("indicative", "customary-present"),
+        indicativeImperfect: aspect("indicative", "imperfect"),
+        indicativeFuture: aspect("indicative", "future"),
+        indicativePreterit: aspect("indicative", "preterit"),
+        indicativeDistantPast: aspect("indicative", "distant-past"),
+        optativeNonpast: aspect("optative", "nonpast"),
+        optativePast: aspect("optative", "past"),
+        admonitiveNonpast: aspect("admonitive", "nonpast"),
+      },
       indicative: {
         present: filler("indicative", "present"),
         customaryPresent: filler("indicative", "customary-present"),
@@ -260,6 +311,65 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
         classA: filler("admonitive", "nonpast", "A"),
         other: filler("admonitive", "nonpast", "B"),
       },
+      interpretationRanges: {
+        customaryPresent: ["general-present", "customary-present", "habitual-present", "usual-present"],
+        imperfect: ["customary-past", "habitual-past", "past-habit", "past-progressive"],
+        distantPast: ["simple-past-before-later-event", "past-perfect"],
+      },
+      grammaticalTenseIsNotExistentialTime: true,
+      presentTenseMayReferToPastTimeInContext: true,
+      singularNumberDyadAmbiguity: {
+        futurePreterit: singularNumber("indicative", "future").num1Variants,
+        nonpastOptative: [singularNumber("optative", "nonpast").num1, singularNumber("optative", "nonpast").num2],
+      },
+    });
+  }
+
+  function buildClassicalNahuatlVerbstemCategorySystemFrame() {
+    const build = requireFunction(targetObject, "buildClassicalNahuatlVerbstemClassFrame");
+    const deriveNonactive = requireFunction(targetObject, "deriveClassicalNahuatlNonactiveStemRecord");
+    const source = (tense) => build("nemi", {
+      subject: "3sg",
+      mood: "indicative",
+      tense,
+      verbClass: "B",
+      perfectiveClass: "B",
+      valence: "intransitive",
+      transitivity: "intransitive",
+    });
+    const imperfective = source("present");
+    const perfective = source("preterit");
+    const nonactive = deriveNonactive("nemi", {
+      verbClass: "B",
+      sourceValence: "intransitive",
+    });
+    const imperfectiveConclusion = imperfective.proofFrame?.conclusion || {};
+    const perfectiveConclusion = perfective.proofFrame?.conclusion || {};
+    return verbstemCategoryOwner.issue({
+      authorizationStatus: "authorized",
+      organizingCenter: imperfectiveConclusion.stemAsFormulaPredicate,
+      lexicalMeaningLocus: imperfective.sourceSelectionFrame?.ruleRefs
+        ?.find((rule) => rule.stemRole === "lexical-meaning-locus")?.stemRole || "",
+      valenceDeterminedByStem: imperfectiveConclusion.classTargetValence,
+      voiceFeatures: ["active", "nonactive"],
+      activeIsBasicSource: true,
+      nonactiveStem: nonactive.nonactiveStem,
+      nonactiveAuthorized: nonactive.authorizationStatus === "authorized",
+      nonactiveUses: ["passive", "impersonal"],
+      aspectFeatures: ["imperfective", "perfective"],
+      imperfectiveMeaning: "ongoing-without-regard-to-beginning-or-end",
+      perfectiveMeaning: "beginning-or-end-boundary",
+      imperfectiveIsBasicSource: true,
+      imperfectiveStem: imperfectiveConclusion.stemVariant,
+      imperfectiveAspect: imperfectiveConclusion.aspect,
+      perfectiveStem: perfectiveConclusion.stemVariant,
+      perfectiveAspect: perfectiveConclusion.aspect,
+      perfectiveRequiredEvenWhenMappingIsUnpredictable:
+        Boolean(perfectiveConclusion.stemVariant)
+        && perfectiveConclusion.aspect === "perfective",
+      lackOfPredictableRuleDoesNotMeanNoPerfective: true,
+      contrastiveStemKindCount: 8,
+      contrastiveDimensions: ["aspect", "valence", "voice"],
     });
   }
 
@@ -451,6 +561,8 @@ export function createClassicalNahuatlNuclearSemanticOperationsRuntime(
     isClassicalNahuatlSubjectParadigmSystemFrame: subjectParadigmOwner.validates,
     buildClassicalNahuatlMoodTenseFillerSystemFrame,
     isClassicalNahuatlMoodTenseFillerSystemFrame: moodTenseOwner.validates,
+    buildClassicalNahuatlVerbstemCategorySystemFrame,
+    isClassicalNahuatlVerbstemCategorySystemFrame: verbstemCategoryOwner.validates,
     buildClassicalNahuatlSingularNumberDyadAlternationFrame,
     isClassicalNahuatlSingularNumberDyadAlternationFrame: singularAlternationOwner.validates,
     buildClassicalNahuatlTransitiveVncFormulaSystemFrame,

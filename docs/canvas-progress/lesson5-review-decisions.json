@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "lesson": 5,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson5-intransitive-vnc-structure": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the intransitive formula the automatic normal Result for an intransitive VNC source."
+    },
+    "lesson5-morph-carrier-and-spelling": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make morph identity part of the typed analysis while treating spelling as its contextual realization."
+    },
+    "lesson5-subject-person-fillers": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make subject person and number the only user choices while the application realizes the exact pers1 carrier."
+    },
+    "lesson5-subject-case-filler": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep nominative case structurally present and automatically realized by zero."
+    },
+    "lesson5-subject-number-connector": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make num1 an automatic bridge between the predicate and final subject number."
+    },
+    "lesson5-subject-number-suffix": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make num2 the final automatic statement of subject number."
+    },
+    "lesson5-subject-paradigms": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the four paradigms automatic consequences of ordinary grammatical choices."
+    },
+    "lesson5-verbstem-categories": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make the typed verbstem the source of lexical meaning and all required stem-category distinctions."
+    },
+    "lesson5-mood-tense-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Make mood and tense genuine choices whose available combinations and morphs are enforced by the application."
+    }
+  }
+}

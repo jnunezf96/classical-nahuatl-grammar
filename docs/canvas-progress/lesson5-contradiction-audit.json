@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 5,
+  "status": "UNCONTRADICTED",
+  "reportAuthority": false,
+  "resolvedCount": 8,
+  "unresolvedCount": 0,
+  "resolutions": [
+    "Silent pers2 is a real nominative morph, not missing grammar.",
+    "Num1 and num2 are derived subject-number structure, not extra user choices.",
+    "English gendered translations depend on reference context and do not add Nahuatl gender.",
+    "Preterit c is limited to the Class A singular environment.",
+    "An unpredictable perfective mapping still requires a real perfective stem.",
+    "Mood and tense are genuine choices while aspect and tense carriers are derived.",
+    "Grammatical tense is kept separate from real-world time and translation range.",
+    "Canvas evidence and examples check grammar but never replace the canonical operation."
+  ]
+}
