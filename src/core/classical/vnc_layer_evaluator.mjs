@@ -670,7 +670,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             pers1,
             pers2,
             baseMorph: normalizeClassicalNahuatlVncSlotCarrier(personDyad?.pers1BaseMorph || pers1),
-            supportivePolicy: personDyad?.pers1SupportiveISurfacePolicy || ""
+            supportivePolicy: personDyad?.pers1SupportiveISurfacePolicy || "",
+            variantRule: personDyad?.pers1VariantRule || ""
           },
           prePredicate: prePredicateSlots,
           predicate: {
@@ -686,6 +687,14 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           }
         },
         valenceArity,
+        objectProfile: objectFrame ? {
+          objectKind: objectFrame.objectKind || "",
+          objectPerson: objectFrame.objectPerson || "",
+          objectRule: objectFrame.objectRule || "",
+          objectReflectsSubject: objectFrame.objectReflectsSubject === true,
+          trajectory: objectFrame.trajectory || "",
+          caseFeature: objectFrame.caseFeature || ""
+        } : null,
         objectMorphIdentityFrame: cloneClassicalNahuatlVncSlotValue(objectFrame?.va1MorphIdentityFrame || null),
         sourceFormulaArtifact: normalizeClassicalNahuatlVncSlotCarrier(formulaArtifact),
         formulaArtifactAuthority: "display-only-not-authority",
