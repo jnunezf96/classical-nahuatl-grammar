@@ -91,6 +91,7 @@ function run(ctx = {}) {
     s.ok("the formula cue keeps the formula color and uses italic Fraunces without a legend or underline",
         css.includes(".classical-formula__derived-annotation.classical-formula__supportive-i")
         && css.includes("color: inherit")
+        && css.includes("cursor: pointer")
         && css.includes("font-family: var(--font-title)")
         && css.includes("font-style: italic")
         && !css.includes("text-decoration: underline dotted currentColor")
