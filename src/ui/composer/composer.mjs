@@ -4675,7 +4675,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       next.sentence.adverbial = sentenceAdverbialEntry?.id || "none";
       next.sentence.polarity = normalizeSentenceChoice("polarity", ["positive", "negative"], "positive");
-      next.sentence.surface = normalizeSentenceChoice("surface", ["statement", "emphatic", "question-intonation", "question-cuix", "wish"], "statement");
+      next.sentence.surface = normalizeSentenceChoice("surface", ["statement", "question", "exclamation"], "statement");
       next.sentence.introductoryParticle = normalizeSentenceChoice("introductoryParticle", ["none", "mā", "tlā"], "none");
       next.sentence.prefaceParticle = normalizeSentenceChoice("prefaceParticle", ["none", "ihyo", "ye"], "none");
       next.sentence.introductoryModifier = normalizeSentenceChoice("introductoryModifier", ["none", "cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "tēl", "quin", "nēn"], "none");
@@ -8122,6 +8122,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     }
     const CLASSICAL_BUILT_IN_PARTICLE_CONTROL_ID = "classical-built-in-particle";
     const CLASSICAL_BUILT_IN_PARTICLE_CATEGORIES = Object.freeze({
+      "clause-introducer": "Clause introducers",
       collocation: "Particle collocations",
       negation: "Negativizing particles",
       honorificized: "Honorificized particles"
@@ -8159,7 +8160,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         getClassicalBuiltInParticleEntries(category).forEach(entry => {
           const option = targetObject.document.createElement("option");
           option.value = entry.id;
-          option.textContent = [entry.sourceForm, entry.gloss].filter(Boolean).join(" · ");
+          const canonicalParticleForm = category === "clause-introducer"
+            && typeof targetObject.requestClassicalParticleResult === "function"
+            ? targetObject.requestClassicalParticleResult(entry.id)?.surface || entry.sourceForm
+            : entry.sourceForm;
+          option.textContent = [canonicalParticleForm, entry.gloss].filter(Boolean).join(" · ");
           option.dataset.classicalBuiltInParticleCategory = category;
           option.dataset.classicalAuthorityRole = "non-authorizing-canonical-particle-picker";
           group.appendChild(option);
@@ -8245,7 +8250,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const excludedIds = new Set([
         "l3-ah-negative",
         "l3-ca-negative",
-        "l3-cuix",
         "l3-e-vocative"
       ]);
       if (polarity !== "negative") excludedIds.add("l3-zo");
@@ -8355,13 +8359,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const parts = targetObject.document?.getElementById?.("classical-particle-matrix-slots");
       const status = targetObject.document?.getElementById?.("classical-particle-matrix-status");
       if (!parts || !status) return false;
-      const mood = targetObject.document?.getElementById?.("classical-rule-logic-mood")?.value || "indicative";
       const tense = targetObject.document?.getElementById?.("classical-rule-logic-tense")?.value || "present";
-      const incompatibleIntroductory = ["l3-ma", "l3-tla"].includes(ClassicalParticleMatrixIndividualId)
-        && !["optative", "admonitive"].includes(mood);
       const incompatibleAntecessive = ClassicalParticleMatrixIndividualId === "l3-o-antecessive"
         && !["preterit", "distant-past", "distant-past-as-past", "imperfect", "past"].includes(tense);
-      if (incompatibleIntroductory || incompatibleAntecessive) {
+      if (incompatibleAntecessive) {
         ClassicalParticleCombinationDraftSegments = [];
         ClassicalParticleMatrixIndividualId = "none";
         ClassicalParticleMatrixIndividualKind = "particle";

@@ -57,36 +57,49 @@ function run(ctx = {}) {
         verbClass: "B",
         subject: "3sg",
     };
-    const question = ctx.buildClassicalRuleLogicSurfaceFrame({
-        ...baseVnc,
-        mood: "indicative",
-        tense: "present",
-        sentenceSurfaceMode: "question-cuix",
-    });
-    const wishMa = ctx.buildClassicalRuleLogicSurfaceFrame({
-        ...baseVnc,
-        mood: "optative",
-        tense: "nonpast",
-        introductoryParticle: "mā",
-    });
-    const wishTla = ctx.buildClassicalRuleLogicSurfaceFrame({
-        ...baseVnc,
-        mood: "optative",
-        tense: "past",
-        introductoryParticle: "tlā",
-    });
-    s.eq("cuix, mā, and tlā work through their one normal sentence control", {
-        duplicateParticleChoices: ctx.getClassicalNahuatlSentenceParticleEntries()
-            .filter((entry) => ["l3-cuix", "l3-ma", "l3-tla"].includes(entry.id))
+    const clauseIntroducerIds = [
+        "l3-ca",
+        "l3-cuix",
+        "l3-tla",
+        "l3-ma",
+        "l3-o-behold",
+    ];
+    s.eq("all Lesson 3 clause introducers are particles in the normal picker", {
+        particleChoices: ctx.getClassicalNahuatlSentenceParticleEntries()
+            .filter((entry) => clauseIntroducerIds.includes(entry.id))
             .map((entry) => entry.id),
-        normalResults: [
-            question.sentenceSurfaceDisplay,
-            wishMa.sentenceSurfaceDisplay,
-            wishTla.sentenceSurfaceDisplay,
-        ],
+        builtInChoices: ctx.getClassicalNahuatlParticleCombinationShortcutEntries()
+            .filter((entry) => clauseIntroducerIds.includes(entry.shortcutId))
+            .map((entry) => entry.shortcutId),
     }, {
-        duplicateParticleChoices: [],
-        normalResults: ["Cuix nemi?", "Mā nemi.", "Tlā nemini."],
+        particleChoices: clauseIntroducerIds,
+        builtInChoices: clauseIntroducerIds,
+    });
+
+    const sentencePunctuationResults = ["statement", "question", "exclamation"]
+        .map((sentenceSurfaceMode) => ctx.buildClassicalRuleLogicSurfaceFrame({
+            ...baseVnc,
+            subject: "1sg",
+            mood: "indicative",
+            tense: "present",
+            sentenceSurfaceMode,
+            sentenceParticleId: "l3-ca",
+        }));
+    s.eq("Sentence changes punctuation and does not add a particle or mood", {
+        formulas: sentencePunctuationResults.map((frame) =>
+            frame.sentenceFormulaDisplay),
+        surfaces: sentencePunctuationResults.map((frame) =>
+            frame.sentenceSurfaceDisplay),
+        particles: sentencePunctuationResults.map((frame) =>
+            frame.state.requestedSentenceParticleId),
+    }, {
+        formulas: [
+            "ca #ni-0(nemi)0+0-0#.",
+            "ca #ni-0(nemi)0+0-0#?",
+            "ca #ni-0(nemi)0+0-0#!",
+        ],
+        surfaces: ["Ca ninemi.", "Ca ninemi?", "Ca ninemi!"],
+        particles: ["l3-ca", "l3-ca", "l3-ca"],
     });
 
     const negative = (precedingParticleId, sentenceKind) => {
@@ -192,6 +205,99 @@ function run(ctx = {}) {
         adverbial: "l3-zan",
         polarity: "negative",
         surface: "Ahzo zan ninemi.",
+    });
+
+    const ahzoVnc = ctx.requestClassicalSentenceParticleFrame({
+        particleSourceFrame:
+            ctx.buildClassicalNahuatlParticleSourceFrame("l3-ahzo"),
+        nuclearResultFrame: ctx.requestClassicalVncSentenceResultFrame(
+            ctx.evaluateClassicalNahuatlVncApplication({
+                sourceStem: "nemi",
+                verbClass: "B",
+                sourceValence: "intransitive",
+                subject: "1sg",
+                requestedDerivation: "direct",
+                requestedVoice: "active",
+                mood: "indicative",
+                tense: "present",
+                outputScope: "single",
+            })
+        ),
+    });
+    const ahzoStandaloneAttempt = particle("l3-ahzo", {
+        structuralRole: "independent-utterance",
+    });
+    s.eq("ahzo keeps the VNC in the writing path", {
+        formula: ahzoVnc.sentenceFormulaDisplay,
+        surface: ahzoVnc.sentenceSurfaceDisplay,
+        independentUtterance: ahzoVnc.independentUtterance,
+        standaloneWritingAttempt: [
+            ahzoStandaloneAttempt.authorizationStatus,
+            ahzoStandaloneAttempt.blockReason,
+        ],
+        readingFactPreserved:
+            particle("l3-ahzo").lexicalFactFrame.usageFacts,
+    }, {
+        formula: "ah#zo #ni-0(nemi)0+0-0#",
+        surface: "Ahzo ninemi",
+        independentUtterance: false,
+        standaloneWritingAttempt: [
+            "authorized",
+            "",
+        ],
+        readingFactPreserved: [
+            "negativized particle",
+            "may stand as an utterance",
+        ],
+    });
+
+    const lesson3StandaloneCapableEntries =
+        ctx.getClassicalNahuatlParticleSourceEntries()
+            .filter((entry) => entry.curriculumCoordinate.startsWith("3."))
+            .filter((entry) =>
+                entry.placement.scope === "independent-utterance");
+    const lesson3VncInterjectionResults = lesson3StandaloneCapableEntries
+        .map((entry) => ctx.requestClassicalSentenceParticleFrame({
+            particleSourceFrame:
+                ctx.buildClassicalNahuatlParticleSourceFrame(entry.id),
+            nuclearResultFrame: ctx.requestClassicalVncSentenceResultFrame(
+                ctx.evaluateClassicalNahuatlVncApplication({
+                    sourceStem: "nemi",
+                    verbClass: "B",
+                    sourceValence: "intransitive",
+                    subject: "1sg",
+                    requestedDerivation: "direct",
+                    requestedVoice: "active",
+                    mood: "indicative",
+                    tense: "present",
+                    outputScope: "single",
+                })
+            ),
+            speakerGender: entry.id === "l3-no-interjection"
+                ? "female"
+                : "unspecified",
+        }));
+    s.eq("standalone capability never discards a supplied VNC Source", {
+        capableCount: lesson3StandaloneCapableEntries.length,
+        authorizedCount: lesson3VncInterjectionResults
+            .filter((result) => result.authorizationStatus === "authorized")
+            .length,
+        standaloneCapableCount: lesson3VncInterjectionResults
+            .filter((result) => result.standaloneCapable === true)
+            .length,
+        automaticStandaloneCount: lesson3VncInterjectionResults
+            .filter((result) => result.independentUtterance === true)
+            .length,
+        lostVncCount: lesson3VncInterjectionResults
+            .filter((result) => !result.sentenceFormulaDisplay
+                .includes("#ni-0(nemi)0+0-0#"))
+            .length,
+    }, {
+        capableCount: 20,
+        authorizedCount: 20,
+        standaloneCapableCount: 20,
+        automaticStandaloneCount: 0,
+        lostVncCount: 0,
     });
 
     for (const [id, expectedFormula] of formulaRows) {

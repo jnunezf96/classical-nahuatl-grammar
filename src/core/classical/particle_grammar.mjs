@@ -578,7 +578,7 @@ l3-ca-no-zo|ca no zo|collocation|collocation-sequence|3.5
 l3-otzin|ōtzin|honorificized|floating|3.5
 l3-auhtzin|āuhtzin|honorificized|floating|3.5
 l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
-l58-ahmo|ahmō|clause-introducer|independent-utterance|58.5
+l58-ahmo|ahmō|clause-introducer|clause-initial|58.5
 l58-mah-ca|mah ca#|adjunctor|bound-to-following|58.4
 l58-quemah|quēmah|collocation|independent-utterance|58.4
 l58-quemahca|quemahca|collocation|independent-utterance|58.4
@@ -2065,11 +2065,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         && Object.isFrozen(frame)
       );
     }
-    const CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS = Object.freeze([
-      "l3-cuix",
-      "l3-ma",
-      "l3-tla"
-    ]);
+    const CLASSICAL_NAHUATL_SPECIALIZED_SENTENCE_PARTICLE_IDS = Object.freeze([]);
     const CLASSICAL_NAHUATL_SPECIALIZED_ADVERBIAL_PARTICLE_IDS = Object.freeze([
       "l3-o-antecessive",
       "l3-zo"
@@ -2125,7 +2121,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
     });
     function getClassicalNahuatlParticleCombinationShortcutEntries() {
       return getClassicalNahuatlSentenceParticleEntries()
-        .filter(entry => ["negation", "collocation"].includes(entry.functionScope))
+        .filter(entry => ["clause-introducer", "negation", "collocation"].includes(entry.functionScope))
         .map(entry => {
           const formulaSegments = Array.from(entry.formulaSegments || []);
           const polarity = formulaSegments.some(segment => ["ah#", "ca#"].includes(segment))
@@ -2700,8 +2696,9 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         : "";
       const speakerContextLicensed = !requiredSpeakerGender
         || speakerGender === requiredSpeakerGender;
-      const independentUtterance = syntacticEntry?.placement?.scope
+      const standaloneCapable = syntacticEntry?.placement?.scope
         === "independent-utterance";
+      const independentUtterance = false;
       const authorized = !particleOmitted
         && !unexpectedOptionKey
         && !authorityPath
@@ -2813,6 +2810,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
         speakerGender,
         requiredSpeakerGender,
         speakerContextLicensed,
+        standaloneCapable,
         independentUtterance,
         rightAttachedToNucleus,
         sentenceBoundaryRelation: rightAttachedToNucleus

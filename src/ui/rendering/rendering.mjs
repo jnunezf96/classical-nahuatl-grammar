@@ -814,38 +814,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function normalizeClassicalRuleLogicSurfaceSentenceMode(value = "") {
       const normalized = String(value || "").trim().toLowerCase().replace(/[\s_]/gu, "-");
-      if (normalized === "information-question" || normalized === "inherent-interrogative") {
-        return "information-question";
-      }
-      if (normalized === "negative" || normalized === "negative-assertion") {
-        return "negative";
-      }
-      if (normalized === "emphatic" || normalized === "emphatic-assertion") {
-        return "emphatic";
-      }
-      if (normalized === "question-intonation" || normalized === "intonation-question" || normalized === "yes-no-intonation") {
-        return "question-intonation";
-      }
-      if (normalized === "question-cuix" || normalized === "cuix-question" || normalized === "yes-no-cuix") {
-        return "question-cuix";
-      }
-      if (normalized === "wish" || normalized === "wish-sentence" || normalized === "optative-wish") {
-        return "wish";
-      }
-      if (normalized === "command" || normalized === "command-sentence" || normalized === "direct-command") {
-        return "command";
-      }
-      if (normalized === "exhortation" || normalized === "exhortation-sentence") {
-        return "exhortation";
-      }
+      if (["question", "information-question", "inherent-interrogative", "question-intonation", "intonation-question", "yes-no-intonation", "question-cuix", "cuix-question", "yes-no-cuix"].includes(normalized)) return "question";
+      if (["exclamation", "exclamatory", "emphatic", "emphatic-assertion"].includes(normalized)) return "exclamation";
       return "statement";
     }
     const CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES = Object.freeze([
       "statement",
-      "emphatic",
-      "question-intonation",
-      "question-cuix",
-      "wish"
+      "question",
+      "exclamation"
     ]);
     function normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(value = "") {
       const normalized = String(value || "").trim().toLowerCase().replace(/[\s_]/gu, "-");
@@ -917,65 +893,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
     }
     function getClassicalRuleLogicSurfaceSentenceOptions(sentenceMode = "", sentenceNegativeMode = "") {
-      const mode = normalizeClassicalRuleLogicSurfaceSentenceMode(sentenceMode);
       const negative = normalizeClassicalRuleLogicSurfaceSentenceNegativeMode(sentenceNegativeMode) === "negative";
-      if (mode === "information-question") {
-        return {
-          sentenceType: "information-question",
-          questionMode: "inherent",
-          negative: false
-        };
-      }
-      if (mode === "negative") {
-        return {
-          sentenceType: "negative-assertion"
-        };
-      }
-      if (mode === "emphatic") {
-        return {
-          sentenceType: "emphatic-assertion"
-        };
-      }
-      if (mode === "question-intonation") {
-        return {
-          sentenceType: "yes-no-question",
-          questionMode: "intonation",
-          negative
-        };
-      }
-      if (mode === "question-cuix") {
-        return {
-          sentenceType: "yes-no-question",
-          questionMode: "cuix",
-          negative
-        };
-      }
-      if (mode === "wish") {
-        return {
-          sentenceType: "wish-sentence",
-          negative
-        };
-      }
-      if (mode === "command") {
-        return {
-          sentenceType: "command-sentence",
-          negative
-        };
-      }
-      if (mode === "exhortation") {
-        return {
-          sentenceType: "exhortation-sentence",
-          negative
-        };
-      }
-      if (negative) {
-        return {
-          sentenceType: "negative-assertion",
-          negative: true
-        };
-      }
       return {
-        sentenceType: "affirmative-assertion"
+        sentenceType: negative ? "negative-assertion" : "affirmative-assertion",
+        negative,
+        punctuationMode: normalizeClassicalRuleLogicSurfaceSentenceMode(sentenceMode)
       };
     }
     function normalizeClassicalRuleLogicSurfacePrefixStackMode(value = "") {
@@ -1034,7 +956,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           introductoryModifierFallback: modifierContract.introductoryModifierFallback,
           prefixStackValues: preteritOptativeBorrowedForm ? ["antecessive"] : tense === "past" ? ["none", "antecessive"] : ["none"],
           prefixStackFallback: preteritOptativeBorrowedForm ? "antecessive" : "none",
-          sentenceSurfaceValues: ["statement"],
+          sentenceSurfaceValues: ["statement", "question", "exclamation"],
           sentenceSurfaceFallback: "statement",
           polarityValues: ["positive", "negative"],
           polarityFallback: "positive",
@@ -1056,7 +978,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           introductoryModifierFallback: negative ? "nēn" : "none",
           prefixStackValues: ["none"],
           prefixStackFallback: "none",
-          sentenceSurfaceValues: ["statement"],
+          sentenceSurfaceValues: ["statement", "question", "exclamation"],
           sentenceSurfaceFallback: "statement",
           polarityValues: ["positive", "negative"],
           polarityFallback: "positive",
@@ -1077,7 +999,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           tense
         }) ? ["none", "antecessive"] : ["none"],
         prefixStackFallback: "none",
-        sentenceSurfaceValues: ["statement", "emphatic", "question-intonation", "question-cuix"],
+        sentenceSurfaceValues: ["statement", "question", "exclamation"],
         sentenceSurfaceFallback: "statement",
         polarityValues: ["positive", "negative"],
         polarityFallback: "positive",
@@ -1589,8 +1511,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       let voiceLayerChainFrame = null;
       let selectedVoiceLayerRouteId = "";
       let orderedVoiceApplicationBlockReason = "";
-      const explicitSentenceSurfaceMode = Object.prototype.hasOwnProperty.call(overrides, "sentenceSurfaceMode")
-        || Object.prototype.hasOwnProperty.call(overrides, "sentenceMode");
       const requestedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(overrides.sentenceSurfaceMode || overrides.sentenceMode || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-surface", "statement"));
       const rawRequestedParticleCombinationShortcutId = String(overrides.particleCombinationShortcutId || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-particle-combination-shortcut", "none") || "none").trim();
       const particleCombinationShortcutEntry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
@@ -1639,13 +1559,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       const effectiveMood = moodBoundSelections.mood;
       const effectiveTense = moodBoundSelections.tense;
-      const sentenceSurfaceMode = basalUnit === "nnc" && CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES.includes(requestedSentenceSurfaceMode)
+      const sentenceSurfaceMode = CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES.includes(requestedSentenceSurfaceMode)
         ? requestedSentenceSurfaceMode
-        : explicitSentenceSurfaceMode
-          && effectiveMood === "optative"
-          && ["command", "exhortation"].includes(requestedSentenceSurfaceMode)
-          ? requestedSentenceSurfaceMode
-          : moodBoundSelections.sentenceSurfaceMode;
+        : moodBoundSelections.sentenceSurfaceMode;
       const sentenceNegativeMode = moodBoundSelections.polarityMode;
       const introductoryParticle = moodBoundSelections.introductoryParticle;
       const prefaceParticle = moodBoundSelections.prefaceParticle;
@@ -2497,14 +2413,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
     }
     function normalizeClassicalOrdinaryNncApplicationSentenceType(value = "") {
-      const normalized = normalizeClassicalRuleLogicSurfaceSentenceMode(value);
-      return {
-        statement: "statement",
-        emphatic: "emphatic",
-        "question-intonation": "yes-no-intonation",
-        "question-cuix": "yes-no-cuix",
-        wish: "wish"
-      }[normalized] || "statement";
+      normalizeClassicalRuleLogicSurfaceSentenceMode(value);
+      return "statement";
     }
     function normalizeClassicalOrdinaryNncApplicationPossessor(value = "") {
       return String(value || "").trim();
@@ -3287,11 +3197,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const sentenceLabels = {
         statement: "statement",
-        emphatic: "emphatic",
-        "question-intonation": "intonation question",
-        "question-cuix": "cuix question",
-        "information-question": "information question",
-        wish: "wish"
+        question: "question",
+        exclamation: "exclamation"
       };
       const parts = [subjectLabels[state.subject] || state.subject];
       if (state.nncType === "ordinary") {
@@ -3464,8 +3371,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
       nuclearSurface = "",
       sentenceFormula = "",
       sentenceSurface = "",
-      sentenceFormulaAttachment = ""
+      sentenceFormulaAttachment = "",
+      sentenceSurfaceMode = "statement"
     } = {}) {
+      const normalizedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(sentenceSurfaceMode);
+      const finalPunctuation = normalizedSentenceSurfaceMode === "question"
+        ? "?"
+        : normalizedSentenceSurfaceMode === "exclamation"
+          ? "!"
+          : ".";
+      const applyFinalPunctuation = value => {
+        const text = String(value || "").trim();
+        return text ? `${text.replace(/[.!?]+$/u, "")}${finalPunctuation}` : "";
+      };
       const canonicalNuclearResultFrame = basalUnit === "vnc"
         ? getCanonicalClassicalVncSentenceResultFrame(
           null,
@@ -3516,9 +3434,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return {
           authorizationStatus: "authorized",
           blockReason: "",
-          sentenceFormula: baseSentenceFormula,
-          sentenceSurface: baseSentenceSurface,
+          sentenceFormula: applyFinalPunctuation(baseSentenceFormula),
+          sentenceSurface: applyFinalPunctuation(baseSentenceSurface),
           sentenceFormulaAttachment: baseSentenceFormulaAttachment,
+          sentenceSurfaceMode: normalizedSentenceSurfaceMode,
+          finalPunctuation,
           canonicalNuclearResultFrame,
           adverbialLayerFrame: null,
           layerFrame: null
@@ -3575,9 +3495,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return {
         authorizationStatus: "authorized",
         blockReason: "",
-        sentenceFormula: layerFrame?.authorizationStatus === "authorized" ? layerFrame.sentenceFormulaDisplay : adverbialSentenceFormula,
-        sentenceSurface: layerFrame?.authorizationStatus === "authorized" ? layerFrame.sentenceSurfaceDisplay : adverbialSentenceSurface,
+        sentenceFormula: applyFinalPunctuation(layerFrame?.authorizationStatus === "authorized" ? layerFrame.sentenceFormulaDisplay : adverbialSentenceFormula),
+        sentenceSurface: applyFinalPunctuation(layerFrame?.authorizationStatus === "authorized" ? layerFrame.sentenceSurfaceDisplay : adverbialSentenceSurface),
         sentenceFormulaAttachment: baseSentenceFormulaAttachment,
+        sentenceSurfaceMode: normalizedSentenceSurfaceMode,
+        finalPunctuation,
         canonicalNuclearResultFrame,
         adverbialLayerFrame,
         layerFrame
@@ -3965,6 +3887,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,
+        sentenceSurfaceMode: state.sentenceSurfaceMode,
         nuclearResultFrame: sentenceFrame,
         selectedFormula,
         nuclearSurface:
@@ -3974,8 +3897,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       const typedSentenceType = {
         assertion: "statement",
-        "yes-no-intonation": "question-intonation",
-        "yes-no-cuix": "question-cuix"
+        "yes-no-intonation": "question",
+        "yes-no-cuix": "question"
       }[sentenceFrame?.sentenceType] || sentenceFrame?.sentenceType || state.sentenceSurfaceMode || "statement";
       const ruleRefs = prioritizeClassicalRuleLogicSurfaceWitnesses(surfaceFrame.ruleRefs, buildClassicalRuleTransformationObservationRows(surfaceFrame));
       const seenWitnesses = new Set();
@@ -4121,6 +4044,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,
+        sentenceSurfaceMode: state.sentenceSurfaceMode,
         nuclearResultFrame: sentenceResultFrame
       });
       const ruleRefs = prioritizeClassicalRuleLogicSurfaceWitnesses(surfaceFrame.ruleRefs, buildClassicalRuleTransformationObservationRows(surfaceFrame));
@@ -4249,6 +4173,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               sourceState.requestedSentenceParticleHonorificized,
             requestedSentenceAdverbialId:
               sourceState.requestedSentenceAdverbialId,
+            sentenceSurfaceMode: sourceState.sentenceSurfaceMode,
             nuclearResultFrame: sentenceFrame,
             selectedFormula:
               scalarFrame.formulaProjection.formulaRealization,
@@ -4484,6 +4409,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             sourceState.requestedSentenceParticleHonorificized,
           requestedSentenceAdverbialId:
             sourceState.requestedSentenceAdverbialId,
+          sentenceSurfaceMode: sourceState.sentenceSurfaceMode,
           nuclearResultFrame: sentenceFrame,
           selectedFormula:
             scalarFrame.formulaProjection.formulaRealization,
@@ -5441,6 +5367,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         requestedSentenceParticleId: state.requestedSentenceParticleId,
         requestedSentenceParticleHonorificized: state.requestedSentenceParticleHonorificized,
         requestedSentenceAdverbialId: state.requestedSentenceAdverbialId,
+        sentenceSurfaceMode: state.sentenceSurfaceMode,
         nuclearResultFrame: state.basalUnit === "nnc"
           ? nncSentenceSurfaceFrame
           : vncSentenceResultFrame,
@@ -5856,14 +5783,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         },
         question: {
           statement: "enunciado",
-          emphatic: "enunciado enfático",
-          "question-intonation": "pregunta por entonación",
-          "yes-no-intonation": "pregunta por entonación",
-          "question-cuix": "pregunta con cuix",
-          "yes-no-cuix": "pregunta con cuix",
-          "information-question": "pregunta informativa",
-          "inherent-interrogative": "pregunta inherente",
-          wish: "deseo"
+          question: "pregunta",
+          exclamation: "exclamación"
         },
         emphasis: {
           none: "sin énfasis",
@@ -7423,7 +7344,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_VNC_AUTHORITY_PRESENTATION_CONTRACT = Object.freeze({
       removedOptionValuesByControlId: Object.freeze({
         "classical-rule-logic-subject": Object.freeze(["3common"]),
-        "classical-rule-logic-sentence-surface": Object.freeze(["information-question", "wish"])
+        "classical-rule-logic-sentence-surface": Object.freeze([])
       })
     });
     function getClassicalVncAuthorityPresentationContract() {
@@ -8332,7 +8253,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const nncType = String(surfaceFrame.state?.nncType || "ordinary");
       const nncOptionContract = getClassicalNncAuthorityOptionContract(surfaceFrame.state);
       const nncControlAvailability = getClassicalNncAuthorityControlAvailability(surfaceFrame, nncOptionContract);
-      const nncInterrogativeReadingActive = surfaceFrame.machineryFrame?.discourseFrame?.interrogativeReadingActive === true;
       targetObject.document.querySelectorAll("[data-classical-nnc-authority-heading]").forEach(heading => {
         heading.hidden = !nncActive;
         heading.setAttribute("aria-hidden", String(!nncActive));
@@ -8362,7 +8282,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           nncOptionContract.clausePositionValues || [],
           nncOptionContract.selectedClausePosition || ""
         );
-        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-sentence-surface", nncInterrogativeReadingActive ? ["information-question"] : CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES, nncInterrogativeReadingActive ? "information-question" : surfaceFrame.state?.sentenceSurfaceMode);
+        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-sentence-surface", CLASSICAL_NNC_USER_SENTENCE_SURFACE_VALUES, surfaceFrame.state?.sentenceSurfaceMode);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-possessor", nncOptionContract.possessorValues, nncOptionContract.selectedPossessor);
         const metaphoricalUseControl = targetObject.document.getElementById("classical-rule-logic-nnc-metaphorical-use");
         if (metaphoricalUseControl) {
@@ -16939,11 +16859,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const sentenceLabels = {
         statement: formatVisibleSentenceLayerSlotValue("question", "statement"),
-        emphatic: formatVisibleSentenceLayerSlotValue("question", "emphatic"),
-        "question-intonation": formatVisibleSentenceLayerSlotValue("question", "question-intonation"),
-        "question-cuix": formatVisibleSentenceLayerSlotValue("question", "question-cuix"),
-        "information-question": formatVisibleSentenceLayerSlotValue("question", "information-question"),
-        wish: formatVisibleSentenceLayerSlotValue("question", "wish")
+        question: formatVisibleSentenceLayerSlotValue("question", "question"),
+        exclamation: formatVisibleSentenceLayerSlotValue("question", "exclamation")
       };
       const useShapeLabels = {
         base: "base stem",

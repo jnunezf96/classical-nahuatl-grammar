@@ -64,6 +64,36 @@ function run(ctx) {
     const frameOfKind = (frame, kind) =>
         frame.operationFrames?.find((candidate) => candidate.kind === kind);
 
+    const lesson58StandaloneEntries =
+        ctx.getClassicalNahuatlParticleSourceEntries()
+            .filter((entry) => entry.curriculumCoordinate.startsWith("58."))
+            .filter((entry) =>
+                entry.placement.scope === "independent-utterance");
+    s.eq("Lesson 58 automatic standalone entries are only frozen responses or exclamations", {
+        ids: lesson58StandaloneEntries.map((entry) => entry.id),
+        ahmoPlacement: ctx.findClassicalNahuatlLesson3ParticleEntry("l58-ahmo")
+            .placement.scope,
+    }, {
+        ids: [
+            "l58-quemah",
+            "l58-quemahca",
+            "l58-oc-eh",
+            "l58-tia-oc-eh",
+            "l58-ma-oc-eh",
+            "l58-tia-cuel",
+            "l58-tia-cuel-eh",
+            "l58-tia-cuel-ehhuatl",
+            "l58-ma-cuel",
+            "l58-ma-cuel-eh",
+            "l58-ma-cuel-ehhuatl",
+            "l58-ma-ye-cuel",
+            "l58-ma-ye-cuel-eh",
+            "l58-tia-ye-cuel",
+            "l58-tia-ye-cuel-eh",
+        ],
+        ahmoPlacement: "clause-initial",
+    });
+
     const hasteRows = [
         ["l58-oc-eh", "oc eh", "oc + eh", "Oc eh!", "oc yeh", "oc + yeh", "Oc yeh!"],
         ["l58-tia-oc-eh", "tiā oc eh", "tiā + oc + eh", "Tiā oc eh!", "tiā oc yeh", "tiā + oc + yeh", "Tiā oc yeh!"],

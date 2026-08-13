@@ -59,6 +59,7 @@ function run(ctx = {}) {
             auhtzin.particleResultFrame.formula,
             auhtzin.particleResultFrame.surface,
             auhtzin.selectedEntry.meanings,
+            auhtzin.standaloneCapable,
             auhtzin.independentUtterance,
             auhtzin.sentenceSurfaceDisplay,
             wrongConjunctorHonorific.authorizationStatus,
@@ -88,7 +89,7 @@ function run(ctx = {}) {
             "authorized", "l3-otzin", "ōtzin", "ōtzin", ["behold"], "Ōtzin nemi",
         ]],
         ["ACI-P059-L025-64943B2196", [
-            "authorized", "l3-auhtzin", "āuhtzin", "āuhtzin", ["good", "good"], true, "Āuhtzin", "blocked",
+            "authorized", "l3-auhtzin", "āuhtzin", "āuhtzin", ["good", "good"], true, false, "Āuhtzin nemi", "blocked",
         ]],
         ["ACI-P059-L026-BB2A070E1D", [
             "authorized", "l3-ca-no-zotzin", "ca no zotzin",

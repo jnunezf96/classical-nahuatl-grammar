@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-particle-formula-104";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-sentence-type-108";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

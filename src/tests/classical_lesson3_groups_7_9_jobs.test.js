@@ -211,6 +211,7 @@ function run(ctx = {}) {
             functional["classical-interjection-independent-utterance-distribution"].mostCanOccurAlone,
             standaloneInterjection.authorizationStatus,
             standaloneInterjection.sentenceSurfaceDisplay,
+            standaloneInterjection.standaloneCapable,
             standaloneInterjection.independentUtterance,
         ]],
         ["ACI-P056-L040-9F2DD2E0DF-02", [
@@ -255,7 +256,7 @@ function run(ctx = {}) {
     for (const [atomId, observation] of ruleObservations) observations.set(atomId, observation);
 
     const expectedRules = new Map([
-        ["ACI-P056-L037-DCC9E4187C", [true, "authorized", "O", true]],
+        ["ACI-P056-L037-DCC9E4187C", [true, "authorized", "O nemi", true, false]],
         ["ACI-P056-L040-9F2DD2E0DF-02", ["authorized", "blocked"]],
         ["ACI-P056-L040-9F2DD2E0DF-03", ["preceding-nominal-nuclear-clause", "obligatory", "obligatory"]],
         ["ACI-P056-L040-9F2DD2E0DF-04", ["attracts-stress"]],

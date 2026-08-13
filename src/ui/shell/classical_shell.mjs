@@ -2926,11 +2926,8 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           data-classical-result-scope="sentence-surface"
                         >
                           <option value="statement" selected>statement</option>
-                          <option value="emphatic">emphatic</option>
-                          <option value="question-intonation">question: intonation</option>
-                          <option value="question-cuix">question: cuix</option>
-                          <option value="information-question">information question</option>
-                          <option value="wish">wish</option>
+                          <option value="question">question</option>
+                          <option value="exclamation">exclamation</option>
                         </select>
                       </label>
                       <label
