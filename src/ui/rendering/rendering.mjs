@@ -189,6 +189,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const outputPanel = targetObject.document.getElementById("container-tense-grid");
       const resultControls = targetObject.document.getElementById("output-result-controls");
       const tenseDescription = targetObject.document.getElementById("tense-description");
+      const metaStrip = outputPanel?.querySelector(".output-meta-strip") || null;
       if (outputPanel) {
         outputPanel.classList.remove("container-tense-grid--classical-unified");
         if (outputPanel.dataset?.outputMode === "classical-unified") {
@@ -202,6 +203,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (tenseDescription) {
         tenseDescription.hidden = false;
         tenseDescription.setAttribute("aria-hidden", "false");
+      }
+      if (metaStrip) {
+        metaStrip.hidden = false;
       }
     }
     function normalizeClassicalBasalUnitForRendering(value = "") {
@@ -237,7 +241,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           authority: "nominal-nuclear-clause",
           nuclearClauseAuthority: "true",
           nuclearClauseKind: "nominal-nuclear-clause",
-          outputSummary: "NOMINAL NUCLEAR CLAUSE (NNC) · CLASSICAL NAHUATL · SELECTED FORM",
           selectedOutputLabel: "Selected NNC formula"
         };
       }
@@ -246,7 +249,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         authority: "verbal-nuclear-clause",
         nuclearClauseAuthority: "true",
         nuclearClauseKind: "verbal-nuclear-clause",
-        outputSummary: "VERBAL NUCLEAR CLAUSE (VNC) · CLASSICAL NAHUATL · SELECTED FORM",
         selectedOutputLabel: "Selected VNC output"
       };
     }
@@ -280,7 +282,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const outputPanel = targetObject.document.getElementById("container-tense-grid");
       const resultControls = targetObject.document.getElementById("output-result-controls");
       const tenseDescription = targetObject.document.getElementById("tense-description");
-      const calcSummary = targetObject.document.getElementById("calc-summary");
+      const metaStrip = outputPanel?.querySelector(".output-meta-strip") || null;
       const titleText = outputPanel?.querySelector(":scope > .panel-block-title .panel-block-text");
       if (outputPanel) {
         outputPanel.classList.remove("container-tense-grid--particle");
@@ -290,15 +292,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (titleText) {
         titleText.textContent = "RESULT";
       }
-      if (calcSummary) {
-        calcSummary.textContent = basalMeta.outputSummary;
-        calcSummary.setAttribute("aria-live", "off");
-        calcSummary.dataset.classicalResultAnnouncementOwner =
-          "nested-result-status";
-      }
       if (tenseDescription) {
         tenseDescription.hidden = true;
         tenseDescription.setAttribute("aria-hidden", "true");
+      }
+      if (metaStrip) {
+        metaStrip.hidden = true;
       }
       if (resultControls) {
         resultControls.hidden = true;
@@ -8134,21 +8133,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         const hide = !controlVisibility[id];
         const canvasDisabled = control.dataset?.classicalCanvasSelectAvailability === "disabled-single-canvas-choice";
-        const retainedReadOnlyClass = id === "classical-rule-logic-class"
+        const retainedFilteredClass = id === "classical-rule-logic-class"
           && basalUnit === "vnc"
           && canvasDisabled;
         const retainedReadOnlyTense = id === "classical-rule-logic-tense"
           && basalUnit === "vnc"
           && canvasDisabled;
-        const retainedReadOnlyControl =
-          retainedReadOnlyClass || retainedReadOnlyTense;
-        const visible = !hide && (!canvasDisabled || retainedReadOnlyControl);
+        const retainedSingleChoiceControl =
+          retainedFilteredClass || retainedReadOnlyTense;
+        const visible = !hide && (!canvasDisabled || retainedSingleChoiceControl);
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
-        control.disabled = !visible || retainedReadOnlyControl;
+        // Stem class remains an operable dropdown even when Canvas permits only
+        // one class. Its invalid options stay disabled by the typed contract.
+        control.disabled = !visible || retainedReadOnlyTense;
         control.setAttribute("aria-disabled", String(control.disabled));
         wrapper.dataset.classicalControlAvailability = !visible ? "hidden" : control.disabled ? "disabled" : "enabled";
-        wrapper.dataset.classicalAuthorityUserInput = !visible ? "not-present" : control.disabled ? "not-required" : "required";
+        wrapper.dataset.classicalAuthorityUserInput = !visible
+          ? "not-present"
+          : retainedFilteredClass || control.disabled
+            ? "not-required"
+            : "required";
         wrapper.dataset.classicalControlLayout = getClassicalAuthorityControlLayout(id);
         wrapper.setAttribute("aria-disabled", String(control.disabled));
         wrapper.dataset.classicalRuleLogicVisibleFor = basalUnit === "vnc" ? "vnc" : basalUnit;
@@ -8166,12 +8171,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         if (id === "classical-rule-logic-class") {
           wrapper.dataset.classicalVerbstemClassMachineryAvailable = String(capabilities.verbstemClass === true);
-          wrapper.dataset.classicalVerbstemClassPresentation = retainedReadOnlyClass ? "visible-read-only" : "visible-user-choice";
+          wrapper.dataset.classicalVerbstemClassPresentation = retainedFilteredClass ? "visible-filtered-dropdown" : "visible-user-choice";
           wrapper.dataset.classicalCanvasClassRule = classSelectionContract?.canvasRuleId || "";
           wrapper.dataset.classicalCanvasClassDeterminate = String(classSelectionContract?.determinate === true);
           wrapper.dataset.classicalCanvasClassAllowed = classSelectionContract?.allowedClassIds?.join("|") || "A|B|C|D";
           wrapper.dataset.classicalCanvasClassLocked = String(classSelectionContract?.dropdownLocked === true);
-          wrapper.dataset.classicalRuleLogicGate = classSelectionContract?.dropdownLocked ? "canvas-determines-single-verbstem-class" : "canvas-class-selection-remains-open";
+          wrapper.dataset.classicalRuleLogicGate = classSelectionContract?.dropdownLocked ? "canvas-filters-to-valid-verbstem-classes" : "canvas-class-selection-remains-open";
         }
         if (id === "classical-rule-logic-derivation-option") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "engine-generated-derivation-choice-not-required" : derivationSelectionRecoveryRequired ? "stale-derivation-option-blocked-select-current-engine-option" : "engine-generated-andrews-derivation-choice-required";
@@ -13139,13 +13144,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "Sentence continuation"
         ));
       }
-      const customResultKind = customResultIsVnc
-        ? "VERBAL NUCLEAR CLAUSE (VNC)"
-        : "NOMINAL NUCLEAR CLAUSE (NNC)";
-      const calcSummary = targetObject.document.getElementById("calc-summary");
-      if (calcSummary) {
-        calcSummary.textContent = `${customResultKind} · ${outputScope === "paradigm" ? "FULL PARADIGM" : "SINGLE FORM"}`;
-      }
       if (outputScope === "paradigm"
         && (
           selectedConstruction === "place-gentilic-nnc"
@@ -13530,7 +13528,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       block.dataset.classicalResultVisualOrder =
         "canonical-written-answer-first";
       block.dataset.classicalResultVisualSystem = "grammar-account-surface";
-      const calcSummary = targetObject.document.getElementById("calc-summary");
       const outputScope =
         getClassicalNominalConstructionControlValue(
           "classical-rule-logic-nnc-output-scope",
@@ -13538,12 +13535,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
       let relationalParadigmPlan = null;
       let relationalParadigmCoordinates = null;
-      if (calcSummary) {
-        calcSummary.textContent = `NOMINAL NUCLEAR CLAUSE (NNC) · ${
-          outputScope === "paradigm" ? "FULL PARADIGM" : "SINGLE FORM"
-        }`;
-      }
-
       const heading = targetObject.document.createElement("div");
       heading.className = "classical-rule-surface__heading";
       const title = targetObject.document.createElement("h3");
@@ -14534,7 +14525,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         currentResult && currentSource?.ok ? "issued" : "unavailable";
       currentFacts.dataset.classicalDisplayStringAuthority = "false";
       currentFacts.appendChild(createGrammarInspectorLine(
-        "current Result",
+        "Current Result",
         currentResult && currentSource?.ok
           ? `${formatClassicalClauseRelationValue(currentSource.features?.unitKind)} · ${currentSource.surface}`
           : "Generate one authorized canonical VNC or NNC Result to capture it."
@@ -14686,8 +14677,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       captureActions.className = "classical-whole-canvas-actions";
       captureActions.dataset.classicalClauseRelationCaptureActions = "true";
       ["principal", "adjoined", "dependent", "supplement"].forEach(role => {
-        appendClassicalWholeCanvasPanelActionButton(captureActions, {
-          label: `Capture current as ${captureRoleLabels[role] || role}`,
+        const roleLabel = captureRoleLabels[role] || role;
+        const captureButton = appendClassicalWholeCanvasPanelActionButton(captureActions, {
+          label: `Capture as ${roleLabel}`,
           action: `capture-current-clause-relation-${role}`,
           userRole: "capture-issued-current-result",
           machineRole: "typed-capture-controller",
@@ -14713,6 +14705,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
             refreshClassicalClauseRelationWorkflow();
           }
         });
+        captureButton?.setAttribute(
+          "aria-label",
+          `Capture current Result as ${roleLabel}`
+        );
+        captureButton?.setAttribute(
+          "title",
+          `Capture current Result as ${roleLabel}`
+        );
       });
       if (markerOptions.length) {
         const particleCaptureRoles = selectedRelation
@@ -16851,13 +16851,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const singleNncElegantActive = Boolean(surfaceFrame.basalUnit === "nnc" && !fullParadigmActive && singleNncDisplayFrame?.authorizationStatus === "authorized");
       const singleVncDisplayFrame = surfaceFrame.vncSingleFormDisplayFrame || null;
       const singleVncElegantActive = Boolean(surfaceFrame.basalUnit === "vnc" && !fullVncParadigmActive && singleVncDisplayFrame?.authorizationStatus === "authorized");
-      const calcSummary = targetObject.document.getElementById("calc-summary");
-      if (surfaceFrame.basalUnit === "nnc" && calcSummary) {
-        calcSummary.textContent = fullParadigmActive ? "NOMINAL NUCLEAR CLAUSE (NNC) · FULL PARADIGM" : "NOMINAL NUCLEAR CLAUSE (NNC) · SINGLE FORM";
-      }
-      if (surfaceFrame.basalUnit === "vnc" && calcSummary) {
-        calcSummary.textContent = fullVncParadigmActive ? "VERBAL NUCLEAR CLAUSE (VNC) · FULL PARADIGM" : "VERBAL NUCLEAR CLAUSE (VNC) · SINGLE FORM";
-      }
       const paradigmSection = targetObject.document.createElement("section");
       paradigmSection.className = "classical-rule-surface__format-section classical-rule-surface__paradigm";
       paradigmSection.dataset.classicalNncParadigm = "true";

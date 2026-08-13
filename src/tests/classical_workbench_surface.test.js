@@ -502,7 +502,9 @@ function run(ctx = {}) {
         "CW-P02": resultPanel.includes('data-classical-result-scope-control="nnc"')
             && resultPanel.includes('data-classical-result-scope-control="vnc"')
             && rendering.includes("pointwiseEquivalent === true"),
-        "CW-P03": indexHtml.includes('aria-label="Interface size"')
+        "CW-P03": !indexHtml.includes('aria-label="Interface size"')
+            && !indexHtml.includes('id="ui-scale"')
+            && panels.includes('classicalInterfaceScale = "stable"')
             && panels.includes('classicalNativeZoom = "enabled"')
             && !panels.includes("baseFontSize / scale"),
         "CW-R01": rendering.includes('classicalResultHierarchy = "answer-first"')

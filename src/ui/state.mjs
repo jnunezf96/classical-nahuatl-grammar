@@ -3159,47 +3159,6 @@ export function createUiStateModule(targetObject = globalThis) {
         tenseLabel: getCalcTenseLabel()
       });
     }
-    function updateCalcSummary() {
-      const summaryEl = targetObject.document.getElementById("calc-summary");
-      if (!summaryEl) {
-        return;
-      }
-      const isSimpleView = targetObject.getActiveUiDensityMode() === targetObject.UI_DENSITY_MODE.simple;
-      const mode = getActiveTenseMode();
-      const modeButton = targetObject.document.querySelector(`[data-tense-mode="${mode}"]`);
-      const modeLabel = modeButton?.textContent?.trim() || (mode === targetObject.TENSE_MODE.sustantivo ? "CNN" : mode === targetObject.TENSE_MODE.adjetivo ? "Uso adjetival" : mode === targetObject.TENSE_MODE.adverbio ? "Uso adverbial" : mode === targetObject.TENSE_MODE.particula ? "Partícula" : "CNV");
-      const voice = getCombinedMode();
-      const voiceButton = targetObject.document.querySelector(`[data-combined-mode="${voice}"]`);
-      const voiceLabel = voiceButton?.textContent?.trim() || (voice === targetObject.COMBINED_MODE.nonactive ? "No activo" : "Activo");
-      const includeVoiceInSummary = mode === targetObject.TENSE_MODE.verbo && voice === targetObject.COMBINED_MODE.nonactive;
-      const derivationLabel = mode === targetObject.TENSE_MODE.verbo ? getCalcDerivationLabel().toLowerCase() : "";
-      const transitivityLabel = getCalcTransitivityLabel();
-      const tenseLabel = getCalcTenseLabel();
-      const sourceScopeLabel = !isSimpleView ? getCalcSourceScopeLabel() : "";
-      const clauseShell = getCurrentNuclearClauseShell({
-        mode
-      });
-      const clauseLabel = clauseShell?.displayLabel || "";
-      const parts = (() => {
-        if (mode === targetObject.TENSE_MODE.particula) {
-          return ["Partículas", "inventario diagnóstico", "sin generación"];
-        }
-        if (mode !== targetObject.TENSE_MODE.verbo) {
-          return [clauseLabel, tenseLabel, sourceScopeLabel].filter(Boolean);
-        }
-        if (isSimpleView) {
-          return [clauseLabel, tenseLabel, transitivityLabel].filter(Boolean);
-        }
-        return [clauseLabel, tenseLabel, derivationLabel, transitivityLabel, sourceScopeLabel || (includeVoiceInSummary ? voiceLabel : "")].filter(Boolean);
-      })();
-      const fallback = mode === targetObject.TENSE_MODE.verbo ? isSimpleView ? "Selecciona tiempo" : "Selecciona tiempo y derivación" : mode === targetObject.TENSE_MODE.particula ? "Ingresa una partícula" : "Selecciona tiempo";
-      if (mode === targetObject.TENSE_MODE.particula) {
-        summaryEl.title = "Andrews Lección 3";
-      } else {
-        summaryEl.removeAttribute("title");
-      }
-      summaryEl.textContent = parts.length ? parts.join(" · ") : fallback;
-    }
     function updateCalcStatus() {
       const statusEl = targetObject.document.getElementById("calc-status");
       if (!statusEl) {
@@ -3249,7 +3208,6 @@ export function createUiStateModule(targetObject = globalThis) {
           mode
         });
       }
-      updateCalcSummary();
       updateCalcStatus();
     }
 
@@ -3981,7 +3939,6 @@ export function createUiStateModule(targetObject = globalThis) {
     api.getCalcTenseLabel = getCalcTenseLabel;
     api.getCalcSourceScopeLabel = getCalcSourceScopeLabel;
     api.getCurrentNuclearClauseShell = getCurrentNuclearClauseShell;
-    api.updateCalcSummary = updateCalcSummary;
     api.updateCalcStatus = updateCalcStatus;
     api.updateCalcSummaryAndStatus = updateCalcSummaryAndStatus;
     Object.defineProperty(api, "PRET_UNIVERSAL_VERB_OVERRIDES", {

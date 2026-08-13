@@ -229,56 +229,17 @@ export function createUiPanelsContext(targetObject = globalThis) {
       return index > 0 ? raw.slice(0, index) : "";
     }
     function initUiScaleControl() {
-      const scaleInput = targetObject.document.getElementById("ui-scale");
-      if (!scaleInput) {
-        return;
-      }
-      const valueEl = targetObject.document.getElementById("ui-scale-value");
       const root = targetObject.document.documentElement;
-      const baseAdjustRaw = targetObject.getComputedStyle(root).getPropertyValue("--font-size-adjust");
-      const baseAdjust = Number.parseFloat(baseAdjustRaw) || 0;
-      const minValue = Number.parseFloat(scaleInput.min) || -6;
-      const maxValue = Number.parseFloat(scaleInput.max) || 6;
-      const safeMin = Math.max(minValue, -3);
-      if (safeMin !== minValue) {
-        scaleInput.min = String(safeMin);
-      }
-      const clampValue = value => Math.min(maxValue, Math.max(safeMin, value));
-      const formatValue = value => value > 0 ? `+${value}` : `${value}`;
-      const applyScale = offset => {
-        const nextAdjust = baseAdjust + offset;
-        root.style.setProperty("--font-size-adjust", `${nextAdjust}px`);
-        if (valueEl) {
-          valueEl.textContent = formatValue(offset);
-        }
-      };
-      let initialOffset = Number.parseFloat(scaleInput.value) || 0;
+      if (!root) return;
+      root.style.removeProperty("--font-size-adjust");
+      root.dataset.classicalInterfaceScale = "stable";
       try {
-        const saved = targetObject.window.localStorage ? targetObject.localStorage.getItem(targetObject.UI_SCALE_STORAGE_KEY) : null;
-        if (saved !== null && saved !== "") {
-          const savedValue = Number.parseFloat(saved);
-          if (!Number.isNaN(savedValue)) {
-            initialOffset = savedValue;
-          }
+        if (targetObject.window.localStorage && targetObject.UI_SCALE_STORAGE_KEY) {
+          targetObject.localStorage.removeItem(targetObject.UI_SCALE_STORAGE_KEY);
         }
       } catch {
-        initialOffset = Number.parseFloat(scaleInput.value) || 0;
+        // Storage may be unavailable; the fixed interface scale still applies.
       }
-      initialOffset = clampValue(initialOffset);
-      scaleInput.value = String(initialOffset);
-      applyScale(initialOffset);
-      scaleInput.addEventListener("input", () => {
-        const offset = clampValue(Number.parseFloat(scaleInput.value) || 0);
-        scaleInput.value = String(offset);
-        applyScale(offset);
-        try {
-          if (targetObject.window.localStorage) {
-            targetObject.localStorage.setItem(targetObject.UI_SCALE_STORAGE_KEY, String(offset));
-          }
-        } catch {
-          // Ignore storage failures.
-        }
-      });
     }
     function normalizeUiDensityMode(mode = "") {
       if (mode === UI_DENSITY_MODE.advanced) {

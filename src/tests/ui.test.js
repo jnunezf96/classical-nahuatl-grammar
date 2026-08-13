@@ -858,8 +858,9 @@ function run(ctx = {}) {
         indexHtml.includes('aria-label="Presentation depth"')
             && indexHtml.includes('<span class="button-label">Study</span>')
             && indexHtml.includes('<span class="button-label">Analysis</span>')
-            && indexHtml.includes('data-ui-density-description="simple">Selected form and formula')
-            && indexHtml.includes('data-ui-density-description="advanced">Structure, proof, and clause composition')
+            && indexHtml.includes('aria-description="Show the selected form and formula"')
+            && indexHtml.includes('aria-description="Show structure, proof, and clause composition"')
+            && !indexHtml.includes('id="ui-scale"')
             && css.includes("Study is the shared GCD projection")
             && css.includes("#classical-result-panel .classical-clause-relation-workflow")
             && css.includes("#classical-result-panel .classical-rule-surface__proof-group")
@@ -868,11 +869,11 @@ function run(ctx = {}) {
             && panels.includes("if (enteringSimple && !classicalDisplayOnly)")
     );
     s.ok(
-        "VNC Direct, Causative, and Applicative reuse the NNC #2 Grammar card language",
+        "VNC Direct, Causative, and Applicative reuse the flat Grammar control language",
         css.includes("/* #2 Grammar uses one card language for NNC and every VNC derivation tab. */")
             && css.includes('#classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-organizer')
             && css.includes('#classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section')
-            && css.includes("linear-gradient(150deg, rgba(255, 255, 255, 0.8), rgba(244, 241, 229, 0.58))")
+            && css.includes("background: var(--workbench-panel-bg-soft)")
             && css.includes('#classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__header')
             && css.includes('#classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-control-group__header')
             && !css.includes('[data-classical-derivation-type="direct"] .classical-vnc-authority-section {')
@@ -880,15 +881,15 @@ function run(ctx = {}) {
             && !css.includes('[data-classical-derivation-type="applicative"] .classical-vnc-authority-section {')
     );
     s.ok(
-        "VNC Stem class remains visible while unresolved and becomes read-only when Andrews determines one class",
-        (rendering.includes("const retainedReadOnlyControl =")
-            && rendering.includes('wrapper.dataset.classicalVerbstemClassPresentation = retainedReadOnlyClass ? "visible-read-only" : "visible-user-choice"'))
+        "VNC Stem class remains an operable dropdown filtered to the classes Andrews permits",
+        (rendering.includes("const retainedSingleChoiceControl =")
+            && rendering.includes('wrapper.dataset.classicalVerbstemClassPresentation = retainedFilteredClass ? "visible-filtered-dropdown" : "visible-user-choice"'))
             || rendering.includes('"classical-rule-logic-class": basalUnit === "vnc"')
-            && rendering.includes('const retainedReadOnlyClass = id === "classical-rule-logic-class"')
-            && rendering.includes('const visible = !hide && (!canvasDisabled || retainedReadOnlyClass)')
-            && rendering.includes('control.disabled = !visible || retainedReadOnlyClass')
+            && rendering.includes('const retainedFilteredClass = id === "classical-rule-logic-class"')
+            && rendering.includes('const visible = !hide && (!canvasDisabled || retainedFilteredClass)')
+            && rendering.includes('control.disabled = !visible || retainedReadOnlyTense')
             && rendering.includes('wrapper.dataset.classicalVerbstemClassMachineryAvailable = String(capabilities.verbstemClass === true)')
-            && rendering.includes('retainedReadOnlyClass ? "visible-read-only" : "visible-user-choice"')
+            && rendering.includes('retainedFilteredClass ? "visible-filtered-dropdown" : "visible-user-choice"')
             && !rendering.includes('"classical-rule-logic-class": capabilities.verbstemClass === true')
     );
     s.eq(
@@ -1253,7 +1254,7 @@ function run(ctx = {}) {
             && css.includes("body.is-language-classical .classical-rule-control select:disabled")
             && css.includes("cursor: not-allowed;")
             && rendering.includes('wrapper.dataset.classicalControlAvailability = !visible')
-            && rendering.includes('control.disabled = !visible || retainedReadOnlyClass')
+            && rendering.includes('control.disabled = !visible || retainedReadOnlyTense')
             && rendering.includes("function getClassicalAuthorityControlLayout")
             && rendering.includes('wrapper.dataset.classicalControlLayout = getClassicalAuthorityControlLayout(id)')
             && rendering.includes('wrapper.setAttribute("aria-disabled", String(control.disabled))')
@@ -10593,11 +10594,11 @@ function run(ctx = {}) {
             && rendering.includes("wrapper.dataset.classicalCanvasClassLocked = String(classSelectionContract?.dropdownLocked === true)")
             && rendering.includes("const controlVisibility = {")
             && rendering.includes("const hide = !controlVisibility[id]")
-            && rendering.includes("const visible = !hide && (!canvasDisabled || retainedReadOnlyClass)")
+            && rendering.includes("const visible = !hide && (!canvasDisabled || retainedSingleChoiceControl)")
             && vncApplication.includes('function getClassicalNahuatlVncApplicationAllowedVoices({')
             && vncApplication.includes('"source-stem-required-before-derived-voice"')
             && rendering.includes('requestClassicalVncApplicationResult(applicationRequest)')
-            && rendering.includes('control.disabled = !visible || retainedReadOnlyClass')
+            && rendering.includes('control.disabled = !visible || retainedReadOnlyTense')
             && css.includes('[data-classical-vnc-authority-order="predicate-voice"]')
             && css.includes('[data-classical-vnc-authority-order="predicate-nonactive-family"]')
             && css.includes('[data-classical-vnc-authority-order="predicate-object"]')

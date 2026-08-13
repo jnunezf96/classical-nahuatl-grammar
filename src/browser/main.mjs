@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260812-sound-result-116";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-clause-rhythm-173";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

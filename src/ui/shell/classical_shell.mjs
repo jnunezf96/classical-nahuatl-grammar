@@ -3041,14 +3041,13 @@ ${renderLesson5ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson6ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
-                <details
-                  class="classical-rule-surface__disclosure classical-canvas-grammar-facts"
+                <section
+                  class="classical-canvas-grammar-facts"
                   id="classical-canvas-grammar-facts"
                   data-classical-canvas-grammar-facts="presentation-only"
                   data-classical-source-authorizes="none"
                   data-classical-stage-authority="false"
                 >
-                  <summary>Canvas grammar facts</summary>
                   <div class="grammar-inspector__section">
                     <p>
                       Search the grammar record. These explanations describe the
@@ -3090,7 +3089,7 @@ ${renderLesson6ReaderGuidance(escapeClassicalShellHtml)}
                       <p data-classical-canvas-grammar-fact-source></p>
                     </article>
                   </div>
-                </details>
+                </section>
                 <div
                   id="tense-tabs"
                   class="tense-tabs formula-slot-controls"
@@ -3250,7 +3249,6 @@ ${renderLesson6ReaderGuidance(escapeClassicalShellHtml)}
                 </div>
               </div>
               <div class="output-meta-strip">
-                <div class="calc-summary" id="calc-summary"></div>
                 <details class="tense-description" id="tense-description">
                   <summary class="tense-description__summary">
                     <span class="tense-description__summary-title">Description</span>
@@ -3616,10 +3614,112 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       keyboard.dataset.classicalTranscriptionKeyboardBound = "true";
       return true;
     }
+    function installClassicalPanelRhythm() {
+      const documentObject = targetObject.document;
+      const sourcePanel = documentObject?.getElementById?.("container-inputs") || null;
+      const grammarPanel = documentObject?.getElementById?.("panel-stack-pane-tense") || null;
+      const resultPanel = documentObject?.getElementById?.("container-tense-grid") || null;
+      if (!sourcePanel || !grammarPanel || !resultPanel) return false;
+
+      const markSection = (element, role) => {
+        if (element?.dataset) element.dataset.classicalPanelSection = role;
+        return element;
+      };
+
+      markSection(sourcePanel.querySelector(":scope > .classical-basal-unit-controls"), "primary-controls");
+      markSection(sourcePanel.querySelector(":scope > .classical-source-unit"), "primary-content");
+      markSection(sourcePanel.querySelector(":scope > .classical-source-continuation"), "secondary-content");
+
+      markSection(grammarPanel.querySelector(":scope > .formula-controls-grid"), "primary-content");
+      markSection(grammarPanel.querySelector(":scope > .classical-grammar-dependency-guidance"), "secondary-content");
+      markSection(grammarPanel.querySelector(":scope > .classical-grammar-continuation"), "separate-task");
+      markSection(grammarPanel.querySelector(":scope > #tense-tabs"), "secondary-content");
+
+      const resultTitle = resultPanel.querySelector(":scope > .panel-block-title");
+      const resultActions = resultTitle?.querySelector(":scope > .panel-block-actions")
+        || resultPanel.querySelector(":scope > .panel-block-actions");
+      const resultControls = resultPanel.querySelector(":scope > .output-result-controls");
+      const resultScope = resultPanel.querySelector(":scope > .classical-result-scope-controls");
+      const resultSurface = resultPanel.querySelector(":scope > .classical-rule-surface");
+      const resultMeta = resultPanel.querySelector(":scope > .output-meta-strip");
+      const resultParadigm = resultPanel.querySelector(":scope > #all-tense-conjugations");
+      [resultControls, resultScope, resultSurface, resultMeta, resultParadigm, resultActions]
+        .filter(Boolean)
+        .forEach(element => resultPanel.appendChild(element));
+      markSection(resultControls, "primary-controls");
+      markSection(resultScope, "primary-controls");
+      markSection(resultSurface, "primary-content");
+      markSection(resultMeta, "secondary-content");
+      markSection(resultParadigm, "secondary-content");
+      markSection(resultActions, "actions");
+
+      [sourcePanel, grammarPanel, resultPanel].forEach(panel => {
+        panel.dataset.classicalPanelRhythm = "title-primary-secondary-actions";
+      });
+      return true;
+    }
+    function installClassicalReaderGuidanceHeader() {
+      const documentObject = targetObject.document;
+      const legacyGuide = documentObject?.getElementById?.("classical-reader-guidance") || null;
+      const grammarFacts = documentObject?.getElementById?.("classical-canvas-grammar-facts") || null;
+      const dialog = documentObject?.getElementById?.("classical-reader-guidance-dialog") || null;
+      const readingPanel = documentObject?.getElementById?.("classical-help-panel-reading") || null;
+      const factsPanel = documentObject?.getElementById?.("classical-help-panel-facts") || null;
+      const toggle = documentObject?.getElementById?.("classical-reader-guidance-toggle") || null;
+      const close = documentObject?.getElementById?.("classical-reader-guidance-close") || null;
+      const tabs = Array.from(documentObject?.querySelectorAll?.("[data-classical-help-tab]") || []);
+      if (!legacyGuide || !grammarFacts || !dialog || !readingPanel || !factsPanel || !toggle || !close || tabs.length !== 2) return false;
+
+      const guideBody = legacyGuide.querySelector(":scope > .classical-reader-guidance__body");
+      if (guideBody && !readingPanel.contains(guideBody)) readingPanel.appendChild(guideBody);
+      if (!factsPanel.contains(grammarFacts)) factsPanel.appendChild(grammarFacts);
+      legacyGuide.remove();
+
+      if (dialog.dataset.classicalReaderGuidanceBound === "true") return true;
+      const selectHelpPanel = panelName => {
+        tabs.forEach(tab => {
+          const selected = tab.dataset.classicalHelpTab === panelName;
+          tab.classList.toggle("is-active", selected);
+          tab.setAttribute("aria-selected", selected ? "true" : "false");
+          tab.tabIndex = selected ? 0 : -1;
+        });
+        [readingPanel, factsPanel].forEach(panel => {
+          panel.hidden = panel.dataset.classicalHelpPanel !== panelName;
+        });
+        dialog.dataset.classicalHelpPanel = panelName;
+      };
+      const setExpanded = expanded => {
+        toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+      };
+      const openGuide = () => {
+        if (typeof dialog.showModal === "function") dialog.showModal();
+        else dialog.setAttribute("open", "");
+        setExpanded(true);
+      };
+      const closeGuide = () => {
+        if (typeof dialog.close === "function") dialog.close();
+        else dialog.removeAttribute("open");
+        setExpanded(false);
+      };
+      tabs.forEach(tab => tab.addEventListener("click", () => {
+        selectHelpPanel(tab.dataset.classicalHelpTab || "reading");
+      }));
+      toggle.addEventListener("click", openGuide);
+      close.addEventListener("click", closeGuide);
+      dialog.addEventListener("close", () => setExpanded(false));
+      dialog.addEventListener("click", event => {
+        if (event.target === dialog) closeGuide();
+      });
+      selectHelpPanel("reading");
+      dialog.dataset.classicalReaderGuidanceBound = "true";
+      return true;
+    }
     function installClassicalWorkbenchPresentation() {
       installClassicalWorkbenchStageSemantics();
       installClassicalSourceCommitPresentation();
       installClassicalTranscriptionSourcePresentation();
+      installClassicalPanelRhythm();
+      installClassicalReaderGuidanceHeader();
       return true;
     }
     function ClassicalFooter() {
@@ -3693,6 +3793,8 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.ClassicalPanelShell = ClassicalPanelShell;
     api.installClassicalTranscriptionSourcePresentation =
       installClassicalTranscriptionSourcePresentation;
+    api.installClassicalPanelRhythm = installClassicalPanelRhythm;
+    api.installClassicalReaderGuidanceHeader = installClassicalReaderGuidanceHeader;
     api.installClassicalShell = installClassicalShell;
     api.installClassicalShellWhenReady = installClassicalShellWhenReady;
     return api;

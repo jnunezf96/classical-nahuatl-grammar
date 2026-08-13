@@ -14,11 +14,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20260812-sound-result-116" />
-    <script type="module" src="src/browser/main.mjs?v=20260812-sound-result-116"></script>
+    <link rel="stylesheet" href="style.css?v=20260813-clause-rhythm-173" />
+    <script type="module" src="src/browser/main.mjs?v=20260813-clause-rhythm-173"></script>
     <title>Classical Nahuatl Grammar</title>
   </head>
   <body class="is-language-classical">
@@ -42,62 +42,100 @@
           </p>
         </div>
         <div class="hero-controls">
-          <div class="ui-scale-control">
-            <label class="ui-scale-label" for="ui-scale">Interface size</label>
-            <div class="ui-scale-row">
-              <input
-                type="range"
-                id="ui-scale"
-                min="-6"
-                max="6"
-                step="1"
-                value="0"
-                aria-label="Interface size"
-              />
-              <output class="ui-scale-value" id="ui-scale-value" for="ui-scale">0</output>
-            </div>
-          </div>
+          <button
+            type="button"
+            class="hero-help-button"
+            id="classical-reader-guidance-toggle"
+            aria-controls="classical-reader-guidance-dialog"
+            aria-expanded="false"
+          >
+            Help
+          </button>
           <div class="ui-density-control" role="group" aria-label="Presentation depth">
             <span class="ui-density-label" id="ui-density-label">Depth</span>
             <div class="ui-density-buttons">
               <button
                 type="button"
-                class="ui-density-button button-with-icon"
+                class="ui-density-button"
                 id="ui-density-simple"
                 data-ui-density="simple"
                 aria-pressed="true"
+                aria-description="Show the selected form and formula"
               >
-                <span class="button-icon" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" focusable="false">
-                    <rect x="3" y="3" width="10" height="10" rx="1.25"></rect>
-                  </svg>
-                </span>
                 <span class="button-label">Study</span>
               </button>
               <button
                 type="button"
-                class="ui-density-button button-with-icon"
+                class="ui-density-button"
                 id="ui-density-advanced"
                 data-ui-density="advanced"
                 aria-pressed="false"
+                aria-description="Show structure, proof, and clause composition"
               >
-                <span class="button-icon" aria-hidden="true">
-                  <svg viewBox="0 0 16 16" focusable="false">
-                    <path d="M8 2.5 12.5 5v6L8 13.5 3.5 11V5z"></path>
-                    <path d="M3.5 5 8 7.5 12.5 5"></path>
-                    <path d="M8 7.5V13.5"></path>
-                  </svg>
-                </span>
                 <span class="button-label">Analysis</span>
               </button>
             </div>
-            <p class="ui-density-description" aria-live="polite">
-              <span data-ui-density-description="simple">Selected form and formula</span>
-              <span data-ui-density-description="advanced">Structure, proof, and clause composition</span>
-            </p>
           </div>
         </div>
       </header>
+      <dialog
+        class="classical-reader-guidance-dialog"
+        id="classical-reader-guidance-dialog"
+        aria-labelledby="classical-reader-guidance-dialog-title"
+      >
+        <div class="classical-reader-guidance-dialog__header">
+          <div>
+            <p class="classical-reader-guidance-dialog__eyebrow">Workspace help</p>
+            <h2 id="classical-reader-guidance-dialog-title">Help</h2>
+          </div>
+          <button
+            type="button"
+            class="classical-reader-guidance-dialog__close"
+            id="classical-reader-guidance-close"
+            aria-label="Close help"
+          >
+            Close
+          </button>
+        </div>
+        <div class="classical-help-tabs" role="tablist" aria-label="Help sections">
+          <button
+            type="button"
+            class="classical-help-tab is-active"
+            id="classical-help-tab-reading"
+            role="tab"
+            aria-selected="true"
+            aria-controls="classical-help-panel-reading"
+            data-classical-help-tab="reading"
+          >Reading guide</button>
+          <button
+            type="button"
+            class="classical-help-tab"
+            id="classical-help-tab-facts"
+            role="tab"
+            aria-selected="false"
+            aria-controls="classical-help-panel-facts"
+            data-classical-help-tab="facts"
+            tabindex="-1"
+          >Grammar facts</button>
+        </div>
+        <div class="classical-reader-guidance-dialog__content">
+          <section
+            class="classical-help-panel"
+            id="classical-help-panel-reading"
+            role="tabpanel"
+            aria-labelledby="classical-help-tab-reading"
+            data-classical-help-panel="reading"
+          ></section>
+          <section
+            class="classical-help-panel"
+            id="classical-help-panel-facts"
+            role="tabpanel"
+            aria-labelledby="classical-help-tab-facts"
+            data-classical-help-panel="facts"
+            hidden
+          ></section>
+        </div>
+      </dialog>
       <div
         id="classical-app-root"
         data-classical-shell-root="true"

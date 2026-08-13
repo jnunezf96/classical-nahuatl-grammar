@@ -117,12 +117,12 @@ function run(ctx = {}) {
     );
 
     s.ok(
-        "Unavailable VNC controls stay absent except visible read-only Stem class and mood-bound Tense facts",
-        renderingSource.includes('const retainedReadOnlyClass = id === "classical-rule-logic-class"')
+        "Unavailable VNC controls stay absent except the filtered Stem class dropdown and read-only mood-bound Tense facts",
+        renderingSource.includes('const retainedFilteredClass = id === "classical-rule-logic-class"')
             && renderingSource.includes('const retainedReadOnlyTense = id === "classical-rule-logic-tense"')
-            && renderingSource.includes("retainedReadOnlyClass || retainedReadOnlyTense")
-            && renderingSource.includes("const visible = !hide && (!canvasDisabled || retainedReadOnlyControl);")
-            && renderingSource.includes("control.disabled = !visible || retainedReadOnlyControl;")
+            && renderingSource.includes("retainedFilteredClass || retainedReadOnlyTense")
+            && renderingSource.includes("const visible = !hide && (!canvasDisabled || retainedSingleChoiceControl);")
+            && renderingSource.includes("control.disabled = !visible || retainedReadOnlyTense;")
             && renderingSource.includes('const explicitSemanticSelection = Object.prototype.hasOwnProperty.call(overrides, "mood")')
             && renderingSource.includes("const domMoodBoundSelection = !explicitSemanticSelection")
             && renderingSource.includes("domMoodBoundSelection?.tense || rawRequestedSemanticTense")
