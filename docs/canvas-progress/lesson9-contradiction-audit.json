@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "lesson": 9,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 10,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "Optative is a mood for wishes and hopes; command and exhortation are sentence uses of that mood, not a separate imperative mood.",
+    "Nonpast and past optatives use their own optative formation, while future and preterit optatives borrow indicative forms and are identified by sentence use.",
+    "A preterit optative requires antecessive ō even though the same preterit form can occur without optative use.",
+    "First- and third-person commands require mā or tlā because the VNC form alone may not distinguish optative use; second-person x or xi permits omission.",
+    "Direct command, indirect command, and exhortation are derived from second-, third-, and first-person subjects respectively.",
+    "Mā and tlā stay outside the VNC formula while x or xi, person, number, stem, tense, and object material stay inside it.",
+    "Negative wishes and introduced negative commands change ah to prefixal ca; a blunt second-person command without mā keeps ah.",
+    "The separate ahmō alternative expresses a negative command without being combined with the ah or ca negative transformation.",
+    "A future command uses the future indicative shape with command force supplied by its sentence context; quin may specify later.",
+    "Lesson 9 reuses Mood, Tense, Subject, sentence purpose, Polarity, and Particles; automatic form choice and placement do not become extra user controls."
+  ]
+}

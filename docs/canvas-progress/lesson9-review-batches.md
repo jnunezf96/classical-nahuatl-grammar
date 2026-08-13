@@ -129,8 +129,8 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses future command meaning; the application borrows the future form and preserves command context.
 - Control policy: Reuse Tense, sentence purpose, and Particles; do not add a second future-form control.
 - Proposal: Build future commands through the borrowed-form rule.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/5
+- Status: ACCEPTED
+- Exactly observed: 5/5
 
 ## Batch 4, Group 11: Negative commands
 
@@ -142,6 +142,6 @@ All 187 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses command use, polarity, and time; the application supplies the negative command structure.
 - Control policy: Reuse sentence purpose, Polarity, Tense, and Particles.
 - Proposal: Make prohibition a normal grammatical transformation of the command path.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/18
+- Status: ACCEPTED
+- Exactly observed: 18/18
 

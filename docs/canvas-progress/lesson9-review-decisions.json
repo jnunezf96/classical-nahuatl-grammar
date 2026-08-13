@@ -38,6 +38,14 @@
     "lesson9-first-person-exhortations": {
       "status": "ACCEPTED",
       "acceptedJob": "Use mā with a first-person nonpast optative for singular or plural exhortation, and allow tēl after mā for encouragement despite doubt or reluctance."
+    },
+    "lesson9-future-commands": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the future indicative form as an optative for a later command, and allow quin to specify that the command is for later."
+    },
+    "lesson9-negative-commands": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build nonpast and future negative commands or exhortations as negative wishes: introduced commands use ca, blunt commands without mā use ah, and the usual ahmō alternative remains available."
     }
   }
 }

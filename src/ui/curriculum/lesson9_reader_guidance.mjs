@@ -50,6 +50,16 @@ export const LESSON9_READER_GUIDANCE_GROUPS = freeze([
     "Read first-person optatives as self-encouragement",
     "Mā with a first-person nonpast optative urges the speaker alone or a group including the speaker to act. English let me or let us expresses self-incitement, not permission. Tēl after mā adds encouragement despite doubt or reluctance.",
   ),
+  idea(
+    "lesson9-future-commands",
+    "Read a future form as a later command when the sentence commands",
+    "A command for an event beyond the near future uses the future indicative shape with optative command force. The command context supplies that force, and quin can specify later.",
+  ),
+  idea(
+    "lesson9-negative-commands",
+    "Read negative commands as negative wishes",
+    "A negative command or exhortation uses the negative-wish pattern in the nonpast or future. With mā, negative ah changes to prefixal ca. A blunt command without mā keeps ah. Ahmō is the usual separate alternative and is slightly more emphatic.",
+  ),
 ]);
 
 export function isLesson9ReaderGuidanceExact(candidate = []) {

@@ -167,6 +167,10 @@
       "readingJob": "Distinguish future command use from an ordinary future statement.",
       "decisionSplit": "The user chooses future command meaning; the application borrows the future form and preserves command context.",
       "controlPolicy": "Reuse Tense, sentence purpose, and Particles; do not add a second future-form control.",
+      "writingAtomIds": [
+        "ACI-P098-L008-32ABDE494C",
+        "ACI-P098-L009-EB8093783D"
+      ],
       "proposal": "Build future commands through the borrowed-form rule."
     },
     {
@@ -177,6 +181,15 @@
       "readingJob": "Guide prohibition force, scope, and the difference between immediate and future negative commands.",
       "decisionSplit": "The user chooses command use, polarity, and time; the application supplies the negative command structure.",
       "controlPolicy": "Reuse sentence purpose, Polarity, Tense, and Particles.",
+      "writingAtomIds": [
+        "ACI-P098-L016-E34A88A44A",
+        "ACI-P098-L017-5EEAC49845",
+        "ACI-P098-L018-7FEA528FE0",
+        "ACI-P098-L025-EDA3D8C83B",
+        "ACI-P098-L026-100C8EEB0B",
+        "ACI-P098-L029-8C4E6B763C-02",
+        "ACI-P098-L029-8FFE661856"
+      ],
       "proposal": "Make prohibition a normal grammatical transformation of the command path."
     }
   ]

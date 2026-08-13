@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-lesson9-groups7-9-191";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-lesson9-complete-192";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

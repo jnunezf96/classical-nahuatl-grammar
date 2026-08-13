@@ -46,6 +46,16 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson9_groups_7_9_jobs.test.js",
       "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-future-commands": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-negative-commands": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
     }
   }
 }
