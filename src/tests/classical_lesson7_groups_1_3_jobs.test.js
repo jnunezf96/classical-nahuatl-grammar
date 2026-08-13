@@ -78,7 +78,7 @@ function run(ctx = {}) {
     }, {
         formula: "#ni-0(chip-ā-hua)0+0-0#",
         labels: ["Class A imperfective verbstem morph"],
-        sections: ["§7.1", "§7.3", "§7.3.1", "§7.3.2", "§7.4", "§7.4.1", "§7.4.2"],
+        sections: ["§7.1", "§7.3"],
     });
     s.no("the class cue fails when the grammatical class is broken",
         ctx.getClassicalFormulaDerivedAnnotations(formula, typed, { classId: "B", aspect: "imperfective" })

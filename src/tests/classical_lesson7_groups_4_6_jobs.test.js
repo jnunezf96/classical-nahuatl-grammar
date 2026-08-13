@@ -162,7 +162,7 @@ function run(ctx = {}) {
     }, {
         formula: "#ni-0(mic)c+0-0#",
         labels: ["Class B perfective changes qu to c"],
-        sections: ["§7.1", "§7.3", "§7.3.1", "§7.3.2", "§7.4", "§7.4.1", "§7.4.2"],
+        sections: ["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"],
     });
     s.no("the perfective cue fails when the Class B change is broken",
         ctx.getClassicalFormulaDerivedAnnotations(perfectiveFormula, typedPerfective, {

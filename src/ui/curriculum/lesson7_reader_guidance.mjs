@@ -35,6 +35,21 @@ export const LESSON7_READER_GUIDANCE_GROUPS = freeze([
     "Read through Class B spelling changes",
     "After Class B loses or silences its last vowel, the exposed ending may be spelled differently: qu becomes c, c becomes z, hu becomes uh, cu becomes uc, m becomes n, and y becomes x or z. Traditional oa and ia spelling must not hide the underlying Class B stem.",
   ),
+  idea(
+    "lesson7-variable-class-membership",
+    "Read a real class alternative as two valid analyses",
+    "Some verbs license both Class A and Class B. Each choice has its own perfective result. This is a genuine grammatical choice, not uncertainty created by missing evidence.",
+  ),
+  idea(
+    "lesson7-class-guidelines-one-four",
+    "Use class guidelines without guessing",
+    "Monosyllable shape, a consonant group before the last vowel, final ca, or final tla can determine a class. The stated exceptions remain exceptions, and the guidelines do not predict every verb in the language.",
+  ),
+  idea(
+    "lesson7-class-guidelines-five-eight",
+    "Combine form, meaning, and lexical class facts",
+    "Change-of-state hua, final ya, final o or ō, and the listed Class D stems have distinct class rules. Meaning matters where Canvas says it matters, and a listed lexical membership is not replaced by surface guessing.",
+  ),
 ]);
 
 export function isLesson7ReaderGuidanceExact(candidate = []) {

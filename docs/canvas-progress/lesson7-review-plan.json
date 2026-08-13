@@ -125,6 +125,12 @@
       "readingJob": "Show both licensed class analyses and their perfective results.",
       "decisionSplit": "The user may choose between genuinely licensed class alternatives; the application blocks unlicensed classes.",
       "controlPolicy": "Filter the Stem class control to the licensed alternatives.",
+      "writingAtomIds": [
+        "ACI-P079-L024-8B87106BB4",
+        "ACI-P079-L027-C032E07853",
+        "ACI-P079-L028-6901A6BC62",
+        "ACI-P079-L029-B9F39D9F00"
+      ],
       "proposal": "Offer only genuine variable-class alternatives and generate the matching perfective."
     },
     {
@@ -135,6 +141,17 @@
       "readingJob": "Present the guidelines as useful grammar, not as a claim that every perfective is predictable.",
       "decisionSplit": "The application derives class where a rule determines it and asks for a class only where the source remains genuinely open.",
       "controlPolicy": "Do not replace lexical class knowledge with blind shape guessing.",
+      "writingAtomIds": [
+        "ACI-P079-L030-5FFA9E6CD3",
+        "ACI-P079-L033-855F4A794A",
+        "ACI-P079-L033-855F4A794A-02",
+        "ACI-P079-L040-B72468EF08",
+        "ACI-P079-L041-13178713EA",
+        "ACI-P080-L010-E0A7396785",
+        "ACI-P080-L012-E1834B2BC7",
+        "ACI-P080-L013-BDC281CB7B",
+        "ACI-P080-L014-13826D0127"
+      ],
       "proposal": "Use the first four class guidelines wherever they truly determine or limit class."
     },
     {
@@ -145,6 +162,24 @@
       "readingJob": "Help the reader connect semantic and final-shape conditions to the resulting class.",
       "decisionSplit": "The application derives a determined class and preserves real alternatives; the user resolves only a genuinely open class choice.",
       "controlPolicy": "Keep semantic and lexical conditions automatic where known.",
+      "writingAtomIds": [
+        "ACI-P080-L016-0030489F1D",
+        "ACI-P080-L020-0CA6DE96FC",
+        "ACI-P080-L020-64BCA73F01",
+        "ACI-P080-L022-8CE98916D4",
+        "ACI-P080-L025-A8BD3D34E6",
+        "ACI-P080-L028-DC3520E23E",
+        "ACI-P080-L030-A3103EEDD3",
+        "ACI-P080-L031-34DC8BDD40",
+        "ACI-P080-L032-8D322E91C7",
+        "ACI-P080-L033-7E05206E5F",
+        "ACI-P080-L034-89B81E8EA4",
+        "ACI-P080-L035-C3BDF43EC8",
+        "ACI-P080-L036-765C6B820B",
+        "ACI-P080-L037-821163820F",
+        "ACI-P080-L038-D85A1C4E66",
+        "ACI-P080-L039-004C2126D1"
+      ],
       "proposal": "Use the remaining class guidelines as grammar rules rather than example whitelists."
     },
     {

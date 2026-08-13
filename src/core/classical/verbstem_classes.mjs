@@ -1173,6 +1173,24 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         },
         exceptionKind: "monosyllabic-long-a-class-d-exception"
       }),
+      ehua: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
+        sourceStem: "ē-hua",
+        citedForm: "(ē-hua)",
+        section: "7.5",
+        lineStart: 2984,
+        lineEnd: 2989,
+        exactWitness: "(ē-hua) > (ē-hua) ~ (ē-uh)",
+        relationRuleId: "cn-l7-75-variable-a-b-membership",
+        defaultClassId: "A",
+        classOptions: ["A", "B"],
+        allowedClassIds: ["A", "B"],
+        alternativeClassIds: ["B"],
+        perfectiveStemsByClass: {
+          A: "ē-hua",
+          B: "ē-uh"
+        },
+        conditionKind: "canvas-licensed-variable-a-b-membership"
+      }),
       paca: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
         sourceStem: "pāca",
         citedForm: "tla-(pāca)",
@@ -2146,6 +2164,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }
       if (compactKey === "a") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.a);
+      }
+      if (compactKey === "ehua") {
+        return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.ehua);
       }
       if (compactKey === "mani") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.mani);

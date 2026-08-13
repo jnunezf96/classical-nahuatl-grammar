@@ -4892,7 +4892,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         atomIds: Object.freeze(["ACI-P069-L008-B53886AC27"])
       }),
       "verbstem-class-and-structure": Object.freeze({
-        lessonSections: Object.freeze(["§7.1", "§7.3", "§7.3.1", "§7.3.2", "§7.4", "§7.4.1", "§7.4.2"]),
+        lessonSections: Object.freeze(["§7.1", "§7.3"]),
         atomIds: Object.freeze([
           "ACI-P076-L003-0B2E95869D",
           "ACI-P076-L004-6824D748AE",
@@ -4900,7 +4900,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P076-L012-90944246E3-02",
           "ACI-P077-L029-778C0D9D12",
           "ACI-P077-L030-251E3FE06D",
-          "ACI-P077-L031-688A63867E",
+          "ACI-P077-L031-688A63867E"
+        ])
+      }),
+      "verbstem-perfective-operation": Object.freeze({
+        lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
+        atomIds: Object.freeze([
           "ACI-P077-L034-129B3476B9",
           "ACI-P078-L005-BBD537CB70",
           "ACI-P078-L017-0BE4C0B2F6",
@@ -4915,6 +4920,31 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P079-L011-ABD96847AF",
           "ACI-P079-L012-9382D96669",
           "ACI-P079-L014-A450A2C9BF"
+        ])
+      }),
+      "verbstem-conditioned-imperfective": Object.freeze({
+        lessonSections: Object.freeze(["§7.3.2"]),
+        atomIds: Object.freeze([
+          "ACI-P078-L031-8FF5729A0A",
+          "ACI-P078-L032-1C1DCCF187",
+          "ACI-P078-L035-2BE782702A",
+          "ACI-P078-L038-9168BCF5B9"
+        ])
+      }),
+      "verbstem-class-guideline": Object.freeze({
+        lessonSections: Object.freeze(["§7.5", "§7.6", "§7.6.1", "§7.6.2", "§7.6.3", "§7.6.4", "§7.6.5", "§7.6.6", "§7.6.7", "§7.6.8"]),
+        atomIds: Object.freeze([
+          "ACI-P079-L024-8B87106BB4",
+          "ACI-P079-L030-5FFA9E6CD3",
+          "ACI-P079-L033-855F4A794A",
+          "ACI-P079-L041-13178713EA",
+          "ACI-P080-L010-E0A7396785",
+          "ACI-P080-L014-13826D0127",
+          "ACI-P080-L016-0030489F1D",
+          "ACI-P080-L020-64BCA73F01",
+          "ACI-P080-L025-A8BD3D34E6",
+          "ACI-P080-L028-DC3520E23E",
+          "ACI-P080-L030-A3103EEDD3"
         ])
       }),
       "nuclear-clause-boundary": Object.freeze({
@@ -5198,6 +5228,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "class-c-final-a-replaced-by-h": "perfective replaces final ā with h",
           "class-d-final-long-a-adds-h-and-shortens": "perfective adds h and shortens ā"
         });
+        const classGuidelineLabels = Object.freeze({
+          "cn-l7-75-variable-a-b-membership": "licensed Class A or B choice",
+          "cn-l7-761-monosyllabic-long-a-d": "fixed by monosyllable shape",
+          "cn-l7-762-final-vowel-after-cluster-a": "after a consonant group",
+          "cn-l7-763-final-ka-a": "by final ca",
+          "cn-l7-764-final-tla-a": "by final tla",
+          "cn-l7-765-intransitive-wa-change-a": "change-of-state hua",
+          "cn-l7-766-final-ya-b": "by final ya",
+          "cn-l7-767-final-o-a": "by final o or ō",
+          "cn-l7-768-eight-class-d-stems": "listed verbstem",
+          "cn-l7-768-class-d-variant-stem": "variant verbstem"
+        });
         const imperfectiveShape = String(stemOperationFrame?.selectedImperfectiveShape || "");
         const imperfectiveShapeLabel = imperfectiveShape && imperfectiveShape !== "basic-imperfective-shape"
           ? imperfectiveShape.includes("truncated")
@@ -5206,9 +5248,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ? "conditioned short imperfective"
               : "conditioned imperfective shape"
           : "";
+        const classGuidelineRuleId = String(
+          grammarContext?.classGuidelineRuleId
+          || grammarContext?.classRuleFrame?.classGuidelineRuleId
+          || stemOperationFrame?.classGuidelineRuleId
+          || ""
+        );
         const operationLabel = stemAspect === "perfective"
           ? perfectiveChangeLabels[String(stemOperationFrame?.changeRule || "")] || "perfective verbstem"
-          : imperfectiveShapeLabel;
+          : imperfectiveShapeLabel || classGuidelineLabels[classGuidelineRuleId] || "";
         const stemJobLabel = stemClass || stemContent.includes("-")
           ? [
             stemClass ? `Class ${stemClass}` : "",
@@ -5217,7 +5265,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ].filter(Boolean).join(" ")
           : "predicate stem";
         const stemJobAuthority = stemClass || stemContent.includes("-")
-          ? "verbstem-class-and-structure"
+          ? stemAspect === "perfective"
+            ? "verbstem-perfective-operation"
+            : imperfectiveShapeLabel
+              ? "verbstem-conditioned-imperfective"
+              : classGuidelineRuleId
+                ? "verbstem-class-guideline"
+                : "verbstem-class-and-structure"
           : "predicate-stem";
         let stemPartStart = 0;
         Array.from(stemContent.matchAll(/[-+]/gu)).forEach(match => {

@@ -26,6 +26,18 @@
     "lesson7-class-b-perfective-changes": {
       "status": "ACCEPTED",
       "acceptedJob": "Send Class B perfectives through the common spelling and sound system automatically and show the resulting grammatical change."
+    },
+    "lesson7-variable-class-membership": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Offer the user only Canvas-licensed class alternatives and generate the matching perfective result."
+    },
+    "lesson7-class-guidelines-one-four": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply class guidelines one through four automatically, while preserving their exceptions and true alternatives."
+    },
+    "lesson7-class-guidelines-five-eight": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply class guidelines five through eight automatically, using meaning conditions and exact lexical memberships where Canvas requires them."
     }
   }
 }

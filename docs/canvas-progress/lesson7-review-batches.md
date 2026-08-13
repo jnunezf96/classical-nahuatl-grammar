@@ -84,40 +84,40 @@ All 344 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §7.5
 - Atoms: 4
-- Proposed direction: 0 both; 4 reading only
+- Proposed direction: 4 both; 0 reading only
 - Writing job: Preserve licensed Class A and Class B perfective alternatives for variable stems without turning evidence absence into no form.
 - Reading job: Show both licensed class analyses and their perfective results.
 - User/application split: The user may choose between genuinely licensed class alternatives; the application blocks unlicensed classes.
 - Control policy: Filter the Stem class control to the licensed alternatives.
 - Proposal: Offer only genuine variable-class alternatives and generate the matching perfective.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/4
+- Status: ACCEPTED
+- Exactly observed: 4/4
 
 ## Batch 3, Group 8: Class guidelines 1-4
 
 - Sections: §7.6, §7.6.1, §7.6.2, §7.6.3, §7.6.4
 - Atoms: 25
-- Proposed direction: 0 both; 25 reading only
+- Proposed direction: 9 both; 16 reading only
 - Writing job: Apply the general class guidelines for monosyllables, final consonant clusters, final ka, and final tla while preserving stated exceptions and alternatives.
 - Reading job: Present the guidelines as useful grammar, not as a claim that every perfective is predictable.
 - User/application split: The application derives class where a rule determines it and asks for a class only where the source remains genuinely open.
 - Control policy: Do not replace lexical class knowledge with blind shape guessing.
 - Proposal: Use the first four class guidelines wherever they truly determine or limit class.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/25
+- Status: ACCEPTED
+- Exactly observed: 25/25
 
 ## Batch 3, Group 9: Class guidelines 5-8
 
 - Sections: §7.6.5, §7.6.6, §7.6.7, §7.6.8
 - Atoms: 22
-- Proposed direction: 0 both; 22 reading only
+- Proposed direction: 16 both; 6 reading only
 - Writing job: Apply the change-of-state hua, ya, final o, and listed Class D guidelines with every licensed alternative and exception.
 - Reading job: Help the reader connect semantic and final-shape conditions to the resulting class.
 - User/application split: The application derives a determined class and preserves real alternatives; the user resolves only a genuinely open class choice.
 - Control policy: Keep semantic and lexical conditions automatic where known.
 - Proposal: Use the remaining class guidelines as grammar rules rather than example whitelists.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/22
+- Status: ACCEPTED
+- Exactly observed: 22/22
 
 ## Batch 4, Group 10: Stem class cooperation with tense
 
