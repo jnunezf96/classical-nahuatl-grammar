@@ -7,7 +7,7 @@ import {
 } from "../runtime/create_runtime.mjs?v=20260812-sound-result-116";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260812-lesson6-complete-001";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-sound-result-116";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-lesson6-complete-001";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260812-paradigm-mood-order-001";
 import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260812-lesson6-complete-002";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260812-sound-result-116";
 

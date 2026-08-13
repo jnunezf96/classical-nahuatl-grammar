@@ -4719,17 +4719,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       semanticSeriesLabel: "Present-series forms",
       tenses: Object.freeze(["present", "preterit-as-present", "customary-present", "imperfect", "future"])
     }), Object.freeze({
-      key: "imperfective-optative",
-      aspect: "imperfective",
-      mood: "optative",
-      semanticSeriesLabel: "Optative forms",
-      tenses: Object.freeze(["nonpast", "past", "future"])
-    }), Object.freeze({
       key: "perfective-indicative",
       aspect: "perfective",
       mood: "indicative",
       semanticSeriesLabel: "Past-series forms",
       tenses: Object.freeze(["preterit", "distant-past", "distant-past-as-past"])
+    }), Object.freeze({
+      key: "imperfective-optative",
+      aspect: "imperfective",
+      mood: "optative",
+      semanticSeriesLabel: "Optative forms",
+      tenses: Object.freeze(["nonpast", "past", "future"])
     }), Object.freeze({
       key: "perfective-optative",
       aspect: "perfective",
@@ -9811,7 +9811,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         smithGroups.forEach(group => {
           const groupRows = conjugationRows.filter(row => row.groupKey === group.key);
           if (!groupRows.length) return;
-          lines.push(`${group.semanticSeriesLabel || aspectLabels[group.aspect] || group.aspect} · ${moodLabels[group.mood] || group.mood}`);
+          lines.push(`${moodLabels[group.mood] || group.mood} · ${group.semanticSeriesLabel || aspectLabels[group.aspect] || group.aspect}`);
           lines.push(["Person", ...(group.tenses || []).map(tense => tenseLabels[tense] || tense)].join("\t"));
           smithSubjects.forEach(subject => {
             lines.push([subjectLabels[subject] || subject, ...(group.tenses || []).map(tense => groupRows.find(row => row.tense === tense && row.subject === subject)?.surface || "Unavailable")].join("\t"));
@@ -9844,9 +9844,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const groupHeading = targetObject.document.createElement("div");
           groupHeading.className = "classical-rule-surface__vnc-paradigm-group-heading";
           const groupTitle = targetObject.document.createElement("strong");
-          groupTitle.textContent = group.semanticSeriesLabel || aspectLabels[group.aspect] || group.aspect;
+          groupTitle.textContent = moodLabels[group.mood] || group.mood;
           const groupMood = targetObject.document.createElement("span");
-          groupMood.textContent = moodLabels[group.mood] || group.mood;
+          groupMood.textContent = group.semanticSeriesLabel || aspectLabels[group.aspect] || group.aspect;
           groupHeading.append(groupTitle, groupMood);
           const scroll = targetObject.document.createElement("div");
           scroll.className = "classical-rule-surface__vnc-paradigm-scroll";
