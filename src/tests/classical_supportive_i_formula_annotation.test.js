@@ -326,6 +326,9 @@ function run(ctx = {}) {
         && rendering.includes('message.textContent = mark.title')
         && css.includes(".classical-formula__derived-annotation.is-clicked")
         && css.includes(".classical-formula__click-message"));
+    s.ok("Formula and Diagram letters have the same increased reading space",
+        css.includes('.classical-rule-surface__diagram-expression\n) {')
+        && css.includes("letter-spacing: 0.055em;"));
     s.no("the derived formula annotation is implemented as a user control",
         /id="[^"]*supportive-i-annotation[^"]*"/u.test(
             fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8")

@@ -17009,6 +17009,7 @@ body.is-language-classical #classical-result-panel .classical-rule-surface[data-
   font-family: var(--font-mono);
   font-size: calc(0.82rem + var(--font-size-adjust));
   font-weight: 700;
+  letter-spacing: 0.055em;
 }
 
 body.is-language-classical #classical-result-panel .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] :is(
