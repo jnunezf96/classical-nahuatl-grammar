@@ -713,8 +713,8 @@ function run(ctx) {
                 "authorized",
                 "āuhtzin",
                 "āuhtzin",
-                "āuhtzin",
-                "Āuhtzin",
+                "āuhtzin #ni-0(tēuc)tli-0#.",
+                "Āuhtzin nitēuctli.",
             ],
             rightAttachedNegative: [
                 "authorized",

@@ -5,7 +5,7 @@
   "grammarAuthority": "Andrews transcription",
   "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
   "reportAuthority": false,
-  "resolvedCount": 6,
+  "resolvedCount": 10,
   "unresolvedCount": 0,
   "resolved": [
     {
@@ -31,6 +31,22 @@
     {
       "id": "lesson3-honorific-bypass",
       "resolution": "Stored honorificized entries cannot directly generate Results; the shared honorific operation derives ōtzin, āuhtzin, and ca no zotzin."
+    },
+    {
+      "id": "lesson3-clause-introducer-duplication",
+      "resolution": "Ca, cuix, tlā, mā, ō, and ahmō remain particles in the one normal particle control; sentence force and mood do not create duplicate particle controls."
+    },
+    {
+      "id": "lesson3-honorific-vnc-loss",
+      "resolution": "A standalone-capable or honorificized particle may stand alone, but a supplied VNC remains present in the sentence Formula and Result."
+    },
+    {
+      "id": "lesson3-diplomatic-question-mark",
+      "resolution": "The diplomatic source witness cuix? keeps its question mark as provenance, while the grammatical particle Formula and Result remain cuix."
+    },
+    {
+      "id": "lesson3-removed-particle-mode-route",
+      "resolution": "Particle Results use the canonical particle request and the normal sentence particle path; the removed legacy particle tense mode is not a grammar route."
     }
   ],
   "unresolved": []

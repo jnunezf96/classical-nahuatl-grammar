@@ -140,11 +140,11 @@ function run(ctx = {}) {
             JSON.stringify(actual) === JSON.stringify(broken));
     }
 
-    s.eq("the normal particle control omits choices already owned by the question and introductory-particle controls",
+    s.eq("all clause introducers remain available in the one normal particle control",
         ctx.getClassicalNahuatlSentenceParticleEntries()
             .filter((entry) => entry.functionScope === "clause-introducer")
             .map((entry) => entry.id),
-        ["l3-ca", "l3-o-behold"]);
+        ["l3-ca", "l3-cuix", "l3-tla", "l3-ma", "l3-o-behold", "l58-ahmo"]);
     s.eq("nonparticles stay out of the particle source path", [
         ctx.requestClassicalParticleResult("om").authorizationStatus,
         ctx.requestClassicalParticleResult("iuh").authorizationStatus,

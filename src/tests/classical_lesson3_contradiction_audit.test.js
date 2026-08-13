@@ -174,7 +174,7 @@ function run(ctx = {}) {
         reportAuthority: audit.reportAuthority,
     }, {
         status: "UNCONTRADICTED",
-        resolved: 6,
+        resolved: 10,
         unresolved: 0,
         reportAuthority: false,
     });

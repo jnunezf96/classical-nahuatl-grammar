@@ -174,26 +174,21 @@ function run(ctx) {
     s.eq(
         "main particle action and renderer use the same canonical scalar route with independent projections",
         (() => {
-            const verbControl = ctx.document.getElementById("verb");
-            const previousValue = verbControl.value;
-            const previousMode = ctx.TenseModeState.mode;
-            try {
-                ctx.setActiveTenseMode(ctx.TENSE_MODE.particula);
-                verbControl.value = "ma zo";
-                const actionResult =
-                    ctx.generateNuclearClauseSurface({ silent: true });
-                const renderedResult =
-                    ctx.renderParticleModeConjugations({
-                        candidate: "ma zo",
-                    });
-                verbControl.value = "(nemi)";
-                const blockedAction =
-                    ctx.generateNuclearClauseSurface({ silent: true });
-                const blockedRender =
-                    ctx.renderParticleModeConjugations({
-                        candidate: "(nemi)",
-                    });
-                const summarize = result => ({
+            const sourceFrame =
+                ctx.buildClassicalNahuatlParticleSourceFrame("ma zo");
+            const actionResult =
+                ctx.requestClassicalParticleResult(sourceFrame);
+            const renderedResult =
+                ctx.renderParticleModeConjugations({
+                    candidate: "ma zo",
+                });
+            const blockedAction =
+                ctx.requestClassicalParticleResult("(nemi)");
+            const blockedRender =
+                ctx.renderParticleModeConjugations({
+                    candidate: "(nemi)",
+                });
+            const summarize = result => ({
                     canonical:
                         ctx.isClassicalNahuatlParticleResultFrame(
                             result
@@ -217,18 +212,17 @@ function run(ctx) {
                         result?.formulaRecord
                             !== result?.formulaRealizationRecord,
                 });
-                return {
-                    action: summarize(actionResult),
-                    rendered: summarize(renderedResult),
-                    exactNegative: [
-                        blockedAction,
-                        blockedRender,
+            return {
+                action: summarize(actionResult),
+                rendered: summarize(renderedResult),
+                exactNegative: [
+                    [
+                        blockedAction?.authorizationStatus,
+                        blockedAction?.blockReason,
                     ],
-                };
-            } finally {
-                verbControl.value = previousValue;
-                ctx.TenseModeState.mode = previousMode;
-            }
+                    blockedRender,
+                ],
+            };
         })(),
         {
             action: {
@@ -253,7 +247,10 @@ function run(ctx) {
                 writtenRecordBound: true,
                 distinctProjectionRecords: true,
             },
-            exactNegative: [null, null],
+            exactNegative: [[
+                "blocked",
+                "classical-particle-identity-not-licensed",
+            ], null],
         }
     );
 
@@ -360,7 +357,7 @@ function run(ctx) {
             sources: [true, true, true],
             optionIds: [
                 ["l3-ca", "ca", "ca"],
-                ["l3-cuix", "cuix", "cuix"],
+                ["l3-cuix", "cuix", "cuix?"],
                 ["l3-tla", "tla", "tlā"],
                 ["l3-ma", "ma", "mā"],
                 ["l3-e-vocative", "vocative-e", "#e"],
