@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "lesson": 10,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson10-admonitive-meaning": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat the admonitive as a positive cautionary warning or advice, never as an inherently negative prohibition."
+    },
+    "lesson10-admonitive-vnc-formation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build only nonpast admonitive VNCs from the perfective stem with the correct class-conditioned tense morph and number dyad."
+    },
+    "lesson10-affirmative-admonition-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build affirmative admonition sentences with obligatory mā, optional nēn, participant-based warning role, and no false prohibition or wish reading."
+    }
+  }
+}

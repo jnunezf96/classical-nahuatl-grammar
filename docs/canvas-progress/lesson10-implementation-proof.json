@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 10,
+  "groups": {
+    "lesson10-admonitive-meaning": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson10_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson10_reader_guidance.test.js"
+    },
+    "lesson10-admonitive-vnc-formation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson10_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson10_reader_guidance.test.js"
+    },
+    "lesson10-affirmative-admonition-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson10_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson10_reader_guidance.test.js"
+    }
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "lesson": 10,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson10-admonitive-meaning",
+      "title": "Admonitive meaning",
+      "sections": ["§10.1"],
+      "writingJob": "Treat the admonitive as a positive cautionary warning or advice, never as an inherently negative prohibition.",
+      "readingJob": "Keep source-language admonition meaning distinct from negative-looking English translations.",
+      "decisionSplit": "The user chooses admonitive mood; the application supplies its positive warning force and blocks false prohibition readings.",
+      "controlPolicy": "Reuse Mood; do not add a positive-versus-negative admonitive control.",
+      "derivedCueJob": "Explain the selected admonitive as positive warning or advice.",
+      "writingAtomIds": [
+        "ACI-P099-L003-88994B555E",
+        "ACI-P099-L006-63A81C32E3",
+        "ACI-P099-L007-59A03EA898",
+        "ACI-P099-L008-17C569519F",
+        "ACI-P099-L016-011FBB8AA2-02",
+        "ACI-P099-L016-011FBB8AA2-03"
+      ],
+      "proposal": "Make admonitive meaning an enforced positive warning distinction on the normal application path."
+    },
+    {
+      "groupId": "lesson10-admonitive-vnc-formation",
+      "title": "Admonitive VNC formation",
+      "sections": ["§10.2"],
+      "writingJob": "Build only nonpast admonitive VNCs from the perfective stem with the correct class-conditioned tense morph and number dyad.",
+      "readingJob": "Help the reader distinguish the perfective-based admonitive shape and understand why a standalone VNC has no translation value.",
+      "decisionSplit": "The user chooses mood, subject, and stem; the application enforces nonpast tense, perfective stem, class shape, and number realization.",
+      "controlPolicy": "Reuse Mood, Subject, and stem class; do not expose automatic h, zero, t-in, or t-ih as choices.",
+      "derivedCueJob": "Mark the automatically selected perfective shape, tense morph, and number dyad.",
+      "writingAtomIds": [
+        "ACI-P099-L025-213CC30339",
+        "ACI-P099-L027-96825197F7",
+        "ACI-P099-L030-26E14924E5",
+        "ACI-P099-L031-67AE7EAEA1",
+        "ACI-P099-L031-AA866EEB91",
+        "ACI-P100-L002-5ED2CBD75C",
+        "ACI-P100-L003-06F5516E8F",
+        "ACI-P100-L004-420712089F"
+      ],
+      "proposal": "Keep admonitive formation automatic, nonpast-only, and class-sensitive."
+    },
+    {
+      "groupId": "lesson10-affirmative-admonition-system",
+      "title": "Affirmative admonition sentences",
+      "sections": ["§10.3"],
+      "writingJob": "Convert an affirmative assertion into an admonition with obligatory mā, optional nēn, participant-based role, and warning-sense output.",
+      "readingJob": "Guide direct, indirect, and self-directed warning readings without turning them into prohibitions or wishes.",
+      "decisionSplit": "The user chooses admonitive mood, participant, and optional strengthening; the application supplies mā, placement, role, and valid warning interpretation.",
+      "controlPolicy": "Reuse Mood, Subject, and Particles; nēn remains the existing particle choice and mā is an application obligation.",
+      "derivedCueJob": "Show warning role, obligatory mā, and optional nēn strengthening.",
+      "writingAtomIds": [
+        "ACI-P100-L007-23E19EBF86",
+        "ACI-P100-L008-F1AA6390D3",
+        "ACI-P100-L010-182DC4F7F2",
+        "ACI-P100-L012-B50BCE2387",
+        "ACI-P100-L013-4B31118EEC",
+        "ACI-P100-L014-B43ECB07B3",
+        "ACI-P100-L015-5D76C37786",
+        "ACI-P100-L017-35A7027F5C"
+      ],
+      "proposal": "Make affirmative admonition a normal sentence transformation with enforced warning meaning."
+    },
+    {
+      "groupId": "lesson10-class-a-admonitions",
+      "title": "Class A admonitions",
+      "sections": ["§10.3.1"],
+      "writingJob": "Build and interpret singular and plural Class A affirmative admonitions.",
+      "readingJob": "Use the Class A examples to recognize h and participant-number differences.",
+      "decisionSplit": "The application derives Class A form; the user supplies the stem and participant.",
+      "controlPolicy": "No new control.",
+      "proposal": "Connect Class A admonition forms to the shared admonitive system."
+    },
+    {
+      "groupId": "lesson10-class-b-admonitions",
+      "title": "Class B admonitions",
+      "sections": ["§10.3.2"],
+      "writingJob": "Build and interpret singular and plural Class B affirmative admonitions.",
+      "readingJob": "Use the Class B examples to recognize zero tense and admonitive number shapes.",
+      "decisionSplit": "The application derives Class B form; the user supplies the stem and participant.",
+      "controlPolicy": "No new control.",
+      "proposal": "Connect Class B admonition forms to the shared admonitive system."
+    },
+    {
+      "groupId": "lesson10-class-c-admonitions",
+      "title": "Class C admonitions",
+      "sections": ["§10.3.3"],
+      "writingJob": "Build and interpret singular and plural Class C affirmative admonitions.",
+      "readingJob": "Use the Class C examples to recognize the perfective stem and warning meaning.",
+      "decisionSplit": "The application derives Class C form; the user supplies the stem and participant.",
+      "controlPolicy": "No new control.",
+      "proposal": "Connect Class C admonition forms to the shared admonitive system."
+    },
+    {
+      "groupId": "lesson10-class-d-admonitions",
+      "title": "Class D and nonhuman admonitions",
+      "sections": ["§10.3.4"],
+      "writingJob": "Build Class D admonitions and preserve appropriate warning or advice interpretation for human and nonhuman subjects.",
+      "readingJob": "Guide Class D forms and nonhuman indirect-admonition translations without converting advice into a wish.",
+      "decisionSplit": "The application derives the form and participant applicability; the reader chooses an appropriate translation wording.",
+      "controlPolicy": "No new control.",
+      "proposal": "Connect Class D and nonhuman admonitions to the shared system."
+    },
+    {
+      "groupId": "lesson10-negative-admonitions",
+      "title": "Negative admonition sentences",
+      "sections": ["§10.4"],
+      "writingJob": "Build a negative admonition with ah and obligatory mā nēn as a cancellation of warning, not as a prohibition.",
+      "readingJob": "Guide the counter-caution meaning: be sure to act or reject caution.",
+      "decisionSplit": "The user chooses negative admonition; the application supplies ah, mā nēn, and the reversed caution meaning.",
+      "controlPolicy": "Reuse Polarity, Mood, and Particles; do not add a separate negative-prefix selector.",
+      "proposal": "Keep Lesson 10 negative admonition distinct from Lesson 9 negative command."
+    },
+    {
+      "groupId": "lesson10-general-vnc-contrasts",
+      "title": "General VNC contrasts",
+      "sections": ["§10.5"],
+      "writingJob": "Preserve second-person x or xi and plural morphology as dependable contrasts among moods.",
+      "readingJob": "Use person and number to distinguish admonitive, optative, present, and preterit forms.",
+      "decisionSplit": "The application generates the contrasts; the reading guide explains them.",
+      "controlPolicy": "No new control.",
+      "proposal": "Expose genuine form contrasts without turning analysis into choices."
+    },
+    {
+      "groupId": "lesson10-class-a-contrasts",
+      "title": "Class A contrast paradigm",
+      "sections": ["§10.5.1"],
+      "writingJob": "Generate the full Class A contrast paradigm and preserve each distinct or ambiguous relation.",
+      "readingJob": "Guide h, glottal-stop, mā, person, and number contrasts in Class A.",
+      "decisionSplit": "The application generates the paradigm; the reader uses the cues.",
+      "controlPolicy": "Reuse the full paradigm; no new control.",
+      "proposal": "Make every Class A contrast available from canonical forms."
+    },
+    {
+      "groupId": "lesson10-class-b-contrasts",
+      "title": "Class B contrast paradigm",
+      "sections": ["§10.5.2"],
+      "writingJob": "Generate the full Class B contrast paradigm and enforce mā and antecessive distinctions.",
+      "readingJob": "Guide identical singular forms through sentence particles and antecessive ō.",
+      "decisionSplit": "The application generates forms and restrictions; the reader uses context.",
+      "controlPolicy": "Reuse full paradigm and existing particles.",
+      "proposal": "Make every Class B contrast available from canonical forms."
+    },
+    {
+      "groupId": "lesson10-class-c-contrasts",
+      "title": "Class C contrast paradigm",
+      "sections": ["§10.5.3"],
+      "writingJob": "Generate the full Class C contrast paradigm and enforce glottal, mā, and antecessive distinctions.",
+      "readingJob": "Guide ambiguous unmarked glottal-stop spellings through context.",
+      "decisionSplit": "The application generates forms and restrictions; the reader uses context.",
+      "controlPolicy": "Reuse full paradigm and existing particles.",
+      "proposal": "Make every Class C contrast available from canonical forms."
+    },
+    {
+      "groupId": "lesson10-class-d-contrasts",
+      "title": "Class D contrast paradigm",
+      "sections": ["§10.5.4"],
+      "writingJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
+      "readingJob": "Guide the opposite meanings that unmarked glottal-stop spelling can hide.",
+      "decisionSplit": "The application generates the form; the reader uses spelling and context cues.",
+      "controlPolicy": "Reuse full paradigm and existing person controls.",
+      "proposal": "Make Class D contrast structure available without inventing a new choice."
+    }
+  ]
+}
