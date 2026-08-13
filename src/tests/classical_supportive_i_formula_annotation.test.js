@@ -88,11 +88,13 @@ function run(ctx = {}) {
 
     const css = fs.readFileSync(path.join(ROOT, "style.css"), "utf8");
     const rendering = fs.readFileSync(path.join(ROOT, "src/ui/rendering/rendering.mjs"), "utf8");
-    s.ok("the formula cue uses italics, color, a dotted underline, and a plain-language legend",
+    s.ok("the formula cue uses a light palette color, italics, and Times New Roman without a legend or underline",
         css.includes(".classical-formula__derived-annotation.classical-formula__supportive-i")
+        && css.includes("color: #5b8f88")
+        && css.includes('font-family: "Times New Roman", Times, serif')
         && css.includes("font-style: italic")
-        && css.includes("text-decoration: underline dotted currentColor")
-        && rendering.includes("Italic color: supportive i added automatically"));
+        && !css.includes("text-decoration: underline dotted currentColor")
+        && !rendering.includes("Italic color: supportive i added automatically"));
     s.no("the derived formula annotation is implemented as a user control",
         /id="[^"]*supportive-i-annotation[^"]*"/u.test(
             fs.readFileSync(path.join(ROOT, "src/ui/shell/classical_shell.mjs"), "utf8")

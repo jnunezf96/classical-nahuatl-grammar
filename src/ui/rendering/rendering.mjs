@@ -17426,7 +17426,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
       const specificLinearTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
-      const specificLinearAnnotations = renderClassicalFormulaDerivedAnnotations(
+      renderClassicalFormulaDerivedAnnotations(
         formula,
         specificLinearFormula,
         specificLinearTypedSlotFrame
@@ -17441,12 +17441,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
       linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
-      if (specificLinearAnnotations.length) {
-        const annotationLegend = targetObject.document.createElement("small");
-        annotationLegend.className = "classical-formula__annotation-legend";
-        annotationLegend.textContent = "Italic color: supportive i added automatically";
-        linearFormatHeading.appendChild(annotationLegend);
-      }
       linearFormat.append(linearFormatHeading, formula);
       linearFormat.hidden = fullParadigmActive;
       const nuclearClauseDiagram = targetObject.document.createElement("section");
