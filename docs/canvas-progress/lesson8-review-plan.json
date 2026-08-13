@@ -146,6 +146,7 @@
       "readingJob": "Guide the question and the context-dependent readings of the verbstem without confusing them with cuix itself.",
       "decisionSplit": "The user chooses a cuix question; the application orders the particle and punctuation.",
       "controlPolicy": "Use the particle picker together with sentence type; do not duplicate cuix in a question-mode control.",
+      "writingAtomIds": ["ACI-P092-L002-B690C5EB9B"],
       "proposal": "Compose cuix with the same canonical question and sentence path."
     }
   ]

@@ -11,6 +11,7 @@
     "lesson8-affirmative-assertion": { "status": "ACCEPTED", "acceptedJob": "Build a positive statement from an indicative nuclear clause, with any selected modifiers kept in their grammatical positions." },
     "lesson8-negative-assertion": { "status": "ACCEPTED", "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope." },
     "lesson8-emphatic-assertion": { "status": "ACCEPTED", "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative." },
-    "lesson8-intonation-question": { "status": "ACCEPTED", "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle." }
+    "lesson8-intonation-question": { "status": "ACCEPTED", "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle." },
+    "lesson8-cuix-question": { "status": "ACCEPTED", "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings." }
   }
 }

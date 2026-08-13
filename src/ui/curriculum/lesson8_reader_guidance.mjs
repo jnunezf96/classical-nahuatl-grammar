@@ -50,6 +50,11 @@ export const LESSON8_READER_GUIDANCE_GROUPS = freeze([
     "Read a yes-no question without requiring a particle",
     "A positive or negative assertion can become a yes-no question through its intonation. In writing, the question mark shows this change; no interrogative particle must be present.",
   ),
+  idea(
+    "lesson8-cuix-question",
+    "Read cuix as the question particle, not the verb's meaning",
+    "Cuix stands before the nuclear clause and marks a yes-no question. The question mark belongs to the complete sentence. Possible meanings such as kill, try to kill, fight, attack, or hurt come from tē-(mic-tiā) and context, not from cuix.",
+  ),
 ]);
 
 export function isLesson8ReaderGuidanceExact(candidate = []) {

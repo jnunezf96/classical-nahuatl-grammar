@@ -129,6 +129,6 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses a cuix question; the application orders the particle and punctuation.
 - Control policy: Use the particle picker together with sentence type; do not duplicate cuix in a question-mode control.
 - Proposal: Compose cuix with the same canonical question and sentence path.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 

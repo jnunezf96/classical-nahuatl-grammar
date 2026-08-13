@@ -44,7 +44,7 @@ import {
   LESSON8_READER_GUIDANCE_GROUPS,
   isLesson8ReaderGuidanceExact,
   renderLesson8ReaderGuidance,
-} from "../curriculum/lesson8_reader_guidance.mjs?v=20260813-lesson8-groups7-9-003";
+} from "../curriculum/lesson8_reader_guidance.mjs?v=20260813-lesson8-complete-004";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {

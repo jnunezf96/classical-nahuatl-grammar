@@ -10,6 +10,7 @@
     "lesson8-affirmative-assertion": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_4_6_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
     "lesson8-negative-assertion": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
     "lesson8-emphatic-assertion": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
-    "lesson8-intonation-question": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" }
+    "lesson8-intonation-question": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
+    "lesson8-cuix-question": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_group_10_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" }
   }
 }

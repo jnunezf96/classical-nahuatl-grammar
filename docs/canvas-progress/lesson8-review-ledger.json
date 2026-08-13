@@ -16,10 +16,10 @@
     "batches": 4,
     "proposedBoth": 59,
     "proposedReadingOnly": 145,
-    "acceptedAtoms": 192,
+    "acceptedAtoms": 204,
     "declinedAtoms": 0,
-    "awaitingReview": 12,
-    "implementationCredit": 192
+    "awaitingReview": 0,
+    "implementationCredit": 204
   },
   "groups": [
     {
@@ -210,8 +210,8 @@
       "readingJob": "Guide the question and the context-dependent readings of the verbstem without confusing them with cuix itself.",
       "decisionSplit": "The user chooses a cuix question; the application orders the particle and punctuation.",
       "controlPolicy": "Use the particle picker together with sentence type; do not duplicate cuix in a question-mode control.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 12
     }
   ],
   "records": [
@@ -5224,14 +5224,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_group_10_jobs.test.js#ACI-P092-L002-B690C5EB9B",
+      "writingMutationTest": "src/tests/classical_lesson8_group_10_jobs.test.js#mutation:ACI-P092-L002-B690C5EB9B",
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L002-B690C5EB9B",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L002-B690C5EB9B"
     },
     {
       "atomId": "ACI-P092-L004-C3BF7B7181",
@@ -5250,14 +5250,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L004-C3BF7B7181",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L004-C3BF7B7181"
     },
     {
       "atomId": "ACI-P092-L005-25217E5B01",
@@ -5276,14 +5276,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L005-25217E5B01",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L005-25217E5B01"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E",
@@ -5302,14 +5302,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-02",
@@ -5328,14 +5328,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-02",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-02"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-03",
@@ -5354,14 +5354,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-03",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-03"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-04",
@@ -5380,14 +5380,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-04",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-04"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-05",
@@ -5406,14 +5406,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-05",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-05"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-06",
@@ -5432,14 +5432,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-06",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-06"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-07",
@@ -5458,14 +5458,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-07",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-07"
     },
     {
       "atomId": "ACI-P092-L006-FAB16FBE2E-08",
@@ -5484,14 +5484,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-FAB16FBE2E-08",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-FAB16FBE2E-08"
     },
     {
       "atomId": "ACI-P092-L006-3AF816D664",
@@ -5510,14 +5510,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Build a yes-no question with cuix outside the nuclear clause and preserve licensed interpretations.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Compose selected particle cuix with the normal question path, keep it outside the VNC, and preserve the verbstem's separate possible meanings.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-cuix-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P092-L006-3AF816D664",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P092-L006-3AF816D664"
     }
   ]
 }
