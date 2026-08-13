@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 9,
+  "groups": {
+    "lesson9-optative-time-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-optative-vnc-formation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    },
+    "lesson9-optative-indicative-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson9_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson9_reader_guidance.test.js"
+    }
+  }
+}

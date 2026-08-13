@@ -1,0 +1,155 @@
+{
+  "schemaVersion": 1,
+  "lesson": 9,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson9-optative-time-use",
+      "title": "Optative meaning and time",
+      "sections": ["§9.1", "§9.2"],
+      "writingJob": "Use the optative for wishes and hopes, preserve its two ordinary tenses, and enforce the special borrowed future and preterit uses.",
+      "readingJob": "Guide the reader through wish, hope, regret, disillusionment, and insisted-future readings.",
+      "decisionSplit": "The user chooses mood and tense; the application supplies the licensed form, meaning, and required preterit-optative antecessive ō.",
+      "controlPolicy": "Reuse Mood, Tense, and the existing antecessive behavior; do not add duplicate optative-time controls.",
+      "derivedCueJob": "Name the selected optative time and explain when its form is borrowed from the indicative.",
+      "writingAtomIds": [
+        "ACI-P093-L004-509646CF9F",
+        "ACI-P093-L005-B7B90A1D8F",
+        "ACI-P093-L006-9D0547B7C1",
+        "ACI-P093-L008-8FFE93D28E",
+        "ACI-P093-L009-14EB6E5881",
+        "ACI-P093-L009-4068409005",
+        "ACI-P093-L009-4068409005-02",
+        "ACI-P093-L009-4068409005-03",
+        "ACI-P093-L009-4068409005-04"
+      ],
+      "proposal": "Make optative time a real grammatical choice while deriving its form and interpretation from Andrews."
+    },
+    {
+      "groupId": "lesson9-optative-vnc-formation",
+      "title": "Building optative VNCs",
+      "sections": ["§9.3", "§9.3.1", "§9.3.2", "§9.3.3", "§9.3.4"],
+      "writingJob": "Build nonpast and past optatives from the imperfective stem with their second-person, plural-number, and Class C or D realizations.",
+      "readingJob": "Help the reader identify which parts of an optative form make it distinctive.",
+      "decisionSplit": "The user supplies the stem, participant, mood, and tense; the application chooses the imperfective stem, person morph, number dyad, and class-conditioned vowel.",
+      "controlPolicy": "Do not expose automatic x or xi, c-ān, stem truncation, vowel length, or slot placement as user choices.",
+      "derivedCueJob": "Mark the automatically selected optative person, number, tense, and predicate-stem contributions.",
+      "writingAtomIds": [
+        "ACI-P093-L018-EB13E376B5",
+        "ACI-P093-L019-6B22C08964",
+        "ACI-P093-L020-42F757DAB4",
+        "ACI-P093-L020-282FAB5C0E",
+        "ACI-P093-L023-01E4390B15",
+        "ACI-P093-L026-7CA7E40406",
+        "ACI-P093-L028-63019FC4F2",
+        "ACI-P094-L002-AA5EC70D15",
+        "ACI-P094-L002-0D87A9FA95",
+        "ACI-P094-L004-3A5746CF3A",
+        "ACI-P094-L005-079D6A5FDF",
+        "ACI-P094-L005-A4F1E91CB6",
+        "ACI-P094-L008-51476E0F89",
+        "ACI-P094-L008-AF069BE56B"
+      ],
+      "proposal": "Keep optative formation automatic and class-sensitive on the normal VNC path."
+    },
+    {
+      "groupId": "lesson9-optative-indicative-contrast",
+      "title": "Distinguishing optative and indicative forms",
+      "sections": ["§9.4"],
+      "writingJob": "Preserve the form contrasts that distinguish optatives and require introductory particles where form alone cannot identify first- or third-person optatives.",
+      "readingJob": "Guide the reader through forms that are distinct, forms that are ambiguous, and the sentence clues that resolve them.",
+      "decisionSplit": "The user chooses the intended mood and participant; the application realizes distinctive morphology and enforces the required sentence context.",
+      "controlPolicy": "Reuse Mood, Subject, and Particles; do not ask the user to label a form as morphologically ambiguous.",
+      "derivedCueJob": "Show whether morphology alone distinguishes the optative or whether the surrounding sentence does the work.",
+      "writingAtomIds": [
+        "ACI-P094-L028-F79C62E1C7",
+        "ACI-P095-L002-32CF2F1837",
+        "ACI-P095-L007-7BD8D6FFE3-18",
+        "ACI-P095-L007-7BD8D6FFE3-27",
+        "ACI-P095-L007-7BD8D6FFE3-28",
+        "ACI-P095-L007-7BD8D6FFE3-29"
+      ],
+      "proposal": "Let morphology distinguish what it can and use licensed sentence context for the remaining ambiguity."
+    },
+    {
+      "groupId": "lesson9-wish-sentences",
+      "title": "Wish sentences",
+      "sections": ["§9.5"],
+      "writingJob": "Build licensed wish sentences with their introductory particles, time meanings, and intensifying particles.",
+      "readingJob": "Guide open, contrary-to-fact, past-regret, and intensified wish readings.",
+      "decisionSplit": "The user chooses the intended wish and available particles; the application orders them and enforces their meaning and compatibility.",
+      "controlPolicy": "Reuse Mood, Tense, Particles, and sentence choices; do not expose formula slots.",
+      "proposal": "Compose wishes from genuine choices through one optative sentence path."
+    },
+    {
+      "groupId": "lesson9-negative-wishes",
+      "title": "Negative wishes",
+      "sections": ["§9.6"],
+      "writingJob": "Turn a licensed wish negative with the required ca structure and correct scope.",
+      "readingJob": "Guide the reader through negative wish meaning and particle scope.",
+      "decisionSplit": "The user chooses negative polarity; the application supplies and positions the licensed negative structure.",
+      "controlPolicy": "Reuse Polarity and Particles; do not expose raw ca placement.",
+      "proposal": "Make negative wishes a grammatical transformation rather than manual particle assembly."
+    },
+    {
+      "groupId": "lesson9-command-exhortation-system",
+      "title": "Commands and exhortations",
+      "sections": ["§9.7"],
+      "writingJob": "Use optative VNCs as commands or exhortations according to participant and sentence context.",
+      "readingJob": "Guide command and exhortation force without inventing a separate imperative mood.",
+      "decisionSplit": "The user chooses sentence purpose and participant; the application keeps the grammatical mood optative and supplies the required context.",
+      "controlPolicy": "Do not add an imperative mood; reuse Mood, Subject, sentence purpose, and Particles.",
+      "proposal": "Build commands and exhortations from the optative system Andrews describes."
+    },
+    {
+      "groupId": "lesson9-second-person-commands",
+      "title": "Second-person commands",
+      "sections": ["§9.7.1"],
+      "writingJob": "Build direct second-person commands with the licensed optional introductory material.",
+      "readingJob": "Recognize a direct command from its second-person optative shape and context.",
+      "decisionSplit": "The user chooses second person and command use; the application realizes the optative command.",
+      "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "proposal": "Keep direct commands inside the common optative sentence system."
+    },
+    {
+      "groupId": "lesson9-third-person-commands",
+      "title": "Third-person commands",
+      "sections": ["§9.7.2"],
+      "writingJob": "Build third-person commands with their required introductory particle.",
+      "readingJob": "Use the introductory particle and context to identify indirect command force.",
+      "decisionSplit": "The user chooses third person and command use; the application requires and places the introductory particle.",
+      "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "proposal": "Enforce the sentence context required for third-person commands."
+    },
+    {
+      "groupId": "lesson9-first-person-exhortations",
+      "title": "First-person exhortations",
+      "sections": ["§9.7.3"],
+      "writingJob": "Build first-person exhortations with their required introductory particle and licensed strengthening.",
+      "readingJob": "Use participant and particle context to identify exhortation force.",
+      "decisionSplit": "The user chooses first person and exhortation use; the application supplies the licensed structure.",
+      "controlPolicy": "Reuse Subject, Mood, sentence purpose, and Particles.",
+      "proposal": "Enforce the sentence context required for first-person exhortations."
+    },
+    {
+      "groupId": "lesson9-future-commands",
+      "title": "Future commands",
+      "sections": ["§9.8"],
+      "writingJob": "Use a future indicative form with optative command use when the commanded event is explicitly future.",
+      "readingJob": "Distinguish future command use from an ordinary future statement.",
+      "decisionSplit": "The user chooses future command meaning; the application borrows the future form and preserves command context.",
+      "controlPolicy": "Reuse Tense, sentence purpose, and Particles; do not add a second future-form control.",
+      "proposal": "Build future commands through the borrowed-form rule."
+    },
+    {
+      "groupId": "lesson9-negative-commands",
+      "title": "Negative commands",
+      "sections": ["§9.9"],
+      "writingJob": "Build negative commands and prohibitions with their licensed negative transformation and time behavior.",
+      "readingJob": "Guide prohibition force, scope, and the difference between immediate and future negative commands.",
+      "decisionSplit": "The user chooses command use, polarity, and time; the application supplies the negative command structure.",
+      "controlPolicy": "Reuse sentence purpose, Polarity, Tense, and Particles.",
+      "proposal": "Make prohibition a normal grammatical transformation of the command path."
+    }
+  ]
+}

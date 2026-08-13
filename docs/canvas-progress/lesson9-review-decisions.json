@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "lesson": 9,
+  "rule": "Only the user's explicit accept or decline decision changes a review group status.",
+  "decisions": {
+    "lesson9-optative-time-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the existing Mood and Tense choices to express optative wishes or hopes and automatically enforce the borrowed future or preterit form and required preterit-optative ō."
+    },
+    "lesson9-optative-vnc-formation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build optative VNCs automatically from the imperfective stem with the correct person, plural-number, and Class C or D realization."
+    },
+    "lesson9-optative-indicative-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Produce the optative and indicative form contrasts and use required introductory particles to resolve first- and third-person optatives whose form is otherwise ambiguous."
+    }
+  }
+}
