@@ -4831,9 +4831,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§6.4.1.a"]),
         atomIds: Object.freeze(["ACI-P073-L011-66E6495050", "ACI-P073-L019-DF58E7CC8C"])
       }),
-      "object-k-spelling": Object.freeze({
-        lessonSections: Object.freeze(["§6.4.1.a", "Lesson 2"]),
-        atomIds: Object.freeze(["ACI-P073-L011-D2242C130D", "ACI-P073-L012-492E7ECA39"])
+      "third-person-objective-object": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.1.a"]),
+        atomIds: Object.freeze(["ACI-P073-L010-5017EF8378", "ACI-P073-L010-BEB9308E3D"])
       }),
       "reflexive-object": Object.freeze({
         lessonSections: Object.freeze(["§6.6", "§6.6.1"]),
@@ -4960,15 +4960,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : reflexive
           ? "reflexive object"
           : identity?.morphIdentity === "/k/"
-            ? "/k/ spelling"
+            ? "third-person objective object"
             : "object person";
         addCarrierAnnotation(
           carrierStart,
           va1.slice(0, va1BaseLength),
-          silentVa1 ? "silent-object-person" : reflexive ? "reflexive-object-carrier" : identity?.morphIdentity === "/k/" ? "object-automatic-spelling" : "object-person-carrier",
+          silentVa1 ? "silent-object-person" : reflexive ? "reflexive-object-carrier" : identity?.morphIdentity === "/k/" ? "third-person-objective-object" : "object-person-carrier",
           va1Label,
-          silentVa1 ? "silent" : identity?.morphIdentity === "/k/" ? "automatic-change" : "carrier",
-          reflexive ? "reflexive-object" : identity?.morphIdentity === "/k/" ? "object-k-spelling" : "object-person"
+          silentVa1 ? "silent" : "carrier",
+          reflexive ? "reflexive-object" : identity?.morphIdentity === "/k/" ? "third-person-objective-object" : "object-person"
         );
         if (supportiveObjectI) {
           addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i", "object-supportive-i");

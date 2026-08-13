@@ -118,7 +118,7 @@ function run(ctx = {}) {
         { text: "n", role: "subject-person-carrier", label: "subject person", presentation: "carrier" },
         { text: "i", role: "subject-supportive-i", label: "supportive i", presentation: "supportive-i" },
         { text: "0", role: "silent-nominative", label: "silent nominative", presentation: "silent" },
-        { text: "qu", role: "object-automatic-spelling", label: "/k/ spelling", presentation: "automatic-change" },
+        { text: "qu", role: "third-person-objective-object", label: "third-person objective object", presentation: "carrier" },
         { text: "0", role: "object-number-carrier", label: "silent singular object number", presentation: "silent" },
         { text: "0", role: "silent-tense", label: "silent mood and tense", presentation: "silent" },
         { text: "⎕", role: "silent-number-connector", label: "silent number connector", presentation: "silent" },
