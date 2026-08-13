@@ -4807,10 +4807,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§5.3.1"]),
         atomIds: Object.freeze(["ACI-P066-L014-5F1BC4F2B7", "ACI-P066-L014-3FFC7C76D3"])
       }),
-      "subject-person-sound-change": Object.freeze({
-        lessonSections: Object.freeze(["§5.3.1", "§§2.10.5–2.10.6"]),
-        atomIds: Object.freeze(["ACI-P066-L029-F5311302DA-05"])
-      }),
       "subject-supportive-i": Object.freeze({
         lessonSections: Object.freeze(["§5.3.1"]),
         atomIds: Object.freeze(["ACI-P066-L028-2D04EA9809"])
@@ -4823,9 +4819,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§6.2"]),
         atomIds: Object.freeze(["ACI-P072-L002-47F1830B99", "ACI-P072-L005-833314E443"])
       }),
-      "object-person": Object.freeze({
-        lessonSections: Object.freeze(["§6.4.1"]),
-        atomIds: Object.freeze(["ACI-P073-L008-4749BA79B8"])
+      "nonspecific-human-object": Object.freeze({
+        lessonSections: Object.freeze(["§6.2.2.a"]),
+        atomIds: Object.freeze(["ACI-P072-L015-597D3742E2"])
+      }),
+      "nonspecific-nonhuman-object": Object.freeze({
+        lessonSections: Object.freeze(["§6.2.2.b"]),
+        atomIds: Object.freeze(["ACI-P072-L016-CFD3333900", "ACI-P072-L017-A707ACD636-04"])
+      }),
+      "shuntline-reflexive-object": Object.freeze({
+        lessonSections: Object.freeze(["§6.2.1"]),
+        atomIds: Object.freeze(["ACI-P072-L012-57B42F69F3"])
+      }),
+      "object-person-number": Object.freeze({
+        lessonSections: Object.freeze(["§6.4.1.b"]),
+        atomIds: Object.freeze(["ACI-P073-L023-0C9A4CF37B", "ACI-P073-L024-051146B915"])
       }),
       "object-supportive-i": Object.freeze({
         lessonSections: Object.freeze(["§6.4.1.a"]),
@@ -4909,14 +4917,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "subject person", "carrier", "subject-person");
         addCarrierAnnotation(subjectPers1Start + subject.baseMorph.length, "i", "subject-supportive-i", "supportive i", "supportive-i", "subject-supportive-i");
       } else if (subject.pers1) {
-        const subjectChange = subject.baseMorph && subject.baseMorph !== subject.pers1;
         addCarrierAnnotation(
           subjectPers1Start,
           subject.pers1,
-          subjectChange ? "subject-automatic-sound-change" : "subject-person-carrier",
-          subjectChange ? "subject person sound change" : "subject person",
-          subjectChange ? "automatic-change" : "carrier",
-          subjectChange ? "subject-person-sound-change" : "subject-person"
+          "subject-person-carrier",
+          "subject person",
+          "carrier",
+          "subject-person"
         );
       }
       if (subject.pers2) {
@@ -4937,16 +4944,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (tokenStart < 0) return;
         const carrierStart = tokenStart + 1;
         prePredicateCursor = carrierStart + carrier.length;
-        const objectProfile = typedSlotFrame?.objectProfile || slot?.objectPositionFrame || {};
+        const objectProfile = slot?.objectPositionFrame || typedSlotFrame?.objectProfile || {};
         const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
         if (slot?.kind === "monadic-valence") {
-          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "object", "carrier", "monadic-valence");
+          const monadicJob = {
+            "nonspecific-human": Object.freeze({ label: "nonspecific human object", authorityKey: "nonspecific-human-object" }),
+            "nonspecific-nonhuman": Object.freeze({ label: "nonspecific nonhuman object", authorityKey: "nonspecific-nonhuman-object" }),
+            "shuntline-reflexive": Object.freeze({ label: "shuntline reflexive object", authorityKey: "shuntline-reflexive-object" })
+          }[objectProfile.objectKind] || Object.freeze({ label: "monadic object", authorityKey: "monadic-valence" });
+          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, monadicJob.label, "carrier", monadicJob.authorityKey);
           return;
         }
         if (slot?.kind !== "dyadic-valence") {
           return;
         }
-        const identity = slot?.morphIdentityFrame;
+        const identity = slot?.morphIdentityFrame || slot?.objectPositionFrame?.morphIdentityFrame;
         const va1 = String(slot.va1 || "");
         const va2 = String(slot.va2 || "");
         const supportiveObjectI = identity?.supportiveVowel === "i"
@@ -4955,33 +4967,36 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && va1.endsWith("i");
         const va1BaseLength = supportiveObjectI ? va1.length - 1 : va1.length;
         const silentVa1 = isSilentCarrier(va1);
-        const va1Label = silentVa1
-          ? "silent object person"
-          : reflexive
-          ? "reflexive object"
-          : identity?.morphIdentity === "/k/"
-            ? "third-person objective object"
-            : "object person";
+        const thirdPersonObjectiveObject = !reflexive && (
+          identity?.morphIdentity === "/k/"
+          || /^3/u.test(String(objectProfile.objectPerson || ""))
+        );
+        const va1Job = reflexive
+          ? Object.freeze({ role: "reflexive-object-person-number", label: "reflexive object person and number", authorityKey: "reflexive-object" })
+          : thirdPersonObjectiveObject
+            ? Object.freeze({ role: "third-person-objective-object", label: "third-person objective object", authorityKey: "third-person-objective-object" })
+            : Object.freeze({ role: "object-person-number", label: "object person and number", authorityKey: "object-person-number" });
         addCarrierAnnotation(
           carrierStart,
           va1.slice(0, va1BaseLength),
-          silentVa1 ? "silent-object-person" : reflexive ? "reflexive-object-carrier" : identity?.morphIdentity === "/k/" ? "third-person-objective-object" : "object-person-carrier",
-          va1Label,
+          silentVa1 ? `silent-${va1Job.role}` : va1Job.role,
+          silentVa1 ? `silent ${va1Job.label}` : va1Job.label,
           silentVa1 ? "silent" : "carrier",
-          reflexive ? "reflexive-object" : identity?.morphIdentity === "/k/" ? "third-person-objective-object" : "object-person"
+          va1Job.authorityKey
         );
         if (supportiveObjectI) {
           addCarrierAnnotation(carrierStart + va1.length - 1, "i", "object-supportive-i", "supportive i", "supportive-i", "object-supportive-i");
         }
         const va2Start = carrierStart + va1.length + 1;
         const va2IsSilent = isSilentCarrier(va2);
+        const va2CarriesObjectiveCase = reflexive || !thirdPersonObjectiveObject;
         addCarrierAnnotation(
           va2Start,
           va2,
-          reflexive ? "objective-case-carrier" : "object-number-carrier",
-          reflexive ? (va2IsSilent ? "silent objective case" : "objective case") : (va2IsSilent ? "silent singular object number" : "object number"),
+          va2CarriesObjectiveCase ? "objective-case-carrier" : "object-number-carrier",
+          va2CarriesObjectiveCase ? (va2IsSilent ? "silent objective case" : "objective case") : (va2IsSilent ? "silent singular object number" : "object number"),
           va2IsSilent ? "silent" : "carrier",
-          reflexive ? "objective-case" : "object-number"
+          va2CarriesObjectiveCase ? "objective-case" : "object-number"
         );
       });
       const predicate = slots.predicate || {};

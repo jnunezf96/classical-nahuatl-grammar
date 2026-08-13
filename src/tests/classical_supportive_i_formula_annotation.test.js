@@ -26,12 +26,36 @@ function typedFrame(frame) {
         .conclusion.finalTypedVncSlotFrame;
 }
 
+function annotations(ctx, frame) {
+    return ctx.getClassicalFormulaDerivedAnnotations(
+        frame.resultFrame.finiteSurfaceFrame.formulaRealization,
+        typedFrame(frame)
+    );
+}
+
 function run(ctx = {}) {
     const s = createSuite("classical_supportive_i_formula_annotation");
     const subject = application(ctx);
     const object = application(ctx, {
         sourceValence: "specific-projective",
         objectPerson: "3sg",
+        subject: "3sg",
+    });
+    const secondPersonObject = application(ctx, {
+        sourceValence: "specific-projective",
+        objectPerson: "2sg",
+        subject: "3sg",
+    });
+    const nonspecificHumanObject = application(ctx, {
+        sourceValence: "projective-human",
+        subject: "3sg",
+    });
+    const nonspecificNonhumanObject = application(ctx, {
+        sourceValence: "projective-nonhuman",
+        subject: "3sg",
+    });
+    const reflexiveObject = application(ctx, {
+        sourceValence: "mainline-reflexive",
         subject: "3sg",
     });
 
@@ -91,6 +115,33 @@ function run(ctx = {}) {
             }
         ).filter((annotation) => annotation.role === "object-supportive-i"),
         []);
+    s.eq("every object hover names the carrier's grammatical job", {
+        thirdPerson: annotations(ctx, object)
+            .filter((annotation) => annotation.role.includes("object"))
+            .map((annotation) => annotation.label),
+        secondPerson: annotations(ctx, secondPersonObject)
+            .filter((annotation) => annotation.role.includes("object") || annotation.role.includes("objective"))
+            .map((annotation) => annotation.label),
+        nonspecificHuman: annotations(ctx, nonspecificHumanObject)
+            .filter((annotation) => annotation.role.includes("object"))
+            .map((annotation) => annotation.label),
+        nonspecificNonhuman: annotations(ctx, nonspecificNonhumanObject)
+            .filter((annotation) => annotation.role.includes("object"))
+            .map((annotation) => annotation.label),
+        reflexive: annotations(ctx, reflexiveObject)
+            .filter((annotation) => annotation.role.includes("object") || annotation.role.includes("objective"))
+            .map((annotation) => annotation.label),
+    }, {
+        thirdPerson: ["third-person objective object", "supportive i", "silent singular object number"],
+        secondPerson: ["object person and number", "objective case"],
+        nonspecificHuman: ["nonspecific human object"],
+        nonspecificNonhuman: ["nonspecific nonhuman object"],
+        reflexive: ["reflexive object person and number", "objective case"],
+    });
+    s.no("Formula hovers substitute spelling or sound-process labels for grammatical jobs",
+        [object, secondPersonObject, nonspecificHumanObject, nonspecificNonhumanObject, reflexiveObject]
+            .flatMap((frame) => annotations(ctx, frame))
+            .some((annotation) => /automatic|spelling|sound change/u.test(annotation.label)));
 
     const allKindsFormula = "ca#ni-0+qu-0(mati)0+⎕-0#e";
     const allKinds = ctx.getClassicalFormulaDerivedAnnotations(allKindsFormula, {
