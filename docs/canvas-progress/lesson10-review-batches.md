@@ -129,8 +129,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application generates the paradigm; the reader uses the cues.
 - Control policy: Reuse the full paradigm; no new control.
 - Proposal: Make every Class A contrast available from canonical forms.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/30
+- Status: ACCEPTED
+- Exactly observed: 30/30
 
 ## Batch 4, Group 11: Class B contrast paradigm
 
@@ -142,8 +142,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application generates forms and restrictions; the reader uses context.
 - Control policy: Reuse full paradigm and existing particles.
 - Proposal: Make every Class B contrast available from canonical forms.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/36
+- Status: ACCEPTED
+- Exactly observed: 36/36
 
 ## Batch 4, Group 12: Class C contrast paradigm
 
@@ -155,8 +155,8 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application generates forms and restrictions; the reader uses context.
 - Control policy: Reuse full paradigm and existing particles.
 - Proposal: Make every Class C contrast available from canonical forms.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/32
+- Status: ACCEPTED
+- Exactly observed: 32/32
 
 ## Batch 5, Group 13: Class D contrast paradigm
 

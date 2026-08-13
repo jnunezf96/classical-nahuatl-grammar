@@ -50,6 +50,21 @@ export const LESSON10_READER_GUIDANCE_GROUPS = freeze([
     "Use person and number to distinguish the compared moods",
     "Second-person optatives have x or xi in pers1, while admonitives do not. Plural subjects remain formally distinct across the admonitive, nonpast optative, present indicative, and preterit indicative comparison.",
   ),
+  idea(
+    "lesson10-class-a-contrasts",
+    "Read the Class A contrast table by form and context",
+    "Class A admonitive and nonpast optative forms are distinct when the glottal stop is written. Without it, first- and third-person singular forms can hide opposite meanings. Mā distinguishes ambiguous sentence uses, and identical-looking h can have different grammatical jobs.",
+  ),
+  idea(
+    "lesson10-class-b-contrasts",
+    "Use mā and ō to read identical Class B shapes",
+    "Class B singular admonitives share their VNC shape with singular preterits, but mā marks the admonition. A preterit optative has antecessive ō; an admonitive cannot. Keep mā and huetz as separate grammatical words even when a compressed table witness joins them.",
+  ),
+  idea(
+    "lesson10-class-c-contrasts",
+    "Use the Class C stem shape, mā, and ō together",
+    "Class C admonitives, optatives, presents, and preterits have exact stem differences. Mā identifies the admonition where a singular preterit has the same VNC shape, and antecessive ō belongs to the preterit optative, never the admonitive. Missing glottal-stop spelling can hide opposite readings.",
+  ),
 ]);
 
 export function isLesson10ReaderGuidanceExact(candidate = []) {

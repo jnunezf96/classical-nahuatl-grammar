@@ -38,6 +38,18 @@
     "lesson10-general-vnc-contrasts": {
       "status": "ACCEPTED",
       "acceptedJob": "Preserve second-person x or xi and plural morphology as dependable contrasts among admonitive, optative, present, and preterit forms."
+    },
+    "lesson10-class-a-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the full Class A contrast paradigm and preserve every exact form, morphological distinction, and reading warning."
+    },
+    "lesson10-class-b-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the full Class B contrast paradigm, preserve the mā huetz word boundary, and enforce mā and antecessive distinctions."
+    },
+    "lesson10-class-c-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the full Class C contrast paradigm and enforce its stem, glottal-stop, mā, and antecessive distinctions."
     }
   }
 }
