@@ -4,6 +4,9 @@
   "groups": {
     "lesson8-vnc-expansion-boundary": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_1_3_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
     "lesson8-direction-location": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_1_3_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
-    "lesson8-antecessive-order": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_1_3_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" }
+    "lesson8-antecessive-order": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_1_3_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
+    "lesson8-negative-scope": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_4_6_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
+    "lesson8-sentence-and-transformation": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_4_6_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" },
+    "lesson8-affirmative-assertion": { "status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson8_groups_4_6_jobs.test.js", "readerTest": "src/tests/classical_lesson8_reader_guidance.test.js" }
   }
 }

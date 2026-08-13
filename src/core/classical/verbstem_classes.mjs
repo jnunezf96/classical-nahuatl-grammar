@@ -5903,7 +5903,19 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sentenceCombinationRule: lesson10Applies ? "compose-admonitive-vnc-with-warning-or-advice-force" : lesson9Applies ? "compose-optative-vnc-with-wish-command-or-future-negative-force" : "compose-indicative-vnc-as-assertion-or-yes-no-question",
         sentenceCombinationSubrule: lesson10Applies ? "ma-obligatory-nen-optional-or-required-negative-ah-stays-ah" : lesson9Applies ? "ma-tla-licenses-ca-negative-except-brusque-second-command-keeps-ah" : "prefixal-negative-stays-outside-vnc-cuix-stays-sentence-left",
         negativeQuestionAuthorized: lesson8SentenceType === "yes-no-question" && Boolean(negativeRequested),
-        sentenceOperationType: lesson10Applies ? "admonitive-warning-composition" : lesson9Applies ? "optative-wish-command-composition" : sentenceType === "affirmative-assertion" ? "assertion-composition" : applies ? "question-composition" : "",
+        sentenceOperationType: lesson10Applies
+          ? "admonitive-warning-composition"
+          : lesson9Applies
+            ? "optative-wish-command-composition"
+            : sentenceType === "affirmative-assertion"
+              ? "assertion-composition"
+              : sentenceType === "negative-assertion"
+                ? "negative-assertion-transformation"
+                : sentenceType === "emphatic-assertion"
+                  ? "emphatic-assertion-transformation"
+                  : sentenceType === "yes-no-question"
+                    ? "question-composition"
+                    : "",
         baseVncFormula: selectedFormula,
         vncFormulaAuthorityRole: "complete-vnc-result-consumed-by-sentence-composition",
         consumedVncStatus: selectedFormula ? "complete" : "unavailable",

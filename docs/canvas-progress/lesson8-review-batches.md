@@ -45,40 +45,40 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §8.1.3
 - Atoms: 19
-- Proposed direction: 12 both; 7 reading only
+- Proposed direction: 7 both; 12 reading only
 - Writing job: Place the selected negative outside the VNC or its fore-lying modifier group and enforce ca's trigger conditions.
 - Reading job: Guide the reader through negative scope when English word order hides it.
 - User/application split: The user chooses polarity; the application selects the licensed negative structure and its attachment.
 - Control policy: Reuse polarity and particle choices; do not expose raw negative-prefix placement.
 - Proposal: Make negative scope grammatical rather than a printed-string choice.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/19
+- Status: ACCEPTED
+- Exactly observed: 19/19
 
 ## Batch 2, Group 5: Sentence and transformation
 
 - Sections: §8.2
 - Atoms: 12
-- Proposed direction: 0 both; 12 reading only
+- Proposed direction: 10 both; 2 reading only
 - Writing job: Turn a selected grammatical clause into a written sentence with the proper transformation and final punctuation.
 - Reading job: Distinguish basic sentences from single-base and double-base transformations.
 - User/application split: The user chooses the intended sentence use; the application derives capitalization, punctuation, and compatible transformations.
 - Control policy: Use genuine sentence choices only; do not ask for abstract transformation labels.
 - Proposal: Treat sentence form as a grammatical projection of the selected clause and intent.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 
 ## Batch 2, Group 6: Affirmative assertion
 
 - Sections: §8.3
 - Atoms: 12
-- Proposed direction: 5 both; 7 reading only
+- Proposed direction: 4 both; 8 reading only
 - Writing job: Build a simple affirmative assertion from an indicative nuclear clause with optional outside modifiers.
 - Reading job: Guide the reader from the complete sentence back to its clause and modifiers.
 - User/application split: The user chooses a statement; the application enforces the indicative-clause requirement.
 - Control policy: Reuse sentence type, mood, and particles without a duplicate affirmative control.
 - Proposal: Make the basic statement the unchanged sentence use of a licensed indicative clause.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 
 ## Batch 3, Group 7: Negative assertion
 

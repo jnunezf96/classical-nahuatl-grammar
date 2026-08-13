@@ -56,6 +56,15 @@
       "readingJob": "Guide the reader through negative scope when English word order hides it.",
       "decisionSplit": "The user chooses polarity; the application selects the licensed negative structure and its attachment.",
       "controlPolicy": "Reuse polarity and particle choices; do not expose raw negative-prefix placement.",
+      "writingAtomIds": [
+        "ACI-P090-L007-3B89D94741",
+        "ACI-P090-L009-F9542B25EB",
+        "ACI-P090-L014-A308554219",
+        "ACI-P090-L015-70557C348A",
+        "ACI-P090-L015-8529523993",
+        "ACI-P090-L019-98132D26DF",
+        "ACI-P090-L021-63D2318B1F"
+      ],
       "proposal": "Make negative scope grammatical rather than a printed-string choice."
     },
     {
@@ -66,6 +75,18 @@
       "readingJob": "Distinguish basic sentences from single-base and double-base transformations.",
       "decisionSplit": "The user chooses the intended sentence use; the application derives capitalization, punctuation, and compatible transformations.",
       "controlPolicy": "Use genuine sentence choices only; do not ask for abstract transformation labels.",
+      "writingAtomIds": [
+        "ACI-P090-L025-7E541086E8",
+        "ACI-P090-L026-8F47E46B4C",
+        "ACI-P090-L027-5897EE8620",
+        "ACI-P090-L029-94D6B11ABB",
+        "ACI-P090-L030-B789EACCAB",
+        "ACI-P090-L030-B789EACCAB-02",
+        "ACI-P090-L030-B789EACCAB-03",
+        "ACI-P090-L030-B789EACCAB-04",
+        "ACI-P090-L030-B789EACCAB-05",
+        "ACI-P090-L033-D5EA34C7B2"
+      ],
       "proposal": "Treat sentence form as a grammatical projection of the selected clause and intent."
     },
     {
@@ -76,6 +97,12 @@
       "readingJob": "Guide the reader from the complete sentence back to its clause and modifiers.",
       "decisionSplit": "The user chooses a statement; the application enforces the indicative-clause requirement.",
       "controlPolicy": "Reuse sentence type, mood, and particles without a duplicate affirmative control.",
+      "writingAtomIds": [
+        "ACI-P090-L035-14C0F92705",
+        "ACI-P090-L037-58EA595D5C",
+        "ACI-P090-L037-6884EA80F4",
+        "ACI-P090-L037-3D592220BB"
+      ],
       "proposal": "Make the basic statement the unchanged sentence use of a licensed indicative clause."
     },
     {

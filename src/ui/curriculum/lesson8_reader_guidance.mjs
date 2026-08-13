@@ -20,6 +20,21 @@ export const LESSON8_READER_GUIDANCE_GROUPS = freeze([
     "Read ō as an earlier-event modifier",
     "Antecessive ō stands outside a past-tense VNC and shows that its event comes before another event. It is optional where licensed and is not simply the Nahuatl equivalent of the English word already.",
   ),
+  idea(
+    "lesson8-negative-scope",
+    "Read the negative over its full scope",
+    "Negative ah stands outside the VNC and modifies the complete VNC or its modifier group. When antecessive ō is present, ah comes before it. Negative ca follows the same scope pattern but requires its own grammatical trigger.",
+  ),
+  idea(
+    "lesson8-sentence-and-transformation",
+    "Read the sentence as a complete grammatical unit",
+    "A written sentence begins with a capital and ends with punctuation that reflects its use. A basic sentence is a positive assertion; other sentence uses transform one or more basic sentences by adding, replacing, moving, or deleting grammatical material.",
+  ),
+  idea(
+    "lesson8-affirmative-assertion",
+    "Read a positive statement from its nuclear clause",
+    "A simple positive statement contains one nuclear clause, with optional modifiers around it. A verbal nuclear clause must be indicative. Its period and capitalization present the clause as a complete written statement.",
+  ),
 ]);
 
 export function isLesson8ReaderGuidanceExact(candidate = []) {
