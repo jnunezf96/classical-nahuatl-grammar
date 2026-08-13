@@ -90,8 +90,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses negative polarity; the application composes it with the selected particles and clause.
 - Control policy: Reuse polarity and particle controls.
 - Proposal: Build negative assertions through one scope-aware sentence path.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/7
+- Status: ACCEPTED
+- Exactly observed: 7/7
 
 ## Batch 3, Group 8: Emphatic assertion
 
@@ -103,8 +103,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses emphasis; the application orders ca with the negative element and clause.
 - Control policy: Use the particle combination system rather than a duplicate sentence-type value.
 - Proposal: Make emphasis a particle choice composed with polarity and statement structure.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/9
+- Status: ACCEPTED
+- Exactly observed: 9/9
 
 ## Batch 3, Group 9: Yes-no question by intonation
 
@@ -116,8 +116,8 @@ All 204 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses question; the application supplies question punctuation and preserves the clause grammar.
 - Control policy: Reuse sentence type; do not add an intonation spelling field.
 - Proposal: Make the punctuation change the written projection of a genuine question choice.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/6
+- Status: ACCEPTED
+- Exactly observed: 6/6
 
 ## Batch 4, Group 10: Yes-no question with cuix
 

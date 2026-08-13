@@ -113,6 +113,7 @@
       "readingJob": "Guide different negative readings without treating every negative-looking particle as the same operation.",
       "decisionSplit": "The user chooses negative polarity; the application composes it with the selected particles and clause.",
       "controlPolicy": "Reuse polarity and particle controls.",
+      "writingAtomIds": ["ACI-P091-L010-BBFBB3D75B"],
       "proposal": "Build negative assertions through one scope-aware sentence path."
     },
     {
@@ -123,6 +124,7 @@
       "readingJob": "Guide the emphatic force separately from clause introduction and polarity.",
       "decisionSplit": "The user chooses emphasis; the application orders ca with the negative element and clause.",
       "controlPolicy": "Use the particle combination system rather than a duplicate sentence-type value.",
+      "writingAtomIds": ["ACI-P091-L019-BE9C4BE1B5", "ACI-P091-L025-25154A6076"],
       "proposal": "Make emphasis a particle choice composed with polarity and statement structure."
     },
     {
@@ -133,6 +135,7 @@
       "readingJob": "Recognize a yes-no question even when no interrogative particle is present.",
       "decisionSplit": "The user chooses question; the application supplies question punctuation and preserves the clause grammar.",
       "controlPolicy": "Reuse sentence type; do not add an intonation spelling field.",
+      "writingAtomIds": ["ACI-P091-L030-6467ED5179", "ACI-P091-L033-4DB00A926D", "ACI-P091-L033-4DB00A926D-02"],
       "proposal": "Make the punctuation change the written projection of a genuine question choice."
     },
     {

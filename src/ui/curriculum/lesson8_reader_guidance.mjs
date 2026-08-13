@@ -35,6 +35,21 @@ export const LESSON8_READER_GUIDANCE_GROUPS = freeze([
     "Read a positive statement from its nuclear clause",
     "A simple positive statement contains one nuclear clause, with optional modifiers around it. A verbal nuclear clause must be indicative. Its period and capitalization present the clause as a complete written statement.",
   ),
+  idea(
+    "lesson8-negative-assertion",
+    "Read a negative statement as a transformed assertion",
+    "Negative ah changes a positive assertion into a negative one but remains outside the VNC. The VNC itself keeps its grammatical structure while the negative takes scope over the statement.",
+  ),
+  idea(
+    "lesson8-emphatic-assertion",
+    "Read emphatic ca separately from polarity",
+    "Sentence-initial ca makes an assertion emphatic. A negative assertion can also be emphatic: ca comes before the negative element, so emphasis and negation remain two different grammatical contributions.",
+  ),
+  idea(
+    "lesson8-intonation-question",
+    "Read a yes-no question without requiring a particle",
+    "A positive or negative assertion can become a yes-no question through its intonation. In writing, the question mark shows this change; no interrogative particle must be present.",
+  ),
 ]);
 
 export function isLesson8ReaderGuidanceExact(candidate = []) {

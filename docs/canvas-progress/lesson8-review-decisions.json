@@ -8,6 +8,9 @@
     "lesson8-antecessive-order": { "status": "ACCEPTED", "acceptedJob": "Offer optional earlier-event ō only with compatible past grammar and keep its scope outside the VNC." },
     "lesson8-negative-scope": { "status": "ACCEPTED", "acceptedJob": "Let the user choose polarity while the application places the licensed negative outside the VNC and orders it before ō." },
     "lesson8-sentence-and-transformation": { "status": "ACCEPTED", "acceptedJob": "Use the chosen sentence purpose to derive capitalization, punctuation, and the required transformation without exposing technical transformation labels." },
-    "lesson8-affirmative-assertion": { "status": "ACCEPTED", "acceptedJob": "Build a positive statement from an indicative nuclear clause, with any selected modifiers kept in their grammatical positions." }
+    "lesson8-affirmative-assertion": { "status": "ACCEPTED", "acceptedJob": "Build a positive statement from an indicative nuclear clause, with any selected modifiers kept in their grammatical positions." },
+    "lesson8-negative-assertion": { "status": "ACCEPTED", "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope." },
+    "lesson8-emphatic-assertion": { "status": "ACCEPTED", "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative." },
+    "lesson8-intonation-question": { "status": "ACCEPTED", "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle." }
   }
 }

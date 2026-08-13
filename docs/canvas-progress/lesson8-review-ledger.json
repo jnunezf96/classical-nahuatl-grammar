@@ -16,10 +16,10 @@
     "batches": 4,
     "proposedBoth": 59,
     "proposedReadingOnly": 145,
-    "acceptedAtoms": 170,
+    "acceptedAtoms": 192,
     "declinedAtoms": 0,
-    "awaitingReview": 34,
-    "implementationCredit": 170
+    "awaitingReview": 12,
+    "implementationCredit": 192
   },
   "groups": [
     {
@@ -152,8 +152,8 @@
       "readingJob": "Guide different negative readings without treating every negative-looking particle as the same operation.",
       "decisionSplit": "The user chooses negative polarity; the application composes it with the selected particles and clause.",
       "controlPolicy": "Reuse polarity and particle controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 7
     },
     {
       "groupNumber": 8,
@@ -171,8 +171,8 @@
       "readingJob": "Guide the emphatic force separately from clause introduction and polarity.",
       "decisionSplit": "The user chooses emphasis; the application orders ca with the negative element and clause.",
       "controlPolicy": "Use the particle combination system rather than a duplicate sentence-type value.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 9
     },
     {
       "groupNumber": 9,
@@ -191,8 +191,8 @@
       "readingJob": "Recognize a yes-no question even when no interrogative particle is present.",
       "decisionSplit": "The user chooses question; the application supplies question punctuation and preserves the clause grammar.",
       "controlPolicy": "Reuse sentence type; do not add an intonation spelling field.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 6
     },
     {
       "groupNumber": 10,
@@ -4652,14 +4652,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L010-BBFBB3D75B",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L010-BBFBB3D75B",
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L010-BBFBB3D75B",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L010-BBFBB3D75B"
     },
     {
       "atomId": "ACI-P091-L013-2ECF05C6EB",
@@ -4678,14 +4678,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L013-2ECF05C6EB",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L013-2ECF05C6EB"
     },
     {
       "atomId": "ACI-P091-L014-2DC7987416",
@@ -4704,14 +4704,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L014-2DC7987416",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L014-2DC7987416"
     },
     {
       "atomId": "ACI-P091-L015-3D3BE32AF5",
@@ -4730,14 +4730,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L015-3D3BE32AF5",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L015-3D3BE32AF5"
     },
     {
       "atomId": "ACI-P091-L016-44A5DB226E",
@@ -4756,14 +4756,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L016-44A5DB226E",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L016-44A5DB226E"
     },
     {
       "atomId": "ACI-P091-L017-20E5B78C62",
@@ -4782,14 +4782,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L017-20E5B78C62",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L017-20E5B78C62"
     },
     {
       "atomId": "ACI-P091-L018-1F73078688",
@@ -4808,14 +4808,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Convert an affirmative assertion into its licensed negative sentence while preserving particle scope.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use negative polarity to transform the positive statement while preserving the clause and particle scope.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-negative-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L018-1F73078688",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L018-1F73078688"
     },
     {
       "atomId": "ACI-P091-L019-BE9C4BE1B5",
@@ -4834,14 +4834,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L019-BE9C4BE1B5",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L019-BE9C4BE1B5",
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L019-BE9C4BE1B5",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L019-BE9C4BE1B5"
     },
     {
       "atomId": "ACI-P091-L021-CB852EC6DC",
@@ -4860,14 +4860,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L021-CB852EC6DC",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L021-CB852EC6DC"
     },
     {
       "atomId": "ACI-P091-L022-BBEAAB6DF7",
@@ -4886,14 +4886,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L022-BBEAAB6DF7",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L022-BBEAAB6DF7"
     },
     {
       "atomId": "ACI-P091-L023-B0DDBD57AA",
@@ -4912,14 +4912,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L023-B0DDBD57AA",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L023-B0DDBD57AA"
     },
     {
       "atomId": "ACI-P091-L024-46CD845F43",
@@ -4938,14 +4938,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L024-46CD845F43",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L024-46CD845F43"
     },
     {
       "atomId": "ACI-P091-L025-25154A6076",
@@ -4964,14 +4964,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L025-25154A6076",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L025-25154A6076",
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L025-25154A6076",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L025-25154A6076"
     },
     {
       "atomId": "ACI-P091-L027-E4F10C71DB",
@@ -4990,14 +4990,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L027-E4F10C71DB",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L027-E4F10C71DB"
     },
     {
       "atomId": "ACI-P091-L028-217C84344C",
@@ -5016,14 +5016,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L028-217C84344C",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L028-217C84344C"
     },
     {
       "atomId": "ACI-P091-L029-9C1983D688",
@@ -5042,14 +5042,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Add emphatic ca to an affirmative or negative assertion in its licensed position.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use emphatic ca as a particle choice and order it before a negative element when polarity is negative.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-emphatic-assertion",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L029-9C1983D688",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L029-9C1983D688"
     },
     {
       "atomId": "ACI-P091-L030-6467ED5179",
@@ -5068,14 +5068,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L030-6467ED5179",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L030-6467ED5179",
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L030-6467ED5179",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L030-6467ED5179"
     },
     {
       "atomId": "ACI-P091-L033-4DB00A926D",
@@ -5094,14 +5094,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L033-4DB00A926D",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L033-4DB00A926D",
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L033-4DB00A926D",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L033-4DB00A926D"
     },
     {
       "atomId": "ACI-P091-L033-4DB00A926D-02",
@@ -5120,14 +5120,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#ACI-P091-L033-4DB00A926D-02",
+      "writingMutationTest": "src/tests/classical_lesson8_groups_7_9_jobs.test.js#mutation:ACI-P091-L033-4DB00A926D-02",
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L033-4DB00A926D-02",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L033-4DB00A926D-02"
     },
     {
       "atomId": "ACI-P091-L035-96C0E8A4CA",
@@ -5146,14 +5146,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L035-96C0E8A4CA",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L035-96C0E8A4CA"
     },
     {
       "atomId": "ACI-P091-L036-AB7CFEA784",
@@ -5172,14 +5172,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L036-AB7CFEA784",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L036-AB7CFEA784"
     },
     {
       "atomId": "ACI-P091-L037-B0E0516F79",
@@ -5198,14 +5198,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Turn a statement into a yes-no question by sentence use and question-mark realization.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Use the question choice to produce a yes-no question with question punctuation and no required interrogative particle.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson8-intonation-question",
+      "readerObservationTest": "src/tests/classical_lesson8_reader_guidance.test.js#ACI-P091-L037-B0E0516F79",
+      "readerMutationTest": "src/tests/classical_lesson8_reader_guidance.test.js#mutation:ACI-P091-L037-B0E0516F79"
     },
     {
       "atomId": "ACI-P092-L002-B690C5EB9B",
