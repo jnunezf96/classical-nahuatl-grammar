@@ -4558,9 +4558,7 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
   cursor: pointer;
 }
 
-.classical-formula__derived-annotation--supportive-i,
-.classical-formula__derived-annotation--silent,
-.classical-formula__derived-annotation--automatic-change {
+.classical-formula__derived-annotation--supportive-i {
   font-family: var(--font-title);
   font-style: italic;
   font-weight: 700;

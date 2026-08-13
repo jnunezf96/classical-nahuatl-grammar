@@ -4828,7 +4828,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (isSilentCarrier(subject.pers1)) {
         addCarrierAnnotation(subjectPers1Start, subject.pers1, "silent-subject-person", "silent subject person", "silent");
       } else if (subject.pers1 && subject.baseMorph && subject.pers1 === `${subject.baseMorph}i`) {
-        addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "subject person");
+        addCarrierAnnotation(subjectPers1Start, subject.baseMorph, "subject-person-carrier", "automatic subject person carrier");
         addCarrierAnnotation(subjectPers1Start + subject.baseMorph.length, "i", "subject-supportive-i", "supportive i", "supportive-i");
       } else if (subject.pers1) {
         const subjectChange = subject.baseMorph && subject.baseMorph !== subject.pers1;
@@ -4836,7 +4836,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           subjectPers1Start,
           subject.pers1,
           subjectChange ? "subject-automatic-sound-change" : "subject-person-carrier",
-          subjectChange ? "sound change" : "subject person",
+          subjectChange ? "automatic subject sound change" : "automatic subject person carrier",
           subjectChange ? "automatic-change" : "carrier"
         );
       }
@@ -4845,7 +4845,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           subjectPers2Start,
           subject.pers2,
           isSilentCarrier(subject.pers2) ? "silent-nominative" : "subject-case-carrier",
-          isSilentCarrier(subject.pers2) ? "silent nominative" : "subject case",
+          isSilentCarrier(subject.pers2) ? "silent nominative" : "automatic subject case carrier",
           isSilentCarrier(subject.pers2) ? "silent" : "carrier"
         );
       }
@@ -4860,11 +4860,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const objectProfile = typedSlotFrame?.objectProfile || slot?.objectPositionFrame || {};
         const reflexive = objectProfile.objectKind === "mainline-reflexive" || objectProfile.objectReflectsSubject === true;
         if (slot?.kind === "monadic-valence") {
-          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "object");
+          addCarrierAnnotation(carrierStart, slot.va || carrier, `object-carrier-${slotIndex + 1}`, "automatic object carrier");
           return;
         }
         if (slot?.kind !== "dyadic-valence") {
-          addCarrierAnnotation(carrierStart, carrier, `derived-carrier-${slotIndex + 1}`, "grammar carrier");
+          addCarrierAnnotation(carrierStart, carrier, `derived-carrier-${slotIndex + 1}`, "automatic grammatical carrier");
           return;
         }
         const identity = slot?.morphIdentityFrame;
@@ -4877,12 +4877,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const va1BaseLength = supportiveObjectI ? va1.length - 1 : va1.length;
         const silentVa1 = isSilentCarrier(va1);
         const va1Label = silentVa1
-          ? "silent object person"
+          ? "silent object person carrier"
           : reflexive
-          ? "reflexive object"
+          ? "reflexive object matching subject"
           : identity?.morphIdentity === "/k/"
-            ? "/k/ spelling"
-            : "object person";
+            ? "automatic /k/ spelling"
+            : "automatic object person carrier";
         addCarrierAnnotation(
           carrierStart,
           va1.slice(0, va1BaseLength),
@@ -4898,7 +4898,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           va2Start,
           va2,
           isSilentCarrier(va2) ? "silent-object-carrier" : "object-case-or-number-carrier",
-          isSilentCarrier(va2) ? "silent object" : reflexive ? "objective case" : "object number",
+          isSilentCarrier(va2) ? "silent object carrier" : reflexive ? "automatic objective case carrier" : "automatic object number carrier",
           isSilentCarrier(va2) ? "silent" : "carrier"
         );
       });
@@ -4911,7 +4911,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           tenseStart,
           predicate.tns,
           isSilentCarrier(predicate.tns) ? "silent-tense" : "tense-carrier",
-          isSilentCarrier(predicate.tns) ? "silent tense" : "tense",
+          isSilentCarrier(predicate.tns) ? "silent tense" : "automatic tense carrier",
           isSilentCarrier(predicate.tns) ? "silent" : "carrier"
         );
         const number = slots.number || {};
@@ -4920,7 +4920,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           num1Start,
           number.num1,
           isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector",
-          isSilentCarrier(number.num1) ? "silent connector" : "number connector",
+          isSilentCarrier(number.num1) ? "silent number connector" : "automatic number connector",
           isSilentCarrier(number.num1) ? "silent" : "carrier"
         );
         const num2Start = num1Start + String(number.num1 || "").length + 1;
@@ -4928,7 +4928,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           num2Start,
           number.num2,
           isSilentCarrier(number.num2) ? "silent-subject-number" : "subject-number-carrier",
-          isSilentCarrier(number.num2) ? "silent subject number" : "subject number",
+          isSilentCarrier(number.num2) ? "silent subject number" : "automatic subject number carrier",
           isSilentCarrier(number.num2) ? "silent" : "carrier"
         );
       }
@@ -4940,14 +4940,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           /[\p{L}\p{M}]/u.test(text[boundaryStart - 1] || "")
           && /[\p{L}\p{M}]/u.test(text[boundaryStart + 1] || "")
         ) {
-          addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attaches right", "attachment");
+          addAnnotation(boundaryStart, boundaryStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
         }
       });
       if (nuclearStart > 0 && !/\s/u.test(text[nuclearStart - 1] || "")) {
-        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attaches right", "attachment");
+        addAnnotation(nuclearStart, nuclearStart + 1, "right-attached-boundary", "attached to the word on its right", "attachment");
       }
       if (nuclearEnd >= 0 && /[\p{L}\p{M}]/u.test(text[nuclearEnd + 1] || "")) {
-        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attaches left", "attachment");
+        addAnnotation(nuclearEnd, nuclearEnd + 1, "left-attached-boundary", "attached to the word on its left", "attachment");
       }
       return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
     }
@@ -4965,7 +4965,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (annotation.start > cursor) {
           fragments.push(targetObject.document.createTextNode(text.slice(cursor, annotation.start)));
         }
-        const mark = targetObject.document.createElement(annotation.presentation === "supportive-i" || annotation.presentation === "silent" || annotation.presentation === "automatic-change" ? "em" : "span");
+        const mark = targetObject.document.createElement(annotation.presentation === "supportive-i" ? "em" : "span");
         mark.className = `classical-formula__derived-annotation classical-formula__derived-annotation--${annotation.presentation}${annotation.presentation === "supportive-i" ? " classical-formula__supportive-i" : ""}`;
         mark.dataset.classicalDerivedAnnotation = annotation.role;
         mark.title = annotation.label;
