@@ -13,6 +13,18 @@
     "lesson15-derived-nonanimate-and-possessor-reduplication": {
       "status": "ACCEPTED",
       "acceptedJob": "Keep common grammatical number and apply only lexically licensed possessor reduplication."
+    },
+    "lesson15-secondary-general-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build authorized secondary relational stems with their exact inner possessor carrier."
+    },
+    "lesson15-analogical-restricted-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the authorized analogical tla nounstem and select its use-stem by State."
+    },
+    "lesson15-reclassification-and-possessor-scope": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reclassify authorized tl 2-A stems as tl 1-A and preserve possessor scope."
     }
   }
 }

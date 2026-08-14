@@ -20,6 +20,21 @@ export const LESSON15_READER_GUIDANCE_GROUPS = freeze([
     "Separate grammar number from relationship meaning",
     "An affinity or distributive nonanimate possessive predicate keeps common grammatical number even when English uses a plural translation. A repeated possessor repeats the possessive relation; it does not move plurality from the subject or create a general free reduplication rule.",
   ),
+  idea(
+    "lesson15-secondary-general-use",
+    "Read an inner possessive relation as part of the stem",
+    "A complete inner possessive predicate may be lowered into a secondary general-use stem. Its nonspecific human carrier may appear as tē, ti, or t only where the lexical analysis licenses that form. The outer NNC still has its own subject and possessor.",
+  ),
+  idea(
+    "lesson15-analogical-restricted-use",
+    "Follow the tla predicate into a new nounstem",
+    "A complete possessive predicate with tla may be lowered into a new restricted-use nounstem with a matching general-use form. The source noun and the derived noun may coexist or the derived noun may replace it; that is lexical information, not a general spelling operation.",
+  ),
+  idea(
+    "lesson15-reclassification-and-possessor-scope",
+    "Read reclassification and possessor rank separately",
+    "A licensed tl Subclass 2-A stem may lose its ephemeral i and become Subclass 1-A, after which its State selects the new connector. The possessor inside the NNC remains the nuclear possessor; any supplementary possessor belongs outside the NNC nucleus.",
+  ),
 ]);
 
 export function isLesson15ReaderGuidanceExact(candidate = []) {

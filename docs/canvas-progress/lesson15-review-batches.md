@@ -51,8 +51,8 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: Lexical authority selects the secondary stem; the user supplies the outer subject and possessor.
 - Control policy: No generic carrier control.
 - Proposal: Rerank a complete inner possessive predicate as a general-use stem with its authorized tē, ti, or t carrier.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/33
+- Status: ACCEPTED
+- Exactly observed: 33/33
 
 ## Batch 2, Group 5: Analogical tla restricted-use stems
 
@@ -64,8 +64,8 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: Lexical authority licenses the derived noun; the application selects its use-stem by State.
 - Control policy: Expose only a genuine lexical source-or-derived choice.
 - Proposal: Rerank the complete tla possessive predicate as a new restricted-use stem with its general-use partner.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/11
+- Status: ACCEPTED
+- Exactly observed: 11/11
 
 ## Batch 2, Group 6: Tl 2-A reclassification and possessor scope
 
@@ -77,8 +77,8 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: Lexical authority licenses reclassification; the application performs it.
 - Control policy: No mechanical reclassification control for arbitrary input.
 - Proposal: Reclassify an authorized tl 2-A source as tl 1-A and keep the NNC-internal possessor nuclear.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/19
+- Status: ACCEPTED
+- Exactly observed: 19/19
 
 ## Batch 3, Group 7: Naturally possessed and never-possessive nounstems
 

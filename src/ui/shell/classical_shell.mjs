@@ -79,7 +79,7 @@ import {
   LESSON15_READER_GUIDANCE_GROUPS,
   isLesson15ReaderGuidanceExact,
   renderLesson15ReaderGuidance,
-} from "../curriculum/lesson15_reader_guidance.mjs?v=20260814-lesson15-groups1-3-001";
+} from "../curriculum/lesson15_reader_guidance.mjs?v=20260814-lesson15-groups4-6-002";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {

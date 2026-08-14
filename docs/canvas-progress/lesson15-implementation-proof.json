@@ -16,6 +16,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson15_groups_1_3_jobs.test.js",
       "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-secondary-general-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-analogical-restricted-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-reclassification-and-possessor-scope": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
     }
   }
 }

@@ -5031,6 +5031,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§15.1.4"]),
         atomIds: Object.freeze(["ACI-P136-L038-07EFC9417A"])
       }),
+      "nnc-secondary-general-use": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.5"]),
+        atomIds: Object.freeze(["ACI-P136-L041-870D52F73E", "ACI-P137-L021-CFDED6573A"])
+      }),
+      "nnc-analogical-nounstem": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.6"]),
+        atomIds: Object.freeze(["ACI-P137-L030-7344A71D12", "ACI-P138-L002-C9E8648401"])
+      }),
+      "nnc-reclassification": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.7"]),
+        atomIds: Object.freeze(["ACI-P138-L007-E8C8EF26C9", "ACI-P138-L012-52A7F19FD4-02"])
+      }),
       "nnc-subject-number": Object.freeze({
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
@@ -5378,6 +5390,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? Object.freeze({ role: "nnc-boundary-assimilation", label: "assimilation", authority: "nnc-boundary-assimilation" })
           : lesson15ActionIds.some((action) => action.includes("suppletive") || action.includes("lexically-authorized-possessive-stem") || action.includes("lesson15-yo-matrix"))
             ? Object.freeze({ role: "nnc-suppletive-stem", label: "suppletive stem", authority: "nnc-suppletive-stem" })
+          : lesson15ActionIds.some((action) => action.includes("secondary-general-use") || action.includes("downgrade-inner-possessive"))
+            ? Object.freeze({ role: "nnc-secondary-general-use", label: "secondary general-use stem", authority: "nnc-secondary-general-use" })
+          : lesson15ActionIds.some((action) => action.includes("analogical") || action.includes("downgrade-tla"))
+            ? Object.freeze({ role: "nnc-analogical-nounstem", label: "analogical nounstem", authority: "nnc-analogical-nounstem" })
+          : lesson15ActionIds.some((action) => action.includes("reclassify"))
+            ? Object.freeze({ role: "nnc-reclassification", label: "reclassification", authority: "nnc-reclassification" })
           : lesson14Ambiguity?.authorizationStatus === "authorized"
           && lesson14Ambiguity.selectionRequired === true
           && lesson14Ambiguity.selectedAnalysis
