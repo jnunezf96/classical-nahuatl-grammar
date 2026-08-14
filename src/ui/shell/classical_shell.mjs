@@ -601,16 +601,14 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         aria-label="Sound keyboard for the active stem field"
                         data-classical-source-authorizes="none"
                       >
-                        <span class="classical-transcription-keyboard__title">Sound keyboard</span>
-                        <p>Click a sound to type it directly into Stem, Embed, or Matrix. You can still type anything.</p>
-                        <div class="classical-transcription-keyboard__group" aria-label="Vowels">
-                          <span>Vowels</span>
+                        <details class="classical-transcription-keyboard__group" open>
+                          <summary class="classical-transcription-keyboard__summary">Vowels</summary>
                           <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
-                        </div>
-                        <div class="classical-transcription-keyboard__group" aria-label="Consonants">
-                          <span>Consonants</span>
+                        </details>
+                        <details class="classical-transcription-keyboard__group">
+                          <summary class="classical-transcription-keyboard__summary">Consonants</summary>
                           <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
-                        </div>
+                        </details>
                       </div>
                       <div
                         id="classical-transcription-optional-controls"

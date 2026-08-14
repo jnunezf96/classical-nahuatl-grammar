@@ -229,6 +229,19 @@ function run(ctx = {}) {
                 shell,
                 'id="classical-transcription-keyboard"'
             ),
+            unnecessaryHeadingRemoved:
+                !shell.includes("classical-transcription-keyboard__title")
+                && !shell.includes("Click a sound to type it directly"),
+            vowelsExpanded:
+                shell.includes(
+                    '<details class="classical-transcription-keyboard__group" open>\n'
+                    + '                          <summary class="classical-transcription-keyboard__summary">Vowels</summary>'
+                ),
+            consonantsCollapsed:
+                shell.includes(
+                    '<details class="classical-transcription-keyboard__group">\n'
+                    + '                          <summary class="classical-transcription-keyboard__summary">Consonants</summary>'
+                ),
             vowelKeys: Object.keys(
                 ctx.CLASSICAL_NAHUATL_TRANSCRIPTION_VOWEL_CARRIERS || {}
             ).length,
@@ -258,6 +271,9 @@ function run(ctx = {}) {
         },
         {
             keyboard: 1,
+            unnecessaryHeadingRemoved: true,
+            vowelsExpanded: true,
+            consonantsCollapsed: true,
             vowelKeys: 8,
             consonantKeys: 15,
             ownerFiltered: true,

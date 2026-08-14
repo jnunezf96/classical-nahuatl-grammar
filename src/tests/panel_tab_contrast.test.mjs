@@ -223,7 +223,7 @@ assert.match(
 );
 assert.match(
   css,
-  /#classical-source-panel :is\([\s\S]+\.classical-transcription-keyboard__title,[\s\S]+\.classical-source-context-controls__heading[\s\S]+#classical-authority-panel #classical-rule-logic-controls\[data-classical-rule-logic-surface-unit="vnc"\] \.classical-vnc-authority-section__title \{[\s\S]+font-size: var\(--sgr-type-subsub\);[\s\S]+letter-spacing: 0;[\s\S]+text-transform: none;/u
+  /#classical-source-panel :is\([\s\S]+\.classical-transcription-keyboard__summary,[\s\S]+\.classical-source-context-controls__heading[\s\S]+#classical-authority-panel #classical-rule-logic-controls\[data-classical-rule-logic-surface-unit="vnc"\] \.classical-vnc-authority-section__title \{[\s\S]+font-size: var\(--sgr-type-subsub\);[\s\S]+letter-spacing: 0;[\s\S]+text-transform: none;/u
 );
 assert.match(
   css,

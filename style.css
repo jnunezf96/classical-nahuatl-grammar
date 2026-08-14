@@ -4911,7 +4911,7 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
 }
 
 body.is-language-classical #classical-workbench #classical-source-panel :is(
-  .classical-transcription-keyboard__title,
+  .classical-transcription-keyboard__summary,
   .classical-source-context-controls__heading
 ),
 body.is-language-classical #classical-workbench #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__title {
@@ -16597,24 +16597,13 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   font-size: 0.74rem;
 }
 
-.classical-transcription-keyboard__title {
-  display: block;
-  font-weight: 600;
-}
-
-.classical-transcription-keyboard > p {
-  margin: 6px 0;
-  color: var(--muted-color, #68645d);
-}
-
 .classical-transcription-keyboard__group {
-  display: grid;
-  gap: 5px;
   margin-top: 7px;
 }
 
-.classical-transcription-keyboard__group > span {
+.classical-transcription-keyboard__summary {
   color: var(--muted-color, #68645d);
+  cursor: pointer;
   font-weight: 600;
 }
 
@@ -16622,6 +16611,7 @@ body.is-language-classical .classical-source-continuation [data-classical-user-a
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  margin-top: 5px;
 }
 
 .classical-transcription-keyboard__key {
