@@ -1312,6 +1312,31 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         if (!blockReason) blockReason = contextualSemanticSelectionFrame.blockReason;
         actions.push(CLASSICAL_NAHUATL_LESSON11_ACTIONS.DISABLE_PARADIGM_CELL);
       }
+      const defaultStemOverride = selectedStemOverride;
+      const requestedAlternativeStem = normalizeClassicalNahuatlIrregularVncStem(
+        options.irregularStemChoice || options.irregularAlternativeStem || ""
+      );
+      let selectedAlternativeStem = "";
+      if (requestedAlternativeStem) {
+        const selectedAlternativeIndex = authorizedAlternatives.findIndex(alternative => (
+          normalizeClassicalNahuatlIrregularVncStem(alternative?.stemOverride || "") === requestedAlternativeStem
+        ));
+        if (selectedAlternativeIndex < 0) {
+          available = false;
+          if (!blockReason) blockReason = "lesson11-irregular-alternative-not-authorized-for-selected-cell";
+        } else {
+          const [selectedAlternative] = authorizedAlternatives.splice(selectedAlternativeIndex, 1);
+          selectedStemOverride = selectedAlternative.stemOverride;
+          selectedAlternativeStem = selectedStemOverride;
+          if (defaultStemOverride && defaultStemOverride !== selectedStemOverride) {
+            authorizedAlternatives.unshift({
+              stemOverride: defaultStemOverride,
+              usage: "canvas-default-alternative",
+              preference: "default"
+            });
+          }
+        }
+      }
       return {
         kind: "classical-nahuatl-irregular-vnc-paradigm-plan",
         version: CLASSICAL_NAHUATL_LESSON11_VERSION,
@@ -1335,6 +1360,9 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
         morphologicalTense,
         subjectNumber,
         selectedStemOverride,
+        defaultStemOverride,
+        requestedAlternativeStem,
+        selectedAlternativeStem,
         sourceParadigmMember,
         selectedClassOverride,
         alternatives,

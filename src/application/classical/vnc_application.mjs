@@ -603,7 +603,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         negativePrefix: getToken("negativePrefix"),
         outsidePrefixes: Object.freeze(outsidePrefixes),
         construction: getToken("construction"),
-        lexicalReading: getToken("lexicalReading")
+        lexicalReading: getToken("lexicalReading"),
+        irregularStemChoice: getToken("irregularStemChoice") || getToken("irregularAlternativeStem")
       });
     }
     function buildClassicalNahuatlVncApplicationPronominalCooperationFrame(
@@ -1301,6 +1302,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         outsidePrefixes: [...(sentenceOptions.outsidePrefixes || [])],
         construction: sentenceOptions.construction,
         lexicalReading: sentenceOptions.lexicalReading,
+        irregularStemChoice: sentenceOptions.irregularStemChoice,
         pronominalNncCooperationFrame:
           buildClassicalNahuatlVncApplicationPronominalCooperationFrame(
             normalizedRequest,

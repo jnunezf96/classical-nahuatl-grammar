@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "lesson": 11,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson11-irregularity-foundation",
+      "title": "Irregularity foundation",
+      "sections": ["§11.1"],
+      "proposal": "Make perfective-stem shape and form-meaning alignment the two main kinds of VNC irregularity.",
+      "writingJob": "Classify a known irregular VNC by its real paradigm relation while leaving unknown stems to the regular system.",
+      "readingJob": "Guide the reader to look first at perfective-stem formation and tense-form meaning.",
+      "decisionSplit": "The user supplies stem, subject, mood, and tense; the application recognizes the paradigm relation.",
+      "controlPolicy": "Reuse Stem, Subject, Mood, and Tense; no irregularity checkbox.",
+      "userChoiceJob": "CHOOSE_STEM_SUBJECT_MOOD_AND_TENSE",
+      "applicationJob": "RECOGNIZE_THE_AUTHORIZED_IRREGULAR_PARADIGM",
+      "derivedCueJob": "SHOW_IRREGULAR_VERBSTEM_OR_TENSE_RELATION",
+      "writingAtomIds": [
+        "ACI-P105-L003-980AC81F5A",
+        "ACI-P105-L003-980AC81F5A-02"
+      ]
+    },
+    {
+      "groupId": "lesson11-speech-criterion",
+      "title": "Speech criterion and regular sound change",
+      "sections": ["§11.2"],
+      "proposal": "Judge irregularity by sound and keep regular sound changes under their regular Lesson 2 and Lesson 7 rules.",
+      "writingJob": "Reuse the canonical regular sound-change path when the spoken formation is regular, even if spelling changes.",
+      "readingJob": "Help the reader avoid calling a form irregular merely because its spelling looks different.",
+      "decisionSplit": "The application decides whether a sound operation is regular; the user does not classify it.",
+      "controlPolicy": "No new control.",
+      "userChoiceJob": "NO_NEW_USER_CHOICE",
+      "applicationJob": "KEEP_REGULAR_SOUND_CHANGE_OUT_OF_THE_IRREGULAR_SYSTEM",
+      "derivedCueJob": "SHOW_REGULAR_SOUND_CHANGE",
+      "writingAtomIds": [
+        "ACI-P105-L006-F50CAB9E01",
+        "ACI-P105-L007-9536E9DC9C",
+        "ACI-P105-L009-D0CA423EC5"
+      ]
+    },
+    {
+      "groupId": "lesson11-perfective-stem-irregularity",
+      "title": "Rare perfective-stem irregularities",
+      "sections": ["§11.3", "§11.3.1", "§11.3.2"],
+      "proposal": "Apply compound class shifts and conditioned t-to-h perfectives, exposing only Canvas-authorized alternatives.",
+      "writingJob": "Generate the correct irregular perfective stem by compound class and participant-tense conditions, and allow an authorized alternative where Canvas permits one.",
+      "readingJob": "Guide the reader through the rare class-shift and t-versus-h perfective patterns.",
+      "decisionSplit": "The user may select between authorized results; the application determines when the choice exists and enforces every condition.",
+      "controlPolicy": "Show one Irregular Result picker only for a cell with more than one authorized result.",
+      "userChoiceJob": "CHOOSE_ONLY_BETWEEN_AUTHORIZED_ALTERNATIVE_RESULTS",
+      "applicationJob": "APPLY_COMPOUND_CLASS_SHIFT_AND_CONDITIONED_T_TO_H_PERFECTIVES",
+      "derivedCueJob": "SHOW_IRREGULAR_PERFECTIVE_STEM",
+      "writingAtomIds": [
+        "ACI-P105-L013-65F44103B3",
+        "ACI-P105-L014-BABCF678C5",
+        "ACI-P105-L015-1C9F561900",
+        "ACI-P105-L016-34A1C18BE7",
+        "ACI-P105-L018-6A53AB2C9A",
+        "ACI-P105-L019-C87BF867E5",
+        "ACI-P105-L021-09CD8F9F58",
+        "ACI-P105-L024-A81AEFF179",
+        "ACI-P105-L025-6E2D37611B",
+        "ACI-P105-L026-3154B9EFB1-02",
+        "ACI-P105-L026-3154B9EFB1-03",
+        "ACI-P106-L002-767CEA9665",
+        "ACI-P106-L002-20D45CF318",
+        "ACI-P106-L007-600EC7F741",
+        "ACI-P106-L012-04348EAF38",
+        "ACI-P106-L012-04348EAF38-02",
+        "ACI-P106-L014-381CCD2E1B",
+        "ACI-P106-L015-5C68235DFC",
+        "ACI-P106-L016-2506893806-02"
+      ]
+    },
+    {
+      "groupId": "lesson11-form-meaning-dislocation",
+      "title": "Form-meaning dislocation",
+      "sections": ["§11.4"],
+      "proposal": "Separate a verb's tense meaning from the tense form used to express it.",
+      "writingJob": "Map semantic present and general past to the authorized morphological tense and block forbidden forms.",
+      "readingJob": "Help the reader recognize preterit-as-present and distant-past-as-past patterns.",
+      "decisionSplit": "The user chooses intended time meaning; the application chooses the required form.",
+      "controlPolicy": "Reuse Tense as meaning; do not ask the user to choose the hidden morphological tense."
+    },
+    {
+      "groupId": "lesson11-positional-verbs",
+      "title": "Standing, lying, and hanging",
+      "sections": ["§11.4.1", "§11.4.1.a", "§11.4.1.b", "§11.4.2", "§11.4.2.a", "§11.4.2.b", "§11.4.3", "§11.4.3.a", "§11.4.3.b"],
+      "proposal": "Generate the positional verbs through their authorized tense relations and fused locative structure.",
+      "writingJob": "Build ih-ca, on-o, and pil-ca with their preterit-as-present and distant-past behavior and the conditioned on fusion.",
+      "readingJob": "Guide the positional reading and its form-meaning contrast.",
+      "decisionSplit": "The user supplies the stem and meaning; the application supplies form and fusion.",
+      "controlPolicy": "No new control."
+    },
+    {
+      "groupId": "lesson11-defective-a",
+      "title": "Defective ā",
+      "sections": ["§11.4.4", "§11.4.4.a", "§11.4.4.b"],
+      "proposal": "Keep ā defective and generate its present or absent interpretation through polarity.",
+      "writingJob": "Allow only the authorized preterit-shaped paradigm and apply the conditioned negative allomorph.",
+      "readingJob": "Guide present-versus-absent readings of the same defective family.",
+      "decisionSplit": "The user chooses polarity and participant; the application enforces defectiveness.",
+      "controlPolicy": "Reuse Polarity and Subject; no defectiveness control."
+    },
+    {
+      "groupId": "lesson11-ca-paradigm",
+      "title": "The irregular ca paradigm",
+      "sections": ["§11.4.5", "§11.4.5.a", "§11.4.5.b"],
+      "proposal": "Generate ca from one irregular paradigm relation across its authorized meanings and forms.",
+      "writingJob": "Select the correct ca-family stem member for each semantic and morphological coordinate.",
+      "readingJob": "Guide the reader through ca-family forms without treating them as unrelated words.",
+      "decisionSplit": "The user chooses meaning and participant; the application selects the member.",
+      "controlPolicy": "No new control."
+    },
+    {
+      "groupId": "lesson11-huitz-paradigm",
+      "title": "The hui-tz paradigm",
+      "sections": ["§11.4.6"],
+      "proposal": "Generate hui-tz with its authorized present and future behavior.",
+      "writingJob": "Apply the required tense relation and conditioned stem operation.",
+      "readingJob": "Guide the reader through the resulting hui-tz forms.",
+      "decisionSplit": "The user chooses time meaning; the application builds the form.",
+      "controlPolicy": "No new control."
+    },
+    {
+      "groupId": "lesson11-mani-nemi-relations",
+      "title": "Mani, nemi, and related tense relations",
+      "sections": ["§11.4.7", "§11.4.8", "§11.4.9"],
+      "proposal": "Generate each lexical tense relation without leaking it to nearby regular stems.",
+      "writingJob": "Apply the exact mani, nemi, and related form-meaning relations only to their authorized lexical families.",
+      "readingJob": "Guide the reader through their present and past interpretations.",
+      "decisionSplit": "The user chooses stem and meaning; the application applies the lexical relation.",
+      "controlPolicy": "No new control."
+    },
+    {
+      "groupId": "lesson11-go-paradigm",
+      "title": "The irregular verb go",
+      "sections": ["§11.5", "§11.5.1", "§11.5.1.a", "§11.5.1.a.i", "§11.5.1.a.ii", "§11.5.1.a.iii", "§11.5.1.a.iv", "§11.5.1.a.v", "§11.5.1.b", "§11.5.1.c", "§11.5.1.c.i", "§11.5.1.c.ii"],
+      "proposal": "Generate all members of the go paradigm from one lexical relation.",
+      "writingJob": "Select the correct go stem by participant, mood, tense, and direction without user stem entry.",
+      "readingJob": "Guide the reader in recognizing the different forms as one paradigm.",
+      "decisionSplit": "The user chooses grammatical meaning; the application selects the stem member.",
+      "controlPolicy": "Reuse existing choices; no paradigm-member picker."
+    },
+    {
+      "groupId": "lesson11-come-paradigm",
+      "title": "The irregular verb come",
+      "sections": ["§11.5.2", "§11.5.2.a", "§11.5.2.a.i", "§11.5.2.a.ii", "§11.5.2.a.iii", "§11.5.2.b", "§11.5.2.b.i", "§11.5.2.b.ii", "§11.5.2.b.iii", "§11.5.2.b.iv", "§11.5.2.c", "§11.5.2.c.i", "§11.5.2.c.ii", "§11.5.2.c.iii"],
+      "proposal": "Generate all members of the come paradigm from one lexical relation.",
+      "writingJob": "Select the correct come stem by participant, mood, tense, and direction without user stem entry.",
+      "readingJob": "Guide the reader in recognizing the different forms as one paradigm.",
+      "decisionSplit": "The user chooses grammatical meaning; the application selects the stem member.",
+      "controlPolicy": "Reuse existing choices; no paradigm-member picker."
+    },
+    {
+      "groupId": "lesson11-other-irregular-relations",
+      "title": "Other irregular paradigm relations",
+      "sections": ["§11.5.3"],
+      "proposal": "Keep every remaining listed irregular paradigm as an exact lexical relation.",
+      "writingJob": "Generate the authorized paradigm member without analogy to an unrelated stem.",
+      "readingJob": "Guide recognition of each relation.",
+      "decisionSplit": "The user chooses grammatical meaning; the application selects the member.",
+      "controlPolicy": "No new control."
+    },
+    {
+      "groupId": "lesson11-irregular-idioms",
+      "title": "Irregular idioms",
+      "sections": ["§11.6"],
+      "proposal": "Keep idiomatic lexical meaning separate from productive paradigm formation.",
+      "writingJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
+      "readingJob": "Guide the reader to the whole-construction meaning rather than a word-by-word false reading.",
+      "decisionSplit": "The user supplies the construction; the application recognizes its authorized idiomatic reading.",
+      "controlPolicy": "No idiom checkbox; recognition is automatic."
+    }
+  ]
+}

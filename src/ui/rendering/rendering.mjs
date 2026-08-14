@@ -1502,6 +1502,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const requestedVerbClass = String(overrides.verbClass || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-class", "B") || "B").trim();
       const constructionSelection = String(overrides.construction || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-construction", "none") || "none").trim();
       const lexicalReadingSelection = String(overrides.lexicalReading || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-lexical-reading", "unspecified") || "unspecified").trim();
+      const lesson11AlternativeStemSelection = String(overrides.irregularStemChoice || overrides.irregularAlternativeStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-irregular-alternative", "") || "").trim();
       const classSelectionContract = getClassicalRuleLogicCanvasClassSelection(sourceValue, {
         requestedClassId: requestedVerbClass,
         valence,
@@ -1792,6 +1793,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         classSelectionContract,
         constructionSelection,
         lexicalReadingSelection,
+        lesson11AlternativeStemSelection,
         nncType,
         nncSourceIdentity,
         nncTypedSourceFrame: nncSourceIdentity.typedSourceFrame,
@@ -2239,8 +2241,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         negativePrefix: state.negativePrefix,
         outsidePrefixes: state.outsidePrefixes,
         construction: state.constructionSelection === "none" ? "" : state.constructionSelection,
-        lexicalReading: state.lexicalReadingSelection === "unspecified" ? "" : state.lexicalReadingSelection
-        ,
+        lexicalReading: state.lexicalReadingSelection === "unspecified" ? "" : state.lexicalReadingSelection,
+        irregularStemChoice: state.lesson11AlternativeStemSelection,
         lateOperation: state.lateOperation,
         lateVariant: state.lateVariant,
         compoundMatrixStem: state.compoundMatrixStem,
@@ -4914,6 +4916,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P076-L023-00A89847BC-03"
         ])
       }),
+      "irregular-vnc": Object.freeze({
+        lessonSections: Object.freeze(["§11.1"]),
+        atomIds: Object.freeze(["ACI-P105-L003-980AC81F5A", "ACI-P105-L003-980AC81F5A-02", "ACI-P105-L005-B44A6B05EC"])
+      }),
+      "regular-sound-change-not-irregular": Object.freeze({
+        lessonSections: Object.freeze(["§11.2"]),
+        atomIds: Object.freeze(["ACI-P105-L006-F50CAB9E01", "ACI-P105-L007-9536E9DC9C", "ACI-P105-L009-D0CA423EC5"])
+      }),
+      "irregular-perfective-stem": Object.freeze({
+        lessonSections: Object.freeze(["§11.3.1", "§11.3.2"]),
+        atomIds: Object.freeze(["ACI-P105-L013-65F44103B3", "ACI-P105-L019-C87BF867E5", "ACI-P105-L021-09CD8F9F58", "ACI-P106-L002-20D45CF318"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5368,7 +5382,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const stemToken = `(${String(predicate.stem || "")})`;
       const stemStart = text.indexOf(stemToken, prePredicateCursor);
       if (stemStart >= 0) {
-        addAnnotation(stemStart, stemStart + 1, "stem-left-boundary", "stem boundary", "boundary", "stem-boundary");
+        const lesson11Plan = grammarContext?.lesson11ParadigmPlan
+          || grammarContext?.proofFrame?.conclusion?.lesson11ParadigmPlan
+          || null;
+        const lesson11StemCue = lesson11Plan?.applies
+          ? lesson11Plan.irregularityKind === "lesson7-delegated-irregular-sound-change"
+            ? { role: "regular-sound-change", label: "regular sound change", authorityKey: "regular-sound-change-not-irregular" }
+            : ["compound-class-shift", "conditioned-ti-perfective"].includes(lesson11Plan.irregularityKind)
+              ? { role: "irregular-perfective-stem", label: "irregular perfective stem", authorityKey: "irregular-perfective-stem" }
+              : { role: "irregular-vnc", label: "irregular verbstem", authorityKey: "irregular-vnc" }
+          : null;
+        addAnnotation(
+          stemStart,
+          stemStart + 1,
+          lesson11StemCue?.role || "stem-left-boundary",
+          lesson11StemCue?.label || "stem boundary",
+          lesson11StemCue ? "carrier" : "boundary",
+          lesson11StemCue?.authorityKey || "stem-boundary"
+        );
         const stemContentStart = stemStart + 1;
         const stemContent = String(predicate.stem || "");
         const stemClass = String(grammarContext?.classId || grammarContext?.verbClass || "").trim().toUpperCase();
@@ -8974,6 +9005,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const lesson11StemKey = String(surfaceFrame.state?.stem || "").normalize("NFD").replace(/[\u0300-\u036f]/gu, "").replace(/[^a-z]/gu, "");
       const lesson11ConstructionKind = lesson11StemKey === "amia" ? "quen" : lesson11StemKey === "ia" ? "pronominal-nnc" : "";
       const lesson11LexicalReadingRequired = lesson11StemKey === "itz";
+      const lesson11Plan = surfaceFrame.machineryFrame?.lesson11ParadigmPlan || null;
+      const lesson11AlternativeControl = targetObject.document.getElementById("classical-rule-logic-irregular-alternative");
+      const lesson11AlternativeRecords = lesson11Plan?.authorizationStatus === "authorized"
+        ? [
+          ...(lesson11Plan.defaultStemOverride ? [{ stemOverride: lesson11Plan.defaultStemOverride, label: "preferred form" }] : []),
+          ...(lesson11Plan.selectedAlternativeStem ? [{ stemOverride: lesson11Plan.selectedAlternativeStem, label: "selected alternative" }] : []),
+          ...(lesson11Plan.authorizedAlternatives || []).map(alternative => ({
+            stemOverride: alternative.stemOverride || "",
+            label: alternative.preference === "default" ? "preferred form" : "authorized alternative"
+          }))
+        ].filter((record, index, list) => record.stemOverride && list.findIndex(candidate => candidate.stemOverride === record.stemOverride) === index)
+        : [];
+      if (lesson11AlternativeControl && lesson11AlternativeRecords.length > 1) {
+        const optionSignature = lesson11AlternativeRecords.map(record => `${record.stemOverride}:${record.label}`).join("|");
+        if (lesson11AlternativeControl.dataset.classicalLesson11AlternativeSignature !== optionSignature) {
+          const options = lesson11AlternativeRecords.map((record, index) => {
+            const option = targetObject.document.createElement("option");
+            option.value = index === 0 ? "" : record.stemOverride;
+            option.textContent = `${record.stemOverride} · ${record.label}`;
+            return option;
+          });
+          lesson11AlternativeControl.replaceChildren(...options);
+          lesson11AlternativeControl.dataset.classicalLesson11AlternativeSignature = optionSignature;
+        }
+        lesson11AlternativeControl.value = lesson11Plan.selectedAlternativeStem || "";
+      }
       const valenceControl = targetObject.document.getElementById("classical-rule-logic-valence");
       if (valenceControl?.dataset) {
         valenceControl.dataset.classicalRequestedValence = surfaceFrame.state?.requestedValence || "";
@@ -9023,6 +9080,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-applicative-object": basalUnit === "vnc" && derivationType === "applicative" && derivationSourceAuthorized,
         "classical-rule-logic-construction": basalUnit === "vnc" && Boolean(lesson11ConstructionKind),
         "classical-rule-logic-lexical-reading": basalUnit === "vnc" && lesson11LexicalReadingRequired,
+        "classical-rule-logic-irregular-alternative": basalUnit === "vnc" && lesson11AlternativeRecords.length > 1,
         "classical-rule-logic-vnc-voice": basalUnit === "vnc" && capabilities.voice === true,
         "classical-rule-logic-voice-layer-2": basalUnit === "vnc" && vncVoiceOperation === "inherent-impersonal" && voiceLayer2Inventory?.authorizationStatus === "authorized" && voiceLayer2Inventory.options?.length > 0,
         "classical-rule-logic-voice-layer-3": basalUnit === "vnc" && surfaceFrame.state?.selectedVoiceLayer2Operation === "tla-impersonal" && voiceLayer3Inventory?.authorizationStatus === "authorized" && voiceLayer3Inventory.options?.length > 0,
@@ -9249,6 +9307,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (id === "classical-rule-logic-lexical-reading") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-lesson11-no-homophonous-reading-choice-for-current-stem" : "canvas-lesson11-itz-homophone-reading-required";
           if (hide && "value" in control) control.value = "unspecified";
+        }
+        if (id === "classical-rule-logic-irregular-alternative") {
+          wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-lesson11-no-authorized-alternative-for-current-cell" : "canvas-lesson11-authorized-result-alternative";
+          wrapper.dataset.classicalAuthorityDecisionOwner = hide ? "application" : "user";
+          if (hide && "value" in control) control.value = "";
         }
         if (id === "classical-rule-logic-directional") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-directional-locative-hidden-outside-vnc-lesson8" : "canvas-directional-locative-inside-vnc-core";

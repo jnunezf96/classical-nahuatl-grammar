@@ -1,15 +1,15 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260813-lesson7-stem-morph-cues-201";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260813-lesson11-groups1-3-202";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260813-lesson7-stem-morph-cues-201";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-lesson7-stem-morph-cues-201";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson7-stem-morph-cues-201";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson7-stem-morph-cues-201";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson7-stem-morph-cues-201";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson7-stem-morph-cues-201";
+} from "../runtime/create_runtime.mjs?v=20260813-lesson11-groups1-3-202";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-lesson11-groups1-3-202";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson11-groups1-3-202";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson11-groups1-3-202";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson11-groups1-3-202";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson11-groups1-3-202";
 
 let browserBootstrapPromise = null;
 

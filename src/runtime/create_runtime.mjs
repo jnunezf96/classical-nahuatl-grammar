@@ -1,4 +1,4 @@
-import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260812-lesson6-complete-001";
+import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260813-lesson11-groups1-3-202";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260805-ordinary-nnc-open-source-159";
 import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260812-lesson3-groups-7-9-073";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
@@ -31,7 +31,7 @@ import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classi
 import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core/classical/nuclear_clause_semantic_operations.mjs?v=20260812-lesson6-complete-002";
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
 import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260812-lesson5-verbstem-owner-013";
-import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260802-l58-lexeme-source-150";
+import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260813-lesson11-groups1-3-202";
 import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260813-lesson8-groups4-6-119";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
 import { installClassicalNahuatlLaterLayersGlobals } from "../core/classical/derived_vnc_layers.mjs?v=20260726-lessons2-58-one-system-094";
@@ -71,10 +71,10 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson7-stem-morph-cues-201";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson11-groups1-3-202";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson10-complete-197";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson11-groups1-3-202";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
 import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260812-particle-shortcuts-081";

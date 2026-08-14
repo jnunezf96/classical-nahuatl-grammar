@@ -55,6 +55,11 @@ import {
   isLesson10ReaderGuidanceExact,
   renderLesson10ReaderGuidance,
 } from "../curriculum/lesson10_reader_guidance.mjs?v=20260813-lesson10-complete-005";
+import {
+  LESSON11_READER_GUIDANCE_GROUPS,
+  isLesson11ReaderGuidanceExact,
+  renderLesson11ReaderGuidance,
+} from "../curriculum/lesson11_reader_guidance.mjs?v=20260813-lesson11-groups1-3-001";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2741,6 +2746,15 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           <option value="motion">come / go</option>
                         </select>
                       </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-irregular-alternative" hidden aria-hidden="true">
+                        <span class="classical-rule-control__label">Irregular Result</span>
+                        <select
+                          id="classical-rule-logic-irregular-alternative"
+                          data-classical-rule-logic-control="irregular-alternative"
+                        >
+                          <option value="" selected>preferred form</option>
+                        </select>
+                      </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="predicate-voice" data-classical-derivation-authority-control="finalizer">
                         <span class="classical-rule-control__label">Voice</span>
                         <select
@@ -3063,6 +3077,7 @@ ${renderLesson7ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson8ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson9ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson10ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson11ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -3818,6 +3833,8 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson9ReaderGuidanceExact = isLesson9ReaderGuidanceExact;
     api.LESSON10_READER_GUIDANCE_GROUPS = LESSON10_READER_GUIDANCE_GROUPS;
     api.isLesson10ReaderGuidanceExact = isLesson10ReaderGuidanceExact;
+    api.LESSON11_READER_GUIDANCE_GROUPS = LESSON11_READER_GUIDANCE_GROUPS;
+    api.isLesson11ReaderGuidanceExact = isLesson11ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;
