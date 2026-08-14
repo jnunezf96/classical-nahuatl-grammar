@@ -25,6 +25,18 @@
     "lesson11-defective-a": {
       "status": "ACCEPTED",
       "acceptedJob": "Keep ā defective, use polarity for present versus absent meaning, and automatically select ay- or ah-."
+    },
+    "lesson11-itzi-compound-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep motion itzi compound-only, generate hui-tz and carrying compounds, and require the intended reading for ambiguous itz."
+    },
+    "lesson11-amia-constructions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate defective am-i-h only through an authorized quēn construction and keep its particles in the correct place."
+    },
+    "lesson11-zero-ia-mani-nemi-relations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve zero-root existence structure, require pronominal cooperation, and apply mani and nemi's exact tense and referent jobs."
     }
   }
 }

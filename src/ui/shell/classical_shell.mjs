@@ -59,7 +59,7 @@ import {
   LESSON11_READER_GUIDANCE_GROUPS,
   isLesson11ReaderGuidanceExact,
   renderLesson11ReaderGuidance,
-} from "../curriculum/lesson11_reader_guidance.mjs?v=20260813-lesson11-groups4-6-002";
+} from "../curriculum/lesson11_reader_guidance.mjs?v=20260813-lesson11-groups7-9-003";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2744,6 +2744,18 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           <option value="unspecified" selected>choose reading</option>
                           <option value="alert-observant">alert / observant</option>
                           <option value="motion">come / go</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-referent" hidden aria-hidden="true">
+                        <span class="classical-rule-control__label">Referent</span>
+                        <select
+                          id="classical-rule-logic-predicate-referent"
+                          data-classical-rule-logic-control="predicate-referent"
+                        >
+                          <option value="unspecified" selected>not specified</option>
+                          <option value="wide-flat-thing">wide or flat thing</option>
+                          <option value="mass-or-crowd">mass or crowd</option>
+                          <option value="individual-animate">individual animate being · unusual</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-irregular-alternative" hidden aria-hidden="true">

@@ -1502,6 +1502,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const requestedVerbClass = String(overrides.verbClass || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-class", "B") || "B").trim();
       const constructionSelection = String(overrides.construction || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-construction", "none") || "none").trim();
       const lexicalReadingSelection = String(overrides.lexicalReading || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-lexical-reading", "unspecified") || "unspecified").trim();
+      const predicateReferentKindSelection = String(overrides.predicateReferentKind || overrides.referentKind || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-predicate-referent", "unspecified") || "unspecified").trim();
       const lesson11AlternativeStemSelection = String(overrides.irregularStemChoice || overrides.irregularAlternativeStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-irregular-alternative", "") || "").trim();
       const classSelectionContract = getClassicalRuleLogicCanvasClassSelection(sourceValue, {
         requestedClassId: requestedVerbClass,
@@ -1793,6 +1794,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         classSelectionContract,
         constructionSelection,
         lexicalReadingSelection,
+        predicateReferentKindSelection,
         lesson11AlternativeStemSelection,
         nncType,
         nncSourceIdentity,
@@ -2242,6 +2244,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         outsidePrefixes: state.outsidePrefixes,
         construction: state.constructionSelection === "none" ? "" : state.constructionSelection,
         lexicalReading: state.lexicalReadingSelection === "unspecified" ? "" : state.lexicalReadingSelection,
+        predicateReferentKind: state.predicateReferentKindSelection === "unspecified" ? "" : state.predicateReferentKindSelection,
         irregularStemChoice: state.lesson11AlternativeStemSelection,
         lateOperation: state.lateOperation,
         lateVariant: state.lateVariant,
@@ -3386,21 +3389,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
       sentenceSurfaceMode = "statement"
     } = {}) {
       const normalizedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(sentenceSurfaceMode);
-      const finalPunctuation = normalizedSentenceSurfaceMode === "question"
-        ? "?"
-        : normalizedSentenceSurfaceMode === "exclamation"
-          ? "!"
-          : ".";
-      const applyFinalPunctuation = value => {
-        const text = String(value || "").trim();
-        return text ? `${text.replace(/[.!?]+$/u, "")}${finalPunctuation}` : "";
-      };
       const canonicalNuclearResultFrame = basalUnit === "vnc"
         ? getCanonicalClassicalVncSentenceResultFrame(
           null,
           nuclearResultFrame
         )
         : nuclearResultFrame;
+      const grammarRequiredPunctuation = String(
+        canonicalNuclearResultFrame?.sentenceSurfaceFrame?.finalPunctuation || ""
+      ).trim();
+      const finalPunctuation = ["?", "!"].includes(grammarRequiredPunctuation)
+        ? grammarRequiredPunctuation
+        : normalizedSentenceSurfaceMode === "question"
+          ? "?"
+          : normalizedSentenceSurfaceMode === "exclamation"
+            ? "!"
+            : ".";
+      const applyFinalPunctuation = value => {
+        const text = String(value || "").trim();
+        return text ? `${text.replace(/[.!?]+$/u, "")}${finalPunctuation}` : "";
+      };
       if (basalUnit === "vnc" && !canonicalNuclearResultFrame) {
         return {
           authorizationStatus: "blocked",
@@ -4944,6 +4952,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§11.4.4"]),
         atomIds: Object.freeze(["ACI-P107-L017-153B6118EF", "ACI-P107-L019-CE6B110CFF", "ACI-P107-L025-B6F7DF6F59"])
       }),
+      "itzi-motion-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.5"]),
+        atomIds: Object.freeze(["ACI-P107-L030-2C30D8AF1A", "ACI-P107-L034-D374C0BC37", "ACI-P108-L002-B869DC3E81", "ACI-P108-L011-39214EEA5E"])
+      }),
+      "itz-homophone-reading": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.5 Note 2"]),
+        atomIds: Object.freeze(["ACI-P108-L025-AA241C5DA3", "ACI-P108-L026-AC3FDD8441"])
+      }),
+      "amia-construction": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.6"]),
+        atomIds: Object.freeze(["ACI-P108-L028-BC30330250", "ACI-P108-L030-4645D457AD", "ACI-P108-L037-90BDE6BBE7"])
+      }),
+      "zero-root-existence": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.7"]),
+        atomIds: Object.freeze(["ACI-P108-L040-8CDA405528", "ACI-P109-L002-AF0781E708", "ACI-P109-L003-8C51A8439E"])
+      }),
+      "mani-referent": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.8"]),
+        atomIds: Object.freeze(["ACI-P109-L009-154A6AA078", "ACI-P109-L009-154A6AA078-04", "ACI-P109-L012-463D207465", "ACI-P109-L012-3F5C84A7B4"])
+      }),
+      "nemi-tense-relation": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.9"]),
+        atomIds: Object.freeze(["ACI-P109-L016-5287F30C12", "ACI-P109-L018-813CB3CE7E"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5220,6 +5252,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         addAnnotation(start, start + value.length, role, label, "carrier", authorityKey);
       };
       if (sentenceContext) {
+        const lesson11SentencePlan = grammarContext?.lesson11ParadigmPlan
+          || grammarContext?.proofFrame?.conclusion?.lesson11ParadigmPlan
+          || null;
         const sentenceRole = String(sentenceContext.canvasSentenceRole || sentenceContext.sentenceCanvasRole || "");
         const selectedMood = String(sentenceContext.mood || sentenceContext.state?.mood || grammarContext?.mood || "");
         const introductoryParticle = String(sentenceContext.introductoryParticle || sentenceContext.sentenceIntroductoryParticle || sentenceContext.state?.introductoryParticle || "");
@@ -5249,6 +5284,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
             sentenceRole.includes("admonition") || selectedMood === "admonitive" ? "admonition strengthener" : sentenceRole === "wish" ? "wish strengthener" : "command strengthener",
             sentenceRole.includes("admonition") || selectedMood === "admonitive" ? "admonition-strengthener" : "wish-strengthener"
           );
+        }
+        if (lesson11SentencePlan?.lexemeId === "am-i-ā") {
+          const construction = String(lesson11SentencePlan.construction || sentenceContext.lesson11Construction || "");
+          if (["quēn", "quēn-mach"].includes(construction)) {
+            addSentenceCarrier("quēn", "amia-required-construction", "required quēn construction", "amia-construction");
+          }
+          if (construction === "quēn-mach") {
+            addSentenceCarrier("mach", "amia-evaluative-particle", "evaluative mach", "amia-construction");
+          }
         }
         (sentenceContext.sentencePrefixalStack || []).forEach(prefix => {
           const normalizedPrefix = String(prefix || "");
@@ -5414,8 +5458,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
               ? { role: "irregular-perfective-stem", label: "irregular perfective stem", authorityKey: "irregular-perfective-stem" }
               : lesson11Plan.irregularityKind === "form-meaning-dislocation"
                 ? { role: "positional-verbstem", label: "positional verbstem", authorityKey: "positional-verbs" }
-                : lesson11Plan.irregularityKind === "defective-preterit-as-present"
+              : lesson11Plan.irregularityKind === "defective-preterit-as-present"
                   ? { role: "defective-a", label: lesson11Plan.contextualInterpretation === "be-absent" ? "be absent" : "be present", authorityKey: "defective-a" }
+                : lesson11Plan.irregularityKind === "defective-compound-only"
+                  ? { role: "itzi-motion-compound", label: "come or go motion verbstem", authorityKey: "itzi-motion-compounds" }
+                  : ["ambiguous-itz-reading", "defective-motion-itz-simple-blocked", "defective-alert-perfective-only"].includes(lesson11Plan.irregularityKind)
+                    ? { role: "itz-homophone-reading", label: lesson11Plan.irregularityKind === "defective-alert-perfective-only" ? "alert or observant verbstem" : "motion verbstem", authorityKey: "itz-homophone-reading" }
+                    : lesson11Plan.irregularityKind === "defective-construction-bound"
+                      ? { role: "amia-construction", label: "construction-bound verbstem", authorityKey: "amia-construction" }
+                      : lesson11Plan.irregularityKind === "defective-nnc-cooperation"
+                        ? { role: "zero-root-existence", label: "zero-root existence verbstem", authorityKey: "zero-root-existence" }
+                        : lesson11Plan.irregularityKind === "preterit-stem-exception"
+                          ? { role: "mani-referent", label: lesson11Plan.contextualInterpretation === "wide-flat-thing" ? "wide or flat referent" : lesson11Plan.contextualInterpretation === "mass-or-crowd" ? "mass or crowd referent" : lesson11Plan.usageStatus === "marked-not-ordinary" ? "individual animate referent, unusual" : "mani positional verbstem", authorityKey: "mani-referent" }
+                          : lesson11Plan.irregularityKind === "regular-with-optional-past-reading"
+                            ? { role: "nemi-tense-relation", label: "nemi tense relation", authorityKey: "nemi-tense-relation" }
               : { role: "irregular-vnc", label: "irregular verbstem", authorityKey: "irregular-vnc" }
           : null;
         addAnnotation(
@@ -9035,6 +9091,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const lesson11StemKey = String(surfaceFrame.state?.stem || "").normalize("NFD").replace(/[\u0300-\u036f]/gu, "").replace(/[^a-z]/gu, "");
       const lesson11ConstructionKind = lesson11StemKey === "amia" ? "quen" : lesson11StemKey === "ia" ? "pronominal-nnc" : "";
       const lesson11LexicalReadingRequired = lesson11StemKey === "itz";
+      const lesson11PredicateReferentAvailable = lesson11StemKey === "mani";
       const lesson11Plan = surfaceFrame.machineryFrame?.lesson11ParadigmPlan || null;
       const lesson11AlternativeControl = targetObject.document.getElementById("classical-rule-logic-irregular-alternative");
       const lesson11AlternativeRecords = lesson11Plan?.authorizationStatus === "authorized"
@@ -9095,8 +9152,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-subject": basalUnit === "vnc"
           && capabilities.subject === true
           && !(derivationType === "causative" && causativeObjectKind === "reflexive"),
-        "classical-rule-logic-mood": capabilities.mood === true,
-        "classical-rule-logic-tense": capabilities.tense === true,
+        "classical-rule-logic-mood": capabilities.mood === true || lesson11LexicalReadingRequired,
+        "classical-rule-logic-tense": capabilities.tense === true || lesson11LexicalReadingRequired,
         "classical-rule-logic-class": basalUnit === "vnc",
         "classical-rule-logic-derivation-option": basalUnit === "vnc"
           && derivationType !== "direct"
@@ -9110,6 +9167,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-applicative-object": basalUnit === "vnc" && derivationType === "applicative" && derivationSourceAuthorized,
         "classical-rule-logic-construction": basalUnit === "vnc" && Boolean(lesson11ConstructionKind),
         "classical-rule-logic-lexical-reading": basalUnit === "vnc" && lesson11LexicalReadingRequired,
+        "classical-rule-logic-predicate-referent": basalUnit === "vnc" && lesson11PredicateReferentAvailable,
         "classical-rule-logic-irregular-alternative": basalUnit === "vnc" && lesson11AlternativeRecords.length > 1,
         "classical-rule-logic-vnc-voice": basalUnit === "vnc" && capabilities.voice === true,
         "classical-rule-logic-voice-layer-2": basalUnit === "vnc" && vncVoiceOperation === "inherent-impersonal" && voiceLayer2Inventory?.authorizationStatus === "authorized" && voiceLayer2Inventory.options?.length > 0,
@@ -9198,6 +9256,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (lesson11LexicalReadingRequired) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-lexical-reading", ["unspecified", "alert-observant", "motion"], "unspecified");
+      }
+      if (lesson11PredicateReferentAvailable) {
+        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-predicate-referent", ["unspecified", "wide-flat-thing", "mass-or-crowd", "individual-animate"], "unspecified");
       }
       const classSelectionContract = surfaceFrame.state?.classSelectionContract || null;
       const lesson11ClassOverride = surfaceFrame.machineryFrame?.lesson11ParadigmPlan?.selectedClassOverride || "";
@@ -9336,6 +9397,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         if (id === "classical-rule-logic-lexical-reading") {
           wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-lesson11-no-homophonous-reading-choice-for-current-stem" : "canvas-lesson11-itz-homophone-reading-required";
+          if (hide && "value" in control) control.value = "unspecified";
+        }
+        if (id === "classical-rule-logic-predicate-referent") {
+          wrapper.dataset.classicalRuleLogicGate = hide ? "canvas-lesson11-no-special-referent-choice-for-current-stem" : "canvas-lesson11-mani-referent-choice";
           if (hide && "value" in control) control.value = "unspecified";
         }
         if (id === "classical-rule-logic-irregular-alternative") {
@@ -10309,6 +10374,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         controlId: "classical-rule-logic-lexical-reading",
         label: "Reading"
       }, {
+        controlId: "classical-rule-logic-predicate-referent",
+        label: "Referent"
+      }, {
         controlId: "classical-rule-logic-vnc-voice",
         label: "Voice"
       }, {
@@ -10343,6 +10411,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-applicative-object": "applicative-object",
         "classical-rule-logic-construction": "construction",
         "classical-rule-logic-lexical-reading": "reading",
+        "classical-rule-logic-predicate-referent": "referent",
         "classical-rule-logic-vnc-voice": "voice",
         "classical-rule-logic-voice-layer-2": "voice-layer-2",
         "classical-rule-logic-voice-layer-3": "voice-layer-3",

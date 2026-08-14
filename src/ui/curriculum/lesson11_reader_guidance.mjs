@@ -35,6 +35,21 @@ export const LESSON11_READER_GUIDANCE_GROUPS = freeze([
     "Read defective ā as present or absent",
     "The defective verb ā has only a preterit-shaped paradigm. Its positive forms mean to be present and its negative forms mean to be absent. The negative uses ah- or ay- according to participant, with ayāc preferred for third-person singular and ahāc also attested; Canvas writes ayoc āc as separate words and records traditional ayocac.",
   ),
+  idea(
+    "lesson11-itzi-compound-paradigm",
+    "Keep motion itzi separate from alert itz",
+    "Motion itzi is defective and does not occur as a simple-stemmed VNC. It appears in hui-tz and in carrying compounds such as itqui-tz and huīca-tz. Their present meaning uses a preterit-shaped form, their ordinary past uses a reduced distant-past a, and a second-person present form may serve as a command. The homophonous alert or observant itz is a different stem with a different grammatical use.",
+  ),
+  idea(
+    "lesson11-amia-constructions",
+    "Read am-i-h only inside its authorized constructions",
+    "Defective am-i-h has no imperfective use and appears with quēn. Quēn may stand outside the VNC, combine with mach for an evaluative exclamation, or be incorporated as quē-n-am-i-h. Traditional spelling may write quēnami or quēmmach solid, but the grammatical parts remain distinct. The negative ahmō zan tiquēnamih has both a literal restricted evaluation and the idiomatic praise ‘you are marvelous.’",
+  ),
+  idea(
+    "lesson11-zero-ia-mani-nemi-relations",
+    "Distinguish zero-root existence, mani, and nemi",
+    "The defective existence stem Ø-i-h preserves a silent root and works only with the required pronominal NNC structure. Its amihqueh ‘you all exist’ is structurally different from the homophonous amihqueh ‘they are.’ Mani keeps mani, not man, in the preterit; it ordinarily describes wide or flat things and masses or crowds, not individual animate beings. Nemi is regular, though its distant-past form may carry an ordinary past meaning.",
+  ),
 ]);
 
 export function isLesson11ReaderGuidanceExact(candidate = []) {

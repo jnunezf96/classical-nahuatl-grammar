@@ -604,6 +604,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         outsidePrefixes: Object.freeze(outsidePrefixes),
         construction: getToken("construction"),
         lexicalReading: getToken("lexicalReading"),
+        predicateReferentKind: getToken("predicateReferentKind") || getToken("referentKind"),
         irregularStemChoice: getToken("irregularStemChoice") || getToken("irregularAlternativeStem")
       });
     }
@@ -1302,6 +1303,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         outsidePrefixes: [...(sentenceOptions.outsidePrefixes || [])],
         construction: sentenceOptions.construction,
         lexicalReading: sentenceOptions.lexicalReading,
+        predicateReferentKind: sentenceOptions.predicateReferentKind,
+        referentKind: sentenceOptions.predicateReferentKind,
         irregularStemChoice: sentenceOptions.irregularStemChoice,
         pronominalNncCooperationFrame:
           buildClassicalNahuatlVncApplicationPronominalCooperationFrame(
@@ -3028,6 +3031,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           prefixWords.push("mā");
         } else if (particle === "tlā" || particle === "tla") {
           prefixWords.push("tlā");
+        } else if (particle === "quēn" || particle === "mach") {
+          prefixWords.push(particle);
         } else if (particle === "ihyo" || particle === "ye") {
           prefixWords.push(particle);
         } else if (["cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "tēl", "quin"].includes(particle)) {

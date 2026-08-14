@@ -80,44 +80,44 @@ All 352 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - Status: ACCEPTED
 - Exactly observed: 13/13
 
-## Batch 3, Group 7: The irregular ca paradigm
+## Batch 3, Group 7: Itzi, hui-tz, and carrying compounds
 
 - Sections: §11.4.5, §11.4.5.a, §11.4.5.b
 - Atoms: 24
-- Proposed direction: 7 both; 17 reading only
-- Writing job: Select the correct ca-family stem member for each semantic and morphological coordinate.
-- Reading job: Guide the reader through ca-family forms without treating them as unrelated words.
-- User/application split: The user chooses meaning and participant; the application selects the member.
-- Control policy: No new control.
-- Proposal: Generate ca from one irregular paradigm relation across its authorized meanings and forms.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/24
+- Proposed direction: 8 both; 16 reading only
+- Writing job: Enforce the compound-only motion stem, delete post-stem k where required, and apply the authorized present, past, command, and lexical-reading conditions.
+- Reading job: Guide the reader through the motion compounds and the distinct alert or observant homophone.
+- User/application split: The user chooses the intended reading only for ambiguous itz; the application builds or blocks the form.
+- Control policy: Reuse Reading only when itz is ambiguous; no control for automatic stem operations.
+- Proposal: Keep motion itzi defective, generate hui-tz and its carrying compounds, and distinguish homophonous alert itz.
+- Status: ACCEPTED
+- Exactly observed: 24/24
 
-## Batch 3, Group 8: The hui-tz paradigm
+## Batch 3, Group 8: Defective am-i-h constructions
 
 - Sections: §11.4.6
 - Atoms: 22
-- Proposed direction: 15 both; 7 reading only
-- Writing job: Apply the required tense relation and conditioned stem operation.
-- Reading job: Guide the reader through the resulting hui-tz forms.
-- User/application split: The user chooses time meaning; the application builds the form.
-- Control policy: No new control.
-- Proposal: Generate hui-tz with its authorized present and future behavior.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/22
+- Proposed direction: 7 both; 15 reading only
+- Writing job: Require an authorized quēn construction, build the preterit-as-present VNC, and keep sentence particles outside the VNC unless quēn is incorporated.
+- Reading job: Guide the reader through interrogative, evaluative, negative, and traditional solid spellings.
+- User/application split: The user chooses the genuine construction; the application enforces defectiveness and placement.
+- Control policy: Reuse the existing Construction picker; no separate defectiveness control.
+- Proposal: Generate defective am-i-h only with its required quēn constructions, including incorporated quēn.
+- Status: ACCEPTED
+- Exactly observed: 22/22
 
-## Batch 3, Group 9: Mani, nemi, and related tense relations
+## Batch 3, Group 9: Zero-root existence, mani, and nemi
 
 - Sections: §11.4.7, §11.4.8, §11.4.9
 - Atoms: 25
-- Proposed direction: 17 both; 8 reading only
-- Writing job: Apply the exact mani, nemi, and related form-meaning relations only to their authorized lexical families.
-- Reading job: Guide the reader through their present and past interpretations.
-- User/application split: The user chooses stem and meaning; the application applies the lexical relation.
-- Control policy: No new control.
-- Proposal: Generate each lexical tense relation without leaking it to nearby regular stems.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/25
+- Proposed direction: 11 both; 14 reading only
+- Writing job: Build only the authorized zero-root cooperative form, keep mani's preterit on mani, select man or nen where required, and mark mani's referent usage.
+- Reading job: Guide the reader through homophonous amihqueh structures and the meanings and uses of mani and nemi.
+- User/application split: The user chooses the construction and, for mani, may state the referent kind; the application performs the structural and tense work.
+- Control policy: Reuse Construction and add one contextual Referent picker shown only for mani.
+- Proposal: Preserve the zero root of Ø-i-h, require pronominal NNC cooperation, and apply mani and nemi's exact lexical tense and referent relations.
+- Status: ACCEPTED
+- Exactly observed: 25/25
 
 ## Batch 4, Group 10: The irregular verb go
 
