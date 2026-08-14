@@ -379,6 +379,19 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <option value="">Type a verbstem or choose a canonical stem</option>
                         </select>
                       </label>
+                      <label class="classical-nnc-source-guide__field" data-classical-source-identity-control="class">
+                        <span class="classical-nnc-source-guide__label">Verbstem class</span>
+                        <select
+                          id="classical-rule-logic-class"
+                          class="classical-nnc-source-guide__select"
+                          data-classical-rule-logic-control="class"
+                        >
+                          <option value="A">A</option>
+                          <option value="B" selected>B</option>
+                          <option value="C">C</option>
+                          <option value="D">D</option>
+                        </select>
+                      </label>
                       <p id="classical-vnc-source-initial-i" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
                       <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field classical-nnc-source-guide__checkbox" hidden>
                         <input
@@ -530,18 +543,6 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <option value="projective-nonhuman">va tla nonspecific nonhuman projective</option>
                           <option value="specific-projective">va1-va2 specific projective</option>
                           <option value="mainline-reflexive">va1-va2 mainline reflexive/reciprocal</option>
-                        </select>
-                      </label>
-                      <label class="classical-rule-control" data-classical-source-identity-control="class">
-                        <span class="classical-rule-control__label">Stem class</span>
-                        <select
-                          id="classical-rule-logic-class"
-                          data-classical-rule-logic-control="class"
-                        >
-                          <option value="A">A</option>
-                          <option value="B" selected>B</option>
-                          <option value="C">C</option>
-                          <option value="D">D</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-source-identity-control="voice" hidden aria-hidden="true">

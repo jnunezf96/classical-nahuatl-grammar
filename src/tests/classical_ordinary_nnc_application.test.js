@@ -162,7 +162,7 @@ function run(ctx = {}) {
             incompatibleClassReason:
                 "typed-class-alternative-contradicts-canvas-form-constraint",
             canonicalOverrideReason:
-                "ordinary-nnc-source-canonical-class-override-not-allowed",
+                "ordinary-nnc-source-class-contradicts-canonical-source",
         }
     );
 

@@ -927,12 +927,15 @@ export function createClassicalNahuatlNncApplicationModule(
     const openSourceClassAnalysis = getOpenNncSourceClassAnalysis(
       requestedSourceClass,
     );
+    const canonicalSourceClass = getCanonicalNncSourceClass(
+      lexicalEntry,
+    );
     const requestedOpenNounClass = normalizeNounClass(
       openSourceClassAnalysis?.nounClass || "",
     );
     const openStemSource = Boolean(!lexicalEntry && requestedOpenNounClass);
     const sourceClass = lexicalEntry
-      ? getCanonicalNncSourceClass(lexicalEntry)
+      ? canonicalSourceClass
       : requestedSourceClass;
     const lexicalEntryId = lexicalEntry
       ? `ordinary-nounstem:${stem}`
@@ -1049,8 +1052,12 @@ export function createClassicalNahuatlNncApplicationModule(
         `ordinary-nnc-source-lexical-facts-are-engine-owned:${forbiddenSourceKey}`;
     } else if (requestedSourceClass && !openSourceClassAnalysis) {
       blockReason = "open-nounstem-source-class-analysis-not-recognized";
-    } else if (lexicalEntry && (requestedOpenNounClass || requestedSourceClass)) {
-      blockReason = "ordinary-nnc-source-canonical-class-override-not-allowed";
+    } else if (
+      lexicalEntry
+      && requestedSourceClass
+      && requestedSourceClass !== canonicalSourceClass
+    ) {
+      blockReason = "ordinary-nnc-source-class-contradicts-canonical-source";
     } else if ((embedStem && !matrixStem) || (!embedStem && matrixStem)) {
       blockReason = "ordinary-nnc-source-embed-matrix-pair-required";
     } else if (!lexicalEntry && !requestedOpenNounClass) {

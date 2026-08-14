@@ -163,7 +163,7 @@ function run(ctx = {}) {
         ],
     }, {
         unresolved: [true, true],
-        known: [false, false],
+        known: [true, true],
     });
 
     const sourcePanel = ctx.ClassicalSourcePanel();
@@ -172,9 +172,35 @@ function run(ctx = {}) {
         source: sourcePanel.includes('id="classical-rule-logic-nnc-class"')
             && sourcePanel.includes(">Nounstem class</span>"),
         grammar: authorityPanel.includes('id="classical-rule-logic-nnc-class"'),
+        matchingVerbstemPresentation:
+            sourcePanel.includes(">Verbstem class</span>")
+            && sourcePanel.includes(
+                'id="classical-rule-logic-class"\n                          class="classical-nnc-source-guide__select"'
+            ),
     }, {
         source: true,
         grammar: false,
+        matchingVerbstemPresentation: true,
+    });
+
+    const canonicalClass = ctx.issueCanonicalNncSourceFrame({
+        stem: "cal", sourceClass: "tli-1",
+    });
+    const contradictedCanonicalClass = ctx.issueCanonicalNncSourceFrame({
+        stem: "cal", sourceClass: "zero",
+    });
+    s.eq("the Source choice is open, while Canvas still guards a known nounstem", {
+        canonical: [canonicalClass.authorizationStatus, canonicalClass.sourceClass],
+        contradiction: [
+            contradictedCanonicalClass.authorizationStatus,
+            contradictedCanonicalClass.blockReason,
+        ],
+    }, {
+        canonical: ["authorized", "tli-1"],
+        contradiction: [
+            "blocked",
+            "ordinary-nnc-source-class-contradicts-canonical-source",
+        ],
     });
 
     const ordinary = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });

@@ -10686,8 +10686,8 @@ function run(ctx = {}) {
                         fullParadigm["classical-rule-logic-nnc-predicate-form"].available,
                     paradigmStemRelation:
                         fullParadigm["classical-rule-logic-nnc-stem-relation"].available,
-                    canonicalClassHidden:
-                        ordinary["classical-rule-logic-nnc-class"].renderInAuthority === false,
+                    canonicalClassAvailable:
+                        ordinary["classical-rule-logic-nnc-class"].available === true,
                     openClassAvailable:
                         open["classical-rule-logic-nnc-class"].available,
                 };
@@ -10706,7 +10706,7 @@ function run(ctx = {}) {
                 paradigmAnimacy: true,
                 paradigmPredicateFormation: true,
                 paradigmStemRelation: false,
-                canonicalClassHidden: true,
+                canonicalClassAvailable: true,
                 openClassAvailable: true,
             }
             : null
@@ -10779,9 +10779,9 @@ function run(ctx = {}) {
                         source.subclass,
                     sourceUseShape:
                         source.useShape,
-                    canonicalClassHidden:
+                    canonicalClassAvailable:
                         ordinary["classical-rule-logic-nnc-class"]
-                            .renderInAuthority === false,
+                            .available === true,
                     openClassControlPresent:
                         classicalShell.includes(
                             'id="classical-rule-logic-nnc-class"'
@@ -10800,7 +10800,7 @@ function run(ctx = {}) {
                 sourceClass: "tli",
                 sourceSubclass: "tli-1",
                 sourceUseShape: "base",
-                canonicalClassHidden: true,
+                canonicalClassAvailable: true,
                 openClassControlPresent: true,
                 canonicalPredicateOperationPresent: true,
             }

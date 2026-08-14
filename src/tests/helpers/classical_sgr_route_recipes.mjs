@@ -517,7 +517,7 @@ const FAMILIES = [
           choice("classical-cardinal-modifier", "none"),
           choice("classical-cardinal-count-kind", "ordinary"),
           choice("classical-cardinal-classifier", "measure"),
-          choice("classical-rule-logic-nnc-class", "tli"),
+          choice("classical-rule-logic-nnc-class", "tli-1"),
           choice("classical-cardinal-measure-composition", "with-measured-nnc"),
         ],
         actions: ["apply-source"],

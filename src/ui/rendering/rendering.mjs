@@ -2382,6 +2382,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             === "classical-nahuatl-ordinary-nnc-source-frame"
         )
         && state.nncOpenStemSource === true;
+      const classSelectableNnc = ordinaryNnc || openStemNnc;
       const possessiveNnc = ordinaryNnc && contract.nncState === "possessive";
       const fullParadigm = state.nncOutputScope === "paradigm";
       const availability = (available, reason, options = {}) => ({
@@ -2404,15 +2405,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
           renderInAuthority: ordinaryNnc && contract.predicateOptionValues.length > 1
         }),
         "classical-rule-logic-nnc-class": availability(
-          openStemNnc,
-          openStemNnc
-            ? "open-stem-source-requires-explicit-typed-class-analysis"
-            : "canonical-source-record-owns-noun-class",
+          classSelectableNnc,
+          classSelectableNnc
+            ? openStemNnc
+              ? "open-stem-source-requires-explicit-typed-class-analysis"
+              : "ordinary-nounstem-source-allows-explicit-class-analysis"
+            : "pronominal-source-has-no-ordinary-nounstem-class",
           {
-            decisionOwner: openStemNnc
+            decisionOwner: classSelectableNnc
               ? "user"
               : "canvas-context",
-            renderInAuthority: openStemNnc
+            renderInAuthority: classSelectableNnc
           }
         ),
         "classical-rule-logic-nnc-stem-relation": availability(!fullParadigm && ordinaryNnc && contract.stemRelationValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-stem-relation" : !ordinaryNnc ? "canvas-stem-relation-is-ordinary-nounstem-authority" : contract.stemRelationValues.length > 1 ? "canvas-reference-allows-stem-relation-selection" : "canvas-singular-personal-reference-requires-plain-stem"),
@@ -7854,7 +7857,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined") {
         return;
       }
-      targetObject.document.querySelectorAll(".classical-rule-control.is-conflicting, .classical-source-parts__field.is-conflicting").forEach(wrapper => {
+      targetObject.document.querySelectorAll(".classical-rule-control.is-conflicting, .classical-source-parts__field.is-conflicting, .classical-nnc-source-guide__field.is-conflicting").forEach(wrapper => {
         wrapper.classList.remove("is-conflicting");
         wrapper.removeAttribute("data-classical-block-reason");
         const control = wrapper.querySelector("select, input, button");
@@ -7895,7 +7898,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!controlIds.length) return "Review Source and Grammar";
       const labels = controlIds.map(controlId => CLASSICAL_RULE_LOGIC_REPAIR_CONTROL_LABELS[controlId] || "").filter(Boolean);
       if (!labels.length) return "Review Source and Grammar";
-      const sourceControlIds = new Set(["classical-source-whole", "classical-vnc-source-initial-i-choice", "classical-rule-logic-class", "classical-rule-logic-valence"]);
+      const sourceControlIds = new Set(["classical-source-whole", "classical-vnc-source-initial-i-choice", "classical-rule-logic-class", "classical-rule-logic-nnc-class", "classical-rule-logic-valence"]);
       const sourceLabels = controlIds.map((controlId, index) => sourceControlIds.has(controlId) ? labels[index] : "").filter(Boolean);
       const authorityLabels = controlIds.map((controlId, index) => !sourceControlIds.has(controlId) ? labels[index] : "").filter(Boolean);
       if (controlIds[0] === "classical-source-whole") {
@@ -9672,6 +9675,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-subject", nncActive ? nncOptionContract.subjectValues : ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"], nncActive ? nncOptionContract.selectedSubject : "1sg");
       if (nncActive) {
+        const nncSourceClassControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-class"
+        );
+        if (
+          nncSourceClassControl
+          && !surfaceFrame.state?.requestedNncSourceClass
+          && surfaceFrame.state?.nncTypedSourceFrame?.sourceClass
+        ) {
+          nncSourceClassControl.value =
+            surfaceFrame.state.nncTypedSourceFrame.sourceClass;
+        }
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-person", nncOptionContract.subjectPersonValues, nncOptionContract.selectedSubjectPerson);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-animacy", nncOptionContract.animacyValues, nncOptionContract.selectedAnimacy);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-number", nncOptionContract.subjectNumberValues, nncOptionContract.selectedSubjectNumber);
@@ -9703,15 +9717,57 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       }
       syncClassicalVncAuthorityOptionPresentation(basalUnit, derivationType);
+      const sourceDraft = nncActive
+        ? targetObject.getClassicalSourcePartControlState?.() || null
+        : null;
+      const sourceDraftStem = sourceDraft?.mode === "embed-matrix"
+        ? [sourceDraft.sourceEmbedStem, sourceDraft.sourceMatrixStem]
+            .filter(Boolean)
+            .join("-")
+        : sourceDraft?.sourceWholeStem || "";
+      const sourceDraftFrame = sourceDraftStem
+        && typeof targetObject.issueCanonicalNncSourceFrame === "function"
+        ? targetObject.issueCanonicalNncSourceFrame({
+            stem: sourceDraftStem,
+            ...(sourceDraft?.mode === "embed-matrix"
+              ? {
+                  embedStem: sourceDraft.sourceEmbedStem,
+                  matrixStem: sourceDraft.sourceMatrixStem
+                }
+              : {})
+          })
+        : null;
+      const sourceDraftAllowsNounstemClass = Boolean(
+        nncActive
+        && (
+          !sourceDraftStem
+          || sourceDraftFrame?.kind
+            === "classical-nahuatl-ordinary-nnc-source-frame"
+          || sourceDraftFrame?.blockReason
+            === "lexical-noun-class-selection-required"
+        )
+      );
       targetObject.document.querySelectorAll("[data-classical-nnc-authority-control], [data-classical-result-scope-control=\"nnc\"]").forEach(wrapper => {
         const wrapperControl = wrapper.querySelector?.("select, input, button") || null;
         const control = wrapperControl;
-        const availability = nncControlAvailability[control?.id] || {
+        const classifiedAvailability = nncControlAvailability[control?.id] || {
           available: false,
           reason: "canvas-nnc-control-unclassified",
           decisionOwner: "unclassified",
           renderInAuthority: false
         };
+        const availability =
+          control?.id === "classical-rule-logic-nnc-class"
+          && sourceDraftAllowsNounstemClass
+            ? {
+                available: true,
+                reason: sourceDraftStem
+                  ? "source-draft-requires-or-allows-nounstem-class"
+                  : "source-draft-awaits-nounstem-and-class",
+                decisionOwner: "user",
+                renderInAuthority: true
+              }
+            : classifiedAvailability;
         const renderInAuthority = nncActive && availability.renderInAuthority !== false;
         wrapper.hidden = !renderInAuthority;
         wrapper.setAttribute("aria-hidden", String(!renderInAuthority));
@@ -17125,7 +17181,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
               "classicalSurfaceAtomIds",
               atom.atomId
             );
-            control.dataset.classicalSgrBindingStage = "grammar";
+            control.dataset.classicalSgrBindingStage = control.closest?.(
+              "#classical-source-panel"
+            )
+              ? "source"
+              : "grammar";
             control.dataset.classicalGrammarAuthority = "false";
           });
         });

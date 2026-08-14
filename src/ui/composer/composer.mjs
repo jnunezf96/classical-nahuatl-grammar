@@ -9147,7 +9147,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const openSourceClassControl = targetObject.document.getElementById(
         "classical-rule-logic-nnc-class"
       );
-      if ((sourceStem || relationalSelection) && openSourceClassControl) {
+      if (relationalSelection && openSourceClassControl) {
         openSourceClassControl.value = "";
       }
       if (targetObject.document?.body) {
@@ -9169,6 +9169,26 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const compoundSelection = sourceMode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix;
       if (compoundSelection && (!selection.sourceEmbedStem || !selection.sourceMatrixStem)) {
         return false;
+      }
+      if (
+        openSourceClassControl
+        && typeof targetObject.issueCanonicalNncSourceFrame === "function"
+      ) {
+        const canonicalSource = targetObject.issueCanonicalNncSourceFrame({
+          stem: sourceStem,
+          ...(compoundSelection
+            ? {
+                embedStem: selection.sourceEmbedStem,
+                matrixStem: selection.sourceMatrixStem
+              }
+            : {})
+        });
+        openSourceClassControl.value =
+          canonicalSource?.authorizationStatus === "authorized"
+          && canonicalSource?.kind
+            === "classical-nahuatl-ordinary-nnc-source-frame"
+            ? canonicalSource.sourceClass || ""
+            : "";
       }
       setClassicalSourcePartsMode(compoundSelection ? CLASSICAL_SOURCE_PARTS_MODE.embedMatrix : CLASSICAL_SOURCE_PARTS_MODE.wholeStem, {
         clearValues: true,
