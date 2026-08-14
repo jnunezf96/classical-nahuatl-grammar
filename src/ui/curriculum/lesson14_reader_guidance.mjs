@@ -18,7 +18,22 @@ export const LESSON14_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson14-number-and-derived-nounstems",
     "Keep subject number apart from stem meaning",
-    "Number belongs to the personal-pronoun subject. A long-vowel reduplication inside the nounstem marks affinity or cohesion. A glottal-stop reduplication inside the nounstem presents members separately, in separate places, or as different kinds.",
+    "Number belongs to the personal-pronoun subject. A long-vowel reduplication inside the nounstem marks affinity or cohesion. A glottal-stop reduplication inside the nounstem presents members separately, in separate places, or as different kinds. A derived stem may also have a special or stronger lexical meaning; affective and exceptional pronominal stems belong to later lessons.",
+  ),
+  idea(
+    "lesson14-absolutive-singular-common",
+    "Read the base stem with a singular or common subject",
+    "An absolutive NNC with a singular or common-number subject uses the base restricted-use nounstem. A nonanimate common subject may still use a distributive or varietal derived base when its referents are separate or varied.",
+  ),
+  idea(
+    "lesson14-absolutive-plural",
+    "Read plural form as a lexical pattern",
+    "A plural animate subject may occur with a plain, affinity, or distributive or varietal nounstem. The following t, m, or zero belongs to subject number. Class gives guidance, but the noun's allowed forms, obligatory affinity, alternatives, and preferences must be known lexically.",
+  ),
+  idea(
+    "lesson14-possessive-plural",
+    "Read relationship inside a possessive plural stem",
+    "A possessive NNC with a plural subject normally uses the plain general-use nounstem and hu-ān. Use an affinity stem for special cohesion or a distributive or varietal stem for separate lines or kinds. Exceptional lexical formations remain exceptions.",
   ),
 ]);
 

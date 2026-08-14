@@ -13,6 +13,18 @@
     "lesson14-number-and-derived-nounstems": {
       "status": "ACCEPTED",
       "acceptedJob": "Keep number on the subject and derive plain, affinity, or distributive-varietal meaning inside the nounstem."
+    },
+    "lesson14-absolutive-singular-common": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build an absolutive singular or common NNC with the base restricted-use nounstem."
+    },
+    "lesson14-absolutive-plural": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build every lexically authorized absolutive plural form and preserve genuine alternatives and preferences."
+    },
+    "lesson14-possessive-plural": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build a possessive plural NNC from the required plain, affinity, or distributive-varietal general-use stem."
     }
   }
 }

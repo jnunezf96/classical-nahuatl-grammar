@@ -51,8 +51,8 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses State, subject, and intended stem meaning; the application selects the base restricted-use shape.
 - Control policy: No stem-shape control; reuse State, Subject, and the derived-stem meaning choice.
 - Proposal: Use only the base shape of the restricted-use nounstem for an absolutive-state NNC with a singular or common-number subject.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/14
+- Status: ACCEPTED
+- Exactly observed: 14/14
 
 ## Batch 2, Group 5: Absolutive plural stem and connector selection
 
@@ -64,8 +64,8 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the subject and intended relationship; the application selects known lexical forms, asking only when equally authorized alternatives remain a genuine choice.
 - Control policy: Do not expose connector morphs; expose only a genuine authorized form choice when meaning and context do not settle it.
 - Proposal: Build plural-subject absolutive NNCs from the noun's authorized plain, affinity, or distributive/varietal stem and its lexical connector pattern.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/102
+- Status: ACCEPTED
+- Exactly observed: 102/102
 
 ## Batch 2, Group 6: Possessive plural nounstem selection
 
@@ -77,8 +77,8 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the intended relationship; the application supplies the general-use shape and possessive plural connector.
 - Control policy: Reuse the relationship choice; do not add a connector or use-stem control.
 - Proposal: Normally use the plain general-use stem for possessive plural NNCs, but use affinity or distributive/varietal stems when the intended relationship requires them.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/22
+- Status: ACCEPTED
+- Exactly observed: 22/22
 
 ## Batch 3, Group 7: Possessive singular or common class subclasses
 
