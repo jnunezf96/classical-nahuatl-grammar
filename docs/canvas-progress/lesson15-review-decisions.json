@@ -25,6 +25,14 @@
     "lesson15-reclassification-and-possessor-scope": {
       "status": "ACCEPTED",
       "acceptedJob": "Reclassify authorized tl 2-A stems as tl 1-A and preserve possessor scope."
+    },
+    "lesson15-natural-possession": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Enforce lexical State availability and allow only an authorized metaphorical override."
+    },
+    "lesson15-nnc-sentences": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build sentences from the typed NNC without inventing have or encoded definiteness."
     }
   }
 }

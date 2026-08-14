@@ -90,8 +90,8 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses intended meaning; lexical policy allows or blocks State.
 - Control policy: No natural-possession toggle; use lexical authority and expose metaphorical use only when meaningful.
 - Proposal: Enforce lexical State availability for property, relationship, body-part, and never-possessive stems.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/52
+- Status: ACCEPTED
+- Exactly observed: 52/52
 
 ## Batch 3, Group 8: NNCs as complete sentences
 
@@ -103,6 +103,6 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses genuine sentence meaning; the application supplies structure and punctuation.
 - Control policy: Reuse existing sentence controls.
 - Proposal: Send the finished typed NNC through sentence grammar for statement, question, exclamation, polarity, mood, and particles.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/36
+- Status: ACCEPTED
+- Exactly observed: 36/36
 

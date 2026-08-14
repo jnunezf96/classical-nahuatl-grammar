@@ -5043,6 +5043,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§15.1.7"]),
         atomIds: Object.freeze(["ACI-P138-L007-E8C8EF26C9", "ACI-P138-L012-52A7F19FD4-02"])
       }),
+      "nnc-natural-possession": Object.freeze({
+        lessonSections: Object.freeze(["§15.2", "§15.2.1", "§15.2.2", "§15.2.3"]),
+        atomIds: Object.freeze(["ACI-P138-L021-2223F3D420", "ACI-P138-L022-A82779F9EB", "ACI-P138-L026-4EDD47D37A"])
+      }),
       "nnc-subject-number": Object.freeze({
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
@@ -5375,8 +5379,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           });
         }
         const lexicalStateAvailability = String(grammarContext?.nncSourceAuthorityFrame?.stateAvailability || "");
+        const naturalPossessionPolicy = String(grammarContext?.nncSourceAuthorityFrame?.naturalPossessionPolicy || "");
         const restrictedState = ["absolutive-only", "possessive-only"].includes(lexicalStateAvailability);
-        if (restrictedState) {
+        if (restrictedState && naturalPossessionPolicy === "naturally-possessed") {
+          addAnnotation(stemStart, stemStart + 1, "nnc-natural-possession", "natural possession", "boundary", "nnc-natural-possession");
+        } else if (restrictedState) {
           addAnnotation(stemStart, stemStart + 1, "nnc-state-exception", "exception", "boundary", "nnc-state-exception");
         } else if (stateArity === "vacant") {
           addAnnotation(stemStart, stemStart + 1, "absolutive-state", "absolutive State", "boundary", "nnc-absolutive-state");

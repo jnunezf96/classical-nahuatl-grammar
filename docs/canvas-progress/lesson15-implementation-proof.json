@@ -31,6 +31,16 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson15_groups_4_6_jobs.test.js",
       "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-natural-possession": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-nnc-sentences": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
     }
   }
 }

@@ -35,6 +35,16 @@ export const LESSON15_READER_GUIDANCE_GROUPS = freeze([
     "Read reclassification and possessor rank separately",
     "A licensed tl Subclass 2-A stem may lose its ephemeral i and become Subclass 1-A, after which its State selects the new connector. The possessor inside the NNC remains the nuclear possessor; any supplementary possessor belongs outside the NNC nucleus.",
   ),
+  idea(
+    "lesson15-natural-possession",
+    "Read lexical State availability",
+    "Property, kinship, human-relation, and body-part stems may normally require possessive State because their referent is naturally associated with another entity. Other stems normally reject possessive State. A real metaphorical use may override the latter restriction, but a dictionary's class-identifying absolutive suffix does not create an ordinary absolutive use.",
+  ),
+  idea(
+    "lesson15-nnc-sentences",
+    "Read the NNC as a complete sentence",
+    "A finished NNC may make a statement, question, emphatic assertion, or wish and may combine with polarity and particles. A possessive NNC can be translated with English have, but Nahuatl has not added a have verb. The nounstem predicate also leaves definite and indefinite readings open.",
+  ),
 ]);
 
 export function isLesson15ReaderGuidanceExact(candidate = []) {
