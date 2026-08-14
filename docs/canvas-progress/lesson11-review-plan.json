@@ -80,7 +80,15 @@
       "writingJob": "Map semantic present and general past to the authorized morphological tense and block forbidden forms.",
       "readingJob": "Help the reader recognize preterit-as-present and distant-past-as-past patterns.",
       "decisionSplit": "The user chooses intended time meaning; the application chooses the required form.",
-      "controlPolicy": "Reuse Tense as meaning; do not ask the user to choose the hidden morphological tense."
+      "controlPolicy": "Reuse Tense as meaning; do not ask the user to choose the hidden morphological tense.",
+      "userChoiceJob": "CHOOSE_INTENDED_TIME_MEANING",
+      "applicationJob": "SELECT_THE_REQUIRED_MORPHOLOGICAL_TENSE",
+      "derivedCueJob": "SHOW_FORM_AND_MEANING_RELATION",
+      "writingAtomIds": [
+        "ACI-P106-L019-409F949CAE",
+        "ACI-P106-L022-AA129D8F4C",
+        "ACI-P106-L026-9BAAC5347D"
+      ]
     },
     {
       "groupId": "lesson11-positional-verbs",
@@ -90,7 +98,20 @@
       "writingJob": "Build ih-ca, on-o, and pil-ca with their preterit-as-present and distant-past behavior and the conditioned on fusion.",
       "readingJob": "Guide the positional reading and its form-meaning contrast.",
       "decisionSplit": "The user supplies the stem and meaning; the application supplies form and fusion.",
-      "controlPolicy": "No new control."
+      "controlPolicy": "No new control.",
+      "userChoiceJob": "CHOOSE_POSITIONAL_STEM_AND_TIME_MEANING",
+      "applicationJob": "BUILD_POSITIONAL_PARADIGM_AND_FUSED_LOCATIVE_STRUCTURE",
+      "derivedCueJob": "SHOW_POSITIONAL_VERBSTEM_AND_FORM_MEANING_RELATION",
+      "writingAtomIds": [
+        "ACI-P106-L030-45D2971474",
+        "ACI-P106-L037-987EBB0647",
+        "ACI-P106-L038-D8D005B8FD",
+        "ACI-P106-L038-D8D005B8FD-02",
+        "ACI-P106-L038-D8D005B8FD-03",
+        "ACI-P107-L009-97BD54C119",
+        "ACI-P107-L010-326F8916DB",
+        "ACI-P107-L016-234DB02AB4"
+      ]
     },
     {
       "groupId": "lesson11-defective-a",
@@ -100,7 +121,17 @@
       "writingJob": "Allow only the authorized preterit-shaped paradigm and apply the conditioned negative allomorph.",
       "readingJob": "Guide present-versus-absent readings of the same defective family.",
       "decisionSplit": "The user chooses polarity and participant; the application enforces defectiveness.",
-      "controlPolicy": "Reuse Polarity and Subject; no defectiveness control."
+      "controlPolicy": "Reuse Polarity and Subject; no defectiveness control.",
+      "userChoiceJob": "CHOOSE_POLARITY_AND_SUBJECT",
+      "applicationJob": "ENFORCE_DEFECTIVE_A_AND_SELECT_AY_OR_AH",
+      "derivedCueJob": "SHOW_PRESENT_OR_ABSENT_INTERPRETATION",
+      "writingAtomIds": [
+        "ACI-P107-L017-153B6118EF",
+        "ACI-P107-L017-153B6118EF-02",
+        "ACI-P107-L019-CE6B110CFF",
+        "ACI-P107-L019-75464D5C92",
+        "ACI-P107-L025-B6F7DF6F59"
+      ]
     },
     {
       "groupId": "lesson11-ca-paradigm",

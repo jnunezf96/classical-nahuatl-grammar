@@ -4928,6 +4928,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§11.3.1", "§11.3.2"]),
         atomIds: Object.freeze(["ACI-P105-L013-65F44103B3", "ACI-P105-L019-C87BF867E5", "ACI-P105-L021-09CD8F9F58", "ACI-P106-L002-20D45CF318"])
       }),
+      "preterit-as-present": Object.freeze({
+        lessonSections: Object.freeze(["§11.4"]),
+        atomIds: Object.freeze(["ACI-P106-L019-409F949CAE", "ACI-P106-L022-AA129D8F4C", "ACI-P106-L026-9BAAC5347D"])
+      }),
+      "distant-past-as-past": Object.freeze({
+        lessonSections: Object.freeze(["§11.4"]),
+        atomIds: Object.freeze(["ACI-P106-L019-409F949CAE", "ACI-P106-L027-8F2D9AECE9"])
+      }),
+      "positional-verbs": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.1", "§11.4.2", "§11.4.3"]),
+        atomIds: Object.freeze(["ACI-P106-L030-45D2971474", "ACI-P106-L038-D8D005B8FD", "ACI-P107-L010-326F8916DB"])
+      }),
+      "defective-a": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.4"]),
+        atomIds: Object.freeze(["ACI-P107-L017-153B6118EF", "ACI-P107-L019-CE6B110CFF", "ACI-P107-L025-B6F7DF6F59"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5238,19 +5254,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const normalizedPrefix = String(prefix || "");
           if (normalizedPrefix === "ō#") {
             addSentenceCarrier(normalizedPrefix, "earlier-event-modifier", "earlier event", "earlier-event-modifier");
-          } else if (["ah#", "ca#"].includes(normalizedPrefix)) {
+          } else if (["ah#", "ay#", "ca#"].includes(normalizedPrefix)) {
             const selectedMood = sentenceContext.mood || sentenceContext.state?.mood;
             const isAdmonitive = selectedMood === "admonitive";
             const isOptative = selectedMood === "optative";
+            const isDefectiveAAbsence = (grammarContext?.lesson11ParadigmPlan?.lexemeId === "ā"
+              || grammarContext?.proofFrame?.conclusion?.lesson11ParadigmPlan?.lexemeId === "ā")
+              && (grammarContext?.lesson11ParadigmPlan?.contextualInterpretation === "be-absent"
+                || grammarContext?.proofFrame?.conclusion?.lesson11ParadigmPlan?.contextualInterpretation === "be-absent");
             addSentenceCarrier(
               normalizedPrefix,
-              isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion",
-              isAdmonitive
+              isDefectiveAAbsence ? "defective-a-absence" : isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion",
+              isDefectiveAAbsence
+                ? "be absent"
+                : isAdmonitive
                 ? "cancels the admonition"
                 : isOptative
                   ? sentenceRole === "wish" ? "negative wish" : "negative command"
                   : "negative assertion",
-              isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion"
+              isDefectiveAAbsence ? "defective-a" : isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion"
             );
           }
         });
@@ -5390,6 +5412,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? { role: "regular-sound-change", label: "regular sound change", authorityKey: "regular-sound-change-not-irregular" }
             : ["compound-class-shift", "conditioned-ti-perfective"].includes(lesson11Plan.irregularityKind)
               ? { role: "irregular-perfective-stem", label: "irregular perfective stem", authorityKey: "irregular-perfective-stem" }
+              : lesson11Plan.irregularityKind === "form-meaning-dislocation"
+                ? { role: "positional-verbstem", label: "positional verbstem", authorityKey: "positional-verbs" }
+                : lesson11Plan.irregularityKind === "defective-preterit-as-present"
+                  ? { role: "defective-a", label: lesson11Plan.contextualInterpretation === "be-absent" ? "be absent" : "be present", authorityKey: "defective-a" }
               : { role: "irregular-vnc", label: "irregular verbstem", authorityKey: "irregular-vnc" }
           : null;
         addAnnotation(
@@ -5527,9 +5553,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sentenceMood = String(sentenceContext?.mood || sentenceContext?.state?.mood || grammarContext?.mood || "");
         const sentenceRole = String(sentenceContext?.canvasSentenceRole || sentenceContext?.sentenceCanvasRole || "");
         const futureCommand = (sentenceContext?.futureIndicativeAsOptative === true || sentenceContext?.sentenceFutureIndicativeAsOptative === true) && sentenceRole.includes("command");
-        const tenseJob = futureCommand
-          ? Object.freeze({ label: "future command", authorityKey: "future-command" })
-          : sentenceMood === "admonitive"
+        const tenseJob = lesson11Plan?.paradigmTense === "preterit-as-present"
+          ? Object.freeze({ label: "preterit form with present meaning", authorityKey: "preterit-as-present" })
+          : lesson11Plan?.paradigmTense === "distant-past-as-past"
+            ? Object.freeze({ label: "distant-past form with past meaning", authorityKey: "distant-past-as-past" })
+            : futureCommand
+              ? Object.freeze({ label: "future command", authorityKey: "future-command" })
+              : sentenceMood === "admonitive"
             ? Object.freeze({ label: "admonitive mood and tense", authorityKey: "admonitive-morphology" })
             : sentenceMood === "optative"
               ? Object.freeze({ label: sentenceRole === "wish" ? "wish mood and tense" : "optative mood and tense", authorityKey: "optative-morphology" })

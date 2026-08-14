@@ -2922,7 +2922,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ? prefixes.map(normalizeClassicalNahuatlVncApplicationToken).filter(Boolean)
         : [];
       return [
-        normalized.includes("ca#") ? "ca#" : normalized.includes("ah#") ? "ah#" : "",
+        normalized.includes("ca#") ? "ca#" : normalized.includes("ay#") ? "ay#" : normalized.includes("ah#") ? "ah#" : "",
         normalized.includes("ō#") ? "ō#" : ""
       ].filter(Boolean);
     }
@@ -2941,7 +2941,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       if (
         prefixalStack.includes("ō#")
         && prefixalStack.some(
-          particle => particle === "ah#" || particle === "ca#"
+          particle => particle === "ah#" || particle === "ay#" || particle === "ca#"
         )
       ) {
         return "prefixal-negative-plus-antecessive-stack-attached-at-left-edge";
@@ -2951,10 +2951,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       }
       if (
         prefixalStack.some(
-          particle => particle === "ah#" || particle === "ca#"
+          particle => particle === "ah#" || particle === "ay#" || particle === "ca#"
         )
         || particles.some(
-          particle => particle === "ah#" || particle === "ca#"
+          particle => particle === "ah#" || particle === "ay#" || particle === "ca#"
         )
       ) {
         return "prefixal-negative-attached-at-left-edge";
@@ -2978,7 +2978,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ? explicitPrefixalStack
         : orderClassicalNahuatlVncSentencePrefixalStack(particles);
       const sentenceLeftParticles = particles.filter(
-        particle => !["ah#", "ca#", "ō#"].includes(particle)
+        particle => !["ah#", "ay#", "ca#", "ō#"].includes(particle)
       );
       const formulaWithPrefixalStack = prefixalStack.length
         ? `${prefixalStack.join("")}${baseFormula.startsWith("#") ? baseFormula.slice(1) : baseFormula}`
@@ -3011,7 +3011,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const prefixalSurface = explicitPrefixalStack.map(particle => ({
         "ō#": "ō",
         "ca#": "ca",
-        "ah#": "ah"
+        "ah#": "ah",
+        "ay#": "ay"
       })[particle] || "").join("");
       if (!particles.length) {
         return `${capitalize(`${prefixalSurface}${baseSurfaceLower}`)}${punctuation}`;
@@ -3033,8 +3034,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           prefixWords.push(getClassicalNahuatlVncSentenceParticleDisplayText(particle));
         } else if (particle === "nēn" || particle === "nen") {
           prefixWords.push("nēn");
-        } else if (!explicitPrefixalStack.length && (particle === "ah#" || particle === "ca#")) {
-          attachedPrefixes = particle === "ca#" ? "ca" : "ah";
+        } else if (!explicitPrefixalStack.length && ["ah#", "ay#", "ca#"].includes(particle)) {
+          attachedPrefixes = particle === "ca#" ? "ca" : particle === "ay#" ? "ay" : "ah";
         }
       });
       const nuclearWithAttachedPrefixes = attachedPrefixes

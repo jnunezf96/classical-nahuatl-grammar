@@ -4347,6 +4347,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       if (normalized === "ah") {
         return "ah#";
       }
+      if (normalized === "ay") {
+        return "ay#";
+      }
       if (normalized === "ca") {
         return "ca#";
       }
@@ -5658,7 +5661,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }).filter(Boolean) : [];
       const outsidePrefixes = Array.isArray(expandedVncBoundaryFrame?.outsidePrefixes) ? expandedVncBoundaryFrame.outsidePrefixes.map(normalizeClassicalNahuatlOutsidePrefix).filter(Boolean) : [];
       const prefixes = Array.from(new Set([...outsidePrefixes, ...normalizedSentenceParticles]));
-      const negativePrefix = prefixes.includes("ca#") ? "ca#" : prefixes.includes("ah#") ? "ah#" : "";
+      const negativePrefix = prefixes.includes("ca#") ? "ca#" : prefixes.includes("ay#") ? "ay#" : prefixes.includes("ah#") ? "ah#" : "";
       return [negativePrefix, prefixes.includes("ō#") ? "ō#" : ""].filter(Boolean);
     }
     function buildClassicalNahuatlVncSentenceSurfaceFrame({
@@ -5667,6 +5670,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       expandedVncBoundaryFrame = null,
       priorVncFrame = null,
       predicateFormationRuleFrame = null,
+      lesson11ParadigmPlan = null,
       options = {}
     } = {}) {
       const normalizedMood = normalizeClassicalNahuatlVerbstemMood(mood);
@@ -5828,7 +5832,18 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const lesson9NegativeRequested = Boolean(lesson9Applies && isClassicalNahuatlNegativeSentenceRequested(options));
       const lesson9BrusqueNegativeCommand = Boolean(lesson9NegativeRequested && lesson9SentenceType === "command-sentence" && lesson9IntroductoryParticleOmissionAllowed && !lesson9IntroductoryParticlePresent);
       const negativeRequested = lesson10NegativeRequested || lesson9NegativeRequested || boundaryNegativePrefix || options.negative === true || options.negativeAssertion === true || lesson8SentenceType === "negative-assertion" || lesson8SentenceType === "emphatic-assertion" && (options.negative === true || options.negativeAssertion === true);
-      const sentenceNegativePrefix = lesson10NegativeRequested ? "ah#" : lesson9NegativeRequested ? lesson9BrusqueNegativeCommand ? "ah#" : "ca#" : boundaryNegativePrefix || (negativeRequested ? "ah#" : "");
+      const ordinarySentenceNegativePrefix = lesson10NegativeRequested ? "ah#" : lesson9NegativeRequested ? lesson9BrusqueNegativeCommand ? "ah#" : "ca#" : boundaryNegativePrefix || (negativeRequested ? "ah#" : "");
+      const defectiveANegative = lesson11ParadigmPlan?.lexemeId === "ā"
+        && lesson11ParadigmPlan.contextualInterpretation === "be-absent";
+      const defectiveAThirdSingular = defectiveANegative
+        && /^3/u.test(String(options.subject || options.subjectPerson || ""))
+        && subjectNumberClass === "singular";
+      const sentenceNegativePrefix = defectiveAThirdSingular && ordinarySentenceNegativePrefix === "ah#"
+        ? "ay#"
+        : ordinarySentenceNegativePrefix;
+      const negativePrefixAlternatives = defectiveAThirdSingular
+        ? ["ay#", "ah#"]
+        : sentenceNegativePrefix ? [sentenceNegativePrefix] : [];
       const lesson10NegativeAssertionConversionSource = lesson10NegativeRequested ? "negative-present-indicative-assertion" : "";
       const lesson10NegativeAssertionConversionTarget = lesson10NegativeRequested ? "negative-admonition-cancellation-sentence" : "";
       const lesson10NegativePrefixAttachment = lesson10NegativeRequested ? "ah#-affixed-to-admonitive-vnc" : "";
@@ -5838,13 +5853,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const lesson10PositiveVetativeTermAuthority = lesson10NegativeRequested ? "not-authority-unfortunate-traditional-term" : "";
       const lesson10CaNegativeFromLesson9Blocked = Boolean(lesson10NegativeRequested || lesson10CaNegativeRequested);
       const emphaticRequested = lesson8SentenceType === "emphatic-assertion";
-      const sentenceParticles = [...lesson11ConstructionParticles, ...(lesson9PrefaceParticle ? [lesson9PrefaceParticle] : []), ...(lesson10Applies ? ["mā"] : lesson9IntroductoryParticle ? [lesson9IntroductoryParticle] : []), ...(lesson10Nen ? [lesson10Nen] : lesson9IntroductoryModifier ? [lesson9IntroductoryModifier] : []), ...(questionMode === "cuix" ? ["cuix"] : []), ...(emphaticRequested ? ["ca"] : []), ...(sentenceNegativePrefix === "ah#" ? ["ah#"] : []), ...(sentenceNegativePrefix === "ca#" ? ["ca#"] : [])];
+      const sentenceParticles = [...lesson11ConstructionParticles, ...(lesson9PrefaceParticle ? [lesson9PrefaceParticle] : []), ...(lesson10Applies ? ["mā"] : lesson9IntroductoryParticle ? [lesson9IntroductoryParticle] : []), ...(lesson10Nen ? [lesson10Nen] : lesson9IntroductoryModifier ? [lesson9IntroductoryModifier] : []), ...(questionMode === "cuix" ? ["cuix"] : []), ...(emphaticRequested ? ["ca"] : []), ...(["ah#", "ay#", "ca#"].includes(sentenceNegativePrefix) ? [sentenceNegativePrefix] : [])];
       const sentencePrefixalStack = buildClassicalNahuatlSentencePrefixalStack({
         sentenceParticles,
         expandedVncBoundaryFrame
       });
       const hostileSlots = getClassicalNahuatlSentenceHostileFormulaSlots(options);
-      const sentenceParticleSet = new Set(["ca", "cuix", "cuix?", "ah#", "ca#", "mā", "ma", "tlā", "tla", "ihyo", "ye", "cuēl", "cuel", "ye-cuēl", "ye-cuel", "cuēl-eh", "cuel-eh", "ye-cuēl-eh", "ye-cuel-eh", "tēl", "tel", "quin", "nēn", "nen", "quēn", "quen", "mach"]);
+      const sentenceParticleSet = new Set(["ca", "cuix", "cuix?", "ah#", "ay#", "ca#", "mā", "ma", "tlā", "tla", "ihyo", "ye", "cuēl", "cuel", "ye-cuēl", "ye-cuel", "cuēl-eh", "cuel-eh", "ye-cuēl-eh", "ye-cuel-eh", "tēl", "tel", "quin", "nēn", "nen", "quēn", "quen", "mach"]);
       const hostileRejectedFormulaSlots = hostileSlots.filter(slot => sentenceParticleSet.has(slot));
       const lesson8IndicativeVncPresent = Boolean(!lesson8Applies || normalizedMood === "indicative");
       const actions = !applies ? [] : [...(lesson8SentenceType === "affirmative-assertion" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.REWRITE_INDICATIVE_VNC_AS_AFFIRMATIVE_ASSERTION] : []), ...(lesson8Applies && negativeRequested ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_NEGATIVE_OUTSIDE_VNC] : []), ...(lesson8Applies && emphaticRequested ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_EMPHATIC_CA_TO_SENTENCE_LEFT_EDGE] : []), ...(lesson8SentenceType === "yes-no-question" && questionMode === "intonation" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.MARK_YES_NO_BY_INTONATION] : []), ...(lesson8SentenceType === "yes-no-question" && questionMode === "cuix" ? [CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.ADD_CUIX_TO_SENTENCE_LEFT_EDGE] : []), ...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.MARK_LOWER_VNC_PROVISIONAL, ...(lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ACCEPT_FUTURE_INDICATIVE_AS_OPTATIVE] : [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.SUBSTITUTE_OPTATIVE_VNC_FOR_INDICATIVE]), ...(lesson9IntroductoryParticle ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_INTRODUCTORY_PARTICLE_OUTSIDE_VNC] : []), ...(lesson9PrefaceParticle ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_PREFACE_PARTICLE_OUTSIDE_VNC] : []), ...(lesson9IntroductoryModifier ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ADD_INTRODUCTORY_MODIFIER_OUTSIDE_VNC] : []), ...(lesson9IntroductoryParticleRequired && lesson9SentenceType === "wish-sentence" ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_WISH] : []), ...(lesson9IntroductoryParticleRequired && ["command-sentence", "exhortation-sentence"].includes(lesson9SentenceType) && !lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_FIRST_THIRD] : []), ...(lesson9FutureIndicativeAsOptative ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.REQUIRE_INTRODUCTORY_PARTICLE_FOR_FUTURE_COMMAND] : []), ...(lesson9IntroductoryParticleOmissionAllowed ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.ALLOW_SECOND_PERSON_COMMAND_OMISSION] : []), ...(lesson9RoleDerivedFromSubject ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.DERIVE_COMMAND_EXHORTATION_ROLE_FROM_SUBJECT] : []), ...(lesson9NegativeRequested && !lesson9BrusqueNegativeCommand ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.CHANGE_NEGATIVE_AH_TO_CA_WITH_INTRODUCTORY_PARTICLE] : []), ...(lesson9BrusqueNegativeCommand ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.KEEP_AH_FOR_BRUSQUE_NEGATIVE_COMMAND_WITHOUT_MA] : []), CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.KEEP_INTRODUCTORY_PARTICLE_OUT_OF_VNC_FORMULA] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.MARK_LOWER_VNC_PROVISIONAL, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.CLASSIFY_ADMONITIVE_AS_POSITIVE_WARNING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REJECT_VETITIVE_PROHIBITION_READING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_DONT_TRANSLATION_AUTHORITY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_ADMONITIVE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ENFORCE_NONPAST_ONLY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.USE_PERFECTIVE_STEM, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_CLASS_A_H_CONTRAST, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_ADMONITIVE_NUMBER_DYADS, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.MARK_NO_TRANSLATION_OUTSIDE_SENTENCE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_NONPAST_PERFECTIVE_STEM, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.SUBSTITUTE_ADMONITIVE_FOR_PRESENT_INDICATIVE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ADD_MA_OUTSIDE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_MA_SENTENCE_BEGINNING, ...(lesson10Nen ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.ADD_NEN_OUTSIDE_VNC] : []), ...(lesson10Nen ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_NEN_ADVERBIALIZED_NNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_MANEN_TRADITIONAL_SOLID_SPELLING] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.DERIVE_ADMONITION_ROLE_FROM_SUBJECT, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.AUTHORIZE_WARNING_RENDERINGS, ...(lesson10NegativeRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REQUIRE_MA_NEN_FOR_NEGATIVE_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.TRANSFORM_NEGATIVE_ASSERTION_TO_NEGATIVE_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.AFFIX_AH_TO_ADMONITIVE_VNC, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_NEGATIVE_ADMONITION_CANCELS_WARNING, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.REJECT_POSITIVE_VETATIVE_TERM_AUTHORITY, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_NEGATIVE_AH_IN_ADMONITION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CA_FOR_ADMONITION] : []), ...(lesson10CaNegativeRequested && !lesson10NegativeRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CA_FOR_ADMONITION] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_ADMONITIVE_OPTATIVE_PRESENT_PRETERIT_CONTRASTS, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_SECOND_PERSON_X_XI_OPTATIVE_DISTINCTION, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_PLURAL_SUBJECTS_ALWAYS_DISTINCTIVE, CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_MA_AS_ADMONITIVE_SENTENCE_DISTINGUISHER, ...(lesson10ClassContrastProfile.glottalStopAmbiguityWarning ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_GLOTTAL_STOP_AMBIGUITY_WARNING] : []), ...(lesson10ClassContrastProfile.hMorphRoleContrast ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.RECORD_H_TENSE_VS_NUM1_ROLE_CONTRAST] : []), ...(lesson10AntecessiveRequested ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_ANTECESSIVE_WITH_ADMONITIVE] : []), ...(!lesson10ContrastReadingAuthorized ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.BLOCK_CONTRAST_READING_AS_ADMONITIVE_AUTHORITY] : []), CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_ADMONITIVE_PARTICLES_OUT_OF_VNC_FORMULA] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.KEEP_SENTENCE_PARTICLES_OUT_OF_VNC_FORMULA, ...(hostileRejectedFormulaSlots.length ? [...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.BLOCK_INTRODUCTORY_PARTICLE_FORMULA_SLOT] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.KEEP_ADMONITIVE_PARTICLES_OUT_OF_VNC_FORMULA] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.BLOCK_SENTENCE_PARTICLE_FORMULA_SLOT] : []), ...(lesson9Applies ? [CLASSICAL_NAHUATL_LESSON9_SENTENCE_ACTIONS.CARRY_SENTENCE_FINALIZER_TO_SELECTED_OUTPUT] : []), ...(lesson10Applies ? [CLASSICAL_NAHUATL_LESSON10_SENTENCE_ACTIONS.CARRY_SENTENCE_FINALIZER_TO_SELECTED_OUTPUT] : []), CLASSICAL_NAHUATL_LESSON8_SENTENCE_SURFACE_ACTIONS.CARRY_SENTENCE_SURFACE_TO_SELECTED_OUTPUT];
@@ -6030,7 +6045,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         lesson9NegativeTransformation: lesson9NegativeRequested ? lesson9BrusqueNegativeCommand ? "brusque-command-keeps-ah" : "ma-tla-changes-ah-to-ca" : "",
         caNegativeLicensedByIntroductoryParticle: Boolean(lesson9NegativeRequested && !lesson9BrusqueNegativeCommand),
         ahNegativeRequiredWithoutIntroductoryParticle: lesson9BrusqueNegativeCommand,
-        negativePrefixSource: lesson10NegativeRequested ? "Lesson 10 negative admonition sentence layer" : lesson9NegativeRequested ? "Lesson 9 negative wish/command sentence layer" : negativeRequested ? "Lesson 8 sentence or expanded-boundary layer" : "",
+        negativePrefixSource: defectiveANegative ? "Andrews Lesson 11 defective ā allomorphy" : lesson10NegativeRequested ? "Lesson 10 negative admonition sentence layer" : lesson9NegativeRequested ? "Lesson 9 negative wish/command sentence layer" : negativeRequested ? "Lesson 8 sentence or expanded-boundary layer" : "",
         sentenceParticles,
         sentencePrefixalStack,
         sentencePrefixalStackAttachment: sentencePrefixalStack.length ? "prefixal-stack-attached-at-left-edge" : "",
@@ -6048,6 +6063,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         questionMode,
         emphaticParticle: emphaticRequested ? "ca" : "",
         negativePrefix: sentenceNegativePrefix,
+        negativePrefixAlternatives,
+        defectiveANegativeInterpretation: defectiveANegative,
+        defectiveANegativeAllomorph: defectiveANegative ? sentenceNegativePrefix : "",
         negativePrefixOutsideVnc: Boolean(negativeRequested),
         sentenceActions: actions,
         hostileFormulaSlots: hostileSlots,
@@ -7645,6 +7663,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         expandedVncBoundaryFrame: activeExpandedVncBoundaryFrame,
         priorVncFrame,
         predicateFormationRuleFrame,
+        lesson11ParadigmPlan: activeLesson11ParadigmPlan,
         options
       });
       const grammarOperationEvaluationFrame = typeof getClassicalNahuatlVerbstemRuntimeTarget()?.buildClassicalNahuatlVncOperationEvaluationFrame === "function" ? getClassicalNahuatlVerbstemRuntimeTarget().buildClassicalNahuatlVncOperationEvaluationFrame({

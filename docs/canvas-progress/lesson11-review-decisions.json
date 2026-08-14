@@ -13,6 +13,18 @@
     "lesson11-perfective-stem-irregularity": {
       "status": "ACCEPTED",
       "acceptedJob": "Generate compound class shifts and conditioned t-to-h perfectives, with a user choice only between authorized alternatives."
+    },
+    "lesson11-form-meaning-dislocation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat the user's tense as meaning and automatically select the required preterit or distant-past form."
+    },
+    "lesson11-positional-verbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate ih-ca, on-o, and pil-ca through their positional paradigm relations and enforce on-o's fused locative structure."
+    },
+    "lesson11-defective-a": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep ā defective, use polarity for present versus absent meaning, and automatically select ay- or ah-."
     }
   }
 }

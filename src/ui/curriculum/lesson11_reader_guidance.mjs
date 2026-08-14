@@ -20,6 +20,21 @@ export const LESSON11_READER_GUIDANCE_GROUPS = freeze([
     "Read the two rare perfective-stem irregularities",
     "A compound may exceptionally change the class of its matrix stem, as ahco-cui gives ahco-uc or ahco-c. Some ti-stems instead allow regular t and irregular h perfectives. With mati, singular preterit or admonitive favors mah but may use mat; plural and distant-past forms use mat.",
   ),
+  idea(
+    "lesson11-form-meaning-dislocation",
+    "Read the meaning separately from the tense form",
+    "Some VNCs use a preterit-shaped form for present meaning and a distant-past-shaped form for ordinary past meaning. The application therefore starts from the intended time meaning and supplies the required form; it does not insert the antecessive ō into a preterit-as-present form.",
+  ),
+  idea(
+    "lesson11-positional-verbs",
+    "Recognize standing, lying, and hanging as positional paradigms",
+    "Ih-ca means to stand, on-o means to lie, and pil-ca means to hang. Their present forms are preterit-shaped and their ordinary past forms are distant-past-shaped. The on of on-o belongs inside that verbstem except when o is selected as the matrix of a connective-t construction.",
+  ),
+  idea(
+    "lesson11-defective-a",
+    "Read defective ā as present or absent",
+    "The defective verb ā has only a preterit-shaped paradigm. Its positive forms mean to be present and its negative forms mean to be absent. The negative uses ah- or ay- according to participant, with ayāc preferred for third-person singular and ahāc also attested; Canvas writes ayoc āc as separate words and records traditional ayocac.",
+  ),
 ]);
 
 export function isLesson11ReaderGuidanceExact(candidate = []) {

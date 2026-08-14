@@ -45,40 +45,40 @@ All 352 atoms are included exactly once. Unaccepted groups remain proposals; imp
 
 - Sections: §11.4
 - Atoms: 7
-- Proposed direction: 4 both; 3 reading only
+- Proposed direction: 3 both; 4 reading only
 - Writing job: Map semantic present and general past to the authorized morphological tense and block forbidden forms.
 - Reading job: Help the reader recognize preterit-as-present and distant-past-as-past patterns.
 - User/application split: The user chooses intended time meaning; the application chooses the required form.
 - Control policy: Reuse Tense as meaning; do not ask the user to choose the hidden morphological tense.
 - Proposal: Separate a verb's tense meaning from the tense form used to express it.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/7
+- Status: ACCEPTED
+- Exactly observed: 7/7
 
 ## Batch 2, Group 5: Standing, lying, and hanging
 
 - Sections: §11.4.1, §11.4.1.a, §11.4.1.b, §11.4.2, §11.4.2.a, §11.4.2.b, §11.4.3, §11.4.3.a, §11.4.3.b
 - Atoms: 25
-- Proposed direction: 14 both; 11 reading only
+- Proposed direction: 8 both; 17 reading only
 - Writing job: Build ih-ca, on-o, and pil-ca with their preterit-as-present and distant-past behavior and the conditioned on fusion.
 - Reading job: Guide the positional reading and its form-meaning contrast.
 - User/application split: The user supplies the stem and meaning; the application supplies form and fusion.
 - Control policy: No new control.
 - Proposal: Generate the positional verbs through their authorized tense relations and fused locative structure.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/25
+- Status: ACCEPTED
+- Exactly observed: 25/25
 
 ## Batch 2, Group 6: Defective ā
 
 - Sections: §11.4.4, §11.4.4.a, §11.4.4.b
 - Atoms: 13
-- Proposed direction: 4 both; 9 reading only
+- Proposed direction: 5 both; 8 reading only
 - Writing job: Allow only the authorized preterit-shaped paradigm and apply the conditioned negative allomorph.
 - Reading job: Guide present-versus-absent readings of the same defective family.
 - User/application split: The user chooses polarity and participant; the application enforces defectiveness.
 - Control policy: Reuse Polarity and Subject; no defectiveness control.
 - Proposal: Keep ā defective and generate its present or absent interpretation through polarity.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/13
+- Status: ACCEPTED
+- Exactly observed: 13/13
 
 ## Batch 3, Group 7: The irregular ca paradigm
 
