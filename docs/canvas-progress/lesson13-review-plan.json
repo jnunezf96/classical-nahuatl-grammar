@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "lesson": 13,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson13-possessive-formula-foundation",
+      "title": "Monadic and dyadic possessive formulas",
+      "sections": ["§13.1", "§13.1.1", "§13.1.2", "§13.2", "§13.2.1"],
+      "proposal": "Build a possessive-state NNC with either a one-part or two-part possessor position while reusing the Lesson 12 subject-person morphs.",
+      "writingJob": "Preserve the typed subject, possessor, nounstem predicate, State, and formula boundaries in both possessive formulas.",
+      "readingJob": "Guide the reader in recognizing whether the possessor position is monadic or dyadic without confusing it with the subject.",
+      "decisionSplit": "The intended possessor determines the formula; the application chooses the proper structure and reuses the subject morphs.",
+      "controlPolicy": "Reuse Possessor and State; do not add a monadic/dyadic picker.",
+      "userChoiceJob": "CHOOSE_POSSESSOR_MEANING",
+      "applicationJob": "SELECT_AND_BUILD_THE_MONADIC_OR_DYADIC_POSSESSIVE_FORMULA",
+      "derivedCueJob": "SHOW_SUBJECT_POSSESSOR_AND_NOUNSTEM_BOUNDARIES"
+    },
+    {
+      "groupId": "lesson13-possessive-subject-paradigm",
+      "title": "Possessive-state subject connectors and paradigm",
+      "sections": ["§13.2.2", "§13.2.3", "§13.3"],
+      "proposal": "Generate every possessive-state subject form from person, number, nounstem boundary, and typed morphological conditioning.",
+      "writingJob": "Select uh, hu, hui, zero, and ān automatically and generate the complete possessive-state subject paradigm.",
+      "readingJob": "Guide the reader in identifying supportive i, silent versus sounded following morphs, and possessive-only subject shapes.",
+      "decisionSplit": "The user chooses subject person and number; the application selects every connector and spelling realization.",
+      "controlPolicy": "Reuse Subject and Full paradigm; never expose connector morphs as choices.",
+      "userChoiceJob": "CHOOSE_SUBJECT_PERSON_AND_NUMBER",
+      "applicationJob": "SELECT_POSSESSIVE_SUBJECT_CONNECTORS_AND_GENERATE_THE_PARADIGM",
+      "derivedCueJob": "SHOW_SUBJECT_NUMBER_CONNECTOR_AND_SUPPORTIVE_I_JOBS"
+    },
+    {
+      "groupId": "lesson13-monadic-possessors",
+      "title": "Reciprocal and nonspecific possessors",
+      "sections": ["§13.4", "§13.4.1", "§13.4.2"],
+      "proposal": "Build monadic possessors ne, tē, and tla from their real meanings and restrictions.",
+      "writingJob": "Generate reciprocal, nonspecific-human, or nonspecific-nonhuman possession and enforce third-person and relational restrictions where required.",
+      "readingJob": "Guide the reader in distinguishing reciprocal possession from reflexive-reciprocal objects and human from nonhuman nonspecific possession.",
+      "decisionSplit": "The user chooses the intended possessor meaning; the application chooses the morph and enforces applicability.",
+      "controlPolicy": "Use the existing Possessor choice; show only meanings available for the current nounstem and subject.",
+      "userChoiceJob": "CHOOSE_RECIPROCAL_OR_NONSPECIFIC_POSSESSOR_MEANING",
+      "applicationJob": "REALIZE_NE_TE_OR_TLA_AND_ENFORCE_THEIR_RESTRICTIONS",
+      "derivedCueJob": "SHOW_POSSESSOR_ROLE_AND_HUMANITY"
+    },
+    {
+      "groupId": "lesson13-dyadic-possessor-architecture",
+      "title": "Dyadic possessor person and number structure",
+      "sections": ["§13.5", "§13.5.1", "§13.5.1.a", "§13.5.1.b"],
+      "proposal": "Build the first possessor subposition from person, number, and possessive case according to the possessor's person.",
+      "writingJob": "Generate ī for third-person possessors and n, t, m, or am for first- and second-person possessors.",
+      "readingJob": "Guide the reader in seeing which categories are carried by the first possessor subposition.",
+      "decisionSplit": "The user chooses the possessor; the application distributes person, number, and case across the two subpositions.",
+      "controlPolicy": "Reuse Possessor; no subposition picker.",
+      "userChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
+      "applicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
+      "derivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS"
+    },
+    {
+      "groupId": "lesson13-dyadic-second-subposition",
+      "title": "Dyadic second subposition and vowel-initial replacement",
+      "sections": ["§13.5.2", "§13.5.2.a", "§13.5.2.b"],
+      "proposal": "Complete the dyadic possessor with third-person number or first/second-person possessive case.",
+      "writingJob": "Generate zero, m or n for third-person number and automatically replace possessive o with its irregular mate before a vowel-initial nounstem.",
+      "readingJob": "Guide the reader in recognizing the category supplied by the second subposition and the vowel-initial replacement.",
+      "decisionSplit": "The user chooses possessor and nounstem; the application supplies the second morph and its boundary-conditioned form.",
+      "controlPolicy": "No new control; plural m/n is exposed only if both are genuinely authorized results.",
+      "userChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
+      "applicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
+      "derivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER"
+    },
+    {
+      "groupId": "lesson13-specific-possessor-paradigm",
+      "title": "Specific possessor paradigm and reading distinction",
+      "sections": ["§13.6"],
+      "proposal": "Generate the complete specific possessor paradigm while preserving the difference between amo and ammo structures.",
+      "writingJob": "Generate every specific possessor form and keep the NNC second-plural possessor distinct from the VNC second-plural reflexive sequence.",
+      "readingJob": "Guide the reader through possessor translations, broader plural readings, and ambiguous traditional spelling.",
+      "decisionSplit": "The user chooses the possessor; the application generates its form, while sentence structure resolves visually ambiguous spelling.",
+      "controlPolicy": "Reuse Possessor and Full paradigm; no spelling-disambiguation control.",
+      "userChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
+      "applicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
+      "derivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 13,
+  "groups": {
+    "lesson13-possessive-formula-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    },
+    "lesson13-possessive-subject-paradigm": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    },
+    "lesson13-monadic-possessors": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    }
+  }
+}

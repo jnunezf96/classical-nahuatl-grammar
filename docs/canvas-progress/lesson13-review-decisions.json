@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 13,
+  "decisions": {
+    "lesson13-possessive-formula-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Choose and build the monadic or dyadic possessive formula from the intended possessor."
+    },
+    "lesson13-possessive-subject-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate every possessive-state subject connector and the full subject paradigm automatically."
+    },
+    "lesson13-monadic-possessors": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Realize reciprocal, nonspecific-human, and nonspecific-nonhuman possessors and enforce their restrictions."
+    }
+  }
+}
