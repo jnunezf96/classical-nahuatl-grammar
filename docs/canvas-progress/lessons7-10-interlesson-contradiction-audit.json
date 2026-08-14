@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "lessons": [7, 8, 9, 10],
+  "status": "UNCONTRADICTED",
+  "grammarAuthority": "Andrews transcription",
+  "sourceDocument": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "reportAuthority": false,
+  "resolvedCount": 12,
+  "unresolvedCount": 0,
+  "resolved": [
+    {
+      "id": "lessons7-10-stem-aspect-order",
+      "resolution": "Lesson 7 supplies one class-conditioned stem system; Lesson 10 requests its perfective member for the nonpast admonitive rather than inventing a second stem rule."
+    },
+    {
+      "id": "lessons7-10-directional-boundary",
+      "resolution": "Lesson 8 directional on or huāl stays inside the VNC before the Lesson 7 verbstem in indicative, optative, and admonitive Results."
+    },
+    {
+      "id": "lessons8-10-antecessive-boundary",
+      "resolution": "Earlier-event ō remains outside a licensed past VNC, becomes obligatory for the borrowed preterit optative, and is unavailable to the nonpast admonitive."
+    },
+    {
+      "id": "lessons8-9-ca-distinction",
+      "resolution": "Lesson 8 emphatic ca is a separate sentence particle, while Lesson 9 negative ca is an attached prefix selected only by its wish or introduced-command environment."
+    },
+    {
+      "id": "lessons8-10-ah-distinction",
+      "resolution": "Negative ah is an outside prefix in an assertion or blunt command; with the admonitive it cancels the caution and requires the separate mā nēn sentence context."
+    },
+    {
+      "id": "lessons9-10-ma-distinction",
+      "resolution": "Mā introduces a wish, command, exhortation, or admonition according to the typed mood and participant role; its spelling alone never chooses the construction."
+    },
+    {
+      "id": "lessons9-10-negative-allomorph",
+      "resolution": "Introduced negative optatives use ca, blunt second-person commands keep ah, and negative admonitives keep ah rather than borrowing the Lesson 9 ca rule."
+    },
+    {
+      "id": "lessons9-10-form-meaning",
+      "resolution": "A shared or borrowed VNC form does not supply its own sentence meaning; typed mood, tense, subject, and sentence context distinguish indicative, optative, and admonitive uses."
+    },
+    {
+      "id": "lessons8-10-sentence-writing-context",
+      "resolution": "Statement, question, and exclamation choose final writing punctuation without replacing the Canvas mood, particle, or sentence-role grammar that built the Result."
+    },
+    {
+      "id": "lessons8-question-name-bridge",
+      "resolution": "The normal application now recognizes the Canvas name yes-no-question directly, so cuix, question force, and question punctuation cannot split across two differently named settings."
+    },
+    {
+      "id": "lessons7-10-user-choice-boundary",
+      "resolution": "The user chooses genuine grammar and writing context; class-conditioned stem operations, prefix placement, negative allomorphy, role, and attachment remain application obligations."
+    },
+    {
+      "id": "lessons7-10-cue-context",
+      "resolution": "Clickable cues name the job selected by the typed Result context, so identical visible material such as mā, ca, ah, 0, or h does not receive a conflicting generic explanation."
+    }
+  ],
+  "unresolved": []
+}

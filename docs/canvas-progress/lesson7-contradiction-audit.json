@@ -5,6 +5,7 @@
   "resolvedCount": 9,
   "unresolvedCount": 0,
   "reportAuthority": false,
+  "interlessonAudit": "lessons7-10-interlesson-contradiction-audit.json",
   "resolutions": [
     "A verbstem remains one lexical unit while preserving its real internal morph boundaries.",
     "Valence is part of verb citation grammar; automatic carrier spelling is not a separate user choice.",

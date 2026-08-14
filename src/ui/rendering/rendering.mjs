@@ -821,7 +821,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function normalizeClassicalRuleLogicSurfaceSentenceMode(value = "") {
       const normalized = String(value || "").trim().toLowerCase().replace(/[\s_]/gu, "-");
-      if (["question", "information-question", "inherent-interrogative", "question-intonation", "intonation-question", "yes-no-intonation", "question-cuix", "cuix-question", "yes-no-cuix"].includes(normalized)) return "question";
+      if (["question", "yes-no-question", "information-question", "inherent-interrogative", "question-intonation", "intonation-question", "yes-no-intonation", "question-cuix", "cuix-question", "yes-no-cuix"].includes(normalized)) return "question";
       if (["exclamation", "exclamatory", "emphatic", "emphatic-assertion"].includes(normalized)) return "exclamation";
       return "statement";
     }
@@ -1518,7 +1518,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       let voiceLayerChainFrame = null;
       let selectedVoiceLayerRouteId = "";
       let orderedVoiceApplicationBlockReason = "";
-      const requestedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(overrides.sentenceSurfaceMode || overrides.sentenceMode || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-surface", "statement"));
+      const requestedSentenceSurfaceMode = normalizeClassicalRuleLogicSurfaceSentenceMode(overrides.sentenceSurfaceMode || overrides.sentenceMode || overrides.sentenceType || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-sentence-surface", "statement"));
       const rawRequestedParticleCombinationShortcutId = String(overrides.particleCombinationShortcutId || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-particle-combination-shortcut", "none") || "none").trim();
       const particleCombinationShortcutEntry = typeof targetObject.findClassicalNahuatlParticleCombinationShortcutEntry === "function"
         ? targetObject.findClassicalNahuatlParticleCombinationShortcutEntry(rawRequestedParticleCombinationShortcutId)
@@ -6416,6 +6416,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const finalTypedVncSlotFrame = machineryFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame || machineryFrame?.proofFrame?.conclusion?.finalBoundaryRealizationFrame?.typedSlotFrame || machineryFrame?.finalBoundaryRealizationFrame?.typedSlotFrame || null;
       const vncDiagrammaticFrame = basalMeta.unit === "vnc" && typeof targetObject.requestClassicalVncDiagrammaticFrame === "function" ? targetObject.requestClassicalVncDiagrammaticFrame(finalTypedVncSlotFrame) : null;
       const diagrammaticFrame = basalMeta.unit === "vnc" ? vncDiagrammaticFrame : nncDiagrammaticFrame;
+      const sentenceFinalPunctuation = sentenceSurfaceDisplay.match(/[.?!]$/u)?.[0] || "";
+      const sentenceCanvasCompositionPunctuation = sentenceSurfaceFrame?.finalPunctuation || "";
+      const sentenceWritingContextDiffersFromCanvasComposition = Boolean(
+        sentenceFinalPunctuation
+        && sentenceCanvasCompositionPunctuation
+        && sentenceFinalPunctuation !== sentenceCanvasCompositionPunctuation
+      );
       const visibleSurfaceFrame = {
         kind: "classical-nahuatl-visible-rule-logic-surface-frame",
         version: 1,
@@ -6455,6 +6462,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sentenceLesson11ConstructionParticles: sentenceSurfaceFrame?.lesson11ConstructionParticles || [],
         sentenceSurfaceDisplay,
         provisionalSentenceSurfaceDisplay,
+        sentenceWritingUse: state.sentenceSurfaceMode,
+        sentenceFinalPunctuation,
+        sentenceCanvasCompositionPunctuation,
+        sentenceWritingContextDiffersFromCanvasComposition,
+        sentenceWritingContextIsGrammarAuthority: false,
         sentenceSurfaceStatus: lesson11SelectedOutputBlocked
           ? "blocked"
           : sentenceParticleLayerFrame?.active
