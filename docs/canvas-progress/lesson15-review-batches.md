@@ -33,11 +33,11 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - Sections: §15.1.3, §15.1.4
 - Atoms: 9
 - Proposed direction: 4 both; 5 reading only
-- Writing job: Build affinity or distributive nonanimate possessive forms without converting their English plural reading into grammar number, and duplicate the typed possessor dyad only where licensed.
+- Writing job: Build affinity or distributive nonanimate possessive forms without converting their English plural reading into grammar number, and duplicate the typed possessor dyad when the user selects it in the required structure.
 - Reading job: Guide the reader in separating common grammatical number, plural translation, stem relation, and repeated possessor material.
-- User/application split: The user chooses the intended stem relation; the application keeps number correct and applies lexically licensed reduplication.
-- Control policy: Reuse the existing stem-meaning choice; no new general reduplication control unless an authorized lexical alternative truly remains.
-- Proposal: Keep common grammatical number on derived nonanimate predicates and apply possessor reduplication only from typed lexical authority.
+- User/application split: The user chooses the intended stem relation and optional possessor reduplication; the application keeps number correct and allows reduplication only in the required context.
+- Control policy: Show the possessor-reduplication choice only for a possessive NNC with a plural subject and a specific possessor.
+- Proposal: Keep common grammatical number on derived nonanimate predicates and allow possessor reduplication as a genuine choice in the required possessive-plural structure.
 - Status: ACCEPTED
 - Exactly observed: 9/9
 
@@ -74,9 +74,9 @@ All 237 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - Proposed direction: 9 both; 10 reading only
 - Writing job: Delete the ephemeral i, rebuild connectors for tl 1-A, and preserve nuclear versus supplementary possessor scope.
 - Reading job: Guide the reader through reclassification, meaning alternatives, and possessor rank.
-- User/application split: Lexical authority licenses reclassification; the application performs it.
-- Control policy: No mechanical reclassification control for arbitrary input.
-- Proposal: Reclassify an authorized tl 2-A source as tl 1-A and keep the NNC-internal possessor nuclear.
+- User/application split: The user chooses reclassification for a valid tl 2-A source; the application deletes ephemeral i and rebuilds the form.
+- Control policy: Show the reclassification choice for any entered source whose typed structure is tl 2-A with ephemeral i.
+- Proposal: Allow a structurally valid tl 2-A source to be reclassified as tl 1-A and keep the NNC-internal possessor nuclear.
 - Status: ACCEPTED
 - Exactly observed: 19/19
 

@@ -18,7 +18,7 @@ export const LESSON15_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson15-derived-nonanimate-and-possessor-reduplication",
     "Separate grammar number from relationship meaning",
-    "An affinity or distributive nonanimate possessive predicate keeps common grammatical number even when English uses a plural translation. A repeated possessor repeats the possessive relation; it does not move plurality from the subject or create a general free reduplication rule.",
+    "An affinity or distributive nonanimate possessive predicate keeps common grammatical number even when English uses a plural translation. In the required possessive-plural structure, the writer may choose to repeat the possessor; this repeats the possessive relation and does not move plurality from the subject.",
   ),
   idea(
     "lesson15-secondary-general-use",
@@ -33,7 +33,7 @@ export const LESSON15_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson15-reclassification-and-possessor-scope",
     "Read reclassification and possessor rank separately",
-    "A licensed tl Subclass 2-A stem may lose its ephemeral i and become Subclass 1-A, after which its State selects the new connector. The possessor inside the NNC remains the nuclear possessor; any supplementary possessor belongs outside the NNC nucleus.",
+    "A tl Subclass 2-A stem with ephemeral i may lose that i and become Subclass 1-A, after which its State selects the new connector. This choice follows the stem structure rather than an example list. The possessor inside the NNC remains the nuclear possessor; any supplementary possessor belongs outside the NNC nucleus.",
   ),
   idea(
     "lesson15-natural-possession",

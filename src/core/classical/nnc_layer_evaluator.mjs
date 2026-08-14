@@ -3756,9 +3756,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const exactCanvasLexicalOption = selectionAuthority === "canvas-predicate-option"
         && canvasPredicateOption?.optionId === "tec-title";
       const lexicalSelectionAuthority = ["user-supplied-lexical-analysis", "external-lexical-record"].includes(selectionAuthority);
+      const structuralUserSelection = operation === "tl-2a-to-1a"
+        && selectionAuthority === "user-selection";
       const selectionAuthorityKnown = operation === "regular"
         ? ["canvas-regular-default", "canvas-predicate-option"].includes(selectionAuthority)
-        : lexicalSelectionAuthority || exactCanvasLexicalOption;
+        : lexicalSelectionAuthority || exactCanvasLexicalOption || structuralUserSelection;
       const derivedTargetStem = operation === "yo-matrix"
         ? yoMatrixStem
         : operation === "secondary-general-use"
@@ -3816,6 +3818,8 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
           ? "Andrews transcription exact lexical witness"
           : operation === "regular"
             ? "Andrews transcription regular default"
+          : structuralUserSelection
+            ? "Andrews transcription plus typed source structure"
             : "Andrews transcription plus typed lexical analysis",
         sourceDocument: CLASSICAL_NAHUATL_NNC_SOURCE_DOCUMENT,
         authorizationStatus: blockReason ? "blocked" : "authorized",
@@ -3911,7 +3915,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             record.suppletiveConnector
           );
       }
-      if (!productiveOperations.includes(record.operation) || !lexicalAuthority) {
+      const productiveAuthority = lexicalAuthority
+        || (
+          record.operation === "tl-2a-to-1a"
+          && record.selectionAuthority === "user-selection"
+        );
+      if (!productiveOperations.includes(record.operation) || !productiveAuthority) {
         return false;
       }
       if (record.targetStemDerivation !== "canonical-semantic-operation") {
@@ -3964,12 +3973,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const normalizedSourceStem = normalizeClassicalNahuatlNncStem(sourceStem);
       const selected = options.selected === true;
       const selectionAuthority = normalizeClassicalNahuatlNncToken(options.selectionAuthority || (selected ? "" : "not-selected")).toLowerCase().replace(/[\s_]/gu, "-");
-      const selectionAuthorityKnown = !selected || ["user-supplied-lexical-analysis", "external-lexical-record"].includes(selectionAuthority);
+      const selectionAuthorityKnown = !selected || selectionAuthority === "user-selection";
       const blockReason = !normalizedSourceStem ? "lesson15-reduplication-source-stem-required" : !selectionAuthorityKnown ? "possessor-reduplication-requires-typed-selection-authority" : "";
       return {
         kind: "classical-nahuatl-ordinary-nnc-possessor-reduplication-selection",
         version: 1,
-        sourceAuthority: "Andrews transcription plus typed lexical analysis",
+        sourceAuthority: "Andrews transcription plus typed grammatical context",
         sourceDocument: CLASSICAL_NAHUATL_NNC_SOURCE_DOCUMENT,
         authorizationStatus: blockReason ? "blocked" : "authorized",
         blockReason,
@@ -3993,8 +4002,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         && typeof record.selected === "boolean"
         && (
           record.selected
-            ? ["user-supplied-lexical-analysis", "external-lexical-record"]
-              .includes(record.selectionAuthority)
+            ? record.selectionAuthority === "user-selection"
             : record.selectionAuthority === "not-selected"
         )
         && record.separateFromStemOperation === true

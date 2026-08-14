@@ -205,6 +205,7 @@ function run(ctx = {}) {
                     state: "possessive",
                     subject: "3sg",
                     possessor: "3pl",
+                    metaphoricalUse: stem === "cal",
                 }
             );
         const boundaryResult =
@@ -452,6 +453,7 @@ function run(ctx = {}) {
                 state: "possessive",
                 subject: "3sg",
                 possessor: "1sg",
+                metaphoricalUse: true,
             }),
             evaluateFormation(cal, "analogical-restricted-use", {
                 state: "absolutive",
@@ -545,8 +547,13 @@ function run(ctx = {}) {
             pil,
             pilReduplicationOperation
         );
+    const openReduplicationSource =
+        ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+            stem: "xal",
+            nounClass: "tli",
+        });
     const calReduplicationOperation =
-        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(cal, {
+        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(openReduplicationSource, {
             state: "possessive",
             subject: "3pl",
             possessor: "1sg",
@@ -574,14 +581,14 @@ function run(ctx = {}) {
             }
         );
     const blockedCalReduplicationPlan =
-        ctx.prepareClassicalNahuatlOrdinaryNncParadigmPlan(cal, {
+        ctx.prepareClassicalNahuatlOrdinaryNncParadigmPlan(openReduplicationSource, {
             states: ["possessive"],
             subjects: ["3pl"],
             possessors: ["1sg"],
             possessorReduplication: true,
         });
     s.eq(
-        "possessor reduplication is a conditioned choice only for the Canvas-attested lexical source",
+        "possessor reduplication is a structural choice for every matching possessive plural context",
         {
             pilSourceOptions: pil.possessorReduplicationOptions,
             pilOperationStatus:
@@ -589,7 +596,7 @@ function run(ctx = {}) {
             pilResultStatus: pilReduplicationResult.authorizationStatus,
             pilFormula: pilReduplicationResult.formulaRealization,
             pilWritten: pilReduplicationResult.surfaceRealization,
-            calSourceOptions: cal.possessorReduplicationOptions,
+            calSourceOptions: openReduplicationSource.possessorReduplicationOptions,
             calStatus: calReduplicationOperation.authorizationStatus,
             calReason: calReduplicationOperation.blockReason,
             poisonedSourceStatus:
@@ -610,18 +617,16 @@ function run(ctx = {}) {
             pilFormula: "#0-0+n-o-n-o(pil)hu-ān#",
             pilWritten: "nonopilhuān",
             calSourceOptions: [false],
-            calStatus: "blocked",
-            calReason:
-                "ordinary-nnc-possessor-reduplication-not-lexically-authorized",
+            calStatus: "authorized",
+            calReason: "",
             poisonedSourceStatus: "blocked",
             poisonedSourceReason:
                 "ordinary-nnc-source-lexical-facts-are-engine-owned:animacy",
             poisonedStatus: "blocked",
             poisonedReason:
                 "issued-authorized-ordinary-nnc-source-required",
-            planStatus: "blocked",
-            planReason:
-                "ordinary-nnc-possessor-reduplication-not-lexically-authorized",
+            planStatus: "authorized",
+            planReason: "",
         }
     );
 

@@ -63,7 +63,7 @@ function run(ctx = {}) {
     const reclassified = (state, subject) => {
         const operation = ctx.buildClassicalNahuatlStemOperationRecord("māi", {
             operation: "tl-2a-to-1a", nounClass: "tl", useShape: "truncated-i",
-            subclass: "tl-2a", selectionAuthority: "user-supplied-lexical-analysis",
+            subclass: "tl-2a", selectionAuthority: "user-selection",
         });
         const authority = ctx.buildClassicalNahuatlNncSourceAuthorityFrame("māi", {
             selectedState: state, policySelectionAuthority: "user-supplied-lexical-analysis",
@@ -82,6 +82,27 @@ function run(ctx = {}) {
         reclassified("possessive", "3sg"),
         reclassified("possessive", "3pl"),
     ];
+    const openReclassificationSource = ctx.issueCanonicalNncSourceFrame({
+        stem: "tēi", nounClass: "tl",
+    });
+    const openReclassificationSelection = ctx.getCanonicalNncOperationSelectionFrame(
+        openReclassificationSource,
+        {
+            state: "possessive", subject: "3sg", possessor: "3sg",
+            predicateFormation: "tl-2a-to-1a",
+        },
+    );
+    const openReclassificationOperation = ctx.issueCanonicalNncOperationFrame(
+        openReclassificationSource,
+        {
+            state: "possessive", subject: "3sg", possessor: "3sg",
+            predicateFormation: "tl-2a-to-1a",
+        },
+    );
+    const openReclassificationResult = ctx.requestClassicalOrdinaryNncResult(
+        openReclassificationSource,
+        openReclassificationOperation,
+    );
 
     const families = {
         "lesson15-secondary-general-use": {
@@ -114,6 +135,15 @@ function run(ctx = {}) {
                 reclassifiedFrames[1].operationFrame.possessorRole,
                 reclassifiedFrames[1].nncSlotFrame.slots.state.nuclearPossessorRole,
                 reclassifiedFrames[1].nncSlotFrame.slots.state.supplementaryPossessorRole,
+            ],
+            structuralChoiceAuthority: reclassifiedFrames[0].operationFrame.lesson15StemOperationRecord.selectionAuthority,
+            openStructuralSource: [
+                openReclassificationSource.useShape,
+                openReclassificationSource.subclass,
+                openReclassificationSelection.predicateOptionValues.includes("tl-2a-to-1a"),
+                openReclassificationOperation.authorizationStatus,
+                openReclassificationResult.formulaRealization,
+                openReclassificationResult.surfaceRealization,
             ],
         },
     };

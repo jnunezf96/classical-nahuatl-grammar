@@ -12,7 +12,7 @@
     },
     "lesson15-derived-nonanimate-and-possessor-reduplication": {
       "status": "ACCEPTED",
-      "acceptedJob": "Keep common grammatical number and apply only lexically licensed possessor reduplication."
+      "acceptedJob": "Keep common grammatical number and allow user-selected possessor reduplication only in the required possessive-plural structure."
     },
     "lesson15-secondary-general-use": {
       "status": "ACCEPTED",
@@ -24,7 +24,7 @@
     },
     "lesson15-reclassification-and-possessor-scope": {
       "status": "ACCEPTED",
-      "acceptedJob": "Reclassify authorized tl 2-A stems as tl 1-A and preserve possessor scope."
+      "acceptedJob": "Let any structurally valid tl 2-A source be reclassified as tl 1-A and preserve possessor scope."
     },
     "lesson15-natural-possession": {
       "status": "ACCEPTED",

@@ -896,15 +896,27 @@ export function createClassicalNahuatlNncApplicationModule(
       || Object.freeze(openStemSource ? ["plain"] : []);
     const pluralConnectorOptions =
       lexicalEntry?.pluralConnectorOptions || Object.freeze([]);
-    const useShape = lexicalEntry?.useShape || (openStemSource ? "base" : "");
+    const openTl2AReclassificationShape = Boolean(
+      openStemSource
+      && nounClass === "tl"
+      && /[āē]i$/u.test(stem)
+    );
+    const useShape = lexicalEntry?.useShape || (openStemSource
+      ? openTl2AReclassificationShape
+        ? "truncated"
+        : "base"
+      : "");
     const subclass = lexicalEntry?.subclass || (openStemSource
       ? nounClass === "tl"
-        ? "tl-1-a"
+        ? openTl2AReclassificationShape
+          ? "tl-2-a"
+          : "tl-1-a"
         : nounClass === "tli"
           ? "tli-1"
           : ""
       : "");
-    const ephemeralFinalVowel = lexicalEntry?.ephemeralFinalVowel || "";
+    const ephemeralFinalVowel = lexicalEntry?.ephemeralFinalVowel
+      || (openTl2AReclassificationShape ? "i" : "");
     const truncationRepair = lexicalEntry?.truncationRepair
       || (openStemSource ? "none" : "");
     const compoundSource = lexicalEntry?.compoundSource === true
@@ -1384,11 +1396,8 @@ export function createClassicalNahuatlNncApplicationModule(
         : predicateOptionValues.includes("source-stem")
           ? "source-stem"
           : predicateOptionValues[0] || "";
-      const possessorReduplicationLexicallyAuthorized =
-        sourceFrame.possessorReduplicationOptions.includes(true);
       const possessorReduplicationAvailable = Boolean(
-        possessorReduplicationLexicallyAuthorized
-        && selectedState === "possessive"
+        selectedState === "possessive"
         && selectedSubject.endsWith("pl")
         && ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"]
           .includes(selectedPossessor),
@@ -1421,7 +1430,7 @@ export function createClassicalNahuatlNncApplicationModule(
         selectedPredicateOptionId: selectedPredicateFormation,
         possessorValues,
         selectedPossessor,
-        possessorReduplicationLexicallyAuthorized,
+        possessorReduplicationLexicallyAuthorized: false,
         possessorReduplicationAvailable,
         selectedPossessorReduplication:
           possessorReduplicationAvailable
@@ -1720,12 +1729,6 @@ export function createClassicalNahuatlNncApplicationModule(
         "ordinary-nnc-predicate-formation-not-licensed-for-source-and-context";
     } else if (
       possessorReduplication
-      && !sourceFrame.possessorReduplicationOptions.includes(true)
-    ) {
-      blockReason =
-        "ordinary-nnc-possessor-reduplication-not-lexically-authorized";
-    } else if (
-      possessorReduplication
       && !(
         state === "possessive"
         && subject.endsWith("pl")
@@ -1767,7 +1770,7 @@ export function createClassicalNahuatlNncApplicationModule(
         "lexical-noun-class-authorization",
         "state-and-participant-selection",
         "licensed-predicate-formation-selection",
-        "lexical-possessor-reduplication-authorization",
+        "user-selected-structural-possessor-reduplication",
       ]),
       requestedOutputKind: "canonical-ordinary-nnc-result",
       derivedLexicalFactsReadOnly: true,
@@ -1934,7 +1937,9 @@ export function createClassicalNahuatlNncApplicationModule(
               ? "canvas-predicate-option"
               : operationFrame.predicateOperation === "regular"
                 ? "canvas-regular-default"
-                : "external-lexical-record",
+                : operationFrame.predicateOperation === "tl-2a-to-1a"
+                  ? "user-selection"
+                  : "external-lexical-record",
           targetStem:
             operationFrame.predicateFormation === "tec-title"
               ? selectedPredicateOption?.targetStem || ""
@@ -1963,7 +1968,7 @@ export function createClassicalNahuatlNncApplicationModule(
         {
           selected: operationFrame.possessorReduplication,
           selectionAuthority: operationFrame.possessorReduplication
-            ? "external-lexical-record"
+            ? "user-selection"
             : "not-selected",
         },
       );
@@ -2345,14 +2350,6 @@ export function createClassicalNahuatlNncApplicationModule(
       sentenceType: ownDataValue(request, "sentenceType", "statement"),
       polarity: ownDataValue(request, "polarity", "positive"),
     };
-    if (
-      !blockReason
-      && fixedSelections.possessorReduplication
-      && !sourceFrame.possessorReduplicationOptions.includes(true)
-    ) {
-      blockReason =
-        "ordinary-nnc-possessor-reduplication-not-lexically-authorized";
-    }
     const operationFrames = [];
     if (!blockReason) {
       const appendCoordinateOperations = ({

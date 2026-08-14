@@ -66,19 +66,39 @@ function run(ctx = {}) {
         stemFormation: "distributive", derivedStem: "chah-chān",
     });
     const derived = ctx.buildClassicalNahuatlHigherNncFrame(derivedLower, { animacy: "nonanimate" });
-    const reduplicationSelection = ctx.buildClassicalNahuatlPossessorReduplicationSelection("pil", {
-        selected: true, selectionAuthority: "user-supplied-lexical-analysis",
+    const reduplicationSelection = ctx.buildClassicalNahuatlPossessorReduplicationSelection("cal", {
+        selected: true, selectionAuthority: "user-selection",
     });
-    const reduplicationAuthority = ctx.buildClassicalNahuatlNncSourceAuthorityFrame("pil", {
+    const reduplicationAuthority = ctx.buildClassicalNahuatlNncSourceAuthorityFrame("cal", {
         selectedState: "possessive", policySelectionAuthority: "user-supplied-lexical-analysis",
         lesson15PossessorReduplicationSelection: reduplicationSelection,
     });
-    const reduplicationLower = ctx.buildClassicalNahuatlClassGovernedNncFrame("pil", {
+    const reduplicationLower = ctx.buildClassicalNahuatlClassGovernedNncFrame("cal", {
         state: "possessive", subject: "3pl", possessor: "1sg",
         nounClass: "tli", classSelectionAuthority: "user-selection",
         nncSourceAuthorityFrame: reduplicationAuthority,
     });
     const reduplicated = ctx.buildClassicalNahuatlHigherNncFrame(reduplicationLower);
+    const applicationReduplicationSource = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });
+    const applicationReduplicationSelection = ctx.getCanonicalNncOperationSelectionFrame(
+        applicationReduplicationSource,
+        {
+            state: "possessive", subject: "3pl", possessor: "1sg",
+            animacy: "animate", metaphoricalUse: true,
+            possessorReduplication: true,
+        },
+    );
+    const applicationReduplicationOperation = ctx.issueCanonicalNncOperationFrame(
+        applicationReduplicationSource,
+        {
+            state: "possessive", subject: "3pl", possessor: "1sg",
+            metaphoricalUse: true, possessorReduplication: true,
+        },
+    );
+    const applicationReduplicationResult = ctx.requestClassicalOrdinaryNncResult(
+        applicationReduplicationSource,
+        applicationReduplicationOperation,
+    );
 
     const families = {
         "lesson15-possessive-plural-assimilation": {
@@ -99,6 +119,14 @@ function run(ctx = {}) {
             reduplicated: [reduplicated.authorizationStatus, reduplicated.formulaRealization, reduplicated.nncSlotFrame.slots.state.arity],
             possessorSlots: reduplicated.nncSlotFrame.slots.state.slots.map((slot) => `${slot.role}:${slot.carrier}`),
             subjectNumber: reduplicated.nncSlotFrame.subjectNumber,
+            structuralChoiceAuthority: reduplicated.operationFrame.lesson15PossessorReduplicationSelection.selectionAuthority,
+            normalApplicationPath: [
+                applicationReduplicationSelection.possessorReduplicationAvailable,
+                applicationReduplicationSelection.selectedPossessorReduplication,
+                applicationReduplicationOperation.authorizationStatus,
+                applicationReduplicationResult.formulaRealization,
+                applicationReduplicationResult.surfaceRealization,
+            ],
         },
     };
     const expected = JSON.parse(JSON.stringify(families));

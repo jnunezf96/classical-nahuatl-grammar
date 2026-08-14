@@ -1352,7 +1352,7 @@ function run(ctx = {}) {
             const hostileReclassification =
                 ctx.buildClassicalNahuatlStemOperationRecord("naci", {
                     operation: "tl-2a-to-1a",
-                    selectionAuthority: "user-supplied-lexical-analysis",
+                    selectionAuthority: "user-selection",
                     nounClass: "tl",
                     useShape: "truncated-i",
                     subclass: "tl-2a",
@@ -2562,7 +2562,7 @@ function run(ctx = {}) {
                     nounClass: "tl",
                     useShape: "truncated-i",
                     subclass: "tl-2a",
-                    selectionAuthority: "user-supplied-lexical-analysis",
+                    selectionAuthority: "user-selection",
                 }),
             });
             const secondarySource = ctx.buildClassicalNahuatlClassGovernedNncFrame("tah", {
@@ -2657,7 +2657,7 @@ function run(ctx = {}) {
                 policySelectionAuthority: "user-supplied-lexical-analysis",
                 lesson15PossessorReduplicationSelection: ctx.buildClassicalNahuatlPossessorReduplicationSelection("pil", {
                     selected: true,
-                    selectionAuthority: "user-supplied-lexical-analysis",
+                    selectionAuthority: "user-selection",
                 }),
             });
             const source = ctx.buildClassicalNahuatlClassGovernedNncFrame("pil", {
@@ -2784,7 +2784,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 15 tl 2-A to 1-A reclassification is lexical rather than State-gated and recomputes each connector",
+        "Lesson 15 tl 2-A to 1-A reclassification follows typed source structure and recomputes each connector",
         (() => {
             const build = (state, subject) => {
                 const operationRecord = ctx.buildClassicalNahuatlStemOperationRecord("māi", {
@@ -2792,7 +2792,7 @@ function run(ctx = {}) {
                     nounClass: "tl",
                     useShape: "truncated-i",
                     subclass: "tl-2a",
-                    selectionAuthority: "user-supplied-lexical-analysis",
+                    selectionAuthority: "user-selection",
                 });
                 const sourceAuthority = ctx.buildClassicalNahuatlNncSourceAuthorityFrame("māi", {
                     selectedState: state,
@@ -2825,7 +2825,7 @@ function run(ctx = {}) {
             };
             const untyped = ctx.buildClassicalNahuatlStemOperationRecord("māi", {
                 operation: "tl-2a-to-1a",
-                selectionAuthority: "user-supplied-lexical-analysis",
+                selectionAuthority: "user-selection",
             });
             const paradigm = ctx.buildClassicalNncParadigmFrame({
                 basalUnit: "nnc",
@@ -2930,7 +2930,7 @@ function run(ctx = {}) {
                         nounClass: "tl",
                         useShape: "truncated-i",
                         subclass: "tl-2a",
-                        selectionAuthority: "user-supplied-lexical-analysis",
+                        selectionAuthority: "user-selection",
                     });
                 const sourceAuthority =
                     ctx.buildClassicalNahuatlNncSourceAuthorityFrame("māi", {
