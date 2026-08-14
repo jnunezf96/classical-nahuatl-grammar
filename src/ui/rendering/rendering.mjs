@@ -4964,6 +4964,66 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P082-L024-29B3304BD7"
         ])
       }),
+      "directional-prefix": Object.freeze({
+        lessonSections: Object.freeze(["§8.1.1"]),
+        atomIds: Object.freeze(["ACI-P087-L009-C5DA1DCBF8", "ACI-P087-L018-073DCB9B6E-02", "ACI-P087-L024-6715FCD2B5"])
+      }),
+      "earlier-event-modifier": Object.freeze({
+        lessonSections: Object.freeze(["§8.1.2"]),
+        atomIds: Object.freeze(["ACI-P089-L025-993403902E", "ACI-P089-L030-B13835C33A"])
+      }),
+      "negative-assertion": Object.freeze({
+        lessonSections: Object.freeze(["§8.1.3", "§8.4"]),
+        atomIds: Object.freeze(["ACI-P090-L007-3B89D94741", "ACI-P091-L010-BBFBB3D75B"])
+      }),
+      "emphatic-assertion": Object.freeze({
+        lessonSections: Object.freeze(["§8.5"]),
+        atomIds: Object.freeze(["ACI-P091-L019-BE9C4BE1B5"])
+      }),
+      "question-particle": Object.freeze({
+        lessonSections: Object.freeze(["§8.6.2"]),
+        atomIds: Object.freeze(["ACI-P092-L002-B690C5EB9B"])
+      }),
+      "optative-morphology": Object.freeze({
+        lessonSections: Object.freeze(["§9.1", "§9.3"]),
+        atomIds: Object.freeze(["ACI-P093-L004-509646CF9F", "ACI-P093-L018-EB13E376B5"])
+      }),
+      "wish-introducer": Object.freeze({
+        lessonSections: Object.freeze(["§9.5"]),
+        atomIds: Object.freeze(["ACI-P095-L022-17A5FC483D", "ACI-P095-L024-544E1F2573"])
+      }),
+      "wish-strengthener": Object.freeze({
+        lessonSections: Object.freeze(["§9.5"]),
+        atomIds: Object.freeze(["ACI-P096-L015-B5530F1357", "ACI-P096-L025-313573DD0F"])
+      }),
+      "negative-wish-command": Object.freeze({
+        lessonSections: Object.freeze(["§9.6", "§9.9"]),
+        atomIds: Object.freeze(["ACI-P096-L032-C45EADCC64", "ACI-P097-L004-9B41376753", "ACI-P098-L016-E34A88A44A"])
+      }),
+      "command-introducer": Object.freeze({
+        lessonSections: Object.freeze(["§9.7"]),
+        atomIds: Object.freeze(["ACI-P097-L017-42FC1FFF66", "ACI-P097-L018-8BA5D666F8"])
+      }),
+      "future-command": Object.freeze({
+        lessonSections: Object.freeze(["§9.8"]),
+        atomIds: Object.freeze(["ACI-P098-L008-32ABDE494C", "ACI-P098-L009-EB8093783D"])
+      }),
+      "admonition-introducer": Object.freeze({
+        lessonSections: Object.freeze(["§10.3"]),
+        atomIds: Object.freeze(["ACI-P100-L008-F1AA6390D3", "ACI-P100-L012-B50BCE2387"])
+      }),
+      "admonition-strengthener": Object.freeze({
+        lessonSections: Object.freeze(["§10.3", "§10.3.4"]),
+        atomIds: Object.freeze(["ACI-P100-L010-182DC4F7F2", "ACI-P101-L017-76D6ED7F57"])
+      }),
+      "admonitive-morphology": Object.freeze({
+        lessonSections: Object.freeze(["§10.1", "§10.2"]),
+        atomIds: Object.freeze(["ACI-P099-L016-011FBB8AA2-02", "ACI-P099-L025-213CC30339", "ACI-P099-L027-96825197F7"])
+      }),
+      "negative-admonition": Object.freeze({
+        lessonSections: Object.freeze(["§10.4"]),
+        atomIds: Object.freeze(["ACI-P101-L023-A798BEA5C8", "ACI-P101-L033-E214411E9F-03", "ACI-P101-L035-8E4D508EFA-03"])
+      }),
       "nuclear-clause-boundary": Object.freeze({
         lessonSections: Object.freeze(["§4.4"]),
         atomIds: Object.freeze(["ACI-P061-L016-50C9F319DB", "ACI-P061-L017-65685DB703"])
@@ -5105,11 +5165,80 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const isSilentCarrier = carrier => ["0", "⎕"].includes(String(carrier || ""));
       const subject = slots.subject || {};
+      const sentenceContext = grammarContext?.sentenceSurfaceFrame || grammarContext || null;
       const nuclearSignature = subject.pers1 && subject.pers2
         ? `#${subject.pers1}-${subject.pers2}`
         : "";
       const nuclearStart = nuclearSignature ? text.indexOf(nuclearSignature) : text.indexOf("#");
       if (nuclearStart < 0) return Object.freeze([]);
+      const addSentenceCarrier = (carrier, role, label, authorityKey) => {
+        const value = String(carrier || "").replace(/#$/u, "");
+        if (!value) return;
+        const start = text.indexOf(value);
+        if (start < 0 || start >= nuclearStart) return;
+        addAnnotation(start, start + value.length, role, label, "carrier", authorityKey);
+      };
+      if (sentenceContext) {
+        const sentenceRole = String(sentenceContext.canvasSentenceRole || sentenceContext.sentenceCanvasRole || "");
+        const selectedMood = String(sentenceContext.mood || sentenceContext.state?.mood || grammarContext?.mood || "");
+        const introductoryParticle = String(sentenceContext.introductoryParticle || sentenceContext.sentenceIntroductoryParticle || sentenceContext.state?.introductoryParticle || "");
+        const introductoryModifier = String(sentenceContext.introductoryModifier || sentenceContext.sentenceIntroductoryModifier || sentenceContext.state?.introductoryModifier || "");
+        const prefaceParticle = String(sentenceContext.prefaceParticle || sentenceContext.sentencePrefaceParticle || sentenceContext.state?.prefaceParticle || "");
+        if (introductoryParticle) {
+          if (sentenceRole.includes("admonition") || selectedMood === "admonitive") {
+            addSentenceCarrier(introductoryParticle, "admonition-introducer", "admonition introducer", "admonition-introducer");
+          } else if (sentenceRole === "wish" || selectedMood === "optative" && !sentenceRole.includes("command") && sentenceRole !== "exhortation") {
+            addSentenceCarrier(introductoryParticle, "wish-introducer", "wish introducer", "wish-introducer");
+          } else if (sentenceRole.includes("command") || sentenceRole === "exhortation") {
+            addSentenceCarrier(
+              introductoryParticle,
+              "command-introducer",
+              sentenceRole === "exhortation" ? "exhortation introducer" : "command introducer",
+              "command-introducer"
+            );
+          }
+        }
+        if (prefaceParticle) {
+          addSentenceCarrier(prefaceParticle, "wish-preface", "wish preface", "wish-strengthener");
+        }
+        if (introductoryModifier) {
+          addSentenceCarrier(
+            introductoryModifier,
+            sentenceRole.includes("admonition") || selectedMood === "admonitive" ? "admonition-strengthener" : "wish-command-strengthener",
+            sentenceRole.includes("admonition") || selectedMood === "admonitive" ? "admonition strengthener" : sentenceRole === "wish" ? "wish strengthener" : "command strengthener",
+            sentenceRole.includes("admonition") || selectedMood === "admonitive" ? "admonition-strengthener" : "wish-strengthener"
+          );
+        }
+        (sentenceContext.sentencePrefixalStack || []).forEach(prefix => {
+          const normalizedPrefix = String(prefix || "");
+          if (normalizedPrefix === "ō#") {
+            addSentenceCarrier(normalizedPrefix, "earlier-event-modifier", "earlier event", "earlier-event-modifier");
+          } else if (["ah#", "ca#"].includes(normalizedPrefix)) {
+            const selectedMood = sentenceContext.mood || sentenceContext.state?.mood;
+            const isAdmonitive = selectedMood === "admonitive";
+            const isOptative = selectedMood === "optative";
+            addSentenceCarrier(
+              normalizedPrefix,
+              isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion",
+              isAdmonitive
+                ? "cancels the admonition"
+                : isOptative
+                  ? sentenceRole === "wish" ? "negative wish" : "negative command"
+                  : "negative assertion",
+              isAdmonitive ? "negative-admonition" : isOptative ? "negative-wish-command" : "negative-assertion"
+            );
+          }
+        });
+        if ((sentenceContext.sentenceParticles || []).includes("ahmō")) {
+          addSentenceCarrier("ahmō", "negative-wish-command", "negative command", "negative-wish-command");
+        }
+        if (sentenceContext.emphaticParticle === "ca" || sentenceContext.sentenceEmphaticParticle === "ca") {
+          addSentenceCarrier("ca", "emphatic-assertion", "emphatic assertion", "emphatic-assertion");
+        }
+        if (sentenceContext.questionMode === "cuix" || sentenceContext.sentenceQuestionMode === "cuix") {
+          addSentenceCarrier("cuix", "question-particle", "yes-no question", "question-particle");
+        }
+      }
       const subjectPers1Start = nuclearStart + 1;
       const subjectPers2Start = subjectPers1Start + String(subject.pers1 || "").length + 1;
       if (isSilentCarrier(subject.pers1)) {
@@ -5165,6 +5294,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "shuntline-reflexive": Object.freeze({ label: "shuntline reflexive object", authorityKey: "shuntline-reflexive-object" })
           }[objectProfile.objectKind] || Object.freeze({ label: "monadic object", authorityKey: "monadic-valence" });
           addCarrierAnnotation(carrierStart, realizedCarrier, `object-carrier-${slotIndex + 1}`, monadicJob.label, "carrier", monadicJob.authorityKey);
+          return;
+        }
+        if (slot?.kind === "vnc-internal-directional" || slot?.role === "directional-locative") {
+          addCarrierAnnotation(
+            carrierStart,
+            realizedCarrier,
+            "directional-prefix",
+            realizedCarrier === "huāl" ? "direction toward here" : "direction away or there",
+            "carrier",
+            "directional-prefix"
+          );
           return;
         }
         if (slot?.kind !== "dyadic-valence") {
@@ -5327,32 +5467,47 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const tenseStart = stemStart + stemToken.length;
+        const sentenceMood = String(sentenceContext?.mood || sentenceContext?.state?.mood || grammarContext?.mood || "");
+        const sentenceRole = String(sentenceContext?.canvasSentenceRole || sentenceContext?.sentenceCanvasRole || "");
+        const futureCommand = (sentenceContext?.futureIndicativeAsOptative === true || sentenceContext?.sentenceFutureIndicativeAsOptative === true) && sentenceRole.includes("command");
+        const tenseJob = futureCommand
+          ? Object.freeze({ label: "future command", authorityKey: "future-command" })
+          : sentenceMood === "admonitive"
+            ? Object.freeze({ label: "admonitive mood and tense", authorityKey: "admonitive-morphology" })
+            : sentenceMood === "optative"
+              ? Object.freeze({ label: sentenceRole === "wish" ? "wish mood and tense" : "optative mood and tense", authorityKey: "optative-morphology" })
+              : Object.freeze({ label: "mood and tense", authorityKey: "mood-tense" });
         addCarrierAnnotation(
           tenseStart,
           predicate.tns,
           isSilentCarrier(predicate.tns) ? "silent-tense" : "tense-carrier",
-          isSilentCarrier(predicate.tns) ? "silent mood and tense" : "mood and tense",
+          isSilentCarrier(predicate.tns) ? `silent ${tenseJob.label}` : tenseJob.label,
           isSilentCarrier(predicate.tns) ? "silent" : "carrier",
-          "mood-tense"
+          tenseJob.authorityKey
         );
         const number = slots.number || {};
         const num1Start = tenseStart + String(predicate.tns || "").length + 1;
+        const numberJob = sentenceMood === "admonitive"
+          ? Object.freeze({ connector: "admonitive number connector", subject: "admonitive subject number", authorityKey: "admonitive-morphology" })
+          : sentenceMood === "optative"
+            ? Object.freeze({ connector: "optative number connector", subject: "optative subject number", authorityKey: "optative-morphology" })
+            : Object.freeze({ connector: "number connector", subject: "subject number", authorityKey: "" });
         addCarrierAnnotation(
           num1Start,
           number.num1,
           isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector",
-          isSilentCarrier(number.num1) ? "silent number connector" : "number connector",
+          isSilentCarrier(number.num1) ? `silent ${numberJob.connector}` : numberJob.connector,
           isSilentCarrier(number.num1) ? "silent" : "carrier",
-          "number-connector"
+          numberJob.authorityKey || "number-connector"
         );
         const num2Start = num1Start + String(number.num1 || "").length + 1;
         addCarrierAnnotation(
           num2Start,
           number.num2,
           isSilentCarrier(number.num2) ? "silent-subject-number" : "subject-number-carrier",
-          isSilentCarrier(number.num2) ? "silent subject number" : "subject number",
+          isSilentCarrier(number.num2) ? `silent ${numberJob.subject}` : numberJob.subject,
           isSilentCarrier(number.num2) ? "silent" : "carrier",
-          "subject-number"
+          numberJob.authorityKey || "subject-number"
         );
       }
       const nuclearEnd = text.indexOf("#", nuclearStart + 1);
@@ -5501,7 +5656,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const role = String(annotationRole || "");
       if (role.includes("tense")) return "tense";
       if (role.includes("number")) return "subject";
-      if (role.includes("object") || role.includes("reflexive") || role.startsWith("derived-carrier")) return "core";
+      if (role.includes("object") || role.includes("reflexive") || role.includes("directional") || role.startsWith("derived-carrier")) return "core";
       if (role.includes("subject") || role.includes("nominative")) return "subject";
       if (role === "predicate-stem" || role === "stem-left-boundary") return "core";
       if (role.includes("boundary")) return "any";
@@ -18130,11 +18285,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
       const specificLinearTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
+      const derivedAnnotationGrammarContext = Object.freeze({
+        ...(surfaceFrame.machineryFrame || {}),
+        mood: surfaceFrame.state?.mood || surfaceFrame.machineryFrame?.mood || "",
+        tense: surfaceFrame.state?.tense || surfaceFrame.machineryFrame?.tense || "",
+        sentenceSurfaceFrame: Object.freeze({
+          ...(surfaceFrame.sentenceSurfaceFrame || {}),
+          state: surfaceFrame.state || null,
+          sentenceCanvasRole: surfaceFrame.sentenceCanvasRole || surfaceFrame.sentenceSurfaceFrame?.canvasSentenceRole || "",
+          sentenceIntroductoryParticle: surfaceFrame.sentenceIntroductoryParticle || surfaceFrame.sentenceSurfaceFrame?.introductoryParticle || "",
+          sentenceIntroductoryModifier: surfaceFrame.sentenceIntroductoryModifier || surfaceFrame.sentenceSurfaceFrame?.introductoryModifier || "",
+          sentencePrefaceParticle: surfaceFrame.sentencePrefaceParticle || surfaceFrame.sentenceSurfaceFrame?.prefaceParticle || "",
+          sentencePrefixalStack: surfaceFrame.sentencePrefixalStack || surfaceFrame.sentenceSurfaceFrame?.sentencePrefixalStack || Object.freeze([]),
+          sentenceParticles: surfaceFrame.sentenceParticles || surfaceFrame.sentenceSurfaceFrame?.sentenceParticles || Object.freeze([]),
+          sentenceEmphaticParticle: surfaceFrame.sentenceEmphaticParticle || surfaceFrame.sentenceSurfaceFrame?.emphaticParticle || "",
+          sentenceQuestionMode: surfaceFrame.sentenceQuestionMode || surfaceFrame.sentenceSurfaceFrame?.questionMode || "",
+          sentenceFutureIndicativeAsOptative: surfaceFrame.sentenceFutureIndicativeAsOptative === true || surfaceFrame.sentenceSurfaceFrame?.futureIndicativeAsOptative === true
+        })
+      });
       renderClassicalFormulaDerivedAnnotations(
         formula,
         specificLinearFormula,
         specificLinearTypedSlotFrame,
-        surfaceFrame.machineryFrame
+        derivedAnnotationGrammarContext
       );
       const linearFormatSwitch = createFormulaSpecificitySwitch("Linear format", mode => {
         const showGeneral = mode === "general" && Boolean(generalLinearFormula);
@@ -18142,7 +18315,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
         formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
         if (showGeneral) renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula);
-        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame, surfaceFrame.machineryFrame);
+        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame, derivedAnnotationGrammarContext);
       });
       linearFormatSwitch.hidden = !generalLinearFormula;
       linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
@@ -18181,7 +18354,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             diagramRow.role,
             specificLinearFormula,
             specificLinearTypedSlotFrame,
-            surfaceFrame.machineryFrame
+            derivedAnnotationGrammarContext
           );
         } else {
           renderClassicalGeneralFormulaAnnotations(expression, diagramRow.expression);
@@ -18256,7 +18429,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sentenceFormula,
         typedSentenceFormulaDisplay || "",
         specificLinearTypedSlotFrame,
-        surfaceFrame.machineryFrame
+        derivedAnnotationGrammarContext
       );
       sentenceFormula.hidden = !typedSentenceFormulaDisplay;
       sentenceFormulaSection.hidden = fullParadigmActive || !typedSentenceFormulaDisplay;
