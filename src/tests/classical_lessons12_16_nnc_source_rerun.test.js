@@ -166,6 +166,17 @@ function run(ctx = {}) {
         known: [false, false],
     });
 
+    const sourcePanel = ctx.ClassicalSourcePanel();
+    const authorityPanel = ctx.ClassicalAuthorityPanel();
+    s.eq("the nounstem class choice is presented in Source, not Grammar", {
+        source: sourcePanel.includes('id="classical-rule-logic-nnc-class"')
+            && sourcePanel.includes(">Nounstem class</span>"),
+        grammar: authorityPanel.includes('id="classical-rule-logic-nnc-class"'),
+    }, {
+        source: true,
+        grammar: false,
+    });
+
     const ordinary = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });
     const personal = ctx.issueCanonicalNncSourceFrame({
         stem: "eh-huā", embedStem: "eh", matrixStem: "huā",

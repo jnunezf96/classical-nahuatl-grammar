@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-lessons12-16-nnc-source-222";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-class-in-source-223";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

@@ -485,6 +485,31 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           </optgroup>
                         </select>
                       </label>
+                      <label
+                        class="classical-nnc-source-guide__field"
+                        data-classical-nnc-authority-control="ordinary"
+                        data-classical-nnc-authority-order="open-stem-class"
+                        hidden
+                      >
+                        <span class="classical-nnc-source-guide__label">Nounstem class</span>
+                        <select
+                          id="classical-rule-logic-nnc-class"
+                          class="classical-nnc-source-guide__select"
+                          data-classical-rule-logic-control="nnc-class"
+                        >
+                          <option value="" selected>Choose class</option>
+                          <option value="zero">0</option>
+                          <option value="in">in</option>
+                          <option value="tli-1">tli 1</option>
+                          <option value="tli-2">tli 2</option>
+                          <option value="tl-1-a">tl 1-A</option>
+                          <option value="tl-1-b">tl 1-B</option>
+                          <option value="tl-2-a">tl 2-A</option>
+                          <option value="tl-2-b-a">tl 2-B (final a)</option>
+                          <option value="tl-2-b-i">tl 2-B (final i)</option>
+                          <option value="tl-2-c">tl 2-C</option>
+                        </select>
+                      </label>
                       <p class="classical-nnc-source-guide__rule">Source contains the nounstem only. Subject, State, and number remain outside (STEM).</p>
                     </section>
                     <div
@@ -2352,22 +2377,6 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="analogical-restricted-use">tla possessive predicate → restricted-use stem</option>
                           <option value="tl-2a-to-1a">tl 2-A → 1-A by ephemeral i loss</option>
                           <option value="tec-title">special general-use stem (tēc)</option>
-                        </select>
-                      </label>
-                      <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="open-stem-class" hidden>
-                        <span class="classical-rule-control__label">NNC source class</span>
-                        <select id="classical-rule-logic-nnc-class" data-classical-rule-logic-control="nnc-class">
-                          <option value="" selected>Choose class</option>
-                          <option value="zero">0</option>
-                          <option value="in">in</option>
-                          <option value="tli-1">tli 1</option>
-                          <option value="tli-2">tli 2</option>
-                          <option value="tl-1-a">tl 1-A</option>
-                          <option value="tl-1-b">tl 1-B</option>
-                          <option value="tl-2-a">tl 2-A</option>
-                          <option value="tl-2-b-a">tl 2-B (final a)</option>
-                          <option value="tl-2-b-i">tl 2-B (final i)</option>
-                          <option value="tl-2-c">tl 2-C</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="predicate-stem-relation" hidden>
