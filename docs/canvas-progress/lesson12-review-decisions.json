@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 12,
+  "decisions": {
+    "lesson12-state-and-absolutive-formula": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the typed absolutive NNC structure from the existing State choice."
+    },
+    "lesson12-subject-number-connectors": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the subject while the application selects every connector, supportive vowel, and assimilation."
+    },
+    "lesson12-absolutive-subject-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the complete absolutive subject paradigm without a connector picker."
+    }
+  }
+}

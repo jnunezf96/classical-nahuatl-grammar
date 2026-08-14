@@ -4992,6 +4992,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§11.5.2 Note"]),
         atomIds: Object.freeze(["ACI-P113-L018-D299E78807-03"])
       }),
+      "grammar-exception": Object.freeze({
+        lessonSections: Object.freeze(["§11.4.8"]),
+        atomIds: Object.freeze(["ACI-P109-L009-154A6AA078-02"])
+      }),
+      "nnc-absolutive-state": Object.freeze({
+        lessonSections: Object.freeze(["§12.1", "§12.2"]),
+        atomIds: Object.freeze(["ACI-P115-L009-4E02BB0AA3", "ACI-P115-L016-53D8BE9734", "ACI-P115-L018-F42DBD1F11"])
+      }),
+      "nnc-nounstem-predicate": Object.freeze({
+        lessonSections: Object.freeze(["§12.2", "§12.5"]),
+        atomIds: Object.freeze(["ACI-P115-L018-F42DBD1F11", "ACI-P117-L036-C8DE1C0F5B"])
+      }),
+      "nnc-number-connector": Object.freeze({
+        lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
+        atomIds: Object.freeze(["ACI-P115-L028-A4139D4FBD-02", "ACI-P116-L005-BB969DA0FA", "ACI-P116-L024-BA670DD472"])
+      }),
+      "nnc-subject-number": Object.freeze({
+        lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
+        atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5254,6 +5274,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       const isSilentCarrier = carrier => ["0", "⎕"].includes(String(carrier || ""));
       const subject = slots.subject || {};
+      const isTypedNnc = typedSlotFrame?.kind === "classical-nahuatl-nnc-slot-frame";
+      if (isTypedNnc) {
+        const nuclearStart = text.indexOf("#");
+        const stem = String(slots.predicate?.stem || "");
+        const stemToken = `(${stem})`;
+        const stemStart = text.indexOf(stemToken);
+        if (nuclearStart < 0 || stemStart < 0) return Object.freeze([]);
+        addAnnotation(nuclearStart, nuclearStart + 1, "nuclear-clause-boundary", "nuclear clause boundary", "boundary", "nuclear-clause-boundary");
+        let cursor = nuclearStart + 1;
+        addCarrierAnnotation(cursor, subject.pers1, isSilentCarrier(subject.pers1) ? "silent-subject-person" : "subject-person", isSilentCarrier(subject.pers1) ? "silent subject person" : "subject person", isSilentCarrier(subject.pers1) ? "silent" : "carrier", "subject-person");
+        cursor += String(subject.pers1 || "").length;
+        addAnnotation(cursor, cursor + 1, "subposition-boundary", "subposition boundary", "boundary", "subposition-boundary");
+        cursor += 1;
+        addCarrierAnnotation(cursor, subject.pers2, isSilentCarrier(subject.pers2) ? "silent-subject-nominative" : "subject-nominative", isSilentCarrier(subject.pers2) ? "silent nominative" : "nominative", isSilentCarrier(subject.pers2) ? "silent" : "carrier", "subject-nominative");
+        addAnnotation(stemStart, stemStart + 1, "absolutive-state", "absolutive State", "boundary", "nnc-absolutive-state");
+        addAnnotation(stemStart + 1, stemStart + 1 + stem.length, "nounstem-predicate", "nounstem predicate", "carrier", "nnc-nounstem-predicate");
+        addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
+        const number = slots.number || {};
+        const num1Start = stemStart + stemToken.length;
+        addCarrierAnnotation(num1Start, number.num1, isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector", isSilentCarrier(number.num1) ? "silent number connector" : "number connector", isSilentCarrier(number.num1) ? "silent" : "carrier", "nnc-number-connector");
+        const numberBoundary = num1Start + String(number.num1 || "").length;
+        addAnnotation(numberBoundary, numberBoundary + 1, "subposition-boundary", "subposition boundary", "boundary", "subposition-boundary");
+        const num2Start = numberBoundary + 1;
+        addCarrierAnnotation(num2Start, number.num2, isSilentCarrier(number.num2) ? "silent-subject-number" : "subject-number", isSilentCarrier(number.num2) ? "silent subject number" : "subject number", isSilentCarrier(number.num2) ? "silent" : "carrier", "nnc-subject-number");
+        const nuclearEnd = text.lastIndexOf("#");
+        if (nuclearEnd > nuclearStart) addAnnotation(nuclearEnd, nuclearEnd + 1, "nuclear-clause-boundary", "nuclear clause boundary", "boundary", "nuclear-clause-boundary");
+        return Object.freeze(annotations.sort((left, right) => left.start - right.start || left.end - right.end));
+      }
       const sentenceContext = grammarContext?.sentenceSurfaceFrame || grammarContext || null;
       const nuclearSignature = subject.pers1 && subject.pers2
         ? `#${subject.pers1}-${subject.pers2}`
@@ -5485,7 +5533,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
                       : lesson11Plan.irregularityKind === "defective-nnc-cooperation"
                         ? { role: "zero-root-existence", label: "zero-root existence verbstem", authorityKey: "zero-root-existence" }
                         : lesson11Plan.irregularityKind === "preterit-stem-exception"
-                          ? { role: "mani-referent", label: lesson11Plan.contextualInterpretation === "wide-flat-thing" ? "wide or flat referent" : lesson11Plan.contextualInterpretation === "mass-or-crowd" ? "mass or crowd referent" : lesson11Plan.usageStatus === "marked-not-ordinary" ? "individual animate referent, unusual" : "mani positional verbstem", authorityKey: "mani-referent" }
+                          ? lesson11Plan.requestedSemanticTense === "preterit"
+                            ? { role: "grammar-exception", label: "exception", authorityKey: "grammar-exception" }
+                            : { role: "mani-referent", label: lesson11Plan.contextualInterpretation === "wide-flat-thing" ? "wide or flat referent" : lesson11Plan.contextualInterpretation === "mass-or-crowd" ? "mass or crowd referent" : lesson11Plan.usageStatus === "marked-not-ordinary" ? "individual animate referent, unusual" : "mani positional verbstem", authorityKey: "mani-referent" }
                           : lesson11Plan.irregularityKind === "regular-with-optional-past-reading"
                             ? { role: "nemi-tense-relation", label: "nemi tense relation", authorityKey: "nemi-tense-relation" }
                             : lesson11Plan.irregularityKind === "suppletive" && lesson11Plan.lexemeId === "be-suppletive"
@@ -5825,7 +5875,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (role.includes("number")) return "subject";
       if (role.includes("object") || role.includes("reflexive") || role.includes("directional") || role.startsWith("derived-carrier")) return "core";
       if (role.includes("subject") || role.includes("nominative")) return "subject";
-      if (role === "predicate-stem" || role === "stem-internal-morph" || role === "stem-left-boundary") return "core";
+      if (role.includes("state") || role.includes("predicate") || role === "stem-internal-morph" || role === "stem-left-boundary") return "core";
       if (role.includes("boundary")) return "any";
       return "";
     }
@@ -5833,7 +5883,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const role = String(diagramRole || "").trim().toLowerCase();
       if (role.includes("tense")) return "tense";
       if (role.includes("subject")) return "subject";
-      if (role.includes("core") || role.includes("object") || role.includes("valence")) return "core";
+      if (role.includes("core") || role.includes("object") || role.includes("valence") || role.includes("predicate")) return "core";
       return "";
     }
     function renderClassicalDiagramDerivedAnnotations(
@@ -18511,7 +18561,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       formula.dataset.classicalFormulaAuthority = surfaceFrame.formulaAuthority || "";
       const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
-      const specificLinearTypedSlotFrame = getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
+      const specificLinearTypedSlotFrame = surfaceFrame.basalUnit === "nnc"
+        ? surfaceFrame.nncGrammarSurfaceContract?.typedSlotFrame || null
+        : getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
       const derivedAnnotationGrammarContext = Object.freeze({
         ...(surfaceFrame.machineryFrame || {}),
         mood: surfaceFrame.state?.mood || surfaceFrame.machineryFrame?.mood || "",

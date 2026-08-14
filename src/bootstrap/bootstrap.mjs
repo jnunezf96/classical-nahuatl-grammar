@@ -1,14 +1,14 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260813-lesson11-groups10-12-205";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260813-lesson12-groups1-3-209";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260813-lesson11-groups10-12-205";
+} from "../runtime/create_runtime.mjs?v=20260813-lesson12-groups1-3-209";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260813-lesson11-groups10-12-205";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson11-groups10-12-205";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson11-groups10-12-205";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-transcription-keyboard-disclosures-206";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260813-lesson12-groups1-3-209";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260813-lesson12-groups1-3-209";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson11-groups10-12-205";
 
 let browserBootstrapPromise = null;

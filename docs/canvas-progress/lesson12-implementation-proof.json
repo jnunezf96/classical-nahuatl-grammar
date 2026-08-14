@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 12,
+  "groups": {
+    "lesson12-state-and-absolutive-formula": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson12_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson12_reader_guidance.test.js"
+    },
+    "lesson12-subject-number-connectors": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson12_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson12_reader_guidance.test.js"
+    },
+    "lesson12-absolutive-subject-paradigm": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson12_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson12_reader_guidance.test.js"
+    }
+  }
+}

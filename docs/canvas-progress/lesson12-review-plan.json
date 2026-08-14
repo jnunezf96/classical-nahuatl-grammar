@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "lesson": 12,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson12-state-and-absolutive-formula",
+      "title": "State and the absolutive NNC formula",
+      "sections": ["§12.1", "§12.2"],
+      "proposal": "Build an absolutive NNC as a subject plus nounstem predicate with vacant State and no tense position.",
+      "writingJob": "Preserve the typed NNC subject, predicate, State, and formula boundaries.",
+      "readingJob": "Guide the reader in distinguishing State from Valence and an NNC from a VNC.",
+      "decisionSplit": "The user chooses State; the application builds the corresponding NNC structure.",
+      "controlPolicy": "Reuse State; no new control.",
+      "userChoiceJob": "CHOOSE_ABSOLUTIVE_OR_POSSESSIVE_STATE",
+      "applicationJob": "BUILD_TYPED_ABSOLUTIVE_NNC_STRUCTURE",
+      "derivedCueJob": "SHOW_SUBJECT_PREDICATE_AND_STATE_STRUCTURE"
+    },
+    {
+      "groupId": "lesson12-subject-number-connectors",
+      "title": "Subject and number connectors",
+      "sections": ["§12.3", "§12.3.1", "§12.3.2", "§12.3.2.a", "§12.3.2.b", "§12.3.2.c"],
+      "proposal": "Select every person and number carrier from subject, State, noun class, and boundary conditions.",
+      "writingJob": "Select and realize the authorized subject and number dyads, supportive vowels, and assimilation automatically.",
+      "readingJob": "Guide the reader in keeping State-conditioned number connectors inside the subject rather than the predicate.",
+      "decisionSplit": "The user chooses subject person and number; the application selects connector morphs.",
+      "controlPolicy": "Reuse Subject; do not expose connector morphs as choices.",
+      "userChoiceJob": "CHOOSE_SUBJECT_PERSON_AND_NUMBER",
+      "applicationJob": "SELECT_STATE_AND_CLASS_CONDITIONED_SUBJECT_CONNECTORS",
+      "derivedCueJob": "SHOW_SUBJECT_AND_NUMBER_CONNECTOR_JOBS"
+    },
+    {
+      "groupId": "lesson12-absolutive-subject-paradigm",
+      "title": "Complete absolutive subject paradigm",
+      "sections": ["§12.4"],
+      "proposal": "Generate the complete absolutive subject inventory without asking the user to choose its automatic morphs.",
+      "writingJob": "Generate every valid person, number, and noun-class subject shape through the same canonical NNC owner.",
+      "readingJob": "Guide recognition of singular, common, and plural subject shapes and their English correspondences.",
+      "decisionSplit": "The user chooses subject coordinates; the application produces the exact shape and full paradigm.",
+      "controlPolicy": "Reuse Subject and Full paradigm; no connector picker.",
+      "userChoiceJob": "CHOOSE_SUBJECT_COORDINATES",
+      "applicationJob": "GENERATE_COMPLETE_ABSOLUTIVE_SUBJECT_PARADIGM",
+      "derivedCueJob": "SHOW_PERSON_AND_NUMBER_CARRIERS"
+    },
+    {
+      "groupId": "lesson12-nounstem-predicate-and-translation",
+      "title": "Nounstem predicate and translation",
+      "sections": ["§12.5"],
+      "proposal": "Keep the nounstem predicative and tenseless while allowing context-sensitive translation.",
+      "writingJob": "Build the nounstem as an identifying, describing, or locating predicate without inventing tense or definiteness.",
+      "readingJob": "Guide the reader from the Nahuatl predicate to a context-appropriate English sentence.",
+      "decisionSplit": "The application preserves Nahuatl structure; the reader supplies contextual English time and definiteness.",
+      "controlPolicy": "No new control until a genuine sentence context supplies the choice.",
+      "userChoiceJob": "NO_NEW_USER_CHOICE",
+      "applicationJob": "PRESERVE_TENSELESS_NOUNSTEM_PREDICATION",
+      "derivedCueJob": "SHOW_NOUNSTEM_PREDICATE_JOB"
+    },
+    {
+      "groupId": "lesson12-animacy-reference-and-number",
+      "title": "Animacy, reference, and number",
+      "sections": ["§12.6"],
+      "proposal": "Use typed animacy and actual subject reference to allow singular, common, plural, and metaphorical constructions.",
+      "writingJob": "Enforce animacy-number applicability while allowing a deliberate metaphorical animate reading.",
+      "readingJob": "Guide the reader in separating subject number from nounstem inflection and resolving reference from context.",
+      "decisionSplit": "The user supplies intended reference only when it changes the grammatical reading; the application enforces compatibility.",
+      "controlPolicy": "Reuse Animacy and Metaphorical use; no noun-plural control.",
+      "userChoiceJob": "CHOOSE_REFERENCE_WHEN_CONTEXT_REQUIRES_IT",
+      "applicationJob": "ENFORCE_ANIMACY_AND_SUBJECT_NUMBER_COMPATIBILITY",
+      "derivedCueJob": "SHOW_REFERENCE_AND_SUBJECT_NUMBER_JOBS"
+    },
+    {
+      "groupId": "lesson12-state-selection-freedom",
+      "title": "State selection and lexical restrictions",
+      "sections": ["§12.7"],
+      "proposal": "Allow ordinary nounstems in either State and enforce only genuine lexical State restrictions.",
+      "writingJob": "Admit both States by default and block a State only when typed lexical authority requires it.",
+      "readingJob": "Guide the reader in distinguishing State choice from a verbstem's control of Valence.",
+      "decisionSplit": "The user chooses State where grammar permits it; the application enforces lexical restrictions.",
+      "controlPolicy": "Reuse State; unavailable choices are disabled automatically.",
+      "userChoiceJob": "CHOOSE_AN_AVAILABLE_STATE",
+      "applicationJob": "ALLOW_OR_RESTRICT_STATE_FROM_TYPED_LEXICAL_AUTHORITY",
+      "derivedCueJob": "SHOW_STATE_JOB_OR_EXCEPTION"
+    }
+  ]
+}
