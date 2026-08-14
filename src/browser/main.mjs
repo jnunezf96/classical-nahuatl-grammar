@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-source-class-controls-224";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-class-pattern-225";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

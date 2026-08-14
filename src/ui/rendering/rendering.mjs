@@ -9105,6 +9105,38 @@ export function createUiRenderingApi(targetObject = globalThis) {
       presentation.primary.appendChild(preview);
       return true;
     }
+    function syncClassicalNncSourceClassPattern(surfaceFrame = null) {
+      const root = targetObject.document?.getElementById?.(
+        "classical-nnc-source-class-pattern"
+      ) || null;
+      if (!root) {
+        return false;
+      }
+      const sourceFrame = surfaceFrame?.state?.nncTypedSourceFrame || null;
+      const sourceClass = String(sourceFrame?.sourceClass || "");
+      const classPattern = sourceFrame?.sourceClassAnalysis?.classPattern || null;
+      const visible = surfaceFrame?.state?.basalUnit === "nnc"
+        && sourceFrame?.kind === "classical-nahuatl-ordinary-nnc-source-frame"
+        && Boolean(sourceClass && classPattern);
+      root.hidden = !visible;
+      root.setAttribute("aria-hidden", String(!visible));
+      root.dataset.classicalSourceClass = visible ? sourceClass : "";
+      root.dataset.classicalGrammarAuthority = "false";
+      root.dataset.classicalPresentationOnly = "true";
+      const cells = {
+        "classical-nnc-source-class-pattern-absolutive-common": classPattern?.absolutiveSingularCommon,
+        "classical-nnc-source-class-pattern-absolutive-plural": classPattern?.absolutivePlural,
+        "classical-nnc-source-class-pattern-possessive-common": classPattern?.possessiveSingularCommon,
+        "classical-nnc-source-class-pattern-possessive-plural": classPattern?.possessivePlural
+      };
+      Object.entries(cells).forEach(([id, cell]) => {
+        const output = targetObject.document?.getElementById?.(id) || null;
+        if (!output) return;
+        output.textContent = visible ? String(cell?.realization || "") : "";
+        output.dataset.classicalCanvasSection = visible ? String(cell?.canvasSection || "") : "";
+      });
+      return visible;
+    }
     function syncClassicalRuleLogicControlsForSurfaceFrame(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined" || !surfaceFrame) {
         return;
@@ -9790,6 +9822,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         wrapper.dataset.classicalControlAvailability = !renderInAuthority ? "hidden" : control.disabled ? "disabled" : "enabled";
       });
       syncClassicalNncGrammarSurfaceContract(surfaceFrame);
+      syncClassicalNncSourceClassPattern(surfaceFrame);
       syncClassicalLessons27282933Closure(surfaceFrame);
       if (fullVncParadigm) {
         [...CLASSICAL_VNC_FULL_PARADIGM_ENUMERATED_CONTROL_IDS, "classical-rule-logic-valence"].forEach(id => {

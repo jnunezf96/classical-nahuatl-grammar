@@ -523,6 +523,27 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <option value="tl-2-c">tl 2-C</option>
                         </select>
                       </label>
+                      <section
+                        id="classical-nnc-source-class-pattern"
+                        class="classical-nnc-source-class-pattern"
+                        aria-label="Nounstem class pattern"
+                        aria-live="polite"
+                        hidden
+                      >
+                        <div class="classical-nnc-source-class-pattern__title">Class pattern</div>
+                        <div class="classical-nnc-source-class-pattern__grid" role="table" aria-label="Absolutive and possessive class pattern">
+                          <div class="classical-nnc-source-class-pattern__corner" role="columnheader"></div>
+                          <div class="classical-nnc-source-class-pattern__heading" role="columnheader">singular / common</div>
+                          <div class="classical-nnc-source-class-pattern__heading" role="columnheader">plural</div>
+                          <div class="classical-nnc-source-class-pattern__state" role="rowheader">absolutive</div>
+                          <output id="classical-nnc-source-class-pattern-absolutive-common" class="classical-nnc-source-class-pattern__value" role="cell"></output>
+                          <output id="classical-nnc-source-class-pattern-absolutive-plural" class="classical-nnc-source-class-pattern__value" role="cell"></output>
+                          <div class="classical-nnc-source-class-pattern__state" role="rowheader">possessive</div>
+                          <output id="classical-nnc-source-class-pattern-possessive-common" class="classical-nnc-source-class-pattern__value" role="cell"></output>
+                          <output id="classical-nnc-source-class-pattern-possessive-plural" class="classical-nnc-source-class-pattern__value" role="cell"></output>
+                        </div>
+                        <p class="classical-nnc-source-class-pattern__note">The class supplies the pattern. An absolutive plural connector remains a lexical fact and is not guessed from spelling.</p>
+                      </section>
                       <p class="classical-nnc-source-guide__rule">Source contains the nounstem only. Subject, State, and number remain outside (STEM).</p>
                     </section>
                     <div

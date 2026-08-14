@@ -74,46 +74,127 @@ const ORDINARY_NNC_SUBCLASSES_BY_CLASS = Object.freeze({
   in: Object.freeze([""]),
   zero: Object.freeze([""]),
 });
+function defineOpenNncSourceClassPattern({
+  absolutiveSingularCommon,
+  absolutivePlural,
+  possessiveSingularCommon,
+  possessivePlural = "general-use stem + hu-ān",
+}) {
+  return Object.freeze({
+    absolutiveSingularCommon: Object.freeze({
+      realization: absolutiveSingularCommon,
+      canvasSection: "§14.4",
+    }),
+    absolutivePlural: Object.freeze({
+      realization: absolutivePlural,
+      canvasSection: "§14.5",
+    }),
+    possessiveSingularCommon: Object.freeze({
+      realization: possessiveSingularCommon,
+      canvasSection: "§14.7",
+    }),
+    possessivePlural: Object.freeze({
+      realization: possessivePlural,
+      canvasSection: "§14.6",
+    }),
+  });
+}
+const TL_ABSOLUTIVE_PLURAL_PATTERN =
+  "restricted-use stem + lexical m-eh or 0-h";
+const OTHER_ABSOLUTIVE_PLURAL_PATTERN =
+  "restricted-use stem + lexical t-in or m-eh";
 const ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES = Object.freeze({
   "tl-1-a": Object.freeze({
     nounClass: "tl", useShape: "base", subclass: "tl-1-a",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + uh",
+    }),
   }),
   "tl-1-b": Object.freeze({
     nounClass: "tl", useShape: "base", subclass: "tl-1-b",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
   }),
   "tl-2-a": Object.freeze({
     nounClass: "tl", useShape: "truncated", subclass: "tl-2-a",
     ephemeralFinalVowel: "i", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "truncated general-use stem + 0",
+    }),
   }),
   "tl-2-b-a": Object.freeze({
     nounClass: "tl", useShape: "truncated", subclass: "tl-2-b",
     ephemeralFinalVowel: "a", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "truncated general-use stem + 0",
+    }),
   }),
   "tl-2-b-i": Object.freeze({
     nounClass: "tl", useShape: "truncated", subclass: "tl-2-b",
     ephemeralFinalVowel: "i", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "truncated general-use stem + 0",
+    }),
   }),
   "tl-2-c": Object.freeze({
     nounClass: "tl", useShape: "truncated", subclass: "tl-2-c",
     ephemeralFinalVowel: "a", truncationRepair: "supportive-i",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon:
+        "truncated general-use stem + supportive i + 0",
+    }),
   }),
   "tli-1": Object.freeze({
     nounClass: "tli", useShape: "base", subclass: "tli-1",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tli or li",
+      absolutivePlural: OTHER_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
   }),
   "tli-2": Object.freeze({
     nounClass: "tli", useShape: "base", subclass: "tli-2",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + tli or li",
+      absolutivePlural: OTHER_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon:
+        "general-use stem + hui or a licensed silent alternative",
+    }),
   }),
   in: Object.freeze({
     nounClass: "in", useShape: "base", subclass: "",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + in",
+      absolutivePlural: OTHER_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
   }),
   zero: Object.freeze({
     nounClass: "zero", useShape: "base", subclass: "",
     ephemeralFinalVowel: "", truncationRepair: "none",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon: "restricted-use stem + 0",
+      absolutivePlural: OTHER_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon: "general-use stem + 0",
+    }),
   }),
 });
 function getOpenNncSourceClassAnalysis(sourceClass = "") {
@@ -937,6 +1018,7 @@ export function createClassicalNahuatlNncApplicationModule(
     const sourceClass = lexicalEntry
       ? canonicalSourceClass
       : requestedSourceClass;
+    const sourceClassAnalysis = getOpenNncSourceClassAnalysis(sourceClass);
     const lexicalEntryId = lexicalEntry
       ? `ordinary-nounstem:${stem}`
       : openStemSource
@@ -1147,7 +1229,7 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalSelectionAuthority,
       openStemSource,
       sourceClass,
-      sourceClassAnalysis: openSourceClassAnalysis,
+      sourceClassAnalysis,
       sourceClassShapeFrame: openSourceShapeFrame,
       nounClass,
       referentialAnimacy,

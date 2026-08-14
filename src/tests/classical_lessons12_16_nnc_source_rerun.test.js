@@ -14,6 +14,40 @@ function run(ctx = {}) {
             "tl-2-c", "tli-1", "tli-2", "in", "zero",
         ]
     );
+    const patternsByClass = Object.fromEntries(
+        inventory.map((entry) => [entry.sourceClass, entry.classPattern])
+    );
+    s.eq("each Lesson 14 class carries its complete absolutive and possessive pattern", {
+        tl1a: patternsByClass["tl-1-a"],
+        tl2c: patternsByClass["tl-2-c"],
+        tli2: patternsByClass["tli-2"],
+        zero: patternsByClass.zero,
+    }, {
+        tl1a: {
+            absolutiveSingularCommon: { realization: "restricted-use stem + tl", canvasSection: "§14.4" },
+            absolutivePlural: { realization: "restricted-use stem + lexical m-eh or 0-h", canvasSection: "§14.5" },
+            possessiveSingularCommon: { realization: "general-use stem + uh", canvasSection: "§14.7" },
+            possessivePlural: { realization: "general-use stem + hu-ān", canvasSection: "§14.6" },
+        },
+        tl2c: {
+            absolutiveSingularCommon: { realization: "restricted-use stem + tl", canvasSection: "§14.4" },
+            absolutivePlural: { realization: "restricted-use stem + lexical m-eh or 0-h", canvasSection: "§14.5" },
+            possessiveSingularCommon: { realization: "truncated general-use stem + supportive i + 0", canvasSection: "§14.7" },
+            possessivePlural: { realization: "general-use stem + hu-ān", canvasSection: "§14.6" },
+        },
+        tli2: {
+            absolutiveSingularCommon: { realization: "restricted-use stem + tli or li", canvasSection: "§14.4" },
+            absolutivePlural: { realization: "restricted-use stem + lexical t-in or m-eh", canvasSection: "§14.5" },
+            possessiveSingularCommon: { realization: "general-use stem + hui or a licensed silent alternative", canvasSection: "§14.7" },
+            possessivePlural: { realization: "general-use stem + hu-ān", canvasSection: "§14.6" },
+        },
+        zero: {
+            absolutiveSingularCommon: { realization: "restricted-use stem + 0", canvasSection: "§14.4" },
+            absolutivePlural: { realization: "restricted-use stem + lexical t-in or m-eh", canvasSection: "§14.5" },
+            possessiveSingularCommon: { realization: "general-use stem + 0", canvasSection: "§14.7" },
+            possessivePlural: { realization: "general-use stem + hu-ān", canvasSection: "§14.6" },
+        },
+    });
 
     const sources = [
         ["cihuā", "tl-1-a", {}, ["tl", "tl-1-a", "base", ""]],
@@ -177,10 +211,21 @@ function run(ctx = {}) {
             && sourcePanel.includes(
                 'id="classical-rule-logic-class"\n                          class="classical-nnc-source-guide__select"'
             ),
+        completeClassPattern:
+            sourcePanel.includes('id="classical-nnc-source-class-pattern"')
+            && sourcePanel.includes('id="classical-nnc-source-class-pattern-absolutive-common"')
+            && sourcePanel.includes('id="classical-nnc-source-class-pattern-absolutive-plural"')
+            && sourcePanel.includes('id="classical-nnc-source-class-pattern-possessive-common"')
+            && sourcePanel.includes('id="classical-nnc-source-class-pattern-possessive-plural"')
+            && sourcePanel.includes("not guessed from spelling"),
+        patternAbsentFromGrammar:
+            !authorityPanel.includes('id="classical-nnc-source-class-pattern"'),
     }, {
         source: true,
         grammar: false,
         matchingVerbstemPresentation: true,
+        completeClassPattern: true,
+        patternAbsentFromGrammar: true,
     });
 
     const canonicalClass = ctx.issueCanonicalNncSourceFrame({
