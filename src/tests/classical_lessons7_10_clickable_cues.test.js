@@ -35,6 +35,7 @@ function run(ctx = {}) {
     };
 
     const directional = cueRows(build({ directionalPrefix: "huāl" }));
+    const analyzedStem = cueRows(build({ stem: "chip-ā-hua", verbClass: "A" }));
     const emphatic = cueRows(build({ sentenceType: "emphatic-assertion" }));
     const cuix = cueRows(build({ sentenceType: "yes-no-question", questionMode: "cuix" }));
     const wish = cueRows(build({ stem: "cochi", subject: "1sg", mood: "optative", tense: "nonpast", introductoryParticle: "mā" }));
@@ -42,6 +43,22 @@ function run(ctx = {}) {
     const admonition = cueRows(build({ mood: "admonitive", tense: "nonpast", introductoryParticle: "mā", introductoryModifier: "nēn", negative: true }));
 
     const hasCue = (rows, text, label) => rows.some((row) => row.text === text && row.label === label);
+    s.eq("Lesson 7.1 identifies pieces inside an analyzed verbstem without inventing separate meanings", {
+        morphs: analyzedStem.filter((row) => row.label === "verbstem morph"),
+        boundaries: analyzedStem.filter((row) => row.label === "stem morph boundary"),
+        innerClassClaims: analyzedStem.filter((row) => /Class [A-D]/u.test(row.label)),
+    }, {
+        morphs: [
+            { text: "chip", label: "verbstem morph", lessons: ["§7.1"] },
+            { text: "ā", label: "verbstem morph", lessons: ["§7.1"] },
+            { text: "hua", label: "verbstem morph", lessons: ["§7.1"] },
+        ],
+        boundaries: [
+            { text: "-", label: "stem morph boundary", lessons: ["§7.1"] },
+            { text: "-", label: "stem morph boundary", lessons: ["§7.1"] },
+        ],
+        innerClassClaims: [],
+    });
     s.ok("Lesson 8 direction, emphasis, and question material has exact clickable jobs",
         hasCue(directional, "huāl", "direction toward here")
         && hasCue(emphatic, "ca", "emphatic assertion")
@@ -71,6 +88,7 @@ function run(ctx = {}) {
         && rendering.includes("sentenceSurfaceFrame: Object.freeze({")
         && rendering.includes("sentenceCanvasRole: surfaceFrame.sentenceCanvasRole")
         && rendering.includes("renderClassicalDiagramDerivedAnnotations(")
+        && rendering.includes('["stem-morph-boundary", "stem-constituent-boundary"].includes(annotation.role)')
         && rendering.includes('role.includes("directional")'));
     s.no("the new cues add a user control",
         /id="[^"]*(?:directional-cue|wish-cue|command-cue|admonition-cue)[^"]*"/u.test(

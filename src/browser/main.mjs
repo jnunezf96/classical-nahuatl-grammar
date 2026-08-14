@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-lessons7-10-uncontradicted-199";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260813-lesson7-stem-morph-cues-201";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

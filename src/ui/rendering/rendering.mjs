@@ -4903,6 +4903,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P077-L031-688A63867E"
         ])
       }),
+      "verbstem-internal-morph": Object.freeze({
+        lessonSections: Object.freeze(["§7.1"]),
+        atomIds: Object.freeze([
+          "ACI-P076-L010-81B7281C89",
+          "ACI-P076-L011-65C1B6BAA4",
+          "ACI-P076-L012-90944246E3",
+          "ACI-P076-L012-90944246E3-02",
+          "ACI-P076-L022-E30A8716BC",
+          "ACI-P076-L023-00A89847BC-03"
+        ])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5446,11 +5457,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   ? "verbstem-predicate-table"
                   : "verbstem-class-and-structure"
           : "predicate-stem";
+        const analyzedStem = stemContent.includes("-");
         let stemPartStart = 0;
         Array.from(stemContent.matchAll(/[-+]/gu)).forEach(match => {
           const separatorIndex = Number(match.index);
           if (separatorIndex > stemPartStart) {
-            addAnnotation(stemContentStart + stemPartStart, stemContentStart + separatorIndex, "predicate-stem", stemJobLabel, "carrier", stemJobAuthority);
+            addAnnotation(
+              stemContentStart + stemPartStart,
+              stemContentStart + separatorIndex,
+              analyzedStem ? "stem-internal-morph" : "predicate-stem",
+              analyzedStem ? "verbstem morph" : stemJobLabel,
+              "carrier",
+              analyzedStem ? "verbstem-internal-morph" : stemJobAuthority
+            );
           }
           addAnnotation(
             stemContentStart + separatorIndex,
@@ -5463,7 +5482,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           stemPartStart = separatorIndex + 1;
         });
         if (stemPartStart < stemContent.length) {
-          addAnnotation(stemContentStart + stemPartStart, stemContentStart + stemContent.length, "predicate-stem", stemJobLabel, "carrier", stemJobAuthority);
+          addAnnotation(
+            stemContentStart + stemPartStart,
+            stemContentStart + stemContent.length,
+            analyzedStem ? "stem-internal-morph" : "predicate-stem",
+            analyzedStem ? "verbstem morph" : stemJobLabel,
+            "carrier",
+            analyzedStem ? "verbstem-internal-morph" : stemJobAuthority
+          );
         }
         addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const tenseStart = stemStart + stemToken.length;
@@ -5658,7 +5684,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (role.includes("number")) return "subject";
       if (role.includes("object") || role.includes("reflexive") || role.includes("directional") || role.startsWith("derived-carrier")) return "core";
       if (role.includes("subject") || role.includes("nominative")) return "subject";
-      if (role === "predicate-stem" || role === "stem-left-boundary") return "core";
+      if (role === "predicate-stem" || role === "stem-internal-morph" || role === "stem-left-boundary") return "core";
       if (role.includes("boundary")) return "any";
       return "";
     }
@@ -5691,7 +5717,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
             annotation.role.includes("boundary")
             || annotation.role.includes("punctuation")
             || annotation.role === "nonsubject-constituents"
-          ) return false;
+          ) {
+            return diagramFamily === "core" && ["stem-morph-boundary", "stem-constituent-boundary"].includes(annotation.role);
+          }
           const family = getClassicalDiagramAnnotationFamily(annotation.role);
           return family === diagramFamily;
         })
