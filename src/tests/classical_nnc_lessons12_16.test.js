@@ -4169,6 +4169,38 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "Classical saved routes distinguish VNC from NNC while retaining old verb links",
+        (() => {
+            const nncHash = ctx.buildEntradaUrlHash({
+                input: "(tleh)",
+                slots: { a: { embed: "tl", stem: "eh" } },
+                classicalNnc: { active: true, subject: "3pl" },
+            });
+            const legacyNnc = ctx.parseEntradaUrlSegmentString(
+                "#classical/v1/verb/(tleh)/cn/1/cn-subj/3pl"
+            );
+            return {
+                nncKind: nncHash.startsWith("#classical/v1/nnc/(tleh)"),
+                keepsNncActivationState: nncHash.includes("/cn/1"),
+                legacyNncStillOpens: legacyNnc.classicalNnc.active,
+                legacyNncRewritesAsNnc: ctx.buildEntradaUrlHash(legacyNnc)
+                    .startsWith("#classical/v1/nnc/(tleh)"),
+                vncKind: ctx.buildEntradaUrlHash({
+                    input: "(nemi)",
+                    transitivity: "intransitive",
+                }).startsWith("#classical/v1/vnc/(nemi)"),
+            };
+        })(),
+        {
+            nncKind: true,
+            keepsNncActivationState: true,
+            legacyNncStillOpens: true,
+            legacyNncRewritesAsNnc: true,
+            vncKind: true,
+        }
+    );
+
+    s.eq(
         "Curriculum metadata cannot select an ordinary-NNC operation, while an unapplied semantic operation fails closed",
         (() => {
             const frame = ctx.buildClassicalNahuatlClassGovernedNncFrame("cal", {

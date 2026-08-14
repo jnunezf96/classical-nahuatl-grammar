@@ -340,6 +340,14 @@ function run(ctx) {
             },
         },
     });
+    s.eq(
+        "Classical URL names an ordinary verb nuclear clause as VNC",
+        ctx.buildEntradaUrlHash({
+            input: "(nemi)",
+            transitivity: "intransitive",
+        }),
+        "#classical/v1/vnc/(nemi)/tr/intransitive"
+    );
     const parsedComposerEntrada = ctx.parseEntradaUrlSegmentString(composerEntradaHash);
     s.eq(
         "entrada URL schema rejects the retired version without a compatibility adapter",
@@ -645,7 +653,7 @@ function run(ctx) {
             hasLegacySegments: false,
         }
     );
-    const classicalNncEntrada = ctx.parseEntradaUrlSegmentString(ctx.buildEntradaUrlSegmentString({
+    const classicalNncRoute = ctx.buildEntradaUrlHash({
         input: "(toma)",
         classicalNnc: {
             active: true,
@@ -665,7 +673,39 @@ function run(ctx) {
             dependentClauseIntroducedByIn: true,
             specialHumanUse: true,
         },
-    }));
+    });
+    const classicalNncEntrada = ctx.parseEntradaUrlSegmentString(classicalNncRoute);
+    const legacySharedVerbNnc = ctx.parseEntradaUrlSegmentString(
+        "#classical/v1/verb/(toma)/cn/1/cn-subj/1pl"
+    );
+    s.eq(
+        "Classical URL names NNC directly and rewrites the former shared verb route",
+        {
+            directRouteStartsWithNnc: classicalNncRoute.startsWith("#classical/v1/nnc/(toma)"),
+            directRouteKeepsNncActivation: classicalNncRoute.includes("/cn/1"),
+            parsedDirectNncActive: classicalNncEntrada.classicalNnc.active,
+            legacyNncActive: legacySharedVerbNnc.classicalNnc.active,
+            rewrittenLegacyRouteStartsWithNnc: ctx.buildEntradaUrlHash(legacySharedVerbNnc)
+                .startsWith("#classical/v1/nnc/(toma)"),
+            rewrittenLegacyRouteKeepsSharedVerb: ctx.buildEntradaUrlHash(legacySharedVerbNnc)
+                .includes("/verb/"),
+            rewrittenLegacyRouteKeepsNncActivation: ctx.buildEntradaUrlHash(legacySharedVerbNnc)
+                .includes("/cn/1"),
+            rewrittenLegacyVncRoute: ctx.buildEntradaUrlHash(
+                ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(nemi)/tr/intransitive")
+            ),
+        },
+        {
+            directRouteStartsWithNnc: true,
+            directRouteKeepsNncActivation: true,
+            parsedDirectNncActive: true,
+            legacyNncActive: true,
+            rewrittenLegacyRouteStartsWithNnc: true,
+            rewrittenLegacyRouteKeepsSharedVerb: false,
+            rewrittenLegacyRouteKeepsNncActivation: true,
+            rewrittenLegacyVncRoute: "#classical/v1/vnc/(nemi)/tr/intransitive",
+        }
+    );
     s.eq(
         "entrada URL keeps only the canonical Classical NNC control state",
         {

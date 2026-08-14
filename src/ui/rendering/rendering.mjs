@@ -163,7 +163,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return "";
       }
       const hash = String(targetObject.window.location.hash || "");
-      const match = hash.match(/(?:^|\/)verb\/([^/]+)/u);
+      const match = hash.match(/(?:^|\/)(?:vnc|nnc|verb)\/([^/]+)/u);
       if (!match) {
         return "";
       }

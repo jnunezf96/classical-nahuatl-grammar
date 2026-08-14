@@ -4935,6 +4935,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return ["causative", "applicative"].includes(snapshot?.derivationType) && String(value || "") !== "";
       }
       if (field.key === "classicalNncEnabled") {
+        // The leading `nnc` segment names the clause kind. Keep the explicit
+        // activation field as state so a freshly opened link can initialize
+        // the NNC controls before restoring their individual selections.
         return value === true;
       }
       if (field.key === "board") {
@@ -5079,7 +5082,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           return;
         }
         const value = getEntradaUrlNestedValue(normalized, field.path);
-        segments.push(field.segment, encodeEntradaUrlSegmentValue(typeof value === "boolean" ? value ? "1" : "0" : value));
+        const segment = field.key === "input"
+          ? normalized.classicalNnc.active === true ? "nnc" : "vnc"
+          : field.segment;
+        segments.push(segment, encodeEntradaUrlSegmentValue(typeof value === "boolean" ? value ? "1" : "0" : value));
       });
       return segments.length > 2 ? segments.join("/") : "";
     }
@@ -5113,6 +5119,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const normalizedValue = field.type === "boolean" ? normalizeEntradaUrlBoolean(decodedValue) : decodedValue;
         setEntradaUrlNestedValue(snapshot, field.path, normalizedValue);
         presentFields.push(field.key);
+        if (field.key === "input" && segmentKey === "nnc") {
+          snapshot.classicalNnc.active = true;
+          presentFields.push("classicalNncEnabled");
+        }
       }
       snapshot.presentFields = presentFields;
       return normalizeEntradaUrlStateSnapshot(snapshot);
@@ -12265,7 +12275,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     ]);
     var ENTRADA_URL_SEGMENT_SCHEMA = Object.freeze([{
       key: "input",
-      segment: "verb",
+      segment: "vnc",
       path: ["input"],
       defaultValue: ""
     }, {
@@ -12568,6 +12578,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       acc[field.segment] = field;
       return acc;
     }, {});
+    // `verb` is the former shared VNC/NNC route label. Keep it readable so
+    // existing saved links continue to open and are rewritten canonically.
+    ENTRADA_URL_SEGMENT_FIELD_BY_SEGMENT.verb = ENTRADA_URL_SEGMENT_FIELD_BY_SEGMENT.vnc;
+    ENTRADA_URL_SEGMENT_FIELD_BY_SEGMENT.nnc = ENTRADA_URL_SEGMENT_FIELD_BY_SEGMENT.vnc;
     var EntradaUrlSegmentSyncTimer = null;
     var ClassicalResultScopeRefreshTimer = null;
     var EntradaUrlSegmentsInitialized = false;

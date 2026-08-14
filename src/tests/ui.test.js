@@ -4107,7 +4107,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#classical/v1/verb/(chol-o-a)/tr/intransitive/a-stem/choloa",
+                    hash: "#classical/v1/vnc/(chol-o-a)/tr/intransitive/a-stem/choloa",
                 };
                 testDocument.getElementById = function getElementById(id) {
                         if (id === "verb") {
@@ -4202,7 +4202,7 @@ function run(ctx = {}) {
                     ctx.document = testDocument;
                 }
                 testWindow.location = {
-                    hash: "#classical/v1/verb/(tom-a)/tr/intransitive/a-embed/tom/a-stem/a",
+                    hash: "#classical/v1/vnc/(tom-a)/tr/intransitive/a-embed/tom/a-stem/a",
                 };
                 testDocument.body = {
                     classList: {
@@ -4246,7 +4246,7 @@ function run(ctx = {}) {
                         parsedBoundaryBlocksHyphen: parsed.sourceBoundaryRoleFrame?.hyphenOnlyCannotPopulateEmbedMatrix === true,
                         segmentRejectsEmbed: !segmentString.includes("/a-embed/tom"),
                         segmentRejectsStemMirror: !segmentString.includes("/a-stem/a"),
-                        segmentKeepsSource: segmentString.includes("verb/(tom-a)") || segmentString.includes("verb/%28tom-a%29"),
+                        segmentKeepsSource: segmentString.includes("vnc/(tom-a)") || segmentString.includes("vnc/%28tom-a%29"),
                         readoutStem: readout.stem,
                         readoutMorphs: readout.morphs,
                         readoutRoles: readout.roles,

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-state-recovery-242";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-vnc-nnc-route-245";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
