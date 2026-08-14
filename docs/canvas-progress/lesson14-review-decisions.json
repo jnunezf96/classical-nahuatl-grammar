@@ -25,6 +25,14 @@
     "lesson14-possessive-plural": {
       "status": "ACCEPTED",
       "acceptedJob": "Build a possessive plural NNC from the required plain, affinity, or distributive-varietal general-use stem."
+    },
+    "lesson14-possessive-singular-common": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the class-authorized possessive singular or common form, including automatic truncation and supportive i."
+    },
+    "lesson14-constituent-analysis": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep grammatically possible constituent analyses open and resolve only genuine source ambiguity."
     }
   }
 }

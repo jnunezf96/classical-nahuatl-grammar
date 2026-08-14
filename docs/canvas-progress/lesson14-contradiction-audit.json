@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "lesson": 14,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 10,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "The construction selects restricted-use or general-use shape; the user does not choose that shape separately.",
+    "Noun class is lexical authority. Visible spelling limits candidates but never invents class membership.",
+    "Subject number and stem-internal affinity or distributive meaning remain separate grammatical dimensions.",
+    "Class and typed lexical alternatives select number connectors; the connector is not a noun suffix.",
+    "Possessive singular or common forms use only the class-authorized base or truncated general-use stem.",
+    "Truncation deletes only a typed ephemeral final a or i and never performs blind string deletion.",
+    "Supportive i repairs only a licensed Subclass 2-C cluster and spelling rules apply after that repair.",
+    "A visible final uh, tl, tli, o, or m never selects its own constituent analysis.",
+    "Typed alternatives remain open until a user or external lexical authority selects one; spelling alone is never authority.",
+    "Vowel length and supportive-i boundary behavior remain explicit even where traditional spelling hides them."
+  ]
+}

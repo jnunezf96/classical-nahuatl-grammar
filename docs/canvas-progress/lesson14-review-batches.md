@@ -90,8 +90,8 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses the nounstem, possessor, and subject; the application performs all class, truncation, connector, and phonological work.
 - Control policy: No subclass, truncation, connector, or supportive-i controls; lexical authority and grammar determine them.
 - Proposal: Select the lexical class subclass, general-use stem shape, and subject connector required for a possessive singular/common NNC.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/149
+- Status: ACCEPTED
+- Exactly observed: 149/149
 
 ## Batch 3, Group 8: Ambiguous NNC constituent analysis
 
@@ -103,5 +103,5 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application keeps structural possibilities open; the user is asked only for source meaning or structure that cannot be derived from the entered spelling.
 - Control policy: Use one minimal Exception or analysis choice only when real ambiguity remains; never ask the user to choose a morph the application already knows.
 - Proposal: Preserve all grammatically possible NNC analyses until vocabulary, morphs, sound changes, length, and typed source information settle the structure.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/51
+- Status: ACCEPTED
+- Exactly observed: 51/51

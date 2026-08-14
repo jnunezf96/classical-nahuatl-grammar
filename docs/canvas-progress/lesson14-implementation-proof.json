@@ -31,6 +31,16 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson14_groups_4_6_jobs.test.js",
       "readerTest": "src/tests/classical_lesson14_reader_guidance.test.js"
+    },
+    "lesson14-possessive-singular-common": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson14_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson14_reader_guidance.test.js"
+    },
+    "lesson14-constituent-analysis": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson14_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson14_reader_guidance.test.js"
     }
   }
 }

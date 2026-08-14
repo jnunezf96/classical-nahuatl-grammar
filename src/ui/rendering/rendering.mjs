@@ -5007,6 +5007,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P115-L028-A4139D4FBD-02", "ACI-P116-L005-BB969DA0FA", "ACI-P116-L024-BA670DD472"])
       }),
+      "nnc-use-stem-shape": Object.freeze({
+        lessonSections: Object.freeze(["§14.1", "§14.2.8", "§14.7"]),
+        atomIds: Object.freeze(["ACI-P124-L006-C0AE46F48A", "ACI-P124-L007-621B5EF7A8", "ACI-P130-L016-56E70B4574", "ACI-P132-L017-B9DE84EB0D"])
+      }),
+      "nnc-class-connector": Object.freeze({
+        lessonSections: Object.freeze(["§14.2", "§14.5", "§14.7"]),
+        atomIds: Object.freeze(["ACI-P124-L027-8B7CFC817C", "ACI-P127-L023-5B183B91B8", "ACI-P130-L020-D09B501BC1", "ACI-P130-L027-04AEDB0568"])
+      }),
+      "nnc-constituent-analysis": Object.freeze({
+        lessonSections: Object.freeze(["§14.8"]),
+        atomIds: Object.freeze(["ACI-P133-L030-0D1A4CC7A0", "ACI-P133-L033-049FFCAA21", "ACI-P134-L006-EBA505AA63"])
+      }),
       "nnc-subject-number": Object.freeze({
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
@@ -5332,11 +5344,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
         } else if (stateArity === "vacant") {
           addAnnotation(stemStart, stemStart + 1, "absolutive-state", "absolutive State", "boundary", "nnc-absolutive-state");
         }
-        addAnnotation(stemStart + 1, stemStart + 1 + stem.length, "nounstem-predicate", "nounstem predicate", "carrier", "nnc-nounstem-predicate");
+        const lesson14Frame = grammarContext?.inputClassGovernedFrame
+          || (grammarContext?.kind === "classical-nahuatl-nounstem-class-governed-nnc-frame" ? grammarContext : null);
+        const lesson14Source = lesson14Frame?.sourceFrame || null;
+        const lesson14Derived = lesson14Frame?.derivedStemFrame || null;
+        const lesson14Ambiguity = lesson14Frame?.ambiguityFrame || null;
+        const lesson14StemCue = lesson14Ambiguity?.authorizationStatus === "authorized"
+          && lesson14Ambiguity.selectionRequired === true
+          && lesson14Ambiguity.selectedAnalysis
+          ? Object.freeze({ role: "nnc-constituent-analysis", label: "constituent analysis", authority: "nnc-constituent-analysis" })
+          : lesson14Source?.truncationRepair === "supportive-i"
+            ? Object.freeze({ role: "nnc-use-stem-shape", label: "supportive i", authority: "nnc-use-stem-shape" })
+            : lesson14Source?.selectedUseShape === "truncated"
+              ? Object.freeze({ role: "nnc-use-stem-shape", label: "truncated nounstem", authority: "nnc-use-stem-shape" })
+              : lesson14Derived?.stemFormation === "affinity"
+                ? Object.freeze({ role: "nnc-use-stem-shape", label: "affinity nounstem", authority: "nnc-use-stem-shape" })
+                : lesson14Derived?.stemFormation === "distributive-varietal"
+                  ? Object.freeze({ role: "nnc-use-stem-shape", label: "distributive or varietal nounstem", authority: "nnc-use-stem-shape" })
+                  : Object.freeze({ role: "nounstem-predicate", label: "nounstem predicate", authority: "nnc-nounstem-predicate" });
+        addAnnotation(stemStart + 1, stemStart + 1 + stem.length, lesson14StemCue.role, lesson14StemCue.label, "carrier", lesson14StemCue.authority);
         addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const number = slots.number || {};
         const num1Start = stemStart + stemToken.length;
-        addCarrierAnnotation(num1Start, number.num1, isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector", isSilentCarrier(number.num1) ? "silent number connector" : "number connector", isSilentCarrier(number.num1) ? "silent" : "carrier", "nnc-number-connector");
+        addCarrierAnnotation(num1Start, number.num1, isSilentCarrier(number.num1) ? "silent-number-connector" : "number-connector", isSilentCarrier(number.num1) ? "silent number connector" : lesson14Source ? "class-governed number connector" : "number connector", isSilentCarrier(number.num1) ? "silent" : "carrier", lesson14Source ? "nnc-class-connector" : "nnc-number-connector");
         const numberBoundary = num1Start + String(number.num1 || "").length;
         addAnnotation(numberBoundary, numberBoundary + 1, "subposition-boundary", "subposition boundary", "boundary", "subposition-boundary");
         const num2Start = numberBoundary + 1;
