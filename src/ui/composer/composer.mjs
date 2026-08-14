@@ -9103,6 +9103,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
       });
       const sourceParts = getClassicalSourcePartControlState();
+      const canonicalOptionFromParts =
+        sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+          ? findClassicalNncSourceExampleOptionByParts(
+            select,
+            sourceParts.sourceEmbedStem,
+            sourceParts.sourceMatrixStem
+          )
+          : null;
       const selectedCanonicalStem =
         root.dataset.classicalNncSourceSelection === "canonical-nounstem"
           ? normalizeClassicalFuenteSourcePartStem(
@@ -9110,6 +9118,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           )
           : "";
       const sourceStem = selectedCanonicalStem
+        || normalizeClassicalFuenteSourcePartStem(
+          canonicalOptionFromParts?.dataset?.classicalNncSourceStem || ""
+        )
         || (sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
           ? joinClassicalSourceEmbedMatrix(
             sourceParts.sourceEmbedStem,
@@ -9120,7 +9131,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const relationalStemId = String(currentOption?.dataset?.classicalRelationalStemId || "");
       const selectedOption = relationalStemId
         ? currentOption
-        : Array.from(select.options || []).find(option => normalizeClassicalFuenteSourcePartStem(option.dataset?.classicalNncSourceStem || "") === sourceStem);
+        : canonicalOptionFromParts
+          || Array.from(select.options || []).find(option => normalizeClassicalFuenteSourcePartStem(option.dataset?.classicalNncSourceStem || "") === sourceStem);
       const currentStem = normalizeClassicalFuenteSourcePartStem(currentOption?.dataset?.classicalNncSourceStem || "");
       if (!relationalStemId && sourceStem && selectedOption && currentStem !== sourceStem) {
         select.value = selectedOption.value;
@@ -9137,6 +9149,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       root.dataset.classicalNncSourceMode = relationalStemId
         ? "relational"
         : select.value ? selectedStructure.sourceMode : sourceParts.mode;
+      if (!relationalStemId && select.value) {
+        root.dataset.classicalNncSourceSelectedStem =
+          selectedStructure.sourceStem;
+      } else if (!relationalStemId) {
+        delete root.dataset.classicalNncSourceSelectedStem;
+      }
       return true;
     }
     function getClassicalNncSourceExampleSelection(option = null) {
@@ -9154,6 +9172,27 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceContract: "stem-only",
         exampleAuthority: "not-authority"
       };
+    }
+    function findClassicalNncSourceExampleOptionByParts(
+      select = null,
+      embedStem = "",
+      matrixStem = ""
+    ) {
+      const normalizedEmbed = normalizeClassicalFuenteSourcePartStem(embedStem);
+      const normalizedMatrix = normalizeClassicalFuenteSourcePartStem(matrixStem);
+      if (!select || !normalizedEmbed || !normalizedMatrix) {
+        return null;
+      }
+      const matches = Array.from(select.options || []).filter(option => {
+        if (option.dataset?.classicalRelationalStemId) {
+          return false;
+        }
+        const selection = getClassicalNncSourceExampleSelection(option);
+        return selection.sourceMode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+          && selection.sourceEmbedStem === normalizedEmbed
+          && selection.sourceMatrixStem === normalizedMatrix;
+      });
+      return matches.length === 1 ? matches[0] : null;
     }
     function isCanonicalDirectNncSourceFrame(sourceFrame = null) {
       return Boolean(
@@ -9566,12 +9605,25 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const directNncRoute = /(?:^|\/)cn\/1(?:\/|$)/u.test(
         String(targetObject.window?.location?.hash || "")
       );
+      const sourceExampleSelect = getClassicalNncSourceGuideElements().select;
+      const canonicalOptionFromParts =
+        directNncRoute
+          ? findClassicalNncSourceExampleOptionByParts(
+            sourceExampleSelect,
+            sourceEmbedStem,
+            sourceMatrixStem
+          )
+          : null;
+      const canonicalRouteStem = normalizeClassicalFuenteSourcePartStem(
+        canonicalOptionFromParts?.dataset?.classicalNncSourceStem
+          || sourceWholeStem
+      );
       const canonicalNncSource =
         directNncRoute
-        && sourceWholeStem
+        && canonicalRouteStem
         && typeof targetObject.issueCanonicalNncSourceFrame === "function"
           ? targetObject.issueCanonicalNncSourceFrame({
-            stem: sourceWholeStem,
+            stem: canonicalRouteStem,
             ...(sourceEmbedStem ? { embedStem: sourceEmbedStem } : {}),
             ...(sourceMatrixStem ? { matrixStem: sourceMatrixStem } : {})
           })
@@ -9584,7 +9636,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           nncSourceGuide.dataset.classicalNncSourceSelection =
             "canonical-nounstem";
           nncSourceGuide.dataset.classicalNncSourceSelectedStem =
-            sourceWholeStem;
+            canonicalRouteStem;
+        }
+        if (sourceExampleSelect && canonicalOptionFromParts) {
+          sourceExampleSelect.value = canonicalOptionFromParts.value;
         }
       }
       setClassicalSourcePartsMode(
@@ -13083,6 +13138,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.populateClassicalVncSourceStemPicker = populateClassicalVncSourceStemPicker;
     api.applyClassicalVncSourceStemSelection = applyClassicalVncSourceStemSelection;
     api.getClassicalNncSourceExampleSelection = getClassicalNncSourceExampleSelection;
+    api.findClassicalNncSourceExampleOptionByParts =
+      findClassicalNncSourceExampleOptionByParts;
     api.applyClassicalNncSourceExampleSelection = applyClassicalNncSourceExampleSelection;
     api.getClassicalSourcePartControlState = getClassicalSourcePartControlState;
     api.setClassicalSourcePartsMode = setClassicalSourcePartsMode;

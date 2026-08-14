@@ -1375,9 +1375,35 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
     }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
-      const explicitSourceValue = normalizeClassicalNahuatlMachinerySourceValue(overrides.stem || overrides.verb || "");
-      const sourceValue = explicitSourceValue || getActiveClassicalRuleLogicSource("");
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
+      const requestedExplicitSourceValue =
+        normalizeClassicalNahuatlMachinerySourceValue(
+          overrides.stem || overrides.verb || ""
+        );
+      const nncSourceGuide = basalUnit === "nnc"
+        && typeof targetObject.document !== "undefined"
+          ? targetObject.document.getElementById("classical-nnc-source-guide")
+          : null;
+      const canonicalNncSourceValue =
+        nncSourceGuide?.dataset?.classicalNncSourceSelection
+          === "canonical-nounstem"
+          ? normalizeClassicalNahuatlMachinerySourceValue(
+            nncSourceGuide.dataset.classicalNncSourceSelectedStem || ""
+          )
+          : "";
+      const explicitSourceValue =
+        canonicalNncSourceValue
+        && requestedExplicitSourceValue
+        && normalizeClassicalNahuatlMachineryBoundaryComparisonValue(
+          canonicalNncSourceValue
+        ) === normalizeClassicalNahuatlMachineryBoundaryComparisonValue(
+          requestedExplicitSourceValue
+        )
+          ? canonicalNncSourceValue
+          : requestedExplicitSourceValue;
+      const sourceValue = explicitSourceValue
+        || canonicalNncSourceValue
+        || getActiveClassicalRuleLogicSource("");
       const sourceInitialIControl = typeof targetObject.document === "undefined"
         ? null
         : targetObject.document.getElementById("classical-vnc-source-initial-i-choice");
@@ -2697,11 +2723,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function buildClassicalPronominalNncApplicationResultFrame(state = {}) {
       const sourceFrame =
         buildClassicalPronominalNncApplicationSourceFrame(state);
+      if (sourceFrame?.authorizationStatus === "blocked") {
+        return sourceFrame;
+      }
       const operationFrame =
         buildClassicalPronominalNncApplicationOperationFrame(
           sourceFrame,
           state
         );
+      if (operationFrame?.authorizationStatus === "blocked") {
+        return operationFrame;
+      }
       return (
         sourceFrame
         && operationFrame
@@ -7081,11 +7113,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "am-i-a-requires-quen-construction-and-present-meaning": "select an authorized quēn construction; this stem requires present meaning",
         "cen-hui-requires-a-plural-subject": "select a plural subject",
         "lexical-noun-class-selection-required": "select the noun class",
+        "class-must-be-user-selected-or-supplied-by-external-lexical-record": "select the noun class",
+        "open-nounstem-source-class-analysis-not-recognized": "select a noun class shown for this nounstem",
         "typed-class-alternative-contradicts-canvas-form-constraint": "select a noun class compatible with the nounstem ending",
         "ordinary-nnc-source-canonical-class-override-not-allowed": "use the class supplied by the canonical nounstem record",
+        "ordinary-nnc-source-class-contradicts-canonical-source": "the selected noun class does not belong to this nounstem",
+        "ordinary-nnc-source-selected-class-not-lexically-licensed": "the selected noun class does not belong to this nounstem",
         "unknown-nnc-subject": "select an authorized NNC subject",
         "unknown-nnc-state": "select absolutive or possessive state",
         "unknown-possessor-selection": "select an authorized possessor",
+        "ordinary-nnc-plural-connector-not-lexically-authorized": "choose a plural ending",
+        "lexical-plural-number-dyad-selection-required": "choose a plural ending",
+        "plural-connector-must-be-user-selected-or-supplied-by-external-lexical-record": "choose a plural ending",
+        "selected-plural-connector-not-in-typed-lexical-record": "choose a plural ending available for this nounstem",
+        "ordinary-nnc-animacy-mismatch-requires-metaphorical-use": "select metaphorical use, or change the referent",
+        "ordinary-nnc-metaphorical-use-requires-animacy-mismatch": "metaphorical use applies only when the referent differs from the nounstem's usual reference",
+        "pronominal-nnc-subject-not-licensed-for-source": "choose a subject available for this nounstem",
         "constituent-alternative-stem-required": "enter the exact alternative nounstem, including vowel length",
         "constituent-analysis-selection-required": "select one typed constituent analysis",
         "selected-constituent-analysis-not-authorized": "select an authorized typed constituent analysis",

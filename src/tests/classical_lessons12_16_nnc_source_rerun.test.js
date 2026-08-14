@@ -338,6 +338,48 @@ function run(ctx = {}) {
         surface: "mihmichtin",
     });
 
+    const michPossessiveAffinityOperation = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        {
+            state: "possessive",
+            subject: "3pl",
+            possessor: "3sg",
+            stemFormation: "affinity",
+        }
+    );
+    const michPossessiveAffinityResult = ctx.requestClassicalOrdinaryNncResult(
+        michSource,
+        michPossessiveAffinityOperation,
+    );
+    const michPossessiveDistributiveOperation = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        {
+            state: "possessive",
+            subject: "3pl",
+            possessor: "3sg",
+            stemFormation: "distributive-varietal",
+        }
+    );
+    const michPossessiveDistributiveResult = ctx.requestClassicalOrdinaryNncResult(
+        michSource,
+        michPossessiveDistributiveOperation,
+    );
+    s.eq("choosing a possessive plural stem relation supplies its Canvas semantic need", {
+        affinity: [
+            michPossessiveAffinityResult.authorizationStatus,
+            michPossessiveAffinityResult.formulaRealization,
+            michPossessiveAffinityResult.surfaceRealization,
+        ],
+        distributive: [
+            michPossessiveDistributiveResult.authorizationStatus,
+            michPossessiveDistributiveResult.formulaRealization,
+            michPossessiveDistributiveResult.surfaceRealization,
+        ],
+    }, {
+        affinity: ["authorized", "#0-0+ī-0(mī-mich)hu-ān#", "īmīmichhuān"],
+        distributive: ["authorized", "#0-0+ī-0(mih-mich)hu-ān#", "īmihmichhuān"],
+    });
+
     const michAffinityChoices = ctx.getCanonicalNncOperationSelectionFrame(
         michSource,
         {
@@ -372,6 +414,245 @@ function run(ctx = {}) {
     }, {
         ordinary: ["authorized", false, "tli-1"],
         personal: ["authorized", "personal-compound"],
+    });
+
+    const routeOptions = {
+        options: [
+            {
+                value: "tl-eh",
+                dataset: {
+                    classicalNncSourceStem: "tl-eh",
+                    classicalNncSourceMode: "embed-matrix",
+                    classicalNncSourceEmbed: "tl",
+                    classicalNncSourceMatrix: "eh",
+                },
+            },
+            {
+                value: "tle-māi",
+                dataset: {
+                    classicalNncSourceStem: "tle-māi",
+                    classicalNncSourceMode: "embed-matrix",
+                    classicalNncSourceEmbed: "tle",
+                    classicalNncSourceMatrix: "māi",
+                },
+            },
+        ],
+    };
+    s.eq("a saved written NNC route recovers its canonical Source boundaries", {
+        tleh: ctx.findClassicalNncSourceExampleOptionByParts(
+            routeOptions, "tl", "eh"
+        )?.value || "",
+        tlemāi: ctx.findClassicalNncSourceExampleOptionByParts(
+            routeOptions, "tle", "māi"
+        )?.value || "",
+        unknown: ctx.findClassicalNncSourceExampleOptionByParts(
+            routeOptions, "tenam", "ca"
+        )?.value || "",
+    }, {
+        tleh: "tl-eh",
+        tlemāi: "tle-māi",
+        unknown: "",
+    });
+    s.eq("NNC Result guidance names the next real choice", {
+        plural: ctx.getClassicalRuleLogicSurfaceBlockMessage(
+            "ordinary-nnc-plural-connector-not-lexically-authorized"
+        ),
+        animacy: ctx.getClassicalRuleLogicSurfaceBlockMessage(
+            "ordinary-nnc-animacy-mismatch-requires-metaphorical-use"
+        ),
+        sourceClass: ctx.getClassicalRuleLogicSurfaceBlockMessage(
+            "ordinary-nnc-source-class-contradicts-canonical-source"
+        ),
+    }, {
+        plural: "choose a plural ending",
+        animacy: "select metaphorical use, or change the referent",
+        sourceClass: "the selected noun class does not belong to this nounstem",
+    });
+    const blockedHumanItlah = ctx.buildClassicalRuleLogicSurfaceFrame({
+        basalUnit: "nnc",
+        stem: "itl-ah",
+        sourceEmbedStem: "itl",
+        sourceMatrixStem: "ah",
+        subject: "3sg",
+        nncSpecialHumanUse: false,
+    });
+    s.eq("a blocked pronominal NNC preserves the exact grammatical reason", {
+        status: blockedHumanItlah.authorizationStatus,
+        reason: blockedHumanItlah.blockReason,
+        guidance: ctx.getClassicalRuleLogicSurfaceBlockMessage(
+            blockedHumanItlah.blockReason
+        ),
+    }, {
+        status: "blocked",
+        reason: "itlah-with-human-subject-requires-special-situation-selection",
+        guidance: "select the special human use of itlah",
+    });
+
+    const ordinaryControlSweepSources = [
+        { stem: "cal" },
+        { stem: "pah" },
+        { stem: "mich" },
+        { stem: "chichi" },
+        { stem: "tēuc" },
+        { stem: "pil" },
+        { stem: "māi" },
+        { stem: "tle-māi", embedStem: "tle", matrixStem: "māi" },
+    ];
+    const ordinaryControlSweepSubjects = [
+        "1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl",
+    ];
+    const ordinaryControlSweepFailures = [];
+    let ordinaryControlSweepCount = 0;
+    for (const sourceInput of ordinaryControlSweepSources) {
+        const source = ctx.issueCanonicalNncSourceFrame(sourceInput);
+        for (const subject of ordinaryControlSweepSubjects) {
+            const animacy = subject === "3common" ? "nonanimate" : "animate";
+            const metaphoricalUse = source.referentialAnimacy !== "any"
+                && source.referentialAnimacy !== animacy;
+            for (const state of source.allowedStateValues) {
+                const initialChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                    state, subject, animacy, metaphoricalUse,
+                });
+                const possessors = state === "possessive"
+                    ? initialChoices.possessorValues
+                    : [""];
+                for (const possessor of possessors) {
+                    const possessorChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                        state, subject, animacy, metaphoricalUse, possessor,
+                    });
+                    for (const stemFormation of possessorChoices.stemRelationValues) {
+                        const relationChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                            state, subject, animacy, metaphoricalUse, possessor,
+                            stemFormation,
+                        });
+                        const predicates = relationChoices.predicateOptionValues.length
+                            ? relationChoices.predicateOptionValues
+                            : ["source-stem"];
+                        const pluralConnectors = state === "absolutive"
+                            && subject.endsWith("pl")
+                            ? relationChoices.pluralConnectorValues
+                            : [""];
+                        const reduplications = relationChoices.possessorReduplicationAvailable
+                            ? [false, true]
+                            : [false];
+                        for (const predicateFormation of predicates) {
+                            for (const pluralConnector of pluralConnectors) {
+                                for (const possessorReduplication of reduplications) {
+                                    ordinaryControlSweepCount += 1;
+                                    const operation = ctx.issueCanonicalNncOperationFrame(source, {
+                                        state,
+                                        subject,
+                                        metaphoricalUse,
+                                        possessor,
+                                        stemFormation,
+                                        predicateFormation,
+                                        pluralConnector,
+                                        possessorReduplication,
+                                    });
+                                    const result = ctx.evaluateClassicalNahuatlOrdinaryNnc(
+                                        source,
+                                        operation,
+                                    );
+                                    if (operation.authorizationStatus !== "authorized"
+                                        || result?.authorizationStatus !== "authorized") {
+                                        ordinaryControlSweepFailures.push({
+                                            source: sourceInput.stem,
+                                            state,
+                                            subject,
+                                            possessor,
+                                            stemFormation,
+                                            predicateFormation,
+                                            pluralConnector,
+                                            possessorReduplication,
+                                            operationReason: operation.blockReason,
+                                            resultReason: result?.blockReason || "no-result-frame",
+                                        });
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    s.eq("every advertised ordinary NNC Grammar choice reaches an authorized Result", {
+        checked: ordinaryControlSweepCount,
+        failures: ordinaryControlSweepFailures,
+    }, {
+        checked: 6134,
+        failures: [],
+    });
+
+    const pronominalControlSweepSources = [
+        { stem: "eh" },
+        { stem: "eh-huā", embedStem: "eh", matrixStem: "huā" },
+        { stem: "tl-eh", embedStem: "tl", matrixStem: "eh" },
+        { stem: "cā-tl-eh", embedStem: "cā", matrixStem: "tl-eh" },
+        { stem: "itl-ah", embedStem: "itl", matrixStem: "ah" },
+        { stem: "ix-qui-ch", embedStem: "ix", matrixStem: "qui-ch" },
+        { stem: "mo-ch-eh-huā", embedStem: "mo-ch", matrixStem: "eh-huā" },
+    ];
+    const pronominalControlSweepFailures = [];
+    let pronominalControlSweepCount = 0;
+    for (const sourceInput of pronominalControlSweepSources) {
+        const source = ctx.issueCanonicalNncSourceFrame(sourceInput);
+        for (const subject of source.allowedSubjects) {
+            const animacy = subject === "3common" ? "nonanimate" : "animate";
+            const subjectChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                subject, animacy,
+            });
+            const doubledSelections = subjectChoices.doubledFirstPluralAvailable
+                ? [false, true]
+                : [false];
+            const specialHumanUse = subjectChoices.specialHumanUseAvailable;
+            for (const clausePosition of source.allowedClausePositions) {
+                for (const adjunctorInMode of source.allowedAdjunctorModes) {
+                    for (const doubledFirstPlural of doubledSelections) {
+                        for (const sentenceType of ["statement"]) {
+                            for (const polarity of ["positive", "negative"]) {
+                                pronominalControlSweepCount += 1;
+                                const operation = ctx.issueCanonicalNncOperationFrame(source, {
+                                    subject,
+                                    clausePosition,
+                                    adjunctorInMode,
+                                    doubledFirstPlural,
+                                    specialHumanUse,
+                                    sentenceType,
+                                    polarity,
+                                });
+                                const result = ctx.evaluateClassicalNahuatlPronominalNnc(
+                                    source,
+                                    operation,
+                                );
+                                if (operation.authorizationStatus !== "authorized"
+                                    || result.authorizationStatus !== "authorized") {
+                                    pronominalControlSweepFailures.push({
+                                        source: sourceInput.stem,
+                                        subject,
+                                        clausePosition,
+                                        adjunctorInMode,
+                                        doubledFirstPlural,
+                                        specialHumanUse,
+                                        sentenceType,
+                                        polarity,
+                                        operationReason: operation.blockReason,
+                                        resultReason: result.blockReason,
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    s.eq("every advertised pronominal NNC Grammar choice reaches an authorized Result", {
+        checked: pronominalControlSweepCount,
+        failures: pronominalControlSweepFailures,
+    }, {
+        checked: 212,
+        failures: [],
     });
 
     return s;

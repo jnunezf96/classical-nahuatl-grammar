@@ -2085,6 +2085,10 @@ export function createClassicalNahuatlNncApplicationModule(
         pluralConnector: operationFrame.pluralConnector,
         pluralConnectorOptions: sourceFrame.pluralConnectorOptions,
         sourcePlainPluralConnector: operationFrame.pluralConnector,
+        possessivePluralDerivedSemanticNeed:
+          operationFrame.state === "possessive"
+          && operationFrame.subject.endsWith("pl")
+          && operationFrame.stemFormation !== "plain",
       },
     );
   }

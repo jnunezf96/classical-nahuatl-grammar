@@ -9347,11 +9347,11 @@ function run(ctx = {}) {
             ? {
                 doubledStatus: "authorized",
                 doubledFormula: "#ti-t-0(eh-huā-n)t-in#",
-                hostileDoubledReason: "classical-selected-output-not-authorized",
+                hostileDoubledReason: "doubled-first-plural-person-is-limited-to-first-plural-personal-compound-nnc",
                 dependentStatus: "authorized",
                 dependentSurface: "Tleh in …?",
                 dependentFormula: "#0-0(tl-eh)0-0# in …?",
-                blockedHumanReason: "classical-selected-output-not-authorized",
+                blockedHumanReason: "itlah-with-human-subject-requires-special-situation-selection",
                 selectedHumanStatus: "authorized",
                 selectedHumanFormula: "#t-0(itl-ah)0-0#",
                 doubledAvailability: true,

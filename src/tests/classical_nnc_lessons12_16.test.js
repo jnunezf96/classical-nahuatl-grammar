@@ -3945,8 +3945,8 @@ function run(ctx = {}) {
                 planKind:
                     "classical-nahuatl-ordinary-nnc-paradigm-plan",
                 planStatus: "authorized",
-                planCoordinates: 62,
-                rows: 62,
+                planCoordinates: 106,
+                rows: 106,
                 states: ["absolutive", "possessive"],
                 subjects: [
                     "1sg",
@@ -5131,6 +5131,52 @@ function run(ctx = {}) {
             composition: { embed: "a-c", matrix: "ah", embedVowelLengthAction: "remove-length-before-ah-matrix" },
             blockedReason: "itlah-with-human-subject-requires-special-situation-selection",
             selectedFormula: "#t-0(itl-ah)0-0#",
+        }
+    );
+
+    s.eq(
+        "Lesson 16 special human itlah applies to third person as well as first and second person",
+        (() => {
+            const plan = ctx.buildClassicalNahuatlPronominalParadigmPlan({
+                subtype: "indefinite",
+                indefiniteKind: "something",
+                enteredStem: "itl-ah",
+            });
+            const source = ctx.issueCanonicalNncSourceFrame({
+                stem: "itl-ah",
+                embedStem: "itl",
+                matrixStem: "ah",
+            });
+            const thirdSingularChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                subject: "3sg",
+                animacy: "animate",
+            });
+            const thirdPluralChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                subject: "3pl",
+                animacy: "animate",
+            });
+            const selectedThirdSingular = ctx.issueCanonicalNncOperationFrame(source, {
+                subject: "3sg",
+                specialHumanUse: true,
+            });
+            const selectedThirdSingularResult = ctx.requestClassicalPronominalNncResult(
+                source,
+                selectedThirdSingular,
+            );
+            return {
+                planSubjects: Array.from(new Set(plan.coordinates.map((coordinate) => coordinate.subject))),
+                thirdSingularChoiceAvailable: thirdSingularChoices.specialHumanUseAvailable,
+                thirdPluralChoiceAvailable: thirdPluralChoices.specialHumanUseAvailable,
+                selectedThirdSingularStatus: selectedThirdSingular.authorizationStatus,
+                selectedThirdSingularFormula: selectedThirdSingularResult.formulaRealization,
+            };
+        })(),
+        {
+            planSubjects: ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"],
+            thirdSingularChoiceAvailable: true,
+            thirdPluralChoiceAvailable: true,
+            selectedThirdSingularStatus: "authorized",
+            selectedThirdSingularFormula: "#0-0(itl-ah)0-0#",
         }
     );
 

@@ -6768,7 +6768,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         subtypeDetail = isClassicalNahuatlQuantitiveAuthorityRecord(quantitiveAuthorityRecord) ? quantitiveAuthorityRecord.matrixFamily : "";
       } else if (subtype === "quantitive-personal-compound") subtypeDetail = "quantitive-personal-compound";
       const referentKey = normalizeClassicalNahuatlNncToken(options.subjectReferentCategory || options.subjectReferentAnimacy || "").toLowerCase();
-      const humanSubject = ["1sg", "2sg", "1pl", "2pl"].includes(subject) || referentKey === "human";
+      const humanSubject = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(subject) || referentKey === "human";
       return {
         subtype,
         subtypeDetail,
@@ -7410,7 +7410,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
                   specialHumanUseSelected:
                     subtype === "indefinite"
                     && options.indefiniteKind === "something"
-                    && ["1sg", "2sg", "1pl", "2pl"].includes(subject)
+                    && ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(subject)
                 };
                 const typedSourceOptions = { ...sourceOptions };
                 typedSourceOptions.lesson16ParadigmSourceProjectionToken =

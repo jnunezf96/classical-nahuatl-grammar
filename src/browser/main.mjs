@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-option-audit-237";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-state-recovery-242";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

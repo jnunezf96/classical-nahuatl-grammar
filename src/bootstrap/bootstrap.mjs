@@ -1,14 +1,14 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260814-nnc-option-audit-237";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260814-nnc-state-recovery-242";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260814-nnc-option-audit-237";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260814-nnc-option-audit-237";
+} from "../runtime/create_runtime.mjs?v=20260814-nnc-state-recovery-242";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260814-nnc-state-recovery-241";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260813-lesson11-groups10-12-205";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260814-nnc-option-audit-237";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260814-nnc-option-audit-237";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260814-nnc-state-recovery-241";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260814-nnc-state-recovery-241";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260813-lesson11-groups10-12-205";
 
 let browserBootstrapPromise = null;
