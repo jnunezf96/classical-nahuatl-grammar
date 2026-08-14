@@ -306,7 +306,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
     }
     function getActiveClassicalRuleLogicSource(fallbackValue = "") {
-      return getClassicalNahuatlMachinerySource(fallbackValue);
+      const sourceValue = getClassicalNahuatlMachinerySource(fallbackValue);
+      if (
+        getClassicalBasalUnitFromSurfaceForRendering("vnc") === "nnc"
+        && typeof targetObject.document !== "undefined"
+      ) {
+        const sourceGuide = targetObject.document.getElementById(
+          "classical-nnc-source-guide"
+        );
+        const selectedCanonicalStem = String(
+          sourceGuide?.dataset?.classicalNncSourceSelectedStem || ""
+        ).trim();
+        if (
+          sourceGuide?.dataset?.classicalNncSourceSelection
+            === "canonical-nounstem"
+          && selectedCanonicalStem
+        ) {
+          return selectedCanonicalStem;
+        }
+      }
+      return sourceValue;
     }
     function renderClassicalRuleLogicMachinery({
       stem = "",
@@ -720,7 +739,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sourcePartsMode = String(sourcePartsRoot?.dataset?.classicalSourcePartsMode || "whole-stem").trim();
         const fuenteEmbedStem = normalizeClassicalNahuatlMachinerySourceValue(targetObject.document.getElementById("classical-source-embed")?.value || "");
         const fuenteMatrixStem = normalizeClassicalNahuatlMachinerySourceValue(targetObject.document.getElementById("classical-source-matrix")?.value || "");
-        if ((!normalizedSourceValue || !fuenteSourceValue || fuenteSourceValue === normalizedSourceValue) && sourcePartsMode === "embed-matrix") {
+        const sourceAndMirrorMatch =
+          !normalizedSourceValue
+          || !fuenteSourceValue
+          || fuenteSourceValue === normalizedSourceValue
+          || normalizeClassicalNahuatlMachineryBoundaryComparisonValue(
+            fuenteSourceValue
+          ) === normalizeClassicalNahuatlMachineryBoundaryComparisonValue(
+            normalizedSourceValue
+          );
+        if (sourceAndMirrorMatch && sourcePartsMode === "embed-matrix") {
           return {
             sourceEmbedStem: fuenteEmbedStem,
             sourceMatrixStem: fuenteMatrixStem,

@@ -228,6 +228,23 @@ function getClassGuidedAbsolutivePluralConnectors(sourceClass = "") {
       : ["t-in", "m-eh"],
   );
 }
+function getPluralConnectorsForStemRelation(
+  sourceFrame = null,
+  stemRelation = "plain",
+) {
+  const values = sourceFrame?.pluralConnectorOptions || [];
+  if (stemRelation !== "affinity") {
+    return Object.freeze([...values]);
+  }
+  if (sourceFrame?.nounClass === "tl") {
+    return Object.freeze(values.filter((value) =>
+      ["m-eh", "0-h"].includes(value)));
+  }
+  if (["tli", "in"].includes(sourceFrame?.nounClass)) {
+    return Object.freeze(values.filter((value) => value === "t-in"));
+  }
+  return Object.freeze([]);
+}
 function defineOrdinaryNncLexeme({
   nounClass,
   referentialAnimacy = "any",
@@ -1528,10 +1545,22 @@ export function createClassicalNahuatlNncApplicationModule(
         : stateValues[0] || "";
       const stemRelationEnvironmentAvailable =
         selectedSubject.endsWith("pl") || selectedSubject === "3common";
+      const absolutivePlural = selectedState === "absolutive"
+        && selectedSubject.endsWith("pl");
       const stemRelationValues = Object.freeze(
         sourceFrame.stemFormationOptions.filter(
           (value) =>
-            value === "plain" || stemRelationEnvironmentAvailable,
+            value === "plain"
+            || (
+              stemRelationEnvironmentAvailable
+              && (
+                !absolutivePlural
+                || getPluralConnectorsForStemRelation(
+                  sourceFrame,
+                  value,
+                ).length > 0
+              )
+            ),
         ),
       );
       const requestedStemFormation = normalizeChoice(
@@ -1590,9 +1619,11 @@ export function createClassicalNahuatlNncApplicationModule(
         && ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"]
           .includes(selectedPossessor),
       );
-      const pluralConnectorValues = selectedState === "absolutive"
-        && selectedSubject.endsWith("pl")
-          ? sourceFrame.pluralConnectorOptions
+      const pluralConnectorValues = absolutivePlural
+          ? getPluralConnectorsForStemRelation(
+            sourceFrame,
+            selectedStemFormation,
+          )
           : Object.freeze([]);
       const requestedPluralConnector = normalizeChoice(
         ownDataValue(selections, "pluralConnector", ""),

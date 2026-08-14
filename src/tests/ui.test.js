@@ -1003,6 +1003,10 @@ function run(ctx = {}) {
             && composer.includes("function syncClassicalNncSourceGuide")
             && composer.includes("function applyClassicalNncSourceExampleSelection")
             && composer.includes("const compoundSelection = sourceMode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix")
+            && composer.includes("preserveDirectNncGeneration")
+            && composer.includes("function isCanonicalDirectNncSourceFrame")
+            && composer.includes("directCanonicalNncRoute")
+            && rendering.includes("classicalNncSourceSelectedStem")
             && !composer.includes("const sourceAuthoritySelections = [")
     );
     s.ok(

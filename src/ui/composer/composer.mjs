@@ -9103,7 +9103,19 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
       });
       const sourceParts = getClassicalSourcePartControlState();
-      const sourceStem = sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix ? joinClassicalSourceEmbedMatrix(sourceParts.sourceEmbedStem, sourceParts.sourceMatrixStem) : sourceParts.sourceWholeStem;
+      const selectedCanonicalStem =
+        root.dataset.classicalNncSourceSelection === "canonical-nounstem"
+          ? normalizeClassicalFuenteSourcePartStem(
+            root.dataset.classicalNncSourceSelectedStem || ""
+          )
+          : "";
+      const sourceStem = selectedCanonicalStem
+        || (sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+          ? joinClassicalSourceEmbedMatrix(
+            sourceParts.sourceEmbedStem,
+            sourceParts.sourceMatrixStem
+          )
+          : sourceParts.sourceWholeStem);
       const currentOption = select.selectedOptions?.[0] || null;
       const relationalStemId = String(currentOption?.dataset?.classicalRelationalStemId || "");
       const selectedOption = relationalStemId
@@ -9143,6 +9155,15 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         exampleAuthority: "not-authority"
       };
     }
+    function isCanonicalDirectNncSourceFrame(sourceFrame = null) {
+      return Boolean(
+        sourceFrame?.authorizationStatus === "authorized"
+        && [
+          "classical-nahuatl-ordinary-nnc-source-frame",
+          "classical-nahuatl-pronominal-nnc-source-frame"
+        ].includes(sourceFrame.kind)
+      );
+    }
     function applyClassicalNncSourceExampleSelection() {
       const {
         root,
@@ -9181,11 +9202,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (compoundSelection && (!selection.sourceEmbedStem || !selection.sourceMatrixStem)) {
         return false;
       }
+      let canonicalSource = null;
       if (
         openSourceClassControl
         && typeof targetObject.issueCanonicalNncSourceFrame === "function"
       ) {
-        const canonicalSource = targetObject.issueCanonicalNncSourceFrame({
+        canonicalSource = targetObject.issueCanonicalNncSourceFrame({
           stem: sourceStem,
           ...(compoundSelection
             ? {
@@ -9203,7 +9225,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       setClassicalSourcePartsMode(compoundSelection ? CLASSICAL_SOURCE_PARTS_MODE.embedMatrix : CLASSICAL_SOURCE_PARTS_MODE.wholeStem, {
         clearValues: true,
-        clearWhole: compoundSelection
+        clearWhole: compoundSelection,
+        preserveDirectNncGeneration:
+          isCanonicalDirectNncSourceFrame(canonicalSource)
       });
       const {
         wholeInput,
@@ -9326,7 +9350,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       ) || null;
       if (constructionControl
         && getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc) {
-        if (embedMatrixEnabled && constructionControl.value === "none") {
+        if (embedMatrixEnabled && options.preserveDirectNncGeneration === true) {
+          constructionControl.value = "none";
+          delete constructionControl.dataset.classicalSourcePartsDerivedOperation;
+        } else if (embedMatrixEnabled && constructionControl.value === "none") {
           constructionControl.value = "compound-nnc";
           constructionControl.dataset.classicalSourcePartsDerivedOperation = "true";
         } else if (!embedMatrixEnabled
@@ -9536,7 +9563,34 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (matrixInput && sourceMatrixStem) {
         matrixInput.value = sourceMatrixStem;
       }
-      setClassicalSourcePartsMode(sourceEmbedStem || sourceMatrixStem ? "embed-matrix" : "whole-stem");
+      const directNncRoute = /(?:^|\/)cn\/1(?:\/|$)/u.test(
+        String(targetObject.window?.location?.hash || "")
+      );
+      const canonicalNncSource =
+        directNncRoute
+        && sourceWholeStem
+        && typeof targetObject.issueCanonicalNncSourceFrame === "function"
+          ? targetObject.issueCanonicalNncSourceFrame({
+            stem: sourceWholeStem,
+            ...(sourceEmbedStem ? { embedStem: sourceEmbedStem } : {}),
+            ...(sourceMatrixStem ? { matrixStem: sourceMatrixStem } : {})
+          })
+          : null;
+      const directCanonicalNncRoute =
+        directNncRoute && isCanonicalDirectNncSourceFrame(canonicalNncSource);
+      if (directCanonicalNncRoute) {
+        const nncSourceGuide = getClassicalNncSourceGuideElements().root;
+        if (nncSourceGuide?.dataset) {
+          nncSourceGuide.dataset.classicalNncSourceSelection =
+            "canonical-nounstem";
+          nncSourceGuide.dataset.classicalNncSourceSelectedStem =
+            sourceWholeStem;
+        }
+      }
+      setClassicalSourcePartsMode(
+        sourceEmbedStem || sourceMatrixStem ? "embed-matrix" : "whole-stem",
+        { preserveDirectNncGeneration: directCanonicalNncRoute }
+      );
       syncClassicalBuiltSourceToVerbInput();
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       setClassicalSourcePartsPendingState(false);
@@ -9602,7 +9656,21 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const embedSurface = rawEmbedSurface || "_";
       const matrixSurface = rawMatrixSurface || "_";
       const hasParts = mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix || selectedOptions?.sourceSelectionKind === "embed-matrix";
-      const builtStem = mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix || hasParts ? joinClassicalSourceEmbedMatrix(rawEmbedSurface, rawMatrixSurface) : wholeSurface;
+      const nncSourceGuide = targetObject.document?.getElementById?.(
+        "classical-nnc-source-guide"
+      );
+      const canonicalNncSourceStem =
+        getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.nnc
+        && nncSourceGuide?.dataset?.classicalNncSourceSelection
+          === "canonical-nounstem"
+          ? normalizeClassicalFuenteSourcePartStem(
+            nncSourceGuide.dataset.classicalNncSourceSelectedStem || ""
+          )
+          : "";
+      const builtStem = canonicalNncSourceStem
+        || (mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix || hasParts
+          ? joinClassicalSourceEmbedMatrix(rawEmbedSurface, rawMatrixSurface)
+          : wholeSurface);
       const displaySource = wrapClassicalSourceDisplayStem(builtStem || wholeSurface || inputSurface);
       const modeLabel = getClassicalSourcePartsModeLabel(hasParts ? CLASSICAL_SOURCE_PARTS_MODE.embedMatrix : mode);
       const partsSurface = hasParts ? [rawEmbedSurface || "embed", rawMatrixSurface || "matrix"].join(" + ") : "_";

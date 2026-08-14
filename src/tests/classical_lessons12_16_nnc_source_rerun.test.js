@@ -338,6 +338,30 @@ function run(ctx = {}) {
         surface: "mihmichtin",
     });
 
+    const michAffinityChoices = ctx.getCanonicalNncOperationSelectionFrame(
+        michSource,
+        {
+            state: "absolutive",
+            subject: "3pl",
+            stemFormation: "affinity",
+            pluralConnector: "m-eh",
+        }
+    );
+    const chichiSource = ctx.issueCanonicalNncSourceFrame({ stem: "chichi" });
+    const chichiPluralChoices = ctx.getCanonicalNncOperationSelectionFrame(
+        chichiSource,
+        { state: "absolutive", subject: "3pl" }
+    );
+    s.eq("Grammar hides plural endings and relations that contradict the selected class", {
+        michAffinityEndings: michAffinityChoices.pluralConnectorValues,
+        michAffinitySelected: michAffinityChoices.selectedPluralConnector,
+        zeroClassPluralRelations: chichiPluralChoices.stemRelationValues,
+    }, {
+        michAffinityEndings: ["t-in"],
+        michAffinitySelected: "t-in",
+        zeroClassPluralRelations: ["plain", "distributive-varietal"],
+    });
+
     const ordinary = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });
     const personal = ctx.issueCanonicalNncSourceFrame({
         stem: "eh-huā", embedStem: "eh", matrixStem: "huā",
