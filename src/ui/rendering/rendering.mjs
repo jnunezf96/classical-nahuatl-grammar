@@ -1305,8 +1305,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalNncSubjectReferenceCategories(state = {}) {
       const animacy =
         state.nncAnimacy === "nonanimate" ? "nonanimate" : "animate";
-      const metaphoricalUse =
-        animacy === "animate" && state.nncMetaphoricalUse === true;
+      const metaphoricalUse = state.nncMetaphoricalUse === true;
       return {
         animacy,
         metaphoricalUse,
@@ -1642,8 +1641,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "literal"
           ) === "metaphorical";
       const nncAnimacy = requestedNncAnimacy;
-      const nncMetaphoricalUse =
-        metaphoricalUseRequested && nncAnimacy === "animate";
+      const nncMetaphoricalUse = metaphoricalUseRequested;
       const allowedNncStates = ["absolutive", "possessive"];
       const nncState = allowedNncStates.includes(requestedNncState) ? requestedNncState : allowedNncStates[0];
       const nncUseShape = requestedNncUseShape;
@@ -2421,7 +2419,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           decisionOwner: contract.animacyValues.length > 1 ? "user" : "canvas-context"
         }),
         "classical-rule-logic-nnc-subject-number": availability(!fullParadigm && contract.subjectNumberValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-subject-number" : contract.subjectNumberValues.length > 1 ? "canvas-person-and-animacy-allow-number-selection" : "canvas-person-and-animacy-determine-number"),
-        "classical-rule-logic-nnc-metaphorical-use": availability(ordinaryNnc && contract.metaphoricalUseAvailable, !ordinaryNnc ? "canvas-pronominal-source-fixes-its-semantic-kind" : contract.metaphoricalUseAvailable ? "canvas-allows-animate-reference-against-nounstem-expectation" : "canvas-metaphorical-use-requires-animate-reference-or-never-possessive-state-override", {
+        "classical-rule-logic-nnc-metaphorical-use": availability(ordinaryNnc && contract.metaphoricalUseAvailable, !ordinaryNnc ? "canvas-pronominal-source-fixes-its-semantic-kind" : contract.metaphoricalUseAvailable ? "canvas-allows-subject-reference-against-nounstem-expectation" : "canvas-metaphorical-use-requires-an-animacy-mismatch", {
           renderInAuthority: ordinaryNnc
         }),
       };
@@ -2501,6 +2499,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         {
           state: selectedState,
           subject: String(state.subject || "").trim(),
+          metaphoricalUse: state.nncMetaphoricalUse === true,
           possessor: selectedState === "possessive"
             ? normalizeClassicalOrdinaryNncApplicationPossessor(
               state.nncPossessor
@@ -5012,6 +5011,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
       }),
+      "nnc-state-exception": Object.freeze({
+        lessonSections: Object.freeze(["§12.7"]),
+        atomIds: Object.freeze(["ACI-P119-L021-8656C33671"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5288,7 +5291,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         addAnnotation(cursor, cursor + 1, "subposition-boundary", "subposition boundary", "boundary", "subposition-boundary");
         cursor += 1;
         addCarrierAnnotation(cursor, subject.pers2, isSilentCarrier(subject.pers2) ? "silent-subject-nominative" : "subject-nominative", isSilentCarrier(subject.pers2) ? "silent nominative" : "nominative", isSilentCarrier(subject.pers2) ? "silent" : "carrier", "subject-nominative");
-        addAnnotation(stemStart, stemStart + 1, "absolutive-state", "absolutive State", "boundary", "nnc-absolutive-state");
+        const stateArity = String(slots.state?.arity || "");
+        const lexicalStateAvailability = String(grammarContext?.nncSourceAuthorityFrame?.stateAvailability || "");
+        const restrictedState = ["absolutive-only", "possessive-only"].includes(lexicalStateAvailability);
+        if (restrictedState) {
+          addAnnotation(stemStart, stemStart + 1, "nnc-state-exception", "exception", "boundary", "nnc-state-exception");
+        } else if (stateArity === "vacant") {
+          addAnnotation(stemStart, stemStart + 1, "absolutive-state", "absolutive State", "boundary", "nnc-absolutive-state");
+        }
         addAnnotation(stemStart + 1, stemStart + 1 + stem.length, "nounstem-predicate", "nounstem predicate", "carrier", "nnc-nounstem-predicate");
         addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
         const number = slots.number || {};

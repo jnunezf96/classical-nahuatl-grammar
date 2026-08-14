@@ -3779,7 +3779,8 @@ function run(ctx = {}) {
                     nncSubclass: "tli-1",
                     nncUseShape: "base",
                     nncReferent: "nonanimate",
-                    subject: "3sg",
+                    nncAnimacy: "nonanimate",
+                    subject: "3common",
                     sentenceSurfaceMode: "statement",
                     sentenceNegativeMode: "positive",
                 });
@@ -3932,7 +3933,7 @@ function run(ctx = {}) {
                     "affinity",
                     "distributive-varietal",
                 ],
-                pluralConnectors: [],
+                pluralConnectors: ["t-in"],
                 absolutivePluralSubjects: [],
                 rowsUseCanonicalScalar: true,
             },

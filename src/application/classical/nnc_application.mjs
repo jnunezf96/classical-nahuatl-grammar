@@ -247,7 +247,9 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
   }),
   cal: defineOrdinaryNncLexeme({
     nounClass: "tli",
+    referentialAnimacy: "nonanimate",
     stemFormationOptions: ["plain", "affinity", "distributive-varietal"],
+    pluralConnectorOptions: ["t-in"],
     subclass: "tli-1",
   }),
   mich: defineOrdinaryNncLexeme({
@@ -327,6 +329,7 @@ const ORDINARY_NNC_SOURCE_INPUT_KEYS = Object.freeze(
 const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "state",
   "subject",
+  "metaphoricalUse",
   "possessor",
   "stemFormation",
   "predicateFormation",
@@ -1137,6 +1140,7 @@ export function createClassicalNahuatlNncApplicationModule(
       state: frame?.state || "",
       subject: frame?.subject || "",
       referentialAnimacy: frame?.referentialAnimacy || "",
+      metaphoricalUse: frame?.metaphoricalUse === true,
       possessor: frame?.possessor || "",
       stemFormation: frame?.stemFormation || "",
       pluralConnector: frame?.pluralConnector || "",
@@ -1272,11 +1276,20 @@ export function createClassicalNahuatlNncApplicationModule(
     const requestedSubject = normalizeSubject(
       ownDataValue(selections, "subject", ""),
     );
-    const requestedAnimacy = normalizeChoice(
+    const suppliedAnimacy = normalizeChoice(
       ownDataValue(selections, "animacy", ""),
     );
+    const requestedAnimacy = suppliedAnimacy || (
+      ordinary && sourceFrame.referentialAnimacy !== "any"
+        ? sourceFrame.referentialAnimacy
+        : ""
+    );
+    const selectableSubjects = ordinary
+      && sourceFrame.referentialAnimacy !== "any"
+      ? ORDINARY_NNC_SUBJECTS
+      : sourceFrame.allowedSubjects;
     const subjectSelection = selectNncSubjectForAnimacy(
-      sourceFrame.allowedSubjects,
+      selectableSubjects,
       requestedSubject,
       requestedAnimacy,
     );
@@ -1299,8 +1312,10 @@ export function createClassicalNahuatlNncApplicationModule(
         .map(getNncSubjectNumber),
     )));
     const selectedSubjectNumber = getNncSubjectNumber(selectedSubject);
-    const selectedMetaphoricalUse = ordinary
-      && selectedAnimacy === "animate"
+    const metaphoricalUseAvailable = ordinary
+      && sourceFrame.referentialAnimacy !== "any"
+      && selectedAnimacy !== sourceFrame.referentialAnimacy;
+    const selectedMetaphoricalUse = metaphoricalUseAvailable
       && ownDataValue(selections, "metaphoricalUse", false) === true;
 
     if (ordinary) {
@@ -1396,7 +1411,7 @@ export function createClassicalNahuatlNncApplicationModule(
         selectedSubjectNumber,
         animacyValues: availableAnimacyValues,
         selectedAnimacy,
-        metaphoricalUseAvailable: selectedAnimacy === "animate",
+        metaphoricalUseAvailable,
         selectedMetaphoricalUse,
         stemRelationValues,
         selectedStemRelation: selectedStemFormation,
@@ -1604,6 +1619,10 @@ export function createClassicalNahuatlNncApplicationModule(
     const referentialAnimacy = subject === "3common"
       ? "nonanimate"
       : "animate";
+    const metaphoricalUse =
+      ownDataValue(selections, "metaphoricalUse", false) === true;
+    const animacyMismatch = sourceFrame.referentialAnimacy !== "any"
+      && sourceFrame.referentialAnimacy !== referentialAnimacy;
     const requestedPossessor = ownDataValue(selections, "possessor", "");
     const possessor = state === "possessive"
       ? normalizePossessor(requestedPossessor)
@@ -1660,6 +1679,10 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "ordinary-nnc-state-not-lexically-authorized";
     } else if (!ORDINARY_NNC_SUBJECTS.includes(subject)) {
       blockReason = "ordinary-nnc-subject-not-recognized";
+    } else if (animacyMismatch && !metaphoricalUse) {
+      blockReason = "ordinary-nnc-animacy-mismatch-requires-metaphorical-use";
+    } else if (metaphoricalUse && !animacyMismatch) {
+      blockReason = "ordinary-nnc-metaphorical-use-requires-animacy-mismatch";
     } else if (state === "possessive" && !ORDINARY_NNC_POSSESSORS.includes(possessor)) {
       blockReason = "ordinary-nnc-possessor-required";
     } else if (state === "absolutive" && normalizeText(requestedPossessor)) {
@@ -1728,6 +1751,7 @@ export function createClassicalNahuatlNncApplicationModule(
       state,
       subject,
       referentialAnimacy,
+      metaphoricalUse,
       possessor,
       stemFormation,
       pluralConnector,
@@ -1951,6 +1975,7 @@ export function createClassicalNahuatlNncApplicationModule(
           stateAvailability: sourceFrame.stateAvailability,
           naturalPossessionPolicy: sourceFrame.naturalPossessionPolicy,
           naturalPossessionSemantics: sourceFrame.naturalPossessionSemantics,
+          metaphoricalOverride: operationFrame.metaphoricalUse === true,
           possessorCompatibility: sourceFrame.possessorCompatibility,
           policySelectionAuthority: sourceFrame.openStemSource
             ? "default-ordinary-source-analysis"
@@ -1987,6 +2012,7 @@ export function createClassicalNahuatlNncApplicationModule(
             ? operationFrame.subclass.replace(/^tli-/u, "")
             : "",
           animacy: operationFrame.referentialAnimacy,
+          metaphoricalOverride: operationFrame.metaphoricalUse === true,
           naturalPossessionPolicy: sourceFrame.naturalPossessionPolicy,
           stateAvailability: sourceFrame.stateAvailability,
           policySelectionAuthority: sourceFrame.openStemSource
@@ -2000,6 +2026,7 @@ export function createClassicalNahuatlNncApplicationModule(
         classGovernedFrame,
         {
           animacy: operationFrame.referentialAnimacy,
+          metaphoricalOverride: operationFrame.metaphoricalUse === true,
           naturalPossessionPolicy: sourceFrame.naturalPossessionPolicy,
           stateAvailability: sourceFrame.stateAvailability,
           policySelectionAuthority: sourceFrame.openStemSource

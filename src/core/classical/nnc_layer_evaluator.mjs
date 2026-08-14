@@ -4181,13 +4181,48 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       });
       const predicateSemanticsFrame = {
         kind: "classical-nahuatl-absolutive-nnc-nounstem-predicate-semantics-frame",
+        lexicalMeaningLocus: "nounstem",
         predicateRoleOptions: ["identify", "describe", "locate"],
+        predicateFunctionCompulsory: true,
+        independentReferentialStatus: false,
         tenseCategoryEncoded: false,
         timeReferenceSource: "discourse-context",
+        englishCopularTranslationRequired: true,
+        englishCopularTenseSource: "translation-context",
+        laterExplicitTenseAssignmentAvailable: true,
+        laterExplicitTenseAssignmentSection: "§51.3",
         definitenessEncoded: false,
         indefinitenessEncoded: false,
+        englishArticleSource: "translation-context",
         referentialityAccedesTo: "subject-personal-pronoun",
         legalWitnessTagIds: ["cn-l12-125-nounstem-predicate"]
+      };
+      const referenceSemanticsFrame = {
+        kind: "classical-nahuatl-absolutive-nnc-reference-semantics-frame",
+        nounstemRole: "culturally-classified-labeling-device",
+        culturalAnimacyMayDifferFromEnglishExpectation: true,
+        normalAnimacyCorrelation: "nounstem-classification-correlates-with-subject-reference",
+        nounstemAnimacyMayRevealSubjectReference: true,
+        ultimateAnimacyAuthority: "subject-reference",
+        animacyImplicationMayBeContradictedBySubjectReference: true,
+        contradictoryReferenceOftenProduces: "metaphorical-construction",
+        nounstemIndicatesNumber: false,
+        nounstemParticipatesInNumberCompatibility: true,
+        animateSubjectNumbers: ["singular", "plural"],
+        thirdSingularGenericReferenceAllowed: true,
+        nonanimateSubjectNumbers: ["common"],
+        commonNumberRealityRange: ["one", "more-than-one"],
+        countMassDistinctionEncoded: false,
+        englishCountMassSource: "translation-context",
+        englishSingularPluralSource: "translation-context",
+        commonNumberMatchesAnimateThirdSingularShape: true,
+        nounstemClassSelectsNumberMorphShape: true,
+        numberPositionBelongsTo: "subject-personal-pronoun",
+        numberPositionIsNounstemInflection: false,
+        nuclearClauseIsMorphologicalWord: false,
+        singularMeaningPredicateWithPluralSubjectAllowed: true,
+        subjectPredicateCompartmentalization: "airtight",
+        legalWitnessTagIds: ["cn-l12-126-animacy-number"]
       };
       const sourceAuthorized = Boolean(nuclearClauseAuthorized && normalizedStem && isClassicalNahuatlNncSourceAuthorityFrame(nncSourceAuthorityFrame) && stateFrame.authorizationStatus === "authorized");
       const nncSlotFrame = buildClassicalNahuatlNncSlotFrame({
@@ -4259,6 +4294,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         nuclearClauseResult,
         stateFrame,
         predicateSemanticsFrame,
+        referenceSemanticsFrame,
         personFrame,
         numberFrame,
         nncSlotFrame,

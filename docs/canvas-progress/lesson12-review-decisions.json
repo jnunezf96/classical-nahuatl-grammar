@@ -13,6 +13,18 @@
     "lesson12-absolutive-subject-paradigm": {
       "status": "ACCEPTED",
       "acceptedJob": "Generate the complete absolutive subject paradigm without a connector picker."
+    },
+    "lesson12-nounstem-predicate-and-translation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the nounstem predicative and tenseless while English tense and articles come only from context."
+    },
+    "lesson12-animacy-reference-and-number": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use actual subject reference to enforce animacy and number, including deliberate metaphorical use."
+    },
+    "lesson12-state-selection-freedom": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Allow both States normally and restrict them only through typed lexical authority."
     }
   }
 }

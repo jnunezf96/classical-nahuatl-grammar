@@ -20,6 +20,21 @@ export const LESSON12_READER_GUIDANCE_GROUPS = freeze([
     "Recognize the complete absolutive subject paradigm",
     "Singular or common subjects use one of four noun-class shapes; plural subjects use one of three. Person and number choose the subject row, while the nounstem's typed class supplies the correct connector. The connector is never a separate grammatical choice.",
   ),
+  idea(
+    "lesson12-nounstem-predicate-and-translation",
+    "Read the nounstem as a predicate",
+    "The nounstem identifies, describes, or locates the subject. It does not itself mark tense, definiteness, or indefiniteness. English tense and articles must come from the surrounding context.",
+  ),
+  idea(
+    "lesson12-animacy-reference-and-number",
+    "Read number as part of the subject",
+    "Actual subject reference decides animacy. Animate reference allows singular or plural; nonanimate reference uses common number unless a deliberate metaphorical reading changes the reference. Number belongs to the subject, never to the nounstem.",
+  ),
+  idea(
+    "lesson12-state-selection-freedom",
+    "Choose State unless the nounstem is exceptional",
+    "Most nounstems allow either absolutive or possessive State. Only typed lexical knowledge may restrict the choice; a restricted case is shown simply as an exception.",
+  ),
 ]);
 
 export function isLesson12ReaderGuidanceExact(candidate = []) {

@@ -51,8 +51,8 @@ All 137 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application preserves Nahuatl structure; the reader supplies contextual English time and definiteness.
 - Control policy: No new control until a genuine sentence context supplies the choice.
 - Proposal: Keep the nounstem predicative and tenseless while allowing context-sensitive translation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/14
+- Status: ACCEPTED
+- Exactly observed: 14/14
 
 ## Batch 2, Group 5: Animacy, reference, and number
 
@@ -64,8 +64,8 @@ All 137 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user supplies intended reference only when it changes the grammatical reading; the application enforces compatibility.
 - Control policy: Reuse Animacy and Metaphorical use; no noun-plural control.
 - Proposal: Use typed animacy and actual subject reference to allow singular, common, plural, and metaphorical constructions.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/39
+- Status: ACCEPTED
+- Exactly observed: 39/39
 
 ## Batch 2, Group 6: State selection and lexical restrictions
 
@@ -77,5 +77,5 @@ All 137 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user chooses State where grammar permits it; the application enforces lexical restrictions.
 - Control policy: Reuse State; unavailable choices are disabled automatically.
 - Proposal: Allow ordinary nounstems in either State and enforce only genuine lexical State restrictions.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/4
+- Status: ACCEPTED
+- Exactly observed: 4/4

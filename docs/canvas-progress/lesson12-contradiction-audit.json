@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "lesson": 12,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 10,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "An absolutive NNC contains a nounstem predicate and no tense position.",
+    "English tense, copular wording, and definite or indefinite articles come from translation context; the application does not invent them.",
+    "The nounstem may identify, describe, or locate, but referentiality belongs to the subject personal pronoun.",
+    "Cultural nounstem animacy normally guides interpretation, but actual subject reference is the deciding grammatical factor.",
+    "Animate reference allows singular or plural subject number; nonanimate reference uses common number unless metaphorical use is chosen.",
+    "Common number does not encode an English count versus mass distinction and may be translated singular or plural according to context.",
+    "The Number position belongs to the NNC subject and is never nounstem inflection.",
+    "A singular-meaning nounstem may predicate a plural subject because subject and predicate remain separate constituents.",
+    "Most nounstems permit either State; only typed lexical authority may restrict State, and the visible cue for that restriction is exception.",
+    "Lesson 12 reuses State, Subject, Animacy, Metaphorical use, and Full paradigm; it adds no connector, tense, article, or noun-plural control."
+  ]
+}
