@@ -13,6 +13,18 @@
     "lesson13-monadic-possessors": {
       "status": "ACCEPTED",
       "acceptedJob": "Realize reciprocal, nonspecific-human, and nonspecific-nonhuman possessors and enforce their restrictions."
+    },
+    "lesson13-dyadic-possessor-architecture": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case."
+    },
+    "lesson13-dyadic-second-subposition": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically."
+    },
+    "lesson13-specific-possessor-paradigm": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo."
     }
   }
 }

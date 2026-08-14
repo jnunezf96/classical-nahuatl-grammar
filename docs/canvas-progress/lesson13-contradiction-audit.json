@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "lesson": 13,
+  "status": "UNCONTRADICTED",
+  "resolvedCount": 9,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "The intended possessor selects a monadic or dyadic State structure; formula type is not a separate user choice.",
+    "The possessive-state subject reuses Lesson 12 person morphs but has its own automatically selected number connectors.",
+    "Singular or common possessive subjects use uh, hui, or zero; plural subjects use hu-an, with supportive i and spelling derived automatically.",
+    "Reciprocal ne is a possessor rather than an object and requires a third-person subject.",
+    "Nonspecific te is human; nonspecific tla is nonhuman and requires relational or separately authorized compatibility.",
+    "Specific possessors always put person in st1, while st2 supplies whichever category st1 does not contain.",
+    "First- and second-person possessive o is replaced by square zero before a vowel-initial nounstem.",
+    "Third-person possessor number is automatic: zero is singular or common, while m or n is plural according to its licensed boundary.",
+    "NNC am-o and VNC am-m-o may look similar in traditional spelling but remain different typed grammatical structures."
+  ]
+}

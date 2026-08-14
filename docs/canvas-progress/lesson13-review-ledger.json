@@ -16,10 +16,10 @@
     "batches": 2,
     "proposedBoth": 42,
     "proposedReadingOnly": 41,
-    "acceptedAtoms": 50,
+    "acceptedAtoms": 83,
     "declinedAtoms": 0,
-    "awaitingReview": 33,
-    "implementationCredit": 50
+    "awaitingReview": 0,
+    "implementationCredit": 83
   },
   "groups": [
     {
@@ -106,8 +106,8 @@
       "readingJob": "Guide the reader in seeing which categories are carried by the first possessor subposition.",
       "decisionSplit": "The user chooses the possessor; the application distributes person, number, and case across the two subpositions.",
       "controlPolicy": "Reuse Possessor; no subposition picker.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 9
     },
     {
       "groupNumber": 5,
@@ -127,8 +127,8 @@
       "readingJob": "Guide the reader in recognizing the category supplied by the second subposition and the vowel-initial replacement.",
       "decisionSplit": "The user chooses possessor and nounstem; the application supplies the second morph and its boundary-conditioned form.",
       "controlPolicy": "No new control; plural m/n is exposed only if both are genuinely authorized results.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 10
     },
     {
       "groupNumber": 6,
@@ -146,8 +146,8 @@
       "readingJob": "Guide the reader through possessor translations, broader plural readings, and ambiguous traditional spelling.",
       "decisionSplit": "The user chooses the possessor; the application generates its form, while sentence structure resolves visually ambiguous spelling.",
       "controlPolicy": "Reuse Possessor and Full paradigm; no spelling-disambiguation control.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 14
     }
   ],
   "records": [
@@ -1468,14 +1468,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L012-1573C5610E",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L012-1573C5610E"
     },
     {
       "atomId": "ACI-P122-L014-67445E0F31",
@@ -1494,14 +1494,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L014-67445E0F31",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L014-67445E0F31"
     },
     {
       "atomId": "ACI-P122-L014-F14C6E71A1",
@@ -1520,14 +1520,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L014-F14C6E71A1",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L014-F14C6E71A1",
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L014-F14C6E71A1",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L014-F14C6E71A1"
     },
     {
       "atomId": "ACI-P122-L017-5E31ECB3A5",
@@ -1546,14 +1546,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L017-5E31ECB3A5",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L017-5E31ECB3A5",
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L017-5E31ECB3A5",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L017-5E31ECB3A5"
     },
     {
       "atomId": "ACI-P122-L018-F2BDFAB3CC",
@@ -1572,14 +1572,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L018-F2BDFAB3CC",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L018-F2BDFAB3CC",
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L018-F2BDFAB3CC",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L018-F2BDFAB3CC"
     },
     {
       "atomId": "ACI-P122-L018-E36F20B881",
@@ -1598,14 +1598,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L018-E36F20B881",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L018-E36F20B881"
     },
     {
       "atomId": "ACI-P122-L021-5B35269515",
@@ -1624,14 +1624,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L021-5B35269515",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L021-5B35269515",
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L021-5B35269515",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L021-5B35269515"
     },
     {
       "atomId": "ACI-P122-L021-B2483C86B1",
@@ -1650,14 +1650,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L021-B2483C86B1",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L021-B2483C86B1"
     },
     {
       "atomId": "ACI-P122-L022-A77DE55216",
@@ -1676,14 +1676,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "BUILD_THE_FIRST_DYADIC_POSSESSOR_SUBPOSITION",
       "proposedDerivedCueJob": "SHOW_PERSON_NUMBER_AND_CASE_JOBS",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Build the first specific-possessor subposition from person, number, and possessive case.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-possessor-architecture",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L022-A77DE55216",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L022-A77DE55216"
     },
     {
       "atomId": "ACI-P122-L027-E79982D0C8",
@@ -1702,14 +1702,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L027-E79982D0C8",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L027-E79982D0C8",
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L027-E79982D0C8",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L027-E79982D0C8"
     },
     {
       "atomId": "ACI-P122-L028-F03A537B91",
@@ -1728,14 +1728,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L028-F03A537B91",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L028-F03A537B91",
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L028-F03A537B91",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L028-F03A537B91"
     },
     {
       "atomId": "ACI-P122-L030-28FC5A9386",
@@ -1754,14 +1754,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L030-28FC5A9386",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L030-28FC5A9386"
     },
     {
       "atomId": "ACI-P122-L031-F16EFD6A83",
@@ -1780,14 +1780,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L031-F16EFD6A83",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L031-F16EFD6A83"
     },
     {
       "atomId": "ACI-P122-L031-5A956F4EDB",
@@ -1806,14 +1806,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L031-5A956F4EDB",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L031-5A956F4EDB"
     },
     {
       "atomId": "ACI-P122-L033-AD59D5E8AD",
@@ -1832,14 +1832,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L033-AD59D5E8AD",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L033-AD59D5E8AD",
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L033-AD59D5E8AD",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L033-AD59D5E8AD"
     },
     {
       "atomId": "ACI-P122-L033-AD59D5E8AD-02",
@@ -1858,14 +1858,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L033-AD59D5E8AD-02",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L033-AD59D5E8AD-02"
     },
     {
       "atomId": "ACI-P122-L033-AD59D5E8AD-03",
@@ -1884,14 +1884,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L033-AD59D5E8AD-03",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L033-AD59D5E8AD-03",
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L033-AD59D5E8AD-03",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L033-AD59D5E8AD-03"
     },
     {
       "atomId": "ACI-P122-L033-AD59D5E8AD-04",
@@ -1910,14 +1910,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L033-AD59D5E8AD-04",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L033-AD59D5E8AD-04"
     },
     {
       "atomId": "ACI-P122-L033-2EF22919BF",
@@ -1936,14 +1936,14 @@
       "proposedUserChoiceJob": "CHOOSE_ONLY_AN_AUTHORIZED_THIRD_PLURAL_VARIANT",
       "proposedApplicationJob": "BUILD_THE_SECOND_DYADIC_SUBPOSITION_AND_APPLY_VOWEL_INITIAL_REPLACEMENT",
       "proposedDerivedCueJob": "SHOW_POSSESSIVE_CASE_OR_POSSESSOR_NUMBER",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Complete the specific possessor and replace possessive o before a vowel automatically.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P122-L033-2EF22919BF",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P122-L033-2EF22919BF",
+      "readerGuidanceIdeaId": "lesson13-dyadic-second-subposition",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L033-2EF22919BF",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L033-2EF22919BF"
     },
     {
       "atomId": "ACI-P122-L036-E96F04A176",
@@ -1962,14 +1962,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L036-E96F04A176",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L036-E96F04A176"
     },
     {
       "atomId": "ACI-P122-L037-B703199C55",
@@ -1988,14 +1988,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P122-L037-B703199C55",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P122-L037-B703199C55"
     },
     {
       "atomId": "ACI-P123-L002-120B70AD01",
@@ -2014,14 +2014,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L002-120B70AD01",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L002-120B70AD01"
     },
     {
       "atomId": "ACI-P123-L004-0D181E0364",
@@ -2040,14 +2040,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L004-0D181E0364",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L004-0D181E0364"
     },
     {
       "atomId": "ACI-P123-L005-EB6E026BC8",
@@ -2066,14 +2066,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L005-EB6E026BC8",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L005-EB6E026BC8"
     },
     {
       "atomId": "ACI-P123-L006-BE0911F8B9",
@@ -2092,14 +2092,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L006-BE0911F8B9",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L006-BE0911F8B9"
     },
     {
       "atomId": "ACI-P123-L007-12DFEAEED2",
@@ -2118,14 +2118,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L007-12DFEAEED2",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L007-12DFEAEED2"
     },
     {
       "atomId": "ACI-P123-L008-DF82FD1890",
@@ -2144,14 +2144,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L008-DF82FD1890",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L008-DF82FD1890"
     },
     {
       "atomId": "ACI-P123-L009-9541420B32",
@@ -2170,14 +2170,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L009-9541420B32",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L009-9541420B32"
     },
     {
       "atomId": "ACI-P123-L012-361C9C2088",
@@ -2196,14 +2196,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L012-361C9C2088",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L012-361C9C2088"
     },
     {
       "atomId": "ACI-P123-L013-20A70F50E1",
@@ -2222,14 +2222,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L013-20A70F50E1",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L013-20A70F50E1"
     },
     {
       "atomId": "ACI-P123-L013-20A70F50E1-02",
@@ -2248,14 +2248,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L013-20A70F50E1-02",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L013-20A70F50E1-02"
     },
     {
       "atomId": "ACI-P123-L014-154AB46054",
@@ -2274,14 +2274,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L014-154AB46054",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L014-154AB46054"
     },
     {
       "atomId": "ACI-P123-L014-DAEC9E7F38",
@@ -2300,14 +2300,14 @@
       "proposedUserChoiceJob": "CHOOSE_SPECIFIC_POSSESSOR",
       "proposedApplicationJob": "GENERATE_THE_COMPLETE_POSSESSOR_PARADIGM_AND_PRESERVE_STRUCTURE",
       "proposedDerivedCueJob": "SHOW_POSSESSOR_PERSON_NUMBER_AND_CASE",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the full specific-possessor paradigm and preserve the structural difference between NNC amo and VNC ammo.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#ACI-P123-L014-DAEC9E7F38",
+      "writingMutationTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js#mutation:ACI-P123-L014-DAEC9E7F38",
+      "readerGuidanceIdeaId": "lesson13-specific-possessor-paradigm",
+      "readerObservationTest": "src/tests/classical_lesson13_reader_guidance.test.js#ACI-P123-L014-DAEC9E7F38",
+      "readerMutationTest": "src/tests/classical_lesson13_reader_guidance.test.js#mutation:ACI-P123-L014-DAEC9E7F38"
     }
   ]
 }

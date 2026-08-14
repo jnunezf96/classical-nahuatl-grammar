@@ -20,6 +20,21 @@ export const LESSON13_READER_GUIDANCE_GROUPS = freeze([
     "Read the one-part possessor by its reference",
     "ne means one another's and requires a third-person subject. tē means an unspecified human possessor. tla means an unspecified nonhuman possessor and normally requires a relational or otherwise authorized nounstem. These are possessors, not objects.",
   ),
+  idea(
+    "lesson13-dyadic-possessor-architecture",
+    "Read the first specific-possessor part",
+    "The first possessor part always carries person. With a third-person possessor, ī also carries possessive case. With first or second person, n, t, m, or am also carries the possessor's number.",
+  ),
+  idea(
+    "lesson13-dyadic-second-subposition",
+    "Read what the second possessor part completes",
+    "After third-person ī, the second part carries possessor number: zero is singular or common, and m or n is plural. After first- or second-person n, t, m, or am, the second part carries possessive case: o before a consonant and square zero before a vowel.",
+  ),
+  idea(
+    "lesson13-specific-possessor-paradigm",
+    "Use structure to distinguish amo from ammo",
+    "Specific possessors mean my, our, your, his, her, its, or their according to their person and number. In standard analysis, NNC am-o is a second-person plural possessor, while VNC am-m-o is a second-person plural subject plus reflexive object. Traditional spelling may hide that structural difference.",
+  ),
 ]);
 
 export function isLesson13ReaderGuidanceExact(candidate = []) {

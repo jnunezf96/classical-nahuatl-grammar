@@ -51,8 +51,8 @@ All 83 atoms are included exactly once. Unaccepted groups remain proposals; impl
 - User/application split: The user chooses the possessor; the application distributes person, number, and case across the two subpositions.
 - Control policy: Reuse Possessor; no subposition picker.
 - Proposal: Build the first possessor subposition from person, number, and possessive case according to the possessor's person.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/9
+- Status: ACCEPTED
+- Exactly observed: 9/9
 
 ## Batch 2, Group 5: Dyadic second subposition and vowel-initial replacement
 
@@ -64,8 +64,8 @@ All 83 atoms are included exactly once. Unaccepted groups remain proposals; impl
 - User/application split: The user chooses possessor and nounstem; the application supplies the second morph and its boundary-conditioned form.
 - Control policy: No new control; plural m/n is exposed only if both are genuinely authorized results.
 - Proposal: Complete the dyadic possessor with third-person number or first/second-person possessive case.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/10
+- Status: ACCEPTED
+- Exactly observed: 10/10
 
 ## Batch 2, Group 6: Specific possessor paradigm and reading distinction
 
@@ -77,5 +77,5 @@ All 83 atoms are included exactly once. Unaccepted groups remain proposals; impl
 - User/application split: The user chooses the possessor; the application generates its form, while sentence structure resolves visually ambiguous spelling.
 - Control policy: Reuse Possessor and Full paradigm; no spelling-disambiguation control.
 - Proposal: Generate the complete specific possessor paradigm while preserving the difference between amo and ammo structures.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/14
+- Status: ACCEPTED
+- Exactly observed: 14/14

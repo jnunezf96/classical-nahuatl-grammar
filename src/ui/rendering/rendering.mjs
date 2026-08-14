@@ -5015,6 +5015,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§12.7"]),
         atomIds: Object.freeze(["ACI-P119-L021-8656C33671"])
       }),
+      "nnc-monadic-possessor": Object.freeze({
+        lessonSections: Object.freeze(["§13.4.1", "§13.4.2"]),
+        atomIds: Object.freeze(["ACI-P122-L002-3389139451", "ACI-P122-L006-2B6E47A7DF"])
+      }),
+      "nnc-possessor-st1": Object.freeze({
+        lessonSections: Object.freeze(["§13.5.1", "§13.5.1.a", "§13.5.1.b"]),
+        atomIds: Object.freeze(["ACI-P122-L017-5E31ECB3A5", "ACI-P122-L018-F2BDFAB3CC", "ACI-P122-L021-5B35269515"])
+      }),
+      "nnc-possessor-st2": Object.freeze({
+        lessonSections: Object.freeze(["§13.5.2", "§13.5.2.a", "§13.5.2.b"]),
+        atomIds: Object.freeze(["ACI-P122-L027-E79982D0C8", "ACI-P122-L028-F03A537B91", "ACI-P122-L033-AD59D5E8AD", "ACI-P122-L033-AD59D5E8AD-03"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5292,6 +5304,27 @@ export function createUiRenderingApi(targetObject = globalThis) {
         cursor += 1;
         addCarrierAnnotation(cursor, subject.pers2, isSilentCarrier(subject.pers2) ? "silent-subject-nominative" : "subject-nominative", isSilentCarrier(subject.pers2) ? "silent nominative" : "nominative", isSilentCarrier(subject.pers2) ? "silent" : "carrier", "subject-nominative");
         const stateArity = String(slots.state?.arity || "");
+        const stateSlots = Array.isArray(slots.state?.slots) ? slots.state.slots : [];
+        const stateBoundary = text.indexOf("+", cursor);
+        let stateCursor = stateBoundary >= 0 ? stateBoundary + 1 : -1;
+        if (stateCursor >= 0 && stateArity === "monadic" && stateSlots[0]) {
+          const role = String(stateSlots[0].possessorRole || "");
+          const label = role === "reciprocal"
+            ? "reciprocal possessor"
+            : role === "nonspecific-human"
+              ? "nonspecific human possessor"
+              : role === "nonspecific-nonhuman"
+                ? "nonspecific nonhuman possessor"
+                : "possessor";
+          addCarrierAnnotation(stateCursor, stateSlots[0].carrier, role || "possessor", label, isSilentCarrier(stateSlots[0].carrier) ? "silent" : "carrier", "nnc-monadic-possessor");
+        } else if (stateCursor >= 0 && stateArity === "dyadic" && stateSlots.length === 2) {
+          const possessor = String(stateSlots[0].possessorPerson || "");
+          const thirdPerson = possessor.startsWith("3");
+          addCarrierAnnotation(stateCursor, stateSlots[0].carrier, "possessor-st1", thirdPerson ? "possessor person and possessive case" : "possessor person and number", isSilentCarrier(stateSlots[0].carrier) ? "silent" : "carrier", "nnc-possessor-st1");
+          stateCursor += String(stateSlots[0].carrier || "").length;
+          if (text[stateCursor] === "-") stateCursor += 1;
+          addCarrierAnnotation(stateCursor, stateSlots[1].carrier, "possessor-st2", thirdPerson ? "possessor number" : "possessive case", isSilentCarrier(stateSlots[1].carrier) ? "silent" : "carrier", "nnc-possessor-st2");
+        }
         const lexicalStateAvailability = String(grammarContext?.nncSourceAuthorityFrame?.stateAvailability || "");
         const restrictedState = ["absolutive-only", "possessive-only"].includes(lexicalStateAvailability);
         if (restrictedState) {

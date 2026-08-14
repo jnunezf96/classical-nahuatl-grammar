@@ -16,6 +16,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson13_groups_1_3_jobs.test.js",
       "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    },
+    "lesson13-dyadic-possessor-architecture": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    },
+    "lesson13-dyadic-second-subposition": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
+    },
+    "lesson13-specific-possessor-paradigm": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson13_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson13_reader_guidance.test.js"
     }
   }
 }
