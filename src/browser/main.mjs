@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-plural-grammar-226";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-formula-order-229";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

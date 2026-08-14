@@ -2380,6 +2380,14 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="tec-title">special general-use stem (tēc)</option>
                         </select>
                       </label>
+                      <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="predicate-stem-relation" hidden>
+                        <span class="classical-rule-control__label">Stem relation</span>
+                        <select id="classical-rule-logic-nnc-stem-relation" data-classical-rule-logic-control="nnc-stem-relation">
+                          <option value="plain" selected>plain</option>
+                          <option value="affinity">affinity</option>
+                          <option value="distributive-varietal">distributive / varietal</option>
+                        </select>
+                      </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="plural-ending" hidden>
                         <span class="classical-rule-control__label">Plural ending</span>
                         <select id="classical-rule-logic-nnc-plural-connector" data-classical-rule-logic-control="nnc-plural-connector">
@@ -2388,14 +2396,6 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="m-eh">-meh</option>
                           <option value="0-h">-h</option>
                           <option value="hu-ān">-huān (automatic)</option>
-                        </select>
-                      </label>
-                      <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="predicate-stem-relation" hidden>
-                        <span class="classical-rule-control__label">Stem relation</span>
-                        <select id="classical-rule-logic-nnc-stem-relation" data-classical-rule-logic-control="nnc-stem-relation">
-                          <option value="plain" selected>plain</option>
-                          <option value="affinity">affinity</option>
-                          <option value="distributive-varietal">distributive / varietal</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="possessive" data-classical-nnc-authority-order="predicate-possessor" hidden>

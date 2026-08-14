@@ -3945,8 +3945,8 @@ function run(ctx = {}) {
                 planKind:
                     "classical-nahuatl-ordinary-nnc-paradigm-plan",
                 planStatus: "authorized",
-                planCoordinates: 56,
-                rows: 56,
+                planCoordinates: 62,
+                rows: 62,
                 states: ["absolutive", "possessive"],
                 subjects: [
                     "1sg",

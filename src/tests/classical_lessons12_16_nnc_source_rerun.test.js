@@ -220,12 +220,18 @@ function run(ctx = {}) {
             && authorityPanel.includes('<option value="m-eh">-meh</option>')
             && authorityPanel.includes('<option value="0-h">-h</option>')
             && authorityPanel.includes('<option value="hu-ān">-huān (automatic)</option>'),
+        nounstemControlsFollowFormulaOrder:
+            authorityPanel.indexOf('id="classical-rule-logic-nnc-predicate-form"')
+                < authorityPanel.indexOf('id="classical-rule-logic-nnc-stem-relation"')
+            && authorityPanel.indexOf('id="classical-rule-logic-nnc-stem-relation"')
+                < authorityPanel.indexOf('id="classical-rule-logic-nnc-plural-connector"'),
     }, {
         source: true,
         grammar: false,
         matchingVerbstemPresentation: true,
         noClassPatternInSource: true,
         pluralEndingChoiceInGrammar: true,
+        nounstemControlsFollowFormulaOrder: true,
     });
 
     const canonicalClass = ctx.issueCanonicalNncSourceFrame({
@@ -303,6 +309,33 @@ function run(ctx = {}) {
             "#0-0+ī-0(mich)hu-ān#",
             "īmichhuān",
         ],
+    });
+
+    const michDistributiveOperation = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        {
+            state: "absolutive",
+            subject: "3pl",
+            pluralConnector: "t-in",
+            stemFormation: "distributive-varietal",
+        }
+    );
+    const michDistributiveResult = ctx.requestClassicalOrdinaryNncResult(
+        michSource,
+        michDistributiveOperation
+    );
+    s.eq("the normal Grammar route applies the stem relation before the plural ending", {
+        operation: michDistributiveOperation.authorizationStatus,
+        relation: michDistributiveOperation.stemFormation,
+        result: michDistributiveResult.authorizationStatus,
+        formula: michDistributiveResult.formulaRealization,
+        surface: michDistributiveResult.wordSurface,
+    }, {
+        operation: "authorized",
+        relation: "distributive-varietal",
+        result: "authorized",
+        formula: "#0-0(mih-mich)t-in#",
+        surface: "mihmichtin",
     });
 
     const ordinary = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });

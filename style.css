@@ -13256,21 +13256,26 @@ body.is-language-classical #classical-rule-logic-controls[data-classical-rule-lo
   order: 34;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-subclass"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="plural-ending"] {
   order: 35;
+  grid-column: span 4;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-use-stem"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-subclass"] {
   order: 36;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-possessor-reduplication"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-use-stem"] {
   order: 37;
+}
+
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="predicate-possessor-reduplication"] {
+  order: 38;
   grid-column: span 6;
 }
 
 body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-authority-order="context-doubled-first-plural"] {
-  order: 38;
+  order: 39;
   grid-column: span 6;
 }
 
@@ -13306,19 +13311,19 @@ body.is-language-classical #classical-rule-logic-controls[data-classical-rule-lo
   grid-column: span 6;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-grammar-group="subject"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] > .classical-rule-controls-grid > [data-classical-nnc-grammar-group="subject"] {
   order: 11;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-grammar-group="state"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] > .classical-rule-controls-grid > [data-classical-nnc-grammar-group="state"] {
   order: 21;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-grammar-group="nounstem"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] > .classical-rule-controls-grid > [data-classical-nnc-grammar-group="nounstem"] {
   order: 31;
 }
 
-body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] [data-classical-nnc-grammar-group="sentence"] {
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] > .classical-rule-controls-grid > [data-classical-nnc-grammar-group="sentence"] {
   order: 41;
 }
 

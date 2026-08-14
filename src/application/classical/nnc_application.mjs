@@ -2053,6 +2053,7 @@ export function createClassicalNahuatlNncApplicationModule(
         pluralStemFormationOptions: sourceFrame.stemFormationOptions,
         pluralConnector: operationFrame.pluralConnector,
         pluralConnectorOptions: sourceFrame.pluralConnectorOptions,
+        sourcePlainPluralConnector: operationFrame.pluralConnector,
       },
     );
   }
@@ -2218,7 +2219,9 @@ export function createClassicalNahuatlNncApplicationModule(
           stemFormation: operationFrame.stemFormation,
           pluralConnector: operationFrame.pluralConnector,
           pluralSelectionAuthority: operationFrame.pluralConnector
-            ? "external-lexical-record"
+            ? sourceFrame.pluralConnectorOptions.length > 1
+              ? "user-selection"
+              : "external-lexical-record"
             : "",
           generalUseShape: operationFrame.useShape,
           ephemeralFinalVowel: sourceFrame.ephemeralFinalVowel,

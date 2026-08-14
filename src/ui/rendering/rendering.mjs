@@ -2449,7 +2449,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             && contract.selectedSubjectNumber === "plural"
             && (
               contract.nncState === "possessive"
-              || contract.pluralConnectorValues.length > 0
+              || (contract.pluralConnectorValues || []).length > 0
             ),
           fullParadigm
             ? "canvas-full-paradigm-enumerates-plural-endings"
@@ -2461,7 +2461,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           {
             decisionOwner:
               contract.nncState === "absolutive"
-              && contract.pluralConnectorValues.length > 1
+              && (contract.pluralConnectorValues || []).length > 1
                 ? "user"
                 : "application",
             renderInAuthority:
@@ -8485,7 +8485,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-rule-logic-nnc-state": "state",
       "classical-rule-logic-nnc-possessor": "state",
       "classical-rule-logic-nnc-possessor-reduplication": "state",
-      "classical-rule-logic-nnc-metaphorical-use": "state",
+      "classical-rule-logic-nnc-metaphorical-use": "subject",
       "classical-rule-logic-nnc-predicate-form": "nounstem",
       "classical-rule-logic-nnc-stem-relation": "nounstem",
       "classical-rule-logic-nnc-plural-connector": "nounstem",
