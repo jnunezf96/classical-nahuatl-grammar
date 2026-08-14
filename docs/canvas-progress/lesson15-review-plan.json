@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "lesson": 15,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson15-possessive-plural-assimilation",
+      "title": "Possessive-plural stem-boundary assimilation",
+      "sections": ["§15.1", "§15.1.1", "§15.1.1.a", "§15.1.1.b"],
+      "proposal": "Apply the two Andrews-authorized stem-final changes only before possessive plural hu-ān.",
+      "writingJob": "Delete final voiceless w and assimilate final n before possessive plural hu-ān while preserving the licensed n-retaining spelling alternative.",
+      "readingJob": "Guide the reader in recovering the underlying stem from the assimilated possessive-plural form.",
+      "decisionSplit": "The user chooses the nounstem, subject, and possessor; the application performs the boundary change.",
+      "controlPolicy": "No assimilation control; the typed stem and following hu-ān determine it.",
+      "userChoiceJob": "CHOOSE_NOUNSTEM_SUBJECT_AND_POSSESSOR",
+      "applicationJob": "APPLY_POSSESSIVE_PLURAL_BOUNDARY_ASSIMILATION",
+      "derivedCueJob": "SHOW_ASSIMILATION_ON_THE_CHANGED_STEM"
+    },
+    {
+      "groupId": "lesson15-suppletive-possessive-stems",
+      "title": "Lexically suppletive possessive stems",
+      "sections": ["§15.1.2", "§15.1.2.a", "§15.1.2.b", "§15.1.2.c"],
+      "proposal": "Use only a noun's typed Andrews-authorized possessive replacement and block invented historical forms.",
+      "writingJob": "Substitute an authorized possessive stem or yō-matrix, preserve person and number, support the Totēc title exception, and reject spurious totēcuiyo as a native derivation.",
+      "readingJob": "Guide the reader in connecting the possessive replacement to its source noun and in separating native grammar from historical priestly spelling.",
+      "decisionSplit": "The user chooses the nounstem, subject, and possessor; lexical authority supplies the replacement stem.",
+      "controlPolicy": "No general suppletion control; show a genuine lexical alternative only when the source record licenses one.",
+      "userChoiceJob": "CHOOSE_NOUNSTEM_SUBJECT_AND_POSSESSOR",
+      "applicationJob": "SELECT_THE_AUTHORIZED_POSSESSIVE_REPLACEMENT",
+      "derivedCueJob": "SHOW_SUPPLETIVE_STEM_OR_EXCEPTION"
+    },
+    {
+      "groupId": "lesson15-derived-nonanimate-and-possessor-reduplication",
+      "title": "Derived nonanimate readings and possessor reduplication",
+      "sections": ["§15.1.3", "§15.1.4"],
+      "proposal": "Keep common grammatical number on derived nonanimate predicates and apply possessor reduplication only from typed lexical authority.",
+      "writingJob": "Build affinity or distributive nonanimate possessive forms without converting their English plural reading into grammar number, and duplicate the typed possessor dyad only where licensed.",
+      "readingJob": "Guide the reader in separating common grammatical number, plural translation, stem relation, and repeated possessor material.",
+      "decisionSplit": "The user chooses the intended stem relation; the application keeps number correct and applies lexically licensed reduplication.",
+      "controlPolicy": "Reuse the existing stem-meaning choice; no new general reduplication control unless an authorized lexical alternative truly remains.",
+      "userChoiceJob": "CHOOSE_THE_INTENDED_STEM_RELATION",
+      "applicationJob": "KEEP_COMMON_NUMBER_AND_APPLY_LICENSED_POSSESSOR_REDUPLICATION",
+      "derivedCueJob": "SHOW_AFFINITY_DISTRIBUTIVE_OR_POSSESSOR_REDUPLICATION"
+    },
+    {
+      "groupId": "lesson15-secondary-general-use",
+      "title": "Secondary general-use relational stems",
+      "sections": ["§15.1.5"],
+      "proposal": "Rerank a complete inner possessive predicate as a general-use stem with its authorized tē, ti, or t carrier.",
+      "writingJob": "Build the typed secondary general-use stem and its extended relational meanings.",
+      "readingJob": "Guide the reader through the inner and outer possessive relationships.",
+      "decisionSplit": "Lexical authority selects the secondary stem; the user supplies the outer subject and possessor.",
+      "controlPolicy": "No generic carrier control.",
+      "userChoiceJob": "CHOOSE_OUTER_SUBJECT_AND_POSSESSOR",
+      "applicationJob": "BUILD_SECONDARY_GENERAL_USE_RELATIONAL_STEM",
+      "derivedCueJob": "SHOW_SECONDARY_GENERAL_USE_STEM"
+    },
+    {
+      "groupId": "lesson15-analogical-restricted-use",
+      "title": "Analogical tla restricted-use stems",
+      "sections": ["§15.1.6"],
+      "proposal": "Rerank the complete tla possessive predicate as a new restricted-use stem with its general-use partner.",
+      "writingJob": "Build the typed analogical nounstem and preserve source coexistence or replacement as lexical information.",
+      "readingJob": "Guide the reader through the rank change and resulting meaning.",
+      "decisionSplit": "Lexical authority licenses the derived noun; the application selects its use-stem by State.",
+      "controlPolicy": "Expose only a genuine lexical source-or-derived choice.",
+      "userChoiceJob": "CHOOSE_SOURCE_OR_AUTHORIZED_DERIVED_NOUN_MEANING",
+      "applicationJob": "BUILD_ANALOGICAL_RESTRICTED_AND_GENERAL_USE_STEMS",
+      "derivedCueJob": "SHOW_ANALOGICAL_RANK_CHANGE"
+    },
+    {
+      "groupId": "lesson15-reclassification-and-possessor-scope",
+      "title": "Tl 2-A reclassification and possessor scope",
+      "sections": ["§15.1.7", "§15.1.8"],
+      "proposal": "Reclassify an authorized tl 2-A source as tl 1-A and keep the NNC-internal possessor nuclear.",
+      "writingJob": "Delete the ephemeral i, rebuild connectors for tl 1-A, and preserve nuclear versus supplementary possessor scope.",
+      "readingJob": "Guide the reader through reclassification, meaning alternatives, and possessor rank.",
+      "decisionSplit": "Lexical authority licenses reclassification; the application performs it.",
+      "controlPolicy": "No mechanical reclassification control for arbitrary input.",
+      "userChoiceJob": "CHOOSE_ONLY_A_LICENSED_LEXICAL_ALTERNATIVE",
+      "applicationJob": "RECLASSIFY_AND_REBUILD_THE_TYPED_NNC",
+      "derivedCueJob": "SHOW_RECLASSIFICATION_OR_POSSESSOR_SCOPE"
+    },
+    {
+      "groupId": "lesson15-natural-possession",
+      "title": "Naturally possessed and never-possessive nounstems",
+      "sections": ["§15.2", "§15.2.1", "§15.2.2", "§15.2.3"],
+      "proposal": "Enforce lexical State availability for property, relationship, body-part, and never-possessive stems.",
+      "writingJob": "Require possessive State where natural association demands it and permit an explicit metaphorical override where Andrews licenses one.",
+      "readingJob": "Guide the reader through possession scope and English singular or plural interpretations.",
+      "decisionSplit": "The user chooses intended meaning; lexical policy allows or blocks State.",
+      "controlPolicy": "No natural-possession toggle; use lexical authority and expose metaphorical use only when meaningful.",
+      "userChoiceJob": "CHOOSE_INTENDED_LITERAL_OR_METAPHORICAL_MEANING",
+      "applicationJob": "ENFORCE_LEXICAL_STATE_AVAILABILITY",
+      "derivedCueJob": "SHOW_NATURAL_POSSESSION_OR_EXCEPTION"
+    },
+    {
+      "groupId": "lesson15-nnc-sentences",
+      "title": "NNCs as complete sentences",
+      "sections": ["§15.3"],
+      "proposal": "Send the finished typed NNC through sentence grammar for statement, question, exclamation, polarity, mood, and particles.",
+      "writingJob": "Build the normal sentence from the canonical NNC without inventing a have verb or encoding definiteness in the predicate.",
+      "readingJob": "Guide the reader through equative, attributive, adverbial, having, and definite or indefinite translations.",
+      "decisionSplit": "The user chooses genuine sentence meaning; the application supplies structure and punctuation.",
+      "controlPolicy": "Reuse existing sentence controls.",
+      "userChoiceJob": "CHOOSE_GENUINE_SENTENCE_MEANING",
+      "applicationJob": "BUILD_SENTENCE_FROM_CANONICAL_NNC",
+      "derivedCueJob": "SHOW_NNC_SENTENCE_JOB"
+    }
+  ]
+}

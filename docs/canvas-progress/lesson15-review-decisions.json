@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 15,
+  "decisions": {
+    "lesson15-possessive-plural-assimilation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply possessive-plural boundary assimilation automatically."
+    },
+    "lesson15-suppletive-possessive-stems": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use only authorized possessive replacement stems and block invented forms."
+    },
+    "lesson15-derived-nonanimate-and-possessor-reduplication": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep common grammatical number and apply only lexically licensed possessor reduplication."
+    }
+  }
+}

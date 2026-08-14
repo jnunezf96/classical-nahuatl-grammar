@@ -5019,6 +5019,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§14.8"]),
         atomIds: Object.freeze(["ACI-P133-L030-0D1A4CC7A0", "ACI-P133-L033-049FFCAA21", "ACI-P134-L006-EBA505AA63"])
       }),
+      "nnc-boundary-assimilation": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.1.a", "§15.1.1.b"]),
+        atomIds: Object.freeze(["ACI-P135-L007-EFB867D0A4", "ACI-P135-L007-219C31A1E7", "ACI-P135-L013-0AFCECC24E", "ACI-P135-L013-92B728E8BC"])
+      }),
+      "nnc-suppletive-stem": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.2", "§15.1.2.a", "§15.1.2.b", "§15.1.2.c"]),
+        atomIds: Object.freeze(["ACI-P135-L018-B7E050BFF0", "ACI-P135-L024-55C495303B", "ACI-P136-L008-93D875386B"])
+      }),
+      "nnc-possessor-reduplication": Object.freeze({
+        lessonSections: Object.freeze(["§15.1.4"]),
+        atomIds: Object.freeze(["ACI-P136-L038-07EFC9417A"])
+      }),
       "nnc-subject-number": Object.freeze({
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
@@ -5317,6 +5329,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         addCarrierAnnotation(cursor, subject.pers2, isSilentCarrier(subject.pers2) ? "silent-subject-nominative" : "subject-nominative", isSilentCarrier(subject.pers2) ? "silent nominative" : "nominative", isSilentCarrier(subject.pers2) ? "silent" : "carrier", "subject-nominative");
         const stateArity = String(slots.state?.arity || "");
         const stateSlots = Array.isArray(slots.state?.slots) ? slots.state.slots : [];
+        const lesson15Frame = grammarContext?.kind === "classical-nahuatl-ordinary-nnc-higher-nnc-frame"
+          ? grammarContext
+          : grammarContext?.inputHigherNncFrame || null;
+        const lesson15Actions = Array.isArray(lesson15Frame?.operationFrame?.appliedActions)
+          ? lesson15Frame.operationFrame.appliedActions
+          : [];
+        const lesson15ActionIds = lesson15Actions.map((action) => String(action?.action || ""));
         const stateBoundary = text.indexOf("+", cursor);
         let stateCursor = stateBoundary >= 0 ? stateBoundary + 1 : -1;
         if (stateCursor >= 0 && stateArity === "monadic" && stateSlots[0]) {
@@ -5336,6 +5355,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           stateCursor += String(stateSlots[0].carrier || "").length;
           if (text[stateCursor] === "-") stateCursor += 1;
           addCarrierAnnotation(stateCursor, stateSlots[1].carrier, "possessor-st2", thirdPerson ? "possessor number" : "possessive case", isSilentCarrier(stateSlots[1].carrier) ? "silent" : "carrier", "nnc-possessor-st2");
+        } else if (stateCursor >= 0 && stateArity === "reduplicated-dyadic" && stateSlots.length === 4) {
+          stateSlots.forEach((slot, index) => {
+            addCarrierAnnotation(stateCursor, slot.carrier, `possessor-reduplication-${index + 1}`, "possessor reduplication", isSilentCarrier(slot.carrier) ? "silent" : "carrier", "nnc-possessor-reduplication");
+            stateCursor += String(slot.carrier || "").length;
+            if (text[stateCursor] === "-") stateCursor += 1;
+          });
         }
         const lexicalStateAvailability = String(grammarContext?.nncSourceAuthorityFrame?.stateAvailability || "");
         const restrictedState = ["absolutive-only", "possessive-only"].includes(lexicalStateAvailability);
@@ -5349,7 +5374,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const lesson14Source = lesson14Frame?.sourceFrame || null;
         const lesson14Derived = lesson14Frame?.derivedStemFrame || null;
         const lesson14Ambiguity = lesson14Frame?.ambiguityFrame || null;
-        const lesson14StemCue = lesson14Ambiguity?.authorizationStatus === "authorized"
+        const lesson14StemCue = lesson15ActionIds.some((action) => action.includes("assimilate") || action.includes("delete-final-voiceless-w"))
+          ? Object.freeze({ role: "nnc-boundary-assimilation", label: "assimilation", authority: "nnc-boundary-assimilation" })
+          : lesson15ActionIds.some((action) => action.includes("suppletive") || action.includes("lexically-authorized-possessive-stem") || action.includes("lesson15-yo-matrix"))
+            ? Object.freeze({ role: "nnc-suppletive-stem", label: "suppletive stem", authority: "nnc-suppletive-stem" })
+          : lesson14Ambiguity?.authorizationStatus === "authorized"
           && lesson14Ambiguity.selectionRequired === true
           && lesson14Ambiguity.selectedAnalysis
           ? Object.freeze({ role: "nnc-constituent-analysis", label: "constituent analysis", authority: "nnc-constituent-analysis" })

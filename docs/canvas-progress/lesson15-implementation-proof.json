@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "lesson": 15,
+  "groups": {
+    "lesson15-possessive-plural-assimilation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-suppletive-possessive-stems": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    },
+    "lesson15-derived-nonanimate-and-possessor-reduplication": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson15_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson15_reader_guidance.test.js"
+    }
+  }
+}
