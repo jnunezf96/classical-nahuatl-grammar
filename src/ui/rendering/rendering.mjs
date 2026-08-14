@@ -4976,6 +4976,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§11.4.9"]),
         atomIds: Object.freeze(["ACI-P109-L016-5287F30C12", "ACI-P109-L018-813CB3CE7E"])
       }),
+      "being-suppletion": Object.freeze({
+        lessonSections: Object.freeze(["§11.5.1"]),
+        atomIds: Object.freeze(["ACI-P109-L031-72ADB5606D", "ACI-P109-L035-CA9C29D22B", "ACI-P110-L025-198EFE635C", "ACI-P110-L027-7B10812DD4", "ACI-P111-L008-8B99184F43"])
+      }),
+      "going-suppletion": Object.freeze({
+        lessonSections: Object.freeze(["§11.5.2"]),
+        atomIds: Object.freeze(["ACI-P111-L020-9E6B134C7E", "ACI-P111-L025-AAC2F38F3B", "ACI-P111-L027-A907BE4B72", "ACI-P112-L019-191AD41FD8-02", "ACI-P112-L037-9A91BF8394"])
+      }),
+      "coming-fused-hual": Object.freeze({
+        lessonSections: Object.freeze(["§11.5.3"]),
+        atomIds: Object.freeze(["ACI-P113-L022-1CE11A34D2", "ACI-P113-L024-D3C08FAA63"])
+      }),
+      "plural-only-cen-hui": Object.freeze({
+        lessonSections: Object.freeze(["§11.5.2 Note"]),
+        atomIds: Object.freeze(["ACI-P113-L018-D299E78807-03"])
+      }),
       "verbstem-perfective-operation": Object.freeze({
         lessonSections: Object.freeze(["§7.3.1", "§7.4", "§7.4.1", "§7.4.2"]),
         atomIds: Object.freeze([
@@ -5472,6 +5488,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
                           ? { role: "mani-referent", label: lesson11Plan.contextualInterpretation === "wide-flat-thing" ? "wide or flat referent" : lesson11Plan.contextualInterpretation === "mass-or-crowd" ? "mass or crowd referent" : lesson11Plan.usageStatus === "marked-not-ordinary" ? "individual animate referent, unusual" : "mani positional verbstem", authorityKey: "mani-referent" }
                           : lesson11Plan.irregularityKind === "regular-with-optional-past-reading"
                             ? { role: "nemi-tense-relation", label: "nemi tense relation", authorityKey: "nemi-tense-relation" }
+                            : lesson11Plan.irregularityKind === "suppletive" && lesson11Plan.lexemeId === "be-suppletive"
+                              ? { role: "being-suppletion", label: "suppletive being verbstem", authorityKey: "being-suppletion" }
+                              : lesson11Plan.irregularityKind === "suppletive" && lesson11Plan.lexemeId === "go-suppletive"
+                                ? { role: "going-suppletion", label: "suppletive going verbstem", authorityKey: "going-suppletion" }
+                                : lesson11Plan.irregularityKind === "suppletive" && lesson11Plan.lexemeId === "come-suppletive"
+                                  ? { role: "coming-fused-hual", label: "fused huāl coming verbstem", authorityKey: "coming-fused-hual" }
+                                  : lesson11Plan.irregularityKind === "plural-only-hui-compound"
+                                    ? { role: "plural-only-cen-hui", label: "plural-only go-together verbstem", authorityKey: "plural-only-cen-hui" }
               : { role: "irregular-vnc", label: "irregular verbstem", authorityKey: "irregular-vnc" }
           : null;
         addAnnotation(
@@ -9177,7 +9201,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-object": shouldShowClassicalRuleLogicObject(surfaceFrame),
         "classical-rule-logic-object-interpretation": basalUnit === "vnc" && valence === "mainline-reflexive",
         "classical-rule-logic-tla-fusion": shouldShowClassicalRuleLogicTlaFusion(surfaceFrame),
-        "classical-rule-logic-directional": capabilities.directionalLocative === true,
+        "classical-rule-logic-directional": capabilities.directionalLocative === true
+          && lesson11Plan?.lexemeId !== "come-suppletive",
         "classical-rule-logic-prefix-stack": shouldShowClassicalRuleLogicPrefixStack(surfaceFrame) && surfaceFrame.machineryFrame?.lesson11ParadigmPlan?.paradigmTense !== "preterit-as-present",
         "classical-rule-logic-polarity": capabilities.polarity === true
           || nncSupportsSharedSentenceControls,

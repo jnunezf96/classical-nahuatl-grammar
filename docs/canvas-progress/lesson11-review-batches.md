@@ -119,44 +119,44 @@ All 352 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - Status: ACCEPTED
 - Exactly observed: 25/25
 
-## Batch 4, Group 10: The irregular verb go
+## Batch 4, Group 10: Being and existence suppletion
 
 - Sections: §11.5, §11.5.1, §11.5.1.a, §11.5.1.a.i, §11.5.1.a.ii, §11.5.1.a.iii, §11.5.1.a.iv, §11.5.1.a.v, §11.5.1.b, §11.5.1.c, §11.5.1.c.i, §11.5.1.c.ii
 - Atoms: 89
-- Proposed direction: 34 both; 55 reading only
-- Writing job: Select the correct go stem by participant, mood, tense, and direction without user stem entry.
-- Reading job: Guide the reader in recognizing the different forms as one paradigm.
-- User/application split: The user chooses grammatical meaning; the application selects the stem member.
-- Control policy: Reuse existing choices; no paradigm-member picker.
-- Proposal: Generate all members of the go paradigm from one lexical relation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/89
+- Proposed direction: 20 both; 69 reading only
+- Writing job: Select ye, ca-t, or ca-h by mood, tense, number, and locative context, including the marked antiquated ca-t form only when chosen.
+- Reading job: Guide the reader through suppletion, antiquated catqui forms, contextual meanings, and traditional spellings.
+- User/application split: The user chooses mood, tense, subject, direction, and an authorized marked variant; the application selects every ordinary stem member and ending.
+- Control policy: Reuse Mood, Tense, Subject, Directional, Polarity, and the existing marked-alternative picker; no paradigm-member picker.
+- Proposal: Generate the ye, ca-t, and ca-h members from one being and existence paradigm.
+- Status: ACCEPTED
+- Exactly observed: 89/89
 
-## Batch 4, Group 11: The irregular verb come
+## Batch 4, Group 11: Going suppletion
 
 - Sections: §11.5.2, §11.5.2.a, §11.5.2.a.i, §11.5.2.a.ii, §11.5.2.a.iii, §11.5.2.b, §11.5.2.b.i, §11.5.2.b.ii, §11.5.2.b.iii, §11.5.2.b.iv, §11.5.2.c, §11.5.2.c.i, §11.5.2.c.ii, §11.5.2.c.iii
 - Atoms: 74
-- Proposed direction: 29 both; 45 reading only
-- Writing job: Select the correct come stem by participant, mood, tense, and direction without user stem entry.
-- Reading job: Guide the reader in recognizing the different forms as one paradigm.
-- User/application split: The user chooses grammatical meaning; the application selects the stem member.
-- Control policy: Reuse existing choices; no paradigm-member picker.
-- Proposal: Generate all members of the come paradigm from one lexical relation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/74
+- Proposed direction: 19 both; 55 reading only
+- Writing job: Select the correct going stem by mood, tense, and subject number, delete forbidden post-hui k, and block singular cen-hui and dispreferred dialectal forms.
+- Reading job: Guide the reader through the shared paradigm, spelling ambiguities, dialectal forms, and the archaic ya-hui compound analysis.
+- User/application split: The user chooses mood, tense, and subject; the application selects the stem and applies its boundary rules.
+- Control policy: Reuse Mood, Tense, and Subject; no paradigm-member or dialect picker.
+- Proposal: Generate yā, ya-uh, hui, and yah from one going paradigm.
+- Status: ACCEPTED
+- Exactly observed: 74/74
 
-## Batch 4, Group 12: Other irregular paradigm relations
+## Batch 4, Group 12: Coming with fused huāl
 
 - Sections: §11.5.3
 - Atoms: 11
 - Proposed direction: 2 both; 9 reading only
-- Writing job: Generate the authorized paradigm member without analogy to an unrelated stem.
-- Reading job: Guide recognition of each relation.
-- User/application split: The user chooses grammatical meaning; the application selects the member.
-- Control policy: No new control.
-- Proposal: Keep every remaining listed irregular paradigm as an exact lexical relation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/11
+- Writing job: Select the going member, fuse huāl, apply l plus y assimilation, and prevent a second directional prefix.
+- Reading job: Guide the reader in recognizing all fused members as one coming paradigm and its traditional dictionary name.
+- User/application split: The user chooses mood, tense, and subject; the application selects and fuses the correct member.
+- Control policy: Reuse Mood, Tense, and Subject; no Directional or paradigm-member picker for fused huāl.
+- Proposal: Build the coming paradigm by fusing huāl to the appropriate member of the going paradigm.
+- Status: ACCEPTED
+- Exactly observed: 11/11
 
 ## Batch 5, Group 13: Irregular idioms
 

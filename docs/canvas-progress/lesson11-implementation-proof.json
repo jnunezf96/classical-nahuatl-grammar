@@ -46,6 +46,21 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson11_groups_7_9_jobs.test.js",
       "readerTest": "src/tests/classical_lesson11_reader_guidance.test.js"
+    },
+    "lesson11-being-suppletion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson11_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson11_reader_guidance.test.js"
+    },
+    "lesson11-going-suppletion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson11_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson11_reader_guidance.test.js"
+    },
+    "lesson11-coming-fused-hual": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson11_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson11_reader_guidance.test.js"
     }
   }
 }

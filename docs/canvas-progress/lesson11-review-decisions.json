@@ -37,6 +37,18 @@
     "lesson11-zero-ia-mani-nemi-relations": {
       "status": "ACCEPTED",
       "acceptedJob": "Preserve zero-root existence structure, require pronominal cooperation, and apply mani and nemi's exact tense and referent jobs."
+    },
+    "lesson11-being-suppletion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Select ye, ca-t, or ca-h from the user's grammatical coordinates and expose only the authorized antiquated alternative."
+    },
+    "lesson11-going-suppletion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Select yā, ya-uh, hui, or yah automatically, apply hui boundary rules, and enforce plural-only cen-hui."
+    },
+    "lesson11-coming-fused-hual": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Fuse huāl to the correct going member and apply the required assimilation without a second directional choice."
     }
   }
 }

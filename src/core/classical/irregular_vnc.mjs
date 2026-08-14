@@ -1328,6 +1328,12 @@ export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis)
           const [selectedAlternative] = authorizedAlternatives.splice(selectedAlternativeIndex, 1);
           selectedStemOverride = selectedAlternative.stemOverride;
           selectedAlternativeStem = selectedStemOverride;
+          if (selectedAlternative.tnsOverride) {
+            tnsOverride = selectedAlternative.tnsOverride;
+          }
+          if (selectedAlternative.num1Override) {
+            num1Override = selectedAlternative.num1Override;
+          }
           if (defaultStemOverride && defaultStemOverride !== selectedStemOverride) {
             authorizedAlternatives.unshift({
               stemOverride: defaultStemOverride,

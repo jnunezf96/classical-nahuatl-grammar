@@ -50,6 +50,21 @@ export const LESSON11_READER_GUIDANCE_GROUPS = freeze([
     "Distinguish zero-root existence, mani, and nemi",
     "The defective existence stem Ø-i-h preserves a silent root and works only with the required pronominal NNC structure. Its amihqueh ‘you all exist’ is structurally different from the homophonous amihqueh ‘they are.’ Mani keeps mani, not man, in the preterit; it ordinarily describes wide or flat things and masses or crowds, not individual animate beings. Nemi is regular, though its distant-past form may carry an ordinary past meaning.",
   ),
+  idea(
+    "lesson11-being-suppletion",
+    "Read ye, ca-t, and ca-h as one being paradigm",
+    "The being and existence verb combines stems that once belonged to separate verbs. Ye supplies customary, imperfect, future, optative, and admonitive forms. Present meaning uses ca-h with a singular subject and ca-t with a plural subject; ordinary past meaning uses ca-t with the distant-past form. Antiquated singular catqui keeps qui, and on- gives the locative meaning ‘to be there.’ Context decides whether third-person forms mean he, she, it, or they and whether negative locative forms mean that none was there.",
+  ),
+  idea(
+    "lesson11-going-suppletion",
+    "Read yā, ya-uh, hui, and yah as one going paradigm",
+    "The going verb chooses its stem from mood, tense, and subject number. Present and nonpast optative use ya-uh with singular or common number but hui with plural number. Hui cannot take a following k, and its distant-past-as-past form uses a rather than imperfect ya. Other imperfective cells use yā, while preterit, distant past, and admonitive use yah. Dialectal plural ya-hui forms exist but Andrews does not consider them good usage. Cen-hui means ‘go together’ and therefore requires a plural subject.",
+  ),
+  idea(
+    "lesson11-coming-fused-hual",
+    "Recognize the fused huāl coming paradigm",
+    "The coming verb is the going paradigm with huāl fused into its stem. Before yā and ya-uh, l plus y becomes ll, giving huāl-lā and huāl-la-uh; before hui and yah the corresponding members are huāl-hui and huāl-lah. Because huāl is already inside the verbstem, it is not an additional directional choice.",
+  ),
 ]);
 
 export function isLesson11ReaderGuidanceExact(candidate = []) {
