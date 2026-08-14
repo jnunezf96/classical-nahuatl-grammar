@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "lesson": 14,
+  "groupsPerBatch": 3,
+  "groups": [
+    {
+      "groupId": "lesson14-use-stem-kinds",
+      "title": "Restricted-use and general-use nounstems",
+      "sections": ["§14.1"],
+      "proposal": "Keep one lexical nounstem record with the Andrews-authorized restricted-use and general-use forms needed by different constructions.",
+      "writingJob": "Use the restricted-use stem in an absolutive-state NNC and the general-use stem in a possessive-state NNC or compound embed position.",
+      "readingJob": "Guide the reader in recognizing which use-stem is present and why its shape may differ.",
+      "decisionSplit": "The user supplies or chooses the noun meaning; the application selects the required use-stem from the construction.",
+      "controlPolicy": "No restricted/general picker; construction and State determine the stem automatically.",
+      "userChoiceJob": "CHOOSE_OR_ENTER_THE_NOUNSTEM_MEANING",
+      "applicationJob": "SELECT_THE_REQUIRED_RESTRICTED_OR_GENERAL_USE_STEM",
+      "derivedCueJob": "SHOW_THE_USE_STEM_JOB_WHEN_ITS_SHAPE_MATTERS"
+    },
+    {
+      "groupId": "lesson14-nounstem-classes",
+      "title": "The four nounstem classes and their permitted shapes",
+      "sections": ["§14.2", "§14.2.1", "§14.2.2", "§14.2.3", "§14.2.4", "§14.2.5", "§14.2.6", "§14.2.7", "§14.2.8", "§14.2.8.a", "§14.2.8.b", "§14.2.8.c"],
+      "proposal": "Store the nounstem's lexical class and authorized alternatives, then enforce the class-conditioned stem and connector possibilities without guessing class from spelling alone.",
+      "writingJob": "Build tl-, tli-, in-, and zero-class NNCs with their valid final shapes, supportive-vowel variants, alternative class memberships, and base, truncated, or glottalized general-use shapes.",
+      "readingJob": "Guide the reader in identifying class evidence while keeping lexical class membership and genuine alternative analyses open.",
+      "decisionSplit": "The user may enter any nounstem; the application uses known lexical class information or asks only when more than one class is genuinely possible and unresolved.",
+      "controlPolicy": "Class is normally an application obligation; expose a class choice only for unknown input or an Andrews-authorized alternative.",
+      "userChoiceJob": "RESOLVE_CLASS_ONLY_WHEN_THE_INPUT_REMAINS_GENUINELY_AMBIGUOUS",
+      "applicationJob": "ENFORCE_NOUNSTEM_CLASS_AND_USE_STEM_SHAPE",
+      "derivedCueJob": "SHOW_CLASS_OR_STEM_SHAPE_ONLY_WHEN_IT_EXPLAINS_THE_RESULT"
+    },
+    {
+      "groupId": "lesson14-number-and-derived-nounstems",
+      "title": "Number, affinity, and distributive or varietal nounstems",
+      "sections": ["§14.3", "§14.3.1", "§14.3.2", "§14.3.2.a", "§14.3.2.a [2]", "§14.3.2.b", "§14.3.2.c", "§14.3.1 [2]", "§14.3.2 [2]", "§14.3.3"],
+      "proposal": "Keep grammatical number on the personal-pronoun subject while deriving affinity or distributive/varietal meaning inside the nounstem.",
+      "writingJob": "Form the long-vowel affinity reduplication or glottal-stop distributive/varietal reduplication from the source nounstem and preserve animate versus nonanimate applicability.",
+      "readingJob": "Guide the reader in distinguishing subject number from the nounstem's cohesive-group or separate-members meaning.",
+      "decisionSplit": "The user chooses the intended relationship meaning when relevant; the application builds the correct reduplicated stem and keeps it separate from subject number.",
+      "controlPolicy": "Use a meaning-based plain, affinity, or distributive/varietal choice; never call it noun plural.",
+      "userChoiceJob": "CHOOSE_PLAIN_AFFINITY_OR_DISTRIBUTIVE_VARIETAL_MEANING",
+      "applicationJob": "DERIVE_THE_REQUIRED_NOUNSTEM_AND_KEEP_NUMBER_ON_THE_SUBJECT",
+      "derivedCueJob": "SHOW_AFFINITY_OR_DISTRIBUTIVE_VARIETAL_DERIVATION_WITHIN_STEM_BOUNDARIES"
+    },
+    {
+      "groupId": "lesson14-absolutive-singular-common",
+      "title": "Absolutive singular or common nounstem selection",
+      "sections": ["§14.4"],
+      "proposal": "Use only the base shape of the restricted-use nounstem for an absolutive-state NNC with a singular or common-number subject.",
+      "writingJob": "Select the base restricted-use stem, preserve all four nounstem classes, and permit a derived distributive/varietal base when its meaning is intended.",
+      "readingJob": "Guide the reader in identifying the subject's singular/common number and the base nounstem independently.",
+      "decisionSplit": "The user chooses State, subject, and intended stem meaning; the application selects the base restricted-use shape.",
+      "controlPolicy": "No stem-shape control; reuse State, Subject, and the derived-stem meaning choice.",
+      "userChoiceJob": "CHOOSE_STATE_SUBJECT_AND_INTENDED_STEM_MEANING",
+      "applicationJob": "BUILD_ABSOLUTIVE_SINGULAR_COMMON_WITH_THE_BASE_RESTRICTED_USE_STEM",
+      "derivedCueJob": "SHOW_SUBJECT_NUMBER_CLASS_AND_BASE_STEM_JOBS"
+    },
+    {
+      "groupId": "lesson14-absolutive-plural",
+      "title": "Absolutive plural stem and connector selection",
+      "sections": ["§14.5", "§14.5.1", "§14.5.1.a", "§14.5.1.b", "§14.5.1.b.i", "§14.5.1.b.ii", "§14.5.1.b.iii", "§14.5.2", "§14.5.2.a", "§14.5.2.b", "§14.5.2.b.i", "§14.5.2.b.ii", "§14.5.3", "§14.5.4", "§14.5.4.a", "§14.5.4.b", "§14.5.4.c", "§14.5.4.d"],
+      "proposal": "Build plural-subject absolutive NNCs from the noun's authorized plain, affinity, or distributive/varietal stem and its lexical connector pattern.",
+      "writingJob": "Select t, m, or zero plus the proper number ending, enforce obligatory or preferred affinity forms, and preserve authorized alternatives without manufacturing them.",
+      "readingJob": "Guide the reader through lexical variation, preferred forms, and the difference between stem derivation and subject plurality.",
+      "decisionSplit": "The user chooses the subject and intended relationship; the application selects known lexical forms, asking only when equally authorized alternatives remain a genuine choice.",
+      "controlPolicy": "Do not expose connector morphs; expose only a genuine authorized form choice when meaning and context do not settle it.",
+      "userChoiceJob": "CHOOSE_ONLY_A_GENUINE_AUTHORIZED_ALTERNATIVE",
+      "applicationJob": "BUILD_THE_AUTHORIZED_ABSOLUTIVE_PLURAL_FORM",
+      "derivedCueJob": "SHOW_STEM_TYPE_AND_SUBJECT_CONNECTOR_JOBS"
+    },
+    {
+      "groupId": "lesson14-possessive-plural",
+      "title": "Possessive plural nounstem selection",
+      "sections": ["§14.6"],
+      "proposal": "Normally use the plain general-use stem for possessive plural NNCs, but use affinity or distributive/varietal stems when the intended relationship requires them.",
+      "writingJob": "Build the selected general-use nounstem with the possessive plural subject connector hu-ān.",
+      "readingJob": "Guide the reader in recognizing whether the nounstem adds cohesion, distribution, or variety to a plural possessive subject.",
+      "decisionSplit": "The user chooses the intended relationship; the application supplies the general-use shape and possessive plural connector.",
+      "controlPolicy": "Reuse the relationship choice; do not add a connector or use-stem control.",
+      "userChoiceJob": "CHOOSE_PLAIN_AFFINITY_OR_DISTRIBUTIVE_VARIETAL_MEANING",
+      "applicationJob": "BUILD_THE_POSSESSIVE_PLURAL_WITH_THE_REQUIRED_GENERAL_USE_STEM",
+      "derivedCueJob": "SHOW_RELATIONSHIP_STEM_AND_POSSESSIVE_PLURAL_CONNECTOR_JOBS"
+    },
+    {
+      "groupId": "lesson14-possessive-singular-common",
+      "title": "Possessive singular or common class subclasses",
+      "sections": ["§14.7", "§14.7.1", "§14.7.1.a", "§14.7.1.b", "§14.7.1.b.i", "§14.7.1.b.ii", "§14.7.2", "§14.7.2.a", "§14.7.2.a.i", "§14.7.2.a.ii", "§14.7.2.b", "§14.7.2.b.i", "§14.7.2.b.ii", "§14.7.2.b.iii"],
+      "proposal": "Select the lexical class subclass, general-use stem shape, and subject connector required for a possessive singular/common NNC.",
+      "writingJob": "Build base or truncated general-use stems; select zero, hui, or uh; delete only ephemeral vowels; and add supportive i only when truncation creates an illegal cluster.",
+      "readingJob": "Guide the reader in separating stem-final material from subject connectors and in recognizing ephemeral-vowel deletion and supportive-vowel repair.",
+      "decisionSplit": "The user chooses the nounstem, possessor, and subject; the application performs all class, truncation, connector, and phonological work.",
+      "controlPolicy": "No subclass, truncation, connector, or supportive-i controls; lexical authority and grammar determine them.",
+      "userChoiceJob": "CHOOSE_NOUNSTEM_POSSESSOR_AND_SUBJECT",
+      "applicationJob": "BUILD_THE_CLASS_AUTHORIZED_POSSESSIVE_SINGULAR_COMMON_FORM",
+      "derivedCueJob": "SHOW_TRUNCATION_SUPPORTIVE_I_AND_CONNECTOR_JOBS"
+    },
+    {
+      "groupId": "lesson14-constituent-analysis",
+      "title": "Ambiguous NNC constituent analysis",
+      "sections": ["§14.8"],
+      "proposal": "Preserve all grammatically possible NNC analyses until vocabulary, morphs, sound changes, length, and typed source information settle the structure.",
+      "writingJob": "Generate from the typed structure without collapsing distinct stems or connectors that happen to have the same spelling.",
+      "readingJob": "Guide the reader through ambiguities involving uh, tl, tli, o, m, vowel length, glottal stop, and supportive i.",
+      "decisionSplit": "The application keeps structural possibilities open; the user is asked only for source meaning or structure that cannot be derived from the entered spelling.",
+      "controlPolicy": "Use one minimal Exception or analysis choice only when real ambiguity remains; never ask the user to choose a morph the application already knows.",
+      "userChoiceJob": "RESOLVE_ONLY_GENUINE_SOURCE_AMBIGUITY",
+      "applicationJob": "PRESERVE_AND_RESOLVE_AUTHORIZED_CONSTITUENT_ANALYSES",
+      "derivedCueJob": "SHOW_THE_GRAMMATICAL_JOB_OF_THE_SELECTED_CONSTITUENTS"
+    }
+  ]
+}

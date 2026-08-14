@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 14,
+  "decisions": {
+    "lesson14-use-stem-kinds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Select the restricted-use or general-use nounstem automatically from its construction."
+    },
+    "lesson14-nounstem-classes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Enforce the nounstem's lexical class and ask only when unknown input remains genuinely ambiguous."
+    },
+    "lesson14-number-and-derived-nounstems": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep number on the subject and derive plain, affinity, or distributive-varietal meaning inside the nounstem."
+    }
+  }
+}
