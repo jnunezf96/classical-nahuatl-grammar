@@ -65,6 +65,11 @@ export const LESSON10_READER_GUIDANCE_GROUPS = freeze([
     "Use the Class C stem shape, mā, and ō together",
     "Class C admonitives, optatives, presents, and preterits have exact stem differences. Mā identifies the admonition where a singular preterit has the same VNC shape, and antecessive ō belongs to the preterit optative, never the admonitive. Missing glottal-stop spelling can hide opposite readings.",
   ),
+  idea(
+    "lesson10-class-d-contrasts",
+    "Use the glottal stop and person marker in Class D",
+    "Class D singular admonitives have a glottal stop that distinguishes them from nonpast optatives. Second-person optatives also have x or xi. If a text does not write the glottal stop, first- and third-person forms can hide opposite readings such as a wish to eat versus a warning about eating.",
+  ),
 ]);
 
 export function isLesson10ReaderGuidanceExact(candidate = []) {

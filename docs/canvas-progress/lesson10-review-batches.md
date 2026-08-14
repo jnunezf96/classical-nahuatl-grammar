@@ -168,6 +168,6 @@ All 248 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The application generates the form; the reader uses spelling and context cues.
 - Control policy: Reuse full paradigm and existing person controls.
 - Proposal: Make Class D contrast structure available without inventing a new choice.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/7
+- Status: ACCEPTED
+- Exactly observed: 7/7
 

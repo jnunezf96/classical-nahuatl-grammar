@@ -61,6 +61,11 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson10_groups_10_12_jobs.test.js",
       "readerTest": "src/tests/classical_lesson10_reader_guidance.test.js"
+    },
+    "lesson10-class-d-contrasts": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson10_group_13_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson10_reader_guidance.test.js"
     }
   }
 }

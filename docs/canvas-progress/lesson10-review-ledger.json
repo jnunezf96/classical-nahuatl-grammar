@@ -16,10 +16,10 @@
     "batches": 5,
     "proposedBoth": 153,
     "proposedReadingOnly": 95,
-    "acceptedAtoms": 241,
+    "acceptedAtoms": 248,
     "declinedAtoms": 0,
-    "awaitingReview": 7,
-    "implementationCredit": 241
+    "awaitingReview": 0,
+    "implementationCredit": 248
   },
   "groups": [
     {
@@ -266,8 +266,8 @@
       "readingJob": "Guide the opposite meanings that unmarked glottal-stop spelling can hide.",
       "decisionSplit": "The application generates the form; the reader uses spelling and context cues.",
       "controlPolicy": "Reuse full paradigm and existing person controls.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 7
     }
   ],
   "records": [
@@ -6554,14 +6554,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P103-L037-32C7A3981F",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P103-L037-32C7A3981F"
     },
     {
       "atomId": "ACI-P103-L057-58050C34CC",
@@ -6580,14 +6580,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P103-L057-58050C34CC",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P103-L057-58050C34CC"
     },
     {
       "atomId": "ACI-P103-L066-5EDCA5C1FD",
@@ -6606,14 +6606,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P103-L066-5EDCA5C1FD",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P103-L066-5EDCA5C1FD"
     },
     {
       "atomId": "ACI-P104-L002-82B0DFA077",
@@ -6632,14 +6632,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#ACI-P104-L002-82B0DFA077",
+      "writingMutationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#mutation:ACI-P104-L002-82B0DFA077",
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P104-L002-82B0DFA077",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P104-L002-82B0DFA077"
     },
     {
       "atomId": "ACI-P104-L003-246B282C05",
@@ -6658,14 +6658,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#ACI-P104-L003-246B282C05",
+      "writingMutationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#mutation:ACI-P104-L003-246B282C05",
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P104-L003-246B282C05",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P104-L003-246B282C05"
     },
     {
       "atomId": "ACI-P104-L004-2129A4027E",
@@ -6684,14 +6684,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#ACI-P104-L004-2129A4027E",
+      "writingMutationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#mutation:ACI-P104-L004-2129A4027E",
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P104-L004-2129A4027E",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P104-L004-2129A4027E"
     },
     {
       "atomId": "ACI-P104-L004-41E6995E5C",
@@ -6710,14 +6710,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Generate Class D contrast forms and preserve the glottal-stop and second-person distinctions.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
-      "writingObservationTest": "",
-      "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions.",
+      "implementationCredit": "EXACTLY_OBSERVED",
+      "writingObservationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#ACI-P104-L004-41E6995E5C",
+      "writingMutationTest": "src/tests/classical_lesson10_group_13_jobs.test.js#mutation:ACI-P104-L004-41E6995E5C",
+      "readerGuidanceIdeaId": "lesson10-class-d-contrasts",
+      "readerObservationTest": "src/tests/classical_lesson10_reader_guidance.test.js#ACI-P104-L004-41E6995E5C",
+      "readerMutationTest": "src/tests/classical_lesson10_reader_guidance.test.js#mutation:ACI-P104-L004-41E6995E5C"
     }
   ]
 }

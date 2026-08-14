@@ -50,6 +50,10 @@
     "lesson10-class-c-contrasts": {
       "status": "ACCEPTED",
       "acceptedJob": "Generate the full Class C contrast paradigm and enforce its stem, glottal-stop, mā, and antecessive distinctions."
+    },
+    "lesson10-class-d-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate the Class D contrast paradigm and preserve its glottal-stop, second-person, and opposite-reading distinctions."
     }
   }
 }

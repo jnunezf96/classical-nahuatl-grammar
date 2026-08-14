@@ -207,6 +207,12 @@
       "readingJob": "Guide the opposite meanings that unmarked glottal-stop spelling can hide.",
       "decisionSplit": "The application generates the form; the reader uses spelling and context cues.",
       "controlPolicy": "Reuse full paradigm and existing person controls.",
+      "writingAtomIds": [
+        "ACI-P104-L002-82B0DFA077",
+        "ACI-P104-L003-246B282C05",
+        "ACI-P104-L004-2129A4027E",
+        "ACI-P104-L004-41E6995E5C"
+      ],
       "proposal": "Make Class D contrast structure available without inventing a new choice."
     }
   ]
