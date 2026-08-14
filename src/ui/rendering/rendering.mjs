@@ -764,8 +764,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && targetObject.isIssuedCanonicalNncSourceFrame(initialSourceFrame)
           ? initialSourceFrame
           : null;
-      const requestedNounClass = String(
-        lexicalAnalysis.nounClass || ""
+      const requestedSourceClass = String(
+        lexicalAnalysis.sourceClass || ""
       ).trim();
       const openStemSourceCandidate =
         initialSourceFrame?.kind
@@ -774,14 +774,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           === "lexical-noun-class-selection-required";
       if (
         !typedSourceFrame
-        && requestedNounClass
+        && requestedSourceClass
         && initialSourceFrame?.blockReason
           === "lexical-noun-class-selection-required"
         && typeof targetObject.issueCanonicalNncSourceFrame === "function"
       ) {
         issuedSourceFrame = targetObject.issueCanonicalNncSourceFrame({
           ...sourceConstituents,
-          nounClass: requestedNounClass
+          sourceClass: requestedSourceClass
         });
         typedSourceFrame =
           typeof targetObject.isIssuedCanonicalNncSourceFrame === "function"
@@ -813,7 +813,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceMatrixStem,
         typedSourceFrame,
         blockedSourceFrame: typedSourceFrame ? null : issuedSourceFrame,
-        requestedNounClass,
+        requestedSourceClass,
         openStemSourceCandidate,
         authority: "canonical-typed-source",
         sourceDocument: "ANDREWS_TRANSCRIPTION_CANVAS.md"
@@ -1576,18 +1576,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const introductoryModifier = moodBoundSelections.introductoryModifier;
       const sentenceOptions = getClassicalRuleLogicSurfaceSentenceOptions(sentenceSurfaceMode, sentenceNegativeMode);
       const directionalPrefix = normalizeClassicalRuleLogicSurfaceDirectionalPrefix(overrides.directionalPrefix || overrides.directional || overrides.directionalLocativePrefix || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-directional", "none"));
-      const requestedNncNounClass = String(
-        overrides.nncNounClass
+      const requestedNncSourceClass = String(
+        overrides.nncSourceClass
         || getClassicalRuleLogicSurfaceControlValue(
           "classical-rule-logic-nnc-class",
-          "zero"
+          ""
         )
-        || "zero"
+        || ""
       ).trim();
       const nncSourceIdentity = deriveClassicalNncSourceIdentity(
         sourceValue,
         sourceParts,
-        { nounClass: requestedNncNounClass }
+        { sourceClass: requestedNncSourceClass }
       );
       const nncType = nncSourceIdentity.nncType || "";
       const ordinaryNncLexicalSourceFrame =
@@ -1599,6 +1599,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ordinaryNncLexicalSourceFrame?.authorizationStatus === "authorized";
       const requestedNncState = String(overrides.nncState || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-nnc-state", "absolutive") || "absolutive").trim();
       const nncNounClass = ordinaryNncLexicallyAuthorized
+        ? ordinaryNncLexicalSourceFrame.nounClass
+        : "";
+      const requestedNncNounClass = ordinaryNncLexicallyAuthorized
         ? ordinaryNncLexicalSourceFrame.nounClass
         : "";
       const requestedNncStemRelation = String(overrides.nncStemRelation || overrides.stemFormation || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-nnc-stem-relation", "plain") || "plain").trim();
@@ -1799,6 +1802,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         nncTypedSourceFrame: nncSourceIdentity.typedSourceFrame,
         nncBlockedSourceFrame: nncSourceIdentity.blockedSourceFrame,
         requestedNncNounClass,
+        requestedNncSourceClass,
         nncOpenStemSource:
           ordinaryNncLexicalSourceFrame?.openStemSource === true
           || nncSourceIdentity.openStemSourceCandidate === true,
@@ -2283,7 +2287,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             sourceEmbedStem: state.sourceEmbedStem,
             sourceMatrixStem: state.sourceMatrixStem
           }, {
-            nounClass: state.requestedNncNounClass || "zero"
+            sourceClass: state.requestedNncSourceClass || ""
           });
       const sourceFrame =
         state.nncTypedSourceFrame || sourceIdentity.typedSourceFrame || null;
@@ -2474,8 +2478,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ...(state.sourceMatrixStem
             ? { matrixStem: String(state.sourceMatrixStem).trim() }
             : {}),
-          nounClass: String(
-            state.requestedNncNounClass || "zero"
+          sourceClass: String(
+            state.requestedNncSourceClass || ""
           ).trim()
         });
       }
@@ -13131,9 +13135,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         constructionKind === "cardinal-numeral-nnc" ? "nonanimate" : "animate"
       );
       const lexicalNounstem = matrixStem || wholeStem;
-      const requestedNounClass = getClassicalNominalConstructionControlValue(
+      const requestedSourceClass = getClassicalNominalConstructionControlValue(
         "classical-rule-logic-nnc-class",
-        "zero"
+        ""
       );
       const initialCanonicalNncLexicalSource =
         lexicalNounstem
@@ -13145,11 +13149,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const canonicalNncLexicalSource =
         initialCanonicalNncLexicalSource?.blockReason
           === "lexical-noun-class-selection-required"
-        && requestedNounClass
+        && requestedSourceClass
         && typeof targetObject.issueCanonicalNncSourceFrame === "function"
           ? targetObject.issueCanonicalNncSourceFrame({
               stem: lexicalNounstem,
-              nounClass: requestedNounClass
+              sourceClass: requestedSourceClass
             })
           : initialCanonicalNncLexicalSource;
       const nounClass =

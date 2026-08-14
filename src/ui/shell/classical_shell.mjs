@@ -2355,12 +2355,19 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="open-stem-class" hidden>
-                        <span class="classical-rule-control__label">Open-stem noun class</span>
+                        <span class="classical-rule-control__label">NNC source class</span>
                         <select id="classical-rule-logic-nnc-class" data-classical-rule-logic-control="nnc-class">
-                          <option value="zero" selected>0</option>
-                          <option value="tl">tl</option>
-                          <option value="tli">tli / li</option>
+                          <option value="" selected>Choose class</option>
+                          <option value="zero">0</option>
                           <option value="in">in</option>
+                          <option value="tli-1">tli 1</option>
+                          <option value="tli-2">tli 2</option>
+                          <option value="tl-1-a">tl 1-A</option>
+                          <option value="tl-1-b">tl 1-B</option>
+                          <option value="tl-2-a">tl 2-A</option>
+                          <option value="tl-2-b-a">tl 2-B (final a)</option>
+                          <option value="tl-2-b-i">tl 2-B (final i)</option>
+                          <option value="tl-2-c">tl 2-C</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="predicate-stem-relation" hidden>

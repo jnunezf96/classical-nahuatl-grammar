@@ -83,7 +83,7 @@ function run(ctx = {}) {
         reclassified("possessive", "3pl"),
     ];
     const openReclassificationSource = ctx.issueCanonicalNncSourceFrame({
-        stem: "tēi", nounClass: "tl",
+        stem: "tēi", sourceClass: "tl-2-a",
     });
     const openReclassificationSelection = ctx.getCanonicalNncOperationSelectionFrame(
         openReclassificationSource,

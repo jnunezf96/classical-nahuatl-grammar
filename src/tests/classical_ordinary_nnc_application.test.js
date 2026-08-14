@@ -73,7 +73,7 @@ function run(ctx = {}) {
     const openSource =
         ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
             stem: "nemi",
-            nounClass: "zero",
+            sourceClass: "zero",
         });
     const openOperation =
         ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(openSource, {
@@ -85,7 +85,7 @@ function run(ctx = {}) {
     const secondOpenSource =
         ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
             stem: "xopa",
-            nounClass: "zero",
+            sourceClass: "zero",
         });
     const secondOpenOperation =
         ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
@@ -109,12 +109,12 @@ function run(ctx = {}) {
     const incompatibleOpenClass =
         ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
             stem: "nemi",
-            nounClass: "tli",
+            sourceClass: "tli-1",
         });
     const canonicalClassOverride =
         ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
             stem: "cal",
-            nounClass: "zero",
+            sourceClass: "zero",
         });
     const copiedOpenSource = { ...openSource };
 
@@ -550,7 +550,7 @@ function run(ctx = {}) {
     const openReduplicationSource =
         ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
             stem: "xal",
-            nounClass: "tli",
+            sourceClass: "tli-1",
         });
     const calReduplicationOperation =
         ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(openReduplicationSource, {
@@ -616,7 +616,7 @@ function run(ctx = {}) {
             pilResultStatus: "authorized",
             pilFormula: "#0-0+n-o-n-o(pil)hu-ān#",
             pilWritten: "nonopilhuān",
-            calSourceOptions: [false],
+            calSourceOptions: [false, true],
             calStatus: "authorized",
             calReason: "",
             poisonedSourceStatus: "blocked",

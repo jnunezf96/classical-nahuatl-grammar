@@ -4478,6 +4478,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         slots,
         classicalNnc: {
           active: false,
+          sourceClass: "",
           subject: "3common",
           state: "absolutive",
           predicateOptionId: "source-stem",
@@ -4691,6 +4692,34 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       next.sentence.antecessive = normalizeEntradaUrlBoolean(sentenceSource.antecessive);
       next.sentence.invalidFields = sentenceInvalidFields;
       next.classicalNnc.active = normalizeEntradaUrlBoolean(classicalSource.active);
+      next.classicalNnc.sourceClass = normalizeChoice(
+        classicalSource.sourceClass,
+        ["", "tl-1-a", "tl-1-b", "tl-2-a", "tl-2-b-a", "tl-2-b-i", "tl-2-c", "tli-1", "tli-2", "in", "zero"],
+        ""
+      );
+      if (
+        next.classicalNnc.sourceClass
+        && typeof targetObject.issueCanonicalNncSourceFrame === "function"
+      ) {
+        const routeNncStem = String(next.input || "")
+          .trim()
+          .replace(/^\((.*)\)$/u, "$1");
+        const canonicalRouteSource = routeNncStem
+          ? targetObject.issueCanonicalNncSourceFrame({
+              stem: routeNncStem,
+              ...(next.slots.a.embed ? { embedStem: next.slots.a.embed } : {}),
+              ...(next.slots.a.stem && next.slots.a.embed
+                ? { matrixStem: next.slots.a.stem }
+                : {})
+            })
+          : null;
+        if (
+          canonicalRouteSource?.authorizationStatus === "authorized"
+          && canonicalRouteSource?.openStemSource !== true
+        ) {
+          next.classicalNnc.sourceClass = "";
+        }
+      }
       next.classicalNnc.subject = normalizeChoice(classicalSource.subject, ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"], "3common");
       next.classicalNnc.state = normalizeChoice(classicalSource.state, ["absolutive", "possessive"], "absolutive");
       next.classicalNnc.predicateOptionId = normalizeChoice(classicalSource.predicateOptionId, ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tl-2a-to-1a", "tec-title"], "source-stem");
@@ -4855,6 +4884,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }, {}),
         classicalNnc: {
           active: nncActive,
+          sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || "",
           subject: targetObject.document.getElementById("classical-rule-logic-subject")?.value || "3common",
           state: targetObject.document.getElementById("classical-rule-logic-nnc-state")?.value || "absolutive",
           predicateOptionId: targetObject.document.getElementById("classical-rule-logic-nnc-predicate-form")?.value || "source-stem",
@@ -5172,7 +5202,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active !== true) {
         return false;
       }
-      const explicitKeys = ["classicalNncSubject", "classicalNncState", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
+      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
       if (!explicitKeys.some(key => hasEntradaUrlExplicitField(snapshot, key))) {
         return false;
       }
@@ -5182,6 +5212,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const subjectNumber = subjectValue === "3common" ? "common" : subjectMatch?.[2] === "pl" ? "plural" : "singular";
       const animacyValue = String(snapshot.classicalNnc?.animacy || "animate");
       const valuesByControl = {
+        "classical-rule-logic-nnc-class": snapshot.classicalNnc?.sourceClass,
         "classical-rule-logic-subject": snapshot.classicalNnc?.subject,
         "classical-rule-logic-nnc-subject-person": subjectPerson,
         "classical-rule-logic-nnc-subject-number": subjectNumber,
@@ -9113,6 +9144,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return false;
       }
       const relationalSelection = Boolean(selection.relationalStemId);
+      const openSourceClassControl = targetObject.document.getElementById(
+        "classical-rule-logic-nnc-class"
+      );
+      if ((sourceStem || relationalSelection) && openSourceClassControl) {
+        openSourceClassControl.value = "";
+      }
       if (targetObject.document?.body) {
         targetObject.document.body.dataset.classicalRelationalNncMode = String(relationalSelection);
       }
@@ -12271,6 +12308,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       path: ["classicalNnc", "active"],
       defaultValue: false,
       type: "boolean"
+    }, {
+      key: "classicalNncSourceClass",
+      segment: "cn-source-class",
+      path: ["classicalNnc", "sourceClass"],
+      defaultValue: "",
+      classicalNncOnly: true
     }, {
       key: "classicalNncSubject",
       segment: "cn-subj",

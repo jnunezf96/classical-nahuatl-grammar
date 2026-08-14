@@ -8926,11 +8926,11 @@ function run(ctx = {}) {
         "free-form ordinary NNC Source survives the canonical application boundary with explicit open-stem class analysis",
         typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function"
             ? (() => {
-                const buildOpen = (stem, nounClass = "zero") =>
+                const buildOpen = (stem, sourceClass = "zero") =>
                     ctx.buildClassicalRuleLogicSurfaceFrame({
                         basalUnit: "nnc",
                         stem,
-                        nncNounClass: nounClass,
+                        nncSourceClass: sourceClass,
                         nncState: "absolutive",
                         nncOutputScope: "single",
                         nncAnimacy: "animate",
@@ -8940,7 +8940,7 @@ function run(ctx = {}) {
                     });
                 const nemi = buildOpen("nemi");
                 const xopa = buildOpen("xopa");
-                const incompatible = buildOpen("nemi", "tli");
+                const incompatible = buildOpen("nemi", "tli-1");
                 const canonical = buildOpen("cal", "zero");
                 const incompatibleAvailability =
                     ctx.getClassicalNncAuthorityControlAvailability?.(
@@ -10636,7 +10636,7 @@ function run(ctx = {}) {
                 });
                 const openSource = ctx.issueCanonicalNncSourceFrame({
                     stem: "nemi",
-                    nounClass: "zero",
+                    sourceClass: "zero",
                 });
                 const open = ctx.getClassicalNncAuthorityControlAvailability({
                     state: {
@@ -10644,6 +10644,7 @@ function run(ctx = {}) {
                         nncTypedSourceFrame: openSource,
                         nncOpenStemSource: true,
                         requestedNncNounClass: "zero",
+                        requestedNncSourceClass: "zero",
                         nncState: "absolutive",
                         subject: "3sg",
                     },
@@ -11676,15 +11677,15 @@ function run(ctx = {}) {
             && typeof ctx.getClassicalNncAuthorityControlAvailability === "function"
             ? (() => {
                 const cases = [
-                    { stem: "tēuc", option: "yo-matrix", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "pil", option: "yo-matrix", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "tēuc", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "pil", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "tēuc", option: "tec-title", nncState: "possessive", subject: "3sg", nncPossessor: "1pl", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "cal", option: "secondary-general-use", nncState: "possessive", subject: "3sg", nncPossessor: "1sg", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "cal", option: "analogical-restricted-use", nncState: "absolutive", subject: "3common", nncNounClass: "tli", nncSubclass: "tli-1" },
-                    { stem: "māi", option: "tl-2a-to-1a", nncState: "possessive", subject: "3sg", nncPossessor: "3sg", nncNounClass: "tl", nncUseShape: "truncated-i", nncSubclass: "tl-2a" },
-                    { stem: "māi", option: "tl-2a-to-1a", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncNounClass: "tl", nncUseShape: "truncated-i", nncSubclass: "tl-2a" },
+                    { stem: "tēuc", option: "yo-matrix", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tli-1" },
+                    { stem: "pil", option: "yo-matrix", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tli-1" },
+                    { stem: "tēuc", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncSourceClass: "tli-1" },
+                    { stem: "pil", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncSourceClass: "tli-1" },
+                    { stem: "tēuc", option: "tec-title", nncState: "possessive", subject: "3sg", nncPossessor: "1pl", nncSourceClass: "tli-1" },
+                    { stem: "cal", option: "secondary-general-use", nncState: "possessive", subject: "3sg", nncPossessor: "1sg", nncSourceClass: "tli-1" },
+                    { stem: "cal", option: "analogical-restricted-use", nncState: "absolutive", subject: "3common", nncSourceClass: "tli-1" },
+                    { stem: "māi", option: "tl-2a-to-1a", nncState: "possessive", subject: "3sg", nncPossessor: "3sg", nncSourceClass: "tl-2-a" },
+                    { stem: "māi", option: "tl-2a-to-1a", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tl-2-a" },
                 ];
                 const outputs = cases.map(({ option, ...input }) => {
                     const frame = ctx.buildClassicalRuleLogicSurfaceFrame({

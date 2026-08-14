@@ -649,6 +649,7 @@ function run(ctx) {
         input: "(toma)",
         classicalNnc: {
             active: true,
+            sourceClass: "tl-2-a",
             subject: "1pl",
             state: "possessive",
             predicateOptionId: "source-stem",
@@ -670,6 +671,7 @@ function run(ctx) {
         {
             hasClassicalSegments: [
                 "cn-subj",
+                "cn-source-class",
                 "cn-state",
                 "cn-l15-operation",
                 "cn-l15-redup",
@@ -692,6 +694,7 @@ function run(ctx) {
             hasClassicalSegments: true,
             classicalNnc: {
                 active: true,
+                sourceClass: "tl-2-a",
                 subject: "1pl",
                 state: "possessive",
                 predicateOptionId: "source-stem",

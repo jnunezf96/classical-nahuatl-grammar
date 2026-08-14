@@ -119,7 +119,7 @@ function run(ctx = {}) {
         restricted.nncSlotFrame,
         restricted,
     ).map((cue) => cue.label);
-    s.ok("a typed lexical State restriction is shown by the minimal cue exception", restrictedCues.includes("exception"));
+    s.ok("a naturally possessed Source shows its exact State restriction cue", restrictedCues.includes("natural possession"));
     s.no("an ordinary possessive NNC is not mislabeled as absolutive State", ctx.getClassicalFormulaDerivedAnnotations(
         ctx.buildClassicalNahuatlPossessiveNncFrame("cal", { subject: "3common", possessor: "1sg", singularConnector: "0", animacy: "nonanimate" }).formulaRealization,
         ctx.buildClassicalNahuatlPossessiveNncFrame("cal", { subject: "3common", possessor: "1sg", singularConnector: "0", animacy: "nonanimate" }).nncSlotFrame,

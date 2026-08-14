@@ -67,7 +67,7 @@ function run(ctx = {}) {
         possessive: ordinaryPossessive.authorizationStatus,
         availability: ordinaryAbsolutive.stateAvailability,
         restrictedAvailability: restrictedAuthority.stateAvailability,
-        cue: restrictedCueLabels.includes("exception"),
+        cue: restrictedCueLabels.includes("natural possession"),
     }, { absolutive: "authorized", possessive: "authorized", availability: "both", restrictedAvailability: "possessive-only", cue: true });
     return s;
 }

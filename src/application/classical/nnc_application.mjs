@@ -74,17 +74,72 @@ const ORDINARY_NNC_SUBCLASSES_BY_CLASS = Object.freeze({
   in: Object.freeze([""]),
   zero: Object.freeze([""]),
 });
+const ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES = Object.freeze({
+  "tl-1-a": Object.freeze({
+    nounClass: "tl", useShape: "base", subclass: "tl-1-a",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+  "tl-1-b": Object.freeze({
+    nounClass: "tl", useShape: "base", subclass: "tl-1-b",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+  "tl-2-a": Object.freeze({
+    nounClass: "tl", useShape: "truncated", subclass: "tl-2-a",
+    ephemeralFinalVowel: "i", truncationRepair: "none",
+  }),
+  "tl-2-b-a": Object.freeze({
+    nounClass: "tl", useShape: "truncated", subclass: "tl-2-b",
+    ephemeralFinalVowel: "a", truncationRepair: "none",
+  }),
+  "tl-2-b-i": Object.freeze({
+    nounClass: "tl", useShape: "truncated", subclass: "tl-2-b",
+    ephemeralFinalVowel: "i", truncationRepair: "none",
+  }),
+  "tl-2-c": Object.freeze({
+    nounClass: "tl", useShape: "truncated", subclass: "tl-2-c",
+    ephemeralFinalVowel: "a", truncationRepair: "supportive-i",
+  }),
+  "tli-1": Object.freeze({
+    nounClass: "tli", useShape: "base", subclass: "tli-1",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+  "tli-2": Object.freeze({
+    nounClass: "tli", useShape: "base", subclass: "tli-2",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+  in: Object.freeze({
+    nounClass: "in", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+  zero: Object.freeze({
+    nounClass: "zero", useShape: "base", subclass: "",
+    ephemeralFinalVowel: "", truncationRepair: "none",
+  }),
+});
+function getOpenNncSourceClassAnalysis(sourceClass = "") {
+  const normalized = normalizeChoice(sourceClass).toLowerCase();
+  return ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES[normalized] || null;
+}
+function getCanonicalNncSourceClass(lexicalEntry = null) {
+  if (!lexicalEntry) return "";
+  if (lexicalEntry.nounClass === "tl" && lexicalEntry.subclass === "tl-2-b") {
+    return `tl-2-b-${lexicalEntry.ephemeralFinalVowel || "a"}`;
+  }
+  return lexicalEntry.subclass || lexicalEntry.nounClass || "";
+}
+function getClassicalNahuatlOpenNncSourceClassInventory() {
+  return Object.freeze(Object.entries(
+    ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES,
+  ).map(([sourceClass, analysis]) => Object.freeze({
+    sourceClass,
+    ...analysis,
+  })));
+}
 const ORDINARY_NNC_PLURAL_CONNECTORS = Object.freeze([
   "t-in",
   "m-eh",
   "0-h",
 ]);
-// Andrews §15.1.4 supplies one executable lexical witness for optional
-// possessor-dyad reduplication: (pil)-li-.  Do not generalize that documentary
-// witness into blanket authorization for every nounstem.
-const ORDINARY_NNC_POSSESSOR_REDUPLICATION_LEXEMES = Object.freeze(
-  new Set(["pil"]),
-);
 function defineOrdinaryNncLexeme({
   nounClass,
   referentialAnimacy = "any",
@@ -324,7 +379,7 @@ const ORDINARY_NNC_LEXICON = Object.freeze({
   ...LESSON58_ASSOCIATED_AZ_LEXICON,
 });
 const ORDINARY_NNC_SOURCE_INPUT_KEYS = Object.freeze(
-  new Set(["stem", "embedStem", "matrixStem", "nounClass"]),
+  new Set(["stem", "embedStem", "matrixStem", "nounClass", "sourceClass"]),
 );
 const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "state",
@@ -825,6 +880,7 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalEntryId: frame?.lexicalEntryId || "",
       lexicalSelectionAuthority: frame?.lexicalSelectionAuthority || "",
       openStemSource: frame?.openStemSource === true,
+      sourceClass: frame?.sourceClass || "",
       nounClass: frame?.nounClass || "",
       referentialAnimacy: frame?.referentialAnimacy || "",
       naturalPossessionPolicy: frame?.naturalPossessionPolicy || "",
@@ -865,14 +921,23 @@ export function createClassicalNahuatlNncApplicationModule(
       (key) => !ORDINARY_NNC_SOURCE_INPUT_KEYS.has(key),
     ) || "";
     const lexicalEntry = ORDINARY_NNC_LEXICON[stem] || null;
+    const requestedSourceClass = normalizeChoice(
+      ownDataValue(source, "sourceClass", ""),
+    ).toLowerCase();
+    const openSourceClassAnalysis = getOpenNncSourceClassAnalysis(
+      requestedSourceClass,
+    );
     const requestedOpenNounClass = normalizeNounClass(
-      ownDataValue(source, "nounClass", ""),
+      openSourceClassAnalysis?.nounClass || "",
     );
     const openStemSource = Boolean(!lexicalEntry && requestedOpenNounClass);
+    const sourceClass = lexicalEntry
+      ? getCanonicalNncSourceClass(lexicalEntry)
+      : requestedSourceClass;
     const lexicalEntryId = lexicalEntry
       ? `ordinary-nounstem:${stem}`
       : openStemSource
-        ? `open-nounstem:${stem}:${requestedOpenNounClass}`
+        ? `open-nounstem:${stem}:${sourceClass || requestedOpenNounClass}`
         : "";
     const nounClass = lexicalEntry?.nounClass || requestedOpenNounClass;
     const referentialAnimacy =
@@ -896,31 +961,44 @@ export function createClassicalNahuatlNncApplicationModule(
       || Object.freeze(openStemSource ? ["plain"] : []);
     const pluralConnectorOptions =
       lexicalEntry?.pluralConnectorOptions || Object.freeze([]);
-    const openTl2AReclassificationShape = Boolean(
-      openStemSource
-      && nounClass === "tl"
-      && /[āē]i$/u.test(stem)
-    );
     const useShape = lexicalEntry?.useShape || (openStemSource
-      ? openTl2AReclassificationShape
-        ? "truncated"
-        : "base"
+      ? openSourceClassAnalysis?.useShape || "base"
       : "");
     const subclass = lexicalEntry?.subclass || (openStemSource
-      ? nounClass === "tl"
-        ? openTl2AReclassificationShape
-          ? "tl-2-a"
-          : "tl-1-a"
+      ? openSourceClassAnalysis?.subclass ?? (
+        nounClass === "tl"
+        ? "tl-1-a"
         : nounClass === "tli"
           ? "tli-1"
           : ""
+      )
       : "");
     const ephemeralFinalVowel = lexicalEntry?.ephemeralFinalVowel
-      || (openTl2AReclassificationShape ? "i" : "");
+      || openSourceClassAnalysis?.ephemeralFinalVowel
+      || "";
     const truncationRepair = lexicalEntry?.truncationRepair
-      || (openStemSource ? "none" : "");
+      || (openStemSource
+        ? openSourceClassAnalysis?.truncationRepair || "none"
+        : "");
     const compoundSource = lexicalEntry?.compoundSource === true
       || Boolean(openStemSource && embedStem && matrixStem);
+    const openSourceShapeCapabilityMissing = Boolean(
+      openSourceClassAnalysis?.useShape === "truncated"
+      && typeof targetObject.validateClassicalNahuatlSubclassSourceShape
+        !== "function"
+    );
+    const openSourceShapeFrame = openSourceClassAnalysis
+      && typeof targetObject.validateClassicalNahuatlSubclassSourceShape
+        === "function"
+      ? targetObject.validateClassicalNahuatlSubclassSourceShape(stem, {
+        nounClass,
+        generalUseShape: useShape,
+        tlSubclass: subclass.replace(/^tl-2-/u, "2").toUpperCase(),
+        ephemeralFinalVowel,
+        truncationRepair,
+        compoundStem: compoundSource,
+      })
+      : null;
     const lexicalFormation =
       lexicalEntry?.lexicalFormation || (openStemSource
         ? compoundSource
@@ -938,11 +1016,7 @@ export function createClassicalNahuatlNncApplicationModule(
       : openStemSource
         ? "user-supplied-lexical-analysis"
         : "";
-    const possessorReduplicationOptions = Object.freeze(
-      ORDINARY_NNC_POSSESSOR_REDUPLICATION_LEXEMES.has(stem)
-        ? [false, true]
-        : [false],
-    );
+    const possessorReduplicationOptions = Object.freeze([false, true]);
     const lexicalSelectionRecord =
       typeof targetObject.buildClassicalNahuatlLexicalSelectionRecord
         === "function"
@@ -973,7 +1047,9 @@ export function createClassicalNahuatlNncApplicationModule(
     } else if (forbiddenSourceKey) {
       blockReason =
         `ordinary-nnc-source-lexical-facts-are-engine-owned:${forbiddenSourceKey}`;
-    } else if (lexicalEntry && requestedOpenNounClass) {
+    } else if (requestedSourceClass && !openSourceClassAnalysis) {
+      blockReason = "open-nounstem-source-class-analysis-not-recognized";
+    } else if (lexicalEntry && (requestedOpenNounClass || requestedSourceClass)) {
       blockReason = "ordinary-nnc-source-canonical-class-override-not-allowed";
     } else if ((embedStem && !matrixStem) || (!embedStem && matrixStem)) {
       blockReason = "ordinary-nnc-source-embed-matrix-pair-required";
@@ -1019,6 +1095,15 @@ export function createClassicalNahuatlNncApplicationModule(
     ) {
       blockReason = "ordinary-nnc-source-subclass-mismatches-noun-class";
     } else if (
+      openSourceShapeCapabilityMissing
+    ) {
+      blockReason = "ordinary-nnc-source-shape-validator-required";
+    } else if (
+      openSourceShapeFrame
+      && openSourceShapeFrame.authorizationStatus !== "authorized"
+    ) {
+      blockReason = openSourceShapeFrame.blockReason;
+    } else if (
       useShape === "truncated"
       && (
         nounClass !== "tl"
@@ -1054,6 +1139,9 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalEntryId,
       lexicalSelectionAuthority,
       openStemSource,
+      sourceClass,
+      sourceClassAnalysis: openSourceClassAnalysis,
+      sourceClassShapeFrame: openSourceShapeFrame,
       nounClass,
       referentialAnimacy,
       naturalPossessionPolicy,
@@ -3695,6 +3783,7 @@ export function createClassicalNahuatlNncApplicationModule(
   }
 
   return Object.freeze({
+    getClassicalNahuatlOpenNncSourceClassInventory,
     buildClassicalNahuatlOrdinaryNncSourceFrame,
     isClassicalNahuatlOrdinaryNncSourceFrame,
     buildClassicalNahuatlNncOperationSelectionFrame,
@@ -3721,8 +3810,16 @@ export function createClassicalNahuatlNncApplicationModule(
 
 export function installClassicalNahuatlNncApplicationGlobals(
   targetObject = globalThis,
+  installationContext = {},
 ) {
-  const api = createClassicalNahuatlNncApplicationModule(targetObject);
+  const applicationTarget = Object.create(targetObject);
+  Object.defineProperties(
+    applicationTarget,
+    Object.getOwnPropertyDescriptors(
+      installationContext?.moduleDependencyCapabilities || {},
+    ),
+  );
+  const api = createClassicalNahuatlNncApplicationModule(applicationTarget);
   Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
   return api;
 }
