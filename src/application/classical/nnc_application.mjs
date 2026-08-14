@@ -221,6 +221,13 @@ const ORDINARY_NNC_PLURAL_CONNECTORS = Object.freeze([
   "m-eh",
   "0-h",
 ]);
+function getClassGuidedAbsolutivePluralConnectors(sourceClass = "") {
+  return Object.freeze(
+    String(sourceClass || "").startsWith("tl-")
+      ? ["m-eh", "0-h"]
+      : ["t-in", "m-eh"],
+  );
+}
 function defineOrdinaryNncLexeme({
   nounClass,
   referentialAnimacy = "any",
@@ -470,12 +477,12 @@ const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "stemFormation",
   "predicateFormation",
   "possessorReduplication",
+  "pluralConnector",
   "sentenceType",
   "polarity",
 ]));
 const ORDINARY_NNC_DERIVED_OPERATION_KEYS = Object.freeze(new Set([
   "referentialAnimacy",
-  "pluralConnector",
   "useShape",
   "subclass",
 ]));
@@ -513,6 +520,7 @@ const NNC_OPERATION_SELECTION_INPUT_KEYS = Object.freeze(new Set([
   "stemFormation",
   "predicateFormation",
   "possessorReduplication",
+  "pluralConnector",
   "clausePosition",
   "adjunctorInMode",
   "doubledFirstPlural",
@@ -1044,8 +1052,11 @@ export function createClassicalNahuatlNncApplicationModule(
     const stemFormationOptions =
       lexicalEntry?.stemFormationOptions
       || Object.freeze(openStemSource ? ["plain"] : []);
-    const pluralConnectorOptions =
+    const lexicalPluralConnectorOptions =
       lexicalEntry?.pluralConnectorOptions || Object.freeze([]);
+    const pluralConnectorOptions = lexicalPluralConnectorOptions.length
+      ? lexicalPluralConnectorOptions
+      : getClassGuidedAbsolutivePluralConnectors(sourceClass);
     const useShape = lexicalEntry?.useShape || (openStemSource
       ? openSourceClassAnalysis?.useShape || "base"
       : "");
@@ -1579,6 +1590,20 @@ export function createClassicalNahuatlNncApplicationModule(
         && ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"]
           .includes(selectedPossessor),
       );
+      const pluralConnectorValues = selectedState === "absolutive"
+        && selectedSubject.endsWith("pl")
+          ? sourceFrame.pluralConnectorOptions
+          : Object.freeze([]);
+      const requestedPluralConnector = normalizeChoice(
+        ownDataValue(selections, "pluralConnector", ""),
+      );
+      const selectedPluralConnector = pluralConnectorValues.includes(
+        requestedPluralConnector,
+      )
+        ? requestedPluralConnector
+        : pluralConnectorValues.length === 1
+          ? pluralConnectorValues[0]
+          : "";
       return deepFreeze({
         kind: NNC_OPERATION_SELECTION_FRAME_KIND,
         version: 1,
@@ -1616,6 +1641,12 @@ export function createClassicalNahuatlNncApplicationModule(
             "possessorReduplication",
             false,
           ) === true,
+        pluralConnectorValues,
+        selectedPluralConnector,
+        possessivePluralConnector:
+          selectedState === "possessive" && selectedSubject.endsWith("pl")
+            ? "hu-ān"
+            : "",
         doubledFirstPluralAvailable: false,
         selectedDoubledFirstPlural: false,
         adjunctorInValues: Object.freeze(["none"]),
@@ -1626,7 +1657,7 @@ export function createClassicalNahuatlNncApplicationModule(
         selectedSpecialHumanUse: false,
         clausePositionValues: Object.freeze(["initial"]),
         selectedClausePosition: "initial",
-        derivedNumberForms: sourceFrame.pluralConnectorOptions,
+        derivedNumberForms: pluralConnectorValues,
         lexicalFactsReadOnly: true,
         derivedCoordinateFactsReadOnly: true,
         selectionFrameAuthorizesGeneration: false,
@@ -1820,13 +1851,19 @@ export function createClassicalNahuatlNncApplicationModule(
         sourceFrame.stemFormationOptions[0] || "plain",
       ),
     );
+    const requestedPluralConnector = normalizeChoice(
+      ownDataValue(selections, "pluralConnector", ""),
+    );
     const pluralConnector = (
       state === "absolutive"
       && subject.endsWith("pl")
     )
       ? normalizeChoice(
         typeof issuedPluralConnector === "undefined"
-          ? sourceFrame.pluralConnectorOptions[0] || ""
+          ? requestedPluralConnector
+            || (sourceFrame.pluralConnectorOptions.length === 1
+              ? sourceFrame.pluralConnectorOptions[0]
+              : "")
           : issuedPluralConnector,
       )
       : "";

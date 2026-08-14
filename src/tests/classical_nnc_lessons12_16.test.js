@@ -3945,8 +3945,8 @@ function run(ctx = {}) {
                 planKind:
                     "classical-nahuatl-ordinary-nnc-paradigm-plan",
                 planStatus: "authorized",
-                planCoordinates: 47,
-                rows: 47,
+                planCoordinates: 56,
+                rows: 56,
                 states: ["absolutive", "possessive"],
                 subjects: [
                     "1sg",
@@ -3961,8 +3961,8 @@ function run(ctx = {}) {
                     "affinity",
                     "distributive-varietal",
                 ],
-                pluralConnectors: [],
-                absolutivePluralSubjects: [],
+                pluralConnectors: ["t-in", "m-eh"],
+                absolutivePluralSubjects: ["1pl", "2pl", "3pl"],
                 rowsUseCanonicalScalar: true,
             },
         ]

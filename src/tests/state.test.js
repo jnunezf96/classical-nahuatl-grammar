@@ -697,6 +697,7 @@ function run(ctx) {
                 sourceClass: "tl-2-a",
                 subject: "1pl",
                 state: "possessive",
+                pluralConnector: "",
                 predicateOptionId: "source-stem",
                 possessorReduplication: true,
                 possessor: "3pl",

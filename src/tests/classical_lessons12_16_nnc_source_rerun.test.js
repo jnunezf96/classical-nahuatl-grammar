@@ -211,21 +211,21 @@ function run(ctx = {}) {
             && sourcePanel.includes(
                 'id="classical-rule-logic-class"\n                          class="classical-nnc-source-guide__select"'
             ),
-        completeClassPattern:
-            sourcePanel.includes('id="classical-nnc-source-class-pattern"')
-            && sourcePanel.includes('id="classical-nnc-source-class-pattern-absolutive-common"')
-            && sourcePanel.includes('id="classical-nnc-source-class-pattern-absolutive-plural"')
-            && sourcePanel.includes('id="classical-nnc-source-class-pattern-possessive-common"')
-            && sourcePanel.includes('id="classical-nnc-source-class-pattern-possessive-plural"')
-            && sourcePanel.includes("not guessed from spelling"),
-        patternAbsentFromGrammar:
-            !authorityPanel.includes('id="classical-nnc-source-class-pattern"'),
+        noClassPatternInSource:
+            !sourcePanel.includes('id="classical-nnc-source-class-pattern"'),
+        pluralEndingChoiceInGrammar:
+            authorityPanel.includes('id="classical-rule-logic-nnc-plural-connector"')
+            && authorityPanel.includes(">Plural ending</span>")
+            && authorityPanel.includes('<option value="t-in">-tin</option>')
+            && authorityPanel.includes('<option value="m-eh">-meh</option>')
+            && authorityPanel.includes('<option value="0-h">-h</option>')
+            && authorityPanel.includes('<option value="hu-ān">-huān (automatic)</option>'),
     }, {
         source: true,
         grammar: false,
         matchingVerbstemPresentation: true,
-        completeClassPattern: true,
-        patternAbsentFromGrammar: true,
+        noClassPatternInSource: true,
+        pluralEndingChoiceInGrammar: true,
     });
 
     const canonicalClass = ctx.issueCanonicalNncSourceFrame({
@@ -245,6 +245,63 @@ function run(ctx = {}) {
         contradiction: [
             "blocked",
             "ordinary-nnc-source-class-contradicts-canonical-source",
+        ],
+    });
+
+    const michSource = ctx.issueCanonicalNncSourceFrame({ stem: "mich" });
+    const michPluralChoices = ctx.getCanonicalNncOperationSelectionFrame(
+        michSource,
+        { state: "absolutive", subject: "3pl" }
+    );
+    const michUnselectedPlural = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        { state: "absolutive", subject: "3pl" }
+    );
+    const michTinOperation = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        { state: "absolutive", subject: "3pl", pluralConnector: "t-in" }
+    );
+    const michTinResult = ctx.requestClassicalOrdinaryNncResult(
+        michSource,
+        michTinOperation
+    );
+    const michPossessivePluralOperation = ctx.issueCanonicalNncOperationFrame(
+        michSource,
+        { state: "possessive", subject: "3pl", possessor: "3sg" }
+    );
+    const michPossessivePluralResult = ctx.requestClassicalOrdinaryNncResult(
+        michSource,
+        michPossessivePluralOperation
+    );
+    s.eq("Grammar asks for the absolutive plural ending but supplies possessive plural hu-ān", {
+        choices: michPluralChoices.pluralConnectorValues,
+        selectedBeforeChoice: michPluralChoices.selectedPluralConnector,
+        unselected: [
+            michUnselectedPlural.authorizationStatus,
+            michUnselectedPlural.blockReason,
+        ],
+        absolutiveTin: [
+            michTinResult.authorizationStatus,
+            michTinResult.formulaRealization,
+            michTinResult.surfaceRealization,
+        ],
+        possessivePlural: [
+            michPossessivePluralResult.authorizationStatus,
+            michPossessivePluralResult.formulaRealization,
+            michPossessivePluralResult.surfaceRealization,
+        ],
+    }, {
+        choices: ["t-in", "m-eh"],
+        selectedBeforeChoice: "",
+        unselected: [
+            "blocked",
+            "ordinary-nnc-plural-connector-not-lexically-authorized",
+        ],
+        absolutiveTin: ["authorized", "#0-0(mich)t-in#", "michtin"],
+        possessivePlural: [
+            "authorized",
+            "#0-0+ī-0(mich)hu-ān#",
+            "īmichhuān",
         ],
     });
 

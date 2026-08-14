@@ -1631,9 +1631,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // Predicate formation is the user operation.  The lexical class and
       // use-shape inputs above come only from the issued Source frame.
       const nncPossessorReduplication = Object.prototype.hasOwnProperty.call(overrides, "nncPossessorReduplication") ? overrides.nncPossessorReduplication === true : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-nnc-possessor-reduplication", "single") === "reduplicated";
+      const requestedNncPluralConnector = String(
+        overrides.nncPluralConnector
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-nnc-plural-connector",
+          ""
+        )
+        || ""
+      ).trim();
+      const availableNncPluralConnectors =
+        ordinaryNncLexicalSourceFrame?.pluralConnectorOptions || [];
       const nncNumberForm = nncType === "ordinary"
         && String(subject || "").endsWith("pl")
-        ? ordinaryNncLexicalSourceFrame?.pluralConnectorOptions?.[0] || ""
+        ? requestedNncState === "possessive"
+          ? "hu-ān"
+          : availableNncPluralConnectors.includes(requestedNncPluralConnector)
+            ? requestedNncPluralConnector
+            : availableNncPluralConnectors.length === 1
+              ? availableNncPluralConnectors[0]
+              : ""
         : "";
       const requestedNncAnimacy = visibleNncAnimacy;
       const metaphoricalUseRequested =
@@ -1711,6 +1727,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 ),
               stemFormation: nncStemRelation,
               predicateFormation: nncPredicateOptionId,
+              pluralConnector: nncNumberForm,
               possessorReduplication: nncPossessorReduplication,
               clausePosition: nncClausePosition,
               adjunctorInMode: nncAdjunctorInMode,
@@ -2308,6 +2325,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 ),
               stemFormation: state.nncStemRelation,
               predicateFormation: state.nncPredicateOptionId,
+              pluralConnector:
+                state.nncState === "absolutive"
+                  ? state.nncNumberForm
+                  : "",
               possessorReduplication:
                 state.nncPossessorReduplication === true,
               clausePosition: state.nncClausePosition,
@@ -2356,6 +2377,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         possessorReduplicationLexicallyAuthorized: false,
         possessorReduplicationAvailable: false,
         selectedPossessorReduplication: false,
+        pluralConnectorValues: [],
+        selectedPluralConnector: "",
+        possessivePluralConnector: "",
         doubledFirstPluralAvailable: false,
         selectedDoubledFirstPlural: false,
         adjunctorInValues: [],
@@ -2419,6 +2443,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
         ),
         "classical-rule-logic-nnc-stem-relation": availability(!fullParadigm && ordinaryNnc && contract.stemRelationValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-stem-relation" : !ordinaryNnc ? "canvas-stem-relation-is-ordinary-nounstem-authority" : contract.stemRelationValues.length > 1 ? "canvas-reference-allows-stem-relation-selection" : "canvas-singular-personal-reference-requires-plain-stem"),
+        "classical-rule-logic-nnc-plural-connector": availability(
+          !fullParadigm
+            && ordinaryNnc
+            && contract.selectedSubjectNumber === "plural"
+            && (
+              contract.nncState === "possessive"
+              || contract.pluralConnectorValues.length > 0
+            ),
+          fullParadigm
+            ? "canvas-full-paradigm-enumerates-plural-endings"
+            : contract.selectedSubjectNumber !== "plural"
+                ? "absolutive-plural-ending-requires-plural-subject"
+                : contract.nncState === "possessive"
+                  ? "possessive-plural-ending-is-automatic-hu-an"
+                  : "canvas-class-guided-lexical-absolutive-plural-ending-choice",
+          {
+            decisionOwner:
+              contract.nncState === "absolutive"
+              && contract.pluralConnectorValues.length > 1
+                ? "user"
+                : "application",
+            renderInAuthority:
+              ordinaryNnc
+              && contract.selectedSubjectNumber === "plural"
+          }
+        ),
         "classical-rule-logic-nnc-possessor": availability(!fullParadigm && possessiveNnc && contract.possessorValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-possessor" : possessiveNnc ? "canvas-possessive-state-allows-possessor-selection" : "canvas-possessor-requires-possessive-state"),
         "classical-rule-logic-nnc-possessor-reduplication": availability(!fullParadigm && ordinaryNnc && contract.possessorReduplicationAvailable, contract.possessorReduplicationAvailable ? "canvas-allows-optional-possessor-reduplication-in-dyadic-possessive-plural-context" : "possessor-reduplication-requires-dyadic-possessive-plural-subject"),
         "classical-rule-logic-nnc-subject-person": availability(!fullParadigm && contract.subjectPersonValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-subject-person" : contract.subjectPersonValues.length > 1 ? "canvas-subject-context-allows-person-selection" : "canvas-source-and-subject-context-determine-person"),
@@ -2516,6 +2566,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
             String(state.nncStemRelation || "plain").trim(),
           predicateFormation:
             String(state.nncPredicateOptionId || "source-stem").trim(),
+          pluralConnector:
+            selectedState === "absolutive"
+              ? String(state.nncNumberForm || "").trim()
+              : "",
           possessorReduplication:
             state.nncPossessorReduplication === true,
           sentenceType:
@@ -7752,11 +7806,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-rule-logic-sentence-adverbial": "Adverbial modifier",
       "classical-rule-logic-introductory-particle": "Introductory particle",
       "classical-rule-logic-preface-particle": "Before introductory",
-      "classical-rule-logic-introductory-modifier": "After introductory"
+      "classical-rule-logic-introductory-modifier": "After introductory",
+      "classical-rule-logic-nnc-plural-connector": "Plural ending"
     });
     function getClassicalRuleLogicConflictControlIds(blockReason = "") {
       const reason = String(blockReason || "").toLowerCase();
       if (!reason) return [];
+      if (reason.includes("plural-connector")) {
+        return ["classical-rule-logic-nnc-plural-connector"];
+      }
       if (CLASSICAL_VNC_BLOCK_REPAIR_CONTROL_IDS[reason]) {
         return [...CLASSICAL_VNC_BLOCK_REPAIR_CONTROL_IDS[reason]];
       }
@@ -8430,6 +8488,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-rule-logic-nnc-metaphorical-use": "state",
       "classical-rule-logic-nnc-predicate-form": "nounstem",
       "classical-rule-logic-nnc-stem-relation": "nounstem",
+      "classical-rule-logic-nnc-plural-connector": "nounstem",
       "classical-rule-logic-nnc-clause-position": "sentence",
       "classical-rule-logic-nnc-doubled-first-plural": "sentence",
       "classical-rule-logic-nnc-dependent-clause-in": "sentence",
@@ -9105,38 +9164,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       presentation.primary.appendChild(preview);
       return true;
     }
-    function syncClassicalNncSourceClassPattern(surfaceFrame = null) {
-      const root = targetObject.document?.getElementById?.(
-        "classical-nnc-source-class-pattern"
-      ) || null;
-      if (!root) {
-        return false;
-      }
-      const sourceFrame = surfaceFrame?.state?.nncTypedSourceFrame || null;
-      const sourceClass = String(sourceFrame?.sourceClass || "");
-      const classPattern = sourceFrame?.sourceClassAnalysis?.classPattern || null;
-      const visible = surfaceFrame?.state?.basalUnit === "nnc"
-        && sourceFrame?.kind === "classical-nahuatl-ordinary-nnc-source-frame"
-        && Boolean(sourceClass && classPattern);
-      root.hidden = !visible;
-      root.setAttribute("aria-hidden", String(!visible));
-      root.dataset.classicalSourceClass = visible ? sourceClass : "";
-      root.dataset.classicalGrammarAuthority = "false";
-      root.dataset.classicalPresentationOnly = "true";
-      const cells = {
-        "classical-nnc-source-class-pattern-absolutive-common": classPattern?.absolutiveSingularCommon,
-        "classical-nnc-source-class-pattern-absolutive-plural": classPattern?.absolutivePlural,
-        "classical-nnc-source-class-pattern-possessive-common": classPattern?.possessiveSingularCommon,
-        "classical-nnc-source-class-pattern-possessive-plural": classPattern?.possessivePlural
-      };
-      Object.entries(cells).forEach(([id, cell]) => {
-        const output = targetObject.document?.getElementById?.(id) || null;
-        if (!output) return;
-        output.textContent = visible ? String(cell?.realization || "") : "";
-        output.dataset.classicalCanvasSection = visible ? String(cell?.canvasSection || "") : "";
-      });
-      return visible;
-    }
     function syncClassicalRuleLogicControlsForSurfaceFrame(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined" || !surfaceFrame) {
         return;
@@ -9736,6 +9763,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-state", nncOptionContract.stateValues, nncOptionContract.nncState);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-predicate-form", nncOptionContract.predicateOptionValues, nncOptionContract.selectedPredicateOptionId);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-stem-relation", nncOptionContract.stemRelationValues, nncOptionContract.selectedStemRelation);
+        const nncPluralConnectorControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-plural-connector"
+        );
+        const possessivePlural =
+          nncOptionContract.nncState === "possessive"
+          && nncOptionContract.selectedSubjectNumber === "plural";
+        const nncPluralConnectorValues = possessivePlural
+          ? [nncOptionContract.possessivePluralConnector || "hu-ān"]
+          : nncOptionContract.pluralConnectorValues || [];
+        if (!nncPluralConnectorValues.length) {
+          if (nncPluralConnectorControl) {
+            nncPluralConnectorControl.value = "";
+          }
+        } else {
+          applyClassicalRuleLogicSelectOptionAvailability(
+            "classical-rule-logic-nnc-plural-connector",
+            nncPluralConnectorValues.length > 1
+              ? ["", ...nncPluralConnectorValues]
+              : nncPluralConnectorValues,
+            possessivePlural
+              ? nncOptionContract.possessivePluralConnector || "hu-ān"
+              : nncOptionContract.selectedPluralConnector || ""
+          );
+        }
         applyClassicalRuleLogicSelectOptionAvailability(
           "classical-rule-logic-nnc-clause-position",
           nncOptionContract.clausePositionValues || [],
@@ -9822,7 +9873,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         wrapper.dataset.classicalControlAvailability = !renderInAuthority ? "hidden" : control.disabled ? "disabled" : "enabled";
       });
       syncClassicalNncGrammarSurfaceContract(surfaceFrame);
-      syncClassicalNncSourceClassPattern(surfaceFrame);
       syncClassicalLessons27282933Closure(surfaceFrame);
       if (fullVncParadigm) {
         [...CLASSICAL_VNC_FULL_PARADIGM_ENUMERATED_CONTROL_IDS, "classical-rule-logic-valence"].forEach(id => {

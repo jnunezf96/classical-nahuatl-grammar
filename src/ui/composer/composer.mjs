@@ -4481,6 +4481,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           sourceClass: "",
           subject: "3common",
           state: "absolutive",
+          pluralConnector: "",
           predicateOptionId: "source-stem",
           possessorReduplication: false,
           possessor: "3sg",
@@ -4722,6 +4723,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       next.classicalNnc.subject = normalizeChoice(classicalSource.subject, ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"], "3common");
       next.classicalNnc.state = normalizeChoice(classicalSource.state, ["absolutive", "possessive"], "absolutive");
+      next.classicalNnc.pluralConnector = normalizeChoice(
+        classicalSource.pluralConnector,
+        ["", "t-in", "m-eh", "0-h"],
+        ""
+      );
       next.classicalNnc.predicateOptionId = normalizeChoice(classicalSource.predicateOptionId, ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tl-2a-to-1a", "tec-title"], "source-stem");
       next.classicalNnc.possessorReduplication = normalizeEntradaUrlBoolean(classicalSource.possessorReduplication);
       next.classicalNnc.possessor = normalizeChoice(classicalSource.possessor, ["reciprocal", "nonspecific-human", "nonspecific-nonhuman", "1sg", "2sg", "3sg", "1pl", "2pl", "3pl"], "3sg");
@@ -4887,6 +4893,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           sourceClass: targetObject.document.getElementById("classical-rule-logic-nnc-class")?.value || "",
           subject: targetObject.document.getElementById("classical-rule-logic-subject")?.value || "3common",
           state: targetObject.document.getElementById("classical-rule-logic-nnc-state")?.value || "absolutive",
+          pluralConnector:
+            targetObject.document.getElementById("classical-rule-logic-nnc-state")?.value === "absolutive"
+              ? targetObject.document.getElementById("classical-rule-logic-nnc-plural-connector")?.value || ""
+              : "",
           predicateOptionId: targetObject.document.getElementById("classical-rule-logic-nnc-predicate-form")?.value || "source-stem",
           possessorReduplication: targetObject.document.getElementById("classical-rule-logic-nnc-possessor-reduplication")?.checked === true,
           possessor: targetObject.document.getElementById("classical-rule-logic-nnc-possessor")?.value || "3sg",
@@ -5202,7 +5212,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active !== true) {
         return false;
       }
-      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
+      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
       if (!explicitKeys.some(key => hasEntradaUrlExplicitField(snapshot, key))) {
         return false;
       }
@@ -5219,6 +5229,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         "classical-rule-logic-nnc-subject-animacy": animacyValue === "nonanimate" ? "nonanimate" : "animate",
         "classical-rule-logic-nnc-metaphorical-use": snapshot.classicalNnc?.metaphoricalUse === true,
         "classical-rule-logic-nnc-state": snapshot.classicalNnc?.state,
+        "classical-rule-logic-nnc-plural-connector": snapshot.classicalNnc?.pluralConnector,
         "classical-rule-logic-nnc-predicate-form": snapshot.classicalNnc?.predicateOptionId,
         "classical-rule-logic-nnc-possessor-reduplication": snapshot.classicalNnc?.possessorReduplication,
         "classical-rule-logic-nnc-possessor": snapshot.classicalNnc?.possessor,
@@ -12345,6 +12356,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       segment: "cn-state",
       path: ["classicalNnc", "state"],
       defaultValue: "absolutive",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncPluralConnector",
+      segment: "cn-plural",
+      path: ["classicalNnc", "pluralConnector"],
+      defaultValue: "",
       classicalNncOnly: true
     }, {
       key: "classicalNncPredicateOptionId",

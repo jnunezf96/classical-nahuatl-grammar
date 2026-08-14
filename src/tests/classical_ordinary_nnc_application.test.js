@@ -652,7 +652,7 @@ function run(ctx = {}) {
             }
         );
     s.eq(
-        "an unattested pah plural connector is absent from the coordinate domain and cannot be caller-authorized",
+        "an open lexical plural remains unguessed until the user selects a class-guided ending",
         {
             lexicalConnectorDomain: pahSource.pluralConnectorOptions,
             missingConnectorStatus:
@@ -665,13 +665,12 @@ function run(ctx = {}) {
                 pahPluralWithInjectedConnector.blockReason,
         },
         {
-            lexicalConnectorDomain: [],
+            lexicalConnectorDomain: ["t-in", "m-eh"],
             missingConnectorStatus: "blocked",
             missingConnectorReason:
                 "ordinary-nnc-plural-connector-not-lexically-authorized",
-            injectedConnectorStatus: "blocked",
-            injectedConnectorReason:
-                "ordinary-nnc-operation-derived-facts-are-engine-owned:pluralConnector",
+            injectedConnectorStatus: "authorized",
+            injectedConnectorReason: "",
         }
     );
 

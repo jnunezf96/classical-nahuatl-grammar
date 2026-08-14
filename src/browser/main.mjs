@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-class-pattern-225";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260814-nnc-plural-grammar-226";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

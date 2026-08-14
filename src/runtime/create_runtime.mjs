@@ -1,5 +1,5 @@
 import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260813-lesson11-groups10-12-205";
-import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260814-nnc-class-pattern-225";
+import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260814-nnc-plural-grammar-226";
 import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260812-lesson3-groups-7-9-073";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260811-canvas-fact-browser-012";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260726-lessons2-58-one-system-094";
@@ -66,18 +66,18 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260726-l
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260726-lessons2-58-one-system-094";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260726-lessons2-58-one-system-094";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260811-classical-runtime-only-056";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260814-nnc-class-pattern-225";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260814-nnc-plural-grammar-226";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260726-lessons2-58-one-system-094";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260814-nnc-class-pattern-225";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260814-nnc-plural-grammar-226";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260726-lessons2-58-one-system-094";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260814-nnc-class-pattern-225";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260814-nnc-plural-grammar-226";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260726-lessons2-58-one-system-094";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260814-nnc-class-pattern-225";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260814-nnc-plural-grammar-226";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],
