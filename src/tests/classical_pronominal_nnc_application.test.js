@@ -192,12 +192,16 @@ function run(ctx = {}) {
         },
         {
             status: "authorized",
-            coordinateCount: 3,
+            coordinateCount: 7,
             issued: true,
             parity: true,
             exact: [
+                ["#n-0(eh)0-0#", "neh"],
+                ["#t-0(eh)0-0#", "teh"],
                 ["#0-0(yeh)0-0#", "yeh"],
                 ["#0-0(yeh)0-0#", "yeh"],
+                ["#t-0(eh)m-eh#", "tehmeh"],
+                ["#am-0(eh)m-eh#", "amehmeh"],
                 ["#0-0(yeh)m-eh#", "yehmeh"],
             ],
         }
@@ -273,14 +277,16 @@ function run(ctx = {}) {
             sourceStatus: "authorized",
             sourceParts: ["eh", "huā"],
             planStatus: "authorized",
-            subjects: ["1sg", "2sg", "3common", "1pl", "2pl"],
-            coordinateCount: 12,
+            subjects: ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"],
+            coordinateCount: 16,
             parity: true,
             exact: [
                 ["#n-0(eh-huā)tl-0#", "nehhuātl"],
                 ["#n-0(eh-huā)⎕-0#", "nehhuā"],
                 ["#t-0(eh-huā)tl-0#", "tehhuātl"],
                 ["#t-0(eh-huā)⎕-0#", "tehhuā"],
+                ["#0-0(yeh-huā)tl-0#", "yehhuātl"],
+                ["#0-0(yeh-huā)⎕-0#", "yehhuā"],
                 ["#0-0(eh-huā)tl-0#", "ehhuātl"],
                 ["#0-0(eh-huā)⎕-0#", "ehhuā"],
                 ["#t-0(eh-huā-n)t-in#", "tehhuāntin"],
@@ -289,6 +295,8 @@ function run(ctx = {}) {
                 ["#ti-t-0(eh-huā-n)⎕-⎕#", "titehhuān"],
                 ["#am-0(eh-huā-n)t-in#", "amehhuāntin"],
                 ["#am-0(eh-huā-n)⎕-⎕#", "amehhuān"],
+                ["#0-0(yeh-huā-n)t-in#", "yehhuāntin"],
+                ["#0-0(yeh-huā-n)⎕-⎕#", "yehhuān"],
             ],
             missingStatus: "blocked",
             missingReason:
@@ -311,7 +319,7 @@ function run(ctx = {}) {
             source,
             {
                 subject: "3sg",
-                numberForm: "sounded",
+                matrixForm: "poisoned-matrix-form",
             }
         );
     const injected = ctx.buildClassicalNahuatlPronominalNncOperationFrame(
@@ -369,7 +377,7 @@ function run(ctx = {}) {
                 "pronominal-nnc-source-lexical-facts-are-engine-owned:familyId",
             derivedFactOperationStatus: "blocked",
             derivedFactOperationReason:
-                "pronominal-nnc-operation-derived-facts-are-engine-owned:numberForm",
+                "pronominal-nnc-operation-derived-facts-are-engine-owned:matrixForm",
             copiedEvaluation: "blocked",
             injectedStatus: "blocked",
             injectedReason:

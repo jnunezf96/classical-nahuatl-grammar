@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "lesson": 18,
+  "decisions": {
+    "lesson18-integrated-and-short-pronominal": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Offer integrated antecessive placement only when both carriers are licensed, enforce the short-pronominal utterance boundary, and keep nonsemantic spelling variants as cues."
+    },
+    "lesson18-marked-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply optional in to the complete adjoined unit while preserving role, reference, number, determinacy, topic status, nesting, and typed demonstrative identity."
+    },
+    "lesson18-discontinuous-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive discontinuity from the selected constituent order and preserve all typed head and recursive supplementation links across intervening clauses."
+    },
+    "lesson18-collective-and-named-partner": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use typed plural reference and participant identity to derive collective and named-partner agreement, preserving the unresolved moch analysis without adding exception switches."
+    },
+    "lesson18-male-bonding": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use owner-issued speaker sex and group membership to derive or block first-person-plural oquich-tli cross-reference against third-person heads."
+    },
+    "lesson18-ayi-silent-object": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive overt nonspecific tla or the silent specific-object head from patient specificity, bind a captured specific patient to that head, preserve the ayi/ax stem relation, and exclude ichtequi."
+    },
+    "lesson18-principal-deletion-and-command-subject": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive licensed ca-h deletion from the captured structure, promote the adverbial modifier to proxy principal, preserve the supplementary subject as the surface subject, and keep second-person optative supplements classified as command subjects rather than vocatives."
+    },
+    "lesson18-real-vocatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build real vocatives from a typed third-person NNC and owner-issued speaker sex, deriving obligatory male or female realization and exposing only licensed optional glottal-y or silent plural-in variants."
+    },
+    "lesson18-free-order-and-complete-clauses": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the typed principal, role, reference, repetition, recursion, and complete-clause graph across every licensed order, asking only for order or a genuinely ambiguous structural choice."
+    }
+  }
+}

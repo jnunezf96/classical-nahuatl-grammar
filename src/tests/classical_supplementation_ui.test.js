@@ -12,7 +12,7 @@ function functionSlice(source, startName, endName) {
         : "";
 }
 
-function run() {
+function run(ctx = {}) {
     const s = createSuite("classical_supplementation_ui");
     const root = path.resolve(__dirname, "..", "..");
     const shell = fs.readFileSync(
@@ -178,6 +178,115 @@ function run() {
         )
         && !decisionMap.includes('"speech-act": "speechAct"')
         && !decisionMap.includes('"speaker-gender": "speakerGender"')
+    );
+
+    s.ok(
+        "recursive Results, genuine choices, and clickable formula cues stay on the normal composition panel",
+        workflow.includes(
+            '{ captureRole: "principal", label: "principal" }'
+        )
+        && workflow.includes(
+            '{ captureRole: "adjoined", label: "supplement" }'
+        )
+        && workflow.includes('label: `Use composition as ${label}`')
+        && workflow.includes(
+            'action: `recapture-composition-as-${captureRole}`'
+        )
+        && workflow.includes("renderClassicalFormulaDerivedAnnotations(")
+        && workflow.includes(
+            'decisionGrid.dataset.classicalClauseRelationDecisionSurface ='
+        )
+        && workflow.includes('"unresolved-semantic-choices-only"')
+        && decisionMap.includes(
+            '"supplementation-order": "supplementationOrder"'
+        )
+    );
+
+    s.ok(
+        "the normal workflow chooses the relation first and narrows capture roles before showing later choices",
+        workflow.includes(
+            'relationGrid.dataset.classicalClauseRelationDecisionSurface ='
+        )
+        && workflow.includes('"relation-first-role-narrowing"')
+        && workflow.includes("const captureActionRoles = !selectedRelation")
+        && workflow.includes(
+            'decision.id !== "relation" && requiredCapturesReady'
+        )
+    );
+
+    const target = Object.create(ctx);
+    const controllerApi =
+        ctx.createClassicalClauseRelationControllerGlobals(target);
+    Object.defineProperties(
+        target,
+        Object.getOwnPropertyDescriptors(controllerApi)
+    );
+    const controller = target.createClassicalClauseRelationController();
+    const relationFirst = controller.buildDecisionContract({
+        relation: "supplementation",
+    });
+    const issueNnc = (stem) => {
+        const frame = ctx.buildClassicalNahuatlAbsolutiveNncFrame(stem, {
+            subject: "3sg",
+            nounClass: "zero",
+            animacy: "animate",
+        });
+        return ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:sentence-surface",
+            args: [
+                frame.nncSlotFrame,
+                { sentenceType: "assertion", polarity: "positive" },
+            ],
+        });
+    };
+    controller.captureCurrentResult(
+        "principal",
+        issueNnc("Petoloh").canonicalResult,
+    );
+    controller.captureCurrentResult(
+        "adjoined",
+        issueNnc("icnīuh").canonicalResult,
+    );
+    const unresolved = controller.buildDecisionContract({
+        relation: "supplementation",
+    });
+    const resolved = controller.buildDecisionContract({
+        relation: "supplementation",
+        supplementationReferenceMode: "shared",
+        supplementationOrder: "principal-first",
+    });
+    s.eq(
+        "Canvas-derived defaults stay automatic but genuine supplementation choices never receive silent answers",
+        {
+            relationFirst: relationFirst.relation,
+            relationFirstBlock: relationFirst.blockReason,
+            relationFirstCaptures:
+                relationFirst.derived.requiredCaptureRoles,
+            unresolvedStatus: unresolved.authorizationStatus,
+            unresolvedChoices: unresolved.unresolvedDecisionIds,
+            unresolvedSelections: unresolved.decisions
+                .filter((decision) => [
+                    "supplementation-reference-mode",
+                    "supplementation-order",
+                ].includes(decision.id))
+                .map((decision) => [decision.id, decision.selectedValue]),
+            resolvedStatus: resolved.authorizationStatus,
+        },
+        {
+            relationFirst: "supplementation",
+            relationFirstBlock: "classical-supplementation-principal-capture-required",
+            relationFirstCaptures: ["principal", "adjoined"],
+            unresolvedStatus: "blocked",
+            unresolvedChoices: [
+                "supplementation-reference-mode",
+                "supplementation-order",
+            ],
+            unresolvedSelections: [
+                ["supplementation-reference-mode", ""],
+                ["supplementation-order", ""],
+            ],
+            resolvedStatus: "authorized",
+        }
     );
 
     return s;

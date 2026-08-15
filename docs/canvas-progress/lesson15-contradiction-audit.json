@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "lesson": 15,
   "status": "UNCONTRADICTED",
-  "resolvedCount": 12,
+  "resolvedCount": 13,
   "unresolvedCount": 0,
   "reportAuthority": false,
   "resolutions": [
@@ -17,6 +17,7 @@
     "Tl 2-A to 1-A reclassification requires typed tl 2-A source structure, not an evidence list, and recomputes the connector for each target State.",
     "The NNC-internal possessor remains nuclear while a supplementary possessor belongs outside the NNC nucleus.",
     "Natural-possession policy controls State availability; only an explicit authorized metaphorical meaning overrides a never-possessive restriction.",
-    "Sentence grammar consumes the finished typed NNC without inventing a have verb or encoding definiteness in the nounstem predicate."
+    "Sentence grammar consumes the finished typed NNC without inventing a have verb or encoding definiteness in the nounstem predicate.",
+    "Choosing a canonical nounstem refreshes its ordinary referent default instead of carrying an incompatible referent from the previous Source."
   ]
 }

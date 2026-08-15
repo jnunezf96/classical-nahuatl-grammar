@@ -13,7 +13,7 @@ export const LESSON13_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson13-possessive-subject-paradigm",
     "Read the possessive subject around the predicate",
-    "Subject person comes before the possessor and nounstem. Subject number follows the nounstem: singular or common uses uh, hui, or zero as licensed by the stem and boundary, while plural uses hu-ān. The supportive i in hui and all connector spelling are automatic.",
+    "Subject person comes before the possessor and nounstem. Subject number follows the nounstem: singular or common uses uh, hu plus an automatically added supportive i, or zero as licensed by the stem and boundary, while plural uses hu-ān. All connector spelling is automatic.",
   ),
   idea(
     "lesson13-monadic-possessors",

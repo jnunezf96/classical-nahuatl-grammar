@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "lesson": 21,
+  "contradictionTest": "src/tests/classical_lesson21_contradiction_audit.test.js",
+  "groups": {
+    "lesson21-passive-foundation-and-source-limits": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-formula-and-single-object-promotion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-reflexive-ne-retention": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-reflexive-projective-double-object": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-two-specific-mainline-promotion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-specific-nonspecific-and-three-object": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-passive-mood-sentence-composition": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    },
+    "lesson21-active-reflexive-contextual-passive-reading": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson21_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson21_reader_guidance.test.js"
+    }
+  }
+}

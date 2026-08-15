@@ -4408,7 +4408,7 @@ function run(ctx = {}) {
                 "classical-nahuatl-pronominal-nnc-paradigm-plan",
             planStatus: "authorized",
             rowsPresent: true,
-            subjects: ["1sg", "2sg", "3common", "1pl", "2pl"],
+            subjects: ["1sg", "2sg", "3sg", "3common", "1pl", "2pl", "3pl"],
             hasDoubledFirstPlural: true,
             everyContractValid: true,
             invalidCandidatesRendered: false,
@@ -4725,13 +4725,13 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 16 Source stem must match the selected typed pronominal analysis",
+        "Lesson 16 personal Source alternants let subject grammar select the Result stem",
         (() => {
             const matched = ctx.buildClassicalNahuatlPronominalNncFrame({
                 subtype: "personal-simple", subject: "3sg",
                 enteredStem: "yeh", requireEnteredStem: true,
             });
-            const mismatched = ctx.buildClassicalNahuatlPronominalNncFrame({
+            const conditionedAlternant = ctx.buildClassicalNahuatlPronominalNncFrame({
                 subtype: "personal-simple", subject: "3sg",
                 enteredStem: "eh", requireEnteredStem: true,
             });
@@ -4741,13 +4741,17 @@ function run(ctx = {}) {
             });
             return {
                 matched: [matched.authorizationStatus, matched.sourceFrame.enteredStemMatchesAnalysis, matched.formulaRealization],
-                mismatched: [mismatched.authorizationStatus, mismatched.blockReason],
+                conditionedAlternant: [
+                    conditionedAlternant.authorizationStatus,
+                    conditionedAlternant.sourceFrame.enteredStemMatchesAnalysis,
+                    conditionedAlternant.formulaRealization,
+                ],
                 absent: [absent.authorizationStatus, absent.blockReason],
             };
         })(),
         {
             matched: ["authorized", true, "#0-0(yeh)0-0#"],
-            mismatched: ["blocked", "entered-stem-does-not-match-selected-pronominal-nnc-analysis"],
+            conditionedAlternant: ["authorized", true, "#0-0(yeh)0-0#"],
             absent: ["blocked", "pronominal-nnc-entered-stem-required"],
         }
     );

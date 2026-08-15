@@ -2351,6 +2351,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const vowelInitialStem = isClassicalNahuatlNncVowelSound(stemFirstSound);
       const typedSourceAuthority = isClassicalNahuatlNncSourceAuthorityFrame(nncSourceAuthorityFrame) ? nncSourceAuthorityFrame : null;
       const sourcePossessorCompatibility = typedSourceAuthority?.possessorCompatibility || "";
+      const nonspecificHumanPossessorCarrier = ["tē", "ti", "t"].includes(
+        typedSourceAuthority?.nonspecificHumanPossessorCarrier
+      ) ? typedSourceAuthority.nonspecificHumanPossessorCarrier : "tē";
       const relationKind = typedSourceAuthority ? sourcePossessorCompatibility === "relational-tla" ? "relational" : "nonrelational" : normalizeClassicalNahuatlNncToken(nounstemRelationKind).toLowerCase();
       const analogicalTlaAuthorized = typedSourceAuthority ? sourcePossessorCompatibility === "analogical-tla-derived" : analogicalTlaDerivedStem === true;
       const authorizedThirdPluralSt2Options = typedSourceAuthority?.thirdPluralPossessorSt2Options?.length ? typedSourceAuthority.thirdPluralPossessorSt2Options : ["m", "n"];
@@ -2363,7 +2366,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         arity = "monadic";
         const carriers = {
           reciprocal: "ne",
-          "nonspecific-human": "tē",
+          "nonspecific-human": nonspecificHumanPossessorCarrier,
           "nonspecific-nonhuman": "tla"
         };
         possessorRole = normalizedPossessor;
@@ -2565,7 +2568,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             pers1BaseMorph: complete ? personFrame.pers1BaseMorph : "",
             supportiveISurfacePolicy: complete ? personFrame.supportiveISurfacePolicy : "",
             supportiveISurfaceAction: complete ? personFrame.supportiveISurfaceAction : "",
-            supportiveISurfaceReason: complete ? personFrame.supportiveISurfaceReason : ""
+            supportiveISurfaceReason: complete ? personFrame.supportiveISurfaceReason : "",
+            subjectAssimilationAction: complete
+              ? personFrame.subjectAssimilationAction || ""
+              : ""
           },
           participant: {
             arity: participantArity,
@@ -3561,6 +3567,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const subclass = normalizeClassicalNahuatlNncToken(
         context.subclass || context.tlSubclass || ""
       ).toLowerCase().replace(/[\s_]/gu, "-");
+      const requestedSecondaryPossessorCarrier = normalizeClassicalNahuatlNncToken(
+        context.secondaryPossessorCarrier || ""
+      ).toLowerCase();
+      const secondaryPossessorCarrier = ["tē", "ti", "t"].includes(
+        requestedSecondaryPossessorCarrier
+      ) ? requestedSecondaryPossessorCarrier : "tē";
       const pluralSubject = /pl$/u.test(subject);
       const yoMatrixEmbedStem = resolveClassicalNahuatlLesson15YoMatrixEmbedStem(
         normalizedSourceStem,
@@ -3615,11 +3627,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         exactWitness: "The absolutive-state NNC pillōtl means it is nobility; the same (-yō)-tl- nounstem forms possessive-state NNCs"
       }), option({
         optionId: "secondary-general-use",
-        displayLabel: "secondary general-use stem (tē-)",
+        displayLabel: `secondary general-use stem (${secondaryPossessorCarrier}-)`,
         operation: "secondary-general-use",
-        targetStem: `tē-${normalizedSourceStem}`,
+        targetStem: `${secondaryPossessorCarrier}-${normalizedSourceStem}`,
         suppletiveConnector: "not-applicable",
-        secondaryPossessorCarrier: "tē",
+        secondaryPossessorCarrier,
         requiresPossessive: true,
         canvasSection: "15.1.5",
         transcriptionLineStart: 5222,
@@ -4083,6 +4095,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       };
       const requestedPossessorCompatibility = normalizeClassicalNahuatlNncToken(options.possessorCompatibility || "").toLowerCase().replace(/[\s_]/gu, "-");
       const possessorCompatibility = possessorCompatibilityAliases[requestedPossessorCompatibility] || "";
+      const requestedNonspecificHumanPossessorCarrier = normalizeClassicalNahuatlNncToken(
+        options.nonspecificHumanPossessorCarrier || "tē"
+      ).toLowerCase();
+      const nonspecificHumanPossessorCarrier = ["tē", "ti", "t"].includes(
+        requestedNonspecificHumanPossessorCarrier
+      ) ? requestedNonspecificHumanPossessorCarrier : "";
       const suppliedThirdPluralOptions = Object.prototype.hasOwnProperty.call(options, "thirdPluralPossessorSt2Options");
       const rawThirdPluralOptions = Array.isArray(options.thirdPluralPossessorSt2Options) ? options.thirdPluralPossessorSt2Options : normalizeClassicalNahuatlNncToken(options.thirdPluralPossessorSt2Options || "").toLowerCase().split(/[^mn]+/u);
       const normalizedThirdPluralOptions = rawThirdPluralOptions.map(value => normalizeClassicalNahuatlNncToken(value).toLowerCase()).filter(Boolean);
@@ -4095,7 +4113,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const suppliedLesson15ReduplicationSelection = Object.prototype.hasOwnProperty.call(options, "lesson15PossessorReduplicationSelection");
       const lesson15PossessorReduplicationSelection = isClassicalNahuatlPossessorReduplicationSelection(options.lesson15PossessorReduplicationSelection) && options.lesson15PossessorReduplicationSelection.sourceStem === normalizedStem ? cloneClassicalNahuatlNncValue(options.lesson15PossessorReduplicationSelection) : buildClassicalNahuatlPossessorReduplicationSelection(normalizedStem);
       let blockReason = "";
-      if (!normalizedStem) blockReason = "nnc-source-authority-stem-required";else if (!naturalPossessionPolicy) blockReason = "unknown-natural-possession-policy";else if (!naturalSemanticsKnown) blockReason = "unknown-natural-possession-semantics";else if (!naturalSemanticsCompatible) blockReason = "natural-possession-semantics-contradicts-policy";else if (!suppliedStateAvailabilityKnown) blockReason = "unknown-lexical-state-availability";else if (stateAvailabilityContradiction) blockReason = "natural-possession-policy-contradicts-state-availability";else if (!policyAuthorityKnown) blockReason = "unknown-state-policy-selection-authority";else if (!possessorCompatibility) blockReason = "unknown-possessor-compatibility";else if (suppliedThirdPluralOptionsInvalid) {
+      if (!normalizedStem) blockReason = "nnc-source-authority-stem-required";else if (!naturalPossessionPolicy) blockReason = "unknown-natural-possession-policy";else if (!naturalSemanticsKnown) blockReason = "unknown-natural-possession-semantics";else if (!naturalSemanticsCompatible) blockReason = "natural-possession-semantics-contradicts-policy";else if (!suppliedStateAvailabilityKnown) blockReason = "unknown-lexical-state-availability";else if (stateAvailabilityContradiction) blockReason = "natural-possession-policy-contradicts-state-availability";else if (!policyAuthorityKnown) blockReason = "unknown-state-policy-selection-authority";else if (!possessorCompatibility) blockReason = "unknown-possessor-compatibility";else if (!nonspecificHumanPossessorCarrier) blockReason = "unknown-nonspecific-human-possessor-carrier";else if (suppliedThirdPluralOptionsInvalid) {
         blockReason = "third-plural-possessor-st2-options-must-be-nonempty-m-n-subset";
       } else if (suppliedLesson15OperationRecord && (!isClassicalNahuatlStemOperationRecord(options.lesson15StemOperationRecord) || options.lesson15StemOperationRecord.sourceStem !== normalizedStem)) {
         blockReason = options.lesson15StemOperationRecord?.blockReason || "authorized-lesson15-stem-operation-record-required";
@@ -4124,6 +4142,11 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             : "policy-derived-unspecified-or-default",
         policySelectionAuthority,
         possessorCompatibility,
+        nonspecificHumanPossessorCarrier,
+        nonspecificHumanPossessorCarrierAuthority:
+          requestedNonspecificHumanPossessorCarrier === "tē"
+            ? "canvas-regular-default"
+            : "typed-lexical-source-record",
         tlaPossessorAvailable: possessorCompatibility !== "ordinary",
         tlaPossessorAvailabilityReason: possessorCompatibility === "relational-tla" ? "relational-nounstem-source-analysis" : possessorCompatibility === "analogical-tla-derived" ? "lesson15-analogical-tla-derived-source-analysis" : "not-authorized-for-ordinary-source-analysis",
         thirdPluralPossessorSt2Options,
@@ -4141,7 +4164,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       };
     }
     function isClassicalNahuatlNncSourceAuthorityFrame(frame = null) {
-      return Boolean(frame && frame.kind === "classical-nahuatl-nnc-source-authority-frame" && frame.authorizationStatus === "authorized" && frame.sourceStem && ["ordinary", "naturally-possessed", "never-possessive"].includes(frame.naturalPossessionPolicy) && ["ordinary", "natural-association-unspecified", "property", "kinship-or-human-relation", "body-part", "never-possessive"].includes(frame.naturalPossessionSemantics) && ["both", "absolutive-only", "possessive-only"].includes(frame.stateAvailability) && ["ordinary", "relational-tla", "analogical-tla-derived"].includes(frame.possessorCompatibility) && Array.isArray(frame.thirdPluralPossessorSt2Options) && frame.thirdPluralPossessorSt2Options.length > 0 && frame.thirdPluralPossessorSt2Options.every(value => ["m", "n"].includes(value)) && Array.isArray(frame.allowedStateValues) && frame.allowedStateValues.includes(frame.selectedState) && isClassicalNahuatlStemOperationRecord(frame.lesson15StemOperationRecord) && frame.lesson15StemOperationRecord.sourceStem === frame.sourceStem && isClassicalNahuatlPossessorReduplicationSelection(frame.lesson15PossessorReduplicationSelection) && frame.lesson15PossessorReduplicationSelection.sourceStem === frame.sourceStem && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false);
+      return Boolean(frame && frame.kind === "classical-nahuatl-nnc-source-authority-frame" && frame.authorizationStatus === "authorized" && frame.sourceStem && ["ordinary", "naturally-possessed", "never-possessive"].includes(frame.naturalPossessionPolicy) && ["ordinary", "natural-association-unspecified", "property", "kinship-or-human-relation", "body-part", "never-possessive"].includes(frame.naturalPossessionSemantics) && ["both", "absolutive-only", "possessive-only"].includes(frame.stateAvailability) && ["ordinary", "relational-tla", "analogical-tla-derived"].includes(frame.possessorCompatibility) && ["tē", "ti", "t"].includes(frame.nonspecificHumanPossessorCarrier) && Array.isArray(frame.thirdPluralPossessorSt2Options) && frame.thirdPluralPossessorSt2Options.length > 0 && frame.thirdPluralPossessorSt2Options.every(value => ["m", "n"].includes(value)) && Array.isArray(frame.allowedStateValues) && frame.allowedStateValues.includes(frame.selectedState) && isClassicalNahuatlStemOperationRecord(frame.lesson15StemOperationRecord) && frame.lesson15StemOperationRecord.sourceStem === frame.sourceStem && isClassicalNahuatlPossessorReduplicationSelection(frame.lesson15PossessorReduplicationSelection) && frame.lesson15PossessorReduplicationSelection.sourceStem === frame.sourceStem && frame.formulaStringAuthority === false && frame.surfaceStringAuthority === false);
     }
     function buildClassicalNahuatlAbsolutiveNncFrame(stem = "", options = {}) {
       const normalizedStem = normalizeClassicalNahuatlNncStem(stem);
@@ -7158,16 +7181,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       if (!sourceIdentityAlternants.length && sourceIdentityStem) {
         sourceIdentityAlternants = [sourceIdentityStem];
       }
-      const paradigmSourceProjection =
-        options.lesson16ParadigmSourceProjectionToken
-        === CLASSICAL_NAHUATL_LESSON16_PARADIGM_SOURCE_PROJECTION_TOKEN;
       const enteredStemMatchesAnalysis = Boolean(
         enteredStem
-        && (
-          paradigmSourceProjection
-            ? sourceIdentityAlternants.includes(enteredStem)
-            : enteredStem === sourceStem
-        )
+        && sourceIdentityAlternants.includes(enteredStem)
       );
       if (!blockReason && options.requireEnteredStem === true && !enteredStem) {
         blockReason = "pronominal-nnc-entered-stem-required";
@@ -7656,6 +7672,16 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         subject: sourceFrame.subject || options.subject || "3sg",
         followingMaterial: numberFrame.predicateStem || sourceFrame.sourceStem
       });
+      if (
+        sourceFrame.subtype === "quantitive"
+        && sourceFrame.sourceIdentityStem === "ce-qui"
+        && sourceFrame.subject === "2pl"
+        && numberFrame.internalPluralMorph === "n-inside-stem"
+        && personFrame.authorizationStatus === "authorized"
+      ) {
+        personFrame.pers1 = "az";
+        personFrame.subjectAssimilationAction = "nasal-plus-s-to-ss";
+      }
       if (contextSelectionRecord?.doubledFirstPlural?.selected === true) {
         if (contextSelectionRecord.doubledFirstPlural.available === true && personFrame.authorizationStatus === "authorized") {
           personFrame.pers1 = "ti-t";

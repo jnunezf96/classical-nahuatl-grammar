@@ -171,9 +171,10 @@ function run(ctx = {}) {
         s.no(`mutation:${record.atomId} fails when its ${familyId} behavior is broken`, JSON.stringify(broken) === JSON.stringify(wanted));
     }
 
-    const supportiveCues = ctx.getClassicalFormulaDerivedAnnotations(
+    const supportiveAnnotations = ctx.getClassicalFormulaDerivedAnnotations(
         twoC.formulaRealization, twoC.nncSlotFrame, twoC,
-    ).map((cue) => cue.label);
+    );
+    const supportiveCues = supportiveAnnotations.map((cue) => cue.label);
     const analysisCues = ctx.getClassicalFormulaDerivedAnnotations(
         ambiguitySelected.formulaRealization, ambiguitySelected.nncSlotFrame, ambiguitySelected,
     ).map((cue) => cue.label);
@@ -184,6 +185,38 @@ function run(ctx = {}) {
         supportiveCues.includes("supportive i")
         && connectorCues.includes("class-governed number connector")
         && analysisCues.includes("constituent analysis"));
+    const supportiveI = supportiveAnnotations.find((cue) => cue.label === "supportive i");
+    s.eq("the supportive-i cue marks only the automatically added i", {
+        text: supportiveI ? twoC.formulaRealization.slice(supportiveI.start, supportiveI.end) : "",
+        presentation: supportiveI?.presentation || "",
+    }, { text: "i", presentation: "supportive-i" });
+    const resultContextSupportiveI = ctx.getClassicalFormulaDerivedAnnotations(
+        twoC.formulaRealization,
+        twoC.nncSlotFrame,
+        { sourceFrame: twoC.sourceFrame, operationFrame: { stemFormation: "plain" } },
+    ).find((cue) => cue.label === "supportive i");
+    s.eq("the normal Result context preserves the same exact supportive-i cue", {
+        text: resultContextSupportiveI
+            ? twoC.formulaRealization.slice(resultContextSupportiveI.start, resultContextSupportiveI.end)
+            : "",
+        presentation: resultContextSupportiveI?.presentation || "",
+    }, { text: "i", presentation: "supportive-i" });
+    ctx.window.location = {
+        hash: "#classical/v1/nnc/(cozca)/a-embed/coz/a-stem/ca/cn/1/cn-source-class/tl-2-c/cn-subj/3common/cn-state/possessive",
+        pathname: "/index.html",
+        search: "",
+    };
+    ctx.window.history = { replaceState() {} };
+    const sourcePartsRoot = ctx.document.getElementById("classical-source-parts");
+    sourcePartsRoot.dataset.classicalSourcePartsInitialized = "false";
+    ctx.syncClassicalSourcePartControlsFromRuntime();
+    const restoredSource = ctx.getClassicalSourcePartControlState();
+    s.eq("a saved open NNC link restores its explicit Lesson 14 class after rebuilding Source", {
+        mode: restoredSource.mode,
+        embed: restoredSource.sourceEmbedStem,
+        matrix: restoredSource.sourceMatrixStem,
+        sourceClass: ctx.document.getElementById("classical-rule-logic-nnc-class")?.value || "",
+    }, { mode: "embed-matrix", embed: "coz", matrix: "ca", sourceClass: "tl-2-c" });
     return s;
 }
 

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "lesson": 18,
+  "contradictionTest": "src/tests/classical_lesson18_contradiction_audit.test.js",
+  "groups": {
+    "lesson18-integrated-and-short-pronominal": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-marked-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-discontinuous-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-collective-and-named-partner": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-male-bonding": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-ayi-silent-object": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-principal-deletion-and-command-subject": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-real-vocatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    },
+    "lesson18-free-order-and-complete-clauses": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson18_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson18_reader_guidance.test.js"
+    }
+  }
+}

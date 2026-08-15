@@ -110,7 +110,8 @@ function run(ctx = {}) {
                 && presentationSource.includes('createControlGroup("sequence", "Sequence"')
                 && presentationSource.includes('createControlGroup("dependent", "Dependent operation"')
                 && presentationSource.includes('targetObject.document.createElement("section")')
-                && presentationSource.includes("section.hidden = false")
+                && presentationSource.includes("const grammarOrganizerActive = vncActive || nncActive")
+                && presentationSource.includes("section !== presentation.particleGroup || visibleControls === 0")
                 && presentationSource.includes("group.hidden = visibleControls === 0")
                 && !presentationSource.includes('targetObject.document.createElement("details")');
         })()

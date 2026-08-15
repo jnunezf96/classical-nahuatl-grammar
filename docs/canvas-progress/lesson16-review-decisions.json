@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "lesson": 16,
+  "decisions": {
+    "lesson16-pronominal-nnc-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build pronominal forms as absolutive NNCs and keep internal plural n separate from subject number."
+    },
+    "lesson16-simple-personal-pronominals": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build simple personal forms with automatic subject-conditioned eh or yeh selection."
+    },
+    "lesson16-compound-personal-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build compound personal forms with automatic stem choice, internal plural n, subject connector, and distributive structure."
+    },
+    "lesson16-compound-personal-variants": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build sounded and silent compound variants, the evaluative collocation, and the restricted doubled first-plural construction."
+    },
+    "lesson16-what-interrogatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build tleh across its licensed subjects and apply interrogative force, separate dependent in, and fused elliptical in automatically."
+    },
+    "lesson16-compound-and-who-interrogatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build what, which, and who interrogatives with exact person, polarity, fusion, and clause-position restrictions."
+    },
+    "lesson16-demonstrative-and-indefinite-pronominals": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build demonstrative and indefinite forms with silent demonstrative plural structure, the ah boundary, and the special human-use restriction."
+    },
+    "lesson16-quantitive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build typed quantity embed-matrix sources, select the long matrix before internal plural n, and apply clause-position meaning."
+    },
+    "lesson16-quantitive-plural-and-miye-cequi": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the normal internal-n quantity plural and licensed plain variants, including miye, cequi, and second-plural assimilation."
+    },
+    "lesson16-izqui-quezqui-aqui": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build izqui, quezqui, distributive quecizqui, and aqui with licensed plural forms, modifiers, and clause-position meaning."
+    },
+    "lesson16-achi-mochi-ixachi": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build achi, mochi, ixachi, and the mo-ch personal compound with their licensed plural forms and adverbial combination."
+    }
+  }
+}

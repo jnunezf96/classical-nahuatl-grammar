@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "lesson": 19,
+  "contradictionTest": "src/tests/classical_lesson19_contradiction_audit.test.js",
+  "groups": {
+    "lesson19-vnc-supplements-and-shared-heads": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-pronominal-existentials-and-included-reference": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-included-subject-possessor-and-recursion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-speech-and-question-content": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-causing-and-requesting-content": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-wishes-and-realizability": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-perception-cognition-and-emotion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-same-subject-futures-and-rumored-report": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    },
+    "lesson19-deleted-saying-principals": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson19_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson19_reader_guidance.test.js"
+    }
+  }
+}

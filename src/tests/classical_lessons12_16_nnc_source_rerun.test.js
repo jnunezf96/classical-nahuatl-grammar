@@ -137,6 +137,48 @@ function run(ctx = {}) {
         exact: ["authorized", "tl-2-a", "tl-2-a"],
     });
 
+    const canonicalCalSource = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });
+    s.eq("Lesson 14 final shape narrows the Source class choices without guessing membership", {
+        vowelFinal: ctx.getClassicalNncCompatibleOpenSourceClassValues("nemi"),
+        consonantFinal: ctx.getClassicalNncCompatibleOpenSourceClassValues("pah"),
+        clusteredFinalI: ctx.getClassicalNncCompatibleOpenSourceClassValues(
+            "cem-izqui",
+            { compoundStem: true }
+        ),
+        canonical: ctx.getClassicalNncCompatibleOpenSourceClassValues(
+            "cal",
+            { sourceFrame: canonicalCalSource }
+        ),
+    }, {
+        vowelFinal: ["tl-1-a", "tl-1-b", "tl-2-b-i", "zero"],
+        consonantFinal: ["tli-1", "tli-2", "in", "zero"],
+        clusteredFinalI: ["tl-1-a", "tl-1-b", "zero"],
+        canonical: ["tli-1"],
+    });
+
+    const commonQuantitiveUi = ctx.buildClassicalRuleLogicSurfaceFrame({
+        basalUnit: "nnc",
+        stem: "cem-ix-qui-ch",
+        sourceEmbedStem: "cem-ix",
+        sourceMatrixStem: "qui-ch",
+        nncSubjectPerson: "3",
+        nncSubjectNumber: "common",
+        nncAnimacy: "animate",
+        nncState: "absolutive",
+        nncOutputScope: "single",
+    });
+    s.eq("the normal NNC path preserves common number for a quantitive source", {
+        status: commonQuantitiveUi.authorizationStatus,
+        subject: commonQuantitiveUi.state.subject,
+        sourceFamily: commonQuantitiveUi.state.nncTypedSourceFrame?.familyId || "",
+        surface: commonQuantitiveUi.sentenceSurfaceDisplay || "",
+    }, {
+        status: "authorized",
+        subject: "3common",
+        sourceFamily: "quantitive",
+        surface: "Cemixquich.",
+    });
+
     const plainClass = ctx.issueCanonicalNncSourceFrame({
         stem: "cihuā", sourceClass: "zero",
     });
@@ -215,7 +257,9 @@ function run(ctx = {}) {
             !sourcePanel.includes('id="classical-nnc-source-class-pattern"'),
         pluralEndingChoiceInGrammar:
             authorityPanel.includes('id="classical-rule-logic-nnc-plural-connector"')
-            && authorityPanel.includes(">Plural ending</span>")
+            && authorityPanel.includes(">Number ending</span>")
+            && authorityPanel.includes('<option value="sounded">sounded ending</option>')
+            && authorityPanel.includes('<option value="silent-silent">silent ending</option>')
             && authorityPanel.includes('<option value="t-in">-tin</option>')
             && authorityPanel.includes('<option value="m-eh">-meh</option>')
             && authorityPanel.includes('<option value="0-h">-h</option>')
@@ -580,7 +624,7 @@ function run(ctx = {}) {
         checked: ordinaryControlSweepCount,
         failures: ordinaryControlSweepFailures,
     }, {
-        checked: 6134,
+        checked: 5993,
         failures: [],
     });
 
@@ -591,6 +635,14 @@ function run(ctx = {}) {
         { stem: "cā-tl-eh", embedStem: "cā", matrixStem: "tl-eh" },
         { stem: "itl-ah", embedStem: "itl", matrixStem: "ah" },
         { stem: "ix-qui-ch", embedStem: "ix", matrixStem: "qui-ch" },
+        { stem: "miye-c", embedStem: "miye", matrixStem: "c" },
+        { stem: "iz-qui", embedStem: "iz", matrixStem: "qui" },
+        { stem: "quē-z-qui", embedStem: "quē-z", matrixStem: "qui" },
+        { stem: "quē-c-iz-qui", embedStem: "quē-c-iz", matrixStem: "qui" },
+        { stem: "a-qui", embedStem: "a", matrixStem: "qui" },
+        { stem: "a-chi", embedStem: "a", matrixStem: "chi" },
+        { stem: "mo-chi", embedStem: "mo", matrixStem: "chi" },
+        { stem: "ix-a-chi", embedStem: "ix-a", matrixStem: "chi" },
         { stem: "mo-ch-eh-huā", embedStem: "mo-ch", matrixStem: "eh-huā" },
     ];
     const pronominalControlSweepFailures = [];
@@ -605,18 +657,36 @@ function run(ctx = {}) {
             const doubledSelections = subjectChoices.doubledFirstPluralAvailable
                 ? [false, true]
                 : [false];
+            const pluralizationValues = subjectChoices.predicatePluralizationValues.length
+                ? subjectChoices.predicatePluralizationValues
+                : [""];
             const specialHumanUse = subjectChoices.specialHumanUseAvailable;
             for (const clausePosition of source.allowedClausePositions) {
                 for (const adjunctorInMode of source.allowedAdjunctorModes) {
                     for (const doubledFirstPlural of doubledSelections) {
-                        for (const sentenceType of ["statement"]) {
+                      for (const predicatePluralization of pluralizationValues) {
+                        const pluralizationChoices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                            subject,
+                            animacy,
+                            clausePosition,
+                            adjunctorInMode,
+                            doubledFirstPlural,
+                            predicatePluralization,
+                        });
+                        const numberForms = pluralizationChoices.numberFormValues.length
+                            ? pluralizationChoices.numberFormValues
+                            : [""];
+                        for (const numberForm of numberForms) {
+                          for (const sentenceType of ["statement"]) {
                             for (const polarity of ["positive", "negative"]) {
                                 pronominalControlSweepCount += 1;
                                 const operation = ctx.issueCanonicalNncOperationFrame(source, {
                                     subject,
                                     clausePosition,
                                     adjunctorInMode,
+                                    numberForm,
                                     doubledFirstPlural,
+                                    predicatePluralization,
                                     specialHumanUse,
                                     sentenceType,
                                     polarity,
@@ -632,7 +702,9 @@ function run(ctx = {}) {
                                         subject,
                                         clausePosition,
                                         adjunctorInMode,
+                                        numberForm,
                                         doubledFirstPlural,
+                                        predicatePluralization,
                                         specialHumanUse,
                                         sentenceType,
                                         polarity,
@@ -642,6 +714,8 @@ function run(ctx = {}) {
                                 }
                             }
                         }
+                        }
+                      }
                     }
                 }
             }
@@ -651,7 +725,7 @@ function run(ctx = {}) {
         checked: pronominalControlSweepCount,
         failures: pronominalControlSweepFailures,
     }, {
-        checked: 212,
+        checked: 540,
         failures: [],
     });
 

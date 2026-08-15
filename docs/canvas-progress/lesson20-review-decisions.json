@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "lesson": 20,
+  "decisions": {
+    "lesson20-nonactive-foundation-and-suffixes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the familiar nonactive request on a typed active imperfective Source, derive only owner-licensed suffix Results, preserve real morpheme boundaries, and ask for a formation only when more than one final Result is valid."
+    },
+    "lesson20-regular-lo-and-root-ya": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply regular lō from the typed imperfective active Source and automatically remove final ya only for the licensed root-plus-ya analysis, without adding class, future-base, or deletion controls."
+    },
+    "lesson20-class-c-d-lo-and-irregular-lohua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive Class C and D vowel behavior, licensed exceptional quantity, suppletive lo-hua bases, and first-member compound attachment from the typed Source, exposing only a genuinely licensed alternative Result."
+    },
+    "lesson20-o-nonactive-formation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the licensed ō nonactive Result from the typed final environment, automatically deleting the final vowel and applying consonant changes, while asking only when Andrews licenses a competing lō or other Result."
+    },
+    "lesson20-ohua-nonactive-formation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive regular and lexically licensed o-hua Results from the typed Source, automatically handling final-vowel and w deletion, compensatory length, consonant changes, and narrow exceptions without spelling or sound-change switches."
+    },
+    "lesson20-hua-nonactive-formation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive hua Results from licensed i- and o-final Sources, automatically preserving or lengthening vowel quantity and applying narrow exceptional replacements, while exposing only genuinely competing final Results."
+    },
+    "lesson20-hualo-free-variants": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Offer hua-lō only as an owner-licensed free variant beside the corresponding hua Result, using the normal formation list and never adding a rarity or variant switch."
+    },
+    "lesson20-nonactive-class-a-and-perfective": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Route every selected nonactive Result through automatic Class A imperfective and perfective formation, deriving long or reduced final o from the following typed morphs while leaving only the ordinary tense or VNC Result choice to the user."
+    }
+  }
+}

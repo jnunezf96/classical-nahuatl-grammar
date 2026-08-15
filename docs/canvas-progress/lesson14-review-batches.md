@@ -85,7 +85,7 @@ All 428 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - Sections: §14.7, §14.7.1, §14.7.1.a, §14.7.1.b, §14.7.1.b.i, §14.7.1.b.ii, §14.7.2, §14.7.2.a, §14.7.2.a.i, §14.7.2.a.ii, §14.7.2.b, §14.7.2.b.i, §14.7.2.b.ii, §14.7.2.b.iii
 - Atoms: 149
 - Proposed direction: 85 both; 64 reading only
-- Writing job: Build base or truncated general-use stems; select zero, hui, or uh; delete only ephemeral vowels; and add supportive i only when truncation creates an illegal cluster.
+- Writing job: Build base or truncated general-use stems; select zero, hu, or uh; add supportive i to hu when the boundary requires it; delete only ephemeral vowels; and use supportive i after truncation only when an illegal cluster is created.
 - Reading job: Guide the reader in separating stem-final material from subject connectors and in recognizing ephemeral-vowel deletion and supportive-vowel repair.
 - User/application split: The user chooses the nounstem, possessor, and subject; the application performs all class, truncation, connector, and phonological work.
 - Control policy: No subclass, truncation, connector, or supportive-i controls; lexical authority and grammar determine them.

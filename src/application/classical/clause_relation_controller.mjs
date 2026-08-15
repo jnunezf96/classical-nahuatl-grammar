@@ -633,7 +633,12 @@ function buildDecision({
     option => option.value === selected,
   ) || null;
   const selectedAvailable = !normalizedOptionAvailability.length
-    || selectedOption?.status === RELATION_AVAILABILITY.AVAILABLE;
+    || selectedOption?.status === RELATION_AVAILABILITY.AVAILABLE
+    || (
+      id === "relation"
+      && selectedOption?.status === RELATION_AVAILABILITY.MISSING_PREREQUISITE
+      && selectedOption.missingCaptureRoles.length > 0
+    );
   const decision = {
     kind: "classical-clause-relation-user-decision",
     id,
@@ -1894,7 +1899,7 @@ export function createClassicalClauseRelationControllerGlobals(
       let optionalCaptureRoles = [];
       if (relation === "supplementation") {
         requiredCaptureRoles = ["principal", "adjoined"];
-        optionalCaptureRoles = ["dependent", "supplement", "marker"];
+        optionalCaptureRoles = ["marker"];
         requiredCaptureRoles.forEach(requireRole);
         const principalPreview = buildCapturedSupplementationEnvelope(
           "principal",
@@ -1946,11 +1951,14 @@ export function createClassicalClauseRelationControllerGlobals(
           expose = values.length > 1,
         }) => {
           const requested = normalizeToken(selectionObject[key]);
+          const explicitChoiceRequired = expose && values.length > 1;
           const selectedValue = values.includes(requested)
             ? requested
             : requested
               ? ""
-              : values.includes(fallback)
+              : explicitChoiceRequired
+                ? ""
+                : values.includes(fallback)
                 ? fallback
                 : values[0] || "";
           if (expose) {
@@ -1967,16 +1975,39 @@ export function createClassicalClauseRelationControllerGlobals(
           operationSelections[key] = selectedValue;
           return selectedValue;
         };
+        const typedInterrogativeSupplement = Boolean(
+          supplementPreview?.interrogativeKind,
+        );
         const referenceMode = resolveChoice({
           id: "supplementation-reference-mode",
           key: "supplementationReferenceMode",
-          values: ["shared", "included", "absolute-topic"],
+          values: typedInterrogativeSupplement
+            ? ["shared"]
+            : ["shared", "included", "absolute-topic"],
           fallback: "shared",
           reason:
-            "the user selects shared reference, whole-supplement reference, or an absolute topic",
+            typedInterrogativeSupplement
+              ? "an interrogative NNC replaces a shared supplement"
+              : "the user selects shared reference, whole-supplement reference, or an absolute topic",
         });
+        const includedSemanticGroup = normalizeToken(
+          principalPreview?.semanticGroup,
+        );
+        const includedObjectContent = [
+          "speech",
+          "saying",
+          "wish",
+          "perception",
+          "cognition",
+          "causing",
+          "requesting",
+        ].includes(includedSemanticGroup);
         const headRoleValues = referenceMode === "absolute-topic"
           ? ["subject"]
+          : referenceMode === "included" && includedObjectContent
+            ? principalPreview?.objects?.length ? ["object"] : []
+          : referenceMode === "included" && includedSemanticGroup === "affect"
+            ? ["subject"]
           : principalPreview?.unitKind === "nnc"
           ? [
               "subject",
@@ -2016,8 +2047,7 @@ export function createClassicalClauseRelationControllerGlobals(
           expose: referenceMode !== "included" && contactRoleValues.length > 1,
         });
         const interrogativeSupplement = Boolean(
-          referenceMode === "shared"
-          && supplementPreview?.interrogativeKind,
+          referenceMode === "shared" && typedInterrogativeSupplement,
         );
         const orderValues = markerSemantic === "ca" || interrogativeSupplement
           ? ["supplement-first"]
@@ -2033,9 +2063,6 @@ export function createClassicalClauseRelationControllerGlobals(
         if (order === "discontinuous") {
           requireRole("dependent");
           requiredCaptureRoles.push("dependent");
-          optionalCaptureRoles = optionalCaptureRoles.filter(
-            role => role !== "dependent",
-          );
         }
         const principalObjects = Array.from(principalPreview?.objects || []);
         const principalObjectId = headRole === "object"
@@ -2126,17 +2153,34 @@ export function createClassicalClauseRelationControllerGlobals(
           }[normalizeToken(supplementPreview?.sentenceKind)] || "";
         }
         if (referenceMode === "included" && semanticGroup === "wish") {
+          const supplementMood = normalizeToken(supplementPreview?.mood);
+          const supplementTense = normalizeToken(supplementPreview?.tense);
+          const wishRealizabilityValues = [
+            (
+              supplementMood === "indicative"
+              && supplementTense === "future"
+            ) || (
+              supplementMood === "optative"
+              && ["nonpast", "future"].includes(supplementTense)
+            )
+              ? "realizable"
+              : "",
+            supplementMood === "optative" && supplementTense === "past"
+              ? "present-or-future-impossible"
+              : "",
+            supplementMood === "optative"
+              && supplementTense === "past"
+              && supplementPreview?.antecessiveOrder
+              ? "past-counterfactual"
+              : "",
+          ].filter(Boolean);
           resolveChoice({
             id: "wish-realizability",
             key: "wishRealizability",
-            values: [
-              "realizable",
-              "present-or-future-impossible",
-              "past-counterfactual",
-            ],
-            fallback: "realizable",
+            values: wishRealizabilityValues,
+            fallback: wishRealizabilityValues[0] || "",
             reason:
-              "the wish complement selects the realizability relation licensed by its mood and tense",
+              "the user resolves realizability only when the typed mood, tense, and antecessive leave more than one licensed reading",
           });
         }
         operationSelections.markerSemantic = markerSemantic;
@@ -2168,6 +2212,20 @@ export function createClassicalClauseRelationControllerGlobals(
           contactRole,
           supplementObjectId,
         );
+        const retainContactAlternatives = Boolean(
+          referenceMode === "shared"
+          && principalPreview?.unitKind === "vnc"
+          && principalPreview?.silentSpecificObjectAuthorized !== true
+          && principalPreview?.subject?.features?.person === "3"
+          && supplementParticipant?.features?.person === "3"
+          && principalPreview.objects?.some(object => (
+            object.features?.person === "3"
+            && object.features?.number
+              === supplementParticipant.features?.number
+          ))
+        );
+        operationSelections.retainContactAlternatives =
+          retainContactAlternatives;
         const personOrNumberMismatch = Boolean(
           principalParticipant
           && supplementParticipant
@@ -2184,7 +2242,10 @@ export function createClassicalClauseRelationControllerGlobals(
           && principalParticipant?.features?.number === "plural"
             ? "collective"
           : personOrNumberMismatch
-              && supplementDiscourseContext?.namedPartnerKnownParticipant
+              && Boolean(
+                supplementDiscourseContext?.namedPartnerKnownParticipant,
+              )
+              && supplementDiscourseContext.namedPartnerKnownParticipant
                 !== "none"
               && principalParticipant?.features?.number === "plural"
               && supplementParticipant?.features?.person === "3"
@@ -2260,60 +2321,108 @@ export function createClassicalClauseRelationControllerGlobals(
       } else if (relation === "rumored-report") {
         requiredCaptureRoles = ["principal", "adjoined"];
         requiredCaptureRoles.forEach(requireRole);
-        [
-          ["rumor-mach", "mach", ["present", "absent"], "present"],
-          [
-            "fuse-quil-mach",
-            "fuseQuilMach",
-            ["separate", "fused"],
-            "separate",
-          ],
-        ].forEach(([id, key, values, fallback]) => {
-          const requested = normalizeToken(selectionObject[key]);
-          const selectedValue = values.includes(requested)
-            ? requested
-            : requested
-              ? ""
-              : fallback;
+        const requestedMach = normalizeToken(selectionObject.mach);
+        const selectedMach = ["present", "absent"].includes(requestedMach)
+          ? requestedMach
+          : "";
+        decisions.push(buildDecision({
+          id: "rumor-mach",
+          values: ["present", "absent"],
+          selectedValue: selectedMach,
+          reason: "the user chooses whether the optional report particle mach is present",
+        }));
+        if (requestedMach && !selectedMach) {
+          diagnostics.push("classical-rumored-report-rumor-mach-not-licensed");
+        }
+        operationSelections.mach = selectedMach;
+        const requestedFusion = normalizeToken(selectionObject.fuseQuilMach);
+        if (selectedMach === "present") {
+          const selectedFusion = ["separate", "fused"].includes(
+            requestedFusion,
+          ) ? requestedFusion : "";
           decisions.push(buildDecision({
-            id,
-            values,
-            selectedValue,
-            reason: "the report operation licenses this particle realization",
+            id: "fuse-quil-mach",
+            values: ["separate", "fused"],
+            selectedValue: selectedFusion,
+            reason: "mach is present, so the user chooses the desired written boundary",
           }));
-          operationSelections[key] = selectedValue;
-        });
+          if (requestedFusion && !selectedFusion) {
+            diagnostics.push(
+              "classical-rumored-report-fuse-quil-mach-not-licensed",
+            );
+          }
+          operationSelections.fuseQuilMach = selectedFusion;
+        } else {
+          if (requestedFusion && requestedFusion !== "separate") {
+            diagnostics.push(
+              "classical-rumored-report-fusion-requires-mach",
+            );
+          }
+          operationSelections.fuseQuilMach = "separate";
+        }
       } else if (relation === "deleted-principal") {
         requiredCaptureRoles = ["principal", "dependent", "adjoined"];
         requiredCaptureRoles.forEach(requireRole);
-        [
-          [
-            "deletion-kind",
-            "deletionKind",
-            ["saying", "saying-adverb-only", "cah-proxy"],
-            "saying",
-          ],
-          [
-            "speech-directness",
-            "speechDirectness",
-            ["direct", "indirect"],
-            "direct",
-          ],
-        ].forEach(([id, key, values, fallback]) => {
-          const requested = normalizeToken(selectionObject[key]);
-          const selectedValue = values.includes(requested)
+        const visiblePreview = buildCapturedSupplementationEnvelope(
+          "principal",
+          { referenceId: "deleted-visible" },
+        );
+        const deletedPreview = buildCapturedSupplementationEnvelope(
+          "dependent",
+          {
+            referenceId: "deleted-cah",
+            subjectReferenceId: "deleted-shared-subject",
+          },
+        );
+        const supplementPreview = buildCapturedSupplementationEnvelope(
+          "adjoined",
+          {
+            referenceId: "deleted-supplement",
+            subjectReferenceId: "deleted-shared-subject",
+          },
+        );
+        const adverbialRole = normalizeToken(visiblePreview?.adverbialRole);
+        const cahProxy = Boolean(
+          visiblePreview?.unitKind === "nnc"
+          && visiblePreview?.isAdverbialNnc === true
+          && ["place", "time", "manner", "degree"].includes(adverbialRole)
+          && deletedPreview?.unitKind === "vnc"
+          && /(?:^|-)ca-h$/u.test(deletedPreview?.sourceStem || "")
+          && supplementPreview?.unitKind === "nnc"
+        );
+        const visibleSpeechAction = visiblePreview?.unitKind === "vnc"
+          && visiblePreview?.semanticGroup === "speech-action";
+        const deletedSaying = deletedPreview?.unitKind === "vnc"
+          && ["speech", "saying"].includes(deletedPreview?.semanticGroup);
+        const deletionKind = cahProxy
+          ? "cah-proxy"
+          : visibleSpeechAction && deletedSaying
+            ? "saying"
+            : visiblePreview?.isAdverbialNnc === true && deletedSaying
+              ? "saying-adverb-only"
+              : "";
+        if (!deletionKind && requiredCaptureRoles.every(role => (
+          getValidatedCapture(role)
+        ))) {
+          diagnostics.push("classical-deleted-principal-route-not-licensed");
+        }
+        operationSelections.deletionKind = deletionKind;
+        operationSelections.adverbialRole = cahProxy ? adverbialRole : "";
+        if (deletionKind.startsWith("saying")) {
+          const requested = normalizeToken(selectionObject.speechDirectness);
+          const selectedValue = ["direct", "indirect"].includes(requested)
             ? requested
-            : requested
-              ? ""
-              : fallback;
+            : "";
           decisions.push(buildDecision({
-            id,
-            values,
+            id: "speech-directness",
+            values: ["direct", "indirect"],
             selectedValue,
-            reason: "the deletion operation licenses this structural choice",
+            reason: "the included utterance can be presented as direct or indirect speech",
           }));
-          operationSelections[key] = selectedValue;
-        });
+          operationSelections.speechDirectness = selectedValue;
+        } else {
+          operationSelections.speechDirectness = "";
+        }
       } else if (relation === "negative-ac-plural") {
         requiredCaptureRoles = ["principal"];
         requireRole("principal");
@@ -2644,11 +2753,11 @@ export function createClassicalClauseRelationControllerGlobals(
         }
       } else if (relation === "deleted-principal") {
         if (
-          (principal.captured && principal.unitKind !== "vnc")
+          (principal.captured && !["nnc", "vnc"].includes(principal.unitKind))
           || (dependent.captured && dependent.unitKind !== "vnc")
           || (adjoined.captured && !clauseKinds.includes(adjoined.unitKind))
         ) {
-          return impossible("The available saying route requires VNC principal and dependent Results plus an NNC or VNC utterance.");
+          return impossible("Principal deletion requires a typed adverbial or speech Result, a VNC deleted principal, and a typed supplement.");
         }
       } else if (relation === "vocative") {
         if (
@@ -3075,7 +3184,14 @@ export function createClassicalClauseRelationControllerGlobals(
       const requestedRelationOption = relationOptions.find(option => (
         option.value === requestedRelation
       )) || null;
-      const relation = availableRelationValues.includes(requestedRelation)
+      const relation = (
+        availableRelationValues.includes(requestedRelation)
+        || (
+          requestedRelationOption?.status
+            === RELATION_AVAILABILITY.MISSING_PREREQUISITE
+          && requestedRelationOption.missingCaptureRoles.length > 0
+        )
+      )
         ? requestedRelation
         : "";
       const decisions = [];
@@ -4042,11 +4158,67 @@ export function createClassicalClauseRelationControllerGlobals(
           `${principalReference}-object`,
           `${principalReference}-possessor`,
         );
+        const supplementPreviewForContact = buildEnvelope(
+          "adjoined",
+          supplementReference,
+          `${supplementReference}-subject`,
+          `${supplementReference}-object`,
+          `${supplementReference}-possessor`,
+        );
+        const supplementContactParticipant = selected
+          .supplementationContactRole === "object"
+            ? supplementPreviewForContact?.objects?.find(object => (
+                !selected.supplementObjectId
+                || object.id === selected.supplementObjectId
+              )) || null
+            : selected.supplementationContactRole === "possessor"
+              ? supplementPreviewForContact?.possessor || null
+              : supplementPreviewForContact?.subject || null;
+        const normalizedPrincipalStem = normalizeToken(
+          principalPreview?.sourceStem,
+        );
+        const sameSubjectFutureEligible = [
+          "mati",
+          "il-namiqui",
+          "il-cahua",
+          "ilcahua",
+          "nequi",
+        ].some(stem => (
+          normalizedPrincipalStem === stem
+          || normalizedPrincipalStem.endsWith(`-${stem}`)
+        ));
+        const sameSubjectFuture = Boolean(
+          selected.supplementationReferenceMode === "included"
+          && selected.supplementationHeadRole === "object"
+          && sameSubjectFutureEligible
+          && supplementPreviewForContact?.unitKind === "vnc"
+          && supplementPreviewForContact?.tense === "future"
+          && principalPreview?.subject?.category
+            === supplementPreviewForContact?.subject?.category
+        );
+        const principalSubjectReference = sameSubjectFuture
+          ? "supplementation-same-subject-future"
+          : selected.supplementationHeadRole === "subject"
+              || selected.retainContactAlternatives === true
+            ? principalContactReference
+            : principalReference;
+        const supplementSubjectReference = sameSubjectFuture
+          ? "supplementation-same-subject-future"
+          : selected.supplementationContactRole === "subject"
+            ? supplementContactReference
+            : supplementReference;
         const principalObjectReferenceIds = Object.fromEntries(
           (principalPreview?.objects || []).map(object => [
             object.id,
-            selected.supplementationHeadRole === "object"
+            (
+              selected.supplementationHeadRole === "object"
               && object.id === selected.principalObjectId
+            ) || (
+              selected.retainContactAlternatives === true
+              && object.features?.person === "3"
+              && object.features?.number
+                === supplementContactParticipant?.features?.number
+            )
               ? principalContactReference
               : `${principalReference}-object-${object.id}`,
           ]),
@@ -4054,9 +4226,7 @@ export function createClassicalClauseRelationControllerGlobals(
         const principalClause = buildEnvelope(
           "principal",
           principalReference,
-          selected.supplementationHeadRole === "subject"
-            ? principalContactReference
-            : principalReference,
+          principalSubjectReference,
           selected.supplementationHeadRole === "object"
             ? `${principalReference}-object`
             : `${principalReference}-object`,
@@ -4106,13 +4276,7 @@ export function createClassicalClauseRelationControllerGlobals(
           absoluteTopicContext,
           exceptionContext,
         ].filter(Boolean);
-        const supplementPreview = buildEnvelope(
-          "adjoined",
-          supplementReference,
-          `${supplementReference}-subject`,
-          `${supplementReference}-object`,
-          `${supplementReference}-possessor`,
-        );
+        const supplementPreview = supplementPreviewForContact;
         const supplementObjectReferenceIds = Object.fromEntries(
           (supplementPreview?.objects || []).map(object => [
             object.id,
@@ -4125,9 +4289,7 @@ export function createClassicalClauseRelationControllerGlobals(
         const supplementClause = buildEnvelope(
           "adjoined",
           supplementReference,
-          selected.supplementationContactRole === "subject"
-            ? supplementContactReference
-            : supplementReference,
+          supplementSubjectReference,
           selected.supplementationContactRole === "object"
             ? supplementContactReference
             : `${supplementReference}-object`,
@@ -4172,6 +4334,8 @@ export function createClassicalClauseRelationControllerGlobals(
             agreementException,
             principalObjectId: selected.principalObjectId || "",
             supplementObjectId: selected.supplementObjectId || "",
+            retainContactAlternatives:
+              selected.retainContactAlternatives === true,
             interveningClauses: interveningClause
               ? [interveningClause]
               : [],
@@ -4221,37 +4385,87 @@ export function createClassicalClauseRelationControllerGlobals(
           },
         };
       } else if (relation === "deleted-principal") {
-        const visiblePrincipalClause = buildEnvelope(
+        const sayingDeletion = selected.deletionKind.startsWith("saying");
+        const visiblePreview = buildEnvelope(
           "principal",
-          "visible-principal",
-          "visible-principal-subject",
+          "deleted-visible-preview",
+        );
+        const deletedPreview = buildEnvelope(
+          "dependent",
+          "deleted-principal-preview",
+        );
+        const deletedContentObject = sayingDeletion
+          ? Array.from(deletedPreview?.objects || []).find(object => (
+              object.sounded === false
+            )) || Array.from(deletedPreview?.objects || []).find(object => (
+              /report|content|supplement/u.test(object.id)
+            )) || null
+          : null;
+        const visibleObjectReferenceIds = Object.fromEntries(
+          Array.from(visiblePreview?.objects || []).map(object => [
+            object.id,
+            "shared-addressee",
+          ]),
+        );
+        const deletedObjectReferenceIds = Object.fromEntries(
+          Array.from(deletedPreview?.objects || []).map(object => [
+            object.id,
+            object.id === deletedContentObject?.id
+              ? "deleted-whole-supplement"
+              : "shared-addressee",
+          ]),
+        );
+        const visibleEnvelope = buildEnvelope(
+          "principal",
+          "deleted-visible",
+          sayingDeletion ? "shared-speaker" : "deleted-visible",
           "shared-addressee",
-          "visible-principal-possessor",
+          "deleted-visible-possessor",
+          { objectReferenceIds: visibleObjectReferenceIds },
         );
         const deletedPrincipalClause = buildEnvelope(
           "dependent",
           "deleted-principal",
-          "deleted-principal-subject",
+          selected.deletionKind === "cah-proxy"
+            ? "deleted-shared-subject"
+            : "shared-speaker",
           "shared-addressee",
           "deleted-principal-possessor",
+          { objectReferenceIds: deletedObjectReferenceIds },
         );
         const supplementClause = buildEnvelope(
           "adjoined",
           "deleted-whole-supplement",
+          selected.deletionKind === "cah-proxy"
+            ? "deleted-shared-subject"
+            : "deleted-whole-supplement",
         );
-        const deletedSupplementationApplication =
-          requestThroughCanonicalApplication({
-            operationKind: "relation",
-            principalClause: deletedPrincipalClause,
-            supplementClause,
-            options: {
-              referenceMode: "included",
-              headRole: "object",
-              supplementContactRole: "subject",
-              order: "principal-first",
-              speechDirectness: selected.speechDirectness,
-            },
-          });
+        const visiblePrincipalClause = selected.deletionKind === "cah-proxy"
+          && typeof targetObject
+            .buildClassicalNahuatlSupplementationAdverbialModifierFrame
+            === "function"
+          ? targetObject
+            .buildClassicalNahuatlSupplementationAdverbialModifierFrame(
+              visibleEnvelope,
+              { adverbialRole: selected.adverbialRole },
+            )
+          : visibleEnvelope;
+        const deletedSupplementationApplication = selected.deletionKind
+          .startsWith("saying")
+          ? requestThroughCanonicalApplication({
+              operationKind: "relation",
+              principalClause: deletedPrincipalClause,
+              supplementClause,
+              options: {
+                referenceMode: "included",
+                headRole: "object",
+                principalObjectId: deletedContentObject?.id || "",
+                supplementContactRole: "subject",
+                order: "principal-first",
+                speechDirectness: selected.speechDirectness,
+              },
+            })
+          : null;
         const deletedSupplementationFrame =
           deletedSupplementationApplication?.canonicalResult || null;
         request = {

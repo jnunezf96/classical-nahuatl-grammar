@@ -1,6 +1,6 @@
 import { cloneStaticRuntimePaths } from "./runtime_paths.mjs?v=20260726-lessons2-58-one-system-094";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
-import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260814-vnc-nnc-route-245";
+import { RUNTIME_MODULE_PATHS } from "../runtime/create_runtime.mjs?v=20260815-lesson21-groups7-8-294";
 
 export function installRuntimeBridge(globalObject = globalThis, runtime = {}) {
     if (!globalObject || typeof globalObject !== "object") {

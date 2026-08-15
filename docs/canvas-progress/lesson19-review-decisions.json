@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "lesson": 19,
+  "decisions": {
+    "lesson19-vnc-supplements-and-shared-heads": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Extend the familiar supplementation path to complete typed VNC Results, preserving the exact shared subject, object, or possessor head, recursion, optional in, and independently derived written projections."
+    },
+    "lesson19-pronominal-existentials-and-included-reference": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the special demonstrative and interrogative existential forms from typed pronominal and VNC sources, and distinguish shared contact from a complete included clause serving as the referent."
+    },
+    "lesson19-included-subject-possessor-and-recursion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Attach a complete typed clause as a third-person singular included subject or possessor while preserving internal shared-reference recursion and the scope of typed ca or in."
+    },
+    "lesson19-speech-and-question-content": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind a captured statement, question, command, or exclamation as the complete included object of a typed speech predicate, deriving its sentence type and exposing only the real direct-versus-indirect reporting choice."
+    },
+    "lesson19-causing-and-requesting-content": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind complete caused and requested propositions to typed object heads while preserving matrix and internal participants, honorific grammar, polarity, and sentence type without exception switches."
+    },
+    "lesson19-wishes-and-realizability": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind the complete desired proposition and derive its licensed mood, tense, antecessive, and negative scope from typed realizability facts, asking only when more than one final reading remains."
+    },
+    "lesson19-perception-cognition-and-emotion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind the complete perceived, known, remembered, forgotten, feared, or emotionally evaluated proposition, deriving its object or subject role, tense restriction, participants, and recursion from the selected predicate and captured Results."
+    },
+    "lesson19-same-subject-futures-and-rumored-report": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the complete same-subject future clause behind an English infinitive-like reading, keep nequi incorporation separate, and build the fixed typed quil report with optional mach and only its licensed written fusion choice."
+    },
+    "lesson19-deleted-saying-principals": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Validate the full saying relation, shared speaker and addressee, silent content head, and complete utterance before offering a recoverable deleted-principal surface, while preserving genuine direct or indirect reporting choice."
+    }
+  }
+}

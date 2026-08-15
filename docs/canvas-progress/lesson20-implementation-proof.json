@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "lesson": 20,
+  "contradictionTest": "src/tests/classical_lesson20_contradiction_audit.test.js",
+  "groups": {
+    "lesson20-nonactive-foundation-and-suffixes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-regular-lo-and-root-ya": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-class-c-d-lo-and-irregular-lohua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-o-nonactive-formation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-ohua-nonactive-formation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-hua-nonactive-formation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-hualo-free-variants": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    },
+    "lesson20-nonactive-class-a-and-perfective": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson20_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson20_reader_guidance.test.js"
+    }
+  }
+}

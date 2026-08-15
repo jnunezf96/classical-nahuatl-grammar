@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "lesson": 21,
+  "decisions": {
+    "lesson21-passive-foundation-and-source-limits": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use the familiar active Source and passive-voice request, then automatically validate a specific or reflexive object, delete the source subject without an agent phrase, promote the eligible object, and select the owner-issued nonactive stem."
+    },
+    "lesson21-passive-formula-and-single-object-promotion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Promote the sole specific projective object into the passive subject positions with its person and number intact, including an owner-authorized silent third-person object, while discarding the active subject and adding no promotion or case controls."
+    },
+    "lesson21-passive-reflexive-ne-retention": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Promote the active mainline reflexive object to passive subject and automatically retain shuntline ne as its reflexive trace, exposing reflexive versus reciprocal only when the plural Source genuinely permits both."
+    },
+    "lesson21-passive-reflexive-projective-double-object": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a typed Source with one reflexive and one specific projective object, automatically promote the projective object and convert the reflexive object to shuntline ne, with no second promotion-target choice."
+    },
+    "lesson21-passive-two-specific-mainline-promotion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Promote the Source-authorized mainline specific object, retain the shuntline specific object with its licensed silent or third-plural realization, and expose role selection only while composing a genuinely ambiguous active Source."
+    },
+    "lesson21-passive-specific-nonspecific-and-three-object": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Promote the only specific object regardless of line status, retain tē, tla, and all other licensed object relations, preserve genuine interpretation ambiguity, and reuse the same typed transformation recursively for three-object Sources."
+    },
+    "lesson21-passive-mood-sentence-composition": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the completed passive frame while the user selects the ordinary sentence mood and the application derives its licensed tense, number, negation, and introductory material without adding passive-specific mood controls."
+    },
+    "lesson21-active-reflexive-contextual-passive-reading": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the generated VNC grammatically active and reflexive, authorize a separate contextual passive or literal reflexive reading from the typed Source and referential context, expose the reading only where genuinely ambiguous, and preserve the subject as patient in animate contextual uses."
+    }
+  }
+}

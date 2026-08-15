@@ -131,6 +131,38 @@ function run(ctx = {}) {
         result: "authorized",
         formula: "#0-0+tē(cal)0-0#",
     });
+    const metaphoricalPlan = ctx.prepareClassicalOrdinaryNncParadigmPlan(
+        source,
+        {
+            states: ["possessive"],
+            subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
+            metaphoricalUse: true,
+        },
+    );
+    const metaphoricalCoordinates =
+        ctx.projectClassicalOrdinaryNncParadigmCoordinates(
+            metaphoricalPlan,
+        );
+    s.eq("the full paradigm keeps the accepted metaphorical reference choice while it expands the subject paradigm", {
+        plan: metaphoricalPlan.authorizationStatus,
+        coordinates: metaphoricalCoordinates.length,
+        subjects: Array.from(new Set(
+            metaphoricalCoordinates.map((coordinate) => coordinate.subject),
+        )),
+        metaphorical: metaphoricalCoordinates.every(
+            (coordinate) => coordinate.operationFrame.metaphoricalUse === true,
+        ),
+        exact: metaphoricalCoordinates.every((coordinate) => (
+            coordinate.authorizationStatus === "authorized"
+            && coordinate.pointwiseEquivalent === true
+        )),
+    }, {
+        plan: "authorized",
+        coordinates: 88,
+        subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
+        metaphorical: true,
+        exact: true,
+    });
     return s;
 }
 

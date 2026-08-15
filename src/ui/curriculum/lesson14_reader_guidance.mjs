@@ -38,7 +38,7 @@ export const LESSON14_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson14-possessive-singular-common",
     "Read class, stem shape, and connector separately",
-    "In and zero stems use a base general-use stem with zero. Tli stems normally use zero, while a small subclass uses hui or an authorized silent alternative. Tl stems use a lexical subclass: base plus uh, base plus zero, or a truncated stem. Truncation deletes only an ephemeral final vowel; supportive i repairs only the illegal cluster created in Subclass 2-C. Stem-final uh, tl, or tli must not be mistaken for a subject connector.",
+    "In and zero stems use a base general-use stem with zero. Tli stems normally use zero, while a small subclass uses hu; an automatically added supportive i gives hui where the boundary requires it, and an authorized silent alternative may also occur. Tl stems use a lexical subclass: base plus uh, base plus zero, or a truncated stem. Truncation deletes only an ephemeral final vowel; supportive i repairs only the illegal cluster created in Subclass 2-C. Stem-final uh, tl, or tli must not be mistaken for a subject connector.",
   ),
   idea(
     "lesson14-constituent-analysis",

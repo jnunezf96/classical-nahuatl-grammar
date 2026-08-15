@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "lesson": 17,
+  "decisions": {
+    "lesson17-supplementation-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep both nuclear clauses complete, preserve the affixal personal pronoun as head, and expose only the genuine supplementation and reference choices."
+    },
+    "lesson17-shared-subject-and-have": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind shared supplementary subjects by referent identity and derive the locative have interpretation automatically."
+    },
+    "lesson17-shared-object-and-possessor": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Bind the supplement to a licensed object or possessor and expose the role only when the grammar leaves a real choice."
+    },
+    "lesson17-recursive-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture completed Results as principal or supplement, preserve every typed reference link, and reject circular or duplicated hierarchy edges."
+    },
+    "lesson17-contact-demonstratives-and-ambiguity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use referent identity for contact, accept demonstrative NNC supplements, preserve licensed spelling projections, and expose a subject or object choice only for genuine third-person ambiguity."
+    },
+    "lesson17-topic-comment": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive topic and comment from supplement-first order while preserving supplementation role, principal selection, nesting, and licensed emphatic ca."
+    },
+    "lesson17-information-questions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Replace a supplement with an owner-issued interrogative NNC, derive its sentence-initial position and question punctuation, preserve its selected head link, and expose only genuine principal or head ambiguity."
+    }
+  }
+}

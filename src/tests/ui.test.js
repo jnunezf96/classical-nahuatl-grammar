@@ -8587,6 +8587,10 @@ function run(ctx = {}) {
             && css.includes('.classical-rule-surface__paradigm-map-form-summary::marker')
             && css.includes('.classical-rule-surface__paradigm-map-form-detail')
             && rendering.includes('form.name = "classical-nnc-paradigm-detail"')
+            && rendering.includes('form.dataset.classicalNncParadigmClickableCues = "true"')
+            && rendering.includes('renderClassicalFormulaDerivedAnnotations(')
+            && rendering.includes('renderClassicalDiagramDerivedAnnotations(')
+            && rendering.includes('const form = createParadigmMapForm(entry, { table: true })')
             && rendering.includes('"classical-rule-surface__vnc-paradigm-detail"')
             && rendering.includes('function updateClassicalNncParadigmPopupDirection(form = null)')
             && rendering.includes('form.dataset.classicalNncPopupDirection = direction')
@@ -11686,7 +11690,7 @@ function run(ctx = {}) {
                     { stem: "tēuc", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncSourceClass: "tli-1" },
                     { stem: "pil", option: "yo-matrix", nncState: "possessive", subject: "1sg", nncPossessor: "2sg", nncSourceClass: "tli-1" },
                     { stem: "tēuc", option: "tec-title", nncState: "possessive", subject: "3sg", nncPossessor: "1pl", nncSourceClass: "tli-1" },
-                    { stem: "cal", option: "secondary-general-use", nncState: "possessive", subject: "3sg", nncPossessor: "1sg", nncSourceClass: "tli-1" },
+                    { stem: "cal", option: "secondary-general-use", nncState: "possessive", subject: "3sg", nncPossessor: "1sg", nncSourceClass: "tli-1", nncMetaphoricalUse: true },
                     { stem: "cal", option: "analogical-restricted-use", nncState: "absolutive", subject: "3common", nncSourceClass: "tli-1" },
                     { stem: "māi", option: "tl-2a-to-1a", nncState: "possessive", subject: "3sg", nncPossessor: "3sg", nncSourceClass: "tl-2-a" },
                     { stem: "māi", option: "tl-2a-to-1a", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tl-2-a" },

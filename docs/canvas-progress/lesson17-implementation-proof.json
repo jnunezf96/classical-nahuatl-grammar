@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "lesson": 17,
+  "contradictionTest": "src/tests/classical_lesson17_contradiction_audit.test.js",
+  "groups": {
+    "lesson17-supplementation-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-shared-subject-and-have": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-shared-object-and-possessor": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-recursive-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-contact-demonstratives-and-ambiguity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-topic-comment": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    },
+    "lesson17-information-questions": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson17_group_7_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson17_reader_guidance.test.js"
+    }
+  }
+}

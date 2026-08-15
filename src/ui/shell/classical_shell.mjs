@@ -80,6 +80,36 @@ import {
   isLesson15ReaderGuidanceExact,
   renderLesson15ReaderGuidance,
 } from "../curriculum/lesson15_reader_guidance.mjs?v=20260814-lesson15-structure-correction-004";
+import {
+  LESSON16_READER_GUIDANCE_GROUPS,
+  isLesson16ReaderGuidanceExact,
+  renderLesson16ReaderGuidance,
+} from "../curriculum/lesson16_reader_guidance.mjs?v=20260814-lesson16-groups1-3-001";
+import {
+  LESSON17_READER_GUIDANCE_GROUPS,
+  isLesson17ReaderGuidanceExact,
+  renderLesson17ReaderGuidance,
+} from "../curriculum/lesson17_reader_guidance.mjs?v=20260815-lesson17-complete-003";
+import {
+  LESSON18_READER_GUIDANCE_GROUPS,
+  isLesson18ReaderGuidanceExact,
+  renderLesson18ReaderGuidance,
+} from "../curriculum/lesson18_reader_guidance.mjs?v=20260815-lesson18-complete-002";
+import {
+  LESSON19_READER_GUIDANCE_GROUPS,
+  isLesson19ReaderGuidanceExact,
+  renderLesson19ReaderGuidance,
+} from "../curriculum/lesson19_reader_guidance.mjs?v=20260815-lesson19-complete-003";
+import {
+  LESSON20_READER_GUIDANCE_GROUPS,
+  isLesson20ReaderGuidanceExact,
+  renderLesson20ReaderGuidance,
+} from "../curriculum/lesson20_reader_guidance.mjs?v=20260815-lesson20-complete-003";
+import {
+  LESSON21_READER_GUIDANCE_GROUPS,
+  isLesson21ReaderGuidanceExact,
+  renderLesson21ReaderGuidance,
+} from "../curriculum/lesson21_reader_guidance.mjs?v=20260815-lesson21-groups7-8-003";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -448,7 +478,19 @@ export function createClassicalShellModule(targetObject = globalThis) {
                             <option value="chichi" data-classical-nnc-source-stem="chichi" data-classical-nnc-source-mode="whole-stem">(chichi) · dog · 0 class</option>
                             <option value="tēuc" data-classical-nnc-source-stem="tēuc" data-classical-nnc-source-mode="whole-stem">(tēuc) · lord · tli class</option>
                             <option value="pil" data-classical-nnc-source-stem="pil" data-classical-nnc-source-mode="whole-stem">(pil) · child / noble · tli class</option>
+                            <option value="tah" data-classical-nnc-source-stem="tah" data-classical-nnc-source-mode="whole-stem">(tah) · father · tli class</option>
+                            <option value="ic-cāuh" data-classical-nnc-source-stem="ic-cāuh" data-classical-nnc-source-mode="whole-stem">(ic-cāuh) · younger brother · tli class</option>
+                            <option value="āch-cāuh" data-classical-nnc-source-stem="āch-cāuh" data-classical-nnc-source-mode="whole-stem">(āch-cāuh) · older brother · tli class</option>
+                            <option value="chān" data-classical-nnc-source-stem="chān" data-classical-nnc-source-mode="whole-stem">(chān) · home / homeland · naturally possessed</option>
+                            <option value="āxcāi" data-classical-nnc-source-stem="āxcāi" data-classical-nnc-source-mode="whole-stem">(āxcāi) · property / possession · naturally possessed</option>
+                            <option value="nān" data-classical-nnc-source-stem="nān" data-classical-nnc-source-mode="whole-stem">(nān) · mother · naturally possessed</option>
+                            <option value="yāō" data-classical-nnc-source-stem="yāō" data-classical-nnc-source-mode="whole-stem">(yāō) · enemy · naturally possessed</option>
+                            <option value="poh" data-classical-nnc-source-stem="poh" data-classical-nnc-source-mode="whole-stem">(poh) · companion / peer · naturally possessed</option>
+                            <option value="yaca" data-classical-nnc-source-stem="yaca" data-classical-nnc-source-mode="whole-stem">(yaca) · nose · naturally possessed</option>
                             <option value="māi" data-classical-nnc-source-stem="māi" data-classical-nnc-source-mode="whole-stem">(māi) · hand · tl class, truncated use stem</option>
+                            <option value="mix" data-classical-nnc-source-stem="mix" data-classical-nnc-source-mode="whole-stem">(mix) · cloud · never possessive literally</option>
+                            <option value="quiy-a-hui" data-classical-nnc-source-stem="quiy-a-hui" data-classical-nnc-source-mode="whole-stem">(quiy-a-hui) · rain · never possessive literally</option>
+                            <option value="tōnatiuh" data-classical-nnc-source-stem="tōnatiuh" data-classical-nnc-source-mode="whole-stem">(tōnatiuh) · sun · metaphorical possession available</option>
                             <option value="tle-māi" data-classical-nnc-source-stem="tle-māi" data-classical-nnc-source-mode="embed-matrix" data-classical-nnc-source-embed="tle" data-classical-nnc-source-matrix="māi">(tle-māi) · fire-hand / incense ladle · compound tl class</option>
                           </optgroup>
                           <optgroup label="Personal entities">
@@ -2388,11 +2430,20 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="distributive-varietal">distributive / varietal</option>
                         </select>
                       </label>
+                      <label class="classical-rule-control" data-classical-nnc-authority-control="quantity" data-classical-nnc-authority-order="quantity-plural-formation" hidden>
+                        <span class="classical-rule-control__label">Plural formation</span>
+                        <select id="classical-rule-logic-nnc-quantity-plural-formation" data-classical-rule-logic-control="nnc-quantity-plural-formation">
+                          <option value="internal-n" selected>normal · internal n</option>
+                          <option value="plain-variant">variant · unchanged stem</option>
+                        </select>
+                      </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="ordinary" data-classical-nnc-authority-order="plural-ending" hidden>
-                        <span class="classical-rule-control__label">Plural ending</span>
+                        <span class="classical-rule-control__label">Number ending</span>
                         <select id="classical-rule-logic-nnc-plural-connector" data-classical-rule-logic-control="nnc-plural-connector">
                           <option value="" selected>Choose ending</option>
+                          <option value="sounded">sounded ending</option>
                           <option value="t-in">-tin</option>
+                          <option value="silent-silent">silent ending</option>
                           <option value="m-eh">-meh</option>
                           <option value="0-h">-h</option>
                           <option value="hu-ān">-huān (automatic)</option>
@@ -2789,6 +2840,8 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           <option value="unspecified" selected>choose reading</option>
                           <option value="alert-observant">alert / observant</option>
                           <option value="motion">come / go</option>
+                          <option value="literal-reflexive">literal reflexive</option>
+                          <option value="contextual-passive">contextual passive</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-referent" hidden aria-hidden="true">
@@ -3139,6 +3192,12 @@ ${renderLesson12ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson13ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson14ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson15ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson16ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson17ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson18ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson19ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson20ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson21ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -3904,6 +3963,18 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson14ReaderGuidanceExact = isLesson14ReaderGuidanceExact;
     api.LESSON15_READER_GUIDANCE_GROUPS = LESSON15_READER_GUIDANCE_GROUPS;
     api.isLesson15ReaderGuidanceExact = isLesson15ReaderGuidanceExact;
+    api.LESSON16_READER_GUIDANCE_GROUPS = LESSON16_READER_GUIDANCE_GROUPS;
+    api.isLesson16ReaderGuidanceExact = isLesson16ReaderGuidanceExact;
+    api.LESSON17_READER_GUIDANCE_GROUPS = LESSON17_READER_GUIDANCE_GROUPS;
+    api.isLesson17ReaderGuidanceExact = isLesson17ReaderGuidanceExact;
+    api.LESSON18_READER_GUIDANCE_GROUPS = LESSON18_READER_GUIDANCE_GROUPS;
+    api.isLesson18ReaderGuidanceExact = isLesson18ReaderGuidanceExact;
+    api.LESSON19_READER_GUIDANCE_GROUPS = LESSON19_READER_GUIDANCE_GROUPS;
+    api.isLesson19ReaderGuidanceExact = isLesson19ReaderGuidanceExact;
+    api.LESSON20_READER_GUIDANCE_GROUPS = LESSON20_READER_GUIDANCE_GROUPS;
+    api.isLesson20ReaderGuidanceExact = isLesson20ReaderGuidanceExact;
+    api.LESSON21_READER_GUIDANCE_GROUPS = LESSON21_READER_GUIDANCE_GROUPS;
+    api.isLesson21ReaderGuidanceExact = isLesson21ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;

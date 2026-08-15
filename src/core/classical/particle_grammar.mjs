@@ -578,6 +578,9 @@ l3-ca-no-zo|ca no zo|collocation|collocation-sequence|3.5
 l3-otzin|ōtzin|honorificized|floating|3.5
 l3-auhtzin|āuhtzin|honorificized|floating|3.5
 l3-ca-no-zotzin|ca no zotzin|honorificized|collocation-sequence|3.5
+l16-quen-mach-huel|quēn mach huel|collocation|collocation-sequence|16.3.2.c
+l16-huel|huel|adverbial-modifier|floating|16.9.3
+l16-achi-adverbial|achi|adverbial-modifier|floating|16.9.7
 l58-ahmo|ahmō|clause-introducer|clause-initial|58.5
 l58-mah-ca|mah ca#|adjunctor|bound-to-following|58.4
 l58-quemah|quēmah|collocation|independent-utterance|58.4
@@ -693,6 +696,9 @@ l3-ca-no-zo|thus it is|base collocation licensed for particle honorificization
 l3-otzin|behold|honorificized single particle
 l3-auhtzin|good; good|honorificized single particle
 l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its final member
+l16-quen-mach-huel|how fortunate; how favorable|evaluative exclamation used with a personal-pronominal NNC
+l16-huel|exactly; completely|adverbial modifier of a quantitive NNC
+l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the quantitive NNC it modifies
 `.trim().split("\n").map(row => Object.freeze(row.split("|"))));
     const CLASSICAL_NAHUATL_PARTICLE_LEXICAL_FACTS_BY_ID =
       Object.freeze(Object.fromEntries(
@@ -718,6 +724,7 @@ l3-ca-no-zotzin|thus it is|honorificizes the entire collocation through its fina
       Object.freeze({ id: "lesson3-negation", sectionPrefix: "3.3", sectionLabel: "3.3" }),
       Object.freeze({ id: "lesson3-collocations", sectionPrefix: "3.4", sectionLabel: "3.4" }),
       Object.freeze({ id: "lesson3-honorificized", sectionPrefix: "3.5", sectionLabel: "3.5" }),
+      Object.freeze({ id: "lesson16-personal-pronominal-collocations", sectionPrefix: "16.", sectionLabel: "Lesson 16 collocations" }),
       Object.freeze({ id: "shared-later-particle-collocations", sectionPrefix: "58.", sectionLabel: "Shared collocations" })
     ]);
     function getClassicalNahuatlParticleRuntimeTarget() {

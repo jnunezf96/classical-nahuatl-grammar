@@ -39,6 +39,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlOrderedVoiceVncApplicationFrames = new WeakSet();
     const classicalNahuatlContextualTimeFrames = new WeakSet();
     const classicalNahuatlContextualTimeBatchFrames = new WeakSet();
+    const classicalNahuatlActiveReflexiveContextualPassiveReadingFrames = new WeakSet();
     const classicalNahuatlVncContinuationSourceByApplicationFrame =
       new WeakMap();
     const classicalNahuatlVncContinuationSourceByResultFrame =
@@ -2270,6 +2271,165 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           === "interpretClassicalNahuatlVncContextualTime"
         && frame.formulaStringAuthority === false
         && frame.surfaceStringAuthority === false
+        && frame.callerSuppliedAuthorityAccepted === false
+        && Object.isFrozen(frame)
+      );
+    }
+    function interpretClassicalNahuatlActiveReflexiveContextualPassiveReading(
+      vncApplicationFrame = null,
+      context = {},
+    ) {
+      const contextObject = context && typeof context === "object"
+        && !Array.isArray(context)
+        ? context
+        : {};
+      const allowedKeys = new Set([
+        "subjectAnimacy",
+        "subjectReference",
+        "requestedReading",
+      ]);
+      const forbiddenKey = Reflect.ownKeys(contextObject).find(
+        key => typeof key !== "string" || !allowedKeys.has(key),
+      );
+      const applicationAuthorized =
+        isClassicalNahuatlVncApplicationFrame(vncApplicationFrame);
+      const normalizedRequest = applicationAuthorized
+        ? vncApplicationFrame.normalizedRequest
+        : null;
+      const resultFrame = applicationAuthorized
+        ? vncApplicationFrame.resultFrame
+        : null;
+      const sourceObjectRequests = Array.isArray(
+        normalizedRequest?.sourceObjectRequests,
+      )
+        ? normalizedRequest.sourceObjectRequests
+        : [];
+      const reflexiveSource = Boolean(
+        normalizedRequest?.derivationType === "direct"
+        && normalizedRequest?.voice === "active"
+        && normalizedRequest?.objectInterpretation !== "reciprocal"
+        && sourceObjectRequests.length === 1
+        && sourceObjectRequests[0]?.objectKind === "reflexive",
+      );
+      const subject = normalizeClassicalNahuatlVncApplicationToken(
+        normalizedRequest?.subject,
+      ).toLowerCase();
+      const thirdPersonSubject = ["3sg", "3pl"].includes(subject);
+      const subjectAnimacy = normalizeClassicalNahuatlVncApplicationToken(
+        contextObject.subjectAnimacy || "nonanimate",
+      ).toLowerCase();
+      const subjectReference = normalizeClassicalNahuatlVncApplicationToken(
+        contextObject.subjectReference || "specific",
+      ).toLowerCase();
+      const requestedReading = normalizeClassicalNahuatlVncApplicationToken(
+        contextObject.requestedReading,
+      ).toLowerCase();
+      const availableReadings = Object.freeze([
+        "literal-reflexive",
+        "contextual-passive",
+      ]);
+      const recognizedAnimacy = ["nonanimate", "animate"].includes(
+        subjectAnimacy,
+      );
+      const recognizedReference = ["specific", "generic"].includes(
+        subjectReference,
+      );
+      const readingRecognized = !requestedReading
+        || availableReadings.includes(requestedReading);
+      const authorized = Boolean(
+        !forbiddenKey
+        && applicationAuthorized
+        && isClassicalNahuatlVncApplicationResultFrame(resultFrame)
+        && reflexiveSource
+        && thirdPersonSubject
+        && recognizedAnimacy
+        && recognizedReference
+        && readingRecognized,
+      );
+      const blockReason = forbiddenKey
+        ? "active-reflexive-contextual-reading-accepts-typed-context-only"
+        : !applicationAuthorized
+          ? "owner-issued-active-vnc-result-required"
+          : !reflexiveSource
+            ? "contextual-passive-reading-requires-active-reflexive-vnc"
+            : !thirdPersonSubject
+              ? "contextual-passive-reading-requires-third-person-patient"
+              : !recognizedAnimacy
+                ? "contextual-passive-reading-requires-subject-animacy"
+                : !recognizedReference
+                  ? "contextual-passive-reading-requires-specific-or-generic-reference"
+                  : !readingRecognized
+                    ? "contextual-passive-reading-not-licensed"
+                    : "";
+      const selectedReading = authorized ? requestedReading : "";
+      const contextualPassiveSelected = selectedReading === "contextual-passive";
+      const frame = deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-active-reflexive-contextual-passive-reading-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason,
+        finiteVncResult: authorized ? vncApplicationFrame : null,
+        grammaticalVoice: authorized ? "active" : "",
+        reflexiveMorphologyPreserved: authorized,
+        subject,
+        subjectAnimacy: authorized ? subjectAnimacy : "",
+        subjectReference: authorized ? subjectReference : "",
+        subjectSemanticRole: authorized
+          ? contextualPassiveSelected ? "patient" : selectedReading ? "agent-and-patient" : "unresolved-until-reading-selection"
+          : "",
+        availableReadings: authorized ? availableReadings : Object.freeze([]),
+        selectedReading,
+        readingSelectionRequired: authorized && !selectedReading,
+        readingSelectionIsUserChoice: authorized,
+        animacyFactIsUserChoice: false,
+        animatePatientWarning: authorized && subjectAnimacy === "animate"
+          ? "animate subject is interpreted as patient, not agent"
+          : "",
+        changesFiniteMorphology: false,
+        formulaRealization: authorized
+          ? resultFrame.formulaRealization
+          : "",
+        surfaceRealization: authorized
+          ? resultFrame.surfaceRealization
+          : "",
+        formulaProjectionSource: "owner-issued-active-reflexive-vnc-result",
+        writtenProjectionSource: "owner-issued-active-reflexive-vnc-result",
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        lessonMetadataAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+      });
+      if (authorized) {
+        classicalNahuatlActiveReflexiveContextualPassiveReadingFrames.add(
+          frame,
+        );
+      }
+      return frame;
+    }
+    function isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame(
+      frame = null,
+    ) {
+      return Boolean(
+        classicalNahuatlActiveReflexiveContextualPassiveReadingFrames.has(
+          frame,
+        )
+        && frame?.kind === "classical-nahuatl-active-reflexive-contextual-passive-reading-frame"
+        && frame.version === CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION
+        && frame.authorizationStatus === "authorized"
+        && isClassicalNahuatlVncApplicationFrame(frame.finiteVncResult)
+        && frame.grammaticalVoice === "active"
+        && frame.reflexiveMorphologyPreserved === true
+        && frame.availableReadings.length === 2
+        && frame.readingSelectionIsUserChoice === true
+        && frame.animacyFactIsUserChoice === false
+        && frame.changesFiniteMorphology === false
+        && frame.formulaRealization
+          === frame.finiteVncResult.resultFrame.formulaRealization
+        && frame.surfaceRealization
+          === frame.finiteVncResult.resultFrame.surfaceRealization
+        && frame.formulaStringAuthority === false
+        && frame.surfaceStringAuthority === false
+        && frame.lessonMetadataAuthority === false
         && frame.callerSuppliedAuthorityAccepted === false
         && Object.isFrozen(frame)
       );
@@ -5924,6 +6084,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlVncContextualTimeFrame,
         interpretClassicalNahuatlVncContextualTimeBatch,
         isClassicalNahuatlVncContextualTimeBatch,
+        interpretClassicalNahuatlActiveReflexiveContextualPassiveReading,
+        isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame,
         buildClassicalNahuatlOrderedVoiceVncApplicationFrame,
         isClassicalNahuatlOrderedVoiceVncApplicationFrame,
         buildClassicalNahuatlVncSentenceFormulaRealization,
@@ -5972,6 +6134,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlVncContextualTimeFrame,
         interpretClassicalNahuatlVncContextualTimeBatch,
         isClassicalNahuatlVncContextualTimeBatch,
+        interpretClassicalNahuatlActiveReflexiveContextualPassiveReading,
+        isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame,
         buildClassicalNahuatlOrderedVoiceVncApplicationFrame,
         isClassicalNahuatlOrderedVoiceVncApplicationFrame,
         buildClassicalNahuatlVncSentenceResultFrame,
@@ -6061,6 +6225,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       interpretClassicalNahuatlVncContextualTimeBatch;
     api.isClassicalNahuatlVncContextualTimeBatch =
       isClassicalNahuatlVncContextualTimeBatch;
+    api.interpretClassicalNahuatlActiveReflexiveContextualPassiveReading =
+      interpretClassicalNahuatlActiveReflexiveContextualPassiveReading;
+    api.isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame =
+      isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame;
     api.buildClassicalNahuatlOrderedVoiceVncApplicationFrame =
       buildClassicalNahuatlOrderedVoiceVncApplicationFrame;
     api.isClassicalNahuatlOrderedVoiceVncApplicationFrame =

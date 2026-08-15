@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "lesson": 17,
+  "scope": "full-lesson",
+  "status": "UNCONTRADICTED",
+  "acceptedAtomCount": 253,
+  "awaitingReviewAtomCount": 0,
+  "resolvedCount": 10,
+  "unresolvedCount": 0,
+  "reportAuthority": false,
+  "resolutions": [
+    "Recursive supplementation reuses owner-issued completed Results; it does not turn recursion depth into a grammatical control.",
+    "Every recursive layer preserves its complete clause nodes and typed reference edges, while repeated graph frames and invalid attachment roots are blocked.",
+    "Supplement contact follows personal-pronoun referent identity rather than lexical stem identity, spelling, or adjacency.",
+    "Demonstrative in and on remain full owner-issued NNC supplements; traditional solid spellings are derived projections that do not change their grammatical relation.",
+    "Subject-object contact alternatives remain available only when matching third-person typed participants create a real ambiguity.",
+    "Supplement-first order derives topic and comment without changing the supplement's subject, object, or possessor role.",
+    "The emphatic particle ca belongs to a following comment and is blocked outside topic-before-comment order.",
+    "Choosing or recapturing a principal is separate from linear order, so nested topics and genuine principal ambiguity remain structurally explicit.",
+    "An information question requires an owner-issued interrogative NNC supplement and automatically derives sentence-initial order and question punctuation; it does not add a movement control.",
+    "The interrogative supplement keeps the replaced supplement's typed subject, object, or possessor link, while genuine principal or head ambiguity remains a user choice."
+  ],
+  "evidenceTests": [
+    "src/tests/classical_lesson17_groups_1_3_jobs.test.js",
+    "src/tests/classical_lesson17_groups_4_6_jobs.test.js",
+    "src/tests/classical_lesson17_group_7_jobs.test.js",
+    "src/tests/classical_lesson17_reader_guidance.test.js",
+    "src/tests/classical_lesson17_contradiction_audit.test.js"
+  ]
+}

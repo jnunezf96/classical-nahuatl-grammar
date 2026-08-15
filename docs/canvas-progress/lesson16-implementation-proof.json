@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "lesson": 16,
+  "groups": {
+    "lesson16-pronominal-nnc-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-simple-personal-pronominals": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-compound-personal-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-compound-personal-variants": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-what-interrogatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-compound-and-who-interrogatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-demonstrative-and-indefinite-pronominals": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-quantitive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-quantitive-plural-and-miye-cequi": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-izqui-quezqui-aqui": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    },
+    "lesson16-achi-mochi-ixachi": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson16_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson16_reader_guidance.test.js"
+    }
+  }
+}

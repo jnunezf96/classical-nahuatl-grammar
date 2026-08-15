@@ -4490,6 +4490,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           animacy: "animate",
           metaphoricalUse: false,
           clausePosition: "initial",
+          quantityPluralFormation: "",
           doubledFirstPlural: false,
           adjunctorInMode: "none",
           dependentClauseIntroducedByIn: false,
@@ -4755,6 +4756,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         next.classicalNnc.animacy === "animate"
         && normalizeEntradaUrlBoolean(classicalSource.metaphoricalUse);
       next.classicalNnc.clausePosition = normalizeChoice(classicalSource.clausePosition, ["initial", "noninitial"], "initial");
+      next.classicalNnc.quantityPluralFormation = normalizeChoice(
+        classicalSource.quantityPluralFormation,
+        ["", "internal-n", "plain-variant"],
+        ""
+      );
       next.classicalNnc.doubledFirstPlural = normalizeEntradaUrlBoolean(classicalSource.doubledFirstPlural);
       next.classicalNnc.dependentClauseIntroducedByIn = normalizeEntradaUrlBoolean(classicalSource.dependentClauseIntroducedByIn);
       next.classicalNnc.adjunctorInMode = normalizeChoice(
@@ -4905,6 +4911,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           animacy: targetObject.document.getElementById("classical-rule-logic-nnc-subject-animacy")?.value || "animate",
           metaphoricalUse: targetObject.document.getElementById("classical-rule-logic-nnc-metaphorical-use")?.checked === true,
           clausePosition: targetObject.document.getElementById("classical-rule-logic-nnc-clause-position")?.value || "initial",
+          quantityPluralFormation: targetObject.document.getElementById("classical-rule-logic-nnc-quantity-plural-formation")?.value || "",
           doubledFirstPlural: targetObject.document.getElementById("classical-rule-logic-nnc-doubled-first-plural")?.checked === true,
           adjunctorInMode: targetObject.document.getElementById("classical-rule-logic-nnc-dependent-clause-in")?.value || "none",
           dependentClauseIntroducedByIn: targetObject.document.getElementById("classical-rule-logic-nnc-dependent-clause-in")?.value === "dependent-clause",
@@ -5222,7 +5229,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active !== true) {
         return false;
       }
-      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
+      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncQuantityPluralFormation", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
       if (!explicitKeys.some(key => hasEntradaUrlExplicitField(snapshot, key))) {
         return false;
       }
@@ -5246,6 +5253,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         "classical-rule-logic-nnc-stem-relation": snapshot.classicalNnc?.stemRelation,
         "classical-rule-logic-nnc-output-scope": snapshot.classicalNnc?.outputScope,
         "classical-rule-logic-nnc-clause-position": snapshot.classicalNnc?.clausePosition,
+        "classical-rule-logic-nnc-quantity-plural-formation": snapshot.classicalNnc?.quantityPluralFormation,
         "classical-rule-logic-nnc-doubled-first-plural": snapshot.classicalNnc?.doubledFirstPlural,
         "classical-rule-logic-nnc-dependent-clause-in": snapshot.classicalNnc?.adjunctorInMode || (snapshot.classicalNnc?.dependentClauseIntroducedByIn ? "dependent-clause" : "none"),
         "classical-rule-logic-nnc-special-human-use": snapshot.classicalNnc?.specialHumanUse
@@ -5488,6 +5496,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!sourceLexemeRestorationApplied) {
         return false;
       }
+      // Source reconstruction and its dependent controls are now stable.
+      // Restore explicit NNC grammar choices before producing the Result.
+      applyClassicalNncEntradaUrlStateToControls(normalized);
       // URL restoration is a state transaction. Its finalizer must project the
       // restored typed state into Result for either nuclear-clause kind, even
       // during the initial non-generating restore. Previously only NNC received
@@ -9272,6 +9283,42 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             ? canonicalSource.sourceClass || ""
             : "";
       }
+      if (
+        canonicalSource?.authorizationStatus === "authorized"
+        && canonicalSource?.kind
+          === "classical-nahuatl-ordinary-nnc-source-frame"
+        && ["animate", "nonanimate"].includes(
+          canonicalSource.referentialAnimacy
+        )
+      ) {
+        const sourceAnimacyControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-subject-animacy"
+        );
+        const sourcePersonControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-subject-person"
+        );
+        const sourceNumberControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-subject-number"
+        );
+        const metaphoricalUseControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-metaphorical-use"
+        );
+        if (sourceAnimacyControl) {
+          sourceAnimacyControl.value = canonicalSource.referentialAnimacy;
+        }
+        if (sourcePersonControl) {
+          sourcePersonControl.value = "3";
+        }
+        if (sourceNumberControl) {
+          sourceNumberControl.value =
+            canonicalSource.referentialAnimacy === "nonanimate"
+              ? "common"
+              : "singular";
+        }
+        if (metaphoricalUseControl) {
+          metaphoricalUseControl.checked = false;
+        }
+      }
       setClassicalSourcePartsMode(compoundSelection ? CLASSICAL_SOURCE_PARTS_MODE.embedMatrix : CLASSICAL_SOURCE_PARTS_MODE.wholeStem, {
         clearValues: true,
         clearWhole: compoundSelection,
@@ -9402,9 +9449,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         if (embedMatrixEnabled && options.preserveDirectNncGeneration === true) {
           constructionControl.value = "none";
           delete constructionControl.dataset.classicalSourcePartsDerivedOperation;
-        } else if (embedMatrixEnabled && constructionControl.value === "none") {
-          constructionControl.value = "compound-nnc";
-          constructionControl.dataset.classicalSourcePartsDerivedOperation = "true";
         } else if (!embedMatrixEnabled
           && constructionControl.dataset.classicalSourcePartsDerivedOperation === "true") {
           constructionControl.value = "none";
@@ -9598,6 +9642,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!root || root.dataset.classicalSourcePartsInitialized === "true") {
         return;
       }
+      const restoredSnapshot =
+        typeof readEntradaUrlStateSnapshotFromLocation === "function"
+          ? readEntradaUrlStateSnapshotFromLocation(targetObject.window?.location)
+          : null;
       const {
         sourceWholeStem,
         sourceEmbedStem,
@@ -9657,6 +9705,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         { preserveDirectNncGeneration: directCanonicalNncRoute }
       );
       syncClassicalBuiltSourceToVerbInput();
+      applyClassicalNncEntradaUrlStateToControls(restoredSnapshot);
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       setClassicalSourcePartsPendingState(false);
       root.dataset.classicalSourcePartsInitialized = "true";
@@ -9845,8 +9894,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             ? targetObject.deriveClassicalNncSourceIdentity(
               normalizedNncStem,
               {
-                sourceEmbedStem: builtSourceFrame.embedSurface || "",
-                sourceMatrixStem: builtSourceFrame.matrixSurface || ""
+                sourceEmbedStem: builtSourceFrame.hasParts
+                  ? builtSourceFrame.embedSurface || ""
+                  : "",
+                sourceMatrixStem: builtSourceFrame.hasParts
+                  ? builtSourceFrame.matrixSurface || ""
+                  : ""
               }
             )
             : null;
@@ -12545,6 +12598,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       segment: "cn-position",
       path: ["classicalNnc", "clausePosition"],
       defaultValue: "initial",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncQuantityPluralFormation",
+      segment: "cn-l16-quantity-plural",
+      path: ["classicalNnc", "quantityPluralFormation"],
+      defaultValue: "",
       classicalNncOnly: true
     }, {
       key: "classicalNncDoubledFirstPlural",

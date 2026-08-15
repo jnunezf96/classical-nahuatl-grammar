@@ -21,6 +21,12 @@ function run(ctx) {
         "rendering",
         "rendering.mjs"
     ), "utf8");
+    const styles = fs.readFileSync(path.resolve(
+        __dirname,
+        "..",
+        "..",
+        "style.css"
+    ), "utf8");
     const workflow = functionSlice(
         rendering,
         "createClassicalClauseRelationWorkflow",
@@ -74,6 +80,30 @@ function run(ctx) {
     );
 
     s.ok(
+        "the original capture workflow shows only the clause slots required by the selected supplementation contract",
+        workflow.includes(
+            'const captureActionRoles = !selectedRelation'
+        )
+        && workflow.includes(': selectedRelation === "supplementation"')
+        && workflow.includes(
+            'previewDecisionContract.derived?.requiredCaptureRoles'
+        )
+        && workflow.includes(
+            'captureActionRoles.forEach(role => {'
+        )
+        && workflow.includes(
+            'const captureCardRoles = !selectedRelation'
+        )
+        && workflow.includes(
+            'controllerState.captures?.marker?.captured ? ["marker"] : []'
+        )
+        && !workflow.includes("classicalLesson17SupplementationFastPath")
+        && styles.includes(
+            '#classical-result-panel .classical-clause-relation-workflow {'
+        )
+    );
+
+    s.ok(
         "early nominal and relational renderers enter the same capture workflow and reuse only owner-issued independent projections",
         rendering.includes(
             "createClassicalClauseRelationWorkflow(frame)"
@@ -119,6 +149,12 @@ function run(ctx) {
         && workflow.includes("Capture particle as ${")
         && workflow.includes("ActiveClassicalClauseRelationMarkerResult")
         && markerSelection.includes("requestClassicalParticleResult(")
+        && markerSelection.includes(
+            '=== "supplementation"'
+        )
+        && markerSelection.includes(
+            'controller?.captureCurrentResult(\n              "marker",'
+        )
         && markerSelection.includes("captureClassicalGrammarApplicationResult")
         && markerSelection.includes("isClassicalGrammarApplicationResultCapture")
         && !markerSelection.includes("option.textContent")
@@ -219,7 +255,7 @@ function run(ctx) {
         workflow.includes("controller.compose({")
         && workflow.includes("ActiveClassicalClauseRelationResult.presentation?.formula")
         && workflow.includes("ActiveClassicalClauseRelationResult.presentation?.surface")
-        && workflow.includes("recapture-composition-as-${role}")
+        && workflow.includes("recapture-composition-as-${captureRole}")
         && workflow.includes("ActiveClassicalClauseRelationResult.canonicalResult")
         && !workflow.includes("evaluateAdverbialAdjunction(")
     );
