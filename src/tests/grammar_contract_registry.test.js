@@ -662,7 +662,7 @@ function run(ctx = {}) {
         ]
     );
     s.eq(
-        "public Impersonal formation inventory exposes only exact source-licensed Lesson 22 options",
+        "public Impersonal formation inventory exposes every open typed Lesson 22 formation without making internal voice operations public",
         (() => {
             const application = registryApi.createClassicalNahuatlVncApplication(registryApi);
             const preview = application.evaluate({
@@ -690,10 +690,10 @@ function run(ctx = {}) {
         })(),
         {
             publicVoice: "impersonal",
-            selectorRequired: false,
-            optionIds: ["lō:mayāna-lō"],
+            selectorRequired: true,
+            optionIds: ["lō:mayāna-lō", "inherent-impersonal", "tla-impersonal"],
             inventoryRegistered: true,
-            internalOptionsRegistered: [],
+            internalOptionsRegistered: [true, true],
             forgedInventoryRegistered: false,
         }
     );

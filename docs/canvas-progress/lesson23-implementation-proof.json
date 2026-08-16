@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "lesson": 23,
+  "contradictionTest": "src/tests/classical_lesson23_contradiction_audit.test.js",
+  "groups": {
+    "lesson23-object-functions-and-governors": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-multiple-valence-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-intransitive-source-histories": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-directive-source-histories": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-filled-positions-and-mainline-reflexive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-suffix-history-and-specific-incompatibility": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-multiple-valence-formula-and-silencing": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    },
+    "lesson23-object-order-and-role-ambiguity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson23_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson23_reader_guidance.test.js"
+    }
+  }
+}

@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
+} from "./vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
@@ -2393,6 +2393,10 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       }
       return runtimeTarget.buildClassicalNahuatlMultipleObjectVncFrame(rebuiltLesson7, {
         objectRequests: clusterFrame.objectRequests,
+        rareThirdCausativeMeaningSupported:
+          clusterFrame.rareThirdCausativeMeaningSupported === true,
+        exceptionalSuffixOrderAuthorized:
+          clusterFrame.exceptionalSuffixOrderAuthorized === true,
         formulaArtifact: clusterFrame.formulaArtifact || "",
         surfaceArtifact: clusterFrame.surfaceArtifact || ""
       });
@@ -6425,6 +6429,19 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return buildBlockedClassicalNahuatlDerivedVncMachineryFrame(sourceMachineryFrame, operationFrame, targetLesson7Machinery?.blockReason || "classical-vnc-derived-target-lesson7-machinery-blocked");
       }
       if (targetObjectRequests.length >= 2) {
+        const orderedTargetObjectRequests = targetObjectRequests
+          .slice()
+          .sort((left, right) => left.derivationalLevel - right.derivationalLevel);
+        const newestTargetObjectRequest = orderedTargetObjectRequests.at(-1) || null;
+        const typedOperationAddsThirdCausative =
+          operationFrame.derivationType === "causative"
+          && targetObjectRequests.length === 3
+          && newestTargetObjectRequest?.governor === "causative";
+        const typedOperationAuthorizesExceptionalSuffixHistory =
+          typedOperationAddsThirdCausative
+          && orderedTargetObjectRequests
+            .slice(0, -1)
+            .some((request) => request.governor === "applicative");
         targetObjectClusterFrame = runtimeTarget.buildClassicalNahuatlObjectClusterFrame(operationFrame.targetStem, {
           subject: targetSubject,
           subjectCarrier: lowerTypedFrame.slots.subject.pers1,
@@ -6434,6 +6451,13 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
             || requestedTargetMorphologicalTense,
           objectRequests: targetObjectRequests,
           causativeSpecificShuntlineRealization: operationFrame.causativeSpecificShuntlineRealization,
+          // The owner-issued operation is itself the user's intended meaning
+          // and history. It supplies these narrow Lesson 23 permissions
+          // automatically; no extra switch or stem list is needed.
+          rareThirdCausativeMeaningSupported:
+            typedOperationAddsThirdCausative,
+          exceptionalSuffixOrderAuthorized:
+            typedOperationAuthorizesExceptionalSuffixHistory,
           minimumPositionCount: targetObjectRequests.length,
           maximumPositionCount: targetObjectRequests.length
         });

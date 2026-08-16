@@ -2498,7 +2498,13 @@ export function createGrammarContractRegistryModule(targetObject = globalThis) {
         ok: Array.isArray(frame?.options) && frame.options.every(option => Boolean(option?.optionId) && option?.publicVoice === frame.publicVoice && typeof option?.voiceOperation === "string"),
         diagnostic: "nonactive-formation-inventory-option-continuity-invalid"
       }, {
-        ok: frame?.selectorRequired === (frame?.options?.length > 1) && frame?.selectionRequired === frame?.selectorRequired && frame?.automaticOptionId === (frame?.options?.length === 1 ? frame.options[0].optionId : "") && frame?.defaultOptionId === "",
+        ok: frame?.selectorRequired === (frame?.options?.length > 1)
+          && frame?.selectionRequired === (frame?.selectorRequired && !frame?.automaticOptionId)
+          && (
+            frame?.automaticOptionId === ""
+            || frame?.options?.some(option => option.optionId === frame.automaticOptionId)
+          )
+          && frame?.defaultOptionId === frame?.automaticOptionId,
         diagnostic: "nonactive-formation-inventory-selection-policy-invalid"
       }, {
         ok: frame?.internalVoiceOperationsArePublicChoices === false && frame?.typedFormationAuthority === true && frame?.callerSuppliedAuthorityAccepted === false && frame?.formulaStringAuthority === false && frame?.surfaceStringAuthority === false,

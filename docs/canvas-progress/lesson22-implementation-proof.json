@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "lesson": 22,
+  "contradictionTest": "src/tests/classical_lesson22_contradiction_audit.test.js",
+  "groups": {
+    "lesson22-inherently-impersonal-vncs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-nonanimate-versus-impersonal-subjects": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-transformed-impersonal-voice": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-impersonal-formula-and-intransitive-irregular-results": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-nonspecific-object-retention-and-readings": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-reflexive-source-to-ne": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-impersonal-optative-and-admonitive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    },
+    "lesson22-tla-impersonal-derivation-and-lexicon": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson22_groups_7_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson22_reader_guidance.test.js"
+    }
+  }
+}

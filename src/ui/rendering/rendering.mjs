@@ -10,11 +10,11 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260726-lessons2-58-one-system-094";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260815-lesson23-complete-302";
 import {
   normalizeGenerationSourceTransitivity,
   validateGenerationSourceTransitivitySelection,
@@ -2210,6 +2210,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
       // a canonical sentence/result source in its own right; spreading it over
       // an application frame would destroy both validators' WeakSet identity.
       const vncApplicationFrame = baseVncApplicationFrame;
+      const requestedLesson22ImpersonalReading =
+        lexicalReadingSelection === "unspecified"
+          ? ""
+          : lexicalReadingSelection;
+      const requestedLesson22ImpersonalReadingFrame = typeof targetObject
+        .interpretClassicalNahuatlImpersonalResultReading === "function"
+        ? targetObject.interpretClassicalNahuatlImpersonalResultReading(
+          vncApplicationFrame,
+          { requestedReading: requestedLesson22ImpersonalReading },
+        )
+        : null;
+      // A Reading value can belong to an earlier construction.  The owner
+      // still rejects that stale request; the renderer then asks the same
+      // owner for the current inventory so the user can recover in one step.
+      const lesson22ImpersonalReadingFrame =
+        requestedLesson22ImpersonalReadingFrame?.blockReason
+          === "impersonal-result-reading-not-licensed"
+        ? targetObject.interpretClassicalNahuatlImpersonalResultReading(
+          vncApplicationFrame,
+          { requestedReading: "" },
+        )
+        : requestedLesson22ImpersonalReadingFrame;
       const applicationControlFrame = vncApplicationFrame.controlFrame || {};
       const applicationTypedFrames = vncApplicationFrame.resultFrame?.appliedTypedFrames || [];
       nonactiveStemRecord = applicationTypedFrames.find(frame => frame?.kind === "classical-nahuatl-nonactive-vnc-nonactive-stem-record") || null;
@@ -2296,6 +2318,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         voiceLayerChainFrame: orderedVoiceAvailable ? voiceLayerChainFrame : null,
         continuationLateOperationBlocked,
         vncApplicationFrame,
+        lesson22ImpersonalReadingFrame,
         vncOrderedVoiceApplicationFrame:
           orderedVoiceAvailable ? vncOrderedVoiceApplicationFrame : null,
         orderedVoiceApplicationBlockReason:
@@ -5940,6 +5963,342 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P184-L031-B1A89F9C22-07"
         ])
       }),
+      "inherently-impersonal-subject": Object.freeze({
+        lessonSections: Object.freeze(["§22.1"]),
+        atomIds: Object.freeze([
+          "ACI-P185-L003-1D5287DD12",
+          "ACI-P185-L004-4D45AF5101",
+          "ACI-P185-L007-35D2EC5596",
+          "ACI-P185-L007-35D2EC5596-02",
+          "ACI-P185-L009-7BD9D9F0B3",
+          "ACI-P185-L011-4AD43955AB",
+          "ACI-P185-L015-C4AC395E11",
+          "ACI-P185-L016-EB54645592-02",
+          "ACI-P185-L016-EB54645592-03",
+          "ACI-P185-L016-EB54645592-04",
+          "ACI-P185-L021-A0EF0C7F54",
+          "ACI-P185-L022-B7E2F7CA2D"
+        ])
+      }),
+      "nonanimate-versus-impersonal-subject": Object.freeze({
+        lessonSections: Object.freeze(["§22.2"]),
+        atomIds: Object.freeze([
+          "ACI-P185-L026-0C3CBDD121",
+          "ACI-P185-L026-0C3CBDD121-03",
+          "ACI-P185-L026-0C3CBDD121-04",
+          "ACI-P185-L026-0C3CBDD121-05",
+          "ACI-P185-L026-0C3CBDD121-06",
+          "ACI-P186-L003-8548A775CA",
+          "ACI-P186-L006-10BC2F3855",
+          "ACI-P186-L007-5600E9BCC5-02",
+          "ACI-P186-L007-5600E9BCC5-03",
+          "ACI-P186-L009-91721E2959"
+        ])
+      }),
+      "transformed-impersonal-voice": Object.freeze({
+        lessonSections: Object.freeze(["§22.3"]),
+        atomIds: Object.freeze([
+          "ACI-P186-L011-55513429A6",
+          "ACI-P186-L011-55513429A6-02",
+          "ACI-P186-L013-78DFFD2B61",
+          "ACI-P186-L014-F57C3795F8",
+          "ACI-P186-L019-BEDAAA31A7",
+          "ACI-P186-L020-29D002DDE3",
+          "ACI-P186-L023-C9BC965C28",
+          "ACI-P186-L023-C9BC965C28-02",
+          "ACI-P186-L023-C9BC965C28-03",
+          "ACI-P186-L023-C9BC965C28-04",
+          "ACI-P186-L023-C9BC965C28-05",
+          "ACI-P186-L023-C9BC965C28-06",
+          "ACI-P186-L026-BF6E5BAD73",
+          "ACI-P186-L027-CBD4998E0E",
+          "ACI-P186-L027-CBD4998E0E-02",
+          "ACI-P186-L029-7E7D3A6D08",
+          "ACI-P186-L033-ED5F3637CF",
+          "ACI-P186-L034-6591D0A0C9",
+          "ACI-P186-L036-72EE242BBC",
+          "ACI-P186-L039-E31F298D0E",
+          "ACI-P187-L002-7D23E2A95C",
+          "ACI-P187-L003-75406DCBAE",
+          "ACI-P187-L005-E94AE66321",
+          "ACI-P187-L005-E94AE66321-02",
+          "ACI-P187-L006-CAFA4D4932"
+        ])
+      }),
+      "impersonal-formula-and-irregular-results": Object.freeze({
+        lessonSections: Object.freeze(["§22.4", "§22.4.1"]),
+        atomIds: Object.freeze([
+          "ACI-P187-L011-93D688E3AC",
+          "ACI-P187-L014-9C23512A71",
+          "ACI-P187-L015-F45828EA38",
+          "ACI-P187-L017-CE3203FF67",
+          "ACI-P187-L018-C3FBC4292F",
+          "ACI-P187-L023-35D4877C65-02",
+          "ACI-P187-L023-35D4877C65-03",
+          "ACI-P187-L023-35D4877C65-04",
+          "ACI-P187-L023-35D4877C65-05",
+          "ACI-P187-L023-35D4877C65-07",
+          "ACI-P187-L023-35D4877C65-09",
+          "ACI-P187-L023-35D4877C65-10",
+          "ACI-P187-L023-35D4877C65-12",
+          "ACI-P187-L023-35D4877C65-14",
+          "ACI-P187-L023-35D4877C65-15",
+          "ACI-P187-L023-35D4877C65-16",
+          "ACI-P187-L023-35D4877C65-18",
+          "ACI-P187-L023-35D4877C65-20",
+          "ACI-P187-L023-35D4877C65-21",
+          "ACI-P187-L023-35D4877C65-22",
+          "ACI-P187-L033-FDFEF63EAC"
+        ])
+      }),
+      "impersonal-nonspecific-object-retention": Object.freeze({
+        lessonSections: Object.freeze(["§22.4.2"]),
+        atomIds: Object.freeze([
+          "ACI-P188-L005-9CF11F08C8",
+          "ACI-P188-L009-A409CB5183-02",
+          "ACI-P188-L009-A409CB5183-03",
+          "ACI-P188-L009-A409CB5183-04",
+          "ACI-P188-L009-A409CB5183-05",
+          "ACI-P188-L009-A409CB5183-06",
+          "ACI-P188-L009-A409CB5183-07",
+          "ACI-P188-L009-A409CB5183-08",
+          "ACI-P188-L009-A409CB5183-10",
+          "ACI-P188-L009-A409CB5183-11",
+          "ACI-P188-L012-DEBC6349A0-02",
+          "ACI-P188-L012-DEBC6349A0-03",
+          "ACI-P188-L012-DEBC6349A0-04",
+          "ACI-P188-L012-DEBC6349A0-05",
+          "ACI-P188-L012-DEBC6349A0-06",
+          "ACI-P188-L012-DEBC6349A0-07",
+          "ACI-P188-L012-DEBC6349A0-08",
+          "ACI-P188-L012-DEBC6349A0-10",
+          "ACI-P188-L012-DEBC6349A0-11",
+          "ACI-P188-L015-680F3A5F80-02",
+          "ACI-P188-L015-680F3A5F80-03",
+          "ACI-P188-L015-680F3A5F80-04",
+          "ACI-P188-L015-680F3A5F80-05",
+          "ACI-P188-L015-680F3A5F80-06",
+          "ACI-P188-L015-680F3A5F80-07",
+          "ACI-P188-L015-680F3A5F80-08",
+          "ACI-P188-L015-680F3A5F80-09",
+          "ACI-P188-L015-680F3A5F80-10"
+        ])
+      }),
+      "impersonal-reflexive-ne": Object.freeze({
+        lessonSections: Object.freeze(["§22.4.3"]),
+        atomIds: Object.freeze([
+          "ACI-P188-L018-6D9F54B0FE",
+          "ACI-P188-L021-3653DD917F-02",
+          "ACI-P188-L021-3653DD917F-03",
+          "ACI-P188-L021-3653DD917F-04",
+          "ACI-P188-L021-3653DD917F-05",
+          "ACI-P188-L021-3653DD917F-06",
+          "ACI-P188-L021-3653DD917F-08",
+          "ACI-P188-L021-3653DD917F-09",
+          "ACI-P188-L021-3653DD917F-10",
+          "ACI-P188-L021-3653DD917F-11",
+          "ACI-P188-L021-3653DD917F-13",
+          "ACI-P188-L021-3653DD917F-14",
+          "ACI-P188-L021-3653DD917F-15",
+          "ACI-P188-L021-3653DD917F-16",
+          "ACI-P188-L021-3653DD917F-17",
+          "ACI-P188-L021-3653DD917F-18"
+        ])
+      }),
+      "impersonal-optative-admonitive-sentence-path": Object.freeze({
+        lessonSections: Object.freeze(["§22.5"]),
+        atomIds: Object.freeze(["ACI-P188-L026-B23A5AB28B"])
+      }),
+      "tla-impersonal-derivation-and-lexicon": Object.freeze({
+        lessonSections: Object.freeze(["§22.6"]),
+        atomIds: Object.freeze([
+          "ACI-P189-L006-F5E2812AB9",
+          "ACI-P189-L008-D1C5A4B760",
+          "ACI-P189-L009-87224B22EB",
+          "ACI-P189-L009-87224B22EB-03",
+          "ACI-P189-L009-87224B22EB-04",
+          "ACI-P189-L019-8A0FFD2A97-03",
+          "ACI-P189-L019-8A0FFD2A97-04",
+          "ACI-P189-L019-8A0FFD2A97-05",
+          "ACI-P189-L019-8A0FFD2A97-06",
+          "ACI-P189-L019-8A0FFD2A97-07",
+          "ACI-P189-L027-9FCF68A613",
+          "ACI-P189-L028-765838738A-03",
+          "ACI-P189-L028-765838738A-04",
+          "ACI-P189-L028-765838738A-05",
+          "ACI-P189-L028-765838738A-06",
+          "ACI-P189-L028-765838738A-07",
+          "ACI-P189-L028-765838738A-08",
+          "ACI-P190-L003-34F6981CFB",
+          "ACI-P190-L006-4D0992F586",
+          "ACI-P190-L007-24AF1F99ED",
+          "ACI-P190-L009-523C5E1AFE",
+          "ACI-P190-L009-523C5E1AFE-06",
+          "ACI-P190-L009-523C5E1AFE-08",
+          "ACI-P190-L009-523C5E1AFE-09",
+          "ACI-P190-L013-B5096F7ABD-03",
+          "ACI-P190-L013-B5096F7ABD-04",
+          "ACI-P190-L013-B5096F7ABD-05",
+          "ACI-P190-L013-B5096F7ABD-06",
+          "ACI-P190-L018-1D76616F38-02",
+          "ACI-P190-L018-1D76616F38-03",
+          "ACI-P190-L018-1D76616F38-04",
+          "ACI-P190-L018-1D76616F38-06",
+          "ACI-P190-L018-1D76616F38-07",
+          "ACI-P190-L018-1D76616F38-08",
+          "ACI-P190-L018-1D76616F38-10",
+          "ACI-P190-L018-1D76616F38-11",
+          "ACI-P190-L018-1D76616F38-12",
+          "ACI-P190-L018-1D76616F38-14",
+          "ACI-P190-L018-1D76616F38-15",
+          "ACI-P190-L018-1D76616F38-17",
+          "ACI-P190-L018-1D76616F38-19",
+          "ACI-P190-L018-1D76616F38-21",
+          "ACI-P190-L018-1D76616F38-22"
+        ])
+      }),
+      "lesson23-object-functions-and-governors": Object.freeze({
+        lessonSections: Object.freeze(["§23.1"]),
+        atomIds: Object.freeze([
+          "ACI-P191-L003-D39415D66D",
+          "ACI-P191-L003-D39415D66D-02",
+          "ACI-P191-L003-47699B649A",
+          "ACI-P191-L003-DE0BE9ACE0",
+          "ACI-P191-L008-CA0B0A13DC",
+          "ACI-P191-L008-18779C5D9A",
+          "ACI-P192-L006-E06F0C99F1",
+          "ACI-P192-L007-127730115C",
+          "ACI-P192-L012-8DA4ED983F",
+          "ACI-P192-L012-AA1A19FB6F",
+          "ACI-P192-L014-CE38CF791A",
+          "ACI-P192-L014-CE38CF791A-04",
+          "ACI-P192-L014-CE38CF791A-08",
+          "ACI-P192-L014-CE38CF791A-09",
+          "ACI-P192-L014-CE38CF791A-10",
+          "ACI-P192-L015-E69E75C059",
+          "ACI-P192-L015-E69E75C059-02"
+        ])
+      }),
+      "lesson23-multiple-valence-foundation": Object.freeze({
+        lessonSections: Object.freeze(["§23.2"]),
+        atomIds: Object.freeze([
+          "ACI-P192-L016-B430BBA3DC",
+          "ACI-P192-L016-311AE5493B",
+          "ACI-P192-L016-10FC2FCBED",
+          "ACI-P192-L017-25B111F13A-02",
+          "ACI-P192-L017-25B111F13A-03",
+          "ACI-P192-L017-25B111F13A-07"
+        ])
+      }),
+      "lesson23-intransitive-source-histories": Object.freeze({
+        lessonSections: Object.freeze([
+          "§23.2.1.a",
+          "§23.2.1.b",
+          "§23.2.1.c",
+          "§23.2.1.d"
+        ]),
+        atomIds: Object.freeze([
+          "ACI-P192-L021-ACC0C5341D",
+          "ACI-P192-L022-DCCA4168EC",
+          "ACI-P192-L023-800640EE43",
+          "ACI-P193-L015-B776E60D52",
+          "ACI-P193-L016-3C104BB7A9",
+          "ACI-P193-L017-10C66BE163"
+        ])
+      }),
+      "lesson23-directive-source-histories": Object.freeze({
+        lessonSections: Object.freeze([
+          "§23.2.2.a",
+          "§23.2.2.b",
+          "§23.2.2.c"
+        ]),
+        atomIds: Object.freeze([
+          "ACI-P193-L004-3AC59D2A68",
+          "ACI-P193-L005-B1088F6BC3",
+          "ACI-P193-L006-31D598FEB2",
+          "ACI-P193-L009-22EC5F42F0",
+          "ACI-P193-L011-7252DB3FD8",
+          "ACI-P193-L019-3927EA44B0",
+          "ACI-P193-L020-C17569C947",
+          "ACI-P193-L021-A472BDAD49",
+          "ACI-P193-L023-27D6AB87C7",
+          "ACI-P193-L023-CA93DA8EA4"
+        ])
+      }),
+      "lesson23-filled-positions-and-mainline-reflexive": Object.freeze({
+        lessonSections: Object.freeze(["§23.3", "§23.3.1", "§23.3.2"]),
+        atomIds: Object.freeze([
+          "ACI-P193-L025-72EBA3CA1E",
+          "ACI-P193-L026-F6EBAF2303",
+          "ACI-P193-L026-1A1CF71E6C"
+        ])
+      }),
+      "lesson23-suffix-history-and-specific-incompatibility": Object.freeze({
+        lessonSections: Object.freeze(["§23.3.3", "§23.3.4", "§23.3.5"]),
+        atomIds: Object.freeze([
+          "ACI-P194-L003-72471AE53B",
+          "ACI-P194-L003-815FBA7391",
+          "ACI-P194-L004-2592895C4A",
+          "ACI-P194-L004-74DD2C3CED",
+          "ACI-P194-L005-933D1A0265",
+          "ACI-P194-L005-933D1A0265-03",
+          "ACI-P194-L006-55A8199F5E"
+        ])
+      }),
+      "lesson23-multiple-valence-formula-and-silencing": Object.freeze({
+        lessonSections: Object.freeze(["§23.4"]),
+        atomIds: Object.freeze([
+          "ACI-P194-L007-524DC31A76-03",
+          "ACI-P194-L007-524DC31A76-04",
+          "ACI-P194-L008-E1C21BD1D8",
+          "ACI-P194-L010-E30CA4B579",
+          "ACI-P194-L011-0F6542ADE2",
+          "ACI-P194-L015-1CBBC45E59-02",
+          "ACI-P194-L015-B9EFC89DFA",
+          "ACI-P194-L015-EB2CFE1268",
+          "ACI-P194-L016-8C4A6A0474",
+          "ACI-P194-L016-9E9EA66FD9",
+          "ACI-P194-L016-3BC7F203E8",
+          "ACI-P194-L016-3D40D3A83B",
+          "ACI-P194-L016-A4B364BCF9",
+          "ACI-P195-L002-2BF6476438",
+          "ACI-P195-L002-2BF6476438-02"
+        ])
+      }),
+      "lesson23-object-order-and-role-ambiguity": Object.freeze({
+        lessonSections: Object.freeze(["§23.5", "§23.5.1", "§23.5.2", "§23.5.3", "§23.5.4"]),
+        atomIds: Object.freeze([
+          "ACI-P195-L004-3277E474E9",
+          "ACI-P195-L004-55C7953FC8",
+          "ACI-P195-L005-A95D95FBD7",
+          "ACI-P195-L006-B9D194F2A1",
+          "ACI-P195-L007-BD125D9B1D",
+          "ACI-P195-L008-52B5ADECCE",
+          "ACI-P195-L009-056F1FE6CE",
+          "ACI-P195-L009-056F1FE6CE-02",
+          "ACI-P195-L009-056F1FE6CE-03",
+          "ACI-P195-L009-056F1FE6CE-05",
+          "ACI-P195-L009-056F1FE6CE-07",
+          "ACI-P195-L009-056F1FE6CE-08",
+          "ACI-P195-L010-44946B7518",
+          "ACI-P195-L011-514F368BB7",
+          "ACI-P195-L012-9C40BD0D60",
+          "ACI-P196-L012-885A77A473",
+          "ACI-P196-L012-D904731DF2",
+          "ACI-P196-L012-998F5F9158",
+          "ACI-P196-L013-19A3B1D2A6",
+          "ACI-P196-L014-B4743E4B60",
+          "ACI-P196-L014-357B5B9EDF",
+          "ACI-P196-L015-281C91F5A3",
+          "ACI-P196-L015-281C91F5A3-02",
+          "ACI-P196-L015-8A1DCA77BE",
+          "ACI-P196-L015-8A1DCA77BE-02",
+          "ACI-P196-L015-8A1DCA77BE-03",
+          "ACI-P196-L015-8A1DCA77BE-04",
+          "ACI-P196-L015-8A1DCA77BE-05",
+          "ACI-P196-L015-8A1DCA77BE-06"
+        ])
+      }),
       "nnc-subject-number": Object.freeze({
         lessonSections: Object.freeze(["§12.3.2", "§12.4"]),
         atomIds: Object.freeze(["ACI-P116-L015-CF2F168DAF", "ACI-P116-L024-BA670DD472", "ACI-P116-L033-7862336BFD"])
@@ -6445,6 +6804,366 @@ export function createUiRenderingApi(targetObject = globalThis) {
             `passive voice preserved inside the ordinary ${sentenceMood} sentence path`,
             "carrier",
             "passive-mood-sentence-composition",
+          );
+        }
+      }
+      if (
+        voiceTransformationFrame?.authorizationStatus === "authorized"
+        && voiceTransformationFrame.voice === "inherent-impersonal"
+      ) {
+        const predicateStart = text.indexOf("(");
+        addAnnotation(
+          1,
+          predicateStart > 1 ? predicateStart : Math.min(text.length, 4),
+          "inherently-impersonal-subject",
+          `inherently impersonal · fixed third-person singular grammatical subject · no referent · agentless, not subjectless · ${voiceTransformationFrame.sourceStem}`,
+          "carrier",
+          "inherently-impersonal-subject",
+        );
+      }
+      const subjectReferenceFrame = grammarContext?.subjectReferenceFrame
+        || grammarContext?.resultFrame?.subjectReferenceFrame
+        || null;
+      if (
+        subjectReferenceFrame?.authorizationStatus === "authorized"
+        && subjectReferenceFrame.subjectKind === "nonanimate-referential"
+      ) {
+        const predicateStart = text.indexOf("(");
+        addAnnotation(
+          1,
+          predicateStart > 1 ? predicateStart : Math.min(text.length, 4),
+          "nonanimate-versus-impersonal-subject",
+          `nonanimate subject · identifiable referent ${subjectReferenceFrame.referentIdentity} · common number · supplementable${subjectReferenceFrame.supplementPresent ? " · supplement present" : ""}`,
+          "carrier",
+          "nonanimate-versus-impersonal-subject",
+        );
+      }
+      if (
+        voiceTransformationFrame?.authorizationStatus === "authorized"
+        && voiceTransformationFrame.voice === "impersonal"
+      ) {
+        addAnnotation(
+          0,
+          1,
+          "transformed-impersonal-voice",
+          `impersonal voice · active subject ${voiceTransformationFrame.sourceSubject || "source subject"} deleted · faceless third-person singular subject installed · ${voiceTransformationFrame.sourceStem} → ${voiceTransformationFrame.targetStem} · specific projective objects blocked`,
+          "boundary",
+          "transformed-impersonal-voice",
+        );
+        const predicateStart = text.indexOf("(");
+        const firstBoundary = text.indexOf("#");
+        const inheritedLesson11Premise = (
+          grammarContext?.proofFrame?.premises
+          || grammarContext?.selectedMachineryFrame?.proofFrame?.premises
+          || grammarContext?.resultFrame?.selectedMachineryFrame?.proofFrame
+            ?.premises
+          || []
+        ).find(premise => premise?.lesson === "Andrews Lesson 11");
+        const formulaCueStart = firstBoundary >= 0
+          ? firstBoundary + 1
+          : 1;
+        const firstObjectBoundary = text.indexOf("+", formulaCueStart);
+        const formulaCueEnd = firstObjectBoundary > formulaCueStart
+          && firstObjectBoundary < predicateStart
+          ? firstObjectBoundary
+          : predicateStart;
+        if (formulaCueEnd > formulaCueStart) {
+          addAnnotation(
+            formulaCueStart,
+            formulaCueEnd,
+            "impersonal-formula-and-irregular-results",
+            `same ${voiceTransformationFrame.sourceValence || "source"} formula shape · fixed nonreferential third-person singular subject · source subject unrecoverable · ${voiceTransformationFrame.sourceStem} → ${voiceTransformationFrame.targetStem}${inheritedLesson11Premise?.operationApplies ? " · inherited Lesson 11 irregular tense" : ""}`,
+            "carrier",
+            "impersonal-formula-and-irregular-results",
+          );
+        }
+        const sourceObjectPositions = voiceTransformationFrame
+          .sourceObjectClusterFrame?.positions || [];
+        const sourceValence = String(
+          voiceTransformationFrame.sourceValence || "",
+        );
+        const nonspecificCarriers = sourceObjectPositions
+          .filter(position => (
+            position?.objectKind === "nonspecific-human"
+            || position?.objectKind === "nonspecific-nonhuman"
+          ))
+          .map(position => position.carrier)
+          .concat(
+            sourceValence === "projective-human" ? ["tē"] : [],
+            sourceValence === "projective-nonhuman" ? ["tla"] : [],
+          );
+        const uniqueNonspecificCarriers = Array.from(new Set(
+          nonspecificCarriers,
+        ));
+        const retainedCarrierFormula = uniqueNonspecificCarriers
+          .map(carrier => carrier === "tē" ? "tē" : carrier)
+          .find(carrier => text.includes(`+${carrier}`)) || "";
+        const retainedCarrierStart = retainedCarrierFormula
+          ? text.indexOf(`+${retainedCarrierFormula}`) + 1
+          : -1;
+        const impersonalReadingFrame = grammarContext
+          ?.lesson22ImpersonalReadingFrame
+          || grammarContext?.sentenceSurfaceFrame?.state
+            ?.lesson22ImpersonalReadingFrame
+          || null;
+        if (retainedCarrierStart >= 0) {
+          const readingLabel = impersonalReadingFrame?.selectedReading
+            ? `selected reading ${impersonalReadingFrame.selectedReading.replace(/-/gu, " ")}`
+            : impersonalReadingFrame?.availableReadings?.length
+              ? `${impersonalReadingFrame.availableReadings.length} genuine readings available`
+              : "generalized or patient-focused reading follows context";
+          addAnnotation(
+            retainedCarrierStart,
+            retainedCarrierStart + retainedCarrierFormula.length,
+            "impersonal-nonspecific-object-retention",
+            `${uniqueNonspecificCarriers.join(" + ")} retained unchanged from the active Source · ${readingLabel} · formula unchanged by interpretation`,
+            "carrier",
+            "impersonal-nonspecific-object-retention",
+          );
+        }
+        const reflexiveSource = [
+          "mainline-reflexive",
+          "shuntline-reflexive",
+          "human-reciprocal",
+        ].includes(sourceValence) || sourceObjectPositions.some(
+          position => position?.objectKind === "reflexive",
+        );
+        const neStart = text.indexOf("+ne");
+        if (reflexiveSource && neStart >= 0) {
+          addAnnotation(
+            neStart + 1,
+            neStart + 3,
+            "impersonal-reflexive-ne",
+            `source reflexive → impersonal ne automatically · no new participant${uniqueNonspecificCarriers.length ? ` · ${uniqueNonspecificCarriers.join(" + ")} retained separately` : ""}`,
+            "carrier",
+            "impersonal-reflexive-ne",
+          );
+        }
+      }
+      if (
+        voiceTransformationFrame?.authorizationStatus === "authorized"
+        && voiceTransformationFrame.voice === "tla-impersonal"
+      ) {
+        const tlaImpersonalRecord = grammarContext?.tlaImpersonalStemRecord
+          || grammarContext?.selectedMachineryFrame?.tlaImpersonalStemRecord
+          || grammarContext?.resultFrame?.selectedMachineryFrame
+            ?.tlaImpersonalStemRecord
+          || null;
+        const tlaAnalysis = tlaImpersonalRecord?.sourceAnalysis || null;
+        const stemStart = text.indexOf("(");
+        const derivationalTlaStart = text.indexOf("tla-", stemStart + 1);
+        const impersonalReadingFrame = grammarContext
+          ?.lesson22ImpersonalReadingFrame
+          || grammarContext?.sentenceSurfaceFrame?.state
+            ?.lesson22ImpersonalReadingFrame
+          || null;
+        const readingLabel = impersonalReadingFrame?.selectedReading
+          ? `selected reading ${impersonalReadingFrame.selectedReading.replace(/-/gu, " ")}`
+          : impersonalReadingFrame?.availableReadings?.length > 1
+            ? `${impersonalReadingFrame.availableReadings.length} genuine readings available`
+            : "meaning follows the typed lexical Source";
+        if (derivationalTlaStart >= 0) {
+          addAnnotation(
+            derivationalTlaStart,
+            derivationalTlaStart + 3,
+            "tla-impersonal-derivation-and-lexicon",
+            `derivational tla inside the verbstem, not object tla · ${tlaImpersonalRecord?.sourceStem || "licensed Source"} → ${tlaImpersonalRecord?.impersonalStem || "owner-derived stem"} · ${tlaAnalysis?.semanticClass || "licensed semantic class"} · ${tlaAnalysis?.subjectDomain || "general subject"} · ${tlaAnalysis?.sourceAttestation || "attested source"} · ${readingLabel}`,
+            "carrier",
+            "tla-impersonal-derivation-and-lexicon",
+          );
+        }
+      }
+      if (
+        voiceTransformationFrame?.authorizationStatus === "authorized"
+        && ["impersonal", "inherent-impersonal", "tla-impersonal"].includes(
+          voiceTransformationFrame.voice,
+        )
+      ) {
+        const sentenceMood = String(
+          grammarContext?.mood
+          || grammarContext?.sentenceSurfaceFrame?.state?.mood
+          || grammarContext?.activeMachineryFrame?.priorVncFrame?.personDyad
+            ?.mood
+          || "",
+        );
+        if (["optative", "admonitive"].includes(sentenceMood)) {
+          const predicateEnd = text.indexOf(")");
+          const finalBoundary = text.lastIndexOf("#");
+          const moodStart = predicateEnd >= 0
+            ? predicateEnd + 1
+            : Math.max(1, text.indexOf("mā"));
+          const moodEnd = finalBoundary > moodStart
+            ? finalBoundary
+            : Math.min(text.length, moodStart + 2);
+          addAnnotation(
+            moodStart,
+            moodEnd,
+            "impersonal-optative-admonitive-sentence-path",
+            `completed ${voiceTransformationFrame.voice.replace(/-/gu, " ")} Result preserved inside the ordinary ${sentenceMood} sentence path`,
+            "carrier",
+            "impersonal-optative-admonitive-sentence-path",
+          );
+        }
+      }
+      const lesson23ObjectClusterFrame = [
+        grammarContext?.targetObjectClusterFrame,
+        grammarContext?.multipleObjectClusterFrame,
+        grammarContext?.activeMachineryFrame?.targetObjectClusterFrame,
+        grammarContext?.activeMachineryFrame?.multipleObjectClusterFrame,
+        grammarContext?.selectedMachineryFrame?.targetObjectClusterFrame,
+        grammarContext?.selectedMachineryFrame?.multipleObjectClusterFrame,
+        grammarContext?.resultFrame?.activeMachineryFrame?.targetObjectClusterFrame,
+        grammarContext?.resultFrame?.activeMachineryFrame?.multipleObjectClusterFrame,
+        grammarContext?.resultFrame?.selectedMachineryFrame?.targetObjectClusterFrame,
+        grammarContext?.resultFrame?.selectedMachineryFrame?.multipleObjectClusterFrame,
+      ].find((candidate) => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate.kind === "classical-nahuatl-multiple-object-vnc-object-cluster-frame"
+      )) || null;
+      if (lesson23ObjectClusterFrame) {
+        const positions = lesson23ObjectClusterFrame.positions || [];
+        const firstPosition = positions[0] || null;
+        const lastPosition = positions[positions.length - 1] || null;
+        const locateCarrier = (position, fromIndex = 0) => {
+          const carrier = String(position?.carrier || "");
+          if (!carrier) return -1;
+          const prefixed = text.indexOf(`+${carrier}`, fromIndex);
+          return prefixed >= 0 ? prefixed + 1 : text.indexOf(carrier, fromIndex);
+        };
+        const firstCarrierStart = locateCarrier(firstPosition);
+        const firstGovernor = firstPosition?.governorUnitFrame || null;
+        if (firstCarrierStart >= 0 && firstGovernor) {
+          const allLinks = positions.map((position) => {
+            const governor = position.governorUnitFrame;
+            return `${position.objectId}: ${governor?.objectFunction || position.governor} object ↔ ${governor?.requiredStemOperation || "typed governor"}`;
+          }).join(" · ");
+          addAnnotation(
+            firstCarrierStart,
+            firstCarrierStart + String(firstPosition.carrier).length,
+            "lesson23-object-functions-and-governors",
+            `${allLinks} · function and suffix link derived from composition, not chosen separately`,
+            "carrier",
+            "lesson23-object-functions-and-governors",
+          );
+        }
+        const predicateStart = text.indexOf("(");
+        if (predicateStart >= 0) {
+          addAnnotation(
+            predicateStart,
+            predicateStart + 1,
+            "lesson23-multiple-valence-foundation",
+            `${lesson23ObjectClusterFrame.sourceStem} Source · ${positions.length} complete Valence positions · application count, maximum three · no slot-count choice`,
+            "boundary",
+            "lesson23-multiple-valence-foundation",
+          );
+        }
+        const lastCarrierStart = locateCarrier(
+          lastPosition,
+          Math.max(0, firstCarrierStart + String(firstPosition?.carrier || "").length),
+        );
+        if (lastCarrierStart >= 0 && lastPosition !== firstPosition) {
+          const history = positions.slice().sort((left, right) => (
+            left.derivationalLevel - right.derivationalLevel
+          )).map((position) => (
+            `level ${position.derivationalLevel} ${position.governor} → ${position.objectId} ${position.prominence}`
+          )).join(" · ");
+          addAnnotation(
+            lastCarrierStart,
+            lastCarrierStart + String(lastPosition.carrier).length,
+            "lesson23-intransitive-source-histories",
+            `${history} · levels and prominence derived automatically; history is not surface order`,
+            "carrier",
+            "lesson23-intransitive-source-histories",
+          );
+        }
+        const directivePosition = positions.find(position => (
+          position.governor === "directive"
+        )) || null;
+        const directiveCarrierStart = locateCarrier(directivePosition);
+        if (directiveCarrierStart > 0 && text[directiveCarrierStart - 1] === "+") {
+          const orderedHistory = positions.slice().sort((left, right) => (
+            left.derivationalLevel - right.derivationalLevel
+          ));
+          addAnnotation(
+            directiveCarrierStart - 1,
+            directiveCarrierStart,
+            "lesson23-directive-source-histories",
+            `${directivePosition.objectId} retained as level-one direct object · ${orderedHistory.map(position => `level ${position.derivationalLevel} ${position.governor} ${position.prominence}`).join(" · ")}${lesson23ObjectClusterFrame.rareThirdCausativeHistory ? " · rare third causative meaning support supplied" : ""}`,
+            "boundary",
+            "lesson23-directive-source-histories",
+          );
+        }
+        const reflexivePosition = positions.find(position => (
+          position.objectKind === "reflexive"
+        )) || null;
+        const predicateEnd = predicateStart >= 0
+          ? text.indexOf(")", predicateStart + 1)
+          : -1;
+        if (reflexivePosition && predicateEnd >= 0) {
+          addAnnotation(
+            predicateEnd,
+            predicateEnd + 1,
+            "lesson23-filled-positions-and-mainline-reflexive",
+            `${reflexivePosition.objectId} · ${reflexivePosition.prominence} reflexive · ${reflexivePosition.governor} governor · ${reflexivePosition.sounded ? "sounded" : "silent"} ${reflexivePosition.carrier} · all positions remain structurally filled`,
+            "boundary",
+            "lesson23-filled-positions-and-mainline-reflexive",
+          );
+        }
+        const numberBoundary = predicateEnd >= 0
+          ? text.indexOf("+", predicateEnd + 1)
+          : -1;
+        if (numberBoundary >= 0) {
+          const silentSpecific = positions.filter(position => (
+            position.objectKind === "specific-projective"
+            && position.sounded === false
+          ));
+          addAnnotation(
+            numberBoundary,
+            numberBoundary + 1,
+            "lesson23-suffix-history-and-specific-incompatibility",
+            `${lesson23ObjectClusterFrame.suffixHistory.join(" → ") || "directive source only"} suffix history · ${lesson23ObjectClusterFrame.standardSuffixOrder ? "ordinary causative-before-applicative order" : "authorized exceptional order"} · object surface order derived separately${silentSpecific.length ? ` · silent but present: ${silentSpecific.map(position => position.objectId).join(", ")}` : ""}`,
+            "boundary",
+            "lesson23-suffix-history-and-specific-incompatibility",
+          );
+        }
+        const initialClauseBoundary = text.indexOf("#");
+        if (initialClauseBoundary >= 0) {
+          const positionReadout = positions.map((position) => {
+            const subpositions = position.valenceArity === "dyadic"
+              ? `${position.va1}-${position.va2}`
+              : position.va;
+            return `${position.objectId}: ${position.prominence} ${subpositions} (${position.sounded === false ? "silent but present" : "sounded"})`;
+          }).join(" · ");
+          addAnnotation(
+            initialClauseBoundary,
+            initialClauseBoundary + 1,
+            "lesson23-multiple-valence-formula-and-silencing",
+            `${positions.length} complete Valence positions · ${positionReadout} · tē, tla, and shuntline ne are automatic`,
+            "boundary",
+            "lesson23-multiple-valence-formula-and-silencing",
+          );
+        }
+        const roleAmbiguityFrame = grammarContext?.objectRoleAmbiguityFrame
+          || grammarContext?.activeMachineryFrame?.objectRoleAmbiguityFrame
+          || grammarContext?.selectedMachineryFrame?.objectRoleAmbiguityFrame
+          || grammarContext?.resultFrame?.activeMachineryFrame?.objectRoleAmbiguityFrame
+          || grammarContext?.resultFrame?.selectedMachineryFrame?.objectRoleAmbiguityFrame
+          || null;
+        const finalClauseBoundary = text.lastIndexOf("#");
+        if (finalClauseBoundary > initialClauseBoundary) {
+          const selectedRoles = positions.map(position => (
+            `${position.carrier}: ${position.governorUnitFrame?.objectFunction || position.governor}`
+          )).join(" · ");
+          const ambiguityLabel = roleAmbiguityFrame?.genuinelyAmbiguous === true
+            ? ` · ${roleAmbiguityFrame.roleMappingCount} genuine role mappings share this surface; choose the intended mapping or leave the reading open`
+            : " · role mapping fixed by the typed composition";
+          addAnnotation(
+            finalClauseBoundary,
+            finalClauseBoundary + 1,
+            "lesson23-object-order-and-role-ambiguity",
+            `form-based order: ${lesson23ObjectClusterFrame.linearCarriers.join(" + ")} · ${selectedRoles}${ambiguityLabel}`,
+            "boundary",
+            "lesson23-object-order-and-role-ambiguity",
           );
         }
       }
@@ -11507,6 +12226,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && surfaceFrame.state?.objectInterpretation !== "reciprocal"
         && ["3sg", "3pl"].includes(String(surfaceFrame.state?.subject || ""))
       );
+      const lesson22ImpersonalReadingFrame =
+        surfaceFrame.state?.lesson22ImpersonalReadingFrame || null;
+      const lesson22ImpersonalReadingAvailable = Boolean(
+        lesson22ImpersonalReadingFrame?.authorizationStatus === "authorized"
+        && lesson22ImpersonalReadingFrame.readingSelectionIsUserChoice === true
+        && lesson22ImpersonalReadingFrame.availableReadings?.length > 1
+      );
       const lesson11Plan = surfaceFrame.machineryFrame?.lesson11ParadigmPlan || null;
       const lesson11AlternativeControl = targetObject.document.getElementById("classical-rule-logic-irregular-alternative");
       const lesson11AlternativeRecords = lesson11Plan?.authorizationStatus === "authorized"
@@ -11583,7 +12309,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-construction": basalUnit === "vnc" && Boolean(lesson11ConstructionKind),
         "classical-rule-logic-lexical-reading": basalUnit === "vnc"
           && (lesson11LexicalReadingRequired
-            || lesson21ActiveReflexiveReadingAvailable),
+            || lesson21ActiveReflexiveReadingAvailable
+            || lesson22ImpersonalReadingAvailable),
         "classical-rule-logic-predicate-referent": basalUnit === "vnc" && lesson11PredicateReferentAvailable,
         "classical-rule-logic-irregular-alternative": basalUnit === "vnc" && lesson11AlternativeRecords.length > 1,
         "classical-rule-logic-vnc-voice": basalUnit === "vnc" && capabilities.voice === true,
@@ -11676,6 +12403,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-lexical-reading", ["unspecified", "alert-observant", "motion"], "unspecified");
       } else if (lesson21ActiveReflexiveReadingAvailable) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-lexical-reading", ["unspecified", "literal-reflexive", "contextual-passive"], "unspecified");
+      } else if (lesson22ImpersonalReadingAvailable) {
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-lexical-reading",
+          ["unspecified", ...lesson22ImpersonalReadingFrame.availableReadings],
+          "unspecified",
+        );
       }
       if (lesson11PredicateReferentAvailable) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-predicate-referent", ["unspecified", "wide-flat-thing", "mass-or-crowd", "individual-animate"], "unspecified");
@@ -11818,12 +12551,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (id === "classical-rule-logic-lexical-reading") {
           wrapper.dataset.classicalRuleLogicGate = hide
             ? "no-genuine-lexical-or-contextual-reading-choice"
-            : lesson21ActiveReflexiveReadingAvailable
+            : lesson22ImpersonalReadingAvailable
+              ? "canvas-lesson22-impersonal-result-reading-choice"
+              : lesson21ActiveReflexiveReadingAvailable
               ? "canvas-lesson21-active-reflexive-contextual-reading-choice"
               : "canvas-lesson11-itz-homophone-reading-required";
           wrapper.dataset.classicalAuthorityDecisionOwner = hide
             ? "not-applicable"
             : "user";
+          control.required = lesson22ImpersonalReadingAvailable
+            && lesson22ImpersonalReadingFrame.readingSelectionRequired === true;
+          control.setAttribute("aria-required", String(control.required));
           if (hide && "value" in control) control.value = "unspecified";
         }
         if (id === "classical-rule-logic-predicate-referent") {

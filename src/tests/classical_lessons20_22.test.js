@@ -1652,7 +1652,7 @@ function run(ctx = {}) {
     const voiceAvailabilityRuntimeLoaded = typeof ctx.getClassicalNahuatlVncApplicationAllowedVoices === "function"
         && typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function";
     s.eq(
-        "Canvas voice availability follows the completed active analysis and normalizes incompatible requests",
+        "Voice availability follows the completed active analysis without a stem whitelist and normalizes incompatible requests",
         voiceAvailabilityRuntimeLoaded ? (() => {
             const mayanaInventory = ctx.getClassicalNahuatlNonactiveStemOptions("mayāna", {
                 verbClass: "B",
@@ -1712,9 +1712,9 @@ function run(ctx = {}) {
         },
         voiceAvailabilityRuntimeLoaded ? {
             noStem: ["active"],
-            intransitive: ["active", "impersonal", "inherent-impersonal", "tla-impersonal"],
+            intransitive: ["impersonal", "inherent-impersonal", "tla-impersonal"],
             specific: ["active", "passive"],
-            unsupported: ["active"],
+            unsupported: ["active", "inherent-impersonal", "tla-impersonal"],
             normalizedRequestedVoice: "active",
             normalizedStatus: "blocked",
         } : {
@@ -2119,8 +2119,17 @@ function run(ctx = {}) {
                     && item.mechanicallyDerived === item.expected
                     && item.realizationRuleId
                     && item.span !== "0-0"),
-                arbitraryInherent: [arbitraryInherent.authorizationStatus, arbitraryInherent.blockReason],
-                arbitraryTla: [arbitraryTla.authorizationStatus, arbitraryTla.blockReason],
+                arbitraryInherent: [
+                    arbitraryInherent.authorizationStatus,
+                    arbitraryInherent.blockReason,
+                    arbitraryInherent.sourceAnalysis.canvasExampleMatch,
+                ],
+                arbitraryTla: [
+                    arbitraryTla.authorizationStatus,
+                    arbitraryTla.blockReason,
+                    arbitraryTla.impersonalStem,
+                    arbitraryTla.sourceAnalysis.canvasExampleMatch,
+                ],
             };
         })(),
         {
@@ -2128,8 +2137,8 @@ function run(ctx = {}) {
             inherentAuthorized: true,
             tlaCount: 18,
             tlaAuthorized: true,
-            arbitraryInherent: ["blocked", "lesson22-inherent-impersonal-source-not-in-canvas-inventory"],
-            arbitraryTla: ["blocked", "lesson22-tla-impersonal-source-not-licensed-by-canvas"],
+            arbitraryInherent: ["authorized", "", false],
+            arbitraryTla: ["authorized", "", "tla-xele", false],
         }
     );
 

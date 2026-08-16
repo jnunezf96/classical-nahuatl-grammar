@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "lesson": 22,
+  "decisions": {
+    "lesson22-inherently-impersonal-vncs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept any entered intransitive Source when the user selects the typed inherent-impersonal lexical analysis; use Canvas-listed stems only as known defaults and examples, never as an authorization list; then fix the grammatical subject as a nonreferential third-person singular fiction and reuse the ordinary tense and sentence controls."
+    },
+    "lesson22-nonanimate-versus-impersonal-subjects": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use typed referent identity and supplementation structure to keep a nameable nonanimate common-number subject distinct from a nonreferential impersonal subject despite their shared third-person singular surface, with no number, nameability, supplementability, or construction switch."
+    },
+    "lesson22-transformed-impersonal-voice": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Expose impersonal voice only when it is a genuine choice, then automatically delete the active personal subject, install the faceless third-person singular subject, derive the owner-issued nonactive stem, preserve eligible valence, allow reflexive and nonspecific objects, and reject a specific projective object without silently changing to passive."
+    },
+    "lesson22-impersonal-formula-and-intransitive-irregular-results": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the active Source formula and valence, automatically import the nonreferential third-person singular subject, discard the old subject without a recoverable trace, and reuse owner-issued ordinary or irregular nonactive results in the user's familiar tense and sentence path."
+    },
+    "lesson22-nonspecific-object-retention-and-readings": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Retain typed nonspecific human te and nonhuman tla object relations unchanged, including together, and expose a Reading choice only where one unchanged owner-issued impersonal Result genuinely supports several licensed interpretations."
+    },
+    "lesson22-reflexive-source-to-ne": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Automatically transform an eligible reflexive Source relation into impersonal shuntline ne, retain every separate nonspecific object, add no participant, and leave reflexive-versus-reciprocal choice only on a plural Source that genuinely licenses both."
+    },
+    "lesson22-impersonal-optative-and-admonitive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the completed impersonal Result intact while the familiar Mood and sentence controls apply wish, command, exhortation, negative, past-optative, or admonitive force, with compatible tense, negation, and introductory material derived automatically and no impersonal-specific mood controls."
+    },
+    "lesson22-tla-impersonal-derivation-and-lexicon": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept any entered intransitive Source through the familiar Source path, apply productive tla-impersonal formation automatically, use Canvas-listed stems only for known defaults, readings, and sound adjustments, never as an authorization list, keep derivational tla distinct from object tla, and expose Reading only for a genuinely open intended meaning."
+    }
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "lesson": 23,
+  "decisions": {
+    "lesson23-object-functions-and-governors": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply any open typed Source, its real valence, the intended participants, and any causative or applicative operation. Derive direct, causative, or applicative object function and the object-plus-governor link from that history, and expose an exceptional intransitive Source analysis only when genuinely intended; Canvas examples never form a stem list."
+    },
+    "lesson23-multiple-valence-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the Source and each real participant-adding operation. Automatically build every complete Valence position, retain the Source object when present, derive the history and object count, and block a fourth position without an object-count control."
+    },
+    "lesson23-intransitive-source-histories": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user compose an open intransitive Source with one, two, or three ordered causative or applicative operations and their participants. Automatically assign contiguous levels, make the newest object mainline, and keep each earlier object on its proper shuntline without level or prominence controls."
+    },
+    "lesson23-directive-source-histories": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply any directive Source, its direct object, and each later causative or applicative operation with its participant. Retain the direct object at level one, derive all later levels and prominence automatically, and require genuine Source-meaning support before admitting the extremely limited third-stage causative history."
+    },
+    "lesson23-filled-positions-and-mainline-reflexive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose reflexive participation only when intended. Keep every Valence position and subposition structurally present even when silent, allow only one mainline reflexive shape, and normally derive its control from the last-added suffix without position, prominence, carrier, or suffix-control switches."
+    },
+    "lesson23-suffix-history-and-specific-incompatibility": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the real causative and applicative operations and supply exceptional-order support only for a genuinely intended exceptional history. Preserve suffix history, normally require causative before applicative, derive object prominence separately from surface order, and keep every incompatible specific object structurally present while sounding only the privileged one."
+    },
+    "lesson23-multiple-valence-formula-and-silencing": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply the actual participants through canonical Source and derivational composition. Project every complete Valence position into the shared formula, privilege the mainline object, derive each sounded or silent carrier by person and number, and preserve automatic tē, tla, and shuntline ne without carrier controls."
+    },
+    "lesson23-object-order-and-role-ambiguity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply participants and their intended derivational governors. Derive carrier order universally from form, preserve valid two- and three-carrier combinations and the existing Direction rule, and expose a role-mapping choice only when distinct grammatical mappings genuinely produce the same visible carrier sequence."
+    }
+  }
+}

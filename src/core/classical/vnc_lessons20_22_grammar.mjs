@@ -113,6 +113,7 @@ const CANONICAL_EXECUTOR_INVENTORY = Object.freeze([
   "getClassicalNahuatlNonactiveStemOptions",
   "getClassicalNahuatlInherentImpersonalSourceAnalysis",
   "getClassicalNahuatlTlaImpersonalSourceAnalysis",
+  "buildClassicalNahuatlVncSubjectReferenceFrame",
   "getClassicalNahuatlVncApplicationAllowedVoices",
 ]);
 
@@ -179,8 +180,8 @@ const DISTINCTION_SPECS = [
   ["polarity", ["affirmative", "negative"], ["buildClassicalNahuatlParticleSentenceSurfaceFrame"], "project-each-licensed-polarity", "genuine-user-choice"],
   ["semantic-versus-morphological-tense", ["same", "licensed-dislocation"], ["buildClassicalNahuatlVerbstemPlan"], "preserve-both-coordinates", "contextual-fact"],
   ["scalar-versus-full-paradigm", ["single", "prepared-paradigm"], ["buildClassicalNahuatlDerivedVncFrame"], "pointwise-equivalent", "derived-fact"],
-  ["lexical-inherent-impersonal-class", ["licensed-source", "blocked-source"], ["getClassicalNahuatlInherentImpersonalSourceAnalysis"], "fixed-before-coordinate-expansion", "lexical-fact"],
-  ["tla-impersonal-source-class", ["licensed-source", "blocked-source"], ["getClassicalNahuatlTlaImpersonalSourceAnalysis"], "fixed-before-coordinate-expansion", "lexical-fact"],
+  ["lexical-inherent-impersonal-class", ["known-source-default", "user-supplied-source-analysis"], ["getClassicalNahuatlInherentImpersonalSourceAnalysis"], "fixed-before-coordinate-expansion", "lexical-fact"],
+  ["tla-impersonal-source-class", ["known-source-default", "open-productive-source"], ["getClassicalNahuatlTlaImpersonalSourceAnalysis"], "fixed-before-coordinate-expansion", "lexical-fact"],
   ["conditioned-boundary-realization", ["regular", "quantity-conditioned", "consonant-conditioned"], ["buildClassicalNahuatlClassCFinalIVowelLengthRuleFrame", "buildClassicalNahuatlFinalIOHuaVowelLengthRuleFrame"], "recompute-for-every-cell", "boundary-conditioned-fact"],
   ["evidence-authority-boundary", ["typed-grammar-only"], ["getClassicalNahuatlVncApplicationAllowedVoices"], "stored-examples-never-authorize", "documentary-fact"],
 ].map(([axisId, licensedValues, canonicalExecutorIds, paradigmConsequence, semanticFactRole]) => deepFreeze({
@@ -197,8 +198,8 @@ const RESTRICTIONS = Object.freeze([
   "passive-requires-specific-or-reflexive-object",
   "passive-agent-cannot-be-expressed",
   "impersonal-blocks-specific-projective-source",
-  "inherent-impersonal-requires-licensed-intransitive-source",
-  "tla-impersonal-requires-licensed-intransitive-source",
+  "inherent-impersonal-requires-intransitive-source-and-typed-lexical-analysis",
+  "tla-impersonal-requires-intransitive-source",
   "caller-supplied-derived-stem-cannot-authorize",
   "stored-formula-or-surface-cannot-authorize",
 ]);
@@ -236,24 +237,24 @@ export const CLASSICAL_NAHUATL_LESSON22_INHERENT_IMPERSONAL_SOURCES =
 
 export const CLASSICAL_NAHUATL_LESSON22_TLA_IMPERSONAL_SOURCES =
   Object.freeze({
-    "huā-qui": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative" }),
-    "pol-i-hui": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative" }),
-    "cel-i-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative" }),
-    "ihyā-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative" }),
-    "cah-ca-h": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative" }),
-    "on-o": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative" }),
-    "chic-ā-hua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative" }),
-    "huē-i-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative" }),
-    "it-hui": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "reconstructed-inchoative" }),
-    "petl-ā-ni": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological" }),
-    "tlatz-i-ni": Object.freeze({ realizationRuleId: "prefix-tla-lengthen-i-before-ni", semanticClass: "meteorological" }),
-    "poy-ā-hua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological" }),
-    "nēci": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological" }),
-    "ce-ce-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological" }),
-    "yohua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inherent-impersonal-layer" }),
-    "ih-cahu-a-ca": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "animate-generality-exception" }),
-    "cue-cuech-ca": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "animate-generality-exception" }),
-    "izta-ya": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "finite-contrast-inchoative" }),
+    "huā-qui": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze(["general-drying", "drought"]) }),
+    "pol-i-hui": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "cel-i-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "ihyā-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "cah-ca-h": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "on-o": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "stative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "chic-ā-hua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "huē-i-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "it-hui": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "reconstructed-inchoative", subjectDomain: "general-nonhuman", sourceAttestation: "reconstructed-source", availableReadings: Object.freeze(["general-perceptibility", "daybreak"]) }),
+    "petl-ā-ni": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "tlatz-i-ni": Object.freeze({ realizationRuleId: "prefix-tla-lengthen-i-before-ni", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "poy-ā-hua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "nēci": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze(["nonspecific-entity-brightness", "general-brightness", "dawn"]) }),
+    "ce-ce-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "yohua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inherent-impersonal-layer", subjectDomain: "referentially-empty", availableReadings: Object.freeze([]) }),
+    "ih-cahu-a-ca": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "animate-generality-exception", subjectDomain: "general-human", availableReadings: Object.freeze(["general-noisy-talk", "general-hubbub", "enemy-war-cries"]) }),
+    "cue-cuech-ca": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "animate-generality-exception", subjectDomain: "general-human", availableReadings: Object.freeze([]) }),
+    "izta-ya": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "finite-contrast-inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze(["general-whitening", "dawn"]) }),
   });
 
 function normalizeStem(value = "") {
@@ -310,13 +311,18 @@ export function getClassicalNahuatlInherentImpersonalSourceAnalysis(
   return Object.freeze({
     kind: "classical-nahuatl-impersonal-vnc-inherent-impersonal-source-analysis",
     version: 1,
-    authorizationStatus: resolved ? "authorized" : "blocked",
+    authorizationStatus: normalized ? "authorized" : "blocked",
     blockReason: !normalized
       ? "lesson22-inherent-impersonal-source-stem-required"
-      : resolved ? "" : "lesson22-inherent-impersonal-source-not-in-canvas-inventory",
+      : "",
     enteredSourceStem: normalized,
-    canonicalSourceStem: resolved?.sourceStem || "",
-    semanticClass: resolved?.record.semanticClass || "",
+    canonicalSourceStem: resolved?.sourceStem || normalized,
+    semanticClass: resolved?.record.semanticClass || "user-supplied-inherent-impersonal",
+    sourceAnalysisStatus: resolved
+      ? "canvas-known-lexical-default"
+      : "user-supplied-typed-lexical-analysis",
+    inherentImpersonalFixedByKnownLexicon: Boolean(resolved),
+    canvasExampleMatch: Boolean(resolved),
     callerSuppliedLexicalClassAuthority: false,
     formulaStringAuthority: false,
     surfaceStringAuthority: false,
@@ -331,32 +337,107 @@ export function getClassicalNahuatlTlaImpersonalSourceAnalysis(
     CLASSICAL_NAHUATL_LESSON22_TLA_IMPERSONAL_SOURCES,
     normalized
   );
-  const derivedTargetStem = resolved
-    ? deriveClassicalNahuatlTlaImpersonalTargetStem(
-      resolved.sourceStem,
-      resolved.record.realizationRuleId
-    )
-    : "";
+  const canonicalSourceStem = resolved?.sourceStem || normalized;
+  const realizationRuleId = resolved?.record.realizationRuleId || "prefix-tla";
+  const derivedTargetStem = deriveClassicalNahuatlTlaImpersonalTargetStem(
+    canonicalSourceStem,
+    realizationRuleId
+  );
   return Object.freeze({
     kind: "classical-nahuatl-impersonal-vnc-tla-impersonal-source-analysis",
     version: 1,
-    authorizationStatus: resolved && derivedTargetStem ? "authorized" : "blocked",
+    authorizationStatus: normalized && derivedTargetStem ? "authorized" : "blocked",
     blockReason: !normalized
       ? "lesson22-tla-impersonal-source-stem-required"
-      : resolved && derivedTargetStem
+      : derivedTargetStem
         ? ""
-        : resolved
-          ? "lesson22-tla-impersonal-realization-rule-failed"
-          : "lesson22-tla-impersonal-source-not-licensed-by-canvas",
+        : "lesson22-tla-impersonal-realization-rule-failed",
     enteredSourceStem: normalized,
-    canonicalSourceStem: resolved?.sourceStem || "",
-    realizationRuleId: resolved?.record.realizationRuleId || "",
+    canonicalSourceStem,
+    realizationRuleId,
     derivedTargetStem,
-    semanticClass: resolved?.record.semanticClass || "",
+    semanticClass: resolved?.record.semanticClass || "open-productive-source",
+    subjectDomain: resolved?.record.subjectDomain || "context-supplied",
+    sourceAttestation: resolved
+      ? resolved.record.sourceAttestation || "attested-source"
+      : "user-supplied-source",
+    sourceAnalysisStatus: resolved
+      ? "canvas-known-default-or-exception"
+      : "open-productive-source",
+    canvasExampleMatch: Boolean(resolved),
+    availableReadings: resolved?.record.availableReadings || Object.freeze([]),
+    readingSelectionIsUserChoice:
+      (resolved?.record.availableReadings?.length || 0) > 1,
     targetDerivedByEngine: Boolean(derivedTargetStem),
     callerSuppliedTargetAuthority: false,
     formulaStringAuthority: false,
     surfaceStringAuthority: false,
+  });
+}
+
+export function buildClassicalNahuatlVncSubjectReferenceFrame({
+  grammaticalVoice = "active",
+  subjectMorphology = "3sg",
+  subjectAnimacy = "",
+  referentIdentity = "",
+  supplementPresent = false,
+} = {}) {
+  const voice = String(grammaticalVoice || "").trim();
+  const morphology = String(subjectMorphology || "").trim();
+  const animacy = String(subjectAnimacy || "").trim();
+  const referent = String(referentIdentity || "").trim();
+  const impersonal = [
+    "impersonal",
+    "inherent-impersonal",
+    "tla-impersonal",
+  ].includes(voice);
+  const nonanimate = voice === "active" && animacy === "nonanimate";
+  const authorized = Boolean(
+    morphology === "3sg"
+    && (
+      (impersonal && !referent && supplementPresent !== true)
+      || (nonanimate && Boolean(referent))
+    )
+  );
+  const blockReason = morphology !== "3sg"
+    ? "lesson22-subject-reference-requires-third-singular-morphology"
+    : impersonal && referent
+      ? "lesson22-impersonal-subject-cannot-name-a-referent"
+      : impersonal && supplementPresent === true
+        ? "lesson22-impersonal-subject-cannot-be-supplemented"
+        : nonanimate && !referent
+          ? "lesson22-nonanimate-subject-referent-identity-required"
+          : !impersonal && !nonanimate
+            ? "lesson22-subject-reference-construction-not-recognized"
+            : "";
+  return deepFreeze({
+    kind: "classical-nahuatl-vnc-subject-reference-frame",
+    version: 1,
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason,
+    grammaticalVoice: authorized ? voice : "",
+    subjectMorphology: authorized ? morphology : "",
+    subjectKind: authorized
+      ? impersonal
+        ? "impersonal-nonreferential"
+        : "nonanimate-referential"
+      : "",
+    grammaticalSubjectPresent: authorized,
+    referentIdentity: authorized && nonanimate ? referent : "",
+    referentStatus: authorized
+      ? impersonal ? "none" : "identifiable"
+      : "",
+    semanticNumber: authorized
+      ? impersonal ? "not-applicable" : "common"
+      : "",
+    supplementable: authorized && nonanimate,
+    supplementPresent: authorized && nonanimate && supplementPresent === true,
+    agentless: authorized && voice === "inherent-impersonal",
+    facelessAgent: authorized && voice === "impersonal",
+    derivedFactIsUserChoice: false,
+    formulaStringAuthority: false,
+    displayTextAuthority: false,
+    callerSuppliedAuthorityAccepted: false,
   });
 }
 

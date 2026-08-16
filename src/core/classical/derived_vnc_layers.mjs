@@ -1793,6 +1793,17 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         tense: operationFrame.sourceMachineryFrame?.priorVncFrame?.tense || "present",
         objectRequests,
         causativeSpecificShuntlineRealization: operationFrame.causativeSpecificShuntlineRealization,
+        rareThirdCausativeMeaningSupported:
+          operationFrame.derivationType === "causative"
+          && objectRequests.length === 3
+          && objectRequests
+            .slice()
+            .sort((left, right) => left.derivationalLevel - right.derivationalLevel)
+            .at(-1)?.governor === "causative",
+        exceptionalSuffixOrderAuthorized:
+          operationFrame.derivationType === "causative"
+          && objectRequests.length === 3
+          && objectRequests.some((request) => request.governor === "applicative"),
         minimumPositionCount: objectRequests.length,
         maximumPositionCount: objectRequests.length
       });

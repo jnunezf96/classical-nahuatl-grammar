@@ -110,6 +110,16 @@ import {
   isLesson21ReaderGuidanceExact,
   renderLesson21ReaderGuidance,
 } from "../curriculum/lesson21_reader_guidance.mjs?v=20260815-lesson21-groups7-8-003";
+import {
+  LESSON22_READER_GUIDANCE_GROUPS,
+  isLesson22ReaderGuidanceExact,
+  renderLesson22ReaderGuidance,
+} from "../curriculum/lesson22_reader_guidance.mjs?v=20260815-open-stems-004";
+import {
+  LESSON23_READER_GUIDANCE_GROUPS,
+  isLesson23ReaderGuidanceExact,
+  renderLesson23ReaderGuidance,
+} from "../curriculum/lesson23_reader_guidance.mjs?v=20260815-lesson23-complete-003";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2842,6 +2852,25 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                           <option value="motion">come / go</option>
                           <option value="literal-reflexive">literal reflexive</option>
                           <option value="contextual-passive">contextual passive</option>
+                          <option value="generalized-active">people in general act on nonspecific objects</option>
+                          <option value="distributive">everybody acts on something or someone</option>
+                          <option value="maximally-generalized">everybody acts on everybody</option>
+                          <option value="patient-human">human patient focus</option>
+                          <option value="patient-nonhuman">nonhuman patient focus</option>
+                          <option value="patient-human-plural-theme">people receive things</option>
+                          <option value="patient-nonhuman-singular">one nonhuman patient</option>
+                          <option value="patient-nonhuman-plural">plural nonhuman patients</option>
+                          <option value="general-drying">things in general become dry</option>
+                          <option value="drought">there is a drought</option>
+                          <option value="general-perceptibility">things in general become perceptible</option>
+                          <option value="daybreak">day breaks</option>
+                          <option value="nonspecific-entity-brightness">an unnameable thing becomes bright</option>
+                          <option value="general-brightness">everything in general becomes bright</option>
+                          <option value="dawn">it dawns</option>
+                          <option value="general-noisy-talk">people in general talk noisily</option>
+                          <option value="general-hubbub">people create a general hubbub</option>
+                          <option value="enemy-war-cries">the enemy yell their war cries</option>
+                          <option value="general-whitening">things in general become white</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-referent" hidden aria-hidden="true">
@@ -3198,6 +3227,8 @@ ${renderLesson18ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson19ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson20ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson21ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson22ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson23ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -3975,6 +4006,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson20ReaderGuidanceExact = isLesson20ReaderGuidanceExact;
     api.LESSON21_READER_GUIDANCE_GROUPS = LESSON21_READER_GUIDANCE_GROUPS;
     api.isLesson21ReaderGuidanceExact = isLesson21ReaderGuidanceExact;
+    api.LESSON22_READER_GUIDANCE_GROUPS = LESSON22_READER_GUIDANCE_GROUPS;
+    api.isLesson22ReaderGuidanceExact = isLesson22ReaderGuidanceExact;
+    api.LESSON23_READER_GUIDANCE_GROUPS = LESSON23_READER_GUIDANCE_GROUPS;
+    api.isLesson23ReaderGuidanceExact = isLesson23ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;
