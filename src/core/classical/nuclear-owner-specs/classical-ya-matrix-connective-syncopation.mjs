@@ -13,11 +13,11 @@ const spec = {
   "coordinates": {
     "claim-p2787::p2787-note-1-when-the-matrix-verbstem-has-the-shape": {
       "assertionId": "classical-ya-matrix-connective-syncopation:p2787-note-1-when-the-matrix-verbstem-has-the-shape",
-      "canonicalPath": "cases.syncopatedYa.targetStem"
+      "canonicalPath": "cases.syncopatedYa.facts.yaSyncopatedSequence"
     },
     "claim-p2788::p2788-tla-cuah-t-a-to-eat-before-going-to": {
       "assertionId": "classical-ya-matrix-connective-syncopation:p2788-tla-cuah-t-a-to-eat-before-going-to",
-      "canonicalPath": "cases.syncopatedYa.facts.connective"
+      "canonicalPath": "cases.syncopatedYaPreterit.facts.yaSyncopatedSequence"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

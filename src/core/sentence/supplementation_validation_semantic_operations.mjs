@@ -194,6 +194,51 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
       headRole: "subject",
       supplementContactRole: "subject",
     });
+    const accompanyingPossessionCompound =
+      targetObject.evaluateClassicalNahuatlLateVncDerivation({
+        sourceStem: "ca",
+        sourceValence: "intransitive",
+        verbClass: "A",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "present",
+        lateOperation: "compound",
+        lateVariant: "connective-t",
+        compoundMatrixStem: "nemi",
+      });
+    const accompanyingPossessionPrincipal = envelope(
+      accompanyingPossessionCompound,
+      {
+        referenceId: "shield",
+        subjectReferenceId: "shield",
+      },
+    );
+    const accompanyingPossessionNnc =
+      targetObject.buildClassicalNahuatlPossessiveNncFrame("chīmal", {
+        subject: "3sg",
+        possessor: "1sg",
+        singularConnector: "0",
+        nounstemRelationKind: "nonrelational",
+        animacy: "nonanimate",
+      });
+    const accompanyingPossessionSupplement = envelope(
+      accompanyingPossessionNnc,
+      {
+        referenceId: "shield",
+        subjectReferenceId: "shield",
+        possessorReferenceId: "speaker",
+      },
+    );
+    const accompanyingPossession = relation(
+      accompanyingPossessionPrincipal,
+      accompanyingPossessionSupplement,
+      {
+        referenceMode: "shared",
+        headRole: "subject",
+        supplementContactRole: "subject",
+        order: "supplement-first",
+      },
+    );
 
     const ambiguousPrincipal = envelope(buildVnc("itta", {
       subject: "3sg",
@@ -763,6 +808,7 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
       object: compactRelation(object),
       possessor: compactRelation(possessor),
       locativeHave: compactRelation(locativeHave),
+      accompanyingPossession: compactRelation(accompanyingPossession),
       contactAmbiguity: compactRelation(contactAmbiguity),
       shortPronominal: compactRelation(shortPronominal),
       recursive: compactRelation(recursive),
@@ -861,6 +907,10 @@ export function createClassicalSupplementationValidationSemanticOperationsApi(
         have: cloneValue(frameOfKind(
           locativeHave,
           "classical-nahuatl-supplementation-have-frame",
+        )),
+        accompanyingPossession: cloneValue(frameOfKind(
+          accompanyingPossession,
+          "classical-nahuatl-accompanying-possession-frame",
         )),
         contactAlternatives: cloneValue(frameOfKind(
           contactAmbiguity,

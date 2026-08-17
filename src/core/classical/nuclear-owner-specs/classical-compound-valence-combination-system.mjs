@@ -41,7 +41,7 @@ const spec = {
     },
     "claim-p2756::p2756-tstem-tstem": {
       "assertionId": "classical-compound-valence-combination-system:p2756-tstem-tstem",
-      "canonicalPath": "blockedCases.unknownMatrix.blockReason"
+      "canonicalPath": "contract.valencePatterns.3"
     },
     "claim-p2757::p2757-the-choice-of-stem-in-the-matrix-subposition-is": {
       "assertionId": "classical-compound-valence-combination-system:p2757-the-choice-of-stem-in-the-matrix-subposition-is",

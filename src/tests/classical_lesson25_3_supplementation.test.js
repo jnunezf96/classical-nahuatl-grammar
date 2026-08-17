@@ -26,13 +26,13 @@ function evaluateMachtia(ctx, {
         requestedVoice: "active",
         causativeSpecificShuntlineRealization,
     };
-    const preview =
-        ctx.classicalNahuatlVncApplication.evaluate(request);
+    const application = ctx.createClassicalNahuatlVncApplication(ctx);
+    const preview = application.evaluate(request);
     const option = preview.controlFrame?.derivationOptionInventory
         ?.options?.find(
         candidate => candidate.targetStem === "mach-tiā"
     );
-    return ctx.classicalNahuatlVncApplication.evaluate({
+    return application.evaluate({
         ...request,
         derivationOptionId: option?.optionId || "missing-mach-tiā",
     });

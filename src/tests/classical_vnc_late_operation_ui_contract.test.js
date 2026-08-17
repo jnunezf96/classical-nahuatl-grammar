@@ -149,11 +149,11 @@ function run(ctx = {}) {
         },
         {
             status: "authorized",
-            selectControls: 13,
-            selectOptions: 73,
+            selectControls: 15,
+            selectOptions: 87,
             switches: 2,
-            authorityTags: 77,
-            uniqueTags: 77,
+            authorityTags: 91,
+            uniqueTags: 91,
             incomplete: [],
             missingDefaults: [],
             duplicates: [],
@@ -202,7 +202,7 @@ function run(ctx = {}) {
             parity: Object.fromEntries(
                 Object.keys(contracts).map(controlId => [controlId, true])
             ),
-            renderedCount: 73,
+            renderedCount: 87,
             taggedCount: 0,
             uniqueTagCount: 0,
             untaggedValues: allRenderedOptions.map(option => option.value),
@@ -284,7 +284,7 @@ function run(ctx = {}) {
         },
         {
             status: "blocked",
-            recordCount: 77,
+            recordCount: 91,
             visibleOptionCount: 0,
             missingVisibleTags: [],
             incompleteRecords: [],

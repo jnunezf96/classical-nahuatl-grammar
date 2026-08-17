@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 26,
+  "decisions": {
+    "lesson26-applicative-foundation-and-irregular-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed Source, let the user select an inherent-applicative, irregular, or valence-neutral analysis only when that lexical or structural analysis is genuinely intended and not already fixed. Preserve the Source history, import the applicative participant, and derive mainline status, object depth, and participant consequences automatically; Canvas examples never form a stem whitelist."
+    },
+    "lesson26-type-one-applicatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose Type 1 for any open typed Source because its lexical availability is unpredictable. Replace the final Source vowel with iā, derive boundary changes, Class C, participant transfer, and object depth automatically, and expose Causative versus Applicative only where the intended final composition genuinely leaves both roles possible."
+    },
+    "lesson26-type-two-foundation-and-final-i": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose Type 2 and the intended applicative participant for any open typed Source. Use typed Source shape, class, and signed history to derive liā or huiā, final-i vowel and consonant changes, the silent āyi restriction, reflexive-to-ne transfer, Class C, and object levels automatically; expose Source history only when more than one licensed route remains."
+    },
+    "lesson26-final-a-source-routes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed final-a Source, use Source shape and signed history to derive its licensed iā, liā, or huiā applicative route, all regular alternations, recursive applicative structure, and participant depth automatically. Expose only a genuinely unresolved Source history or competing structure; Canvas examples never form a stem whitelist."
+    },
+    "lesson26-shape-and-class-exceptions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply Canvas-authorized Class D, Class B iya or eya, and oya exception routes to any open Source with the matching typed class, shape, valence, and history. Let the user resolve only a genuinely unsettled oya transitivity or Source history; do not expose a Canvas-stem picker."
+    },
+    "lesson26-oa-and-huia-routes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use typed Source shape and signed internal history to derive licensed o-ā or huiā applicatives, including root-final l, root-final o, a-hui, i-hui, fused, exceptional, and suppletive routes. Ask the user to choose a history only when provenance cannot recover it, and propagate form and participant structure automatically without stem-spelling admission rules."
+    },
+    "lesson26-special-and-parallel-applicatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed Source, preserve licensed final-ō huiā ambiguity, rare tiā applicatives, parallel Type 1 and Type 2 formations, automatic Class C membership, and the basic applicative participant transformation. Expose only a genuine derivation-role, type, Source-history, or imported-participant choice; Canvas examples and meanings never select the formation."
+    },
+    "lesson26-single-object-applicatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a typed Source without an object, let the user choose the applicative participant and only genuine coreference. Compact the Source and derive the single specific, reflexive, nonspecific-human, or nonspecific-nonhuman object, its carrier, governor, Class C Result, and realization automatically."
+    },
+    "lesson26-double-object-applicatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a typed transitive Source, let the user choose the applicative participant, genuine referent identities, and a supplement head only when several eligible silent objects remain. Derive mainline promotion, Source-object shuntline retention, compatibility, silence, reflexive ne, prefix order, and ordinary Lesson 17 supplementation automatically."
+    },
+    "lesson26-triple-object-applicatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the eligible recaptured Result, new applicative participant, and only genuine referent identity. Reuse recursive derivation to import the new participant and automatically preserve earlier objects, derive mainline plus first- and second-level shuntlines, specificity, reflexivity, nonspecificity, silence, ne, compatibility, and prefix order without a separate triple-object engine."
+    },
+    "lesson26-ambiguity-mood-and-voice": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve every licensed typed Source analysis and unresolved reading. Let the user select an intended Source only when final composition or context requires it and choose the desired Mood or passive or impersonal Voice. Apply the shared Mood and Voice owners to the completed applicative while retaining participant hierarchy; surface spelling never chooses an analysis."
+    },
+    "lesson26-object-interpretation-and-applicative-unit": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive every human or nonhuman participant interpretation licensed by typed Source structure, preserve deceptive surface ambiguity and causative or applicative closeness, and keep the applicative suffix linked to its imported object. Let the user choose an interpretation or derivation role only where grammar and final context leave a real alternative; Canvas stems never gate input."
+    }
+  }
+}

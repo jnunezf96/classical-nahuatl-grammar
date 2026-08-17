@@ -9024,7 +9024,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         || getClassicalVncCanonicalInitialIRecord(sourceStem, String(select?.selectedOptions?.[0]?.dataset?.classicalVncSourceValenceDisplay || ""));
       const canonicalKind = String(canonicalRecord?.initialIAnalysis?.kind || "").trim();
       const initialI = /^[iī]/iu.test(sourceStem);
-      const userChoiceApplies = initialI && !["real", "supportive", "contextual"].includes(canonicalKind);
+      const userChoiceApplies = initialI
+        && (!canonicalKind || canonicalKind === "contextual");
       if (choiceField) {
         choiceField.hidden = !userChoiceApplies;
       }
@@ -9047,7 +9048,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const selectedKind = userChoiceApplies
         ? choice?.checked === true ? "supportive" : "real"
         : "";
-      const kind = canonicalKind || (userChoiceApplies ? selectedKind : "not-applicable");
+      const kind = canonicalKind === "contextual"
+        ? selectedKind
+        : canonicalKind || (userChoiceApplies ? selectedKind : "not-applicable");
       const visible = initialI;
       if (root?.dataset) {
         root.dataset.classicalVncSourceInitialI = visible ? kind || "unresolved" : "not-applicable";
@@ -9059,9 +9062,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       fact.hidden = !visible;
       fact.textContent = !visible
         ? ""
-        : canonicalKind
+        : canonicalKind && canonicalKind !== "contextual"
           ? `Initial i: ${canonicalKind === "contextual" ? "context-sensitive" : canonicalKind} (canonical source fact)`
-          : `Initial i: ${selectedKind || "real"}${selectedKind === "real" ? " (default; check Supportive i only when intended)" : " (source choice)"}`;
+          : `Initial i: ${selectedKind || "real"}${selectedKind === "real" ? " (default; choose Supportive i only when intended)" : " (source choice)"}`;
       return visible;
     }
     function syncClassicalVncSourceGuide(unit = "") {

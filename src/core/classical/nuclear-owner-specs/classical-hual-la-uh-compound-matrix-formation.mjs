@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2795::p2795-tla-ma-mah-ti-hua-l-la-uh-to": {
       "assertionId": "classical-hual-la-uh-compound-matrix-formation:p2795-tla-ma-mah-ti-hua-l-la-uh-to",
-      "canonicalPath": "cases.intransitiveMatrices.huāl-la-uh.targetStem"
+      "canonicalPath": "contract.selectedMatrixProfiles.huāl-la-uh.directionalRetained"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

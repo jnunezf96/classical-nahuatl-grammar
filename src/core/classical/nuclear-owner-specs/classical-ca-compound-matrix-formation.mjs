@@ -17,27 +17,27 @@ const spec = {
   "coordinates": {
     "claim-p2775::p2775-coh-coch-ti-ca-h-to-doze-to-nod": {
       "assertionId": "classical-ca-compound-matrix-formation:p2775-coh-coch-ti-ca-h-to-doze-to-nod",
-      "canonicalPath": "cases.intransitiveMatrices.ca.targetStem"
+      "canonicalPath": "cases.intransitiveMatrices.ca.facts.matrixFiniteStem"
     },
     "claim-p2776::p2776-cop-ti-ca-h-to-be-blinking-to-be": {
       "assertionId": "classical-ca-compound-matrix-formation:p2776-cop-ti-ca-h-to-be-blinking-to-be",
-      "canonicalPath": "cases.intransitiveMatrices.ca.authorizationStatus"
+      "canonicalPath": "cases.intransitiveMatrices.ca.facts.matrixConstruction"
     },
     "claim-p2777::p2777-to-sleep-admonitive-vnc-ti-cop-ti-ye-h": {
       "assertionId": "classical-ca-compound-matrix-formation:p2777-to-sleep-admonitive-vnc-ti-cop-ti-ye-h",
-      "canonicalPath": "cases.intransitiveMatrices.ca.targetStem"
+      "canonicalPath": "cases.caOptative.facts.matrixFiniteStem"
     },
     "claim-p2778::p2778-ti-c-chiuh-ti-ye-h": {
       "assertionId": "classical-ca-compound-matrix-formation:p2778-ti-c-chiuh-ti-ye-h",
-      "canonicalPath": "cases.intransitiveMatrices.ca.authorizationStatus"
+      "canonicalPath": "cases.caOptative.targetStem"
     },
     "claim-p2779::p2779-when-used-as-the-embed-of-a-compound-with": {
       "assertionId": "classical-ca-compound-matrix-formation:p2779-when-used-as-the-embed-of-a-compound-with",
-      "canonicalPath": "cases.intransitiveMatrices.ca.targetStem"
+      "canonicalPath": "cases.eHuaCa.facts.eHuaCaIdiomaticReadingAvailable"
     },
     "claim-p2780::p2780-e-hua-ti-ca-h-to-be-sitting-to": {
       "assertionId": "classical-ca-compound-matrix-formation:p2780-e-hua-ti-ca-h-to-be-sitting-to",
-      "canonicalPath": "cases.intransitiveMatrices.ca.authorizationStatus"
+      "canonicalPath": "cases.eHuaCa.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

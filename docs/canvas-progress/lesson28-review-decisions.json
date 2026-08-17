@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 28,
+  "decisions": {
+    "lesson28-compounding-foundation-and-embed-matrix-order": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build binary compounds from owner-issued Results. Let the user choose the embed, matrix, principal Result, and only a genuinely intended bracketing; derive embed-before-matrix order, matrix subject, deleted embed subject with preserved reference, output category, valid embed functions, and Source continuity automatically."
+    },
+    "lesson28-linked-integrated-and-valence-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep typed embed and matrix entry open. Derive compound valence from the embed and linked or integrated structure from the selected matrix construction; allow all four embed-matrix valence combinations, use known matrices only as convenience analyses, and never gate a user-supplied stem by Canvas example membership."
+    },
+    "lesson28-connective-t-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a selected connective-t compound, let the user choose the embed, matrix, and any genuinely ambiguous construction analysis. Derive the perfective-plus-zero embed, t before a vowel or ti before a consonant, matrix subject, compound valence, finite Result, and the two licensed event-time readings automatically."
+    },
+    "lesson28-ca-nemi-and-yauh-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose a typed ca, nemi, or yāuh matrix construction and optional yā syncopation. Derive the embed perfective, connective, preserved embed valence, ordinary finite matrix stem, mood, tense, number, ca suppletion, yāuh number alternants, and genuine connective-versus-causative analysis automatically; keep idiomatic translations and examples as reading cues."
+    },
+    "lesson28-hualla-huitz-ahci-mani-ihca-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the typed matrix construction and choose ordinary connective-t versus the special connectiveless carry analysis only when the intended Source meaning requires that distinction. Keep typed Source entry open, derive the special carry form from the entered stem's shape rather than a stem whitelist, and automatically derive directional huāl retention, connective status, finite matrix behavior, valence, participants, and stance or motion readings."
+    },
+    "lesson28-o-ehua-quiza-huetzi-and-other-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the typed matrix analysis, a genuinely licensed ēhua Class A or B history, and reversed event order only when the intended composition requires it. Automatically derive connective, matrix inflection, omission of locative on with matrix o, valence, participants, and fixed embed-before-matrix constituent order; keep rapid, abrupt, motion, posture, and example meanings as reading cues and never gate open typed stems by the example inventory."
+    },
+    "lesson28-special-embeds-event-order-and-nonactive-scope": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive ca-to-ye, yāuh-to-yah, and ittā-to-itz perfective embeds from typed Source identity; enforce cac nonanimate reference automatically; keep observational and motion itz as distinct typed analyses; let the user select genuinely intended reversed chronology and the Canvas-licensed passive or impersonal scope; derive nonactive stems, tla placement, participant topology, stative preference, and finite realization automatically."
+    },
+    "lesson28-accompanying-possession": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reuse owner-issued possessive NNC Results and ordinary ca-to-ye connective compound Results through the normal Supplementation path. Let the user choose the two Results, their supplementary-subject link, and order only when the final topic requires it; preserve the nested possessor and matrix subject and derive the accompanying-possession reading without a special have verb, possession picker, item inventory, or second supplementation engine."
+    },
+    "lesson28-intransitivized-reflexive-matrix": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the reflexive-matrix connective construction from an open typed embed and matrix core. Let the user choose the construction and only an unsettled typed matrix role; derive fixed m-o regardless of subject person, discharge matrix transitivity onto the fused reflexive without adding a participant, let the embed determine compound valence, derive finite behavior and readings, and require plural reference when a typed mo-mana matrix has an animate subject without using Canvas examples as a Source whitelist."
+    },
+    "lesson28-shared-object-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build shared-object compounds from a typed transitive embed and open typed transitive matrix. Let the user choose the shared-object composition and resolve a referent only when more than one typed object could genuinely be shared; verify coreference, preserve reflexive or projective kind, person, and number, realize one carrier on the embed, suppress the duplicate matrix carrier, preserve other participants, derive the connective, hierarchy, valence, matrix finite form, special Class A ēhua embed, and distributive plural reading cues, and never use Canvas matrices as a stem whitelist."
+    },
+    "lesson28-future-embed-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build future-embed compounds from an owner-issued future VNC supplementary-object Result and a typed nequi desire or anomalous qui volition matrix. Let the user choose the future supplement, future-embed construction, genuine nequi or qui analysis, and ordinary finite composition; automatically replace the matrix object with the future predicate, retain embed valence and nonactive structure, put future z inside and matrix tense outside, enforce imperfect-only qui, allow licensed antecessive and included-referent patterns, treat conditional wording as a reading, and keep general Source entry open without a stem whitelist."
+    },
+    "lesson28-recursive-compounding": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture any owner-issued compound Result through Add another derivation and let the user choose whether it becomes the next embed or matrix. Build a validated binary, non-circular hierarchy; preserve every nested Source link and participant; derive each layer's connective, valence, Mood, Tense, and outside finite boundary locally; allow the completed Result to continue into another compound or future embed; and expose no depth, connective, participant-copy, example-template, or stem-whitelist controls."
+    }
+  }
+}

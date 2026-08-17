@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "lesson": 27,
+  "contradictionTest": "src/tests/classical_lesson27_contradiction_audit.test.js",
+  "groups": {
+    "lesson27-frequentative-foundation-and-shape-choice": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-short-glottal-ordinary-frequentatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-long-short-supportive-i-and-recursion": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-object-pronoun-reduplication": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-intransitive-destockal-frequentatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-causative-destockal-frequentatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-extinct-fused-and-role-ambiguous-destockals": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-destockal-applicative-and-type-two-causative": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-uncertain-ca-frequentatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-uncertain-tzca-frequentatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    },
+    "lesson27-frequentative-nonactive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson27_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson27_reader_guidance.test.js"
+    }
+  }
+}

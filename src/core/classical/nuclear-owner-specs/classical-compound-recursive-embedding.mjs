@@ -15,19 +15,19 @@ const spec = {
   "coordinates": {
     "claim-p2886::p2886-tla-cuah-t-ahci-ti-uh-to-go-along": {
       "assertionId": "classical-compound-recursive-embedding:p2886-tla-cuah-t-ahci-ti-uh-to-go-along",
-      "canonicalPath": "cases.recursiveEmbed.authorizationStatus"
+      "canonicalPath": "cases.recursiveMatrix.targetStem"
     },
     "claim-p2887::p2887-tla-cuah-t-ahci-ti-ya-z-nequi-to": {
       "assertionId": "classical-compound-recursive-embedding:p2887-tla-cuah-t-ahci-ti-ya-z-nequi-to",
-      "canonicalPath": "cases.recursiveEmbed.facts.recursiveEmbed"
+      "canonicalPath": "cases.recursiveEmbed.targetStem"
     },
     "claim-p2888::p2888-coch-ti-pil-ca-t-o-to-remain-asleep": {
       "assertionId": "classical-compound-recursive-embedding:p2888-coch-ti-pil-ca-t-o-to-remain-asleep",
-      "canonicalPath": "cases.recursiveEmbed.ruleFamily"
+      "canonicalPath": "cases.recursiveMatrix.facts.recursiveResultRole"
     },
     "claim-p2889::p2889-te-cui-ti-huetzi-z-nequi-to-want-to": {
       "assertionId": "classical-compound-recursive-embedding:p2889-te-cui-ti-huetzi-z-nequi-to-want-to",
-      "canonicalPath": "contract.recursiveTypedClosureRequired"
+      "canonicalPath": "cases.recursiveEmbed.facts.recursiveHierarchyAcyclic"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

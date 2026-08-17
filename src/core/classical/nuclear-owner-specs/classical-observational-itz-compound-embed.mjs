@@ -17,23 +17,23 @@ const spec = {
   "coordinates": {
     "claim-p2824::p2824-as-already-mentioned-in-26-1-the-verbstem-te": {
       "assertionId": "classical-observational-itz-compound-embed:p2824-as-already-mentioned-in-26-1-the-verbstem-te",
-      "canonicalPath": "cases.itzObservational.facts.itzEmbedSense"
+      "canonicalPath": "cases.ittaObservational.facts.ittaToItzEmbedAlternation"
     },
     "claim-p2825::p2825-te-itz-t-o-to-sit-remain-looking-at": {
       "assertionId": "classical-observational-itz-compound-embed:p2825-te-itz-t-o-to-sit-remain-looking-at",
-      "canonicalPath": "cases.itzObservational.facts.embedStem"
+      "canonicalPath": "cases.ittaObservational.facts.specialPerfectiveEmbedResult"
     },
     "claim-p2826::p2826-tla-itz-ti-uh-to-go-seeing-s-th": {
       "assertionId": "classical-observational-itz-compound-embed:p2826-tla-itz-ti-uh-to-go-seeing-s-th",
-      "canonicalPath": "blockedCases.itzMissingSense.blockReason"
+      "canonicalPath": "cases.ittaObservational.targetStem"
     },
     "claim-p2827::p2827-one-also-finds-the-perfective-stem-of-the-intransitive": {
       "assertionId": "classical-observational-itz-compound-embed:p2827-one-also-finds-the-perfective-stem-of-the-intransitive",
-      "canonicalPath": "cases.itzObservational.facts.itzEmbedSense"
+      "canonicalPath": "cases.itzObservational.facts.itzSourceAnalysis"
     },
     "claim-p2828::p2828-itz-ti-uh-to-go-looking": {
       "assertionId": "classical-observational-itz-compound-embed:p2828-itz-ti-uh-to-go-looking",
-      "canonicalPath": "cases.itzObservational.facts.embedStem"
+      "canonicalPath": "cases.itzObservational.facts.specialPerfectiveEmbedResult"
     },
     "claim-p2829::p2829-itz-ti-ca-h-to-be-looking-to-be": {
       "assertionId": "classical-observational-itz-compound-embed:p2829-itz-ti-ca-h-to-be-looking-to-be",

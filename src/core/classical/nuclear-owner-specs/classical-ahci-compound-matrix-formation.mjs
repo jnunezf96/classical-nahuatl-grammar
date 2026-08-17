@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2802::p2802-tla-ma-mah-t-ahci-to-arrive-carrying-s": {
       "assertionId": "classical-ahci-compound-matrix-formation:p2802-tla-ma-mah-t-ahci-to-arrive-carrying-s",
-      "canonicalPath": "cases.intransitiveMatrices.ahci.targetStem"
+      "canonicalPath": "cases.ahciPreterit.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

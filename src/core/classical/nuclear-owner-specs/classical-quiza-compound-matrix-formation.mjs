@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2811::p2811-tla-cui-ti-quiza-to-snatch-s-th": {
       "assertionId": "classical-quiza-compound-matrix-formation:p2811-tla-cui-ti-quiza-to-snatch-s-th",
-      "canonicalPath": "cases.intransitiveMatrices.quiza.targetStem"
+      "canonicalPath": "cases.quizaPreterit.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

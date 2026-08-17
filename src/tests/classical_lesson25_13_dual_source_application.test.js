@@ -191,7 +191,7 @@ function run(ctx = {}) {
     const s = createSuite(
         "classical_lesson25_13_dual_source_application",
     );
-    const application = ctx.classicalNahuatlVncApplication;
+    const application = ctx.createClassicalNahuatlVncApplication(ctx);
 
     const caquiActiveSource = selectDerivation(application, {
         sourceStem: "caqui",

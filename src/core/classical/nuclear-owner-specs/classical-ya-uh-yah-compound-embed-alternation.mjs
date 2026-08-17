@@ -14,11 +14,11 @@ const spec = {
   "coordinates": {
     "claim-p2818::p2818-the-verb-ya-uh-uses-a-preterit-predicate-formed": {
       "assertionId": "classical-ya-uh-yah-compound-embed-alternation:p2818-the-verb-ya-uh-uses-a-preterit-predicate-formed",
-      "canonicalPath": "cases.yaEmbed.facts.embedStem"
+      "canonicalPath": "cases.yaEmbed.facts.specialPerfectiveEmbedResult"
     },
     "claim-p2819::p2819-this-is-a-regular-formation": {
       "assertionId": "classical-ya-uh-yah-compound-embed-alternation:p2819-this-is-a-regular-formation",
-      "canonicalPath": "cases.yaEmbed.targetStem"
+      "canonicalPath": "cases.yaEmbed.facts.yauhToYahEmbedAlternation"
     },
     "claim-p2820::p2820-ya-yah-ti-nemi-to-stroll-along-to-go": {
       "assertionId": "classical-ya-uh-yah-compound-embed-alternation:p2820-ya-yah-ti-nemi-to-stroll-along-to-go",

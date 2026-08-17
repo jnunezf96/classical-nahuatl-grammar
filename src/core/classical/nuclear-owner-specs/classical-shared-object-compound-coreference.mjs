@@ -16,23 +16,23 @@ const spec = {
   "coordinates": {
     "claim-p2858::p2858-the-final-type-of-connective-t-compound-stem-is": {
       "assertionId": "classical-shared-object-compound-coreference:p2858-the-final-type-of-connective-t-compound-stem-is",
-      "canonicalPath": "contract.sharedObjectPronounManifestation"
+      "canonicalPath": "contract.sharedObjectCoreferenceAuthority"
     },
     "claim-p2859::p2859-both-the-matrix-and-the-embed-come-from-transitive": {
       "assertionId": "classical-shared-object-compound-coreference:p2859-both-the-matrix-and-the-embed-come-from-transitive",
-      "canonicalPath": "contract.sharedObjectKinds.0"
+      "canonicalPath": "cases.sharedObject.facts.sharedObjectEmbedAndMatrixTransitive"
     },
     "claim-p2860::p2860-when-combined-into-a-compound-vnc-the-coreferential-object": {
       "assertionId": "classical-shared-object-compound-coreference:p2860-when-combined-into-a-compound-vnc-the-coreferential-object",
-      "canonicalPath": "contract.sharedObjectKinds.1"
+      "canonicalPath": "cases.sharedObject.facts.sharedObjectManifestationCount"
     },
     "claim-p2861::p2861-this-object-pronoun-may-be-reflexive-or-projective": {
       "assertionId": "classical-shared-object-compound-coreference:p2861-this-object-pronoun-may-be-reflexive-or-projective",
-      "canonicalPath": "blockedCases.sharedWithoutObject.blockReason"
+      "canonicalPath": "contract.sharedObjectKinds"
     },
     "claim-p2862::p2862-there-are-six-verbs-that-commonly-occur-as-the": {
       "assertionId": "classical-shared-object-compound-coreference:p2862-there-are-six-verbs-that-commonly-occur-as-the",
-      "canonicalPath": "contract.sharedObjectPronounManifestation"
+      "canonicalPath": "contract.sharedObjectMatrixInventory"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

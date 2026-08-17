@@ -14,15 +14,15 @@ const spec = {
   "coordinates": {
     "claim-p2830::p2830-note-one-should-not-confuse-the-intransitive-embed-stem": {
       "assertionId": "classical-itz-compound-homophone-analysis:p2830-note-one-should-not-confuse-the-intransitive-embed-stem",
-      "canonicalPath": "cases.itzObservational.facts.itzEmbedSense"
+      "canonicalPath": "cases.itzObservational.facts.itzSourceAnalysis"
     },
     "claim-p2831::p2831-itz-ti-uh-to-go-going-i-e-to": {
       "assertionId": "classical-itz-compound-homophone-analysis:p2831-itz-ti-uh-to-go-going-i-e-to",
-      "canonicalPath": "cases.huicaCarry.facts.oldConnectivelessHuītzFormation"
+      "canonicalPath": "cases.itzMotion.facts.itzSourceAnalysis"
     },
     "claim-p2832::p2832-itz-t-e-hua-to-get-up-and-go": {
       "assertionId": "classical-itz-compound-homophone-analysis:p2832-itz-t-e-hua-to-get-up-and-go",
-      "canonicalPath": "contract.traditionalSpellingRole"
+      "canonicalPath": "cases.itzMotionEHuaReversed.facts.eventOrder"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

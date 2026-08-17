@@ -258,23 +258,29 @@ function run(ctx = {}) {
         }
     );
     s.eq(
-        "Lesson 28 negative and hostile gates reject unlicensed matrices and copied closure frames",
+        "Lesson 28 admits an arbitrary typed matrix analysis and rejects copied closure frames",
         (() => {
-            const invalidMatrix = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+            const arbitraryMatrix = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 lateOperation: "compound",
                 lateVariant: "connective-t",
                 compoundMatrixStem: "invented",
+                compoundMatrixClass: "A",
             }));
             const copied = JSON.parse(JSON.stringify(compound));
             return {
-                matrixStatus: invalidMatrix.authorizationStatus,
-                matrixReason: invalidMatrix.blockReason,
+                matrixStatus: arbitraryMatrix.authorizationStatus,
+                matrixReason: arbitraryMatrix.blockReason,
+                matrixTarget: arbitraryMatrix.operationFrame?.targetStem,
+                openAdmission: arbitraryMatrix.operationFrame?.operationFacts
+                    ?.openTypedMatrixAdmission,
                 copiedCanonical: ctx.isClassicalNahuatlClosureFrame(copied),
             };
         })(),
         {
-            matrixStatus: "blocked",
-            matrixReason: "lesson28-matrix-inventory-selection-required",
+            matrixStatus: "authorized",
+            matrixReason: "",
+            matrixTarget: "chōca-t-invented",
+            openAdmission: true,
             copiedCanonical: false,
         }
     );
@@ -572,7 +578,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 27 lexical, recursive-object, ambiguity, and uncertain families are source-gated mechanical paths",
+        "Lesson 27 lexical, recursive-object, ambiguity, and uncertain families use open typed shapes",
         (() => {
             const lexicalized = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 sourceStem: "po-pō-ca",
@@ -652,14 +658,14 @@ function run(ctx = {}) {
             fusedRecursive: ["authorized", "tlah-tla-coh-cōhua", true],
             applicativeForce: ["authorized", "applicative", "specific-projective"],
             uncertain: ["authorized", "cui-cui-tz-ca"],
-            inventedLexical: ["blocked", "canvas-listed-lexicalized-destockal-required"],
-            inventedUncertain: ["blocked", "canvas-listed-uncertain-ca-root-required"],
+            inventedLexical: ["authorized", ""],
+            inventedUncertain: ["authorized", ""],
             hostileCount: ["blocked", "positive-bounded-reduplication-count-required"],
         }
     );
 
     s.eq(
-        "Lesson 28 enforces each compound pattern's matrix inventory, coreference, special carry formation, itz analysis, and sounded future embed",
+        "Lesson 28 keeps ordinary and typed carry analyses open while enforcing coreference, itz analysis, and sounded future embed",
         (() => {
             const wrongMatrixFamily = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 lateOperation: "compound",
@@ -673,6 +679,8 @@ function run(ctx = {}) {
             }));
             const regularCarry = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 sourceStem: "huīca",
+                sourceValence: "tla",
+                objectKind: "nonspecific-nonhuman",
                 verbClass: "A",
                 lateOperation: "compound",
                 lateVariant: "connective-t",
@@ -680,6 +688,8 @@ function run(ctx = {}) {
             }));
             const specialCarry = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 sourceStem: "huīca",
+                sourceValence: "tla",
+                objectKind: "nonspecific-nonhuman",
                 verbClass: "A",
                 lateOperation: "compound",
                 lateVariant: "huītz-carry",
@@ -733,6 +743,7 @@ function run(ctx = {}) {
                     specialCarry.authorizationStatus,
                     specialCarry.operationFrame?.targetStem,
                     specialCarry.operationFrame?.operationFacts?.oldConnectivelessHuītzFormation,
+                    specialCarry.operationFrame?.operationFacts?.carrySourceStemWhitelistUsed,
                 ],
                 future: [
                     future.authorizationStatus,
@@ -754,10 +765,10 @@ function run(ctx = {}) {
             };
         })(),
         {
-            wrongMatrixFamily: ["blocked", "lesson28-matrix-inventory-selection-required"],
+            wrongMatrixFamily: ["authorized", ""],
             sharedWithoutObject: ["blocked", "shared-object-coreferential-embed-object-required"],
-            regularCarry: ["blocked", "huīca-itqui-require-old-connectiveless-huītz-formation"],
-            specialCarry: ["authorized", "huica-tz", true],
+            regularCarry: ["authorized", ""],
+            specialCarry: ["authorized", "huica-tz", true, false],
             future: ["authorized", "cochi-z-nequi", "z"],
             conditionalWrongTense: ["blocked", "tla-qui-matrix-is-imperfect-only"],
             itzMissingSense: ["blocked", "typed-itz-embed-sense-required"],

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 25,
+  "decisions": {
+    "lesson25-type-two-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose Causative Type 2 and resolve an underlying nonactive Source history only when more than one licensed history remains possible. Derive tiā, object count, participant structure, reconstructed history, and the required yāuh or huāllāuh suppletion automatically through the normal causative owner without a stem whitelist."
+    },
+    "lesson25-hua-source-routes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed Source with a licensed hua history, replace hua with tiā and automatically derive vowel quantity, cluster shortening, supportive i, a to i, s to x, postvocalic ti to chi, participant structure, and valence from Source shape and typed Source valence. Expose only a genuinely unresolved history or parallel-formation choice; examples never gate admission."
+    },
+    "lesson25-o-ohua-source-and-machtia": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For an open typed o or o-hua Source history, derive the consonant-before-tiā result, enforce the two-consonant restriction and lō redirection, and preserve machtia's licensed Source and reflexive or reciprocal ambiguity. Keep silent objects fully grammatical and supplementable, expose silent versus sounded specific shuntline realization only in its eligible writer-variation environment, and derive the remaining boundaries and cues automatically."
+    },
+    "lesson25-lo-source-routes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed Source with a licensed lō history, replace only final ō with tiā, retain l, and derive all shape-conditioned sound changes, participant consequences, and target form automatically. Expose only a genuinely unresolved Source history or licensed parallel variant, and use examples as reading evidence rather than a stem whitelist."
+    },
+    "lesson25-lia-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive a Class C liā causative from typed denominal-ti or root-plus-ya Source structure, preserving any authorized deverbal history and routing participants through the shared causative transformation. Ask the user to choose Causative versus Applicative or confirm a Source history only when the final composition is genuinely ambiguous."
+    },
+    "lesson25-huia-class-and-parallel-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For an open typed long-o Source, derive each licensed direct huiā, o-to-a plus huiā, or lō-to-tiā result, automatically assign tiā, liā, and huiā causatives to Class C, and preserve genuine parallel Type 1 and Type 2 results. Expose only real derivation-role, Source-history, or parallel-causative choices; examples and meaning matches remain cues rather than admission rules."
+    },
+    "lesson25-basic-causative-transformation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reuse the canonical causative participant transformation for every open typed Source. Let the user choose the imported causer and resolve genuine coreference only when needed; automatically compact the Source, transfer its subject as a specific, reflexive, or nonspecific causative object according to Source voice, and preserve its subject-like role inside the embedded event."
+    },
+    "lesson25-double-object-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build double-object causatives from the typed active-transitive, passive, or impersonal Source. Let the user choose the Source, new causer, and genuine referent identities; automatically promote the causative object to mainline, preserve the older Source object on the shuntline, enforce compatibility, silence, ne replacement, coreference exceptions, prefix order, and voice transfer."
+    },
+    "lesson25-triple-object-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture a canonical double-object causative Result as the typed Source for another causative layer. Let the user choose that recursive Source, the new causer, and genuine participant identity; automatically derive the mainline plus two shuntline levels, specific, reflexive, or nonspecific outcomes, licensed silence, prefix order, voice consequences, and coreference exceptions through the normal recursive causative owner."
+    },
+    "lesson25-causative-ambiguity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve every licensed typed Source analysis for an ambiguous multiple-object causative Result. Let the user choose an intended Source only when final composition or real context requires resolution; keep prefix order, incompatibility rules, ne replacement, silence, and all still-possible readings automatic and never infer Source authority from the surface string."
+    },
+    "lesson25-mood-and-nonactive-voice": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the ordinary Mood and Voice controls to the completed causative VNC. Let the user choose the intended Mood or passive or impersonal Voice; derive the canonical form changes and preserve the causative participant hierarchy through the shared mood and nonactive owners without Lesson-25-specific controls."
+    },
+    "lesson25-silent-object-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reuse Lesson 17 supplementation for every grammatically present silent direct or shuntline causative object. Let the user supply the supplement and choose its head only when several eligible silent objects remain; validate referent identity, preserve object level and silence, and derive person or number clarification through the shared supplementation owner."
+    }
+  }
+}

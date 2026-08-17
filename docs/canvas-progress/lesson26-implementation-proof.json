@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 26,
+  "contradictionTest": "src/tests/classical_lesson26_contradiction_audit.test.js",
+  "groups": {
+    "lesson26-applicative-foundation-and-irregular-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-type-one-applicatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-type-two-foundation-and-final-i": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-final-a-source-routes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-shape-and-class-exceptions": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-oa-and-huia-routes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-special-and-parallel-applicatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-single-object-applicatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-double-object-applicatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-triple-object-applicatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-ambiguity-mood-and-voice": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    },
+    "lesson26-object-interpretation-and-applicative-unit": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson26_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson26_reader_guidance.test.js"
+    }
+  }
+}

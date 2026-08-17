@@ -18,31 +18,31 @@ const spec = {
   "coordinates": {
     "claim-p2838::p2838-connective-t-compound-stems-may-have-two-passive-formations": {
       "assertionId": "classical-compound-nonactive-scope-system:p2838-connective-t-compound-stems-may-have-two-passive-formations",
-      "canonicalPath": "cases.nonactiveEmbed.authorizationStatus"
+      "canonicalPath": "cases.passiveEmbed.facts.passiveScopeOptions"
     },
     "claim-p2839::p2839-either-the-embed-subposition-or-both-it-and-the": {
       "assertionId": "classical-compound-nonactive-scope-system:p2839-either-the-embed-subposition-or-both-it-and-the",
-      "canonicalPath": "cases.nonactiveEmbed.facts.nonactiveScope"
+      "canonicalPath": "cases.passiveBoth.facts.nonactiveScope"
     },
     "claim-p2840::p2840-huico-tinemi-huic-o-ti-nemi-huico-tinemohua-huic": {
       "assertionId": "classical-compound-nonactive-scope-system:p2840-huico-tinemi-huic-o-ti-nemi-huico-tinemohua-huic",
-      "canonicalPath": "cases.nonactiveEmbed.targetStem"
+      "canonicalPath": "cases.passiveBoth.targetStem"
     },
     "claim-p2841::p2841-connective-t-compound-stems-may-have-three-impersonal-formations": {
       "assertionId": "classical-compound-nonactive-scope-system:p2841-connective-t-compound-stems-may-have-three-impersonal-formations",
-      "canonicalPath": "cases.nonactiveEmbed.authorizationStatus"
+      "canonicalPath": "cases.nonactiveEmbed.facts.impersonalScopeOptions"
     },
     "claim-p2842::p2842-the-following-three-vncs-are-translated-people-arrive-and": {
       "assertionId": "classical-compound-nonactive-scope-system:p2842-the-following-three-vncs-are-translated-people-arrive-and",
-      "canonicalPath": "cases.nonactiveEmbed.facts.nonactiveScope"
+      "canonicalPath": "cases.impersonalBoth.facts.nonactiveScope"
     },
     "claim-p2843::p2843-if-the-matrix-stem-is-a-stative-verb-however": {
       "assertionId": "classical-compound-nonactive-scope-system:p2843-if-the-matrix-stem-is-a-stative-verb-however",
-      "canonicalPath": "cases.nonactiveEmbed.targetStem"
+      "canonicalPath": "cases.stativeImpersonalBoth.facts.stativeMatrixPrefersEmbedOnly"
     },
     "claim-p2844::p2844-but-even-here-both-stems-can-be-impersonalized": {
       "assertionId": "classical-compound-nonactive-scope-system:p2844-but-even-here-both-stems-can-be-impersonalized",
-      "canonicalPath": "cases.nonactiveEmbed.authorizationStatus"
+      "canonicalPath": "cases.stativeImpersonalBoth.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

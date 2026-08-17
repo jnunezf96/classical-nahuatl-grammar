@@ -21,23 +21,23 @@ const spec = {
     },
     "claim-p2848::p2848-the-matrix-subposition-is-filled-by-a-reflexive-core": {
       "assertionId": "classical-reflexive-matrix-compound-system:p2848-the-matrix-subposition-is-filled-by-a-reflexive-core",
-      "canonicalPath": "cases.reflexiveMatrix.facts.matrixSourceValence"
+      "canonicalPath": "contract.reflexiveMatrixSystem.typedRole"
     },
     "claim-p2849::p2849-within-the-compound-stem-the-reflexive-object-plus-reflexive": {
       "assertionId": "classical-reflexive-matrix-compound-system:p2849-within-the-compound-stem-the-reflexive-object-plus-reflexive",
-      "canonicalPath": "contract.reflexiveMatrixInventory.4"
+      "canonicalPath": "contract.reflexiveMatrixSystem.fixedCarrier"
     },
     "claim-p2850::p2850-as-in-the-compound-stems-of-28-6-the": {
       "assertionId": "classical-reflexive-matrix-compound-system:p2850-as-in-the-compound-stems-of-28-6-the",
-      "canonicalPath": "cases.reflexiveMatrix.ruleFamily"
+      "canonicalPath": "contract.reflexiveMatrixSystem.embedDeterminesValence"
     },
     "claim-p2851::p2851-five-verbs-commonly-occur-as-the-matrix-in-this": {
       "assertionId": "classical-reflexive-matrix-compound-system:p2851-five-verbs-commonly-occur-as-the-matrix-in-this",
-      "canonicalPath": "cases.reflexiveMatrix.facts.matrixSourceValence"
+      "canonicalPath": "cases.reflexiveMatrix.facts.reflexiveMatrixExamplesNonexhaustive"
     },
     "claim-p2852::p2852-they-are-listed-below-with-the-translations-particular-to": {
       "assertionId": "classical-reflexive-matrix-compound-system:p2852-they-are-listed-below-with-the-translations-particular-to",
-      "canonicalPath": "contract.reflexiveMatrixInventory.4"
+      "canonicalPath": "cases.reflexiveMatrix.facts.matrixReadingOptions"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

@@ -27,7 +27,7 @@ const spec = {
     },
     "claim-p2774::p2774-the-process-may-be-abstractly-represented-in-terms-of": {
       "assertionId": "classical-intransitive-compound-matrix-inventory:p2774-the-process-may-be-abstractly-represented-in-terms-of",
-      "canonicalPath": "blockedCases.unknownMatrix.authorizationStatus"
+      "canonicalPath": "contract.openTypedMatrixAdmission"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

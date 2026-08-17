@@ -16,23 +16,23 @@ const spec = {
   "coordinates": {
     "claim-p2806::p2806-when-functioning-as-the-matrix-of-a-compound-stem": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2806-when-functioning-as-the-matrix-of-a-compound-stem",
-      "canonicalPath": "cases.intransitiveMatrices.ē-hua.targetStem"
+      "canonicalPath": "cases.eHuaClassAPreterit.facts.eHuaLicensedMatrixClasses"
     },
     "claim-p2807::p2807-m-e-uh-t-e-hua-to-get-up": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2807-m-e-uh-t-e-hua-to-get-up",
-      "canonicalPath": "cases.intransitiveMatrices.ē-hua.authorizationStatus"
+      "canonicalPath": "cases.eHuaClassBPreterit.authorizationStatus"
     },
     "claim-p2808::p2808-tla-cauh-t-e-hua-to-leaves-th-and": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2808-tla-cauh-t-e-hua-to-leaves-th-and",
-      "canonicalPath": "cases.intransitiveMatrices.ē-hua.targetStem"
+      "canonicalPath": "cases.eHuaClassAPreterit.targetStem"
     },
     "claim-p2809::p2809-ti-c-ca-uh-t-e-hua-z-qu": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2809-ti-c-ca-uh-t-e-hua-z-qu",
-      "canonicalPath": "cases.intransitiveMatrices.ē-hua.authorizationStatus"
+      "canonicalPath": "cases.eHuaClassAPreterit.authorizationStatus"
     },
     "claim-p2810::p2810-cual-a-n-t-e-hua-to-get-up": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2810-cual-a-n-t-e-hua-to-get-up",
-      "canonicalPath": "cases.intransitiveMatrices.ē-hua.targetStem"
+      "canonicalPath": "cases.eHuaClassBPreterit.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

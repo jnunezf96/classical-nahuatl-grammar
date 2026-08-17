@@ -13,11 +13,11 @@ const spec = {
   "coordinates": {
     "claim-p2804::p2804-tlap-a-n-t-o-to-lie-after-having": {
       "assertionId": "classical-o-compound-matrix-formation:p2804-tlap-a-n-t-o-to-lie-after-having",
-      "canonicalPath": "cases.intransitiveMatrices.o.targetStem"
+      "canonicalPath": "cases.oPreteritAsPresent.targetStem"
     },
     "claim-p2805::p2805-m-o-tlaz-t-o-to-be-recumbent-after": {
       "assertionId": "classical-o-compound-matrix-formation:p2805-m-o-tlaz-t-o-to-be-recumbent-after",
-      "canonicalPath": "cases.intransitiveMatrices.o.facts.connective"
+      "canonicalPath": "cases.oPreteritAsPresent.facts.oLocativeOnOmitted"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

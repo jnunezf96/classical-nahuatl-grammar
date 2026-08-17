@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "lesson": 24,
+  "decisions": {
+    "lesson24-final-vowel-and-open-valence": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user enter any open verbstem and choose its intended Valence. Preserve that typed Valence for stems ending in i, a, o, or e; show final-vowel patterns and exceptions only as reading cues, never as inference, authorization, or a stem whitelist."
+    },
+    "lesson24-valence-neutral-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user use the same open stem as intransitive or transitive when that is the intended analysis and supply the real transitive participant. Preserve the identical stem shape, enforce the chosen object structure, and let that typed Valence determine later passive or impersonal formation without a valence-neutral toggle or Canvas list."
+    },
+    "lesson24-final-i-type-one-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "After the user chooses Causative for an open final-i Source, expose replacement versus addition only when the Source analysis leaves both valid. Accept a special consonant analysis only when genuinely intended, then automatically derive removed or retained i, short a or long ā, participant transfer, and target Class B or C without a stem whitelist."
+    },
+    "lesson24-final-a-and-ya-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "After the user chooses Causative, let the typed Source analysis settle ordinary final-a replacement or normal root-plus-ya replacement. Preserve surface-identical morphological replacement, derive ya loss plus long ā and the resulting class automatically, and expose retained y only for a genuinely intended licensed exception without a stem whitelist."
+    },
+    "lesson24-destockal-source-architecture": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply or confirm a destockal Source analysis only when needed. Preserve its ordered root, stock formative, and stem formative, keep both derivational boundaries in the canonical Source, treat only the completed verbstem as the destockal VNC Source, and expose the hierarchy through one compact clickable cue."
+    },
+    "lesson24-ni-hui-destockal-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept any open typed long-vowel ni or hui destockal Source, derive its root, stock formative, theme, regular root-vowel harmony cue, and Class B projection. Preserve an explicitly intended exceptional stock-vowel analysis as the only extra choice; examples and inventories never gate the Source."
+    },
+    "lesson24-ni-hui-causative-procedure": {
+      "status": "ACCEPTED",
+      "acceptedJob": "After the user chooses Causative for an open ni or hui destockal Source, expose replacement versus addition only when both remain valid and the Source has not settled the procedure. Derive the target boundary, long or short causative vowel, participant transfer, preference cue, and Class B or C automatically without a majority list or stem whitelist."
+    },
+    "lesson24-coalesced-and-obsolete-destockal-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user supply an underlying segmented Source when the visible stem hides a root-stock boundary or the intended analysis is reconstructed. Preserve that boundary and provenance in the formula and later derivation, coalesce identical vowels only in the written projection, and never turn reconstructed examples into an admission list or separate coalescence control."
+    },
+    "lesson24-hua-destockal-sources-and-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept open ā-hua and ē-hua destockal Sources, preserve independently entered hua and hui stems as separate Sources, and automatically form the Type 1 causative by hua to hu-a replacement with a Class B target. Ask for destockal, compound, exceptional-class, or reconstructed analysis only when real ambiguity requires it; never use a stem or synonym whitelist."
+    },
+    "lesson24-short-vowel-hui-destockal-causatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept open i-hui, a-hui, and o-hui destockal Sources, derive regular short stock selection from the root, and automatically form the Class C o-ā causative from a Class B Source. Ask only for a genuinely exceptional or irregular Source relation, preserve exact negative restrictions, and never use a stem whitelist."
+    },
+    "lesson24-causative-participant-transform": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose the imported causer and expose projective versus reflexive only for genuine coreference ambiguity. Automatically transform an active Source subject into the causative object or an impersonal Source agent into nonspecific tla, preserve the Source core, and derive every remaining carrier, governor, and participant relation."
+    }
+  }
+}

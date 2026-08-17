@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2796::p2796-tla-cuah-ti-hui-tz-to-come-eatings-th": {
       "assertionId": "classical-hui-tz-compound-matrix-formation:p2796-tla-cuah-ti-hui-tz-to-come-eatings-th",
-      "canonicalPath": "cases.intransitiveMatrices.huī-tz.targetStem"
+      "canonicalPath": "cases.huitzPreteritAsPresent.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

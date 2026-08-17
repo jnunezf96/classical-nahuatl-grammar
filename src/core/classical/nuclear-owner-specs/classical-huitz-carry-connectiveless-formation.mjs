@@ -16,23 +16,23 @@ const spec = {
   "coordinates": {
     "claim-p2797::p2797-two-verbs-tla-hui-ca-to-carry-s-th": {
       "assertionId": "classical-huitz-carry-connectiveless-formation:p2797-two-verbs-tla-hui-ca-to-carry-s-th",
-      "canonicalPath": "cases.huicaCarry.targetStem"
+      "canonicalPath": "contract.typedCarryConstruction.userSelectsAnalysis"
     },
     "claim-p2798::p2798-instead-they-use-an-old-formation-in-which-the": {
       "assertionId": "classical-huitz-carry-connectiveless-formation:p2798-instead-they-use-an-old-formation-in-which-the",
-      "canonicalPath": "cases.huicaCarry.facts.oldConnectivelessHuītzFormation"
+      "canonicalPath": "contract.typedCarryConstruction.matrixPerfective"
     },
     "claim-p2799::p2799-tla-huica-tz-to-come-carrying-s-th": {
       "assertionId": "classical-huitz-carry-connectiveless-formation:p2799-tla-huica-tz-to-come-carrying-s-th",
-      "canonicalPath": "cases.huicaCarry.facts.prohibitedConnectiveT"
+      "canonicalPath": "contract.typedCarryConstruction.huicaShape"
     },
     "claim-p2800::p2800-tla-huica-tz-eh": {
       "assertionId": "classical-huitz-carry-connectiveless-formation:p2800-tla-huica-tz-eh",
-      "canonicalPath": "blockedCases.regularCarry.blockReason"
+      "canonicalPath": "cases.huicaCarry.formulaRealization"
     },
     "claim-p2801::p2801-tla-itqui-tz-to-go-carrying-s-th": {
       "assertionId": "classical-huitz-carry-connectiveless-formation:p2801-tla-itqui-tz-to-go-carrying-s-th",
-      "canonicalPath": "cases.huicaCarry.targetStem"
+      "canonicalPath": "contract.typedCarryConstruction.itquiShape"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

@@ -5688,7 +5688,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         }
         const canonicalContinuationResultFrame = lateOperationResultAuthorized
           ? sourceResultFrame.operationFrame
-            ?.targetApplicationFrame?.resultFrame || null
+            ?.targetApplicationFrame?.resultFrame || sourceResultFrame
           : sourceResultFrame;
         const sourceMachineryFrame =
           canonicalContinuationResultFrame?.selectedMachineryFrame || null;
@@ -5720,6 +5720,67 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const getContinuationSourceConstituents = (
         sourceResultFrame = null,
       ) => {
+        const currentRuntimeTarget =
+          getClassicalNahuatlVncApplicationRuntimeTarget();
+        const compoundClosureAuthorized = Boolean(
+          sourceResultFrame?.authorizationStatus === "authorized"
+          && sourceResultFrame.operationFrame?.operation === "compound"
+          && typeof currentRuntimeTarget?.isClassicalNahuatlClosureFrame
+            === "function"
+          && currentRuntimeTarget.isClassicalNahuatlClosureFrame(
+            sourceResultFrame,
+          ) === true
+        );
+        if (compoundClosureAuthorized) {
+          const operationFrame = sourceResultFrame.operationFrame;
+          const sourceDescriptor =
+            getClassicalNahuatlVncContinuationSourceDescriptor(
+              operationFrame.sourceMachineryFrame,
+              currentRuntimeTarget,
+            );
+          const targetValence =
+            normalizeClassicalNahuatlVncApplicationToken(
+              operationFrame.targetValence,
+            ) || "intransitive";
+          const sourceObjectRequests = targetValence === "intransitive"
+            ? Object.freeze([])
+            : Object.freeze(
+              (sourceDescriptor.sourceObjectRequests || []).map(
+                cloneClassicalNahuatlVncApplicationCompactValue,
+              ),
+            );
+          if (
+            operationFrame.targetStem
+            && operationFrame.targetClass
+            && operationFrame.targetValence
+          ) {
+            return Object.freeze({
+              kind:
+                "classical-nahuatl-vnc-result-source-constituent-projection",
+              version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+              sourceStem: operationFrame.targetStem,
+              sourceLexemeId: "",
+              sourceInitialISelection: "",
+              verbClass: operationFrame.targetClass,
+              sourceValence: targetValence,
+              sourceSubject:
+                sourceResultFrame.normalizedRequest?.subject || "3sg",
+              sourceVoice: sourceDescriptor.sourceVoice || "active",
+              sourceNonactiveOptionId:
+                sourceDescriptor.sourceNonactiveOptionId || "",
+              sourceObjectRequests,
+              objectKind: sourceObjectRequests.length > 1
+                ? "multiple-object"
+                : sourceObjectRequests[0]?.objectKind || "none",
+              objectPerson: sourceObjectRequests.length > 1
+                ? "multiple"
+                : sourceObjectRequests[0]?.objectPerson || "",
+              projectionRole: "read-only-source-constituents",
+              grammarAuthority: false,
+              callerSuppliedAuthorityAccepted: false,
+            });
+          }
+        }
         const continuationSource =
           getContinuationSourceForResult(sourceResultFrame);
         if (!continuationSource) return null;

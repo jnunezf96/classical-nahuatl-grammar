@@ -17,27 +17,27 @@ const spec = {
   "coordinates": {
     "claim-p2863::p2863-m-o-te-tla-tla-l-i-a-to": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2863-m-o-te-tla-tla-l-i-a-to",
-      "canonicalPath": "cases.sharedObjectMatrices.tlāl-i-ā.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.tlāl-i-ā.facts.matrixReadingOptions"
     },
     "claim-p2864::p2864-m-o-te-tla-quetza-to-place-oneself-s": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2864-m-o-te-tla-quetza-to-place-oneself-s",
-      "canonicalPath": "cases.sharedObjectMatrices.quetza.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.quetza.facts.matrixReadingOptions"
     },
     "claim-p2865::p2865-m-o-te-tla-te-ca-to-stretch-oneself": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2865-m-o-te-tla-te-ca-to-stretch-oneself",
-      "canonicalPath": "cases.sharedObjectMatrices.tēca.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.tēca.facts.matrixReadingOptions"
     },
     "claim-p2866::p2866-m-o-te-tla-ca-hua-to-leave-oneself": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2866-m-o-te-tla-ca-hua-to-leave-oneself",
-      "canonicalPath": "cases.sharedObjectMatrices.cāhua.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.cāhua.facts.matrixReadingOptions"
     },
     "claim-p2867::p2867-m-o-te-tla-quix-tia-to-cause-oneself": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2867-m-o-te-tla-quix-tia-to-cause-oneself",
-      "canonicalPath": "cases.sharedObjectMatrices.quix-tiā.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.quix-tiā.facts.matrixReadingOptions"
     },
     "claim-p2868::p2868-m-o-te-tla-ma-y-a-hui-to": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2868-m-o-te-tla-ma-y-a-hui-to",
-      "canonicalPath": "cases.sharedObjectMatrices.māy-a-hui.targetStem"
+      "canonicalPath": "cases.sharedObjectMatrices.māy-a-hui.facts.matrixReadingOptions"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

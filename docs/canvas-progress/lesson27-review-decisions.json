@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "lesson": 27,
+  "decisions": {
+    "lesson27-frequentative-foundation-and-shape-choice": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat the frequentative as a productive derivation on any open typed verbstem. Let the user choose short-vowel-plus-glottal-stop, long-vowel, or short-vowel formation because lexical cooperation is unpredictable, and derive the copied consonant, vowel, typed Result, and finite realization automatically without a Canvas-stem whitelist."
+    },
+    "lesson27-short-glottal-ordinary-frequentatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open compatible typed Source, let the user select short-glottal formation and optionally identify action, agent, patient, occasion, or place scope only when the intended semantic composition needs it. Derive the prefix, participant continuity, distributive readings, fusion, and licensed tla placement automatically; idiomatic meanings and examples remain non-authorizing reading evidence."
+    },
+    "lesson27-long-short-supportive-i-and-recursion": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Let the user choose long-vowel or short-vowel formation, resolve supportive versus real initial i only where the typed Source leaves both analyses possible, and select additional reduplication layers for intended emphasis. Derive copied sounds, supportive-i deletion, exceptional real-i retention, reconstructed Source continuity, nested reduplication, and finite realization automatically."
+    },
+    "lesson27-object-pronoun-reduplication": {
+      "status": "ACCEPTED",
+      "acceptedJob": "When typed Source structure makes more than one target possible, let the user choose the lexical stem, fused tla, both, or the eligible mainline reflexive. Derive the selected object form, copied material, independent object and event scopes, supportive-i deletion, partial reflexive carrier, participants, and finite Result automatically without a stem whitelist."
+    },
+    "lesson27-intransitive-destockal-frequentatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed first-kind intransitive destockal shape, let the user choose ordinary or special frequentative formation, intended recursion, and the existing Voice path. Derive ni or hui to ca, the reduced stock vowel, short-vowel prefix, Class A, ca-to-c-ō or ca-to-c-o-hua nonactive form, and inherent or tla impersonal form automatically; examples never gate Source admission."
+    },
+    "lesson27-causative-destockal-frequentatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any open typed first-kind causative destockal shape in n-a, ni-ā, or hu-a, let the user choose the special causative destockal frequentative. Derive tz-a, retain causative a and object structure, reduce the stock vowel, add short-vowel reduplication, assign Class B, and use normal perfective final-a loss automatically without a stem whitelist."
+    },
+    "lesson27-extinct-fused-and-role-ambiguous-destockals": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Accept any completed ca or tz-a shape with an extinct or fused destockal Source analysis, preserve fused vowel length, and retain both causative and applicative readings of ambiguous tz-a until context requires the user to select one. Canvas examples remain evidence and never gate Source admission."
+    },
+    "lesson27-destockal-applicative-and-type-two-causative": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture a completed frequentative destockal Result, let the user choose the next applicative or rare Type-two causative derivation and its new participant, then derive tz-a to ch-i-liā or ca to qui-l-tiā, preserve prior objects, assign the resulting class, and reject unsupported tla fusion automatically."
+    },
+    "lesson27-uncertain-ca-frequentatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat uncertain ca as an explicit shape-based analysis on any open compatible root. Let the user choose plain ca, causative tz-a, applicative tz-a, its participant, or fused tla only when intended; derive reduplication, suffix structure, assimilation, participant topology, and valence without inferring lexical meaning or using example stems as a whitelist."
+    },
+    "lesson27-uncertain-tzca-frequentatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat uncertain tz-ca as an open shape-based intransitive analysis. Let the user choose that analysis only when intended; replace the final Source syllable with tz-ca, derive the copied prefix, preserve uncertain history, keep unreduplicated and transitive tz-ca structures distinct, and issue a typed Result that can feed a later derivation without an example-stem whitelist."
+    },
+    "lesson27-frequentative-nonactive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Allow the ordinary frequentative shapes on any owner-issued nonactive Result. Let the user choose the frequentative shape and ordinary Mood or Tense; preserve impersonal voice and participant topology, and derive the reading of separate individual acts within the collective action automatically."
+    }
+  }
+}

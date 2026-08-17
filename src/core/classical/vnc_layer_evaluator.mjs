@@ -3904,6 +3904,12 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       };
     }
     function getClassicalNahuatlPositionPreviewCarrier(position = {}, subject = "") {
+      if (
+        position.objectKind === "specific-projective"
+        && position.silentSpecificObject === true
+      ) {
+        return "⎕-0";
+      }
       if (position.objectKind === "reflexive") {
         return position.prominence === "mainline" || normalizeClassicalNahuatlVncSlotCarrier(position.objectPerson) === normalizeClassicalNahuatlVncSlotCarrier(subject) ? `${getClassicalNahuatlReflexiveVa1(subject)}-o` : "ne";
       }
@@ -4002,6 +4008,9 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         objectId: normalizeClassicalNahuatlVncSlotCarrier(request?.objectId || `object-${index + 1}`),
         objectKind: normalizeClassicalNahuatlVncSlotCarrier(request?.objectKind),
         objectPerson: normalizeClassicalNahuatlVncSlotCarrier(request?.objectPerson),
+        ...(request?.silentSpecificObject === true
+          ? { silentSpecificObject: true }
+          : {}),
         governor: normalizeClassicalNahuatlVncSlotCarrier(request?.governor),
         derivationalLevel: Number(request?.derivationalLevel)
       }));
@@ -4030,7 +4039,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         && newestHistoryPosition?.governor === "causative";
       const rareThirdCausativeAuthorized = !rareThirdCausativeHistory
         || rareThirdCausativeMeaningSupported === true;
-      const requestShapeAuthorized = normalizedRequests.length >= minimumPositionCount && normalizedRequests.length <= maximumPositionCount && normalizedRequests.every(request => request.objectId && Object.prototype.hasOwnProperty.call(CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY, request.objectKind) && CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS.includes(request.governor) && Number.isInteger(request.derivationalLevel) && request.derivationalLevel >= 1 && request.derivationalLevel <= 3 && (request.objectKind !== "specific-projective" || ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(request.objectPerson)) && (request.objectKind !== "reflexive" || !request.objectPerson || request.objectPerson === normalizedSubject || request.objectPerson === "nonfirst-common")) && new Set(objectIds).size === objectIds.length && new Set(levels).size === levels.length && levelsAreContiguous && directiveHistoryAuthorized;
+      const requestShapeAuthorized = normalizedRequests.length >= minimumPositionCount && normalizedRequests.length <= maximumPositionCount && normalizedRequests.every(request => request.objectId && Object.prototype.hasOwnProperty.call(CLASSICAL_NAHUATL_LESSON23_OBJECT_SEQUENCE_PRIORITY, request.objectKind) && CLASSICAL_NAHUATL_LESSON23_OBJECT_GOVERNORS.includes(request.governor) && Number.isInteger(request.derivationalLevel) && request.derivationalLevel >= 1 && request.derivationalLevel <= 3 && (request.objectKind !== "specific-projective" || ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(request.objectPerson)) && (request.silentSpecificObject !== true || request.objectKind === "specific-projective" && request.objectPerson === "3sg") && (request.objectKind !== "reflexive" || !request.objectPerson || request.objectPerson === normalizedSubject || request.objectPerson === "nonfirst-common")) && new Set(objectIds).size === objectIds.length && new Set(levels).size === levels.length && levelsAreContiguous && directiveHistoryAuthorized;
       const rankedPositions = normalizedRequests.map(request => ({
         ...request,
         prominence: request.derivationalLevel === maximumLevel ? "mainline" : "shuntline",
@@ -4048,7 +4057,10 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const specificShuntlineChoiceRecognized = !normalizedSpecificShuntlineRealization
         || ["silent", "sounded"].includes(normalizedSpecificShuntlineRealization);
       const specificShuntlineChoiceApplies = !normalizedSpecificShuntlineRealization || specificShuntlineChoiceEligible;
-      const defaultSoundedSpecific = specificPositions.slice().sort((left, right) => right.derivationalLevel - left.derivationalLevel)[0] || null;
+      const defaultSoundedSpecific = specificPositions
+        .filter((position) => position.silentSpecificObject !== true)
+        .slice()
+        .sort((left, right) => right.derivationalLevel - left.derivationalLevel)[0] || null;
       const soundedSpecific = specificShuntlineChoiceEligible && normalizedSpecificShuntlineRealization === "silent"
         ? null
         : defaultSoundedSpecific;
@@ -4059,12 +4071,20 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           const lesson253SpecificShuntlineChoice = specificShuntlineChoiceEligible
             && position.objectId === specificShuntlinePosition?.objectId
             && Boolean(normalizedSpecificShuntlineRealization);
-          const dyad = getClassicalNahuatlSpecificDyad(position.objectPerson, {
-            sounded: position.objectId === soundedSpecific?.objectId,
-            soundedSpecificPerson: soundedSpecific?.objectPerson || "",
-            leftCarrier: previousCarrier,
-            rightCarrier: nextCarrier
-          });
+          const sourceLexicallySilent = position.silentSpecificObject === true;
+          const dyad = sourceLexicallySilent
+            ? {
+              va1: "⎕",
+              va2: "0",
+              carrier: "⎕-0",
+              silencingRule: "lesson18.8-ayi-silent-specific-object-retained",
+            }
+            : getClassicalNahuatlSpecificDyad(position.objectPerson, {
+              sounded: position.objectId === soundedSpecific?.objectId,
+              soundedSpecificPerson: soundedSpecific?.objectPerson || "",
+              leftCarrier: previousCarrier,
+              rightCarrier: nextCarrier
+            });
           const governorUnitFrame = buildClassicalNahuatlObjectGovernorUnitFrame(position, {
             prominence: position.prominence
           });
@@ -4075,11 +4095,16 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
             va1: dyad.va1,
             va2: dyad.va2,
             carrier: dyad.carrier,
-            sounded: position.objectId === soundedSpecific?.objectId,
-            silencingRule: lesson253SpecificShuntlineChoice && normalizedSpecificShuntlineRealization === "silent"
+            sounded: !sourceLexicallySilent
+              && position.objectId === soundedSpecific?.objectId,
+            silencingRule: sourceLexicallySilent
+              ? dyad.silencingRule
+              : lesson253SpecificShuntlineChoice && normalizedSpecificShuntlineRealization === "silent"
               ? "lesson25.3-nonspecific-causative-silences-specific-shuntline"
               : dyad.silencingRule,
-            carrierAuthority: lesson253SpecificShuntlineChoice
+            carrierAuthority: sourceLexicallySilent
+              ? "Andrews Lessons 18.8 and 26.4 retained āyi silent object"
+              : lesson253SpecificShuntlineChoice
               ? normalizedSpecificShuntlineRealization === "silent"
                 ? "Andrews Lesson 25.3 general silent-specific-shuntline practice"
                 : "Andrews Lesson 25.3 sounded-specific-shuntline writer variant"

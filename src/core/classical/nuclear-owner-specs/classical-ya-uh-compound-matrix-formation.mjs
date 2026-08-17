@@ -15,19 +15,19 @@ const spec = {
   "coordinates": {
     "claim-p2783::p2783-cuica-ti-uh-to-go-away-singing": {
       "assertionId": "classical-ya-uh-compound-matrix-formation:p2783-cuica-ti-uh-to-go-away-singing",
-      "canonicalPath": "cases.intransitiveMatrices.ya-uh.targetStem"
+      "canonicalPath": "cases.intransitiveMatrices.ya-uh.facts.matrixFiniteStem"
     },
     "claim-p2784::p2784-tla-po-uh-ti-uh-to-go-away-counting": {
       "assertionId": "classical-ya-uh-compound-matrix-formation:p2784-tla-po-uh-ti-uh-to-go-away-counting",
-      "canonicalPath": "cases.intransitiveMatrices.ya-uh.authorizationStatus"
+      "canonicalPath": "cases.yaPresentPlural.facts.matrixFiniteStem"
     },
     "claim-p2785::p2785-another-possible-translation-for-a-compound-stem-built-on": {
       "assertionId": "classical-ya-uh-compound-matrix-formation:p2785-another-possible-translation-for-a-compound-stem-built-on",
-      "canonicalPath": "cases.intransitiveMatrices.ya-uh.targetStem"
+      "canonicalPath": "cases.intransitiveMatrices.ya-uh.facts.matrixReadingOptions"
     },
     "claim-p2786::p2786-tla-man-ti-uh-to-set-s-th-down": {
       "assertionId": "classical-ya-uh-compound-matrix-formation:p2786-tla-man-ti-uh-to-set-s-th-down",
-      "canonicalPath": "cases.intransitiveMatrices.ya-uh.authorizationStatus"
+      "canonicalPath": "cases.unsyncopatedYaFuture.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 25,
+  "contradictionTest": "src/tests/classical_lesson25_contradiction_audit.test.js",
+  "groups": {
+    "lesson25-type-two-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-hua-source-routes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-o-ohua-source-and-machtia": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-lo-source-routes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-lia-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-huia-class-and-parallel-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-basic-causative-transformation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-double-object-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-triple-object-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-causative-ambiguity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-mood-and-nonactive-voice": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    },
+    "lesson25-silent-object-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson25_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson25_reader_guidance.test.js"
+    }
+  }
+}

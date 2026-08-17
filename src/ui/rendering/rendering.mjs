@@ -592,6 +592,35 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       return true;
     }
+    function releaseClassicalVncResultSourceControlsForRecursiveMatrix() {
+      ClassicalVncResultSourceControlSnapshots.forEach(
+        (snapshot, control) => {
+          control.disabled = snapshot.disabled;
+          const wrapper = control.closest?.(".classical-rule-control") || null;
+          if (wrapper?.dataset) {
+            delete wrapper.dataset.classicalResultSourceFact;
+            delete wrapper.dataset.classicalResultSourceFactOwner;
+            wrapper.dataset.classicalControlAvailability = control.disabled
+              ? "disabled"
+              : "enabled";
+            wrapper.dataset.classicalAuthorityUserInput = control.disabled
+              ? "not-required"
+              : "required";
+          }
+          wrapper?.setAttribute?.("aria-disabled", String(control.disabled));
+          wrapper?.removeAttribute?.("data-classical-result-source-fact");
+          wrapper?.removeAttribute?.("data-classical-result-source-fact-owner");
+        }
+      );
+      return true;
+    }
+    function isClassicalRecursiveCompoundContinuationFrame(frame = null) {
+      return Boolean(
+        frame?.kind === "classical-nahuatl-late-vnc-derivation-closure-frame"
+        && frame.authorizationStatus === "authorized"
+        && frame.operationFrame?.operation === "compound"
+      );
+    }
     function getClassicalVncResultSourceContinuationCandidate(
       surfaceFrame = null
     ) {
@@ -637,6 +666,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
               resultFrame
             )
           : null;
+      const recursiveMatrixSelected = Boolean(
+        state.lateOperation === "compound"
+        && state.compoundRecursiveRole === "matrix"
+        && isClassicalRecursiveCompoundContinuationFrame(resultFrame)
+      );
+      if (recursiveMatrixSelected) {
+        ActiveClassicalVncResultSourceProjection = projection;
+        return Object.freeze({
+          resultFrame,
+          projection,
+          recursiveCompoundRole: "matrix"
+        });
+      }
       const sourceMatches = Boolean(
         projection
         && state.basalUnit === "vnc"
@@ -655,10 +697,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
           String(projection.sourceValence || "")
         && String(state.sourceSubject || "") ===
           String(projection.sourceSubject || "")
-        && String(state.objectKind || "") ===
-          String(projection.objectKind || "")
-        && String(state.objectPerson || "") ===
-          String(projection.objectPerson || "")
+        && (
+          String(projection.sourceValence || "") === "intransitive"
+          || (
+            String(state.objectKind || "") ===
+              String(projection.objectKind || "")
+            && String(state.objectPerson || "") ===
+              String(projection.objectPerson || "")
+          )
+        )
         && !String(state.sourceEmbedStem || "")
         && !String(state.sourceMatrixStem || "")
       );
@@ -1407,13 +1454,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceInitialIControl = typeof targetObject.document === "undefined"
         ? null
         : targetObject.document.getElementById("classical-vnc-source-initial-i-choice");
+      const sourceInitialIFact = typeof targetObject.document === "undefined"
+        ? ""
+        : String(
+          targetObject.document.getElementById("classical-vnc-source-guide")
+            ?.dataset?.classicalVncSourceInitialI || "",
+        ).trim();
       const sourceInitialISelection = basalUnit === "vnc"
         ? String(
           overrides.sourceInitialISelection
           || overrides.sourceInitialIKind
           || (sourceInitialIControl && sourceInitialIControl.disabled !== true
             ? sourceInitialIControl.checked === true ? "supportive" : "real"
-            : "")
+            : ["supportive", "real"].includes(sourceInitialIFact)
+              ? sourceInitialIFact
+              : "")
           || ""
         ).trim()
         : "";
@@ -1845,12 +1900,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const lateVariant = basalUnit === "vnc"
         ? String(overrides.lateVariant || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-late-variant", "") || "").trim()
         : "";
+      const requestedCompoundRecursiveRole = basalUnit === "vnc"
+        ? String(overrides.compoundRecursiveRole || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-recursive-role", "embed") || "embed").trim()
+        : "embed";
+      const compoundRecursiveRole = ["embed", "matrix"].includes(
+        requestedCompoundRecursiveRole
+      )
+        ? requestedCompoundRecursiveRole
+        : "embed";
       const compoundMatrixStem = basalUnit === "vnc"
         ? String(overrides.compoundMatrixStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-matrix", "") || "").trim()
         : "";
       const compoundMatrixClass = String(overrides.compoundMatrixClass || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-matrix-class", "A") || "A").trim();
-      const compoundEventOrder = String(overrides.compoundEventOrder || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-event-order", "iconic") || "iconic").trim();
-      const compoundNonactiveScope = String(overrides.compoundNonactiveScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-nonactive-scope", "none") || "none").trim();
+      const requestedCompoundEventOrder = String(overrides.compoundEventOrder || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-event-order", "iconic") || "iconic").trim();
+      const compoundEventOrderChoiceAvailable = compoundMatrixStem === "huetzi"
+        || compoundMatrixStem === "ahci"
+        || (
+          compoundMatrixStem === "ē-hua"
+          && sourceValue.replace(/^\((.*)\)$/u, "$1") === "itz"
+          && String(overrides.compoundItzSense || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-itz-sense", "") || "").trim() === "motion"
+        );
+      const compoundEventOrder = compoundEventOrderChoiceAvailable
+        ? requestedCompoundEventOrder
+        : "iconic";
+      const requestedCompoundNonactiveScope = String(overrides.compoundNonactiveScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-nonactive-scope", "none") || "none").trim();
+      const licensedCompoundNonactiveScopes = vncVoiceOperation === "passive"
+        ? ["embed", "both"]
+        : vncVoice === "impersonal"
+          ? vncVoiceOperation === "tla-impersonal"
+            ? ["embed"]
+            : ["embed", "matrix", "both"]
+          : ["none"];
+      const compoundNonactiveScope = licensedCompoundNonactiveScopes.includes(
+        requestedCompoundNonactiveScope
+      )
+        ? requestedCompoundNonactiveScope
+        : licensedCompoundNonactiveScopes[0];
       const compoundSubjectAnimacy = String(overrides.compoundSubjectAnimacy || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-subject-animacy", "nonanimate") || "nonanimate").trim();
       const compoundPossessiveStem = String(overrides.compoundPossessiveStem || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-possessive-stem", "") || "").trim();
       const compoundPossessor = String(overrides.compoundPossessor || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-possessor", "") || "").trim();
@@ -1859,6 +1944,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? overrides.compoundYaSyncopation === true
         : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-compound-ya-syncopation", "false") === "true";
       const frequentativeRepetitions = Number(overrides.frequentativeRepetitions || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-repetitions", "1") || 1);
+      const frequentativeTarget = String(overrides.frequentativeTarget || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-target", "lexical-stem") || "lexical-stem").trim();
+      const requestedFrequentativeScope = String(overrides.frequentativeScope || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-frequentative-scope", "open") || "open").trim();
+      const frequentativeScope = requestedFrequentativeScope === "patient"
+        && requestedValence === "intransitive"
+        ? "open"
+        : requestedFrequentativeScope;
       const purposiveSeries = String(overrides.purposiveSeries || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-series", "outbound-nonpast-indicative") || "outbound-nonpast-indicative").trim();
       const purposiveIrregularPluralN = Object.prototype.hasOwnProperty.call(overrides, "purposiveIrregularPluralN")
         ? overrides.purposiveIrregularPluralN === true
@@ -1872,6 +1963,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         stem: sourceValue,
         lateOperation,
         lateVariant,
+        compoundRecursiveRole,
         compoundMatrixStem,
         compoundMatrixClass,
         compoundEventOrder,
@@ -1882,6 +1974,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         compoundItzSense,
         compoundYaSyncopation,
         frequentativeRepetitions,
+        frequentativeTarget,
+        frequentativeScope,
         purposiveSeries,
         purposiveIrregularPluralN,
         purposiveExternalDirectional,
@@ -2148,21 +2242,40 @@ export function createUiRenderingApi(targetObject = globalThis) {
         getActiveClassicalVncResultSourceForState(finalizedState);
       const continuationLateOperationBlocked = false;
       const applicationRequest = buildClassicalRuleLogicVncApplicationRequest(finalizedState);
+      const recursiveCompoundRole = resultSourceContinuation
+        && lateOperation === "compound"
+        && isClassicalRecursiveCompoundContinuationFrame(
+          resultSourceContinuation.resultFrame
+        )
+        ? finalizedState.compoundRecursiveRole || "embed"
+        : "";
       const continuedBaseVncApplicationFrame = resultSourceContinuation
+        && !recursiveCompoundRole
         ? targetObject.requestClassicalVncApplicationResult(
           applicationRequest,
           resultSourceContinuation.resultFrame
         )
         : null;
-      const lessons27282933ClosureFrame = lateOperation !== "none"
-        && typeof targetObject.requestClassicalLateVncOperation === "function"
-        ? targetObject.requestClassicalLateVncOperation(
-          continuedBaseVncApplicationFrame
+      const closureRequest = recursiveCompoundRole === "embed"
+        ? {
+          ...applicationRequest,
+          compoundEmbedClosureFrame: resultSourceContinuation.resultFrame
+        }
+        : recursiveCompoundRole === "matrix"
+          ? {
+            ...applicationRequest,
+            compoundMatrixClosureFrame: resultSourceContinuation.resultFrame
+          }
+          : continuedBaseVncApplicationFrame
             ? {
               ...applicationRequest,
               sourceApplicationFrame: continuedBaseVncApplicationFrame
             }
-            : applicationRequest
+            : applicationRequest;
+      const lessons27282933ClosureFrame = lateOperation !== "none"
+        && typeof targetObject.requestClassicalLateVncOperation === "function"
+        ? targetObject.requestClassicalLateVncOperation(
+          closureRequest
         )
         : null;
       const baseVncApplicationFrame = lessons27282933ClosureFrame?.baseApplicationFrame
@@ -2390,6 +2503,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lateOperation: state.lateOperation,
         lateVariant: state.lateVariant,
         compoundMatrixStem: state.compoundMatrixStem,
+        compoundRecursiveRole: state.compoundRecursiveRole,
         compoundMatrixClass: state.compoundMatrixClass || "A",
         compoundEventOrder: state.compoundEventOrder,
         compoundNonactiveScope: state.compoundNonactiveScope,
@@ -2399,6 +2513,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         compoundItzSense: state.compoundItzSense,
         compoundYaSyncopation: state.compoundYaSyncopation,
         frequentativeRepetitions: state.frequentativeRepetitions,
+        frequentativeTarget: state.frequentativeTarget,
+        frequentativeScope: state.frequentativeScope,
         purposiveSeries: state.purposiveSeries,
         purposiveIrregularPluralN: state.purposiveIrregularPluralN,
         purposiveExternalDirectional: state.purposiveExternalDirectional,
@@ -6157,6 +6273,544 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P190-L018-1D76616F38-22"
         ])
       }),
+      "lesson24-final-vowel-and-open-valence": Object.freeze({
+        lessonSections: Object.freeze(["§24.1"]),
+        atomIds: Object.freeze([
+          "ACI-P197-L004-0100C26157",
+          "ACI-P197-L004-41D2D4ADBD",
+          "ACI-P197-L004-B2BF352FA3",
+          "ACI-P197-L009-F55ACCC0B2",
+          "ACI-P197-L009-F55ACCC0B2-02",
+          "ACI-P197-L013-F8A50FDF53",
+          "ACI-P197-L013-F8A50FDF53-02"
+        ])
+      }),
+      "lesson24-valence-neutral-sources": Object.freeze({
+        lessonSections: Object.freeze(["§24.2", "§24.2.1", "§24.2.2"]),
+        atomIds: Object.freeze([
+          "ACI-P197-L020-A015149659",
+          "ACI-P197-L020-922A6633BD",
+          "ACI-P198-L002-C9A086E738",
+          "ACI-P198-L018-95E49E9CDE"
+        ])
+      }),
+      "lesson24-final-i-type-one-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§24.3", "§24.3.1", "§24.3.1.a", "§24.3.1.b"]),
+        atomIds: Object.freeze([
+          "ACI-P198-L023-BE79D91072",
+          "ACI-P198-L023-79E4B74946",
+          "ACI-P198-L023-E90C8C5F70",
+          "ACI-P199-L002-0B09F12475",
+          "ACI-P199-L003-B99FC81777",
+          "ACI-P199-L011-066C475FF2",
+          "ACI-P199-L012-84FE322A8A-07",
+          "ACI-P199-L017-E339F574A3",
+          "ACI-P199-L017-E339F574A3-03",
+          "ACI-P199-L018-5551FB6CD1",
+          "ACI-P199-L022-15B91EAC39"
+        ])
+      }),
+      "lesson24-final-a-and-ya-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§24.3.2", "§24.3.2.a", "§24.3.2.b"]),
+        atomIds: Object.freeze([
+          "ACI-P200-L002-CC9101A25B",
+          "ACI-P200-L003-77059CB930",
+          "ACI-P200-L003-982E8ACDEA",
+          "ACI-P200-L006-06B6C54C5B",
+          "ACI-P200-L009-BE43182B1A",
+          "ACI-P200-L009-E833325858",
+          "ACI-P200-L010-EB2EFD3CFA",
+          "ACI-P200-L010-EB2EFD3CFA-02"
+        ])
+      }),
+      "lesson24-destockal-source-architecture": Object.freeze({
+        lessonSections: Object.freeze(["§24.4"]),
+        atomIds: Object.freeze([
+          "ACI-P200-L012-0D81C1B3C6",
+          "ACI-P200-L012-E9126617CD",
+          "ACI-P200-L012-50877BE1F3",
+          "ACI-P200-L012-80FC88961C",
+          "ACI-P200-L013-5D05DC4426",
+          "ACI-P200-L016-2CD7853895"
+        ])
+      }),
+      "lesson24-ni-hui-destockal-sources": Object.freeze({
+        lessonSections: Object.freeze(["§24.5", "§24.5.1", "§24.5.2", "§24.5.3", "§24.5.4", "§24.5.5", "§24.5.6"]),
+        atomIds: Object.freeze([
+          "ACI-P201-L004-8CF59410D7",
+          "ACI-P201-L004-5D859597BD",
+          "ACI-P201-L005-2E368A61C9",
+          "ACI-P203-L004-321DD44966"
+        ])
+      }),
+      "lesson24-ni-hui-causative-procedure": Object.freeze({
+        lessonSections: Object.freeze(["§24.5.7", "§24.5.7.a", "§24.5.7.b", "§24.5.8"]),
+        atomIds: Object.freeze([
+          "ACI-P203-L005-AC982449B7",
+          "ACI-P203-L022-3EF3B0BE62",
+          "ACI-P203-L022-F1EA346E69"
+        ])
+      }),
+      "lesson24-coalesced-and-obsolete-destockal-sources": Object.freeze({
+        lessonSections: Object.freeze(["§24.5.9"]),
+        atomIds: Object.freeze([
+          "ACI-P203-L023-C42FB7761B",
+          "ACI-P203-L023-4A6F6CC3BE",
+          "ACI-P203-L023-4A6F6CC3BE-02",
+          "ACI-P203-L023-4A6F6CC3BE-03",
+          "ACI-P204-L005-94CD718F68"
+        ])
+      }),
+      "lesson24-hua-destockal-sources-and-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§24.6", "§24.6.1", "§24.6.2", "§24.6.3", "§24.6.4", "§24.6.5", "§24.6.6"]),
+        atomIds: Object.freeze([
+          "ACI-P204-L008-5A17D67DB2",
+          "ACI-P204-L008-C86510A41C",
+          "ACI-P205-L003-F4904E5310",
+          "ACI-P205-L003-5DAFC37350",
+          "ACI-P205-L006-D3DA91BCBB",
+          "ACI-P205-L006-F62844DC47",
+          "ACI-P205-L006-4B4A825A0C",
+          "ACI-P205-L007-A1C28A1FC6",
+          "ACI-P205-L007-293BC8F28B",
+          "ACI-P205-L008-A3BDFC0725",
+          "ACI-P205-L009-0214C1066F",
+          "ACI-P205-L009-F252FAD5BE",
+          "ACI-P206-L002-B72164A055-02",
+          "ACI-P206-L005-95A1AA0406"
+        ])
+      }),
+      "lesson24-short-vowel-hui-destockal-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§24.7"]),
+        atomIds: Object.freeze([
+          "ACI-P206-L007-C56FA96CF4",
+          "ACI-P206-L007-C5E00AA381",
+          "ACI-P206-L007-F72EFF40D4",
+          "ACI-P206-L015-1F6FA5EBD2",
+          "ACI-P206-L022-C4B0CB6F8E",
+          "ACI-P206-L022-C4B0CB6F8E-02",
+          "ACI-P206-L022-54AFBC8678",
+          "ACI-P207-L003-9BCDCD44AC",
+          "ACI-P207-L003-2FF7E6518C",
+          "ACI-P207-L004-4B33459DA0",
+          "ACI-P207-L004-A1CC5F2FD8",
+          "ACI-P207-L007-7D78501BE1-03",
+          "ACI-P207-L008-46EB84E7C8-02",
+          "ACI-P207-L008-46EB84E7C8-04",
+          "ACI-P207-L008-46EB84E7C8-05",
+          "ACI-P207-L009-EBB422E3C7"
+        ])
+      }),
+      "lesson24-causative-participant-transform": Object.freeze({
+        lessonSections: Object.freeze(["§24.8", "§24.8.1", "§24.8.2", "§24.8.3", "§24.8.3.a", "§24.8.3.b"]),
+        atomIds: Object.freeze([
+          "ACI-P207-L011-1AE138BAE5",
+          "ACI-P207-L011-1AE138BAE5-02",
+          "ACI-P207-L011-1AE138BAE5-03",
+          "ACI-P207-L011-1AE138BAE5-04",
+          "ACI-P207-L011-1AE138BAE5-05",
+          "ACI-P207-L011-1AE138BAE5-06",
+          "ACI-P207-L011-1AE138BAE5-07",
+          "ACI-P207-L012-60CD6DCD7C",
+          "ACI-P207-L012-04D2245B03",
+          "ACI-P207-L013-4AD3C6AA61",
+          "ACI-P208-L003-8927213F00",
+          "ACI-P208-L004-33D2C17DCF",
+          "ACI-P208-L016-71FD30C6BB",
+          "ACI-P208-L020-6DE542BA8D",
+          "ACI-P208-L032-27AA1204F0",
+          "ACI-P209-L006-AE35630318"
+        ])
+      }),
+      "lesson25-type-two-foundation": Object.freeze({
+        lessonSections: Object.freeze(["§25.1"]),
+        atomIds: Object.freeze([
+          "ACI-P210-L003-7F727155A5",
+          "ACI-P210-L004-A6D2089C00",
+          "ACI-P210-L004-68EDCE98C5",
+          "ACI-P210-L004-1BE0677349",
+          "ACI-P210-L009-AA9422A524",
+          "ACI-P210-L009-E029824E95"
+        ])
+      }),
+      "lesson25-hua-source-routes": Object.freeze({
+        lessonSections: Object.freeze(["§25.2", "§25.2.1", "§25.2.2", "§25.2.3", "§25.2.4"]),
+        atomIds: Object.freeze([
+          "ACI-P210-L010-ACC5505A3E",
+          "ACI-P211-L005-9246CC4636",
+          "ACI-P211-L008-44EA14D5DD",
+          "ACI-P211-L011-E5D7138041",
+          "ACI-P211-L011-36EEB7865B",
+          "ACI-P211-L013-9FC2EB47A3-06",
+          "ACI-P211-L013-9FC2EB47A3-07",
+          "ACI-P211-L015-0CCCA78A50",
+          "ACI-P211-L015-41A399C146",
+          "ACI-P211-L019-038B503B22",
+          "ACI-P211-L021-E200A210A5-08",
+          "ACI-P212-L003-312730D135",
+          "ACI-P212-L004-CE87C8BC81-03"
+        ])
+      }),
+      "lesson25-o-ohua-source-and-machtia": Object.freeze({
+        lessonSections: Object.freeze(["§25.3", "§25.3.1", "§25.3.2"]),
+        atomIds: Object.freeze([
+          "ACI-P212-L007-72A5E96D91",
+          "ACI-P212-L008-A7FF53186B",
+          "ACI-P212-L008-87E32CE33E",
+          "ACI-P212-L008-87E32CE33E-02",
+          "ACI-P212-L015-EEB906988F-10",
+          "ACI-P212-L015-EEB906988F-11",
+          "ACI-P212-L015-EEB906988F-12",
+          "ACI-P212-L015-EEB906988F-13",
+          "ACI-P212-L015-EEB906988F-18",
+          "ACI-P212-L015-EEB906988F-21",
+          "ACI-P213-L002-A42478FB85",
+          "ACI-P213-L003-08D566EA9D-05",
+          "ACI-P213-L003-08D566EA9D-06",
+          "ACI-P213-L004-B91AC30E8D",
+          "ACI-P213-L005-5A112863FE-05",
+          "ACI-P213-L006-EF3B94E512",
+          "ACI-P213-L009-FDD8C8B72C",
+          "ACI-P213-L011-99B20D52CC"
+        ])
+      }),
+      "lesson25-lo-source-routes": Object.freeze({
+        lessonSections: Object.freeze(["§25.4", "§25.4.1", "§25.4.1.a", "§25.4.1.b", "§25.4.2", "§25.4.2.a", "§25.4.2.b", "§25.4.3", "§25.4.4", "§25.4.5", "§25.4.5.a", "§25.4.5.b", "§25.4.6", "§25.4.7", "§25.4.8"]),
+        atomIds: Object.freeze([
+          "ACI-P213-L013-4F17B9291F",
+          "ACI-P213-L014-02D69B3173-05",
+          "ACI-P213-L017-B9573DBC0B",
+          "ACI-P213-L018-80F9B46034",
+          "ACI-P214-L003-3366D9FA14",
+          "ACI-P214-L006-564E15640E",
+          "ACI-P214-L008-C367EA205F",
+          "ACI-P214-L008-C367EA205F-02",
+          "ACI-P214-L010-D55342E01C",
+          "ACI-P214-L012-A6744F0BCC",
+          "ACI-P214-L016-CCAAA631C7",
+          "ACI-P215-L003-B23D28DA6B-03",
+          "ACI-P215-L003-B23D28DA6B-04",
+          "ACI-P215-L003-B23D28DA6B-08"
+        ])
+      }),
+      "lesson25-lia-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§25.5", "§25.5.1", "§25.5.2"]),
+        atomIds: Object.freeze([
+          "ACI-P215-L004-A944546109",
+          "ACI-P215-L004-BF4511DCF9",
+          "ACI-P215-L005-80D71ADA69",
+          "ACI-P215-L010-69A5389FF6"
+        ])
+      }),
+      "lesson25-huia-class-and-parallel-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§25.6", "§25.7", "§25.8", "§25.8.a", "§25.8.b", "§25.8.a [2]", "§25.8.b [2]", "§25.8.a [3]", "§25.8.b [3]"]),
+        atomIds: Object.freeze([
+          "ACI-P215-L021-6A9D03D19F",
+          "ACI-P215-L021-8F5E4850FE",
+          "ACI-P215-L022-2A40037BBC",
+          "ACI-P216-L002-2DD04D3990",
+          "ACI-P216-L005-DBF095B939",
+          "ACI-P216-L009-01E560BC5E",
+          "ACI-P216-L011-4A1B68D91C",
+          "ACI-P216-L011-9466400243",
+          "ACI-P216-L016-8354D73C9F"
+        ])
+      }),
+      "lesson25-basic-causative-transformation": Object.freeze({
+        lessonSections: Object.freeze(["§25.9", "§25.10", "§25.10.1", "§25.10.2", "§25.10.3"]),
+        atomIds: Object.freeze([
+          "ACI-P216-L023-724825A915",
+          "ACI-P216-L023-4D6DE31C86",
+          "ACI-P216-L023-4D6DE31C86-02",
+          "ACI-P216-L023-4D6DE31C86-03",
+          "ACI-P216-L023-4D6DE31C86-04",
+          "ACI-P216-L023-3F7427C48D",
+          "ACI-P217-L002-D1EDAC2F0F",
+          "ACI-P217-L003-75DA0711B4",
+          "ACI-P217-L004-5E1387A28E",
+          "ACI-P217-L007-67ADB338BA",
+          "ACI-P217-L009-FBFFE74F56-04",
+          "ACI-P217-L017-D9E726906B",
+          "ACI-P217-L019-3DDF8C51A6-04"
+        ])
+      }),
+      "lesson25-double-object-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§25.11", "§25.11.1", "§25.11.1.a", "§25.11.1.b", "§25.11.1.c", "§25.11.2", "§25.11.2.a", "§25.11.2.b", "§25.11.3", "§25.11.3.a", "§25.11.3.b", "§25.11.3.c"]),
+        atomIds: Object.freeze([
+          "ACI-P217-L020-D74CF904B5", "ACI-P217-L020-C6D8F7684A", "ACI-P218-L002-3674ABB060", "ACI-P218-L003-D9196DF561", "ACI-P218-L005-D68DE08C56-03", "ACI-P218-L005-D68DE08C56-04", "ACI-P218-L005-D68DE08C56-05", "ACI-P218-L005-D68DE08C56-06", "ACI-P218-L009-BC2CDF2287-02", "ACI-P218-L009-BC2CDF2287-03", "ACI-P218-L009-BC2CDF2287-04", "ACI-P218-L010-B22C724227", "ACI-P218-L012-4C691DEDAA-03", "ACI-P218-L012-4C691DEDAA-04", "ACI-P218-L015-352D7981C6-03", "ACI-P218-L015-352D7981C6-04", "ACI-P218-L016-16881645EA", "ACI-P218-L016-F353E06749", "ACI-P219-L003-9F4E6FC7BD-04", "ACI-P219-L003-9F4E6FC7BD-05", "ACI-P219-L003-9F4E6FC7BD-06", "ACI-P219-L013-6D2DAE201E-05", "ACI-P219-L013-6D2DAE201E-09", "ACI-P219-L015-47330B3DFA", "ACI-P219-L017-E757359165-04", "ACI-P219-L017-E757359165-05", "ACI-P219-L018-1402C5AE47", "ACI-P219-L019-D78454E3EA", "ACI-P219-L021-7CF3AFEE12-03", "ACI-P219-L021-7CF3AFEE12-04", "ACI-P219-L021-7CF3AFEE12-05", "ACI-P219-L023-63BDC906E1", "ACI-P219-L025-A783ADE156-02", "ACI-P219-L025-A783ADE156-03", "ACI-P219-L026-2209B8637E", "ACI-P220-L002-04BACF49C5", "ACI-P220-L005-1B72FC4B84-07", "ACI-P220-L008-84947825C4", "ACI-P220-L012-FEB1ABACB0-06", "ACI-P220-L012-FEB1ABACB0-07", "ACI-P220-L014-23CAA5B7D3", "ACI-P220-L016-B30B79F639-03", "ACI-P220-L016-B30B79F639-04", "ACI-P220-L017-D6ABE41050", "ACI-P220-L017-802ED2B771", "ACI-P220-L019-3AA81384AD-04", "ACI-P220-L019-3AA81384AD-05", "ACI-P220-L019-3AA81384AD-06", "ACI-P220-L021-98532AFA78", "ACI-P220-L023-5A588D472B-03", "ACI-P220-L023-5A588D472B-04"
+        ])
+      }),
+      "lesson25-triple-object-causatives": Object.freeze({
+        lessonSections: Object.freeze(["§25.12", "§25.12.1", "§25.12.2", "§25.12.3"]),
+        atomIds: Object.freeze([
+          "ACI-P221-L002-69CD4BC366", "ACI-P221-L002-B393BD53F0", "ACI-P221-L004-26B72956DB", "ACI-P221-L005-6658F8E93F-05", "ACI-P221-L006-30074FEE0B-02", "ACI-P221-L006-30074FEE0B-05", "ACI-P221-L006-30074FEE0B-06", "ACI-P221-L006-30074FEE0B-07", "ACI-P221-L007-9D49EE6181-05", "ACI-P221-L008-BB8720ABCF-02", "ACI-P221-L011-8B8DC2FD6E-02", "ACI-P221-L013-3A35527762-06", "ACI-P221-L013-3A35527762-07", "ACI-P222-L002-4D7E7EBD5B-02", "ACI-P222-L003-98A2F04E5A", "ACI-P222-L005-BEA92F4EE9-05", "ACI-P222-L005-BEA92F4EE9-07", "ACI-P222-L006-FA13F1A036", "ACI-P222-L007-7FFD247E7D-05", "ACI-P222-L008-E421BFF1D7-02", "ACI-P222-L010-538808102C-04", "ACI-P222-L010-538808102C-07", "ACI-P222-L012-4A5958A95F-02", "ACI-P222-L012-4A5958A95F-07", "ACI-P222-L015-E563929EA7-04", "ACI-P222-L015-E563929EA7-07", "ACI-P222-L016-442BE1D2E8", "ACI-P222-L017-C53519C633-05", "ACI-P223-L002-98D1B0BB09-06", "ACI-P223-L002-98D1B0BB09-07", "ACI-P223-L006-4952CEF74C-07", "ACI-P223-L011-F5DB947CC9-03", "ACI-P223-L011-F5DB947CC9-04", "ACI-P223-L011-F5DB947CC9-05"
+        ])
+      }),
+      "lesson25-causative-ambiguity": Object.freeze({
+        lessonSections: Object.freeze(["§25.13"]),
+        atomIds: Object.freeze([
+          "ACI-P223-L013-54403BB040",
+          "ACI-P223-L013-93465EC1C5",
+          "ACI-P223-L013-F59A8CC80D",
+          "ACI-P223-L013-FE0B6576A5",
+          "ACI-P223-L013-F04885787B",
+          "ACI-P223-L013-D5C78BA9A6",
+          "ACI-P223-L014-38D7D4236F",
+          "ACI-P223-L014-2265B7752D"
+        ])
+      }),
+      "lesson25-mood-and-nonactive-voice": Object.freeze({
+        lessonSections: Object.freeze(["§25.14", "§25.15"]),
+        atomIds: Object.freeze([
+          "ACI-P223-L014-D44004664E",
+          "ACI-P224-L011-C1552EFF79"
+        ])
+      }),
+      "lesson25-silent-object-supplementation": Object.freeze({
+        lessonSections: Object.freeze(["§25.16"]),
+        atomIds: Object.freeze([
+          "ACI-P224-L023-5F7E12F303",
+          "ACI-P224-L023-00A73C7DF4",
+          "ACI-P224-L023-BE002E40FA",
+          "ACI-P225-L007-A1F68B706C-02",
+          "ACI-P225-L007-A1F68B706C-03"
+        ])
+      }),
+      "lesson26-applicative-foundation-and-irregular-sources": Object.freeze({
+        lessonSections: Object.freeze(["§26.1", "§26.1.1", "§26.1.2", "§26.1.3"]),
+        atomIds: Object.freeze([
+          "ACI-P226-L003-A982ACCD2B", "ACI-P226-L005-C80078EBAA", "ACI-P226-L007-A6A3D01C81", "ACI-P226-L008-F8A201908A", "ACI-P226-L008-C68D910B84", "ACI-P226-L009-C995EFBBB4", "ACI-P226-L009-CC47D12972", "ACI-P226-L010-DF64443D02-02", "ACI-P226-L010-DF64443D02-04", "ACI-P226-L010-DF64443D02-06", "ACI-P227-L006-C2BE00887C", "ACI-P227-L012-A0A3A1B78B", "ACI-P227-L013-565EB7F297", "ACI-P227-L014-5D8A73DBFA"
+        ])
+      }),
+      "lesson26-type-one-applicatives": Object.freeze({
+        lessonSections: Object.freeze(["§26.2"]),
+        atomIds: Object.freeze([
+          "ACI-P227-L021-933EB7BEA3", "ACI-P227-L021-34A51161E9", "ACI-P227-L023-FD84C3EDE5-04", "ACI-P227-L023-FD84C3EDE5-05", "ACI-P227-L026-7875BF00DF-02", "ACI-P227-L026-7875BF00DF-03", "ACI-P227-L026-7875BF00DF-04", "ACI-P227-L026-7875BF00DF-05", "ACI-P227-L026-7875BF00DF-06", "ACI-P227-L026-7875BF00DF-07", "ACI-P227-L026-7875BF00DF-08", "ACI-P228-L002-5FA87BE988-03", "ACI-P228-L002-5FA87BE988-04", "ACI-P228-L002-5FA87BE988-05", "ACI-P228-L002-5FA87BE988-06", "ACI-P228-L003-BF98FC5176", "ACI-P228-L004-C44FA27BD0-02", "ACI-P228-L004-C44FA27BD0-03", "ACI-P228-L004-C44FA27BD0-04", "ACI-P228-L004-C44FA27BD0-05", "ACI-P228-L004-C44FA27BD0-06", "ACI-P228-L004-C44FA27BD0-07", "ACI-P228-L004-C44FA27BD0-08", "ACI-P228-L004-C44FA27BD0-09", "ACI-P228-L005-93B672B8FC", "ACI-P228-L005-93B672B8FC-03", "ACI-P228-L005-93B672B8FC-04", "ACI-P228-L005-93B672B8FC-05", "ACI-P228-L005-93B672B8FC-10", "ACI-P228-L006-55E0068436", "ACI-P228-L006-78C5DF026A", "ACI-P228-L007-B27229A16A", "ACI-P228-L011-A20CD8B855", "ACI-P228-L011-C54E009F0D", "ACI-P228-L013-C66C1EF955-02", "ACI-P228-L013-C66C1EF955-03", "ACI-P228-L013-C66C1EF955-04", "ACI-P228-L013-C66C1EF955-05", "ACI-P228-L013-C66C1EF955-06", "ACI-P228-L015-9F289BF406", "ACI-P228-L016-66BD99BD27-02", "ACI-P228-L016-66BD99BD27-03", "ACI-P228-L018-BAF8083CDC", "ACI-P229-L002-8A45F7AA1C-04", "ACI-P229-L002-8A45F7AA1C-08", "ACI-P229-L003-CDB900B2DA"
+        ])
+      }),
+      "lesson26-type-two-foundation-and-final-i": Object.freeze({
+        lessonSections: Object.freeze(["§26.3", "§26.4"]),
+        atomIds: Object.freeze([
+          "ACI-P229-L004-5BE588303C", "ACI-P229-L004-5BE588303C-03", "ACI-P229-L004-5BE588303C-04", "ACI-P229-L004-5BE588303C-05", "ACI-P229-L005-39BE4BC60C", "ACI-P229-L006-C8F2268F67", "ACI-P229-L006-C9DB2138FA", "ACI-P229-L007-00AD8FF13E", "ACI-P229-L008-C401360710", "ACI-P229-L009-DA4DB3DC15-02", "ACI-P229-L009-DA4DB3DC15-03", "ACI-P229-L009-DA4DB3DC15-04", "ACI-P229-L009-DA4DB3DC15-05", "ACI-P229-L009-DA4DB3DC15-06", "ACI-P229-L010-B6155F595C-02", "ACI-P229-L010-B6155F595C-03", "ACI-P229-L010-B6155F595C-05", "ACI-P229-L010-B6155F595C-06", "ACI-P229-L010-B6155F595C-07", "ACI-P229-L010-B6155F595C-08", "ACI-P229-L010-B6155F595C-09", "ACI-P229-L011-4FDD74C66A", "ACI-P229-L012-E9C612E6CF-04", "ACI-P229-L012-E9C612E6CF-05", "ACI-P229-L013-040F89FE83-06", "ACI-P230-L002-437A28A84E-02", "ACI-P230-L002-437A28A84E-03", "ACI-P230-L002-437A28A84E-05", "ACI-P230-L004-D37DE58136-03", "ACI-P230-L004-D37DE58136-05", "ACI-P230-L004-D37DE58136-06", "ACI-P230-L004-D37DE58136-07", "ACI-P230-L004-D37DE58136-08", "ACI-P230-L004-D37DE58136-10", "ACI-P230-L005-EA0D7F1B32", "ACI-P230-L007-BFC1CB8CBF", "ACI-P230-L010-BA0C19DBCA", "ACI-P230-L011-916BB68375-03", "ACI-P230-L011-916BB68375-05", "ACI-P230-L012-7E38431F1A", "ACI-P230-L013-2540ED4618"
+        ])
+      }),
+      "lesson26-final-a-source-routes": Object.freeze({
+        lessonSections: Object.freeze(["§26.5", "§26.6", "§26.7"]),
+        atomIds: Object.freeze([
+          "ACI-P230-L015-3FB3CC0CF9", "ACI-P230-L016-9C708546DF", "ACI-P230-L017-09EE551154", "ACI-P230-L018-039F51A37C", "ACI-P230-L020-DB270BC08E-02", "ACI-P230-L020-DB270BC08E-03", "ACI-P230-L020-DB270BC08E-05", "ACI-P231-L003-796C208C46", "ACI-P231-L006-41318DE369-03", "ACI-P231-L006-41318DE369-04", "ACI-P231-L006-41318DE369-05", "ACI-P231-L006-41318DE369-06", "ACI-P231-L006-41318DE369-07", "ACI-P231-L006-41318DE369-08", "ACI-P231-L006-41318DE369-09", "ACI-P231-L006-41318DE369-10", "ACI-P231-L007-05534E11E6", "ACI-P231-L011-C6EE95C7E0-02", "ACI-P231-L011-C6EE95C7E0-03", "ACI-P231-L011-C6EE95C7E0-04", "ACI-P231-L011-C6EE95C7E0-05", "ACI-P231-L014-C478DF09D8", "ACI-P231-L016-C9AFD9BAB4", "ACI-P231-L018-89B7756BD1", "ACI-P231-L019-D081B8DFA2-02", "ACI-P231-L019-D081B8DFA2-03", "ACI-P231-L019-D081B8DFA2-04", "ACI-P231-L019-D081B8DFA2-05", "ACI-P231-L019-D081B8DFA2-06", "ACI-P231-L019-D081B8DFA2-07", "ACI-P231-L019-D081B8DFA2-08", "ACI-P231-L019-D081B8DFA2-09", "ACI-P231-L021-6A6A2DA96D-05", "ACI-P231-L021-6A6A2DA96D-06", "ACI-P232-L001-2DA1BE2C24", "ACI-P232-L002-7F74BE9B59-02", "ACI-P232-L002-7F74BE9B59-03", "ACI-P232-L002-7F74BE9B59-04", "ACI-P232-L002-7F74BE9B59-05", "ACI-P232-L002-7F74BE9B59-06", "ACI-P232-L002-7F74BE9B59-07", "ACI-P232-L002-7F74BE9B59-08", "ACI-P232-L004-2946738E7C"
+        ])
+      }),
+      "lesson26-shape-and-class-exceptions": Object.freeze({
+        lessonSections: Object.freeze(["§26.8", "§26.8.1", "§26.8.2", "§26.8.3", "§26.8.4"]),
+        atomIds: Object.freeze([
+          "ACI-P232-L005-6A0B288C7C", "ACI-P232-L007-D72827CB2A", "ACI-P232-L007-3A952EFE24", "ACI-P232-L010-054FDBEBC7", "ACI-P232-L012-4FC31D858A-02", "ACI-P232-L012-4FC31D858A-03", "ACI-P232-L012-4FC31D858A-04", "ACI-P232-L012-4FC31D858A-05", "ACI-P232-L012-4FC31D858A-06", "ACI-P232-L013-D76F93951C", "ACI-P232-L015-A383415472", "ACI-P232-L015-055BCB830D", "ACI-P232-L018-C566382FB0", "ACI-P233-L002-7386774E19"
+        ])
+      }),
+      "lesson26-oa-and-huia-routes": Object.freeze({
+        lessonSections: Object.freeze(["§26.9", "§26.9.1", "§26.9.2", "§26.9.3", "§26.9.4"]),
+        atomIds: Object.freeze([
+          "ACI-P233-L006-425413205D", "ACI-P233-L007-8A286943CF", "ACI-P233-L007-8A286943CF-02", "ACI-P233-L009-EC43309F24", "ACI-P233-L016-CEE1753984", "ACI-P233-L016-CEE1753984-02", "ACI-P233-L018-2FFC4FD9E7-04", "ACI-P233-L018-2FFC4FD9E7-05", "ACI-P233-L019-B0059DD34C", "ACI-P233-L020-ED7A4D4468-02", "ACI-P233-L020-ED7A4D4468-03", "ACI-P233-L020-ED7A4D4468-04", "ACI-P233-L020-ED7A4D4468-05", "ACI-P233-L020-ED7A4D4468-06", "ACI-P233-L020-ED7A4D4468-07", "ACI-P233-L020-ED7A4D4468-08", "ACI-P233-L021-34A6DD3BF3", "ACI-P233-L022-184E6EBC5E", "ACI-P233-L022-184E6EBC5E-03", "ACI-P233-L022-184E6EBC5E-04", "ACI-P233-L023-5910A6893A-02", "ACI-P233-L023-5910A6893A-03", "ACI-P233-L023-5910A6893A-04", "ACI-P233-L023-5910A6893A-05", "ACI-P233-L023-5910A6893A-06", "ACI-P233-L023-5910A6893A-07", "ACI-P233-L025-D3AE38252A", "ACI-P234-L002-D64AF9E3B9", "ACI-P234-L003-93F522D37A-02", "ACI-P234-L003-93F522D37A-03", "ACI-P234-L003-93F522D37A-04", "ACI-P234-L003-93F522D37A-05", "ACI-P234-L003-93F522D37A-06", "ACI-P234-L004-4F5AC0999F-04", "ACI-P234-L004-4F5AC0999F-05", "ACI-P234-L004-4F5AC0999F-07", "ACI-P234-L004-4F5AC0999F-09", "ACI-P234-L005-CF855E2568", "ACI-P234-L006-4D8302EF11-02", "ACI-P234-L006-4D8302EF11-03", "ACI-P234-L006-4D8302EF11-04", "ACI-P234-L006-4D8302EF11-05", "ACI-P234-L006-4D8302EF11-06", "ACI-P234-L006-4D8302EF11-07", "ACI-P234-L008-7BD9D2ED17", "ACI-P234-L008-4C185DF631"
+        ])
+      }),
+      "lesson26-special-and-parallel-applicatives": Object.freeze({
+        lessonSections: Object.freeze(["§26.10", "§26.11", "§26.12", "§26.13", "§26.14"]),
+        atomIds: Object.freeze([
+          "ACI-P234-L009-9DEA0C8A10", "ACI-P234-L011-106B726E09", "ACI-P234-L011-5D06C0DE59", "ACI-P235-L003-8C55879B51", "ACI-P235-L003-8C55879B51-03", "ACI-P235-L006-A0F5C4FA62", "ACI-P235-L007-E0CDFF94E0", "ACI-P235-L007-E0CDFF94E0-02", "ACI-P235-L007-308FF2767D", "ACI-P235-L008-C80910E86D", "ACI-P235-L008-1CCA17A08A"
+        ])
+      }),
+      "lesson26-single-object-applicatives": Object.freeze({
+        lessonSections: Object.freeze(["§26.15", "§26.15.c"]),
+        atomIds: Object.freeze([
+          "ACI-P235-L009-DD552752FB", "ACI-P235-L015-8C9F2A43F6", "ACI-P235-L019-98A8FE6814", "ACI-P235-L020-D4D244C399-02", "ACI-P235-L020-D4D244C399-03", "ACI-P235-L020-D4D244C399-04", "ACI-P235-L020-D4D244C399-05", "ACI-P235-L020-D4D244C399-06", "ACI-P235-L020-D4D244C399-07", "ACI-P235-L022-A95E5A077E-02", "ACI-P235-L022-A95E5A077E-03", "ACI-P235-L022-A95E5A077E-04", "ACI-P235-L022-A95E5A077E-05", "ACI-P235-L022-A95E5A077E-06", "ACI-P235-L022-A95E5A077E-07"
+        ])
+      }),
+      "lesson26-double-object-applicatives": Object.freeze({
+        lessonSections: Object.freeze(["§26.16", "§26.16.1", "§26.16.1.b [2]", "§26.16.2"]),
+        atomIds: Object.freeze([
+          "ACI-P235-L023-E66741A07C", "ACI-P235-L024-CDCF8D6F2F", "ACI-P236-L013-7084ED2219-02", "ACI-P236-L013-7084ED2219-03", "ACI-P236-L013-7084ED2219-04", "ACI-P236-L013-7084ED2219-07", "ACI-P236-L013-7084ED2219-11", "ACI-P236-L013-7084ED2219-14", "ACI-P236-L014-E705BA4F0E", "ACI-P236-L014-E705BA4F0E-04", "ACI-P236-L018-5CF2FFEB9A", "ACI-P236-L021-03A5955B08-03", "ACI-P236-L021-03A5955B08-04"
+        ])
+      }),
+      "lesson26-triple-object-applicatives": Object.freeze({
+        lessonSections: Object.freeze(["§26.17", "§26.17.1", "§26.17.2", "§26.17.3"]),
+        atomIds: Object.freeze([
+          "ACI-P237-L003-7BD6C2098D", "ACI-P237-L004-D850E49EEC", "ACI-P237-L018-9144F99F45", "ACI-P237-L020-AC9EAB3102-02", "ACI-P237-L020-AC9EAB3102-03", "ACI-P237-L020-AC9EAB3102-04", "ACI-P237-L022-B8B8A49DD7-02", "ACI-P237-L022-B8B8A49DD7-03", "ACI-P237-L022-B8B8A49DD7-04", "ACI-P238-L003-16BDA2FAB4", "ACI-P238-L005-5C65766E5F-02", "ACI-P238-L005-5C65766E5F-03", "ACI-P238-L005-5C65766E5F-04"
+        ])
+      }),
+      "lesson26-ambiguity-mood-and-voice": Object.freeze({
+        lessonSections: Object.freeze(["§26.18", "§26.18.1", "§26.18.2", "§26.19", "§26.20"]),
+        atomIds: Object.freeze([
+          "ACI-P238-L008-8CA7D4BC4A", "ACI-P238-L008-0AF5CC5265", "ACI-P238-L009-E3E14AD156", "ACI-P238-L009-4E590833FC", "ACI-P238-L009-4E590833FC-02", "ACI-P238-L009-4E590833FC-03", "ACI-P238-L009-4E590833FC-04", "ACI-P238-L009-4E590833FC-05", "ACI-P238-L010-C32B76ACC7", "ACI-P238-L010-CA95056F4E", "ACI-P238-L011-73A1D9C05F", "ACI-P238-L011-4117C8579A", "ACI-P239-L004-21244CF86E", "ACI-P239-L016-699B7818A5", "ACI-P239-L021-00718A4580-02", "ACI-P239-L021-00718A4580-03", "ACI-P239-L023-506B467B50-02", "ACI-P239-L023-506B467B50-03", "ACI-P239-L023-506B467B50-04", "ACI-P239-L023-506B467B50-05", "ACI-P239-L024-6A045F987A", "ACI-P239-L024-6A045F987A-06", "ACI-P240-L003-B84364D890-02", "ACI-P240-L003-B84364D890-03", "ACI-P240-L003-B84364D890-04", "ACI-P240-L003-B84364D890-05", "ACI-P240-L005-009E4DA941-02", "ACI-P240-L005-009E4DA941-03", "ACI-P240-L005-009E4DA941-04", "ACI-P240-L005-009E4DA941-05", "ACI-P240-L006-56D9D29A3A", "ACI-P240-L006-53809268D2", "ACI-P240-L007-AB21C9FE0F-02", "ACI-P240-L007-AB21C9FE0F-03", "ACI-P240-L007-AB21C9FE0F-04", "ACI-P240-L007-AB21C9FE0F-05", "ACI-P240-L007-AB21C9FE0F-06", "ACI-P240-L007-AB21C9FE0F-07", "ACI-P240-L008-91AB99C368-02", "ACI-P240-L008-91AB99C368-03", "ACI-P240-L008-91AB99C368-04", "ACI-P240-L008-91AB99C368-05", "ACI-P240-L008-91AB99C368-06", "ACI-P240-L008-91AB99C368-07", "ACI-P240-L008-91AB99C368-08"
+        ])
+      }),
+      "lesson26-object-interpretation-and-applicative-unit": Object.freeze({
+        lessonSections: Object.freeze(["§26.21", "§26.21.1", "§26.21.2", "§26.22", "§26.23"]),
+        atomIds: Object.freeze([
+          "ACI-P240-L009-003DD511BE", "ACI-P240-L009-85B83DC91F", "ACI-P240-L016-4A98E25776", "ACI-P240-L024-3B4453E4F9", "ACI-P240-L025-7879B900CC", "ACI-P241-L004-866E49D0FB", "ACI-P241-L005-1DB043BE9E", "ACI-P241-L006-1CED0E12BC-04", "ACI-P241-L008-7A1A30F7B5", "ACI-P241-L008-B4B13D1E3B", "ACI-P241-L015-1D871199AC", "ACI-P241-L015-7D58CA296B", "ACI-P241-L015-D46161D491", "ACI-P242-L002-005C9D21FA", "ACI-P242-L003-BD80D70CF0", "ACI-P242-L003-BD80D70CF0-02", "ACI-P242-L003-BD80D70CF0-03", "ACI-P242-L005-522A0DD289", "ACI-P242-L007-CB71B11E9D", "ACI-P242-L010-3393EE7EBD-02", "ACI-P242-L010-3393EE7EBD-03", "ACI-P242-L010-3393EE7EBD-04", "ACI-P242-L010-3393EE7EBD-05", "ACI-P242-L010-3393EE7EBD-06", "ACI-P242-L010-3393EE7EBD-07", "ACI-P242-L011-A1BDA3B45E", "ACI-P242-L011-A1BDA3B45E-02", "ACI-P242-L011-A1BDA3B45E-03"
+        ])
+      }),
+      "lesson27-frequentative-foundation-and-shape-choice": Object.freeze({
+        lessonSections: Object.freeze(["§27.1", "§27.2"]),
+        atomIds: Object.freeze([
+          "ACI-P243-L003-BFF719FF1B-09",
+          "ACI-P243-L006-EA43DC2653",
+          "ACI-P243-L008-765A37EA98",
+          "ACI-P243-L013-9BF0090BB4"
+        ])
+      }),
+      "lesson27-short-glottal-ordinary-frequentatives": Object.freeze({
+        lessonSections: Object.freeze(["§27.2.1"]),
+        atomIds: Object.freeze([
+          "ACI-P243-L016-646F1C25F4", "ACI-P243-L018-7D9F3DBA09", "ACI-P243-L018-7D9F3DBA09-02", "ACI-P243-L018-7D9F3DBA09-03", "ACI-P243-L018-7D9F3DBA09-04", "ACI-P243-L018-7D9F3DBA09-05", "ACI-P243-L018-7D9F3DBA09-06", "ACI-P243-L025-2EBFB1A503-02", "ACI-P243-L025-2EBFB1A503-03", "ACI-P243-L025-2EBFB1A503-04", "ACI-P243-L025-2EBFB1A503-05", "ACI-P243-L025-2EBFB1A503-06", "ACI-P243-L025-2EBFB1A503-07", "ACI-P243-L025-2EBFB1A503-08", "ACI-P243-L027-AE14B0E5CA-02", "ACI-P243-L027-AE14B0E5CA-03", "ACI-P243-L027-AE14B0E5CA-04", "ACI-P243-L027-AE14B0E5CA-05", "ACI-P243-L027-AE14B0E5CA-06", "ACI-P243-L027-AE14B0E5CA-07", "ACI-P243-L027-AE14B0E5CA-08", "ACI-P244-L002-F5503FD7FB-02", "ACI-P244-L002-F5503FD7FB-06", "ACI-P244-L002-F5503FD7FB-07", "ACI-P244-L010-B7627D5BEA", "ACI-P244-L019-7512B8245B", "ACI-P244-L022-227BF07F86", "ACI-P244-L024-5BE4745838", "ACI-P244-L024-5BE4745838-02", "ACI-P244-L024-5BE4745838-03", "ACI-P244-L024-5BE4745838-04"
+        ])
+      }),
+      "lesson27-long-short-supportive-i-and-recursion": Object.freeze({
+        lessonSections: Object.freeze(["§27.2.2", "§27.2.3"]),
+        atomIds: Object.freeze([
+          "ACI-P244-L028-3C4CCCD356", "ACI-P244-L039-59B0754462", "ACI-P245-L006-90DE491E19", "ACI-P245-L007-77227F4D29-02", "ACI-P245-L007-77227F4D29-03", "ACI-P245-L007-77227F4D29-04", "ACI-P245-L007-77227F4D29-05", "ACI-P245-L007-77227F4D29-06", "ACI-P245-L007-77227F4D29-07", "ACI-P245-L009-06579CE5B8", "ACI-P245-L010-8DDA7E7552", "ACI-P245-L014-FF348205A8", "ACI-P245-L015-18A6657449", "ACI-P245-L015-18A6657449-04", "ACI-P245-L015-18A6657449-05", "ACI-P245-L015-18A6657449-06", "ACI-P245-L015-18A6657449-07", "ACI-P245-L015-18A6657449-08", "ACI-P245-L017-41EC51211E"
+        ])
+      }),
+      "lesson27-object-pronoun-reduplication": Object.freeze({
+        lessonSections: Object.freeze(["§27.3", "§27.3.1", "§27.3.2"]),
+        atomIds: Object.freeze([
+          "ACI-P245-L024-3E3EF1B8C8", "ACI-P245-L026-1DAE8075E0", "ACI-P245-L027-1BB8299350", "ACI-P245-L039-16DE19AED7", "ACI-P245-L040-2E226BDA67-02", "ACI-P245-L040-2E226BDA67-03", "ACI-P245-L040-2E226BDA67-04", "ACI-P245-L040-2E226BDA67-05", "ACI-P245-L040-2E226BDA67-06", "ACI-P245-L040-2E226BDA67-07", "ACI-P245-L040-2E226BDA67-08", "ACI-P245-L040-2E226BDA67-09", "ACI-P245-L043-C9ECA6A40D", "ACI-P246-L002-FBADB0781E", "ACI-P246-L003-18BF28211A"
+        ])
+      }),
+      "lesson27-intransitive-destockal-frequentatives": Object.freeze({
+        lessonSections: Object.freeze(["§27.4", "§27.4.1", "§27.4.1.a", "§27.4.1.b"]),
+        atomIds: Object.freeze([
+          "ACI-P246-L014-8F71BEBD1A", "ACI-P246-L014-8F71BEBD1A-02", "ACI-P246-L014-8F71BEBD1A-03", "ACI-P246-L018-D3CFC041A8", "ACI-P246-L019-8268297119", "ACI-P246-L025-8D11D351FC-02", "ACI-P246-L025-8D11D351FC-03", "ACI-P246-L025-8D11D351FC-04", "ACI-P246-L025-8D11D351FC-05", "ACI-P246-L025-8D11D351FC-06", "ACI-P246-L025-8D11D351FC-07", "ACI-P246-L027-AA19167CCB-02", "ACI-P246-L027-AA19167CCB-03", "ACI-P246-L027-AA19167CCB-04", "ACI-P246-L027-AA19167CCB-05", "ACI-P246-L027-AA19167CCB-06", "ACI-P246-L027-AA19167CCB-07", "ACI-P246-L029-A613123DB0-02", "ACI-P246-L029-A613123DB0-03", "ACI-P246-L029-A613123DB0-04", "ACI-P246-L029-A613123DB0-05", "ACI-P246-L029-A613123DB0-06", "ACI-P246-L029-A613123DB0-07", "ACI-P246-L029-A613123DB0-08", "ACI-P246-L031-09DC3B54C7", "ACI-P246-L038-CCB650CD02", "ACI-P246-L039-0C1ABCC65F", "ACI-P247-L002-C524F41EDE", "ACI-P247-L004-39CAD8414E", "ACI-P247-L010-282AC802F9"
+        ])
+      }),
+      "lesson27-causative-destockal-frequentatives": Object.freeze({
+        lessonSections: Object.freeze(["§27.4.2"]),
+        atomIds: Object.freeze([
+          "ACI-P247-L012-1203D4C6AB", "ACI-P247-L014-47DCF3D61E", "ACI-P247-L019-4DDE278469-02", "ACI-P247-L019-4DDE278469-03", "ACI-P247-L019-4DDE278469-04", "ACI-P247-L019-4DDE278469-05", "ACI-P247-L019-4DDE278469-06", "ACI-P247-L022-C99D7BC2D4-02", "ACI-P247-L022-C99D7BC2D4-03", "ACI-P247-L022-C99D7BC2D4-04", "ACI-P247-L022-C99D7BC2D4-05", "ACI-P247-L022-C99D7BC2D4-06", "ACI-P247-L025-E1372B31DA"
+        ])
+      }),
+      "lesson27-extinct-fused-and-role-ambiguous-destockals": Object.freeze({
+        lessonSections: Object.freeze(["§27.4.3", "§27.4.4"]),
+        atomIds: Object.freeze(["ACI-P247-L027-850EE9B04A","ACI-P247-L029-C1A27041D3","ACI-P247-L030-3FD4221712","ACI-P247-L031-58D602945E","ACI-P247-L032-829CB08558","ACI-P247-L033-8EEEAAC63F","ACI-P247-L033-8EEEAAC63F-02","ACI-P247-L034-5663D65B8D","ACI-P247-L036-43C42888D2","ACI-P247-L037-76A99F08C2","ACI-P247-L038-B74E587066","ACI-P247-L039-6DD10064FA","ACI-P248-L002-236CE3C797","ACI-P248-L003-3C6186D887","ACI-P248-L005-8BAD08AD9F","ACI-P248-L005-8BAD08AD9F-02","ACI-P248-L005-8BAD08AD9F-03","ACI-P248-L006-702CBCBE63","ACI-P248-L008-9A048EB133","ACI-P248-L008-9A048EB133-02","ACI-P248-L009-6775680259"])
+      }),
+      "lesson27-destockal-applicative-and-type-two-causative": Object.freeze({
+        lessonSections: Object.freeze(["§27.4.5", "§27.4.6"]),
+        atomIds: Object.freeze(["ACI-P248-L010-87F2AADF80","ACI-P248-L012-CCF5107EE0","ACI-P248-L014-1FD59A7DF2","ACI-P248-L014-1FD59A7DF2-02","ACI-P248-L014-1FD59A7DF2-03","ACI-P248-L014-1FD59A7DF2-04","ACI-P248-L014-1FD59A7DF2-05","ACI-P248-L016-4458C4FEA2","ACI-P248-L016-4458C4FEA2-02","ACI-P248-L016-4458C4FEA2-03","ACI-P248-L016-4458C4FEA2-04","ACI-P248-L016-4458C4FEA2-05","ACI-P248-L016-4458C4FEA2-06","ACI-P248-L018-78017B5E68","ACI-P248-L018-78017B5E68-02","ACI-P248-L018-78017B5E68-03","ACI-P248-L018-78017B5E68-04","ACI-P248-L018-78017B5E68-05","ACI-P248-L018-78017B5E68-06","ACI-P248-L018-78017B5E68-07","ACI-P248-L018-78017B5E68-08","ACI-P248-L018-78017B5E68-09","ACI-P248-L018-78017B5E68-10","ACI-P248-L025-226E6B2A58","ACI-P248-L027-848EC806A3"])
+      }),
+      "lesson27-uncertain-ca-frequentatives": Object.freeze({
+        lessonSections: Object.freeze(["§27.5", "§27.5.1"]),
+        atomIds: Object.freeze(["ACI-P248-L029-292C7F269F","ACI-P248-L030-5C10EF9919","ACI-P248-L031-E80AD8004C","ACI-P248-L032-BDAF6A2854","ACI-P248-L033-F410206A43","ACI-P248-L035-ACD7BF2C38","ACI-P248-L037-76A2A0BE3B","ACI-P248-L038-B8901E0EC8","ACI-P248-L038-B8901E0EC8-02","ACI-P248-L038-B8901E0EC8-03","ACI-P248-L038-B8901E0EC8-04","ACI-P248-L038-B8901E0EC8-05","ACI-P248-L038-B8901E0EC8-06","ACI-P248-L038-B8901E0EC8-07","ACI-P248-L038-B8901E0EC8-08","ACI-P249-L002-CFC1B3542A","ACI-P249-L002-CFC1B3542A-02","ACI-P249-L002-CFC1B3542A-03","ACI-P249-L002-CFC1B3542A-04","ACI-P249-L002-CFC1B3542A-05","ACI-P249-L002-CFC1B3542A-06","ACI-P249-L009-A4A60E7DC1","ACI-P249-L010-2E9F293B46","ACI-P249-L010-2E9F293B46-03","ACI-P249-L010-2E9F293B46-04","ACI-P249-L010-2E9F293B46-05","ACI-P249-L010-2E9F293B46-06","ACI-P249-L010-2E9F293B46-02","ACI-P249-L013-FB1DB8E5DC","ACI-P249-L013-FB1DB8E5DC-02","ACI-P249-L013-FB1DB8E5DC-03","ACI-P249-L013-FB1DB8E5DC-04","ACI-P249-L013-FB1DB8E5DC-05","ACI-P249-L013-FB1DB8E5DC-06","ACI-P249-L013-FB1DB8E5DC-07","ACI-P249-L013-FB1DB8E5DC-08"])
+      }),
+      "lesson27-uncertain-tzca-frequentatives": Object.freeze({
+        lessonSections: Object.freeze(["§27.5.2"]),
+        atomIds: Object.freeze(["ACI-P249-L017-1E45355D51","ACI-P249-L019-7BE72FD013","ACI-P249-L020-D3644FA1E5","ACI-P249-L021-618E20B8DC","ACI-P249-L022-E3FD20770A","ACI-P249-L023-4242E2B9D0","ACI-P249-L023-4242E2B9D0-03","ACI-P249-L023-4242E2B9D0-04","ACI-P249-L023-4242E2B9D0-05","ACI-P249-L023-4242E2B9D0-06","ACI-P249-L023-4242E2B9D0-07","ACI-P249-L023-4242E2B9D0-08","ACI-P249-L023-4242E2B9D0-02","ACI-P249-L026-6492C1FC33","ACI-P249-L028-59CF7CB613","ACI-P249-L028-59CF7CB613-02","ACI-P249-L028-59CF7CB613-03","ACI-P249-L028-59CF7CB613-04","ACI-P249-L031-1D3754414F","ACI-P249-L032-5CA73386E3","ACI-P249-L033-15AED4EE8D","ACI-P249-L033-15AED4EE8D-02","ACI-P249-L033-15AED4EE8D-03","ACI-P249-L033-15AED4EE8D-04","ACI-P249-L033-15AED4EE8D-05","ACI-P249-L033-15AED4EE8D-06","ACI-P249-L033-15AED4EE8D-07","ACI-P249-L033-15AED4EE8D-08","ACI-P249-L033-15AED4EE8D-09","ACI-P249-L033-15AED4EE8D-10"])
+      }),
+      "lesson27-frequentative-nonactive": Object.freeze({
+        lessonSections: Object.freeze(["§27.6"]),
+        atomIds: Object.freeze(["ACI-P249-L036-07360C3124","ACI-P249-L037-A88ADB3B37","ACI-P249-L039-27C2642A9E","ACI-P249-L039-27C2642A9E-02","ACI-P249-L039-27C2642A9E-03","ACI-P249-L039-27C2642A9E-04","ACI-P249-L039-27C2642A9E-05","ACI-P249-L039-27C2642A9E-06","ACI-P249-L039-27C2642A9E-07","ACI-P249-L039-27C2642A9E-08","ACI-P249-L039-27C2642A9E-09","ACI-P249-L039-27C2642A9E-10","ACI-P249-L039-27C2642A9E-11","ACI-P249-L039-27C2642A9E-12"])
+      }),
+      "lesson28-compounding-foundation-and-embed-matrix-order": Object.freeze({
+        lessonSections: Object.freeze(["§28.1", "§28.1.1", "§28.1.2", "§28.1.3", "§28.2", "§28.2.1", "§28.2.2"]),
+        atomIds: Object.freeze(["ACI-P250-L003-3440B1248B","ACI-P250-L003-3440B1248B-02","ACI-P250-L006-33479733C8","ACI-P250-L007-589D0BEF9E","ACI-P250-L008-5A379F893B","ACI-P250-L009-4A4F6537B7","ACI-P250-L010-40015CBE9E","ACI-P250-L010-40015CBE9E-02","ACI-P250-L010-40015CBE9E-03","ACI-P250-L010-40015CBE9E-04","ACI-P250-L010-40015CBE9E-05","ACI-P250-L010-40015CBE9E-06","ACI-P250-L010-40015CBE9E-07","ACI-P250-L016-BC9BE67475","ACI-P250-L017-E49F6642E8","ACI-P250-L017-E49F6642E8-02","ACI-P250-L018-CD5E7AAB9B","ACI-P250-L020-7DF601BAC4","ACI-P250-L023-01492548B4","ACI-P250-L023-01492548B4-02","ACI-P250-L026-C4A6D6EB0F","ACI-P250-L026-C4A6D6EB0F-02","ACI-P250-L026-C4A6D6EB0F-03","ACI-P250-L026-C4A6D6EB0F-04","ACI-P250-L026-C4A6D6EB0F-05","ACI-P250-L028-D6F11EA1D8","ACI-P250-L029-4B8BFDD1A9","ACI-P250-L029-4B8BFDD1A9-02","ACI-P251-L004-23418F1402","ACI-P251-L005-3956345870","ACI-P251-L006-EF32209C72","ACI-P251-L007-81671C9715","ACI-P251-L009-7289175E96","ACI-P251-L010-20DE067E34","ACI-P251-L010-20DE067E34-02","ACI-P251-L010-20DE067E34-03","ACI-P251-L010-20DE067E34-04","ACI-P251-L012-D344E9A360","ACI-P251-L013-61C99F0A86","ACI-P251-L015-4C8416F4C8","ACI-P251-L017-6A422F8846","ACI-P251-L017-6A422F8846-03","ACI-P251-L017-6A422F8846-02","ACI-P251-L018-3B6FC789D2","ACI-P251-L018-3B6FC789D2-03","ACI-P251-L018-3B6FC789D2-04","ACI-P251-L018-3B6FC789D2-02","ACI-P251-L018-3B6FC789D2-05","ACI-P251-L022-B32BEE5615","ACI-P251-L024-EE58159F0B","ACI-P251-L024-EE58159F0B-02","ACI-P251-L024-EE58159F0B-03","ACI-P251-L027-7A39D41356","ACI-P251-L027-7A39D41356-02","ACI-P251-L028-51FC20AF22","ACI-P251-L031-1BE90D4FDB","ACI-P251-L032-6F31831A04","ACI-P251-L032-6F31831A04-02","ACI-P251-L035-E6675716AF","ACI-P251-L038-8953BEDD6B","ACI-P251-L039-E38EDC9062","ACI-P251-L040-B847AF6904","ACI-P251-L042-E9662F211A"])
+      }),
+      "lesson28-linked-integrated-and-valence-system": Object.freeze({
+        lessonSections: Object.freeze(["§28.3", "§28.4", "§28.4.1", "§28.4.2", "§28.4.3", "§28.4.4"]),
+        atomIds: Object.freeze(["ACI-P252-L002-896BFC2CEA","ACI-P252-L005-52C13C7F6D","ACI-P252-L006-CC47BE79B3","ACI-P252-L007-5BC1AD4BFA","ACI-P252-L008-B882378D86","ACI-P252-L010-66F0904E3F","ACI-P252-L012-3EB0D10239","ACI-P252-L012-3EB0D10239-02","ACI-P252-L012-3EB0D10239-03","ACI-P252-L012-3EB0D10239-04","ACI-P252-L012-3EB0D10239-05","ACI-P252-L015-8137C477B9","ACI-P252-L016-8644391F64","ACI-P252-L016-F77A79A45D","ACI-P252-L018-AEB08DA93B","ACI-P252-L020-FDE0DF2BDC","ACI-P252-L022-D268A1798B","ACI-P252-L022-136B732D0F","ACI-P252-L023-1F2BA6C0A4","ACI-P252-L023-5B96AF3723","ACI-P252-L024-8629BEDAC4","ACI-P252-L024-3CBE3D14E3","ACI-P252-L026-9B812B7DCB","ACI-P252-L026-9B812B7DCB-02","ACI-P252-L026-9B812B7DCB-03","ACI-P252-L026-9B812B7DCB-04","ACI-P252-L027-FAB75CE916","ACI-P252-L028-E06C4A8D4D","ACI-P252-L028-E06C4A8D4D-02"])
+      }),
+      "lesson28-connective-t-foundation": Object.freeze({
+        lessonSections: Object.freeze(["§28.5"]),
+        atomIds: Object.freeze(["ACI-P252-L030-C0B24F2E9F","ACI-P252-L032-0C3F5A758B","ACI-P252-L032-0C3F5A758B-02","ACI-P252-L033-E6DEBDF653","ACI-P252-L037-27A656258C","ACI-P253-L002-6849422C99","ACI-P253-L002-6849422C99-02","ACI-P253-L002-6849422C99-03","ACI-P253-L004-60DAF0B9EA","ACI-P253-L006-A6A2AC7277","ACI-P253-L009-7CF4920083","ACI-P253-L009-7CF4920083-02","ACI-P253-L009-7CF4920083-03","ACI-P253-L009-7CF4920083-04","ACI-P253-L012-0A8A66941B","ACI-P253-L014-3871E0C730","ACI-P253-L015-023ABD3ABF","ACI-P253-L015-023ABD3ABF-02","ACI-P253-L016-AA4A80201D","ACI-P253-L017-07489199AC","ACI-P253-L017-07489199AC-02"])
+      }),
+      "lesson28-ca-nemi-and-yauh-matrices": Object.freeze({
+        lessonSections: Object.freeze(["§28.6", "§28.6.1", "§28.6.2", "§28.6.3"]),
+        atomIds: Object.freeze(["ACI-P253-L019-C065AA9354","ACI-P253-L021-E2004E736D","ACI-P253-L025-E747D35B3D","ACI-P253-L025-E747D35B3D-02","ACI-P253-L025-E747D35B3D-03","ACI-P253-L027-6DE42BC4F5","ACI-P253-L028-D09BF54E3F","ACI-P253-L028-70C9349AAC","ACI-P253-L031-003B8103E3","ACI-P253-L031-003B8103E3-02","ACI-P253-L031-003B8103E3-03","ACI-P253-L033-E9B503831D","ACI-P253-L034-ECA0A9FACE","ACI-P253-L035-EA38F1D38D","ACI-P253-L035-EA38F1D38D-02","ACI-P253-L035-EA38F1D38D-03","ACI-P253-L035-EA38F1D38D-04","ACI-P253-L035-EA38F1D38D-05","ACI-P253-L035-EA38F1D38D-06","ACI-P253-L035-EA38F1D38D-07","ACI-P253-L035-EA38F1D38D-08","ACI-P253-L037-9D073280B2","ACI-P253-L038-8D7AA71BBE","ACI-P253-L039-06FA9EA05C","ACI-P253-L041-EB84DE4CEE","ACI-P254-L002-78D1881F36","ACI-P254-L004-2FF3251068","ACI-P254-L004-2FF3251068-02","ACI-P254-L005-C224346AAC","ACI-P254-L006-DADE7A1D3C","ACI-P254-L008-2705B098BF","ACI-P254-L009-36FC5CE5DB","ACI-P254-L010-7F919CDF3C","ACI-P254-L011-30E1F72FE3","ACI-P254-L011-30E1F72FE3-03","ACI-P254-L011-30E1F72FE3-02","ACI-P254-L014-C9BBAD1AFA","ACI-P254-L014-C9BBAD1AFA-02","ACI-P254-L014-C9BBAD1AFA-03","ACI-P254-L015-BA9929A0C7","ACI-P254-L017-17E3B4B61E","ACI-P254-L017-17E3B4B61E-02","ACI-P254-L017-17E3B4B61E-03","ACI-P254-L017-17E3B4B61E-04","ACI-P254-L017-17E3B4B61E-05","ACI-P254-L017-17E3B4B61E-06","ACI-P254-L020-C52B3F2A88","ACI-P254-L021-F9E8767967","ACI-P254-L022-B2758C0A99","ACI-P254-L023-1430251D4F","ACI-P254-L025-435120926B","ACI-P254-L025-435120926B-03","ACI-P254-L025-435120926B-04","ACI-P254-L025-435120926B-05","ACI-P254-L025-435120926B-06","ACI-P254-L025-435120926B-02","ACI-P254-L028-1510A80A57","ACI-P254-L029-BF03D6A97F","ACI-P254-L031-9D4DD88747","ACI-P254-L033-7379FF8459","ACI-P254-L034-C0666D44B5","ACI-P254-L036-2CF12890F6","ACI-P254-L038-27D0FA4802","ACI-P254-L039-EB80EF5446","ACI-P255-L002-AC20C74C5C","ACI-P255-L004-CD2CD73239","ACI-P255-L004-CD2CD73239-02","ACI-P255-L005-28C4F051A0","ACI-P255-L005-28C4F051A0-02","ACI-P255-L005-28C4F051A0-03","ACI-P255-L005-28C4F051A0-04","ACI-P255-L007-D5E0C20A01","ACI-P255-L007-D5E0C20A01-02","ACI-P255-L007-D5E0C20A01-03","ACI-P255-L007-D5E0C20A01-04","ACI-P255-L009-F06B8639EC","ACI-P255-L009-F06B8639EC-02","ACI-P255-L009-F06B8639EC-03","ACI-P255-L009-F06B8639EC-04","ACI-P255-L009-F06B8639EC-05","ACI-P255-L009-F06B8639EC-06","ACI-P255-L011-ECEF6D58B3","ACI-P255-L013-752E5E8AB8","ACI-P255-L015-1628CA752C","ACI-P255-L016-05A7287573","ACI-P255-L016-05A7287573-02","ACI-P255-L016-05A7287573-03","ACI-P255-L018-5422909145","ACI-P255-L020-331D249CE5","ACI-P255-L022-D56360D89F","ACI-P255-L023-0801AB47EE","ACI-P255-L023-0801AB47EE-02","ACI-P255-L023-0801AB47EE-03","ACI-P255-L023-0801AB47EE-04","ACI-P255-L026-0FF92420ED","ACI-P255-L029-71BF3CEC55","ACI-P255-L029-29CE433AA1","ACI-P255-L031-2FE81319EB","ACI-P255-L032-8968017D2C","ACI-P255-L034-154E6C0A61","ACI-P255-L034-154E6C0A61-02","ACI-P255-L034-154E6C0A61-03","ACI-P255-L034-154E6C0A61-04","ACI-P255-L034-154E6C0A61-05","ACI-P255-L034-154E6C0A61-06","ACI-P255-L034-154E6C0A61-07","ACI-P255-L034-154E6C0A61-08","ACI-P255-L035-E79A2BCD43"])
+      }),
+      "lesson28-hualla-huitz-ahci-mani-ihca-matrices": Object.freeze({
+        lessonSections: Object.freeze(["§28.6.4", "§28.6.5", "§28.6.6", "§28.6.7", "§28.6.8"]),
+        atomIds: Object.freeze(["ACI-P255-L037-AF7FC6EB65","ACI-P255-L037-AF7FC6EB65-02","ACI-P255-L037-AF7FC6EB65-03","ACI-P255-L037-AF7FC6EB65-04","ACI-P255-L037-AF7FC6EB65-05","ACI-P255-L037-AF7FC6EB65-06","ACI-P255-L040-14BABCEC86","ACI-P255-L042-F7A3144E63","ACI-P255-L043-7CC959AF88","ACI-P255-L043-7CC959AF88-02","ACI-P255-L043-7CC959AF88-03","ACI-P255-L043-7CC959AF88-04","ACI-P255-L043-7CC959AF88-05","ACI-P255-L043-7CC959AF88-06","ACI-P255-L043-7CC959AF88-07","ACI-P255-L043-7CC959AF88-08","ACI-P255-L045-C328C5E08B","ACI-P255-L047-8AF824553B","ACI-P255-L049-DEA149DA33","ACI-P256-L002-C6A2BE2915","ACI-P256-L004-0D0DF7FE9D","ACI-P256-L005-74CB0B9DB0","ACI-P256-L005-74CB0B9DB0-02","ACI-P256-L008-9CF6F94753","ACI-P256-L010-D8D8E5836E","ACI-P256-L011-009492DF1F","ACI-P256-L012-B17DE2F57F","ACI-P256-L013-7A54E9F3C1","ACI-P256-L014-59A22A0BA0","ACI-P256-L016-AD7A61E9B4","ACI-P256-L018-D0961F9782","ACI-P256-L020-B54C82E6DA","ACI-P256-L021-131AC3E9ED","ACI-P256-L023-12099DE73F","ACI-P256-L023-12099DE73F-02","ACI-P256-L023-12099DE73F-03","ACI-P256-L023-12099DE73F-04","ACI-P256-L023-12099DE73F-05","ACI-P256-L023-12099DE73F-06","ACI-P256-L023-12099DE73F-07","ACI-P256-L023-12099DE73F-08","ACI-P256-L023-12099DE73F-09","ACI-P256-L026-4FE755FF20","ACI-P256-L027-1C9D9660F3","ACI-P256-L028-3CF39D52D2","ACI-P256-L030-4950FDC4CC","ACI-P256-L030-4950FDC4CC-02","ACI-P256-L030-4950FDC4CC-03","ACI-P256-L030-4950FDC4CC-04","ACI-P256-L030-4950FDC4CC-05","ACI-P256-L030-4950FDC4CC-06","ACI-P256-L030-4950FDC4CC-07","ACI-P256-L030-4950FDC4CC-08","ACI-P256-L032-378DDCE75D","ACI-P256-L034-3FC0E96EC4","ACI-P256-L035-C3733D4990"])
+      }),
+      "lesson28-o-ehua-quiza-huetzi-and-other-matrices": Object.freeze({
+        lessonSections: Object.freeze(["§28.6.9", "§28.6.10", "§28.6.11", "§28.6.12", "§28.6.13", "§28.6.14", "§28.6.15"]),
+        atomIds: Object.freeze(["ACI-P256-L037-DB93ACCFB6","ACI-P256-L037-DB93ACCFB6-03","ACI-P256-L037-DB93ACCFB6-02","ACI-P257-L002-065AD274CD","ACI-P257-L003-AC5365F87E","ACI-P257-L005-879F4BE388","ACI-P257-L007-F6970043B9","ACI-P257-L009-7CE4CDBAE4","ACI-P257-L010-AF7DA30B45","ACI-P257-L012-249D3E07BD","ACI-P257-L013-AC92AC697A","ACI-P257-L015-58216E0DA4","ACI-P257-L016-9F839F448F","ACI-P257-L017-B0E19FC7A8","ACI-P257-L018-E0ADC43217","ACI-P257-L019-E9A1FA2A95","ACI-P257-L021-64B1D00CD1","ACI-P257-L021-64B1D00CD1-02","ACI-P257-L021-64B1D00CD1-03","ACI-P257-L021-64B1D00CD1-04","ACI-P257-L021-64B1D00CD1-05","ACI-P257-L021-64B1D00CD1-06","ACI-P257-L024-B15FA332F9","ACI-P257-L026-98721E0518","ACI-P257-L027-D05DCEC550","ACI-P257-L029-3995CE6BBE","ACI-P257-L029-3995CE6BBE-02","ACI-P257-L029-3995CE6BBE-03","ACI-P257-L029-3995CE6BBE-04","ACI-P257-L029-3995CE6BBE-05","ACI-P257-L029-3995CE6BBE-06","ACI-P257-L032-C87DD1EF82","ACI-P257-L034-820493B29D","ACI-P257-L035-9BA001BC6A","ACI-P257-L037-3144018DFC","ACI-P257-L038-D9496E38B7","ACI-P257-L038-D9496E38B7-03","ACI-P257-L038-D9496E38B7-04","ACI-P257-L038-D9496E38B7-05","ACI-P257-L038-D9496E38B7-06","ACI-P257-L038-D9496E38B7-07","ACI-P257-L038-D9496E38B7-08","ACI-P257-L038-D9496E38B7-02","ACI-P258-L002-F0FDDFF3AB","ACI-P258-L002-F0FDDFF3AB-02","ACI-P258-L002-F0FDDFF3AB-03","ACI-P258-L002-F0FDDFF3AB-04","ACI-P258-L004-6747171FD7","ACI-P258-L006-5B9F907A04","ACI-P258-L008-DBCDD9E5F3","ACI-P258-L008-DBCDD9E5F3-03","ACI-P258-L008-DBCDD9E5F3-04","ACI-P258-L008-DBCDD9E5F3-05","ACI-P258-L008-DBCDD9E5F3-06","ACI-P258-L008-DBCDD9E5F3-07","ACI-P258-L008-DBCDD9E5F3-02","ACI-P258-L011-AE117BC8AB","ACI-P258-L013-046DAA844D","ACI-P258-L015-2773F95A87"])
+      }),
+      "lesson28-special-embeds-event-order-and-nonactive-scope": Object.freeze({
+        lessonSections: Object.freeze(["§28.7", "§28.7.1", "§28.7.2", "§28.7.3", "§28.7.4", "§28.7.5", "§28.7.6", "§28.7.7"]),
+        atomIds: Object.freeze([
+          "ACI-P258-L017-0C53EC0ADC", "ACI-P258-L018-0AE5E74AA9", "ACI-P258-L018-0AE5E74AA9-02", "ACI-P258-L019-54D1616311", "ACI-P258-L022-37E7D3E83C", "ACI-P258-L023-D5641F7958", "ACI-P258-L023-D5641F7958-02", "ACI-P258-L023-D5641F7958-03", "ACI-P258-L023-D5641F7958-04", "ACI-P258-L025-C727766228", "ACI-P258-L026-33F0576D4D", "ACI-P258-L028-ADE22D7CCD", "ACI-P258-L029-B11D21DA18", "ACI-P258-L030-6541F3F16B", "ACI-P258-L031-D4C48A5EC5", "ACI-P258-L031-D4C48A5EC5-02", "ACI-P258-L031-D4C48A5EC5-03", "ACI-P258-L031-D4C48A5EC5-04", "ACI-P258-L033-9915C694F5", "ACI-P258-L035-AE2B5D6FC9", "ACI-P258-L035-AE2B5D6FC9-02", "ACI-P258-L035-AE2B5D6FC9-03", "ACI-P258-L035-AE2B5D6FC9-04", "ACI-P258-L037-07CFAC2BCC", "ACI-P258-L038-BDE46AB238", "ACI-P259-L002-A071149B92", "ACI-P259-L004-722202DF13", "ACI-P259-L005-F76F2A1F28", "ACI-P259-L006-9AB5798277", "ACI-P259-L007-6D4C2BA61C", "ACI-P259-L008-2011DB7A82", "ACI-P259-L010-7E0B154027", "ACI-P259-L011-E8CBD75852", "ACI-P259-L013-300EBCB781", "ACI-P259-L015-D9EF80BAF9", "ACI-P259-L015-D9EF80BAF9-02", "ACI-P259-L017-B0A6FC50B2", "ACI-P259-L018-CA3DB88C42", "ACI-P259-L020-E192C6166D", "ACI-P259-L021-07DE6AB9FD", "ACI-P259-L022-A7EB65331B", "ACI-P259-L024-9C5DEE51B0", "ACI-P259-L025-E78062754F", "ACI-P259-L026-E015304C1A", "ACI-P259-L027-7407DCF04A", "ACI-P259-L028-C817A804AC", "ACI-P259-L029-0FDC2DDF77", "ACI-P259-L030-DB56CCCFF5", "ACI-P259-L031-3D8949D8B7", "ACI-P259-L031-3D8949D8B7-02", "ACI-P259-L033-B78F8715B6", "ACI-P259-L034-A0A81E61FF", "ACI-P259-L034-A0A81E61FF-02", "ACI-P259-L035-7EC276A700", "ACI-P259-L036-09BF2B6E60", "ACI-P259-L037-392D030710", "ACI-P259-L038-CF9F602636", "ACI-P259-L041-EAF858B564", "ACI-P259-L041-EAF858B564-03", "ACI-P259-L041-EAF858B564-04", "ACI-P259-L041-EAF858B564-02", "ACI-P260-L002-A87BEC218D", "ACI-P260-L003-F6DBD2CBDD", "ACI-P260-L005-14B428CAA9", "ACI-P260-L006-B6B3E30832", "ACI-P260-L007-9FC87C19A4", "ACI-P260-L008-B96DD54177", "ACI-P260-L010-74A6E81DF0", "ACI-P260-L010-7B46C31694", "ACI-P260-L012-370933C56C", "ACI-P260-L013-00CB220580", "ACI-P260-L014-EA07299808", "ACI-P260-L016-FDF31ADFFB", "ACI-P260-L016-3ED811649D", "ACI-P260-L016-3ED811649D-02", "ACI-P260-L016-3ED811649D-03", "ACI-P260-L016-3ED811649D-04", "ACI-P260-L017-B8BF74AAD1", "ACI-P260-L019-A8198AF873", "ACI-P260-L020-1E43F35032", "ACI-P260-L021-0104296AE3", "ACI-P260-L022-9307205901", "ACI-P260-L024-E35EECF0CE", "ACI-P260-L025-613F75BA5E", "ACI-P260-L026-94915BB396", "ACI-P260-L028-57AE194CF4", "ACI-P260-L029-BC70BE6030", "ACI-P260-L031-2D633CFCF0", "ACI-P260-L032-AA0463817E", "ACI-P260-L033-A963CBC22A"
+        ])
+      }),
+      "lesson28-accompanying-possession": Object.freeze({
+        lessonSections: Object.freeze(["§28.8"]),
+        atomIds: Object.freeze([
+          "ACI-P260-L035-B2D54B895E", "ACI-P260-L035-B2D54B895E-02",
+          "ACI-P261-L003-BC8A4C247B", "ACI-P261-L003-BC8A4C247B-02",
+          "ACI-P261-L004-767F677F7D", "ACI-P261-L005-9CAE120F1E",
+          "ACI-P261-L005-9CAE120F1E-02", "ACI-P261-L005-9CAE120F1E-03",
+          "ACI-P261-L005-9CAE120F1E-04", "ACI-P261-L005-9CAE120F1E-05",
+          "ACI-P261-L005-9CAE120F1E-06", "ACI-P261-L005-9CAE120F1E-07",
+          "ACI-P261-L007-3F01D8115E", "ACI-P261-L008-E768747C77",
+          "ACI-P261-L010-A4F3A33A8B", "ACI-P261-L010-A4F3A33A8B-02",
+          "ACI-P261-L010-A4F3A33A8B-03", "ACI-P261-L010-A4F3A33A8B-04",
+          "ACI-P261-L014-646DABD0DC", "ACI-P261-L014-646DABD0DC-02",
+          "ACI-P261-L014-646DABD0DC-03", "ACI-P261-L014-646DABD0DC-04",
+          "ACI-P261-L014-646DABD0DC-05", "ACI-P261-L014-646DABD0DC-06",
+          "ACI-P261-L014-646DABD0DC-07"
+        ])
+      }),
+      "lesson28-intransitivized-reflexive-matrix": Object.freeze({
+        lessonSections: Object.freeze([
+          "§28.9", "§28.9.1", "§28.9.2", "§28.9.3", "§28.9.4",
+          "§28.9.5"
+        ]),
+        atomIds: Object.freeze([
+          "ACI-P261-L016-0DDC4F5652", "ACI-P261-L017-59F874E1F0", "ACI-P261-L018-13F5BA1416", "ACI-P261-L020-526B57CCE3", "ACI-P261-L020-526B57CCE3-02", "ACI-P261-L022-EFFF4A983C", "ACI-P261-L023-69071519CC", "ACI-P261-L023-9ACABE658C", "ACI-P261-L025-E4C2B82EB0", "ACI-P261-L025-E4C2B82EB0-02", "ACI-P261-L025-E4C2B82EB0-03", "ACI-P261-L025-E4C2B82EB0-04", "ACI-P261-L025-E4C2B82EB0-05", "ACI-P261-L025-E4C2B82EB0-06", "ACI-P261-L025-E4C2B82EB0-07", "ACI-P261-L028-7B8A208343", "ACI-P261-L029-F79F98A224", "ACI-P261-L030-9EC1BB39F0", "ACI-P261-L030-9EC1BB39F0-02", "ACI-P261-L030-9EC1BB39F0-03", "ACI-P261-L030-9EC1BB39F0-04", "ACI-P261-L030-9EC1BB39F0-05", "ACI-P261-L030-9EC1BB39F0-06", "ACI-P261-L030-9EC1BB39F0-07", "ACI-P261-L030-9EC1BB39F0-08", "ACI-P261-L033-27EF29EA5E", "ACI-P261-L035-450C9BE79F", "ACI-P261-L037-8F018E0BF2", "ACI-P261-L038-B37328D687", "ACI-P261-L039-A423711BD2", "ACI-P262-L002-6AD684D9DC", "ACI-P262-L004-4C89CD532A", "ACI-P262-L004-4C89CD532A-02", "ACI-P262-L004-4C89CD532A-03", "ACI-P262-L004-4C89CD532A-04", "ACI-P262-L004-4C89CD532A-05", "ACI-P262-L004-4C89CD532A-06", "ACI-P262-L004-4C89CD532A-07", "ACI-P262-L004-4C89CD532A-08", "ACI-P262-L007-3092609A3A", "ACI-P262-L009-0E324D72F0", "ACI-P262-L009-0E324D72F0-02", "ACI-P262-L011-4EC620E4A5", "ACI-P262-L012-8C11E95D17", "ACI-P262-L013-7BDE8ED7D7", "ACI-P262-L014-25E0DF14A4", "ACI-P262-L015-D51DE0A8B6", "ACI-P262-L016-D025988C31", "ACI-P262-L018-046CF96527", "ACI-P262-L018-046CF96527-02", "ACI-P262-L020-0D7B585452", "ACI-P262-L022-180E95CEAC", "ACI-P262-L024-1FD1A82FEA", "ACI-P262-L024-1FD1A82FEA-03", "ACI-P262-L024-1FD1A82FEA-04", "ACI-P262-L024-1FD1A82FEA-05", "ACI-P262-L024-1FD1A82FEA-06", "ACI-P262-L024-1FD1A82FEA-07", "ACI-P262-L024-1FD1A82FEA-02", "ACI-P262-L027-D456F276A5", "ACI-P262-L027-D456F276A5-02", "ACI-P262-L027-D456F276A5-03", "ACI-P262-L027-D456F276A5-04", "ACI-P262-L027-D456F276A5-05", "ACI-P262-L027-D456F276A5-06", "ACI-P262-L027-D456F276A5-07", "ACI-P262-L029-12C9F6B15F"
+        ])
+      }),
+      "lesson28-shared-object-compounds": Object.freeze({
+        lessonSections: Object.freeze([
+          "§28.10", "§28.10.1", "§28.10.2", "§28.10.3", "§28.10.4",
+          "§28.10.5", "§28.10.6"
+        ]),
+        atomIds: Object.freeze([
+          "ACI-P262-L031-FA6A031587", "ACI-P262-L031-FA6A031587-02",
+          "ACI-P262-L033-D4F269D163", "ACI-P262-L034-42CC883BCD",
+          "ACI-P262-L035-084B4627F1", "ACI-P262-L037-B250C76018",
+          "ACI-P262-L037-BB5DA97696", "ACI-P263-L002-C2EEC8F9DC",
+          "ACI-P263-L002-C2EEC8F9DC-02", "ACI-P263-L002-C2EEC8F9DC-03",
+          "ACI-P263-L002-C2EEC8F9DC-04", "ACI-P263-L006-738480E479",
+          "ACI-P263-L007-454457E1DF", "ACI-P263-L009-989126BCEF",
+          "ACI-P263-L009-989126BCEF-02", "ACI-P263-L009-989126BCEF-03",
+          "ACI-P263-L012-74A061D093", "ACI-P263-L013-3BDD082C39",
+          "ACI-P263-L014-7DBCD461BB", "ACI-P263-L014-7DBCD461BB-03",
+          "ACI-P263-L014-7DBCD461BB-02", "ACI-P263-L017-DBE939E6C1",
+          "ACI-P263-L019-E197EB0CC2", "ACI-P263-L021-436A20F049",
+          "ACI-P263-L023-90F8BF33E8", "ACI-P263-L026-BE2CBB701D",
+          "ACI-P263-L028-81194F8152", "ACI-P263-L030-9CB4AD6911",
+          "ACI-P263-L030-9CB4AD6911-02", "ACI-P263-L030-9CB4AD6911-03"
+        ])
+      }),
+      "lesson28-future-embed-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§28.11", "§28.11.1", "§28.11.2"]),
+        atomIds: Object.freeze([
+          "ACI-P263-L033-BEBCF509FE", "ACI-P263-L034-3BD4699238", "ACI-P263-L034-3BD4699238-02", "ACI-P263-L035-4E0F5F90A4", "ACI-P263-L035-4E0F5F90A4-02",
+          "ACI-P263-L035-4E0F5F90A4-03", "ACI-P263-L035-4E0F5F90A4-04", "ACI-P263-L036-3FDD2C7F2B", "ACI-P263-L038-BD4FD3A593", "ACI-P263-L038-BD4FD3A593-02",
+          "ACI-P263-L038-BD4FD3A593-03", "ACI-P263-L038-BD4FD3A593-04", "ACI-P263-L038-BD4FD3A593-05", "ACI-P264-L003-F5A6856DD6", "ACI-P264-L006-1233007345",
+          "ACI-P264-L007-2C159438FD", "ACI-P264-L009-788C976C1B", "ACI-P264-L010-66E6B7D83B", "ACI-P264-L010-66E6B7D83B-02", "ACI-P264-L010-66E6B7D83B-03",
+          "ACI-P264-L014-4C8575478D", "ACI-P264-L015-83ADAB74CA", "ACI-P264-L015-83ADAB74CA-02", "ACI-P264-L015-83ADAB74CA-03", "ACI-P264-L018-F20EDBC5C1",
+          "ACI-P264-L020-1B4923D3E1", "ACI-P264-L022-31FEC5DF78", "ACI-P264-L024-16ED9D311A", "ACI-P264-L026-D665D4ABB7", "ACI-P264-L026-903D3C1FC9",
+          "ACI-P264-L027-D4FEF762EC", "ACI-P264-L028-3507FFE3B3", "ACI-P264-L030-8A6C14A49F", "ACI-P264-L032-277B91CD98", "ACI-P264-L034-314D0EACD0",
+          "ACI-P264-L035-CD45CFCA44", "ACI-P264-L038-54A845930A", "ACI-P264-L039-F1AFAB8C4A", "ACI-P265-L002-136B8C3BE4", "ACI-P265-L003-4A20D65832",
+          "ACI-P265-L005-1EE0496908", "ACI-P265-L007-F129D928FE", "ACI-P265-L009-A9A670394F", "ACI-P265-L011-461E7F1644", "ACI-P265-L013-FE40B555BC",
+          "ACI-P265-L013-FE40B555BC-02", "ACI-P265-L014-06AD3682DF", "ACI-P265-L014-06AD3682DF-02", "ACI-P265-L016-A2763C4D3C", "ACI-P265-L016-A2763C4D3C-02",
+          "ACI-P265-L016-A2763C4D3C-03", "ACI-P265-L016-A2763C4D3C-04", "ACI-P265-L016-A2763C4D3C-05"
+        ])
+      }),
+      "lesson28-recursive-compounding": Object.freeze({
+        lessonSections: Object.freeze(["§28.12"]),
+        atomIds: Object.freeze([
+          "ACI-P265-L018-457D21F4B2", "ACI-P265-L018-457D21F4B2-02", "ACI-P265-L018-457D21F4B2-03", "ACI-P265-L018-457D21F4B2-04", "ACI-P265-L018-457D21F4B2-05",
+          "ACI-P265-L021-320AEF4E6B", "ACI-P265-L022-19D6422EAB", "ACI-P265-L023-B469F66231", "ACI-P265-L024-3F626D0591", "ACI-P265-L026-FE4EBFB5B1",
+          "ACI-P265-L027-1836E0290C", "ACI-P265-L028-FC040279B8", "ACI-P265-L029-C3FF659DBC"
+        ])
+      }),
       "lesson23-object-functions-and-governors": Object.freeze({
         lessonSections: Object.freeze(["§23.1"]),
         atomIds: Object.freeze([
@@ -7005,6 +7659,1105 @@ export function createUiRenderingApi(targetObject = globalThis) {
           );
         }
       }
+      const lesson24ApplicationFrame = grammarContext?.kind
+        === "classical-nahuatl-vnc-application-frame"
+        ? grammarContext
+        : null;
+      const lesson24ResultFrame = grammarContext?.kind
+        === "classical-nahuatl-vnc-application-result-frame"
+        ? grammarContext
+        : grammarContext?.resultFrame || null;
+      const lesson24OperationFrame = [
+        grammarContext?.derivationOperationFrame,
+        lesson24ResultFrame?.derivationOperationFrame,
+        grammarContext?.selectedMachineryFrame?.derivationOperationFrame,
+        lesson24ResultFrame?.selectedMachineryFrame?.derivationOperationFrame,
+      ].find((candidate) => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate.kind === "classical-nahuatl-vnc-derivation-operation-frame"
+      )) || null;
+      const lesson24SelectedOption = lesson24OperationFrame?.selectedOption || null;
+      const lesson24SourceAnalysisFrame = [
+        grammarContext?.sourceAnalysisFrame,
+        lesson24ResultFrame?.sourceAnalysisFrame,
+        lesson24SelectedOption?.sourceAnalysisFrame,
+      ].find((candidate) => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate.kind === "classical-nahuatl-vnc-derivation-source-analysis"
+      )) || null;
+      const lesson24Request = lesson24ApplicationFrame?.normalizedRequest
+        || grammarContext?.normalizedRequest
+        || null;
+      const lesson24PredicateStart = text.indexOf("(");
+      const lesson24PredicateEnd = lesson24PredicateStart >= 0
+        ? text.indexOf(")", lesson24PredicateStart + 1)
+        : -1;
+      const lesson24SelectedRoute = String(
+        lesson24SelectedOption?.derivationRoute || "",
+      );
+      const lesson24Analyses = lesson24SourceAnalysisFrame?.analyses || [];
+      const lesson24SelectedSourceAnalysis = lesson24Analyses.find((analysis) => (
+        analysis.analysisId === lesson24SelectedOption?.sourceAnalysisId
+      )) || null;
+      const lesson24FusedDestockalTypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && /fused-destockal/u.test(lesson24SelectedRoute);
+      const lesson24HuaDestockalTypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && /destockal-hua/u.test(lesson24SelectedRoute);
+      const lesson24ShortHuiOaTypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && /destockal-(?:o-)?hui-to-o-a|pilca-piloa/u.test(lesson24SelectedRoute);
+      const lesson24NiHuiDestockalTypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && !lesson24FusedDestockalTypeOne
+        && !lesson24HuaDestockalTypeOne
+        && !lesson24ShortHuiOaTypeOne
+        && (
+          /destockal-(?:ni|hui)/u.test(lesson24SelectedRoute)
+          || (
+            /final-i/u.test(lesson24SelectedRoute)
+            && /destockal-(?:ni|hui)/u.test(String(
+              lesson24SelectedSourceAnalysis?.category
+              || lesson24SelectedOption?.sourceAnalysisId
+              || "",
+            ))
+          )
+        );
+      const lesson24FinalITypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && /final-i/u.test(lesson24SelectedRoute)
+        && !lesson24NiHuiDestockalTypeOne;
+      const lesson24FinalAOrYaTypeOne = lesson24SelectedOption?.derivationSubtype === "type-one"
+        && /final-a|root-plus-ya/u.test(lesson24SelectedRoute);
+      if (
+        (
+          lesson24FusedDestockalTypeOne
+          || lesson24HuaDestockalTypeOne
+          || lesson24ShortHuiOaTypeOne
+          || lesson24NiHuiDestockalTypeOne
+        )
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart + 1
+      ) {
+        const construction = lesson24SelectedOption.targetConstruction || {};
+        const selectedAnalysis = lesson24SelectedSourceAnalysis
+          || lesson24Analyses.find((analysis) => (
+            String(analysis.category || "").includes("destockal")
+          ))
+          || null;
+        const sourceSegments = selectedAnalysis?.segments?.join("-")
+          || lesson24OperationFrame.sourceStem;
+        const preference = lesson24SelectedOption.derivationalPreference
+          ? ` · ${lesson24SelectedOption.derivationalPreference.replace(/-/gu, " ")}`
+          : "";
+        const procedure = /append/u.test(String(construction.operation || ""))
+          ? "addition"
+          : "replacement";
+        const authorityKey = lesson24FusedDestockalTypeOne
+          ? "lesson24-coalesced-and-obsolete-destockal-sources"
+          : lesson24HuaDestockalTypeOne
+            ? "lesson24-hua-destockal-sources-and-causatives"
+            : lesson24ShortHuiOaTypeOne
+              ? "lesson24-short-vowel-hui-destockal-causatives"
+              : "lesson24-ni-hui-causative-procedure";
+        const routeDetail = lesson24FusedDestockalTypeOne
+          ? `underlying ${sourceSegments} retained through the coalesced or reconstructed Source history`
+          : lesson24HuaDestockalTypeOne
+            ? `${sourceSegments} · hua → hu-a automatically`
+            : lesson24ShortHuiOaTypeOne
+              ? `${sourceSegments} · ${lesson24SelectedSourceAnalysis?.shortStockVowelSelectionFrame?.relation?.replace(/-/gu, " ") || "typed exceptional relation"} · ${lesson24SelectedOption?.causativeOaHistory?.sourceRoute || "irregular Source relation"} → o-ā automatically`
+              : `${sourceSegments} · ${procedure}${preference}`;
+        addAnnotation(
+          lesson24PredicateStart + 1,
+          lesson24PredicateEnd,
+          authorityKey,
+          `${lesson24OperationFrame.sourceStem} → ${lesson24SelectedOption.targetStem} · ${routeDetail} · Class ${lesson24SelectedOption.targetClass} · causative participant transfer automatic · no stem list`,
+          "carrier",
+          authorityKey,
+        );
+      } else if (
+        (lesson24FinalITypeOne || lesson24FinalAOrYaTypeOne)
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart + 1
+      ) {
+        const construction = lesson24SelectedOption.targetConstruction || {};
+        const procedure = lesson24SelectedOption.procedure
+          || lesson24SelectedOption.preferredProcedure
+          || (/append/u.test(String(construction.operation || "")) ? "addition" : "replacement");
+        const material = [
+          construction.remove ? `remove ${construction.remove}` : "retain the Source",
+          construction.add ? `add ${construction.add}` : "apply the typed causative boundary",
+        ].join(" · ");
+        const participantCount = lesson24OperationFrame.participantTransformFrame
+          ?.targetObjectRequests?.length || 0;
+        const authorityKey = lesson24FinalAOrYaTypeOne
+          ? "lesson24-final-a-and-ya-causatives"
+          : "lesson24-final-i-type-one-causatives";
+        const surfaceRelation = construction.preserve === "y"
+          ? "licensed retained-y exception"
+          : construction.surfaceChange === false
+            ? "morphological replacement with the same visible spelling"
+            : construction.remove === "ya"
+            ? "ya removed before long causative ā"
+            : "typed Source boundary replacement";
+        addAnnotation(
+          lesson24PredicateStart + 1,
+          lesson24PredicateEnd,
+          authorityKey,
+          `${lesson24OperationFrame.sourceStem} → ${lesson24SelectedOption.targetStem} · ${procedure} · ${material} · ${surfaceRelation} · Class ${lesson24SelectedOption.targetClass} · ${participantCount} target participant position${participantCount === 1 ? "" : "s"} · ${lesson24SelectedOption.lexicalChoiceRequired ? "formation choice required" : "formation fixed by Source analysis"}`,
+          "carrier",
+          authorityKey,
+        );
+      } else if (
+        lesson24Request?.sourceStem
+        && lesson24Request?.sourceValence
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart
+      ) {
+        const sourceStem = String(lesson24Request.sourceStem);
+        const finalVowel = (sourceStem.match(/[aeioāēīō](?!.*[aeioāēīō])/u) || ["none"])[0];
+        addAnnotation(
+          lesson24PredicateStart,
+          lesson24PredicateStart + 1,
+          "lesson24-final-vowel-and-open-valence",
+          `${sourceStem} · final vowel ${finalVowel} is a reading clue only · typed Source Valence ${lesson24Request.sourceValence} is preserved`,
+          "boundary",
+          "lesson24-final-vowel-and-open-valence",
+        );
+        addAnnotation(
+          lesson24PredicateEnd,
+          lesson24PredicateEnd + 1,
+          "lesson24-valence-neutral-sources",
+          `${sourceStem} keeps this stem shape · chosen ${lesson24Request.sourceValence} analysis controls its participant structure and later nonactive route · no valence-neutral list or toggle`,
+          "boundary",
+          "lesson24-valence-neutral-sources",
+        );
+        const destockalAnalysis = lesson24Analyses
+          .find((analysis) => (
+            String(analysis.category || "").includes("destockal")
+            && Array.isArray(analysis.segments)
+            && analysis.segments.length >= 3
+          )) || null;
+        if (destockalAnalysis) {
+          const [root, stockFormative, stemFormative] = destockalAnalysis.segments;
+          const rootStart = text.indexOf(root, lesson24PredicateStart + 1);
+          if (rootStart >= 0) {
+            addAnnotation(
+              rootStart,
+              rootStart + String(root).length,
+              "lesson24-destockal-source-architecture",
+              `${root} root → ${root}-${stockFormative} stock → ${root}-${stockFormative}-${stemFormative} completed verbstem · the stock is not the completed destockal VNC Source`,
+              "carrier",
+              "lesson24-destockal-source-architecture",
+            );
+          }
+          const harmony = destockalAnalysis.stockVowelHarmonyFrame || null;
+          const stockStart = text.indexOf(
+            stockFormative,
+            Math.max(lesson24PredicateStart + 1, rootStart + String(root).length),
+          );
+          if (harmony?.authorizationStatus === "authorized" && stockStart >= 0) {
+            const relation = harmony.regularHarmony
+              ? `regular harmony with root vowel ${harmony.rootVowel}`
+              : harmony.exceptionalAnalysis
+                ? `exceptional stock vowel; regular cue would be ${harmony.expectedStockFormative}`
+                : "root-vowel harmony cue unresolved";
+            addAnnotation(
+              stockStart,
+              stockStart + String(stockFormative).length,
+              "lesson24-ni-hui-destockal-sources",
+              `${root} root · ${stockFormative} long stock formative · ${stemFormative} theme · ${relation} · typed Source Class ${lesson24Request.verbClass} · no inventory gate`,
+              "carrier",
+              "lesson24-ni-hui-destockal-sources",
+            );
+          }
+          const shortSelection = destockalAnalysis.shortStockVowelSelectionFrame || null;
+          const shortRelation = destockalAnalysis.shortHuiCausativeRelationFrame || null;
+          if (shortSelection?.authorizationStatus === "authorized" && stockStart >= 0) {
+            const rootCondition = shortSelection.rootFinalLOverride
+              ? "root-final l selects short i"
+              : shortSelection.rootVowel
+                ? `last root vowel ${shortSelection.rootVowel} regularly selects ${shortSelection.expectedStockFormative || "no automatic stock"}`
+                : "root-vowel cue unresolved";
+            const relation = shortSelection.specialOHui
+              ? "special o-hui Source"
+              : shortSelection.regularSelection
+                ? "regular short stock selection"
+                : `exceptional short stock analysis${shortSelection.expectedStockFormative ? `; regular cue is ${shortSelection.expectedStockFormative}` : ""}`;
+            const counterpart = shortRelation?.relation === "exact-o-a-counterpart-blocked"
+              ? ` · exact o-ā counterpart blocked: ${shortRelation.reason}`
+              : shortRelation?.relation === "special-o-hui-to-o-a"
+                ? " · Causative replaces hui with ā"
+                : " · Causative replaces i-hui or a-hui with o-ā";
+            addAnnotation(
+              stockStart,
+              stockStart + String(stockFormative).length,
+              "lesson24-short-vowel-hui-destockal-causatives",
+              `${rootCondition} · ${stockFormative}-hui · ${relation} · typed Source Class ${lesson24Request.verbClass}${counterpart} · no inventory gate`,
+              "carrier",
+              "lesson24-short-vowel-hui-destockal-causatives",
+            );
+          }
+          const neighboringBoundaries = lesson24ResultFrame?.finiteSurfaceFrame
+            ?.neighboringBoundaries || [];
+          const coalescenceBoundary = neighboringBoundaries.find((boundary) => (
+            (boundary.appliedRuleIds || []).includes(
+              "cn-l24-identical-root-stock-vowel-coalescence",
+            )
+          )) || null;
+          const fusedAnalysis = lesson24Analyses.find((analysis) => (
+            String(analysis.category || "").includes("fused-destockal")
+          )) || null;
+          const themeStart = text.indexOf(
+            stemFormative,
+            Math.max(
+              lesson24PredicateStart + 1,
+              stockStart + String(stockFormative).length,
+            ),
+          );
+          if ((coalescenceBoundary || fusedAnalysis) && themeStart >= 0) {
+            const hiddenSegments = (fusedAnalysis || destockalAnalysis).segments.join("-");
+            const cueStart = stemFormative === "hua" && stockStart >= 0
+              ? stockStart
+              : themeStart;
+            const cueLength = stemFormative === "hua"
+              ? String(stockFormative).length
+              : String(stemFormative).length;
+            addAnnotation(
+              cueStart,
+              cueStart + cueLength,
+              "lesson24-coalesced-and-obsolete-destockal-sources",
+              `underlying ${hiddenSegments} remains separate in the formula · written ${lesson24ResultFrame?.surfaceRealization || sourceStem} coalesces identical vowels only in the written projection · typed Source history preserved for later derivation`,
+              "carrier",
+              "lesson24-coalesced-and-obsolete-destockal-sources",
+            );
+          }
+          if (stemFormative === "hua" && themeStart >= 0) {
+            addAnnotation(
+              themeStart,
+              themeStart + String(stemFormative).length,
+              "lesson24-hua-destockal-sources-and-causatives",
+              `${root}-${stockFormative}-hua typed destockal Source · independently entered hua and hui Sources remain separate · Causative automatically replaces hua with hu-a and yields Class B · no synonym or stem whitelist`,
+              "carrier",
+              "lesson24-hua-destockal-sources-and-causatives",
+            );
+          }
+        }
+      }
+      const lesson24ParticipantTransform = lesson24OperationFrame?.participantTransformFrame || null;
+      if (
+        lesson24ParticipantTransform?.authorizationStatus === "authorized"
+        && lesson24ParticipantTransform.derivationType === "causative"
+      ) {
+        const causee = lesson24ParticipantTransform.addedObjectRequest || null;
+        const choice = lesson24ParticipantTransform.causativeObjectKindChoiceEligible
+          ? `genuine causee choice: ${lesson24ParticipantTransform.allowedCausativeObjectKinds.join(" or ")}`
+          : "causee form derived automatically";
+        const sourceTransfer = lesson24ParticipantTransform.sourceVoice === "active"
+          ? `Source subject ${lesson24ParticipantTransform.sourceSubject} becomes the causative ${causee?.objectKind || "object"}`
+          : `implicit ${lesson24ParticipantTransform.sourceVoice} agent becomes ${causee?.objectKind || "the causative object"}`;
+        const occupied = (index) => annotations.some((annotation) => (
+          index >= annotation.start && index < annotation.end
+        ));
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find((index) => (
+            index !== lesson24PredicateStart
+            && index !== lesson24PredicateEnd
+            && !occupied(index)
+            && /[^()]/u.test(text[index] || "")
+          ));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson24-causative-participant-transform",
+            `${sourceTransfer} · governor causative · imported subject ${lesson24ParticipantTransform.targetSubject} · ${choice} · Source VNC core preserved`,
+            "carrier",
+            "lesson24-causative-participant-transform",
+          );
+        }
+      }
+      const lesson25TypeTwo = lesson24OperationFrame?.derivationType === "causative"
+        && lesson24SelectedOption?.derivationSubtype === "type-two";
+      if (
+        lesson25TypeTwo
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart + 1
+      ) {
+        const lesson25Bridge = lesson24SelectedOption?.typeTwoInternalBridgeFrame || null;
+        const lesson25TargetCount = lesson24ParticipantTransform
+          ?.targetObjectRequests?.length || 0;
+        const lesson25Suppletive = /suppletive/u.test(lesson24SelectedRoute);
+        addAnnotation(
+          lesson24PredicateStart,
+          lesson24PredicateStart + 1,
+          "lesson25-type-two-foundation",
+          `${lesson24OperationFrame.sourceStem} Source → ${lesson25Bridge?.nonactiveStem || "typed nonactive history"} → ${lesson24SelectedOption.targetStem} · Type 2 tiā · ${lesson25TargetCount} object position${lesson25TargetCount === 1 ? "" : "s"} derived from the Source${lesson25Suppletive ? " · required huīca suppletion" : ""} · no stem whitelist`,
+          "boundary",
+          "lesson25-type-two-foundation",
+        );
+        const lesson25HuaRoute = /hua|huī|huetzqui|destockal-ihui/u.test(
+          `${lesson24SelectedRoute} ${lesson25Bridge?.nonactiveStem || ""}`,
+        ) && !/o-hua|ohua/u.test(
+          `${lesson24SelectedRoute} ${lesson25Bridge?.nonactiveStem || ""}`,
+        );
+        if (lesson25HuaRoute) {
+          const targetStart = lesson24PredicateStart + 1;
+          const targetEnd = Math.min(
+            lesson24PredicateEnd,
+            targetStart + Math.max(1, lesson24SelectedOption.targetStem.length),
+          );
+          addAnnotation(
+            targetStart,
+            targetEnd,
+            "lesson25-hua-source-routes",
+            `${lesson25Bridge?.nonactiveStem || "hua nonactive Source"} · hua replaced by tiā · vowel quantity and supportive or consonant changes derived from Source shape · typed ${lesson24Request?.sourceValence || "Source Valence"} controls the participant result · history choice appears only when licensed alternatives remain`,
+            "carrier",
+            "lesson25-hua-source-routes",
+          );
+        }
+        const lesson25OHistory = /(?:^|-)o(?:-hua)?-|o-hua|ohua|mach-tia|mauh-tia|quen-tia/u.test(
+          `${lesson24SelectedRoute} ${lesson25Bridge?.nonactiveStem || ""} ${lesson24SelectedOption.targetStem || ""}`,
+        );
+        if (lesson25OHistory) {
+          const shuntlineRule = lesson24ResultFrame?.selectedMachineryFrame
+            ?.targetObjectClusterFrame?.causativeSpecificShuntlineRuleFrame
+            || grammarContext?.targetObjectClusterFrame
+              ?.causativeSpecificShuntlineRuleFrame
+            || null;
+          const cueStart = Math.max(
+            lesson24PredicateStart + 1,
+            lesson24PredicateEnd - 1,
+          );
+          addAnnotation(
+            cueStart,
+            lesson24PredicateEnd,
+            "lesson25-o-ohua-source-and-machtia",
+            `${lesson25Bridge?.nonactiveStem || "o or o-hua Source history"} → ${lesson24SelectedOption.targetStem} · consonant-before-tiā route${/l-tia/u.test(lesson24SelectedOption.targetStem || "") ? " redirected to lō" : ""}${shuntlineRule ? ` · specific shuntline ${shuntlineRule.selectedRealization}` : ""} · silent objects remain grammatical and supplementable · genuine Source or reflexive/reciprocal ambiguity stays visible`,
+            "carrier",
+            "lesson25-o-ohua-source-and-machtia",
+          );
+        }
+        const lesson25BridgeFamily = lesson25Bridge?.suffixFamily
+          || lesson24SelectedOption?.typeTwoBridgeSuffixFamily
+          || lesson24SelectedOption?.lesson20NonactiveStemRecord?.suffixFamily
+          || "";
+        const lesson25LoHistory = lesson25BridgeFamily === "lō"
+          || /(?:^|-)lo(?:-|$)|lō|lo-nonactive/u.test(lesson24SelectedRoute)
+          || /-l-tiā$/u.test(lesson24SelectedOption.targetStem || "");
+        if (lesson25LoHistory) {
+          const loBridge = lesson25Bridge?.nonactiveStem
+            || lesson24SelectedOption?.lesson20NonactiveStemRecord?.nonactiveStem
+            || lesson24SelectedOption?.typeTwoBridgeStem
+            || "typed lō history";
+          addAnnotation(
+            Math.max(lesson24PredicateStart + 1, lesson24PredicateEnd - 1),
+            lesson24PredicateEnd,
+            "lesson25-lo-source-routes",
+            `${loBridge} → ${lesson24SelectedOption.targetStem} · only final ō is replaced by tiā and l remains · vowel and consonant alternations derive from Source shape · unresolved history or variant choice appears only when licensed · no stem whitelist`,
+            "carrier",
+            "lesson25-lo-source-routes",
+          );
+        }
+        const lesson25LiaRoute = /lia/u.test(lesson24SelectedRoute)
+          || /-liā$/u.test(lesson24SelectedOption.targetStem || "");
+        if (lesson25LiaRoute) {
+          const sourceAnalysis = lesson24SelectedOption?.sourceAnalysisId
+            || lesson24OperationFrame?.sourceAnalysisFrame?.selectedAnalysisId
+            || "typed denominal-ti or root-plus-ya Source";
+          addAnnotation(
+            lesson24PredicateStart + 1,
+            Math.min(lesson24PredicateEnd, lesson24PredicateStart + 2),
+            "lesson25-lia-causatives",
+            `${sourceAnalysis} → ${lesson24SelectedOption.targetStem} · liā causative · ya deletion and Source segmentation derived automatically · Class ${lesson24SelectedOption.targetClass || "C"} · causative versus applicative is chosen only when the final composition is genuinely ambiguous`,
+            "carrier",
+            "lesson25-lia-causatives",
+          );
+        }
+        const lesson25HuiaRoute = /huia/u.test(lesson24SelectedRoute)
+          || /-huiā$/u.test(lesson24SelectedOption.targetStem || "");
+        if (lesson25HuiaRoute) {
+          addAnnotation(
+            lesson24PredicateStart + 1,
+            Math.min(lesson24PredicateEnd, lesson24PredicateStart + 2),
+            "lesson25-huia-class-and-parallel-causatives",
+            `${lesson24OperationFrame.sourceStem} → ${lesson24SelectedOption.targetStem} · direct or replacive huiā route derived from typed final-ō Source history · Class ${lesson24SelectedOption.targetClass || "C"} · derivation role or history choice appears only when both remain licensed`,
+            "carrier",
+            "lesson25-huia-class-and-parallel-causatives",
+          );
+        }
+      }
+      const lesson26ApplicativeOption = lesson24OperationFrame?.derivationType === "applicative"
+        ? lesson24SelectedOption
+        : null;
+      if (
+        lesson26ApplicativeOption
+        && lesson24ParticipantTransform?.authorizationStatus === "authorized"
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart
+      ) {
+        const lesson26Subtype = String(
+          lesson26ApplicativeOption.derivationSubtype || "",
+        );
+        const lesson26Route = String(
+          lesson26ApplicativeOption.derivationRoute || "",
+        );
+        const lesson26Construction = lesson26ApplicativeOption
+          .targetConstruction || null;
+        const lesson26AddedObject = lesson24ParticipantTransform
+          .addedObjectRequest || null;
+        const lesson26RetainedReflexive = lesson24ParticipantTransform
+          .retainedSourceReflexiveShuntlineRuleFrame || null;
+        const lesson26CueIndex = Array.from(
+          { length: lesson24PredicateEnd - lesson24PredicateStart },
+          (_, offset) => lesson24PredicateStart + offset,
+        ).find((index) => (
+          /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some((annotation) => (
+            index >= annotation.start && index < annotation.end
+          ))
+        ));
+        if (
+          Number.isInteger(lesson26CueIndex)
+          && [
+            "inherent-applicative",
+            "irregular-applicative",
+            "valence-neutral-applicative",
+          ].includes(lesson26Subtype)
+        ) {
+          addAnnotation(
+            lesson26CueIndex,
+            lesson26CueIndex + 1,
+            "lesson26-applicative-foundation-and-irregular-sources",
+            `${lesson24OperationFrame.sourceStem} → ${lesson26ApplicativeOption.targetStem} · ${lesson26Subtype.replace(/-/gu, " ")} Source analysis · ${lesson26AddedObject?.objectKind || "applicative participant"} imported at object level ${lesson26AddedObject?.derivationalLevel || lesson24ParticipantTransform.targetObjectCount} · mainline status and object depth derived automatically · Canvas examples do not gate open stems`,
+            "carrier",
+            "lesson26-applicative-foundation-and-irregular-sources",
+          );
+        } else if (
+          Number.isInteger(lesson26CueIndex)
+          && lesson26Subtype === "type-three"
+        ) {
+          addAnnotation(
+            lesson26CueIndex,
+            lesson26CueIndex + 1,
+            "lesson26-special-and-parallel-applicatives",
+            `${lesson24OperationFrame.sourceStem} → ${lesson26ApplicativeOption.targetStem} · rare tiā applicative through ${lesson26Construction?.nonactiveStem || "the typed nonactive Source"} · Class ${lesson26ApplicativeOption.targetClass || "C"} · ${lesson26AddedObject?.objectKind || "applicative participant"} imported at object level ${lesson26AddedObject?.derivationalLevel || lesson24ParticipantTransform.targetObjectCount} · choose this exceptional formation only when the intended final composition requires it`,
+            "carrier",
+            "lesson26-special-and-parallel-applicatives",
+          );
+        } else if (
+          Number.isInteger(lesson26CueIndex)
+          && lesson26Subtype === "type-one"
+        ) {
+          addAnnotation(
+            lesson26CueIndex,
+            lesson26CueIndex + 1,
+            "lesson26-type-one-applicatives",
+            `${lesson24OperationFrame.sourceStem} → ${lesson26ApplicativeOption.targetStem} · Type 1 lexical choice · final ${lesson26Construction?.remove || "Source vowel"} replaced by ${lesson26Construction?.add || "iā"} · Class ${lesson26ApplicativeOption.targetClass || "C"} · ${lesson26AddedObject?.objectKind || "applicative participant"} imported at object level ${lesson26AddedObject?.derivationalLevel || lesson24ParticipantTransform.targetObjectCount} · derivation role is chosen only when the final composition is genuinely ambiguous`,
+            "carrier",
+            "lesson26-type-one-applicatives",
+          );
+        } else if (
+          Number.isInteger(lesson26CueIndex)
+          && lesson26Subtype.startsWith("type-two")
+        ) {
+          const lesson26SpecialRoute = /(?:final-o-(?:direct|replacive)-huia|parallel-final-hua)/u.test(
+            lesson26Route,
+          );
+          const lesson26OaHuiaRoute = /(?:o-a|oa|huia-from|ihtoa)/u.test(
+            lesson26Route,
+          );
+          const lesson26ExceptionRoute = /(?:class-d|class-b|intransitive-oya|transitive-oya)/u.test(
+            lesson26Route,
+          );
+          const lesson26FinalARoute = /(?:final-ia|consonant-final-a|final-tla|final-tza|final-sa|final-ca)/u.test(
+            lesson26Route,
+          );
+          const lesson26CueRole = lesson26SpecialRoute
+            ? "lesson26-special-and-parallel-applicatives"
+            : lesson26OaHuiaRoute
+              ? "lesson26-oa-and-huia-routes"
+              : lesson26ExceptionRoute
+                ? "lesson26-shape-and-class-exceptions"
+                : lesson26FinalARoute
+                  ? "lesson26-final-a-source-routes"
+                  : "lesson26-type-two-foundation-and-final-i";
+          const lesson26History = String(
+            lesson26ApplicativeOption.selectedSourceHistory
+              || lesson26ApplicativeOption.sourceHistoryChoice
+              || lesson26ApplicativeOption.typeTwoInternalBridgeFrame
+                ?.suffixFamily
+              || "",
+          );
+          const lesson26AutomaticChange = lesson26SpecialRoute
+            ? /parallel-final-hua/u.test(lesson26Route)
+              ? "parallel Type 2 formation selected; Type 1 remains a separate licensed choice"
+              : "direct or replacive huiā route selected from typed final-ō Source history"
+            : /final-si-to-xi/u.test(lesson26Route)
+            ? "si → xi"
+            : /final-tzi-to-chi/u.test(lesson26Route)
+              ? "tzi → chi"
+              : /final-ti-to-chi/u.test(lesson26Route)
+                ? "ti → chi"
+                : lesson26OaHuiaRoute
+                  ? `${lesson26History ? `${lesson26History} history · ` : ""}${/suppletive/u.test(lesson26Route) ? "suppletive base" : /exceptional/u.test(lesson26Route) ? "exceptional liā route" : "o-ā history recovered before huiā"}`
+                  : lesson26ExceptionRoute
+                    ? `Class ${lesson24OperationFrame.sourceClass || lesson26ApplicativeOption.licensedSourceClass || "typed"} and ${lesson24OperationFrame.sourceValence || lesson26ApplicativeOption.licensedSourceValence || "typed valence"} select the exception`
+                    : lesson26FinalARoute
+                      ? `${lesson26Construction?.remove || "final-a material"} → ${lesson26Construction?.add || lesson26ApplicativeOption.suffix || "applicative suffix"} from typed Source shape`
+                      : "Source-shape alternation derived automatically";
+          const lesson26ChoicePolicy = lesson26SpecialRoute
+            ? "formation or derivation role is chosen only when the intended Result remains genuinely ambiguous"
+            : lesson26OaHuiaRoute
+            ? "Source history is chosen only when signed provenance cannot recover it"
+            : lesson26ExceptionRoute
+              ? "only unsettled oya valence or Source history remains a choice"
+              : lesson26FinalARoute
+                ? "only a real Source-history or recursive-structure ambiguity remains a choice"
+                : "Source-history choice appears only when licensed alternatives remain";
+          addAnnotation(
+            lesson26CueIndex,
+            lesson26CueIndex + 1,
+            lesson26CueRole,
+            `${lesson24OperationFrame.sourceStem} → ${lesson26ApplicativeOption.targetStem} · Type 2 ${lesson26ApplicativeOption.suffix || lesson26Construction?.add || "liā or huiā"} · ${lesson26AutomaticChange} · Class ${lesson26ApplicativeOption.targetClass || "C"} · object level ${lesson26AddedObject?.derivationalLevel || lesson24ParticipantTransform.targetObjectCount}${lesson26RetainedReflexive ? " · retained Source reflexive becomes shuntline ne" : ""} · ${lesson26ChoicePolicy} · Canvas examples do not gate open stems`,
+            "carrier",
+            lesson26CueRole,
+          );
+        }
+        const lesson26ParticipantCueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index,
+        ).find((index) => (
+          /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some((annotation) => (
+            index >= annotation.start && index < annotation.end
+          ))
+        ));
+        const lesson26SourceObjectCount = Number(
+          lesson24ParticipantTransform.sourceObjectCount || 0,
+        );
+        const lesson26TargetObjectCount = Number(
+          lesson24ParticipantTransform.targetObjectCount || 0,
+        );
+        const lesson26ParticipantCueRole = lesson26SourceObjectCount === 0
+          && lesson26TargetObjectCount === 1
+          ? "lesson26-single-object-applicatives"
+          : lesson26SourceObjectCount === 1
+            && lesson26TargetObjectCount === 2
+            ? "lesson26-double-object-applicatives"
+            : lesson26SourceObjectCount === 2
+              && lesson26TargetObjectCount === 3
+              ? "lesson26-triple-object-applicatives"
+              : "";
+        if (Number.isInteger(lesson26ParticipantCueIndex) && lesson26ParticipantCueRole) {
+          const lesson26SourceObjects = lesson24ParticipantTransform
+            .retainedTargetObjectRequests || [];
+          const lesson26TargetObjectCluster = lesson24ResultFrame
+            ?.selectedMachineryFrame?.targetObjectClusterFrame
+            || grammarContext?.targetObjectClusterFrame
+            || null;
+          const lesson26SilentSourceObjects = Array.from(new Set([
+            ...lesson26SourceObjects
+              .filter((request) => request.silentSpecificObject === true)
+              .map((request) => request.objectId),
+            ...(lesson26TargetObjectCluster?.positions || [])
+              .filter((position) => (
+                position.sounded === false
+                && lesson26SourceObjects.some((request) => (
+                  request.objectId === position.objectId
+                ))
+              ))
+              .map((position) => position.objectId),
+          ]));
+          const lesson26ParticipantDetail = lesson26ParticipantCueRole
+            === "lesson26-single-object-applicatives"
+            ? `intransitive Source: 0 objects → 1 object · ${lesson26AddedObject?.objectKind || "applicative participant"}${lesson26AddedObject?.objectPerson ? ` ${lesson26AddedObject.objectPerson}` : ""} imported as mainline at level ${lesson26AddedObject?.derivationalLevel || 1} · governor applicative · carrier and agreement derived automatically`
+            : lesson26ParticipantCueRole === "lesson26-double-object-applicatives"
+              ? `single-object Source: 1 object → 2 objects · new ${lesson26AddedObject?.objectKind || "applicative participant"}${lesson26AddedObject?.objectPerson ? ` ${lesson26AddedObject.objectPerson}` : ""} is mainline at level ${lesson26AddedObject?.derivationalLevel || 2} · retained Source object is shuntline at level ${lesson26SourceObjects[0]?.derivationalLevel || 1}${lesson26RetainedReflexive ? " and surfaces as ne" : ""}${lesson26SilentSourceObjects.length ? ` · silent ${lesson26SilentSourceObjects.join(", ")} remains available to the ordinary supplement link` : ""} · compatibility and prefix order derived automatically`
+              : `recaptured double-object Result: 2 objects → 3 objects · new ${lesson26AddedObject?.objectKind || "applicative participant"}${lesson26AddedObject?.objectPerson ? ` ${lesson26AddedObject.objectPerson}` : ""} is mainline at level ${lesson26AddedObject?.derivationalLevel || 3} · earlier levels ${lesson26SourceObjects.map((request) => request.derivationalLevel).sort((left, right) => right - left).join(" and ")} are first- and second-level shuntlines${lesson26RetainedReflexive ? " · retained reflexive surfaces as ne" : ""}${lesson26SilentSourceObjects.length ? ` · silent ${lesson26SilentSourceObjects.join(", ")} remains available to the ordinary supplement link` : ""} · compatibility, silence, ne, and prefix order are derived by ordinary recursion`;
+          addAnnotation(
+            lesson26ParticipantCueIndex,
+            lesson26ParticipantCueIndex + 1,
+            lesson26ParticipantCueRole,
+            lesson26ParticipantDetail,
+            "carrier",
+            lesson26ParticipantCueRole,
+          );
+        }
+        const lesson26AmbiguityCueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index,
+        ).find((index) => (
+          /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some((annotation) => (
+            index >= annotation.start && index < annotation.end
+          ))
+        ));
+        if (Number.isInteger(lesson26AmbiguityCueIndex)) {
+          const lesson26ReverseSources = lesson24OperationFrame
+            ?.reverseSourceAnalyses || [];
+          const lesson26Voice = lesson24ResultFrame?.selectedVoice
+            || lesson24ResultFrame?.selectedMachineryFrame
+              ?.voiceTransformationFrame?.voice
+            || grammarContext?.voiceTransformationFrame?.voice
+            || "active";
+          const lesson26MoodCondition = String(
+            typedSlotFrame?.slots?.number?.condition || "",
+          );
+          const lesson26Mood = /admonitive/u.test(lesson26MoodCondition)
+            ? "admonitive"
+            : /optative/u.test(lesson26MoodCondition)
+              ? "optative"
+              : /imperative/u.test(lesson26MoodCondition)
+                ? "imperative"
+                : lesson24Request?.mood || "indicative";
+          addAnnotation(
+            lesson26AmbiguityCueIndex,
+            lesson26AmbiguityCueIndex + 1,
+            "lesson26-ambiguity-mood-and-voice",
+            `${lesson26ReverseSources.length} licensed typed Source ${lesson26ReverseSources.length === 1 ? "analysis" : "analyses"} retained · choose a Source only when composition or context requires it · surface spelling has no authority · Mood ${lesson26Mood} and Voice ${lesson26Voice} use the shared owners after applicative composition · participant hierarchy retained`,
+            "carrier",
+            "lesson26-ambiguity-mood-and-voice",
+          );
+        }
+        const lesson26InterpretationCueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index,
+        ).find((index) => (
+          /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some((annotation) => (
+            index >= annotation.start && index < annotation.end
+          ))
+        ));
+        if (Number.isInteger(lesson26InterpretationCueIndex)) {
+          const lesson26TargetObjectCluster = lesson24ResultFrame
+            ?.selectedMachineryFrame?.targetObjectClusterFrame
+            || grammarContext?.targetObjectClusterFrame
+            || null;
+          const lesson26ApplicativePosition = lesson26TargetObjectCluster
+            ?.positions?.find((position) => (
+              position.objectId === lesson26AddedObject?.objectId
+            )) || null;
+          addAnnotation(
+            lesson26InterpretationCueIndex,
+            lesson26InterpretationCueIndex + 1,
+            "lesson26-object-interpretation-and-applicative-unit",
+            `${lesson26AddedObject?.objectKind || "applicative participant"}${lesson26AddedObject?.objectPerson ? ` ${lesson26AddedObject.objectPerson}` : ""} interpretation comes from typed participant structure · ${lesson26AddedObject?.objectId || "applicative object"} ↔ ${lesson26ApplicativePosition?.governorUnitFrame?.requiredStemOperation || "applicative-derivational-suffix"} is one discontinuous unit · same-looking causative and applicative Results remain separate typed compositions · choose only a real interpretation or derivation-role alternative`,
+            "carrier",
+            "lesson26-object-interpretation-and-applicative-unit",
+          );
+        }
+      }
+      const lesson27ClosureFrame = grammarContext?.operationFrame
+        ?.operation === "frequentative"
+        ? grammarContext
+        : grammarContext?.vncLateOperationClosureFrame
+          || grammarContext?.lateOperationClosureFrame
+          || null;
+      const lesson27OperationFrame = lesson27ClosureFrame?.operationFrame
+        || (grammarContext?.operationFrame?.operation === "frequentative"
+          ? grammarContext.operationFrame
+          : null);
+      if (
+        lesson27OperationFrame?.authorizationStatus === "authorized"
+        && lesson27OperationFrame.operation === "frequentative"
+      ) {
+        const lesson27Facts = lesson27OperationFrame.operationFacts || {};
+        const predicateStart = text.indexOf("(");
+        const predicateEnd = predicateStart >= 0
+          ? text.indexOf(")", predicateStart + 1)
+          : -1;
+        const cueIndexes = predicateStart >= 0 && predicateEnd > predicateStart
+          ? Array.from(
+            { length: predicateEnd - predicateStart - 1 },
+            (_, offset) => predicateStart + offset + 1,
+          ).filter(index => /[^#+()\-]/u.test(text[index] || ""))
+          : [];
+        const addLesson27Cue = (role, label) => {
+          let cueIndex = cueIndexes.find(index => !annotations.some(
+            annotation => index >= annotation.start && index < annotation.end,
+          ));
+          if (!Number.isInteger(cueIndex)) {
+            const replaceableIndex = annotations.findIndex(annotation => (
+              !String(annotation.role || "").startsWith("lesson27-")
+              && cueIndexes.some(index => (
+                index >= annotation.start && index < annotation.end
+              ))
+            ));
+            if (replaceableIndex >= 0) {
+              const [replaceable] = annotations.splice(replaceableIndex, 1);
+              cueIndex = cueIndexes.find(index => (
+                index >= replaceable.start && index < replaceable.end
+              ));
+            }
+          }
+          if (!Number.isInteger(cueIndex)) return;
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            role,
+            label,
+            "carrier",
+            role,
+          );
+        };
+        const ordinaryFrequentative = [
+          "ordinary-short-glottal",
+          "ordinary-long",
+          "ordinary-short",
+          "tla-short-glottal",
+          "tla-long",
+          "tla-short-glottal-and-stem-short-glottal",
+          "tla-long-and-stem-long",
+          "reflexive-partial",
+        ].includes(lesson27OperationFrame.variant);
+        if (ordinaryFrequentative) {
+          addLesson27Cue(
+            "lesson27-frequentative-foundation-and-shape-choice",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · ${lesson27Facts.shapeFormula || lesson27Facts.shape || "selected frequentative shape"} · copied prefix ${lesson27Facts.copiedPrefix || "derived from Source"} · consonant is optional when the Source syllable has none · shape is a lexical user choice; copied sounds and finite Result are automatic · no stem whitelist`,
+          );
+        }
+        if (lesson27Facts.shape === "short-glottal"
+          && lesson27Facts.reduplicationTarget !== "mainline-reflexive") {
+          const scope = lesson27Facts.semanticScope || "open";
+          addLesson27Cue(
+            "lesson27-short-glottal-ordinary-frequentatives",
+            `short vowel + h · ${scope === "open" ? "action, agent, patient, occasion, and place readings remain open" : `selected meaning focus: ${scope}`} · patient scope ${lesson27Facts.patientScopeAvailable ? "available from the typed Source object" : "not offered without a typed Source object"} · bounded, intense, abrupt, uneven, or distributive readings remain visible · fusion and tla placement follow typed structure`,
+          );
+        }
+        if (ordinaryFrequentative && (
+          ["ordinary-long", "ordinary-short"].includes(
+            lesson27OperationFrame.variant,
+          )
+          || lesson27Facts.supportiveIDeleted === true
+          || Number(lesson27Facts.repetitions || 1) > 1
+        )) {
+          const initialI = lesson27Facts.initialIAnalysis || "not-applicable";
+          addLesson27Cue(
+            "lesson27-long-short-supportive-i-and-recursion",
+            `${lesson27Facts.shape === "long" ? "long-vowel continuous formation" : lesson27Facts.shape === "short" ? "short-vowel formation" : "short-glottal formation"} · initial i ${initialI}${lesson27Facts.supportiveIDeleted ? ` deleted before ${lesson27Facts.sourceStemAfterSupportiveIDeletion || "the retained Source"}` : initialI === "real" ? " retained" : ""} · copied prefix ${lesson27Facts.copiedPrefix || "derived automatically"} · ${lesson27Facts.repetitions || 1} reduplication layer${Number(lesson27Facts.repetitions || 1) === 1 ? "" : "s"} · extra layers are chosen only for intended emphasis`,
+          );
+        }
+        if (
+          lesson27Facts.objectPronounReduplicated === true
+          || lesson27Facts.reduplicationTarget === "mainline-reflexive"
+        ) {
+          addLesson27Cue(
+            "lesson27-object-pronoun-reduplication",
+            `selected target: ${lesson27Facts.reduplicationTarget || "typed object pronoun"} · ${lesson27Facts.objectPronounReduplicated ? "fused tla is reduplicated" : `reflexive ${lesson27Facts.reflexiveCarrier || "carrier"} becomes ${lesson27Facts.partialReflexiveCarrier || "the partial reduplicated carrier"}`} · lexical stem ${lesson27Facts.lexicalStemAlsoReduplicated ? "is also reduplicated" : "is not additionally reduplicated"} · object scope ${lesson27Facts.objectScope || "comes from the typed participant"} · event scope ${lesson27Facts.eventScope || "remains distinct"} · supportive i ${lesson27Facts.supportiveIDeleted ? "is deleted automatically" : "does not require deletion"}`,
+          );
+        }
+        if (lesson27OperationFrame.variant === "destockal-intransitive") {
+          addLesson27Cue(
+            "lesson27-intransitive-destockal-frequentatives",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · ${lesson27Facts.sourceDestockalSuffix} becomes ${lesson27Facts.targetDestockalSuffix} · stock ${lesson27Facts.stockVowel} is realized as ${lesson27Facts.reducedStockVowel} · copied prefix ${lesson27Facts.copiedPrefix} · ${lesson27Facts.repetitions} layer${Number(lesson27Facts.repetitions) === 1 ? "" : "s"} · ${lesson27Facts.nonactiveFormation} voice path · Class A is automatic · Source admission is by destockal shape, never by example-stem list`,
+          );
+        }
+        if (lesson27OperationFrame.variant === "destockal-causative") {
+          addLesson27Cue(
+            "lesson27-causative-destockal-frequentatives",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · ${lesson27Facts.sourceDestockalSuffix} becomes ${lesson27Facts.targetDestockalSuffix} while causative ${lesson27Facts.retainedCausativeVowel} remains · stock ${lesson27Facts.stockVowel} is realized as ${lesson27Facts.reducedStockVowel} · copied prefix ${lesson27Facts.copiedPrefix} · Class B and perfective final-a loss are automatic · typed object structure is preserved · no stem whitelist`,
+          );
+        }
+        if ([
+          "destockal-lexicalized",
+          "destockal-causative-force",
+          "destockal-applicative-force",
+        ].includes(lesson27OperationFrame.variant)) {
+          addLesson27Cue(
+            "lesson27-extinct-fused-and-role-ambiguous-destockals",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · open completed ca or tz-a Source shape · ${lesson27Facts.fusedLongVowel ? `fused long vowel ${lesson27Facts.fusedLongVowel} remains long` : "extinct Source history remains explicit"} · role ${lesson27Facts.contextualRoleSelected || lesson27Facts.semanticForce || "intransitive"} · ${Array.isArray(lesson27Facts.licensedSemanticForces) && lesson27Facts.licensedSemanticForces.length > 1 ? "causative and applicative readings remain available until context selects one" : "participant role follows the selected structure"} · Canvas stems are examples, never an inventory`,
+          );
+        }
+        if ([
+          "destockal-applicative",
+          "destockal-type-two",
+        ].includes(lesson27OperationFrame.variant)) {
+          const added = lesson27Facts.addedParticipant || {};
+          addLesson27Cue(
+            "lesson27-destockal-applicative-and-type-two-causative",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · recaptured completed Result · ${lesson27Facts.sourceSuffix} becomes ${lesson27Facts.replacementSuffix}${lesson27Facts.addedApplicativeSuffix ? ` plus ${lesson27Facts.addedApplicativeSuffix}` : ""} · ${lesson27Facts.derivationRole} · added participant ${added.objectKind || "selected kind"}${added.objectPerson ? ` ${added.objectPerson}` : ""} · earlier objects stay in typed order · unsupported tla fusion is not inferred`,
+          );
+        }
+        if (lesson27OperationFrame.variant.startsWith("uncertain-ca")) {
+          addLesson27Cue(
+            "lesson27-uncertain-ca-frequentatives",
+            `${lesson27Facts.sourceRoot || lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · explicit uncertain-ca Source analysis · copied prefix ${lesson27Facts.copiedPrefix || "read from the open root"} · ${lesson27Facts.targetSuffix || "ca or tz-a structure"} · role ${lesson27Facts.derivationRole || "intransitive"} · ${lesson27Facts.fusedObjectPrefix ? "tla is fused and valence is lowered" : "fusion is not inferred"} · sound assimilation follows structure · lexical meaning remains unset · no example-stem whitelist`,
+          );
+        }
+        if (lesson27OperationFrame.variant === "uncertain-tzca") {
+          addLesson27Cue(
+            "lesson27-uncertain-tzca-frequentatives",
+            `${lesson27OperationFrame.sourceStem} → ${lesson27OperationFrame.targetStem} · final Source syllable ${lesson27Facts.replacedSourceSyllable || "selected by shape"} is replaced by ${lesson27Facts.replacement || "tz-ca"} · copied prefix ${lesson27Facts.copiedPrefix || "derived from Source"} · the completed tz-ca Result can be used as the next Source · unreduplicated and transitive tz-ca belong to different Source analyses · uncertain history and lexical meaning remain open · no example-stem whitelist`,
+          );
+        }
+        if (lesson27Facts.nonactiveSourceRecaptured === true) {
+          addLesson27Cue(
+            "lesson27-frequentative-nonactive",
+            `owner-issued ${lesson27Facts.sourceVoice || "nonactive"} Result recaptured as Source · participant topology remains unchanged · frequentative formation distributes separate individual acts within the collective action · impersonal subject denotes people in general or the relevant group · ${lesson27Facts.finiteMood || "selected Mood"} and ${lesson27Facts.finiteTense || "selected Tense"} are realized by the ordinary finite boundary`,
+          );
+        }
+      }
+      const lesson28ClosureFrame = grammarContext?.operationFrame
+        ?.operation === "compound"
+        ? grammarContext
+        : grammarContext?.vncLateOperationClosureFrame
+          || grammarContext?.lateOperationClosureFrame
+          || null;
+      const lesson28OperationFrame = lesson28ClosureFrame?.operationFrame
+        || (grammarContext?.operationFrame?.operation === "compound"
+          ? grammarContext.operationFrame
+          : null);
+      if (
+        lesson28OperationFrame?.authorizationStatus === "authorized"
+        && lesson28OperationFrame.operation === "compound"
+      ) {
+        const lesson28Facts = lesson28OperationFrame.operationFacts || {};
+        const predicateStart = text.indexOf("(");
+        const predicateEnd = predicateStart >= 0
+          ? text.indexOf(")", predicateStart + 1)
+          : -1;
+        const cueIndexes = predicateStart >= 0 && predicateEnd > predicateStart
+          ? Array.from(
+            { length: predicateEnd - predicateStart - 1 },
+            (_, offset) => predicateStart + offset + 1,
+          ).filter(index => /[^#+()\-]/u.test(text[index] || ""))
+          : [];
+        const addLesson28Cue = (role, label) => {
+          let cueIndex = cueIndexes.find(index => !annotations.some(
+            annotation => index >= annotation.start && index < annotation.end,
+          ));
+          if (!Number.isInteger(cueIndex)) {
+            const replaceableIndex = annotations.findIndex(annotation => (
+              !String(annotation.role || "").startsWith("lesson28-")
+              && cueIndexes.some(index => (
+                index >= annotation.start && index < annotation.end
+              ))
+            ));
+            if (replaceableIndex >= 0) {
+              const [replaceable] = annotations.splice(replaceableIndex, 1);
+              cueIndex = cueIndexes.find(index => (
+                index >= replaceable.start && index < replaceable.end
+              ));
+            }
+          }
+          if (!Number.isInteger(cueIndex)
+            && [
+              "lesson28-shared-object-compounds",
+              "lesson28-future-embed-compounds",
+              "lesson28-recursive-compounding",
+            ].includes(role)) {
+            const contextualIndex = annotations.findIndex(annotation => (
+              annotation.role === "lesson28-connective-t-foundation"
+            ));
+            if (contextualIndex >= 0) {
+              const [contextual] = annotations.splice(contextualIndex, 1);
+              cueIndex = cueIndexes.find(index => (
+                index >= contextual.start && index < contextual.end
+              ));
+            }
+          }
+          if (!Number.isInteger(cueIndex)) return;
+          addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+        };
+        addLesson28Cue(
+          "lesson28-compounding-foundation-and-embed-matrix-order",
+          `${lesson28OperationFrame.sourceStem} is the embed and ${lesson28Facts.matrixStem} is the matrix · binary typed Results become one morphological predicate · embed always precedes matrix · the matrix supplies the compound subject and category · the embed subject is deleted but its reference remains · an embed can be object, possessor, modifier, or complement, never subject`,
+        );
+        addLesson28Cue(
+          "lesson28-linked-integrated-and-valence-system",
+          `${lesson28Facts.compoundType} compound · ${lesson28Facts.linkage} · embed valence ${lesson28Facts.embedSourceValence} determines compound valence ${lesson28OperationFrame.targetValence} · matrix valence ${lesson28Facts.matrixSourceValence} belongs to the typed matrix analysis · any compatible typed matrix stem is admitted; Canvas examples do not form a whitelist`,
+        );
+        if (lesson28Facts.linkage === "linked-connective-t") {
+          addLesson28Cue(
+            "lesson28-connective-t-foundation",
+            `perfective embed ${lesson28Facts.embedStem} + zero preterit + connective ${lesson28Facts.connectiveAllomorph} + matrix ${lesson28Facts.matrixStem} · ${lesson28Facts.connectiveCondition} · supportive i ${lesson28Facts.connectiveSupportiveI ? "separates the members" : "is absent before a vowel"} · both completed-before-matrix and begun-before-continuing readings remain available · translation never chooses the grammar`,
+          );
+        }
+        if (["ca", "nemi", "ya-uh"].includes(lesson28Facts.matrixSelectionStem)) {
+          const matrixReadings = (lesson28Facts.matrixReadingOptions || [])
+            .join(", ");
+          const yaChoice = lesson28Facts.yaSyncopationAvailable
+            ? ` · yā permits ${lesson28Facts.yaUnsyncopatedSequence} or optional ${lesson28Facts.yaSyncopatedSequence}; ${lesson28Facts.yaSyncopationSelected ? "syncopated" : "unsyncopated"} was chosen`
+            : "";
+          const traditionalAnalysis = lesson28Facts
+            .traditionalSpellingMayNeutralizeDistinction
+            ? " · traditional tia, tiaya, or tiani spelling can require a connective-t versus causative analysis choice; the generated structures remain distinct"
+            : "";
+          addLesson28Cue(
+            "lesson28-ca-nemi-and-yauh-matrices",
+            `selected matrix ${lesson28Facts.matrixSelectionStem} → finite matrix ${lesson28Facts.matrixFiniteStem} (${lesson28Facts.matrixFiniteMood}, ${lesson28Facts.matrixFiniteTense}, ${lesson28Facts.matrixFiniteSubject}) · matrix agreement is automatic · available reading cues: ${matrixReadings}${yaChoice}${traditionalAnalysis}${lesson28Facts.eHuaCaIdiomaticReadingAvailable ? " · ē-hua + ca also permits the seated or at-ease idiom" : ""}`,
+          );
+        }
+        if ([
+          "huāl-la-uh", "huī-tz", "ahci", "mani", "ihca",
+        ].includes(lesson28Facts.matrixSelectionStem)) {
+          const matrixReadings = (lesson28Facts.matrixReadingOptions || [])
+            .join(", ");
+          const direction = lesson28Facts.hualDirectionalRetained
+            ? ` · directional ${lesson28Facts.retainedMatrixDirectional} remains inside the matrix automatically`
+            : "";
+          const carry = lesson28Facts.carryAnalysisSelected
+            ? ` · special typed carry analysis: Source ${lesson28Facts.carrySourceStem} → embed ${lesson28Facts.carryEmbedStem} + connectiveless matrix ${lesson28Facts.carryVisibleMatrixShape} from ${lesson28Facts.carryMatrixPerfectiveStem} · object ${lesson28Facts.carryObjectKind}${lesson28Facts.carryObjectPerson ? ` ${lesson28Facts.carryObjectPerson}` : ""} stays with the embed · the shape is derived without a stem whitelist`
+            : lesson28Facts.matrixSelectionStem === "huī-tz"
+              ? " · ordinary connective-t analysis selected; choose the separate carry analysis only for an intended typed carry construction"
+              : "";
+          addLesson28Cue(
+            "lesson28-hualla-huitz-ahci-mani-ihca-matrices",
+            `selected ${lesson28Facts.selectedMatrixAnalysis} analysis with matrix ${lesson28Facts.matrixSelectionStem} → finite matrix ${lesson28Facts.matrixFiniteStem} (${lesson28Facts.matrixFiniteMood}, ${lesson28Facts.matrixFiniteTense}, ${lesson28Facts.matrixFiniteSubject}) · semantic range ${lesson28Facts.matrixSemanticDomain} · matrix agreement is automatic · embed valence ${lesson28Facts.embedSourceValence} and its participants are preserved · available reading cues: ${matrixReadings}${direction}${carry}`,
+          );
+        }
+        if ([
+          "o", "ē-hua", "quiza", "huetzi", "tlehcō", "cal-aqui", "pil-ca",
+        ].includes(lesson28Facts.matrixSelectionStem)) {
+          const matrixReadings = (lesson28Facts.matrixReadingOptions || [])
+            .join(", ");
+          const oOmission = lesson28Facts.oLocativeOnOmitted
+            ? ` · matrix o automatically omits its ordinary locative ${lesson28Facts.omittedMatrixLocative}`
+            : "";
+          const eHuaClass = lesson28Facts.eHuaClassHistoryChoiceAvailable
+            ? ` · licensed ēhua history ${lesson28Facts.eHuaSelectedMatrixClass} selected from ${lesson28Facts.eHuaLicensedMatrixClasses.join(" or ")} · perfective alternatives ${lesson28Facts.eHuaPerfectiveClassAlternants.join(" or ")}`
+            : "";
+          const eventOrder = lesson28Facts.matrixSelectionStem === "huetzi"
+            ? ` · interpreted event order ${lesson28Facts.eventOrder}: ${lesson28Facts.interpretedFirstEvent} event before ${lesson28Facts.interpretedSecondEvent} event · the written compound stays ${lesson28Facts.surfaceConstituentOrder}`
+            : "";
+          addLesson28Cue(
+            "lesson28-o-ehua-quiza-huetzi-and-other-matrices",
+            `selected matrix ${lesson28Facts.matrixSelectionStem} → finite matrix ${lesson28Facts.matrixFiniteStem} (${lesson28Facts.matrixFiniteMood}, ${lesson28Facts.matrixFiniteTense}, ${lesson28Facts.matrixFiniteSubject}) · semantic range ${lesson28Facts.matrixSemanticDomain} · connective and matrix inflection are automatic · embed valence ${lesson28Facts.embedSourceValence} and its participants are preserved · rapid or abrupt meanings are reading cues, not extra controls · available reading cues: ${matrixReadings}${oOmission}${eHuaClass}${eventOrder} · compatible typed stems remain open; examples do not form a whitelist`,
+          );
+        }
+        const lesson28Group7Relevant = lesson28Facts.specialPerfectiveEmbedDerived
+          || lesson28Facts.cacNonanimateReferenceRequired
+          || lesson28Facts.itzHomophonesRemainDistinct
+          || lesson28Facts.reversedEventOrderLicensed
+          || lesson28Facts.nonactiveScope !== "none";
+        if (lesson28Group7Relevant) {
+          const specialEmbed = lesson28Facts.specialPerfectiveEmbedDerived
+            ? ` · typed Source ${lesson28Facts.specialPerfectiveEmbedSource} automatically supplies special perfective embed ${lesson28Facts.specialPerfectiveEmbedResult}`
+            : "";
+          const cac = lesson28Facts.cacNonanimateReferenceRequired
+            ? ` · cac automatically requires nonanimate reference; available reading cues: ${(lesson28Facts.cacReadingOptions || []).join(", ")}`
+            : "";
+          const itz = lesson28Facts.itzHomophonesRemainDistinct
+            ? ` · itz Source analysis ${lesson28Facts.itzSourceAnalysis} remains distinct from its homophone${lesson28Facts.itzSourceAnalysisIsUserChoice ? " and is the selected user meaning" : ""}`
+            : "";
+          const eventOrder = lesson28Facts.reversedEventOrderLicensed
+            ? ` · interpreted ${lesson28Facts.eventOrder}: ${lesson28Facts.interpretedFirstEvent} event before ${lesson28Facts.interpretedSecondEvent} event; written order remains ${lesson28Facts.surfaceConstituentOrder}`
+            : "";
+          const nonactive = lesson28Facts.nonactiveScope !== "none"
+            ? ` · ${lesson28Facts.compoundVoice} scope ${lesson28Facts.nonactiveScope}: embed ${lesson28Facts.embedNonactiveOperation}, matrix ${lesson28Facts.matrixNonactiveOperation} · passive permits embed or both; impersonal permits embed, matrix, or both · stative embed-only preference ${lesson28Facts.stativeMatrixPrefersEmbedOnly ? "applies but is not absolute" : "does not add a restriction"}${lesson28Facts.tlaImpersonalMustRemainOnEmbed ? " · tla stays on the embed" : ""}`
+            : "";
+          addLesson28Cue(
+            "lesson28-special-embeds-event-order-and-nonactive-scope",
+            `special embed, event order, and nonactive scope are read from typed Source and Grammar choices${specialEmbed}${cac}${itz}${eventOrder}${nonactive} · suffixes, participant effects, and finite realization are automatic; examples do not authorize the grammar`,
+          );
+        }
+        if (lesson28Facts.typedReflexiveMatrixRole
+          === "reflexive-matrix-core") {
+          const readings = (lesson28Facts.matrixReadingOptions || [])
+            .join(", ");
+          const manaRestriction = lesson28Facts
+            .moManaAnimateSubjectMustBePlural
+            ? ` · mo-mana subject animacy ${lesson28Facts.reflexiveMatrixSubjectAnimacy}; an animate subject must be plural and number comes from the finite Subject`
+            : "";
+          addLesson28Cue(
+            "lesson28-intransitivized-reflexive-matrix",
+            `typed matrix core ${lesson28Facts.reflexiveMatrixCore} → fixed ${lesson28Facts.fixedReflexiveCarrier}-${lesson28Facts.reflexiveMatrixCore} · m-o stays fixed for subject ${lesson28Facts.matrixFiniteSubject} and grounds the matrix core's transitivity without adding a participant · embed ${lesson28Facts.embedStem} keeps compound valence ${lesson28Facts.embedSourceValence} · connective ${lesson28Facts.connective} and finite matrix behavior are automatic · available reading cues: ${readings || "open typed reflexive-matrix reading"}${manaRestriction} · known matrices are examples, never a stem whitelist`,
+          );
+        }
+        if (lesson28Facts.sharedObjectCompositionSelected === true) {
+          const readings = (lesson28Facts.matrixReadingOptions || [])
+            .join(", ");
+          const referentChoice = lesson28Facts.sharedObjectReferentChoiceRequired
+            ? " · more than one typed object can be shared, so choose the intended referent"
+            : " · the single typed Source object settles the referent; no extra choice is needed";
+          const eHua = lesson28Facts.sharedObjectEHuaClassAEmbedAutomatic
+            ? ` · ēhua embed Class ${lesson28Facts.sharedObjectEmbedClass} is automatic in this construction`
+            : "";
+          const distributive = lesson28Facts.sharedObjectPluralAllowsDistributiveReading
+            ? " · plural shared reference permits a distributive reading"
+            : "";
+          addLesson28Cue(
+            "lesson28-shared-object-compounds",
+            `typed transitive embed ${lesson28OperationFrame.sourceStem} and transitive matrix ${lesson28Facts.matrixSelectionStem} share one ${lesson28Facts.sharedObjectKind || "typed"} object${lesson28Facts.sharedObjectPerson ? ` ${lesson28Facts.sharedObjectPerson}` : ""} · coreference ${lesson28Facts.sharedObjectCoreferenceVerified ? "verified" : "not verified"} · one carrier is realized on the ${lesson28Facts.sharedObjectCarrierSite}; the duplicate matrix carrier is suppressed · reflexive or projective identity and other participants remain distinct · connective ${lesson28Facts.connective} and finite Result are automatic · available matrix readings: ${readings || "open typed shared-object result"}${referentChoice}${eHua}${distributive} · examples never form a stem whitelist`,
+          );
+        }
+        if (lesson28Facts.futureSupplementationAuthorized === true) {
+          const matrixAnalysis = lesson28Facts.futureMatrixAnalysisId
+            === "qui-volition-imperfect"
+            ? "qui volition in the imperfect"
+            : "nequi desire";
+          const nonactive = lesson28Facts.futureEmbedVoice
+            && lesson28Facts.futureEmbedVoice !== "active"
+            ? ` · ${lesson28Facts.futureEmbedVoice} remains inside the future embed`
+            : "";
+          const antecessive = lesson28Facts.antecessiveOrderRequested
+            ? " · licensed antecessive order was selected and scopes over the finite matrix"
+            : " · licensed antecessive order remains available through ordinary finite composition";
+          addLesson28Cue(
+            "lesson28-future-embed-compounds",
+            `owner-issued future VNC supplement ${lesson28Facts.futureSupplementationFrame?.supplement?.result?.surfaceRealization || lesson28Facts.futureEmbedPredicateStem || lesson28OperationFrame.sourceStem} functions as the matrix object · future predicate ${lesson28Facts.futureEmbedPredicateStem} plus internal ${lesson28Facts.futureEmbedTenseMorph} replaces the matrix object carrier · embed valence ${lesson28Facts.futureEmbedValence} and its participants remain intact · selected matrix analysis ${matrixAnalysis}; matrix Mood and Tense stay outside the embed · the embed action follows the matrix action${nonactive}${antecessive} · principal and supplement subjects are coreferential, and included-referent supplementation remains available · traditional conditional wording is a reading, not another tense · z, object deletion, and finite nesting are automatic · nequi and qui are this construction's Canvas inventory, never a general Source-entry whitelist`,
+          );
+        }
+        if (lesson28Facts.recursiveCompoundAuthorized === true) {
+          const capturedRole = lesson28Facts.recursiveResultRole || "embed";
+          const capturedStem = capturedRole === "embed"
+            ? lesson28Facts.recursiveEmbedFrame?.operationFrame?.targetStem
+            : lesson28Facts.recursiveMatrixFrame?.operationFrame?.targetStem;
+          addLesson28Cue(
+            "lesson28-recursive-compounding",
+            `captured compound Result ${capturedStem || "issued Result"} is reused as the next ${capturedRole} · the user chooses only this role and the next binary bracketing · hierarchy depth ${lesson28Facts.recursiveDepth} is validated as acyclic with two distinct constituents · each layer derives its own connective, valence, tense, and participant links · outer embed valence and all typed participants remain intact · the finite boundary stays outside the completed compound · Add another derivation can continue the chain · Canvas examples are reading evidence, never a stem whitelist or depth template`,
+          );
+        }
+      }
+      const lesson25ParallelRelation = lesson24SelectedOption
+        ?.parallelFormationLexicalRelation || null;
+      if (
+        lesson25ParallelRelation
+        && lesson24PredicateStart >= 0
+        && lesson24PredicateEnd > lesson24PredicateStart
+      ) {
+        const parallelCueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index,
+        ).find((index) => (
+          index !== lesson24PredicateStart
+          && index !== lesson24PredicateEnd
+          && /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some((annotation) => (
+            index >= annotation.start && index < annotation.end
+          ))
+        ));
+        if (Number.isInteger(parallelCueIndex)) {
+          addAnnotation(
+            parallelCueIndex,
+            parallelCueIndex + 1,
+            "lesson25-huia-class-and-parallel-causatives",
+            `parallel Type 1 and Type 2 causatives remain distinct · ${lesson25ParallelRelation.meaningRelation || "meaning relation available as a cue"} · lexical meaning comparison is read-only and never selects the operation · choose the intended formation for the final composition`,
+            "carrier",
+            "lesson25-huia-class-and-parallel-causatives",
+          );
+        }
+      }
+      if (
+        lesson24ParticipantTransform?.authorizationStatus === "authorized"
+        && lesson24OperationFrame?.derivationType === "causative"
+      ) {
+        const basicCueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find((index) => (
+            /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some((annotation) => (
+              index >= annotation.start && index < annotation.end
+            ))
+          ));
+        if (Number.isInteger(basicCueIndex)) {
+          const causee = lesson24ParticipantTransform.addedObjectRequest || null;
+          addAnnotation(
+            basicCueIndex,
+            basicCueIndex + 1,
+            "lesson25-basic-causative-transformation",
+            `new causer ${lesson24ParticipantTransform.targetSubject} · Source subject ${lesson24ParticipantTransform.sourceSubject} becomes ${causee?.objectKind || "the causative object"} · ${lesson24ParticipantTransform.sourceVoice} Source voice · causative object is object-like in the outer clause and subject-like in the embedded event · coreference is chosen only when genuinely unresolved`,
+            "carrier",
+            "lesson25-basic-causative-transformation",
+          );
+        }
+      }
       const lesson23ObjectClusterFrame = [
         grammarContext?.targetObjectClusterFrame,
         grammarContext?.multipleObjectClusterFrame,
@@ -7164,6 +8917,109 @@ export function createUiRenderingApi(targetObject = globalThis) {
             `form-based order: ${lesson23ObjectClusterFrame.linearCarriers.join(" + ")} · ${selectedRoles}${ambiguityLabel}`,
             "boundary",
             "lesson23-object-order-and-role-ambiguity",
+          );
+        }
+      }
+      if (
+        lesson24OperationFrame?.derivationType === "causative"
+        && lesson23ObjectClusterFrame?.authorizationStatus === "authorized"
+        && [2, 3].includes(lesson23ObjectClusterFrame.positions?.length)
+      ) {
+        const participantCueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find((index) => (
+            /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some((annotation) => (
+              index >= annotation.start && index < annotation.end
+            ))
+          ));
+        if (Number.isInteger(participantCueIndex)) {
+          const positions = lesson23ObjectClusterFrame.positions || [];
+          const isTriple = positions.length === 3;
+          const positionSummary = positions
+            .slice()
+            .sort((left, right) => right.derivationalLevel - left.derivationalLevel)
+            .map((position) => (
+              `level ${position.derivationalLevel} ${position.prominence} ${position.governor} ${position.sounded === false ? "silent" : position.carrier}`
+            )).join(" · ");
+          addAnnotation(
+            participantCueIndex,
+            participantCueIndex + 1,
+            isTriple
+              ? "lesson25-triple-object-causatives"
+              : "lesson25-double-object-causatives",
+            `${isTriple ? "recursive canonical causative Source" : `${lesson24ParticipantTransform?.sourceVoice || "typed"} Source`} · ${positionSummary} · prefix order, mainline promotion, shuntline retention, silence, ne, and voice consequences derived automatically · choose only the Source, new causer, and genuine participant identity`,
+            "carrier",
+            isTriple
+              ? "lesson25-triple-object-causatives"
+              : "lesson25-double-object-causatives",
+          );
+        }
+      }
+      const lesson25ReverseSourceAnalyses = Array.isArray(
+        lesson24OperationFrame?.reverseSourceAnalyses,
+      ) ? lesson24OperationFrame.reverseSourceAnalyses : [];
+      if (
+        lesson24OperationFrame?.derivationType === "causative"
+        && lesson25ReverseSourceAnalyses.length > 1
+      ) {
+        const ambiguityCueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find((index) => (
+            /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some((annotation) => (
+              index >= annotation.start && index < annotation.end
+            ))
+          ));
+        if (Number.isInteger(ambiguityCueIndex)) {
+          const analysisSummary = lesson25ReverseSourceAnalyses.map((analysis) => (
+            `${analysis.sourceVoice || "typed"} ${analysis.formationStem || "Source"}`
+          )).join(" or ");
+          addAnnotation(
+            ambiguityCueIndex,
+            ambiguityCueIndex + 1,
+            "lesson25-causative-ambiguity",
+            `${lesson25ReverseSourceAnalyses.length} licensed typed Sources: ${analysisSummary} · surface shape and fixed prefix order do not choose the Source · context or final composition may resolve the reading; otherwise ambiguity remains open`,
+            "carrier",
+            "lesson25-causative-ambiguity",
+          );
+        }
+      }
+      const lesson25LaterMood = String(
+        grammarContext?.mood
+        || grammarContext?.sentenceSurfaceFrame?.state?.mood
+        || grammarContext?.selectedMachineryFrame?.priorVncFrame?.mood
+        || grammarContext?.resultFrame?.selectedMachineryFrame?.priorVncFrame?.mood
+        || "",
+      );
+      const lesson25LaterVoice = String(
+        voiceTransformationFrame?.voice || "active",
+      );
+      if (
+        lesson24OperationFrame?.derivationType === "causative"
+        && (
+          ["optative", "admonitive"].includes(lesson25LaterMood)
+          || ["passive", "impersonal"].includes(lesson25LaterVoice)
+        )
+      ) {
+        const laterLayerCueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find((index) => (
+            /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some((annotation) => (
+              index >= annotation.start && index < annotation.end
+            ))
+          ));
+        if (Number.isInteger(laterLayerCueIndex)) {
+          const retainedCount = voiceTransformationFrame
+            ?.targetObjectClusterFrame?.positions?.length
+            || lesson23ObjectClusterFrame?.positions?.length
+            || lesson24OperationFrame?.targetObjectRequests?.length
+            || 0;
+          addAnnotation(
+            laterLayerCueIndex,
+            laterLayerCueIndex + 1,
+            "lesson25-mood-and-nonactive-voice",
+            `completed causative → ordinary ${lesson25LaterMood || "indicative"} Mood${lesson25LaterVoice !== "active" ? ` → ${lesson25LaterVoice} Voice` : ""} · shared owners derive the form · ${retainedCount} causative object level${retainedCount === 1 ? "" : "s"} retained · no Lesson-25-specific control`,
+            "carrier",
+            "lesson25-mood-and-nonactive-voice",
           );
         }
       }
@@ -7474,6 +9330,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             === "classical-nahuatl-supplementation-coreferential-future-frame"
             && operation.authorizationStatus === "authorized"
           ) || null;
+          const accompanyingPossessionFrame = Array.from(
+            frame.operationFrames || []
+          ).find(operation => operation.kind
+            === "classical-nahuatl-accompanying-possession-frame"
+          ) || null;
           const complementAuthorityKey = coreferentialFutureFrame
             ? "supplementation-coreferential-future"
             : ["speech", "saying"].includes(
@@ -7560,7 +9421,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "named-partner": "supplementation-named-partner",
             "male-bonding": "supplementation-male-bonding",
           })[agreementFrame?.agreementExceptionKind] || "";
-          const specialAuthorityKey = ayiSilentObjectFrame
+          const specialAuthorityKey = accompanyingPossessionFrame
+            ? "lesson28-accompanying-possession"
+            : ayiSilentObjectFrame
             ? "supplementation-ayi-silent-object"
             : agreementAuthorityKey;
           const principalContinuation = Array.from(
@@ -7651,6 +9514,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 : agreementFrame?.agreementExceptionKind
                   === "male-bonding"
                 ? "third-person head · speaker included"
+                : accompanyingPossessionFrame
+                ? `ye connective compound · matrix subject cross-references the possessed Result · ${accompanyingPossessionFrame.matrixStem} matrix preserved · no special have verb`
                 : principalIsShort
                 ? "short pronominal principal clause"
                 : `${topicFrame ? "comment · " : ""}principal ${headRole} head`;
@@ -7697,6 +9562,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
               const specialSupplementLabel = ayiSilentObjectFrame
                 && headRole === "object"
                 ? "specific patient · supplementary object"
+                : accompanyingPossessionFrame
+                  ? `possessed Result · supplementary subject · nested possessor preserved · ${accompanyingPossessionFrame.possessedResultIsTopic ? "topic" : "noninitial order"} · have along, carry, or wear reading`
                 : agreementFrame?.agreementExceptionKind
                   === "collective-reference"
                   ? "collective form · plural reference"
@@ -7800,6 +9667,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
                       ? "typed pronominal existential cooperation"
                   : ayiSilentObjectFrame
                     ? "specific patient binds silent object 0-0"
+                    : accompanyingPossessionFrame
+                      ? "possessed Result is the ye compound's supplementary subject; its possessor remains nested"
                     : agreementFrame?.agreementExceptionKind
                       === "collective-reference"
                       ? "plural reference licenses agreement"
@@ -7851,6 +9720,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
           }
         };
         annotateSupplementationFrame(grammarContext);
+        const lesson25SilentHead = grammarContext.referenceFrame
+          ?.principalHead || null;
+        const lesson25CausativePrincipal = (
+          grammarContext.principalClause?.objects || []
+        ).some((object) => /^causative-object/u.test(object?.id || ""));
+        if (
+          lesson25CausativePrincipal
+          && grammarContext.referenceFrame?.headRole === "object"
+          && lesson25SilentHead?.silent === true
+        ) {
+          const silentLinkCueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find((index) => (
+              /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some((annotation) => (
+                index >= annotation.start && index < annotation.end
+              ))
+            ));
+          if (Number.isInteger(silentLinkCueIndex)) {
+            addAnnotation(
+              silentLinkCueIndex,
+              silentLinkCueIndex + 1,
+              "lesson25-silent-object-supplementation",
+              `causative principal · silent ${lesson25SilentHead.id} remains the supplement head · shared referent ${lesson25SilentHead.referenceId || "validated"} · object level and silence preserved · supplement clarifies person or number without making the principal object overt`,
+              "carrier",
+              "lesson25-silent-object-supplementation",
+            );
+          }
+        }
         return Object.freeze(
           annotations.sort((left, right) => left.start - right.start || left.end - right.end)
         );
@@ -10562,6 +12459,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_VNC_BLOCK_REPAIR_CONTROL_IDS = Object.freeze({
       "missing-stem": Object.freeze(["classical-source-whole"]),
       "classical-vnc-source-initial-i-selection-required": Object.freeze(["classical-vnc-source-initial-i-choice"]),
+      "licensed-frequentative-scope-required": Object.freeze(["classical-rule-logic-frequentative-scope"]),
+      "frequentative-scope-requires-short-glottal-formation": Object.freeze(["classical-rule-logic-late-variant", "classical-rule-logic-frequentative-scope"]),
+      "patient-scope-requires-typed-source-object": Object.freeze(["classical-rule-logic-valence", "classical-rule-logic-frequentative-scope"]),
+      "licensed-frequentative-target-required": Object.freeze(["classical-rule-logic-frequentative-target"]),
+      "fused-tla-source-required": Object.freeze(["classical-source-whole", "classical-rule-logic-frequentative-target"]),
+      "fused-tla-reduplication-requires-glottal-or-long-shape": Object.freeze(["classical-rule-logic-late-variant", "classical-rule-logic-frequentative-target"]),
+      "partial-reflexive-requires-short-glottal-formation": Object.freeze(["classical-rule-logic-late-variant", "classical-rule-logic-frequentative-target"]),
+      "licensed-destockal-impersonal-formation-required": Object.freeze(["classical-rule-logic-vnc-voice", "classical-rule-logic-nonactive-family"]),
       "lesson20-active-source-stem-required": Object.freeze(["classical-source-whole"]),
       "lesson20-final-shape-source-stem-required": Object.freeze(["classical-source-whole"]),
       "lessons20-22-authorized-active-vnc-source-required": Object.freeze(["classical-source-whole", "classical-rule-logic-subject", "classical-rule-logic-mood", "classical-rule-logic-tense", "classical-rule-logic-valence"]),
@@ -10630,6 +12535,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_RULE_LOGIC_REPAIR_CONTROL_LABELS = Object.freeze({
       "classical-source-whole": "Source stem",
       "classical-vnc-source-initial-i-choice": "Initial i",
+      "classical-rule-logic-frequentative-scope": "Meaning focus",
+      "classical-rule-logic-frequentative-target": "Reduplication target",
       "classical-rule-logic-subject": "Subject",
       "classical-rule-logic-mood": "Mood",
       "classical-rule-logic-tense": "Tense",
@@ -11404,9 +13311,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && surfaceFrame.state.lateOperation !== "none";
       const operation = String(surfaceFrame?.state?.lateOperation || "none");
       const variant = String(surfaceFrame?.state?.lateVariant || "");
-      const sourceStem = String(surfaceFrame?.state?.stem || "");
+      const sourceStem = String(surfaceFrame?.state?.stem || "")
+        .replace(/^\((.*)\)$/u, "$1");
       const compoundMatrixStem = String(
         surfaceFrame?.state?.compoundMatrixStem || ""
+      );
+      const recursiveCompoundAvailable = Boolean(
+        operation === "compound"
+        && isClassicalRecursiveCompoundContinuationFrame(
+          ActiveClassicalVncResultSourceContinuation
+        )
+      );
+      const recursiveCompoundRole = String(
+        surfaceFrame?.state?.compoundRecursiveRole || "embed"
       );
       const purposiveSeries = String(
         surfaceFrame?.state?.purposiveSeries || ""
@@ -11417,17 +13334,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const variantFamilies = {
         frequentative: new Set([
           "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-          "tla-short-glottal", "tla-long",
-          "tla-short-glottal-and-stem-short-glottal",
-          "tla-long-and-stem-long", "reflexive-partial",
           "destockal-intransitive", "destockal-causative",
-          "destockal-applicative-force", "destockal-lexicalized",
+          "destockal-causative-force", "destockal-applicative-force",
+          "destockal-lexicalized",
           "destockal-applicative", "destockal-type-two",
-          "uncertain-ca", "uncertain-tzca"
+          "uncertain-ca", "uncertain-ca-causative",
+          "uncertain-ca-applicative", "uncertain-ca-fused-tla",
+          "uncertain-tzca"
         ]),
         compound: new Set([
           "connective-t", "reflexive-matrix", "shared-object",
-          "huītz-carry", "future-embed", "accompanying-possession"
+          "huītz-carry", "future-embed"
         ]),
         honorific: new Set(["causative", "applicative", "preterit-embed"]),
         reverential: new Set(["preterit-embed"]),
@@ -11458,37 +13375,121 @@ export function createUiRenderingApi(targetObject = globalThis) {
           group.hidden = !visibleOption;
           group.disabled = !visibleOption;
         });
+      const automaticCompoundMatrixClasses = new Set([
+        "ca", "nemi", "ya-uh", "huāl-la-uh", "huī-tz", "ahci", "mani",
+        "ihca", "o", "quiza", "huetzi", "tlehcō", "cal-aqui", "pil-ca",
+        "m-o-cāhua", "m-o-tēca", "m-o-tlāl-i-ā", "m-o-man-a",
+        "m-o-quetza", "man-a", "tlāl-i-ā", "quetza", "tēca", "cāhua", "quix-tiā",
+        "māy-a-hui", "tla-nequi", "tla-qui"
+      ]);
+      const matrixClassControl = targetObject.document.getElementById(
+        "classical-rule-logic-compound-matrix-class"
+      );
+      Array.from(matrixClassControl?.options || []).forEach(option => {
+        const licensed = compoundMatrixStem !== "ē-hua"
+          || ["A", "B"].includes(option.value);
+        option.hidden = !licensed;
+        option.disabled = !licensed;
+      });
+      if (compoundMatrixStem === "ē-hua"
+        && !["A", "B"].includes(matrixClassControl?.value)) {
+        matrixClassControl.value = "A";
+      }
+      const eventOrderControl = targetObject.document.getElementById(
+        "classical-rule-logic-compound-event-order"
+      );
+      const eventOrderChoiceAvailable = compoundMatrixStem === "huetzi"
+        || compoundMatrixStem === "ahci"
+        || (
+          compoundMatrixStem === "ē-hua"
+          && sourceStem === "itz"
+          && String(surfaceFrame?.state?.compoundItzSense || "") === "motion"
+        );
+      if (!eventOrderChoiceAvailable && eventOrderControl) {
+        eventOrderControl.value = "iconic";
+      }
+      const compoundVoiceOperation = String(
+        surfaceFrame?.state?.vncVoiceOperation
+        || surfaceFrame?.state?.vncVoice
+        || "active"
+      );
+      const compoundNonactiveScopeControl = targetObject.document.getElementById(
+        "classical-rule-logic-compound-nonactive-scope"
+      );
+      const licensedNonactiveScopes = compoundVoiceOperation === "passive"
+        ? ["embed", "both"]
+        : compoundVoiceOperation === "tla-impersonal"
+          ? ["embed"]
+          : String(surfaceFrame?.state?.vncVoice || "active") === "impersonal"
+            ? ["embed", "matrix", "both"]
+            : ["none"];
+      Array.from(compoundNonactiveScopeControl?.options || []).forEach(option => {
+        const licensed = licensedNonactiveScopes.includes(option.value);
+        option.hidden = !licensed;
+        option.disabled = !licensed;
+      });
+      if (compoundNonactiveScopeControl
+        && !licensedNonactiveScopes.includes(
+          compoundNonactiveScopeControl.value
+        )) {
+        compoundNonactiveScopeControl.value = licensedNonactiveScopes[0];
+      }
       const familyControls = {
         "classical-rule-logic-late-variant":
           licensedVariants.size > 0,
-        "classical-rule-logic-compound-matrix": operation === "compound",
+        "classical-rule-logic-compound-recursive-role":
+          recursiveCompoundAvailable,
+        "classical-rule-logic-compound-matrix":
+          operation === "compound"
+          && (!recursiveCompoundAvailable || recursiveCompoundRole === "embed"),
         "classical-rule-logic-compound-matrix-class":
-          operation === "compound" && compoundMatrixStem === "ē-hua",
+          operation === "compound"
+          && Boolean(compoundMatrixStem)
+          && (
+            compoundMatrixStem === "ē-hua"
+            || !automaticCompoundMatrixClasses.has(compoundMatrixStem)
+          ),
         "classical-rule-logic-compound-itz-sense":
           operation === "compound" && sourceStem === "itz",
         "classical-rule-logic-compound-ya-syncopation":
           operation === "compound" && compoundMatrixStem === "ya-uh",
-        "classical-rule-logic-compound-event-order": operation === "compound",
+        "classical-rule-logic-compound-event-order":
+          operation === "compound" && eventOrderChoiceAvailable,
         "classical-rule-logic-compound-nonactive-scope":
-          operation === "compound",
+          operation === "compound"
+          && ["passive", "impersonal"].includes(
+            String(surfaceFrame?.state?.vncVoice || "active")
+          )
+          && licensedNonactiveScopes.length > 1,
         "classical-rule-logic-compound-subject-animacy":
           operation === "compound"
-          && (
-            sourceStem === "cac"
-            || (variant === "reflexive-matrix"
-              && compoundMatrixStem === "m-o-man-a")
-          ),
-        "classical-rule-logic-compound-possessive-stem":
-          operation === "compound" && variant === "accompanying-possession",
-        "classical-rule-logic-compound-possessor":
-          operation === "compound" && variant === "accompanying-possession",
+          && variant === "reflexive-matrix"
+          && /^(?:[ntm]-o-)?man-a$/u.test(compoundMatrixStem)
+          && /^3/u.test(String(surfaceFrame?.state?.subject || "3sg")),
+        "classical-rule-logic-compound-possessive-stem": false,
+        "classical-rule-logic-compound-possessor": false,
         "classical-rule-logic-frequentative-repetitions":
           operation === "frequentative"
           && [
             "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-            "tla-short-glottal-and-stem-short-glottal",
-            "tla-long-and-stem-long"
+            "destockal-intransitive", "destockal-causative"
           ].includes(variant),
+        "classical-rule-logic-frequentative-target":
+          operation === "frequentative"
+          && [
+            "ordinary-short-glottal", "ordinary-long", "ordinary-short",
+          ].includes(variant)
+          && (
+            /^tla-/u.test(sourceStem)
+            || (
+              String(surfaceFrame?.state?.valence || "")
+                === "mainline-reflexive"
+              && /^i/u.test(sourceStem)
+            )
+          ),
+        "classical-rule-logic-frequentative-scope":
+          operation === "frequentative"
+          && variant === "ordinary-short-glottal",
         "classical-rule-logic-purposive-series": operation === "purposive",
         "classical-rule-logic-purposive-irregular-n":
           operation === "purposive"
@@ -11512,6 +13513,64 @@ export function createUiRenderingApi(targetObject = globalThis) {
         host.hidden = !visible;
         host.setAttribute("aria-hidden", String(!visible));
       });
+      const frequentativeScopeControl = targetObject.document.getElementById(
+        "classical-rule-logic-frequentative-scope"
+      );
+      const patientScopeOption = Array.from(
+        frequentativeScopeControl?.options || []
+      ).find(option => option.value === "patient") || null;
+      const patientScopeAvailable = String(
+        surfaceFrame?.state?.valence || "intransitive"
+      ) !== "intransitive";
+      if (patientScopeOption) {
+        patientScopeOption.hidden = !patientScopeAvailable;
+        patientScopeOption.disabled = !patientScopeAvailable;
+      }
+      if (
+        frequentativeScopeControl?.value === "patient"
+        && !patientScopeAvailable
+      ) {
+        frequentativeScopeControl.value = "open";
+      }
+      const frequentativeTargetControl = targetObject.document.getElementById(
+        "classical-rule-logic-frequentative-target"
+      );
+      const fusedTlaSource = /^tla-/u.test(sourceStem);
+      const supportiveReflexiveSource = String(
+        surfaceFrame?.state?.valence || "",
+      ) === "mainline-reflexive"
+        && /^i/u.test(sourceStem)
+        && String(surfaceFrame?.state?.sourceInitialISelection || "")
+          === "supportive";
+      const glottalOrLong = [
+        "ordinary-short-glottal",
+        "ordinary-long",
+      ].includes(variant);
+      Array.from(frequentativeTargetControl?.options || []).forEach(option => {
+        const available = option.value === "lexical-stem"
+          ? fusedTlaSource
+          : option.value === "mainline-reflexive"
+            ? supportiveReflexiveSource
+              && variant === "ordinary-short-glottal"
+            : fusedTlaSource && glottalOrLong;
+        option.hidden = !available;
+        option.disabled = !available;
+      });
+      const selectedTargetOption = Array.from(
+        frequentativeTargetControl?.options || [],
+      ).find(option => (
+        option.value === frequentativeTargetControl?.value
+      ));
+      if (frequentativeTargetControl && (
+        !selectedTargetOption
+        || selectedTargetOption.disabled
+      )) {
+        frequentativeTargetControl.value = fusedTlaSource
+          ? "lexical-stem"
+          : supportiveReflexiveSource
+            ? "mainline-reflexive"
+            : "lexical-stem";
+      }
       return { active };
     }
     function syncClassicalNncGrammarSurfaceContract(surfaceFrame = null) {
@@ -12178,7 +14237,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
             const numberedSubtype = rawSubtype === "type-one" ? "Type 1" : rawSubtype === "type-two" ? "Type 2" : rawSubtype === "type-three" ? "Type 3" : rawSubtype.split("-").map((part, index) => index === 0 ? `${part.charAt(0).toUpperCase()}${part.slice(1)}` : part).join(" ");
             const typedOperation = String(option.targetConstruction?.operation || option.procedure || "");
             const procedure = typedOperation.includes("replace") ? "nonactive replacement" : typedOperation.includes("add") ? "addition" : "grammar-supported formation";
-            return [numberedSubtype, option.targetStem || option.derivedStem, procedure, option.lexicalChoiceRequired === true ? "lexical choice" : ""].filter(Boolean).join(" · ");
+            const sourceHistoryChoice = String(
+              option.sourceHistoryChoice || "",
+            ).trim();
+            return [
+              numberedSubtype,
+              option.targetStem || option.derivedStem,
+              sourceHistoryChoice ? `Source history: ${sourceHistoryChoice}` : "",
+              procedure,
+              !sourceHistoryChoice && option.lexicalChoiceRequired === true
+                ? "lexical choice"
+                : "",
+            ].filter(Boolean).join(" · ");
           }
           return withoutSourceReference(option.label || option.optionLabel || [option.formationType || option.operationType || option.optionId, option.targetStem || option.derivedStem].filter(Boolean).join(" → "));
         };
@@ -12305,7 +14375,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-causative-result-subject": basalUnit === "vnc" && derivationType === "causative" && derivationSourceAuthorized,
         "classical-rule-logic-causative-causee-valence": basalUnit === "vnc" && derivationType === "causative" && derivationSourceAuthorized && causativeObjectKindChoiceEligible,
         "classical-rule-logic-causative-specific-shuntline-realization": basalUnit === "vnc" && derivationType === "causative" && derivationSourceAuthorized && causativeSpecificShuntlineChoiceEligible,
-        "classical-rule-logic-applicative-object": basalUnit === "vnc" && derivationType === "applicative" && derivationSourceAuthorized,
+        "classical-rule-logic-applicative-object": basalUnit === "vnc"
+          && (
+            (derivationType === "applicative" && derivationSourceAuthorized)
+            || [
+              "destockal-applicative",
+              "uncertain-ca-applicative",
+            ].includes(String(surfaceFrame.state?.lateVariant || ""))
+          ),
         "classical-rule-logic-construction": basalUnit === "vnc" && Boolean(lesson11ConstructionKind),
         "classical-rule-logic-lexical-reading": basalUnit === "vnc"
           && (lesson11LexicalReadingRequired
@@ -13888,6 +15965,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-rule-logic-late-operation",
             "classical-rule-logic-late-variant",
             "classical-rule-logic-compound-matrix",
+            "classical-rule-logic-compound-recursive-role",
             "classical-rule-logic-compound-matrix-class",
             "classical-rule-logic-compound-itz-sense",
             "classical-rule-logic-compound-ya-syncopation",
@@ -13897,6 +15975,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-rule-logic-compound-possessive-stem",
             "classical-rule-logic-compound-possessor",
             "classical-rule-logic-frequentative-repetitions",
+            "classical-rule-logic-frequentative-target",
+            "classical-rule-logic-frequentative-scope",
             "classical-rule-logic-purposive-series",
             "classical-rule-logic-purposive-irregular-n",
             "classical-rule-logic-purposive-external",
@@ -13929,6 +16009,31 @@ export function createUiRenderingApi(targetObject = globalThis) {
           if (sourceFactControl) sourceFactControl.value = "";
         });
         applyClassicalVncResultSourceReadOnlyControls(projection);
+        const recursiveRoleControl = targetObject.document.getElementById(
+          "classical-rule-logic-compound-recursive-role"
+        );
+        if (recursiveRoleControl
+          && recursiveRoleControl.dataset.classicalRecursiveRoleBound !== "true") {
+          recursiveRoleControl.dataset.classicalRecursiveRoleBound = "true";
+          recursiveRoleControl.addEventListener("change", () => {
+            if (recursiveRoleControl.value === "matrix") {
+              releaseClassicalVncResultSourceControlsForRecursiveMatrix();
+              setClassicalWholeCanvasActionStatus(
+                "Captured Result is the matrix. Enter the new embed in Source."
+              );
+              return;
+            }
+            const sourceInput = targetObject.document.getElementById(
+              "classical-source-whole"
+            ) || targetObject.document.getElementById("verb");
+            if (sourceInput) sourceInput.value = nextSource;
+            applyClassicalVncResultSourceReadOnlyControls(projection);
+            targetObject.syncClassicalBuiltSourceToVerbInput?.();
+            setClassicalWholeCanvasActionStatus(
+              "Captured Result is the embed. Enter the new matrix under Grammar."
+            );
+          });
+        }
         input.dispatchEvent(new targetObject.Event("input", {
           bubbles: true
         }));
@@ -13937,6 +16042,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }));
         if (typeof targetObject.syncClassicalBuiltSourceToVerbInput === "function") {
           targetObject.syncClassicalBuiltSourceToVerbInput();
+        }
+        if (typeof targetObject.commitClassicalSourcePartsEvaluation === "function") {
+          targetObject.commitClassicalSourcePartsEvaluation({
+            force: true,
+            source: "result-continuation"
+          });
         }
         if (typeof renderClassicalRuleLogicSurfaceBlock === "function") {
           renderClassicalRuleLogicSurfaceBlock({
@@ -21917,8 +24028,32 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const specificLinearTypedSlotFrame = surfaceFrame.basalUnit === "nnc"
         ? surfaceFrame.nncGrammarSurfaceContract?.typedSlotFrame || null
         : getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
+      const annotationVncApplicationFrame = surfaceFrame.state
+        ?.vncApplicationFrame || null;
+      const annotationLateOperationClosureFrame = surfaceFrame.state
+        ?.vncLateOperationClosureFrame || null;
       const derivedAnnotationGrammarContext = Object.freeze({
         ...(surfaceFrame.machineryFrame || {}),
+        vncLateOperationClosureFrame: annotationLateOperationClosureFrame,
+        operationFrame: annotationLateOperationClosureFrame?.operationFrame
+          || surfaceFrame.machineryFrame?.operationFrame
+          || null,
+        normalizedRequest: annotationVncApplicationFrame?.normalizedRequest
+          || surfaceFrame.machineryFrame?.normalizedRequest
+          || null,
+        resultFrame: annotationVncApplicationFrame?.resultFrame
+          || surfaceFrame.machineryFrame?.resultFrame
+          || null,
+        sourceAnalysisFrame: annotationVncApplicationFrame?.resultFrame
+          ?.sourceAnalysisFrame
+          || annotationVncApplicationFrame?.sourceAnalysisFrame
+          || surfaceFrame.machineryFrame?.sourceAnalysisFrame
+          || null,
+        derivationOperationFrame: annotationVncApplicationFrame?.resultFrame
+          ?.derivationOperationFrame
+          || annotationVncApplicationFrame?.derivationOperationFrame
+          || surfaceFrame.machineryFrame?.derivationOperationFrame
+          || null,
         mood: surfaceFrame.state?.mood || surfaceFrame.machineryFrame?.mood || "",
         tense: surfaceFrame.state?.tense || surfaceFrame.machineryFrame?.tense || "",
         sentenceSurfaceFrame: Object.freeze({

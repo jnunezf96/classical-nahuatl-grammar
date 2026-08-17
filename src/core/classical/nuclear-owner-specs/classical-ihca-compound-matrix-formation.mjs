@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2803::p2803-cho-ca-t-ihca-to-stand-crying": {
       "assertionId": "classical-ihca-compound-matrix-formation:p2803-cho-ca-t-ihca-to-stand-crying",
-      "canonicalPath": "cases.intransitiveMatrices.ihca.targetStem"
+      "canonicalPath": "cases.ihcaPreteritAsPresent.targetStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

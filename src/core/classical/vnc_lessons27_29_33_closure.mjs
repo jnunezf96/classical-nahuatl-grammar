@@ -36,6 +36,49 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   const text = value => String(value ?? "").trim();
   const key = value => text(value).toLowerCase();
 
+  function analyzeRecursiveCompoundHierarchy(
+    embedClosureFrame = null,
+    matrixClosureFrame = null
+  ) {
+    const seen = new Set();
+    const active = new Set();
+    let maximumDepth = 0;
+    let circular = false;
+    let reused = false;
+    function visit(frame, depth = 1) {
+      if (!frame) return;
+      maximumDepth = Math.max(maximumDepth, depth);
+      if (active.has(frame)) {
+        circular = true;
+        return;
+      }
+      if (seen.has(frame)) {
+        reused = true;
+        return;
+      }
+      seen.add(frame);
+      active.add(frame);
+      const facts = frame.operationFrame?.operationFacts || {};
+      visit(facts.recursiveEmbedFrame, depth + 1);
+      visit(facts.recursiveMatrixFrame, depth + 1);
+      active.delete(frame);
+    }
+    visit(embedClosureFrame);
+    visit(matrixClosureFrame);
+    return freeze({
+      authorizationStatus: circular || reused ? "blocked" : "authorized",
+      blockReason: circular
+        ? "recursive-compound-hierarchy-must-be-acyclic"
+        : reused
+          ? "recursive-compound-requires-distinct-embed-and-matrix-results"
+          : "",
+      acyclic: !circular,
+      distinctConstituents: !reused,
+      maximumDepth,
+      capturedResultCount: seen.size,
+    });
+  }
+
   function buildSelectedLcmProjection(
     request = {},
     operationFrame = null,
@@ -157,6 +200,20 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   }
 
   const vowels = "aāeēiīoō";
+  const FREQUENTATIVE_SCOPES = Object.freeze([
+    "open",
+    "action",
+    "agent",
+    "patient",
+    "occasion",
+    "place",
+  ]);
+  const FREQUENTATIVE_TARGETS = Object.freeze([
+    "lexical-stem",
+    "fused-tla",
+    "fused-tla-and-lexical-stem",
+    "mainline-reflexive",
+  ]);
   const consonantUnits = /^(?:ch|cu|hu|qu|tl|tz|[bcçhlmnpqstxyz])/u;
   const shortVowel = value => ({ ā: "a", ē: "e", ī: "i", ō: "o" }[value] || value);
   const longVowel = value => ({ a: "ā", e: "ē", i: "ī", o: "ō" }[value] || value);
@@ -186,6 +243,93 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     const prefix = `${parts.consonant}${vowel}${shape === "short-glottal" ? "h" : ""}`;
     const repetitions = Math.max(1, Math.min(3, Number(options.repetitions) || 1));
     return `${Array.from({ length: repetitions }, () => prefix).join("-")}-${parts.retainedStem}`;
+  }
+  function parseIntransitiveDestockal(sourceStem = "") {
+    const match = text(sourceStem).match(
+      /^(.*?)([aāeēiīoō])(-?)(ni|hui)$/u,
+    );
+    if (!match) return null;
+    const [, beforeStockVowel, stockVowel, boundary, sourceSuffix] = match;
+    const reducedStockVowel = shortVowel(stockVowel);
+    return freeze({
+      sourceSuffix,
+      stockVowel,
+      reducedStockVowel,
+      targetSuffix: "ca",
+      targetCore: `${beforeStockVowel}${reducedStockVowel}${boundary}ca`,
+    });
+  }
+  function parseCausativeDestockal(sourceStem = "") {
+    const match = text(sourceStem).match(
+      /^(.*?)([aāeēiīoō])(-?)(n-a|na|ni-ā|niā|hu-a|hua)$/u,
+    );
+    if (!match) return null;
+    const [, beforeStockVowel, stockVowel, boundary, sourceSuffix] = match;
+    const reducedStockVowel = shortVowel(stockVowel);
+    return freeze({
+      sourceSuffix,
+      stockVowel,
+      reducedStockVowel,
+      retainedCausativeVowel: "a",
+      targetSuffix: "tz-a",
+      targetCore: `${beforeStockVowel}${reducedStockVowel}${boundary}tz-a`,
+    });
+  }
+  function parseCompletedLexicalizedDestockal(sourceStem = "") {
+    const stem = text(sourceStem).replace(/^\((.*)\)$/u, "$1");
+    const causativeMatch = stem.match(/(?:tz-a|tza)$/u);
+    const intransitiveMatch = stem.match(/ca$/u);
+    if (!causativeMatch && !intransitiveMatch) return null;
+    return freeze({
+      targetStem: stem,
+      targetClass: causativeMatch ? "B" : "A",
+      structuralForce: causativeMatch ? "causative-or-applicative" : "intransitive",
+      tzAUnit: causativeMatch?.[0] || "",
+      fusedLongVowel: stem.match(/[āēīō]/u)?.[0] || "",
+    });
+  }
+  function deriveUncertainCaStem(sourceRoot = "", role = "intransitive") {
+    const root = text(sourceRoot).replace(/^\((.*)\)$/u, "$1");
+    if (!root || !new RegExp(`[${vowels}]`, "u").test(root)) return null;
+    const parts = getReduplicationParts(root);
+    if (!parts.vowel) return null;
+    const copiedPrefix = `${parts.consonant}${shortVowel(parts.vowel)}`;
+    const suffix = role === "intransitive" ? "ca" : "tz-a";
+    return freeze({
+      root,
+      copiedPrefix,
+      targetStem: `${copiedPrefix}-${root}-${suffix}`,
+      suffix,
+    });
+  }
+  function deriveUncertainTzcaStem(sourceStem = "") {
+    const stem = text(sourceStem).replace(/^\((.*)\)$/u, "$1");
+    if (!stem || /(?:^|-)tz-ca$/u.test(stem)) return null;
+    const vowelMatches = [...stem.matchAll(new RegExp(`[${vowels}]`, "gu"))];
+    if (vowelMatches.length < 2) return null;
+    const finalVowelIndex = vowelMatches.at(-1)?.index;
+    const previousVowelIndex = vowelMatches.at(-2)?.index;
+    if (!Number.isInteger(finalVowelIndex)
+      || !Number.isInteger(previousVowelIndex)) return null;
+    const between = stem.slice(previousVowelIndex + 1, finalVowelIndex);
+    const boundaryOffset = between.lastIndexOf("-");
+    const finalSyllableStart = boundaryOffset >= 0
+      ? previousVowelIndex + 2 + boundaryOffset
+      : previousVowelIndex + 1;
+    const retainedSource = stem.slice(0, finalSyllableStart).replace(/-+$/u, "");
+    const replacedSyllable = stem.slice(finalSyllableStart).replace(/^-+/u, "");
+    if (!retainedSource || !replacedSyllable) return null;
+    const copied = getReduplicationParts(retainedSource);
+    if (!copied.vowel) return null;
+    const copiedPrefix = `${copied.consonant}${shortVowel(copied.vowel)}`;
+    return freeze({
+      sourceStem: stem,
+      retainedSource,
+      replacedSyllable,
+      copiedPrefix,
+      replacement: "tz-ca",
+      targetStem: `${copiedPrefix}-${retainedSource}-tz-ca`,
+    });
   }
   function perfectiveStemFromMachinery(machineryFrame = null) {
     const candidates = [
@@ -317,6 +461,16 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   function connectiveFor(matrixStem) {
     return new RegExp(`^[${vowels}]`, "iu").test(text(matrixStem)) ? "t" : "ti";
   }
+  function carryEmbedStemForHuītz(sourceStem = "") {
+    const stem = text(sourceStem);
+    if (!stem) return "";
+    // The old carry construction keeps the typed carry predicate but applies
+    // the witnessed shortening before final -tz.  This is a shape rule, not a
+    // list of admitted lexical stems: any fully typed carry Source can use it.
+    return stem
+      .replace(/^i(?=[^aeiouāēīō])/u, "")
+      .replace(/ī(?=ca$)/u, "i");
+  }
   const INTRANSITIVE_COMPOUND_MATRICES = new Set([
     "ca", "nemi", "ya-uh", "huāl-la-uh", "huī-tz", "ahci", "mani",
     "ihca", "o", "ē-hua", "quiza", "huetzi", "tlehcō", "cal-aqui",
@@ -326,45 +480,80 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     "m-o-cāhua", "m-o-tēca", "m-o-tlāl-i-ā", "m-o-man-a",
     "m-o-quetza"
   ]);
+  const REFLEXIVE_MATRIX_READINGS = Object.freeze({
+    "m-o-cāhua": Object.freeze([
+      "stop-doing", "leave-in-a-condition", "remain-in-a-state"
+    ]),
+    "m-o-tēca": Object.freeze([
+      "settle-down-to-doing", "begin-doing", "become-a-condition",
+      "lie-stretched-out-in-a-state"
+    ]),
+    "m-o-tlāl-i-ā": Object.freeze([
+      "sit-in-a-state", "settle-down-to-doing", "become-a-condition",
+      "begin-doing"
+    ]),
+    "m-o-man-a": Object.freeze([
+      "do-gradually", "become-gradually", "begin-doing",
+      "stand-in-position-to-do"
+    ]),
+    "m-o-quetza": Object.freeze([
+      "do-gradually", "become-gradually"
+    ])
+  });
+  function normalizeReflexiveMatrixAnalysis(matrixStem = "") {
+    const suppliedStem = text(matrixStem);
+    const coreStem = suppliedStem.replace(/^(?:[ntm]-o-)+/u, "");
+    return freeze({
+      suppliedStem,
+      coreStem,
+      canonicalStem: coreStem ? `m-o-${coreStem}` : "",
+      fusedReflexiveCarrier: "m-o",
+      suppliedCarrierReplaced: Boolean(
+        coreStem && suppliedStem !== coreStem && !suppliedStem.startsWith("m-o-")
+      )
+    });
+  }
   const SHARED_OBJECT_COMPOUND_MATRICES = new Set([
     "tlāl-i-ā", "quetza", "tēca", "cāhua", "quix-tiā", "māy-a-hui"
   ]);
+  const SHARED_OBJECT_MATRIX_READINGS = Object.freeze({
+    "tlāl-i-ā": Object.freeze([
+      "place-shared-object-sitting", "set-shared-object-in-a-condition"
+    ]),
+    quetza: Object.freeze([
+      "place-shared-object-standing", "set-shared-object-in-a-condition"
+    ]),
+    tēca: Object.freeze([
+      "stretch-shared-object-out", "place-shared-object-recumbent"
+    ]),
+    cāhua: Object.freeze([
+      "leave-shared-object-in-a-condition", "leave-shared-object-behind"
+    ]),
+    "quix-tiā": Object.freeze([
+      "cause-shared-object-to-exit-in-a-condition",
+      "cause-shared-object-to-end-up-in-a-manner"
+    ]),
+    "māy-a-hui": Object.freeze([
+      "push-shared-object-down-in-a-condition",
+      "knock-shared-object-flat"
+    ])
+  });
   const FUTURE_EMBED_COMPOUND_MATRICES = new Set(["tla-nequi", "tla-qui"]);
-  const LEXICALIZED_DESTOCKAL_FREQUENTATIVES = new Map([
-    ["chi-chin-a-ca", { targetStem: "chi-chin-a-ca", targetClass: "A", force: "intransitive" }],
-    ["qui-quin-a-ca", { targetStem: "qui-quin-a-ca", targetClass: "A", force: "intransitive" }],
-    ["qui-quin-a-tz-a", { targetStem: "qui-quin-a-tz-a", targetClass: "B", force: "applicative" }],
-    ["po-pō-ca", { targetStem: "po-pō-ca", targetClass: "A", force: "intransitive" }],
-    ["po-pō-tz-a", { targetStem: "po-pō-tz-a", targetClass: "B", force: "causative" }],
-    ["to-tō-ca", { targetStem: "to-tō-ca", targetClass: "A", force: "intransitive" }],
-    ["to-tō-tz-a", { targetStem: "to-tō-tz-a", targetClass: "B", force: "causative" }],
-    ["pi-pī-ca", { targetStem: "pi-pī-ca", targetClass: "A", force: "intransitive" }],
-    ["pi-pi-tz-a", { targetStem: "pi-pi-tz-a", targetClass: "B", force: "causative" }],
-    ["tla-cua-cual-a-ca", { targetStem: "tla-cua-cual-a-ca", targetClass: "A", force: "impersonal" }],
-    ["tla-tzi-tzil-i-ca", { targetStem: "tla-tzi-tzil-i-ca", targetClass: "A", force: "impersonal" }]
-  ]);
-  const UNCERTAIN_CA_FREQUENTATIVES = new Map([
-    ["chal", "cha-chal-ca"],
-    ["tzil", "tzi-tzil-ca"],
-    ["nal", "na-na-l-ca"],
-    ["hual", "hua-hua-l-ca"],
-    ["pach", "pa-pach-ca"],
-    ["huix", "hui-huix-ca"]
-  ]);
-  const UNCERTAIN_TZCA_FREQUENTATIVES = new Map([
-    ["tla-tla", "tla-tla-tz-ca"],
-    ["cui-ca", "cui-cui-tz-ca"],
-    ["na-na-tz-ca", "na-na-tz-ca"],
-    ["pi-pi-tz-ca", "pi-pi-tz-ca"],
-    ["mo-mo-tz-ca", "mo-mo-tz-ca"],
-    ["pe-pe-tz-ca", "pe-pe-tz-ca"]
-  ]);
-  function allowedCompoundMatricesForVariant(variant) {
-    if (variant === "reflexive-matrix") return REFLEXIVE_COMPOUND_MATRICES;
-    if (variant === "shared-object") return SHARED_OBJECT_COMPOUND_MATRICES;
-    if (variant === "future-embed") return FUTURE_EMBED_COMPOUND_MATRICES;
-    if (variant === "huītz-carry") return new Set(["huī-tz"]);
-    return INTRANSITIVE_COMPOUND_MATRICES;
+  function analyzeFutureEmbedMatrix(matrixStem = "") {
+    const suppliedStem = text(matrixStem);
+    const lexicalStem = suppliedStem.replace(/^tla-/u, "");
+    if (!FUTURE_EMBED_COMPOUND_MATRICES.has(`tla-${lexicalStem}`)) return null;
+    return freeze({
+      suppliedStem,
+      canonicalConstructionStem: `tla-${lexicalStem}`,
+      lexicalStem,
+      analysisId: lexicalStem === "qui"
+        ? "qui-volition-imperfect"
+        : "nequi-desire",
+      reading: lexicalStem === "qui"
+        ? "volition-or-conditional-result"
+        : "want-desire-or-hope",
+    });
   }
   function deriveCompoundMatrixClass(matrixStem = "", requestedClass = "") {
     const stem = text(matrixStem);
@@ -372,41 +561,19 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     if (stem === "ē-hua") {
       return ["A", "B"].includes(requested) ? requested : "A";
     }
+    const knownMatrixClass = ({
+      quiza: "B",
+      huetzi: "B",
+      "cal-aqui": "B"
+    })[stem];
+    if (knownMatrixClass) return knownMatrixClass;
     const profile = typeof targetObject.inferClassicalNahuatlLesson7ClassProfile
       === "function"
       ? targetObject.inferClassicalNahuatlLesson7ClassProfile(stem)
       : null;
     const inferred = text(profile?.classId).toUpperCase();
     if (["A", "B", "C", "D"].includes(inferred)) return inferred;
-    return ({
-      ca: "A",
-      nemi: "B",
-      "ya-uh": "B",
-      "huāl-la-uh": "B",
-      "huī-tz": "A",
-      ahci: "B",
-      mani: "B",
-      ihca: "B",
-      o: "A",
-      quiza: "B",
-      huetzi: "B",
-      tlehcō: "C",
-      "cal-aqui": "B",
-      "pil-ca": "A",
-      "m-o-cāhua": "A",
-      "m-o-tēca": "A",
-      "m-o-tlāl-i-ā": "D",
-      "m-o-man-a": "B",
-      "m-o-quetza": "B",
-      "tla-nequi": "B",
-      "tla-qui": "B",
-      "tlāl-i-ā": "D",
-      quetza: "B",
-      tēca: "A",
-      cāhua: "A",
-      "quix-tiā": "D",
-      "māy-a-hui": "B"
-    })[stem] || "A";
+    return "A";
   }
   function cloneObjectFrameFromTyped(typedFrame = null, transform = null) {
     const slots = (
@@ -433,13 +600,84 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         va1: silencedSpecificProjective ? "⎕" : slot.va1,
         va2: slot.va2,
         objectKind: text(slot?.objectPositionFrame?.objectKind)
-          || (/^(?:n|t|m)-(?:o|⎕)$/u.test(carrier) ? "reflexive" : "")
+          || (/^(?:n|t|m)-(?:o|⎕)$/u.test(carrier) ? "reflexive" : ""),
+        objectPerson: text(
+          slot?.morphIdentityFrame?.objectPerson
+          || slot?.objectPositionFrame?.objectPerson
+        ),
+        objectNumber: text(
+          slot?.morphIdentityFrame?.objectNumber
+          || slot?.objectPositionFrame?.objectNumber
+        )
       };
       return transform ? transform(position, slot, index) : position;
     });
     if (!mapped.length) return { valenceArity: "vacant" };
     if (mapped.length > 1) return { valenceArity: "multiple", positions: mapped };
     return { ...mapped[0], valenceArity: mapped[0].valenceArity };
+  }
+  function objectFramePositions(frame = null) {
+    if (!frame || frame.valenceArity === "vacant") return [];
+    if (frame.valenceArity === "multiple") return [...(frame.positions || [])];
+    return [{ ...frame }];
+  }
+  function objectFrameReferentSignature(frame = null) {
+    return JSON.stringify(objectFramePositions(frame).map(position => ({
+      valenceArity: text(position.valenceArity),
+      objectKind: text(position.objectKind),
+      person: text(position.objectPerson),
+      number: text(position.objectNumber)
+    })));
+  }
+  function combineObjectFrames(...frames) {
+    const positions = frames.flatMap(objectFramePositions);
+    if (!positions.length) return { valenceArity: "vacant" };
+    if (positions.length === 1) return { ...positions[0] };
+    return { valenceArity: "multiple", positions };
+  }
+  function buildCanonicalAddedObjectFrame({
+    stem,
+    verbClass,
+    subject,
+    mood,
+    tense,
+    objectKind,
+    objectPerson,
+    governor,
+    derivationalLevel,
+  } = {}) {
+    if (typeof targetObject.evaluateClassicalNahuatlVncApplication !== "function") {
+      return null;
+    }
+    const participantApplication = targetObject.evaluateClassicalNahuatlVncApplication({
+      sourceStem: stem,
+      sourceValence: objectKind === "nonspecific-human"
+        ? "projective-human"
+        : objectKind === "nonspecific-nonhuman"
+          ? "projective-nonhuman"
+          : "specific-projective",
+      objectKind,
+      objectPerson,
+      verbClass,
+      subject,
+      mood,
+      tense,
+      derivationType: "direct",
+      requestedVoice: "active",
+      voice: "active",
+    });
+    if (participantApplication?.authorizationStatus !== "authorized") return null;
+    const participantFrame = cloneObjectFrameFromTyped(
+      getBaseTypedFrame(participantApplication),
+      position => ({
+        ...position,
+        objectKind,
+        objectPerson,
+        governor,
+        derivationalLevel,
+      }),
+    );
+    return participantFrame.valenceArity === "vacant" ? null : participantFrame;
   }
   function createTypedSlotFromBase(baseTypedFrame, targetStem, {
     predicateTns,
@@ -594,7 +832,11 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     const sourceCoordinateStem = recursiveEmbedFrame
       ? recursiveEmbedFrame.operationFrame?.targetStem
       : baseApplicationFrame?.normalizedRequest?.sourceStem;
-    if (text(sourceCoordinateStem) !== sourceStem
+    const compoundItzMotionSource = operation === "compound"
+      && sourceStem === "itz"
+      && key(request.compoundItzSense) === "motion"
+      && text(sourceCoordinateStem) === "huī-tz";
+    if ((!compoundItzMotionSource && text(sourceCoordinateStem) !== sourceStem)
       || text(sourceCoordinateSubject) !== text(request.subject || "3sg")) {
       return blockedOperation(request, "typed-source-request-continuity-required");
     }
@@ -638,16 +880,144 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const frequentativeSourceStem = baseIsNonactive
         ? text(baseTyped.slots?.predicate?.stem)
         : sourceStem;
-      if (["ordinary-short-glottal", "ordinary-long", "ordinary-short"].includes(variant)) {
-        const shape = variant === "ordinary-long" ? "long" : variant === "ordinary-short" ? "short" : "short-glottal";
-        // A fused/impersonal tla is already a typed stem constituent.  The
-        // ordinary route reduplicates the lexical stem under it; the separate
-        // tla-* variants below are the licensed choice that reduplicates tla
-        // itself.  This preserves both formations stated in §27.2/§27.3.
+      const legacyTargetByVariant = {
+        "tla-short-glottal": "fused-tla",
+        "tla-long": "fused-tla",
+        "tla-short-glottal-and-stem-short-glottal": "fused-tla-and-lexical-stem",
+        "tla-long-and-stem-long": "fused-tla-and-lexical-stem",
+        "reflexive-partial": "mainline-reflexive",
+      };
+      const legacyShapeByVariant = {
+        "tla-short-glottal": "short-glottal",
+        "tla-long": "long",
+        "tla-short-glottal-and-stem-short-glottal": "short-glottal",
+        "tla-long-and-stem-long": "long",
+        "reflexive-partial": "short-glottal",
+      };
+      const requestedTarget = key(
+        request.frequentativeTarget
+        || legacyTargetByVariant[variant]
+        || "lexical-stem",
+      );
+      if (!FREQUENTATIVE_TARGETS.includes(requestedTarget)) {
+        return blockedOperation(
+          request,
+          "licensed-frequentative-target-required",
+          "frequentative-object",
+        );
+      }
+      const ordinaryVariant = [
+        "ordinary-short-glottal",
+        "ordinary-long",
+        "ordinary-short",
+      ].includes(variant);
+      const legacyObjectVariant = Object.hasOwn(
+        legacyTargetByVariant,
+        variant,
+      );
+      if (ordinaryVariant || legacyObjectVariant) {
+        const shape = legacyShapeByVariant[variant]
+          || (variant === "ordinary-long"
+            ? "long"
+            : variant === "ordinary-short"
+              ? "short"
+              : "short-glottal");
+        const requestedScope = key(request.frequentativeScope || "open");
+        if (!FREQUENTATIVE_SCOPES.includes(requestedScope)) {
+          return blockedOperation(
+            request,
+            "licensed-frequentative-scope-required",
+            "frequentative-prefix-shape"
+          );
+        }
+        if (shape !== "short-glottal" && requestedScope !== "open") {
+          return blockedOperation(
+            request,
+            "frequentative-scope-requires-short-glottal-formation",
+            "frequentative-prefix-shape"
+          );
+        }
+        const sourceHasPatient = Array.isArray(baseTyped.slots?.prePredicate)
+          && baseTyped.slots.prePredicate.some(slot => (
+            ["monadic-valence", "dyadic-valence"].includes(slot?.kind)
+          ));
+        if (requestedScope === "patient" && !sourceHasPatient) {
+          return blockedOperation(
+            request,
+            "patient-scope-requires-typed-source-object",
+            "frequentative-prefix-shape"
+          );
+        }
+        if (requestedTarget === "mainline-reflexive") {
+          if (shape !== "short-glottal") {
+            return blockedOperation(
+              request,
+              "partial-reflexive-requires-short-glottal-formation",
+              "frequentative-reflexive",
+            );
+          }
+          if (key(request.sourceInitialISelection) !== "supportive"
+            || !/^i/u.test(sourceStem)) {
+            return blockedOperation(
+              request,
+              "supportive-initial-i-source-required",
+              "frequentative-reflexive",
+            );
+          }
+          const reflexiveSlot = baseTyped.slots.prePredicate?.find(slot => (
+            /reflexive/u.test(slot.objectPositionFrame?.objectKind || "")
+            || /^[mnt]-o$/u.test(slot.carrier || "")
+          ));
+          if (!reflexiveSlot) {
+            return blockedOperation(
+              request,
+              "mainline-reflexive-source-required",
+              "frequentative-reflexive",
+            );
+          }
+          targetStem = sourceStem.slice(1);
+          objectTransform = position => {
+            const va1 = text(position.va1 || position.va || "")
+              .replace(/-?o$/u, "");
+            return { ...position, valenceArity: "dyadic", va1, va2: "oh-o" };
+          };
+          ruleFamily = "frequentative-reflexive";
+          operationFacts = {
+            reduplicationTarget: requestedTarget,
+            shape,
+            shapeFormula: "mainline reflexive carrier + short vowel + h",
+            reflexiveCarrier: text(reflexiveSlot.carrier),
+            partialReflexiveCarrier: `${text(reflexiveSlot.carrier).replace(/-?o$/u, "")}-oh-o`,
+            initialIAnalysis: "supportive",
+            supportiveIDeleted: true,
+            sourceStemAfterSupportiveIDeletion: targetStem,
+            participantStructurePreserved: true,
+            repetitions: 1,
+          };
+        } else {
+        // A fused/impersonal tla is already a typed stem constituent. The
+        // target choice determines whether reduplication applies to tla, the
+        // lexical stem beneath it, or both; copied material remains derived.
+        const fusedTlaSelected = requestedTarget !== "lexical-stem";
+        if (fusedTlaSelected && !/^tla-/u.test(frequentativeSourceStem)) {
+          return blockedOperation(
+            request,
+            "fused-tla-source-required",
+            "frequentative-tla",
+          );
+        }
+        if (fusedTlaSelected && shape === "short") {
+          return blockedOperation(
+            request,
+            "fused-tla-reduplication-requires-glottal-or-long-shape",
+            "frequentative-tla",
+          );
+        }
         const ordinarySourceStem = /^tla-/u.test(frequentativeSourceStem)
           ? frequentativeSourceStem.slice(4)
           : frequentativeSourceStem;
-        if (key(request.sourceInitialISelection) === "supportive"
+        const sourceInitialISelection = key(request.sourceInitialISelection);
+        if (sourceInitialISelection === "supportive"
           && !/^i(?:ch|cu|hu|qu|tl|tz|[bcçhlmnpqstxyz]){2}/u.test(ordinarySourceStem)) {
           return blockedOperation(
             request,
@@ -657,46 +1027,62 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         }
         const reduplicatedStem = reduplicate(ordinarySourceStem, shape, {
           repetitions,
-          supportiveI: key(request.sourceInitialISelection) === "supportive"
+          supportiveI: sourceInitialISelection === "supportive"
         });
-        targetStem = /^tla-/u.test(frequentativeSourceStem)
-          ? `tla-${reduplicatedStem}`
-          : reduplicatedStem;
-        operationFacts = { shape, repetitions, lexicalShapeChoice: true };
-      } else if (/^tla-(?:short-glottal|long)(?:-and-stem-(?:short-glottal|long|short))?$/u.test(variant)) {
-        if (!/^tla-/u.test(sourceStem)) return blockedOperation(request, "fused-tla-source-required", "frequentative-tla");
-        const tlaShape = variant.startsWith("tla-long") ? "tlā-tla" : "tlah-tla";
-        const embeddedShape = variant.match(/-and-stem-(short-glottal|long|short)$/u)?.[1] || "";
-        const lexicalStem = sourceStem.slice(4);
-        targetStem = embeddedShape
-          ? `${tlaShape}-${reduplicate(lexicalStem, embeddedShape, { repetitions })}`
-          : `${tlaShape}-${lexicalStem}`;
-        ruleFamily = "frequentative-tla";
+        const reduplicationParts = getReduplicationParts(ordinarySourceStem, {
+          supportiveI: sourceInitialISelection === "supportive"
+        });
+        const copiedVowel = shape === "long"
+          ? longVowel(shortVowel(reduplicationParts.vowel))
+          : shortVowel(reduplicationParts.vowel);
+        const copiedPrefix = `${reduplicationParts.consonant}${copiedVowel}${shape === "short-glottal" ? "h" : ""}`;
+        const tlaPrefix = shape === "long" ? "tlā-tla" : "tlah-tla";
+        targetStem = fusedTlaSelected
+          ? requestedTarget === "fused-tla-and-lexical-stem"
+            ? `${tlaPrefix}-${reduplicatedStem}`
+            : `${tlaPrefix}-${ordinarySourceStem}`
+          : /^tla-/u.test(frequentativeSourceStem)
+            ? `tla-${reduplicatedStem}`
+            : reduplicatedStem;
+        ruleFamily = fusedTlaSelected
+          ? "frequentative-tla"
+          : "frequentative-prefix-shape";
         operationFacts = {
-          objectPronounReduplicated: true,
-          lexicalStemAlsoReduplicated: Boolean(embeddedShape),
-          lexicalStemShape: embeddedShape || "none",
-          repetitions
+          reduplicationTarget: requestedTarget,
+          shape,
+          shapeFormula: shape === "short-glottal"
+            ? "(C)+short vowel+h"
+            : shape === "long"
+              ? "(C)+long vowel"
+              : "(C)+short vowel",
+          copiedConsonant: reduplicationParts.consonant,
+          copiedVowel,
+          copiedPrefix,
+          repetitions,
+          lexicalShapeChoice: true,
+          semanticScope: requestedScope,
+          availableSemanticScopes: FREQUENTATIVE_SCOPES,
+          patientScopeAvailable: sourceHasPatient,
+          initialIAnalysis: sourceInitialISelection || "not-applicable",
+          supportiveIDeleted: sourceInitialISelection === "supportive",
+          sourceStemAfterSupportiveIDeletion: reduplicationParts.retainedStem,
+          objectPronounReduplicated: fusedTlaSelected,
+          lexicalStemAlsoReduplicated:
+            requestedTarget === "fused-tla-and-lexical-stem",
+          objectScope: fusedTlaSelected ? "nonspecific-nonhuman objects" : "unchanged",
+          eventScope: requestedTarget === "fused-tla"
+            ? "unchanged"
+            : "frequentative event",
+          independentObjectAndEventScopes:
+            requestedTarget === "fused-tla-and-lexical-stem",
         };
-      } else if (variant === "reflexive-partial") {
-        if (key(request.sourceInitialISelection) !== "supportive" || !/^i/u.test(sourceStem)) {
-          return blockedOperation(request, "supportive-initial-i-source-required", "frequentative-reflexive");
         }
-        if (!baseTyped.slots.prePredicate?.some(slot => /reflexive/u.test(slot.objectPositionFrame?.objectKind || "") || /^[mnt]-o$/u.test(slot.carrier || ""))) {
-          return blockedOperation(request, "mainline-reflexive-source-required", "frequentative-reflexive");
-        }
-        targetStem = sourceStem.slice(1);
-        objectTransform = position => {
-          const va1 = text(position.va1 || position.va || "").replace(/-?o$/u, "");
-          return { ...position, valenceArity: "dyadic", va1, va2: "oh-o" };
-        };
-        ruleFamily = "frequentative-reflexive";
       } else if (variant === "destockal-lexicalized") {
-        const lexicalized = LEXICALIZED_DESTOCKAL_FREQUENTATIVES.get(sourceStem);
+        const lexicalized = parseCompletedLexicalizedDestockal(sourceStem);
         if (!lexicalized) {
           return blockedOperation(
             request,
-            "canvas-listed-lexicalized-destockal-required",
+            "completed-ca-or-tza-destockal-shape-required",
             "frequentative-destockal"
           );
         }
@@ -704,15 +1090,24 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           ? frequentativeSourceStem
           : lexicalized.targetStem;
         targetClass = lexicalized.targetClass;
-        targetValence = lexicalized.force === "intransitive"
+        targetValence = lexicalized.structuralForce === "intransitive"
           ? "intransitive"
           : text(request.sourceValence || request.valence || "specific-projective");
         ruleFamily = "frequentative-destockal";
         operationFacts = {
           lexicalizedDestockal: true,
-          fusedStockVowelRemainsLong: /[āēīō]/u.test(targetStem),
-          semanticForce: lexicalized.force,
-          nonactiveAppliedToFrequentativeStem: baseIsNonactive
+          sourceHistory: "extinct-or-fused-destockal",
+          openSourceShape: true,
+          fusedStockVowelRemainsLong: Boolean(lexicalized.fusedLongVowel),
+          fusedLongVowel: lexicalized.fusedLongVowel,
+          tzAUnit: lexicalized.tzAUnit,
+          semanticForce: lexicalized.structuralForce,
+          licensedSemanticForces: lexicalized.tzAUnit
+            ? ["causative", "applicative"]
+            : ["intransitive"],
+          contextualRoleSelection: Boolean(lexicalized.tzAUnit),
+          nonactiveAppliedToFrequentativeStem: baseIsNonactive,
+          canvasExamplesAreEvidenceOnly: true,
         };
       } else if (variant.startsWith("destockal-")) {
         const shape = "short";
@@ -723,94 +1118,368 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           () => redup
         ).join("-");
         if (variant === "destockal-intransitive") {
-          if (!/(?:ni|hui)$/u.test(sourceStem)) return blockedOperation(request, "ni-or-hui-destockal-source-required", "frequentative-destockal");
-          targetStem = `${reduplicationPrefix}-${sourceStem.replace(/(?:ni|hui)$/u, "ca").replace(/[āēīō]/gu, shortVowel)}`;
+          const parsed = parseIntransitiveDestockal(sourceStem);
+          if (!parsed) return blockedOperation(request, "ni-or-hui-destockal-source-required", "frequentative-destockal");
+          const activeFrequentativeStem = `${reduplicationPrefix}-${parsed.targetCore}`;
+          const selectedVoiceOperation = key(
+            baseApplicationFrame?.controlFrame?.selectedVoiceOperation,
+          );
+          const selectedNonactiveOptionId = text(
+            baseApplicationFrame?.controlFrame?.selectedNonactiveOptionId
+            || request.nonactiveOptionId,
+          );
+          let nonactiveFormation = "active";
+          if (baseIsNonactive) {
+            if (selectedVoiceOperation === "tla-impersonal") {
+              targetStem = `tla-${activeFrequentativeStem}`;
+              nonactiveFormation = "tla-impersonal";
+            } else if (/^o-hua:/u.test(selectedNonactiveOptionId)) {
+              targetStem = activeFrequentativeStem.replace(/ca$/u, "c-o-hua");
+              nonactiveFormation = "ca-to-c-o-hua";
+            } else if (/^hua:/u.test(selectedNonactiveOptionId)) {
+              targetStem = activeFrequentativeStem.replace(/ca$/u, "c-ō");
+              nonactiveFormation = "ca-to-c-ō";
+            } else if (selectedVoiceOperation === "inherent-impersonal") {
+              targetStem = activeFrequentativeStem;
+              nonactiveFormation = "inherent-impersonal";
+            } else {
+              return blockedOperation(
+                request,
+                "licensed-destockal-impersonal-formation-required",
+                "frequentative-nonactive",
+              );
+            }
+          } else {
+            targetStem = activeFrequentativeStem;
+          }
           targetClass = "A";
-        } else if (["destockal-causative", "destockal-applicative-force"].includes(variant)) {
-          if (!/(?:n-a|ni-ā|hu-a|na|niā|hua)$/u.test(sourceStem)) return blockedOperation(request, "destockal-causative-source-required", "frequentative-destockal");
-          const retained = sourceStem.replace(/(?:n-a|ni-ā|hu-a|na|niā|hua)$/u, "tz-a").replace(/[āēīō]/gu, shortVowel);
-          targetStem = `${reduplicationPrefix}-${retained}`;
+          targetValence = "intransitive";
+          operationFacts = {
+            shape,
+            shapeFormula: "(C)+short vowel",
+            reduplicationTarget: "lexical-stem",
+            copiedConsonant: parts.consonant,
+            copiedVowel: shortVowel(parts.vowel),
+            copiedPrefix: redup,
+            shortVowelReduplication: true,
+            sourceDestockalSuffix: parsed.sourceSuffix,
+            targetDestockalSuffix: parsed.targetSuffix,
+            stockVowel: parsed.stockVowel,
+            reducedStockVowel: parsed.reducedStockVowel,
+            stockLongVowelReduced: parsed.stockVowel !== parsed.reducedStockVowel,
+            activeFrequentativeStem,
+            nonactiveFormation,
+            impersonalOnlyWhenNonactive: baseIsNonactive,
+            targetClass: "A",
+            perfectiveKeepsFinalA: true,
+            repetitions,
+            openSourceShape: true,
+          };
+        } else if ([
+          "destockal-causative",
+          "destockal-causative-force",
+          "destockal-applicative-force",
+        ].includes(variant)) {
+          const completed = variant !== "destockal-causative"
+            ? parseCompletedLexicalizedDestockal(sourceStem)
+            : null;
+          const completedTzA = completed?.tzAUnit ? completed : null;
+          const parsed = completedTzA ? null : parseCausativeDestockal(sourceStem);
+          if (!completedTzA && !parsed) return blockedOperation(
+            request,
+            variant === "destockal-causative"
+              ? "destockal-causative-source-required"
+              : "destockal-causative-or-completed-tza-source-required",
+            "frequentative-destockal",
+          );
+          targetStem = completedTzA
+            ? completedTzA.targetStem
+            : `${reduplicationPrefix}-${parsed.targetCore}`;
           targetClass = "B";
           if (variant === "destockal-applicative-force") {
             targetValence = "specific-projective";
           }
+          operationFacts = {
+            shape,
+            shapeFormula: "(C)+short vowel",
+            reduplicationTarget: "lexical-stem",
+            copiedConsonant: parts.consonant,
+            copiedVowel: shortVowel(parts.vowel),
+            copiedPrefix: redup,
+            shortVowelReduplication: true,
+            sourceDestockalSuffix: parsed?.sourceSuffix || "completed-tz-a",
+            targetDestockalSuffix: parsed?.targetSuffix || completedTzA.tzAUnit,
+            stockVowel: parsed?.stockVowel || completedTzA.fusedLongVowel,
+            reducedStockVowel: parsed?.reducedStockVowel || completedTzA.fusedLongVowel,
+            stockLongVowelReduced: parsed
+              ? parsed.stockVowel !== parsed.reducedStockVowel
+              : false,
+            retainedCausativeVowel: parsed?.retainedCausativeVowel || "a",
+            semanticForce: variant === "destockal-applicative-force"
+              ? "applicative"
+              : "causative",
+            contextualRoleSelected: completedTzA
+              ? variant === "destockal-applicative-force"
+                ? "applicative"
+                : "causative"
+              : "not-applicable",
+            completedTzASource: Boolean(completedTzA),
+            participantStructurePreserved: true,
+            targetClass: "B",
+            perfectiveDropsFinalA: true,
+            repetitions,
+            openSourceShape: true,
+          };
         } else if (variant === "destockal-applicative") {
           if (!/(?:tz-a|tza)$/u.test(sourceStem)) return blockedOperation(request, "frequentative-destockal-tza-source-required", "frequentative-destockal");
           targetStem = sourceStem.replace(/(?:tz-a|tza)$/u, "ch-i-liā");
           targetClass = "C";
+          targetValence = "specific-projective";
+          const addedObjectKind = text(
+            request.applicativeObjectKind || "nonspecific-human",
+          );
+          const addedObjectPerson = text(request.applicativeObjectPerson);
+          const addedObjectFrame = buildCanonicalAddedObjectFrame({
+            stem: targetStem,
+            verbClass: targetClass,
+            subject: request.subject,
+            mood: request.mood,
+            tense: request.tense,
+            objectKind: addedObjectKind,
+            objectPerson: addedObjectPerson,
+            governor: "applicative",
+            derivationalLevel: objectFramePositions(
+              cloneObjectFrameFromTyped(baseTyped),
+            ).length + 1,
+          });
+          if (!addedObjectFrame) return blockedOperation(
+            request,
+            "canonical-applicative-participant-required",
+            "frequentative-destockal",
+          );
+          objectFrame = combineObjectFrames(
+            cloneObjectFrameFromTyped(baseTyped),
+            addedObjectFrame,
+          );
+          operationFacts = {
+            recursiveResultSource: true,
+            sourceSuffix: sourceStem.match(/(?:tz-a|tza)$/u)?.[0] || "tz-a",
+            replacementSuffix: "ch-i",
+            addedApplicativeSuffix: "liā",
+            derivationRole: "applicative",
+            addedParticipant: {
+              objectKind: addedObjectKind,
+              objectPerson: addedObjectPerson,
+            },
+            priorObjectsPreserved: true,
+            unsupportedTlaFusionRejected: true,
+            targetClass: "C",
+          };
         } else if (variant === "destockal-type-two") {
           targetStem = sourceStem.replace(/ca$/u, "qui-l-tiā");
           if (targetStem === sourceStem) return blockedOperation(request, "frequentative-destockal-ca-source-required", "frequentative-destockal");
           targetClass = "C";
+          targetValence = "specific-projective";
+          const addedObjectKind = text(
+            request.causativeObjectKind || "specific-projective",
+          );
+          const addedObjectPerson = text(
+            request.causativeObjectPerson || "3sg",
+          );
+          const addedObjectFrame = buildCanonicalAddedObjectFrame({
+            stem: targetStem,
+            verbClass: targetClass,
+            subject: request.subject,
+            mood: request.mood,
+            tense: request.tense,
+            objectKind: addedObjectKind,
+            objectPerson: addedObjectPerson,
+            governor: "causative",
+            derivationalLevel: objectFramePositions(
+              cloneObjectFrameFromTyped(baseTyped),
+            ).length + 1,
+          });
+          if (!addedObjectFrame) return blockedOperation(
+            request,
+            "canonical-causee-participant-required",
+            "frequentative-destockal",
+          );
+          objectFrame = combineObjectFrames(
+            cloneObjectFrameFromTyped(baseTyped),
+            addedObjectFrame,
+          );
+          operationFacts = {
+            recursiveResultSource: true,
+            sourceSuffix: "ca",
+            replacementSuffix: "qui-l-tiā",
+            derivationRole: "rare-type-two-causative",
+            lexicalLicenseSuppliedBySelectedAnalysis: true,
+            addedParticipant: {
+              objectKind: addedObjectKind,
+              objectPerson: addedObjectPerson,
+            },
+            priorObjectsPreserved: true,
+            targetClass: "C",
+          };
         } else {
           return blockedOperation(request, "recognized-destockal-operation-required", "frequentative-destockal");
         }
         ruleFamily = "frequentative-destockal";
-        operationFacts = {
-          shortVowelReduplication: true,
-          stockLongVowelReduced: true,
-          repetitions,
-          semanticForce: variant === "destockal-applicative-force"
-            ? "applicative"
-            : variant === "destockal-causative"
-              ? "causative"
-              : ""
-        };
+        operationFacts = Object.keys(operationFacts).length
+          ? operationFacts
+          : {
+            shortVowelReduplication: true,
+            stockLongVowelReduced: true,
+            repetitions,
+            semanticForce: "",
+          };
       } else if ([
         "uncertain-ca",
+        "uncertain-ca-causative",
+        "uncertain-ca-applicative",
+        "uncertain-ca-fused-tla",
         "uncertain-ca-applicative-growl",
         "uncertain-ca-fused-tla-bark",
       ].includes(variant)) {
-        targetStem = text(UNCERTAIN_CA_FREQUENTATIVES.get(sourceStem));
-        if (!targetStem) {
+        const requestedRole = variant === "uncertain-ca"
+          ? "intransitive"
+          : variant === "uncertain-ca-causative"
+            ? "causative"
+            : "applicative";
+        const uncertain = deriveUncertainCaStem(sourceStem, requestedRole);
+        if (!uncertain) {
           return blockedOperation(
             request,
-            "canvas-listed-uncertain-ca-root-required",
+            "open-uncertain-ca-root-shape-required",
             "frequentative-uncertain"
           );
         }
+        targetStem = uncertain.targetStem;
         targetClass = "A";
         ruleFamily = "frequentative-uncertain";
-        if (variant === "uncertain-ca-applicative-growl") {
-          if (sourceStem !== "hual") return blockedOperation(
-            request,
-            "hual-growl-applicative-source-required",
-            "frequentative-uncertain",
-          );
-          targetStem = "hua-hua-l-tz-a";
-          targetClass = "A";
+        if (["uncertain-ca-applicative", "uncertain-ca-applicative-growl"].includes(variant)) {
           targetValence = "specific-projective";
-          operationFacts = {
-            lexicalMeaning: "dog-growl-at-object",
-            objectPrefixAlternatives: ["tē", "tla"],
-            applicative: true,
-          };
-        } else if (variant === "uncertain-ca-fused-tla-bark") {
-          if (sourceStem !== "hual") return blockedOperation(
+          const addedObjectKind = text(
+            request.applicativeObjectKind || request.objectKind || "specific-projective",
+          );
+          const addedObjectPerson = text(
+            request.applicativeObjectPerson || request.objectPerson,
+          );
+          objectFrame = buildCanonicalAddedObjectFrame({
+            stem: targetStem,
+            verbClass: targetClass,
+            subject: request.subject,
+            mood: request.mood,
+            tense: request.tense,
+            objectKind: addedObjectKind,
+            objectPerson: addedObjectPerson,
+            governor: "applicative",
+            derivationalLevel: 1,
+          });
+          if (!objectFrame) return blockedOperation(
             request,
-            "hual-bark-source-required",
+            "canonical-applicative-participant-required",
             "frequentative-uncertain",
           );
-          targetStem = "tla-hua-hua-l-tz-a";
-          targetClass = "A";
+          operationFacts = {
+            sourceAnalysis: "uncertain-ca",
+            sourceRoot: uncertain.root,
+            copiedPrefix: uncertain.copiedPrefix,
+            targetSuffix: uncertain.suffix,
+            derivationRole: "applicative",
+            addedParticipant: {
+              objectKind: addedObjectKind,
+              objectPerson: addedObjectPerson,
+            },
+            openSourceShape: true,
+            lexicalMeaningInferred: false,
+          };
+        } else if (["uncertain-ca-fused-tla", "uncertain-ca-fused-tla-bark"].includes(variant)) {
+          targetStem = `tla-${uncertain.targetStem}`;
           targetValence = "intransitive";
           operationFacts = {
-            lexicalMeaning: "dog-bark",
+            sourceAnalysis: "uncertain-ca",
+            sourceRoot: uncertain.root,
+            copiedPrefix: uncertain.copiedPrefix,
+            targetSuffix: uncertain.suffix,
+            derivationRole: "applicative",
             fusedObjectPrefix: "tla",
             fusionLowersValence: true,
+            openSourceShape: true,
+            lexicalMeaningInferred: false,
+          };
+        } else {
+          if (variant === "uncertain-ca-causative") {
+            targetValence = "specific-projective";
+            const addedObjectKind = text(
+              request.causativeObjectKind || request.objectKind || "specific-projective",
+            );
+            const addedObjectPerson = text(
+              request.causativeObjectPerson || request.objectPerson || "3sg",
+            );
+            objectFrame = buildCanonicalAddedObjectFrame({
+              stem: targetStem,
+              verbClass: targetClass,
+              subject: request.subject,
+              mood: request.mood,
+              tense: request.tense,
+              objectKind: addedObjectKind,
+              objectPerson: addedObjectPerson,
+              governor: "causative",
+              derivationalLevel: 1,
+            });
+            if (!objectFrame) return blockedOperation(
+              request,
+              "canonical-causee-participant-required",
+              "frequentative-uncertain",
+            );
+          }
+          operationFacts = {
+            sourceAnalysis: "uncertain-ca",
+            sourceRoot: uncertain.root,
+            copiedPrefix: uncertain.copiedPrefix,
+            targetSuffix: uncertain.suffix,
+            derivationRole: requestedRole,
+            openSourceShape: true,
+            uncertainHistoryPreserved: true,
+            lexicalMeaningInferred: false,
+            canvasExamplesAreEvidenceOnly: true,
+            assimilationAvailableFromStructure: /ch-tz-a$/u.test(targetStem),
           };
         }
       } else if (variant === "uncertain-tzca") {
-        targetStem = text(UNCERTAIN_TZCA_FREQUENTATIVES.get(sourceStem));
-        if (!targetStem) {
+        const sourceHasObject = Array.isArray(baseTyped.slots?.prePredicate)
+          && baseTyped.slots.prePredicate.some(slot => (
+            ["monadic-valence", "dyadic-valence"].includes(slot?.kind)
+          ));
+        const uncertainTzca = deriveUncertainTzcaStem(sourceStem);
+        if (!uncertainTzca || sourceHasObject) {
           return blockedOperation(
             request,
-            "canvas-listed-uncertain-tzca-source-required",
+            sourceHasObject
+              ? "intransitive-uncertain-tzca-source-required"
+              : "replaceable-final-source-syllable-required",
             "frequentative-uncertain"
           );
         }
+        targetStem = uncertainTzca.targetStem;
         targetClass = "A";
+        targetValence = "intransitive";
         ruleFamily = "frequentative-uncertain";
+        operationFacts = {
+          sourceAnalysis: "uncertain-tzca-frequentative",
+          openSourceShape: true,
+          retainedSource: uncertainTzca.retainedSource,
+          replacedSourceSyllable: uncertainTzca.replacedSyllable,
+          replacement: uncertainTzca.replacement,
+          copiedPrefix: uncertainTzca.copiedPrefix,
+          uncertainHistoryPreserved: true,
+          completedTzcaResultAvailableForContinuation: true,
+          unreduplicatedTzcaIsDifferentSourceAnalysis: true,
+          transitiveTzcaIsDifferentFormation: true,
+          lexicalMeaningInferred: false,
+          canvasExamplesAreEvidenceOnly: true,
+        };
       } else {
         return blockedOperation(request, "recognized-frequentative-variant-required", "frequentative-prefix-shape");
       }
@@ -820,21 +1489,84 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       )
         ? internalContext.recursiveMatrixClosureFrame
         : null;
-      const matrixStem = text(
+      const recursiveHierarchy = analyzeRecursiveCompoundHierarchy(
+        recursiveEmbedFrame,
+        recursiveMatrixFrame
+      );
+      if (recursiveHierarchy.authorizationStatus !== "authorized") {
+        return blockedOperation(
+          request,
+          recursiveHierarchy.blockReason,
+          "compound-recursion"
+        );
+      }
+      const requestedMatrixStem = text(
         recursiveMatrixFrame?.operationFrame?.targetStem
         || request.compoundMatrixStem
         || request.matrixStem
       );
+      const reflexiveMatrixAnalysis = variant === "reflexive-matrix"
+        ? normalizeReflexiveMatrixAnalysis(requestedMatrixStem)
+        : null;
+      const matrixStem = reflexiveMatrixAnalysis?.canonicalStem
+        || requestedMatrixStem;
+      const futureMatrixAnalysis = variant === "future-embed"
+        ? analyzeFutureEmbedMatrix(matrixStem)
+        : null;
+      if (variant === "future-embed" && !futureMatrixAnalysis) {
+        return blockedOperation(
+          request,
+          "future-embed-matrix-analysis-must-be-nequi-or-qui",
+          "compound-future-embed",
+        );
+      }
+      const reflexiveMatrixSubject = text(request.subject || "3sg");
+      const reflexiveMatrixSubjectAnimacy = /^[12]/u.test(
+        reflexiveMatrixSubject
+      )
+        ? "animate"
+        : key(request.compoundSubjectAnimacy || "nonanimate");
       const matrixTyped = recursiveMatrixFrame?.finalTypedVncSlotFrame
         || getBaseTypedFrame(internalContext.matrixApplicationFrame);
-      const realizedMatrixStem = text(
+      const matrixPredicateStem = text(
         recursiveMatrixFrame?.operationFrame?.targetStem
         || matrixTyped?.slots?.predicate?.stem
         || matrixStem
       );
-      const allowedMatrices = allowedCompoundMatricesForVariant(variant);
-      if (!matrixStem || (!recursiveMatrixFrame && !allowedMatrices.has(matrixStem))) {
-        return blockedOperation(request, "lesson28-matrix-inventory-selection-required", "compound-matrix-inventory");
+      const realizedMatrixStem = matrixStem === "ya-uh"
+        && matrixPredicateStem === "ya-uh"
+        ? "uh"
+        : matrixStem === "o"
+          ? matrixPredicateStem.replace(/^on-/u, "")
+          : matrixPredicateStem;
+      if (!matrixStem) {
+        return blockedOperation(request, "typed-compound-matrix-required", "compound-matrix-analysis");
+      }
+      const selectedEventOrder = key(request.compoundEventOrder || "iconic");
+      if (!["iconic", "hysteron-proteron"].includes(selectedEventOrder)) {
+        return blockedOperation(
+          request,
+          "licensed-compound-event-order-required",
+          "compound-event-order"
+        );
+      }
+      const selectedItzSense = key(request.compoundItzSense);
+      const reversedEventOrderLicensed = selectedEventOrder === "hysteron-proteron"
+        || matrixStem === "huetzi"
+        || matrixStem === "ahci"
+        || (
+          matrixStem === "ē-hua"
+          && sourceStem === "itz"
+          && selectedItzSense === "motion"
+        );
+      if (matrixStem === "ē-hua"
+        && request.compoundMatrixClass
+        && !["A", "B"].includes(text(request.compoundMatrixClass).toUpperCase())) {
+        return blockedOperation(
+          request,
+          "e-hua-matrix-requires-licensed-a-or-b-class-history",
+          "compound-matrix-analysis"
+        );
       }
       const canonicalMatrixApplication = Boolean(
         typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
@@ -849,7 +1581,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           request,
           internalContext.matrixApplicationFrame?.blockReason
             || "authorized-matrix-coordinate-required",
-          "compound-matrix-inventory"
+          "compound-matrix-analysis"
         );
       }
       const matrixCoordinateStem = recursiveMatrixFrame
@@ -858,9 +1590,16 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const matrixCoordinateSubject = recursiveMatrixFrame
         ? recursiveMatrixFrame.normalizedRequest?.subject
         : internalContext.matrixApplicationFrame?.normalizedRequest?.subject;
-      if (text(matrixCoordinateStem) !== matrixStem
+      const expectedMatrixCoordinateStem = variant === "future-embed"
+        ? futureMatrixAnalysis.lexicalStem
+        : matrixStem === "ca"
+          ? "ye"
+          : matrixStem === "o"
+            ? "on-o"
+            : matrixStem;
+      if (text(matrixCoordinateStem) !== expectedMatrixCoordinateStem
         || text(matrixCoordinateSubject) !== text(request.subject || "3sg")) {
-        return blockedOperation(request, "typed-matrix-request-continuity-required", "compound-matrix-inventory");
+        return blockedOperation(request, "typed-matrix-request-continuity-required", "compound-matrix-analysis");
       }
       targetClass = text(
         recursiveMatrixFrame?.operationFrame?.targetClass
@@ -868,8 +1607,44 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         || internalContext.derivedMatrixClass
         || deriveCompoundMatrixClass(matrixStem)
       ).toUpperCase();
+      const requestedNonactiveScope = key(
+        request.compoundNonactiveScope || "none"
+      );
+      const requestedCompoundVoice = key(
+        request.requestedVoice || request.voice || "active"
+      );
+      const selectedEmbedVoiceOperation = key(
+        baseApplicationFrame?.controlFrame?.selectedVoiceOperation
+        || baseApplicationFrame?.controlFrame?.selectedVoice
+        || request.nonactiveOptionId
+        || requestedCompoundVoice
+      );
+      if (requestedCompoundVoice === "active"
+        && requestedNonactiveScope !== "none") {
+        return blockedOperation(
+          request,
+          "compound-nonactive-scope-requires-nonactive-voice",
+          "compound-nonactive"
+        );
+      }
+      if (requestedCompoundVoice === "passive"
+        && !["embed", "both"].includes(requestedNonactiveScope)) {
+        return blockedOperation(
+          request,
+          "compound-passive-scope-must-be-embed-or-both",
+          "compound-nonactive"
+        );
+      }
+      if (requestedCompoundVoice === "impersonal"
+        && !["embed", "matrix", "both"].includes(requestedNonactiveScope)) {
+        return blockedOperation(
+          request,
+          "compound-impersonal-scope-must-be-embed-matrix-or-both",
+          "compound-nonactive"
+        );
+      }
       if (baseApplicationFrame?.controlFrame?.selectedVoiceOperation === "tla-impersonal"
-        && key(request.compoundNonactiveScope) !== "embed") {
+        && requestedNonactiveScope !== "embed") {
         return blockedOperation(request, "tla-impersonal-is-embed-only", "compound-nonactive");
       }
       if (variant === "future-embed"
@@ -880,13 +1655,30 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           "compound-nonactive"
         );
       }
-      const perfective = ({ ca: "ye", "ya-uh": "yah", "itt-a": "itz" }[sourceStem] || perfectiveStemFromMachinery(baseMachinery) || sourceStem);
-      if (sourceStem === "cac" && key(request.compoundSubjectAnimacy) !== "nonanimate") {
+      const perfective = ({
+        ca: "ye",
+        "ya-uh": "yah",
+        "itt-a": "itz",
+        itz: "itz"
+      }[sourceStem] || perfectiveStemFromMachinery(baseMachinery) || sourceStem);
+      const sharedEmbedObjectFrame = variant === "shared-object"
+        ? cloneObjectFrameFromTyped(baseTyped)
+        : null;
+      const sharedMatrixObjectFrame = variant === "shared-object"
+        ? cloneObjectFrameFromTyped(matrixTyped)
+        : null;
+      const sharedObjectCoreferenceVerified = variant === "shared-object"
+        && sharedEmbedObjectFrame?.valenceArity !== "vacant"
+        && sharedMatrixObjectFrame?.valenceArity !== "vacant"
+        && objectFrameReferentSignature(sharedEmbedObjectFrame)
+          === objectFrameReferentSignature(sharedMatrixObjectFrame);
+      if (sourceStem === "cac"
+        && request.compoundSubjectAnimacy
+        && key(request.compoundSubjectAnimacy) !== "nonanimate") {
         return blockedOperation(request, "cac-embed-requires-nonanimate-subject", "compound-irregular-embed");
       }
-      if (sourceStem === "itt-a") return blockedOperation(request, "itta-cannot-embed-select-itz-source-analysis", "compound-irregular-embed");
       if (sourceStem === "itz"
-        && key(request.compoundItzSense) !== "observational") {
+        && !["observational", "motion"].includes(selectedItzSense)) {
         return blockedOperation(
           request,
           "typed-itz-embed-sense-required",
@@ -894,43 +1686,65 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         );
       }
       if (variant === "shared-object"
-        && cloneObjectFrameFromTyped(baseTyped).valenceArity === "vacant") {
+        && sharedEmbedObjectFrame.valenceArity === "vacant") {
         return blockedOperation(
           request,
           "shared-object-coreferential-embed-object-required",
           "compound-shared-object"
         );
       }
+      if (variant === "shared-object" && !sharedObjectCoreferenceVerified) {
+        return blockedOperation(
+          request,
+          "shared-object-embed-matrix-coreference-required",
+          "compound-shared-object"
+        );
+      }
       if (variant === "huītz-carry") {
-        const specialTarget = {
-          huīca: "huica-tz",
-          itqui: "itqui-tz"
-        }[sourceStem];
-        if (!specialTarget) {
+        if (matrixStem !== "huī-tz") {
           return blockedOperation(
             request,
-            "huītz-carry-requires-huīca-or-itqui-embed",
+            "huītz-carry-requires-typed-huītz-matrix-analysis",
             "compound-irregular-embed"
           );
         }
-        targetStem = specialTarget;
+        const carryObjectFrame = cloneObjectFrameFromTyped(baseTyped);
+        if (carryObjectFrame.valenceArity === "vacant") {
+          return blockedOperation(
+            request,
+            "huītz-carry-requires-typed-carry-object",
+            "compound-irregular-embed"
+          );
+        }
+        const carryEmbedStem = carryEmbedStemForHuītz(sourceStem);
+        if (!carryEmbedStem) {
+          return blockedOperation(
+            request,
+            "typed-carry-source-required",
+            "compound-irregular-embed"
+          );
+        }
+        targetStem = `${carryEmbedStem}-tz`;
         predicateTns = matrixTyped?.slots?.predicate?.tns;
         numberDyad = matrixTyped?.slots?.number;
         ruleFamily = "compound-irregular-embed";
         operationFacts = {
           oldConnectivelessHuītzFormation: true,
-          prohibitedConnectiveT: true
+          prohibitedConnectiveT: true,
+          carryLexicalAnalysisSelected: true,
+          carrySourceStem: sourceStem,
+          carryEmbedStem,
+          carryMatrixPerfectiveStem: "itz",
+          carryVisibleMatrixShape: "tz",
+          carryObjectKind: text(request.sourceValence || request.valence),
+          carryObjectPerson: text(request.objectPerson),
+          openTypedCarrySourceAdmission: true,
+          carrySourceStemWhitelistUsed: false,
+          specialCarryStemDerivedFromShape: true
         };
-      } else if (matrixStem === "huī-tz"
-        && ["huīca", "itqui"].includes(sourceStem)) {
-        return blockedOperation(
-          request,
-          "huīca-itqui-require-old-connectiveless-huītz-formation",
-          "compound-irregular-embed"
-        );
       } else if (variant === "connective-t" || variant === "reflexive-matrix" || variant === "shared-object" || variant === "accompanying-possession") {
         const syncopatedYa = request.compoundYaSyncopation === true;
-        if (syncopatedYa && !/^(?:yā|ya)$/u.test(realizedMatrixStem)) {
+        if (syncopatedYa && !/^(?:yā|ya|yah)$/u.test(realizedMatrixStem)) {
           return blockedOperation(
             request,
             "syncopated-ta-requires-ya-matrix-shape",
@@ -940,7 +1754,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         const connector = syncopatedYa
           ? "t"
           : connectiveFor(realizedMatrixStem);
-        const matrixRealization = syncopatedYa ? "ā" : realizedMatrixStem;
+        const matrixRealization = syncopatedYa
+          ? realizedMatrixStem === "yah" ? "ah" : "ā"
+          : realizedMatrixStem;
         targetStem = `${perfective}-${connector}-${matrixRealization}`;
         predicateTns = matrixTyped?.slots?.predicate?.tns;
         numberDyad = matrixTyped?.slots?.number;
@@ -951,7 +1767,10 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             : variant === "accompanying-possession"
               ? "compound-supplement"
               : "compound-connective-t";
-        if (variant === "reflexive-matrix" && matrixStem === "m-o-man-a" && key(request.compoundSubjectAnimacy) === "animate" && !/pl$/u.test(text(request.subject))) {
+        if (variant === "reflexive-matrix"
+          && matrixStem === "m-o-man-a"
+          && reflexiveMatrixSubjectAnimacy === "animate"
+          && !/pl$/u.test(reflexiveMatrixSubject)) {
           return blockedOperation(request, "mo-mana-animate-subject-must-be-plural", ruleFamily);
         }
         if (variant === "accompanying-possession") {
@@ -976,16 +1795,100 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           };
         }
       } else if (variant === "future-embed") {
-        if (matrixStem === "tla-qui" && key(request.tense) !== "imperfect") return blockedOperation(request, "tla-qui-matrix-is-imperfect-only", "compound-future-embed");
-        const futurePredicateStem = futureEmbedStem(
-          sourceStem,
-          text(request.verbClass || "B")
+        const futureSupplementationFrame =
+          internalContext.futureSupplementationFrame || null;
+        const futureSupplementationAuthorized = Boolean(
+          targetObject.isClassicalNahuatlSupplementationFrame?.(
+            futureSupplementationFrame,
+          )
+          && futureSupplementationFrame.authorizationStatus === "authorized"
+          && futureSupplementationFrame.referenceFrame?.referenceMode
+            === "included"
+          && futureSupplementationFrame.referenceFrame?.headRole === "object"
+          && futureSupplementationFrame.supplementClause?.unitKind === "vnc"
+          && futureSupplementationFrame.supplementClause?.tense === "future"
+          && futureSupplementationFrame.operationFrames?.some?.(
+            frame => frame.kind
+              === "classical-nahuatl-supplementation-coreferential-future-frame"
+              && frame.authorizationStatus === "authorized",
+          )
         );
-        const integratedMatrixStem = matrixStem.replace(/^tla-/u, "");
+        if (!futureSupplementationAuthorized) {
+          return blockedOperation(
+            request,
+            futureSupplementationFrame?.blockReason
+              || "owner-issued-future-supplementary-object-required",
+            "compound-future-embed",
+          );
+        }
+        if (futureMatrixAnalysis.lexicalStem === "qui"
+          && key(request.tense) !== "imperfect") {
+          return blockedOperation(
+            request,
+            "tla-qui-matrix-is-imperfect-only",
+            "compound-future-embed",
+          );
+        }
+        const typedFuturePredicateStem = text(
+          baseTyped?.slots?.predicate?.stem || sourceStem,
+        );
+        const futurePredicateStem = futureEmbedStem(
+          typedFuturePredicateStem,
+          text(
+            baseApplicationFrame?.normalizedRequest?.verbClass
+            || request.verbClass
+            || "B",
+          ),
+        );
+        const integratedMatrixStem = futureMatrixAnalysis.lexicalStem;
         targetStem = `${futurePredicateStem}-z-${integratedMatrixStem}`;
         predicateTns = matrixTyped?.slots?.predicate?.tns;
         numberDyad = matrixTyped?.slots?.number;
         ruleFamily = "compound-future-embed";
+        operationFacts = {
+          futureSupplementationFrame,
+          futureSupplementationAuthorized,
+          futureSupplementSourceKind: "owner-issued-future-vnc-result",
+          futureSupplementFunctionsAsObject: true,
+          matrixObjectReplacedByFuturePredicate: true,
+          matrixObjectCarrierSuppressed: true,
+          futureEmbedPredicateStem: futurePredicateStem,
+          futureEmbedTense: "future",
+          futureEmbedTenseMorph: "z",
+          futureEmbedValence: text(
+            request.sourceValence || request.valence || "intransitive",
+          ),
+          futureEmbedMayBeIntransitiveOrTransitive: true,
+          futureEmbedActionAfterMatrixAction: true,
+          futureMatrixAnalysisId: futureMatrixAnalysis.analysisId,
+          futureMatrixLexicalStem: futureMatrixAnalysis.lexicalStem,
+          futureMatrixConstructionStem:
+            futureMatrixAnalysis.canonicalConstructionStem,
+          futureMatrixReading: futureMatrixAnalysis.reading,
+          futureMatrixAnalysisIsUserChoice: true,
+          futureMatrixInventoryIsConstructionalNotSourceWhitelist: true,
+          futureMatrixStemWhitelistUsed: false,
+          quiMatrixAnomalous: futureMatrixAnalysis.lexicalStem === "qui",
+          quiMatrixImperfectOnly: futureMatrixAnalysis.lexicalStem === "qui",
+          traditionalConditionalIsReadingNotTense:
+            futureMatrixAnalysis.lexicalStem === "qui",
+          principalAndSupplementSubjectsCoreferential:
+            futureSupplementationFrame.principalClause?.subject?.referenceId
+              === futureSupplementationFrame.supplementClause?.subject
+                ?.referenceId,
+          includedReferentSupplementationAvailable:
+            futureMatrixAnalysis.lexicalStem === "qui",
+          antecessiveOrderAvailable:
+            futureMatrixAnalysis.lexicalStem === "qui"
+            && key(request.tense) === "imperfect",
+          antecessiveOrderRequested: Boolean(
+            request.sentenceAntecessive === true
+            || request.antecessive === true
+            || request.requestedPrefixStackMode === "antecessive"
+            || request.prefixStackMode === "antecessive",
+          ),
+          antecessiveScopesFiniteMatrixTense: true,
+        };
       } else {
         return blockedOperation(request, "recognized-lesson28-compound-variant-required", "compound-structure");
       }
@@ -1000,18 +1903,52 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         embedSourceValence: text(
           request.sourceValence || request.valence || "intransitive"
         ),
-        matrixSourceValence: SHARED_OBJECT_COMPOUND_MATRICES.has(matrixStem)
-          || FUTURE_EMBED_COMPOUND_MATRICES.has(matrixStem)
+        matrixSourceValence: variant === "shared-object"
+          || variant === "future-embed"
           ? "transitive"
-          : REFLEXIVE_COMPOUND_MATRICES.has(matrixStem)
+          : variant === "reflexive-matrix"
             ? "transitive-reflexive-core"
-            : "intransitive",
+            : text(
+              recursiveMatrixFrame?.operationFrame?.targetValence
+              || internalContext.matrixApplicationFrame?.normalizedRequest?.sourceValence
+              || "intransitive"
+            ),
+        matrixFiniteApplicationValence: text(
+          recursiveMatrixFrame?.operationFrame?.targetValence
+          || internalContext.matrixApplicationFrame?.normalizedRequest?.sourceValence
+          || "intransitive"
+        ),
+        binaryConstituentCount: 2,
+        binaryCompoundStructure: true,
+        sourceClauseRelationshipsPreserved: true,
+        syntaxDowngradedToMorphology: true,
+        principalSubjectFromMatrix: true,
+        embedSubjectReferencePreserved: true,
+        embedNeverFunctionsAsSubject: true,
+        licensedEmbedFunctions: freeze([
+          "incorporated-object",
+          "incorporated-possessor",
+          "incorporated-modifier",
+          "incorporated-complement"
+        ]),
+        compoundOutputCategory: "VNC",
+        typedMatrixAnalysisRequired: true,
+        openTypedMatrixAdmission: true,
+        canvasExamplesAreEvidenceOnly: true,
+        supportedEmbedMatrixValencePatterns: freeze([
+          "intransitive+intransitive",
+          "transitive+intransitive",
+          "intransitive+transitive",
+          "transitive+transitive"
+        ]),
         embedDeterminesCompoundValence: true,
         matrixDeterminesCompoundType: true,
         sourcePredicatePreserved: true,
         embedSubjectDeleted: true,
         matrixAfterEmbed: true,
-        embedStem: perfective,
+        embedStem: variant === "future-embed"
+          ? operationFacts.futureEmbedPredicateStem
+          : perfective,
         connective: variant === "future-embed"
           ? ""
           : variant === "huītz-carry"
@@ -1020,18 +1957,395 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
               ? "t"
               : connectiveFor(realizedMatrixStem),
         matrixStem: realizedMatrixStem,
-        embedTenseMorph: variant === "future-embed" ? "z" : "0",
-        itzEmbedSense: sourceStem === "itz"
-          ? "observational"
-          : sourceStem === "huī-tz" && perfective === "itz"
-            ? "motion"
+        matrixSelectionStem: matrixStem,
+        matrixSuppliedStem: requestedMatrixStem,
+        reflexiveMatrixCore: reflexiveMatrixAnalysis?.coreStem || "",
+        typedReflexiveMatrixRole:
+          variant === "reflexive-matrix" ? "reflexive-matrix-core" : "",
+        fixedReflexiveCarrier:
+          reflexiveMatrixAnalysis?.fusedReflexiveCarrier || "",
+        fixedReflexiveCarrierDerived:
+          variant === "reflexive-matrix",
+        fixedReflexiveCarrierRegardlessOfSubject:
+          variant === "reflexive-matrix",
+        suppliedPersonMarkedReflexiveCarrierReplaced:
+          reflexiveMatrixAnalysis?.suppliedCarrierReplaced === true,
+        matrixTransitivityDischargedOntoFusedReflexive:
+          variant === "reflexive-matrix",
+        reflexiveCoreStructurallyIntransitiveInCompound:
+          variant === "reflexive-matrix",
+        reflexiveMatrixIntroducesNoNewParticipant:
+          variant === "reflexive-matrix",
+        reflexiveMatrixSubjectCoreference:
+          variant === "reflexive-matrix",
+        reflexiveMatrixExamplesNonexhaustive:
+          variant === "reflexive-matrix",
+        reflexiveMatrixStemWhitelistUsed: false,
+        reflexiveMatrixSubjectAnimacy:
+          variant === "reflexive-matrix"
+            ? reflexiveMatrixSubjectAnimacy
             : "",
+        moManaAnimateSubjectMustBePlural:
+          variant === "reflexive-matrix" && matrixStem === "m-o-man-a",
+        moManaSubjectNumberDerivedFromFiniteSubject:
+          variant === "reflexive-matrix" && matrixStem === "m-o-man-a",
+        matrixFiniteStem: variant === "huītz-carry"
+          ? "tz"
+          : realizedMatrixStem,
+        matrixFiniteMood: key(request.mood || "indicative"),
+        matrixFiniteTense: key(request.tense || "present"),
+        matrixFiniteSubject: text(request.subject || "3sg"),
+        matrixFiniteNumberMorph: text(matrixTyped?.slots?.number?.num2),
+        matrixConstruction: variant === "future-embed"
+          ? operationFacts.futureMatrixAnalysisId
+          : ({
+          ca: "progressive-or-continuative-ca",
+          nemi: "continuative-nemi",
+          "ya-uh": "departure-ya-uh",
+          "huāl-la-uh": "hither-coming-huāl-la-uh",
+          "huī-tz": variant === "huītz-carry"
+            ? "typed-carry-connectiveless-huītz"
+            : "coming-huī-tz",
+          ahci: "arrival-ahci",
+          mani: "area-or-group-stance-mani",
+          ihca: "standing-state-ihca",
+          o: "recumbent-state-o",
+          "ē-hua": "beginning-or-rapid-departure-ē-hua",
+          quiza: "rapid-or-abrupt-quiza",
+          huetzi: "falling-or-rapid-abrupt-huetzi",
+          tlehcō: "ascending-tlehcō",
+          "cal-aqui": "entering-cal-aqui",
+          "pil-ca": "suspended-state-pil-ca",
+          "m-o-cāhua": "reflexive-stop-or-result-state-cāhua",
+          "m-o-tēca": "reflexive-settle-begin-or-recumbent-tēca",
+          "m-o-tlāl-i-ā": "reflexive-sit-settle-or-begin-tlāl-i-ā",
+          "m-o-man-a": "reflexive-gradual-or-standing-man-a",
+          "m-o-quetza": "reflexive-gradual-quetza"
+        })[matrixStem] || "open-typed-intransitive-matrix",
+        matrixReadingOptions: freeze(
+          variant === "shared-object"
+            ? SHARED_OBJECT_MATRIX_READINGS[matrixStem] || []
+            : REFLEXIVE_MATRIX_READINGS[matrixStem] || ({
+          ca: ["be-in-the-act-of", "remain-engaged-in-begun-event"],
+          nemi: ["go-along-doing", "spend-time-doing", "continue-doing"],
+          "ya-uh": ["go-away-doing", "go-doing", "do-and-leave"],
+          "huāl-la-uh": ["come-while-doing", "come-along-doing"],
+          "huī-tz": variant === "huītz-carry"
+            ? ["come-carrying", "go-carrying"]
+            : ["come-doing", "come-in-a-state"],
+          ahci: ["arrive-doing", "arrive-in-a-state"],
+          mani: [
+            "go-along-happening", "happen-all-around-an-area",
+            "extend-over-an-area-in-a-state", "stand-as-a-group-doing"
+          ],
+          ihca: ["stand-doing", "stand-in-a-state", "result-state-standing"],
+          o: [
+            "lie-stretched-out-doing", "lie-stretched-out-in-a-state",
+            "lie-broken", "be-recumbent"
+          ],
+          "ē-hua": [
+            "move-or-start-into-action", "begin-doing", "do-quickly",
+            "get-up-and-go-away", "leave-and-depart"
+          ],
+          quiza: [
+            "do-quickly", "do-abruptly", "burst-forth",
+            "leave-abruptly", "snatch"
+          ],
+          huetzi: [
+            "do-quickly", "do-abruptly", "fall", "plunge",
+            "snatch", "die-and-fall", "fall-and-then-die",
+            "die-from-a-fall", "die-suddenly"
+          ],
+          tlehcō: ["ascend", "climb-up-at-a-run"],
+          "cal-aqui": [
+            "house-enter", "enter", "enter-at-a-run", "enter-swiftly"
+          ],
+          "pil-ca": [
+            "hang", "be-suspended", "sleep-with-head-hanging-down"
+          ]
+        })[matrixStem] || []),
+        sharedObjectCompositionSelected: variant === "shared-object",
+        sharedObjectEmbedAndMatrixTransitive: variant === "shared-object",
+        sharedObjectCoreferenceVerified,
+        sharedObjectKind: variant === "shared-object"
+          ? text(request.objectKind || request.sourceValence)
+          : "",
+        sharedObjectPerson: variant === "shared-object"
+          ? text(request.objectPerson)
+          : "",
+        sharedObjectNumber: variant === "shared-object"
+          ? text(request.objectNumber)
+          : "",
+        sharedObjectManifestationCount: variant === "shared-object" ? 1 : 0,
+        sharedObjectCarrierSite: variant === "shared-object" ? "embed" : "",
+        matrixSharedObjectCarrierSuppressed: variant === "shared-object",
+        sharedObjectReflexiveOrProjectivePreserved:
+          variant === "shared-object",
+        sharedObjectOtherParticipantsRemainDistinct:
+          variant === "shared-object",
+        sharedObjectReferentChoiceRequired: variant === "shared-object"
+          && objectFramePositions(sharedEmbedObjectFrame).length > 1,
+        sharedObjectReferentResolvedByTypedSource: variant === "shared-object"
+          && objectFramePositions(sharedEmbedObjectFrame).length === 1,
+        sharedObjectExamplesNonexhaustive: variant === "shared-object",
+        sharedObjectMatrixStemWhitelistUsed: false,
+        sharedObjectEHuaClassAEmbedAutomatic: variant === "shared-object"
+          && sourceStem === "ē-hua",
+        sharedObjectEmbedClass: variant === "shared-object"
+          && sourceStem === "ē-hua"
+          ? text(baseApplicationFrame?.normalizedRequest?.verbClass).toUpperCase()
+          : "",
+        sharedObjectPluralAllowsDistributiveReading: variant === "shared-object"
+          && /pl$/u.test(text(request.objectPerson || request.objectNumber)),
+        matrixSemanticDomain: ({
+          "huāl-la-uh": "directed-coming",
+          "huī-tz": variant === "huītz-carry"
+            ? "typed-carry-motion"
+            : "coming",
+          ahci: "arrival",
+          mani: "area-or-group-stance",
+          ihca: "standing-state",
+          o: "recumbent-state",
+          "ē-hua": "beginning-or-rapid-departure",
+          quiza: "rapid-or-abrupt-motion",
+          huetzi: "falling-or-sudden-motion",
+          tlehcō: "ascent",
+          "cal-aqui": "entering",
+          "pil-ca": "suspended-state",
+          "m-o-cāhua": "stopping-or-result-state",
+          "m-o-tēca": "settling-beginning-or-recumbent-state",
+          "m-o-tlāl-i-ā": "sitting-settling-or-beginning",
+          "m-o-man-a": "gradual-change-or-standing-position",
+          "m-o-quetza": "gradual-development"
+        })[matrixStem] || "",
+        oLocativeOnOmitted: matrixStem === "o",
+        omittedMatrixLocative: matrixStem === "o" ? "on" : "",
+        matrixLocativeRealization: matrixStem === "o" ? "" : "not-applicable",
+        eHuaClassHistoryChoiceAvailable: matrixStem === "ē-hua",
+        eHuaLicensedMatrixClasses: matrixStem === "ē-hua"
+          ? freeze(["A", "B"])
+          : freeze([]),
+        eHuaSelectedMatrixClass: matrixStem === "ē-hua" ? targetClass : "",
+        eHuaPerfectiveClassAlternants: matrixStem === "ē-hua"
+          ? freeze(["ē-hua", "e-uh"])
+          : freeze([]),
+        rapidOrAbruptReadingIsCueOnly:
+          ["ē-hua", "quiza", "huetzi", "cal-aqui"].includes(matrixStem),
+        huetziBasicFallReadingAvailable: matrixStem === "huetzi",
+        huetziRapidAbruptReadingAvailable: matrixStem === "huetzi",
+        huetziReversedEventReadingAvailable: matrixStem === "huetzi",
+        huetziCausalFallReadingAvailable: matrixStem === "huetzi",
+        hualDirectionalRetained: matrixStem === "huāl-la-uh"
+          && /huāl/u.test(realizedMatrixStem),
+        retainedMatrixDirectional: matrixStem === "huāl-la-uh"
+          ? "huāl"
+          : "",
+        ordinaryHuītzConnectiveSelected: matrixStem === "huī-tz"
+          && variant !== "huītz-carry",
+        carryAnalysisSelected: variant === "huītz-carry",
+        selectedMatrixAnalysis: variant === "future-embed"
+          ? operationFacts.futureMatrixAnalysisId
+          : variant === "huītz-carry"
+            ? "special-carry-connectiveless"
+            : "ordinary-connective-t",
+        ordinaryVersusCarryAnalysisIsTypedChoice: matrixStem === "huī-tz",
+        matrixAnalysisDoesNotWhitelistSourceStem: true,
+        embedFiniteCoordinate: variant === "future-embed"
+          ? "indicative-future"
+          : "indicative-preterit-zero",
+        matrixSuppliesFiniteMoodAndTense: true,
+        embedFiniteCoordinateDecoupled:
+          internalContext.compoundEmbedFiniteCoordinateDecoupled === true,
+        caSuppletiveFiniteStemDerived: matrixStem === "ca"
+          ? realizedMatrixStem
+          : "",
+        yaPresentSingularUh: matrixStem === "ya-uh"
+          && key(request.mood || "indicative") === "indicative"
+          && key(request.tense || "present") === "present"
+          && !/pl$/u.test(text(request.subject || "3sg"))
+          && realizedMatrixStem === "uh",
+        yaPresentPluralHui: matrixStem === "ya-uh"
+          && key(request.mood || "indicative") === "indicative"
+          && key(request.tense || "present") === "present"
+          && /pl$/u.test(text(request.subject || "3sg"))
+          && realizedMatrixStem === "hui",
+        yaSyncopationAvailable: matrixStem === "ya-uh"
+          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem),
+        yaSyncopationSelected: matrixStem === "ya-uh"
+          && request.compoundYaSyncopation === true,
+        yaUnsyncopatedSequence: matrixStem === "ya-uh"
+          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem)
+          ? `ti-${matrixPredicateStem}`
+          : "",
+        yaSyncopatedSequence: matrixStem === "ya-uh"
+          && /^(?:yā|ya|yah)$/u.test(matrixPredicateStem)
+          ? matrixPredicateStem === "yah" ? "t-ah" : "t-ā"
+          : "",
+        connectiveCausativeStructurallyDistinct: true,
+        traditionalSpellingMayNeutralizeDistinction: matrixStem === "ya-uh",
+        traditionalSpellingAnalysisChoices: matrixStem === "ya-uh"
+          ? freeze(["connective-t", "causative"])
+          : freeze([]),
+        eHuaCaIdiomaticReadingAvailable: sourceStem === "ē-hua"
+          && matrixStem === "ca",
+        embedTenseMorph: variant === "future-embed" ? "z" : "0",
+        embedPerfectiveRequired: variant !== "future-embed",
+        connectiveAllomorph: variant === "future-embed" || variant === "huītz-carry"
+          ? ""
+          : request.compoundYaSyncopation === true
+            ? "t"
+            : connectiveFor(realizedMatrixStem),
+        connectiveCondition: variant === "future-embed" || variant === "huītz-carry"
+          ? "not-applicable"
+          : request.compoundYaSyncopation === true
+            ? "optional-ti-ya-syncopation"
+          : new RegExp(`^[${vowels}]`, "iu").test(realizedMatrixStem)
+            ? "t-before-vowel"
+            : "ti-before-consonant",
+        connectiveSupportiveI: variant !== "future-embed"
+          && variant !== "huītz-carry"
+          && request.compoundYaSyncopation !== true
+          && connectiveFor(realizedMatrixStem) === "ti",
+        linkedCompartmentalization: variant !== "future-embed",
+        availableEventTimeReadings: variant === "future-embed"
+          ? freeze(["future-embed-action-after-matrix-action"])
+          : freeze([
+            "embed-completed-before-matrix",
+            "embed-begun-before-and-continuing-with-matrix"
+          ]),
+        translationDoesNotAuthorizeGrammar: true,
+        specialPerfectiveEmbedDerived:
+          ["ca", "ya-uh", "itt-a", "itz"].includes(sourceStem),
+        specialPerfectiveEmbedSource: sourceStem,
+        specialPerfectiveEmbedResult: perfective,
+        caToYeEmbedAlternation: sourceStem === "ca" && perfective === "ye",
+        yauhToYahEmbedAlternation:
+          sourceStem === "ya-uh" && perfective === "yah",
+        ittaToItzEmbedAlternation:
+          sourceStem === "itt-a" && perfective === "itz",
+        itzEmbedSense: sourceStem === "itz"
+          ? selectedItzSense
+          : sourceStem === "itt-a"
+            ? "observational"
+            : sourceStem === "huī-tz" && perfective === "itz"
+              ? "motion"
+              : "",
+        itzSourceAnalysis: sourceStem === "itz"
+          ? selectedItzSense === "motion"
+            ? "compound-only-motion-itz"
+            : "observational-itz"
+          : sourceStem === "itt-a"
+            ? "transitive-itta-observational"
+            : "",
+        itzHomophonesRemainDistinct: sourceStem === "itz"
+          || sourceStem === "itt-a",
+        itzSourceAnalysisIsUserChoice: sourceStem === "itz",
+        cacNonanimateReferenceRequired: sourceStem === "cac",
+        cacSubjectAnimacy: sourceStem === "cac" ? "nonanimate" : "",
+        cacAnimacyConsequenceAutomatic: sourceStem === "cac",
+        cacReadingOptions: sourceStem === "cac"
+          ? freeze([
+            "be-quiet", "be-calm", "be-alone", "be-deserted",
+            "stand-abandoned", "lie-silent", "fall-silent",
+            "become-fair-weather"
+          ])
+          : freeze([]),
         recursiveEmbed: Boolean(recursiveEmbedFrame),
         recursiveMatrix: Boolean(recursiveMatrixFrame),
         recursiveEmbedFrame,
         recursiveMatrixFrame,
-        eventOrder: key(request.compoundEventOrder || "iconic"),
-        nonactiveScope: key(request.compoundNonactiveScope || "none")
+        recursiveCompoundAuthorized:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveResultRole: recursiveEmbedFrame
+          ? "embed"
+          : recursiveMatrixFrame
+            ? "matrix"
+            : "",
+        recursiveRoleIsUserChoice:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveBinaryConstituentCount:
+          recursiveEmbedFrame || recursiveMatrixFrame ? 2 : 0,
+        recursiveHierarchyAcyclic: recursiveHierarchy.acyclic,
+        recursiveHierarchyValidated:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveConstituentsDistinct:
+          recursiveHierarchy.distinctConstituents,
+        recursiveDepth: recursiveEmbedFrame || recursiveMatrixFrame
+          ? recursiveHierarchy.maximumDepth + 1
+          : 0,
+        recursiveSourceLinksPreserved:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveLocalRulesIndependent:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveLocalConnectiveDerived:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveValenceInheritedFromOuterEmbed:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveParticipantsPreserved:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveFiniteBoundaryOutsideCompletedCompound:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveContinuationAvailable:
+          Boolean(recursiveEmbedFrame || recursiveMatrixFrame),
+        recursiveExampleStemWhitelistUsed: false,
+        recursiveManualDepthControlRequired: false,
+        recursiveManualConnectiveControlRequired: false,
+        recursiveManualParticipantCopyingRequired: false,
+        eventOrder: selectedEventOrder,
+        reversedEventOrderLicensed,
+        reversedEventOrderMatrices: freeze(["huetzi", "ahci"]),
+        motionItzEHuaReversalLicensed:
+          matrixStem === "ē-hua"
+          && sourceStem === "itz"
+          && selectedItzSense === "motion",
+        reversedEventOrderSelected:
+          selectedEventOrder === "hysteron-proteron",
+        interpretedFirstEvent: selectedEventOrder === "hysteron-proteron"
+          ? "matrix"
+          : "embed",
+        interpretedSecondEvent: selectedEventOrder === "hysteron-proteron"
+          ? "embed"
+          : "matrix",
+        surfaceConstituentOrder: "embed-before-matrix",
+        eventOrderChoiceChangesInterpretationOnly: true,
+        compoundVoice: requestedCompoundVoice,
+        nonactiveScope: requestedNonactiveScope,
+        passiveScopeOptions: freeze(["embed", "both"]),
+        impersonalScopeOptions: freeze(["embed", "matrix", "both"]),
+        embedNonactiveApplied: ["embed", "both"].includes(
+          requestedNonactiveScope
+        ),
+        matrixNonactiveApplied: ["matrix", "both"].includes(
+          requestedNonactiveScope
+        ),
+        embedNonactiveOperation: ["embed", "both"].includes(
+          requestedNonactiveScope
+        ) ? selectedEmbedVoiceOperation : "active",
+        matrixNonactiveOperation: ["matrix", "both"].includes(
+          requestedNonactiveScope
+        ) ? key(
+          internalContext.matrixApplicationFrame?.controlFrame
+            ?.selectedVoiceOperation
+          || internalContext.matrixApplicationFrame?.controlFrame
+            ?.selectedVoice
+          || "impersonal"
+        ) : "active",
+        nonactiveScopeChangesParticipantTopology: requestedNonactiveScope
+          !== "none",
+        nonactiveResultValence: targetValence,
+        stativeMatrixPrefersEmbedOnly: [
+          "ca", "mani", "ihca", "o", "pil-ca"
+        ].includes(matrixStem),
+        stativeMatrixPreferenceIsNotAbsolute: [
+          "ca", "mani", "ihca", "o", "pil-ca"
+        ].includes(matrixStem),
+        tlaImpersonalMustRemainOnEmbed:
+          selectedEmbedVoiceOperation === "tla-impersonal",
+        tlaImpersonalCarrier: selectedEmbedVoiceOperation === "tla-impersonal"
+          ? "embed"
+          : "",
+        nonactiveSuffixesDerivedAutomatically: requestedNonactiveScope
+          !== "none"
       };
       if (recursiveEmbedFrame || recursiveMatrixFrame) {
         ruleFamily = "compound-recursion";
@@ -1340,6 +2654,26 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       };
     }
     if (!targetStem) return blockedOperation(request, "licensed-operation-did-not-produce-target-stem", ruleFamily);
+    if (operation === "frequentative" && baseIsNonactive) {
+      const participantTopology = (baseTyped.slots?.prePredicate || []).map(
+        slot => ({
+          kind: slot.kind,
+          carrier: slot.carrier,
+          objectKind: slot.objectPositionFrame?.objectKind || "",
+        }),
+      );
+      operationFacts = {
+        ...operationFacts,
+        nonactiveSourceRecaptured: true,
+        sourceVoice: selectedBaseVoice,
+        impersonalGroupReading: true,
+        separateIndividualActsWithinCollectiveAction: true,
+        participantTopologyPreserved: true,
+        sourceParticipantTopology: participantTopology,
+        finiteMood: text(request.mood),
+        finiteTense: text(request.tense),
+      };
+    }
     const ruleFamilies = new Set([ruleFamily]);
     if (operation === "frequentative") {
       if (["ordinary-short-glottal", "ordinary-long", "ordinary-short"].includes(variant)) {
@@ -1351,7 +2685,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       if (key(request.sourceInitialISelection) === "supportive") {
         ruleFamilies.add("frequentative-supportive-i");
       }
-      if (variant === "reflexive-partial" || variant.startsWith("tla-")) {
+      if (
+        variant === "reflexive-partial"
+        || variant.startsWith("tla-")
+        || key(request.frequentativeTarget) !== ""
+          && key(request.frequentativeTarget) !== "lexical-stem"
+      ) {
         ruleFamilies.add("frequentative-object");
       }
       if (baseIsNonactive) {
@@ -1664,7 +3003,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     const baseRequest = { ...request };
     [
       "lateOperation", "extendedOperation", "lateVariant", "extendedVariant",
-      "frequentativeRepetitions", "frequentativeReplacementSyllable",
+      "frequentativeRepetitions", "frequentativeScope", "frequentativeTarget",
+      "frequentativeReplacementSyllable",
       "compoundMatrixStem", "compoundMatrixClass", "compoundSubjectAnimacy",
       "compoundPossessiveStem", "compoundPossessor",
       "compoundItzSense", "compoundYaSyncopation",
@@ -1680,16 +3020,48 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     ].forEach(field => delete baseRequest[field]);
     if (key(request.lateOperation) === "compound"
       && text(request.sourceStem || request.stem) === "itz") {
-      // The observational lexeme is perfective-only.  A connective-t embed
-      // consumes that authorized preterit predicate even when the matrix is
-      // being inflected at another coordinate.
-      // The direct VNC application admits the lexical-reading coordinate, not
-      // the lesson-indexed alias used by the lower irregular-stem evaluator.
-      // Supplying the alias here was correctly rejected as caller authority
-      // before the compound owner could enforce its observational sense gate.
-      baseRequest.lexicalReading = "alert-observant";
+      const itzSense = key(request.compoundItzSense);
+      if (itzSense === "motion") {
+        // Motion itz is a compound-only perfective member of the huītz
+        // paradigm.  Recapture that typed lexeme instead of pretending that
+        // it is an independently finite simple stem.
+        baseRequest.sourceStem = "huī-tz";
+        baseRequest.lexicalReading = "";
+        baseRequest.mood = "indicative";
+        baseRequest.tense = "preterit-as-present";
+      } else {
+        // The observational lexeme is perfective-only.  A connective-t embed
+        // consumes that authorized preterit predicate even when the matrix is
+        // being inflected at another coordinate.
+        baseRequest.lexicalReading = "alert-observant";
+        baseRequest.mood = "indicative";
+        baseRequest.tense = "preterit";
+      }
+    }
+    if (key(request.lateOperation) === "compound"
+      && key(request.lateVariant) === "shared-object"
+      && text(request.sourceStem || request.stem) === "ē-hua") {
+      // In the shared-object construction ēhua supplies its Class A
+      // perfective automatically.  The Canvas fact is a construction rule,
+      // not a lexical picker or a whitelist entry.
+      baseRequest.verbClass = "A";
+    }
+    if (key(request.lateOperation) === "compound"
+      && key(request.lateVariant) === "future-embed") {
+      // The Source member of this construction is always an owner-issued
+      // future VNC supplement. The user's ordinary Mood and Tense selections
+      // belong to the matrix and are restored on the completed compound.
       baseRequest.mood = "indicative";
-      baseRequest.tense = "preterit";
+      baseRequest.tense = "future";
+      baseRequest.sentenceType = "statement";
+      baseRequest.introductoryParticle = "none";
+      // Antecessive belongs to the finite matrix. Leaving it on the future
+      // supplement would ask the ordinary VNC owner for an impossible
+      // antecessive-future cell and would erase the owner-issued supplement.
+      delete baseRequest.sentenceAntecessive;
+      delete baseRequest.antecessive;
+      delete baseRequest.requestedPrefixStackMode;
+      delete baseRequest.prefixStackMode;
     }
     if (key(request.lateOperation) === "purposive") {
       const purposiveSeries = key(request.purposiveSeries);
@@ -1740,6 +3112,31 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || (typeof targetObject.evaluateClassicalNahuatlVncApplication === "function"
         ? targetObject.evaluateClassicalNahuatlVncApplication(baseRequest)
         : null);
+    let compoundEmbedFiniteCoordinateDecoupled = Boolean(
+      key(request.lateOperation) === "compound"
+      && key(request.lateVariant) === "future-embed"
+      && baseApplicationFrame?.authorizationStatus === "authorized"
+      && key(baseApplicationFrame?.normalizedRequest?.tense) === "future"
+      && key(request.tense || "present") !== "future"
+    );
+    if (key(request.lateOperation) === "compound"
+      && !sourceApplicationFrame
+      && baseApplicationFrame?.authorizationStatus !== "authorized"
+      && typeof targetObject.evaluateClassicalNahuatlVncApplication === "function") {
+      // A connective compound embeds the Source perfective with zero preterit.
+      // Its matrix, not that embedded Source, bears the requested finite
+      // coordinate.  Retry only the embedded Source at its own canonical
+      // perfective coordinate when a matrix-only tense is unavailable to it.
+      baseApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication({
+        ...baseRequest,
+        mood: "indicative",
+        tense: "preterit",
+        sentenceType: "statement",
+        introductoryParticle: "none",
+      });
+      compoundEmbedFiniteCoordinateDecoupled =
+        baseApplicationFrame?.authorizationStatus === "authorized";
+    }
     const compoundEmbedClosureFrame = isAuthorizedClosureFrame(
       request.compoundEmbedClosureFrame
     )
@@ -1793,29 +3190,51 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         honorificDerivationBlockReason = text(honorificApplicationFrame?.blockReason);
       }
     }
-    const matrixStem = text(
+    const requestedMatrixStem = text(
       recursiveMatrixClosureFrame?.operationFrame?.targetStem
       || request.compoundMatrixStem
       || request.matrixStem
     );
+    const reflexiveMatrixAnalysis = lateVariant === "reflexive-matrix"
+      ? normalizeReflexiveMatrixAnalysis(requestedMatrixStem)
+      : null;
+    const matrixStem = reflexiveMatrixAnalysis?.canonicalStem
+      || requestedMatrixStem;
     const derivedMatrixClass = recursiveMatrixClosureFrame
       ? text(recursiveMatrixClosureFrame.operationFrame?.targetClass)
       : deriveCompoundMatrixClass(
-          matrixStem,
+          reflexiveMatrixAnalysis?.coreStem || matrixStem,
           request.compoundMatrixClass
         );
-    const matrixApplicationFrame = key(request.lateOperation) === "compound" && matrixStem
-      && typeof targetObject.evaluateClassicalNahuatlVncApplication === "function"
-      ? targetObject.evaluateClassicalNahuatlVncApplication({
-        sourceStem: matrixStem,
+    const futureMatrixAnalysis = lateVariant === "future-embed"
+      ? analyzeFutureEmbedMatrix(matrixStem)
+      : null;
+    const matrixApplicationSourceStem = lateVariant === "future-embed"
+      ? futureMatrixAnalysis?.lexicalStem || matrixStem
+      : matrixStem === "ca"
+      ? "ye"
+      : matrixStem === "o"
+        ? "on-o"
+        : matrixStem;
+    const matrixNeedsNonactive = ["matrix", "both"].includes(
+      compoundNonactiveScope
+    );
+    const matrixApplicationRequest = {
+        sourceStem: matrixApplicationSourceStem,
         sourceValence: lateVariant === "shared-object"
           ? text(request.sourceValence || request.valence || "specific-projective")
+          : lateVariant === "future-embed"
+            ? "specific-projective"
           : "intransitive",
         objectKind: lateVariant === "shared-object"
           ? text(request.objectKind)
+          : lateVariant === "future-embed"
+            ? "specific-projective"
           : "",
         objectPerson: lateVariant === "shared-object"
           ? text(request.objectPerson)
+          : lateVariant === "future-embed"
+            ? "3sg"
           : "",
         objectNumber: lateVariant === "shared-object"
           ? text(request.objectNumber)
@@ -1825,17 +3244,87 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         mood: request.mood,
         tense: request.tense,
         derivationType: "direct",
-        requestedVoice: ["matrix", "both"].includes(compoundNonactiveScope)
-          ? request.requestedVoice || request.voice || "active"
-          : "active",
-        voice: ["matrix", "both"].includes(compoundNonactiveScope)
-          ? request.voice || request.requestedVoice || "active"
-          : "active",
-        nonactiveOptionId: ["matrix", "both"].includes(compoundNonactiveScope)
-          ? request.nonactiveOptionId || ""
-          : ""
-      })
-      : null;
+        // A matrix in the nonactive stem is structurally impersonal even when
+        // the compound as a whole has passive force through its embed.
+        requestedVoice: matrixNeedsNonactive ? "impersonal" : "active",
+        voice: matrixNeedsNonactive ? "impersonal" : "active",
+        nonactiveOptionId: ""
+    };
+    let matrixApplicationFrame = null;
+    if (key(request.lateOperation) === "compound" && matrixStem
+      && typeof targetObject.evaluateClassicalNahuatlVncApplication === "function") {
+      matrixApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication(
+        matrixApplicationRequest
+      );
+      if (matrixNeedsNonactive
+        && matrixApplicationFrame?.authorizationStatus !== "authorized") {
+        const matrixNonactiveInventory = matrixApplicationFrame?.controlFrame
+          ?.nonactiveOptionInventory;
+        const matrixNonactiveOptionId = text(
+          matrixNonactiveInventory?.automaticOptionId
+          || (
+            matrixNonactiveInventory?.options?.length === 1
+              ? matrixNonactiveInventory.options[0]?.optionId
+              : ""
+          )
+          || matrixNonactiveInventory?.options?.find?.(
+            option => option.operationId === "inherent-impersonal"
+          )?.optionId
+          || matrixNonactiveInventory?.options?.[0]?.optionId
+        );
+        if (matrixNonactiveOptionId) {
+          matrixApplicationFrame = targetObject.evaluateClassicalNahuatlVncApplication({
+            ...matrixApplicationRequest,
+            nonactiveOptionId: matrixNonactiveOptionId
+          });
+        }
+      }
+    }
+    let futureSupplementationFrame = null;
+    if (lateOperation === "compound"
+      && lateVariant === "future-embed"
+      && baseApplicationFrame?.authorizationStatus === "authorized"
+      && matrixApplicationFrame?.authorizationStatus === "authorized"
+      && typeof targetObject
+        .buildClassicalNahuatlSupplementationClauseEnvelope === "function"
+      && typeof targetObject.evaluateClassicalNahuatlSupplementationOperation
+        === "function") {
+      const sharedSubjectReferenceId = `future-embed-subject:${text(
+        request.subject || "3sg",
+      )}`;
+      const supplementReferenceId = "future-embed-supplement-vnc";
+      const principalClause = targetObject
+        .buildClassicalNahuatlSupplementationClauseEnvelope(
+          matrixApplicationFrame,
+          {
+            referenceId: "future-embed-principal-vnc",
+            subjectReferenceId: sharedSubjectReferenceId,
+            objectReferenceId: supplementReferenceId,
+          },
+        );
+      const supplementClause = targetObject
+        .buildClassicalNahuatlSupplementationClauseEnvelope(
+          baseApplicationFrame,
+          {
+            referenceId: supplementReferenceId,
+            subjectReferenceId: sharedSubjectReferenceId,
+            objectReferenceId: "future-embed-internal-object",
+          },
+        );
+      futureSupplementationFrame = targetObject
+        .evaluateClassicalNahuatlSupplementationOperation({
+          operationKind: "relation",
+          principalClause,
+          supplementClause,
+          options: {
+            referenceMode: "included",
+            headRole: "object",
+            supplementContactRole: "subject",
+            order: "principal-first",
+            wishRealizability: "realizable",
+          },
+        });
+    }
     const possessiveSupplementFrame = lateOperation === "compound"
       && lateVariant === "accompanying-possession"
       ? buildAccompanyingPossessionSupplement(request)
@@ -1995,6 +3484,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     const operationFrame = buildClassicalNahuatlOperationFrame(baseApplicationFrame, request, {
       matrixApplicationFrame,
       derivedMatrixClass,
+      futureSupplementationFrame,
       recursiveEmbedClosureFrame,
       recursiveMatrixClosureFrame,
       invalidRecursiveEmbedFrame:
@@ -2027,7 +3517,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       attitudeCompoundTarget: attitudeTarget,
       honorificDerived,
       honorificDerivationAttempted,
-      honorificDerivationBlockReason
+      honorificDerivationBlockReason,
+      compoundEmbedFiniteCoordinateDecoupled
     });
     const machineryFrame = buildClassicalNahuatlMachineryFrame(operationFrame);
     const finiteSurfaceFrame = isClassicalNahuatlMachineryFrame(machineryFrame)

@@ -4,7 +4,7 @@ import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/outp
 import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
-} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
+} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260816-lesson28-group12-348";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
@@ -120,6 +120,31 @@ import {
   isLesson23ReaderGuidanceExact,
   renderLesson23ReaderGuidance,
 } from "../curriculum/lesson23_reader_guidance.mjs?v=20260815-lesson23-complete-003";
+import {
+  LESSON24_READER_GUIDANCE_GROUPS,
+  isLesson24ReaderGuidanceExact,
+  renderLesson24ReaderGuidance,
+} from "../curriculum/lesson24_reader_guidance.mjs?v=20260815-lesson24-complete-004";
+import {
+  LESSON25_READER_GUIDANCE_GROUPS,
+  isLesson25ReaderGuidanceExact,
+  renderLesson25ReaderGuidance,
+} from "../curriculum/lesson25_reader_guidance.mjs?v=20260815-lesson25-groups10-12-004";
+import {
+  LESSON26_READER_GUIDANCE_GROUPS,
+  isLesson26ReaderGuidanceExact,
+  renderLesson26ReaderGuidance,
+} from "../curriculum/lesson26_reader_guidance.mjs?v=20260816-lesson26-complete-007";
+import {
+  LESSON27_READER_GUIDANCE_GROUPS,
+  isLesson27ReaderGuidanceExact,
+  renderLesson27ReaderGuidance,
+} from "../curriculum/lesson27_reader_guidance.mjs?v=20260816-lesson27-groups10-11-004";
+import {
+  LESSON28_READER_GUIDANCE_GROUPS,
+  isLesson28ReaderGuidanceExact,
+  renderLesson28ReaderGuidance,
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260816-lesson28-group12-011";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -2698,6 +2723,14 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-late-variant")}
                         <span class="classical-rule-control__label">Matrix stem</span>
                         <input id="classical-rule-logic-compound-matrix" data-classical-rule-logic-control="compound-matrix" type="text" value="" autocomplete="off" spellcheck="false" />
                       </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-recursive-compound-role" hidden aria-hidden="true">
+                        <span class="classical-rule-control__label">Captured compound’s next role</span>
+                        <select id="classical-rule-logic-compound-recursive-role" data-classical-rule-logic-control="compound-recursive-role">
+                          <option value="embed" selected>use captured Result as the embed</option>
+                          <option value="matrix">use captured Result as the matrix</option>
+                        </select>
+                        <small>Choose only how the issued compound fits into the next two-part compound.</small>
+                      </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-matrix-class">
                         <span class="classical-rule-control__label">Matrix class</span>
                         <select id="classical-rule-logic-compound-matrix-class" data-classical-rule-logic-control="compound-matrix-class">
@@ -2746,6 +2779,18 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-compound-possesso
                         <span class="classical-rule-control__label">Reduplications</span>
                         <select id="classical-rule-logic-frequentative-repetitions" data-classical-rule-logic-control="frequentative-repetitions">
 ${renderClassicalVncLateOperationOptions("classical-rule-logic-frequentative-repetitions")}
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-frequentative-target">
+                        <span class="classical-rule-control__label">Reduplication target</span>
+                        <select id="classical-rule-logic-frequentative-target" data-classical-rule-logic-control="frequentative-target">
+${renderClassicalVncLateOperationOptions("classical-rule-logic-frequentative-target")}
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-frequentative-scope">
+                        <span class="classical-rule-control__label">Meaning focus</span>
+                        <select id="classical-rule-logic-frequentative-scope" data-classical-rule-logic-control="frequentative-scope">
+${renderClassicalVncLateOperationOptions("classical-rule-logic-frequentative-scope")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-purposive-series">
@@ -3229,6 +3274,11 @@ ${renderLesson20ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson21ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson22ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson23ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson24ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson25ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson26ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson27ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson28ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -4010,6 +4060,16 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson22ReaderGuidanceExact = isLesson22ReaderGuidanceExact;
     api.LESSON23_READER_GUIDANCE_GROUPS = LESSON23_READER_GUIDANCE_GROUPS;
     api.isLesson23ReaderGuidanceExact = isLesson23ReaderGuidanceExact;
+    api.LESSON24_READER_GUIDANCE_GROUPS = LESSON24_READER_GUIDANCE_GROUPS;
+    api.isLesson24ReaderGuidanceExact = isLesson24ReaderGuidanceExact;
+    api.LESSON25_READER_GUIDANCE_GROUPS = LESSON25_READER_GUIDANCE_GROUPS;
+    api.isLesson25ReaderGuidanceExact = isLesson25ReaderGuidanceExact;
+    api.LESSON26_READER_GUIDANCE_GROUPS = LESSON26_READER_GUIDANCE_GROUPS;
+    api.isLesson26ReaderGuidanceExact = isLesson26ReaderGuidanceExact;
+    api.LESSON27_READER_GUIDANCE_GROUPS = LESSON27_READER_GUIDANCE_GROUPS;
+    api.isLesson27ReaderGuidanceExact = isLesson27ReaderGuidanceExact;
+    api.LESSON28_READER_GUIDANCE_GROUPS = LESSON28_READER_GUIDANCE_GROUPS;
+    api.isLesson28ReaderGuidanceExact = isLesson28ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;

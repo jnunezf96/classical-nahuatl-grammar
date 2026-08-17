@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "lesson": 24,
+  "contradictionTest": "src/tests/classical_lesson24_contradiction_audit.test.js",
+  "groups": {
+    "lesson24-final-vowel-and-open-valence": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-valence-neutral-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-final-i-type-one-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-final-a-and-ya-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-destockal-source-architecture": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-ni-hui-destockal-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-ni-hui-causative-procedure": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-coalesced-and-obsolete-destockal-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-hua-destockal-sources-and-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-short-vowel-hui-destockal-causatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    },
+    "lesson24-causative-participant-transform": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson24_groups_10_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson24_reader_guidance.test.js"
+    }
+  }
+}

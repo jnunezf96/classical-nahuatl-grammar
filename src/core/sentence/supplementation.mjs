@@ -1483,12 +1483,19 @@ export function createClassicalNahuatlSupplementationApi(
         === "function"
       && targetObject.isClassicalNahuatlVncApplicationFrame(sourceFrame)
     );
+    const lateVncClosureAuthorized = Boolean(
+      typeof targetObject.isClassicalNahuatlClosureFrame === "function"
+      && targetObject.isClassicalNahuatlClosureFrame(sourceFrame)
+      && sourceFrame?.authorizationStatus === "authorized"
+    );
     const vncApplicationResultFrame = vncApplicationResultAuthorized
       ? sourceFrame.resultFrame
       : null;
-    const canonicalVncMachineryFrame = vncApplicationResultAuthorized
-      ? vncApplicationResultFrame?.selectedMachineryFrame || null
-      : null;
+    const canonicalVncMachineryFrame = lateVncClosureAuthorized
+      ? sourceFrame.selectedMachineryFrame || null
+      : vncApplicationResultAuthorized
+        ? vncApplicationResultFrame?.selectedMachineryFrame || null
+        : null;
     const vncSlotFrame = getVncSlotFrame(sourceFrame)
       || vncApplicationResultFrame?.finalTypedVncSlotFrame
       || null;
@@ -1544,7 +1551,7 @@ export function createClassicalNahuatlSupplementationApi(
       )
     );
     const vncAuthorized = Boolean(
-      vncApplicationResultAuthorized
+      (vncApplicationResultAuthorized || lateVncClosureAuthorized)
       && vncSlotFrame
       && typeof targetObject.isClassicalNahuatlVncSlotFrame === "function"
       && targetObject.isClassicalNahuatlVncSlotFrame(vncSlotFrame)
@@ -1562,8 +1569,9 @@ export function createClassicalNahuatlSupplementationApi(
           ? "particle"
           : "";
     const slotFrame = nncSlotFrame || vncSlotFrame;
-    let canonicalVncFiniteSurfaceFrame =
-      vncApplicationResultFrame?.finiteSurfaceFrame || null;
+    let canonicalVncFiniteSurfaceFrame = lateVncClosureAuthorized
+      ? sourceFrame.finiteSurfaceFrame || null
+      : vncApplicationResultFrame?.finiteSurfaceFrame || null;
     if (
       canonicalVncFiniteSurfaceFrame
       && (
@@ -1607,6 +1615,7 @@ export function createClassicalNahuatlSupplementationApi(
           : ""
       )
       || sourceFrame?.targetStem
+      || sourceFrame?.operationFrame?.targetStem
       || sourceFrame?.sourceVerbstem
       || sourceFrame?.stem
       || (
@@ -1658,6 +1667,12 @@ export function createClassicalNahuatlSupplementationApi(
         ? String(sourceFrame.wordSurface || "").trim()
       : completedNncResultAuthorized
         ? completedNncSentenceSurface
+      : lateVncClosureAuthorized
+        ? String(
+            sourceFrame.surfaceRealization
+            || canonicalVncFiniteSurfaceFrame?.wordRealization
+            || ""
+          ).trim()
       : vncAuthorized && canonicalVncFiniteSurfaceFrame
         ? String(
             canonicalVncFiniteSurfaceFrame.wordRealization || ""
@@ -1690,6 +1705,12 @@ export function createClassicalNahuatlSupplementationApi(
         ? String(sourceFrame.formulaRealization || "").trim()
       : completedNncResultAuthorized
         ? completedNncSentenceFormula
+      : lateVncClosureAuthorized
+        ? String(
+            sourceFrame.formulaRealization
+            || canonicalVncFiniteSurfaceFrame?.formulaRealization
+            || ""
+          ).trim()
       : unitKind
         ? getTypedClauseFormula(unitKind, slotFrame)
         : "";
@@ -1766,7 +1787,7 @@ export function createClassicalNahuatlSupplementationApi(
         ? String(sourceFrame.sourceFrame?.subjectId || "3common").trim()
       : adverbialNuclearResultAuthorized
         ? adverbialSubjectCategory
-      : vncApplicationResultAuthorized
+      : vncApplicationResultAuthorized || lateVncClosureAuthorized
         ? String(sourceFrame.normalizedRequest?.subject || "").trim()
       : getSubjectCategory(slotFrame, sourceFrame);
     const selectedVoiceOperation = normalizeToken(
@@ -1830,7 +1851,7 @@ export function createClassicalNahuatlSupplementationApi(
       sourceFrame?.lesson11ParadigmPlan?.requestedMood
       || canonicalVncMachineryFrame?.lesson11ParadigmPlan?.requestedMood
       || (
-        vncApplicationResultAuthorized
+        vncApplicationResultAuthorized || lateVncClosureAuthorized
           ? sourceFrame.normalizedRequest?.mood
           : ""
       )
@@ -1847,7 +1868,7 @@ export function createClassicalNahuatlSupplementationApi(
       || canonicalVncMachineryFrame?.selectedOutputLogicFrame?.outputFillers
         ?.lesson11RequestedSemanticTense
       || (
-        vncApplicationResultAuthorized
+        vncApplicationResultAuthorized || lateVncClosureAuthorized
           ? sourceFrame.normalizedRequest?.tense
           : ""
       )
@@ -1926,6 +1947,8 @@ export function createClassicalNahuatlSupplementationApi(
       ? canonicalVncSelectedObjectClusterPresent
         ? canonicalVncMachineryFrame
         : sourceFrame.normalizedRequest
+      : lateVncClosureAuthorized
+        ? canonicalVncMachineryFrame || sourceFrame
       : sourceFrame;
     const canonicalObjects = unitKind === "vnc"
       ? getObjectRecords(
@@ -2026,6 +2049,30 @@ export function createClassicalNahuatlSupplementationApi(
         ? sourceFrame.contextualRealizationFrame
         : null,
       sourceFrameKind: String(sourceFrame?.kind || ""),
+      lateVncOperation: lateVncClosureAuthorized
+        ? normalizeToken(sourceFrame.operationFrame?.operation)
+        : "",
+      lateVncVariant: lateVncClosureAuthorized
+        ? normalizeToken(sourceFrame.operationFrame?.variant)
+        : "",
+      lateVncRuleFamily: lateVncClosureAuthorized
+        ? normalizeToken(sourceFrame.operationFrame?.ruleFamily)
+        : "",
+      lateVncEmbedStem: lateVncClosureAuthorized
+        ? String(
+            sourceFrame.operationFrame?.operationFacts?.embedStem || ""
+          ).trim()
+        : "",
+      lateVncMatrixStem: lateVncClosureAuthorized
+        ? String(
+            sourceFrame.operationFrame?.operationFacts?.matrixStem || ""
+          ).trim()
+        : "",
+      lateVncConnective: lateVncClosureAuthorized
+        ? String(
+            sourceFrame.operationFrame?.operationFacts?.connective || ""
+          ).trim()
+        : "",
       sourceCanonicalSignature: String(sourceFrame?.canonicalSignature || ""),
       vncBoundaryRealizationFrame: unitKind === "vnc"
         ? canonicalVncFiniteSurfaceFrame
@@ -2081,7 +2128,7 @@ export function createClassicalNahuatlSupplementationApi(
             ? sourceFrame.sourceFrame?.negative === true
               ? "negative"
               : "positive"
-          : vncApplicationResultAuthorized
+          : vncApplicationResultAuthorized || lateVncClosureAuthorized
             ? sourceFrame.normalizedRequest?.sentenceOptions?.negative === true
               ? "negative"
               : "positive"
@@ -3363,6 +3410,7 @@ export function createClassicalNahuatlSupplementationApi(
       "il-cahua",
       "ilcahua",
       "nequi",
+      "qui",
     ].some(stem => (
       normalizedPrincipalStem === stem
       || normalizedPrincipalStem.endsWith(`-${stem}`)
@@ -3392,12 +3440,50 @@ export function createClassicalNahuatlSupplementationApi(
               === supplementClause.subject.referenceId,
           nequiIncorporatedAlternativeIsSeparateDerivationalRoute:
             normalizedPrincipalStem === "nequi",
+          quiFutureEmbedAlternativeIsSeparateDerivationalRoute:
+            normalizedPrincipalStem === "qui",
           translationStringAuthority: false,
           formulaStringAuthority: false,
           surfaceStringAuthority: false,
         })
       : null;
     const operationFrames = [
+      principalClause.unitKind === "vnc"
+        && principalClause.lateVncOperation === "compound"
+        && principalClause.lateVncEmbedStem === "ye"
+        && ["t", "ti"].includes(principalClause.lateVncConnective)
+        && supplementClause.unitKind === "nnc"
+        && Boolean(supplementClause.possessor)
+        && referenceMode === "shared"
+        && headRole === "subject"
+        && contactRole === "subject"
+        ? {
+            kind:
+              "classical-nahuatl-accompanying-possession-frame",
+            sourceSection: "28.8",
+            possessiveResultKind: supplementClause.sourceFrameKind,
+            yeCompoundResultKind: principalClause.sourceFrameKind,
+            yeEmbedStem: principalClause.lateVncEmbedStem,
+            connective: principalClause.lateVncConnective,
+            matrixStem: principalClause.lateVncMatrixStem,
+            supplementarySubjectAuthorized: true,
+            nestedSupplementaryPossessorPreserved: true,
+            matrixSubjectPreserved: true,
+            possessedResultIsTopic: order === "supplement-first",
+            createsHaveVerb: false,
+            createsSecondSupplementationEngine: false,
+            readingKind: "accompanying-possession",
+            readingOptions: [
+              "have-along-with-one",
+              "have-on-one",
+              "carry-with-one",
+              "wear-on-one",
+            ],
+            itemInventoryAuthority: false,
+            formulaStringAuthority: false,
+            surfaceStringAuthority: false,
+          }
+        : null,
       principalClause.unitKind === "vnc"
         && /(?:^|-)ca-h$/u.test(principalClause.sourceStem)
         && principalClause.directionalPrefix === "on"

@@ -3,8 +3,8 @@
 const { createSuite } = require("./runner");
 
 function evaluateCausative(ctx, request, targetStem) {
-    const preview =
-        ctx.classicalNahuatlVncApplication.evaluate(request);
+    const application = ctx.createClassicalNahuatlVncApplication(ctx);
+    const preview = application.evaluate(request);
     const option = preview.controlFrame?.derivationOptionInventory
         ?.options?.find(candidate => candidate.targetStem === targetStem);
     return ctx.executeClassicalGrammarApplicationRequest({

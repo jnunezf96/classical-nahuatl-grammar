@@ -205,7 +205,14 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
       }),
       lateVariant({
         value: "destockal-applicative-force",
-        label: "destockal applicative interpretation",
+        label: "tz-a: applicative interpretation",
+        lineStart: 9213,
+        lineEnd: 9218,
+        family: "Frequentative formations",
+      }),
+      lateVariant({
+        value: "destockal-causative-force",
+        label: "tz-a: causative interpretation",
         lineStart: 9213,
         lineEnd: 9218,
         family: "Frequentative formations",
@@ -226,7 +233,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
       }),
       lateVariant({
         value: "destockal-lexicalized",
-        label: "lexicalized destockal frequentative",
+        label: "extinct or fused destockal",
         lineStart: 9194,
         lineEnd: 9212,
         family: "Frequentative formations",
@@ -234,6 +241,27 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
       lateVariant({
         value: "uncertain-ca",
         label: "uncertain ca type",
+        lineStart: 9241,
+        lineEnd: 9268,
+        family: "Frequentative formations",
+      }),
+      lateVariant({
+        value: "uncertain-ca-causative",
+        label: "uncertain ca: causative tz-a",
+        lineStart: 9241,
+        lineEnd: 9268,
+        family: "Frequentative formations",
+      }),
+      lateVariant({
+        value: "uncertain-ca-applicative",
+        label: "uncertain ca: applicative tz-a",
+        lineStart: 9241,
+        lineEnd: 9268,
+        family: "Frequentative formations",
+      }),
+      lateVariant({
+        value: "uncertain-ca-fused-tla",
+        label: "uncertain ca: fused tla",
         lineStart: 9241,
         lineEnd: 9268,
         family: "Frequentative formations",
@@ -268,7 +296,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
       }),
       lateVariant({
         value: "huītz-carry",
-        label: "huītz carry formation",
+        label: "special huītz carry · no connective",
         lineStart: 9435,
         lineEnd: 9577,
         family: "Compound formations",
@@ -318,7 +346,7 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         lineStart: 9435,
         lineEnd: 9656,
         selected: index === 0,
-        applicability: `typed compound matrix whose lexical class inventory permits Class ${value}`,
+        applicability: `user-supplied typed compound matrix analyzed as Class ${value}`,
         outputBehavior: "supplies matrix inflection class only; it cannot supply a matrix stem or finite result",
       })),
     ],
@@ -457,6 +485,54 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
         selected: index === 0,
         applicability: `${label} licensed frequentative reduplication${value === "1" ? "" : "s"}`,
         outputBehavior: "selects recursion count; the evaluator realizes every reduplicative boundary",
+      })),
+    ],
+    "classical-rule-logic-frequentative-target": [
+      ...[
+        ["lexical-stem", "lexical stem"],
+        ["fused-tla", "fused tla"],
+        ["fused-tla-and-lexical-stem", "fused tla and lexical stem"],
+        ["mainline-reflexive", "mainline reflexive"],
+      ].map(([value, label], index) => option({
+        controlId: "classical-rule-logic-frequentative-target",
+        value,
+        label,
+        tagSuffix: `frequentative-target-${value}`,
+        lineStart: 9105,
+        lineEnd: 9138,
+        canvasStatus: index === 0 ? "authorized" : "conditioned-optional",
+        selected: index === 0,
+        applicability: value === "lexical-stem"
+          ? "ordinary frequentative, including a lexical stem beneath fused tla"
+          : value === "mainline-reflexive"
+            ? "mainline reflexive before a supportive initial i under short-glottal formation"
+            : "typed fused-tla Source under a licensed glottal or long frequentative shape",
+        outputBehavior: "selects the structurally available reduplication target; copied sounds and participant structure remain automatic",
+      })),
+    ],
+    "classical-rule-logic-frequentative-scope": [
+      ...[
+        ["open", "leave the reading open"],
+        ["action", "repeated action"],
+        ["agent", "separate agents"],
+        ["patient", "separate patients"],
+        ["occasion", "separate occasions"],
+        ["place", "separate places"],
+      ].map(([value, label], index) => option({
+        controlId: "classical-rule-logic-frequentative-scope",
+        value,
+        label,
+        tagSuffix: `frequentative-scope-${value}`,
+        lineStart: 9020,
+        lineEnd: 9062,
+        canvasStatus: index === 0 ? "authorized" : "conditioned-optional",
+        selected: index === 0,
+        applicability: value === "patient"
+          ? "short-glottal frequentative whose typed Source has an object"
+          : "short-glottal frequentative whose intended composition identifies this distributive scope",
+        outputBehavior: value === "open"
+          ? "preserves every licensed contextual scope without forcing a semantic choice"
+          : `records ${label} in the typed frequentative Result without supplying its form`,
       })),
     ],
     "classical-rule-logic-purposive-series": [

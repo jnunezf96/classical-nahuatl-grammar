@@ -19,11 +19,11 @@ const spec = {
     },
     "claim-p2870::p2870-this-future-tense-vnc-allows-its-predicate-to-become": {
       "assertionId": "classical-future-embed-compound-structure:p2870-this-future-tense-vnc-allows-its-predicate-to-become",
-      "canonicalPath": "cases.futureNequi.facts.linkage"
+      "canonicalPath": "contract.futureEmbedSystem.matrixObjectReplaced"
     },
     "claim-p2871::p2871-the-future-tense-morph-on-the-embed-indicates-that": {
       "assertionId": "classical-future-embed-compound-structure:p2871-the-future-tense-morph-on-the-embed-indicates-that",
-      "canonicalPath": "contract.futureEmbedObjectFunction"
+      "canonicalPath": "contract.futureEmbedSystem.laterEmbedAction"
     },
     "claim-p2872::p2872-there-are-only-two-verbstems-that-can-occur-in": {
       "assertionId": "classical-future-embed-compound-structure:p2872-there-are-only-two-verbstems-that-can-occur-in",

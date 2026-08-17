@@ -18,11 +18,11 @@ const spec = {
     },
     "claim-p2874::p2874-tla-co-hua-z-nequi-to-want-to-buys": {
       "assertionId": "classical-nequi-future-embed-compound:p2874-tla-co-hua-z-nequi-to-want-to-buys",
-      "canonicalPath": "cases.futureNequi.facts.embedTenseMorph"
+      "canonicalPath": "contract.futureEmbedSystem.embedTenseMorph"
     },
     "claim-p2875::p2875-a-vnc-built-on-a-compound-stem-with-tla": {
       "assertionId": "classical-nequi-future-embed-compound:p2875-a-vnc-built-on-a-compound-stem-with-tla",
-      "canonicalPath": "cases.futureNequi.facts.matrixSourceValence"
+      "canonicalPath": "contract.futureEmbedSystem.passiveEmbed"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

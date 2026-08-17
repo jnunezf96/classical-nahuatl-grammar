@@ -21,7 +21,12 @@ function run(ctx = {}) {
     const start = panel.indexOf(
         'data-classical-reader-guidance-lesson="23"',
     );
-    const end = panel.indexOf('id="classical-canvas-grammar-facts"');
+    const nextLesson = panel.indexOf(
+        'data-classical-reader-guidance-lesson="24"',
+        start + 1,
+    );
+    const facts = panel.indexOf('id="classical-canvas-grammar-facts"');
+    const end = nextLesson >= 0 ? nextLesson : facts;
     const visible = panel.slice(start, end);
 
     s.eq("accepted Lesson 23 atoms point to eight collapsed reading ideas", {

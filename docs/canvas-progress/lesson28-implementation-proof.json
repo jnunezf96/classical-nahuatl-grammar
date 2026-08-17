@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 28,
+  "contradictionTest": "src/tests/classical_lesson28_contradiction_audit.test.js",
+  "groups": {
+    "lesson28-compounding-foundation-and-embed-matrix-order": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-linked-integrated-and-valence-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-connective-t-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-ca-nemi-and-yauh-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-hualla-huitz-ahci-mani-ihca-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-o-ehua-quiza-huetzi-and-other-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-special-embeds-event-order-and-nonactive-scope": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-accompanying-possession": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-intransitivized-reflexive-matrix": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-shared-object-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-future-embed-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    },
+    "lesson28-recursive-compounding": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson28_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson28_reader_guidance.test.js"
+    }
+  }
+}

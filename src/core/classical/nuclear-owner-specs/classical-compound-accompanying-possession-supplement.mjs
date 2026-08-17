@@ -5,7 +5,7 @@ const spec = {
   "inputContract": "complete-typed-classical-compound-accompanying-possession-supplement-source",
   "domain": "classical-compound-accompanying-possession-supplement",
   "mode": "canonical-operation",
-  "canonicalActorId": "classical-nahuatl-compound-runtime",
+  "canonicalActorId": "classical-nahuatl-supplementation-runtime",
   "selections": [
     "claim-p2845",
     "claim-p2846"
@@ -13,15 +13,15 @@ const spec = {
   "coordinates": {
     "claim-p2845::p2845-to-express-the-notion-of-having-something-in-one": {
       "assertionId": "classical-compound-accompanying-possession-supplement:p2845-to-express-the-notion-of-having-something-in-one",
-      "canonicalPath": "cases.accompanyingPossession.facts.supplementarySubjectAuthorized"
+      "canonicalPath": "extractedFrames.accompanyingPossession.supplementarySubjectAuthorized"
     },
     "claim-p2846::p2846-they-carry-their-provisions-with-them-the-topic-i": {
       "assertionId": "classical-compound-accompanying-possession-supplement:p2846-they-carry-their-provisions-with-them-the-topic-i",
-      "canonicalPath": "cases.accompanyingPossession.surfaceRealization"
+      "canonicalPath": "accompanyingPossession.referenceFrame.supplementContactRole"
     }
   },
-  "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",
-  "executionValidatorName": "isClassicalNahuatlCompoundValidationFrame",
+  "executionFunctionName": "buildClassicalNahuatlSupplementationValidationFrame",
+  "executionValidatorName": "isClassicalNahuatlSupplementationValidationFrame",
   "executionArgsBySelection": {
     "claim-p2845": [],
     "claim-p2846": []

@@ -16,15 +16,15 @@ const spec = {
   "coordinates": {
     "claim-p2853::p2853-te-yahual-o-h-ti-m-o-te-ca": {
       "assertionId": "classical-reflexive-matrix-compound-inventory:p2853-te-yahual-o-h-ti-m-o-te-ca",
-      "canonicalPath": "cases.reflexiveMatrices.m-o-tēca.authorizationStatus"
+      "canonicalPath": "cases.reflexiveMatrices.m-o-tēca.facts.matrixReadingOptions"
     },
     "claim-p2854::p2854-tla-mat-ti-m-o-tla-l-i-a": {
       "assertionId": "classical-reflexive-matrix-compound-inventory:p2854-tla-mat-ti-m-o-tla-l-i-a",
-      "canonicalPath": "cases.reflexiveMatrices.m-o-tlāl-i-ā.authorizationStatus"
+      "canonicalPath": "cases.reflexiveMatrices.m-o-tlāl-i-ā.facts.matrixReadingOptions"
     },
     "claim-p2855::p2855-i-got-control-of-myself": {
       "assertionId": "classical-reflexive-matrix-compound-inventory:p2855-i-got-control-of-myself",
-      "canonicalPath": "cases.reflexiveMatrices.m-o-man-a.authorizationStatus"
+      "canonicalPath": "cases.reflexiveMatrices.m-o-tlāl-i-ā.facts.matrixReadingOptions"
     },
     "claim-p2856::p2856-nal-to-na-ti-m-o-man-a-to": {
       "assertionId": "classical-reflexive-matrix-compound-inventory:p2856-nal-to-na-ti-m-o-man-a-to",
@@ -32,7 +32,7 @@ const spec = {
     },
     "claim-p2857::p2857-the-m-o-man-a-matrix-cannot-be-used": {
       "assertionId": "classical-reflexive-matrix-compound-inventory:p2857-the-m-o-man-a-matrix-cannot-be-used",
-      "canonicalPath": "cases.reflexiveMatrices.m-o-tēca.authorizationStatus"
+      "canonicalPath": "blockedCases.animateSingularMana.blockReason"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlCompoundValidationFrame",

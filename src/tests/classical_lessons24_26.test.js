@@ -8,6 +8,7 @@ const {
     CANVAS_EXAMPLES,
     buildCanvasExampleFrame,
     getFormulaRealization,
+    projectRuntimeFormulaToCanvasWitnessShape,
 } = require(path.join(ROOT, "scripts", "audit_classical_lessons24_26_canvas_examples.js"));
 
 function findCanvasExample(id) {
@@ -73,6 +74,26 @@ function getBoundarylessClassicalStemIdentity(stem = "") {
 
 function run(ctx = {}) {
     const s = createSuite("classical_lessons24_26");
+
+    s.eq(
+        "Canvas witness comparison reads open verbstem shape rather than a stem whitelist",
+        {
+            canvasWitness: projectRuntimeFormulaToCanvasWitnessShape(
+                "#ti-0+n-ēch+□-0(chihua-l-tia)0+0-0#"
+            ),
+            arbitraryMatchingStem: projectRuntimeFormulaToCanvasWitnessShape(
+                "#ti-0+n-ēch+⎕-0(zepī-l-tiā)0+0-0#"
+            ),
+            differentMorphemeShape: projectRuntimeFormulaToCanvasWitnessShape(
+                "#ti-0+n-ēch+⎕-0(zepī-tiā)0+0-0#"
+            ),
+        },
+        {
+            canvasWitness: "#ti-0+n-ēch+0-0(OPEN-STEM-MORPHEME-MORPHEME)0+0-0#",
+            arbitraryMatchingStem: "#ti-0+n-ēch+0-0(OPEN-STEM-MORPHEME-MORPHEME)0+0-0#",
+            differentMorphemeShape: "#ti-0+n-ēch+0-0(OPEN-STEM-MORPHEME)0+0-0#",
+        }
+    );
 
     s.eq(
         "The modern runtime exposes the complete typed Lessons 24-26 core boundary",
