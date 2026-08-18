@@ -105,6 +105,24 @@ function run(ctx = {}) {
         huaquiSource,
         { derivationType: "causative" },
     );
+    const totocaInventory = ctx.getClassicalNahuatlVncDerivationOptionInventory(
+        source("totoca", "intransitive", "", "A"),
+        { derivationType: "causative" },
+    );
+    const markedTotocaInventory = ctx.getClassicalNahuatlVncDerivationOptionInventory(
+        source("to-tō-ca", "intransitive", "", "A"),
+        { derivationType: "causative" },
+    );
+    const unrelatedMacronInventory = ctx.getClassicalNahuatlVncDerivationOptionInventory(
+        source("xōtoca", "intransitive", "", "A"),
+        { derivationType: "causative" },
+    );
+    const exactTotoca = totocaInventory.options.find((option) => (
+        option.ruleId === "cn-l24-2432a-totoca-tototza"
+    ));
+    const exactMarkedTotoca = markedTotocaInventory.options.find((option) => (
+        option.ruleId === "cn-l24-2432a-totoca-tototza"
+    ));
 
     const observations = {
         "lesson24-final-vowel-and-open-valence": {
@@ -168,6 +186,14 @@ function run(ctx = {}) {
                 option.targetStem === "huā-tz-a"
                 && option.targetConstruction.operation === "replace-final-and-consonant"
             )),
+            quantityAuthority: [
+                exactTotoca?.targetStem || "",
+                exactMarkedTotoca?.targetStem || "",
+                exactTotoca?.targetQuantityAuthority || "",
+                unrelatedMacronInventory.options.some((option) => (
+                    option.ruleId === "cn-l24-2432a-totoca-tototza"
+                )),
+            ],
             cue: typeOneCues.some((cue) => (
                 cue.role === "lesson24-final-i-type-one-causatives"
                 && cue.label.includes("Class B")
@@ -210,6 +236,12 @@ function run(ctx = {}) {
                 ["authorized", "xopi-ā", "C", 1, "causative"],
             ],
             consonantChange: true,
+            quantityAuthority: [
+                "to-tō-tz-a",
+                "to-tō-tz-a",
+                "typed-lexical-source-analysis-not-literal-witness-spelling",
+                false,
+            ],
             cue: true,
         },
     };
@@ -228,6 +260,10 @@ function run(ctx = {}) {
             typeOneOptions.length !== 2,
             typeOneOptions[0]?.targetClass === typeOneOptions[1]?.targetClass,
             typeOneApplications.some((frame) => frame.authorizationStatus !== "authorized"),
+            exactTotoca?.targetStem !== exactMarkedTotoca?.targetStem,
+            unrelatedMacronInventory.options.some((option) => (
+                option.ruleId === "cn-l24-2432a-totoca-tototza"
+            )),
             typeOneCues.some((cue) => cue.role === "lesson24-final-i-type-one-causatives") === false,
         ],
     };

@@ -92,7 +92,7 @@ function run(ctx = {}) {
         compoundMatrixStem: "māy-a-hui",
     }));
     const arbitraryMatrix = ctx.evaluateClassicalNahuatlLateVncDerivation(request({
-        compoundMatrixStem: "invented",
+        compoundMatrixStem: "zama",
     }));
     const missingObject = ctx.evaluateClassicalNahuatlLateVncDerivation(request({
         sourceStem: "chōca",
@@ -195,7 +195,7 @@ function run(ctx = {}) {
             "tēchtehtēntimāyahui", true,
         ],
         opennessAndGate: [
-            "authorized", "cui-t-invented", true, false,
+            "authorized", "cui-ti-zama", true, false,
             "blocked", "shared-object-coreferential-embed-object-required",
         ],
         cue: [true, true],

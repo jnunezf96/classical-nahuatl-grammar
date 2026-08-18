@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "./vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
@@ -402,13 +402,13 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       analysisId: "cn-l24-2459-mini-fused-destockal",
       sourceAliases: Object.freeze(["mī-ni", "mīni"]),
       categories: Object.freeze(["destockal-ni-candidate", "fused-destockal-ni-exact"]),
-      canonicalSegments: Object.freeze(["mi", "i", "ni"]),
+      canonicalSegments: Object.freeze(["mi", "ī", "ni"]),
       andrewsSections: Object.freeze(["24.5.9"])
     }), Object.freeze({
       analysisId: "cn-l24-2459-xini-fused-destockal",
       sourceAliases: Object.freeze(["xī-ni", "xīni", "xi-ni", "xini"]),
       categories: Object.freeze(["destockal-ni-candidate", "fused-destockal-ni-exact"]),
-      canonicalSegments: Object.freeze(["xi", "i", "ni"]),
+      canonicalSegments: Object.freeze(["xi", "ī", "ni"]),
       andrewsSections: Object.freeze(["24.5.9"])
     }), Object.freeze({
       analysisId: "cn-l24-2459-cehui-fused-destockal",
@@ -1023,7 +1023,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceValence: "intransitive",
       minimumSourceObjectCount: 0,
       maximumSourceObjectCount: 0,
-      bridgeBaseOperation: "lengthen-final-i",
+      bridgeBaseOperation: "preserve-source",
       bridgeSuffixFamily: "hua",
       blockedLesson20SuffixFamilies: Object.freeze(["o-hua"]),
       targetClass: "C",
@@ -1043,7 +1043,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceValence: "intransitive",
       minimumSourceObjectCount: 0,
       maximumSourceObjectCount: 0,
-      bridgeBaseOperation: "lengthen-final-i",
+      bridgeBaseOperation: "preserve-source",
       bridgeSuffixFamily: "hua",
       blockedLesson20SuffixFamilies: Object.freeze(["o-hua"]),
       targetClass: "C",
@@ -1063,7 +1063,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceValence: "intransitive",
       minimumSourceObjectCount: 0,
       maximumSourceObjectCount: 0,
-      bridgeBaseOperation: "lengthen-final-i",
+      bridgeBaseOperation: "preserve-source",
       bridgeSuffixFamily: "hua",
       blockedLesson20SuffixFamilies: Object.freeze(["o-hua"]),
       targetClass: "C",
@@ -1106,7 +1106,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceValence: "intransitive",
       minimumSourceObjectCount: 0,
       maximumSourceObjectCount: 0,
-      bridgeBaseOperation: "lengthen-final-i",
+      bridgeBaseOperation: "preserve-source",
       bridgeSuffixFamily: "hua",
       blockedLesson20SuffixFamilies: Object.freeze(["o-hua"]),
       targetClass: "C",
@@ -1433,7 +1433,8 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       maximumSourceObjectCount: 1,
       bridgeBaseOperation: "replace-final-a-with-i",
       bridgeSuffixFamily: "hua",
-      retainedBaseOperation: "lengthen-final-i",
+      bridgeFinalIQuantityOverride:
+        "long-apparent-geminate-single-phone",
       targetClass: "C",
       ruleId: "cn-l25-252-itta-itti-tia",
       andrewsSection: "25.2.3",
@@ -2962,6 +2963,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         implicitAgentObjectKind: frame.implicitAgentObjectKind || "",
         explicitBoundaryObserved: frame.explicitBoundaryObserved === true,
         boundaryAuthority: frame.boundaryAuthority || "",
+        morphemicSourceProfile: frame.morphemicSourceProfile || null,
         analyses: frame.analyses || [],
         authorizationStatus: frame.authorizationStatus || "",
         blockReason: frame.blockReason || "",
@@ -3246,6 +3248,43 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           sourceAnalysisSelectionRequired: true
         });
       }
+      const observedMorphemicSourceProfile =
+        sourceIdentityFrame.internalMorphology?.morphemicSourceProfile
+        || null;
+      const underlyingMorphemeSequences = analyses
+        .filter(candidate => candidate.segments.length > 1)
+        .map(candidate => Object.freeze({
+          analysisId: candidate.analysisId,
+          category: candidate.category,
+          segments: candidate.segments,
+          analysisAuthority: candidate.analysisAuthority,
+          lexicalStatus: candidate.lexicalStatus,
+          sourceAnalysisSelectionRequired:
+            candidate.sourceAnalysisSelectionRequired === true,
+        }));
+      const morphemicSourceProfile = observedMorphemicSourceProfile
+        ? Object.freeze({
+          ...observedMorphemicSourceProfile,
+          observedMorphemicComplexity:
+            observedMorphemicSourceProfile.morphemicComplexity,
+          morphemicComplexity:
+            observedMorphemicSourceProfile.morphemicComplexity
+              === "polymorphemic"
+              || underlyingMorphemeSequences.length
+              ? "polymorphemic"
+              : "monomorphemic",
+          underlyingMorphemeSequences:
+            Object.freeze(underlyingMorphemeSequences),
+          fusionPreservesUnderlyingStructure: Boolean(
+            observedMorphemicSourceProfile.morphemicComplexity
+              === "monomorphemic"
+            && underlyingMorphemeSequences.length
+          ),
+          sourceAnalysisChoiceRequired: underlyingMorphemeSequences.some(
+            candidate => candidate.sourceAnalysisSelectionRequired,
+          ),
+        })
+        : null;
       const frame = {
         kind: "classical-nahuatl-vnc-derivation-source-analysis",
         version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
@@ -3271,6 +3310,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceFinalShapeFrame,
         sourceIdentityFrame,
         sourceInternalMorphology: sourceIdentityFrame.internalMorphology || null,
+        morphemicSourceProfile,
         explicitBoundaryObserved: normalizeClassicalNahuatlVncDerivationStem(
           sourceDescriptor.enteredSourceStem || sourceDescriptor.sourceStem,
         ).includes("-"),
@@ -3291,6 +3331,27 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         getClassicalNahuatlVncDerivationGenerationSourceDescriptor(
           sourceDescriptor,
         ),
+      );
+    }
+    function doesClassicalNahuatlMorphemicSourceProfileAgree(
+      analysis = null,
+      sourceDescriptor = {},
+    ) {
+      const profile = analysis?.morphemicSourceProfile || null;
+      const shape = analysis?.sourceFinalShapeFrame || null;
+      return Boolean(
+        analysis?.authorizationStatus === "authorized"
+        && profile?.authorizationStatus === "authorized"
+        && shape?.authorizationStatus === "authorized"
+        && profile.sourceStem === analysis.sourceStem
+        && profile.sourceStem === sourceDescriptor.sourceStem
+        && profile.sourceClass === analysis.sourceClass
+        && profile.sourceClass === sourceDescriptor.sourceClass
+        && profile.sourceValence === analysis.sourceValence
+        && profile.sourceValence === sourceDescriptor.sourceValence
+        && profile.phonologicalShape?.finalLetter === shape.finalLetter
+        && profile.edgeStructure?.letterTail?.two === shape.letterTail?.two
+        && profile.edgeStructure?.letterTail?.three === shape.letterTail?.three
       );
     }
     function buildClassicalNahuatlVncDerivationSourceAnalysisFrame(sourceMachineryFrame = null) {
@@ -3318,6 +3379,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           participantSurfaceObjectRequests: Object.freeze([]),
           promotedSourceObjectRequest: null,
           implicitAgentObjectKind: "",
+          morphemicSourceProfile: null,
           analyses: Object.freeze([]),
           analysisCount: 0,
           callerSuppliedAnalysisAllowed: false,
@@ -3417,7 +3479,8 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         explicitRootPlusYaBoundary: frame.explicitRootPlusYaBoundary === true,
         rootPlusYaBoundaryStatus: frame.rootPlusYaBoundaryStatus || "",
         hiddenIntervocalicY: frame.hiddenIntervocalicY === true,
-        finalVowelAllomorph: frame.finalVowelAllomorph || ""
+        finalVowelAllomorph: frame.finalVowelAllomorph || "",
+        morphemicSourceProfile: frame.morphemicSourceProfile || null
       };
     }
     function hasClassicalNahuatlTwoConsonantClusterBeforeFinalVowel(stem = "") {
@@ -3667,6 +3730,112 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           ),
         );
     }
+    function getClassicalNahuatlTypeTwoHuaStructuralBridgeLicenses(
+      sourceDescriptor = {},
+    ) {
+      const analysis = getClassicalNahuatlVncDerivationSourceAnalysis(
+        sourceDescriptor,
+      );
+      const shape = analysis?.sourceFinalShapeFrame || null;
+      const morphemicSourceProfile = analysis?.morphemicSourceProfile || null;
+      if (
+        !shape
+        || shape.authorizationStatus !== "authorized"
+        || !doesClassicalNahuatlMorphemicSourceProfileAgree(
+          analysis,
+          sourceDescriptor,
+        )
+        || sourceDescriptor.sourceObjectCount > 2
+      ) {
+        return [];
+      }
+      const exactHuaWitnessExists =
+        CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES.some(
+          license => (
+            license.bridgeSuffixFamily === "hua"
+            && hasClassicalNahuatlVncDerivationLexicalKey(
+              sourceDescriptor.sourceStem,
+              license.sourceStem,
+            )
+          ),
+        );
+      const exactLiaDisposition =
+        getClassicalNahuatlTypeTwoCausativeLiaSourceDisposition(
+          sourceDescriptor,
+        );
+      if (
+        exactHuaWitnessExists
+        || exactLiaDisposition?.disposition === "licensed-lia"
+      ) {
+        return [];
+      }
+      const finalTwo = morphemicSourceProfile.edgeStructure.letterTail.two;
+      const finalThree = morphemicSourceProfile.edgeStructure.letterTail.three;
+      const structuralRoutes = [];
+      if (finalTwo === "ca") {
+        structuralRoutes.push({
+          structuralFamilyId: "cn-l25-2521-final-ca-hua-source",
+          bridgeBaseOperation: "replace-final-ca-with-quī",
+          ruleId: "cn-l25-2521-final-ka-hua-to-tia",
+          andrewsSection: "25.2.1",
+        });
+      } else if (["ci", "si"].includes(finalTwo)) {
+        structuralRoutes.push({
+          structuralFamilyId: "cn-l25-2522-final-si-hua-source",
+          bridgeBaseOperation: finalTwo === "ci"
+            ? "replace-final-ci-with-xi"
+            : "replace-final-si-with-xi",
+          ruleId: "cn-l25-2522-final-si-hua-to-tia",
+          andrewsSection: "25.2.2",
+        });
+      } else if (["sa", "za"].includes(finalTwo)) {
+        structuralRoutes.push({
+          structuralFamilyId: "cn-l25-2522-final-sa-hua-source",
+          bridgeBaseOperation: "replace-final-za-with-xi",
+          ruleId: "cn-l25-2522-final-sa-hua-to-tia",
+          andrewsSection: "25.2.2",
+        });
+      } else if (finalTwo === "ta") {
+        structuralRoutes.push({
+          structuralFamilyId: "cn-l25-2523-final-ta-hua-source",
+          bridgeBaseOperation: "replace-final-a-with-i",
+          ruleId: "cn-l25-2523-final-ta-hua-to-tia",
+          andrewsSection: "25.2.3",
+        });
+      } else if (/^[aeioāēīō]ti$/u.test(finalThree)) {
+        structuralRoutes.push({
+          structuralFamilyId: "cn-l25-2523-postvocalic-ti-hua-source",
+          bridgeBaseOperation: "replace-final-ti-with-chi",
+          ruleId: "cn-l25-2523-postvocalic-ti-hua-to-tia",
+          andrewsSection: "25.2.3",
+        });
+      }
+      return structuralRoutes.map(route => Object.freeze({
+        derivationLicenseId: route.ruleId,
+        sourceStem: sourceDescriptor.sourceStem,
+        sourceClass: sourceDescriptor.sourceClass,
+        sourceValence: sourceDescriptor.sourceValence,
+        sourceValences: Object.freeze([sourceDescriptor.sourceValence]),
+        minimumSourceObjectCount: sourceDescriptor.sourceObjectCount,
+        maximumSourceObjectCount: sourceDescriptor.sourceObjectCount,
+        bridgeBaseOperation: route.bridgeBaseOperation,
+        bridgeSuffixFamily: "hua",
+        lesson20PrerequisitePolicy: "internal-only",
+        targetClass: "C",
+        ruleId: route.ruleId,
+        ruleTagId: "cn-l25-type-two-causative-typed-nonactive-base",
+        andrewsSection: route.andrewsSection,
+        formationLesson: "25",
+        evidenceSections: Object.freeze(["25.1", route.andrewsSection, "25.9", "25.15"]),
+        derivationSubtype: "type-two",
+        derivationRoute: "type-two-tia-from-typed-morphemic-hua-source",
+        sourceMatchAuthority: "typed-morphemic-source-structure",
+        morphemicSourceProfile,
+        sourceShapeAgreement: true,
+        structuralFamilyId: route.structuralFamilyId,
+        canvasExampleAuthority: false,
+      }));
+    }
     function buildClassicalNahuatlTypeTwoCausativeInternalBridgeFrame(
       sourceDescriptor = {},
       license = null,
@@ -3676,11 +3845,19 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         getClassicalNahuatlVncDerivationCanonicalLexicalSourceRecord(
           sourceDescriptor,
         );
+      const sourceMatchAuthority = normalizeClassicalNahuatlVncDerivationToken(
+        license.sourceMatchAuthority || "typed-lexical-source",
+      );
+      const sourceStemForMatch = lexicalSourceRecord?.stem
+        || sourceDescriptor.sourceStem;
       const sourceMatches = Boolean(
-        lexicalSourceRecord
-        && hasClassicalNahuatlVncDerivationLexicalKey(
-          lexicalSourceRecord.stem,
-          license.sourceStem,
+        sourceStemForMatch
+        && (
+          sourceMatchAuthority === "typed-morphemic-source-structure"
+          || hasClassicalNahuatlVncDerivationLexicalKey(
+            sourceStemForMatch,
+            license.sourceStem,
+          )
         )
         && sourceDescriptor.sourceClass === license.sourceClass
         && (license.sourceValences || [license.sourceValence])
@@ -3696,7 +3873,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       );
       if (!sourceMatches) return null;
       const sourceStem = normalizeClassicalNahuatlVncDerivationStem(
-        lexicalSourceRecord.stem,
+        sourceStemForMatch,
       );
       const lesson20PrerequisitePolicy =
         normalizeClassicalNahuatlVncDerivationToken(
@@ -3791,7 +3968,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         bridgeBaseStem = `${sourceStem.slice(0, -2)}quī`;
       } else if (
         bridgeBaseOperation === "replace-final-za-with-xi"
-        && /za$/u.test(sourceStem)
+        && /[sz]a$/u.test(sourceStem)
       ) {
         bridgeBaseStem = `${sourceStem.slice(0, -2)}xi`;
       } else if (
@@ -3802,6 +3979,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       } else if (
         bridgeBaseOperation === "replace-final-ci-with-xi"
         && /ci$/u.test(sourceStem)
+      ) {
+        bridgeBaseStem = `${sourceStem.slice(0, -2)}xi`;
+      } else if (
+        bridgeBaseOperation === "replace-final-si-with-xi"
+        && /si$/u.test(sourceStem)
       ) {
         bridgeBaseStem = `${sourceStem.slice(0, -2)}xi`;
       } else if (
@@ -3843,6 +4025,59 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       const suffixFamily = normalizeClassicalNahuatlVncDerivationStem(
         license.bridgeSuffixFamily,
       );
+      const bridgeBaseStemBeforeQuantity = bridgeBaseStem;
+      const bridgeFinalIQuantityOverride =
+        normalizeClassicalNahuatlVncDerivationToken(
+          license.bridgeFinalIQuantityOverride,
+        );
+      if (
+        bridgeFinalIQuantityOverride
+        && bridgeFinalIQuantityOverride
+          !== "long-apparent-geminate-single-phone"
+      ) {
+        return null;
+      }
+      const typeTwoHuaQuantityApplies = Boolean(
+        suffixFamily === "hua"
+        && /^25\.2(?:\.|$)/u.test(String(license.andrewsSection || ""))
+        && /[iī]$/u.test(bridgeBaseStem),
+      );
+      const bridgeBaseFinalIAlreadyLong = /ī$/u.test(bridgeBaseStem);
+      const twoConsonantClusterBeforeFinalI = typeTwoHuaQuantityApplies
+        && !bridgeBaseFinalIAlreadyLong
+        && !bridgeFinalIQuantityOverride
+        && hasClassicalNahuatlTwoConsonantClusterBeforeFinalVowel(
+          bridgeBaseStem,
+        );
+      if (
+        typeTwoHuaQuantityApplies
+        && !bridgeBaseFinalIAlreadyLong
+        && !twoConsonantClusterBeforeFinalI
+      ) {
+        bridgeBaseStem = `${bridgeBaseStem.slice(0, -1)}ī`;
+      }
+      const baseFinalIQuantityRuleFrame = typeTwoHuaQuantityApplies
+        ? Object.freeze({
+          kind: "classical-nahuatl-type-two-hua-base-final-i-quantity-frame",
+          version: 1,
+          authorizationStatus: "authorized",
+          ruleId: "cn-l25-252-hua-long-i-with-two-consonant-shortening",
+          inputStem: bridgeBaseStemBeforeQuantity,
+          inputAlreadyLong: bridgeBaseFinalIAlreadyLong,
+          quantityOverride: bridgeFinalIQuantityOverride,
+          twoConsonantClusterBeforeFinalI,
+          operation: bridgeBaseFinalIAlreadyLong
+            ? "preserve-long-final-i"
+            : bridgeFinalIQuantityOverride
+              ? "lengthen-final-i-apparent-geminate-single-phone"
+              : twoConsonantClusterBeforeFinalI
+                ? "preserve-short-final-i"
+                : "lengthen-final-i",
+          outputStem: bridgeBaseStem,
+          derivedFromShape: true,
+          userSelectable: false,
+        })
+        : null;
       const familyRule = {
         hua: Object.freeze({ removeCount: 3, remove: "hua" }),
         ō: Object.freeze({ removeCount: 1, remove: "ō" }),
@@ -3929,12 +4164,15 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceValence: sourceDescriptor.sourceValence,
         sourceObjectCount: sourceDescriptor.sourceObjectCount,
         lexicalSourceRecord,
+        sourceMatchAuthority,
+        structuralFamilyId: license.structuralFamilyId || "",
         derivationLicenseId: license.derivationLicenseId,
         lesson20PrerequisitePolicy,
         blockedLesson20SuffixFamilies,
         classBFinalMToNBoundaryPolicy,
         bridgeBaseOperation,
         bridgeBaseStem,
+        baseFinalIQuantityRuleFrame,
         phoneRepertoryRelation: bridgePhoneRepertoryRelation,
         suffixFamily,
         nonactiveStem,
@@ -3964,6 +4202,8 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceSignature: frame.sourceSignature,
         sourceLexemeId: frame.sourceLexemeId,
         derivationLicenseId: frame.derivationLicenseId,
+        sourceMatchAuthority: frame.sourceMatchAuthority,
+        structuralFamilyId: frame.structuralFamilyId,
         lesson20PrerequisitePolicy: frame.lesson20PrerequisitePolicy,
         blockedLesson20SuffixFamilies:
           frame.blockedLesson20SuffixFamilies,
@@ -3971,6 +4211,21 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           frame.classBFinalMToNBoundaryPolicy,
         bridgeBaseOperation: frame.bridgeBaseOperation,
         bridgeBaseStem: frame.bridgeBaseStem,
+        baseFinalIQuantityRuleId:
+          frame.baseFinalIQuantityRuleFrame?.ruleId || "",
+        baseFinalIQuantityInputStem:
+          frame.baseFinalIQuantityRuleFrame?.inputStem || "",
+        baseFinalIQuantityInputAlreadyLong:
+          frame.baseFinalIQuantityRuleFrame?.inputAlreadyLong === true,
+        baseFinalIQuantityOverride:
+          frame.baseFinalIQuantityRuleFrame?.quantityOverride || "",
+        baseFinalIQuantityCluster:
+          frame.baseFinalIQuantityRuleFrame
+            ?.twoConsonantClusterBeforeFinalI === true,
+        baseFinalIQuantityOperation:
+          frame.baseFinalIQuantityRuleFrame?.operation || "",
+        baseFinalIQuantityOutputStem:
+          frame.baseFinalIQuantityRuleFrame?.outputStem || "",
         suffixFamily: frame.suffixFamily,
         nonactiveStem: frame.nonactiveStem,
         retainedStem: frame.retainedStem,
@@ -4006,9 +4261,12 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         && frame.authorizationStatus === "authorized"
         && frame.sourceSignature === sourceDescriptor.sourceSignature
         && frame.sourceStem
-          === getClassicalNahuatlVncDerivationCanonicalLexicalSourceRecord(
-            sourceDescriptor,
-          )?.stem
+          === (
+            getClassicalNahuatlVncDerivationCanonicalLexicalSourceRecord(
+              sourceDescriptor,
+            )?.stem
+            || sourceDescriptor.sourceStem
+          )
         && frame.sourceLexemeId
           === (sourceDescriptor.sourceLexemeId || "")
         && frame.sourceClass === sourceDescriptor.sourceClass
@@ -4018,6 +4276,10 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           === getClassicalNahuatlVncDerivationCanonicalLexicalSourceRecord(
             sourceDescriptor,
           )
+        && [
+          "typed-lexical-source",
+          "typed-morphemic-source-structure",
+        ].includes(frame.sourceMatchAuthority)
         && frame.userSelectable === false
         && frame.internalPrerequisiteOnly === true
         && frame.callerSuppliedAuthorityAccepted === false
@@ -4152,12 +4414,13 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return [];
       }
       const analysis = getClassicalNahuatlVncDerivationSourceAnalysis(sourceDescriptor);
-      if (!analysis) {
+      if (!doesClassicalNahuatlMorphemicSourceProfileAgree(analysis, sourceDescriptor)) {
         return [];
       }
       const shape = analysis.sourceFinalShapeFrame;
+      const morphemicSourceProfile = analysis.morphemicSourceProfile;
       const morphology = analysis.sourceInternalMorphology || {};
-      const morphemes = Array.isArray(shape.morphemes) ? shape.morphemes : [];
+      const morphemes = morphemicSourceProfile.explicitMorphemes;
       const finalMorpheme = morphemes.at(-1) || "";
       const precedingMorpheme = morphemes.at(-2) || "";
       const longA = "ā";
@@ -4175,6 +4438,9 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         licensedMaximumSourceObjectCount: 0,
         sourceAnalysisFrame: analysis,
         sourceFinalShapeFrame: shape,
+        morphemicSourceProfile,
+        sourceShapeAgreement: true,
+        productiveSourceAuthority: "typed-morphemic-source-profile",
         sourceInternalMorphology: analysis.sourceInternalMorphology,
         formationRuleTier: "productive-final-shape",
         productivityStatus: "andrews-category-rule",
@@ -4241,7 +4507,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return candidates;
       }
       if (exactAlternation) {
-        const targetStem = sourceUsesClassicalNahuatlLongVowelNotation(sourceDescriptor.sourceStem) ? exactAlternation.markedTargetStem : exactAlternation.unmarkedTargetStem;
+        const targetStem = exactAlternation.markedTargetStem;
         const sourceAnalysis = analysis.analyses.find(candidate => exactAlternation.ruleId.includes("huaqui")
           ? candidate.category === "type-one-consonant-alternation"
           : exactAlternation.ruleId.includes("yocoya")
@@ -4271,6 +4537,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           andrewsSection: exactAlternation.andrewsSection,
           evidenceSections: Object.freeze([exactAlternation.andrewsSection, "24.8.1", "24.9"]),
           authorityStatus: "typed-lexical-alternation-over-category-rule",
+          targetQuantityAuthority: "typed-lexical-source-analysis-not-literal-witness-spelling",
           exactWitness: true,
           lexicalChoiceRequired: false,
           derivationLicenseId: exactAlternation.ruleId,
@@ -4536,7 +4803,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return [];
       }
       const analysis = getClassicalNahuatlVncDerivationSourceAnalysis(sourceDescriptor);
-      if (!analysis) {
+      if (!doesClassicalNahuatlMorphemicSourceProfileAgree(analysis, sourceDescriptor)) {
         return [];
       }
       if (
@@ -4547,6 +4814,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return [];
       }
       const shape = analysis.sourceFinalShapeFrame;
+      const morphemicSourceProfile = analysis.morphemicSourceProfile;
       const intransitiveWithoutObjects = sourceDescriptor.sourceValence === "intransitive" && sourceDescriptor.sourceObjectCount === 0;
       const scopeFields = {
         derivationType: "causative",
@@ -4563,6 +4831,9 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         licensedMaximumSourceObjectCount: 2,
         sourceAnalysisFrame: analysis,
         sourceFinalShapeFrame: shape,
+        morphemicSourceProfile,
+        sourceShapeAgreement: true,
+        productiveSourceAuthority: "typed-morphemic-source-profile",
         sourceInternalMorphology: analysis.sourceInternalMorphology,
         productivityStatus: "andrews-category-rule",
         lexicalChoiceRequired: false,
@@ -4756,8 +5027,16 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           targetEnvironment: directionalTargetEnvironment
         }));
       }
+      const structuralInternalBridgeLicenses =
+        getClassicalNahuatlTypeTwoHuaStructuralBridgeLicenses(
+          sourceDescriptor,
+        );
+      const internalBridgeLicenses = [
+        ...CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES,
+        ...structuralInternalBridgeLicenses,
+      ];
       const exactInternalBridgeFrames =
-        CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES
+        internalBridgeLicenses
           .map(license =>
             buildClassicalNahuatlTypeTwoCausativeInternalBridgeFrame(
               sourceDescriptor,
@@ -4772,25 +5051,14 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         getClassicalNahuatlVncDerivationCanonicalLexicalSourceRecord(
           sourceDescriptor,
         );
-      const exactLicenseOwnerAppliesToSource = Boolean(
-        canonicalLexicalSourceRecord
-        && CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES.some(
-          license => hasClassicalNahuatlVncDerivationLexicalKey(
-            canonicalLexicalSourceRecord.stem,
-            license.sourceStem,
-          ),
-        )
-      );
       if (
-        (
-          canonicalLexicalSourceRecord?.sourceLexemeSelectionRequired === true
-          || exactLicenseOwnerAppliesToSource
-        )
+        canonicalLexicalSourceRecord?.sourceLexemeSelectionRequired === true
         && !exactInternalBridgeFrames.length
       ) {
-        // A source with a lexical route owner cannot fall through to a generic
-        // Lesson 20 shape route when its typed class, valence, arity, or
-        // selected lexeme does not satisfy that owner's license.
+        // A genuinely ambiguous lexical Source must resolve its lexical
+        // identity before derivation. Mere presence in a Canvas witness table
+        // never prevents a differently typed Source with the same spelling
+        // from using the productive Lesson 20 shape route.
         return [];
       }
       const inventory = runtimeTarget.getClassicalNahuatlNonactiveStemOptions(sourceDescriptor.sourceStem, {
@@ -4943,7 +5211,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         const targetStem = joinClassicalNahuatlVncDerivationMorphemes(realizedRetainedStem, tia);
         const exactBridgeFrame = licensedExactFrameForRecord;
         const exactLicense = exactBridgeFrame
-          ? CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES.find(
+          ? internalBridgeLicenses.find(
             license => license.derivationLicenseId
               === exactBridgeFrame.derivationLicenseId,
           ) || null
@@ -4952,7 +5220,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         return [finalizeClassicalNahuatlVncDerivationOption(sourceDescriptor, {
           ...scopeFields,
           optionId: `causative:type-two:${record.selectedOptionId}`,
-          label: `${resolvedTargetStem} (type-two causative · ${record.suffixFamily} nonactive → ${tia}${exactLicense ? " · lexical license" : ""})`,
+          label: `${resolvedTargetStem} (type-two causative · ${record.suffixFamily} nonactive → ${tia}${exactLicense?.sourceMatchAuthority === "typed-morphemic-source-structure" ? " · typed Source structure" : exactLicense ? " · lexical license" : ""})`,
           derivationRoute: exactLicense?.derivationRoute || familyRule.route,
           procedure: "map-canonical-lesson20-nonactive-family-to-type-two-causative",
           suffix: tia,
@@ -4961,8 +5229,12 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           ruleId: exactLicense?.ruleId || `${familyRule.ruleId}:${record.selectedRuleId}`,
           andrewsSection: exactLicense?.andrewsSection || familyRule.section,
           evidenceSections: exactLicense?.evidenceSections || Object.freeze(["25.1", familyRule.section, "25.11", "25.15"]),
-          authorityStatus: exactLicense ? "typed-lexical-license-over-productive-nonactive-bridge" : "productive-rule-plus-typed-nonactive-record",
-          exactWitness: Boolean(exactLicense),
+          authorityStatus: exactLicense?.sourceMatchAuthority === "typed-morphemic-source-structure"
+            ? "typed-morphemic-source-rule-over-productive-nonactive-bridge"
+            : exactLicense
+              ? "typed-lexical-license-over-productive-nonactive-bridge"
+              : "productive-rule-plus-typed-nonactive-record",
+          exactWitness: Boolean(exactLicense && exactLicense.sourceMatchAuthority !== "typed-morphemic-source-structure"),
           derivationLicenseId: exactLicense?.derivationLicenseId || familyRule.ruleId,
           licensedLesson20OptionId: record.selectedOptionId,
           licensedLesson20RuleId: record.selectedRuleId,
@@ -4973,7 +5245,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           lesson20NonactiveStemRecord: record,
           sourceFinalShapeFrame: record.sourceFinalShapeFrame,
           sourceInternalMorphology: record.sourceInternalMorphology,
-          formationRuleTier: exactLicense ? "typed-lexical-license" : "typed-nonactive-category-rule",
+          formationRuleTier: exactLicense?.sourceMatchAuthority === "typed-morphemic-source-structure"
+            ? "typed-morphemic-source-rule"
+            : exactLicense
+              ? "typed-lexical-license"
+              : "typed-nonactive-category-rule",
           productivityStatus: "andrews-category-rule",
           lexicalChoiceRequired: false,
           optionAliases: exactLicense ? [exactLicense.ruleId] : [],
@@ -5021,7 +5297,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         .filter(frame => !bridgedExactLicenseIds.has(frame.derivationLicenseId))
         .map(frame => {
           const license =
-            CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_EXACT_LICENSES.find(
+            internalBridgeLicenses.find(
               candidate => candidate.derivationLicenseId
                 === frame.derivationLicenseId,
             );
@@ -5045,12 +5321,14 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
               ruleId: license.ruleId,
               andrewsSection: license.andrewsSection,
               evidenceSections: license.evidenceSections,
-              authorityStatus:
-                "typed-lexical-route-plus-derived-internal-nonactive-prerequisite",
-              exactWitness: true,
+              authorityStatus: license.sourceMatchAuthority === "typed-morphemic-source-structure"
+                ? "typed-morphemic-source-rule-plus-derived-internal-nonactive-prerequisite"
+                : "typed-lexical-route-plus-derived-internal-nonactive-prerequisite",
+              exactWitness: license.sourceMatchAuthority !== "typed-morphemic-source-structure",
               derivationLicenseId: license.derivationLicenseId,
-              formationRuleTier:
-                "typed-lexical-internal-nonactive-prerequisite",
+              formationRuleTier: license.sourceMatchAuthority === "typed-morphemic-source-structure"
+                ? "typed-morphemic-internal-nonactive-prerequisite"
+                : "typed-lexical-internal-nonactive-prerequisite",
               productivityStatus: "andrews-internal-base-rule",
               lexicalChoiceRequired: false,
               optionAliases: [license.ruleId],
@@ -5091,12 +5369,16 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
     function getClassicalNahuatlLicensedApplicativeOptions(sourceDescriptor = {}) {
       const runtimeTarget = getClassicalNahuatlVncDerivationRuntimeTarget();
       const analysis = getClassicalNahuatlVncDerivationSourceAnalysis(sourceDescriptor);
-      if (!analysis || sourceDescriptor.sourceObjectCount > 2) {
+      if (
+        !doesClassicalNahuatlMorphemicSourceProfileAgree(analysis, sourceDescriptor)
+        || sourceDescriptor.sourceObjectCount > 2
+      ) {
         return [];
       }
       const shape = analysis.sourceFinalShapeFrame;
+      const morphemicSourceProfile = analysis.morphemicSourceProfile;
       const morphology = analysis.sourceInternalMorphology || {};
-      const morphemes = Array.isArray(shape.morphemes) ? shape.morphemes : [];
+      const morphemes = morphemicSourceProfile.explicitMorphemes;
       const finalMorpheme = morphemes.at(-1) || "";
       // These are canonical tenseless applicative stems. Their suffix vowel is
       // long here; Lesson 7 selects the tense-bearing formulaic allomorph.
@@ -5116,7 +5398,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         licensedSourceValence: sourceDescriptor.sourceValence,
         licensedMinimumSourceObjectCount: 0,
         licensedMaximumSourceObjectCount: 2,
+        sourceAnalysisFrame: analysis,
         sourceFinalShapeFrame: shape,
+        morphemicSourceProfile,
+        sourceShapeAgreement: true,
+        productiveSourceAuthority: "typed-morphemic-source-profile",
         sourceInternalMorphology: analysis.sourceInternalMorphology,
         formationRuleTier: "productive-final-shape",
         productivityStatus: "andrews-category-rule",
@@ -6069,7 +6355,8 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         formulaAuthority: false,
         surfaceAuthority: false
       }];
-      const causativeAmbiguityAnalyses = normalizedTarget === "caquitiltiā" ? [{
+      const causativeAmbiguityAnalyses = ["caquitiltiā", "caquītiltiā"]
+        .includes(normalizedTarget) ? [{
         analysisId: "cn-l25-2513-caquitiltia-from-active-first-causative",
         analysisStatus: sourceDescriptor.sourceVoice === "active" ? "identified-source" : "canonically-licensed-reverse-source",
         formationStem: "caquī-tiā",

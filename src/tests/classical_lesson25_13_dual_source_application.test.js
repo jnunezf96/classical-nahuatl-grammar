@@ -205,7 +205,7 @@ function run(ctx = {}) {
         requestedDerivation: "causative",
         causativeObjectKind: "specific-projective",
         requestedVoice: "active",
-    }, "caqui-tiā");
+    }, "caquī-tiā");
     const caquiPassiveActiveBasis = selectDerivation(application, {
         sourceStem: "caqui",
         verbClass: "B",
@@ -219,7 +219,7 @@ function run(ctx = {}) {
         requestedDerivation: "causative",
         causativeObjectKind: "specific-projective",
         requestedVoice: "active",
-    }, "caqui-tiā");
+    }, "caquī-tiā");
     const caquiPassiveSource = selectLaterVoice(
         application,
         caquiPassiveActiveBasis,
@@ -228,12 +228,12 @@ function run(ctx = {}) {
     const caquiFromActive = continueCausative(
         application,
         caquiActiveSource.frame.resultFrame,
-        "caqui-ti-l-tiā",
+        "caquī-ti-l-tiā",
     );
     const caquiFromPassive = continueCausative(
         application,
         caquiPassiveSource.frame.resultFrame,
-        "caqui-ti-l-tiā",
+        "caquī-ti-l-tiā",
     );
 
     s.eq(
@@ -286,8 +286,8 @@ function run(ctx = {}) {
             ],
             activeSource: [
                 "authorized",
-                "nictēcaquitia",
-                "#ni-0+c-0+tē(caqui-tia)0+0-0#",
+                "nictēcaquītia",
+                "#ni-0+c-0+tē(caquī-tia)0+0-0#",
                 false,
                 false,
                 false,
@@ -295,8 +295,8 @@ function run(ctx = {}) {
             ],
             passiveSource: [
                 "authorized",
-                "nicaquitilo",
-                "#ni-0+⎕-0(caqui-ti-lo)0+0-0#",
+                "nicaquitīlo",
+                "#ni-0+⎕-0(caquī-ti-lo)0+0-0#",
                 false,
                 false,
                 false,
@@ -305,8 +305,8 @@ function run(ctx = {}) {
             activeContinuation: {
                 scalar: [
                     "authorized",
-                    "tinēchtēcaquitiltia",
-                    "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                    "tinēchtēcaquītiltia",
+                    "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
                     false,
                     false,
                     true,
@@ -315,8 +315,8 @@ function run(ctx = {}) {
                 paradigm: [
                     "authorized",
                     "authorized",
-                    "tinēchtēcaquitiltia",
-                    "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                    "tinēchtēcaquītiltia",
+                    "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
                     true,
                     true,
                     true,
@@ -325,8 +325,8 @@ function run(ctx = {}) {
             passiveContinuation: {
                 scalar: [
                     "authorized",
-                    "tinēchtēcaquitiltia",
-                    "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                    "tinēchtēcaquītiltia",
+                    "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
                     false,
                     false,
                     true,
@@ -335,8 +335,8 @@ function run(ctx = {}) {
                 paradigm: [
                     "authorized",
                     "authorized",
-                    "tinēchtēcaquitiltia",
-                    "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                    "tinēchtēcaquītiltia",
+                    "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
                     true,
                     true,
                     true,
@@ -787,9 +787,9 @@ function run(ctx = {}) {
         application.continueFromResult(
             {
                 ...caquiActiveSource.frame.resultFrame,
-                surfaceRealization: "tinēchtēcaquitiltia",
+                surfaceRealization: "tinēchtēcaquītiltia",
                 formulaRealization:
-                    "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                    "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
             },
             caquiFromActive.request,
         );

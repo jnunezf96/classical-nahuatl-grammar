@@ -59,7 +59,7 @@ function run(ctx = {}) {
             { derivationType: "causative" },
         );
     const secondOption = secondInventory.options.find(candidate => (
-        candidate.targetStem === "caqui-ti-l-tiā"
+        candidate.targetStem === "caquī-ti-l-tiā"
     ));
     const secondOperation =
         ctx.deriveClassicalNahuatlVncDerivationOperationFrame(
@@ -130,10 +130,10 @@ function run(ctx = {}) {
             sourceCanonical: true,
             firstOperationCanonical: true,
             firstResultCanonical: true,
-            firstFormula: "#ni-0+m-itz+⎕-0(caqui-tia)0+0-0#",
-            firstWritten: "nimitzcaquitia",
+            firstFormula: "#ni-0+m-itz+⎕-0(caquī-tia)0+0-0#",
+            firstWritten: "nimitzcaquītia",
             secondInventoryCanonical: true,
-            secondTarget: "caqui-ti-l-tiā",
+            secondTarget: "caquī-ti-l-tiā",
             secondOperationCanonical: true,
             participantHistory: [
                 ["specific-projective", "3sg", "directive", 1],
@@ -143,14 +143,14 @@ function run(ctx = {}) {
             secondResultCanonical: true,
             secondFiniteCanonical: true,
             secondFormula:
-                "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
-            secondWritten: "nēchcaquitiltia",
+                "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
+            secondWritten: "nēchcaquītiltia",
             formulaIndependent: true,
             writtenIndependent: true,
         },
     );
 
-    const rawShapes = ["caqui-tiā", "caquī-tiā"].map(stem => {
+    const rawShapes = ["caquī-tiā", "caquī-tiā"].map(stem => {
         const lower = ctx.buildClassicalNahuatlVerbstemClassFrame(stem, {
             subject: "1sg",
             mood: "indicative",
@@ -206,7 +206,7 @@ function run(ctx = {}) {
         canonicalSignature: first.result.canonicalSignature,
         derivationOperationFrame: {
             ...first.operation,
-            targetStem: "caqui-tiā",
+            targetStem: "caquī-tiā",
         },
     };
     const forgedInventory =
@@ -235,7 +235,7 @@ function run(ctx = {}) {
         {
             rawShapes: [
                 {
-                    stem: "caqui-tiā",
+                    stem: "caquī-tiā",
                     sourceAccepted: true,
                     recursiveOptions: 0,
                 },

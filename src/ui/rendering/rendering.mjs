@@ -10,11 +10,11 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   normalizeGenerationSourceTransitivity,
   validateGenerationSourceTransitivitySelection,
@@ -1308,7 +1308,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return {
           kind: "classical-nahuatl-canvas-class-selection",
           determinate: false,
-          selectedClassId: allClassIds.includes(requestedClassId) ? requestedClassId : "B",
+          selectedClassId: allClassIds.includes(requestedClassId) ? requestedClassId : "",
           allowedClassIds: allClassIds,
           canvasRuleId: "cn-l7-76-guidelines-not-majority-prediction",
           dropdownLocked: false
@@ -1327,9 +1327,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? requestedClassId
         : hasDeterminingRule && allowedClassIds.includes(profile.classId)
           ? profile.classId
-          : allowedClassIds.includes("B")
-            ? "B"
-            : allowedClassIds[0];
+          : "";
       return {
         kind: "classical-nahuatl-canvas-class-selection",
         determinate: hasDeterminingRule,
@@ -1465,10 +1463,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           overrides.sourceInitialISelection
           || overrides.sourceInitialIKind
           || (sourceInitialIControl && sourceInitialIControl.disabled !== true
-            ? sourceInitialIControl.checked === true ? "supportive" : "real"
-            : ["supportive", "real"].includes(sourceInitialIFact)
-              ? sourceInitialIFact
-              : "")
+            && ["real", "supportive", "contextual"].includes(
+              String(sourceInitialIControl.value || ""),
+            )
+            ? sourceInitialIControl.value
+            : "")
           || ""
         ).trim()
         : "";
@@ -1616,7 +1615,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || (basalUnit === "vnc" && derivationType === "causative" ? causativeResultSubject : sourceSubject)
         || "1sg"
       ).trim();
-      const requestedVerbClass = String(overrides.verbClass || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-class", "B") || "B").trim();
+      const requestedVerbClass = String(overrides.verbClass || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-class", "") || "").trim();
       const constructionSelection = String(overrides.construction || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-construction", "none") || "none").trim();
       const lexicalReadingSelection = String(overrides.lexicalReading || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-lexical-reading", "unspecified") || "unspecified").trim();
       const predicateReferentKindSelection = String(overrides.predicateReferentKind || overrides.referentKind || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-predicate-referent", "unspecified") || "unspecified").trim();
@@ -1955,6 +1954,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? overrides.purposiveIrregularPluralN === true
         : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-irregular-n", "false") === "true";
       const purposiveExternalDirectional = String(overrides.purposiveExternalDirectional || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-external", "none") || "none").trim();
+      const purposiveSoundedFutureMorph = Object.prototype.hasOwnProperty.call(overrides, "purposiveSoundedFutureMorph")
+        ? overrides.purposiveSoundedFutureMorph === true
+        : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-sounded-future", "false") === "true";
+      const purposiveEarlySingularGlottal = Object.prototype.hasOwnProperty.call(overrides, "purposiveEarlySingularGlottal")
+        ? overrides.purposiveEarlySingularGlottal === true
+        : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-purposive-early-singular-glottal", "false") === "true";
       const honoredParticipant = String(overrides.honoredParticipant || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-honored-participant", "subject") || "subject").trim();
       const honorificDerivationOptionId = String(overrides.honorificDerivationOptionId || requestedDerivationOptionId || "").trim();
       const honorificStemAlternative = String(overrides.honorificStemAlternative || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-honorific-stem-alternative", "default") || "default").trim();
@@ -1979,6 +1984,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         purposiveSeries,
         purposiveIrregularPluralN,
         purposiveExternalDirectional,
+        purposiveSoundedFutureMorph,
+        purposiveEarlySingularGlottal,
         honoredParticipant,
         honorificDerivationOptionId,
         honorificStemAlternative,
@@ -2518,6 +2525,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         purposiveSeries: state.purposiveSeries,
         purposiveIrregularPluralN: state.purposiveIrregularPluralN,
         purposiveExternalDirectional: state.purposiveExternalDirectional,
+        purposiveSoundedFutureMorph: state.purposiveSoundedFutureMorph,
+        purposiveEarlySingularGlottal: state.purposiveEarlySingularGlottal,
         honoredParticipant: state.honoredParticipant,
         honorificDerivationOptionId: state.honorificDerivationOptionId,
         honorificStemAlternative: state.honorificStemAlternative
@@ -6811,6 +6820,140 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "ACI-P265-L027-1836E0290C", "ACI-P265-L028-FC040279B8", "ACI-P265-L029-C3FF659DBC"
         ])
       }),
+      "lesson29-purposive-foundation-and-future-embed": Object.freeze({
+        lessonSections: Object.freeze(["§29.1", "§29.1.1"]),
+        atomIds: Object.freeze(["ACI-P266-L003-CBB3D6753F","ACI-P266-L005-79C2216950","ACI-P266-L006-E96B963CC7","ACI-P266-L006-E96B963CC7-02","ACI-P266-L007-5228F68A97","ACI-P266-L009-212E28DCED","ACI-P266-L010-BBE86FFDCF","ACI-P266-L013-BD5F22BF2D","ACI-P266-L016-36D877C010"])
+      }),
+      "lesson29-internal-directional-matrix": Object.freeze({
+        lessonSections: Object.freeze(["§29.1.2", "§29.1.2.a"]),
+        atomIds: Object.freeze(["ACI-P266-L019-D733076978","ACI-P266-L020-A7DF67E797","ACI-P266-L020-A7DF67E797-03","ACI-P266-L020-A7DF67E797-02","ACI-P266-L024-4992C7FDBF","ACI-P266-L024-4992C7FDBF-02","ACI-P266-L024-4992C7FDBF-03","ACI-P266-L024-4992C7FDBF-04","ACI-P266-L024-4992C7FDBF-05","ACI-P266-L024-4992C7FDBF-06","ACI-P266-L027-FCF2753DAB","ACI-P266-L027-FCF2753DAB-02","ACI-P266-L027-FCF2753DAB-03","ACI-P266-L027-FCF2753DAB-04","ACI-P267-L002-6D01D3711C","ACI-P267-L003-22005F6EC9","ACI-P267-L003-E9F55044ED"])
+      }),
+      "lesson29-purposeful-motion-base-and-series-system": Object.freeze({
+        lessonSections: Object.freeze(["§29.1.2.b", "§29.2"]),
+        atomIds: Object.freeze(["ACI-P267-L006-02B8BD1905","ACI-P267-L007-BFC9F7EB24","ACI-P267-L009-F64F436F77","ACI-P267-L009-EB9AD88F56","ACI-P267-L009-EB9AD88F56-02","ACI-P267-L011-A691C8AA91","ACI-P267-L011-A691C8AA91-02","ACI-P267-L013-0FE29D8436","ACI-P267-L013-737D6AEB9D","ACI-P267-L013-737D6AEB9D-02","ACI-P267-L015-456A93B2B0","ACI-P267-L018-E950496C99","ACI-P267-L018-A4828FC0DC","ACI-P267-L018-A4828FC0DC-02","ACI-P267-L018-A4828FC0DC-03","ACI-P267-L018-A4828FC0DC-04","ACI-P267-L018-A4828FC0DC-05","ACI-P267-L020-DD808B458F","ACI-P267-L021-C93A39F9FC","ACI-P267-L021-A38C9F2DC1","ACI-P267-L022-F3D73ECE1F"])
+      }),
+      "lesson29-outbound-nonpast-and-progressive-contrast": Object.freeze({
+        lessonSections: Object.freeze(["§29.3", "§29.3.1"]),
+        atomIds: Object.freeze([
+          "ACI-P267-L023-4C61AA0DEB", "ACI-P267-L024-17341AC046", "ACI-P267-L026-62503D9258", "ACI-P267-L027-BA7B546895", "ACI-P267-L030-5D96BD40A2",
+          "ACI-P267-L030-5D96BD40A2-02", "ACI-P267-L030-5D96BD40A2-03", "ACI-P267-L030-5D96BD40A2-04", "ACI-P267-L030-5D96BD40A2-05", "ACI-P267-L030-5D96BD40A2-06",
+          "ACI-P267-L030-5D96BD40A2-07", "ACI-P267-L030-5D96BD40A2-08", "ACI-P267-L030-5D96BD40A2-09", "ACI-P267-L030-5D96BD40A2-10", "ACI-P267-L030-5D96BD40A2-11",
+          "ACI-P267-L034-0D220C3116", "ACI-P267-L035-883A4E6FF0", "ACI-P267-L037-AA6D41B084", "ACI-P268-L002-9D8A3D9BF4", "ACI-P268-L004-EF8E14F9CD",
+          "ACI-P268-L007-3A37BD42BF", "ACI-P268-L007-3A37BD42BF-02", "ACI-P268-L007-3A37BD42BF-03", "ACI-P268-L007-3A37BD42BF-04", "ACI-P268-L007-3A37BD42BF-05",
+          "ACI-P268-L007-3A37BD42BF-06", "ACI-P268-L007-3A37BD42BF-07", "ACI-P268-L007-3A37BD42BF-08", "ACI-P268-L007-3A37BD42BF-09", "ACI-P268-L007-3A37BD42BF-10",
+          "ACI-P268-L007-3A37BD42BF-11", "ACI-P268-L011-17E9D57F45", "ACI-P268-L013-D9F7D6D608", "ACI-P268-L015-FB463A93F7", "ACI-P268-L017-CA8492F860",
+          "ACI-P268-L019-1D34C7A999", "ACI-P268-L021-FFB0794662", "ACI-P268-L022-E86327B288", "ACI-P268-L024-4E8780FC3F", "ACI-P268-L025-EDE896E84B",
+          "ACI-P268-L027-EBDE2E8ACA", "ACI-P268-L030-2EFE64C799", "ACI-P268-L031-13CAC2ED1E", "ACI-P268-L033-EAB29C30B7", "ACI-P268-L033-EAB29C30B7-02",
+          "ACI-P268-L033-EAB29C30B7-03", "ACI-P268-L033-EAB29C30B7-04", "ACI-P268-L033-EAB29C30B7-05", "ACI-P268-L033-EAB29C30B7-06", "ACI-P268-L033-EAB29C30B7-07",
+          "ACI-P268-L033-EAB29C30B7-08", "ACI-P268-L033-EAB29C30B7-09", "ACI-P268-L033-EAB29C30B7-10", "ACI-P268-L038-30DB0F9197", "ACI-P268-L040-334A826226",
+          "ACI-P269-L002-32F2973D49"
+        ])
+      }),
+      "lesson29-outbound-past": Object.freeze({
+        lessonSections: Object.freeze(["§29.3.2"]),
+        atomIds: Object.freeze([
+          "ACI-P269-L004-207C9FD515", "ACI-P269-L005-1CE55E335D", "ACI-P269-L006-39BF888A07", "ACI-P269-L009-A726022B07", "ACI-P269-L009-A726022B07-02",
+          "ACI-P269-L009-A726022B07-03", "ACI-P269-L009-A726022B07-04", "ACI-P269-L009-A726022B07-05", "ACI-P269-L009-A726022B07-06", "ACI-P269-L009-A726022B07-07",
+          "ACI-P269-L009-A726022B07-08", "ACI-P269-L009-A726022B07-09", "ACI-P269-L009-A726022B07-10", "ACI-P269-L009-A726022B07-11", "ACI-P269-L013-26D8B93C66",
+          "ACI-P269-L014-E19B8C0583", "ACI-P269-L016-8F4AA774B6", "ACI-P269-L017-90954549DD", "ACI-P269-L019-7FFE996206", "ACI-P269-L020-4503D062C7",
+          "ACI-P269-L021-76C5134A2B", "ACI-P269-L023-BB56537667", "ACI-P269-L024-130A4D9AC0", "ACI-P269-L025-D8CFD6F1B7", "ACI-P269-L026-6947504AC5",
+          "ACI-P269-L026-5EDA192BF5"
+        ])
+      }),
+      "lesson29-outbound-optative": Object.freeze({
+        lessonSections: Object.freeze(["§29.3.3"]),
+        atomIds: Object.freeze([
+          "ACI-P269-L028-1EE4E06C79", "ACI-P269-L030-1DDBF9F430", "ACI-P269-L033-360EF376EE", "ACI-P269-L033-360EF376EE-02", "ACI-P269-L033-360EF376EE-03",
+          "ACI-P269-L033-360EF376EE-04", "ACI-P269-L033-360EF376EE-05", "ACI-P269-L035-21B22A8015", "ACI-P269-L038-CCC1F97A01", "ACI-P269-L038-CCC1F97A01-02",
+          "ACI-P269-L038-CCC1F97A01-03", "ACI-P269-L038-CCC1F97A01-04", "ACI-P269-L038-CCC1F97A01-05", "ACI-P269-L038-CCC1F97A01-06", "ACI-P269-L038-CCC1F97A01-07",
+          "ACI-P269-L038-CCC1F97A01-08", "ACI-P269-L040-99FA0A6546", "ACI-P270-L003-8711020B86", "ACI-P270-L004-BBBDC23EE7", "ACI-P270-L006-1ECBCD0113",
+          "ACI-P270-L008-AC5D050ED4", "ACI-P270-L009-BDDB7FB31D", "ACI-P270-L011-49BE8091F8", "ACI-P270-L012-80413A8C40", "ACI-P270-L013-D31C835596",
+          "ACI-P270-L013-D31C835596-03", "ACI-P270-L013-D31C835596-04", "ACI-P270-L013-D31C835596-05", "ACI-P270-L013-D31C835596-06", "ACI-P270-L013-D31C835596-02",
+          "ACI-P270-L017-FBD4C397B6", "ACI-P270-L017-FBD4C397B6-02", "ACI-P270-L017-FBD4C397B6-03", "ACI-P270-L017-FBD4C397B6-04", "ACI-P270-L017-FBD4C397B6-05",
+          "ACI-P270-L017-FBD4C397B6-06", "ACI-P270-L017-FBD4C397B6-07", "ACI-P270-L017-FBD4C397B6-08", "ACI-P270-L017-FBD4C397B6-09", "ACI-P270-L017-FBD4C397B6-10",
+          "ACI-P270-L017-FBD4C397B6-11", "ACI-P270-L017-FBD4C397B6-12", "ACI-P270-L017-FBD4C397B6-13", "ACI-P270-L017-FBD4C397B6-14", "ACI-P270-L017-FBD4C397B6-15",
+          "ACI-P270-L017-FBD4C397B6-16", "ACI-P270-L017-FBD4C397B6-17", "ACI-P270-L017-FBD4C397B6-18", "ACI-P270-L028-0A4DE79C14", "ACI-P270-L029-5733252599",
+          "ACI-P270-L030-176C3BBC69", "ACI-P270-L031-67454FF499", "ACI-P270-L038-71F81663D9", "ACI-P270-L040-23C5C962F0", "ACI-P270-L040-23C5C962F0-02",
+          "ACI-P271-L002-73795908FE", "ACI-P271-L005-0C9D635C77"
+        ])
+      }),
+      "lesson29-inbound-nonfuture": Object.freeze({
+        lessonSections: Object.freeze(["§29.4", "§29.4.1"]),
+        atomIds: Object.freeze([
+          "ACI-P271-L007-108E25CE42", "ACI-P271-L009-00A0089A48", "ACI-P271-L011-003E54E514", "ACI-P271-L012-2DA4F1D6A5", "ACI-P271-L013-25E116E184",
+          "ACI-P271-L018-DBD7C1D133", "ACI-P271-L018-DBD7C1D133-02", "ACI-P271-L018-DBD7C1D133-03", "ACI-P271-L018-DBD7C1D133-04", "ACI-P271-L018-DBD7C1D133-05",
+          "ACI-P271-L018-DBD7C1D133-06", "ACI-P271-L018-DBD7C1D133-07", "ACI-P271-L018-DBD7C1D133-08", "ACI-P271-L018-DBD7C1D133-09", "ACI-P271-L018-DBD7C1D133-10",
+          "ACI-P271-L018-DBD7C1D133-11", "ACI-P271-L018-DBD7C1D133-12", "ACI-P271-L018-DBD7C1D133-13", "ACI-P271-L018-DBD7C1D133-14", "ACI-P271-L018-DBD7C1D133-15",
+          "ACI-P271-L018-DBD7C1D133-16", "ACI-P271-L023-BBA2C4A1E3", "ACI-P271-L025-7978741305", "ACI-P271-L026-E8464C12B6", "ACI-P271-L028-983391F18B",
+          "ACI-P271-L028-983391F18B-02", "ACI-P271-L028-983391F18B-03", "ACI-P271-L028-983391F18B-04", "ACI-P271-L028-983391F18B-05", "ACI-P271-L028-983391F18B-06",
+          "ACI-P271-L028-983391F18B-07", "ACI-P271-L028-983391F18B-08", "ACI-P271-L030-2EC815131E", "ACI-P271-L030-2EC815131E-02", "ACI-P271-L030-2EC815131E-03",
+          "ACI-P271-L030-2EC815131E-04", "ACI-P271-L030-2EC815131E-05", "ACI-P271-L030-2EC815131E-06", "ACI-P271-L030-2EC815131E-07", "ACI-P271-L030-2EC815131E-08",
+          "ACI-P271-L033-6252F37EA4", "ACI-P271-L035-14F7DCC9F4"
+        ])
+      }),
+      "lesson29-inbound-future": Object.freeze({
+        lessonSections: Object.freeze(["§29.4.2"]),
+        atomIds: Object.freeze([
+          "ACI-P271-L037-67CD6154DE", "ACI-P272-L003-1AC800E79A", "ACI-P272-L004-7C6B50F7A5", "ACI-P272-L006-038948253B", "ACI-P272-L007-D37A427FA0",
+          "ACI-P272-L010-3F80AB414B", "ACI-P272-L012-995604F583", "ACI-P272-L015-98BE1CF64A", "ACI-P272-L016-93CEC6ED7C"
+        ])
+      }),
+      "lesson29-inbound-optative": Object.freeze({
+        lessonSections: Object.freeze(["§29.4.3"]),
+        atomIds: Object.freeze([
+          "ACI-P272-L018-30BC9174B2", "ACI-P272-L020-99C82E43C8", "ACI-P272-L023-996A96D174", "ACI-P272-L024-85BA10F952", "ACI-P272-L026-953AE435EE",
+          "ACI-P272-L026-953AE435EE-02", "ACI-P272-L026-953AE435EE-03", "ACI-P272-L026-953AE435EE-04", "ACI-P272-L026-953AE435EE-05", "ACI-P272-L026-953AE435EE-06",
+          "ACI-P272-L026-953AE435EE-07", "ACI-P272-L026-953AE435EE-08", "ACI-P272-L028-A1EB8D6106", "ACI-P272-L030-E48E790250", "ACI-P272-L030-E48E790250-02",
+          "ACI-P272-L030-E48E790250-03", "ACI-P272-L032-29DE00E004", "ACI-P272-L033-FB85BFAFC0", "ACI-P272-L035-7C526B0BB2", "ACI-P272-L036-DC232FD3AB"
+        ])
+      }),
+      "lesson29-nonactive-purposive-embeds": Object.freeze({
+        lessonSections: Object.freeze(["§29.5"]),
+        atomIds: Object.freeze([
+          "ACI-P273-L002-21D82B9011", "ACI-P273-L003-9FE750E1D0", "ACI-P273-L004-91C873BF02", "ACI-P273-L004-91C873BF02-02", "ACI-P273-L004-91C873BF02-03",
+          "ACI-P273-L004-91C873BF02-04", "ACI-P273-L006-8C4C156464", "ACI-P273-L007-50138BBE01", "ACI-P273-L008-DC4955A91B", "ACI-P273-L009-93C44B5DE7",
+          "ACI-P273-L010-5FCF2525CF"
+        ])
+      }),
+      "lesson29-compound-stemmed-purposive-embeds": Object.freeze({
+        lessonSections: Object.freeze(["§29.6"]),
+        atomIds: Object.freeze([
+          "ACI-P273-L011-C3ABC88CE3", "ACI-P273-L012-7EDC080145", "ACI-P273-L014-42CD1EBA77", "ACI-P273-L015-C532B3B481", "ACI-P273-L015-C532B3B481-02",
+          "ACI-P273-L015-C532B3B481-03", "ACI-P273-L015-C532B3B481-04", "ACI-P273-L015-C532B3B481-05", "ACI-P273-L015-C532B3B481-06", "ACI-P273-L015-C532B3B481-07",
+          "ACI-P273-L015-C532B3B481-08", "ACI-P273-L015-C532B3B481-09", "ACI-P273-L015-C532B3B481-10", "ACI-P273-L015-C532B3B481-11", "ACI-P273-L015-C532B3B481-12",
+          "ACI-P273-L015-C532B3B481-13"
+        ])
+      }),
+      "lesson29-external-directionals-and-fulfilled-purpose": Object.freeze({
+        lessonSections: Object.freeze(["§29.7"]),
+        atomIds: Object.freeze([
+          "ACI-P273-L021-1FF88C0460", "ACI-P273-L021-1FF88C0460-02", "ACI-P273-L024-56DD83DCAE", "ACI-P273-L026-125BB0F20D", "ACI-P273-L026-125BB0F20D-02",
+          "ACI-P273-L026-125BB0F20D-03", "ACI-P273-L026-125BB0F20D-04", "ACI-P273-L026-125BB0F20D-05", "ACI-P273-L026-125BB0F20D-06", "ACI-P273-L026-125BB0F20D-07",
+          "ACI-P273-L026-125BB0F20D-08", "ACI-P273-L026-125BB0F20D-09", "ACI-P273-L028-A6FB03EE87", "ACI-P273-L030-A84B216618", "ACI-P273-L030-A84B216618-03",
+          "ACI-P273-L030-A84B216618-04", "ACI-P273-L030-A84B216618-05", "ACI-P273-L030-A84B216618-06", "ACI-P273-L030-A84B216618-07", "ACI-P273-L030-A84B216618-08",
+          "ACI-P273-L030-A84B216618-02", "ACI-P273-L032-195E9F5AB5", "ACI-P273-L033-7C35686FFB", "ACI-P273-L037-7EAE4B5D5A", "ACI-P273-L037-7EAE4B5D5A-02",
+          "ACI-P273-L037-7EAE4B5D5A-03", "ACI-P273-L037-7EAE4B5D5A-04", "ACI-P273-L037-7EAE4B5D5A-05", "ACI-P273-L037-7EAE4B5D5A-06", "ACI-P273-L037-7EAE4B5D5A-07",
+          "ACI-P273-L037-7EAE4B5D5A-08", "ACI-P273-L037-7EAE4B5D5A-09", "ACI-P273-L037-7EAE4B5D5A-10", "ACI-P273-L037-7EAE4B5D5A-11", "ACI-P273-L037-7EAE4B5D5A-12",
+          "ACI-P273-L037-7EAE4B5D5A-13", "ACI-P273-L037-7EAE4B5D5A-14", "ACI-P273-L037-7EAE4B5D5A-15", "ACI-P273-L037-7EAE4B5D5A-16", "ACI-P273-L037-7EAE4B5D5A-17",
+          "ACI-P273-L037-7EAE4B5D5A-18", "ACI-P273-L037-7EAE4B5D5A-19", "ACI-P273-L037-7EAE4B5D5A-20", "ACI-P273-L037-7EAE4B5D5A-21", "ACI-P273-L037-7EAE4B5D5A-22",
+          "ACI-P273-L037-7EAE4B5D5A-23", "ACI-P273-L037-7EAE4B5D5A-24", "ACI-P273-L037-7EAE4B5D5A-25", "ACI-P274-L008-154F4AF1C2", "ACI-P274-L009-5052103D57",
+          "ACI-P274-L011-AF61483AE0", "ACI-P274-L012-5955C7D77B", "ACI-P274-L014-B00890E0B4", "ACI-P274-L014-B00890E0B4-02", "ACI-P274-L014-B00890E0B4-03",
+          "ACI-P274-L014-B00890E0B4-04", "ACI-P274-L014-B00890E0B4-05", "ACI-P274-L014-B00890E0B4-06", "ACI-P274-L014-B00890E0B4-07", "ACI-P274-L014-B00890E0B4-08",
+          "ACI-P274-L014-B00890E0B4-09", "ACI-P274-L014-B00890E0B4-10"
+        ])
+      }),
+      "lesson30-nominal-embed-foundation-and-object-valence": Object.freeze({
+        lessonSections: Object.freeze(["§30.1", "§30.2"]),
+        atomIds: Object.freeze(["ACI-P275-L003-BAA3F631C0","ACI-P275-L003-BAA3F631C0-02","ACI-P275-L007-1F5E6886F4","ACI-P275-L007-1F5E6886F4-02","ACI-P275-L009-FB755E62DF","ACI-P275-L009-FB755E62DF-03","ACI-P275-L009-FB755E62DF-02","ACI-P275-L011-F59AFF95C1","ACI-P275-L011-F59AFF95C1-02","ACI-P275-L011-F59AFF95C1-03","ACI-P275-L011-F59AFF95C1-04","ACI-P275-L011-F59AFF95C1-05","ACI-P275-L011-F59AFF95C1-06","ACI-P275-L011-F59AFF95C1-07","ACI-P275-L016-B61BAC56D8","ACI-P275-L016-B61BAC56D8-02","ACI-P275-L016-B61BAC56D8-03","ACI-P275-L016-B61BAC56D8-04","ACI-P275-L019-0D1F1A7AA3","ACI-P275-L020-28DDA27538","ACI-P275-L025-56B6E1DE0F","ACI-P275-L027-F9C6B953C0","ACI-P275-L027-F9C6B953C0-02","ACI-P275-L027-F9C6B953C0-03","ACI-P275-L027-F9C6B953C0-04","ACI-P275-L027-F9C6B953C0-05","ACI-P276-L004-3BDE07DD69","ACI-P276-L004-3BDE07DD69-02","ACI-P276-L004-3BDE07DD69-03","ACI-P276-L004-3BDE07DD69-04","ACI-P276-L004-3BDE07DD69-05","ACI-P276-L004-3BDE07DD69-06"])
+      }),
+      "lesson30-single-object-incorporation": Object.freeze({
+        lessonSections: Object.freeze(["§30.3.1"]),
+        atomIds: Object.freeze(["ACI-P276-L011-682420F392","ACI-P276-L013-687E886330","ACI-P276-L015-4DDB06EA3C","ACI-P276-L017-4DB59DB21E","ACI-P276-L020-125ABA86C9","ACI-P276-L020-125ABA86C9-02","ACI-P276-L020-125ABA86C9-03","ACI-P276-L020-125ABA86C9-04","ACI-P276-L020-125ABA86C9-05","ACI-P276-L020-125ABA86C9-06","ACI-P276-L020-125ABA86C9-07","ACI-P276-L020-125ABA86C9-08","ACI-P276-L020-125ABA86C9-09","ACI-P276-L022-AD9B8FA51D","ACI-P276-L022-AD9B8FA51D-03","ACI-P276-L022-AD9B8FA51D-04","ACI-P276-L022-AD9B8FA51D-05","ACI-P276-L022-AD9B8FA51D-06","ACI-P276-L022-AD9B8FA51D-07","ACI-P276-L022-AD9B8FA51D-02","ACI-P276-L025-9B79CEE7E9","ACI-P276-L025-9B79CEE7E9-02","ACI-P276-L025-9B79CEE7E9-03","ACI-P276-L025-9B79CEE7E9-04","ACI-P276-L025-9B79CEE7E9-05","ACI-P276-L025-9B79CEE7E9-06","ACI-P276-L028-B023F6AA12","ACI-P276-L028-B023F6AA12-02","ACI-P276-L028-B023F6AA12-03","ACI-P276-L028-B023F6AA12-04","ACI-P276-L028-B023F6AA12-05","ACI-P276-L028-B023F6AA12-06","ACI-P276-L028-B023F6AA12-07","ACI-P276-L030-AF917EBBD4","ACI-P276-L030-AF917EBBD4-02","ACI-P276-L030-AF917EBBD4-03","ACI-P276-L030-AF917EBBD4-04","ACI-P276-L030-AF917EBBD4-05","ACI-P276-L030-AF917EBBD4-06","ACI-P276-L030-AF917EBBD4-07","ACI-P276-L030-AF917EBBD4-08","ACI-P276-L030-AF917EBBD4-09","ACI-P276-L033-9360CF333F","ACI-P276-L035-1E3D6B3C0B","ACI-P276-L035-1E3D6B3C0B-02","ACI-P276-L035-1E3D6B3C0B-03","ACI-P276-L037-6FB88D7A58","ACI-P276-L038-5E961E3DE7","ACI-P276-L039-E2D59FE8AD","ACI-P276-L039-E2D59FE8AD-02","ACI-P276-L040-BF6FF4F96A"])
+      }),
+      "lesson30-higher-valence-object-incorporation": Object.freeze({
+        lessonSections: Object.freeze(["§30.3.2", "§30.3.3"]),
+        atomIds: Object.freeze(["ACI-P277-L002-30373076BF","ACI-P277-L002-30373076BF-02","ACI-P277-L002-30373076BF-03","ACI-P277-L002-30373076BF-04","ACI-P277-L002-30373076BF-05","ACI-P277-L002-30373076BF-06","ACI-P277-L004-8933E6BC32","ACI-P277-L004-8933E6BC32-02","ACI-P277-L004-8933E6BC32-03","ACI-P277-L006-DBFD611ABF","ACI-P277-L008-F441206DB6","ACI-P277-L011-E8941CB926","ACI-P277-L011-E8941CB926-02","ACI-P277-L011-E8941CB926-03","ACI-P277-L011-E8941CB926-04","ACI-P277-L011-E8941CB926-05","ACI-P277-L011-E8941CB926-06","ACI-P277-L011-E8941CB926-07","ACI-P277-L011-E8941CB926-08","ACI-P277-L014-6EEAC77984","ACI-P277-L014-6EEAC77984-02","ACI-P277-L014-6EEAC77984-03","ACI-P277-L014-6EEAC77984-04","ACI-P277-L014-6EEAC77984-05","ACI-P277-L014-6EEAC77984-06","ACI-P277-L014-6EEAC77984-07","ACI-P277-L014-6EEAC77984-08","ACI-P277-L014-6EEAC77984-09","ACI-P277-L017-56ED4F7DDD","ACI-P277-L017-56ED4F7DDD-02","ACI-P277-L017-56ED4F7DDD-03","ACI-P277-L017-56ED4F7DDD-04","ACI-P277-L017-56ED4F7DDD-05","ACI-P277-L017-56ED4F7DDD-06","ACI-P277-L017-56ED4F7DDD-07","ACI-P277-L017-56ED4F7DDD-08","ACI-P277-L021-DACD042853","ACI-P277-L023-D0B11A90D0","ACI-P277-L023-D0B11A90D0-02","ACI-P277-L023-D0B11A90D0-03","ACI-P277-L023-D0B11A90D0-04","ACI-P277-L023-D0B11A90D0-05","ACI-P277-L023-D0B11A90D0-06","ACI-P277-L023-D0B11A90D0-07","ACI-P277-L023-D0B11A90D0-08","ACI-P277-L023-D0B11A90D0-09","ACI-P277-L024-D177FC5851","ACI-P277-L026-7A7D637D80","ACI-P277-L028-B2329E970D","ACI-P277-L028-B2329E970D-02","ACI-P277-L028-B2329E970D-03","ACI-P277-L031-DA9B625EC9","ACI-P277-L032-5D29263749","ACI-P277-L032-5D29263749-02","ACI-P277-L032-5D29263749-03","ACI-P277-L034-47033E1513","ACI-P277-L034-47033E1513-03","ACI-P277-L034-47033E1513-04","ACI-P277-L034-47033E1513-05","ACI-P277-L034-47033E1513-06","ACI-P277-L034-47033E1513-02","ACI-P277-L038-2A839CA282","ACI-P277-L038-2A839CA282-02","ACI-P277-L038-2A839CA282-03","ACI-P277-L038-2A839CA282-04"])
+      }),
       "lesson23-object-functions-and-governors": Object.freeze({
         lessonSections: Object.freeze(["§23.1"]),
         atomIds: Object.freeze([
@@ -8703,6 +8846,140 @@ export function createUiRenderingApi(targetObject = globalThis) {
           addLesson28Cue(
             "lesson28-recursive-compounding",
             `captured compound Result ${capturedStem || "issued Result"} is reused as the next ${capturedRole} · the user chooses only this role and the next binary bracketing · hierarchy depth ${lesson28Facts.recursiveDepth} is validated as acyclic with two distinct constituents · each layer derives its own connective, valence, tense, and participant links · outer embed valence and all typed participants remain intact · the finite boundary stays outside the completed compound · Add another derivation can continue the chain · Canvas examples are reading evidence, never a stem whitelist or depth template`,
+          );
+        }
+      }
+      const lesson29ClosureFrame = grammarContext?.operationFrame
+        ?.operation === "purposive"
+        ? grammarContext
+        : grammarContext?.vncLateOperationClosureFrame
+          || grammarContext?.lateOperationClosureFrame
+          || null;
+      const lesson29OperationFrame = lesson29ClosureFrame?.operationFrame
+        || (grammarContext?.operationFrame?.operation === "purposive"
+          ? grammarContext.operationFrame
+          : null);
+      if (
+        lesson29OperationFrame?.authorizationStatus === "authorized"
+        && lesson29OperationFrame.operation === "purposive"
+      ) {
+        const facts = lesson29OperationFrame.operationFacts || {};
+        const addLesson29Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => index >= annotation.start && index < annotation.end));
+          if (Number.isInteger(cueIndex)) addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+        };
+        addLesson29Cue(
+          "lesson29-purposive-foundation-and-future-embed",
+          `linked connectiveless Purposive · future embed ${lesson29OperationFrame.sourceStem} with ${facts.embedFutureMorph} boundary · class-conditioned future stem shape is preserved · purposeful movement comes before the intended action · ${facts.soundedFutureMorphSelected ? "rare sounded z was explicitly selected" : "normal silent future is automatic; rare sounded z remains a marked alternative"} · examples never limit typed verbstems`,
+        );
+        addLesson29Cue(
+          "lesson29-internal-directional-matrix",
+          `${facts.direction} comes from the one series choice · intransitive matrix uses internal ${facts.matrixDirectionalMorpheme} written ${(facts.matrixDirectionalSpellings || []).join(" or ")} · the future boundary precedes it · spelling follows sound context · this directional is neither connective t nor external on or huāl`,
+        );
+        addLesson29Cue(
+          "lesson29-purposeful-motion-base-and-series-system",
+          `series ${facts.series} combines direction, mood, and tense · purposeful-motion base ${facts.matrixBaseStem}${facts.matrixBaseStem === "i" ? ` with ${facts.imperfectiveNumberPartner}` : ""} is automatic · perfective o is distinct from on-o · finite tense ${facts.finiteTenseMorph} · number ${facts.numberMorph} · compatible typed Sources stay open without a whitelist`,
+        );
+        if (facts.series === "outbound-nonpast-indicative") {
+          const progressive = facts.progressiveContrast || {};
+          addLesson29Cue(
+            "lesson29-outbound-nonpast-and-progressive-contrast",
+            `outbound nonpast permits ${facts.licensedReadingRange?.join(" or ")} movement readings without another form choice · singular t-ī-uh and plural t-i-hui follow subject number · the purpose action begins after the movement · purposive internal ${progressive.purposiveInternalDirectional || "t"} and future embed remain distinct from progressive connective ${progressive.progressiveExternalConnective || "ti"} and overlapping action · class-conditioned length and glottal evidence are preserved · an Analysis choice belongs only to genuinely underspecified traditional text`,
+          );
+        }
+        if (facts.series === "outbound-past-indicative") {
+          addLesson29Cue(
+            "lesson29-outbound-past",
+            `outbound past uses perfective t-o with zero finite tense and ordinary ${facts.numberMorph} number · available readings: ${facts.licensedReadingRange?.join(", ")} · ordinary antecessive ō is ${facts.ordinaryAntecessiveSelected ? "selected" : "available but not selected"} · typed compound structure and mā context distinguish it from connective t plus on-o optative when traditional spelling is underspecified`,
+          );
+        }
+        if (facts.series === "outbound-nonpast-optative") {
+          addLesson29Cue(
+            "lesson29-outbound-optative",
+            `outbound nonpast optative uses ${facts.earlySingularGlottalSelected ? "the explicitly selected early stem-final h variant" : "ordinary t-i"} · available readings: ${facts.licensedReadingRange?.join(", ")} · let is exhortative, not permissive · regular plural h or licensed free n with preceding long ī remains a real choice · second-person x or xi comes from finite grammar · the purposive matrix remains structurally distinct from the admonitive dyad, with an Analysis choice only for genuinely underspecified text`,
+          );
+        }
+        if (facts.series === "inbound-nonfuture-indicative") {
+          addLesson29Cue(
+            "lesson29-inbound-nonfuture",
+            `inbound nonfuture uses internal ${facts.inboundInternalHitherDirectional || "/k/"} plus perfective c-o and ordinary ${facts.numberMorph} number · available readings: ${facts.licensedReadingRange?.join(", ")} · ordinary antecessive ō is ${facts.ordinaryAntecessiveSelected ? "selected" : "available but not selected"} and scopes the past act of purposing, not the intended action · internal hither /k/ remains distinct from external huāl`,
+          );
+        }
+        if (facts.series === "inbound-future-indicative") {
+          addLesson29Cue(
+            "lesson29-inbound-future",
+            `inbound future derives ${facts.inboundFutureNumberShape} from subject number · singular qu-ī-uh and plural qu-i-hui preserve the future embed, typed Source class, valence, and participants · finite tense ${facts.finiteTenseMorph} and ordinary ${facts.numberMorph} number are automatic · Canvas examples prove the productive pattern and never limit Source entry`,
+          );
+        }
+        if (facts.series === "inbound-nonpast-optative") {
+          addLesson29Cue(
+            "lesson29-inbound-optative",
+            `inbound nonpast optative uses qu-i with ordinary subject, object, and ${facts.numberMorph} number marking · available readings: ${facts.licensedReadingRange?.join(", ")} · let is exhortative, not permissive · the silent future purpose relation and open typed Source remain intact without reading or example controls`,
+          );
+        }
+        if (facts.nonactiveEmbedAuthorized === true) {
+          addLesson29Cue(
+            "lesson29-nonactive-purposive-embeds",
+            `${facts.nonactiveEmbedVoice} Result ${facts.nonactiveEmbedStem} is preserved as the future embed · its voice, valence, and participant topology remain intact · the silent future boundary and selected ${facts.series} matrix are outside the nonactive stem · negative particles remain sentence-external · this reuses the shared future-embed continuation path without a second voice engine or stem whitelist`,
+          );
+        }
+        if (facts.recursiveCompoundEmbedAuthorized === true) {
+          addLesson29Cue(
+            "lesson29-compound-stemmed-purposive-embeds",
+            `captured compound Result ${facts.recursiveCompoundEmbedStem} remains the complete Purposive embed · inner brackets, connective, valence, voice, participants, and event relation are preserved · the outer ${facts.embedFutureMorph} future boundary and ${facts.series} matrix follow the completed compound · the hierarchy is acyclic and can continue without an example template or depth control`,
+          );
+        }
+        if (facts.externalDirectionalSelected === true) {
+          addLesson29Cue(
+            "lesson29-external-directionals-and-fulfilled-purpose",
+            `external ${facts.externalDirectional} means ${facts.externalDirectionalMeaning} and stands outside the completed Purposive · it is independent from internal ${facts.matrixDirectionalMorpheme}, so the directions are ${facts.externalDirectionalRelation} · the separate embed and matrix actions allow matching or disagreement · it may continue or intensify movement · intended purpose, fulfilled purpose, metaphorical movement, and muted intention remain contextual readings, not translation controls`,
+          );
+        }
+      }
+      const lesson30Frame = grammarContext?.constructionKind === "nominal-embed-vnc"
+        ? grammarContext
+        : grammarContext?.nominalConstructionFrame?.constructionKind === "nominal-embed-vnc"
+          ? grammarContext.nominalConstructionFrame
+          : null;
+      const lesson30OperationFrame = lesson30Frame?.operationFrame || null;
+      if (
+        lesson30Frame?.authorizationStatus === "authorized"
+        && lesson30OperationFrame?.kind
+          === "classical-nahuatl-nominal-embed-operation-frame"
+      ) {
+        const addLesson30Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => index >= annotation.start && index < annotation.end));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        addLesson30Cue(
+          "lesson30-nominal-embed-foundation-and-object-valence",
+          `typed NNC embed ${lesson30OperationFrame.embedShape?.sourceStem} → general-use ${lesson30OperationFrame.embedShape?.realizedStem} inside ${lesson30OperationFrame.compoundStem} · relation ${lesson30OperationFrame.relation} · matrix valence ${lesson30OperationFrame.sourceMatrixValence} has ${lesson30OperationFrame.sourceValencePositionCount} object position(s), Result has ${lesson30OperationFrame.targetValencePositionCount} · boundaries, form, and valence follow from the two typed Sources · examples never limit Source admission`,
+        );
+        if (
+          lesson30OperationFrame.relation === "object"
+          && lesson30OperationFrame.sourceValencePositionCount === 1
+        ) {
+          addLesson30Cue(
+            "lesson30-single-object-incorporation",
+            `incorporated nominal satisfies ${lesson30OperationFrame.incorporatedObjectId} · the sole object position is consumed, so the Result is intransitive with no object carrier · finite subject remains · the complete canonical Result stays available for Later derivation`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "object"
+          && lesson30OperationFrame.sourceValencePositionCount > 1
+        ) {
+          const choice = lesson30OperationFrame.incorporatedObjectRoleChoiceRequired
+            ? `genuine role ambiguity was resolved as ${lesson30OperationFrame.incorporatedObjectId}`
+            : `${lesson30OperationFrame.incorporatedObjectId} is structurally determined; no extra choice is shown`;
+          addLesson30Cue(
+            "lesson30-higher-valence-object-incorporation",
+            `one object level (${lesson30OperationFrame.incorporatedObjectId}) is consumed · remaining nuclear objects ${(lesson30OperationFrame.remainingObjectIds || []).join(", ")} keep their typed governors and derivational levels · ${choice} · later derivation receives the complete canonical Result`,
           );
         }
       }
@@ -13497,6 +13774,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && purposiveSeries === "outbound-nonpast-optative",
         "classical-rule-logic-purposive-external":
           operation === "purposive",
+        "classical-rule-logic-purposive-sounded-future":
+          operation === "purposive",
+        "classical-rule-logic-purposive-early-singular-glottal":
+          operation === "purposive"
+          && !pluralSubject
+          && purposiveSeries === "outbound-nonpast-optative",
         "classical-rule-logic-honored-participant":
           ["honorific", "reverential"].includes(operation),
         "classical-rule-logic-honorific-stem-alternative":
@@ -14495,7 +14778,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (lesson11ClassOverride) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-class", [lesson11ClassOverride], lesson11ClassOverride);
       } else if (classSelectionContract?.allowedClassIds?.length) {
-        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-class", classSelectionContract.allowedClassIds, classSelectionContract.selectedClassId);
+        const visibleClassValues = classSelectionContract.selectedClassId
+          ? classSelectionContract.allowedClassIds
+          : ["", ...classSelectionContract.allowedClassIds];
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-class",
+          visibleClassValues,
+          classSelectionContract.selectedClassId,
+        );
       }
       Object.keys(controlVisibility).forEach(id => {
         const control = targetObject.document.getElementById(id);
@@ -15980,6 +16270,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-rule-logic-purposive-series",
             "classical-rule-logic-purposive-irregular-n",
             "classical-rule-logic-purposive-external",
+            "classical-rule-logic-purposive-sounded-future",
+            "classical-rule-logic-purposive-early-singular-glottal",
             "classical-rule-logic-honored-participant",
             "classical-rule-logic-honorific-stem-alternative"
           ].forEach(id => {
@@ -23076,6 +23368,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         [{
           sourceMorpheme,
           targetMorpheme,
+          elisionSide: position,
           vowelLength: "short",
           stressGroupCombination: true
         }]

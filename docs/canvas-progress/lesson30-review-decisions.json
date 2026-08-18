@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 30,
+  "decisions": {
+    "lesson30-nominal-embed-foundation-and-object-valence": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build one productive nominal-incorporation operation from owner-issued NNC and VNC Results. Preserve both typed Sources, derive the general-use nounstem and internal boundaries, distinguish object, adverb, and complement relations, and reduce valence by one only for incorporated objects. Examples and lexical witnesses never gate open Source admission."
+    },
+    "lesson30-single-object-incorporation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For every compatible typed NNC and single-object VNC Source, incorporate the nominal as the object, consume the sole object position, derive an intransitive Result with no object carrier, preserve the finite subject and complete Source analysis, and allow ordinary canonical continuation."
+    },
+    "lesson30-higher-valence-object-incorporation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the same productive object-incorporation rule to double- and triple-object matrices. Consume exactly one typed object level, preserve every remaining participant and shuntline relation, expose an object-role choice only where the typed Source permits a real ambiguity, and pass the complete Result into ordinary later derivation."
+    }
+  }
+}

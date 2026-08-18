@@ -162,6 +162,7 @@ function run(ctx = {}) {
     });
     const causativeHua = evaluate(ctx, {
         sourceStem: "invent-ō-hu-a",
+        sourceInitialISelection: "real",
         sourceValence: "specific-projective",
         objectKind: "specific-projective",
         objectPerson: "3sg",

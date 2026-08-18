@@ -13,11 +13,11 @@ const spec = {
   "coordinates": {
     "claim-p2952::p2952-a-future-tense-predicate-built-on-a-nonactive-stem": {
       "assertionId": "classical-purposive-nonactive-embed:p2952-a-future-tense-predicate-built-on-a-nonactive-stem",
-      "canonicalPath": "cases.nonactiveEmbed.authorizationStatus"
+      "canonicalPath": "cases.nonactiveEmbed.facts.nonactiveEmbedAuthorized"
     },
     "claim-p2953::p2953-it-will-be-in-either-the-passive-or-the": {
       "assertionId": "classical-purposive-nonactive-embed:p2953-it-will-be-in-either-the-passive-or-the",
-      "canonicalPath": "cases.nonactiveEmbed.ruleFamilies.5"
+      "canonicalPath": "cases.nonactiveEmbed.facts.nonactiveEmbedVoices"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

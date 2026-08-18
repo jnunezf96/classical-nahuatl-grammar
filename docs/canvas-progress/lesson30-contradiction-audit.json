@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "lesson": 30,
+  "scope": "accepted-groups-1-3",
+  "status": "UNCONTRADICTED",
+  "acceptedAtomCount": 148,
+  "awaitingReviewAtomCount": 856,
+  "resolvedCount": 18,
+  "unresolvedCount": 0,
+  "resolutions": [
+    "Nominal incorporation is one canonical operation combining typed NNC and VNC Sources rather than a list of example-specific routes.",
+    "The noun contributes its general-use stem and the application preserves the internal NNC-VNC boundary.",
+    "Object, adverb, and complement are distinct grammatical relations rather than translation labels.",
+    "Only incorporated-object formation reduces matrix valence under the accepted Groups 1-3 scope.",
+    "An incorporated object fills exactly one typed matrix object position.",
+    "A single-object matrix therefore becomes intransitive and carries no nuclear object pronoun.",
+    "The finite subject is preserved when the sole object position is consumed.",
+    "A double-object matrix retains one object after incorporation.",
+    "A triple-object matrix retains two objects after incorporation.",
+    "Remaining objects keep their governor and derivational level instead of being rebuilt from surface spelling.",
+    "The structurally oldest compatible object is consumed automatically when the typed Source supplies one match.",
+    "A role control is required only when the typed Source explicitly supplies more than one compatible object match.",
+    "A requested role that is not among the typed compatible matches is rejected.",
+    "An intransitive matrix cannot authorize incorporated-object formation.",
+    "The passive of a single-object incorporated Result is rejected because no object remains to support it.",
+    "Compatible invented nounstem and verbstem shapes pass the same productive rule; Canvas witnesses never gate admission.",
+    "The complete canonical VNC Result remains available through the ordinary Later derivation projection.",
+    "All 148 accepted atoms have exact normal, mutation, clickable-cue, and collapsed reading-guide routes."
+  ],
+  "reportAuthority": false
+}

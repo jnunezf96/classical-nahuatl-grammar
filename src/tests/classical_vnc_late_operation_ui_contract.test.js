@@ -151,9 +151,9 @@ function run(ctx = {}) {
             status: "authorized",
             selectControls: 15,
             selectOptions: 87,
-            switches: 2,
-            authorityTags: 91,
-            uniqueTags: 91,
+        switches: 4,
+        authorityTags: 95,
+        uniqueTags: 95,
             incomplete: [],
             missingDefaults: [],
             duplicates: [],
@@ -230,7 +230,7 @@ function run(ctx = {}) {
         })
     );
     s.eq(
-        "Both semantic switches keep documentary authority tags out of the DOM",
+        "Every semantic switch keeps documentary authority tags out of the DOM",
         {
             absent: Object.fromEntries(
                 Object.entries(renderedSwitches).map(
@@ -284,7 +284,7 @@ function run(ctx = {}) {
         },
         {
             status: "blocked",
-            recordCount: 91,
+        recordCount: 95,
             visibleOptionCount: 0,
             missingVisibleTags: [],
             incompleteRecords: [],

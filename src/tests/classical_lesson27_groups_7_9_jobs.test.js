@@ -79,7 +79,7 @@ function run(ctx = {}) {
         lateVariant: "destockal-applicative-force",
     });
     const hostileLexicalized = evaluate(ctx, {
-        sourceStem: "invent",
+        sourceStem: "nema",
         lateVariant: "destockal-lexicalized",
     });
 

@@ -110,19 +110,30 @@ function run(ctx) {
     };
     const elide = options => {
         const application = request("phonology:vowel-elision", [options]); const result = application.canonicalResult;
-        return { authorized: application.authorizationStatus === "authorized", blocked: application.authorizationStatus === "blocked", reason: result?.blockReason || "", output: result?.outputForm || "", proper: result?.properElision === true, spellingChange: result?.spellingChangeOftenNecessary === true };
+        return { authorized: application.authorizationStatus === "authorized", blocked: application.authorizationStatus === "blocked", reason: result?.blockReason || "", output: result?.outputForm || "", proper: result?.properElision === true, spellingChange: result?.spellingChangeOftenNecessary === true, side: result?.elisionSide || "", literalTargetMatchesDerived: result?.literalTargetMatchesDerived !== false };
     };
     const elisions = {
-        short: elide({ sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short" }),
-        long: elide({ sourceMorpheme: "ōc", targetMorpheme: "c", vowelLength: "long" }),
-        written: elide({ sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short", indicatedInWriting: true }),
-        supportive: elide({ sourceMorpheme: "ic", targetMorpheme: "c", vowelLength: "short", supportiveI: true }),
-        oc: elide({ sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short" }),
-        zo: elide({ sourceMorpheme: "zo", targetMorpheme: "z", vowelLength: "short" }),
-        inWord: elide({ sourceMorpheme: "in", targetMorpheme: "n", vowelLength: "short" }),
-        ihui: elide({ sourceMorpheme: "ihui", targetMorpheme: "hui", vowelLength: "short" }),
-        omome: elide({ sourceMorpheme: "omōme", targetMorpheme: "mōme", vowelLength: "short" }),
+        short: elide({ sourceMorpheme: "oc", targetMorpheme: "wrong", vowelLength: "short", stressGroupCombination: true }),
+        long: elide({ sourceMorpheme: "ōc", targetMorpheme: "c", vowelLength: "long", stressGroupCombination: true }),
+        written: elide({ sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short", indicatedInWriting: true, stressGroupCombination: true }),
+        supportive: elide({ sourceMorpheme: "ic", targetMorpheme: "c", vowelLength: "short", supportiveI: true, stressGroupCombination: true }),
+        oc: elide({ sourceMorpheme: "oc", targetMorpheme: "c", vowelLength: "short", stressGroupCombination: true }),
+        zo: elide({ sourceMorpheme: "zo", targetMorpheme: "z", vowelLength: "short", stressGroupCombination: true }),
+        inWord: elide({ sourceMorpheme: "in", targetMorpheme: "n", vowelLength: "short", stressGroupCombination: true }),
+        ihui: elide({ sourceMorpheme: "ihui", targetMorpheme: "hui", elisionSide: "initial", vowelLength: "short", stressGroupCombination: true }),
+        omome: elide({ sourceMorpheme: "omōme", targetMorpheme: "mōme", elisionSide: "initial", vowelLength: "short", stressGroupCombination: true }),
     };
+    const finalVowelShapes = ["a", "ā", "e", "ē", "i", "ī", "o", "ō"].map((vowel) => (
+        elide({
+            sourceMorpheme: `x${vowel}`,
+            elisionSide: "final",
+            stressGroupCombination: true,
+        })
+    ));
+    const missingStressGroup = elide({
+        sourceMorpheme: "xepa",
+        elisionSide: "final",
+    });
     s.ok("all allowed loss and shift rules run through the ordinary application", Object.values(losses).every(value => value.authorized) && Object.values(shifts).every(value => value.authorized));
     for (const [atomId, observes] of LOSS_ATOMS) { s.eq(`${atomId}: exact consonant-loss job`, observes(losses), true); const broken = structuredClone(losses); for (const value of Object.values(broken)) { value.kind = "broken"; value.lost = false; value.side = "broken"; value.sound = "broken"; value.spelling = "broken"; value.optional = false; value.nasalTrace = false; } s.eq(`${atomId}: changing loss behavior fails`, observes(broken), false); }
     for (const [atomId, observes] of SHIFT_ATOMS) { s.eq(`${atomId}: exact consonant-shift job`, observes(shifts), true); const broken = structuredClone(shifts); for (const value of Object.values(broken)) { value.kind = "broken"; value.sound = "broken"; value.spelling = "broken"; value.optional = false; value.rare = false; value.reverts = false; } s.eq(`${atomId}: changing shift behavior fails`, observes(broken), false); }
@@ -130,6 +141,25 @@ function run(ctx) {
     for (const [atomId, observes] of LOSS_EXAMPLE_ATOMS) { s.eq(`${atomId}: exact automatic loss example`, observes(losses), true); const broken = structuredClone(losses); for (const value of Object.values(broken)) { value.authorized = false; value.sound = "broken"; value.spelling = "broken"; value.nasalTrace = false; } s.eq(`${atomId}: breaking the automatic loss rule fails`, observes(broken), false); }
     for (const [atomId, observes] of SHIFT_EXAMPLE_ATOMS) { s.eq(`${atomId}: exact automatic shift example`, observes(shifts), true); const broken = structuredClone(shifts); for (const value of Object.values(broken)) { value.authorized = false; value.sound = "broken"; value.spelling = "broken"; value.reverts = false; } s.eq(`${atomId}: breaking the automatic shift rule fails`, observes(broken), false); }
     for (const [atomId, observes] of ELISION_EXAMPLE_ATOMS) { s.eq(`${atomId}: exact automatic elision example`, observes(elisions), true); const broken = structuredClone(elisions); for (const value of Object.values(broken)) { value.authorized = false; value.output = "broken"; } s.eq(`${atomId}: breaking the automatic elision rule fails`, observes(broken), false); }
+    s.eq("unlisted final-vowel Source shapes use the same typed edge rule", finalVowelShapes.map((value) => [value.authorized, value.reason, value.output, value.side]), [
+        [true, "", "x", "final"],
+        [false, "long-vowel-resists-elision", "", "final"],
+        [true, "", "x", "final"],
+        [false, "long-vowel-resists-elision", "", "final"],
+        [true, "", "x", "final"],
+        [false, "long-vowel-resists-elision", "", "final"],
+        [true, "", "x", "final"],
+        [false, "long-vowel-resists-elision", "", "final"],
+    ]);
+    s.eq("a literal target cannot authorize or rewrite the productive edge rule", [
+        elisions.short.authorized,
+        elisions.short.output,
+        elisions.short.literalTargetMatchesDerived,
+    ], [true, "c", false]);
+    s.eq("stress-group environment must be explicit Source information", [
+        missingStressGroup.authorized,
+        missingStressGroup.reason,
+    ], [false, "not-set-stress-group-combination"]);
     return s;
 }
 

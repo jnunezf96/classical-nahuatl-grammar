@@ -19,7 +19,7 @@ function buildFirstCaquiCausative(service) {
     };
     const preview = service.evaluate(request);
     const optionId = preview.controlFrame?.derivationOptionInventory
-        ?.options?.find(option => option.targetStem === "caqui-tiā")
+        ?.options?.find(option => option.targetStem === "caquī-tiā")
         ?.optionId || "";
     return service.evaluate({ ...request, derivationOptionId: optionId });
 }
@@ -124,11 +124,11 @@ function run(ctx = {}) {
         {
             first: [
                 "authorized",
-                "nimitzcaquitia",
-                "#ni-0+m-itz+⎕-0(caqui-tia)0+0-0#",
+                "nimitzcaquītia",
+                "#ni-0+m-itz+⎕-0(caquī-tia)0+0-0#",
             ],
             source: {
-                stem: "caqui-tiā",
+                stem: "caquī-tiā",
                 class: "C",
                 valence: "multiple-object",
                 subject: "1sg",
@@ -142,21 +142,21 @@ function run(ctx = {}) {
             },
             second: [
                 "authorized",
-                "nēchcaquitiltia",
-                "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
+                "nēchcaquītiltia",
+                "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
                 true,
             ],
             directContinuation: [
                 "authorized",
-                "nimitzcaquitia",
-                "#ni-0+m-itz+⎕-0(caqui-tia)0+0-0#",
+                "nimitzcaquītia",
+                "#ni-0+m-itz+⎕-0(caquī-tia)0+0-0#",
                 true,
             ],
             paradigm: [
                 "authorized",
                 "authorized",
-                "nēchcaquitiltia",
-                "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
+                "nēchcaquītiltia",
+                "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
                 true,
                 true,
             ],
@@ -176,12 +176,12 @@ function run(ctx = {}) {
         first.resultFrame,
         {
             ...secondRequest,
-            surface: "nēchcaquitiltia",
+            surface: "nēchcaquītiltia",
             formula: "#forged#",
         }
     );
     const mismatches = [
-        { sourceStem: "nēchcaquitiltia" },
+        { sourceStem: "nēchcaquītiltia" },
         { verbClass: "B" },
         { sourceValence: "specific-projective" },
         { sourceSubject: "2sg" },
@@ -238,7 +238,7 @@ function run(ctx = {}) {
             otherConsumesShared: null,
             sharedConsumesOther: null,
             mismatches: [null, null, null, null, null, null, null],
-            exactExplicitObjects: ["authorized", "nēchcaquitiltia"],
+            exactExplicitObjects: ["authorized", "nēchcaquītiltia"],
             poisoned: [
                 "blocked",
                 "classical-vnc-application-caller-authority-rejected",

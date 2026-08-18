@@ -164,11 +164,11 @@ function run(ctx = {}) {
         requestedDerivation: "causative",
         causativeObjectKind: "specific-projective",
         requestedVoice: "active",
-    }, "caqui-tiā");
+    }, "caquī-tiā");
     const ambiguous = continueCausative(
         application,
         firstCausative.frame.resultFrame,
-        "caqui-ti-l-tiā",
+        "caquī-ti-l-tiā",
     );
     const reverseAnalyses = ambiguous.resultFrame
         ?.derivationOperationFrame?.reverseSourceAnalyses || [];
@@ -270,8 +270,8 @@ function run(ctx = {}) {
         "lesson25-causative-ambiguity": {
             result: [
                 "authorized",
-                "tinēchtēcaquitiltia",
-                "#ti-0+n-ēch+⎕-0+tē(caqui-ti-l-tia)0+0-0#",
+                "tinēchtēcaquītiltia",
+                "#ti-0+n-ēch+⎕-0+tē(caquī-ti-l-tia)0+0-0#",
             ],
             analyses: [
                 ["identified-source", "active", false, false, false],

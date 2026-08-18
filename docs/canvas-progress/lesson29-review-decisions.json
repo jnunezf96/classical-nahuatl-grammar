@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 29,
+  "decisions": {
+    "lesson29-purposive-foundation-and-future-embed": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build Purposive as a linked connectiveless compound with an owner-issued future predicate in the embed. Derive the class-conditioned future stem, normal silent future boundary, purposeful-motion matrix, and movement-before-purpose relation automatically; expose only a clearly marked rare sounded-future alternative and never use example stems as authority."
+    },
+    "lesson29-internal-directional-matrix": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reuse direction from the single Purposive series choice. Derive an intransitive matrix with stem-internal outbound t or inbound /k/ written c or qu after the future boundary, distinguish it from connective t and stem-external directionals, and add no duplicate direction or spelling control."
+    },
+    "lesson29-purposeful-motion-base-and-series-system": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use one six-way Purposive series choice for direction, mood, and tense. Derive purposeful-motion i with number-conditioned uh or hui, perfective o, zero finite tense, and the ordinary singular or plural number dyad; reject unlicensed coordinates while keeping every compatible typed Source stem open."
+    },
+    "lesson29-outbound-nonpast-and-progressive-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate outbound nonpast purposives for every compatible typed Source, deriving singular or plural matrix shape, participants, class-conditioned future-embed shape, and movement-before-purpose timing. Preserve the present and future reading range, keep purposive internal t distinct from progressive connective ti, and require an analysis choice only when an underspecified traditional form genuinely leaves both structures possible."
+    },
+    "lesson29-outbound-past": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate outbound past purposives with perfective t-o, zero finite tense, ordinary number, optional ordinary antecessive ō, and the licensed simple, habitual, and anterior past readings. Keep the purposive distinct from connective t plus on-o and use typed structure or mā context to resolve the construction only where an underspecified text is genuinely ambiguous."
+    },
+    "lesson29-outbound-optative": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate outbound nonpast optative purposives with t-i, automatic participants and number, regular plural h or the user-selected free plural n with required long ī, and the licensed command, exhortation, wish, and self-encouragement readings. Preserve the early singular glottal form only as an explicitly selected marked alternative, and require a purposive-versus-admonitive analysis only when an underspecified text genuinely leaves both structures possible."
+    },
+    "lesson29-inbound-nonfuture": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate inbound nonfuture purposives for every compatible typed Source, deriving internal /k/ written c before o, perfective c-o, ordinary number, participants, and the complete present-through-distant-past reading range. Reuse optional ordinary antecessive ō, whose scope is the past act of purposing even when the translation is present, and keep internal hither direction distinct from external huāl."
+    },
+    "lesson29-inbound-future": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate inbound future purposives for every compatible typed Source, deriving singular qu-ī-uh or plural qu-i-hui from subject number while preserving the silent future embed, class-conditioned Source shape, valence, participants, zero finite tense, and ordinary number. Canvas examples remain evidence and never gate Source admission."
+    },
+    "lesson29-inbound-optative": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Generate inbound nonpast optative purposives for every compatible typed Source, deriving qu-i, ordinary subject and object carriers, zero tense, number, and the finite Result. Preserve command, wish, exhortation, self-encouragement, and self-suggestion as contextual readings, with nonpermissive let as a reading cue rather than another control."
+    },
+    "lesson29-nonactive-purposive-embeds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture any owner-issued passive or impersonal VNC Result as the future embed of the ordinary Purposive path. Preserve its nonactive stem, voice, participants, and valence; derive the selected series, direction, matrix, number, and finite Result without a second voice engine or stem whitelist."
+    },
+    "lesson29-compound-stemmed-purposive-embeds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture any owner-issued compound VNC Result as the Purposive future embed. Preserve its brackets, connective, valence, voice, participants, and event relation; apply the outer future boundary and selected Purposive series through the canonical acyclic continuation path without an example template."
+    },
+    "lesson29-external-directionals-and-fulfilled-purpose": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep ordinary external on and huāl structurally separate from formal Purposive internal t or /k/. Allow either external directional outside an authorized Purposive Result, including matching or mismatching directions, while preserving participants and contextual purpose, fulfilled-result, metaphorical, or muted-intention readings without translation controls."
+    }
+  }
+}

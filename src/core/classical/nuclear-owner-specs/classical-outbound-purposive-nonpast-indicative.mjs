@@ -15,7 +15,7 @@ const spec = {
   "coordinates": {
     "claim-p2914::p2914-the-matrix-of-a-compound-stemmed-vnc-signifying-outbound": {
       "assertionId": "classical-outbound-purposive-nonpast-indicative:p2914-the-matrix-of-a-compound-stemmed-vnc-signifying-outbound",
-      "canonicalPath": "cases.singularSeries.outbound-nonpast-indicative.facts.matrixDirectionalMorph"
+      "canonicalPath": "cases.singularSeries.outbound-nonpast-indicative.facts.licensedReadingRange"
     },
     "claim-p2915::p2915-the-vncs-have-only-nonpast-and-past-tense-distinctions": {
       "assertionId": "classical-outbound-purposive-nonpast-indicative:p2915-the-vncs-have-only-nonpast-and-past-tense-distinctions",

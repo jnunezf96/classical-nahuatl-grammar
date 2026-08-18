@@ -11394,7 +11394,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P211-L015-41A399C146 | §25.2.3 | DEP | grammar-bearing | 211 | 15 | 8122 | The /a/ is replaced with [i] as in item 1 above. |
 | ACI-P211-L016-EC526AFA40 | §25.2.3 | LEX | grammar-bearing | 211 | 16 | 8124–8126 | Source tla-(itt-a) can mean ‘to look at a nonhuman object or something.’ |
 | ACI-P211-L016-EC526AFA40-03 | §25.2.3 | LEX | grammar-bearing | 211 | 16 | 8124–8126 | Source tla-(itt-a) can mean ‘to see a nonhuman object or something.’ |
-| ACI-P211-L016-EC526AFA40-04 | §25.2.3 | RUL | grammar-bearing | 211 | 16 | 8124–8126 | Tla-(itt-a) derives through reconstructed nonactive *(itt-i-hua) to causative tē+tla-(itt-ī-tiā). |
+| ACI-P211-L016-EC526AFA40-04 | §25.2.3 | RUL | grammar-bearing | 211 | 16 | 8124–8126 | Tla-(itt-a) derives through reconstructed nonactive *(itt-ī-hua) to causative tē+tla-(itt-ī-tiā). |
 | ACI-P211-L016-EC526AFA40-05 | §25.2.3 | LEX | grammar-bearing | 211 | 16 | 8124–8126 | Causative tē+tla-(itt-ī-tiā) means ‘to cause a human object or someone to see a nonhuman object or something by showing it.’ |
 | ACI-P211-L016-EC526AFA40-06 | §25.2.3 | LEX | grammar-bearing | 211 | 16 | 8124–8126 | Causative tē+tla-(itt-ī-tiā) can mean ‘to show a nonhuman object or something to a human object or someone.’ |
 | ACI-P211-L016-EC526AFA40-07 | §25.2.3 | ANA | analysis | 211 | 16 | 8124–8126 | Long ī after tt in itt-ī-tiā is tentatively attributed to apparent geminate tt representing one phone. |

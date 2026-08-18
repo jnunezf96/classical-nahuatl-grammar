@@ -442,6 +442,11 @@ function cloneNominalConstructionRequest(request = {}) {
     clone.source.cobPreteritAgentiveResultFrame =
       cobPreteritAgentiveResultFrame;
   }
+  const matrixResultFrame =
+    request?.source?.matrixConstituent?.resultFrame || null;
+  if (matrixResultFrame && clone?.source?.matrixConstituent) {
+    clone.source.matrixConstituent.resultFrame = matrixResultFrame;
+  }
   return clone;
 }
 
@@ -554,15 +559,16 @@ function buildEvaluatedGcdFrame(frame = null) {
 }
 
 const vncScalarResultCaches = new WeakMap();
-const vncPreparedPlanCaches = new WeakMap();
 
 function findUnsafeOrNamedAuthorityPath(
   value,
   blockedKeys,
   path,
-  seen
+  seen,
+  trustedValues = new WeakSet()
 ) {
   if (!value || typeof value !== "object") return "";
+  if (trustedValues.has(value)) return "";
   if (seen.has(value)) return "";
   seen.add(value);
   let prototype;
@@ -616,7 +622,8 @@ function findUnsafeOrNamedAuthorityPath(
       item,
       blockedKeys,
       nextPath,
-      seen
+      seen,
+      trustedValues
     );
     if (nested) return nested;
   }
@@ -626,27 +633,42 @@ function findUnsafeOrNamedAuthorityPath(
 function findHostileAuthorityPath(
   value,
   path = "request",
-  seen = new WeakSet()
+  seen = new WeakSet(),
+  trustedValues = new WeakSet()
 ) {
   return findUnsafeOrNamedAuthorityPath(
     value,
     HOSTILE_AUTHORITY_KEYS,
     path,
-    seen
+    seen,
+    trustedValues
   );
 }
 
 function findCallerMintedSourceAuthorityPath(
   value,
   path = "request",
-  seen = new WeakSet()
+  seen = new WeakSet(),
+  trustedValues = new WeakSet()
 ) {
   return findUnsafeOrNamedAuthorityPath(
     value,
     CALLER_MINTED_SOURCE_AUTHORITY_KEYS,
     path,
-    seen
+    seen,
+    trustedValues
   );
+}
+
+function getNominalConstructionTrustedResultFrames(request = {}) {
+  const trusted = new WeakSet();
+  [
+    request?.source?.embedConstituent?.resultFrame,
+    request?.source?.matrixConstituent?.resultFrame,
+  ].forEach(frame => {
+    if (frame && typeof frame === "object") trusted.add(frame);
+  });
+  return trusted;
 }
 
 function normalizeStem(value = "") {
@@ -722,6 +744,17 @@ function projectSourceConstituents(constructionKind = "", source = {}) {
       stem: normalizeStem(embedConstituent.stem),
     };
   }
+  const matrixConstituent = source.matrixConstituent;
+  if (
+    matrixConstituent
+    && typeof matrixConstituent === "object"
+    && !Array.isArray(matrixConstituent)
+  ) {
+    projected.matrixConstituent = {
+      kind: normalizeKey(matrixConstituent.kind),
+      stem: normalizeStem(matrixConstituent.stem),
+    };
+  }
   return deepFreeze(projected);
 }
 
@@ -737,6 +770,7 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
   const embedStem = normalizeStem(source.embedStem);
   const matrixStem = normalizeStem(source.matrixStem);
   const embedConstituent = source.embedConstituent;
+  const matrixConstituent = source.matrixConstituent;
   let blockReason = "";
   let agentiveEmbed = false;
   if (embedConstituent !== undefined) {
@@ -763,27 +797,77 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
     const suppliedPredicateStem = normalizeStem(
       suppliedResult?.canonicalResult?.nncSlotFrame?.slots?.predicate?.stem
     );
-    const resultAuthorized = Boolean(
-      suppliedResult
+    const preteritAgentiveAuthorized = Boolean(
+      constituentKind === "preterit-agentive-nnc"
+      && suppliedResult
       && target.isClassicalNahuatlDeverbalNncGrammarFrame?.(suppliedResult) === true
       && suppliedResult.operationFrame?.nominalizationKind
         === "preterit-agentive"
-      && [
-        suppliedRestrictedStem,
-        suppliedGeneralStem,
-        suppliedPredicateStem,
-      ].filter(Boolean).includes(constituentStem)
+      && [suppliedRestrictedStem, suppliedGeneralStem, suppliedPredicateStem]
+        .filter(Boolean).includes(constituentStem)
     );
+    const ordinaryNncAuthorized = Boolean(
+      constituentKind === "ordinary-nnc"
+      && suppliedResult
+      && target.isClassicalNahuatlOrdinaryNncResult?.(suppliedResult) === true
+      && normalizeStem(suppliedResult.sourceFrame?.stem) === constituentStem
+    );
+    const resultAuthorized = preteritAgentiveAuthorized
+      || ordinaryNncAuthorized;
     if (
       forbiddenKey
-      || constituentKind !== "preterit-agentive-nnc"
+      || !["ordinary-nnc", "preterit-agentive-nnc"].includes(constituentKind)
       || !constituentStem
       || constituentStem !== embedStem
       || !resultAuthorized
     ) {
-      blockReason = "preterit-agentive-embed-constituent-mismatch";
+      blockReason = constituentKind === "ordinary-nnc"
+        ? "ordinary-nnc-embed-constituent-mismatch"
+        : "preterit-agentive-embed-constituent-mismatch";
     } else {
-      agentiveEmbed = true;
+      agentiveEmbed = preteritAgentiveAuthorized;
+    }
+  }
+  let matrixResultProjection = null;
+  if (!blockReason && matrixConstituent !== undefined) {
+    const constituentObject = matrixConstituent
+      && typeof matrixConstituent === "object"
+      && !Array.isArray(matrixConstituent)
+      ? matrixConstituent
+      : null;
+    const allowedKeys = new Set(["kind", "stem", "resultFrame"]);
+    const forbiddenKey = constituentObject
+      ? Reflect.ownKeys(constituentObject).find(
+        key => typeof key !== "string" || !allowedKeys.has(key)
+      )
+      : "matrixConstituent";
+    matrixResultProjection = target
+      .getClassicalNahuatlVncContinuationSourceConstituents?.(
+        constituentObject?.resultFrame
+      ) || null;
+    const projectedObjectCount = Array.isArray(
+      matrixResultProjection?.sourceObjectRequests
+    )
+      ? matrixResultProjection.sourceObjectRequests.length
+      : -1;
+    const expectedObjectCount = ({
+      intransitive: 0,
+      "single-object": 1,
+      "double-object": 2,
+      "triple-object": 3,
+    })[normalizeMatrixValence(source.matrixValence || source.sourceValence)];
+    if (
+      forbiddenKey
+      || normalizeKey(constituentObject?.kind) !== "vnc-result"
+      || normalizeStem(constituentObject?.stem) !== matrixStem
+      || matrixResultProjection?.sourceStem !== matrixStem
+      || matrixResultProjection?.verbClass
+        !== normalizeToken(source.matrixVerbClass || source.verbClass).toUpperCase()
+      || projectedObjectCount !== expectedObjectCount
+      || matrixResultProjection?.grammarAuthority !== false
+      || matrixResultProjection?.callerSuppliedAuthorityAccepted !== false
+    ) {
+      blockReason = "nominal-embed-matrix-result-constituent-mismatch";
     }
   }
 
@@ -844,6 +928,11 @@ function issueClassicalNahuatlNominalConstructionSourceAuthorization(
       && ["tla-cui", "tla-hcuil-o-a"].includes(matrixStem),
     matrixIsApplicative: constructionKind === "nominal-embed-vnc"
       && NOMINAL_EMBED_APPLICATIVE_MATRIX_STEMS.has(matrixStem),
+    ordinaryNncEmbed: Boolean(
+      embedConstituent
+      && normalizeKey(embedConstituent.kind) === "ordinary-nnc"
+    ),
+    matrixResultCaptured: Boolean(matrixResultProjection),
     embedSemanticClass: constructionKind === "nominal-embed-vnc"
       ? NOMINAL_EMBED_BODY_OR_CLOTHING_STEMS.get(embedStem) || ""
       : "",
@@ -1069,19 +1158,40 @@ function normalizeMatrixValence(value = "") {
 }
 
 function buildObjectRequests(count, request = {}) {
+  const supplied = Array.isArray(request.sourceObjectRequests)
+    ? request.sourceObjectRequests
+    : [];
+  if (supplied.length === count) {
+    return supplied.map((objectRequest, index) => ({
+      objectId: normalizeKey(
+        objectRequest?.objectId || `source-object-${index + 1}`
+      ),
+      objectKind: normalizeKey(
+        objectRequest?.objectKind || "specific-projective"
+      ),
+      objectPerson: normalizeKey(objectRequest?.objectPerson || "3sg"),
+      governor: normalizeKey(
+        objectRequest?.governor || (index ? "shuntline" : "directive")
+      ),
+      derivationalLevel: Number(
+        objectRequest?.derivationalLevel || index + 1
+      ),
+    }));
+  }
   const people = Array.isArray(request.objectPeople) ? request.objectPeople : [];
   const kinds = Array.isArray(request.objectKinds) ? request.objectKinds : [];
   return Array.from({ length: count }, (_, index) => ({
     objectId: `source-object-${index + 1}`,
     objectKind: normalizeKey(kinds[index] || "specific-projective"),
     objectPerson: normalizeKey(people[index] || (index === 0 ? request.objectPerson || "3sg" : "3sg")),
-    governor: index ? "shuntline" : "directive",
+    governor: index === 0 ? "directive" : index === 1 ? "applicative" : "causative",
     derivationalLevel: index + 1,
   }));
 }
 
 function valenceFromObjectRequests(objectRequests = []) {
   if (!objectRequests.length) return "intransitive";
+  if (objectRequests.length > 1) return "multiple-object";
   return normalizeKey(objectRequests[0]?.objectKind || "specific-projective") === "nonspecific-human"
     ? "projective-human"
     : normalizeKey(objectRequests[0]?.objectKind || "specific-projective") === "nonspecific-nonhuman"
@@ -1090,9 +1200,11 @@ function valenceFromObjectRequests(objectRequests = []) {
 }
 
 function evaluateCanonicalVncCoordinate(target, vncRequest = {}) {
+  const directEvaluationAvailable =
+    typeof target.evaluateClassicalNahuatlVncApplication === "function";
   const preparedProjectionAvailable = typeof target.prepareClassicalNahuatlVncParadigmPlan === "function"
     && typeof target.projectClassicalNahuatlVncParadigmCoordinates === "function";
-  if (!preparedProjectionAvailable && typeof target.evaluateClassicalNahuatlVncApplication !== "function") {
+  if (!preparedProjectionAvailable && !directEvaluationAvailable) {
     return Object.freeze({
       authorizationStatus: "blocked",
       blockReason: "canonical-vnc-application-unavailable",
@@ -1104,18 +1216,17 @@ function evaluateCanonicalVncCoordinate(target, vncRequest = {}) {
   const targetCache = vncScalarResultCaches.get(target) || new Map();
   if (!vncScalarResultCaches.has(target)) vncScalarResultCaches.set(target, targetCache);
   let canonicalResult = targetCache.get(vncCacheKey);
+  if (!canonicalResult && directEvaluationAvailable) {
+    canonicalResult = target.evaluateClassicalNahuatlVncApplication(
+      vncRequest
+    );
+  }
   if (!canonicalResult && preparedProjectionAvailable) {
-    const preparedKey = JSON.stringify({
-      ...vncRequest,
-      subject: "",
-      mood: "",
-      tense: "",
-    });
-    const planCache = vncPreparedPlanCaches.get(target) || new Map();
-    if (!vncPreparedPlanCaches.has(target)) vncPreparedPlanCaches.set(target, planCache);
-    const preparedPlan = planCache.get(preparedKey)
-      || target.prepareClassicalNahuatlVncParadigmPlan(vncRequest);
-    if (!planCache.has(preparedKey)) planCache.set(preparedKey, preparedPlan);
+    // Paradigm plans carry service-owned identity. Preparing a fresh plan keeps
+    // that identity paired with the service that projects its coordinates.
+    const preparedPlan = target.prepareClassicalNahuatlVncParadigmPlan(
+      vncRequest
+    );
     const coordinate = target.projectClassicalNahuatlVncParadigmCoordinates(preparedPlan, [{
       subject: vncRequest.subject,
       mood: vncRequest.mood,
@@ -1135,14 +1246,13 @@ function evaluateCanonicalVncCoordinate(target, vncRequest = {}) {
       surfaceStringAuthority: false,
     });
   }
-  if (!canonicalResult) canonicalResult = target.evaluateClassicalNahuatlVncApplication(vncRequest);
   if (!targetCache.has(vncCacheKey)) targetCache.set(vncCacheKey, canonicalResult);
   return Object.freeze({
     authorizationStatus: canonicalResult?.authorizationStatus || "blocked",
     blockReason: canonicalResult?.blockReason || "",
-    canonicalTargetEvaluator: preparedProjectionAvailable
-      ? "prepareClassicalNahuatlVncParadigmPlan+projectClassicalNahuatlVncParadigmCoordinates"
-      : "evaluateClassicalNahuatlVncApplication",
+    canonicalTargetEvaluator: directEvaluationAvailable
+      ? "evaluateClassicalNahuatlVncApplication"
+      : "prepareClassicalNahuatlVncParadigmPlan+projectClassicalNahuatlVncParadigmCoordinates",
     canonicalResult,
   });
 }
@@ -1218,6 +1328,7 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
   const sourceObjectRequests = buildObjectRequests(sourceObjectCount, source);
   let targetObjectRequests = sourceObjectRequests;
   let targetValenceCount = sourceObjectCount;
+  let selectedIncorporatedObjectId = "";
   let orientation = normalizeKey(request.orientation || source.orientation);
   let semanticRole = normalizeKey(request.adverbRole || request.complementRole || source.adverbRole || source.complementRole);
   const restrictions = [];
@@ -1257,7 +1368,61 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     appliedSemanticRules.add("incorporated-object/valence");
     appliedSemanticRules.add("incorporated-object/voice");
     if (sourceObjectCount < 1) return buildBlockedFrame("nominal-embed-vnc", "incorporated-object-requires-transitive-matrix", request);
-    targetObjectRequests = sourceObjectRequests.slice(0, -1);
+    const suppliedCandidateIds = Array.isArray(
+      source.incorporatedObjectCandidateIds
+    )
+      ? source.incorporatedObjectCandidateIds.map(normalizeKey).filter(Boolean)
+      : [];
+    const eligibleObjectIds = sourceObjectRequests.map(
+      objectRequest => objectRequest.objectId
+    );
+    const incorporatedObjectCandidateIds = suppliedCandidateIds.length
+      ? suppliedCandidateIds.filter(
+        objectId => eligibleObjectIds.includes(objectId)
+      )
+      : [eligibleObjectIds[0]];
+    const requestedIncorporatedObjectId = normalizeKey(
+      request.incorporatedObjectId || source.incorporatedObjectId
+    );
+    if (!incorporatedObjectCandidateIds.length) {
+      return buildBlockedFrame(
+        "nominal-embed-vnc",
+        "incorporated-object-compatible-role-required",
+        request
+      );
+    }
+    if (
+      incorporatedObjectCandidateIds.length > 1
+      && !requestedIncorporatedObjectId
+    ) {
+      return buildBlockedFrame(
+        "nominal-embed-vnc",
+        "incorporated-object-role-choice-required",
+        request
+      );
+    }
+    const incorporatedObjectId = requestedIncorporatedObjectId
+      || incorporatedObjectCandidateIds[0];
+    if (!incorporatedObjectCandidateIds.includes(incorporatedObjectId)) {
+      return buildBlockedFrame(
+        "nominal-embed-vnc",
+        "incorporated-object-role-choice-mismatch",
+        request
+      );
+    }
+    selectedIncorporatedObjectId = incorporatedObjectId;
+    const remainingSourceObjectRequests = sourceObjectRequests.filter(
+      objectRequest => objectRequest.objectId !== incorporatedObjectId
+    );
+    targetObjectRequests = remainingSourceObjectRequests.map(
+      (objectRequest, index) => ({
+        ...objectRequest,
+        sourceGovernor: objectRequest.governor,
+        sourceDerivationalLevel: objectRequest.derivationalLevel,
+        governor: index === 0 ? "directive" : objectRequest.governor,
+        derivationalLevel: index + 1,
+      })
+    );
     targetValenceCount -= 1;
     semanticRole = "general-patient-area";
     orientation = "not-applicable";
@@ -1405,6 +1570,13 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     ? reduplicateInitial(matrixStem, matrixReduplication === "affinity" ? "affinity" : "distributive", "initial")
     : matrixStem;
   const compoundStem = joinStemParts([realizedEmbed, realizedMatrix]);
+  const compoundInitialISelection = /^[iī]/u.test(compoundStem)
+    && (
+      lexicalFacts.embedLexicalFamily
+      || lexicalFacts.embedSemanticClass
+    )
+      ? "real"
+      : "";
   const targetSourceValence = valenceFromObjectRequests(targetObjectRequests);
   const targetVoice = normalizeKey(request.voice || "active");
   const operationFrame = deepFreeze({
@@ -1422,6 +1594,31 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     selectedVoice: targetVoice,
     sourceObjectRequests,
     targetObjectRequests,
+    incorporatedObjectId: relation === "object"
+      ? selectedIncorporatedObjectId
+      : "",
+    incorporatedObjectRequest: relation === "object"
+      ? sourceObjectRequests.find(
+        objectRequest => objectRequest.objectId === selectedIncorporatedObjectId
+      ) || null
+      : null,
+    incorporatedObjectCandidateIds: relation === "object"
+      ? Object.freeze(
+        (Array.isArray(source.incorporatedObjectCandidateIds)
+          ? source.incorporatedObjectCandidateIds.map(normalizeKey).filter(
+            objectId => sourceObjectRequests.some(
+              objectRequest => objectRequest.objectId === objectId
+            )
+          )
+          : [sourceObjectRequests[0]?.objectId]).filter(Boolean)
+      )
+      : Object.freeze([]),
+    incorporatedObjectRoleChoiceRequired: relation === "object"
+      && Array.isArray(source.incorporatedObjectCandidateIds)
+      && source.incorporatedObjectCandidateIds.length > 1,
+    remainingObjectIds: Object.freeze(
+      targetObjectRequests.map(objectRequest => objectRequest.objectId)
+    ),
     embedShape,
     compoundStem,
     embedReduplication,
@@ -1448,6 +1645,14 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
     requestedVoice: targetVoice,
     outputScope: "single",
     incorporatedAdverb: relation === "adverb",
+    sourceInitialISelection: compoundInitialISelection,
+    requestedCausativeSpecificShuntlineRealization:
+      targetObjectRequests.some(objectRequest => (
+        objectRequest.governor === "causative"
+        && objectRequest.objectKind === "specific-projective"
+      ))
+        ? "silent"
+        : "",
   };
   const vncEvaluation = evaluateCanonicalVncCoordinate(target, vncRequest);
   const canonicalResult = vncEvaluation.canonicalResult;
@@ -2740,9 +2945,15 @@ function evaluateCardinalNominalConstruction(request, target) {
 }
 
 function evaluateNominalConstruction(request = {}, target = globalThis) {
-  const hostilePath = findHostileAuthorityPath(request);
+  const trustedResultFrames =
+    getNominalConstructionTrustedResultFrames(request);
+  const hostilePath = findHostileAuthorityPath(
+    request, "request", new WeakSet(), trustedResultFrames
+  );
   const callerMintedSourceAuthorityPath =
-    findCallerMintedSourceAuthorityPath(request);
+    findCallerMintedSourceAuthorityPath(
+      request, "request", new WeakSet(), trustedResultFrames
+    );
   const constructionKind = normalizeConstructionKind(request.constructionKind);
   if (hostilePath) {
     return buildBlockedFrame(

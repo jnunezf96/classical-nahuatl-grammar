@@ -29,15 +29,15 @@ const spec = {
     },
     "claim-p2946::p2946-the-tense-meaning-covers-the-area-of-the-present": {
       "assertionId": "classical-inbound-purposive-nonfuture-indicative:p2946-the-tense-meaning-covers-the-area-of-the-present",
-      "canonicalPath": "cases.pluralSeries.inbound-nonfuture-indicative.numberMorph"
+      "canonicalPath": "cases.singularSeries.inbound-nonfuture-indicative.facts.licensedReadingRange"
     },
     "claim-p2947::p2947-the-antecessive-order-particle-o-optionally-accompanies-the-vnc": {
       "assertionId": "classical-inbound-purposive-nonfuture-indicative:p2947-the-antecessive-order-particle-o-optionally-accompanies-the-vnc",
-      "canonicalPath": "cases.singularSeries.inbound-nonfuture-indicative.facts.matrixDirectionalMorph"
+      "canonicalPath": "cases.ordinaryAntecessiveInboundNonfuture.facts.ordinaryAntecessiveSelected"
     },
     "claim-p2948::p2948-pl-came-in-order-to-call-s-o-etc": {
       "assertionId": "classical-inbound-purposive-nonfuture-indicative:p2948-pl-came-in-order-to-call-s-o-etc",
-      "canonicalPath": "cases.singularSeries.inbound-nonfuture-indicative.facts.matrixTenseMeaning"
+      "canonicalPath": "cases.singularSeries.inbound-nonfuture-indicative.facts.inboundNonfutureAntecessiveScope"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

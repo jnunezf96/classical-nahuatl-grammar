@@ -1191,7 +1191,8 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         stressGroupCombination: true,
         indicatedInWriting: true,
         sourceMorpheme: beforeValue,
-        targetMorpheme: afterValue
+        targetMorpheme: afterValue,
+        elisionSide: "initial"
       });
       if (frame?.authorizationStatus !== "authorized" || !frame.selectedRuleId) {
         return null;

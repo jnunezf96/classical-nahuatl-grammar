@@ -4,12 +4,12 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
@@ -918,35 +918,41 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           userSelectionAccepted: false
         });
       }
-      const selectedKind = CLASSICAL_NAHUATL_VNC_APPLICATION_SOURCE_INITIAL_I_KINDS.includes(requestedKind)
-        ? requestedKind
-        : "real";
-      const defaultedToReal = !requestedKind;
+      const selectedKind =
+        CLASSICAL_NAHUATL_VNC_APPLICATION_SOURCE_INITIAL_I_KINDS.includes(
+          requestedKind,
+        )
+          ? requestedKind
+          : "";
       const resolvedUserKind = selectedKind === "contextual"
         ? ["projective-nonhuman", "mainline-reflexive", "human-reciprocal"].includes(effectiveValence)
           ? "supportive"
           : "real"
         : selectedKind;
       return Object.freeze({
-        kind: selectedKind,
+        kind: selectedKind || "unresolved",
         resolvedKind: resolvedUserKind,
         sourceRecord: null,
-        sourceAuthority: defaultedToReal ? "default-real-initial-i-source" : "user-declared-source-initial-i",
+        sourceAuthority: selectedKind
+          ? "user-declared-source-initial-i"
+          : "typed-source-initial-i-analysis-required",
         ruleId: selectedKind === "contextual"
           ? "cn-l2-26-context-sensitive-initial-i-source-selection"
-          : defaultedToReal
-            ? "cn-l7-78-real-initial-vowel-source-default"
-            : "cn-source-initial-i-user-declaration",
+          : selectedKind
+            ? "cn-source-initial-i-user-declaration"
+            : "cn-source-initial-i-analysis-required",
         exactWitness: selectedKind === "contextual"
           ? "The user declares a context-sensitive source i; licensed support-dropping environments resolve it as supportive, and other environments as real."
-          : defaultedToReal
-            ? "An unlisted initial-i Source VNC defaults to a real i unless the user selects a different typed source analysis."
-            : "The user declares the initial-i status of an unlisted Source VNC.",
-        selectionRequired: false,
-        requestedKind: selectedKind,
-        selectionSource: defaultedToReal ? "unlisted-source-default" : "unlisted-source",
-        defaultedToReal,
-        userSelectionAccepted: !defaultedToReal
+          : selectedKind
+            ? "The user declares the initial-i status of an unlisted Source VNC."
+            : "An unlisted initial-i Source VNC requires a typed initial-i analysis before Grammar can apply.",
+        selectionRequired: !selectedKind,
+        requestedKind,
+        selectionSource: selectedKind
+          ? "unlisted-source"
+          : "unlisted-source-unresolved",
+        defaultedToReal: false,
+        userSelectionAccepted: Boolean(selectedKind)
       });
     }
     function normalizeClassicalNahuatlVncApplicationRequest(request = {}) {
@@ -979,8 +985,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const requestedSourceVoice = normalizeClassicalNahuatlVncApplicationToken(request.requestedSourceVoice || request.sourceVoice || "active").toLowerCase();
       const sourceVoiceSelectionFrame = validateClassicalNahuatlVncVoiceSelection(requestedSourceVoice, "causative-source");
       const sourceVoice = sourceVoiceSelectionFrame.voice || "active";
-      const verbClassValue = normalizeClassicalNahuatlVncApplicationToken(request.verbClass || request.perfectiveClass || "B").toUpperCase();
-      const verbClass = ["A", "B", "C", "D"].includes(verbClassValue) ? verbClassValue : "B";
+      const verbClassValue = normalizeClassicalNahuatlVncApplicationToken(
+        request.verbClass || request.perfectiveClass || "",
+      ).toUpperCase();
+      const verbClass = ["A", "B", "C", "D"].includes(verbClassValue)
+        ? verbClassValue
+        : "";
       const retainedOutputScopeSelectionFrame = request.outputScopeSelectionFrame?.kind === "classical-result-output-scope-selection-frame"
         ? request.outputScopeSelectionFrame
         : null;
@@ -5271,6 +5281,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           nonactiveOptionInventory,
           nonactiveSelectorRequired: (selectedVoice === "passive" || selectedVoice === "impersonal") && nonactiveOptionInventory?.selectorRequired === true,
           selectedNonactiveOptionId: selectedNonactiveOption?.optionId || "",
+          sourceVerbstemClassSelectionRequired:
+            !formationSourceMachineryFrame?.classId,
           sourceInitialIAnalysis: normalizedBaseRequest.sourceInitialIAnalysis,
           sourceInitialISelectionRequired: normalizedBaseRequest.sourceInitialIAnalysis?.selectionRequired === true
         };
@@ -5403,6 +5415,32 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             rejectedAuthorityFields,
             unsupportedIntentFields,
             forcedBlockReason: specificCoreferenceBlockReason
+          }));
+        }
+        const sourceVerbstemClassSelectionBlockReason =
+          !formationSourceMachineryFrame?.classId
+            ? formationSourceMachineryFrame?.classRuleFrame?.blockReason
+              || "classical-source-verbstem-class-selection-required"
+            : "";
+        if (sourceVerbstemClassSelectionBlockReason) {
+          const controlFrame = Object.freeze({
+            ...controlFrameBase,
+            authorizationStatus: "blocked",
+            blockReason: sourceVerbstemClassSelectionBlockReason
+          });
+          return validateSharedApplicationFrame(buildEvaluationApplicationFrame({
+            normalizedRequest,
+            controlFrame,
+            formationSourceMachineryFrame,
+            sourceMachineryFrame,
+            sourceAnalysisFrame,
+            activeMachineryFrame,
+            derivationOperationFrame,
+            selectedMachineryFrame: activeMachineryFrame,
+            missingCapabilities,
+            rejectedAuthorityFields,
+            unsupportedIntentFields,
+            forcedBlockReason: sourceVerbstemClassSelectionBlockReason
           }));
         }
         const sourceInitialISelectionBlockReason = normalizedBaseRequest.sourceInitialIAnalysis?.selectionRequired === true
@@ -5722,16 +5760,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       ) => {
         const currentRuntimeTarget =
           getClassicalNahuatlVncApplicationRuntimeTarget();
-        const compoundClosureAuthorized = Boolean(
+        const lateClosureAuthorized = Boolean(
           sourceResultFrame?.authorizationStatus === "authorized"
-          && sourceResultFrame.operationFrame?.operation === "compound"
+          && ["compound", "purposive"].includes(
+            sourceResultFrame.operationFrame?.operation,
+          )
           && typeof currentRuntimeTarget?.isClassicalNahuatlClosureFrame
             === "function"
           && currentRuntimeTarget.isClassicalNahuatlClosureFrame(
             sourceResultFrame,
           ) === true
         );
-        if (compoundClosureAuthorized) {
+        if (lateClosureAuthorized) {
           const operationFrame = sourceResultFrame.operationFrame;
           const sourceDescriptor =
             getClassicalNahuatlVncContinuationSourceDescriptor(

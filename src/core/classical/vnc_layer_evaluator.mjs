@@ -1988,6 +1988,97 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
     function getClassicalNahuatlFinalShapeSound(value = "") {
       return normalizeClassicalNahuatlVncSlotCarrier(value).normalize("NFD").replace(/[\u0300-\u036f]/gu, "").toLowerCase();
     }
+    function getClassicalNahuatlMorphemicBoundaryFamilies(morphemes = []) {
+      const normalizedMorphemes = Array.isArray(morphemes)
+        ? morphemes.map(normalizeClassicalNahuatlVncSlotStem).filter(Boolean)
+        : [];
+      const families = [];
+      const addFamily = (familyId, applies) => {
+        if (applies && !families.includes(familyId)) {
+          families.push(familyId);
+        }
+      };
+      const finalOne = normalizedMorphemes.at(-1) || "";
+      const finalTwo = normalizedMorphemes.slice(-2).join("-");
+      const finalThree = normalizedMorphemes.slice(-3).join("-");
+      ["ti", "hui", "ya", "ā", "hua", "tla", "liā", "iā", "huiā", "lō", "ō"]
+        .forEach(ending => addFamily(`X-${ending}`, finalOne === ending));
+      ["ti-ya", "hui-ya", "i-ā", "o-ā", "ti-ā", "l-tiā", "hu-iā", "l-huiā", "hua-lō"]
+        .forEach(ending => addFamily(`X-${ending}`, finalTwo === ending));
+      addFamily("X-tiā", finalOne === "tiā" && finalTwo !== "ti-ā");
+      const destockalStockVowel = ["a", "ā", "e", "ē", "i", "ī", "o", "ō"];
+      ["ni", "hui", "hua"].forEach(formative => {
+        const stockVowel = normalizedMorphemes.at(-2) || "";
+        addFamily(`X-V-${formative}`, finalOne === formative && destockalStockVowel.includes(stockVowel));
+      });
+      addFamily("X-ti-ya", finalThree.endsWith("ti-ya"));
+      addFamily("X-hui-ya", finalThree.endsWith("hui-ya"));
+      return Object.freeze(families);
+    }
+    function buildClassicalNahuatlMorphemicSourceProfile(sourceFinalShapeFrame = null, {
+      sourceClass = "",
+      sourceValence = "",
+      hiddenIntervocalicY = false,
+      finalTiLexicalAnalysis = null
+    } = {}) {
+      const shape = sourceFinalShapeFrame?.authorizationStatus === "authorized"
+        ? sourceFinalShapeFrame
+        : null;
+      const morphemes = shape ? [...shape.morphemes] : [];
+      const boundaryFamilies = getClassicalNahuatlMorphemicBoundaryFamilies(morphemes);
+      const vowelNuclei = shape?.stem.match(/[aāeēiīoō]/gu) || [];
+      const explicitBoundaries = morphemes.slice(0, -1).map((leftMorpheme, index) => Object.freeze({
+        boundaryIndex: index + 1,
+        leftMorpheme,
+        rightMorpheme: morphemes[index + 1]
+      }));
+      const edgeStructure = Object.freeze({
+        orthographicTail: shape?.orthographicTail || Object.freeze({ one: "", two: "", three: "" }),
+        letterTail: shape?.letterTail || Object.freeze({ one: "", two: "", three: "" }),
+        soundTail: shape?.soundTail || Object.freeze({ one: "", two: "", three: "" }),
+        morphemeTail: shape?.morphemeTail || Object.freeze({ one: "", two: "", three: "" }),
+        rightEdgeMorpheme: shape?.rightEdgeMorpheme || "",
+        precedingMorpheme: shape?.precedingMorpheme || "",
+        initialMorpheme: shape?.initialMorpheme || "",
+        hasMorphemeBoundary: shape?.hasMorphemeBoundary === true,
+        finalThreeContainsBoundary: shape?.finalThreeContainsBoundary === true,
+        finalThreeContainsMacron: shape?.finalThreeContainsMacron === true
+      });
+      return Object.freeze({
+        kind: "classical-nahuatl-vnc-morphemic-source-profile",
+        version: 1,
+        authorizationStatus: shape ? "authorized" : "blocked",
+        blockReason: shape ? "" : "typed-source-final-shape-required",
+        sourceStem: shape?.stem || "",
+        morphemicComplexity: morphemes.length > 1 ? "polymorphemic" : "monomorphemic",
+        explicitMorphemes: Object.freeze(morphemes),
+        explicitBoundaries: Object.freeze(explicitBoundaries),
+        boundaryFamilies,
+        recursiveBoundaryStructure: boundaryFamilies.length > 1,
+        edgeStructure,
+        phonologicalShape: Object.freeze({
+          vowelNuclei: Object.freeze([...vowelNuclei]),
+          finalLetter: shape?.finalLetter || "",
+          precedingLetter: shape?.precedingLetter || "",
+          finalSound: shape?.finalSound || "",
+          precedingSound: shape?.precedingSound || "",
+          finalVowelLength: shape?.finalVowelLength || "not-vowel"
+        }),
+        sourceClass: normalizeClassicalNahuatlVncSlotCarrier(sourceClass).toUpperCase(),
+        sourceValence: normalizeClassicalNahuatlVncSlotCarrier(sourceValence),
+        lexicalAnalyses: Object.freeze([
+          ...(hiddenIntervocalicY ? [Object.freeze({
+            analysisId: "hidden-intervocalic-y",
+            analysisKind: "lexical-allomorphy"
+          })] : []),
+          ...(finalTiLexicalAnalysis ? [Object.freeze({ ...finalTiLexicalAnalysis })] : [])
+        ]),
+        canvasExampleAuthority: false,
+        routeAuthorizationByExampleIdentity: false,
+        formulaArtifactAuthority: false,
+        surfaceArtifactAuthority: false
+      });
+    }
     function buildClassicalNahuatlStemFinalShapeFrame(stem = "") {
       const normalizedStem = normalizeClassicalNahuatlVncSlotStem(stem);
       const orthographicUnits = Array.from(normalizedStem);
@@ -2147,6 +2238,20 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           : allomorphLicenseAuthorized || fixedLexicalSourceAuthorized
             ? "lexical-source-licensed"
             : "none";
+      const finalTiLexicalAnalysis =
+        CLASSICAL_NAHUATL_LESSON20_FINAL_TI_LEXICAL_ANALYSES[
+          canonicalEnteredAllomorph
+        ] || null;
+      const morphemicSourceProfile =
+        buildClassicalNahuatlMorphemicSourceProfile(
+          sourceFinalShapeFrame,
+          {
+            sourceClass: normalizedClass,
+            sourceValence: normalizedValence,
+            hiddenIntervocalicY,
+            finalTiLexicalAnalysis
+          }
+        );
       const authorized = Boolean(sourceStemIsTyped && enteredStem && optionRead.authorizationStatus === "authorized");
       const frame = Object.freeze({
         kind: "classical-nahuatl-nonactive-vnc-active-stem-identity-frame",
@@ -2207,6 +2312,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           rootPlusYaBoundaryStatus: explicitRootPlusYaBoundary ? "explicit-boundary-observed" : rootPlusYaAnalysisAuthorized ? "boundary-free-final-ya-analysis" : "not-a-root-plus-ya-analysis",
           rootPlusYaBoundaryAuthority: false,
           hiddenIntervocalicY,
+          finalTiLexicalAnalysis,
+          morphemicSourceProfile,
           finalVowelAllomorph: identity && /final-a-e/u.test(identity.allomorphy) ? sourceFinalShapeFrame.finalLetter : ""
         }),
         exactNonactiveFormations: Object.freeze([]),
@@ -2363,10 +2470,10 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       return false;
     }
 
-    // Andrews §20.2 states the Class C operation over final i + ā, but vowel
-    // length belongs to the active source identity. The Canvas distinguishes
-    // the two lengthening witnesses from the short-i witnesses; this table
-    // classifies the source, while the rule below constructs the output.
+    // These are Canvas observations, not an authorization inventory. Andrews
+    // §20.2 states a productive Class C operation over final i + ā and then
+    // supplies a phonological exception environment. The rule frame below
+    // therefore reads Source shape; it never asks whether a stem occurs here.
     const CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LENGTH_CLASSES = Object.freeze({
       "ce-liā": "lengthen-final-i",
       "ihcuani-ā": "lengthen-final-i",
@@ -2379,12 +2486,35 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       "icn-ēl-iā": "preserve-short-final-i",
       "tlā-ti-ā": "preserve-short-final-i"
     });
+    // Andrews §§54.5.1.a and 55.2 explicitly analyze tla-ti-ā as the causative
+    // of the fire-denominal tla-tla, whose stem-forming tla changes to ti before
+    // causative ā. That lexical internal structure, rather than its presence in
+    // the §20.2 example list, licenses its short final i.
+    const CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LEXICAL_ANALYSES =
+      Object.freeze({
+        "tla-ti-ā": Object.freeze({
+          analysisId: "fire-denominal-tla-to-ti-before-causative-a",
+          baseFinalIStatus: "stem-forming-tla-allomorph-not-ordinary-base-final-i",
+          lengthClass: "preserve-short-final-i"
+        })
+      });
 
-    // Intransitive tequi-ti is the §20.6 final-i + hua formation.  Its visible
-    // -ti boundary is not the §20.4 postvocalic-ti replacive route licensed for
-    // stems such as pa-ti. The transitive reflexive use has its separate fixed
-    // lō formation in §22.4.3; keep that valence distinction engine-owned.
+    // Retained only as a compatibility/evidence export. Route authorization
+    // reads the typed lexical analysis below, not membership in this list.
     const CLASSICAL_NAHUATL_LESSON20_POSTVOCALIC_TI_CHO_EXCLUSIONS = Object.freeze(["tequi-ti"]);
+    // Andrews §54.4 explicitly analyzes tequi-ti as a denominal ti-of-
+    // possession stem built from tequi-tl. Its final ti therefore is not the
+    // ordinary postvocalic-ti input to the §20.4 ch-ō possibility. Exact
+    // identity is legitimate here because Canvas makes the internal analysis
+    // lexical; an unlisted stem of the same sound shape remains productive.
+    const CLASSICAL_NAHUATL_LESSON20_FINAL_TI_LEXICAL_ANALYSES = Object.freeze({
+      "tequi-ti": Object.freeze({
+        analysisId: "denominal-ti-of-possession-from-tequi-tl",
+        finalTiRole: "denominal-possession-formative",
+        postvocalicTiChoRouteStatus: "blocked",
+        huaRouteStatus: "authorized"
+      })
+    });
     // These nonactive-looking intermediates are licensed only inside the
     // type-two causative operation. Generic final-a shape cannot promote them
     // to independent nonactive choices.
@@ -2431,17 +2561,36 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const sourceFinalShapeFrame = buildClassicalNahuatlStemFinalShapeFrame(sourceStem);
       const normalizedSourceStem = sourceFinalShapeFrame.stem;
       const sourceEnding = sourceFinalShapeFrame.orthographicTail.three === "i-ā" ? "i-ā" : sourceFinalShapeFrame.letterTail.two === "iā" ? "iā" : "";
-      const lengthClass = CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LENGTH_CLASSES[normalizedSourceStem] || "preserve-short-final-i";
+      const sourceVowelNuclei = normalizedSourceStem.match(/[aāeēiīoō]/gu) || [];
+      const antepenultimateVowel = sourceVowelNuclei.at(-3) || "";
+      const antepenultimateVowelIsLong = /^[āēīō]$/u.test(antepenultimateVowel);
+      const lexicalAnalysis =
+        CLASSICAL_NAHUATL_LESSON20_CLASS_C_FINAL_I_LEXICAL_ANALYSES[
+          normalizedSourceStem
+        ] || null;
+      const lengthClass = lexicalAnalysis?.lengthClass
+        || (antepenultimateVowelIsLong
+          ? "preserve-short-final-i"
+          : "lengthen-final-i");
       const realizedBaseFinalVowel = lengthClass === "lengthen-final-i" ? "ī" : "i";
       const authorized = Boolean(normalizedSourceStem && sourceEnding);
       return Object.freeze({
         kind: "classical-nahuatl-nonactive-vnc-class-c-final-i-vowel-length-rule-frame",
         version: 1,
-        sourceAuthority: "Andrews §20.2 visually verified Class C source classes",
+        sourceAuthority: "Andrews §20.2 productive Class C final-i rule and typed Source environment; §§54.5.1.a and 55.2 lexical analysis where applicable",
         authorizationStatus: authorized ? "authorized" : "blocked",
         blockReason: authorized ? "" : "lesson20-class-c-final-i-a-shape-required",
         sourceStem: normalizedSourceStem,
         sourceEnding,
+        sourceVowelNuclei: Object.freeze([...sourceVowelNuclei]),
+        antepenultimateVowel,
+        antepenultimateVowelIsLong,
+        lexicalAnalysis,
+        sourceLengthBasis: lexicalAnalysis
+          ? "typed-lexical-internal-structure"
+          : antepenultimateVowelIsLong
+            ? "long-antepenultimate-environment"
+            : "productive-final-i-lengthening",
         sourceLengthClass: lengthClass,
         operation: lengthClass === "lengthen-final-i" ? "replace-final-i-plus-a-with-long-i-plus-lo" : "replace-final-i-plus-a-with-short-i-plus-lo",
         realizedBaseFinalVowel,
@@ -2481,11 +2630,36 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         optionRead.values
       );
       const sourceFinalShapeFrame = sourceIdentityFrame.sourceFinalShapeFrame;
-      const normalizedSourceStem = sourceFinalShapeFrame.stem;
+      const morphemicSourceProfile =
+        sourceIdentityFrame.internalMorphology?.morphemicSourceProfile || null;
+      const sourceShapeAgreement = Boolean(
+        morphemicSourceProfile?.authorizationStatus === "authorized"
+        && morphemicSourceProfile.sourceStem === sourceFinalShapeFrame.stem
+        && morphemicSourceProfile.sourceClass
+          === normalizeClassicalNahuatlVncSlotCarrier(verbClass).toUpperCase()
+        && morphemicSourceProfile.sourceValence
+          === normalizeClassicalNahuatlVncSlotCarrier(sourceValence)
+      );
+      if (!sourceShapeAgreement) {
+        return Object.freeze({
+          sourceIdentityFrame,
+          sourceFinalShapeFrame,
+          morphemicSourceProfile,
+          sourceShapeAgreement: false,
+          options: Object.freeze([]),
+          resolvedOptions: Object.freeze([]),
+          routeEvaluations: Object.freeze([]),
+          authorizationStatus: "blocked",
+          blockReason: "typed-morphemic-source-profile-disagrees-with-source",
+          formulaArtifactAuthority: false,
+          surfaceArtifactAuthority: false
+        });
+      }
+      const normalizedSourceStem = morphemicSourceProfile.sourceStem;
       const normalizedClass = normalizeClassicalNahuatlVncSlotCarrier(verbClass).toUpperCase();
       const normalizedValence = normalizeClassicalNahuatlVncSlotCarrier(sourceValence);
-      const finalLetters = sourceFinalShapeFrame.letterTail;
-      const finalOrthography = sourceFinalShapeFrame.orthographicTail;
+      const finalLetters = morphemicSourceProfile.edgeStructure.letterTail;
+      const finalOrthography = morphemicSourceProfile.edgeStructure.orthographicTail;
       const transitiveSource = isClassicalNahuatlTransitiveValence(normalizedValence);
       const orderedVoiceLayerIntermediate = isClassicalNahuatlOrderedVoiceLayerIntermediateStem(normalizedSourceStem);
       const routeEvaluations = [];
@@ -2536,6 +2710,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           .map(option => ({
             ...option,
             candidateSource: "productive-final-shape",
+            productiveSourceAuthority: "typed-morphemic-source-profile",
+            morphemicSourceProfile,
             decisionCategory,
             candidatePriority: priority
           }));
@@ -2739,7 +2915,11 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         }], ["hui", "wi"].includes(intransitiveWEnding)
           ? Object.freeze({ effect: "add", replaces: Object.freeze([]) })
           : Object.freeze({ effect: "replace", replaces: Object.freeze(["general-final-a"]) }));
-        const intransitivePostvocalicTi = /^[aeioāēīō]ti$/u.test(finalLetters.three) && sourceFinalShapeFrame.initialMorpheme !== "tla" && !CLASSICAL_NAHUATL_LESSON20_POSTVOCALIC_TI_CHO_EXCLUSIONS.includes(normalizedSourceStem);
+        const finalTiLexicalAnalysis =
+          sourceIdentityFrame.internalMorphology.finalTiLexicalAnalysis;
+        const intransitivePostvocalicTi = /^[aeioāēīō]ti$/u.test(finalLetters.three)
+          && morphemicSourceProfile.edgeStructure.initialMorpheme !== "tla"
+          && finalTiLexicalAnalysis?.postvocalicTiChoRouteStatus !== "blocked";
         addRoute(intransitivePostvocalicTi, "intransitive-postvocalic-ti", 420, [{
           nonactiveStem: replaceClassicalNahuatlLesson20FinalShape(sourceFinalShapeFrame, "i", "ī-hua"),
           suffixFamily: "hua",
@@ -2828,6 +3008,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         verbClass: normalizedClass,
         sourceValence: normalizedValence,
         sourceFinalShapeFrame,
+        morphemicSourceProfile,
+        sourceShapeAgreement: true,
         orderedVoiceLayerIntermediate,
         candidateResolutionPolicy: "collect-all-applicable-routes-then-apply-explicit-add-replace-block-compose-relationships",
         routeEvaluations: Object.freeze(typedRouteEvaluations),

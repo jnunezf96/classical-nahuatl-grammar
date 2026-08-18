@@ -19,7 +19,7 @@ const spec = {
     },
     "claim-p2895::p2895-the-imperfective-stem-has-the-same-shape-it-would": {
       "assertionId": "classical-purposive-silent-future-embed:p2895-the-imperfective-stem-has-the-same-shape-it-would",
-      "canonicalPath": "contract.soundedFutureMorphReplacedBy"
+      "canonicalPath": "contract.ordinaryFutureMorph"
     },
     "claim-p2896::p2896-the-appropriateness-of-having-a-future-tense-predicate-as": {
       "assertionId": "classical-purposive-silent-future-embed:p2896-the-appropriateness-of-having-a-future-tense-predicate-as",
@@ -27,7 +27,7 @@ const spec = {
     },
     "claim-p2897::p2897-note-occasionally-in-texts-not-noted-for-stylistic-quality": {
       "assertionId": "classical-purposive-silent-future-embed:p2897-note-occasionally-in-texts-not-noted-for-stylistic-quality",
-      "canonicalPath": "contract.embedTense"
+      "canonicalPath": "contract.rareSoundedFutureStatus"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

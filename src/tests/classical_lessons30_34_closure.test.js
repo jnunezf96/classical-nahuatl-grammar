@@ -5,12 +5,21 @@ const path = require("path");
 const { createSuite } = require("./runner");
 
 const ROOT = path.resolve(__dirname, "..", "..");
+const DEVELOPMENT_ROOT = path.resolve(
+    ROOT,
+    "..",
+    "Classical_Nahuatl_Grammar"
+);
 const CANVAS_LINES = fs.readFileSync(
     path.join(ROOT, "ANDREWS_TRANSCRIPTION_CANVAS.md"),
     "utf8"
 ).split(/\r?\n/u);
 const LEDGER = fs.readFileSync(
-    path.join(ROOT, "docs", "LESSONS_30_31_32_34_SOURCE_LEDGER.md"),
+    path.join(
+        DEVELOPMENT_ROOT,
+        "docs",
+        "LESSONS_30_31_32_34_SOURCE_LEDGER.md"
+    ),
     "utf8"
 );
 const SHELL_SOURCE = fs.readFileSync(
@@ -373,7 +382,8 @@ function familyWitnessRequest(family, ctx) {
     if (family.startsWith("compound-nnc/")) {
         if (family === "compound-nnc/glottalized-embed") {
             return patchSource(lesson31Base(), {
-                embedStem: "teo",
+                embedStem: "teō",
+                matrixStem: "calli",
             });
         }
         if (family === "compound-nnc/negative-embed") {
@@ -584,6 +594,7 @@ function familyWitnessRequest(family, ctx) {
                 objectPerson: "3sg",
                 applicativeObjectKind: "reflexive",
                 applicativeObjectPerson: "",
+                sourceInitialISelection: "real",
             };
             const preview = ctx.evaluateClassicalNahuatlVncApplication(previewRequest);
             const optionId = preview.controlFrame?.derivationOptionInventory?.options?.[0]?.optionId || "";
@@ -593,6 +604,7 @@ function familyWitnessRequest(family, ctx) {
                 derivationType: "applicative",
                 objectKind: "specific-projective",
                 objectPerson: "3sg",
+                sourceInitialISelection: "real",
                 applicativeObjectKind: "reflexive",
                 honorificDerivationOptionId: optionId,
             }), {
@@ -630,10 +642,9 @@ function familyWitnessRequest(family, ctx) {
                     derivationOptionId: optionId,
                 });
             const source =
-                ctx.classicalNahuatlVncApplication
-                    .getContinuationSourceConstituents(
-                        sourceApplicationFrame.resultFrame
-                    );
+                ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+                    sourceApplicationFrame.resultFrame
+                );
             return lesson33Base({
                 source: {
                     ...source,
@@ -951,6 +962,16 @@ function run(ctx = {}) {
                 plan
             )?.[0];
         proofByFamily.set(family, {
+            positiveStatus: positive.authorizationStatus,
+            positiveBlockReason: positive.blockReason || "",
+            semanticRules,
+            canonicalRules,
+            paradigmStatus: row?.authorizationStatus
+                || row?.closureFrame?.authorizationStatus
+                || "",
+            paradigmBlockReason: row?.blockReason
+                || row?.closureFrame?.blockReason
+                || "",
             positiveMechanicallyProven,
             negativeBlocked: negative.authorizationStatus === "blocked",
             hostileBlocked: attitudeDerivation
@@ -1080,7 +1101,7 @@ function run(ctx = {}) {
         relation: "adverb",
         role: "compared-manner",
         orientation: "subject",
-        evaluator: "prepareClassicalNahuatlVncParadigmPlan+projectClassicalNahuatlVncParadigmCoordinates",
+        evaluator: "evaluateClassicalNahuatlVncApplication",
         embedAgent: false,
         embedSubject: false,
     });

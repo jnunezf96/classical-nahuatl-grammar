@@ -129,7 +129,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "An unlisted initial-i Source VNC defaults to real and accepts optional source-only classifications",
+        "An unlisted initial-i Source VNC requires and accepts a typed source-only classification",
         typeof ctx.normalizeClassicalNahuatlVncApplicationRequest === "function"
             ? (() => {
                 const unresolved = ctx.normalizeClassicalNahuatlVncApplicationRequest({
@@ -176,7 +176,7 @@ function run(ctx = {}) {
             })()
             : null,
         {
-            unresolved: { kind: "real", resolvedKind: "real", selectionRequired: false, selectionSource: "unlisted-source-default" },
+            unresolved: { kind: "unresolved", resolvedKind: "", selectionRequired: true, selectionSource: "unlisted-source-unresolved" },
             supportive: { kind: "supportive", resolvedKind: "supportive", selectionSource: "unlisted-source" },
             contextual: { kind: "contextual", resolvedKind: "supportive" },
             canonical: { kind: "supportive", selectionSource: "canonical-source-record", userSelectionAccepted: false }
@@ -184,7 +184,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "An absent unlisted initial-i selection authorizes through the real-i default",
+        "An absent unlisted initial-i selection blocks instead of silently choosing real i",
         (() => {
             if (typeof ctx.createClassicalNahuatlVncApplication !== "function") {
                 return null;
@@ -205,15 +205,15 @@ function run(ctx = {}) {
             };
         })(),
         {
-            authorizationStatus: "authorized",
-            sourceKind: "real",
-            selectionSource: "unlisted-source-default",
-            formula: "#n-0(i-xochi)0+0-0#"
+            authorizationStatus: "blocked",
+            sourceKind: "unresolved",
+            selectionSource: "unlisted-source-unresolved",
+            formula: ""
         }
     );
 
     s.ok(
-        "#1 Source exposes a supportive-i checkbox for an unlisted initial-i verbstem",
+        "#1 Source exposes a required typed initial-i choice for an unlisted initial-i verbstem",
         (() => {
             const root = path.resolve(__dirname, "..", "..");
             const shell = fs.readFileSync(path.join(root, "src", "ui", "shell", "classical_shell.mjs"), "utf8");
@@ -222,15 +222,13 @@ function run(ctx = {}) {
             return shell.includes('id="classical-vnc-source-initial-i"')
                 && shell.includes('hidden aria-live="polite"')
                 && shell.includes('id="classical-vnc-source-initial-i-choice"')
-                && shell.includes('type="checkbox"')
-                && shell.includes('value="supportive"')
-                && shell.includes('data-classical-checked-value="supportive"')
-                && shell.includes('data-classical-unchecked-value="real"')
-                && shell.includes('>Supportive i</span>')
-                && !shell.includes('value="contextual">Context-sensitive i</option>')
+                && shell.includes('<option value="">Choose an analysis</option>')
+                && shell.includes('<option value="real">Real i</option>')
+                && shell.includes('<option value="supportive">Supportive i</option>')
+                && shell.includes('<option value="contextual">Context-sensitive i</option>')
                 && composer.includes("syncClassicalVncSourceInitialIFact")
                 && composer.includes("userChoiceApplies")
-                && composer.includes('choice?.checked === true ? "supportive" : "real"')
+                && composer.includes('["real", "supportive", "contextual"].includes(')
                 && composer.includes("sourceInitialISelection")
                 && stylesheet.includes("#classical-vnc-source-initial-i-choice-field[hidden]")
                 && stylesheet.includes("display: none !important;");

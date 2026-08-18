@@ -2413,7 +2413,7 @@ function run(ctx = {}) {
                 ["cn-l7-73-class-c"],
                 "class-c-requires-full-imperfective-final-long-a-after-i-or-o",
             ],
-            canvasExample: ["A", "cn-l7-76-guidelines-not-majority-prediction", false, true],
+            canvasExample: ["", "cn-l7-76-guidelines-not-majority-prediction", false, true],
         }
     );
 

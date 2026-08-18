@@ -63,6 +63,142 @@ function compact(runtime, frame) {
       externalDirectional: facts.externalDirectional || "",
       callerPurposiveDirectionAuthority:
         facts.callerPurposiveDirectionAuthority === true,
+      soundedFutureMorphSelected: facts.soundedFutureMorphSelected === true,
+      soundedFutureMorphMarkedRare: facts.soundedFutureMorphMarkedRare === true,
+      soundedFutureMorphStyleStatus: facts.soundedFutureMorphStyleStatus || "",
+      futureEmbedClassShapePreserved: facts.futureEmbedClassShapePreserved === true,
+      matrixValence: facts.matrixValence || "",
+      matrixDirectionalMorpheme: facts.matrixDirectionalMorpheme || "",
+      matrixDirectionalSpellings: [...(facts.matrixDirectionalSpellings || [])],
+      matrixDirectionalSpellingDerived: facts.matrixDirectionalSpellingDerived === true,
+      directionalChoiceComesFromSeries: facts.directionalChoiceComesFromSeries === true,
+      duplicateDirectionControlRequired: facts.duplicateDirectionControlRequired === true,
+      futureMorphPrecedesInternalDirectional: facts.futureMorphPrecedesInternalDirectional === true,
+      internalDirectionalNotConnective: facts.internalDirectionalNotConnective === true,
+      internalDirectionalNotExternal: facts.internalDirectionalNotExternal === true,
+      archaicDirectionalPurposiveOnly: facts.archaicDirectionalPurposiveOnly === true,
+      purposeMotionBaseMeaning: facts.purposeMotionBaseMeaning || "",
+      imperfectiveNumberPartner: facts.imperfectiveNumberPartner || "",
+      perfectiveBaseDistinctFromOnO: facts.perfectiveBaseDistinctFromOnO === true,
+      licensedPurposiveSeries: [...(facts.licensedPurposiveSeries || [])],
+      seriesIsSingleUserChoice: facts.seriesIsSingleUserChoice === true,
+      noStemWhitelist: facts.noStemWhitelist === true,
+      licensedReadingRange: [...(facts.licensedReadingRange || [])],
+      readingRangeIsContextualNotAnotherFormChoice:
+        facts.readingRangeIsContextualNotAnotherFormChoice === true,
+      purposeActionBeginsAfterMovement:
+        facts.purposeActionBeginsAfterMovement === true,
+      progressiveActionOverlapsMovement:
+        facts.progressiveActionOverlapsMovement === true,
+      progressiveContrast: facts.progressiveContrast || null,
+      ordinaryAntecessiveAvailable: facts.ordinaryAntecessiveAvailable === true,
+      ordinaryAntecessiveSelected: facts.ordinaryAntecessiveSelected === true,
+      inboundInternalHitherDirectional: facts.inboundInternalHitherDirectional || "",
+      inboundInternalHitherDistinctFromExternalHual:
+        facts.inboundInternalHitherDistinctFromExternalHual === true,
+      inboundNonfutureAntecessiveScope: facts.inboundNonfutureAntecessiveScope || "",
+      inboundNonfutureAntecessiveMayAccompanyPresentReading:
+        facts.inboundNonfutureAntecessiveMayAccompanyPresentReading === true,
+      inboundFutureNumberShape: facts.inboundFutureNumberShape || "",
+      inboundFutureNumberShapeDerived:
+        facts.inboundFutureNumberShapeDerived === true,
+      pastPurposiveNeverIntroducedByMa:
+        facts.pastPurposiveNeverIntroducedByMa === true,
+      pastPurposiveHomographContrast: facts.pastPurposiveHomographContrast || "",
+      pastPurposiveAnalysisUsesTypedStructureAndMaContext:
+        facts.pastPurposiveAnalysisUsesTypedStructureAndMaContext === true,
+      optativeLetReadingIsPermissive:
+        facts.optativeLetReadingIsPermissive === true,
+      optativeMayExpressSelfEncouragement:
+        facts.optativeMayExpressSelfEncouragement === true,
+      optativeMayExpressSelfSuggestion:
+        facts.optativeMayExpressSelfSuggestion === true,
+      secondPersonPers1DerivedByFiniteGrammar:
+        facts.secondPersonPers1DerivedByFiniteGrammar === true,
+      purposiveOptativeDistinctFromAdmonitive:
+        facts.purposiveOptativeDistinctFromAdmonitive === true,
+      purposiveOptativeMatrixEnding: facts.purposiveOptativeMatrixEnding || "",
+      admonitiveContrastEnding: facts.admonitiveContrastEnding || "",
+      traditionalUnmarkedOptativeMayBeAmbiguous:
+        facts.traditionalUnmarkedOptativeMayBeAmbiguous === true,
+      optativeAnalysisChoiceRequiredOnlyWhenTypedTextIsUnderspecified:
+        facts.optativeAnalysisChoiceRequiredOnlyWhenTypedTextIsUnderspecified === true,
+      earlySingularGlottalSelected: facts.earlySingularGlottalSelected === true,
+      earlySingularGlottalMorph: facts.earlySingularGlottalMorph || "",
+      earlySingularGlottalMarkedAberrant:
+        facts.earlySingularGlottalMarkedAberrant === true,
+      earlySingularGlottalReplacesTi:
+        facts.earlySingularGlottalReplacesTi === true,
+      ordinarySingularTiRemainsPreferred:
+        facts.ordinarySingularTiRemainsPreferred === true,
+      nonactiveEmbedAuthorized: facts.nonactiveEmbedAuthorized === true,
+      nonactiveEmbedVoice: facts.nonactiveEmbedVoice || "",
+      nonactiveEmbedStem: facts.nonactiveEmbedStem || "",
+      nonactiveEmbedVoices: [...(facts.nonactiveEmbedVoices || [])],
+      nonactiveEmbedVoicePreserved: facts.nonactiveEmbedVoicePreserved === true,
+      nonactiveEmbedParticipantTopologyPreserved:
+        facts.nonactiveEmbedParticipantTopologyPreserved === true,
+      nonactiveEmbedValencePreserved: facts.nonactiveEmbedValencePreserved === true,
+      nonactiveEmbedFutureBoundaryOutsideStem:
+        facts.nonactiveEmbedFutureBoundaryOutsideStem === true,
+      nonactiveEmbedUsesSharedFutureEmbedPath:
+        facts.nonactiveEmbedUsesSharedFutureEmbedPath === true,
+      nonactiveEmbedNegativeParticlesRemainSentenceExternal:
+        facts.nonactiveEmbedNegativeParticlesRemainSentenceExternal === true,
+      nonactiveEmbedExampleWhitelistUsed:
+        facts.nonactiveEmbedExampleWhitelistUsed === true,
+      recursiveCompoundEmbedAuthorized:
+        facts.recursiveCompoundEmbedAuthorized === true,
+      recursiveCompoundEmbedStem: facts.recursiveCompoundEmbedStem || "",
+      recursiveCompoundEmbedFramePreserved:
+        facts.recursiveCompoundEmbedFramePreserved === true,
+      recursiveCompoundInternalStructurePreserved:
+        facts.recursiveCompoundInternalStructurePreserved === true,
+      recursiveCompoundParticipantsPreserved:
+        facts.recursiveCompoundParticipantsPreserved === true,
+      recursiveCompoundValencePreserved:
+        facts.recursiveCompoundValencePreserved === true,
+      recursiveCompoundVoicePreserved:
+        facts.recursiveCompoundVoicePreserved === true,
+      recursiveCompoundEventRelationPreserved:
+        facts.recursiveCompoundEventRelationPreserved === true,
+      recursivePurposiveBoundaryOutsideCompletedCompound:
+        facts.recursivePurposiveBoundaryOutsideCompletedCompound === true,
+      recursivePurposiveHierarchyAcyclic:
+        facts.recursivePurposiveHierarchyAcyclic === true,
+      recursivePurposiveContinuationAvailable:
+        facts.recursivePurposiveContinuationAvailable === true,
+      recursivePurposiveExampleTemplateUsed:
+        facts.recursivePurposiveExampleTemplateUsed === true,
+      externalDirectionalSelected: facts.externalDirectionalSelected === true,
+      externalDirectionalMeaning: facts.externalDirectionalMeaning || "",
+      externalDirectionalOutsideCompletedPurposive:
+        facts.externalDirectionalOutsideCompletedPurposive === true,
+      externalDirectionalIndependentFromInternal:
+        facts.externalDirectionalIndependentFromInternal === true,
+      externalDirectionalRelation: facts.externalDirectionalRelation || "",
+      externalDirectionalMayContinueOrIntensifyMovement:
+        facts.externalDirectionalMayContinueOrIntensifyMovement === true,
+      embedAndMatrixActionsRemainSeparate:
+        facts.embedAndMatrixActionsRemainSeparate === true,
+      ordinaryExternalDirectionalCanCarryPurposiveReading:
+        facts.ordinaryExternalDirectionalCanCarryPurposiveReading === true,
+      ordinaryExternalDirectionalPathRemainsDistinct:
+        facts.ordinaryExternalDirectionalPathRemainsDistinct === true,
+      formalPurposiveCounterpartAvailable:
+        facts.formalPurposiveCounterpartAvailable === true,
+      fulfilledPurposeReadingAvailable:
+        facts.fulfilledPurposeReadingAvailable === true,
+      metaphoricalMovementReadingAvailable:
+        facts.metaphoricalMovementReadingAvailable === true,
+      mutedIntentionReadingAvailable:
+        facts.mutedIntentionReadingAvailable === true,
+      purposiveInterpretationReadings:
+        [...(facts.purposiveInterpretationReadings || [])],
+      interpretationIsContextualNotFormChoice:
+        facts.interpretationIsContextualNotFormChoice === true,
+      translationHasGrammarAuthority:
+        facts.translationHasGrammarAuthority === true,
     },
     predicateTense: frame?.finalTypedVncSlotFrame?.slots?.predicate?.tns || "",
     numberMorph: frame?.finalTypedVncSlotFrame?.slots?.number?.num2 || "",
@@ -175,6 +311,21 @@ function buildProjection(runtime) {
       purposiveSeries: "outbound-nonpast-optative",
       purposiveIrregularPluralN: true,
     }),
+    rareSoundedFuture: evaluate(runtime, {
+      purposiveSoundedFutureMorph: true,
+    }),
+    ordinaryAntecessivePast: evaluate(runtime, {
+      purposiveSeries: "outbound-past-indicative",
+      sentenceAntecessive: true,
+    }),
+    ordinaryAntecessiveInboundNonfuture: evaluate(runtime, {
+      purposiveSeries: "inbound-nonfuture-indicative",
+      sentenceAntecessive: true,
+    }),
+    earlySingularGlottal: evaluate(runtime, {
+      purposiveSeries: "outbound-nonpast-optative",
+      purposiveEarlySingularGlottal: true,
+    }),
     poisonedDirection: evaluate(runtime, {
       purposiveSeries: "inbound-future-indicative",
       purposiveDirection: "outbound",
@@ -253,6 +404,11 @@ function buildProjection(runtime) {
       purposiveSeries: "outbound-nonpast-optative",
       purposiveIrregularPluralN: true,
     }),
+    earlySingularGlottalWrongCoordinate: evaluate(runtime, {
+      subject: "3pl",
+      purposiveSeries: "outbound-nonpast-optative",
+      purposiveEarlySingularGlottal: true,
+    }),
   };
   const positives = [
     ...Object.values(singularSeries),
@@ -272,6 +428,8 @@ function buildProjection(runtime) {
     unknownSeries: "licensed-purposive-series-required",
     invalidExternalDirectional: "licensed-external-directional-required",
     irregularNWrongCoordinate: "irregular-n-is-outbound-plural-optative-only",
+    earlySingularGlottalWrongCoordinate:
+      "early-singular-glottal-is-outbound-singular-optative-only",
   };
   const blockedAuthorized = Object.entries(blockedCases).every(
     ([id, record]) => record.authorizationStatus === "blocked"
@@ -297,11 +455,20 @@ function buildProjection(runtime) {
       compoundType: "linked",
       linkage: "connectiveless",
       embedTense: "future",
-      soundedFutureMorphReplacedBy: "⎕",
+      ordinaryFutureMorph: "⎕",
+      rareSoundedFutureMorph: "z",
+      rareSoundedFutureStatus: "marked-nonpreferred-textual-variant",
       imperfectiveStemShapePreserved: true,
       matrixValence: "intransitive",
       matrixDirectionalPlacement: "inside-matrix-subposition",
       directionalMorphs: { outbound: "t", inbound: "c/qu" },
+      inboundDirectionalMorpheme: "/k/",
+      inboundDirectionalSpellings: ["c", "qu"],
+      directionComesFromSingleSeriesChoice: true,
+      duplicateDirectionControlRequired: false,
+      futureMorphPrecedesInternalDirectional: true,
+      internalDirectionalDistinctFromConnectiveAndExternal: true,
+      openTypedSourceAdmission: true,
       matrixBaseStems: { imperfective: "i", perfective: "o" },
       movementBaseMeaning: "move-purposefully",
       movements: ["outbound", "inbound"],
@@ -311,12 +478,28 @@ function buildProjection(runtime) {
       optativeTenseMeaning: "nonpast",
       finiteTenseMorph: "0",
       numberDyads: { singularCommon: "0-0", plural: "0-h" },
+      licensedSeries: seriesIds,
       purposeActionBeginsAfterMovement: true,
       progressiveContrast: {
         purposiveDirectionalInsideMatrix: true,
         progressiveConnectiveOutsideMatrix: true,
         traditionalSpellingAuthority: false,
+        analysisChoiceRequiredOnlyForUnderspecifiedTraditionalText: true,
       },
+      outboundNonpastReadings: ["present", "future"],
+      outboundPastReadings: ["simple-past", "habitual-past", "anterior-past"],
+      outboundPastAntecessive: "ordinary-optional-sentence-particle",
+      outboundPastHomographResolution:
+        "typed-purposive-vs-connective-t-on-o-optative-plus-ma-context",
+      outboundOptativeReadings: [
+        "command", "exhortation", "wish", "self-encouragement", "self-suggestion",
+      ],
+      outboundOptativeLetReading: "nonpermissive-exhortation",
+      outboundOptativePluralVariants: ["h", "n-with-preceding-long-i"],
+      outboundOptativeAdmonitiveContrast:
+        "matrix-t-i-plus-finite-number-vs-perfective-plus-admonitive-dyad",
+      earlySingularGlottalVariant:
+        "explicitly-selected-marked-aberrant-alternative-to-preferred-t-i",
       nonactiveEmbedVoices: ["passive", "impersonal"],
       recursiveTypedClosureRequired: true,
       externalDirectionalMorphs: ["huāl", "on"],

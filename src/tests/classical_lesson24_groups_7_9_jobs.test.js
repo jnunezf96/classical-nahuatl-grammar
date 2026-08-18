@@ -209,8 +209,8 @@ function run(ctx = {}) {
         "lesson24-coalesced-and-obsolete-destockal-sources": {
             directApplicationContextDelivered: true,
             fused: [
-                [["mi", "i", "ni"], "typed-lexical-source-analysis", "cn-l24-2459-mini-fused-destockal:fused-destockal-ni-exact", "mī-n-a", "authorized", true],
-                [["xi", "i", "ni"], "typed-lexical-source-analysis", "cn-l24-2459-xini-fused-destockal:fused-destockal-ni-exact", "xī-ni-ā", "authorized", true],
+                [["mi", "ī", "ni"], "typed-lexical-source-analysis", "cn-l24-2459-mini-fused-destockal:fused-destockal-ni-exact", "mī-n-a", "authorized", true],
+                [["xi", "ī", "ni"], "typed-lexical-source-analysis", "cn-l24-2459-xini-fused-destockal:fused-destockal-ni-exact", "xī-ni-ā", "authorized", true],
                 [["ce", "ē", "hui"], "typed-lexical-source-analysis", "cn-l24-2459-cehui-fused-destockal:fused-destockal-hui-exact", "cē-hui-ā", "authorized", true],
             ],
             open: [

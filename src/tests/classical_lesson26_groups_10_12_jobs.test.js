@@ -301,7 +301,7 @@ function run(ctx = {}) {
             ],
             mood: ["authorized", "#0-0+n-ēch+⎕-0(cōhu-i)0+⎕-0#", "nēchcōhui", true],
             passive: ["authorized", "passive", "#ni-0+⎕-0(cōhu-i-lo)0+0-0#", "nicōhuilo", 1, true],
-            impersonal: ["authorized", "impersonal", "#0-0+tē(paqui-li-lo)0+0-0#", "tēpaquililo", true],
+            impersonal: ["authorized", "impersonal", "#0-0+tē(paqui-lī-lo)0+0-0#", "tēpaquilīlo", true],
         },
         "lesson26-object-interpretation-and-applicative-unit": {
             interpretations: [

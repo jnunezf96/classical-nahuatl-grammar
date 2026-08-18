@@ -1007,8 +1007,8 @@ nuclear clause can be downgraded to the rank of a stem).
 b. In both hierarchies a root is a single major morpheme/morph.
 c. In English/Spanish a stem can be a root alone ( e.g., duck-;friend-) or a root plus one
 or more derivational affixes (e.g., duck-ling-; friend-ly, un-friend-ly, un-friend-li-ness-). In
-Nahuatl a stem can be a root alone (e.g., ftz-), a root plus a derivational affix (e.g., ftz-tī-), a
-stem plus a derivational affix (e.g., ftz-tf-huā-). A special kind of Nahuatl stem can also be
+Nahuatl a stem can be a root alone (e.g., itz-), a root plus a derivational affix (e.g., itz-tī-), a
+stem plus a derivational affix (e.g., itz-tī-huā-). A special kind of Nahuatl stem can also be
 created by a two-step process by way of a stock (which is created from a root plus a derivational
 suffix; see § 24.4). Furthermore, both English and Nahuatl can create compound stems
 by combining one stem with another.
@@ -1324,7 +1324,7 @@ for two totally different stems; e.g., he lists "tlatia. nino. esconderse o quem
 to bum oneself'). This should have been split into two entries: m-o-(tlii.-tī-iī.), "to hide oneself,"
 and m-o-(tla-ti-iī.), "to bum oneself." His practice can even lead to an erroneous entry
 such as "xima. nite. afeitar . .. , o labrar piedras" ("to shave someone ... , or to work stone").
-But tē-(xfma), "to shave someone," is a simple transitive stem, and (te-xfma), "to work stone,"
+But tē-(xima), "to shave someone," is a simple transitive stem, and (te-xima), "to work stone,"
 is a compound intransitive one in which (te)-tl-, "stone, rock," is embedded as an incorporated
 object. Molina should have listed it as "texima. ni." just as he did for "quauhxima. ni. carpintear,
 labrar madera" ("to do carpenter's work, to work wood"). An even stranger example
@@ -1748,7 +1748,7 @@ stem-initial [i] may be treated as "real" in some situations and as "supportive"
 tlahtic [After tla- the [i] is treated as merely supportive and is rejected.]
 nohtic ~ nihtic [After the possessive pronouns no-, mo-, to-, and amo- the [i] is sometimes rejected and
 sometimes kept; in the latter case it forces out the /o/.]
-tla-(iht-o-a):
+tla-(iht-o-ā):
 tlahtoa [After tla- the [i] is rejected.]
 mihtoa [After the reflexive-verb object pronouns no-, mo-, to-, and amo- the [i] is kept and the /o/ forced out.]
 nehtolli [After ne- the [i] is rejected.]
@@ -2872,7 +2872,7 @@ In certain verbstems the hyphenation indicating morphic boundaries may seem exce
 ## PDF Page 77
 
 62 Lesson 7
-for example, in (ā-I-ti-ā), "to bathe," but each constituent morph can be justified by contrastive
+for example, in (ā-l-ti-ā), "to bathe," but each constituent morph can be justified by contrastive
 analysis.
 7.2. The Citation Form ofVerbstems. If Nahuatl were like English or Spanish, one could cite
 a verbstem without mentioning its valence or, in problematic instances, use notations such as
@@ -2930,7 +2930,7 @@ This is done in order to simplify the analysis of complicated stems to be presen
 lessons.
 Class C: The imperfective stem of Class C verbs always ends in a final /a:/ preceded by
 either Joi or Iii. The perfective stem replaces the /a:/ with a glottal stop: e.g., (chol-o-ā) >
-(chol-o-h); tē-(ā-l-ti-ā) > tē-(ā-I-ti-h).
+(chol-o-h); tē-(ā-l-ti-ā) > tē-(ā-l-ti-h).
 Class D: The imperfective stem of Class D verbs always ends in a syllable consisting of a
 consonant and /a:/. The perfective stem adds a glottal stop after the /a:/. This vowel is thereby
 obligatorily shortened: e.g., (yā) > (yah).
@@ -2941,7 +2941,7 @@ Class A imperfective stem: If the final vowel is short, there is only one shape:
 If the final vowel is long, there are two shapes: e.g., (temō) ~ (temo).
 Class B imperfective stem: only one shape: e.g., (yōli); tla-(tom-a).
 Class C imperfective stem: four shapes: e.g., (chol-o-ā) ~ (chol-o-ā) ~ (chol-ō) ~ (chol-o);
-tē-(ā-I-ti-ā) ~ tē-(ā-I-ti-a) ~ tē-(ā-l-ti) ~ tē-(ā-I-ti).
+tē-(ā-l-ti-ā) ~ tē-(ā-l-ti-a) ~ tē-(ā-l-ti) ~ tē-(ā-l-ti).
 Class D imperfective stem, two shapes: e.g., (yā) ~ (ya).
 In the instance of Class C and Class D verbs, the shape of the imperfective stem is correlated
 with the tense morphs as demonstrated in § 7. 7. In these two classes the stems with short
@@ -3137,7 +3137,7 @@ unit analysis, which is followed by a translational equivalent. In the latter fo
 morphic-carrier segments are only representatives of morphs since the morphic-content segments
 are not given.
 1. VNCs formed on Class A verbstems:
-tichicāhuaz = #ti-Ø(chic-a-hua)z+Ø-Ø#, "#2sg-nom(become-strong)fut+con-sg#"= you
+tichicāhuaz = #ti-Ø(chic-ā-hua)z+Ø-Ø#, "#2sg-nom(become-strong)fut+con-sg#"= you
 (sg) will become strong
 #ti-Ø( ... +Ø-Ø# Subject == you (sg)
 == become strong
@@ -3540,7 +3540,7 @@ when the subject personal pronoun is plural (see § 5.4.3).
 3. All nonpast optative VNCs built on Class C verbstems use truncated stem morphs that
 lack the final /a:/ of the base imperfective stem. The resultant final vowel (lo/ or /i/) of the
 truncated stem is short when followed only by silent morphs and long when followed by at
-least one sounded morph; e.g., (chol-ō)- ~ (chol-o)-; (ā-I-ti)-~ (ā-I-ti)-.
+least one sounded morph; e.g., (chol-ō)- ~ (chol-o)-; (ā-l-ti)- ~ (ā-l-ti)-.
 4. All nonpast optative VNCs built on Class D verbstems use a stem morph with a short
 vowel when followed only by silent morphs and a long vowel when followed by at least one
 sounded morph; e.g., tla-(cuā)- ~ tla-(cua)-.
@@ -4032,7 +4032,7 @@ is preferable.
 This /t/ > [h] irregularity occurs in the perfective stem of certain intransitive verbs created
 by means of the derivational suffix ti (see § 54.2.1), such as *(ca-ti) > (ca-t) ~ (ca-h) (see §
 11.5.1); (huē-huē-ti) > (huē-huē-t) ~ (huē-hue-h), "to become an old man" (notice the shortening
-of the /e:/ before the glottal stop; see § 35.8.2); and (llama-ti)> (ilama-t) ~ (ilama-h),
+of the /e:/ before the glottal stop; see § 35.8.2); and (ilama-ti) > (ilama-t) ~ (ilama-h),
 "to become an old woman" (see § 35.8.1).
 11.4. Irregular Form–Meaning Alignments. Irregularities due to the dislocation of form and
 meaning produce a "preterit-as-present tense" (vaguely similar to English past-as-present tense
@@ -6381,7 +6381,7 @@ agentive NNC (see § 35.3, note) that has become frozen in the third-person sing
 āc is the supplementary subject īn cross-reference to the nuclear subject of tihqueh.
 There is a lack of person and number agreement between the supplement and its head.]
 Āc amihqueh? = āc #am-Ø(Ø-i-h)Ø+qu-eh# = Who you(pl)-exist? I.e., Who are you (pl)?
-Āc ihqueh? = āc #Ø-Ø(Ø-ī-h)Ø+qu-eh# = Who they-exist? I.e., Who are they? [Traditionally,
+Āc ihqueh? = āc #Ø-Ø(Ø-i-h)Ø+qu-eh# = Who they-exist? I.e., Who are they? [Traditionally,
 the NNC and VNC are written solid: aquique.]
 
 ## PDF Page 167
@@ -7732,7 +7732,7 @@ Both the intransitive stem and the derived causative stem of this kind of verb b
 
 b. When derivation takes place by addition, the causative a is added to the full intrasitive stem and is lengthened to /a:/.
 
-(īlpi) = to become tied > tla-(īlpi-ā) = to cause s.th. to become tied; i.e., to tie s.th.
+(ilpi) = to become tied > tla-(ilpi-ā) = to cause s.th. to become tied; i.e., to tie s.th.
 (aqui) = to enter/fit into > tla-(aqui-ā) = to put s.th. in a hole; to (trans)plant s.th.
 (pah-ti) = to have (good) medicine; to convalesce/get well > tē-(pah-ti-ā) = to cause s.o. to have (good) medicine; to cure s.o.
 
@@ -7749,9 +7749,9 @@ a. Certain intransitive verbstems ending in an /a/ that is not part of the /ya/ 
 b. Certain intransitive verbstems end in an /a/ that is part of the derivational suffix ya (see § 54.2). This kind of stem normally replaces the /ya/ morpheme with the causative a, which is lengthened to /a:/ because of the preceding vowel.
 
 (coco-ya) = to become sick > tē-(coco-ā) = to cause s.o. to become sick, to hurt s.o.
-(tlap-i-hui-ya) = nonan, to increase in number, to multiply > tla-(tlap-ī-hui-ā) = to cause s.th. to increase in number
+(tlap-ī-hui-ya) = nonan, to increase in number, to multiply > tla-(tlap-ī-hui-ā) = to cause s.th. to increase in number
 
-The intransitive stem of such verbs belongs to Class A or Class B: e.g., (coco-ya) > perf, (coco-x); (tlap-i-hui-ya) > perf, (tlap-ī-hui-ya) > (tlap-ī-hui-x). The causative stem belongs to Class C: e.g., tē-(coco-ā) > perf, tē-(coco-h); tla-(tlap-ī-hui-ā) > perf, tla-(tlap-ī-hui-h).
+The intransitive stem of such verbs belongs to Class A or Class B: e.g., (coco-ya) > perf, (coco-x); (tlap-ī-hui-ya) > perf, (tlap-ī-hui-ya) > (tlap-ī-hui-x). The causative stem belongs to Class C: e.g., tē-(coco-ā) > perf, tē-(coco-h); tla-(tlap-ī-hui-ā) > perf, tla-(tlap-ī-hui-h).
 
 Note: Occasionally, there are exceptions to the “intransitive ya > causative a” formation in that the causative stem is formed according to subsection 2.a above; for example:
 (yōco-ya) > perf, (yōco-x) = to become comely/well-formed > causative, tla-(yōco-y-a) > perf, tla-(yōco-x) = to cause s.th. to become well-formed; i.e., to form/invent/create s.th. [The intrasitive stem is rare except as the source for its preterit-agentive nounstem.]
@@ -7884,7 +7884,7 @@ b. The majority of hui destockal stems prefer to replace the stem-final i with t
 (chay-ā-hui) = (for grain) to spill out on the ground > tla-(chay-ā-hu-a) = to pour s.th. (e.g., grain) out on the ground
 (tōy-ā-hui) = (for a liquid) to spill out > tla-(tōy-ā-hu-a) = to pour s.th. (i.e., a liquid) out
 Only a few hui stems prefer to add the causative a to the end of the intransitive stem:
-(tlap-i-hui) = nonan, to increase in number > tla-(tlap-ī-hui-ā) = to cause s.th. to increase in number
+(tlap-ī-hui) = nonan, to increase in number > tla-(tlap-ī-hui-ā) = to cause s.th. to increase in number
 
 8. Causative destockal verbstems of the n-a and hu-a kind belong to Class B: tla-(cot-ō-n-a) > perf, tla-(cot-ō-n); tla-(chay-ā-hu-a) > perf, tla-(chay-ā-uh). Those of the ni-ā and hui-ā kind belong to Class C: tla-(chip-ī-ni-ā) > perf, tla-(chip-ī-ni-h); tla-(tlap-ī-hui-ā) > perf, tla-(tlap-ī-hui-h).
 
@@ -7969,10 +7969,10 @@ After a root-final /l/, however, the stock formative is always /i/, even if the 
 (mi-mil-i-hui) = (for a bud or a pregnant woman’s belly) to become filled out, to swell
 (pil-i-hui) = to become wrinkled/wilted; (for hairs) to become stuck to one other
 (pol-i-hui) = to become lost, to perish
-(cuël-i-hui) = (for a twig, etc.) to become bent [Notice the length on the vowel of the root.]
+(cuēl-i-hui) = (for a twig, etc.) to become bent [Notice the length on the vowel of the root.]
 (nol-i-hui) = to become twisted/bent
 
-(cöl-i-hui) = to become bent/curved/hook-shaped; (for a wall) to sag [Notice the long vowel in the root.]
+(cōl-i-hui) = to become bent/curved/hook-shaped; (for a wall) to sag [Notice the long vowel in the root.]
 
 The i-hui or a-hui intransitive destockal verb stems derive their causative stems by replacing these stock-formative-plus-stem-formative sequences with the sequence o-ā. That is, the stock formatives /i/ and /a/ are replaced by the stock formative /o/; consequently the derivation is more complicated than in the other causative destockal-stem formations.
 
@@ -8121,7 +8121,7 @@ tla-(caqui) = to hear s.th. > *(caqui-hua) > tē+ tla-(caqui-tiā) = to cause s.
 
 3. The active source stem ends in /ti/ or /ta/. The /a/ is replaced with [i] as in item 1 above. In certain instances, when /ti/ is postvocalic, it changes to [či].
 
-tla-(itt-a) = to look at/see s.th. > *(itt-i-hua) > tē+ tla-(itt-ī-tiā) = to cause s.o. to see s.th. (by showing the object); to show s.th. to s.o. [The long i after tt is presumably due to the fact that the apparently geminate tt manifests the single phone [t]; see § 26.1.2.
+tla-(itt-a) = to look at/see s.th. > *(itt-ī-hua) > tē+ tla-(itt-ī-tiā) = to cause s.o. to see s.th. (by showing the object); to show s.th. to s.o. [The long i after tt is presumably due to the fact that the apparently geminate tt manifests the single phone [t]; see § 26.1.2.
 
 Contrast the meaning of this causative stem with that of the stem in § 25.4; there it is the perceiver who is being manipulated.]
 tla-(mati) = to know s.th. > *(machi-hua) > tē+ tla-(machi-tiā) = to cause s.o. to know s.th.; to notify s.o. of s.th.
@@ -8138,11 +8138,11 @@ m-o-(pol-i-huī-tiā) = to cause o.s. to become lost; i.e., to become lost/ruine
 
 Causative Verb stems (Second Type) 197
 tē-(pach-i-hui-tiā) = to satiate s.o., to satisfy s.o.'s hunger [< (pach-i-hui), “to become full/satiated/satisfied.” The causative stems tē-(pach-o-ā), “to govern/control/pressure s.o.,” and tla-(pach-o-ā), “to govern/control/pressure s.th.; (for a hen) to sit on eggs,” relate to a different meaning of (pach-i-hui), namely, “(for s.th.) to become pressed down upon; (for a grave, fill, etc.) to become sunken in; (for a building) to settle; (for s.th. made of metal) to become dented.”]
-tē- ~ tla-(i̱hc-i-huī-tiā) = to cause s.o. or s.th. to hurry [< (i̱hc-i-hui), “to hurry.” The causative stem *tē- ~ tla-(i̱hz-o-ā) does not exist.]
+tē- ~ tla-(ihc-i-huī-tiā) = to cause s.o. or s.th. to hurry [< (ihc-i-hui), “to hurry.” The causative stem *tē- ~ tla-(ihz-o-ā) does not exist.]
 Note: At times a type-two causative stem may seem to be ambiguously a one-object or a two-object stem, but the valence is in fact determined by the intransitive or transitive nature of the source (see § 24.2):
 tē-(hue-tz-quī-tiā) = to make s.o. laugh (by telling a joke, etc.) [< (hue-tz-ca),”to laugh”]
 tē+ tla-(hue-tz-quī-tiā) = to make s.o. laugh at s.th. [< tla-(hue-tz-ca), “to laugh at s.th.”]
-25.3. The ̱o and o-hua Nonactive Stems as Source. The tiā replaces the ̱o or o-hua of the
+25.3. The ō and o-hua Nonactive Stems as Source. The tiā replaces the ō or o-hua of the
 
 nonactive stem. The formation is distinguished by the presence of a consonant before tiā (but if the consonant is /l/, the formation is that of § 25.4). If the active source stem has two consonants before the final vowel, this formation is impossible.
 (chōca) = to cry > (chōc-o-hua) > tē-(chōc-tiā) = to cause s.o. to cry
@@ -8170,10 +8170,10 @@ Among the unexpected causative stem formations from ō or o-hua are the followin
 (mahui) = to be afraid > *(mahu-o-hua) > tē-(mauh-tiā) = to frighten s.o.
 2. The active source is a transitive stem ending in /mi/:
 tla-(quēmi) = to wear s.th. > *(quēm-o-hua) > tē+ tla-(quēn-tiā) = to dress s.o. in s.th. [ /m/ + /t/ > nt]]
-25.4. The ło Nonactive Stem as Source. The tiā replaces the /o:/ of the nonactive stem. The formation is distinguished by the presence of an /l/ before the tiā.
-tla-(it-t-a) = to look at/see s.th. > (it-t-a-ło) > tē+ tla-(it-t-a-l-tiā) = to cause s.o. to see s.th. (by moving the person into position) [Contrast tē+ tla-(it-t-i-tiā) in § 25.2.3.]
-tla-(chīhua) = to make s.th. > (chīhua-ło) > tē+ tla-(chīhua-l-tiā) = to cause s.o. to make s.th.
-tla-(quēmi) = to wear s.th. > (quēmi-ło) > tē+ tla-(quēmi-l-tiā) = to dress s.o. in s.th.
+25.4. The lō Nonactive Stem as Source. The tiā replaces the /o:/ of the nonactive stem. The formation is distinguished by the presence of an /l/ before the tiā.
+tla-(itt-a) = to look at/see s.th. > (itt-a-lō) > tē+ tla-(itt-a-l-tiā) = to cause s.o. to see s.th. (by moving the person into position) [Contrast tē+ tla-(itt-ī-tiā) in § 25.2.3.]
+tla-(chīhua) = to make s.th. > (chīhua-lō) > tē+ tla-(chīhua-l-tiā) = to cause s.o. to make s.th.
+tla-(quēmi) = to wear s.th. > (quēmi-lō) > tē+ tla-(quēmi-l-tiā) = to dress s.o. in s.th.
 Class C and D verbs make their causative stems by this procedure:
 
 (cho-l-o-ā) = to bound away/flee > (chol-o-lō) > tē-(chol-o-l-tiā) = to cause s.o. to flee tla-(tlā-ti-ā) = to hide s.th. > (tlā-ti-lō) > tē+tlā-(tlā-ti-l-tiā) = to cause s.o. to hide s.th. tla-(cuā) = to eat s.th. > (cua-lō) > tē+tlā-(cua-l-tiā) = to cause s.o. to eat s.th. There are many unexpected formations. The following represent common types: 1. The active source stem ends in /ka/ or /ki/. The /ka/ may appear as [ka] or change to [ki]. One would expect /k-o:/ or /k-o-wa/: (chōca) = to cry a. *(chōca-lō) > tē-(chōca-l-tiā) b. *(chōqui-lō) > tē-(chōqui-l-tiā) } = to cause s.o. to cry tē+tlā-(maca) = to give s.th. to s.o. > *(maqui-lō) > tē+tē+tlā-(maqui-l-tiā) = to cause s.o. to give s.th. to s.o.
@@ -8204,10 +8204,10 @@ tla-(mati) = to know s.th. > *(machi-lō) > tē+ tla-(machi-l-tiā) = to cause s
 
 s.th.; i.e., to inform s.o. of s.th. [Compare tē+tlā-(machī-tiā) in § 25.2.3; contrast tē-(mach-tiā) in § 25.3.]
 
-7. The verb tla-(itt-a), “to see/look at s.th.,” in addition to having the causative stems tē+tlā-(itt-i-tiā) (see § 25.2.3) and tē+tlā-(itt-a-l-tiā) (see main paragraph above), also has a single-object causative stem built on an intrasitive stem * (itz-ti) derived from the nounstem (itz)-tli-, “an alert/observant entity (i.e., one that results from being alert)” (from the verbstem * (itz); see § 26.1.2 for the relationship with tla-(itt-a)) plus the verbstem-forming suffix ti, “to become” (see § 54.2.1).
+7. The verb tla-(itt-a), “to see/look at s.th.,” in addition to having the causative stems tē+tlā-(itt-ī-tiā) (see § 25.2.3) and tē+tlā-(itt-a-l-tiā) (see main paragraph above), also has a single-object causative stem built on an intransitive stem *(itz-ti) derived from the nounstem (itz)-tli-, “an alert/observant entity (i.e., one that results from being alert)” (from the verbstem *(itzi); see § 26.1.2 for the relationship with tla-(itt-a)) plus the verbstem-forming suffix ti, “to become” (see § 54.2.1).
 
-* (itz-ti) = to become observant, to direct one’s gaze, to look
-* (itz-ti-lō) > tē-(itz-ti-l-tiā) = to cause s.o. to direct his/her gaze, to cause s.o. to look
+*(itz-ti) = to become observant, to direct one’s gaze, to look
+*(itz-ti-lō) > tē-(itz-ti-l-tiā) = to cause s.o. to direct his/her gaze, to cause s.o. to look
 
 8. The active source stem is an intrasitive “root + ya” verb (see § 54.2.3). The ya is deleted and the lō is attached to the root (see § 25.5.2 for the expected formation).
 
@@ -8283,10 +8283,10 @@ b. tē-(pīn-ā-uh-tiā) = to cause s.o. to be ashamed
 
 202 Lesson 25
 The specificity of the causative object pronoun is determined by the active, passive, or impersonal voice of the source VNC. This is demonstrated in the following three sections.
-25.10. Generation of the Single-Object Causative VNC. The source for a single-object causative VNC formed on a type-two causative stem (be it with tiā, liā, or huīā) is an intransitive VNC created from either an active-voice or an impersonal-voice stem (this is the same as in § 24.8).
+25.10. Generation of the Single-Object Causative VNC. The source for a single-object causative VNC formed on a type-two causative stem (be it with tiā, liā, or huiā) is an intransitive VNC created from either an active-voice or an impersonal-voice stem (this is the same as in § 24.8).
 1. Generation of a specific projective-object pronoun in the causative VNC:
 Active intrans source: quīza = #0-0(quiza)0+0-0# = he leaves
-Causative transform: ticquīxtia = #ti-0+c-0(quix-tia)0+0-0# = you persuade him to leave, you dismiss him [The subject pronoun 0-0(....+0-0 of the source VNC has become the specific projective causative object pronoun c-0 of the transform VNC.]
+Causative transform: ticquīxtia = #ti-0+c-0(quīx-tiā)0+0-0# = you persuade him to leave, you dismiss him [The subject pronoun 0-0(....+0-0 of the source VNC has become the specific projective causative object pronoun c-0 of the transform VNC.]
 
 2. Generation of a reflexive-object pronoun in the causative VNC:
 Active intrans source: niquīza = #ni-0(quiza)0+0-0# = I leave
@@ -8314,31 +8314,31 @@ Causative Verb stems (Second Type) 203
 1. Generation of a specific projective causative object in the causative VNC:
 a. With a shuntline specific projective object:
 Active source: nicchihua = #ni-0+c-0(chihua)0+0-0# = I make it
-Causative transform: tinēchchihualtia = #ti-0+n-ēch+□-0(chihua-l-tia)0+0-0# = you persuade me to make it [The subject pronoun ni-0+ . . . +0-0 of the source VNC has become the specific projective causative object pronoun n-ēch in the transform. The specific projective object c-0 of the source has become the shuntline silent variant □-0 in the transform VNC because of the incompatibility of two sounded specific projective object pronouns (see § 23.4). It is extremely important in all such instances that one recognize the real, effective (i.e., meaning producing) presence of the silently manifested pronoun.]
+Causative transform: tinēchchihualtia = #ti-0+n-ēch+□-0(chīhua-l-tiā)0+0-0# = you persuade me to make it [The subject pronoun ni-0+ . . . +0-0 of the source VNC has become the specific projective causative object pronoun n-ēch in the transform. The specific projective object c-0 of the source has become the shuntline silent variant □-0 in the transform VNC because of the incompatibility of two sounded specific projective object pronouns (see § 23.4). It is extremely important in all such instances that one recognize the real, effective (i.e., meaning producing) presence of the silently manifested pronoun.]
 Active source: niquinnōtza = #ni-0+qu-in(nōtza)0+0-0# = I call them
 
-Causative transform: tinēchinnōtzalta = #ti-0+n-ēch+□-in(nōtza-l-tia)0+0-# = you have me call them [The specific projective object qu-in of the source has become the shuntline variant □-in in the transform.]
+Causative transform: tinēchinnōtzaltia = #ti-0+n-ēch+□-in(nōtza-l-tiā)0+0-# = you have me call them [The specific projective object qu-in of the source has become the shuntline variant □-in in the transform.]
 
 Active source: quinnōtzah = #0-0+qu-in(nōtza)0+0-h# = they call them
 
-Causative transform: tiquinnōtzalta = #ti-0+qu-in+□-□(nōtza-l-tia)0+0-# = you have them call them [The subject pronoun 0-0+...+0-h of the source VNC has become the specific projective causative object pronoun qu-in in the transform. The specific projective object qu-in of the source has become the shuntline variant □-□ in the transform VNC because the subject of the source is a third-person plural pronoun.]
+Causative transform: tiquinnōtzaltia = #ti-0+qu-in+□-□(nōtza-l-tiā)0+0-# = you have them call them [The subject pronoun 0-0+...+0-h of the source VNC has become the specific projective causative object pronoun qu-in in the transform. The specific projective object qu-in of the source has become the shuntline variant □-□ in the transform VNC because the subject of the source is a third-person plural pronoun.]
 
 b. With a shuntline reflexive/reciprocal object:
 
 Active source: motlazohtlah = #0-0+m-o(tla-zo-h-tla)0+0-h# = they love one another
 
-Causative transform: tiquinnetlazohtlalta = #ti-0+qu-in+ne(tla-zo-h-tla-l-tia)0+0-# = you cause them to love one another; you reconcile them [The subject pronoun 0-0+...+0-h of the source VNC has become the specific projective causative object
+Causative transform: tiquinnetlazohtlaltia = #ti-0+qu-in+ne(tla-zo-h-tla-l-tiā)0+0-# = you cause them to love one another; you reconcile them [The subject pronoun 0-0+...+0-h of the source VNC has become the specific projective causative object
 
 pronoun qu-in in the transform. The reciprocal object m-o of the source has become the shuntline variant ne in the transform.]  
 Active source: ninopetlāhua = #ni-0+n-o(petl-ā-hu-a)0+0-0# = I undress myself  
-Causative transform: tinēchnepetlāhualtia = #ti-0+n-ēch+ne(petl-ā-hu-a-l-tia)0+0-0# = you cause me to undress myself; you have me get undressed [The subject pronoun ni-0+. . .+0-0 of the source VNC has become the specific projective causative object pronoun n-ēch in the transform. The reflexive object n-o of the source VNC has become the shuntline variant ne in the transform.]  
+Causative transform: tinēchnepetlāhualtia = #ti-0+n-ēch+ne(petl-ā-hu-a-l-tiā)0+0-0# = you cause me to undress myself; you have me get undressed [The subject pronoun ni-0+. . .+0-0 of the source VNC has become the specific projective causative object pronoun n-ēch in the transform. The reflexive object n-o of the source VNC has become the shuntline variant ne in the transform.]
 There is one situation in which the shuntline reflexive/reciprocal object pronoun is prevented from taking on a shuntline shape. This occurs when the imported subject of the causative transform has the same referent as the specific projective object of the source VNC (i.e., projective > reflexive).
 
 ## PDF Page 219
 
 204 Lesson 25
 Active source: nēchitta = #0-0+n-ēch(itt-a)0+0-0# = he sees me
-Causative transform: nicnottīta = #ni-0+c-0+n-o(itt-i-tia)0+0-0# = I cause him to
+Causative transform: nicnottīta = #ni-0+c-0+n-o(itt-ī-tiā)0+0-0# = I cause him to
 see me; i.e., I reveal myself to him, I show myself to him [The subject pronoun
 0-0+. . .+0-0 of the source has become the specific projective causative object pro-
 noun c-0 in the transform. The specific projective object n-ēch of the source has
@@ -8348,21 +8348,21 @@ uity in one respect—nicneittita would mean “I cause him to see himself”—
 same time it creates ambiguity with the possibly homonymous construction pre-
 sented in section 2.a below.
 Active source: mitznequi = #0-0+m-itz(nequi)0+0-0# = she wants you
-Causative transform: ticmonectia = #ti-0+c-0+m-o(nec-tia)0+0-0# = you try to cause
+Causative transform: ticmonectia = #ti-0+c-0+m-o(nec-tiā)0+0-0# = you try to cause
 
 her to want you; i.e., you try to attract her to yourself; you court/woo her [Notice the conative meaning.]
 c. With a shuntline nonspecific projective object:
-Active source: nitlacâhua = #ni-0+tlâ(câhua)0+0-0# = I abandon s.th.
-Causative transform: tinèchtlacâualtia = #ti-0+n-èch+tlâ(câhua-l-tia)0+0-0# = you cause me to abandon s.th., you make me abstain from s.th., you dissuade me from doing s.th. [The subject pronoun ni-0+ . . . +0-0 of the source VNC has become the specific projective causative object pronoun n-èch in the transform. The nonspecific projective object tlâ remains unchanged in its shuntline function in the transform.]
+Active source: nitlacāhua = #ni-0+tla(cāhua)0+0-0# = I abandon s.th.
+Causative transform: tinēchtlacāhualtia = #ti-0+n-ēch+tla(cāhua-l-tiā)0+0-0# = you cause me to abandon s.th., you make me abstain from s.th., you dissuade me from doing s.th. [The subject pronoun ni-0+ . . . +0-0 of the source VNC has become the specific projective causative object pronoun n-ēch in the transform. The nonspecific projective object tla remains unchanged in its shuntline function in the transform.]
 2. Generation of a mainline reflexive causative object pronoun in the causative VNC:
 a. With a shuntline specific projective object:
-Active source: niccâhua = #ni-0+c-0(câhua)0+0-0# = I abandon it
-Causative transform: nicnocâualtia = #ni-0+c-0+n-o(câhua-l-tia)0+0-0# = I cause myself to abandon it; i.e., I abstain from it [Because of the importation of a core-
+Active source: niccāhua = #ni-0+c-0(cāhua)0+0-0# = I abandon it
+Causative transform: nicnocāhualtia = #ni-0+c-0+n-o(cāhua-l-tiā)0+0-0# = I cause myself to abandon it; i.e., I abstain from it [Because of the importation of a core-
 
 erential subject pronoun in the transform VNC, the subject pronoun n-0+...+0-0 of the source VNC has become the reflexive object pronoun n-ο in the transform. The specific projective object pronoun c-0 of the source VNC remains unchanged in its shuntline function in the transform VNC.]  
 b. With a shuntline nonspecific object:  
 Active source: titlachīhua = #ti-0+tlā(chīhua)0+0-0# = you make s.th.  
-Causative transform: timotlachihualta = #ti-0+m-o+tlā(chīhua-l-tia)0+0-0# = you cause yourself to make s.th. [The subject pronoun ti-0+...+0-0 of the source VNC has become the reflexive object pronoun m-ο in the transform. The nonspecific projective object tlā remains unchanged in its shuntline function in the transform.]  
+Causative transform: timotlachīhualtia = #ti-0+m-o+tlā(chīhua-l-tiā)0+0-0# = you cause yourself to make s.th. [The subject pronoun ti-0+...+0-0 of the source VNC has become the reflexive object pronoun m-ο in the transform. The nonspecific projective object tlā remains unchanged in its shuntline function in the transform.]
 3. Generation of a nonspecific causative object pronoun in the causative VNC:
 
 ## PDF Page 220
@@ -8371,14 +8371,14 @@ Causative Verb stems (Second Type) 205
 a. With a shuntline specific projective object:
 Passive source: chihualo = #0-0(chihua-lo)0+0-0# = it is being made; they are being
 made; i.e., s.o. makes it/them
-Causative transform: tictēchihualta = #ti-0+c-0+tē(chihua-l-tia)0+0-0# = you per-
+Causative transform: tictēchihualtia = #ti-0+c-0+tē(chīhua-l-tiā)0+0-0# = you per-
 suade s.o. to make it/them [The impersonal agent implied in the passive source
 VNC is made explicit as the nonspecific causative object pronoun tē in the trans-
 form. The subject pronoun 0-0+ . . . +0-0 of the source becomes the shuntline spe-
 cific projective object of the transform VNC.]
 Passive source: ninōtzalo = #ni-0(nōtza-lo)0+0-0# = I am being summoned; s.o. is
 summoning me
-Causative transform: annēchtēnōtzaltiah = #an-0+n-ēch+tē(nōtza-l-tia)0+0-h# = you (pl) persuade s.o. to summon me [The formation is similar to that in the pre-
+Causative transform: annēchtēnōtzaltiah = #an-0+n-ēch+tē(nōtza-l-tiā)0+0-h# = you (pl) persuade s.o. to summon me [The formation is similar to that in the pre-
 
 ceding example.]
 
@@ -8386,18 +8386,18 @@ b. With a shuntline reflexive/reciprocal object:
 
 Impersonal source: netlazohtlalo = #0-0+ne(tla-zo-h-tla-lo)0+0-0# = people love one another
 
-Causative transform: titēnetlazohtlaltia = #ti-0+tē+ne(tla-zo-h-tla-l-tia)0+0-0# = you cause people to love one another, you reconcile people [The subject pronoun 0-0+ . . +0-0 of the impersonal source has become the nonspecific projective causative object pronoun tē in the causative transform. The shuntline reflexive object pronoun ne remains unchanged in the transform.]
+Causative transform: titēnetlazohtlaltia = #ti-0+tē+ne(tla-zo-h-tla-l-tiā)0+0-0# = you cause people to love one another, you reconcile people [The subject pronoun 0-0+ . . +0-0 of the impersonal source has become the nonspecific projective causative object pronoun tē in the causative transform. The shuntline reflexive object pronoun ne remains unchanged in the transform.]
 
 There is one situation in which the shuntline reflexive/reciprocal object pronoun is prevented from taking a shuntline shape. This occurs when the imported subject of the causative transform has the same referent as the subject of the passive source VNC (i.e., passive subject > reflexive object).
 
 Passive source: nipiyalo = #ni-0(piya-lo)0+0-0# = I am guarded; s.o. guards me
 
-Causative transform: ninotēpiyaltia = #ni-0+n-o+tē(piya-l-tia)0+0-0# = I cause s.o.
+Causative transform: ninotēpiyaltia = #ni-0+n-o+tē(piya-l-tiā)0+0-0# = I cause s.o.
 
 to guard me; i.e., i put myself in s.o.'s safekeeping, i entrust myself to s.o. [the impersonal agent implied in the source vnc becomes the nonspecific projective causative object pronoun tē in the transform vnc. The subject pronoun ni-0( . . +0-0 of the source becomes a shuntline reflexive object but, because of its coreference with the subject of the causative transform, it takes the shape n-o.]
 c. With a shuntline nonspecific projective object:
 Impersonal source: tlachīhualo = #0-0+tla(chīhua-lo)0+0-0# = s.o. makes s.th.; people make things
-Causative transform: titětlachīhualtia = #ti-0+tē+tla(chihua-l-tia)0+0-0# = you persuade s.o. to make s.th.; you persuade people to make things [the impersonal-pronoun subject 0-0+ . . +0-0 of the source vnc has become the nonspecific causative object pronoun tē in the transform. The nonspecific projective object tla remains unchanged in its shuntline function in the transform.]
+Causative transform: titētlachīhualtia = #ti-0+tē+tla(chīhua-l-tiā)0+0-0# = you persuade s.o. to make s.th.; you persuade people to make things [the impersonal-pronoun subject 0-0+ . . +0-0 of the source vnc has become the nonspecific causative object pronoun tē in the transform. The nonspecific projective object tla remains unchanged in its shuntline function in the transform.]
 
 ## PDF Page 221
 
@@ -8406,58 +8406,58 @@ Causative transform: titětlachīhualtia = #ti-0+tē+tla(chihua-l-tia)0+0-0# = y
 No attempt has been made to show all possible triple-object combinations (see § 23.5); the purpose of the display is to exemplify the principles involved. The double-object causative VNCs that serve as the source for the triple-object VNC transforms are generated according to § 25.11.
 
 1. Generation of a mainline specific projective causative-object pronoun in the triple-object VNC from an active source:
-2-obj active source: nimitzcaquitia = #ni-0+m-itz+□-0(caqui-tia)0+0-0# = I cause you to hear it; i.e., I inform you of it [Mainline = m-itz; shuntline = □-0 (= qui-0).]
-3-obj transform: nēchcaquitiltia = #0-0+n-ēch+□-□+□-0(caqui-ti-l-tia)0+0-0# = he causes me to hear it; i.e., he persuades me to inform you of it [Mainline = n-ēch; 2nd-level shuntline = □-□ (= m-itz); lst-level shuntline = □-0 (= qui-0).]
-2-obj active source: niquincaquitia = #ni-0+qu-in+□-0(caqui-tia)0+0-0# = I cause them to hear it; i.e., I inform them of it [Mainline = qu-in; shuntline = □-0 (= qui-0).]
-3-obj transform: tinēchincaquītiltia = #ti-0+n-ēch+□-in+□-0(caqui-ti-l-tia)0+0-0# = you cause me to cause them to hear it; i.e., you persuade me to inform them of it [Mainline = n-ēch; 2nd-level shuntline = □-in (= qu-in); lst-level shuntline = □-0 (= qui-0).]
-2-obj active source: nictlacaquitia = #ni-0+c-0+tla(caqui-tia)0+0-0# = I cause him to
+2-obj active source: nimitzcaquītia = #ni-0+m-itz+□-0(caquī-tiā)0+0-0# = I cause you to hear it; i.e., I inform you of it [Mainline = m-itz; shuntline = □-0 (= qui-0).]
+3-obj transform: nēchcaquītīltia = #0-0+n-ēch+□-□+□-0(caquī-ti-l-tiā)0+0-0# = he causes me to hear it; i.e., he persuades me to inform you of it [Mainline = n-ēch; 2nd-level shuntline = □-□ (= m-itz); lst-level shuntline = □-0 (= qui-0).]
+2-obj active source: niquincaquītia = #ni-0+qu-in+□-0(caquī-tiā)0+0-0# = I cause them to hear it; i.e., I inform them of it [Mainline = qu-in; shuntline = □-0 (= qui-0).]
+3-obj transform: tinēchincaquītīltia = #ti-0+n-ēch+□-in+□-0(caquī-ti-l-tiā)0+0-0# = you cause me to cause them to hear it; i.e., you persuade me to inform them of it [Mainline = n-ēch; 2nd-level shuntline = □-in (= qu-in); lst-level shuntline = □-0 (= qui-0).]
+2-obj active source: nictlacaquītia = #ni-0+c-0+tla(caquī-tiā)0+0-0# = I cause him to
 
 hear s.th.; i.e., I inform him of s.th. [Mainline = c-0; shuntline = tla.]  
-3-obj transform: tinèchtłacaquitiltia = #ti-0+n-èch+□-0+tla(caquī-ti-l-ta)0+0-0# = you cause me to cause him to hear s.th.; i.e., you persuade me to inform him of s.th. [Mainline = n-èch; 2nd-level shuntline = □-0 ( = c-0); lst-level shuntline = tla.]  
-2-obj active source: nictècaquitia = #ni-0+c-0+tè(caquī-tia)0+0-0# = I cause s.o. to hear it; i.e., I inform s.o. of it [Mainline = tè; shuntline = c-0.]  
-3-obj transform: tinèchtłacaquitiltia = #ti-0+n-èch+□-0+tè(caquī-ti-l-ta)0+0-0# = you cause me to cause s.o. to hear it; i.e., you persuade me to inform s.o. of it [Mainline = n-èch; 2nd-level shuntline = tè; lst-level shuntline = □-0 ( = c-0).]  
-2-obj active source: quimocaquitiah = #0-0+qui-0+m-o(caquī-tia)0+0-h# = they cause one another to hear it; i.e., they inform one another of it [Mainline = m-o; shuntline = qui-0.]
+3-obj transform: tinēchtlacaquītīltia = #ti-0+n-ēch+□-0+tla(caquī-ti-l-tiā)0+0-0# = you cause me to cause him to hear s.th.; i.e., you persuade me to inform him of s.th. [Mainline = n-ēch; 2nd-level shuntline = □-0 ( = c-0); lst-level shuntline = tla.]
+2-obj active source: nictēcaquītia = #ni-0+c-0+tē(caquī-tiā)0+0-0# = I cause s.o. to hear it; i.e., I inform s.o. of it [Mainline = tē; shuntline = c-0.]
+3-obj transform: tinēchtēcaquītīltia = #ti-0+n-ēch+□-0+tē(caquī-ti-l-tiā)0+0-0# = you cause me to cause s.o. to hear it; i.e., you persuade me to inform s.o. of it [Mainline = n-ēch; 2nd-level shuntline = tē; lst-level shuntline = □-0 ( = c-0).]
+2-obj active source: quimocaquītiah = #0-0+qui-0+m-o(caquī-tiā)0+0-h# = they cause one another to hear it; i.e., they inform one another of it [Mainline = m-o; shuntline = qui-0.]
 
 ## PDF Page 222
 
 Causative Verb stems (Second Type) 207
-3-obj transform: niquinnecaquitilia = #ni-0+qu-in+□-0+ne(caqui-ți-l-tia)0+0-0# = I cause them to cause one another to hear it; i.e., I cause them to inform one another of it [Mainline = qu-in; 2nd-level shuntline = ne; 1st-level shuntline = □-0 (= qui-0).]
+3-obj transform: niquinnecaquītīltia = #ni-0+qu-in+□-0+ne(caquī-ti-l-tiā)0+0-0# = I cause them to cause one another to hear it; i.e., I cause them to inform one another of it [Mainline = qu-in; 2nd-level shuntline = ne; 1st-level shuntline = □-0 (= qui-0).]
 There is a special situation in which the shuntline reflexive-object pronoun does not take the shuntline shape. This occurs when a mainline projective object of the source is coreferential with the imported subject of the triple-object VNC (compare § 25.11.1.b).
-2-obj active source: nēchtlacaquītia = #0-0+n-ēch+tla(caqui-ťia)0+0-0# = he causes me to hear s.th.; i.e., he informs me of s.th. [Mainline = n-ēch; shuntline = tla.]
-3-obj transform: nicnotlacaquitilia = #ni-0+c-0+n-o+tla(caqui-ți-l-tia)0+0-0# = I cause him to cause me to hear s.th.; i.e., I persuade him to inform me of s.th. [Main-line = c-0; 2nd-level shuntline = n-o; 1st-level shuntline = tla.]
+2-obj active source: nēchtlacaquītia = #0-0+n-ēch+tla(caquī-tiā)0+0-0# = he causes me to hear s.th.; i.e., he informs me of s.th. [Mainline = n-ēch; shuntline = tla.]
+3-obj transform: nicnotlacaquītīltia = #ni-0+c-0+n-o+tla(caquī-ti-l-tiā)0+0-0# = I cause him to cause me to hear s.th.; i.e., I persuade him to inform me of s.th. [Main-line = c-0; 2nd-level shuntline = n-o; 1st-level shuntline = tla.]
 
 2. Generation of a mainline reflexive causative-object pronoun in the triple-object VNC:
-2-obj active source: nimitzcaquitia = #ni-0+m-itz+□-0(caqui-tia)0+0-0# = I cause you to hear it; i.e., I inform you of it [Mainline = m-itz; shuntline = □-0 (= qui-0).]
-3-obj transform: nimitznocaquitiltia = #ni-0+m-itz+□-0+n-o(caqui-ti-l-tia)0+0-0# = I cause myself to cause you to hear it; i.e., I persuade myself to inform you of it [Mainline = n-o; 2nd-level shuntline = m-itz; lst-level shuntline = □-0 (= qui-0).]
-2-obj active source: nictècaquitia = #ni-0+c-0+tè(caqui-tia)0+0-0# = I cause s.o. to hear it; i.e., I inform s.o. of it [Mainline = tè; shuntline = c-0.]
-3-obj transform: nicnotècaquitiltia = #ni-0+c-0+n-o+tè(caqui-ti-l-tia)0+0-0# = I cause myself to cause s.o. to hear it; i.e., I persuade myself to inform s.o. of it [Mainline = n-o; 2nd-level shuntline = tè; lst-level shuntline = c-0.]
-2-obj active source: niquintlacaquitia = #ni-0+qu-in+tlà(caqui-tia)0+0-0# = I cause them to hear s.th.; i.e., I inform them of s.th. [Mainline = qu-in; shuntline = tla.]
-3-obj transform: niquinnotlacaquitiltia = #ni-0+qu-in+n-o+tlà(caqui-ti-l-tia)0+0-0#
+2-obj active source: nimitzcaquītia = #ni-0+m-itz+□-0(caquī-tiā)0+0-0# = I cause you to hear it; i.e., I inform you of it [Mainline = m-itz; shuntline = □-0 (= qui-0).]
+3-obj transform: nimitznocaquītīltia = #ni-0+m-itz+□-0+n-o(caquī-ti-l-tiā)0+0-0# = I cause myself to cause you to hear it; i.e., I persuade myself to inform you of it [Mainline = n-o; 2nd-level shuntline = m-itz; lst-level shuntline = □-0 (= qui-0).]
+2-obj active source: nictēcaquītia = #ni-0+c-0+tē(caquī-tiā)0+0-0# = I cause s.o. to hear it; i.e., I inform s.o. of it [Mainline = tē; shuntline = c-0.]
+3-obj transform: nicnotēcaquītīltia = #ni-0+c-0+n-o+tē(caquī-ti-l-tiā)0+0-0# = I cause myself to cause s.o. to hear it; i.e., I persuade myself to inform s.o. of it [Mainline = n-o; 2nd-level shuntline = tē; lst-level shuntline = c-0.]
+2-obj active source: niquintlacaquītia = #ni-0+qu-in+tla(caquī-tiā)0+0-0# = I cause them to hear s.th.; i.e., I inform them of s.th. [Mainline = qu-in; shuntline = tla.]
+3-obj transform: niquinnotlacaquītīltia = #ni-0+qu-in+n-o+tla(caquī-ti-l-tiā)0+0-0#
 
 = I cause myself to cause them to hear s.th.; i.e., I persuade myself to inform them of s.th. [Mainline = n-o; 2nd-level shuntline = qu-in; 1st-level shuntline = tla.]
-2-obj active source: nitētlacaquitia = #ni-0+tē+tlā(caqui-ťia)0+0-# = I cause s.o. to hear s.th.; i.e., I inform s.o. of s.th. [Mainline = tē; shuntline = tla.]
-3-obj transform: ninotētlacaquitiltia = #ni-0+n-o+tē+tlā(caqui-ťi-l-tia)0+0-# = I cause myself to cause s.o. to hear s.th.; i.e., I persuade myself to inform s.o. of s.th. [Mainline = n-o; 2nd-level shuntline = tē; 1st-level shuntline = tla.]
+2-obj active source: nitētlacaquītia = #ni-0+tē+tla(caquī-tiā)0+0-# = I cause s.o. to hear s.th.; i.e., I inform s.o. of s.th. [Mainline = tē; shuntline = tla.]
+3-obj transform: ninotētlacaquītīltia = #ni-0+n-o+tē+tla(caquī-ti-l-tiā)0+0-# = I cause myself to cause s.o. to hear s.th.; i.e., I persuade myself to inform s.o. of s.th. [Mainline = n-o; 2nd-level shuntline = tē; 1st-level shuntline = tla.]
 3. Generation of a mainline projective causative-object pronoun in the triple-object VNC from a passive or impersonal source:
-1-obj passive source: nicaquitilo = #ni-0+□-0(caqui-ťi-lo)0+0-#. = I am caused to hear it; i.e., I am informed of it; s.o. informs me of it [Shuntline = □-0 ( = □-0 in active source, where it represents qui-0.)]
+1-obj passive source: nicaquītīlo = #ni-0+□-0(caquī-ti-lo)0+0-#. = I am caused to hear it; i.e., I am informed of it; s.o. informs me of it [Shuntline = □-0 ( = □-0 in active source, where it represents qui-0.)]
 
 ## PDF Page 223
 
 208 Lesson 25
-3-obj transform: tinèchtècaquitiltia = #ti-0+n-èch+□-0+tè(caquī-ti-l-tia)0+0-# = you
-cause s.o. to cause me to hear it; i.e., you cause me to be informed of it [Mainline = tè; 2nd-level shuntline n-èch; 1st-level shuntline = □-0.]
-1-obj passive source: nitlacaquitilio = #ni-0+tla(caquī-ti-lo)0+0-# = I am caused to
+3-obj transform: tinēchtēcaquītīltia = #ti-0+n-ēch+□-0+tē(caquī-ti-l-tiā)0+0-# = you
+cause s.o. to cause me to hear it; i.e., you cause me to be informed of it [Mainline = tē; 2nd-level shuntline n-ēch; 1st-level shuntline = □-0.]
+1-obj passive source: nitlacaquītīlo = #ni-0+tla(caquī-ti-lo)0+0-# = I am caused to
 hear s.th.; i.e., I am informed of s.th. [Shuntline = tla.]
-3-obj transform: tinèchtètlacaquitiltia = #ti-0+n-èch+tè+tlca(caquī-ti-l-tia)0+0-# = you
+3-obj transform: tinēchtētlacaquītīltia = #ti-0+n-ēch+tē+tla(caquī-ti-l-tiā)0+0-# = you
 cause s.o. to cause me to hear s.th.; i.e., you persuade s.o. to inform me of s.th.
-[Mainline = tè; 2nd-level shuntline = n-èch; 1st level shuntline = tla.]
-2-obj impersonal source: tètlacaquitilio = #0-0+tè+tlca(caquī-ti-lo)0+0-# = s.o. causes
-s.o. to hear s.th.; i.e., s.o. informs s.o. of s.th. [Mainline = tè; shuntline = tla.]
-3-obj transform: titètètlacaquitiltia = #ti-0+tè+tè+tlca(caquī-ti-l-tia)0+0-# = you
+[Mainline = tē; 2nd-level shuntline = n-ēch; 1st level shuntline = tla.]
+2-obj impersonal source: tētlacaquītīlo = #0-0+tē+tla(caquī-ti-lo)0+0-# = s.o. causes
+s.o. to hear s.th.; i.e., s.o. informs s.o. of s.th. [Mainline = tē; shuntline = tla.]
+3-obj transform: titētētlacaquītīltia = #ti-0+tē+tē+tla(caquī-ti-l-tiā)0+0-# = you
 cause s.o. to cause s.o. to hear s.th.; i.e., you persuade s.o. to inform s.o. of s.th. [Main-
 
 line = tē; 2nd-level shuntline = tē; lst-level shuntline = tla.] 25.13. Ambiguity in Causative Transforms. Because of the fixed order of object prefixes and their nondiscrimination of function by shape (a single shape serves the three functions of direct object, mainline causative object and shuntline causative object), combinations of two or three object pronouns in a VNC are frequently ambiguous. The presentation in § 25.11 and § 25.12 disregards this problem, since the transforms are shown as being generated from identified sources. When reading a Nahuatl text, however, one is faced with only the transforms and must be prepared to postulate possible multiple sources from which to choose the translation that fits the context. For example, tinečtēcaquitiltia may be generated either by nictēcaquitia, “I inform s.o. of it,” or by nicaquitilo, “I am informed of it,” and therefore may be translated as “you have me inform s.o. of it” or “you have s.o. inform me of it.” Similarly, tinčtēchnōtżaltia can be generated by either nitēnōtza, “I call s.o.,” or ninōtzalo, “I am called,” and therefore may be translated as “you have me call s.o.” or “you have s.o. call me.” In all likelihood the general context will decide the choice that should be made, but the reader must train him-/herself to be aware of the possibilities in order to take proper advantage of
 
-that contextual aid. For an understanding of the complexity of the problem (see Appendix C). Since ambiguity is so prevalent in multiple-object situations, one should learn to recognize those mechanisms that reduce or eliminate it. One such instance involves the rule concerning incompatibility of specific-object pronouns. Thus, tinèchnótzaltia may be ambiguous about the identity of the entity referred to by the object pronoun □-0 (a man? a woman? a dog? etc.), but at least the n-ech is clearly functioning as the mainline causative object: “you persuade me to call him/her/it.” Similarly helpful is the rule concerning the replacement of a source mainline reflexive pronoun with the shuntline variant ne; thus, tiquinnetlazohtlaltiah can mean only “we persuade them to love one another,” never “we persuade one another to love them,” which is tiquintotlazohtlaltiah. 25.14. The Causative VNC in the Optative and Admonitive Moods. VNCs formed on causative verb stems may be used in wish, command/exhortation, and admonition sentences:
+that contextual aid. For an understanding of the complexity of the problem (see Appendix C). Since ambiguity is so prevalent in multiple-object situations, one should learn to recognize those mechanisms that reduce or eliminate it. One such instance involves the rule concerning incompatibility of specific-object pronouns. Thus, tinēchnōtzaltia may be ambiguous about the identity of the entity referred to by the object pronoun □-0 (a man? a woman? a dog? etc.), but at least the n-ēch is clearly functioning as the mainline causative object: “you persuade me to call him/her/it.” Similarly helpful is the rule concerning the replacement of a source mainline reflexive pronoun with the shuntline variant ne; thus, tiquinnetlazohtlaltiah can mean only “we persuade them to love one another,” never “we persuade one another to love them,” which is tiquintotlazohtlaltiah. 25.14. The Causative VNC in the Optative and Admonitive Moods. VNCs formed on causative verb stems may be used in wish, command/exhortation, and admonition sentences:
 
 ## PDF Page 224
 
@@ -8550,7 +8550,7 @@ they belong to a valence-neutral pair. Usually, the transitive member has an app
 (tēmiqui) = to dream > tē- ~ tla-(tēmiqui) = to dream about s.o. or s.th.
 (teo-hc-i-hui) = to be hungry > tē- ~ tla-(teo-hc-i-hui) = to hunger for s.o. or s.th.
 (nene-hc-i-hui) = to pant/be winded > tē- ~ tla-(nene-hc-i-hui) = to pant for s.o. or s.th.
-26.2. Applicative Verb stems (First Type). The basic type of applicative verb stems is derived from a nonapplicative stem by adding the morpheme carrier /ia:/ to a replacive imperfective stem that lacks the final vowel of the source verb stem. If that stem-final vowel is a causative morpheme carried by /a/ or /a:/, the resultant applicative stem should be analyzed as having an irregular sig-carried variant, but in these lessons that causative morph is not indicated; e.g., m-o+ tla-(ix-tlâ-hu- ī-a) will be represented as m-o+ tla-(ix-tlâ-hu- ī-a); compare the treatment
+26.2. Applicative Verb stems (First Type). The basic type of applicative verb stems is derived from a nonapplicative stem by adding the morpheme carrier /ia:/ to a replacive imperfective stem that lacks the final vowel of the source verb stem. If that stem-final vowel is a causative morpheme carried by /a/ or /a:/, the resultant applicative stem should be analyzed as having an irregular sig-carried variant, but in these lessons that causative morph is not indicated; e.g., m-o+tla-(ix-tlā-hu-⎕-iā) will be represented as m-o+tla-(ix-tlā-hu-iā); compare the treatment
 
 of stems with /a/- and /aː/-carried morphemes in § 7.3.1 and § 7.3.2, note.
 
@@ -8572,8 +8572,8 @@ Applicative Verbstems 213
 (oh-quetza) = to erect a path; i.e., to open a path > tē-(oh-quech-iā) = to open a path for s.o.; figurative, to set a good example for s.o. [Notice the /č/ to [č] shift. The source stem is a compound stem; see § 30.2.]
 
 At times the source stem is not attested. The following examples have a compound stem as source (see § 30.2).
-*(*ël-ë-hu-a) = to cause the liver (i.e., the heart) to rise > tla-(ël-ë-hu-iā) = to lift the heart with regard to s.th.; i.e., to fervently desire s.th., to yearn for/covet s.th.
-*(*pal-ë-hu-a) = to cause a favor to rise > tē-(pal-ë-hu-iā) = to do a favor for s.o., to help s.o. [The nonstem (pal)-li-, “favor, sake,” does not occur in absolutive-state NNCs; see § 45.4.3.]
+*(ēl-ē-hu-a) = to cause the liver (i.e., the heart) to rise > tla-(ēl-ē-hu-iā) = to lift the heart with regard to s.th.; i.e., to fervently desire s.th., to yearn for/covet s.th.
+*(pal-ē-hu-a) = to cause a favor to rise > tē-(pal-ē-hu-iā) = to do a favor for s.o., to help s.o. [The nonstem (pal)-li-, “favor, sake,” does not occur in absolutive-state NNCs; see § 45.4.3.]
 
 The rule of adding iā after the deletion of the stem-final vowel is valid even when the source stem ends in /i/. Since this deleted /i/ of the stem is replaced by the /i/ of the suffix, the nature
 
@@ -8592,16 +8592,16 @@ tla-(yaca-ti-ā) = to cause s.th. to have a nose/point; i.e., (1) to release s.t
 
 tla-(yaca-ti-ā) = to be a point in relation to s.th.; i.e., to be the person out in front of a group on the move; to be the first person in a line
 
-The possibility for ambiguity between a type-one causative stem and a type-one applicative stem is not limited to source stems ending in ti; for example, the verbstem (i̱lpi), “to become tied,” can produce:
+The possibility for ambiguity between a type-one causative stem and a type-one applicative stem is not limited to source stems ending in ti; for example, the verbstem (ilpi), “to become tied,” can produce:
 
-tla-(i̱lpi-ā) = caus., to cause s.th. to become tied, to tie s.th. [See § 24.3.1.b.]
+tla-(ilpi-ā) = caus., to cause s.th. to become tied, to tie s.th. [See § 24.3.1.b.]
 
 ## PDF Page 229
 
 214 Lesson 26
-m-o-(ilp-iä) = applic., to become tied to one another [This stem is found, for example, in the expression toxiuh molpih (also spelled toxim molpih, as it can be pronounced), “our years have become tied to one another,” frequently translated as “the Binding of the Years.” The expression is the name for the end of a fifty-two-year period (see Appendix E.3). A type-two applicative formation is also possible: m-o-(ilp-iä) yields toxiuh molpilih.] 
+m-o-(ilp-iā) = applic., to become tied to one another [This stem is found, for example, in the expression toxiuh molpih (also spelled toxim molpih, as it can be pronounced), “our years have become tied to one another,” frequently translated as “the Binding of the Years.” The expression is the name for the end of a fifty-two-year period (see Appendix E.3). A type-two applicative formation is also possible: m-o-(ilp-iā) yields toxiuh molpilih.]
 The use of the first type of applicative stem formation is unpredictable, and each verbstem must be learned as a separate lexical item.
-26.3. Applicative Verbstems (Second Type). Another, more frequent, type of applicative stem is formed by means of the suffixal units liä and huiā. Both of these units are suffixal combinations containing the applicative morpheme carried by /ia:/ and the semantically empty mor-
+26.3. Applicative Verbstems (Second Type). Another, more frequent, type of applicative stem is formed by means of the suffixal units liā and huiā. Both of these units are suffixal combinations containing the applicative morpheme carried by /ia:/ and the semantically empty mor-
 
 phemes /l/ and /w/ (concerning other uses of these connective morphemes, see § 20.1, note, for /l/ and § 35.9 and § 58.1 for /w/). They will, however, be written solid in these lessons in order to help distinguish first- and second-type applicative stem formations.
 The derivation using these suffixal units is fairly predictable, since it depends primarily on the ending of the source stem. The unit huiā is used with transitive Class C verbs ending in o-ā (see § 26.9) or with intransitive Class A stems ending in /o:/ (see § 26.10). The suffixal unit liā is used in most other situations (see §§ 26.4–8).
@@ -8610,11 +8610,11 @@ If a reflexive object pronoun occurs in a source VNC, it must become the shuntli
 nitlaihyāna = I hide s.th. > ninotlaihyānilia = I hide s.th. for myself [The reflexive pronoun n-o is mainline, since it is brought in under the control of liā.]
 ninihyāna = I hide (myself); I take shelter from the rain > nicneihyānilia = I hide from him/her [The ne is shuntline, since c-0 is brought in as the mainline object pronoun under
 
-26.4. Applicative Stems from Source Stems Ending in /i/. Both transitive and intransitive verbs whose imperfective stems end in /i/ form an applicative stem by attaching the suffixal unit liä to the imperfective stem:
+26.4. Applicative Stems from Source Stems Ending in /i/. Both transitive and intransitive verbs whose imperfective stems end in /i/ form an applicative stem by attaching the suffixal unit liā to the imperfective stem:
 
-(nemi) = to live > tla-(nemi-liä) = to think about s.th., to consider s.th. [Applicative stems derived from intransitive verbs frequently have a meaning that shifts idiomatically away from that of the source. In the present example, the shift in meaning resembles that occurring in the English word “dwell”: “to dwell” > “to dwell upon s.th.”]
+(nemi) = to live > tla-(nemi-liā) = to think about s.th., to consider s.th. [Applicative stems derived from intransitive verbs frequently have a meaning that shifts idiomatically away from that of the source. In the present example, the shift in meaning resembles that occurring in the English word “dwell”: “to dwell” > “to dwell upon s.th.”]
 
-(tlatz-i-hui) = to be lazy > tla-(tlatz-i-hui-liä) = to be lazy toward s.th., to feel apathy for s.th., to feel aversion toward s.th. [There is also an irregular formation: tla-(tlatz-i-l-huiä); this stem should be a double-object one, presupposing a transitive stem ending in o-ä (see § 26.9.2.)]
+(tlatz-i-hui) = to be lazy > tla-(tlatz-i-hui-liā) = to be lazy toward s.th., to feel apathy for s.th., to feel aversion toward s.th. [There is also an irregular formation: tla-(tlatz-i-l-huiā); this stem should be a double-object one, presupposing a transitive stem ending in o-ā (see § 26.9.2.)]
 
 ## PDF Page 230
 
@@ -8698,31 +8698,31 @@ tla-(piya) = to keep s.th. > tē+tlā-(piya-liā) = to keep s.th. for s.o.
 
 3. Intransitive Class B stems that in end in /eya/ form the applicative stem by deleting the ya and adding liā to the root.
 
-(ce-ya) = to be willing, to consent > tla-(ce-liä) = to be willing with regard to s.th.; i.e., to receive s.th.
+(ce-ya) = to be willing, to consent > tla-(ce-liā) = to be willing with regard to s.th.; i.e., to receive s.th.
 
-4. Verb stems that end in /oya/ may be intrasitive or transitive. The intrasitive stems belong to the type of “root + ya” verb that forms the causative according to § 25.4.8. They create the applicative stem by deleting the ya and attaching the liä to the root:
+4. Verb stems that end in /oya/ may be intrasitive or transitive. The intrasitive stems belong to the type of “root + ya” verb that forms the causative according to § 25.4.8. They create the applicative stem by deleting the ya and attaching the liā to the root:
 
-(tlaōco-ya) = to be sad > tē-(tlaōco-liä) = to be sad in relation to s.o.; i.e., to feel pity for s.o.
+(tlaōco-ya) = to be sad > tē-(tlaōco-liā) = to be sad in relation to s.o.; i.e., to feel pity for s.o.
 
-(coco-ya) = to be sick > tē-(coco-liä) = to be sick in relation to s.o.; to hate s.o.
+(coco-ya) = to be sick > tē-(coco-liā) = to be sick in relation to s.o.; to hate s.o.
 
 If a transitive stem ending in /oya/ belongs to a valence-neutral pair (see § 26.1.3) then it acts like a “root + ya” intrasitive stem; i.e., the applicative is formed on the root (i.e., the stem minus ya):
 
-tla-(yōco-ya) = to create/invent s.th. [Cf., (yōco-ya), “to be well-formed.”] > tē+tla-(yōco-liä) = to create s.th. for s.o.
+tla-(yōco-ya) = to create/invent s.th. [Cf., (yōco-ya), “to be well-formed.”] > tē+tla-(yōco-liā) = to create s.th. for s.o.
 
 ## PDF Page 233
 
 218 Lesson 26
-Others ending in /oya/ use the formation in exception 2 above: they add liä to the imperfec-
+Others ending in /oya/ use the formation in exception 2 above: they add liā to the imperfec-
 tive stem:
-tla-(nāmoyā) = to steal s.th. > tē+tlā-(nāmoyā-liä) = to steal s.th. from s.o.
+tla-(nāmoyā) = to steal s.th. > tē+tlā-(nāmoyā-liā) = to steal s.th. from s.o.
 26.9. Applicative Stems from Source Stems Ending in /oa://. A causative stem formed by
-means of o-ä (see § 24.7) derives its applicative stem by means of huiä. (Contrast this applic-
-ative use of huiä with the causative use in § 25.6.) A number of formations are possible, but all
+means of o-ā (see § 24.7) derives its applicative stem by means of huiā. (Contrast this applic-
+ative use of huiā with the causative use in § 25.6.) A number of formations are possible, but all
 are constructed on a replacive stem.
-1. When o-ä participates in a causative destockal verbstem whose root ends in /l/, the
-applicative suffix huiä is added to that root:
-tla-(nāpal-o-ä) = to carry s.th. in the arms > tē+tlā-(nāpal-huiä) = to carry s.th. in the
+1. When o-ā participates in a causative destockal verbstem whose root ends in /l/, the
+applicative suffix huiā is added to that root:
+tla-(nāpal-o-ā) = to carry s.th. in the arms > tē+tlā-(nāpal-huiā) = to carry s.th. in the
 arms for s.o.
 
 tla-(pol-o-ā) = to lose s.th. > tē+tla-(pol-huiā) = to lose s.th. belonging to s.o.
@@ -8735,7 +8735,7 @@ An intransitive denominal verbstem created by o-ā (see § 55.3.1) can form a si
 ( chol-o-ā) = intrans, to use hoofs; i.e., to bound/jump/flee > tla-(chol-huiā) = to use hoofs in relation to s.th.; i.e., to bound/jump/leap over s.th. (e.g., a stream) [< (chol)-li-, “hoof”]
 2. When the o-ā participates in a causitive destockal verbstem whose root ends in a con-
 
-sonant other than l, the huīā is added to a base that consists of the root plus a-l or i-l. The a-l is used when the intransitive destockal stem behind the causative stem ends in a-hui; the i-l is used when it ends in i-hui (see § 24.7):
+sonant other than l, the huiā is added to a base that consists of the root plus a-l or i-l. The a-l is used when the intransitive destockal stem behind the causative stem ends in a-hui; the i-l is used when it ends in i-hui (see § 24.7):
 tla-(iht-o-ā) = to say s.th. > tē+tlā-(iht-a-l-huiā) = to say s.th. about s.o., to say s.th. for s.o., to speak for s.o. [Cf. (iht-a-hui).]
 tla-(pach-o-ā) = to press down on s.th. > tē+tlā-(pach-i-l-huiā) = to press down on s.th. for s.o. [Cf. (pach-i-hui).]
 Certain intransitive denominal verbstems created by o-ā (see § 55.3.1) can form a single-object applicative stem on analogy with this formation by inventing a hypothetical i-hui/a-hui stem (see § 55.3.2.b, note 2):
@@ -8809,7 +8809,7 @@ Applicative Verbstems
 221
 Single-object source: nitlapāca = I wash s.th.
 Applicative transform:
-a. nitětlapāquilia = I wash s.th. for s.o.
+a. nitētlapāquilia = I wash s.th. for s.o.
 b. nictlapāquilia = I wash s.th. for him
 c. ninotlapāquilia = I wash s.th. for myself
 Single-object source: nicpāca = I wash it/them
@@ -8825,9 +8825,9 @@ Single-object source: niquinnāmoya = I kidnap them
 Applicative transform: niquinnāmoyālia = #ni-0+qu-in+□-(nāmoyā-liā)0+0-0# = I
 kidnap them from them
 As pointed out in § 25.16, a supplementary element may stand in cross-reference to a silently present specific object pronoun.
-Principal: Ónēchcuilih. = ò#0-0+n-ēch+□-(cui-lih)0+□-0# = He took it/them from me.
+Principal: Ōnēchcuilih. = ō#Ø-Ø+n-ēch+⎕-Ø(cuī-lih)Ø+⎕-Ø# = He took it/them from me.
 Adjunct: Nāmox. = #0-0+n-0(āmox)0-0# = It is my book. They are my books.
-Transform: Ónēchcuilih nāmox. = He took my book/books from me. [The subject pronoun 0-0+...0-0 of the adjunct = its head, the direct-object pronoun □-0, in the principal. The supplementary object stands in cross-reference to the silently present object pronoun of the principal.]
+Transform: Ōnēchcuilih nāmox. = He took my book/books from me. [The subject pronoun Ø-Ø+...Ø-Ø of the adjunct = its head, the direct-object pronoun ⎕-Ø, in the principal. The supplementary object stands in cross-reference to the silently present object pronoun of the principal.]
 Note: See Appendix C.2 for the range of possible double-object pronoun combinations.
 
 ## PDF Page 237
@@ -8836,14 +8836,14 @@ Note: See Appendix C.2 for the range of possible double-object pronoun combinati
 Lesson 26
 26.17. The Triple-Object Applicative Transform. When the source VNC is a double-object VNC, the applicative transform has three object pronouns.
 1. If there is no incompatibility among the objects, all three are overt:
-Double-object source: tětłapăcaltia = he has s.o. wash s.th.
+Double-object source: tētlapācaltia = he has s.o. wash s.th.
 Applicative transform:
-a. tětětłapăcaltilia = he has s.o. wash s.th. for s.o.
-b. něchtětłapăcaltilia = he has s.o. wash s.th. for me
-c. motětłapăcaltilia = he has s.o. wash s.th. for himself
-Double-object source: nimitztłapăcaltia = I have you wash s.th.
+a. tētētlapācaltilia = he has s.o. wash s.th. for s.o.
+b. nēchtētlapācaltilia = he has s.o. wash s.th. for me
+c. motētlapācaltilia = he has s.o. wash s.th. for himself
+Double-object source: nimitztlapācaltia = I have you wash s.th.
 Applicative transform:
-a. nimitztětłapăcaltilia = I have you wash s.th. for s.o.
+a. nimitztētlapācaltilia = I have you wash s.th. for s.o.
 
 b. nimitnotlapācaltilia = I have you wash s.th. for me
 
@@ -8874,10 +8874,10 @@ a. mitztēpācaltilia = #0-0+m-itz+□-0+tē(pāca-l-ti-lia)0+0-0# = he has you 
 ## PDF Page 238
 
 Applicative Verbstems 223
-b. mitzmopäcaltilia = #0-0+m-itz+□-0+m-o(päca-l-ti-lia)0+0-0# = he has you wash it/them for himself
+b. mitzmopācaltīlia = #0-0+m-itz+□-0+m-o(pāca-l-ti-liā)0+0-0# = he has you wash it/them for himself
 3. Mutual incompatibility of specific projective-object pronouns may permit only one object pronoun to be overt:
-Double-object source: mitzpäcaltia = #0-0+m-itz+□-0(päca-l-tia)0+0-0# = he has you wash it/them
-Applicative transform: nēchpäcaltilia = #0-0+n-ēch+□-0+□-0(päca-l-ti-lia)0+0-0# = he has you wash it/them for me [Only the mainline projective-object pronoun n-ēch can be manifested by sounded morphs; both the second- and first-level shuntline projective-object pronouns are manifested by silent morphs: the m-itz of the source has become □-0 and the □-0 (the silent variant of qui-0) has remained as it was.]
+Double-object source: mitzpācaltia = #0-0+m-itz+□-0(pāca-l-tiā)0+0-0# = he has you wash it/them
+Applicative transform: nēchpācaltīlia = #0-0+n-ēch+□-0+□-0(pāca-l-ti-liā)0+0-0# = he has you wash it/them for me [Only the mainline projective-object pronoun n-ēch can be manifested by sounded morphs; both the second- and first-level shuntline projective-object pronouns are manifested by silent morphs: the m-itz of the source has become □-0 and the □-0 (the silent variant of qui-0) has remained as it was.]
 See Appendix C.3 for the range of possible triple-object pronoun combinations.
 
 Note: The examples in subsections 2 and 3 above and in § 26.16.2 should make even more evident the already mentioned need to know how many valence positions a given verbstem requires. Without such knowledge one is unable to recognize and translate contrasts such as that between nicxeloa (“I divide it/them”) and nicxelhuia (“I divide it/them with him”).
@@ -8886,9 +8886,9 @@ Note: The examples in subsections 2 and 3 above and in § 26.16.2 should make ev
 
 The problem of ambiguity can be illustrated by examining examples of two situations that are prominently ambiguous: (1) a specific projective-object pronoun followed by tē+tlā, and (2) a specific projective-object pronoun followed by a silently present object followed by tē. In such sequences one must decide which pronoun is mainline, which is second-level shuntline, and which is first-level shuntline; that is, which pronoun correlates with which part of the verbstem.
 
-1. A VNC such as tinèchtètlapācaltilia has two possible interpretations: (a) “you have s.o. wash s.th. for me” or (b) “you have me wash s.th. for s.o.” The first takes the applicative transform to be related to the underlying VNC titètlapācaltia, into which n-èch has been imported as mainline (applicative) object under the sponsorship of liā. The second takes the applicative transform to be related to the underlying VNC tinèchtètlapācaltia, into which tè has been imported as mainline (applicative) object under the sponsorship of liā.
+1. A VNC such as tinēchtētlapācaltīlia has two possible interpretations: (a) “you have s.o. wash s.th. for me” or (b) “you have me wash s.th. for s.o.” The first takes the applicative transform to be related to the underlying VNC titētlapācaltia, into which n-ēch has been imported as mainline (applicative) object under the sponsorship of liā. The second takes the applicative transform to be related to the underlying VNC tinēchtētlapācaltia, into which tē has been imported as mainline (applicative) object under the sponsorship of liā.
 
-2. A VNC such as nèchtèpācaltilia has two possible interpretations: (a) “he has s.o. wash it/them for me” or (b) “he has me wash it/them for s.o.” The first takes the applicative transform to be related to the VNC quitèpācaltia, into which n-èch has been imported as mainline (applicative) object under the sponsorship of liā. The second takes the applicative transform to be related to the underlying VNC nèchpācaltia, into which tè has been imported as mainline (applicative) object under the sponsorship of liā.
+2. A VNC such as nēchtēpācaltīlia has two possible interpretations: (a) “he has s.o. wash it/them for me” or (b) “he has me wash it/them for s.o.” The first takes the applicative transform to be related to the VNC quitēpācaltia, into which n-ēch has been imported as mainline (applicative) object under the sponsorship of liā. The second takes the applicative transform to be related to the underlying VNC nēchpācaltia, into which tē has been imported as mainline (applicative) object under the sponsorship of liā.
 
 ## PDF Page 239
 
@@ -8918,7 +8918,7 @@ Active VNC: Tēchquiyahuiz. = #0-0+t-ēch(quiy-a-hui)z+□-0# = It will rain on 
 Passive VNC: Tiquiyahuilōzqueh. = #ti-0(quiy-a-hu-i-lō)z+qu-eh# = We shall be rained
 
 on.
-Active VNC: Nēchtłacuilihah. = They take something from me.
+Active VNC: Nēchtlacuilihah. = They take something from me.
 Passive VNC: Nitlaçuīlilo. = I am being deprived of something. Something is being taken from me.
 Active VNC: Mitzcuilihqueh. = They took it/them from you.
 Passive VNC: Ticuīlīlōc. = #ti-0+□-0(cui-li-lō)0+c-0# = You were deprived of it/them. It was taken from you. They were taken from you.
@@ -8969,11 +8969,11 @@ tla-(nō-nōtza) = to relate/recount s.th.
 tē-(nō-nōtza) = to give advice to s.o., to advise/correct/reproach s.o.
 Obviously, in dealing with a VNC built on such a stem, if there is a third-person singular/common specific projective-object pronoun, one must ascertain its human or nonhuman nature before translating it.
 26.22. Deceptive VNCs. At times the surface appearance of a VNC may conceal morphosyntactical distinctions that need to be dealt with.
-For example, the applicative VNC nēchtłachihuilih can be translated “he made s.th. for me” because of the analysis #0-0+n-ēch+tla(chihui-lih)0+□-0#, from the transitive source tla-(chihua), “to make s.th.” This VNC can, however, also be translated “he cast a spell on him/her for me,” which results from the analysis #0-0+n-ēch+□-0(tla-chihu-i-lih)0+□-0#. Or, if the VNC is understood to contain □-□ instead of □-0, it can be translated “he cast a spell on you (sg. or pl.) for me.” These double-object translations require the source to be the sin-
+For example, the applicative VNC nēchtlachīhuilih can be translated “he made s.th. for me” because of the analysis #0-0+n-ēch+tla(chīhui-lih)0+□-0#, from the transitive source tla-(chīhua), “to make s.th.” This VNC can, however, also be translated “he cast a spell on him/her for me,” which results from the analysis #0-0+n-ēch+□-0(tla-chīhu-i-lih)0+□-0#. Or, if the VNC is understood to contain □-□ instead of □-0, it can be translated “he cast a spell on you (sg. or pl.) for me.” These double-object translations require the source to be the sin-
 
-gle-object applicative stem tē-(tla-chihu-iā), “to cast a spell on s.o.” (see § 26.2 and § 26.12). One should be constantly awake to the morphosyntactical options.
+gle-object applicative stem tē-(tla-chīhu-iā), “to cast a spell on s.o.” (see § 26.2 and § 26.12). One should be constantly awake to the morphosyntactical options.
 
-26.23. The Unit Formed by the Applicative Suffix and Its Object Pronoun. As in the case of the causative suffix a and the causative object pronoun (see § 24.9), the applicative suffix iā (or l-iā or hu-iā) is so tightly (although discontinuously) bound to the applicative-object pronoun that what has above been described as stem-creation by derivation might, from another perspective, be looked upon as stem creation by composition, with the verbstem *tē-(-iā) [or *tla-(-iā) or *m-o-(-iā)] serving as the matrix of a compound applicative verbstem. The following analysis, using a diagrammatic format, illustrates this point with the VNC nimitztlacōhuiła, “I buy s.th. for you.”
+26.23. The Unit Formed by the Applicative Suffix and Its Object Pronoun. As in the case of the causative suffix a and the causative object pronoun (see § 24.9), the applicative suffix iā (or l-iā or hu-iā) is so tightly (although discontinuously) bound to the applicative-object pronoun that what has above been described as stem-creation by derivation might, from another perspective, be looked upon as stem creation by composition, with the verbstem *tē-(-iā) [or *tla-(-iā) or *m-o-(-iā)] serving as the matrix of a compound applicative verbstem. The following analysis, using a diagrammatic format, illustrates this point with the VNC nimitztlacōhuilia, “I buy s.th. for you.”
 
 | 1 | #ni-0+...+0-0# | Subject | I |
 |---|---|---|---|
@@ -8996,8 +8996,8 @@ tē ~ tlā-(hua-hua-l-o-ā) = to bark at s.o./s.th. [with tlā fusion: (tlā-hua
 One must be careful in assessing causatives as applicatives, however, since occasionally trans-
 
 lation may give a false impression.
-tē-(iht-o̱-ä) = to cause s.o. to become uttered; i.e., to cause s.o.'s name to become uttered; usual translation, to talk about s.o. [Notice also m-̱-(iht-o̱-ä), “to volunteer.”]
-tē-(iḥcuil-o̱-ä) = to cause s.o. to become inscribed; i.e., to cause s.o.'s name to become written; usual translation, to write to s.o.
+tē-(iht-o-ā) = to cause s.o. to become uttered; i.e., to cause s.o.'s name to become uttered; usual translation, to talk about s.o. [Notice also m-⎕-(iht-o-ā), “to volunteer.”]
+tē-(ihcuil-o-ā) = to cause s.o. to become inscribed; i.e., to cause s.o.'s name to become written; usual translation, to write to s.o.
 
 
 ## PDF Page 243
@@ -9138,7 +9138,7 @@ quimohottilihqueh = #Ø-Ø+qui-Ø+m-oh-o(tt-i-lih)Ø+qu-eh# = they considered it
 thoroughly
 27.4. Frequentative Verbstems from Destockal Verbstems. In addition to deriving a frequentative
 verbstem according to§ 27.2, the first kind of destockal verbs (those having the intransitive
-theme suffixes ni and hui, with their causative counterparts n-a or ni-ā and bu-a; see §
+theme suffixes ni and hui, with their causative counterparts n-a or ni-ā and hu-a; see §
 24.5) permit a special frequentative derivation.
 1. Intransitive destockal stems change the theme suffix ni (and sometimes the suffix hui)
 to ca and add a reduplicative prefix that has a short vowel (as in § 27.2.3). The long vowel that
@@ -9166,35 +9166,35 @@ to c-ō or c-o-hua. They are, of course, used only in impersonal voice VNCs.
 ## PDF Page 247
 
 232 Lesson 27
-(cbi-cbin-a-c-ō) ~ (chi-chin-a-c-o-bua) = for people in general to suffer affliction [<
+(chi-chin-a-c-ō) ~ (chi-chin-a-c-o-hua) = for people in general to suffer affliction [<
 (chi-chin-a-ca), "to suffer affliction"]
 The frequentative intransitive stems can also be made impersonal by prefixing the impersonal
 tla.
 (tla-cua-cual-a-ca) = to thunder
 (tla-tzi-tzil-i-ca) = for there to be a general ringing of bells
 The tla can receive reduplication for further intensification.
-(tlab-tla-cua-cual-a-ca) = to thunder rumblingly (or in various places)
+(tlah-tla-cua-cual-a-ca) = to thunder rumblingly (or in various places)
 Frequentative intransitive destockal verbstems having the theme suffix ca belong to Class
 A: (pa-patl-a-ca) > perf, (pa-patl-a-ca).
 2. Frequentative causative destockal verbstems are formed by keeping the causative suffix
-a of n-a ~ ni-ā ~ bu-a and changing the destockal stem formatives n, ni, and bu to tz; then,
+a of n-a ~ ni-ā ~ hu-a and changing the destockal stem formatives n, ni, and hu to tz; then,
 to the stem created by this tz-a, one adds a reduplicative prefix that has a short vowel. The
 long vowel that serves as the stock formative is pronounced as a reduced long and therefore
 is not marked with a macron.
-tla-(cbay-ā-bu-a) = to spills.th. (grain) on the ground> tla-(cba-cbay-a-tz-a) = to scatters.
+tla-(chay-ā-hu-a) = to spills.th. (grain) on the ground> tla-(cha-chay-a-tz-a) = to scatters.
 th. (grain) on the ground
-tla-(cbip-i-ni-ā) = to sprinkle s.th. (i.e., a liquid)> tla-(cbi-cbip-i-tz-a) = to sprinkle
+tla-(chip-i-ni-ā) = to sprinkle s.th. (i.e., a liquid)> tla-(chi-chip-i-tz-a) = to sprinkle
 s.th. (i.e., a liquid) profusely; to distills.th.
 tla-(tlap-ā-n-a) = to breaks.th. to pieces> tla-(tla-tlap-a-tz-a) = to shatters.th. to pieces
 tla-(chit-ō-ni-ā) = to make chips fly, to make sparks fly> tla-(chi-chit-o-tz-a) = to make
 chips fly thick and fast; to make sparks fly furiously
 tla-(poz-ō-ni-ā) = to causes.th. to boil> tla-(po-poz-o-tz-a) = to causes.th. to boil noisily
-Frequentative causative destockal verbstems formed with tz-a belong to Class B: tla-(cbacbay-
-a-tz-a) > perf, tla-(cba-cbay-a-tz).
+Frequentative causative destockal verbstems formed with tz-a belong to Class B: tla-(cha-chay-
+a-tz-a) > perf, tla-(cha-chay-a-tz).
 3. At times the original destockal verbstem is no longer used, and only the derived frequentative
 stems occur:
 (chi-chin-a-ca) = to be in pain
-te-( chī-cbin-a-tz-a) = to torment s.o., to cause s.o. pain
+tē-(chi-chin-a-tz-a) = to torment s.o., to cause s.o. pain
 (qui-quin-a-ca) =(fora pig) to squeal; (for a dog) to growl
 tē-(qui-quin-a-tz-a) = to growl at s.o. [applicative!]
 There are irregular frequentative stem formations based on the destockal stems described
@@ -9257,7 +9257,7 @@ is usually fused to the stem, creating the intransitive (tla-hua-hua-l-tz-a), "(
 to bark." See the related applicative (!) stem tē- ~ tla-(hua-hua-l-o-ā), "to bark at
 s.o. ors.th.," in § 26.23. Compare another onomatopoeic verbstem, tla-(co-co-l-o-ā),
 (for a turkey cock) to gobble at s.th.," which suggests the existence of the intransitive
-stem *(co-co-I-ca), "(for a turkey cock) to gobble."]
+stem *(co-co-l-ca), "(for a turkey cock) to gobble."]
 This type of verbstem formation may also explain the structure of the following:
 (pa-pach-ca) = to curdle [This has the causative stem tla-(pa-pach-tz-a), "to cause s.th.
 to curdle (when cooking it)." Because of the assimilation of le¢! to[¢¢] (see § 2.11.2),
@@ -9532,7 +9532,7 @@ subject pronoun) or an imperfect-tense causative VNC ending in /tia:ya/ (with a 
 (with a plural subject pronoun). All three persons of the subject are involved. Only occasionally, however, are differentiating
 factors lacking, as in:
 Connective-t VNC: nicnectiaya = nicnectiyāya = #ni-Ø+c-Ø(nec-Ø-ti-yā)ya+Ø-Ø# = I used to go wanting it/them
-Causative VNC: nicnectiaya = nicnectiaya = #ni-Ø+c-Ø+Ø-Ø(nec-tia)ya+Ø-Ø# = I used to cause him to want
+Causative VNC: nicnectiaya = nicnectiaya = #ni-Ø+c-Ø+Ø-Ø(nec-tiā)ya+Ø-Ø# = I used to cause him to want
 it/them.
 A similar possible confusion exists in customary-present indicative and past-optative VNCs with a singular or
 plural subject pronoun. The traditionally-spelled ending tiani may represent the connective-t /tiya:ni/ and /tiya:nih/
@@ -9817,7 +9817,7 @@ condition); to begin (to dos.th.):
 sat with bowed head.
 (tla-mat-Ø-ti-m-o-tlāl-i-ā) = to settle down to being prudent; i.e., to become calm, to
 get control of oneself
-Ōnitlamattimotlalih. = ō#ni-Ø(tla-mat-Ø-ti-m-o-tlāU-h)Ø+Ø-Ø# = I became calm.
+Ōnitlamattimotlalih. = ō#ni-Ø(tla-mat-Ø-ti-m-o-tlāl-i-h)Ø+Ø-Ø# = I became calm.
 I got control of myself.
 4. (m-o-man-a) = to (dos.th.) gradually; to become (some condition) gradually; to begin
 (to dos.th.); to get/be in a standing position to (dos.th.):
@@ -9940,9 +9940,9 @@ A VNC built on a compound stem with *tla-( qui) in the matrix subposition manife
 or impersonal voice in the embed:
 Passive: Titlazohtlalōzquiyah. = #ti-Ø(tla-zo-h-tla-lō-z-qui)ya+Ø-h# We would have
 been loved.
-Impersonal: Tētlazohtlalōzquiya. = #Ø-Ø+tē(tla-zo-h-tla-Īo-z-qui)ya+Ø-Ø# = Everyone
+Impersonal: Tētlazohtlalōzquiya. = #Ø-Ø+tē(tla-zo-h-tla-lō-z-qui)ya+Ø-Ø# = Everyone
 would have loved (people).
-Netlazohtlalōzquiya. = #Ø-Ø+ne(tla-zo-h-tla-Īo-z-qui)ya+Ø-Ø# = Everyone
+Netlazohtlalōzquiya. = #Ø-Ø+ne(tla-zo-h-tla-lō-z-qui)ya+Ø-Ø# = Everyone
 would have loved one another.
 Note: A VNC formed on *tla-(qui) as the stem's matrix is most frequently found as the principal clause in a conditional
 sentence (see § 50.7). Notice also its usage in the included-referent supplementation construction of the
@@ -10427,7 +10427,7 @@ tla-(ēl-ē-hu-iā), "to yearn for s.th." (see § 26.2), which is itself derived
 compound stem *(ēl-ē-hu-a), "to cause the liver to rise." The incorporated-object nounstem is (el)-li-, "liver."]
 nimitzēlēhuilia = #ni-Ø+m-itz+⎕-Ø(ēl-ē-hu-i-lia)Ø+Ø-Ø# = I cause the liver to rise for it/them on your behalf,
 i.e., I yearn for it/them for you [This VNC is built on an applicative stem that comes from the applicative stem
-tla-(el-e-hu-ia). The lower-level applicative object pronoun has become a shuntline object and is therefore
+tla-(ēl-ē-hu-iā). The lower-level applicative object pronoun has become a shuntline object and is therefore
 represented by ⎕-Ø.]
 30.4. An Exceptional Formation. In certain incorporated-NNC compound verbstems, what
 should presumably be the object seems to be incorporated into an intransitive stem created by
@@ -10494,7 +10494,7 @@ nictlāpachoa = #ni-Ø+c-Ø(tlā-pach-o-a)Ø+Ø-Ø# = I with-a-covering-press-do
 I cover it [The tla is written in traditional texts as tla, thereby misleading readers into
 thinking that it is the object pronoun tla, but this would create an overload of verb
 objects. It is, rather, the nounstem (tlā)-tl-, "a covering," serving as an adverbial embed.
-The matrix stem is tla-(pach-o-a), "to press down on s.th."]
+The matrix stem is tla-(pach-o-ā), "to press down on s.th."]
 Frequently, the adverb of means or instrument in the concatenate source sentence contains
 a nounstem signifying a body part. When incorporated into a compound the possessive pronoun
 that would cooperate with such a stem has no representation in the compound VNC,
@@ -10552,7 +10552,7 @@ nicxipetlāuhtinemi = #n-Ø(icxi-petl-ā-uh-Ø-ti-nemi)Ø+Ø-Ø# = I walk having
 naked at the feet; i.e., I walk barefoot, I go around barefoot [ < (icxi)-tl-, "foot" + (petla-
 uh-Ø-tī-nemi), "to walk about naked"]
 tiyōlmiqui = #ti-Ø(yōl-miqui)Ø+Ø-Ø# = you heart-die; you die in the heart; i.e., you are terrified
-[ < (yōl)-li-, "lively thing" + (miqui), "to die." Here (yōl)-li- stands for (yol-lo)-tl-,
+[ < (yōl)-li-, "lively thing" + (miqui), "to die." Here (yōl)-li- stands for (yōl-lō)-tl-,
 "heart" (see § 39.9).]
 ninotlancuāquetza = #ni-Ø+n-o(tlan-cuā-quetza)Ø+Ø-Ø# = I knee-erect myself; I erect
 myself on my knees; i.e., I kneel [< (tlan-cuāi)-tl-, "knee" + m-o-(quetza), "to erect
@@ -10569,8 +10569,8 @@ to rise, to raise s.th.; to cause s.th. to depart."]
 30.9. Incorporated Adverbs of Time or Duration. The incorporated NNC may signify the time
 of an action:
 Principal: Niccaqui. = I hear it. [source of the matrix stem]
-Stem of the adverbial adjunct: (yōhua-l)-li- = night [source of the embed stem]
-Transform: Nicyohualcaqui. = #ni-Ø+c-Ø(yōhua-l-caqui)Ø+Ø-Ø# = I hear it in the night. I
+Stem of the adverbial adjunct: (yohua-l)-li- = night [source of the embed stem]
+Transform: Nicyohualcaqui. = #ni-Ø+c-Ø(yohua-l-caqui)Ø+Ø-Ø# = I hear it in the night. I
 hear it at night.
 The incorporated NNC may also signify duration of an action:
 Principal: Mozauhqueh. = They fasted. [source of the matrix stem]
@@ -10693,7 +10693,7 @@ tla-(il-nāmiqui) = to think about/recall s.th. [ < tla-(nāmiqui), "to encounte
 
 Compound Verbstems: Nominal Embed 269
 tla-(il-pitza) = to inflate s.th. [< tla-(pitza), "to blow on s.th. (e.g., a wind instrument/a fire)"]
-tla-(il-tequi) = to sip/suck s.th. [< tla-(téquī), "to cut s.th."]
+tla-(il-tequi) = to sip/suck s.th. [< tla-(tēquī), "to cut s.th."]
 tē- ~ tla-(tel-chihua) = to despise s.o. or s.th. [< tē-(chihua), "to engender s.o."; tla-
 (chīhua), "to make s.th."]
 tē- ~ tla-(tel-icza) = to kick s.o. or s.th. [< tē- ~ tla-(icza), "to step on/tread on s.o. or s.th."]
@@ -11143,7 +11143,7 @@ In the possessive-state NNC it is obvious that the possessor pronoun has no dire
 with the embed stem (ā)-tl-, "water," but rather indicates the possessor of the matrix stem
 (cal)-li-, "house," as qualified by the embed.
 There are, however, instances in which the compound nounstem built on an integrated pattern
-is embed oriented. Consider, for example, the stem (mā-cpa-l-yol-Īō-h)-tli-, "hand-seatheart,"
+is embed oriented. Consider, for example, the stem (mā-cpa-l-yōl-lo-h)-tli-, "hand-seatheart,"
 i.e., "center of the palm."
 mācpalyōllohtli = #Ø-Ø(mā-cpa-l-yōl-lo-h)tli-Ø# = it is the center of the palm
 nomācpalyōlloh = #Ø-Ø+n-o(mā-cpa-yōl-lo-h)Ø-Ø# = it is the center of my palm
@@ -11368,8 +11368,8 @@ floating on the surface (e.g., in a cooking utensil) [ < (īx)-tli-, "face, surf
 the assimilation of /ŝ/ + lyl > [ŝŝ].]
 (pa-ti-yō)-tl- = payment > (tla-pa-ti-yō)-tl- = sellingprice, cost [< *(pa-ti)-tl-, "exchanged
 item" < tla-(pa-tla), "to exchange s.th."; see $ 39.3.3.1
-(ix-xip-tla-yō)-tl- = image, likeness > (tla-k-xip-tla-yō)-tl- = painted image, portrait
-[< īx-xīp-tla-yō)-tl, "rēprēsentative, impersonator"; traditionally spelled (ixiptla)-tl-.]
+(ix-xip-tla-yō)-tl- = image, likeness > (tla-īx-xip-tla-yō)-tl- = painted image, portrait
+[< (īx-xīp-tla-yō)-tl-, "rēprēsentative, impersonator"; traditionally spelled (ixiptla)-tl-.]
 (me-ca-yō)-tl- = mētaphor, ancestry, descent, lineage > (tla-me-ca-yō)-tl- = safety cord
 or strap (to keep one from dropping an implement, etc.) [< (me-ca)-tl-, "cord, rope."]
 At times only the stem with the possessive-state embed is attested:
@@ -11523,7 +11523,7 @@ nounstems are not capable of forming simple-stemmed NNCs (although it would seem
 that they were originally able to do so).
 Affective-matrix nounstems may be divided into three groups according to the stem class
 of the compound stem in relation to the stem class of the nounstem in the embed subposition.
-32.2. The Affective-Matrix Nounstems (-pfl)-11- and (-pōl)-11-. Two affective-matrix nounstems
+32.2. The Affective-Matrix Nounstems (-pīl)-Ø- and (-pōl)-Ø-. Two affective-matrix nounstems
 always form compound affective stems that belong to the 0 class regardless of the class
 of the embedded stem.
 1. The matrix nounstem (-pil)-Ø- expresses smallness with affection:
@@ -12010,7 +12010,7 @@ own sake? I.e., Are you (H) crying?
 Note: The description of the formations in § 33.2 and § 33.3 should be expanded by pointing out that while certain
 intransitive verbs choose either a causative or an applicative formation for their honorific VNCs, others are more indulgent
 and permit both; for example, the verb ( chōca), while apparently preferring the applicative stem m-o-( choqui-lia)
-shown above, can also use the causative stems m-o-(choc-tia), m-o-(chōqui-l-tia), and m-o-(chōqui-tīa).
+shown above, can also use the causative stems m-o-(choc-tia), m-o-(chōqui-l-tia), and m-o-(chōqui-tiā).
 33.4. The Honorific-via-Applicative Transfonnationfor Projective-Object Sources. As a general
 rule, a VNC with a projective-object pronoun creates an honorific counterpart by using an
 applicative stem in a reflexive construction.
@@ -12023,11 +12023,11 @@ for his/her own sake or benefit. In addition to this "logical" difficulty, the V
 potentially a source of ambiguity, since no signal is present to indicate which of the entities
 involved is the honored one.
 Neutral: Quihuīca. = He carries it.
-Honorific: Quimohuiquilia. = #Ø-Ø+qui-Ø+m-o(huiqui-Iia)Ø+Ø-Ø# = He carries it for his
+Honorific: Quimohuiquilia. = #Ø-Ø+qui-Ø+m-o(huiqui-liā)Ø+Ø-Ø# = He carries it for his
 own benefit; i.e., He (H) carries it. He carries it (H).
 Neutral: Ōnechmacac. = o#Ø-Ø+n-ēch+⎕-Ø(maca)Ø+c-Ø# = He has given it to me. He has
 given them to me.
-Honorific: Ōnechmomaquilih. = o#Ø-Ø+n-ēch+⎕-Ø+m-o(maqui-Iih)Ø+Ø-Ø# = He has
+Honorific: Ōnechmomaquilih. = o#Ø-Ø+n-ēch+⎕-Ø+m-o(maqui-lih)Ø+Ø-Ø# = He has
 given it/them to me for his own sake; i.e., He (H) has given it/them to me. He has given
 it (H) to me. He has given them (H) to me.
 With projective verbs, the honorific VNC may occur even when the subject is a first-person
@@ -12211,7 +12211,7 @@ The neutral counterparts of the following honorific VNCs are found in § 28.10.
 ## PDF Page 321
 
 306 Lesson 33
-Ōnicnehuatiquechilih. = o#ni-Ø+c-Ø+n-⎕(ē-hu-a-Ø-ti-quechi-Iih)Ø+Ø-Ø# = I stood him
+Ōnicnehuatiquechilih. = o#ni-Ø+c-Ø+n-⎕(ē-hu-a-Ø-ti-quechi-lih)Ø+Ø-Ø# = I stood him
 (H) on his feet. I stood it (H)/them (H) upright.
 Ōniquinnotlapachohtitequilih. = o#ni-Ø+qu-in+n-o(tla-pach-o-h-Ø-ti-tequi-lih)Ø+Ø-Ø#
 = I put them (H) to bed and covered them (H).
@@ -12862,7 +12862,7 @@ cecualōc = #Ø-Ø(ce-cua-lō-Ø)c-Ø# = he is one who has been eaten by means o
 frozen to death [< tē-(ce-cua), "to eat s.o. by means of ice"]
 cehuechilīlōc = #Ø-Ø(ce-huechi-lī-lō-Ø)c-Ø# = he is one in relation to whom it (i.e., the weather) has fallen
 in the form of ice; i.e., he is one who has frozen to death; also, it is a plant that has become frozen [< tē-
-~ tla-(ce-huechi-līā), impers. applic. stem, "for freezing to happen to s.o. or s.th." < (ce-huetzi), impers,
+~ tla-(ce-huechi-liā), impers. applic. stem, "for freezing to happen to s.o. or s.th." < (ce-huetzi), impers,
 "to fall in the form of ice," i.e., "for the weather to be freezing cold"]
 Note 3: It is, of course, easy for a preterit-agentive NNC to be built on a compound stem. The last two examples
 in the preceding note show a source that has an incorporated adverb. The following example is built on an incorporated-
@@ -13007,7 +13007,7 @@ notētlazohtlacāuh = #Ø-Ø+n-o(tē-tla-zo-h-tla-Ø-cā)uh-Ø# = he/she is my p
 loved people; i.e., he/she is my lover; i.e., he/she is the one who loves me [< tē-(tla-zo-
 tla), "to love s.o."]
 Note 1: Just as there are irregular possessive-state NNCs of the ordinary kind built on compound stems with
-*(yō)-tl- as matrix (e.g., ipillōhuān = #Ø-Ø+i-Ø(pil-lo)hu-ān# = "they are his nobles"; see § 15.1), there are posses-
+*(yō)-tl- as matrix (e.g., ipillōhuān = #Ø-Ø+i-Ø(pil-lō)hu-ān# = "they are his nobles"; see § 15.1), there are posses-
 sive-state preterit-agentive NNCs with the same irregularity; e.g.: itlahtohcāyōhuān =
 #Ø-Ø+i-Ø(tla-ht-o-h-Ø-cā-yō)hu-ān# = "they are his kings."
 Note 2: The absolutive-state preterit-patientive NNC (see § 35.3, note 2) can have a possessive-state counterpart:
@@ -13829,21 +13829,21 @@ stem will name a nonanimate entity; if tla appears, the nounstem will name an an
 ## PDF Page 360
 
 Nominalization of VNCs (Part '.Thro) 345
-tēpohpolhuīlōni = #Ø-Ø(tē-poh-pol-hui-Iō-ni)Ø-Ø# = it is a thing worthy of being pardoned
+tēpohpolhuīlōni = #Ø-Ø(tē-poh-pol-hui-lō-ni)Ø-Ø# = it is a thing worthy of being pardoned
 (of s.o.); it is a pardonable thing [The source VNC is translated as "it is habitually pardoned
 of s.o." < tē+tla-(poh-pōl-huiā).]
-tlapohpolhuīlōni = #Ø-Ø(tla-poh-pol-hui-Iō-ni)Ø-Ø# = he is a person worthy of being pardoned
+tlapohpolhuīlōni = #Ø-Ø(tla-poh-pol-hui-lō-ni)Ø-Ø# = he is a person worthy of being pardoned
 (for s.th.); he is a pardonable person [The source VNC is translated as "he is habitually
 pardoned for s.th."]
 If the subject of the NNC is plural, the number position is filled with the morphic dyad m-eh.
 This automatically implies that the nounstem belongs to Subclass 1-A of the ti nounstem class
 and that it is the result of a "full" nominalization (as in § 36.3), not that of a mere reanalysis
 (as in § 36.2).
-Abs sg: *nitlazohtlalōnitl = *#ni-Ø(tla-zo-h-tla-Iō-ni)tl-Ø# = I am one who is worthy of
+Abs sg: *nitlazohtlalōnitl = *#ni-Ø(tla-zo-h-tla-lō-ni)tl-Ø# = I am one who is worthy of
 being loved
-Variant abs sg: nitlazohtlalōni = #ni-Ø(tla-zo-h-tla-Io-ni)Ø-Ø# = I am one worthy of being
+Variant abs sg: nitlazohtlalōni = #ni-Ø(tla-zo-h-tla-lō-ni)Ø-Ø# = I am one worthy of being
 loved
-Abs pl: titlazohtlālonimeh = #ti-Ø(tla-zo-h-tla-Īo-ni)m-eh# = we are ones worthy of being
+Abs pl: titlazohtlālonimeh = #ti-Ø(tla-zo-h-tla-lō-ni)m-eh# = we are ones worthy of being
 loved
 As in § 36.3, because of the phonological identity, there is no way of knowing when an NNC
 with a singular subject pronoun contains Ø-Ø or Ø-Ø; but the plural NNC with m-eh always
@@ -14063,13 +14063,13 @@ the morphic dyad Ø-Ø (for common number, the only number possible). The stem b
 the 1-B Subclass of the ti class.
 The following examples show the distant-past passive-voice VNC source and the resultant
 possessive-state passive-action NNC:
-VNC: nitlazohtlalōca = #ni-Ø(tla-zo-h-tla-Īo)ca+Ø-Ø# = I had been loved [ < tē-(tla-zoh-
+VNC: nitlazohtlalōca = #ni-Ø(tla-zo-h-tla-lō)ca+Ø-Ø# = I had been loved [ < tē-(tla-zoh-
 tla), "to love s.o."]
-NNC: notlazahtlalōca = #Ø-Ø+n-o(tla-zo-h-tla-Iō-ca)Ø-Ø# = it is my having been loved;
+NNC: notlazahtlalōca = #Ø-Ø+n-o(tla-zo-h-tla-lō-ca)Ø-Ø# = it is my having been loved;
 i.e., it is the love with which I am loved, it is the love felt toward me
 VNC: necocolīlōca = #Ø-Ø+ne(coco-lī-lō)ca+Ø-Ø# = he had been self-hated[< m-o-
 (coco-liā), "to hate oneself']
-NNC: īnecocolīlōca = #Ø-Ø+ī-Ø(ne-coco-lī-Iō-ca)Ø-Ø# = it is the hatred with which he
+NNC: īnecocolīlōca = #Ø-Ø+ī-Ø(ne-coco-lī-lō-ca)Ø-Ø# = it is the hatred with which he
 hates himself; i.e., it is his self-hatred
 VNC: tilnāmicōca = #t-Ø(il-nāmic-ō)ca+Ø-Ø# = you had been remembered [ < tē-(ilnamiqui),
 "to remember s.o."]
@@ -14116,7 +14116,7 @@ possessive-state formation. This possessive-state NNC is synonymous in meaning w
 possessive-state NNCs in section 1 above. The compound stem belongs to Subclass 1-B of
 the ti nounstem class, and therefore the morphic dyad in the subject pronoun's number position
 is Ø-Ø.
-notlazohtlalōcāyo = #Ø-Ø+n-o(tla-zo-h-tla-Īo-cā-yo)Ø-Ø# = it is what is characteristic
+notlazohtlalōcāyo = #Ø-Ø+n-o(tla-zo-h-tla-lō-cā-yo)Ø-Ø# = it is what is characteristic
 of my having been loved, i.e., it is the love with which I am loved
 inecocolilōcāyo = #Ø-Ø+i-Ø(ne-coco-li-lō-cā-yo)Ø-Ø# = it is what is characteristic of his
 having hated himself; i.e., it is the hatred with which he hates himself
@@ -14616,7 +14616,7 @@ idiomatic meaning of this passive patientive nounstem with that of the correspon
 impersonal patientive nounstem of § 38.1.3.a. The original meaning of the
 nounstem can, however, be found in nounstems derived from compound verbstems;
 e.g., (te-cuā-n-cua-l)-li-, "one who is eaten by (means of) a wild beast," a
-passive-patientive nounstem derived from the passive verbstem (tē-cua-n-cua-Io),
+passive-patientive nounstem derived from the passive verbstem (tē-cuā-n-cua-lō),
 "to be eaten by (means of) a man-eating animal"; for (te-cuā-ni)-tl-, see § 36.3.]
 ( quetza-l)-li- = a highly valued long green feather ( originally, "a thing that can be
 stood upright") [Contrast this passive patientive nounstem with the corresponding
@@ -14797,9 +14797,9 @@ spit." Compare (chihcha-l)-li-, "saliva/spit," formed according to§ 38.1.1.a.]
 (xō-chi)-tl- = a thing that has blossomed [ < (xō-chī-hua) < (xō-tla), "to bloom/blossom."
 For the /Al to [c] shift, see § 2.3.4. Compare (moh-mochī)-tl- in § 37.9.1.c.]
 d. Nounstem derived from an impersonal-voice VNC's core whose stem is built on the
-nonactive suffix hua-Io:
+nonactive suffix hua-lō:
 (chīchi-hua-l)-li- = a thing that can become suckled, i.e., a breast/teat/nipple [<
-(chīchi-hua-Iō) < (chīchi), "(for a baby) to suckle"]
+(chīchi-hua-lō) < (chīchi), "(for a baby) to suckle"]
 2. Transitive active source with reflexive object pronoun. Unless a projective object pronoun
 (tē or tla) is present, it is difficult to distinguish the impersonal patientive from a passive
 patientive (see § 37.9.2).
@@ -14898,7 +14898,7 @@ a. Nounstem derived from a nonactive verbstem formed by lō:
 the active causative stem tē-(pach-o-ā), "to cause s.o. to be pressed down," i.e.,
 "to govern s.o." The derivational sequence is: +qui-Ø(pach-o-ā)- = active verb
 core meaning "govern a specific person"> passive verbstem (pach-ō-lō) > impersonalized
-passive verbstem *(tla-pach-ō-Iō) > impersonal patientive nounstem
+passive verbstem *(tla-pach-ō-lō) > impersonal patientive nounstem
 ( tla-pach-ō-l)-li-]
 nitlapachōlli = I am a subject
 nimotlapachōl = I am your subject
@@ -14917,7 +14917,7 @@ patients according to subsection 3.a above.
 372 Lesson 38
 (tla-cual-ā-ni-l)-li- = a person who is provoked to anger[< tē-(cual-ā-ni-ā), "to cause
 s.o. to become angry"]
-(tla-quix-fi-l)-li- = a person who is freed[< tē-(quix-tiā), "to cause s.o. to leave"]
+(tla-quīx-ti-l)-li- = a person who is freed[< tē-(quīx-tiā), "to cause s.o. to leave"]
 (tla-pan-a-hui-l)-li- = a person who has been surpassed or overtaken [ < te-(pan-āhuia),
 "to surpass or overtake s.o."; an applicative stem. There is a homonym
 derived from the causative stem tla-(pan-a-huiā), "to transport s.th. to the other
@@ -14931,16 +14931,16 @@ heart) with regard to s.o."; i.e., "to covet s.o."; see § 26.2. This impersonal
 nounstem has a homonym formed according to subsection 3 above from the verbstem
 tla-(ēl-ē-hu-iā), "to covets.th.," with the meaning "a thing that is coveted."]
 b. Nounstem derived from a nonactive verbstem formed by the suffix ō:
-(tla-fītlan)-tli- = a person who is sent with a message: i.e., a messenger [The ultimate
+(tla-tītlan)-tli- = a person who is sent with a message: i.e., a messenger [The ultimate
 source is the active stem tē-(tītlani), "to send s.o. with a message." The
-derivational sequence is: +qui-Ø(fitlani)-, an active verbcore meaning "to send a
+derivational sequence is: +qui-Ø(tītlani)-, an active verbcore meaning "to send a
 specific person with a message"> passive stem (tītlan-ō) > impersonalized passive
-stem *(tla-fitlan-ō) > impersonal patientive nounstem (tla-fītlan)-tli-. Compare
-the passive patientive (fitlan)-tli-, "messenger/ambassador."]
-nitlafītlantli = I am a messenger
-nimotlafītlan = I am your messenger
+stem *(tla-tītlan-ō) > impersonal patientive nounstem (tla-tītlan)-tli-. Compare
+the passive patientive (tītlan)-tli-, "messenger/ambassador."]
+nitlatītlantli = I am a messenger
+nimotlatītlan = I am your messenger
 titlatītlantin = we are messengers
-annotlafītlanhuān = you are my messengers
+annotlatītlanhuān = you are my messengers
 c. Nounstem derived from a nonactive verbstem formed by the suffix hua ([i:] becomes
 [i] when hua is deleted):
 (tla-ahxi)-tl- = a person who is overtaken; i.e., a prisoner [The ultimate source is the
@@ -14969,7 +14969,7 @@ impersonal patientive nounstem with tē that names a human being:
 (tē-huica-l)-li- == servant/companion [The usual nounstem is (tla-huica-l)-li-, a stem that has a homonym
 formed according to subsection 3.a above and has the meaning of "a thing carried somewhere."]
 (te-ilpi-l)-li- == a person who has been tied up; i.e., a prisoner [The stem is found as an embed in Molina's entry
-(tē-ilpi-I-cal-la-pix-Ø)-qui-, "one who has guarded things (i.e., people) at the prisoner-house"; i.e., "a prison
+(tē-ilpi-l-cal-la-pix-Ø)-qui-, "one who has guarded things (i.e., people) at the prisoner-house"; i.e., "a prison
 warden/guard."The source is the causative stem tē-(ilpi-ā), "to cause s.o. to become tied, i.e., to tie s.o. up."]
 5. Impersonal patientive nounstems with human versus nonhuman contrast. Occasionally,
 an applicative verbstem that permits either human or nonhuman object pronouns (see § 26.21)
@@ -15007,7 +15007,7 @@ teach s.o."; see § 25.3.]
 to s.o."; the derivation of the nounstem is according to§ 37.9.3.]
 6. At times an impersonal passive nounstem and an active-action nounstem can have the
 same translation value (which does not suggest that they mean the same thing):
-(ne-cuil-tōn-ō-l)-li- ~ (ne-cuil-tōn-o-Īiz)-tli- = wealth [< m-o(cuil-tōn-o-ā), "to be
+(ne-cuil-tōn-ō-l)-li- ~ (ne-cuil-tōn-o-liz)-tli- = wealth [< m-o(cuil-tōn-o-ā), "to be
 wealthy"]
 (tla-pil-chihua-l)-li- ~ (tla-pil-chihua-liz)-tli- = misdeed/wrongdoing/offense [ < tla-
 (pil-chīhua), "to dos.th. like a child," i.e., "to err/do wrong"]
@@ -15138,7 +15138,7 @@ one who has valued s.th." with tē-(tla-zo-h-mati), "to know s.o. as a valued on
 The former has a nominalized embed, the latter a deverbal one. Both verbstems are
 translated as "to be grateful to s.o."]
 (yōl)-li- = a thing that results from living; i.e., life[< (yōli), "to live." The nounstem normally
-occurs only as an embed as a stand-in for (yol-lō)-tl-, "heart"; see § 39.9.]
+occurs only as an embed as a stand-in for (yōl-lō)-tl-, "heart"; see § 39.9.]
 3. As in the case of the passive and impersonal patientive nounstems, the source verbstem
 may be compound:
 (tla-mā-tla-chīuh)-tli- = a thing made like a net[< tla-(mā-tla-chihua), "to makes.th.
@@ -15151,8 +15151,8 @@ refuge[< te-(toca-Ø-ti-cal-aqui), "to enter pursuing s.o." Notice the replaceme
 tē by tla; see § 38.1.4.]
 A limited number of perfective patientive nounstems are formed on compound verbstems of
 ownerhood whose matrix stem is *tla-(-hua) or *tla-(-yo-ā). The latter has only one example:
-(yol-lo-h)-tli- = a thing with abundantly owned life, i.e., a heart [ < *(yol-lō-ā), "to own
-life abundantly." Compare (yōl-lo)-tl-, "heart," in § 39.3.3.]
+(yōl-lo-h)-tli- = a thing with abundantly owned life, i.e., a heart [ < *(yōl-lō-ā), "to own
+life abundantly." Compare (yōl-lō)-tl-, "heart," in § 39.3.3.]
 
 ## PDF Page 393
 
@@ -15224,7 +15224,7 @@ nocuīc = it is my song, they are my songs
 tlapācatl = it is laundry
 notlapāc = it is my laundry
 The following nounstems are further examples of the formation:
-(āy-a-hui)-tl- = fog, mist [ < (ay-a-hui), "for there to be a mist, for there to be a fog, to
+(āy-a-hui)-tl- = fog, mist [ < (āy-a-hui), "for there to be a mist, for there to be a fog, to
 be foggy"'; see § 55.6.]
 (copi)-tl- =firefly[< (copi), "to wink, to blink." As in some ofnounstems in subsection
 1 above, an agentive gloss seems more appropriate than a patientive one. Molina lists
@@ -15294,7 +15294,7 @@ ticiyōtl = it is medical art
 īntīciyo = it is their medical art
 The following nounstems are further examples of this derivation:
 (teō-yo)-tl- = a thing that pertains to God; i.e., doctrine, ritual
-(yāo-yō)-tl- = a thing that pertains to enemies; i.e., enmity; war, battle
+(yāō-yō)-tl- = a thing that pertains to enemies; i.e., enmity; war, battle
 (mahui-z-zō)-tl- = a thing that pertains to a man worthy of respect; i.e., honor
 [The stem is traditionally misspelled (mahuizo)-tl-, a spelling that misleads
 one into believing it is derived from tla-(mahui-z-o-ā), "to be astonished at
@@ -15409,7 +15409,7 @@ the English expression "he is on everyone's lips."]
 Peculiar discrepancies may occur. For example, (tzon)-tli-, "hair," does not have an organicpossession
 possession form, but the compound stem (ah-co-l-tzon)-tli-, "hair on the shoulder," does.
 notzon = it is my hair, they are my hairs
-nahcoltzonyo = #Ø-Ø+n-(ah-co-I-tzon-yo)Ø-Ø# = it is my shoulder hair, they are my
+nahcoltzonyo = #Ø-Ø+n-(ah-co-l-tzon-yo)Ø-Ø# = it is my shoulder hair, they are my
 shoulder hairs
 Furthermore, when in the meaning of "upper part/end/tip," (tzon)-tli- does show organic
 possession.
@@ -15818,16 +15818,14 @@ Deverbal Nounstems (Part Three) 393
 Remark: In this type-three causative verbstem formation, the causative constituent inside the verbstem is obviously
 a matrix verbstem and not a suffix (or what can be taken to be a suffix) as in type one and type two (see the
 comment in § 24.9). At times type-two causative verbstems and type-three causative verbstems are synonymous:
-Type-2: te+ne-(notza-I-tia }
-T 3
-I I = to cause/make/get people to talk to one another
-ype- : te+ne- notza- - am
+Type-2: tē+ne-(nōtza-l-tiā) }
+Type-3: tē+ne-(nōtza-l-tlani) } = to cause/make/get people to talk to one another
 [The source of the embed is t-o-(nōtza), "to talk to one another." The mainline reciprocal pronoun of the
 source becomes shuntline in the causative formation, because the causative object must be mainline. Notice
 the placement of the ne after the te.]
 At other times there may be a slight difference in meaning:
-Type-2: tē+tla-(iI-nāmic-tiā) = to make s.o. recall/remembers.th.; i.e., to remind s.o. of s.th.
-Type-3: te+tia-(iI-nāmic-tiani) = to urge s.o. to (try to) recall/remembers.th.
+Type-2: tē+tla-(il-nāmic-tiā) = to make s.o. recall/remembers.th.; i.e., to remind s.o. of s.th.
+Type-3: tē+tla-(il-nāmic-tlani) = to urge s.o. to (try to) recall/remembers.th.
 39.8. The Patientive Nounstem as an Incorporated Object. There is another kind of compound-
 verbstem formation with a patientive nounstem as embed that also transforms a possessor
 pronoun of a source NNC's predicate into a verb object pronoun. Three stems, tla-(tlani), "to
@@ -15850,7 +15848,7 @@ tē-(tla-ht-ō-l-ih-tlani) = to request s.o. 's words; i.e., to request advice f
 The possessor pronoun of the source NNC's predicate ... +i-n(tla-ht-ō-l) ... , "their
 words," has become the projective verb-object pronoun qu-in.]
 tē-(nō-nōtza-l-tēm-o-ā) = to seek s.o. 's counsel; i.e., to seek advice from s.o. [E.g.,
-tēchnōnōtzaltēmōzqueh, #Ø-Ø+t-ēch(nō-nōtza-I-tēmō)z+qu-eh#, "they will seek advice
+tēchnōnōtzaltēmōzqueh, #Ø-Ø+t-ēch(nō-nōtza-l-tēmō)z+qu-eh#, "they will seek advice
 from us." The possessor pronoun of the source NNC's predicate ... t-o(nō-nōtza-l) ... ,
 "our counsel," has become the projective verb-object pronoun t-ēch.]
 39.9. The Imperfective Patientive Nounstem of Characteristic Properties as Embed. Like the
@@ -15862,13 +15860,13 @@ tla-(ne-lhua-yō-toca) = to follows.th. to the root; i.e., to go to the root of 
 ## PDF Page 409
 
 394 Lesson 39
-m-o-(yol-lō-chic-ā-hu-a) = to strengthen o.s. in the heart; i.e., to encourage oneself, to bolster
-up one's own spirits [ < (yōl-Iō)-tl-, "heart"]
+m-o-(yōl-lō-chic-ā-hu-a) = to strengthen o.s. in the heart; i.e., to encourage oneself, to bolster
+up one's own spirits [ < (yōl-lō)-tl-, "heart"]
 More often, however, only the embed of the derived nounstem is used, but with the meaning
 of the full derived stem:
-m-o-(yol-chic-ā-hu-a) = to strengthen o.s. in the heart; i.e., to encourage oneself, to bolster
+m-o-(yōl-chic-ā-hu-a) = to strengthen o.s. in the heart; i.e., to encourage oneself, to bolster
 up one's own spirits
-(yāō-ihtaca)-tl- = provisions for battle [ < (yao-yo)-tl-, "battle" + (ihtaca)-tl-, "provisions,
+(yāō-ihtaca)-tl- = provisions for battle [ < (yāō-yō)-tl-, "battle" + (ihtaca)-tl-, "provisions,
 victuals"]
 The same omission of (-yō)-tl- occurs when its embed is a general-use preterit agentive nounstem;
 for example, (tōna-Ø-cā-tepē)-tl-, "hill (or mountain) of agricultural produce," "hill (or
@@ -16260,7 +16258,7 @@ synonymous verbstems can be translated as adjectives according to § 40.8.2 and 
 respectively.
 a. "it is black":
 tlīliuhqui = #Ø-Ø(tlil-ī-uh-Ø)qui-Ø# [< (tlīl-i-hui)]
-tlīltic = #Ø-Ø(tlīl-ti-Ø)c-Ø# [< (tlil-ti-ya)]
+tlīltic = #Ø-Ø(tlīl-ti-Ø)c-Ø# [< (tlīl-ti-ya)]
 b. "it is wrinkled":
 xolochauhqui = #Ø-Ø(xol-o-ch-a-uh-Ø)qui-Ø# [< (xol-o-ch-a-hui)]
 xolochtic = #Ø-Ø(xol-o-ch-ti-Ø)c-Ø# [< (xol-o-ch-ti-ya)]
@@ -17381,7 +17379,7 @@ Aiz cah. = It is not here. [Ahiz > ayiz > aiz. See § 2.13.1.]
 Quin iz ōhuālahcic. = He arrived a short while ago. [Here quin iz is equivalent to "not
 long ago."]
 Zan ye iz tibuītz. = You are just already coming here; i.e., Come here immediately.
-[Also, Zan ye tibuītz. Since the verb (bui-tz) has no optative, the preterit-as-present
+[Also, Zan ye tibuītz. Since the verb (huī-tz) has no optative, the preterit-as-present
 indicative is used in a command sentence.]
 The preterit-agentive NNC izqui, #Ø-Ø(iz-Ø)qui-Ø#, "it is one that has become present," is also
 found, but its use is substantival or adjectival rather than adverbial (compare it with the adverbialized
@@ -17390,13 +17388,13 @@ Quin izqui īn.= This is a recent thing.
 Zan izqui in. = This was a thing that occurred soon afterward.
 9. nohmah = #Ø-Ø(noh-mah)Ø+⎕-Ø# = it remained/has remained as previously; i.e., still
 [The analysis of the stem of this VNC is conjectural. The matrix is presumably tla-(mati) or
-tla-(ib-mati); the embed is unknown (possibly it is the particle nō, "also"). This adverbialized
+tla-(ih-mati); the embed is unknown (possibly it is the particle nō, "also"). This adverbialized
 VNC is synonymous with the adverbial particle oc, and their combination in the collocation
 oc nohmab, "still," is frequent. Contrast the VNC nohmab with the possessive-state
 NNCs in § 44.8.]
 Oc nobmab cochib? = Are they still sleeping?
 10. yēhua = #Ø-Ø(yē-hua)Ø+Ø-Ø# = it is already; i.e., it has happened a little while ago; i.e.,
-a little while ago, just now [ < (ye-e-bua) < ye, "already"; for this kind of verbstem formation,
+a little while ago, just now [ < (ye-ē-hua) < ye, "already"; for this kind of verbstem formation,
 see § 24.6.2]:
 Cuix yēhua ōtihuāllah? = Did you get here just now?
 11. iyoh = #Ø-Ø(iyo-h)Ø+⎕-Ø# = it became single/solitary; i.e., only, singly, exclusively;
@@ -17461,7 +17459,7 @@ undergo second-degree adverbialization are not ambiguous, because the shape of t
 pronoun is distinctive.
 ( cen-yohoa-l)-li- = one night
 a. equative: cenyohoalli = #Ø-Ø(cen-yohoa-l)li-Ø# = it is one night
-b. adverbial: cenyohoal = #Ø-Ø(cen-yohoa-I)⎕-Ø# = it is for one night, it is during one
+b. adverbial: cenyohoal = #Ø-Ø(cen-yohua-l)⎕-Ø# = it is for one night, it is during one
 night
 Note: Adverbialized NNCs can be built on distributive/varietal and affinity stems if their meaning permits.
 cēcemilhuitl = it is on one day after another; i.e., on one day after another, day after day
@@ -18917,7 +18915,7 @@ calihtic = on the inside of a/the house, inside a/the house
 nocalihtic = on the inside of my house, inside my house
 āihtic = out in the water, out in a/the gulf
 āihtictli ~ āihtectli = it is a/the gulf
-The honorific stem of (ihti-c)-tli- is (zbti-c-tzin-co)-Ø-.
+The honorific stem of (ihti-c)-tli- is (ihti-c-tzin-co)-Ø-.
 3. (īx-co)-Ø- = face location, eyes location; i.e., the visual presence, the presence, position
 in front of; surface location [ < (īx)-tli-, "face, eyes"]
 a. With simple-stemmed embed:
@@ -19438,7 +19436,7 @@ something; i.e., It discusses those who work. [The possessor pronoun ī-n of
 have the same referent. It is by means of this identity that the adjoined clause itlab
 īntequiuh is brought under the control of īntechpa.]
 In ītecbcopa nitlabtōz in nehcaliztli. = I shall speak about fighting.
-The honorific nounstem for (tech)-tli- is (tecb-tzin-co)-Ø-. [Because of the assimilation of
+The honorific nounstem for (tech)-tli- is (tech-tzin-co)-Ø-. [Because of the assimilation of
 /cl+!¢!> [¢¢], this is usually written (te-tzin-co)-Ø-, with a single digraph tz instead of the
 double one tztz.]
 Motecbtzinco buel cab in noyōllo. = My heart is successfully in contact with you
@@ -20459,8 +20457,8 @@ ii. Place-name nounstems formed on (pan)-Ø- (see § 48.3) and those formed on t
 (cā-n)-Ø- of § 48.2.5 add e to the full place-name nounstem before embedding it into (-ca)-tl-.
 Those with (cā-n)-Ø- also change the matrix nounstem (-n)-Ø- to (-m)-Ø-.
 (a) The following examples illustrate the formation from (pan)-Ø-:
-(lzta-pan)-Ø- > (lzta-pan-ē-ca)-tl- = dweller in lztapan; e.g., nlztapanēcatl = I
-am a dweller in Iztapan; tlztapanēcah = we are dwellers in Iztapan
+(Izta-pan)-Ø- > (Izta-pan-ē-ca)-tl- = dweller in Iztapan; e.g., nIztapanēcatl = I
+am a dweller in Iztapan; tIztapanēcah = we are dwellers in Iztapan
 (Tlacō-tēm-pan)-Ø- > (Tlacō-tēm-pan-ē-ca)-tl- = dweller in Tlacotempan; e.g.,
 niTlacōtēmpanēcatl = I am a dweller in Tlacotempan; tiTlacōtempanēcah =
 we are dwellers in Tlacotempan
@@ -20550,7 +20548,7 @@ tiChīchīmēcah = we are dwellers in Chichiman, we are Chichimecs
 (Āz-tla-n)-Ø- > (Āz-te-Ø-ca)-tl- = dweller in Aztlan, an Aztec; e.g., nĀ.ztecatl =
 I am a dweller in Aztlan, I am an Aztec; tĀztecah = we are dwellers in Aztlan,
 we are Aztecs
-(Chol-ō-l-Iā-n)-⎕- > (Chol-ō-I-tē-Ø-ca)-tl- = dweller in Cholollan, a Chololtec;
+(Chol-ō-l-lā-n)-⎕- > (Chol-ō-l-tē-Ø-ca)-tl- = dweller in Cholollan, a Chololtec;
 e.g., niCholōltēcatl = I am a dweller in Cholollan, I am a Chololtec;
 tiCholōltēcah = we are dwellers in Cholollan, we are Chololtecs
 Notice how different these gentilic nounstems with (-te-Ø-ca)-tl- are from the associated-entity
@@ -20696,7 +20694,7 @@ in the supreme council [< (Tlil-la-n)-Ø-, "Place in the Vicinity of Black Ink"]
 
 Place-Name NNCs 511
 tocuiltēcatl = #Ø-Ø(tocuil-te-⎕-ca)tl-Ø# = he is a dweller in the Tocuillan; i.e., he is
-one of the members of the ruler's council [< (Tocuil-Ia-n)-Ø-, "Place in the Vicinity
+one of the members of the ruler's council [< (Tocuil-la-n)-Ø-, "Place in the Vicinity
 of?"]
 ātēmpanēcatl = #Ø-Ø(ā-tēm-pan-ē-ca)tl-Ø# = he is a dweller in Atempan; i.e., he is one
 of the members of the ruler's council [< (Ā-tem-pan)-Ø-, "Place upon the Water's
@@ -21429,7 +21427,7 @@ to drink.
 Huel ixquich tlācatl ōyah in quittazquiya. = Quite he-is-everyone he-is-a-person hewent
 adjr he-would-see-him; i.e., Every single person went in order to see him.
 The purposive VNCs of Lesson 29 may be combined with a VNC built on the verbstems
-(ya-uh) and (huāl-Ia-uh) to express more emphatically the notion of purposive action.
+(ya-uh) and (huāl-la-uh) to express more emphatically the notion of purposive action.
 Oniyah nīcuīcato. }
 0-
 . _ . _ = I went in order to sing.
@@ -22978,8 +22976,8 @@ Note: It is possible, as mentioned in relation to causatives and applicatives, t
 being called suffixes are in fact verbstems and that, instead of derivational suffixation, the stem-forming process
 involved is that of compounding. Since, however, one would never find a VNC such as *niti, #ni-Ø(ti)Ø+Ø-Ø#, "I
 become," the suffixation approach has been accepted in the following discussion.
-54.2. The Inceptive/Stative Suffixes ti, hui, ya, iī, and huā. The five verbstem-forming suffixes
-ti, hui, ya, ā, and huā express the notion of the inception ( or beginning) of, entry into,
+54.2. The Inceptive/Stative Suffixes ti, hui, ya, ā, and hua. The five verbstem-forming suffixes
+ti, hui, ya, ā, and hua express the notion of the inception ( or beginning) of, entry into,
 or being in a state or condition. Of these, the suffixes ti, hui, and ya may operate individually
 or be combined into the sequences ti-ya and hui-ya for a slightly more emphatic expression.
 The combinations ti-ya and hui-ya are traditionally spelled tiā and huia, which is unfortunate
@@ -23021,9 +23019,9 @@ Certain pronominal stems may serve as the source:
 (ah-tl-eh-ti) = to become nothing [< (ah-tl-eh)-Ø-, "nothing"]
 A customary-present agentive nounstem may serve as the source; the nounstem is, of course,
 that of the fully nominal customary-present agentive NNC of § 36.3.
-(āhui-ya-ni-ti) = to become a prostitute [ < (āhui-ya-ni)-tl-, "a prostitute," < (ahui-ya),
+(āhui-ya-ni-ti) = to become a prostitute [ < (āhui-ya-ni)-tl-, "a prostitute," < (āhui-ya),
 "to be happy/content"]
-(tē-mach-tia-ni-ti) = to become a teacher[< (tē-mach-tiā-ni)-tl-, "a teacher"]
+(tē-mach-tiā-ni-ti) = to become a teacher[< (tē-mach-tiā-ni)-tl-, "a teacher"]
 A preterit-agentive nounstem may serve as the source. The verbstem-forming suffix is attached
 to the general-use stem of § 35.5.
 (tlahpal-i-uh-Ø-cā-ti) = (for a young man) to become of marriageable age; also, to
@@ -23045,21 +23043,21 @@ i.e., "a bereaved person"]
 ## PDF Page 584
 
 Denominal Verbstems (Part One) 569
-(axca-huah-Ø-cā-ti) = to become an owner of possessions, i.e., to become rich [<
-(axca-huah-Ø)-⎕-, "one who has owned possessions"]
+(āxcā-huah-Ø-cā-ti) = to become an owner of possessions, i.e., to become rich [<
+(āxcā-huah-Ø)-⎕-, "one who has owned possessions"]
 The nounstem of an adverbialized NNC may serve as the source:
 (tlahcah-ti) = to be late (said of the time from dawn to noon); to be(come) late in the
 morning[< (tlahcah)-tli-, "daytime, day (from sunrise to sunset"]
 (teō-tlāc-ti) = to be late (said of the time from noon to dusk); to be(come) late in the
-afternoon [ < ( tēō-tlac )-tli-, "afternoon"]
-(nēn-ti) = to fail [< (nen)-Ø-, "an empty/useless thing"]
+afternoon [ < (teō-tlāc)-tli-, "afternoon"]
+(nēn-ti) = to fail [< (nēn)-Ø-, "an empty/useless thing"]
 (mōz-tla-ti) = impers, to become tomorrow; pers, to live until tomorrow [ < (mōz-tla)-tl-,
 "the day after today"]
 (im-man-ti) = to be the (opportune) moment [< (im-man)-Ø-, "the very moment, this
 very moment"]
 An adverbialized nounstem formed on a relational nounstem may serve as the source:
 (cem-pō-c-tlan-ti) = to become totally under smoke, i.e., to become totally disoriented/
-confused[< (po-c-tlan)-⎕-, "beneath (a cloud of) smoke"; (cem)-⎕-, "as one,"
+confused[< (pō-c-tlan)-⎕-, "beneath (a cloud of) smoke"; (cem)-⎕-, "as one,"
 i.e., "completely"]
 The resultant verbstem frequently prefixes the impersonal tla (see § 22.6) if the notion of time
 or weather is involved.
@@ -23176,9 +23174,9 @@ representing /ia/, /ya/, or /iya/; see Appendix F). Incidentally, in the variant
 572 Lesson 54
 (hui-ya-Ø)-c-, the /e:/ has become raised to /i:/ and the following /i/ has become
 absorbed into it.]
-tla-(hue-i-ya-Ø-qu-i-lia) = to lengthen s.th.
+tla-(huē-i-ya-Ø-qu-i-liā) = to lengthen s.th.
 Occasionally, the intransitive source is not attested:
-tla-(ōme-liā) = to causes.th. to become two, to doubles.th., to twists.th. [ < *(omeya),
+tla-(ōme-liā) = to causes.th. to become two, to doubles.th., to twists.th. [ < *(ōme-ya),
 "to become two"]
 There are occasions when the liā suffix creates an applicative verbstem:
 tla-(ce-liā) = to be willing in relation to s.th.; i.e., to receives.th. [< (ce-ya), "to be
@@ -23187,41 +23185,41 @@ b. The ya is used to form deverbal verbstems from the denominal verbstems formed
 ti and hui in subsections 1 and 2 above as well as from certain destockal ni/hui verbstems. The
 source and derived verbstems normally have the same translation value.
 i. With a ti verbstem as source:
-(tlil-ti-ya) = to be(come) like black ink; i.e., to be(come) black[< (tlil-ti), "to
+(tlīl-ti-ya) = to be(come) like black ink; i.e., to be(come) black[< (tlīl-ti), "to
 be(come) black"]
 (camoh-pa-l-ti-ya) = to become sweet-potato colored; i.e., to become dark purple
 [< (camoh-pa-l-ti), "to become sweet-potato colored"< (camoh-pa-l)-li-, "s.th.
 colored like a sweet potato"< tla-(camoh-pa), "to dyes.th. like a sweet potato"]
-(cē-ti-ya) = to become one, to merge/unite [< (ce)-Ø-, "one in number"]
+(cē-ti-ya) = to become one, to merge/unite [< (cē)-Ø-, "one in number"]
 Certain verbstem formations prefer to use only ti, others prefer ti-ya, and others are indifferent.
 A deverbal verbstem ending in ti-ya belongs to either Class A or Class B. When it belongs
-to Class B, the perfective stem ends in x (see § 7.4.2): (yec-ti-ya), "to become finished," i.e.,
-"to become good" > pe,f, (yēc-ti-ya) > (yec-ti-x).
+to Class B, the perfective stem ends in x (see § 7.4.2): (yēc-ti-ya), "to become finished," i.e.,
+"to become good" > perf, (yēc-ti-ya) > (yēc-ti-x).
 Just like denominal ya verbstems, deverbal verbstems ending in ti-ya form a causative stem
 by deleting ya and adding liā.
-tla-(tle-xō-ch-ti-Iiā) = to causes.th. to become a live coal, to build up live coals
+tla-(tle-xō-ch-ti-liā) = to causes.th. to become a live coal, to build up live coals
 [< (tle-xō-ch-ti-ya), "to become a live coal"]
-tē-(tlaca-ti-liā) = to engender s.o.
+tē-(tlāca-ti-liā) = to engender s.o.
 There are, however, occasions when the liā suffix has an applicative meaning:
-tē-(tlāca-ti-Iia) = to become a person toward s.o., i.e., to treat s.o. well/decently/
+tē-(tlāca-ti-liā) = to become a person toward s.o., i.e., to treat s.o. well/decently/
 humanely
 ii. With a hui verbstem as source:
 (xo-xō-hui-ya) = to become green [ < (xo-xō-hui), "to become green"]
-(tla-tla-hui-ya) = to become red [ < (tla-tlā-hui), "to become red"]
+(tla-tlā-hui-ya) = to become red [ < (tla-tlā-hui), "to become red"]
 A deverbal verbstem ending in hui-ya belongs to Class B: (xo-xō-hui-ya) > pe,f,
 (xo-xō-hui-x).
 A causative verbstem is derived from a hui-ya stem by deleting the ya and adding liā.
-tla-(xo-xo-hui-Iia) = to causes.th. to become green colored [ < (xo-xo-hui-ya), "to
+tla-(xo-xō-hui-liā) = to causes.th. to become green colored [ < (xo-xō-hui-ya), "to
 become green colored"]
 
 ## PDF Page 588
 
 Denominal Verbstems (Part One) 573
 iii. With certain destockal verbstems of the ni/hui type (see § 24.5):
-(tlap-i-hui-ya) = to increase in number/multiply [< (tlap-i-hui), "to increase in
+(tlap-ī-hui-ya) = to increase in number/multiply [< (tlap-ī-hui), "to increase in
 number/multiply."]
 (cuetl-ā-hui-ya) ="(fora plant) to wilt/wither[< (cuetl-ā-hui), "to wilt/wither"]
-(coz-ā-hui-ya) = to become/tum yellow[< (cōz-ā-hui), "to become/tum yellow"]
+(cōz-ā-hui-ya) = to become/tum yellow[< (cōz-ā-hui), "to become/tum yellow"]
 (yam-ā-ni-ya) =(fora body) to be at a normal temperature; (for the weather) to
 be calm and serene; (for a hide/wax/etc.) to become soft [ < (yam-ā-ni), "to
 become soft." Compare (yam-a-z-ti-ya), "to become soft," derived from the
@@ -23237,12 +23235,12 @@ for example:
 (cuetl-ā-uh-Ø)-qui- = a wilted/withered thing
 (cuetl-ā-hui-ni)-Ø- = a thing that wilts/withers easily
 ( cuetl-a-x)-tli- = tanned hide
-(cōz-a-uh-Ø)-qui- = a yellow thing
+(cōz-ā-uh-Ø)-qui- = a yellow thing
 (yam-ā-n-Ø)-qui- = a soft thing
-(yam-ā-ni-Iiz)-tli- = softness
+(yam-ā-ni-liz)-tli- = softness
 (to-tō-n-Ø)-qui- = a hot thing; fever
-(to-tō-ni-Iiz)-tli- = warmth, heat
-The derived ya stems belong to Class B: (cōz-a-hui-ya) > paf, (cōz-ā-hui-x) ~ (cōz-ā-hui-z).
+(to-tō-ni-liz)-tli- = warmth, heat
+The derived ya stems belong to Class B: (cōz-ā-hui-ya) > perf, (cōz-ā-hui-x) ~ (cōz-ā-hui-z).
 The preference of the source stem over the ya stem for derivation is again evident in the formation
 of the causative stem. It is created by adding the type-one causative suffix ā to the hui
 or ni stem as in § 24.5.7. In traditional spelling no distinction is made between hui-ya and
@@ -23250,7 +23248,7 @@ hui-ā or ni-ya and ni-ā. The ya stem is, however, always intransitive and the 
 transitive.
 tla-(yam-ā-ni-ā) = to tans.th. (i.e., hides); to cool offs.th. (e.g., soup that is very
 hot); to softens.th. (e.g., wax) with heat
-tla-(tlap-i-hui-ā) = to cause s.th. to increase in number
+tla-(tlap-ī-hui-ā) = to cause s.th. to increase in number
 m-o-(to-tō-ni-ā) = to warm o.s. (by the fire or in the sun)
 4. The inceptive/stative suffix ā is of limited use and has a meaning similar to that of ya.
 It is, of course, not to be confused with the causative ā. The verbstem it creates belongs to
@@ -23340,7 +23338,7 @@ Tīhuihhuitiz in Tītlācahuān. = #t-Ø(i-Ø-hui-hhui-ti)z+Ø-Ø# = You (sg) wi
 impersonator of We-Are-His-Slaves. [Thanks to its third-person singular subject
 pronoun (see § 56.2.2.b), the personal name NNC Titlācahuān is the supplementary
 possessor of ī-Ø inside the verbstem.]
-c. (tē-pa-ti-l-Iō-ti) = to be s.o. 's proxy/representative/representer [ < (pa-ti-l-lō)-tl-,
+c. (tē-pa-ti-l-lō-ti) = to be s.o. 's proxy/representative/representer [ < (pa-ti-l-lō)-tl-,
 "replacement/stand-in/proxy" < (pa-ti-l)-li-, "a thing that can be exchanged"; see the verbstem
 tla-(pa-tla), "to exchanges.th."]:
 Ca ipatillōti in Tloqueh Nāhuaqueh. = #Ø-Ø(i-Ø-pa-ti-l-lō-ti)Ø+Ø-Ø# = Indeed he is
@@ -23581,14 +23579,14 @@ meaning of the resultant verbstem is "to cause s.o./o.s. to be(come) (what is si
 the nounstem)."
 tē-(pa-ti-l-lō-ti-ā) = to cause s.o. to be a stand-in; i.e., to assign s.o. as deputy/substitute
 [ < (pa-ti-l-lō)-tl-, "replacement/stand-in/proxy/representative." Compare
-(tē-pa-ti-l-Iō-ti) in § 54.3.1.]
+(tē-pa-ti-l-lō-ti) in § 54.3.1.]
 At times this first-type causative stem is synonymous with a second-type one:
 tē-(hueli-ti-ā) = tē-(hueli-ti-l-tiā) = to cause s.o. to be capable; i.e., to give s.o.
 power/authority
 tē-(pah-ti-ā) = tē-(pah-ti-liā) = to cause s.o. to have (good) medicine; i.e., to cure
 s.o.
 Single-object causative verbstems of both subsection a and subsection b belong to Class C:
-tla-(tzīn-ti-ā) > peif, tla-(tzīn-ti-h); te-(pa-ti-l-lō-ti-ā) >, peif, tē-(pa-ti-l-Iō-ti-h).
+tla-(tzīn-ti-ā) > perf, tla-(tzīn-ti-h); tē-(pa-ti-l-lō-ti-ā) > perf, tē-(pa-ti-l-lō-ti-h).
 2. When the source NNC is in the possessive state, there are again two possible causative
 formations by the addition of the causative ā; in this case, the result is a double-object verbstem.
 The source ti verbstem is not attested for either of these formations. Unlike the stems in
@@ -23745,7 +23743,7 @@ This applicative stem belongs to Class C: tē-(cuica-t-iā) > perf, tē-(cuica-t
 
 LESSON 55
 Denominal Verbstems (Part Two)
-55.1. The Temporal Intransitive Suffix tiiī. There is another verbstem-fonning suffix tiā that
+55.1. The Temporal Intransitive Suffix tiā. There is another verbstem-fonning suffix tiā that
 looks like it should be transitive but is in fact intransitive. It is therefore entirely different from
 any of the /tia:/ stem formations mentioned previously. The tiā apparently has a unitary structure
 (although the ti could conceivably be a connective morph with an intransitive ā). The
@@ -24333,7 +24331,7 @@ f The stem involves a passive-voice source. When the stem of the personal-name N
 has its inner predicate formed on the passive voice, that stem is a preterit-patientive NNC (see §
 35.3, note 2) and the personal-name NNC is not too different from the NNCs already discussed,
 since the inner and outer subject pronouns at least refer to specific entities; for example:
-tiTepotzihtōlōc = #ti-Ø(Ø-Ø-Tepotz-iht-ō-Iō-Ø-c-Ø)Ø-Ø# = you are called "He Is One
+tiTepotzihtōlōc = #ti-Ø(Ø-Ø-Tepotz-iht-ō-lō-Ø-c-Ø)Ø-Ø# = you are called "He Is One
 Who Has Been Talked About Behind his Back" ["you are Talked-About-Behindthe-
 Back"]
 Ahhuelittōctzin = #Ø-Ø(Ø-Ø-Ah-huel-itt-ō-Ø-c-Ø-tzin)Ø-Ø# = he (H) called "He Is
@@ -24344,7 +24342,7 @@ pronoun is nonspecific while the outer one is specific, but the situation is rea
 different from that of those personal-name NNCs with a nonanimate inner subject and
 an animate outer one. The formation offers still another confirmation of the two-tiered structure
 of personal-name NNCs. This kind of name has a stem that is a preterit agentive NNC.
-Tia-impersonal VNC source: cītlallatōnac = #Ø-Ø(citlal-Ia-tōna)Ø+c-Ø# = there has
+Tla-impersonal VNC source: cītlallatōnac = #Ø-Ø(citlal-la-tōna)Ø+c-Ø# = there has
 been a general shining by means of stars [See § 22.6.]
 Personal-name NNC: tiCītlallatōnac = #ti-Ø(Ø-Ø-Cītlal-la-tōna-Ø-c-Ø)Ø-Ø# = you
 are called "There Has Been a General Shining by Means of Stars" ["you Are
@@ -24780,7 +24778,7 @@ sun, thereupon ltzcuauhtzin cried out.
 57.2. Irregularities in Valence. While rules governing valence are remarkably strict and clearcut
 in Nahuatl, there are exceptional situations. A few of these have been presented; for example,
 tla-(āyi), (ich-tequi), tē-(mach-tiā), and instances of variable valence such as (tequi-pano-
-a) ~ tla-(tequi-pan-o-ā) or (ā-I-ti-ā)~ m-Ø-(ā-l-ti-ā), as well as instances of a morphologically
+a) ~ tla-(tequi-pan-o-ā) or (ā-l-ti-ā) ~ m-Ø-(ā-l-ti-ā), as well as instances of a morphologically
 unjustified applicative such as tla-(tēmiqui). There are other instances in which, for no apparent
 reason, a verbstem appears in a VNC with a valence different from that normal to it. In the
 following two sentences, for example, verbstems that expectedly require transitive valence occur
@@ -25164,9 +25162,9 @@ tli-, "a valued thing"]
 6. There is a strange formation in which a reflexive-object pronoun is frozen in a thirdperson
 form inside a verbstem because of the incorporation of an adverbial nounstem in front
 of it; for instance:
-(tlāl-m-Ø-āhui-I-ti-ā) =(fora child) to amuse himself/herself by playing with dirt (creating
+(tlāl-m-Ø-āhui-l-ti-ā) = (for a child) to amuse himself/herself by playing with dirt (creating
 piles with it, etc.) [As in: nitlālmāhuiltia, "I have fun playing with dirt." From
-the causative verbstem m-Ø-(ahui-I-ti-a), "to amuse o.s."; as in: ninahuiltia, "I amuse
+the causative verbstem m-Ø-(āhui-l-ti-ā), "to amuse o.s."; as in: nināhuiltia, "I amuse
 myself."]
 58.3. Exclamatory Expressions. Utterances that express vehement or excited feeling in an
 abrupt manner may be particles (see § 3.2.5), NNCs, VNCs, or combinations of any of these.
@@ -25344,7 +25342,7 @@ to English speakers, but the difference between the two Nahuatl sentences is obv
 a Nahuatl speaker. The other examples are equally distinctive to a Nahuatl speaker. For example,
 quimichpatlān, i.e., #Ø-Ø(quimich-patl-ā-n-Ø)Ø-Ø#, is a preterit-agentive NNC meaning
 "it is a thing that has flown having a resemblance to a mouse," i.e., "it is a bat." Similarly,
-tlālōlīn, i.e., #Ø-Ø(tlal-ol-i-n-Ø)Ø-Ø#, is also a preterit-agentive NNC and means "it is a thing
+tlālōlīn, i.e., #Ø-Ø(tlāl-ōl-i-n-Ø)Ø-Ø#, is also a preterit-agentive NNC and means "it is a thing
 that has moved in the form of the land," i.e., "it is an earthquake." The translation given above
 for ehehcapolihui is especially misleading, because not only is ehehca- not the subject, but
 the Nahuatl predicate is not transitive. Yet the translation is a possible one, as is clear when the
@@ -25614,7 +25612,7 @@ x-Ø(ihcali-hua)ni+Ø-Ø
 t-Ø(ihcali-hua)ni+Ø-h
 x-Ø(ihcali-hua)ni+Ø-h
 Ø-Ø(ihcali-hua)ni+Ø-h
--Io Suffix
+-lō Suffix
 Nonpast Optative
 ni-Ø(pōhua-lō)Ø+⎕-Ø
 xi-Ø(pōhua-lō)Ø+Ø-Ø
@@ -25664,7 +25662,7 @@ t-Ø(ihcali-hua)ca+Ø-Ø
 t-Ø(ihcali-hua)ca+Ø-h
 am-Ø(ihcali-hua)ca+Ø-h
 Ø-Ø(ihcali-hua)ca+Ø-h
--Io Suffix
+-lō Suffix
 Preterit Indicative
 ni-Ø(pōhua-lō)Ø+c-Ø
 ti-Ø(pōhua-lō)Ø+c-Ø
@@ -25707,7 +25705,7 @@ t-Ø(ihcali-hua)h+⎕-Ø
 ti-Ø(ihcali-hua)h+t-in
 am-Ø(ihcali-hua)h+t-in
 Ø-Ø(ihcali-hua)h+t-in
--Io Suffix
+-lō Suffix
 ni-Ø(pohua-lo)h+⎕-Ø
 ti-Ø(pohua-lo)h+⎕-Ø
 Ø-Ø(pohua-lo)h+⎕-Ø
@@ -26982,17 +26980,17 @@ NNCs are formed. The listing is given in the conventional sequence (for example,
 the Florentine Codex, but in the Primeros Memoriales he begins the sequence in a nonstandard way with
 itzcuintli):
 (cipac)-tli-, "caiman"; (eh-ehca)-tl-, "wind"; (cal)-li-, "house"; (cuetz-pal)-in-, "lizard"; (cōā)-tl-,
-"snake"; (miqui-z)-tli-, "death"; (mazā)-tl-, "deer"; (to-ch)-tli-, "rabbit"; (a)-tl-, "water"; (itzcuin)-
-tli-, "dog"; (ozomah)-tli-, "monkey"; (mal-i-n-a-l)-li-, "grass"; (a-ca)-tl-, "reed"; (ōcēlō)-tl-,
-"jaguar"; (cuāuh)-tli-, "eagle"; (cōz-ca-cuāuh)-tli-, "vulture"; (ol-ī-n-Ø)-Ø-, "quake"; (tecpa)-tl-,
-"flint"; (quiy-a-hui)-tl-, "rain"; (xo-chi)-tl-, "flower."
+"snake"; (miqui-z)-tli-, "death"; (mazā)-tl-, "deer"; (tō-ch)-tli-, "rabbit"; (ā)-tl-, "water"; (itzcuin)-
+tli-, "dog"; (ozomah)-tli-, "monkey"; (mal-ī-n-a-l)-li-, "grass"; (ā-ca)-tl-, "reed"; (ōcēlō)-tl-,
+"jaguar"; (cuāuh)-tli-, "eagle"; (cōz-ca-cuāuh)-tli-, "vulture"; (ōl-i-n-Ø)-Ø-, "quake"; (tecpa)-tl-,
+"flint"; (quiy-a-hui)-tl-, "rain"; (xō-chi)-tl-, "flower."
 In a calendar these nounstems (whether animate or nonanimate) always form absolutive-state NNCs with
 third-person singular subjects.
 Note: The day-sign NNC Olin is almost always misspelled Ollin (see § 2.10), a mistake possibly due to a
 confusion with the NNC ōlli, "it is rubber." Olin is, moreover, always mistranslated "movement," an impossible
-rendering, since this is not an action NNC but a preterit-agentive NNC, coming from the destockal verbstem (oli-
+rendering, since this is not an action NNC but a preterit-agentive NNC, coming from the destockal verbstem (ōl-i-
 ni), "to move/quake." Therefore, it means "it is a thing that has moved/quaked," i.e., "one that moves/quakes"
-(since it means "a moving one," it is one of the names of the Sun). The compound nounstem (tlal-ol-i-n-Ø)-⎕-, "a
+(since it means "a moving one," it is one of the names of the Sun). The compound nounstem (tlāl-ōl-i-n-Ø)-⎕-, "a
 moving/quaking thing in the form of land," is equivalent to "earthquake," and the simple nounstem also permits
 this translation.
 3. The day names. As already stated, a day name results from the combination of a numeral NNC and a
@@ -28173,9 +28171,9 @@ iuhqui, 561-63, 564; in principal clause, 622
 (ix)-, "total number," 489
 "Just about to," 609
 /kw/> [k], 349,617
-/1/ (connective morpheme), 160,214
--I- (nounstem-forming suffix), 484, 614-15
-/1/ + /'),j > [11], 34, 536, 565
+/l/ (connective morpheme), 160,214
+-l- (nounstem-forming suffix), 484, 614-15
+/l/ + /λ/ > [ll], 34, 536, 565
 Language change, 3
 Language difference, 3, 19
 Language learning, 3

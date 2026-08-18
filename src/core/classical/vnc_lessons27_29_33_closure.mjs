@@ -9,6 +9,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   const issuedOperationFrames = new WeakSet();
   const issuedMachineryFrames = new WeakSet();
   const issuedClosureFrames = new WeakSet();
+  const issuedSourceAgreementFrames = new WeakSet();
   const LCM_AXIS_IDS = Object.freeze([
     "operation",
     "operation-variant",
@@ -35,6 +36,72 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   };
   const text = value => String(value ?? "").trim();
   const key = value => text(value).toLowerCase();
+
+  function buildClassicalNahuatlLateSourceAgreementFrame(
+    sourceStem = "",
+    { verbClass = "", sourceValence = "" } = {}
+  ) {
+    const normalizedStem = text(sourceStem);
+    const normalizedClass = text(verbClass).toUpperCase();
+    const normalizedValence = text(sourceValence);
+    const sourceIdentityFrame =
+      typeof targetObject.buildClassicalNahuatlActiveStemIdentityFrame
+        === "function"
+        ? targetObject.buildClassicalNahuatlActiveStemIdentityFrame(
+            normalizedStem,
+            {
+              verbClass: normalizedClass,
+              sourceValence: normalizedValence,
+            }
+          )
+        : null;
+    const morphemicSourceProfile =
+      sourceIdentityFrame?.internalMorphology?.morphemicSourceProfile || null;
+    const authorized = Boolean(
+      sourceIdentityFrame?.authorizationStatus === "authorized"
+      && sourceIdentityFrame.enteredStem === normalizedStem
+      && morphemicSourceProfile?.authorizationStatus === "authorized"
+      && morphemicSourceProfile.sourceStem === normalizedStem
+      && morphemicSourceProfile.sourceClass === normalizedClass
+      && morphemicSourceProfile.sourceValence === normalizedValence
+    );
+    const frame = freeze({
+      kind: "classical-nahuatl-late-vnc-source-agreement-frame",
+      version: VERSION,
+      authorizationStatus: authorized ? "authorized" : "blocked",
+      blockReason: authorized
+        ? ""
+        : "typed-morphemic-source-profile-disagrees-with-late-source",
+      sourceStem: normalizedStem,
+      sourceClass: normalizedClass,
+      sourceValence: normalizedValence,
+      sourceIdentityFrame: authorized ? sourceIdentityFrame : null,
+      morphemicSourceProfile: authorized ? morphemicSourceProfile : null,
+      canvasExampleAuthority: false,
+      callerFormulaAuthority: false,
+      callerSurfaceAuthority: false,
+    });
+    issuedSourceAgreementFrames.add(frame);
+    return frame;
+  }
+
+  function isClassicalNahuatlLateSourceAgreementFrame(frame = null) {
+    if (!frame || !issuedSourceAgreementFrames.has(frame)) return false;
+    if (frame.authorizationStatus === "blocked") {
+      return Boolean(frame.blockReason);
+    }
+    return Boolean(
+      frame.kind === "classical-nahuatl-late-vnc-source-agreement-frame"
+      && frame.version === VERSION
+      && frame.authorizationStatus === "authorized"
+      && frame.morphemicSourceProfile?.sourceStem === frame.sourceStem
+      && frame.morphemicSourceProfile?.sourceClass === frame.sourceClass
+      && frame.morphemicSourceProfile?.sourceValence === frame.sourceValence
+      && frame.sourceIdentityFrame?.internalMorphology
+        ?.morphemicSourceProfile === frame.morphemicSourceProfile
+      && frame.canvasExampleAuthority === false
+    );
+  }
 
   function analyzeRecursiveCompoundHierarchy(
     embedClosureFrame = null,
@@ -808,11 +875,27 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || null;
     const baseTyped = recursiveEmbedFrame?.finalTypedVncSlotFrame
       || getBaseTypedFrame(baseApplicationFrame);
-    const sourceStem = text(
+    const requestedSourceStem = text(
       recursiveEmbedFrame?.operationFrame?.targetStem
       || request.sourceStem
       || request.stem
     );
+    const sourceAgreementFrame = buildClassicalNahuatlLateSourceAgreementFrame(
+      requestedSourceStem,
+      {
+        verbClass:
+          recursiveEmbedFrame?.operationFrame?.targetClass
+          || request.verbClass
+          || "B",
+        sourceValence:
+          recursiveEmbedFrame?.operationFrame?.targetValence
+          || request.sourceValence
+          || request.valence
+          || "intransitive",
+      }
+    );
+    const sourceStem = sourceAgreementFrame.morphemicSourceProfile?.sourceStem
+      || requestedSourceStem;
     const operation = key(request.lateOperation || "none");
     const variant = key(request.lateVariant || "");
     const canonicalBaseApplication = Boolean(
@@ -825,6 +908,15 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || !baseTyped
       || !sourceStem) {
       return blockedOperation(request, "authorized-canonical-base-vnc-required");
+    }
+    if (!isClassicalNahuatlLateSourceAgreementFrame(sourceAgreementFrame)
+      || sourceAgreementFrame.authorizationStatus !== "authorized") {
+      return blockedOperation(
+        request,
+        sourceAgreementFrame.blockReason
+          || "typed-morphemic-source-profile-required",
+        "source-structure"
+      );
     }
     const sourceCoordinateSubject = recursiveEmbedFrame
       ? recursiveEmbedFrame.normalizedRequest?.subject
@@ -2351,6 +2443,17 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         ruleFamily = "compound-recursion";
       }
     } else if (operation === "purposive") {
+      const purposiveRecursiveHierarchy = analyzeRecursiveCompoundHierarchy(
+        recursiveEmbedFrame,
+        null
+      );
+      if (purposiveRecursiveHierarchy.authorizationStatus !== "authorized") {
+        return blockedOperation(
+          request,
+          purposiveRecursiveHierarchy.blockReason,
+          "purposive-recursion"
+        );
+      }
       const series = key(request.purposiveSeries);
       const direction = series.startsWith("inbound-")
         ? "inbound"
@@ -2394,10 +2497,24 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           "purposive-paradigm"
         );
       }
+      const earlySingularGlottal =
+        request.purposiveEarlySingularGlottal === true;
+      if (earlySingularGlottal
+        && (plural || series !== "outbound-nonpast-optative")) {
+        return blockedOperation(
+          request,
+          "early-singular-glottal-is-outbound-singular-optative-only",
+          "purposive-paradigm"
+        );
+      }
       const purposiveEmbedStem = baseIsNonactive
         ? text(baseTyped.slots?.predicate?.stem)
         : futureEmbedStem(sourceStem, targetClass);
-      targetStem = `${purposiveEmbedStem}-⎕-${matrixShape}`;
+      const soundedFutureMorph = request.purposiveSoundedFutureMorph === true;
+      const embedFutureMorph = soundedFutureMorph ? "z" : "⎕";
+      targetStem = earlySingularGlottal
+        ? `${purposiveEmbedStem}-${embedFutureMorph}-h`
+        : `${purposiveEmbedStem}-${embedFutureMorph}-${matrixShape}`;
       predicateTns = "0";
       numberDyad = {
         num1: "0",
@@ -2410,12 +2527,34 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         compoundType: "linked",
         linkage: "connectiveless",
         embedTense: "future",
-        embedFutureMorph: "⎕",
+        embedFutureMorph,
+        ordinaryEmbedFutureMorph: "⎕",
+        soundedFutureMorph: "z",
+        soundedFutureMorphSelected: soundedFutureMorph,
+        soundedFutureMorphMarkedRare: true,
+        soundedFutureMorphStyleStatus: "rare-nonpreferred-textual-variant",
+        futureEmbedClassShapePreserved: true,
+        matrixValence: "intransitive",
+        matrixDirectionalMorpheme: direction === "inbound" ? "/k/" : "t",
+        matrixDirectionalSpellings: direction === "inbound" ? ["c", "qu"] : ["t"],
+        matrixDirectionalSpellingDerived: true,
+        directionalChoiceComesFromSeries: true,
+        duplicateDirectionControlRequired: false,
+        futureMorphPrecedesInternalDirectional: true,
+        internalDirectionalNotConnective: true,
+        internalDirectionalNotExternal: true,
+        archaicDirectionalPurposiveOnly: true,
         matrixDirectionalMorph: direction === "inbound" ? "c/qu" : "t",
         matrixBaseStem: series === "outbound-past-indicative"
           || series === "inbound-nonfuture-indicative"
           ? "o"
           : "i",
+        purposeMotionBaseMeaning: "move-purposefully",
+        imperfectiveNumberPartner: plural ? "hui" : "uh",
+        perfectiveBaseDistinctFromOnO: true,
+        licensedPurposiveSeries: Object.keys(matrixShapes),
+        seriesIsSingleUserChoice: true,
+        noStemWhitelist: true,
         matrixTenseMeaning: ({
           "outbound-nonpast-indicative": "nonpast",
           "outbound-past-indicative": "past",
@@ -2424,14 +2563,161 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           "inbound-future-indicative": "future",
           "inbound-nonpast-optative": "nonpast"
         })[series],
+        licensedReadingRange: ({
+          "outbound-nonpast-indicative": ["present", "future"],
+          "outbound-past-indicative": ["simple-past", "habitual-past", "anterior-past"],
+          "outbound-nonpast-optative": ["command", "exhortation", "wish", "self-encouragement", "self-suggestion"],
+          "inbound-nonfuture-indicative": [
+            "present", "preterit", "imperfect", "distant-past"
+          ],
+          "inbound-future-indicative": ["future"],
+          "inbound-nonpast-optative": [
+            "command", "exhortation", "wish", "self-encouragement", "self-suggestion"
+          ]
+        })[series],
+        readingRangeIsContextualNotAnotherFormChoice: true,
         finiteTenseMorph: "0",
         numberMorph: plural
           ? request.purposiveIrregularPluralN === true ? "n" : "h"
           : "0",
         movementPrecedesPurposeAction: true,
+        purposeActionBeginsAfterMovement: true,
+        progressiveActionOverlapsMovement: false,
+        progressiveContrast: series === "outbound-nonpast-indicative"
+          ? {
+            purposiveInternalDirectional: "t",
+            progressiveExternalConnective: "ti",
+            purposiveEmbedTense: "future",
+            progressiveEmbedTense: "preterit",
+            traditionalUnmarkedTextMayBeAmbiguous:
+              ["A", "C", "D"].includes(targetClass),
+            classBShapeRemainsDistinct: targetClass === "B",
+            analysisChoiceRequiredOnlyWhenTypedTextIsUnderspecified: true,
+            spellingAloneHasGrammarAuthority: false
+          }
+          : null,
+        ordinaryAntecessiveAvailable:
+          series === "outbound-past-indicative"
+          || series === "inbound-nonfuture-indicative",
+        ordinaryAntecessiveSelected:
+          (series === "outbound-past-indicative"
+          || series === "inbound-nonfuture-indicative")
+          && Boolean(
+            request.sentenceAntecessive === true
+            || request.antecessive === true
+            || request.requestedPrefixStackMode === "antecessive"
+            || request.prefixStackMode === "antecessive"
+          ),
+        inboundInternalHitherDirectional:
+          direction === "inbound" ? "/k/" : "",
+        inboundInternalHitherDistinctFromExternalHual:
+          direction === "inbound",
+        inboundNonfutureAntecessiveScope:
+          series === "inbound-nonfuture-indicative"
+            ? "past-act-of-purposing-not-intended-action"
+            : "",
+        inboundNonfutureAntecessiveMayAccompanyPresentReading:
+          series === "inbound-nonfuture-indicative",
+        inboundFutureNumberShape:
+          series === "inbound-future-indicative" ? matrixShape : "",
+        inboundFutureNumberShapeDerived:
+          series === "inbound-future-indicative",
+        pastPurposiveNeverIntroducedByMa:
+          series === "outbound-past-indicative",
+        pastPurposiveHomographContrast:
+          series === "outbound-past-indicative"
+            ? "connective-t-plus-on-o-optative"
+            : "",
+        pastPurposiveAnalysisUsesTypedStructureAndMaContext:
+          series === "outbound-past-indicative",
+        optativeLetReadingIsPermissive: false,
+        optativeMayExpressSelfEncouragement:
+          series === "outbound-nonpast-optative"
+          || series === "inbound-nonpast-optative",
+        optativeMayExpressSelfSuggestion:
+          series === "outbound-nonpast-optative"
+          || series === "inbound-nonpast-optative",
+        secondPersonPers1DerivedByFiniteGrammar:
+          series === "outbound-nonpast-optative",
+        purposiveOptativeDistinctFromAdmonitive:
+          series === "outbound-nonpast-optative",
+        purposiveOptativeMatrixEnding:
+          series === "outbound-nonpast-optative"
+            ? request.purposiveIrregularPluralN === true ? "t-ī+0-n" : "t-i+0-h/0"
+            : "",
+        admonitiveContrastEnding:
+          series === "outbound-nonpast-optative" ? "perfective+h/0+t-ih/t-in" : "",
+        traditionalUnmarkedOptativeMayBeAmbiguous:
+          series === "outbound-nonpast-optative",
+        optativeAnalysisChoiceRequiredOnlyWhenTypedTextIsUnderspecified:
+          series === "outbound-nonpast-optative",
+        earlySingularGlottalSelected: earlySingularGlottal,
+        earlySingularGlottalMorph: earlySingularGlottal ? "h" : "",
+        earlySingularGlottalMarkedAberrant: true,
+        earlySingularGlottalReplacesTi: earlySingularGlottal,
+        ordinarySingularTiRemainsPreferred: true,
+        nonactiveEmbedAuthorized: baseIsNonactive,
+        nonactiveEmbedVoice: baseIsNonactive ? selectedBaseVoice : "",
+        nonactiveEmbedStem: baseIsNonactive ? purposiveEmbedStem : "",
+        nonactiveEmbedVoices: freeze(["passive", "impersonal"]),
+        nonactiveEmbedVoicePreserved: baseIsNonactive,
+        nonactiveEmbedParticipantTopologyPreserved: baseIsNonactive,
+        nonactiveEmbedValencePreserved: baseIsNonactive,
+        nonactiveEmbedFutureBoundaryOutsideStem: baseIsNonactive,
+        nonactiveEmbedUsesSharedFutureEmbedPath: baseIsNonactive,
+        nonactiveEmbedNegativeParticlesRemainSentenceExternal: baseIsNonactive,
+        nonactiveEmbedExampleWhitelistUsed: false,
+        recursiveCompoundEmbedAuthorized: Boolean(recursiveEmbedFrame),
+        recursiveEmbedFrame,
+        recursiveCompoundEmbedStem: recursiveEmbedFrame
+          ? purposiveEmbedStem
+          : "",
+        recursiveCompoundEmbedFramePreserved: Boolean(recursiveEmbedFrame),
+        recursiveCompoundInternalStructurePreserved: Boolean(recursiveEmbedFrame),
+        recursiveCompoundParticipantsPreserved: Boolean(recursiveEmbedFrame),
+        recursiveCompoundValencePreserved: Boolean(recursiveEmbedFrame),
+        recursiveCompoundVoicePreserved: Boolean(recursiveEmbedFrame),
+        recursiveCompoundEventRelationPreserved: Boolean(recursiveEmbedFrame),
+        recursivePurposiveBoundaryOutsideCompletedCompound:
+          Boolean(recursiveEmbedFrame),
+        recursivePurposiveHierarchyAcyclic:
+          purposiveRecursiveHierarchy.acyclic,
+        recursivePurposiveContinuationAvailable: Boolean(recursiveEmbedFrame),
+        recursivePurposiveExampleTemplateUsed: false,
         matrixDirectionalInsideStem: true,
         irregularPluralN: request.purposiveIrregularPluralN === true,
         externalDirectional,
+        externalDirectionalSelected: externalDirectional !== "none",
+        externalDirectionalMeaning: externalDirectional === "on"
+          ? "away-thither-there"
+          : externalDirectional === "huāl"
+            ? "hither"
+            : "",
+        externalDirectionalOutsideCompletedPurposive:
+          externalDirectional !== "none",
+        externalDirectionalIndependentFromInternal:
+          externalDirectional !== "none",
+        externalDirectionalRelation: externalDirectional === "none"
+          ? "none"
+          : (externalDirectional === "on" && direction === "outbound")
+            || (externalDirectional === "huāl" && direction === "inbound")
+            ? "matching"
+            : "mismatching",
+        externalDirectionalMayContinueOrIntensifyMovement:
+          externalDirectional !== "none",
+        embedAndMatrixActionsRemainSeparate: true,
+        ordinaryExternalDirectionalCanCarryPurposiveReading: true,
+        ordinaryExternalDirectionalPathRemainsDistinct: true,
+        formalPurposiveCounterpartAvailable: true,
+        fulfilledPurposeReadingAvailable: true,
+        metaphoricalMovementReadingAvailable: true,
+        mutedIntentionReadingAvailable: true,
+        purposiveInterpretationReadings: freeze([
+          "intended-purpose", "fulfilled-purpose",
+          "metaphorical-movement", "muted-intention"
+        ]),
+        interpretationIsContextualNotFormChoice: true,
+        translationHasGrammarAuthority: false,
         callerPurposiveDirectionAuthority: false
       };
     } else {
@@ -2791,6 +3077,11 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           // reflexive object position; this new target is not a second
           // independently licensed reflexive lexical source.
           sourceValence: "intransitive",
+          // The late operation transforms an already typed Source. Preserve
+          // its initial-i analysis when the derived target is sent back
+          // through the canonical finite service; do not make that service
+          // guess again from the target spelling.
+          sourceInitialISelection: request.sourceInitialISelection,
           verbClass: targetClass,
           subject: request.subject,
           mood: request.mood,
@@ -3005,11 +3296,13 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       "lateOperation", "extendedOperation", "lateVariant", "extendedVariant",
       "frequentativeRepetitions", "frequentativeScope", "frequentativeTarget",
       "frequentativeReplacementSyllable",
-      "compoundMatrixStem", "compoundMatrixClass", "compoundSubjectAnimacy",
+      "compoundMatrixStem", "compoundMatrixClass",
+      "compoundMatrixInitialISelection", "compoundSubjectAnimacy",
       "compoundPossessiveStem", "compoundPossessor",
       "compoundItzSense", "compoundYaSyncopation",
       "compoundEventOrder", "compoundNonactiveScope", "purposiveDirection",
       "purposiveSeries", "purposiveIrregularPluralN", "purposiveExternalDirectional",
+      "purposiveSoundedFutureMorph", "purposiveEarlySingularGlottal",
       "honoredParticipant", "honorificDerivationOptionId",
       "honorificStemAlternative", "attitudeCompoundTarget",
       "compoundEmbedClosureFrame", "compoundMatrixClosureFrame",
@@ -3072,6 +3365,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         baseRequest.sentenceType = "wish-sentence";
         baseRequest.introductoryParticle = "mā";
       }
+      // Antecessive belongs to the completed outbound-past Purposive, not to
+      // the present finite Source used to construct its future embed.
+      delete baseRequest.sentenceAntecessive;
+      delete baseRequest.antecessive;
+      delete baseRequest.requestedPrefixStackMode;
+      delete baseRequest.prefixStackMode;
       const externalDirectional = key(request.purposiveExternalDirectional || "none");
       if (externalDirectional !== "none") baseRequest.directionalPrefix = externalDirectional;
     }
@@ -3240,6 +3539,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           ? text(request.objectNumber)
           : "",
         verbClass: derivedMatrixClass,
+        sourceInitialISelection: text(
+          request.compoundMatrixInitialISelection
+        ),
         subject: request.subject,
         mood: request.mood,
         tense: request.tense,
@@ -3745,6 +4047,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   }
   return Object.freeze({
     VERSION,
+    buildClassicalNahuatlLateSourceAgreementFrame,
+    isClassicalNahuatlLateSourceAgreementFrame,
     buildClassicalNahuatlOperationFrame,
     isClassicalNahuatlOperationFrame,
     buildClassicalNahuatlMachineryFrame,

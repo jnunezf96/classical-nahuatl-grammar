@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 29,
+  "contradictionTest": "src/tests/classical_lesson29_contradiction_audit.test.js",
+  "groups": {
+    "lesson29-purposive-foundation-and-future-embed": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-internal-directional-matrix": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-purposeful-motion-base-and-series-system": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-outbound-nonpast-and-progressive-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-outbound-past": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-outbound-optative": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-inbound-nonfuture": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-inbound-future": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-inbound-optative": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-nonactive-purposive-embeds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-compound-stemmed-purposive-embeds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    },
+    "lesson29-external-directionals-and-fulfilled-purpose": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson29_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson29_reader_guidance.test.js"
+    }
+  }
+}

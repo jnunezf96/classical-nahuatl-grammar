@@ -28,7 +28,7 @@ const CASES = Object.freeze([
         subject: "2sg",
         objectPerson: "",
         sourceVoice: "active",
-        previewStatus: "authorized",
+        previewStatus: "blocked",
         targetStem: "quix-tiā",
         route: "type-two-tia-from-quix-o-hua-internal-base",
         bridgeStem: "quīx-o-hua",

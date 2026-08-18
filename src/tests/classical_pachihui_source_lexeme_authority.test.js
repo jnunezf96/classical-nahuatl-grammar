@@ -261,7 +261,7 @@ function run(ctx = {}) {
             satiated: {
                 status: "authorized",
                 canonical: true,
-                targets: ["pach-i-hui-tiā"],
+                targets: ["pach-i-huī-tiā"],
                 bridgeLexeme: SATIATED_LEXEME,
             },
             missing: [
@@ -395,10 +395,10 @@ function run(ctx = {}) {
                 sourceLexemeId: PRESSED_DOWN_LEXEME,
             },
             satiated: {
-                target: "pach-i-hui-tiā",
+                target: "pach-i-huī-tiā",
                 status: "authorized",
-                formula: "#ni-0+c-0(pach-i-hui-tia)0+0-0#",
-                written: "nicpachihuitia",
+                formula: "#ni-0+c-0(pach-i-huī-tia)0+0-0#",
+                written: "nicpachihuītia",
                 sourceLexemeId: SATIATED_LEXEME,
             },
             paradigm: {
@@ -407,8 +407,8 @@ function run(ctx = {}) {
                 coordinateStatus: "authorized",
                 coordinateLexeme: SATIATED_LEXEME,
                 scalarEquivalent: true,
-                formula: "#ni-0+c-0(pach-i-hui-tia)0+0-0#",
-                written: "nicpachihuitia",
+                formula: "#ni-0+c-0(pach-i-huī-tia)0+0-0#",
+                written: "nicpachihuītia",
             },
             missing: [
                 "blocked",

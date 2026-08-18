@@ -78,6 +78,7 @@ function run(ctx = {}) {
             item,
             direct: ctx.evaluateClassicalNahuatlVncApplication({
                 sourceStem: stem,
+                sourceInitialISelection: stem.startsWith("i") ? "real" : "",
                 verbClass: "B",
                 sourceValence: "intransitive",
                 sourceSubject: "3sg",

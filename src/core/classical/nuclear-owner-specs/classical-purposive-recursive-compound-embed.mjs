@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p2954::p2954-the-embed-of-a-purposive-vnc-can-be-a": {
       "assertionId": "classical-purposive-recursive-compound-embed:p2954-the-embed-of-a-purposive-vnc-can-be-a",
-      "canonicalPath": "cases.recursiveCompoundEmbed.ruleFamilies.5"
+      "canonicalPath": "cases.recursiveCompoundEmbed.facts.recursiveCompoundEmbedAuthorized"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

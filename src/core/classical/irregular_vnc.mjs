@@ -3,7 +3,7 @@
 import {
   CLASSICAL_NAHUATL_VNC_SEMANTIC_TENSES,
   validateClassicalNahuatlVncSemanticSelection,
-} from "./vnc_layer_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "./vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 
 export function createClassicalNahuatlIrregularVncApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_LESSON11_VERSION = 1;

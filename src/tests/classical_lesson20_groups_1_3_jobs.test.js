@@ -107,6 +107,44 @@ function run(ctx = {}) {
         "B",
         "intransitive",
     );
+    const novelShortAntepenultClassC = inventory(
+        "xep-i-ā",
+        "C",
+        "specific-projective",
+    );
+    const novelLongAntepenultClassC = inventory(
+        "xēp-i-ā",
+        "C",
+        "specific-projective",
+    );
+    const novelShortAntepenultFrame =
+        ctx.buildClassicalNahuatlClassCFinalIVowelLengthRuleFrame(
+            "xep-i-ā",
+        );
+    const novelLongAntepenultFrame =
+        ctx.buildClassicalNahuatlClassCFinalIVowelLengthRuleFrame(
+            "xēp-i-ā",
+        );
+    const lexicalFireDenominalFrame =
+        ctx.buildClassicalNahuatlClassCFinalIVowelLengthRuleFrame(
+            "tla-ti-ā",
+        );
+    const valenceNeutralShapeRoutes = [
+        ["xep-tla", "A", "xep-tla-lō"],
+        ["xep-o-ā", "C", "xep-ō-lō"],
+        ["xep-i-ā", "C", "xep-ī-lō"],
+    ].flatMap(([stem, verbClass, expectedStem]) => (
+        ["intransitive", "specific-projective"].map((sourceValence) => {
+            const routeInventory = inventory(stem, verbClass, sourceValence);
+            return [
+                stem,
+                sourceValence,
+                routeInventory.options[0]?.nonactiveStem || "",
+                routeInventory.options[0]?.formationAuthority || "",
+                expectedStem,
+            ];
+        })
+    ));
 
     const observations = {
         "lesson20-nonactive-foundation-and-suffixes": {
@@ -334,6 +372,59 @@ function run(ctx = {}) {
         writing: writing.length,
         reading: records.length - writing.length,
     }, { atoms: 87, unique: 87, writing: 20, reading: 67 });
+    s.eq(
+        "Class C final i quantity is productive for an unlisted short-antepenult Source shape",
+        [
+            novelShortAntepenultFrame.sourceLengthBasis,
+            novelShortAntepenultFrame.sourceLengthClass,
+            novelShortAntepenultClassC.options[0]?.nonactiveStem,
+        ],
+        [
+            "productive-final-i-lengthening",
+            "lengthen-final-i",
+            "xep-ī-lō",
+        ],
+    );
+    s.eq(
+        "Class C final i quantity is inhibited by an unlisted long-antepenult Source shape",
+        [
+            novelLongAntepenultFrame.antepenultimateVowel,
+            novelLongAntepenultFrame.sourceLengthBasis,
+            novelLongAntepenultFrame.sourceLengthClass,
+            novelLongAntepenultClassC.options[0]?.nonactiveStem,
+        ],
+        [
+            "ē",
+            "long-antepenultimate-environment",
+            "preserve-short-final-i",
+            "xēp-i-lō",
+        ],
+    );
+    s.eq(
+        "the fire-denominal exception remains identity-specific only because Canvas makes its internal structure lexical",
+        [
+            lexicalFireDenominalFrame.sourceLengthBasis,
+            lexicalFireDenominalFrame.lexicalAnalysis?.analysisId,
+            lexicalFireDenominalFrame.sourceLengthClass,
+        ],
+        [
+            "typed-lexical-internal-structure",
+            "fire-denominal-tla-to-ti-before-causative-a",
+            "preserve-short-final-i",
+        ],
+    );
+    s.eq(
+        "final tla, o-ā, and i-ā routes remain productive under either Source valence",
+        valenceNeutralShapeRoutes,
+        [
+            ["xep-tla", "intransitive", "xep-tla-lō", "productive-rule", "xep-tla-lō"],
+            ["xep-tla", "specific-projective", "xep-tla-lō", "productive-rule", "xep-tla-lō"],
+            ["xep-o-ā", "intransitive", "xep-ō-lō", "productive-rule", "xep-ō-lō"],
+            ["xep-o-ā", "specific-projective", "xep-ō-lō", "productive-rule", "xep-ō-lō"],
+            ["xep-i-ā", "intransitive", "xep-ī-lō", "productive-rule", "xep-ī-lō"],
+            ["xep-i-ā", "specific-projective", "xep-ī-lō", "productive-rule", "xep-ī-lō"],
+        ],
+    );
     groupIds.forEach((groupId) => {
         s.eq(
             `${groupId} works through the normal nonactive application path`,

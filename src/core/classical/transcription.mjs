@@ -3516,9 +3516,48 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
       const targetMorpheme = normalizeClassicalNahuatlOrthographyInput(
         options.targetMorpheme || options.elidedMorpheme || ""
       );
-      const vowelLength = normalizeClassicalNahuatlOrthographyInput(options.vowelLength || "short");
+      const requestedVowelLength = normalizeClassicalNahuatlOrthographyInput(options.vowelLength || "");
       const supportiveI = options.supportiveI === true;
-      const stressGroupCombination = options.stressGroupCombination !== false;
+      const stressGroupCombination = options.stressGroupCombination === true;
+      const requestedElisionSide = normalizeClassicalNahuatlOrthographyInput(options.elisionSide || "");
+      const sourceCharacters = Array.from(sourceMorpheme);
+      const initialSourceVowel = /^[aāeēiīoō]$/u.test(sourceCharacters[0] || "")
+        ? sourceCharacters[0]
+        : "";
+      const finalSourceVowel = /^[aāeēiīoō]$/u.test(sourceCharacters.at(-1) || "")
+        ? sourceCharacters.at(-1)
+        : "";
+      const availableElisionSides = [
+        initialSourceVowel ? "initial" : "",
+        finalSourceVowel ? "final" : ""
+      ].filter(Boolean);
+      const elisionSide = ["initial", "final"].includes(requestedElisionSide)
+        ? requestedElisionSide
+        : availableElisionSides.length === 1
+          ? availableElisionSides[0]
+          : "";
+      const sourceVowel = elisionSide === "initial"
+        ? initialSourceVowel
+        : elisionSide === "final"
+          ? finalSourceVowel
+          : "";
+      const sourceVowelLengthFromShape = /[āēīō]/u.test(sourceVowel)
+        ? "long"
+        : sourceVowel
+          ? "short"
+          : "";
+      const vowelLength = ["short", "long"].includes(requestedVowelLength)
+        ? requestedVowelLength
+        : sourceVowelLengthFromShape;
+      const sourceShapeQuantityContradiction = Boolean(
+        sourceVowelLengthFromShape === "long"
+        && requestedVowelLength === "short"
+      );
+      const derivedTargetMorpheme = elisionSide === "initial"
+        ? sourceCharacters.slice(1).join("")
+        : elisionSide === "final"
+          ? sourceCharacters.slice(0, -1).join("")
+          : "";
       const inferredRuleId = supportiveI
         ? "cn-l2-214-supportive-i-not-proper-elision"
         : vowelLength === "long"
@@ -3532,20 +3571,15 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         ? CLASSICAL_NAHUATL_LESSON2_VOWEL_ELISION_RULES.find(rule => rule.id === requestedRuleId) || null
         : CLASSICAL_NAHUATL_LESSON2_VOWEL_ELISION_RULES.find(rule => rule.id === inferredRuleId) || null;
       const longVowelBlocked = vowelLength === "long";
-      const targetMatchesSource = Boolean(
-        sourceMorpheme
-        && targetMorpheme
-        && sourceMorpheme !== targetMorpheme
-        && (
-          sourceMorpheme.slice(1) === targetMorpheme
-          || sourceMorpheme.slice(0, -1) === targetMorpheme
-        )
-      );
+      const targetMatchesSource = !targetMorpheme
+        || targetMorpheme === derivedTargetMorpheme;
       const authorized =
         Boolean(selectedRule)
         && stressGroupCombination
         && !longVowelBlocked
-        && targetMatchesSource;
+        && Boolean(sourceVowel)
+        && Boolean(derivedTargetMorpheme)
+        && !sourceShapeQuantityContradiction;
       return {
         kind: "classical-nahuatl-transcription-vowel-elision-frame",
         version: CLASSICAL_NAHUATL_LESSON2_FRAME_VERSION,
@@ -3561,9 +3595,18 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
         selectedRule: copyClassicalNahuatlLesson2VowelElisionRule(selectedRule),
         evaluatedRuleIds: [selectedRule?.id].filter(Boolean),
         sourceMorpheme,
-        targetMorpheme,
-        outputForm: authorized ? targetMorpheme : "",
+        targetMorpheme: derivedTargetMorpheme,
+        literalTargetMorpheme: targetMorpheme,
+        literalTargetMatchesDerived: targetMatchesSource,
+        outputForm: authorized ? derivedTargetMorpheme : "",
+        elisionSide,
+        availableElisionSides,
+        sourceVowel,
+        sourceVowelLengthFromShape,
         vowelLength,
+        vowelQuantityAuthority: requestedVowelLength
+          ? "explicit-typed-source-analysis"
+          : "source-phonological-shape",
         supportiveI,
         stressGroupCombination,
         properElision: !supportiveI,
@@ -3574,11 +3617,13 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           ? ""
           : !sourceMorpheme
             ? "vowel-elision-source-morpheme-required"
-            : !targetMorpheme
-              ? "vowel-elision-target-morpheme-required"
-              : !targetMatchesSource
-                ? "vowel-elision-target-mismatch"
-                : longVowelBlocked
+            : availableElisionSides.length > 1 && !elisionSide
+              ? "vowel-elision-side-analysis-required"
+              : !sourceVowel || !derivedTargetMorpheme
+                ? "vowel-elision-source-edge-vowel-required"
+                : sourceShapeQuantityContradiction
+                  ? "vowel-elision-source-quantity-analysis-contradicts-shape"
+                  : longVowelBlocked
                   ? "long-vowel-resists-elision"
                   : "not-set-stress-group-combination",
         premises: [{
@@ -3601,7 +3646,7 @@ export function createClassicalNahuatlTranscriptionApi(targetObject = globalThis
           authorized,
           selectedRuleId: authorized ? selectedRule?.id || "" : "",
           properElision: authorized ? !supportiveI : false,
-          outputForm: authorized ? targetMorpheme : "",
+          outputForm: authorized ? derivedTargetMorpheme : "",
           spellingChangeOftenNecessary: selectedRule?.id === "cn-l2-214-spelling-change-required" || options.indicatedInWriting === true
         }
       };

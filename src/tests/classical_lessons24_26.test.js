@@ -296,7 +296,7 @@ function run(ctx = {}) {
                 derivationType: "causative",
             });
             const longNexOption = inventory.options.find(option => option.targetStem === "nēx-tiā") || null;
-            const longNexiOption = inventory.options.find(option => option.targetStem === "nēxi-tiā") || null;
+            const longNexiOption = inventory.options.find(option => option.targetStem === "nēxī-tiā") || null;
             const operation = ctx.deriveClassicalNahuatlVncDerivationOperationFrame(source, {
                 derivationType: "causative",
                 optionId: longNexOption?.optionId || "missing-neci-long-nex-option",
@@ -323,7 +323,7 @@ function run(ctx = {}) {
         {
             inventoryStatus: "authorized",
             inventoryCanonical: true,
-            targets: ["nēz-a", "nēci-ā", "nēxi-tiā", "nēx-tiā"],
+            targets: ["nēz-a", "nēci-ā", "nēxī-tiā", "nēx-tiā"],
             shortTargetExcluded: true,
             longNex: {
                 bridge: "nēx-o-hua",
@@ -331,7 +331,7 @@ function run(ctx = {}) {
                 exact: true,
             },
             longNexi: {
-                bridge: "nēxi-hua",
+                bridge: "nēxī-hua",
                 exact: true,
             },
             operationStatus: "authorized",

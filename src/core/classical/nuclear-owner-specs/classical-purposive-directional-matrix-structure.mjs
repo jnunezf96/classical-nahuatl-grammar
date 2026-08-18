@@ -24,15 +24,15 @@ const spec = {
     },
     "claim-p2900::p2900-these-directional-prefixes-are-archaic-survivals-found-now-only": {
       "assertionId": "classical-purposive-directional-matrix-structure:p2900-these-directional-prefixes-are-archaic-survivals-found-now-only",
-      "canonicalPath": "contract.directionalMorphs.outbound"
+      "canonicalPath": "contract.directionComesFromSingleSeriesChoice"
     },
     "claim-p2901::p2901-the-variant-future-tense-morph-always-precedes-them": {
       "assertionId": "classical-purposive-directional-matrix-structure:p2901-the-variant-future-tense-morph-always-precedes-them",
-      "canonicalPath": "contract.directionalMorphs.inbound"
+      "canonicalPath": "contract.futureMorphPrecedesInternalDirectional"
     },
     "claim-p2902::p2902-it-should-be-remembered-that-these-compound-stem-internal": {
       "assertionId": "classical-purposive-directional-matrix-structure:p2902-it-should-be-remembered-that-these-compound-stem-internal",
-      "canonicalPath": "contract.matrixValence"
+      "canonicalPath": "contract.internalDirectionalDistinctFromConnectiveAndExternal"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

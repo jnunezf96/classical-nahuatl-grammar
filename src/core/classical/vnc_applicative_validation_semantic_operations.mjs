@@ -218,7 +218,7 @@ function deriveTripleApplicative(runtime) {
       derivationType: "causative",
     });
   const causativeOption = (causativeInventory?.options || [])
-    .find(option => option.targetStem === "caqui-tiā");
+    .find(option => option.targetStem === "caquī-tiā");
   const causativeOperation =
     runtime.deriveClassicalNahuatlVncDerivationOperationFrame(source, {
       derivationType: "causative",

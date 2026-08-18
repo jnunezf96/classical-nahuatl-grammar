@@ -47,6 +47,7 @@ const spec = {
       {
         "sourceMorpheme": "icxi",
         "targetMorpheme": "cxi",
+        "elisionSide": "initial",
         "vowelLength": "long",
         "supportiveI": false,
         "indicatedInWriting": false,
@@ -58,6 +59,7 @@ const spec = {
       {
         "sourceMorpheme": "icxi",
         "targetMorpheme": "cxi",
+        "elisionSide": "initial",
         "vowelLength": "short",
         "supportiveI": false,
         "indicatedInWriting": true,
@@ -69,6 +71,7 @@ const spec = {
       {
         "sourceMorpheme": "icxi",
         "targetMorpheme": "cxi",
+        "elisionSide": "initial",
         "vowelLength": "short",
         "supportiveI": true,
         "indicatedInWriting": false,

@@ -658,6 +658,50 @@ export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_SWITCH_CONTRACTS =
         outputBehavior: "keeps the regular h plural realization",
       }),
     },
+    "classical-rule-logic-purposive-sounded-future": {
+      controlId: "classical-rule-logic-purposive-sounded-future",
+      checked: switchState({
+        controlId: "classical-rule-logic-purposive-sounded-future",
+        value: "true",
+        tagSuffix: "purposive-sounded-future-enabled",
+        lineStart: 9996,
+        lineEnd: 10001,
+        canvasStatus: "conditioned-optional",
+        applicability: "explicitly requested rare sounded future in a purposive VNC",
+        outputBehavior: "retains the attested sounded z future morph and marks it as rare and nonpreferred",
+      }),
+      unchecked: switchState({
+        controlId: "classical-rule-logic-purposive-sounded-future",
+        value: "false",
+        tagSuffix: "purposive-sounded-future-disabled",
+        lineStart: 9980,
+        lineEnd: 9995,
+        applicability: "ordinary purposive VNC",
+        outputBehavior: "uses the normal silent future boundary automatically",
+      }),
+    },
+    "classical-rule-logic-purposive-early-singular-glottal": {
+      controlId: "classical-rule-logic-purposive-early-singular-glottal",
+      checked: switchState({
+        controlId: "classical-rule-logic-purposive-early-singular-glottal",
+        value: "true",
+        tagSuffix: "purposive-early-singular-glottal-enabled",
+        lineStart: 10174,
+        lineEnd: 10178,
+        canvasStatus: "conditioned-optional",
+        applicability: "explicitly requested early singular outbound nonpast-optative purposive variant",
+        outputBehavior: "replaces ordinary matrix t-i with the grammarians' marked stem-final glottal variant without changing the preferred paradigm",
+      }),
+      unchecked: switchState({
+        controlId: "classical-rule-logic-purposive-early-singular-glottal",
+        value: "false",
+        tagSuffix: "purposive-early-singular-glottal-disabled",
+        lineStart: 10174,
+        lineEnd: 10178,
+        applicability: "ordinary singular outbound nonpast-optative purposive coordinate",
+        outputBehavior: "keeps the historically supported ordinary t-i singular form",
+      }),
+    },
   });
 
 export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_AUTHORITY_TAGS =

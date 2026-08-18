@@ -13,7 +13,7 @@ const spec = {
   "coordinates": {
     "claim-p2950::p2950-the-tense-morph-0-has-a-nonpast-optative-meaning": {
       "assertionId": "classical-inbound-purposive-nonpast-optative:p2950-the-tense-morph-0-has-a-nonpast-optative-meaning",
-      "canonicalPath": "cases.singularSeries.inbound-nonpast-optative.targetStem"
+      "canonicalPath": "cases.singularSeries.inbound-nonpast-optative.facts.licensedReadingRange"
     },
     "claim-p2951::p2951-if-only-they-would-come-in-order-to-write": {
       "assertionId": "classical-inbound-purposive-nonpast-optative:p2951-if-only-they-would-come-in-order-to-write",

@@ -4,7 +4,7 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260815-lesson23-complete-302";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   GENERATION_SOURCE_TRANSITIVITY,
   GENERATION_SOURCE_TRANSITIVITY_ORDER,
@@ -9025,32 +9025,36 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const canonicalKind = String(canonicalRecord?.initialIAnalysis?.kind || "").trim();
       const initialI = /^[iī]/iu.test(sourceStem);
       const userChoiceApplies = initialI
-        && (!canonicalKind || canonicalKind === "contextual");
+        && !canonicalKind;
       if (choiceField) {
         choiceField.hidden = !userChoiceApplies;
       }
       if (choice) {
         choice.disabled = !userChoiceApplies;
+        choice.required = userChoiceApplies;
         if (userChoiceApplies) {
           if (root?.dataset?.classicalVncSourceInitialIChoiceStem !== sourceStem) {
-            choice.checked = false;
+            choice.value = "";
           }
           if (root?.dataset) {
             root.dataset.classicalVncSourceInitialIChoiceStem = sourceStem;
           }
         } else {
-          choice.checked = false;
+          choice.value = "";
           if (root?.dataset) {
             delete root.dataset.classicalVncSourceInitialIChoiceStem;
           }
         }
       }
       const selectedKind = userChoiceApplies
-        ? choice?.checked === true ? "supportive" : "real"
+        ? ["real", "supportive", "contextual"].includes(
+            String(choice?.value || ""),
+          )
+          ? String(choice.value)
+          : ""
         : "";
-      const kind = canonicalKind === "contextual"
-        ? selectedKind
-        : canonicalKind || (userChoiceApplies ? selectedKind : "not-applicable");
+      const kind = canonicalKind
+        || (userChoiceApplies ? selectedKind || "unresolved" : "not-applicable");
       const visible = initialI;
       if (root?.dataset) {
         root.dataset.classicalVncSourceInitialI = visible ? kind || "unresolved" : "not-applicable";
@@ -9062,9 +9066,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       fact.hidden = !visible;
       fact.textContent = !visible
         ? ""
-        : canonicalKind && canonicalKind !== "contextual"
+        : canonicalKind
           ? `Initial i: ${canonicalKind === "contextual" ? "context-sensitive" : canonicalKind} (canonical source fact)`
-          : `Initial i: ${selectedKind || "real"}${selectedKind === "real" ? " (default; choose Supportive i only when intended)" : " (source choice)"}`;
+          : selectedKind
+            ? `Initial i: ${selectedKind === "contextual" ? "context-sensitive" : selectedKind} (Source choice)`
+            : "Initial i: choose its Source analysis before generating.";
       return visible;
     }
     function syncClassicalVncSourceGuide(unit = "") {
@@ -9553,7 +9559,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         sourceInitialISelection: (() => {
           const choice = getClassicalVncSourceGuideElements().initialIChoice;
           return choice && choice.disabled !== true
-            ? choice.checked === true ? "supportive" : "real"
+            ? String(choice.value || "")
             : "";
         })(),
         sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || ""
@@ -9846,7 +9852,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const sourceConstitution = activeUnit === CLASSICAL_BASAL_UNIT.vnc && typeof targetObject.buildClassicalNahuatlVncSourceConstitutionProjection === "function" ? targetObject.buildClassicalNahuatlVncSourceConstitutionProjection({
         sourceStem: sourceValue,
         sourceValence: sourceValenceControl?.value || "intransitive",
-        verbClass: sourceClassControl?.value || "B",
+        verbClass: sourceClassControl?.value || "",
         derivationType: "direct"
       }) : null;
       const machine = sourceSelectionFrame?.selectedSourceKind === "embed-matrix" && sourceSelectionFrame.userSelectionContradictsTypedSource === true
@@ -12298,7 +12304,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       { id: "classical-rule-logic-subject", defaultValue: "1sg" },
       { id: "classical-rule-logic-mood", defaultValue: "indicative" },
       { id: "classical-rule-logic-tense", defaultValue: "present" },
-      { id: "classical-rule-logic-class", defaultValue: "B" },
+      { id: "classical-rule-logic-class", defaultValue: "" },
       { id: "classical-rule-logic-derivation-option", defaultValue: "" },
       { id: "classical-rule-logic-causative-source-voice", defaultValue: "active" },
       { id: "classical-rule-logic-causative-source-nonactive", defaultValue: "" },

@@ -213,6 +213,43 @@ function run(ctx = {}) {
         supplementationOrder: "supplement-first",
     });
 
+    const productiveSourceCases = [
+        ["zamal", "A", "intransitive", ""],
+        ["paca", "A", "intransitive", ""],
+        ["zamā", "A", "intransitive", ""],
+        ["chol-o-ā", "C", "intransitive", ""],
+        ["zo-ō-ni", "B", "intransitive", ""],
+        ["caqui-tiā", "C", "specific-projective", "3sg"],
+        ["ca-h", "A", "intransitive", ""],
+    ].map(([sourceStem, verbClass, sourceValence, objectPerson]) => {
+        const principal = issueVnc(sourceStem, {
+            verbClass,
+            sourceValence,
+            objectKind: objectPerson ? "specific-projective" : "",
+            objectPerson,
+            subject: "3sg",
+        });
+        const composed = compose(principal, friend, {
+            supplementationHeadRole: "subject",
+        });
+        const principalCapture = composed.captures[0];
+        const sourceProfile = principal.canonicalResult?.sourceAnalysisFrame
+            ?.morphemicSourceProfile
+            || principal.canonicalResult?.resultFrame?.sourceAnalysisFrame
+                ?.morphemicSourceProfile
+            || null;
+        return {
+            sourceStem,
+            principalStatus: principal.authorizationStatus,
+            captureStatus: principalCapture.authorizationStatus,
+            principalEnvelopePreservesSource:
+                composed.result.canonicalResult?.principalClause?.sourceStem
+                    === sourceStem,
+            composedStatus: composed.result.authorizationStatus,
+            capturedSourceStem: sourceProfile?.sourceStem || sourceStem,
+        };
+    });
+
     const observations = {
         "lesson17-recursive-supplementation": {
             captures: recursive.captures.map(capture => capture.authorizationStatus),
@@ -284,6 +321,18 @@ function run(ctx = {}) {
             ],
         },
     };
+    s.eq(
+        "Lesson 17 supplementation is productive across typed Source shapes and preserves each captured Source",
+        productiveSourceCases,
+        productiveSourceCases.map(({ sourceStem }) => ({
+            sourceStem,
+            principalStatus: "authorized",
+            captureStatus: "authorized",
+            principalEnvelopePreservesSource: true,
+            composedStatus: "authorized",
+            capturedSourceStem: sourceStem,
+        })),
+    );
     const expected = {
         "lesson17-recursive-supplementation": {
             captures: ["authorized", "authorized"],

@@ -79,6 +79,16 @@ function run(ctx = {}) {
     const xocui = inventory("xocui", "B", "specific-projective");
     const meloti = inventory("meloti", "B", "specific-projective");
     const pati = inventory("pa-ti", "B", "intransitive");
+    const novelPostvocalicTi = inventory(
+        "melo-ti",
+        "B",
+        "intransitive",
+    );
+    const lexicalDenominalTi = inventory(
+        "tequi-ti",
+        "A",
+        "intransitive",
+    );
     const pasaO = derive(
         "pasa",
         "B",
@@ -364,6 +374,28 @@ function run(ctx = {}) {
         writing: writing.length,
         reading: records.length - writing.length,
     }, { atoms: 151, unique: 151, writing: 38, reading: 113 });
+    s.eq(
+        "an unlisted postvocalic-ti Source keeps both productive shape routes",
+        stems(novelPostvocalicTi),
+        ["melo-tī-hua", "melo-ch-ō"],
+    );
+    s.eq(
+        "tequi-ti blocks ch-o only through its Canvas lexical internal analysis",
+        {
+            stems: stems(lexicalDenominalTi),
+            analysis: lexicalDenominalTi.sourceIdentityFrame
+                ?.internalMorphology?.finalTiLexicalAnalysis,
+        },
+        {
+            stems: ["tequi-tī-hua"],
+            analysis: {
+                analysisId: "denominal-ti-of-possession-from-tequi-tl",
+                finalTiRole: "denominal-possession-formative",
+                postvocalicTiChoRouteStatus: "blocked",
+                huaRouteStatus: "authorized",
+            },
+        },
+    );
     groupIds.forEach((groupId) => {
         s.eq(
             `${groupId} works through the normal nonactive application path`,

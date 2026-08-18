@@ -94,11 +94,11 @@ function run(ctx = {}) {
 
     const tomi = inspectOption(ctx, "tomi", "tom-tiā");
     const xochi = inspectOption(ctx, "xochi", "xochī-tiā");
-    const caqui = inspectOption(ctx, "caqui", "caqui-tiā", {
+    const caqui = inspectOption(ctx, "caqui", "caquī-tiā", {
         verbClass: "B",
         sourceValence: "specific-projective",
     });
-    const neci = inspectOption(ctx, "nēci", "nēxi-tiā");
+    const neci = inspectOption(ctx, "nēci", "nēxī-tiā");
     const ihza = inspectOption(ctx, "ihza", "ihxi-tiā", { verbClass: "A" });
     const mixihui = inspectOption(ctx, "mīx-i-hui", "mīx-i-huī-tiā");
     const mahui = inspectOption(ctx, "mahui", "mauh-tiā");
@@ -205,8 +205,8 @@ function run(ctx = {}) {
         "lesson25-hua-source-routes": {
             openShapeNotList: ["authorized", "xochī-tiā", "xochī-hua", false, 1],
             shapeRoutes: [
-                ["caqui-tiā", "caqui-hua", "authorized"],
-                ["nēxi-tiā", "nēxi-hua", "authorized"],
+                ["caquī-tiā", "caquī-hua", "authorized"],
+                ["nēxī-tiā", "nēxī-hua", "authorized"],
                 ["ihxi-tiā", "ihxi-hua", "authorized"],
                 ["mīx-i-huī-tiā", "mīx-i-huī-hua", "authorized"],
             ],

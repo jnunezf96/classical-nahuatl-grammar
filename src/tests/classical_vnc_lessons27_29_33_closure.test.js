@@ -265,6 +265,7 @@ function run(ctx = {}) {
                 lateVariant: "connective-t",
                 compoundMatrixStem: "invented",
                 compoundMatrixClass: "A",
+                compoundMatrixInitialISelection: "real",
             }));
             const copied = JSON.parse(JSON.stringify(compound));
             return {
@@ -969,6 +970,7 @@ function run(ctx = {}) {
         derivationType: "applicative",
         applicativeObjectKind: "reflexive",
         applicativeObjectPerson: "",
+        sourceInitialISelection: "real",
     });
     const projectiveHonorificPreview =
         ctx.evaluateClassicalNahuatlVncApplication(projectiveHonorificRequest);

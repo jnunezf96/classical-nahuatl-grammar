@@ -108,7 +108,7 @@ function buildTinocniuh(ctx) {
             causativeObjectKind: "specific-projective",
             requestedVoice: "active",
         },
-        "caqui-tiā"
+        "caquī-tiā"
     );
     const source =
         ctx.getClassicalNahuatlVncContinuationSourceConstituents(
@@ -275,8 +275,8 @@ function run(ctx = {}) {
                 [
                     "tinocniuh",
                     "authorized",
-                    "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tih)0+qu-eh# + in + #ti-0+n-o(cn-īuh)0-0#",
-                    "Nēchcaquitiltihqueh in tinocnūh.",
+                "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tih)0+qu-eh# + in + #ti-0+n-o(cn-īuh)0-0#",
+                "Nēchcaquītiltihqueh in tinocnūh.",
                     "causative-object",
                     true,
                     true,

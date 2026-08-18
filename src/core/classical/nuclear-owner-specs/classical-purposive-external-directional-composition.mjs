@@ -22,7 +22,7 @@ const spec = {
     },
     "claim-p2957::p2957-since-the-action-of-the-embed-and-that-of": {
       "assertionId": "classical-purposive-external-directional-composition:p2957-since-the-action-of-the-embed-and-that-of",
-      "canonicalPath": "contract.externalDirectionalMayIntensifyMovement"
+      "canonicalPath": "cases.externalOn.facts.externalDirectionalMayContinueOrIntensifyMovement"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlPurposiveValidationFrame",

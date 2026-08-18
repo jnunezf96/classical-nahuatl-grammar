@@ -4,7 +4,7 @@ import { CLASSICAL_RESULT_OUTPUT_SCOPE_CONTROL_CONTRACTS } from "../../core/outp
 import { PLACE_GENTILIC_NNC_UI_CONTROL_CONTRACTS } from "../../core/nnc/place_gentilic/ui_contract.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
-} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260816-lesson28-group12-348";
+} from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
@@ -144,7 +144,17 @@ import {
   LESSON28_READER_GUIDANCE_GROUPS,
   isLesson28ReaderGuidanceExact,
   renderLesson28ReaderGuidance,
-} from "../curriculum/lesson28_reader_guidance.mjs?v=20260816-lesson28-group12-011";
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260816-lesson29-groups1-3-012";
+import {
+  LESSON29_READER_GUIDANCE_GROUPS,
+  isLesson29ReaderGuidanceExact,
+  renderLesson29ReaderGuidance,
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260818-lesson29-groups1-12-004";
+import {
+  LESSON30_READER_GUIDANCE_GROUPS,
+  isLesson30ReaderGuidanceExact,
+  renderLesson30ReaderGuidance,
+} from "../curriculum/lesson30_reader_guidance.mjs?v=20260818-lesson30-groups1-3-001";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -451,23 +461,26 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           class="classical-nnc-source-guide__select"
                           data-classical-rule-logic-control="class"
                         >
+                          <option value="" selected>Choose a verbstem class</option>
                           <option value="A">A</option>
-                          <option value="B" selected>B</option>
+                          <option value="B">B</option>
                           <option value="C">C</option>
                           <option value="D">D</option>
                         </select>
                       </label>
                       <p id="classical-vnc-source-initial-i" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
-                      <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field classical-nnc-source-guide__checkbox" hidden>
-                        <input
+                      <label id="classical-vnc-source-initial-i-choice-field" class="classical-nnc-source-guide__field" hidden>
+                        <span class="classical-nnc-source-guide__label">Initial i analysis</span>
+                        <select
                           id="classical-vnc-source-initial-i-choice"
-                          type="checkbox"
-                          value="supportive"
-                          data-classical-checked-value="supportive"
-                          data-classical-unchecked-value="real"
+                          class="classical-nnc-source-guide__select"
                           aria-describedby="classical-vnc-source-initial-i"
-                        />
-                        <span class="classical-nnc-source-guide__label">Supportive i</span>
+                        >
+                          <option value="">Choose an analysis</option>
+                          <option value="real">Real i</option>
+                          <option value="supportive">Supportive i</option>
+                          <option value="contextual">Context-sensitive i</option>
+                        </select>
                       </label>
                       <p id="classical-vnc-source-lexeme-fact" class="classical-vnc-source-guide__fact" hidden aria-live="polite"></p>
                       <label id="classical-vnc-source-lexeme-choice-field" class="classical-nnc-source-guide__field" hidden>
@@ -2803,6 +2816,14 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-purposive-series"
                         <span class="classical-rule-control__label">Plural n variant</span>
                         <input id="classical-rule-logic-purposive-irregular-n" data-classical-rule-logic-control="purposive-irregular-n" type="checkbox" data-classical-checked-value="true" data-classical-unchecked-value="false" />
                       </label>
+                      <label class="classical-rule-control classical-rule-control--checkbox" data-classical-vnc-authority-order="verbstem-purposive-sounded-future">
+                        <span class="classical-rule-control__label">Rare sounded future</span>
+                        <input id="classical-rule-logic-purposive-sounded-future" data-classical-rule-logic-control="purposive-sounded-future" type="checkbox" data-classical-checked-value="true" data-classical-unchecked-value="false" />
+                      </label>
+                      <label class="classical-rule-control classical-rule-control--checkbox" data-classical-vnc-authority-order="verbstem-purposive-early-singular-glottal">
+                        <span class="classical-rule-control__label">Early singular glottal variant</span>
+                        <input id="classical-rule-logic-purposive-early-singular-glottal" data-classical-rule-logic-control="purposive-early-singular-glottal" type="checkbox" data-classical-checked-value="true" data-classical-unchecked-value="false" />
+                      </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-purposive-external">
                         <span class="classical-rule-control__label">External directional</span>
                         <select id="classical-rule-logic-purposive-external" data-classical-rule-logic-control="purposive-external">
@@ -3279,6 +3300,8 @@ ${renderLesson25ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson26ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson27ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson28ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson29ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson30ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -4070,6 +4093,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson27ReaderGuidanceExact = isLesson27ReaderGuidanceExact;
     api.LESSON28_READER_GUIDANCE_GROUPS = LESSON28_READER_GUIDANCE_GROUPS;
     api.isLesson28ReaderGuidanceExact = isLesson28ReaderGuidanceExact;
+    api.LESSON29_READER_GUIDANCE_GROUPS = LESSON29_READER_GUIDANCE_GROUPS;
+    api.isLesson29ReaderGuidanceExact = isLesson29ReaderGuidanceExact;
+    api.LESSON30_READER_GUIDANCE_GROUPS = LESSON30_READER_GUIDANCE_GROUPS;
+    api.isLesson30ReaderGuidanceExact = isLesson30ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;

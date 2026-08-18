@@ -736,7 +736,7 @@ function buildProjection(runtime) {
       compoundEventOrder: "hysteron-proteron",
     }),
     arbitraryTypedMatrix: evaluate(runtime, {
-      compoundMatrixStem: "invented",
+      compoundMatrixStem: "zama",
       compoundMatrixClass: "A",
     }),
     listedElsewhereTypedMatrix: evaluate(runtime, {

@@ -70,12 +70,12 @@ function run() {
         },
         {
             valid: true,
-            count: 4051,
+            count: 7854,
             digest:
-                "02f6a33fd278d5b08c50311822b11979e6052e879e4b458df6a4f3740250333d",
-            expectedCount: 4051,
+                "6f3062268bf5d25ab2553ec1dd47011fe0b526c5220abac9da99375612bec7d1",
+            expectedCount: 7854,
             expectedDigest:
-                "02f6a33fd278d5b08c50311822b11979e6052e879e4b458df6a4f3740250333d",
+                "6f3062268bf5d25ab2553ec1dd47011fe0b526c5220abac9da99375612bec7d1",
         }
     );
 
@@ -86,24 +86,24 @@ function run() {
         "the independent denominator is accounted for lesson by lesson",
         countsBy(lessonRecords, "lesson"),
         {
-            17: 158,
-            18: 159,
-            19: 263,
-            20: 240,
-            21: 81,
-            22: 111,
-            23: 103,
-            24: 299,
-            25: 324,
-            26: 348,
-            27: 170,
-            28: 382,
-            29: 159,
-            30: 359,
-            31: 234,
-            32: 230,
-            33: 168,
-            34: 263,
+            17: 253,
+            18: 254,
+            19: 593,
+            20: 251,
+            21: 161,
+            22: 251,
+            23: 149,
+            24: 520,
+            25: 756,
+            26: 664,
+            27: 335,
+            28: 614,
+            29: 346,
+            30: 1004,
+            31: 470,
+            32: 369,
+            33: 327,
+            34: 537,
         }
     );
 
@@ -130,12 +130,12 @@ function run() {
                 audit.missingOwnerItemIds.length,
         },
         {
-            required: 1587,
-            assigned: 1587,
+            required: 5113,
+            assigned: 5113,
             fullyProved: 0,
-            blocked: 1587,
+            blocked: 5113,
             unowned: 0,
-            unresolved: 1587,
+            unresolved: 5113,
             countOnlyClosures: 0,
             invalid: [],
             missingCanonicalSourceOwner: 0,
@@ -146,10 +146,10 @@ function run() {
         "candidate semantic owners reuse the four production application routes without creating a lesson operation",
         countsBy(built.classifications, "sharedOperationId"),
         {
-            "sentence:supplementation": 205,
-            "vnc:application": 677,
-            "vnc:derivational-operation": 355,
-            "grammar:nominal-construction": 350,
+            "sentence:supplementation": 729,
+            "vnc:application": 1798,
+            "vnc:derivational-operation": 1049,
+            "grammar:nominal-construction": 1537,
         }
     );
 
@@ -377,7 +377,7 @@ function run() {
         },
         {
             dispositions: {
-                "blocked-missing-item-complete-owner-receipt": 1587,
+                "blocked-missing-item-complete-owner-receipt": 5113,
             },
             missingLessons: [],
         }
@@ -387,7 +387,7 @@ function run() {
         (record) => [record.itemId, record]
     ));
     s.eq(
-        "all 1587 blocked owner assignments satisfy the coordinate-bound schema",
+        "all 5113 blocked owner assignments satisfy the coordinate-bound schema",
         built.reconciliationRecords.flatMap((record) => {
             const validation = validateGrammarReconciliationRecord(
                 record,
@@ -483,12 +483,12 @@ function run() {
         },
         {
             complete: true,
-            required: 2464,
-            dispositioned: 2464,
+            required: 2741,
+            dispositioned: 2741,
             byForce: {
-                evidence: 1850,
-                analysis: 271,
-                documentary: 343,
+                evidence: 1895,
+                analysis: 310,
+                documentary: 536,
             },
             invalid: [],
         }
@@ -530,11 +530,11 @@ function run() {
         {
             bySection: {
                 "§25.13": 12,
-                "§25.16": 15,
+                "§25.16": 14,
             },
             byForce: {
                 documentary: 2,
-                analysis: 11,
+                analysis: 10,
                 evidence: 14,
             },
             authorityLeaks: [],
@@ -544,7 +544,7 @@ function run() {
         (record) => record.itemId
     ));
     s.eq(
-        "all 2464 non-authority records satisfy the shared coordinate contract",
+        "all 2741 non-authority records satisfy the shared coordinate contract",
         nonAuthorityRecords.flatMap((record) => {
             const validation =
                 validateNonAuthorityDispositionRecord(

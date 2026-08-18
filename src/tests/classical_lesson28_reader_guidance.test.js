@@ -20,7 +20,10 @@ function run(ctx = {}) {
     const panel = ctx.ClassicalAuthorityPanel();
     const lesson27 = panel.indexOf('data-classical-reader-guidance-lesson="27"');
     const start = panel.indexOf('data-classical-reader-guidance-lesson="28"');
-    const end = panel.indexOf('id="classical-canvas-grammar-facts"');
+    const lesson29 = panel.indexOf('data-classical-reader-guidance-lesson="29"');
+    const end = lesson29 >= 0
+        ? lesson29
+        : panel.indexOf('id="classical-canvas-grammar-facts"');
     const visible = panel.slice(start, end);
 
     s.eq("accepted Lesson 28 atoms point to twelve collapsed reading ideas", {
@@ -42,7 +45,7 @@ function run(ctx = {}) {
         afterLesson27: true,
         beforeFacts: true,
     });
-    const cacheKey = "20260816-lesson28-group12-348";
+    const cacheKey = "20260818-lesson29-groups10-12-357";
     const readSource = (relativePath) => fs.readFileSync(
         path.join(ROOT, relativePath),
         "utf8",
@@ -68,7 +71,7 @@ function run(ctx = {}) {
         ].every((moduleName) => readSource("src/runtime/create_runtime.mjs")
             .includes(`${moduleName}?v=${cacheKey}`)),
         semanticCatalog: readSource("src/runtime/create_runtime.mjs")
-            .includes("nuclear_semantic_owner_catalog.mjs?v=20260816-lesson28-group12-011"),
+            .includes(`nuclear_semantic_owner_catalog.mjs?v=${cacheKey}`),
         semanticLeaves: [
             "classical-ca-compound-matrix-formation.mjs",
             "classical-compound-valence-combination-system.mjs",
@@ -90,7 +93,6 @@ function run(ctx = {}) {
             "classical-observational-itz-compound-embed.mjs",
             "classical-itz-compound-homophone-analysis.mjs",
             "classical-compound-nonactive-scope-system.mjs",
-            "vnc_compound_validation_semantic_operations.mjs",
             "classical-compound-accompanying-possession-supplement.mjs",
             "supplementation_validation_semantic_operations.mjs",
             "classical-reflexive-matrix-compound-inventory.mjs",
@@ -102,11 +104,13 @@ function run(ctx = {}) {
             "classical-qui-imperfect-future-embed-compound.mjs",
             "classical-compound-recursive-embedding.mjs",
         ].every((moduleName) => readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs")
-            .includes(`${moduleName}?v=20260816-lesson28-group12-011`)),
+            .includes(`${moduleName}?v=20260816-lesson29-groups1-3-012`))
+            && readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs")
+                .includes(`vnc_compound_validation_semantic_operations.mjs?v=${cacheKey}`),
         shellContract: readSource("src/ui/shell/classical_shell.mjs")
             .includes(`vnc_late_operation_ui_contract.mjs?v=${cacheKey}`),
         leaf: readSource("src/ui/shell/classical_shell.mjs")
-            .includes("lesson28_reader_guidance.mjs?v=20260816-lesson28-group12-011"),
+            .includes("lesson28_reader_guidance.mjs?v=20260816-lesson29-groups1-3-012"),
     }, {
         index: true,
         main: true,

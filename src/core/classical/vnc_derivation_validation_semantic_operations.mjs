@@ -474,7 +474,7 @@ function buildProjection(runtime) {
     "tomi",
     "tom-tiā",
   );
-  const doubleSpecific = derive(runtime, "caqui", "caqui-tiā", {
+  const doubleSpecific = derive(runtime, "caqui", "caquī-tiā", {
     sourceValence: "specific-projective",
     sourceSubject: "2sg",
     objectPerson: "3sg",

@@ -138,8 +138,8 @@ function run(ctx = {}) {
             },
             {
                 sourceLexemeId: SATIATED_LEXEME,
-                formula: "#ni-0+c-0(pach-i-hui-tia)0+0-0#",
-                written: "nicpachihuitia",
+                formula: "#ni-0+c-0(pach-i-huī-tia)0+0-0#",
+                written: "nicpachihuītia",
             },
         ].map(specification => {
             const oppositeLexeme = specification.sourceLexemeId
@@ -199,8 +199,8 @@ function run(ctx = {}) {
                 state: SATIATED_LEXEME,
                 request: SATIATED_LEXEME,
                 scalarStatus: "authorized",
-                formula: "#ni-0+c-0(pach-i-hui-tia)0+0-0#",
-                written: "nicpachihuitia",
+                formula: "#ni-0+c-0(pach-i-huī-tia)0+0-0#",
+                written: "nicpachihuītia",
                 paradigmStatus: "authorized",
                 paradigmLexeme: SATIATED_LEXEME,
                 legacyReadingKeys: [],

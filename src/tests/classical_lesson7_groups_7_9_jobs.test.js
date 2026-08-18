@@ -115,6 +115,82 @@ function run(ctx = {}) {
         observed: writingRecords.filter((record) => receiptByAtom.has(record.atomId)).length,
         missing: writingRecords.filter((record) => !receiptByAtom.has(record.atomId)).map((record) => record.atomId),
     }, { observed: 29, missing: [] });
+    s.eq(
+        "a Source shape with no determining class rule stays unresolved",
+        {
+            classId: receipts.noGeneralPrediction.classId,
+            perfective: receipts.noGeneralPrediction.perfective,
+            ruleId: receipts.noGeneralPrediction.ruleId,
+        },
+        {
+            classId: "",
+            perfective: "",
+            ruleId: "cn-l7-76-guidelines-not-majority-prediction",
+        },
+    );
+    s.eq(
+        "final tla, o-ā, and i-ā determine class by Source shape under either valence",
+        [
+            ["xep-tla", "A"],
+            ["xep-o-ā", "C"],
+            ["xep-i-ā", "C"],
+        ].flatMap(([stem, expectedClassId]) => (
+            ["intransitive", "specific-projective"].map((valence) => {
+                const profile = ctx.inferClassicalNahuatlLesson7ClassProfile(
+                    stem,
+                    { valence },
+                );
+                return [
+                    stem,
+                    valence,
+                    profile.classId,
+                    profile.classResolutionBasis,
+                    expectedClassId,
+                ];
+            })
+        )),
+        [
+            ["xep-tla", "intransitive", "A", "canvas-source-shape-or-lexical-analysis", "A"],
+            ["xep-tla", "specific-projective", "A", "canvas-source-shape-or-lexical-analysis", "A"],
+            ["xep-o-ā", "intransitive", "C", "canvas-source-shape-or-lexical-analysis", "C"],
+            ["xep-o-ā", "specific-projective", "C", "canvas-source-shape-or-lexical-analysis", "C"],
+            ["xep-i-ā", "intransitive", "C", "canvas-source-shape-or-lexical-analysis", "C"],
+            ["xep-i-ā", "specific-projective", "C", "canvas-source-shape-or-lexical-analysis", "C"],
+        ],
+    );
+    s.eq(
+        "an unlisted Source with the same unresolved shape requires a real class choice",
+        (() => {
+            const application = ctx.createClassicalNahuatlVncApplication(ctx);
+            const missing = application.evaluate({
+                sourceStem: "xemi",
+                sourceValence: "intransitive",
+                subject: "1sg",
+                requestedDerivation: "direct",
+            });
+            const selected = application.evaluate({
+                sourceStem: "xemi",
+                sourceValence: "intransitive",
+                verbClass: "A",
+                subject: "1sg",
+                requestedDerivation: "direct",
+            });
+            return {
+                missing: [missing.authorizationStatus, missing.blockReason],
+                selected: [
+                    selected.authorizationStatus,
+                    selected.normalizedRequest?.verbClass,
+                ],
+            };
+        })(),
+        {
+            missing: [
+                "blocked",
+                "classical-source-verbstem-class-selection-required",
+            ],
+            selected: ["authorized", "A"],
+        },
+    );
     for (const record of writingRecords) {
         const exact = receiptByAtom.get(record.atomId);
         s.ok(`${record.atomId} performs its accepted class job`, exact !== null && exact !== undefined);

@@ -346,6 +346,8 @@ function run(ctx) {
         ctx.buildClassicalNahuatlVowelElisionFrame({
             sourceMorpheme: "icxi",
             targetMorpheme: "cxi",
+            elisionSide: "initial",
+            stressGroupCombination: true,
         }),
         ctx.buildClassicalNahuatlLongVowelGlottalFrame({
             morpheme: "huē",

@@ -2665,9 +2665,6 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           classId = guidelineAuthorityRecord.defaultClassId;
           guidelineId = guidelineAuthorityRecord.relationRuleId;
           classOptions.push(...guidelineClassOptions.filter(classOption => classOption !== classId));
-        } else {
-          classId = "A";
-          guidelineId = "cn-l7-76-guidelines-not-majority-prediction";
         }
       } else if (guidelineAuthorityRecord?.relationRuleId) {
         guidelineId = guidelineAuthorityRecord.relationRuleId;
@@ -2679,18 +2676,26 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       } else if (classId === "A") {
         subclass = finalInfo.long && /[īō]/iu.test(finalInfo.finalVowel) ? "A-2" : "A-1";
       }
-      const classShape = CLASSICAL_NAHUATL_LESSON7_CLASS_SHAPES[classId] || CLASSICAL_NAHUATL_LESSON7_CLASS_SHAPES.A;
+      const classShape = classId
+        ? CLASSICAL_NAHUATL_LESSON7_CLASS_SHAPES[classId] || null
+        : null;
       return {
         kind: "classical-nahuatl-verbstem-stem-class-profile",
         stem: normalizedStem,
         classId,
         subclass,
-        classOptions: Array.from(new Set([classId, ...classOptions])),
+        classOptions: Array.from(new Set([classId, ...classOptions].filter(Boolean))),
         guidelineId,
         finalVowel: finalInfo.finalVowel,
         finalVowelLong: finalInfo.long,
         classBasis: "perfective-stem-shape",
         shapeSummary: cloneClassicalNahuatlLesson7Record(classShape),
+        classSelectionRequired: !classId,
+        classResolutionBasis: explicit
+          ? "typed-source-class-selection"
+          : classId
+            ? "canvas-source-shape-or-lexical-analysis"
+            : "unresolved-no-general-class-prediction",
         stemRelationship,
         stemRelationshipKind: stemRelationship?.relationshipKind || "independent-stem",
         variantStemOf: stemRelationship?.variantStemOf || "",
@@ -3059,6 +3064,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
           imperfectiveStem: normalizedStem,
           perfectiveStem: shortenClassicalNahuatlLesson7FinalLongVowel(normalizedStem) + "h",
           changeRule: "class-d-final-long-a-adds-h-and-shortens"
+        };
+      }
+      if (!profile.classId) {
+        return {
+          imperfectiveStem: normalizedStem,
+          perfectiveStem: "",
+          changeRule: "verbstem-class-selection-required"
         };
       }
       return {
@@ -3584,6 +3596,11 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         classGuidelineContradictionReason: classProfile.classGuidelineContradictionReason,
         classGuidelinePerfectiveStem: classGuidelineAuthorityRecord?.perfectiveStemsByClass?.[classProfile.classId] || "",
         authorizationStatus: classProfile.classId && !classProfile.classGuidelineContradictionBlocked ? "authorized" : "blocked",
+        blockReason: classProfile.classId
+          ? classProfile.classGuidelineContradictionBlocked
+            ? classProfile.classGuidelineContradictionReason
+            : ""
+          : "classical-source-verbstem-class-selection-required",
         grammarGenerationAllowed: false,
         surfaceGenerationAllowed: false,
       };

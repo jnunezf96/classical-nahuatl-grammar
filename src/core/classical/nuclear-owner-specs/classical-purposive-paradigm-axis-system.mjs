@@ -17,11 +17,11 @@ const spec = {
   "coordinates": {
     "claim-p2908::p2908-because-of-the-presence-of-the-directional-prefix-inside": {
       "assertionId": "classical-purposive-paradigm-axis-system:p2908-because-of-the-presence-of-the-directional-prefix-inside",
-      "canonicalPath": "contract.movements.0"
+      "canonicalPath": "contract.licensedSeries.0"
     },
     "claim-p2909::p2909-the-indicative-mood-has-only-two-tenses-the-outbound": {
       "assertionId": "classical-purposive-paradigm-axis-system:p2909-the-indicative-mood-has-only-two-tenses-the-outbound",
-      "canonicalPath": "contract.movements.1"
+      "canonicalPath": "contract.licensedSeries.3"
     },
     "claim-p2910::p2910-both-sets-occur-in-vncs-in-the-indicative-and": {
       "assertionId": "classical-purposive-paradigm-axis-system:p2910-both-sets-occur-in-vncs-in-the-indicative-and",

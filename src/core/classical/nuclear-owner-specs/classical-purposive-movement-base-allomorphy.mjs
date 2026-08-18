@@ -20,11 +20,11 @@ const spec = {
     },
     "claim-p2904::p2904-the-meaning-of-the-base-stem-is-to-move": {
       "assertionId": "classical-purposive-movement-base-allomorphy:p2904-the-meaning-of-the-base-stem-is-to-move",
-      "canonicalPath": "contract.matrixBaseStems.perfective"
+      "canonicalPath": "contract.movementBaseMeaning"
     },
     "claim-p2905::p2905-the-uh-and-hui-are-the-same-stems-that": {
       "assertionId": "classical-purposive-movement-base-allomorphy:p2905-the-uh-and-hui-are-the-same-stems-that",
-      "canonicalPath": "contract.movementBaseMeaning"
+      "canonicalPath": "cases.singularSeries.outbound-nonpast-indicative.facts.imperfectiveNumberPartner"
     },
     "claim-p2906::p2906-the-imperfective-base-stem-is-i-which-has-a": {
       "assertionId": "classical-purposive-movement-base-allomorphy:p2906-the-imperfective-base-stem-is-i-which-has-a",

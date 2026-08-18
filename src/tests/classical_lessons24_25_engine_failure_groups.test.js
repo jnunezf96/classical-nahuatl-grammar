@@ -58,9 +58,9 @@ const STEM_RELATION_CASES = Object.freeze([
     ["l24-043", "xī-ni", "B", "intransitive", "xī-ni-ā", "*(xi-ī-ni) > (xī-ni) > tla-(xī-ni-ā)"],
     ["l24-044", "cē-hui", "B", "intransitive", "cē-hui-ā", "*(ce-ē-hui) > (cē-hui) > tla-(cē-hui-ā)"],
     ["l25-098", "itqui", "A", "projective-nonhuman", "itqui-tiā", "tla-(itqui) > (itqui-hua) > tē+tla-(itqui-tiā)"],
-    ["l25-099", "caqui", "B", "projective-nonhuman", "caqui-tiā", "tla-(caqui) > *(caquī-hua) > tē+tla-(caquī-tiā)"],
+    ["l25-099", "caqui", "B", "projective-nonhuman", "caquī-tiā", "tla-(caqui) > *(caquī-hua) > tē+tla-(caquī-tiā)"],
     ["l25-105", "itt-a", "A", "projective-nonhuman", "itt-ī-tiā", "tla-(itt-a) > *(itt-ī-hua) > tē+tla-(itt-ī-tiā)"],
-    ["l25-106", "mati", "B", "projective-nonhuman", "machi-tiā", "tla-(mati) > *(machi-hua) > tē+tla-(machi-tiā)"],
+    ["l25-106", "mati", "B", "projective-nonhuman", "machī-tiā", "tla-(mati) > *(machī-hua) > tē+tla-(machī-tiā)"],
     ["l25-117", "hue-tz-ca", "A", "projective-nonhuman", "hue-tz-quī-tiā", "tla-(hue-tz-ca) > tē+tla-(hue-tz-quī-tiā)"],
     ["l25-120", "quīza", "B", "intransitive", "quix-tiā", "(quīza) > (quīx-o-hua) > tē-(quix-tiā)"],
     ["l25-122", "cual-ā-ni", "B", "intransitive", "cual-ā-n-tiā", "(cual-ā-ni) > (cual-ā-n-ō) > tē-(cual-ā-n-tiā)"],
@@ -129,7 +129,7 @@ function buildRecursiveCaquiActiveSource(ctx) {
     };
     const preview = application.evaluate(request);
     const derivationOptionId = preview.controlFrame?.derivationOptionInventory?.options
-        ?.find((option) => option.targetStem === "caqui-tiā")?.optionId || "";
+        ?.find((option) => option.targetStem === "caquī-tiā")?.optionId || "";
     return application.evaluate({ ...request, derivationOptionId })
         .resultFrame || null;
 }
@@ -202,7 +202,7 @@ function buildRecursiveCaquiPassiveSource(ctx) {
     };
     const activePreview = application.evaluate(request);
     const derivationOptionId = activePreview.controlFrame?.derivationOptionInventory?.options
-        ?.find((option) => option.targetStem === "caqui-tiā")?.optionId || "";
+        ?.find((option) => option.targetStem === "caquī-tiā")?.optionId || "";
     const selectedRequest = { ...request, derivationOptionId };
     const passivePreview = application.evaluate({
         ...selectedRequest,
@@ -243,7 +243,7 @@ function continueRecursiveCaquiSource(ctx, sourceResultFrame, overrides = {}) {
     };
     const preview = application.continueFromResult(sourceResultFrame, request);
     const derivationOptionId = preview.controlFrame?.derivationOptionInventory?.options
-        ?.find((option) => option.targetStem === "caqui-ti-l-tiā")?.optionId || "";
+        ?.find((option) => option.targetStem === "caquī-ti-l-tiā")?.optionId || "";
     return application.continueFromResult(sourceResultFrame, {
         ...request,
         derivationOptionId,
@@ -380,7 +380,7 @@ function run(ctx = {}) {
             1,
         )),
     }, {
-        genericActiveSource: "nictēcaquitia",
+        genericActiveSource: "nictēcaquītia",
         activeCanonical: true,
         activeOperationStatus: "authorized",
         activeOperationReason: "",
@@ -388,15 +388,15 @@ function run(ctx = {}) {
             ["active", "identified-source", "caquī-tiā", true, false, false, false],
             ["passive", "canonically-licensed-reverse-source", "caquī-ti-lō", true, false, false, false],
         ],
-        genericPassiveSource: "nicaquitilo",
+        genericPassiveSource: "nicaquitīlo",
         passiveCanonical: true,
         passiveAnalyses: [
             ["active", "canonically-licensed-reverse-source", "caquī-tiā", true, false, false, false],
             ["passive", "identified-source", "caquī-ti-lō", true, false, false, false],
         ],
-        activeTarget: "caqui-ti-l-tiā",
+        activeTarget: "caquī-ti-l-tiā",
         activeOperationCanonical: true,
-        passiveTarget: "caqui-ti-l-tiā",
+        passiveTarget: "caquī-ti-l-tiā",
         passiveOperationCanonical: true,
         retiredBuilder: "undefined",
         retiredValidator: "undefined",
@@ -439,7 +439,7 @@ function run(ctx = {}) {
         alternativeBuilderSurvives: typeof ctx.buildClassicalNahuatlLesson2513AlternativeSourceProjectionFrame,
     }, {
         hostileProjectionAccepted: false,
-        injectedTarget: "caqui-ti-l-tiā",
+        injectedTarget: "caquī-ti-l-tiā",
         injectedOperationCanonical: true,
         copiedHostileOperationAccepted: false,
         copiedReverseOperationAccepted: false,

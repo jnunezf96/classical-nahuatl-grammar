@@ -24,7 +24,7 @@ function buildFirstCaquiCausative(ctx) {
     const optionId =
         preview.controlFrame?.derivationOptionInventory
             ?.options?.find(option =>
-                option.targetStem === "caqui-tiā"
+                option.targetStem === "caquī-tiā"
             )?.optionId || "";
     return ctx.evaluateClassicalNahuatlVncApplication({
         ...request,
@@ -139,11 +139,14 @@ function run(ctx = {}) {
         "Add another derivation binds the exact Result, exposes inherited Source facts read-only, and runs the required second causative",
         (() => {
             const first = buildFirstCaquiCausative(ctx);
-            configureSecondCausativeControls(ctx);
             const used =
                 ctx.useClassicalWholeCanvasResultAsNextSource(
                     buildAuthorizedSurface(first)
                 );
+            configureSecondCausativeControls(ctx);
+            ctx.renderClassicalRuleLogicSurfaceBlock({
+                stem: "caquī-tiā",
+            });
             const state = ctx.getClassicalRuleLogicSurfaceState({
                 basalUnit: "vnc",
                 mood: "indicative",
@@ -262,7 +265,7 @@ function run(ctx = {}) {
         {
             used: true,
             controls: {
-                stem: "caqui-tiā",
+                stem: "caquī-tiā",
                 verbClass: ["C", true],
                 valence: ["multiple-object", true],
                 sourceSubject: ["1sg", true],
@@ -273,10 +276,10 @@ function run(ctx = {}) {
             state: {
                 status: "authorized",
                 reason: "",
-                written: "nēchcaquitiltia",
+                written: "nēchcaquītiltia",
                 formula:
-                    "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
-                sourceStem: "caqui-tiā",
+                    "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
+                sourceStem: "caquī-tiā",
                 sourceValence: "multiple-object",
                 lateOperation: "none",
                 requestedDerivation: "causative",
@@ -330,10 +333,10 @@ function run(ctx = {}) {
         {
             status: "authorized",
             rowCount: 1,
-            written: "Nēchcaquitiltia.",
-            word: "nēchcaquitiltia",
+            written: "Nēchcaquītiltia.",
+            word: "nēchcaquītiltia",
             formula:
-                "#0-0+n-ēch+⎕-⎕+⎕-0(caqui-ti-l-tia)0+0-0#",
+                "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
             scalarEquivalent: true,
         }
     );
@@ -356,7 +359,7 @@ function run(ctx = {}) {
             const stem = ctx.document.getElementById(
                 "classical-source-whole"
             );
-            stem.value = "caqui-tiā-edited";
+            stem.value = "caquī-tiā-edited";
             stem.dispatchEvent(new ctx.Event("input", {
                 bubbles: true,
             }));
@@ -381,7 +384,7 @@ function run(ctx = {}) {
                 );
             const restored = ctx.applyEntradaUrlStateSnapshot(
                 ctx.normalizeEntradaUrlStateSnapshot({
-                    input: "(caqui-tiā)",
+                    input: "(caquī-tiā)",
                     derivationType: "causative",
                 }),
                 { triggerGenerate: false }

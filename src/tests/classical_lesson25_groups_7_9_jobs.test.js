@@ -96,10 +96,10 @@ function run(ctx = {}) {
         sourceSubject: "2sg",
         objectPerson: "3sg",
     });
-    const first = derive(ctx, caquiSource, "caqui-tiā", {
+    const first = derive(ctx, caquiSource, "caquī-tiā", {
         targetSubject: "1sg",
     });
-    const second = derive(ctx, first.result, "caqui-ti-l-tiā", {
+    const second = derive(ctx, first.result, "caquī-ti-l-tiā", {
         targetSubject: "3sg",
     });
     const reflexiveSource = buildSource(ctx, "petlāhua", {
@@ -279,7 +279,7 @@ function run(ctx = {}) {
             cue: true,
         },
         "lesson25-triple-object-causatives": {
-            recursiveSource: [true, "authorized", "caqui-ti-l-tiā", "authorized"],
+            recursiveSource: [true, "authorized", "caquī-ti-l-tiā", "authorized"],
             hierarchy: [
                 ["specific-projective", "3sg", "directive", 1],
                 ["specific-projective", "2sg", "causative", 2],
