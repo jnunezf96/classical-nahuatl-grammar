@@ -99,6 +99,9 @@ function run(ctx = {}) {
     s.ok(
         "Source shell keeps the picker, two genuine source choices, and read-only morph analysis",
         shell.includes('id="classical-vnc-source-stem"')
+            && shell.includes('<span class="classical-nnc-source-guide__label">Built-in verbstems</span>')
+            && shell.includes('Type a verbstem or choose a built-in verbstem')
+            && !shell.includes('Canonical verbstem')
             && shell.includes('data-classical-source-parts-kind="whole-stem"')
             && shell.includes('data-classical-source-parts-kind="embed-matrix"')
             && shell.includes('id="classical-source-internal-morphs"')

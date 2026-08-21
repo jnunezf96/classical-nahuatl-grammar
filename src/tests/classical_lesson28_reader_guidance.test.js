@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const { hasVersionedImport } = require("./helpers/browser_cache_chain");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 
@@ -45,33 +46,33 @@ function run(ctx = {}) {
         afterLesson27: true,
         beforeFacts: true,
     });
-    const cacheKey = "20260818-lesson29-groups10-12-357";
     const readSource = (relativePath) => fs.readFileSync(
         path.join(ROOT, relativePath),
         "utf8",
     );
     s.eq("Lesson 28 uses the complete browser cache chain", {
-        index: readSource("index.html").includes(`src/browser/main.mjs?v=${cacheKey}`),
-        main: readSource("src/browser/main.mjs").includes(`bootstrap.mjs?v=${cacheKey}`),
+        index: hasVersionedImport(readSource("index.html"), "src/browser/main.mjs"),
+        main: hasVersionedImport(readSource("src/browser/main.mjs"), "bootstrap.mjs"),
         bootstrap: [
             "runtime_bridge.mjs",
             "create_runtime.mjs",
             "composer.mjs",
             "rendering.mjs",
             "classical_shell.mjs",
-        ].every((moduleName) => readSource("src/bootstrap/bootstrap.mjs")
-            .includes(`${moduleName}?v=${cacheKey}`)),
-        bridge: readSource("src/bootstrap/runtime_bridge.mjs")
-            .includes(`create_runtime.mjs?v=${cacheKey}`),
+        ].every((moduleName) => hasVersionedImport(
+            readSource("src/bootstrap/bootstrap.mjs"), moduleName)),
+        bridge: hasVersionedImport(readSource("src/bootstrap/runtime_bridge.mjs"),
+            "create_runtime.mjs"),
         runtime: [
             "vnc_lessons27_29_33_closure.mjs",
             "vnc_late_operation_ui_contract.mjs",
             "rendering.mjs",
             "classical_shell.mjs",
-        ].every((moduleName) => readSource("src/runtime/create_runtime.mjs")
-            .includes(`${moduleName}?v=${cacheKey}`)),
-        semanticCatalog: readSource("src/runtime/create_runtime.mjs")
-            .includes(`nuclear_semantic_owner_catalog.mjs?v=${cacheKey}`),
+        ].every((moduleName) => hasVersionedImport(
+            readSource("src/runtime/create_runtime.mjs"), moduleName)),
+        semanticCatalog: hasVersionedImport(
+            readSource("src/runtime/create_runtime.mjs"),
+            "nuclear_semantic_owner_catalog.mjs"),
         semanticLeaves: [
             "classical-ca-compound-matrix-formation.mjs",
             "classical-compound-valence-combination-system.mjs",
@@ -103,14 +104,17 @@ function run(ctx = {}) {
             "classical-nequi-future-embed-compound.mjs",
             "classical-qui-imperfect-future-embed-compound.mjs",
             "classical-compound-recursive-embedding.mjs",
-        ].every((moduleName) => readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs")
-            .includes(`${moduleName}?v=20260816-lesson29-groups1-3-012`))
-            && readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs")
-                .includes(`vnc_compound_validation_semantic_operations.mjs?v=${cacheKey}`),
-        shellContract: readSource("src/ui/shell/classical_shell.mjs")
-            .includes(`vnc_late_operation_ui_contract.mjs?v=${cacheKey}`),
-        leaf: readSource("src/ui/shell/classical_shell.mjs")
-            .includes("lesson28_reader_guidance.mjs?v=20260816-lesson29-groups1-3-012"),
+        ].every((moduleName) => hasVersionedImport(
+            readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs"),
+            moduleName))
+            && hasVersionedImport(
+                readSource("src/core/classical/nuclear_semantic_owner_catalog.mjs"),
+                "vnc_compound_validation_semantic_operations.mjs"),
+        shellContract: hasVersionedImport(
+            readSource("src/ui/shell/classical_shell.mjs"),
+            "vnc_late_operation_ui_contract.mjs"),
+        leaf: hasVersionedImport(readSource("src/ui/shell/classical_shell.mjs"),
+            "lesson28_reader_guidance.mjs"),
     }, {
         index: true,
         main: true,

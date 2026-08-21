@@ -1,3 +1,7 @@
+import {
+  buildClassicalNahuatlParticipantFrame,
+} from "../../core/classical/participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
+
 // Canonical ordinary-NNC application service.
 //
 // This service owns the typed Source -> Grammar operation -> canonical Result
@@ -586,6 +590,7 @@ const ORDINARY_NNC_SOURCE_INPUT_KEYS = Object.freeze(
 const ORDINARY_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "state",
   "subject",
+  "humanness",
   "metaphoricalUse",
   "possessor",
   "stemFormation",
@@ -630,6 +635,7 @@ const NNC_OPERATION_SELECTION_INPUT_KEYS = Object.freeze(new Set([
   "state",
   "subject",
   "animacy",
+  "humanness",
   "metaphoricalUse",
   "possessor",
   "stemFormation",
@@ -878,6 +884,7 @@ const PRONOMINAL_NNC_SOURCE_INPUT_KEYS = Object.freeze(
 );
 const PRONOMINAL_NNC_OPERATION_SELECTION_KEYS = Object.freeze(new Set([
   "subject",
+  "humanness",
   "clausePosition",
   "adjunctorInMode",
   "numberForm",
@@ -1059,6 +1066,7 @@ export function createClassicalNahuatlNncApplicationModule(
   const issuedPronominalResultReceipts = new WeakMap();
   const issuedPronominalParadigmPlanReceipts = new WeakMap();
   const issuedPronominalCoordinateReceipts = new WeakMap();
+  const continuationSourceProjections = new WeakMap();
 
   function normalizeNounClass(value = "") {
     return typeof targetObject.normalizeOrdinaryNncNounClass === "function"
@@ -1456,6 +1464,7 @@ export function createClassicalNahuatlNncApplicationModule(
       sourceSignature: frame?.sourceSignature || "",
       state: frame?.state || "",
       subject: frame?.subject || "",
+      referentialHumanness: frame?.referentialHumanness || "",
       referentialAnimacy: frame?.referentialAnimacy || "",
       metaphoricalUse: frame?.metaphoricalUse === true,
       possessor: frame?.possessor || "",
@@ -1643,6 +1652,27 @@ export function createClassicalNahuatlNncApplicationModule(
         .map(getNncSubjectNumber),
     )));
     const selectedSubjectNumber = getNncSubjectNumber(selectedSubject);
+    const requestedHumanness = normalizeChoice(
+      ownDataValue(selections, "humanness", ""),
+    );
+    const humannessValues = Object.freeze(
+      selectedAnimacy === "nonanimate"
+        ? ["nonhuman"]
+        : ["1", "2"].includes(selectedSubjectPerson)
+          ? ["human"]
+          : ["human", "nonhuman"],
+    );
+    const selectedHumanness = humannessValues.includes(requestedHumanness)
+      ? requestedHumanness
+      : humannessValues.length === 1
+        ? humannessValues[0]
+        : "unspecified";
+    const subjectParticipantFrame = buildClassicalNahuatlParticipantFrame({
+      role: "subject",
+      agreement: selectedSubject,
+      animacy: selectedAnimacy,
+      humanness: selectedHumanness,
+    });
     const metaphoricalUseAvailable = ordinary
       && (
         sourceFrame.naturalPossessionPolicy === "never-possessive"
@@ -1781,6 +1811,9 @@ export function createClassicalNahuatlNncApplicationModule(
         selectedSubjectPerson,
         subjectNumberValues,
         selectedSubjectNumber,
+        humannessValues,
+        selectedHumanness,
+        subjectParticipantFrame,
         animacyValues: availableAnimacyValues,
         selectedAnimacy,
         metaphoricalUseAvailable,
@@ -1943,6 +1976,9 @@ export function createClassicalNahuatlNncApplicationModule(
       selectedSubjectPerson,
       subjectNumberValues,
       selectedSubjectNumber,
+      humannessValues,
+      selectedHumanness,
+      subjectParticipantFrame,
       animacyValues: availableAnimacyValues,
       selectedAnimacy,
       metaphoricalUseAvailable: false,
@@ -2042,6 +2078,15 @@ export function createClassicalNahuatlNncApplicationModule(
     const referentialAnimacy = subject === "3common"
       ? "nonanimate"
       : "animate";
+    const requestedHumanness = normalizeChoice(
+      ownDataValue(selections, "humanness", ""),
+    );
+    const subjectParticipantFrame = buildClassicalNahuatlParticipantFrame({
+      role: "subject",
+      agreement: subject,
+      animacy: referentialAnimacy,
+      humanness: requestedHumanness || "unspecified",
+    });
     const metaphoricalUse =
       ownDataValue(selections, "metaphoricalUse", false) === true;
     const animacyMismatch = sourceFrame.referentialAnimacy !== "any"
@@ -2195,6 +2240,8 @@ export function createClassicalNahuatlNncApplicationModule(
       state,
       subject,
       referentialAnimacy,
+      referentialHumanness: subjectParticipantFrame.humanness,
+      subjectParticipantFrame,
       metaphoricalUse,
       possessor,
       stemFormation,
@@ -2486,6 +2533,7 @@ export function createClassicalNahuatlNncApplicationModule(
             ? operationFrame.subclass.replace(/^tli-/u, "")
             : "",
           animacy: operationFrame.referentialAnimacy,
+          humanness: operationFrame.referentialHumanness,
           metaphoricalOverride: operationFrame.metaphoricalUse === true,
           naturalPossessionPolicy: effectiveNaturalPossessionPolicy,
           stateAvailability: effectiveStateAvailability,
@@ -2500,6 +2548,7 @@ export function createClassicalNahuatlNncApplicationModule(
         classGovernedFrame,
         {
           animacy: operationFrame.referentialAnimacy,
+          humanness: operationFrame.referentialHumanness,
           metaphoricalOverride: operationFrame.metaphoricalUse === true,
           naturalPossessionPolicy: effectiveNaturalPossessionPolicy,
           stateAvailability: effectiveStateAvailability,
@@ -3447,6 +3496,12 @@ export function createClassicalNahuatlNncApplicationModule(
     const subject = normalizeSubject(
       ownDataValue(selections, "subject", ""),
     );
+    const pronominalSubjectParticipantFrame = buildClassicalNahuatlParticipantFrame({
+      role: "subject",
+      agreement: subject,
+      animacy: getNncSubjectAnimacy(subject),
+      humanness: ownDataValue(selections, "humanness", "") || "unspecified",
+    });
     const clausePosition = normalizeChoice(
       ownDataValue(selections, "clausePosition", "initial"),
     );
@@ -3590,6 +3645,8 @@ export function createClassicalNahuatlNncApplicationModule(
       sourceFrame,
       sourceSignature,
       subject,
+      referentialHumanness: pronominalSubjectParticipantFrame.humanness,
+      subjectParticipantFrame: pronominalSubjectParticipantFrame,
       numberForm: selectedCoordinate?.numberForm || "",
       matrixForm: selectedCoordinate?.matrixForm || "",
       predicatePluralization:
@@ -3776,6 +3833,7 @@ export function createClassicalNahuatlNncApplicationModule(
     const coordinateOptions = {
       ...coreTypeOptions,
       subject: operationFrame.subject,
+      humanness: operationFrame.referentialHumanness,
       enteredStem: sourceFrame.stem,
       requireEnteredStem: true,
       pluralConnector: operationFrame.numberForm,
@@ -3948,6 +4006,92 @@ export function createClassicalNahuatlNncApplicationModule(
       && frame.surfaceStringAuthority === false
       && Object.isFrozen(frame)
     );
+  }
+
+  function getClassicalNahuatlNncContinuationSourceConstituents(
+    resultFrame = null,
+  ) {
+    const ordinary = isClassicalNahuatlOrdinaryNncResult(resultFrame);
+    const pronominal = isClassicalNahuatlPronominalNncResult(resultFrame);
+    if (!ordinary && !pronominal) return null;
+    const existing = continuationSourceProjections.get(resultFrame);
+    if (existing) return existing;
+    const sourceFrame = resultFrame.sourceFrame;
+    const operationFrame = resultFrame.operationFrame;
+    const typedSlotFrame = resultFrame.typedSlotFrame;
+    const predicateStem = normalizeStem(
+      typedSlotFrame?.slots?.predicate?.stem || "",
+    );
+    if (
+      !predicateStem
+      || typedSlotFrame?.authorizationStatus !== "authorized"
+    ) {
+      return null;
+    }
+    const sourceConstituents = sourceFrame.sourceConstituents?.length
+      ? sourceFrame.sourceConstituents
+      : [sourceFrame.embedStem, sourceFrame.matrixStem].some(Boolean)
+        ? Object.freeze([
+          sourceFrame.embedStem || "",
+          sourceFrame.matrixStem || "",
+        ].filter(Boolean))
+        : Object.freeze([sourceFrame.stem]);
+    const projection = deepFreeze({
+      kind:
+        "classical-nahuatl-nnc-result-source-constituent-projection",
+      version: 1,
+      clauseKind: "nominal-nuclear-clause",
+      nncType: ordinary ? "ordinary" : "pronominal",
+      canonicalResultFrame: resultFrame,
+      canonicalSourceFrame: sourceFrame,
+      canonicalOperationFrame: operationFrame,
+      typedSlotFrame,
+      sourceIdentityStem: sourceFrame.stem,
+      predicateStem,
+      sourceNounClass:
+        sourceFrame.nounClass || typedSlotFrame.nounClass || "",
+      sourceUseShape: ordinary ? sourceFrame.useShape || "" : "",
+      sourceSubclass: ordinary ? sourceFrame.subclass || "" : "",
+      sourceReferentialAnimacy:
+        ordinary ? sourceFrame.referentialAnimacy || "" : "",
+      naturalPossessionPolicy:
+        ordinary ? sourceFrame.naturalPossessionPolicy || "" : "",
+      naturalPossessionSemantics:
+        ordinary ? sourceFrame.naturalPossessionSemantics || "" : "",
+      stateAvailability:
+        ordinary ? sourceFrame.stateAvailability || "" : "",
+      allowedStateValues:
+        ordinary ? sourceFrame.allowedStateValues || Object.freeze([]) : Object.freeze([]),
+      possessorCompatibility:
+        ordinary ? sourceFrame.possessorCompatibility || "" : "",
+      state: ordinary ? operationFrame.state : "absolutive",
+      stateArity: typedSlotFrame.slots.state.arity,
+      stateSlots: typedSlotFrame.slots.state.slots,
+      subjectParticipantFrame:
+        operationFrame.subjectParticipantFrame || null,
+      possessor: ordinary ? operationFrame.possessor || "" : "",
+      stemOperation: ordinary ? resultFrame.stemOperation : null,
+      pronominalFamily:
+        pronominal ? sourceFrame.familyId || "" : "",
+      sourceConstituentKinds:
+        sourceFrame.sourceConstituentKinds?.length
+          ? sourceFrame.sourceConstituentKinds
+          : Object.freeze(
+            sourceConstituents.length > 1
+              ? ["nounstem-embed", "nounstem-matrix"]
+              : ["nounstem"],
+          ),
+      sourceConstituents,
+      projectionRole: "read-only-source-constituents",
+      continuationMode: "licensed-operation-only",
+      directSourceReentryAuthorized: false,
+      grammarAuthority: false,
+      callerSuppliedAuthorityAccepted: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    continuationSourceProjections.set(resultFrame, projection);
+    return projection;
   }
 
   function prepareClassicalNahuatlPronominalNncParadigmPlan(
@@ -4260,6 +4404,7 @@ export function createClassicalNahuatlNncApplicationModule(
     isClassicalNahuatlPronominalNncOperationFrame,
     evaluateClassicalNahuatlPronominalNnc,
     isClassicalNahuatlPronominalNncResult,
+    getClassicalNahuatlNncContinuationSourceConstituents,
     prepareClassicalNahuatlPronominalNncParadigmPlan,
     isClassicalNahuatlPronominalNncParadigmPlan,
     projectClassicalNahuatlPronominalNncParadigmCoordinates,

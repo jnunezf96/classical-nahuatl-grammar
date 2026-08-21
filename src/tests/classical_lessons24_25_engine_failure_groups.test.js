@@ -112,8 +112,7 @@ function buildRecursiveCaquiActiveSourceWithRequests(ctx, {
     });
 }
 
-function buildRecursiveCaquiActiveSource(ctx) {
-    const application = ctx.classicalNahuatlVncApplication;
+function buildRecursiveCaquiActiveSource(ctx, application) {
     const request = {
         sourceStem: "caqui",
         verbClass: "B",
@@ -184,8 +183,7 @@ function buildRecursiveCaquiNonactiveSource(ctx, {
     });
 }
 
-function buildRecursiveCaquiPassiveSource(ctx) {
-    const application = ctx.classicalNahuatlVncApplication;
+function buildRecursiveCaquiPassiveSource(ctx, application) {
     const request = {
         sourceStem: "caqui",
         verbClass: "B",
@@ -218,8 +216,7 @@ function buildRecursiveCaquiPassiveSource(ctx) {
     }).resultFrame || null;
 }
 
-function continueRecursiveCaquiSource(ctx, sourceResultFrame, overrides = {}) {
-    const application = ctx.classicalNahuatlVncApplication;
+function continueRecursiveCaquiSource(ctx, application, sourceResultFrame, overrides = {}) {
     const source = application.getContinuationSourceConstituents(sourceResultFrame);
     const request = {
         sourceStem: source.sourceStem,
@@ -341,13 +338,14 @@ function run(ctx = {}) {
             expected,
         })));
 
-    const activeSource = buildRecursiveCaquiActiveSource(ctx);
+    const continuationApplication = ctx.createClassicalNahuatlVncApplication(ctx);
+    const activeSource = buildRecursiveCaquiActiveSource(ctx, continuationApplication);
     const activeSurface = activeSource.finiteSurfaceFrame;
-    const activeContinuation = continueRecursiveCaquiSource(ctx, activeSource);
+    const activeContinuation = continueRecursiveCaquiSource(ctx, continuationApplication, activeSource);
     const activeOperation = activeContinuation.resultFrame?.derivationOperationFrame || null;
-    const passiveSource = buildRecursiveCaquiPassiveSource(ctx);
+    const passiveSource = buildRecursiveCaquiPassiveSource(ctx, continuationApplication);
     const passiveSurface = passiveSource.finiteSurfaceFrame;
-    const passiveContinuation = continueRecursiveCaquiSource(ctx, passiveSource);
+    const passiveContinuation = continueRecursiveCaquiSource(ctx, continuationApplication, passiveSource);
     const passiveOperation = passiveContinuation.resultFrame?.derivationOperationFrame || null;
     const registry = ctx.getDefaultGrammarContractRegistry();
     const summarizeReverseSource = (analysis) => [

@@ -291,6 +291,14 @@ function getClassicalLesson2NncParts(slots = {}) {
       )
     )).filter(Boolean)
     : [];
+  const prePredicateParts = Array.isArray(slots.prePredicate)
+    ? slots.prePredicate.map((slot, index) => (
+      getClassicalLesson2NonzeroPart(
+        slot?.role || `pre-predicate-${index + 1}`,
+        slot?.carrier,
+      )
+    )).filter(Boolean)
+    : [];
   const predicateParts = String(slots.predicate?.stem || "")
     .split("-")
     .filter(Boolean)
@@ -312,6 +320,7 @@ function getClassicalLesson2NncParts(slots = {}) {
     getClassicalLesson2NonzeroPart("subject-person-2", slots.subject?.pers2),
     ...participantParts,
     ...stateParts,
+    ...prePredicateParts,
     ...predicateParts,
     getClassicalLesson2NonzeroPart("subject-number-1", slots.number?.num1),
     getClassicalLesson2NonzeroPart("subject-number-2", slots.number?.num2),
@@ -403,6 +412,7 @@ function buildClassicalLesson2OwnedWriting(
     return buildClassicalLesson2TokenWriting(expectedSurface, targetObject);
   }
   const writingCandidate = candidateResult?.personalNameResult
+    || candidateResult?.scalarFrame
     || candidateResult;
   const sourceConstituents = writingCandidate?.sourceAuthorizationFrame
     ?.sourceConstituents;
@@ -418,15 +428,19 @@ function buildClassicalLesson2OwnedWriting(
   let parts = [];
   let boundaryKind = "morph";
   if (isNominalCompound) {
-    parts = [
-      {
-        role: "embed",
-        value: writingCandidate?.operationFrame?.embedShape?.realizedStem
-          || sourceConstituents.embedStem,
-      },
-      { role: "matrix", value: sourceConstituents.matrixStem },
-    ];
-    boundaryKind = "compound";
+    const typedCompoundSlots = writingCandidate?.canonicalResult
+      ?.nncSlotFrame?.slots;
+    parts = typedCompoundSlots
+      ? getClassicalLesson2NncParts(typedCompoundSlots)
+      : [
+        {
+          role: "embed",
+          value: writingCandidate?.operationFrame?.embedShape?.realizedStem
+            || sourceConstituents.embedStem,
+        },
+        { role: "matrix", value: sourceConstituents.matrixStem },
+      ];
+    boundaryKind = typedCompoundSlots ? "typed-nnc-slots" : "compound";
   } else if (isBasicClassicalFiniteVncWritingCandidate(writingCandidate)) {
     const person = writingCandidate.personDyad || {};
     const tense = writingCandidate.tenseFrame || {};
@@ -452,6 +466,20 @@ function buildClassicalLesson2OwnedWriting(
       writingCandidate.typedSlotFrame?.slots || {},
     );
     boundaryKind = "ordinary-nnc-slots";
+  } else if (
+    writingCandidate?.kind
+      === "classical-nahuatl-relational-nnc-relational-result"
+    && writingCandidate?.authorizationStatus === "authorized"
+    && writingCandidate?.formulaSlots?.predicate
+  ) {
+    parts = String(writingCandidate.formulaSlots.predicate)
+      .split("-")
+      .filter(Boolean)
+      .map((value, index) => ({
+        role: index ? `relational-part-${index + 1}` : "relational-embed",
+        value,
+      }));
+    boundaryKind = "typed-relational-nnc";
   } else {
     const orderedFrames = findClassicalLesson2Frames(
       writingCandidate,
@@ -571,6 +599,52 @@ function buildClassicalLesson2OwnedWriting(
       );
       if (written) return written;
     }
+    const typedSourceStem = String(
+      writingCandidate?.sourceFrame?.stem
+      || writingCandidate?.source?.stem
+      || "",
+    ).trim();
+    const typedContextFrame = writingCandidate?.operationFrame?.contextFrame;
+    const requestedVariant = String(
+      typedContextFrame?.requestedVariant || "",
+    ).trim();
+    if (requestedVariant && requestedVariant === expectedSurface) {
+      const written = buildClassicalLesson2WritingFromParts(
+        [{ role: "typed-contextual-variant", value: requestedVariant }],
+        "typed-adverbial-context-variant",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    const negativeParticle = String(
+      typedContextFrame?.negativeParticle || "",
+    ).trim();
+    if (
+      negativeParticle
+      && typedSourceStem
+      && `${negativeParticle}${typedSourceStem}` === expectedSurface
+    ) {
+      const written = buildClassicalLesson2WritingFromParts(
+        [
+          { role: "negative-particle", value: negativeParticle },
+          { role: "typed-source-stem", value: typedSourceStem },
+        ],
+        "typed-adverbial-negative-context",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
+    if (typedSourceStem && typedSourceStem === expectedSurface) {
+      const written = buildClassicalLesson2WritingFromParts(
+        [{ role: "typed-source-stem", value: typedSourceStem }],
+        "typed-source-stem",
+        expectedSurface,
+        targetObject,
+      );
+      if (written) return written;
+    }
     return null;
   }
   return buildClassicalLesson2WritingFromParts(
@@ -587,6 +661,16 @@ function buildClassicalLesson2WritingOutputs(
   outputKind,
   targetObject,
 ) {
+  if (Array.isArray(candidateResult)) {
+    return Object.freeze(candidateResult.flatMap(item => (
+      buildClassicalLesson2WritingOutputs(
+        item,
+        operationId,
+        DEFAULT_APPLICATION_OUTPUT_KIND,
+        targetObject,
+      )
+    )));
+  }
   const primaryOutputs = getClassicalLesson2PrimaryWritingOutputs(
     candidateResult,
     outputKind,
@@ -1196,6 +1280,51 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "phonological-length": "derived-fact",
     "written-result": "derived-fact",
   }),
+  "phonology:syllabify": defineAxisSemanticFactRoles({
+    "written-vocable": "lexical-fact",
+    "vowel-centers": "derived-fact",
+    "syllable-boundaries": "derived-fact",
+  }),
+  "phonology:supportive-vowel": defineAxisSemanticFactRoles({
+    "source-segments": "lexical-fact",
+    pronounceability: "boundary-conditioned-fact",
+    "supportive-i-realization": "derived-fact",
+  }),
+  "phonology:open-transition": defineAxisSemanticFactRoles({
+    "first-stem-edge": "lexical-fact",
+    "second-stem-edge": "lexical-fact",
+    "open-transition-realization": "derived-fact",
+  }),
+  "phonology:consonant-length": defineAxisSemanticFactRoles({
+    "first-consonant": "lexical-fact",
+    "second-consonant": "lexical-fact",
+    "long-consonant-realization": "derived-fact",
+  }),
+  "phonology:progressive-assimilation": defineAxisSemanticFactRoles({
+    "left-morph": "lexical-fact",
+    "right-morph": "lexical-fact",
+    "progressive-boundary-realization": "derived-fact",
+  }),
+  "phonology:assimilation": defineAxisSemanticFactRoles({
+    "first-consonant": "lexical-fact",
+    "second-consonant": "lexical-fact",
+    "regressive-boundary-realization": "derived-fact",
+  }),
+  "phonology:consonant-loss": defineAxisSemanticFactRoles({
+    "first-consonant": "lexical-fact",
+    "second-consonant": "lexical-fact",
+    "loss-result": "derived-fact",
+  }),
+  "phonology:consonant-shift": defineAxisSemanticFactRoles({
+    "source-consonant": "lexical-fact",
+    "phonological-environment": "boundary-conditioned-fact",
+    "shift-result": "derived-fact",
+  }),
+  "phonology:vowel-elision": defineAxisSemanticFactRoles({
+    "source-morpheme": "lexical-fact",
+    "stress-group-environment": "boundary-conditioned-fact",
+    "elided-result": "derived-fact",
+  }),
   "sentence:adverbial-adjunction": defineAxisSemanticFactRoles({
     "sentence-adverbial": "lexical-fact",
     "clause-scope": "contextual-fact",
@@ -1213,9 +1342,9 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     "particle-semantic-marker": "lexical-fact",
   }),
   "particle:negative-selection": defineAxisSemanticFactRoles({
-    polarity: "user-choice",
+    polarity: "genuine-user-choice",
     "preceding-particle": "contextual-fact",
-    "sentence-kind": "user-choice",
+    "sentence-kind": "genuine-user-choice",
     "negative-particle-selection": "derived-fact",
   }),
   "vnc:nuclear-clause": defineAxisSemanticFactRoles({

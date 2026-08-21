@@ -45,7 +45,7 @@ function buildSecondCausativeRequest(source) {
 
 function run(ctx = {}) {
     const s = createSuite("classical_vnc_result_source_continuation");
-    const service = ctx.classicalNahuatlVncApplication;
+    const service = ctx.createClassicalNahuatlVncApplication(ctx);
     const first = buildFirstCaquiCausative(service);
     const source = service.getContinuationSourceConstituents(
         first.resultFrame

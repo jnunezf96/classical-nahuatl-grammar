@@ -546,6 +546,152 @@ function run(ctx = {}) {
         };
     });
 
+    const dependentPathCases = [
+        {
+            nounStem: "ix-xip-tla",
+            operationPath: ["included-possessor-ti"],
+            requirements: {
+                sourceSubject: false,
+                sourcePossessor: true,
+                includedPossessorFamily: true,
+                resultSubject: true,
+                resultObjectPeople: 0,
+            },
+        },
+        {
+            nounStem: "ix-xip-tla",
+            operationPath: [
+                "included-possessor-ti",
+                "ti-a-causative-single",
+            ],
+            requirements: {
+                sourceSubject: false,
+                sourcePossessor: true,
+                includedPossessorFamily: true,
+                resultSubject: true,
+                resultObjectPeople: 1,
+            },
+        },
+        {
+            nounStem: "āxcā",
+            operationPath: ["ti-a-causative-double-inceptive"],
+            requirements: {
+                sourceSubject: true,
+                sourcePossessor: true,
+                includedPossessorFamily: false,
+                resultSubject: true,
+                resultObjectPeople: 0,
+            },
+        },
+        {
+            nounStem: "cal",
+            operationPath: ["ti-a-causative-double-possession"],
+            requirements: {
+                sourceSubject: true,
+                sourcePossessor: true,
+                includedPossessorFamily: false,
+                resultSubject: true,
+                resultObjectPeople: 0,
+            },
+        },
+        {
+            nounStem: "cuitla",
+            operationPath: ["applicative-huia-double-object"],
+            requirements: {
+                sourceSubject: true,
+                sourcePossessor: true,
+                includedPossessorFamily: false,
+                resultSubject: true,
+                resultObjectPeople: 0,
+            },
+        },
+        {
+            nounStem: "mahui-z",
+            operationPath: [
+                "denominal-causative-tla",
+                "causative-tla-ti-lia-applicative",
+            ],
+            requirements: {
+                sourceSubject: false,
+                sourcePossessor: false,
+                includedPossessorFamily: false,
+                resultSubject: true,
+                resultObjectPeople: 2,
+            },
+        },
+    ];
+    const dependentPathChoices = dependentPathCases.map(testCase => {
+        const inventory =
+            ctx.prepareClassicalDenominalVncOperationPathInventory({
+                nounStem: testCase.nounStem,
+                subject: "3sg",
+                mood: "indicative",
+                tense: "present",
+                objectPeople: ["3sg", "2sg"],
+            });
+        const choice = inventory.pathChoices?.find(candidate => (
+            JSON.stringify(candidate.operationPath)
+                === JSON.stringify(testCase.operationPath)
+        ));
+        return { testCase, inventory, choice };
+    });
+
+    s.eq(
+        "Owner path discovery exposes dependent possessive routes before their Source choices and publishes exact control requirements",
+        dependentPathChoices.map(({ inventory, choice }) => ({
+            ownerIssued:
+                ctx.isClassicalNahuatlDenominalVncOperationPathInventory(
+                    inventory
+                ),
+            path: choice?.operationPath || [],
+            requirements: choice?.controlRequirements || null,
+            requirementsFrozen: Object.isFrozen(
+                choice?.controlRequirements
+            ),
+            sourceRequestKeys: Object.keys(choice?.sourceRequest || {}).sort(),
+        })),
+        dependentPathCases.map(testCase => ({
+            ownerIssued: true,
+            path: testCase.operationPath,
+            requirements: testCase.requirements,
+            requirementsFrozen: true,
+            sourceRequestKeys: [
+                "nounRoot",
+                "nounStem",
+                "sourceKind",
+                "sourceState",
+                "sourceVerbStem",
+            ],
+        }))
+    );
+
+    s.eq(
+        "Path-discovery witnesses never leak into a Result request",
+        dependentPathChoices.slice(0, 3).map(({ choice }) => {
+            const operationFrame =
+                ctx.deriveClassicalNahuatlDenominalVncOperationPath({
+                    ...choice.sourceRequest,
+                    operationId: choice.operationId,
+                    operationPath: choice.operationPath,
+                    classChoice: choice.finalClassChoice,
+                    classChoices: choice.classChoices,
+                    subject: "3sg",
+                    mood: "indicative",
+                    tense: "present",
+                    objectPeople: ["3sg", "2sg"],
+                });
+            return [
+                operationFrame.authorizationStatus,
+                operationFrame.blockReason,
+            ];
+        }),
+        [
+            ["blocked", "selected-denominal-operation-not-licensed-for-source"],
+            ["blocked", "selected-denominal-operation-not-licensed-for-source"],
+            ["blocked", "selected-denominal-operation-not-licensed-for-source"],
+        ]
+    );
+
     s.eq(
         "The owner issues source-specific paths and every formerly impossible live operation executes exactly",
         ownerIssuedLiveRequests.map(({ testCase, inventory, choice, request }) => {

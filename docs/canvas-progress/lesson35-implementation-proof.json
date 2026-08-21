@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "lesson": 35,
+  "contradictionTest": "src/tests/classical_lesson35_contradiction_audit.test.js",
+  "groups": {
+    "lesson35-nominalization-and-preterit-agentive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-absolutive-preterit-agentive-reanalysis": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-number-animacy-and-object-activation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-general-use-ca-stem": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-possessive-preterit-agentive-nnc": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-agentive-embeds-and-affectives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-old-woman-agentive-family": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-old-man-and-drum-source-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-ownerhood-e-matrix": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    }
+  }
+}

@@ -269,14 +269,14 @@ function run(ctx = {}) {
             ),
         },
         {
-            sourceBroadCoordinates: 826,
-            migratedCoordinates: 826,
-            uniqueExactProofAddresses: 826,
-            uniqueLegacyProofAddresses: 483,
-            wholeResultWitnesses: 187,
+            sourceBroadCoordinates: 793,
+            migratedCoordinates: 793,
+            uniqueExactProofAddresses: 793,
+            uniqueLegacyProofAddresses: 466,
+            wholeResultWitnesses: 180,
             effectiveBroadCoordinates: 0,
             migrationDigest:
-                "3f78681a0d60b8a94e18a8bb1f674193c3b3421c436ce55e9bff71038a4f8023",
+                "ccb1b11c65558894090e445574fcf80b9ff795a4653ed60937a47c0d6e17c119",
             nonAuthorizing: true,
         }
     );

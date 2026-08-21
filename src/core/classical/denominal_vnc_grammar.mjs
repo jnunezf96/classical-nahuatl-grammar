@@ -57,6 +57,11 @@ const INCLUDED_POSSESSOR_STEMS = Object.freeze([
   "tlahu-ēl-i-l",
   "pan",
 ]);
+const SOURCE_PROJECTED_DOUBLE_OBJECT_OPERATION_IDS = Object.freeze([
+  "ti-a-causative-double-inceptive",
+  "ti-a-causative-double-possession",
+  "applicative-huia-double-object",
+]);
 const INTRANSITIVE_TLA_STEMS = Object.freeze(["ilhui", "xō", "tla"]);
 const DESTOCKAL_YA_STEMS = Object.freeze([
   "tlap-i-hui",
@@ -487,6 +492,9 @@ function normalizeSourceRequest(request = {}) {
     possessor: normalizePossessor(request.possessor),
     possessorPerson,
     includedPossessorFamily: key(request.includedPossessorFamily),
+    sourceInitialISelection: key(
+      request.sourceInitialISelection || request.sourceInitialIKind,
+    ),
     numeralStem: normalizeStem(request.numeralStem),
     timeMatrix: normalizeStem(request.timeMatrix),
     sourceOperationFrame: request.sourceOperationFrame || null,
@@ -795,11 +803,8 @@ function buildObjectRequests(spec, source) {
       derivationalLevel: 1,
     }];
   }
-  const directPossessiveProjection = [
-    "ti-a-causative-double-inceptive",
-    "ti-a-causative-double-possession",
-    "applicative-huia-double-object",
-  ].includes(spec.id);
+  const directPossessiveProjection =
+    SOURCE_PROJECTED_DOUBLE_OBJECT_OPERATION_IDS.includes(spec.id);
   const priorObjectRequests = source.sourceOperationFrame?.objectRequests || [];
   const firstObjectPerson = directPossessiveProjection
     ? source.sourceSubject
@@ -841,6 +846,7 @@ function buildFiniteRequest(operationFrame, source) {
       ? sourceObjectRequests[0].objectPerson
       : "",
     sourceObjectRequests,
+    sourceInitialISelection: source.sourceInitialISelection,
     subject: source.subject,
     mood: source.mood,
     tense: source.tense,
@@ -1199,8 +1205,23 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         "lexical-o-a-vnc",
       ].includes(spec.sourceKind);
       const sourceIsRoot = spec.sourceKind === "nounroot-or-stem-as-root";
+      const possessiveSourceDiscovery =
+        spec.sourceKind === "possessive-nnc-predicate"
+          ? {
+            // These values let the owner enumerate structurally available
+            // possessive-source paths before the user makes their dependent
+            // Source selections. They never leave the inventory as a Source
+            // request and therefore cannot authorize a Result.
+            sourceSubject: "3sg",
+            possessor: "3sg",
+            ...(spec.id === "included-possessor-ti"
+              ? { includedPossessorFamily: "proxy" }
+              : {}),
+          }
+          : {};
       return {
         ...request,
+        ...possessiveSourceDiscovery,
         nounStem: sourceIsVnc ? "" : sourceStem,
         nounRoot: sourceIsRoot ? sourceStem : "",
         sourceVerbStem: sourceIsVnc ? sourceStem : "",
@@ -1265,6 +1286,23 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
           ? `${spec.label} · Class ${selectedClass}`
           : spec.label;
       }).join(" → ");
+      const includedPossessor = operationPath.includes(
+        "included-possessor-ti"
+      );
+      const sourceProjectedDoubleObject =
+        SOURCE_PROJECTED_DOUBLE_OBJECT_OPERATION_IDS.includes(
+          operationSpecRecord.id
+        );
+      const controlRequirements = deepFreeze({
+        sourceSubject: sourceProjectedDoubleObject,
+        sourcePossessor:
+          rootRequest.sourceKind === "possessive-nnc-predicate",
+        includedPossessorFamily: includedPossessor,
+        resultSubject: true,
+        resultObjectPeople: sourceProjectedDoubleObject
+          ? 0
+          : operationSpecRecord.objectCount,
+      });
       pathChoices.push(deepFreeze({
         pathChoiceId,
         operationId: operationFrame.operationId,
@@ -1275,6 +1313,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         classSelectionOperationIds: [...classSelectionOperationIds],
         finalClassChoice:
           classChoices[operationFrame.operationId] || "",
+        controlRequirements,
         sourceKind: rootRequest.sourceKind,
         sourceState: rootRequest.sourceState,
         sourceRequest: {
@@ -1422,6 +1461,16 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         choice.operationPath.at(-1) === choice.operationId
         && choice.sourceRequest?.sourceKind === choice.sourceKind
         && choice.sourceRequest?.sourceState === choice.sourceState
+        && typeof choice.controlRequirements?.sourceSubject === "boolean"
+        && typeof choice.controlRequirements?.sourcePossessor === "boolean"
+        && typeof choice.controlRequirements?.includedPossessorFamily
+          === "boolean"
+        && choice.controlRequirements?.resultSubject === true
+        && Number.isInteger(
+          choice.controlRequirements?.resultObjectPeople
+        )
+        && choice.controlRequirements.resultObjectPeople >= 0
+        && choice.controlRequirements.resultObjectPeople <= 2
       ))
       && frame.typedGrammarAuthority === true
       && frame.callerSuppliedAuthorityAccepted === false

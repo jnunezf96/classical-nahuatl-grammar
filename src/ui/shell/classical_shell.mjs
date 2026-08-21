@@ -149,12 +149,57 @@ import {
   LESSON29_READER_GUIDANCE_GROUPS,
   isLesson29ReaderGuidanceExact,
   renderLesson29ReaderGuidance,
-} from "../curriculum/lesson29_reader_guidance.mjs?v=20260818-lesson29-groups1-12-004";
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260821-lesson39-group23-171";
 import {
   LESSON30_READER_GUIDANCE_GROUPS,
   isLesson30ReaderGuidanceExact,
   renderLesson30ReaderGuidance,
-} from "../curriculum/lesson30_reader_guidance.mjs?v=20260818-lesson30-groups1-3-001";
+} from "../curriculum/lesson30_reader_guidance.mjs?v=20260818-lesson30-groups13-15-005";
+import {
+  LESSON31_READER_GUIDANCE_GROUPS,
+  isLesson31ReaderGuidanceExact,
+  renderLesson31ReaderGuidance,
+} from "../curriculum/lesson31_reader_guidance.mjs?v=20260818-lesson32-complete-010";
+import {
+  LESSON32_READER_GUIDANCE_GROUPS,
+  isLesson32ReaderGuidanceExact,
+  renderLesson32ReaderGuidance,
+} from "../curriculum/lesson32_reader_guidance.mjs?v=20260818-lesson32-complete-010";
+import {
+  LESSON33_READER_GUIDANCE_GROUPS,
+  isLesson33ReaderGuidanceExact,
+  renderLesson33ReaderGuidance,
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON34_READER_GUIDANCE_GROUPS,
+  isLesson34ReaderGuidanceExact,
+  renderLesson34ReaderGuidance,
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON35_READER_GUIDANCE_GROUPS,
+  isLesson35ReaderGuidanceExact,
+  renderLesson35ReaderGuidance,
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON36_READER_GUIDANCE_GROUPS,
+  isLesson36ReaderGuidanceExact,
+  renderLesson36ReaderGuidance,
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON37_READER_GUIDANCE_GROUPS,
+  isLesson37ReaderGuidanceExact,
+  renderLesson37ReaderGuidance,
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON38_READER_GUIDANCE_GROUPS,
+  isLesson38ReaderGuidanceExact,
+  renderLesson38ReaderGuidance,
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON39_READER_GUIDANCE_GROUPS,
+  isLesson39ReaderGuidanceExact,
+  renderLesson39ReaderGuidance,
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260821-lesson39-group23-171";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -442,16 +487,16 @@ export function createClassicalShellModule(targetObject = globalThis) {
                       data-classical-vnc-source-guide="canonical-stems"
                       data-classical-source-contract="stem-only"
                       data-classical-source-authorizes="none"
-                      aria-label="VNC canonical verbstems"
+                      aria-label="VNC built-in verbstems"
                     >
                       <label class="classical-nnc-source-guide__field">
-                        <span class="classical-nnc-source-guide__label">Canonical verbstem</span>
+                        <span class="classical-nnc-source-guide__label">Built-in verbstems</span>
                         <select
                           id="classical-vnc-source-stem"
                           class="classical-nnc-source-guide__select"
                           data-classical-vnc-source-stem-picker="true"
                         >
-                          <option value="">Type a verbstem or choose a canonical stem</option>
+                          <option value="">Type a verbstem or choose a built-in verbstem</option>
                         </select>
                       </label>
                       <label class="classical-nnc-source-guide__field" data-classical-source-identity-control="class">
@@ -874,27 +919,34 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <span class="classical-rule-control__label">Source operation</span>
                           <select id="classical-construction-operation" data-classical-rule-logic-control="nominal-construction-operation">
                             <option value="none" data-classical-source-unit="any" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>Source → direct generation → same-rank Result</option>
+                            <option
+                              value="deverbal-nnc"
+                              data-classical-source-unit="any"
+                              data-classical-grammar-operation="deverbal nominalization or characteristic patientive"
+                              data-classical-result-unit="nnc"
+                            >Source → deverbal nominalization or characteristic patientive → NNC Result</option>
                             <optgroup label="Operations from a VNC Source" data-classical-operation-source-group="vnc">
                             <option value="nominal-embed-vnc" data-classical-source-unit="vnc" data-classical-grammar-operation="nominal embedding" data-classical-result-unit="vnc">VNC Source → nominal embedding → VNC Result</option>
                             <option value="attitude-vnc" data-classical-source-unit="vnc" data-classical-grammar-operation="attitude formation" data-classical-result-unit="vnc">VNC Source → honorific, reverential, or pejorative formation → VNC Result</option>
-                            <option
-                              value="deverbal-nnc"
-                              data-classical-source-unit="vnc"
-                              data-classical-grammar-operation="deverbal nominalization"
-                              data-classical-result-unit="nnc"
-                            >VNC Source → deverbal nominalization → NNC Result</option>
                             </optgroup>
                             <optgroup label="Operations from an NNC Source" data-classical-operation-source-group="nnc">
                             <option value="compound-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="nominal compounding" data-classical-result-unit="nnc">NNC Source → nominal compounding → NNC Result</option>
-                            <option value="affective-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="affective formation" data-classical-result-unit="nnc-or-vnc">NNC Source → affective formation → NNC or VNC Result</option>
+                            <option value="affective-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="affective formation" data-classical-result-unit="nnc">NNC Source → affective formation → NNC Result</option>
                             <option value="cardinal-numeral-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="cardinal-number construction" data-classical-result-unit="nnc-or-vnc">NNC Source → cardinal-number construction → NNC or VNC Result</option>
                             <option value="personal-name-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="personal-name formation" data-classical-result-unit="nnc">NNC Source → personal-name formation → NNC Result</option>
 ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                             <option value="denominal-vnc" data-classical-source-unit="nnc" data-classical-grammar-operation="denominal verbalization" data-classical-result-unit="vnc">NNC Source → denominal verbalization → VNC Result</option>
-                            <option value="adverbial-nuclear" data-classical-source-unit="nnc" data-classical-grammar-operation="adverbial use" data-classical-result-unit="nnc">NNC Source → adverbial use → NNC Result</option>
+                            <option value="adverbial-nuclear" data-classical-source-unit="nnc" data-classical-grammar-operation="adverbial use" data-classical-result-unit="nnc-or-vnc">NNC Source → adverbial use → NNC or VNC Result</option>
                             </optgroup>
                           </select>
                         </label>
+                        <div
+                          class="classical-construction-source-analysis-controls"
+                          id="classical-construction-source-analysis-controls"
+                          data-classical-construction-source-analysis-controls="true"
+                          aria-label="Source analysis choices"
+                          hidden
+                        ></div>
                         <div
                           class="classical-construction-controls"
                           id="classical-construction-controls"
@@ -947,6 +999,50 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <span class="classical-rule-control__label">Licensed source path and stem class</span>
                           <select id="classical-denominal-vnc-operation-path" data-classical-rule-logic-control="denominal-vnc-operation-path">
                             <option value="">enter a source stem</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-source-subject="true" hidden>
+                          <span class="classical-rule-control__label">Source subject</span>
+                          <select id="classical-denominal-vnc-source-subject" data-classical-rule-logic-control="denominal-vnc-source-subject">
+                            <option value="1sg">1sg</option>
+                            <option value="2sg">2sg</option>
+                            <option value="3sg" selected>3sg</option>
+                            <option value="1pl">1pl</option>
+                            <option value="2pl">2pl</option>
+                            <option value="3pl">3pl</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-source-possessor="true" hidden>
+                          <span class="classical-rule-control__label">Source possessor</span>
+                          <select id="classical-denominal-vnc-source-possessor" data-classical-rule-logic-control="denominal-vnc-source-possessor">
+                            <option value="1sg">1sg</option>
+                            <option value="2sg">2sg</option>
+                            <option value="3sg" selected>3sg</option>
+                            <option value="1pl">1pl</option>
+                            <option value="2pl">2pl</option>
+                            <option value="3pl">3pl</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-result-object="1" hidden>
+                          <span class="classical-rule-control__label">Result object</span>
+                          <select id="classical-denominal-vnc-result-object-1" data-classical-rule-logic-control="denominal-vnc-result-object-1">
+                            <option value="1sg">1sg</option>
+                            <option value="2sg">2sg</option>
+                            <option value="3sg" selected>3sg</option>
+                            <option value="1pl">1pl</option>
+                            <option value="2pl">2pl</option>
+                            <option value="3pl">3pl</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-result-object="2" hidden>
+                          <span class="classical-rule-control__label">Second result object</span>
+                          <select id="classical-denominal-vnc-result-object-2" data-classical-rule-logic-control="denominal-vnc-result-object-2">
+                            <option value="1sg">1sg</option>
+                            <option value="2sg">2sg</option>
+                            <option value="3sg" selected>3sg</option>
+                            <option value="1pl">1pl</option>
+                            <option value="2pl">2pl</option>
+                            <option value="3pl">3pl</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="personal-name-nnc" hidden>
@@ -1025,10 +1121,12 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <select id="classical-deverbal-nnc-family" data-classical-rule-logic-control="deverbal-nnc-family">
                             <option value="predicate-nominalization" selected>predicate nominalization</option>
                             <option value="deverbal-action">action noun</option>
+                            <option value="nominal-continuation">action noun → NNC compound</option>
+                            <option value="verbal-continuation">action noun → VNC compound</option>
                             <option value="patientive">patientive or characteristic noun</option>
+                            <option value="patientive-embed-continuation">patientive Result → compound embed</option>
+                            <option value="patientive-matrix-continuation">patientive Result → NNC compound</option>
                             <option value="ownerhood">ownerhood</option>
-                            <option value="nominal-continuation">derived noun in an NNC compound</option>
-                            <option value="verbal-continuation">derived noun in a VNC</option>
                             <option value="vocative">vocative boundary</option>
                             <option value="double-nucleus-ownerhood">two-nucleus ownerhood</option>
                           </select>
@@ -1049,7 +1147,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-predicate-activation="true" hidden>
-                          <span class="classical-rule-control__label">Projective object</span>
+                          <span class="classical-rule-control__label">Supplementary object activation</span>
                           <select id="classical-deverbal-nnc-activated-object-person" data-classical-rule-logic-control="deverbal-nnc-activated-object-person">
                             <option value="" selected>remain within the nominalized predicate</option>
                             <option value="1sg">activate 1st singular</option>
@@ -1058,6 +1156,19 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="1pl">activate 1st plural</option>
                             <option value="2pl">activate 2nd plural</option>
                             <option value="3pl">activate 3rd plural</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-preterit-agentive-number="true" hidden>
+                          <span class="classical-rule-control__label">Agentive number realization</span>
+                          <select id="classical-deverbal-nnc-number-connector" data-classical-rule-logic-control="deverbal-nnc-number-connector">
+                            <option value="qui" selected>qui</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-preterit-agentive-affinity="true" hidden>
+                          <span class="classical-rule-control__label">Plural agentive shape</span>
+                          <select id="classical-deverbal-nnc-affinity" data-classical-rule-logic-control="deverbal-nnc-affinity">
+                            <option value="plain" selected>plain</option>
+                            <option value="affinity">affinity</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-preterit-agentive-variant="true" hidden>
@@ -1084,15 +1195,53 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="impersonal-general-action">impersonal general action</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="deverbal-action" hidden>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="deverbal-action,nominal-continuation,verbal-continuation" hidden>
                           <span class="classical-rule-control__label">Action suffix</span>
                           <select id="classical-deverbal-nnc-action-suffix" data-classical-rule-logic-control="deverbal-nnc-action-suffix">
                             <option value="liz" selected>liz</option>
                             <option value="z">z</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="deverbal-action" hidden>
-                          <span class="classical-rule-control__label">Action-stem alternative</span>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="nominal-continuation,verbal-continuation" hidden>
+                          <span class="classical-rule-control__label">Compound matrix stem</span>
+                          <input id="classical-deverbal-nnc-continuation-matrix-stem" data-classical-rule-logic-control="deverbal-nnc-continuation-matrix-stem" type="text" autocomplete="off" spellcheck="false" placeholder="type matrix stem">
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="nominal-continuation" hidden>
+                          <span class="classical-rule-control__label">Matrix noun class</span>
+                          <select id="classical-deverbal-nnc-continuation-matrix-noun-class" data-classical-rule-logic-control="deverbal-nnc-continuation-matrix-noun-class">
+                            <option value="" selected>choose class</option>
+                            <option value="zero">0</option>
+                            <option value="tl">tl</option>
+                            <option value="tli">tli</option>
+                            <option value="in">in</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="verbal-continuation" hidden>
+                          <span class="classical-rule-control__label">Embed–matrix relation</span>
+                          <select id="classical-deverbal-nnc-continuation-relation" data-classical-rule-logic-control="deverbal-nnc-continuation-relation">
+                            <option value="adverb" selected>adverbial relation</option>
+                            <option value="complement">matrix-object complement</option>
+                            <option value="object">incorporated object</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="verbal-continuation" hidden>
+                          <span class="classical-rule-control__label">Matrix verb class</span>
+                          <select id="classical-deverbal-nnc-continuation-matrix-verb-class" data-classical-rule-logic-control="deverbal-nnc-continuation-matrix-verb-class">
+                            <option value="A" selected>A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="verbal-continuation" hidden>
+                          <span class="classical-rule-control__label">Matrix valence</span>
+                          <select id="classical-deverbal-nnc-continuation-matrix-valence" data-classical-rule-logic-control="deverbal-nnc-continuation-matrix-valence">
+                            <option value="intransitive" selected>intransitive</option>
+                            <option value="single-object">single object</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="deverbal-action,nominal-continuation,verbal-continuation" hidden>
+                          <span class="classical-rule-control__label">Action-stem analysis</span>
                           <select id="classical-deverbal-nnc-action-stem-variant" data-classical-rule-logic-control="deverbal-nnc-action-stem-variant">
                             <option value="" selected>use the lexically licensed default</option>
                             <option value="none">retain the source stem</option>
@@ -1102,9 +1251,11 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="ti-to-chi">ti → chi</option>
                             <option value="root-plus-ya-delete">delete root + ya</option>
                             <option value="denominal-ya-delete">delete denominal ya</option>
+                            <option value="supportive-i-drop">drop supportive i after ne</option>
+                            <option value="supportive-i-retain">retain supportive i after ne</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="patientive" hidden>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="patientive,patientive-embed-continuation,patientive-matrix-continuation" hidden>
                           <span class="classical-rule-control__label">Patientive source</span>
                           <select id="classical-deverbal-nnc-patientive-family" data-classical-rule-logic-control="deverbal-nnc-patientive-family">
                             <option value="passive-core" selected>passive core</option>
@@ -1112,6 +1263,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="perfective-active-core">perfective active core</option>
                             <option value="imperfective-active-core">imperfective active core</option>
                             <option value="root-or-stock">root or stock</option>
+                            <option value="preterit-agentive-characteristic-property">preterit-agentive characteristic property</option>
                             <option value="characteristic-property">characteristic property</option>
                           </select>
                         </label>
@@ -1123,10 +1275,139 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-passive-human-realization="true" hidden>
-                          <span class="classical-rule-control__label">Human object in passive patientive</span>
+                          <span class="classical-rule-control__label">Surviving tē in double-object patientive</span>
                           <select id="classical-deverbal-nnc-passive-human-realization" data-classical-rule-logic-control="deverbal-nnc-passive-human-realization">
                             <option value="retain" selected>retain</option>
                             <option value="delete">delete</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-contrast="true" hidden>
+                          <span class="classical-rule-control__label">Patientive referent</span>
+                          <select id="classical-deverbal-nnc-patientive-contrast" data-classical-rule-logic-control="deverbal-nnc-patientive-contrast">
+                            <option value="" selected>Choose the intended referent</option>
+                            <option value="regular-human-tla">human · regular tla</option>
+                            <option value="anomalous-nonhuman-te">nonhuman or abstract · anomalous tē</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-compound-relation="true" hidden>
+                          <span class="classical-rule-control__label">Compound Source relation</span>
+                          <select id="classical-deverbal-nnc-patientive-compound-relation" data-classical-rule-logic-control="deverbal-nnc-patientive-compound-relation">
+                            <option value="" selected>Choose how the embed relates to the matrix</option>
+                            <option value="adverbial-embed">adverbial embed</option>
+                            <option value="incorporated-object">incorporated object</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-matrix-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Compound embed stem</span>
+                          <input id="classical-deverbal-nnc-patientive-matrix-embed-stem" data-classical-rule-logic-control="deverbal-nnc-patientive-matrix-embed-stem" type="text" autocomplete="off" spellcheck="false" placeholder="type nounstem embed">
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-matrix-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Embed source class</span>
+                          <select id="classical-deverbal-nnc-patientive-matrix-embed-class" data-classical-rule-logic-control="deverbal-nnc-patientive-matrix-embed-class">
+                            <option value="" selected>Choose the typed Source class</option>
+                            <option value="zero">0</option>
+                            <option value="in">in</option>
+                            <option value="tli-1">tli-1</option>
+                            <option value="tli-2">tli-2</option>
+                            <option value="tl-1-a">tl-1-a</option>
+                            <option value="tl-1-b">tl-1-b</option>
+                            <option value="tl-2-a">tl-2-a</option>
+                            <option value="tl-2-b-a">tl-2-b · final a</option>
+                            <option value="tl-2-b-i">tl-2-b · final i</option>
+                            <option value="tl-2-c">tl-2-c</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-matrix-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Embed–patientive relation</span>
+                          <select id="classical-deverbal-nnc-patientive-matrix-relation" data-classical-rule-logic-control="deverbal-nnc-patientive-matrix-relation">
+                            <option value="" selected>Choose the grammatical relation</option>
+                            <option value="source">source</option>
+                            <option value="material">material</option>
+                            <option value="purpose">purpose or use</option>
+                            <option value="form">form</option>
+                            <option value="appearance">appearance</option>
+                            <option value="manner">manner</option>
+                            <option value="pertinence">pertinence</option>
+                            <option value="possession">possession</option>
+                            <option value="association">association</option>
+                            <option value="production">production</option>
+                            <option value="carrier">carrier</option>
+                            <option value="sex">sex</option>
+                            <option value="instrument">instrument</option>
+                            <option value="means">means</option>
+                            <option value="character">character</option>
+                            <option value="progeny">progeny</option>
+                            <option value="fellowship">fellowship</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Compound target</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-target" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-target">
+                            <option value="nnc" selected>nominal compound</option>
+                            <option value="vnc">verbal compound</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-characteristic="true" hidden>
+                          <span class="classical-rule-control__label">Characteristic yō in the embed</span>
+                          <select id="classical-deverbal-nnc-characteristic-embed-realization" data-classical-rule-logic-control="deverbal-nnc-characteristic-embed-realization">
+                            <option value="" selected>Choose the licensed realization</option>
+                            <option value="full">keep the full yō formation</option>
+                            <option value="omitted">omit the yō matrix, keep its meaning</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Compound matrix stem</span>
+                          <input id="classical-deverbal-nnc-patientive-embed-matrix-stem" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-matrix-stem" type="text" autocomplete="off" spellcheck="false" placeholder="type matrix stem">
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-nnc="true" hidden>
+                          <span class="classical-rule-control__label">Matrix noun class</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-matrix-noun-class" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-matrix-noun-class">
+                            <option value="" selected>Choose the matrix class</option>
+                            <option value="zero">0</option>
+                            <option value="in">in</option>
+                            <option value="tli">tli</option>
+                            <option value="tl">tl</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-vnc="true" hidden>
+                          <span class="classical-rule-control__label">Matrix verb class</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-matrix-verb-class" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-matrix-verb-class">
+                            <option value="A" selected>A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D">D</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-vnc="true" hidden>
+                          <span class="classical-rule-control__label">Matrix valence</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-matrix-valence" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-matrix-valence">
+                            <option value="intransitive" selected>intransitive</option>
+                            <option value="single-object">single object</option>
+                            <option value="projective-human">nonspecific human object</option>
+                            <option value="projective-nonhuman">nonspecific nonhuman object</option>
+                            <option value="mainline-reflexive">reflexive object</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-vnc-object="true" hidden>
+                          <span class="classical-rule-control__label">Matrix object layer</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-matrix-object-governor" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-matrix-object-governor">
+                            <option value="directive" selected>basic object</option>
+                            <option value="applicative">applicative object</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-continuation="true" hidden>
+                          <span class="classical-rule-control__label">Embed–matrix relation</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-relation" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-relation">
+                            <option value="" selected>Choose the grammatical relation</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-patientive-embed-vnc-complement="true" hidden>
+                          <span class="classical-rule-control__label">Complement reading</span>
+                          <select id="classical-deverbal-nnc-patientive-embed-complement-kind" data-classical-rule-logic-control="deverbal-nnc-patientive-embed-complement-kind">
+                            <option value="considering" selected>considering as</option>
+                            <option value="pretending">pretending or claiming as</option>
+                            <option value="changing">changing into</option>
+                            <option value="desiring">wanting to become or be regarded as</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-root-stock-allomorph="true" hidden>
@@ -1141,6 +1422,14 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="zero">zero</option>
                           </select>
                         </label>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-root-stock-source-analysis="true" hidden>
+                          <span class="classical-rule-control__label">Root or stock Source analysis</span>
+                          <select id="classical-deverbal-nnc-root-stock-source-analysis" data-classical-rule-logic-control="deverbal-nnc-root-stock-source-analysis">
+                            <option value="" selected>Choose the historical Source relation</option>
+                            <option value="deverbal-patientive">verbstem → patientive nounstem</option>
+                            <option value="nounstem-root-source">nounstem root → destockal verbstem</option>
+                          </select>
+                        </label>
                         <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-characteristic-reading="true" hidden>
                           <span class="classical-rule-control__label">Characteristic reading</span>
                           <select id="classical-deverbal-nnc-characteristic-reading" data-classical-rule-logic-control="deverbal-nnc-characteristic-reading">
@@ -1150,30 +1439,12 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="organic-possession">organic possession</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="ownerhood,double-nucleus-ownerhood" hidden>
+                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="ownerhood" hidden>
                           <span class="classical-rule-control__label">Ownerhood matrix</span>
                           <select id="classical-deverbal-nnc-ownerhood-matrix" data-classical-rule-logic-control="deverbal-nnc-ownerhood-matrix">
                             <option value="ē" selected>ē</option>
                             <option value="huā">huā</option>
                             <option value="yō-ā">yō-ā · abundant ownerhood</option>
-                          </select>
-                        </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="verbal-continuation" hidden>
-                          <span class="classical-rule-control__label">VNC role</span>
-                          <select id="classical-deverbal-nnc-continuation-relation" data-classical-rule-logic-control="deverbal-nnc-continuation-relation">
-                            <option value="adverb" selected>adverb</option>
-                            <option value="complement">complement</option>
-                            <option value="object">incorporated object</option>
-                          </select>
-                        </label>
-                        <label class="classical-rule-control" data-construction-for="deverbal-nnc" data-deverbal-nnc-family="verbal-continuation" hidden>
-                          <span class="classical-rule-control__label">Matrix family</span>
-                          <select id="classical-deverbal-nnc-matrix-family" data-classical-rule-logic-control="deverbal-nnc-matrix-family">
-                            <option value="">ordinary matrix</option>
-                            <option value="toca">toca</option>
-                            <option value="tlani">tlani</option>
-                            <option value="ih-tlani">ih-tlani</option>
-                            <option value="tēm-o-ā">tēm-o-ā</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="denominal-vnc" data-denominal-vnc-included-family="true" hidden>
@@ -1190,10 +1461,37 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <span><input id="classical-denominal-vnc-exclamatory" type="checkbox" data-classical-rule-logic-control="denominal-vnc-exclamatory"> exclamation</span>
                         </label>
                         <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-measure-only="true" hidden>
+                          <span class="classical-rule-control__label">Measure meaning</span>
+                          <select id="classical-cardinal-measure-meaning" data-classical-rule-logic-control="cardinal-measure-meaning">
+                            <option value="amount" selected>amount or quantity</option>
+                            <option value="length">length or distance</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-measure-only="true" hidden>
+                          <span class="classical-rule-control__label">Measure nounstem class</span>
+                          <select id="classical-cardinal-measure-class" data-classical-rule-logic-control="cardinal-measure-class">
+                            <option value="" selected>Choose class</option>
+                            <option value="zero">0</option>
+                            <option value="in">in</option>
+                            <option value="tli">tli</option>
+                            <option value="tl">tl</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-measure-only="true" hidden>
                           <span class="classical-rule-control__label">Measure result</span>
                           <select id="classical-cardinal-measure-composition" data-classical-rule-logic-control="cardinal-measure-composition">
                             <option value="measure-only" selected>measure NNC only</option>
                             <option value="with-measured-nnc">measure with thing measured</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-measured-only="true" hidden>
+                          <span class="classical-rule-control__label">Measured nounstem class</span>
+                          <select id="classical-cardinal-measured-class" data-classical-rule-logic-control="cardinal-measured-class">
+                            <option value="" selected>Choose class</option>
+                            <option value="zero">0</option>
+                            <option value="in">in</option>
+                            <option value="tli">tli</option>
+                            <option value="tl">tl</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" hidden>
@@ -1204,20 +1502,13 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="complement">incorporated complement</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-adverb-only="true" hidden>
+                        <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-adverb-source-choice="true" hidden>
                           <span class="classical-rule-control__label">Source route</span>
                           <select id="classical-nominal-embed-adverbial-route" data-classical-rule-logic-control="nominal-embed-adverbial-route">
                             <option value="direct-adverb" selected>direct adverbial source</option>
                             <option value="supplement-subject">possessive supplementary subject</option>
                             <option value="supplement-object">possessive supplementary object</option>
                             <option value="passive-adverbialized-subject">passive-barrier adverbialized subject</option>
-                          </select>
-                        </label>
-                        <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-adverb-only="true" hidden>
-                          <span class="classical-rule-control__label">Embed source</span>
-                          <select id="classical-nominal-embed-source-constituent" data-classical-rule-logic-control="nominal-embed-source-constituent">
-                            <option value="ordinary-nnc" selected>ordinary NNC predicate</option>
-                            <option value="preterit-agentive-nnc">preterit-agentive NNC predicate</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-supplement-object-only="true" hidden>
@@ -1227,15 +1518,17 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="less-intimate">less-intimate possession</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-source-analysis="true" hidden>
-                          <span class="classical-rule-control__label">Source analysis</span>
-                          <select id="classical-nominal-embed-source-analysis" data-classical-rule-logic-control="nominal-embed-source-analysis">
-                            <option value="direct" selected>direct adverb source</option>
-                            <option value="supplement">supplement source</option>
+                        <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-possessor-reference-choice="true" hidden>
+                          <span class="classical-rule-control__label">Possessor link</span>
+                          <select id="classical-nominal-embed-possessor-reference" data-classical-rule-logic-control="nominal-embed-possessor-reference">
+                            <option value="matrix-subject" selected>matrix subject</option>
+                            <option value="source-object-1">first matrix object</option>
+                            <option value="source-object-2">second matrix object</option>
+                            <option value="source-object-3">third matrix object</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-adverb-only="true" hidden>
-                          <span class="classical-rule-control__label">Adverb meaning</span>
+                          <span class="classical-rule-control__label">Adverb relation</span>
                           <select id="classical-nominal-embed-adverbial-role" data-classical-rule-logic-control="nominal-embed-adverbial-role">
                             <option value="means">means</option>
                             <option value="instrument">instrument</option>
@@ -1250,7 +1543,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" data-nominal-embed-orientation-choice="true" hidden>
-                          <span class="classical-rule-control__label">Orientation</span>
+                          <span class="classical-rule-control__label">Comparison target</span>
                           <select id="classical-nominal-embed-reference-orientation" data-classical-rule-logic-control="nominal-embed-reference-orientation">
                             <option value="subject">subject</option>
                             <option value="object">object</option>
@@ -1292,6 +1585,57 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
+                          <span class="classical-rule-control__label">Embed nounstem class</span>
+                          <select id="classical-compound-nnc-embed-source-class" data-classical-rule-logic-control="compound-nnc-embed-source-class">
+                            <option value="" selected>choose class</option>
+                            <option value="zero">0</option>
+                            <option value="in">in</option>
+                            <option value="tli-1">tli 1</option>
+                            <option value="tli-2">tli 2</option>
+                            <option value="tl-1-a">tl 1-A</option>
+                            <option value="tl-1-b">tl 1-B</option>
+                            <option value="tl-2-a">tl 2-A</option>
+                            <option value="tl-2-b-a">tl 2-B (final a)</option>
+                            <option value="tl-2-b-i">tl 2-B (final i)</option>
+                            <option value="tl-2-c">tl 2-C</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
+                          <span class="classical-rule-control__label">Embed lexical status</span>
+                          <select id="classical-compound-nnc-embed-analysis" data-classical-rule-logic-control="compound-nnc-embed-analysis">
+                            <option value="ordinary" selected>ordinary shape</option>
+                            <option value="marked-final-a-loss">marked final-a loss</option>
+                            <option value="glottalized-long-vowel">glottalized long vowel</option>
+                            <option value="unexpected-variant">attested compound variant</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-variant-only="true" hidden>
+                          <span class="classical-rule-control__label">Compound variant stem</span>
+                          <input id="classical-compound-nnc-variant-stem" data-classical-rule-logic-control="compound-nnc-variant-stem" type="text" autocomplete="off" spellcheck="false" placeholder="typed lexical variant">
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
+                          <span class="classical-rule-control__label">Compound-only Source</span>
+                          <select id="classical-compound-nnc-unique-position" data-classical-rule-logic-control="compound-nnc-unique-position">
+                            <option value="none" selected>neither constituent</option>
+                            <option value="embed">embed is compound-only</option>
+                            <option value="matrix">matrix is compound-only</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-unique-only="true" hidden>
+                          <span class="classical-rule-control__label">Compound-only meaning</span>
+                          <select id="classical-compound-nnc-unique-meaning" data-classical-rule-logic-control="compound-nnc-unique-meaning">
+                            <option value="uncertain" selected>uncertain</option>
+                            <option value="known">known</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-yo-only="true" hidden>
+                          <span class="classical-rule-control__label">yō embed history</span>
+                          <select id="classical-compound-nnc-yo-embed-history" data-classical-rule-logic-control="compound-nnc-yo-embed-history">
+                            <option value="absolutive" selected>absolutive embed</option>
+                            <option value="possessive">tla-possessive embed</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-bracketing-choice="true" hidden>
                           <span class="classical-rule-control__label">Constituent bracketing</span>
                           <select id="classical-compound-nnc-bracketing" data-classical-rule-logic-control="compound-nnc-bracketing">
                             <option value="unambiguous" selected>two simple constituents</option>
@@ -1300,12 +1644,27 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="both">compound embed and matrix</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-affinity-target-choice="true" hidden>
                           <span class="classical-rule-control__label">Stem relation applies to</span>
                           <select id="classical-compound-nnc-reduplication-target" data-classical-rule-logic-control="compound-nnc-reduplication-target">
                             <option value="embed" selected>embed</option>
                             <option value="matrix">matrix</option>
                             <option value="both">both</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-distributive-reading-choice="true" hidden>
+                          <span class="classical-rule-control__label">Distribution or variety</span>
+                          <select id="classical-compound-nnc-distributive-reading" data-classical-rule-logic-control="compound-nnc-distributive-reading">
+                            <option value="ambiguous" selected>context does not decide</option>
+                            <option value="distribution">distribution</option>
+                            <option value="variety">variety</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-sex-only="true" hidden>
+                          <span class="classical-rule-control__label">Sex specified by embed</span>
+                          <select id="classical-compound-nnc-sex-value" data-classical-rule-logic-control="compound-nnc-sex-value">
+                            <option value="male" selected>male</option>
+                            <option value="female">female</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
@@ -1323,18 +1682,11 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="fellowship">fellowship</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="compound-nnc" hidden>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc" data-compound-nnc-possessor-orientation-choice="true" hidden>
                           <span class="classical-rule-control__label">Possessor points to</span>
                           <select id="classical-compound-nnc-possessor-orientation" data-classical-rule-logic-control="compound-nnc-possessor-orientation">
                             <option value="matrix">matrix</option>
                             <option value="embed">embed</option>
-                          </select>
-                        </label>
-                        <label class="classical-rule-control" data-construction-for="affective-nnc" hidden>
-                          <span class="classical-rule-control__label">Generated construction</span>
-                          <select id="classical-affective-target-kind" data-classical-rule-logic-control="affective-target-kind">
-                            <option value="nnc" selected>affective NNC</option>
-                            <option value="denominal-vnc">denominal VNC</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-vocative-only="true" hidden>
@@ -1347,8 +1699,16 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-pil-child-only="true" hidden>
                           <span class="classical-rule-control__label">Child formation</span>
                           <select id="classical-affective-pil-child-route" data-classical-rule-logic-control="affective-pil-child-route">
-                            <option value="simple" selected>simple pil source</option>
-                            <option value="affective">affective-matrix formation</option>
+                            <option value="simple" selected>simple source reading</option>
+                            <option value="affective">matrix-bearing affective formation</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-pil-gender-only="true" hidden>
+                          <span class="classical-rule-control__label">Child or noble gender</span>
+                          <select id="classical-affective-pil-gender" data-classical-rule-logic-control="affective-pil-gender">
+                            <option value="unspecified" selected>not specified</option>
+                            <option value="male">male · oquich</option>
+                            <option value="female">female · cihuā</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-possessive-affinity-only="true" hidden>
@@ -1365,47 +1725,119 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="entity">entity with the defect</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="affective-nnc" hidden>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-flawed-source-analysis="true" hidden>
+                          <span class="classical-rule-control__label">Flawed-subject Source</span>
+                          <select id="classical-affective-flawed-source-status" data-classical-rule-logic-control="affective-flawed-source-status">
+                            <option value="ordinary" selected>not flaw-compatible</option>
+                            <option value="optional-defect">defective entity · ordinary or flawed</option>
+                            <option value="optional-defect-entity">defect or affected entity · meaning is open</option>
+                            <option value="obligatory-defect">defective entity · flawed only</option>
+                            <option value="optional-repugnant">disagreeable entity · ordinary or flawed</option>
+                            <option value="lexicalized-flawed">lexically flawed formation</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-flawed-class-strategy="true" hidden>
+                          <span class="classical-rule-control__label">Silent number-one analysis</span>
+                          <select id="classical-affective-flawed-class-strategy" data-classical-rule-logic-control="affective-flawed-class-strategy">
+                            <option value="irregular-silent-num1" selected>irregular silent number one</option>
+                            <option value="zero-alternative">alternative zero-class stem</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-flawed-lexical-reading="true" hidden>
+                          <span class="classical-rule-control__label">Lexical reading</span>
+                          <select id="classical-affective-flawed-lexical-reading" data-classical-rule-logic-control="affective-flawed-lexical-reading">
+                            <option value="chicken" selected>chicken</option>
+                            <option value="rooster">rooster</option>
+                            <option value="hen">hen</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-route-choice="true" hidden>
                           <span class="classical-rule-control__label">Affective route</span>
                           <select id="classical-affective-route" data-classical-rule-logic-control="affective-route">
                             <option value="compound">affective matrix</option>
+                            <option value="ordinary-subject">ordinary subject</option>
                             <option value="flawed-subject">flawed subject</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="affective-nnc" hidden>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-matrix-control="true" hidden>
                           <span class="classical-rule-control__label">Affective matrix</span>
                           <select id="classical-affective-matrix" data-classical-rule-logic-control="affective-matrix">
-                            <option value="pil">pil · small and affectionate</option>
+                            <option value="pil">pīl · outer affectionate-smallness matrix</option>
                             <option value="pōl">pōl · large and disparaging</option>
                             <option value="tzin" selected>tzin · special regard</option>
                             <option value="tōn">tōn · small</option>
                             <option value="zol">zol · old or worn-out</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="affective-nnc" hidden>
-                          <span class="classical-rule-control__label">Meaning</span>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-semantic-choice="true" hidden>
+                          <span class="classical-rule-control__label">Construction meaning</span>
                           <select id="classical-affective-semantic-reading" data-classical-rule-logic-control="affective-semantic-reading">
                             <option value="ordinary-affective">ordinary affective</option>
+                            <option value="special-regard">special regard</option>
+                            <option value="honorific">honor or esteem</option>
+                            <option value="compassion">compassion</option>
+                            <option value="affection">affection</option>
+                            <option value="cherished-smallness">cherished smallness</option>
                             <option value="mass-delimited">delimited mass</option>
-                            <option value="pil-appendage">pil · appendage</option>
-                            <option value="pil-child">pil · child</option>
-                            <option value="pil-noble">pil · noble</option>
-                            <option value="pil-honorific-vocative">pil · honorific vocative</option>
+                            <option value="pil-appendage">source pil · appendage</option>
+                            <option value="pil-child">source pil · child</option>
+                            <option value="pil-noble">source pil · noble</option>
+                            <option value="pil-honorific-vocative">source pil · honorific vocative</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-denominal-only="true" hidden>
-                          <span class="classical-rule-control__label">Denominal operation</span>
-                          <select id="classical-affective-denominal-operation" data-classical-rule-logic-control="affective-denominal-operation">
-                            <option value="inchoative" selected>become worn out</option>
-                            <option value="causative">cause to become worn out</option>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-lexical-analysis-control="true" hidden>
+                          <span class="classical-rule-control__label">Affective Source analysis</span>
+                          <select id="classical-affective-lexical-status" data-classical-rule-logic-control="affective-lexical-status">
+                            <option value="ordinary" selected>ordinary productive compound</option>
+                            <option value="lexicalized-tli">lexicalized special meaning · tli class</option>
+                            <option value="exceptional-zero">typed exceptional zero class</option>
+                            <option value="irregular-embed-variant">typed irregular embed shape</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-irregular-embed-only="true" hidden>
+                          <span class="classical-rule-control__label">Irregular compound embed</span>
+                          <input id="classical-affective-irregular-embed-stem" data-classical-rule-logic-control="affective-irregular-embed-stem" type="text" autocomplete="off" spellcheck="false" placeholder="typed lexical variant">
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-embed-affinity-analysis="true" hidden>
+                          <span class="classical-rule-control__label">Embedded-stem affinity evidence</span>
+                          <select id="classical-affective-embed-affinity-requirement" data-classical-rule-logic-control="affective-embed-affinity-requirement">
+                            <option value="none" selected>matrix affinity only</option>
+                            <option value="optional">embedded affinity is optional</option>
+                            <option value="obligatory">embedded affinity is obligatory</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-optional-embed-affinity="true" hidden>
+                          <span class="classical-rule-control__label">Apply affinity to</span>
+                          <select id="classical-affective-embed-affinity-selected" data-classical-rule-logic-control="affective-embed-affinity-selected">
+                            <option value="matrix" selected>affective matrix only</option>
+                            <option value="both">embed and affective matrix</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-embed-affinity-target="true" hidden>
+                          <span class="classical-rule-control__label">Embedded affinity falls on</span>
+                          <select id="classical-affective-embed-affinity-target" data-classical-rule-logic-control="affective-embed-affinity-target">
+                            <option value="initial" selected>first morphemic part</option>
+                            <option value="matrix">embedded matrix part</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" hidden>
                           <span class="classical-rule-control__label">Attitude</span>
                           <select id="classical-attitude-operation" data-classical-rule-logic-control="attitude-operation">
+                            <option value="" hidden>choose the next attitude</option>
                             <option value="honorific" selected>honorific</option>
                             <option value="reverential">reverential</option>
                             <option value="pejorative">pejorative</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="attitude-vnc" data-attitude-source-analysis="true" hidden>
+                          <span class="classical-rule-control__label">Source honorific formation</span>
+                          <select id="classical-attitude-source-analysis" data-classical-rule-logic-control="attitude-source-analysis">
+                            <option value="" selected>choose what this Source licenses</option>
+                            <option value="causative-only">causative only</option>
+                            <option value="applicative-only">applicative only</option>
+                            <option value="both-causative-preferred">both · causative preferred</option>
+                            <option value="both-applicative-preferred">both · applicative preferred</option>
+                            <option value="both-no-preference">both · no stated preference</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" hidden>
@@ -1416,8 +1848,18 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="preterit-embed">preterit embed</option>
                           </select>
                         </label>
+                        <label class="classical-rule-control" data-construction-for="attitude-vnc" data-attitude-lexical-alternative="true" hidden>
+                          <span class="classical-rule-control__label">Licensed lexical alternative</span>
+                          <select id="classical-attitude-stem-alternative" data-classical-rule-logic-control="attitude-stem-alternative">
+                            <option value="default" selected>usual licensed form</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="attitude-vnc" data-attitude-derivation-option="true" hidden>
+                          <span class="classical-rule-control__label">Formation shape</span>
+                          <select id="classical-attitude-derivation-option" data-classical-rule-logic-control="attitude-derivation-option"></select>
+                        </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" hidden>
-                          <span class="classical-rule-control__label">Respected participant</span>
+                          <span class="classical-rule-control__label" data-classical-attitude-participant-label>Respected participant</span>
                           <select id="classical-attitude-participant" data-classical-rule-logic-control="attitude-participant">
                             <option value="subject" selected>subject</option>
                             <option value="object">object</option>
@@ -1431,7 +1873,13 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <span class="classical-rule-control__label">Numeral use</span>
                           <select id="classical-cardinal-target-kind" data-classical-rule-logic-control="cardinal-target-kind">
                             <option value="nnc" selected>numeral NNC</option>
-                            <option value="vnc-adverb">one as a VNC adverb</option>
+                            <option value="vnc-embed">numeral embedded in a VNC</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-numeral-variant-choice="true" hidden>
+                          <span class="classical-rule-control__label">Licensed numeral shape</span>
+                          <select id="classical-cardinal-numeral-variant" data-classical-rule-logic-control="cardinal-numeral-variant">
+                            <option value="automatic" selected>automatic shape</option>
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" hidden>
@@ -1451,26 +1899,62 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="gross">gross or total count</option>
                           </select>
                         </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-gross-possessor-kind="true" hidden>
+                          <span class="classical-rule-control__label">Gross-count possessor</span>
+                          <select id="classical-cardinal-gross-possessor-kind" data-classical-rule-logic-control="cardinal-gross-possessor-kind">
+                            <option value="animate" selected>animate plural</option>
+                            <option value="nonanimate">nonanimate plural referent</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-gross-number-variant="true" hidden>
+                          <span class="classical-rule-control__label">Nonanimate number spelling</span>
+                          <select id="classical-cardinal-gross-number-variant" data-classical-rule-logic-control="cardinal-gross-number-variant">
+                            <option value="tin" selected>tin · final n represented</option>
+                            <option value="ti">ti · final n not represented</option>
+                          </select>
+                        </label>
                         <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" hidden>
                           <span class="classical-rule-control__label">Counting set</span>
                           <select id="classical-cardinal-classifier" data-classical-rule-logic-control="cardinal-classifier">
                             <option value="basic">basic</option>
-                            <option value="rock">round or plump · te</option>
-                            <option value="row">row · pān</option>
-                            <option value="thing">folded or stacked thing · tlaman</option>
-                            <option value="cob">oblong · ōlō</option>
-                            <option value="tecpan">twenties · people/animals/houses/rocks</option>
-                            <option value="ipil">twenties · blankets/paper/tortillas/hides</option>
-                            <option value="quimil">twenties · blankets</option>
+                            <option value="rock">compatible rock-set unit · te</option>
+                            <option value="row">compatible row-set unit · pān</option>
+                            <option value="thing">compatible set-down or stackable unit · tlaman</option>
+                            <option value="cob">compatible maize-cob-shape unit · ōlō</option>
+                            <option value="tecpan">groups of twenty · lined-up set</option>
+                            <option value="ipil">groups of twenty · pile</option>
+                            <option value="quimil">groups of twenty · bundle</option>
                             <option value="measure">measure</option>
                           </select>
                         </label>
-                        <label class="classical-rule-control" data-construction-for="compound-nnc,affective-nnc,cardinal-numeral-nnc" hidden>
+                        <label class="classical-rule-control" data-construction-for="cardinal-numeral-nnc" data-cardinal-conjunction-form="true" hidden>
+                          <span class="classical-rule-control__label">Conjunction form</span>
+                          <select id="classical-cardinal-conjunction-form" data-classical-rule-logic-control="cardinal-conjunction-form">
+                            <option value="separate" selected>separate numeral clauses</option>
+                            <option value="compound">conjunctive compound</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="compound-nnc,cardinal-numeral-nnc" data-nominal-stem-relation-control="true" hidden>
                           <span class="classical-rule-control__label">Stem relation</span>
                           <select id="classical-construction-reduplication" data-classical-rule-logic-control="nominal-stem-relation">
                             <option value="none">none</option>
                             <option value="affinity">affinity</option>
                             <option value="distributive-varietal">distribution or variety</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-nonanimate-reduplication-reading="true" hidden>
+                          <span class="classical-rule-control__label">Nonanimate reduplication meaning</span>
+                          <select id="classical-affective-nonanimate-reduplication-reading" data-classical-rule-logic-control="affective-nonanimate-reduplication-reading">
+                            <option value="ambiguous" selected>context does not decide</option>
+                            <option value="affinity">affinity</option>
+                            <option value="distributive-varietal">distribution or variety</option>
+                          </select>
+                        </label>
+                        <label class="classical-rule-control" data-construction-for="affective-nnc" data-affective-nonanimate-reduplication-shape="true" hidden>
+                          <span class="classical-rule-control__label">Nonanimate affective shape</span>
+                          <select id="classical-affective-nonanimate-reduplication-shape" data-classical-rule-logic-control="affective-nonanimate-reduplication-shape">
+                            <option value="none" selected>plain matrix</option>
+                            <option value="affinity">reduplicated matrix</option>
                           </select>
                         </label>
                         </div>
@@ -2361,16 +2845,12 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                       <div class="classical-nnc-authority-heading" data-classical-nnc-authority-heading="state" hidden aria-hidden="true">State</div>
                       <div class="classical-nnc-authority-heading" data-classical-nnc-authority-heading="nounstem" hidden aria-hidden="true">Nounstem</div>
                       <div class="classical-nnc-authority-heading" data-classical-nnc-authority-heading="sentence" hidden aria-hidden="true">Sentence</div>
-                      <div class="classical-vnc-authority-heading" data-classical-vnc-authority-heading="verbstem" hidden aria-hidden="true">Verbstem</div>
-                      <div class="classical-vnc-authority-heading" data-classical-vnc-authority-heading="derivation" hidden aria-hidden="true">Derivation</div>
-                      <div class="classical-vnc-authority-heading" data-classical-vnc-authority-heading="subject" hidden aria-hidden="true">Subject</div>
-                      <div class="classical-vnc-authority-heading" data-classical-vnc-authority-heading="predicate" hidden aria-hidden="true">Predicate</div>
-                      <div class="classical-vnc-authority-heading" data-classical-vnc-authority-heading="sentence" hidden aria-hidden="true">Sentence</div>
-                      <label class="classical-rule-control" data-classical-vnc-authority-order="subject-person">
-                        <span class="classical-rule-control__label">Subject</span>
+                      <label class="classical-rule-control" data-classical-vnc-subject-agreement-mirror="true" hidden aria-hidden="true">
+                        <span class="classical-rule-control__label">Subject agreement</span>
                         <select
                           id="classical-rule-logic-subject"
                           data-classical-rule-logic-control="subject"
+                          tabindex="-1"
                         >
                           <option value="1sg" selected>1sg</option>
                           <option value="2sg">2sg</option>
@@ -2379,6 +2859,36 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="1pl">1pl</option>
                           <option value="2pl">2pl</option>
                           <option value="3pl">3pl</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-control="subject" data-classical-vnc-authority-order="subject-person" hidden>
+                        <span class="classical-rule-control__label">Person</span>
+                        <select id="classical-rule-logic-vnc-subject-person" data-classical-rule-logic-control="vnc-subject-person">
+                          <option value="1" selected>first</option>
+                          <option value="2">second</option>
+                          <option value="3">third</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-control="subject" data-classical-vnc-authority-order="subject-animacy" hidden>
+                        <span class="classical-rule-control__label">Animacy</span>
+                        <select id="classical-rule-logic-vnc-subject-animacy" data-classical-rule-logic-control="vnc-subject-animacy">
+                          <option value="animate" selected>animate</option>
+                          <option value="nonanimate">nonanimate</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-control="subject" data-classical-vnc-authority-order="subject-humanness" hidden>
+                        <span class="classical-rule-control__label">Humanness</span>
+                        <select id="classical-rule-logic-vnc-subject-humanness" data-classical-rule-logic-control="vnc-subject-humanness">
+                          <option value="human" selected>human</option>
+                          <option value="nonhuman">nonhuman</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-vnc-authority-control="subject" data-classical-vnc-authority-order="subject-number" hidden>
+                        <span class="classical-rule-control__label">Number</span>
+                        <select id="classical-rule-logic-vnc-subject-number" data-classical-rule-logic-control="vnc-subject-number">
+                          <option value="singular" selected>singular</option>
+                          <option value="common">common</option>
+                          <option value="plural">plural</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="subject" data-classical-nnc-authority-order="subject-person" hidden>
@@ -2390,10 +2900,17 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="subject" data-classical-nnc-authority-order="subject-animacy" hidden>
-                        <span class="classical-rule-control__label">Referent</span>
+                        <span class="classical-rule-control__label">Animacy</span>
                         <select id="classical-rule-logic-nnc-subject-animacy" data-classical-rule-logic-control="nnc-subject-animacy">
                           <option value="animate" selected>animate</option>
                           <option value="nonanimate">nonanimate</option>
+                        </select>
+                      </label>
+                      <label class="classical-rule-control" data-classical-nnc-authority-control="subject" data-classical-nnc-authority-order="subject-humanness" hidden>
+                        <span class="classical-rule-control__label">Humanness</span>
+                        <select id="classical-rule-logic-nnc-subject-humanness" data-classical-rule-logic-control="nnc-subject-humanness">
+                          <option value="human" selected>human</option>
+                          <option value="nonhuman">nonhuman</option>
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-nnc-authority-control="subject" data-classical-nnc-authority-order="subject-number" hidden>
@@ -3302,6 +3819,15 @@ ${renderLesson27ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson28ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson29ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson30ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson31ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson32ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson33ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson34ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson35ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson36ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson37ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson38ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson39ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -3636,6 +4162,275 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         mediaQuery.addListener(syncClassicalWorkbenchStageSemantics);
       }
       navigation.dataset.classicalWorkbenchSemanticsBound = "true";
+      return true;
+    }
+    function syncClassicalSourceNestingStructure() {
+      const documentObject = targetObject.document;
+      const root = documentObject?.getElementById?.("classical-source-parts") || null;
+      if (!root) return false;
+
+      const basalUnitControls = documentObject.getElementById?.(
+        "classical-basal-unit-controls"
+      ) || null;
+      const activeBasalUnitButton = basalUnitControls?.querySelector?.(
+        'button[data-classical-basal-unit][aria-pressed="true"]'
+      ) || null;
+      const activeUnit = String(
+        activeBasalUnitButton?.dataset?.classicalBasalUnit
+        || basalUnitControls?.dataset?.classicalBasalUnit
+        || "vnc"
+      ) === "nnc" ? "nnc" : "vnc";
+      const activeUnitLabel = activeUnit.toUpperCase();
+
+      const getOrCreateSection = (kind, title) => {
+        let section = root.querySelector?.(
+          `:scope > [data-classical-source-outline-section="${kind}"]`
+        ) || null;
+        if (!section) {
+          section = documentObject.createElement("section");
+          section.className = "classical-source-outline__section";
+          section.dataset.classicalSourceOutlineSection = kind;
+          section.dataset.classicalNestingLevel = "2";
+          section.setAttribute("aria-labelledby", `classical-source-outline-${kind}-heading`);
+          const heading = documentObject.createElement("h3");
+          heading.className = "classical-source-outline__heading";
+          heading.id = `classical-source-outline-${kind}-heading`;
+          heading.textContent = title;
+          section.appendChild(heading);
+        }
+        root.appendChild(section);
+        return section;
+      };
+      const identity = getOrCreateSection("identity", "Source identity");
+      const form = getOrCreateSection("form", `${activeUnitLabel} Source path`);
+      const analysis = getOrCreateSection("analysis", "Source analysis");
+      const formHeading = form.querySelector?.(
+        ":scope > .classical-source-outline__heading"
+      );
+      if (formHeading) formHeading.textContent = `${activeUnitLabel} Source path`;
+
+      let operationLane = form.querySelector?.(
+        ':scope > [data-classical-source-path-lane="operation"]'
+      ) || null;
+      if (!operationLane) {
+        operationLane = documentObject.createElement("section");
+        operationLane.className = "classical-source-path-lane";
+        operationLane.dataset.classicalSourcePathLane = "operation";
+        operationLane.dataset.classicalNestingLevel = "3";
+        operationLane.setAttribute(
+          "aria-labelledby",
+          "classical-source-path-operation-heading"
+        );
+        const heading = documentObject.createElement("h4");
+        heading.className = "classical-source-path-lane__heading";
+        heading.id = "classical-source-path-operation-heading";
+        operationLane.appendChild(heading);
+      }
+      const operationLaneHeading = operationLane.querySelector?.(
+        ":scope > .classical-source-path-lane__heading"
+      );
+      if (operationLaneHeading) {
+        operationLaneHeading.textContent = `Continue this ${activeUnitLabel} Source`;
+      }
+      operationLane.dataset.classicalSourcePathUnit = activeUnit;
+      operationLane.dataset.classicalSourcePathStep = "3";
+
+      const operationField = documentObject.getElementById?.(
+        "classical-construction-operation-field"
+      );
+      const operationLabel = operationField?.querySelector?.(
+        ":scope > .classical-rule-control__label"
+      );
+      const operationSelect = documentObject.getElementById?.(
+        "classical-construction-operation"
+      );
+      if (operationLabel) {
+        operationLabel.textContent = `Operation from this ${activeUnitLabel} Source`;
+      }
+      operationSelect?.setAttribute?.(
+        "aria-label",
+        `Operation from this ${activeUnitLabel} Source`
+      );
+      const appendExisting = (section, ids = [], selectors = []) => {
+        const nodes = [
+          ...ids.map(id => documentObject.getElementById(id)),
+          ...selectors.map(selector => root.querySelector?.(selector)),
+        ].filter(Boolean);
+        nodes.forEach(node => {
+          section.appendChild(node);
+        });
+      };
+
+      appendExisting(identity, [
+        "classical-vnc-source-guide",
+        "classical-nnc-source-guide",
+        "classical-source-identity-controls",
+      ]);
+      appendExisting(form, [], [
+        ".classical-source-parts__mode",
+        ".classical-source-parts__grid",
+      ]);
+      form.appendChild(operationLane);
+      appendExisting(operationLane, [
+        "classical-construction-source-controls",
+      ], [
+        ".classical-source-parts__commit-row",
+      ]);
+      appendExisting(operationLane, ["classical-source-commit-status"]);
+      appendExisting(form, [
+        "classical-transcription-keyboard",
+        "classical-transcription-optional-controls",
+      ]);
+      appendExisting(analysis, [
+        "classical-source-readout",
+        "classical-source-constitution",
+        "classical-source-internal-morphs",
+      ]);
+
+      const legacyOperation = root.querySelector?.(
+        ':scope > [data-classical-source-outline-section="operation"]'
+      ) || null;
+      if (legacyOperation) legacyOperation.remove();
+
+      const sectionHasVisibleContent = section => Array.from(
+        section.children || []
+      ).some(node => (
+        !node.classList?.contains("classical-source-outline__heading")
+        && node.hidden !== true
+      ));
+      [identity, form, analysis].forEach((section, index) => {
+        const visible = sectionHasVisibleContent(section);
+        section.hidden = !visible;
+        section.setAttribute("aria-hidden", String(!visible));
+        section.dataset.classicalSourcePathUnit = activeUnit;
+        section.dataset.classicalSourcePathStep = String([1, 2, 4][index]);
+      });
+      root.dataset.classicalSourceNesting = "identity-form-path-analysis";
+      root.dataset.classicalSourcePathUnit = activeUnit;
+      root.setAttribute("aria-label", `${activeUnitLabel} Source path`);
+      root.dataset.classicalNestingLevel = "1";
+      return true;
+    }
+    function installClassicalSourcePathSync() {
+      const documentObject = targetObject.document;
+      const controls = documentObject?.getElementById?.(
+        "classical-basal-unit-controls"
+      ) || null;
+      if (!controls) return false;
+      if (controls.dataset.classicalSourcePathSyncBound === "true") {
+        return true;
+      }
+      const MutationObserverConstructor = targetObject.MutationObserver
+        || documentObject.defaultView?.MutationObserver
+        || null;
+      if (typeof MutationObserverConstructor !== "function") return false;
+      const observer = new MutationObserverConstructor(() => {
+        syncClassicalSourceNestingStructure();
+      });
+      observer.observe(controls, {
+        attributes: true,
+        subtree: true,
+        attributeFilter: ["data-classical-basal-unit", "aria-pressed"],
+      });
+      controls.classicalSourcePathNestingObserver = observer;
+      controls.dataset.classicalSourcePathSyncBound = "true";
+      return true;
+    }
+    function syncClassicalResultNestingStructure() {
+      const documentObject = targetObject.document;
+      const root = documentObject?.getElementById?.("container-tense-grid") || null;
+      if (!root) return false;
+
+      const getOrCreateSection = (kind, title) => {
+        let section = root.querySelector?.(
+          `[data-classical-result-outline-section="${kind}"]`
+        ) || null;
+        if (!section) {
+          section = documentObject.createElement("section");
+          section.className = "classical-result-outline__section";
+          section.dataset.classicalResultOutlineSection = kind;
+          section.dataset.classicalNestingLevel = "1";
+          section.setAttribute("aria-labelledby", `classical-result-outline-${kind}-heading`);
+          const heading = documentObject.createElement("h3");
+          heading.className = "classical-result-outline__heading";
+          heading.id = `classical-result-outline-${kind}-heading`;
+          heading.textContent = title;
+          section.appendChild(heading);
+        }
+        return section;
+      };
+      const view = getOrCreateSection("view", "Result view");
+      const structureAnalysis = getOrCreateSection(
+        "structure-analysis",
+        "Structure and analysis"
+      );
+      const paradigm = getOrCreateSection("paradigm", "Paradigm");
+      const continuation = getOrCreateSection(
+        "continuation",
+        "Continuation"
+      );
+      const appendExisting = (section, ids = [], selectors = []) => {
+        const nodes = [
+          ...ids.map(id => documentObject.getElementById(id)),
+          ...selectors.map(selector => root.querySelector?.(selector)),
+        ].filter(Boolean);
+        nodes.forEach(node => {
+          if (node.parentElement !== section) section.appendChild(node);
+        });
+      };
+
+      appendExisting(view, ["output-result-controls"], [
+        ".output-meta-strip",
+        ".classical-result-scope-controls",
+        ".panel-block-actions",
+      ]);
+      appendExisting(structureAnalysis, ["classical-rule-logic-surface"]);
+      appendExisting(paradigm, ["all-tense-conjugations"]);
+      appendExisting(continuation, ["classical-grammar-continuation"]);
+
+      [view, structureAnalysis, paradigm, continuation].forEach(
+        section => root.appendChild(section)
+      );
+
+      const nodeHasVisibleContent = node => {
+        if (!node || node.hidden || node.classList?.contains("is-hidden")) return false;
+        if (["classical-rule-logic-surface", "all-tense-conjugations"].includes(node.id)) {
+          return Boolean(node.childElementCount || String(node.textContent || "").trim());
+        }
+        return true;
+      };
+      const syncVisibility = () => {
+        [view, structureAnalysis, paradigm, continuation].forEach(section => {
+          const visible = Array.from(section.children || []).some(node => (
+            !node.classList?.contains("classical-result-outline__heading")
+            && nodeHasVisibleContent(node)
+          ));
+          if (section.hidden !== !visible) section.hidden = !visible;
+          if (section.getAttribute("aria-hidden") !== String(!visible)) {
+            section.setAttribute("aria-hidden", String(!visible));
+          }
+        });
+      };
+      syncVisibility();
+      const MutationObserverConstructor = targetObject.MutationObserver
+        || documentObject.defaultView?.MutationObserver
+        || null;
+      if (
+        root.dataset.classicalResultNestingObserved !== "true"
+        && typeof MutationObserverConstructor === "function"
+      ) {
+        const observer = new MutationObserverConstructor(syncVisibility);
+        observer.observe(root, {
+          attributes: true,
+          attributeFilter: ["class", "hidden"],
+          childList: true,
+          subtree: true,
+        });
+        root.classicalResultNestingObserver = observer;
+        root.dataset.classicalResultNestingObserved = "true";
+      }
+      root.dataset.classicalResultNesting =
+        "view-structure-analysis-paradigm-continuation";
       return true;
     }
     function syncClassicalSourceCommitPresentation() {
@@ -3980,9 +4775,12 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     }
     function installClassicalWorkbenchPresentation() {
       installClassicalWorkbenchStageSemantics();
+      syncClassicalSourceNestingStructure();
+      installClassicalSourcePathSync();
       installClassicalSourceCommitPresentation();
       installClassicalTranscriptionSourcePresentation();
       installClassicalPanelRhythm();
+      syncClassicalResultNestingStructure();
       installClassicalReaderGuidanceHeader();
       return true;
     }
@@ -4097,6 +4895,24 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.isLesson29ReaderGuidanceExact = isLesson29ReaderGuidanceExact;
     api.LESSON30_READER_GUIDANCE_GROUPS = LESSON30_READER_GUIDANCE_GROUPS;
     api.isLesson30ReaderGuidanceExact = isLesson30ReaderGuidanceExact;
+    api.LESSON31_READER_GUIDANCE_GROUPS = LESSON31_READER_GUIDANCE_GROUPS;
+    api.isLesson31ReaderGuidanceExact = isLesson31ReaderGuidanceExact;
+    api.LESSON32_READER_GUIDANCE_GROUPS = LESSON32_READER_GUIDANCE_GROUPS;
+    api.isLesson32ReaderGuidanceExact = isLesson32ReaderGuidanceExact;
+    api.LESSON33_READER_GUIDANCE_GROUPS = LESSON33_READER_GUIDANCE_GROUPS;
+    api.isLesson33ReaderGuidanceExact = isLesson33ReaderGuidanceExact;
+    api.LESSON34_READER_GUIDANCE_GROUPS = LESSON34_READER_GUIDANCE_GROUPS;
+    api.isLesson34ReaderGuidanceExact = isLesson34ReaderGuidanceExact;
+    api.LESSON35_READER_GUIDANCE_GROUPS = LESSON35_READER_GUIDANCE_GROUPS;
+    api.isLesson35ReaderGuidanceExact = isLesson35ReaderGuidanceExact;
+    api.LESSON36_READER_GUIDANCE_GROUPS = LESSON36_READER_GUIDANCE_GROUPS;
+    api.isLesson36ReaderGuidanceExact = isLesson36ReaderGuidanceExact;
+    api.LESSON37_READER_GUIDANCE_GROUPS = LESSON37_READER_GUIDANCE_GROUPS;
+    api.isLesson37ReaderGuidanceExact = isLesson37ReaderGuidanceExact;
+    api.LESSON38_READER_GUIDANCE_GROUPS = LESSON38_READER_GUIDANCE_GROUPS;
+    api.isLesson38ReaderGuidanceExact = isLesson38ReaderGuidanceExact;
+    api.LESSON39_READER_GUIDANCE_GROUPS = LESSON39_READER_GUIDANCE_GROUPS;
+    api.isLesson39ReaderGuidanceExact = isLesson39ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;
@@ -4105,6 +4921,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.ClassicalPanelShell = ClassicalPanelShell;
     api.installClassicalTranscriptionSourcePresentation =
       installClassicalTranscriptionSourcePresentation;
+    api.syncClassicalSourceNestingStructure =
+      syncClassicalSourceNestingStructure;
+    api.syncClassicalResultNestingStructure =
+      syncClassicalResultNestingStructure;
     api.installClassicalPanelRhythm = installClassicalPanelRhythm;
     api.installClassicalReaderGuidanceHeader = installClassicalReaderGuidanceHeader;
     api.installClassicalShell = installClassicalShell;

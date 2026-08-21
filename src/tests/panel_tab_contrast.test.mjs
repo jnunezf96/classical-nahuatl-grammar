@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import browserCacheChain from "./helpers/browser_cache_chain.js";
+
+const { currentBrowserCacheKey, usesBrowserCacheKey } = browserCacheChain;
 
 const testDirectory = path.dirname(fileURLToPath(import.meta.url));
 const projectRoot = path.resolve(testDirectory, "..", "..");
@@ -38,22 +41,16 @@ function contrastRatio(first, second) {
   return (lighter + 0.05) / (darker + 0.05);
 }
 
-const stylesheetVersion = html.match(/style\.css\?v=([^"']+)/u)?.[1] || "";
-const moduleEntryVersion = html.match(/main\.mjs\?v=([^"']+)/u)?.[1] || "";
+const browserCacheKey = currentBrowserCacheKey(html);
 const selectedBackground = css.match(/--workbench-teal-deep:\s*(#[a-f\d]{6})\s*;/iu)?.[1] || "";
 const selectedForeground = "#ffffff";
 const declaredFontWeights = new Set(
   Array.from(css.matchAll(/font-weight:\s*(\d+)\s*;/gu), match => Number(match[1]))
 );
 
-assert.ok(stylesheetVersion, "the stylesheet must have an explicit delivery key");
-assert.equal(
-  stylesheetVersion,
-  moduleEntryVersion,
-  "the Workbench stylesheet and browser entry must share the current delivery key"
-);
-assert.ok(browserMain.includes(`bootstrap.mjs?v=${moduleEntryVersion}`));
-assert.ok(bootstrap.includes(`classical_shell.mjs?v=${moduleEntryVersion}`));
+assert.ok(browserCacheKey, "the stylesheet and browser entry must share a delivery key");
+assert.ok(usesBrowserCacheKey(browserMain, "bootstrap.mjs", browserCacheKey));
+assert.ok(usesBrowserCacheKey(bootstrap, "classical_shell.mjs", browserCacheKey));
 assert.equal(selectedBackground.toLowerCase(), "#123f37");
 assert.match(html, /Space\+Grotesk:wght@400;500;600;700/u);
 assert.deepEqual([...declaredFontWeights].sort((a, b) => a - b), [400, 500, 600, 700]);
@@ -120,7 +117,7 @@ assert.match(
 );
 assert.match(
   css,
-  /#classical-result-panel \.classical-result-scope-controls \{[\s\S]+grid-template-columns: minmax\(0, 16rem\);[\s\S]+justify-content: start;[\s\S]+padding-inline: 0;/u
+  /#classical-result-panel\s+\.classical-result-scope-controls \{[\s\S]+grid-template-columns: minmax\(0, 1fr\);[\s\S]+width: 100%;/u
 );
 assert.match(
   css,
@@ -196,11 +193,11 @@ assert.match(
 );
 assert.match(
   css,
-  /\.classical-vnc-authority-section\[data-classical-vnc-authority-disclosure="particle-group"\][\s\S]+:is\(\.classical-built-in-particles, \.classical-particle-combination-builder\) \{[\s\S]+padding: 0;[\s\S]+border: 0;[\s\S]+background: transparent;[\s\S]+box-shadow: none;/u
+  /\.classical-vnc-authority-section\[data-classical-vnc-authority-disclosure="sentence"\][\s\S]+:is\(\.classical-built-in-particles, \.classical-particle-combination-builder\) \{[\s\S]+padding: 0;[\s\S]+border: 0;[\s\S]+background: transparent;[\s\S]+box-shadow: none;/u
 );
 assert.match(
   css,
-  /\.classical-vnc-authority-section\[data-classical-vnc-authority-disclosure="particle-group"\][\s\S]+\.classical-vnc-authority-control-group__header \{[\s\S]+display: none;[\s\S]+\.classical-rule-control__hint \{[\s\S]+font-size: var\(--sgr-type-support\);[\s\S]+font-weight: 500;/u
+  /\.classical-vnc-authority-section\[data-classical-vnc-authority-disclosure="sentence"\][\s\S]+\.classical-vnc-authority-control-group__header \{[\s\S]+display: none;[\s\S]+\.classical-rule-control__hint \{[\s\S]+font-size: var\(--sgr-type-support\);[\s\S]+font-weight: 500;/u
 );
 assert.match(
   css,

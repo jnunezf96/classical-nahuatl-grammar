@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "lesson": 39,
+  "decisions": {
+    "lesson39-perfective-patientive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the perfective patientive from an exact owner-issued active preterit VNC Result, enforce compatible perfective shape and tli class automatically, and offer passive analogy only for a transitive Source."
+    },
+    "lesson39-perfective-impersonal-model": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the impersonal model to exact transitive or intransitive perfective Sources while preserving reflexive and object structure, typed referents, and the Canvas-approved human tē to analogical tla history."
+    },
+    "lesson39-perfective-compounds-and-ownerhood": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve complete compound VNC Source structure through perfective patientive formation, keep acquired-family and abundant-heart readings as narrow typed lexical facts, and inherit automatic boundaries without a route whitelist."
+    },
+    "lesson39-imperfective-patientive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the imperfective patientive from an exact owner-issued active present VNC Result, apply the class-conditioned imperfective Source shape and tl class automatically, and offer passive analogy only for a transitive Source."
+    },
+    "lesson39-imperfective-impersonal-model": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the imperfective impersonal model to exact transitive or intransitive active present VNC Results, preserve typed participants and Source history, and keep witnessed meanings and affective continuations narrow and non-authorizing."
+    },
+    "lesson39-characteristic-patientive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive characteristic imperfective patientives from exact owner-issued ordinary NNC Results, apply the abundant-ownerhood compound path, typed y assimilation, Subclass 1-B tl inflection, and possessive shortening automatically, while keeping inherent-quality readings narrow and non-authorizing."
+    },
+    "lesson39-characteristic-ownerhood-contrasts": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep pertaining-to and intrinsic-aspect readings distinct, preserve any typed ordinary-ownerhood structure inside the embed separately from the outer abundant-ownerhood matrix, expose only a genuine relation ambiguity, and keep lexical readings, reconstructions, traditional spellings, and examples non-authorizing."
+    },
+    "lesson39-characteristic-organic-possession": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Require a possessive Result, an explicit possessor-as-whole, and a possessum-as-integral-part relation for organic possession; derive the state restriction automatically; preserve singular/plural and living/nonliving possibilities; and keep body-part meanings, yō shape, witnessed distributions, exceptions, and examples non-authorizing."
+    },
+    "lesson39-characteristic-adventitious-possession": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue from an exact owner-issued preterit-agentive NNC Result, use its typed general-use nounstem as the embed of the characteristic yō matrix, keep absolutive and possessive outer states distinct, reject adventitious, organic, flesh, and possessor-prefix misreadings, keep lexical meanings non-authorizing, and leave the genuine principal-clause choice to the canonical supplementation owner."
+    },
+    "lesson39-characteristic-extended-notes": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve exact passive-action and active-action NNC Result history in characteristic forms, use the typed general-use action nounstem with the yō-tl matrix automatically, retain passive and active readings and homophonous action-versus-agentive analyses separately, expose an analysis choice only under genuine contextual ambiguity, and keep reconstructed intermediate forms and examples non-authorizing."
+    },
+    "lesson39-root-stock-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive root- and stock-based patientives from the typed morphemic Source rather than a verb list, shorten a true stock-formative long vowel automatically, preserve fused-root vowel quantity, expose only a genuinely unknown licensed allomorph choice, derive the Result class and boundaries automatically, and keep witnessed forms and meanings non-authorizing."
+    },
+    "lesson39-root-stock-allomorphs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the hua root-stock allomorph family from the typed morphemic Source, shorten a true long stock formative automatically, preserve downgraded-noun and compound history, restrict c, ch, and zero to typed alternatives, derive tli versus tl class automatically, and keep witnessed readings non-authorizing."
+    },
+    "lesson39-root-stock-extensions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply productive i-hui and a-hui stock or root patientives from typed Source shape, preserve causative object carriers and narrow agentive or unknown-source lexical facts, expose Source direction only under genuine ambiguity, keep related and homophonous Sources distinct, and never use examples or readings as route gates."
+    },
+    "lesson39-patientive-use-and-reading": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the five patientive procedures distinct under one typed use frame, allow multiple procedures only when each is independently licensed by the exact Source, preserve translation overlap without merging meaning or canonical Results, expose interpretation only under genuine contextual ambiguity, and never let translation, surface, or examples authorize structure."
+    },
+    "lesson39-patientive-compound-embeds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued patientive NNC Result, preserve its complete typed Source and derivation as the embed of a nominal or verbal compound, keep the matrix separately typed, expose only the genuine compound-target and relation choices, derive boundaries automatically, and reject nounstem strings, copied Results, formulas, surfaces, and example identity as authority."
+    },
+    "lesson39-patientive-compound-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued patientive NNC Result as the compound matrix, preserve its complete typed Source and VNC ancestry, expose only the typed embed and genuine relation choices, derive order, boundaries, and Result class automatically, keep derivational history available for final shape and meaning, and reject surface reconstruction, copied Results, formulas, examples, and lexical readings as route authority."
+    },
+    "lesson39-patientive-ownerhood-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued patientive NNC Result into an incorporated object-complement relation, preserve its absolutive or possessive Source state, derive the discarded patientive subject's identity with the matrix object automatically for the absolutive pattern, keep the verbal matrix separately typed, expose only the licensed matrix and genuine complement relation, and reject surface reconstruction, copies, examples, and meanings as route authority."
+    },
+    "lesson39-patientive-ownerhood-hua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue an exact owner-issued absolutive patientive NNC Result through an open typed object-complement matrix analysis; preserve the patientive's VNC ancestry, human-object and compound history, derive reflexive or applicative object coreference from typed participant structure, expose only the matrix, object layer, and intended complement reading, and keep the five witnessed matrices, translations, copied Results, formulas, and surfaces non-authorizing."
+    },
+    "lesson39-patientive-ownerhood-yoa": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue an exact owner-issued absolutive patientive NNC Result through the lexical short-a tlani desiderative matrix; keep it distinct from long-ā tlāni, preserve the complete upstream patientive Source and VNC ancestry, derive m-o, tē, or tla from the typed desired-object pattern, keep tlani matrix-only in this formation, and treat witnessed idiomatic readings, translations, examples, copied Results, formulas, and surfaces as non-authorizing."
+    },
+    "lesson39-patientive-ownerhood-continuation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue an exact owner-issued possessive patientive NNC Result through the typed toca object-complement matrix; automatically change its possessor from possessive case to a mainline applicative objective object, preserve the matrix's original object, inflate single-object to double-object valence without a suffix, derive reflexive versus projective realization from typed participant identity, allow a typed inner ye compound, and reject nounstem strings, copied Results, formulas, surfaces, translations, and examples as authority."
+    },
+    "lesson39-patientive-ownerhood-extended": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue an exact owner-issued possessive patientive NNC Result through the typed short-a tlani matrix as a type-three causative; transform the possessor into the mainline causative object, inherit the exact patientive VNC object history as shuntline structure, derive l plus tl as l-l, preserve passive and impersonal continuations through the canonical voice owner, keep type two and type three distinct, and reject long-a tlani, nounstem strings, copied Results, formulas, surfaces, translations, and examples as authority."
+    },
+    "lesson39-patientive-incorporated-objects": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued possessive patientive Result as the incorporated object of a separately typed verbal matrix; automatically change its possessor into the external mainline applicative object, preserve matrix valence because one object is internal and one is external, add no applicative suffix, retain internal matrix boundaries, and keep witnessed matrices, meanings, nounstem strings, copied Results, formulas, and surfaces non-authorizing."
+    },
+    "lesson39-life-heart-embed-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued characteristic-patientive Result; preserve its complete typed Source, derivation, and full meaning when the characteristic yō matrix receives the Canvas-licensed zero realization; expose full versus omitted realization only where both continuations are licensed; preserve Source identity such as tōna against possessor reanalysis; and keep examples, frequency, translations, nounstem strings, copied Results, formulas, and surfaces non-authorizing."
+    }
+  }
+}

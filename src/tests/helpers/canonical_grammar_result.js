@@ -24,6 +24,7 @@ function buildCanonicalVncTestResult(ctx, {
                 tenseMode: ctx.TENSE_MODE.verbo,
                 derivationMode,
                 derivationType: ctx.DERIVATION_TYPE.direct,
+                sourceVerbClass: "B",
                 voiceMode,
                 tiempo: tense,
                 posicionesFormula,

@@ -70,12 +70,12 @@ function run(ctx = {}) {
         },
         {
             valid: true,
-            atomicItems: 13853,
-            grammarBearing: 5376,
-            evidence: 6235,
-            analysis: 1120,
-            documentary: 1122,
-            section4910Items: 44,
+            atomicItems: 28540,
+            grammarBearing: 18639,
+            evidence: 6524,
+            analysis: 1423,
+            documentary: 1954,
+            section4910Items: 133,
             correctedHeading: true,
             malformedHeading: false,
         }
@@ -93,12 +93,10 @@ function run(ctx = {}) {
         },
         {
             valid: true,
-            count: 945,
-            digest:
-                "94f4e7970776c309f8f4e1fdef02ca6e327089d860af516367204e58194422b8",
-            expectedCount: 945,
-            expectedDigest:
-                "94f4e7970776c309f8f4e1fdef02ca6e327089d860af516367204e58194422b8",
+            count: LESSONS_12_16_SOURCE_ITEM_COUNT,
+            digest: LESSONS_12_16_SOURCE_MANIFEST_DIGEST,
+            expectedCount: LESSONS_12_16_SOURCE_ITEM_COUNT,
+            expectedDigest: LESSONS_12_16_SOURCE_MANIFEST_DIGEST,
         }
     );
 
@@ -133,17 +131,17 @@ function run(ctx = {}) {
         },
         {
             byLesson: {
-                12: 99,
-                13: 62,
-                14: 165,
-                15: 55,
-                16: 127,
+                12: 114,
+                13: 68,
+                14: 293,
+                15: 130,
+                16: 197,
             },
-            required: 508,
-            assigned: 508,
+            required: 802,
+            assigned: 802,
             fullyProved: 0,
-            blocked: 508,
-            unresolved: 508,
+            blocked: 802,
+            unresolved: 802,
             unowned: 0,
             countOnlyClosures: 0,
             invalid: [],
@@ -154,7 +152,7 @@ function run(ctx = {}) {
         (record) => [record.itemId, record]
     ));
     s.eq(
-        "all 508 honest blocks satisfy the shared coordinate-bound contract",
+        "all 802 honest blocks satisfy the shared coordinate-bound contract",
         built.reconciliationRecords.flatMap((record) => {
             const validation = validateGrammarReconciliationRecord(
                 record,
@@ -439,7 +437,7 @@ function run(ctx = {}) {
                 formula: "#n-0(eh-huā)tl-0#",
                 written: "nehhuātl",
                 independent: true,
-                paradigmCount: 12,
+                paradigmCount: 16,
                 parity: true,
                 hostile: "blocked",
                 hostileReason:

@@ -4488,6 +4488,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           stemRelation: "plain",
           outputScope: "single",
           animacy: "animate",
+          humanness: "human",
           metaphoricalUse: false,
           clausePosition: "initial",
           quantityPluralFormation: "",
@@ -4752,6 +4753,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ["animate", "nonanimate"],
         "animate"
       );
+      next.classicalNnc.humanness = normalizeChoice(
+        classicalSource.humanness,
+        ["human", "nonhuman", "unspecified"],
+        "human"
+      );
       next.classicalNnc.metaphoricalUse =
         next.classicalNnc.animacy === "animate"
         && normalizeEntradaUrlBoolean(classicalSource.metaphoricalUse);
@@ -4909,6 +4915,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           stemRelation: targetObject.document.getElementById("classical-rule-logic-nnc-stem-relation")?.value || "plain",
           outputScope: targetObject.document.getElementById("classical-rule-logic-nnc-output-scope")?.value ?? "single",
           animacy: targetObject.document.getElementById("classical-rule-logic-nnc-subject-animacy")?.value || "animate",
+          humanness: targetObject.document.getElementById("classical-rule-logic-nnc-subject-humanness")?.value || "human",
           metaphoricalUse: targetObject.document.getElementById("classical-rule-logic-nnc-metaphorical-use")?.checked === true,
           clausePosition: targetObject.document.getElementById("classical-rule-logic-nnc-clause-position")?.value || "initial",
           quantityPluralFormation: targetObject.document.getElementById("classical-rule-logic-nnc-quantity-plural-formation")?.value || "",
@@ -5229,7 +5236,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || snapshot?.classicalNnc?.active !== true) {
         return false;
       }
-      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncQuantityPluralFormation", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
+      const explicitKeys = ["classicalNncSourceClass", "classicalNncSubject", "classicalNncState", "classicalNncPluralConnector", "classicalNncPredicateOptionId", "classicalNncPossessorReduplication", "classicalNncPossessor", "classicalNncStemRelation", "classicalNncOutputScope", "classicalNncAnimacy", "classicalNncHumanness", "classicalNncMetaphoricalUse", "classicalNncClausePosition", "classicalNncQuantityPluralFormation", "classicalNncDoubledFirstPlural", "classicalNncDependentClauseIntroducedByIn", "classicalNncSpecialHumanUse"];
       if (!explicitKeys.some(key => hasEntradaUrlExplicitField(snapshot, key))) {
         return false;
       }
@@ -5244,6 +5251,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         "classical-rule-logic-nnc-subject-person": subjectPerson,
         "classical-rule-logic-nnc-subject-number": subjectNumber,
         "classical-rule-logic-nnc-subject-animacy": animacyValue === "nonanimate" ? "nonanimate" : "animate",
+        "classical-rule-logic-nnc-subject-humanness": snapshot.classicalNnc?.humanness || "human",
         "classical-rule-logic-nnc-metaphorical-use": snapshot.classicalNnc?.metaphoricalUse === true,
         "classical-rule-logic-nnc-state": snapshot.classicalNnc?.state,
         "classical-rule-logic-nnc-plural-connector": snapshot.classicalNnc?.pluralConnector,
@@ -8087,11 +8095,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const sourceUnit = String(
           option.dataset?.classicalSourceUnit || ""
         ).trim();
-        const available = !sourceUnit || sourceUnit === activeUnit;
+        const available = !sourceUnit
+          || sourceUnit === "any"
+          || sourceUnit === activeUnit;
         option.hidden = false;
         option.disabled = !available;
       });
-      Array.from(construction.querySelectorAll?.("optgroup") || []).forEach(group => {
+      const sourceGroups = Array.from(
+        construction.querySelectorAll?.("optgroup") || []
+      );
+      sourceGroups.forEach(group => {
         const groupUnit = String(
           group.dataset?.classicalOperationSourceGroup || ""
         ).trim();
@@ -8101,11 +8114,22 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           ? `Available from the current ${activeUnit.toUpperCase()} Source`
           : `Requires ${groupUnit === CLASSICAL_BASAL_UNIT.nnc ? "an" : "a"} ${groupUnit.toUpperCase()} Source`;
       });
+      const activeGroup = sourceGroups.find(group => (
+        group.dataset?.classicalOperationSourceGroup === activeUnit
+      ));
+      const firstSourceGroup = sourceGroups[0] || null;
+      if (activeGroup && firstSourceGroup && activeGroup !== firstSourceGroup) {
+        construction.insertBefore(activeGroup, firstSourceGroup);
+      }
       const selectedOption = construction.selectedOptions?.[0] || null;
       const selectedSourceUnit = String(
         selectedOption?.dataset?.classicalSourceUnit || ""
       ).trim();
-      if (selectedSourceUnit && selectedSourceUnit !== activeUnit) {
+      if (
+        selectedSourceUnit
+        && selectedSourceUnit !== "any"
+        && selectedSourceUnit !== activeUnit
+      ) {
         construction.value = "none";
       }
       construction.dataset.classicalSourceUnit = activeUnit;
@@ -9309,6 +9333,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const sourceNumberControl = targetObject.document.getElementById(
           "classical-rule-logic-nnc-subject-number"
         );
+        const sourceHumannessControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-subject-humanness"
+        );
         const metaphoricalUseControl = targetObject.document.getElementById(
           "classical-rule-logic-nnc-metaphorical-use"
         );
@@ -9323,6 +9350,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             canonicalSource.referentialAnimacy === "nonanimate"
               ? "common"
               : "singular";
+        }
+        if (sourceHumannessControl) {
+          sourceHumannessControl.value = canonicalSource.referentialAnimacy === "nonanimate"
+            ? "nonhuman"
+            : "human";
         }
         if (metaphoricalUseControl) {
           metaphoricalUseControl.checked = false;
@@ -10097,6 +10129,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           internalMorphsEl.setAttribute("aria-hidden", String(internalMorphsEl.hidden));
         }
       }
+      targetObject.syncClassicalSourceNestingStructure?.();
       return frame;
     }
     function syncClassicalBasalUnitControls(unit = "") {
@@ -11250,6 +11283,42 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         }
         control.addEventListener("change", () => {
           const shortcutControl = targetObject.document?.getElementById?.("classical-rule-logic-particle-combination-shortcut");
+          const subjectFamily = control.id.includes("-vnc-subject-")
+            ? "vnc"
+            : control.id.includes("-nnc-subject-")
+              ? "nnc"
+              : "";
+          if (subjectFamily) {
+            const subjectControlPrefix = `classical-rule-logic-${subjectFamily}-subject`;
+            const personControl = targetObject.document?.getElementById?.(`${subjectControlPrefix}-person`);
+            const animacyControl = targetObject.document?.getElementById?.(`${subjectControlPrefix}-animacy`);
+            const humannessControl = targetObject.document?.getElementById?.(`${subjectControlPrefix}-humanness`);
+            const numberControl = targetObject.document?.getElementById?.(`${subjectControlPrefix}-number`);
+            const agreementControl = targetObject.document?.getElementById?.("classical-rule-logic-subject");
+            if (control.id === `${subjectControlPrefix}-humanness` && humannessControl?.value === "human") {
+              if (animacyControl) animacyControl.value = "animate";
+            }
+            if (control.id === `${subjectControlPrefix}-humanness` && humannessControl?.value === "nonhuman") {
+              if (personControl) personControl.value = "3";
+            }
+            if (personControl?.value !== "3") {
+              if (animacyControl) animacyControl.value = "animate";
+              if (humannessControl) humannessControl.value = "human";
+            }
+            const nonanimate = animacyControl?.value === "nonanimate";
+            if (nonanimate) {
+              if (personControl) personControl.value = "3";
+              if (humannessControl) humannessControl.value = "nonhuman";
+              if (numberControl) numberControl.value = "common";
+            } else if (numberControl?.value === "common") {
+              numberControl.value = "singular";
+            }
+            if (agreementControl) {
+              agreementControl.value = nonanimate
+                ? subjectFamily === "nnc" ? "3common" : "3sg"
+                : `${personControl?.value || "3"}${numberControl?.value === "plural" ? "pl" : "sg"}`;
+            }
+          }
           if (control.id === "classical-rule-logic-particle-combination-shortcut") {
             applyClassicalParticleCombinationShortcut(control.value);
           } else if (shortcutControl && [
@@ -11276,6 +11345,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             "classical-rule-logic-class",
             "classical-rule-logic-valence",
             "classical-rule-logic-subject",
+            "classical-rule-logic-vnc-subject-person",
+            "classical-rule-logic-vnc-subject-animacy",
+            "classical-rule-logic-vnc-subject-humanness",
+            "classical-rule-logic-vnc-subject-number",
             "classical-rule-logic-object"
           ].includes(control.id)) {
             targetObject
@@ -12333,7 +12406,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       { id: "classical-rule-logic-sentence-particle-honorific", defaultValue: false, type: "checkbox", legacySentence: true },
       { id: "classical-rule-logic-sentence-adverbial", defaultValue: "none", legacySentence: true },
       { id: "classical-rule-logic-particle-combination-shortcut", defaultValue: "none", legacySentence: true },
-      { id: "classical-rule-logic-causative-result-subject", defaultValue: "3sg" }
+      { id: "classical-rule-logic-causative-result-subject", defaultValue: "3sg" },
+      { id: "classical-rule-logic-vnc-subject-animacy", defaultValue: "animate" },
+      { id: "classical-rule-logic-vnc-subject-humanness", defaultValue: "human" }
     ]);
     var ENTRADA_URL_SEGMENT_SCHEMA = Object.freeze([{
       key: "input",
@@ -12594,6 +12669,12 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       segment: "cn-animacy",
       path: ["classicalNnc", "animacy"],
       defaultValue: "animate",
+      classicalNncOnly: true
+    }, {
+      key: "classicalNncHumanness",
+      segment: "cn-humanness",
+      path: ["classicalNnc", "humanness"],
+      defaultValue: "human",
       classicalNncOnly: true
     }, {
       key: "classicalNncMetaphoricalUse",

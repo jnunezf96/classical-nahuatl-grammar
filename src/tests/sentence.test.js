@@ -4,6 +4,7 @@ const { createSuite } = require("./runner");
 
 function run(ctx = {}) {
     const s = createSuite("sentence");
+    const vncApplication = ctx.createClassicalNahuatlVncApplication(ctx);
 
     s.eq(
         "the duplicate sentence metadata and lesson-finalizer APIs are absent",
@@ -30,7 +31,7 @@ function run(ctx = {}) {
     );
 
     const principalSource =
-        ctx.classicalNahuatlVncApplication.evaluate({
+        vncApplication.evaluate({
             sourceStem: "cuīca",
             sourceSubject: "1sg",
             subject: "1sg",

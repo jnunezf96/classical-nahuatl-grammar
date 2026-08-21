@@ -32,6 +32,16 @@ function run(ctx = {}) {
 
     const nonpastSingular = evaluate();
     const nonpastPlural = evaluate({ subject: "3pl" });
+    const ahciSingular = evaluate({
+        sourceStem: "ahci", sourceValence: "specific-projective",
+        objectKind: "specific-projective", objectPerson: "3sg",
+        verbClass: "A", subject: "1sg",
+    });
+    const ahciPlural = evaluate({
+        sourceStem: "ahci", sourceValence: "specific-projective",
+        objectKind: "specific-projective", objectPerson: "3sg",
+        verbClass: "A", subject: "1pl",
+    });
     const past = evaluate({ purposiveSeries: "outbound-past-indicative" });
     const pastPlural = evaluate({ subject: "2pl", purposiveSeries: "outbound-past-indicative" });
     const pastAntecessive = evaluate({
@@ -65,7 +75,7 @@ function run(ctx = {}) {
         contrast: facts(nonpastSingular).progressiveContrast,
     }, {
         singular: ["authorized", "chōca-⎕-t-ī-uh", "t", ["present", "future"], true, false],
-        plural: ["authorized", "chōca-⎕-t-i-hui", "h", "hui"],
+        plural: ["authorized", "chōca-⎕-t-ī-hui", "h", "hui"],
         contrast: {
             purposiveInternalDirectional: "t", progressiveExternalConnective: "ti",
             purposiveEmbedTense: "future", progressiveEmbedTense: "preterit",
@@ -74,6 +84,14 @@ function run(ctx = {}) {
             analysisChoiceRequiredOnlyWhenTypedTextIsUnderspecified: true,
             spellingAloneHasGrammarAuthority: false,
         },
+    });
+
+    s.eq("purposive number changes the movement ending without shortening its vowel", {
+        singular: ahciSingular.formulaRealization,
+        plural: ahciPlural.formulaRealization,
+    }, {
+        singular: "#ni-0+c-0(ahci-⎕-t-ī-uh)0+0-0#",
+        plural: "#ti-0+c-0(ahci-⎕-t-ī-hui)0+0-h#",
     });
 
     s.eq("outbound past derives t-o, number, three readings, and ordinary optional antecessive", {

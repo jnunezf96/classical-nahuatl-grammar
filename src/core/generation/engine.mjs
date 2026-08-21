@@ -3260,6 +3260,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
       resolvedTenseMode = "",
       resolvedDerivationType = "",
       sourceValency = null,
+      sourceVerbClass = "",
       tense = "",
       subjectPrefix = "",
       subjectSuffix = ""
@@ -3391,7 +3392,11 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
       const canonicalApplication =
         targetObject.evaluateClassicalNahuatlVncApplication({
           sourceStem: normalizedSourceStem,
-          verbClass: record.sourceIdentityFrame?.verbClass || "",
+          verbClass: String(
+            sourceVerbClass
+            || record.sourceIdentityFrame?.verbClass
+            || ""
+          ).trim().toUpperCase(),
           sourceValence,
           subject,
           mood: canonicalMood,
@@ -6154,6 +6159,7 @@ export function createGenerationEngineGlobals(targetObject = globalThis, install
           resolvedTenseMode,
           resolvedDerivationType,
           sourceValency,
+          sourceVerbClass: override?.sourceVerbClass || override?.verbClass || "",
           tense,
           subjectPrefix: inputPers1,
           subjectSuffix: inputPers2

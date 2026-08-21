@@ -11,7 +11,7 @@ export const LESSON29_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson29-purposive-foundation-and-future-embed",
     "Choose Purposive; the future embed and link are automatic",
-    "Choose Purposive for purposeful movement toward or away from a place. The application builds a linked, connectiveless compound, puts the future action in the embed, preserves its class-conditioned future stem shape, normally writes a silent ⎕ future boundary, and places movement before the intended action. The separate rare sounded-future checkbox is only for the explicitly requested, attested but nonpreferred z form. The clickable cue shows the future embed, boundary, compound type, and event order. Examples explain the pattern and never limit which compatible typed verbstem you may enter.",
+    "Choose Purposive for purposeful movement toward or away from a place. The application sends the typed verbstem through the shared Class A, B, C, or D future-stem rule, then builds a linked, connectiveless compound with the future action in the embed. Thus a Class C Source such as ihcuil-o-ā supplies ihcuil-ō before the normally silent ⎕ future boundary; the Source itself remains fully preserved. Movement comes before the intended action. The separate rare sounded-future checkbox is only for the explicitly requested, attested but nonpreferred z form. The clickable cue shows the typed Source, its future embed, boundary, compound type, and event order. Examples explain the pattern and never limit which compatible typed verbstem you may enter.",
   ),
   idea(
     "lesson29-internal-directional-matrix",
@@ -26,7 +26,7 @@ export const LESSON29_READER_GUIDANCE_GROUPS = freeze([
   idea(
     "lesson29-outbound-nonpast-and-progressive-contrast",
     "Read outbound nonpast as present or future; keep it separate from the progressive",
-    "Choose outbound nonpast indicative once. The application derives singular t-ī-uh or plural t-i-hui, preserves the typed subject and objects, and leaves both present-like and future-like readings available because context chooses the time reading. In a Purposive, the future embedded action begins after the going; in a Progressive, the embedded action is already happening during the going. The Purposive has internal directional t, while the Progressive has connective ti. Vowel length, glottal stops, and the Class B shape normally show the difference. Only an underspecified traditional spelling that erases those clues calls for a Purposive-versus-Progressive analysis. The clickable cue shows the number shape, reading range, event order, boundary, and sound evidence.",
+    "Choose outbound nonpast indicative once. The application derives singular t-ī-uh or plural t-ī-hui without changing vowel length, preserves the typed subject and objects, and leaves both present-like and future-like readings available because context chooses the time reading. In a Purposive, the future embedded action begins after the going; in a Progressive, the embedded action is already happening during the going. The Purposive has internal directional t, while the Progressive has connective ti. Vowel length, glottal stops, and the Class B shape normally show the difference. Only an underspecified traditional spelling that erases those clues calls for a Purposive-versus-Progressive analysis. The clickable cue shows the number shape, reading range, event order, boundary, and sound evidence.",
   ),
   idea(
     "lesson29-outbound-past",

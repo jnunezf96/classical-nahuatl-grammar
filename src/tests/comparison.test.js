@@ -142,6 +142,9 @@ function run(ctx) {
                 operationId: "vnc:application",
                 args: [{
                     sourceStem,
+                    ...(sourceStem.startsWith("i")
+                        ? { sourceInitialISelection: "real" }
+                        : {}),
                     verbClass: "A",
                     sourceValence: unspecified
                         ? "projective-nonhuman"
@@ -184,8 +187,8 @@ function run(ctx) {
     };
 
     const issueComposition = (leftStem, rightStem) => {
-        const left = issueOrdinary(leftStem);
-        const right = issueOrdinary(rightStem);
+        const left = issueOrdinary(leftStem, { subject: "3common" });
+        const right = issueOrdinary(rightStem, { subject: "3common" });
         const conjuncts = [
             [left, leftStem],
             [right, rightStem],
@@ -300,8 +303,8 @@ function run(ctx) {
         }
     );
 
-    const cal = issueOrdinary("cal").comparisonSource;
-    const mich = issueOrdinary("mich").comparisonSource;
+    const cal = issueOrdinary("cal", { subject: "3common" }).comparisonSource;
+    const mich = issueOrdinary("mich", { subject: "3common" }).comparisonSource;
     const teuc = issueOrdinary("tēuc").comparisonSource;
     const resemblance =
         issueOrdinary("nēnehuilia").comparisonSource;
@@ -626,7 +629,7 @@ function run(ctx) {
     const sourcePoison =
         ctx.buildClassicalComparisonSourceUnit({
             sourceResult:
-                issueOrdinary("cal").receipt.canonicalResult,
+                issueOrdinary("cal", { subject: "3common" }).receipt.canonicalResult,
             surface: "stored answer",
         });
     s.eq(

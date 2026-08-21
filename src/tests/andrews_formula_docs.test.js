@@ -3,11 +3,14 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 
 function readDoc(relativePath) {
-    return fs.readFileSync(path.join(ROOT, relativePath), "utf8");
+    return fs.readFileSync(resolveLegacySupportPath(relativePath), "utf8");
 }
 
 function readClassicalMachineryText() {
@@ -1110,7 +1113,7 @@ function run(ctx = {}) {
         {
             inventoryHasDerivationalFamilies: true,
             derivationTypes: ["applicative", "causative", "direct"],
-            derivationModes: ["active", "nonactive"],
+            derivationModes: [],
             derivationalSchemaNotExecutable: "",
             obsoleteWorkbenchApis: ["undefined", "undefined", "undefined"],
         }

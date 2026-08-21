@@ -3,6 +3,9 @@
 import {
   createGrammarOperationContractOwner,
 } from "../grammar/operation_owner.mjs?v=20260728-runtime-reachability-111";
+import {
+  buildClassicalNahuatlParticipantFrame,
+} from "./participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
@@ -1463,7 +1466,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     }
     function buildClassicalNahuatlNncSubjectPersonFrame({
       subject = "3sg",
-      followingMaterial = ""
+      followingMaterial = "",
+      animacy = "unspecified",
+      humanness = "unspecified"
     } = {}) {
       const normalizedSubject = normalizeClassicalNahuatlNncSubject(subject);
       const firstSound = getClassicalNahuatlNncFirstSound(followingMaterial);
@@ -1500,6 +1505,12 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const pers2 = normalizedSubject ? CLASSICAL_NAHUATL_NNC_ZERO : "";
       const xCarrierRejected = /^xi?$/u.test(pers1);
       const authorized = Boolean(normalizedSubject && pers1 && pers2 && !xCarrierRejected);
+      const participantFrame = buildClassicalNahuatlParticipantFrame({
+        role: "subject",
+        agreement: normalizedSubject,
+        animacy,
+        humanness,
+      });
       return {
         kind: "classical-nahuatl-nnc-subject-person-frame",
         sourceAuthority: "Andrews transcription",
@@ -1519,6 +1530,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         supportiveISurfaceReason: canonicalFinitePersonFrame?.pers1SupportiveISurfaceReason || "not-needed",
         xXiAllowed: false,
         case: "nominative",
+        participantFrame,
         formulaRegion: "subject",
         legalWitnessTagIds: ["cn-l12-123-subject-connectors", "cn-l12-124-subject-paradigm"]
       };
@@ -2422,6 +2434,19 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         blockReason = "unknown-possessor-selection";
       }
       const complete = Boolean(arity && slots.length && slots.every(slot => slot.carrier) && !blockReason);
+      const possessorParticipantFrame = buildClassicalNahuatlParticipantFrame({
+        role: "possessor",
+        agreement: normalizedPossessor,
+        animacy: normalizedPossessor === "nonspecific-human" ? "animate" : "unspecified",
+        humanness: normalizedPossessor === "nonspecific-human"
+          ? "human"
+          : normalizedPossessor === "nonspecific-nonhuman"
+            ? "nonhuman"
+            : "unspecified",
+        specificity: normalizedPossessor.startsWith("nonspecific-")
+          ? "nonspecific"
+          : "specific",
+      });
       return {
         kind: "classical-nahuatl-possessive-nnc-possessive-state-frame",
         sourceAuthority: "Andrews transcription",
@@ -2432,6 +2457,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         arity,
         slots: complete ? slots : [],
         possessor: normalizedPossessor,
+        possessorParticipantFrame,
         subject: normalizedSubject,
         possessorRole,
         stem: normalizedStem,
@@ -2565,6 +2591,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
             pers1: complete ? personFrame.pers1 : "",
             pers2: complete ? personFrame.pers2 : "",
             subject: personFrame?.subject || "",
+            participantFrame: personFrame?.participantFrame || null,
             pers1BaseMorph: complete ? personFrame.pers1BaseMorph : "",
             supportiveISurfacePolicy: complete ? personFrame.supportiveISurfacePolicy : "",
             supportiveISurfaceAction: complete ? personFrame.supportiveISurfaceAction : "",
@@ -2678,11 +2705,75 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     function realizeClassicalNahuatlNncSurfaceCarrier(value = "") {
       return normalizeClassicalNahuatlNncToken(value).split("-").map(part => part.trim()).filter(part => part && !["0", "Ø", "⎕"].includes(part)).join("");
     }
+    function realizeClassicalNahuatlNncPhonologicalSpelling(value = "") {
+      const input = realizeClassicalNahuatlNncSurfaceCarrier(value);
+      if (!input.includes("s") || typeof targetObject.buildClassicalNahuatlSpellingChangeFrame !== "function") {
+        return input;
+      }
+      const graphemes = Array.from(input);
+      const baseVowel = segment => String(segment || "")
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/gu, "")
+        .toLowerCase();
+      return graphemes.map((segment, index) => {
+        if (segment !== "s") return segment;
+        const followingVowel = baseVowel(graphemes[index + 1]);
+        const precedingVowel = baseVowel(graphemes[index - 1]);
+        const beforeVowel = /^[aeio]$/u.test(followingVowel);
+        const afterVowel = /^[aeio]$/u.test(precedingVowel);
+        const spellingFrame = targetObject.buildClassicalNahuatlSpellingChangeFrame({
+          phoneme: "/s/",
+          syllablePosition: beforeVowel ? "initial" : "final",
+          ...(beforeVowel ? { followingVowel } : {}),
+          ...(afterVowel ? { precedingVowel } : {}),
+        });
+        return spellingFrame?.authorizationStatus === "authorized"
+          && spellingFrame.outputSpelling
+          ? spellingFrame.outputSpelling
+          : segment;
+      }).join("");
+    }
+    function realizeClassicalNahuatlNncSurfaceCarriers(values = []) {
+      const writtenParts = Array.from(values || [])
+        .map(realizeClassicalNahuatlNncSurfaceCarrier)
+        .filter(Boolean)
+        .map(realizeClassicalNahuatlNncPhonologicalSpelling);
+      if (
+        !writtenParts.length
+        || typeof targetObject.issueClassicalNahuatlLesson2WritingSource !== "function"
+        || typeof targetObject.writeClassicalNahuatlLesson2Result !== "function"
+      ) {
+        return writtenParts.join("");
+      }
+      const writingSource = targetObject.issueClassicalNahuatlLesson2WritingSource({
+        parts: writtenParts.map(value => ({ role: "morph", value })),
+      });
+      const writtenResult = targetObject.writeClassicalNahuatlLesson2Result(writingSource);
+      return writtenResult?.authorizationStatus === "authorized"
+        ? writtenResult.surface
+        : writtenParts.join("");
+    }
     function realizeClassicalNahuatlNncContextualBoundarySurface(
       nncSlotFrame = null,
       rawSurface = ""
     ) {
-      const surface = normalizeClassicalNahuatlNncToken(rawSurface);
+      const slots = nncSlotFrame?.slots || {};
+      const participantCarriers = Array.isArray(slots.participant?.slots)
+        ? slots.participant.slots.map(slot => slot?.carrier || "")
+        : [];
+      const stateCarriers = Array.isArray(slots.state?.slots)
+        ? slots.state.slots.map(slot => slot?.carrier || "")
+        : [];
+      const typedSurface = realizeClassicalNahuatlNncSurfaceCarriers([
+        slots.subject?.pers1,
+        slots.subject?.pers2,
+        ...participantCarriers,
+        ...stateCarriers,
+        slots.predicate?.stem,
+        slots.number?.num1,
+        slots.number?.num2,
+      ]);
+      const surface = typedSurface || normalizeClassicalNahuatlNncToken(rawSurface);
       const predicateStem = normalizeClassicalNahuatlNncStem(
         nncSlotFrame?.slots?.predicate?.stem
       );
@@ -4200,7 +4291,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       };
       const personFrame = buildClassicalNahuatlNncSubjectPersonFrame({
         subject: options.subject || "3sg",
-        followingMaterial: normalizedStem
+        followingMaterial: normalizedStem,
+        animacy: options.animacy || "unspecified",
+        humanness: options.humanness || "unspecified"
       });
       const numberFrame = resolveClassicalNahuatlLesson12AbsolutiveNumberDyad({
         subject: options.subject || "3sg",
@@ -4397,7 +4490,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const followingStateMaterial = stateFrame.slots.map(slot => slot.carrier).join("");
       const personFrame = buildClassicalNahuatlNncSubjectPersonFrame({
         subject: options.subject || "3sg",
-        followingMaterial: followingStateMaterial
+        followingMaterial: followingStateMaterial,
+        animacy: options.animacy || "unspecified",
+        humanness: options.humanness || "unspecified"
       });
       const numberFrame = resolveClassicalNahuatlLesson13PossessiveNumberDyad({
         subject: options.subject || "3sg",
@@ -7670,7 +7765,9 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const numberFrame = resolveClassicalNahuatlLesson16PronominalNumberFrame(sourceFrame, options);
       const personFrame = buildClassicalNahuatlNncSubjectPersonFrame({
         subject: sourceFrame.subject || options.subject || "3sg",
-        followingMaterial: numberFrame.predicateStem || sourceFrame.sourceStem
+        followingMaterial: numberFrame.predicateStem || sourceFrame.sourceStem,
+        animacy: options.animacy || "unspecified",
+        humanness: options.humanness || "unspecified"
       });
       if (
         sourceFrame.subtype === "quantitive"
@@ -8115,6 +8212,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     api.isClassicalNahuatlNncSlotFrame = isClassicalNahuatlNncSlotFrame;
     api.renderClassicalNahuatlNncSlotFrameFormula = renderClassicalNahuatlNncSlotFrameFormula;
     api.realizeClassicalNahuatlNncSurfaceCarrier = realizeClassicalNahuatlNncSurfaceCarrier;
+    api.realizeClassicalNahuatlNncSurfaceCarriers = realizeClassicalNahuatlNncSurfaceCarriers;
     api.capitalizeClassicalNahuatlNncSentenceInitial = capitalizeClassicalNahuatlNncSentenceInitial;
     api.buildClassicalNahuatlNncSentenceSurfaceFrame = buildClassicalNahuatlNncSentenceSurfaceFrame;
     api.isClassicalNahuatlIssuedNncSentenceSurfaceFrame = isClassicalNahuatlIssuedNncSentenceSurfaceFrame;
@@ -8180,8 +8278,21 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
     return api;
 }
 
-export function installClassicalNahuatlNncLayerEvaluatorGlobals(targetObject = globalThis) {
-    const api = createClassicalNahuatlNncLayerEvaluatorApi(targetObject);
-    Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
+export function installClassicalNahuatlNncLayerEvaluatorGlobals(
+    targetObject = globalThis,
+    installationContext = {}
+) {
+    const target = targetObject && typeof targetObject === "object"
+      ? targetObject
+      : globalThis;
+    const semanticTarget = Object.create(target);
+    Object.defineProperties(
+      semanticTarget,
+      Object.getOwnPropertyDescriptors(
+        installationContext?.moduleDependencyCapabilities || {}
+      )
+    );
+    const api = createClassicalNahuatlNncLayerEvaluatorApi(semanticTarget);
+    Object.defineProperties(target, Object.getOwnPropertyDescriptors(api));
     return api;
 }

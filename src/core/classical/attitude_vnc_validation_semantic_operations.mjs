@@ -96,6 +96,7 @@ function deriveCausativeSource(runtime) {
 function projectiveRequest(runtime) {
   const request = baseRequest({
     sourceStem: "itta",
+    sourceInitialISelection: "real",
     sourceValence: "specific-projective",
     objectKind: "specific-projective",
     objectPerson: "3sg",

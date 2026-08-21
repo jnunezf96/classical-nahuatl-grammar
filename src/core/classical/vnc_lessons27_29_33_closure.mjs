@@ -36,6 +36,374 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   };
   const text = value => String(value ?? "").trim();
   const key = value => text(value).toLowerCase();
+  const HONORIFIC_PRODUCTIVE_FORMATIONS = Object.freeze([
+    "causative",
+    "applicative",
+  ]);
+  const HONORIFIC_DOCUMENTED_LEXICAL_REALIZATIONS = Object.freeze({
+    ihca: Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "ihqui-l-tiā",
+          realizationKind: "irregular",
+        }),
+        anomalous: Object.freeze({
+          targetStem: "ihca-t-i-l-tiā",
+          realizationKind: "documented-alternative",
+        }),
+      }),
+    }),
+    ono: Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "on-o-l-tiā",
+          realizationKind: "connective-t-preferred",
+        }),
+      }),
+    }),
+    "pil-ca": Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "pil-quī-tiā",
+          realizationKind: "irregular",
+        }),
+      }),
+    }),
+    ca: Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "ye-tz-ti-ā",
+          realizationKind: "suppletive",
+        }),
+      }),
+    }),
+    "ya-uh": Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "huica",
+          realizationKind: "suppletive",
+        }),
+      }),
+    }),
+    "huāl-la-uh": Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "huāl-huica",
+          realizationKind: "suppletive",
+        }),
+      }),
+    }),
+    "huī-tz": Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "huica-tz",
+          realizationKind: "suppletive",
+          moodRestriction: "no-optative",
+        }),
+      }),
+    }),
+    miqui: Object.freeze({
+      applicative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "miqui-liā",
+          realizationKind: "honorific-only-applicative",
+          honorificOnly: true,
+        }),
+      }),
+    }),
+    chōca: Object.freeze({
+      applicative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "chōqui-liā",
+          realizationKind: "preferred-applicative",
+        }),
+      }),
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "choc-tiā",
+          realizationKind: "type-one",
+        }),
+        "type-two-l": Object.freeze({
+          targetStem: "chōqui-l-tiā",
+          realizationKind: "type-two-l",
+        }),
+        "type-two-long": Object.freeze({
+          targetStem: "chōqui-tīa",
+          realizationKind: "type-two-long",
+        }),
+      }),
+    }),
+    caqui: Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "caqui-tīā",
+          realizationKind: "documented-honorific-causative",
+        }),
+        "l-causative": Object.freeze({
+          targetStem: "caqui-l-tiā",
+          realizationKind: "documented-honorific-alternative",
+        }),
+      }),
+    }),
+    nequi: Object.freeze({
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "nequi-l-tiā",
+          realizationKind: "documented-honorific-causative",
+        }),
+      }),
+    }),
+    cuepa: Object.freeze({
+      applicative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "cuep-i-liā",
+          realizationKind: "documented-honorific-applicative",
+        }),
+      }),
+      causative: Object.freeze({
+        default: Object.freeze({
+          targetStem: "cuep-i-l-tiā",
+          realizationKind: "documented-honorific-causative",
+        }),
+      }),
+    }),
+  });
+
+  function normalizeHonorificFormationAlternatives(
+    alternatives = null,
+    formation = "",
+  ) {
+    const records = Array.isArray(alternatives?.[formation])
+      ? alternatives[formation]
+      : [];
+    const normalized = records.map((record) => freeze({
+      optionId: key(record?.optionId || record?.id || "default"),
+      targetStem: text(record?.targetStem),
+      realizationKind: key(record?.realizationKind || "typed-lexical"),
+      moodRestriction: key(record?.moodRestriction),
+      honorificOnly: record?.honorificOnly === true,
+    }));
+    const ids = normalized.map(record => record.optionId);
+    return normalized.length
+      && normalized.every(record => record.optionId && record.targetStem)
+      && new Set(ids).size === ids.length
+      ? normalized
+      : records.length
+        ? null
+        : [];
+  }
+
+  function buildHonorificFormationAnalysisFrame(request = {}, sourceStem = "") {
+    const normalizedSourceStem = text(sourceStem);
+    const selectedFormation = key(request.lateVariant);
+    const supplied = request.honorificFormationAnalysis;
+    const hasSuppliedAnalysis = Boolean(
+      supplied && typeof supplied === "object" && !Array.isArray(supplied)
+    );
+    const suppliedFormations = hasSuppliedAnalysis
+      ? [...new Set(
+          (Array.isArray(supplied.availableFormations)
+            ? supplied.availableFormations
+            : [])
+            .map(key)
+            .filter(Boolean),
+        )]
+      : [];
+    const preferredFormation = key(supplied?.preferredFormation);
+    const suppliedSourceStem = text(supplied?.sourceStem);
+    const suppliedAlternatives = Object.fromEntries(
+      HONORIFIC_PRODUCTIVE_FORMATIONS.map(formation => [
+        formation,
+        normalizeHonorificFormationAlternatives(
+          supplied?.formationAlternatives,
+          formation,
+        ),
+      ]),
+    );
+    const invalid = hasSuppliedAnalysis && (
+      key(supplied.lexicalStatus) !== "honorific-formation-analysis"
+      || suppliedSourceStem !== normalizedSourceStem
+      || suppliedFormations.length < 1
+      || suppliedFormations.some(formation => (
+        !HONORIFIC_PRODUCTIVE_FORMATIONS.includes(formation)
+      ))
+      || (preferredFormation && !suppliedFormations.includes(preferredFormation))
+      || Object.values(suppliedAlternatives).some(value => value === null)
+    );
+    if (invalid) {
+      return freeze({
+        kind: "classical-nahuatl-honorific-formation-analysis-frame",
+        authorizationStatus: "blocked",
+        blockReason: "valid-matching-honorific-formation-analysis-required",
+        sourceStem: normalizedSourceStem,
+        availableFormations: freeze([]),
+        selectedFormation,
+        typedSourceAuthority: true,
+        canvasExampleAuthority: false,
+      });
+    }
+    const availableFormations = hasSuppliedAnalysis
+      ? suppliedFormations
+      : selectedFormation
+        ? [selectedFormation]
+        : [];
+    const documented = HONORIFIC_DOCUMENTED_LEXICAL_REALIZATIONS[
+      normalizedSourceStem
+    ] || null;
+    const documentedOptions = documented?.[selectedFormation] || null;
+    const typedOptions = suppliedAlternatives[selectedFormation] || [];
+    const options = typedOptions.length
+      ? typedOptions
+      : Object.entries(documentedOptions || {}).map(([optionId, record]) => (
+          freeze({ optionId, ...record })
+        ));
+    const selectedOptionId = key(request.honorificStemAlternative || "default");
+    const selectedOption = options.find(option => (
+      option.optionId === selectedOptionId
+    )) || null;
+    const selectionLicensed = !options.length || Boolean(selectedOption);
+    const selectedFormationLicensed = availableFormations.includes(
+      selectedFormation,
+    );
+    return freeze({
+      kind: "classical-nahuatl-honorific-formation-analysis-frame",
+      authorizationStatus: "authorized",
+      blockReason: "",
+      lexicalStatus: hasSuppliedAnalysis
+        ? "honorific-formation-analysis"
+        : "legacy-selected-formation-compatibility",
+      sourceStem: normalizedSourceStem,
+      availableFormations: freeze(availableFormations),
+      selectedFormation,
+      selectedFormationLicensed,
+      preferredFormation,
+      routeChoiceRequired: availableFormations.length > 1,
+      formationAutomaticallySelected: availableFormations.length === 1,
+      analysisSupplied: hasSuppliedAnalysis,
+      selectionSource: hasSuppliedAnalysis
+        ? "typed-source-analysis"
+        : "selected-route-backward-compatibility",
+      formationOptions: freeze(options),
+      selectedOptionId,
+      selectedOption,
+      alternativeChoiceRequired: options.length > 1,
+      selectionLicensed,
+      honorificOnlyApplicative: Boolean(
+        supplied?.honorificOnlyApplicative === true
+        || selectedOption?.honorificOnly === true
+      ),
+      moodRestriction: key(
+        selectedOption?.moodRestriction || supplied?.moodRestriction,
+      ),
+      documentedLexicalRealizationUsed: Boolean(
+        selectedOption && !typedOptions.length
+      ),
+      typedSourceAuthority: true,
+      canonicalDerivationAuthority: !selectedOption,
+      canvasExampleAuthority: false,
+      callerFormulaAuthority: false,
+      callerSurfaceAuthority: false,
+    });
+  }
+
+  function buildCompoundLexicalizationAnalysisFrame(
+    request = {},
+    sourceEmbedStem = "",
+    sourceMatrixStem = "",
+  ) {
+    const embedStem = text(sourceEmbedStem);
+    const matrixStem = text(sourceMatrixStem);
+    const supplied = request.compoundLexicalizationAnalysis;
+    const hasSuppliedAnalysis = Boolean(
+      supplied && typeof supplied === "object" && !Array.isArray(supplied)
+    );
+    if (!hasSuppliedAnalysis) {
+      return freeze({
+        kind: "classical-nahuatl-compound-verbstem-lexicalization-analysis-frame",
+        version: VERSION,
+        authorizationStatus: "authorized",
+        blockReason: "",
+        sourceEmbedStem: embedStem,
+        sourceMatrixStem: matrixStem,
+        availableStructures: freeze(["compositional"]),
+        selectedStructure: "compositional",
+        structureChoiceRequired: false,
+        structureAutomaticallySelected: true,
+        analysisSupplied: false,
+        lexicalMeaningTyped: false,
+        exactExampleIdentityAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
+    }
+    const availableStructures = [...new Set(
+      (Array.isArray(supplied.availableStructures)
+        ? supplied.availableStructures
+        : [supplied.selectedStructure]
+      ).map(key).filter(Boolean)
+    )];
+    const selectedStructure = key(
+      supplied.selectedStructure
+      || (availableStructures.length === 1 ? availableStructures[0] : "")
+    );
+    const invalid = key(supplied.lexicalStatus)
+        !== "compound-verbstem-lexicalization-analysis"
+      || text(supplied.sourceEmbedStem) !== embedStem
+      || text(supplied.sourceMatrixStem) !== matrixStem
+      || availableStructures.length < 1
+      || availableStructures.some(structure => ![
+        "compositional", "lexicalized"
+      ].includes(structure))
+      || (selectedStructure
+        && !availableStructures.includes(selectedStructure));
+    if (invalid) {
+      return freeze({
+        kind: "classical-nahuatl-compound-verbstem-lexicalization-analysis-frame",
+        version: VERSION,
+        authorizationStatus: "blocked",
+        blockReason: "valid-matching-compound-lexicalization-analysis-required",
+        sourceEmbedStem: embedStem,
+        sourceMatrixStem: matrixStem,
+        availableStructures: freeze([]),
+        selectedStructure: "",
+        typedSourceAuthority: true,
+        exactExampleIdentityAuthority: false,
+      });
+    }
+    if (availableStructures.length > 1 && !selectedStructure) {
+      return freeze({
+        kind: "classical-nahuatl-compound-verbstem-lexicalization-analysis-frame",
+        version: VERSION,
+        authorizationStatus: "blocked",
+        blockReason: "compound-lexicalization-analysis-choice-required",
+        sourceEmbedStem: embedStem,
+        sourceMatrixStem: matrixStem,
+        availableStructures: freeze(availableStructures),
+        selectedStructure: "",
+        structureChoiceRequired: true,
+        typedSourceAuthority: true,
+        exactExampleIdentityAuthority: false,
+      });
+    }
+    return freeze({
+      kind: "classical-nahuatl-compound-verbstem-lexicalization-analysis-frame",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      blockReason: "",
+      sourceEmbedStem: embedStem,
+      sourceMatrixStem: matrixStem,
+      availableStructures: freeze(availableStructures),
+      selectedStructure,
+      structureChoiceRequired: availableStructures.length > 1,
+      structureAutomaticallySelected: availableStructures.length === 1,
+      analysisSupplied: true,
+      lexicalMeaningTyped: selectedStructure === "lexicalized",
+      lexicalMeaningId: text(supplied.lexicalMeaningId),
+      exactExampleIdentityAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
 
   function buildClassicalNahuatlLateSourceAgreementFrame(
     sourceStem = "",
@@ -516,14 +884,41 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       surfaceStringAuthority: false
     });
   }
-  function futureEmbedStem(sourceStem, verbClass = "B") {
+  function futureEmbedShapeFrame(
+    sourceStem,
+    verbClass = "B",
+    subject = "3sg",
+  ) {
     const stem = text(sourceStem);
     const classId = text(verbClass).toUpperCase();
-    if (classId === "C") {
-      return stem.replace(/([io])a$/u, (_all, vowel) => longVowel(vowel));
+    const sharedFrame =
+      targetObject.buildClassicalNahuatlImperfectiveShapeEligibilityFrame?.({
+        stem,
+        classProfile: { classId },
+        mood: "indicative",
+        tense: "future",
+        subject: text(subject) || "3sg",
+        aspect: "imperfective",
+      });
+    if (sharedFrame?.kind
+      === "classical-nahuatl-verbstem-imperfective-shape-eligibility-frame"
+      && sharedFrame.authorizationStatus === "authorized"
+      && sharedFrame.selectedStemVariant) {
+      return sharedFrame;
     }
-    if (classId === "D") return stem.replace(/a$/u, "ā");
-    return stem;
+    return Object.freeze({
+      selectedStemVariant: stem,
+      underlyingStemVariant: stem,
+      selectedShape: "unresolved-future-imperfective-shape",
+      selectedShapeReason: "shared-lesson7-shape-owner-unavailable",
+      silentCarrier: "",
+    });
+  }
+  function futureEmbedStem(sourceStem, verbClass = "B", subject = "3sg") {
+    return text(
+      futureEmbedShapeFrame(sourceStem, verbClass, subject)
+        ?.selectedStemVariant,
+    );
   }
   function connectiveFor(matrixStem) {
     return new RegExp(`^[${vowels}]`, "iu").test(text(matrixStem)) ? "t" : "ti";
@@ -687,6 +1082,15 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     if (!frame || frame.valenceArity === "vacant") return [];
     if (frame.valenceArity === "multiple") return [...(frame.positions || [])];
     return [{ ...frame }];
+  }
+  function isProjectiveHonorificObjectPosition(position = null) {
+    return [
+      "specific-projective",
+      "nonspecific-human",
+      "nonspecific-nonhuman",
+      "projective-human",
+      "projective-nonhuman",
+    ].includes(key(position?.objectKind));
   }
   function objectFrameReferentSignature(frame = null) {
     return JSON.stringify(objectFramePositions(frame).map(position => ({
@@ -1931,6 +2335,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             || request.verbClass
             || "B",
           ),
+          request.subject,
         );
         const integratedMatrixStem = futureMatrixAnalysis.lexicalStem;
         targetStem = `${futurePredicateStem}-z-${integratedMatrixStem}`;
@@ -2472,7 +2877,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         );
       }
       const matrixShapes = {
-        "outbound-nonpast-indicative": plural ? "t-i-hui" : "t-ī-uh",
+        "outbound-nonpast-indicative": plural ? "t-ī-hui" : "t-ī-uh",
         "outbound-past-indicative": "t-o",
         "outbound-nonpast-optative": plural
           ? request.purposiveIrregularPluralN === true ? "t-ī" : "t-i"
@@ -2507,9 +2912,12 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           "purposive-paradigm"
         );
       }
+      const purposiveFutureEmbedShapeFrame = baseIsNonactive
+        ? null
+        : futureEmbedShapeFrame(sourceStem, targetClass, request.subject);
       const purposiveEmbedStem = baseIsNonactive
         ? text(baseTyped.slots?.predicate?.stem)
-        : futureEmbedStem(sourceStem, targetClass);
+        : text(purposiveFutureEmbedShapeFrame?.selectedStemVariant);
       const soundedFutureMorph = request.purposiveSoundedFutureMorph === true;
       const embedFutureMorph = soundedFutureMorph ? "z" : "⎕";
       targetStem = earlySingularGlottal
@@ -2534,6 +2942,21 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         soundedFutureMorphMarkedRare: true,
         soundedFutureMorphStyleStatus: "rare-nonpreferred-textual-variant",
         futureEmbedClassShapePreserved: true,
+        futureEmbedSourceStem: sourceStem,
+        futureEmbedPredicateStem: purposiveEmbedStem,
+        futureEmbedSelectedShape:
+          text(purposiveFutureEmbedShapeFrame?.selectedShape),
+        futureEmbedSelectedShapeReason:
+          text(purposiveFutureEmbedShapeFrame?.selectedShapeReason),
+        futureEmbedUnderlyingStem:
+          text(purposiveFutureEmbedShapeFrame?.underlyingStemVariant),
+        futureEmbedSilentClassCarrier:
+          text(purposiveFutureEmbedShapeFrame?.silentCarrier),
+        futureEmbedUsesSharedLesson7ShapeOwner:
+          purposiveFutureEmbedShapeFrame?.kind
+            === "classical-nahuatl-verbstem-imperfective-shape-eligibility-frame"
+          && purposiveFutureEmbedShapeFrame.authorizationStatus
+            === "authorized",
         matrixValence: "intransitive",
         matrixDirectionalMorpheme: direction === "inbound" ? "/k/" : "t",
         matrixDirectionalSpellings: direction === "inbound" ? ["c", "qu"] : ["t"],
@@ -2722,28 +3145,168 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       };
     } else {
       const subject = key(request.subject);
-      const honoredParticipant = key(request.honoredParticipant || "subject");
-      const sourceObjectFrame = cloneObjectFrameFromTyped(baseTyped);
+      const requestedHonoredParticipant = key(
+        request.honoredParticipant || "subject"
+      );
+      const honorificSourceTypedFrame =
+        internalContext.attitudeSourceClosureFrame?.finalTypedVncSlotFrame
+        || getBaseTypedFrame(internalContext.honorificSourceApplicationFrame);
+      const sourceTypedObjectFrame = cloneObjectFrameFromTyped(
+        honorificSourceTypedFrame || baseTyped
+      );
+      const canonicalSourceObjectRequests = Array.isArray(
+        internalContext.attitudeSourceClosureFrame
+          ?.normalizedRequest?.sourceObjectRequests
+      )
+        ? internalContext.attitudeSourceClosureFrame
+          .normalizedRequest.sourceObjectRequests
+        : Array.isArray(internalContext.honorificSourceApplicationFrame
+          ?.normalizedRequest?.sourceObjectRequests
+        ) ? internalContext.honorificSourceApplicationFrame
+          .normalizedRequest.sourceObjectRequests
+          : [];
+      const requestedSourceObjectNumbers = Array.isArray(
+        request.sourceObjectRequests
+      )
+        ? request.sourceObjectRequests
+        : [];
+      const sourceObjectPositions = objectFramePositions(
+        sourceTypedObjectFrame
+      ).map((position, index) => {
+        const canonicalRequest = canonicalSourceObjectRequests[index] || {};
+        const numberedRequest = requestedSourceObjectNumbers.find(candidate => (
+          text(candidate?.objectId) === text(canonicalRequest.objectId)
+        )) || requestedSourceObjectNumbers[index] || {};
+        return {
+          ...position,
+          objectId: text(position.objectId || canonicalRequest.objectId),
+          objectKind: text(
+            position.objectKind || canonicalRequest.objectKind
+          ),
+          objectPerson: text(
+            position.objectPerson || canonicalRequest.objectPerson
+          ),
+          objectNumber: text(
+            position.objectNumber
+            || numberedRequest.objectNumber
+            || request.objectNumber
+          ),
+          governor: text(position.governor || canonicalRequest.governor),
+          derivationalLevel: Number(
+            position.derivationalLevel
+            || canonicalRequest.derivationalLevel
+            || index + 1
+          ),
+        };
+      });
+      const sourceObjectFrame = sourceObjectPositions.length > 1
+        ? {
+            ...sourceTypedObjectFrame,
+            valenceArity: "multiple",
+            positions: sourceObjectPositions,
+          }
+        : sourceObjectPositions.length === 1
+          ? {
+              ...sourceTypedObjectFrame,
+              ...sourceObjectPositions[0],
+            }
+          : sourceTypedObjectFrame;
+      const sourceProjectiveObjectPositions = objectFramePositions(
+        sourceObjectFrame
+      ).filter(isProjectiveHonorificObjectPosition);
+      const honorEligibleObjectPositions = sourceProjectiveObjectPositions
+        .filter(position => !/^1/u.test(text(position.objectPerson)));
+      const sourceHasProjectivePatient =
+        sourceProjectiveObjectPositions.length > 0;
+      const sourceHasHonorEligibleObject =
+        honorEligibleObjectPositions.length > 0;
+      const firstPersonSubject = /^1/u.test(subject);
+      const possibleHonoredParticipants = [
+        ...(!firstPersonSubject ? ["subject"] : []),
+        ...(sourceHasHonorEligibleObject ? ["object"] : []),
+      ];
+      const possibleDisparagedParticipants = [
+        "subject",
+        ...(sourceHasProjectivePatient ? ["object"] : []),
+      ];
+      let honoredParticipant = operation === "pejorative"
+        ? requestedHonoredParticipant
+        : firstPersonSubject && sourceHasHonorEligibleObject
+          ? "object"
+          : requestedHonoredParticipant;
+      const inheritedReverentialParticipant = key(
+        internalContext.attitudeSourceClosureFrame?.operationFrame
+          ?.operationFacts?.honoredParticipant
+      );
+      if (operation === "reverential"
+        && inheritedReverentialParticipant
+        && requestedHonoredParticipant !== inheritedReverentialParticipant) {
+        return blockedOperation(
+          request,
+          "reverential-participant-must-match-honorific-source",
+          "reverential-double"
+        );
+      }
+      if (operation === "reverential"
+        && inheritedReverentialParticipant) {
+        honoredParticipant = inheritedReverentialParticipant;
+      }
+      const selectedHonoredObjectPosition = honoredParticipant === "object"
+        && honorEligibleObjectPositions.length === 1
+        ? honorEligibleObjectPositions[0]
+        : null;
+      const ownerIssuedDerivedSourceApplicationFrame =
+        internalContext.ownerIssuedDerivedSourceApplicationFrame || null;
+      const derivedSourceKind = key(internalContext.sourceDerivationKind);
+      const derivedSourceHonorific = Boolean(
+        ownerIssuedDerivedSourceApplicationFrame
+        && ["causative", "applicative"].includes(derivedSourceKind)
+        && operation === "honorific"
+        && variant === "applicative"
+      );
       const sourceHasMainlineReflexive =
         Array.isArray(baseTyped?.slots?.prePredicate)
         && baseTyped.slots.prePredicate.some(slot =>
           /reflexive/u.test(text(slot?.objectPositionFrame?.objectKind))
           || /^[mnt]-o$/u.test(text(slot?.carrier))
         );
-      if ((operation === "honorific" || operation === "reverential") && /^1/u.test(subject) && honoredParticipant !== "object") {
+      if ((operation === "honorific" || operation === "reverential")
+        && firstPersonSubject
+        && !sourceHasHonorEligibleObject
+        && honoredParticipant !== "object") {
         return blockedOperation(request, "self-honorific-not-authorized", "honorific-gate");
       }
       if ((operation === "honorific" || operation === "reverential")
-        && /^1/u.test(subject)
         && honoredParticipant === "object"
-        && sourceObjectFrame.valenceArity === "vacant") {
+        && !sourceHasHonorEligibleObject) {
         return blockedOperation(
           request,
           "first-person-honorific-requires-projective-patient",
           "honorific-projective"
         );
       }
+      if ((operation === "honorific" || operation === "reverential")
+        && !possibleHonoredParticipants.includes(honoredParticipant)) {
+        return blockedOperation(
+          request,
+          "honorific-participant-not-present-in-source",
+          "honorific-gate"
+        );
+      }
+      if (operation === "pejorative"
+        && !possibleDisparagedParticipants.includes(honoredParticipant)) {
+        return blockedOperation(
+          request,
+          "pejorative-participant-not-present-in-source",
+          "pejorative-preterit-embed"
+        );
+      }
       const compoundTarget = key(internalContext.attitudeCompoundTarget);
+      const compoundScopeBasis = key(
+        internalContext.attitudeCompoundScopeBasis,
+      );
+      const compoundLexicalizationAnalysisFrame =
+        internalContext.compoundLexicalizationAnalysisFrame || null;
       const attitudeSourceFrame = isAuthorizedClosureFrame(
         internalContext.attitudeCompoundClosureFrame
       )
@@ -2778,6 +3341,15 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             "attitude-compound"
           );
         }
+        if (compoundLexicalizationAnalysisFrame?.authorizationStatus
+          !== "authorized") {
+          return blockedOperation(
+            request,
+            compoundLexicalizationAnalysisFrame?.blockReason
+              || "authorized-compound-lexicalization-analysis-required",
+            "attitude-compound",
+          );
+        }
         const compoundEmbedStem = text(
           attitudeSourceFrame.operationFrame?.operationFacts?.embedStem
         );
@@ -2805,63 +3377,82 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           attitudeSourceFrame.operationFrame?.targetClass || targetClass
         ).toUpperCase();
         ruleFamily = "attitude-compound";
+        const transformedMemberObjectFrame = cloneObjectFrameFromTyped(
+          attitudeTransformFrame.finalTypedVncSlotFrame,
+        );
+        const sourceCompoundObjectFrame =
+          internalContext.attitudeSourceObjectFrame
+          || cloneObjectFrameFromTyped(
+            attitudeSourceFrame.finalTypedVncSlotFrame,
+          );
         objectFrame = {
-          ...cloneObjectFrameFromTyped(
-            attitudeTransformFrame.finalTypedVncSlotFrame
-          ),
+          ...(compoundTarget === "matrix"
+            ? combineObjectFrames(
+                sourceCompoundObjectFrame,
+                transformedMemberObjectFrame,
+              )
+            : transformedMemberObjectFrame),
           stemRealization: targetStem
         };
         operationFacts = {
           compoundTarget,
+          compoundScopeBasis,
+          scopeDerivedAutomatically: true,
+          directScopeChoiceExposed: false,
           connective: connector,
-          sharedObjectMatrixTransform: compoundTarget === "matrix",
+          compoundVariant: key(
+            attitudeSourceFrame.operationFrame?.variant,
+          ),
+          sharedObjectMatrixTransform:
+            compoundScopeBasis === "shared-object-compound",
+          selectedCompoundStructure:
+            compoundLexicalizationAnalysisFrame.selectedStructure,
+          compoundStructureChoiceRequired:
+            compoundLexicalizationAnalysisFrame.structureChoiceRequired,
+          compoundStructureAutomaticallySelected:
+            compoundLexicalizationAnalysisFrame.structureAutomaticallySelected,
+          compoundLexicalMeaningId:
+            compoundLexicalizationAnalysisFrame.lexicalMeaningId || "",
+          compoundLexicalizationAnalysisFrame,
+          sourceCompoundObjectFrame: freeze(sourceCompoundObjectFrame),
+          transformedMemberObjectFrame: freeze(transformedMemberObjectFrame),
+          completedCompoundObjectFrame: freeze({ ...objectFrame }),
+          compoundObjectsPreserved:
+            objectFramePositions(sourceCompoundObjectFrame).length
+              <= objectFramePositions(objectFrame).length,
           typedCompoundSourceFrame: attitudeSourceFrame,
           typedMemberTransformationFrame: attitudeTransformFrame,
           typedMemberPerfectiveFrame:
-            internalContext.attitudeMemberPerfectiveFrame || null
+            internalContext.attitudeMemberPerfectiveFrame || null,
+          typedCompoundSourcePreserved: true,
+          typedInternalBoundariesPreserved: true,
+          outerSubjectPreserved: true,
+          outerMoodPreserved: true,
+          outerTensePreserved: true,
+          exactExampleIdentityAuthority: false,
+          callerAttitudeScopeAuthorityAccepted: false,
+          callerFormulaAuthorityAccepted: false,
+          callerSurfaceAuthorityAccepted: false,
         };
       } else if (operation === "honorific" && ["causative", "applicative"].includes(variant)) {
         const selected = baseMachinery?.targetStem || baseTyped?.slots?.predicate?.stem || sourceStem;
-        const alternative = key(request.honorificStemAlternative || "default");
-        const exactAlternatives = {
-          ihca: {
-            causative: {
-              default: "ihqui-l-tiā",
-              anomalous: "ihca-t-i-l-tiā"
-            }
-          },
-          ono: { causative: { default: "on-o-l-tiā" } },
-          "pil-ca": { causative: { default: "pil-quī-tiā" } },
-          ca: { causative: { default: "ye-tz-ti-ā" } },
-          "ya-uh": { causative: { default: "huica" } },
-          "huāl-la-uh": { causative: { default: "huāl-huica" } },
-          "huī-tz": { causative: { default: "huica-tz" } },
-          miqui: { applicative: { default: "miqui-liā" } },
-          chōca: {
-            applicative: { default: "chōqui-liā" },
-            causative: {
-              default: "choc-tiā",
-              "type-two-l": "chōqui-l-tiā",
-              "type-two-long": "chōqui-tīa"
-            }
-          }
-        };
-        const exactSourceAlternatives = exactAlternatives[sourceStem] || null;
-        const exactVariantAlternatives = exactSourceAlternatives?.[variant] || null;
-        if (exactSourceAlternatives && !exactVariantAlternatives) {
+        const honorificAnalysis = internalContext
+          .honorificFormationAnalysisFrame
+          || buildHonorificFormationAnalysisFrame(request, sourceStem);
+        if (
+          honorificAnalysis?.authorizationStatus !== "authorized"
+          || honorificAnalysis.selectedFormationLicensed !== true
+        ) {
           return blockedOperation(
             request,
-            "licensed-honorific-transformation-for-source-required",
+            honorificAnalysis?.blockReason
+              || "honorific-formation-not-licensed-by-typed-source-analysis",
             variant === "applicative"
               ? "honorific-applicative"
               : "honorific-causative"
           );
         }
-        if (exactVariantAlternatives
-          && !Object.prototype.hasOwnProperty.call(
-            exactVariantAlternatives,
-            alternative
-          )) {
+        if (honorificAnalysis.selectionLicensed !== true) {
           return blockedOperation(
             request,
             "licensed-honorific-stem-alternative-required",
@@ -2870,20 +3461,27 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
               : "honorific-causative"
           );
         }
-        if (sourceStem === "huī-tz" && key(request.mood) === "optative") {
+        if (honorificAnalysis.moodRestriction === "no-optative"
+          && key(request.mood) === "optative") {
           return blockedOperation(
             request,
             "huica-tz-honorific-has-no-optative",
             "honorific-irregular"
           );
         }
-        const exactIrregular = exactVariantAlternatives?.[alternative] || "";
-        if (!exactIrregular && internalContext.honorificDerivationAttempted === true && internalContext.honorificDerived !== true) {
+        const lexicalRealization = text(
+          honorificAnalysis.selectedOption?.targetStem
+        );
+        if (!lexicalRealization && internalContext.honorificDerivationAttempted === true && internalContext.honorificDerived !== true) {
           return blockedOperation(request, internalContext.honorificDerivationBlockReason || "authorized-honorific-derivation-option-required", variant === "applicative" ? "honorific-applicative" : "honorific-causative");
         }
-        targetStem = exactIrregular || selected;
-        if (exactIrregular && /(?:iā|i-ā)$/u.test(exactIrregular)) {
+        targetStem = lexicalRealization || selected;
+        if (lexicalRealization
+          && variant === "applicative"
+          && /(?:iā|i-ā)$/u.test(lexicalRealization)) {
           targetClass = "D";
+        } else if (lexicalRealization && variant === "causative") {
+          targetClass = "C";
         } else if (internalContext.honorificDerived === true) {
           targetClass = text(
             baseApplicationFrame?.normalizedRequest?.targetClass
@@ -2895,13 +3493,224 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         ruleFamily = variant === "applicative" ? "honorific-applicative" : "honorific-causative";
         const reflexiveBySubject = /^1sg/u.test(subject) ? ["n", "o"] : /^1pl/u.test(subject) ? ["t", "o"] : ["m", "o"];
         const reflexivePosition = { valenceArity: "dyadic", va1: reflexiveBySubject[0], va2: reflexiveBySubject[1], objectKind: "reflexive", governor: variant };
-        objectFrame = internalContext.honorificDerived === true
-          ? { ...sourceObjectFrame, stemRealization: targetStem }
+        const canonicalDerivedObjectFrameBase =
+          internalContext.honorificDerived === true
+          ? {
+              ...cloneObjectFrameFromTyped(
+                getBaseTypedFrame(baseApplicationFrame)
+              ),
+              stemRealization: targetStem,
+            }
           : sourceObjectFrame.valenceArity === "vacant"
           ? { ...reflexivePosition, stemRealization: targetStem }
           : sourceObjectFrame.valenceArity === "multiple"
             ? { valenceArity: "multiple", positions: [...sourceObjectFrame.positions, reflexivePosition], stemRealization: targetStem }
             : { valenceArity: "multiple", positions: [sourceObjectFrame, reflexivePosition], stemRealization: targetStem };
+        const canonicalDerivedPositions = objectFramePositions(
+          canonicalDerivedObjectFrameBase
+        ).map(position => {
+          if (!isProjectiveHonorificObjectPosition(position)) return position;
+          const sourcePosition = sourceProjectiveObjectPositions.find(
+            candidate => text(candidate.objectId) === text(position.objectId)
+          ) || sourceProjectiveObjectPositions.find(candidate => (
+            key(candidate.objectKind) === key(position.objectKind)
+            && key(candidate.objectPerson) === key(position.objectPerson)
+          ));
+          return sourcePosition
+            ? {
+                ...position,
+                objectNumber: sourcePosition.objectNumber,
+              }
+            : position;
+        });
+        const canonicalDerivedObjectFrame =
+          canonicalDerivedPositions.length > 1
+            ? {
+                ...canonicalDerivedObjectFrameBase,
+                valenceArity: "multiple",
+                positions: canonicalDerivedPositions,
+              }
+            : canonicalDerivedObjectFrameBase;
+        objectFrame = canonicalDerivedObjectFrame;
+        const derivedObjectPositions = objectFramePositions(
+          canonicalDerivedObjectFrame
+        );
+        const retainedProjectiveObjectPositions = derivedObjectPositions
+          .filter(isProjectiveHonorificObjectPosition);
+        const retainedDerivedSourceObjectPositions = derivedObjectPositions
+          .filter(position => sourceObjectPositions.some(sourcePosition => (
+            text(sourcePosition.objectId) === text(position.objectId)
+          )));
+        const derivedSourceLowerAgentPositions = sourceObjectPositions.filter(
+          position => ["causative", "applicative"].includes(
+            key(position.governor)
+          )
+        );
+        const derivedSourceThemePositions = sourceObjectPositions.filter(
+          position => key(position.governor) === "directive"
+        );
+        const derivedSourceNonspecificThemePositions =
+          derivedSourceThemePositions.filter(position => [
+            "nonspecific-human", "nonspecific-nonhuman",
+            "projective-human", "projective-nonhuman",
+          ].includes(key(position.objectKind)));
+        const reflexiveBeneficiaryPosition = derivedObjectPositions.find(
+          position => key(position?.objectKind) === "reflexive"
+            && key(position?.governor) === "applicative"
+        ) || null;
+        const projectiveApplicativeHonorific = variant === "applicative"
+          && sourceHasProjectivePatient;
+        const projectiveCausativeHonorific = variant === "causative"
+          && sourceHasProjectivePatient;
+        const causativeReflexiveAgentPosition = derivedObjectPositions.find(
+          position => key(position?.objectKind) === "reflexive"
+            && key(position?.governor) === "causative"
+        ) || null;
+        operationFacts = {
+          ...operationFacts,
+          honorificFormationAnalysisFrame: honorificAnalysis,
+          neutralSourcePreserved: true,
+          sourceAgreementFrame,
+          sourceMorphemicProfile: sourceAgreementFrame.morphemicSourceProfile,
+          availableFormations: honorificAnalysis.availableFormations,
+          selectedFormation: variant,
+          preferredFormation: honorificAnalysis.preferredFormation,
+          routeChoiceRequired: honorificAnalysis.routeChoiceRequired,
+          formationAutomaticallySelected:
+            honorificAnalysis.formationAutomaticallySelected,
+          reflexiveRelationAutomatic: true,
+          reflexiveCoreference: "result-subject",
+          ownInterestReading: variant === "applicative",
+          autonomousAgentCausativeReading: variant === "causative",
+          honorificOnlyApplicative:
+            honorificAnalysis.honorificOnlyApplicative,
+          lexicalRealizationKind: text(
+            honorificAnalysis.selectedOption?.realizationKind
+          ),
+          lexicalAlternativeChoiceRequired:
+            honorificAnalysis.alternativeChoiceRequired,
+          selectedLexicalAlternative:
+            honorificAnalysis.selectedOptionId,
+          documentedLexicalRealizationUsed:
+            honorificAnalysis.documentedLexicalRealizationUsed,
+          canvasExamplesAuthorizeRoute: false,
+          englishHonorificMarkerIsReadingEvidenceOnly: true,
+          projectiveApplicativeHonorific,
+          projectiveCausativeHonorific,
+          sourceHasProjectivePatient,
+          sourceProjectiveObjectPositions,
+          honorEligibleObjectPositions,
+          retainedProjectiveObjectPositions,
+          projectiveObjectsPreserved:
+            projectiveApplicativeHonorific
+            && retainedProjectiveObjectPositions.length
+              === sourceProjectiveObjectPositions.length,
+          projectiveObjectNumberAndRolesPreserved:
+            projectiveApplicativeHonorific,
+          projectiveCausativePatientPreserved:
+            projectiveCausativeHonorific
+            && retainedProjectiveObjectPositions.length
+              === sourceProjectiveObjectPositions.length,
+          projectiveCausativePatientNumberAndRolePreserved:
+            projectiveCausativeHonorific
+            && retainedProjectiveObjectPositions.every(position => (
+              sourceProjectiveObjectPositions.some(sourcePosition => (
+                text(sourcePosition.objectId) === text(position.objectId)
+                && text(sourcePosition.objectKind)
+                  === text(position.objectKind)
+                && text(sourcePosition.objectPerson)
+                  === text(position.objectPerson)
+                && text(sourcePosition.objectNumber)
+                  === text(position.objectNumber)
+                && text(sourcePosition.governor)
+                  === text(position.governor)
+              ))
+            )),
+          causativeReflexiveAgentPosition,
+          causativeReflexiveAgentAddedAutomatically:
+            projectiveCausativeHonorific
+            && Boolean(causativeReflexiveAgentPosition),
+          causativeReflexiveAgentCoreferentialWithResultSubject:
+            projectiveCausativeHonorific
+            && Boolean(causativeReflexiveAgentPosition),
+          literalSelfCausationReading: projectiveCausativeHonorific,
+          agentOrPatientHonorificAmbiguity:
+            projectiveCausativeHonorific
+            && possibleHonoredParticipants.length > 1,
+          typedHonorificFormationAnalysisSupplied:
+            honorificAnalysis.analysisSupplied === true,
+          routeMembershipWhitelistUsed: false,
+          exactExampleStemRouteAuthority: false,
+          reflexiveBeneficiaryPosition,
+          reflexiveBeneficiaryAddedAutomatically:
+            projectiveApplicativeHonorific
+            && Boolean(reflexiveBeneficiaryPosition),
+          literalOwnBenefitReading:
+            projectiveApplicativeHonorific,
+          possibleHonoredParticipants,
+          selectedHonoredObjectPosition,
+          honoredObjectChoiceRequired:
+            honoredParticipant === "object"
+            && honorEligibleObjectPositions.length > 1,
+          honoredParticipantChoiceRequired:
+            possibleHonoredParticipants.length > 1,
+          honoredParticipantAutomaticallySelected:
+            possibleHonoredParticipants.length === 1
+              ? honoredParticipant
+              : "",
+          participantAmbiguityPreserved:
+            possibleHonoredParticipants.length > 1,
+          firstPersonSubjectForcesObjectHonorification:
+            firstPersonSubject && sourceHasHonorEligibleObject,
+          englishHonorificPlacementSelectsParticipant: false,
+          derivedSourceHonorific,
+          derivedSourceKind: derivedSourceHonorific ? derivedSourceKind : "",
+          ownerIssuedDerivedSourceRequired: derivedSourceHonorific,
+          ownerIssuedDerivedSourceRetained: derivedSourceHonorific,
+          derivedSourceApplicationFrame: derivedSourceHonorific
+            ? ownerIssuedDerivedSourceApplicationFrame
+            : null,
+          derivedSourceResultFrame: derivedSourceHonorific
+            ? ownerIssuedDerivedSourceApplicationFrame.resultFrame
+            : null,
+          innerDerivationOperationFrame: derivedSourceHonorific
+            ? ownerIssuedDerivedSourceApplicationFrame.resultFrame
+              ?.derivationOperationFrame || null
+            : null,
+          innerDerivedSourceStem: derivedSourceHonorific
+            ? text(honorificSourceTypedFrame?.slots?.predicate?.stem)
+            : "",
+          derivedSourceHigherAgent: derivedSourceHonorific
+            ? subject
+            : "",
+          derivedSourceLowerAgentPositions: derivedSourceHonorific
+            ? derivedSourceLowerAgentPositions
+            : freeze([]),
+          derivedSourceThemePositions: derivedSourceHonorific
+            ? derivedSourceThemePositions
+            : freeze([]),
+          derivedSourceNonspecificThemePositions: derivedSourceHonorific
+            ? derivedSourceNonspecificThemePositions
+            : freeze([]),
+          derivedSourceNonspecificThemeAllowsSingularOrPluralReading:
+            derivedSourceHonorific
+            && derivedSourceNonspecificThemePositions.length > 0,
+          retainedDerivedSourceObjectPositions: derivedSourceHonorific
+            ? retainedDerivedSourceObjectPositions
+            : freeze([]),
+          derivedSourceObjectsPreserved: derivedSourceHonorific
+            && retainedDerivedSourceObjectPositions.length
+              === sourceObjectPositions.length,
+          derivedSourceBoundariesPreserved: derivedSourceHonorific
+            && Boolean(
+              ownerIssuedDerivedSourceApplicationFrame.resultFrame
+                ?.derivationOperationFrame
+            ),
+          derivedSourceRebuiltFromFormula: false,
+          derivedSourceFormulaAuthorityAccepted: false,
+          derivedSourceSurfaceAuthorityAccepted: false,
+          derivedSourceCanvasExampleAuthority: false,
+        };
       } else {
         if (!["honorific", "reverential", "pejorative"].includes(operation)
           || variant !== "preterit-embed") {
@@ -2928,15 +3737,224 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           );
         }
         const perfective = perfectiveStemFromMachinery(baseMachinery) || sourceStem;
-        const matrix = operation === "pejorative" ? "pol-o-ā" : "tzin-o-ā";
-        targetStem = `${perfective}-⎕-${matrix}`;
+        const matrix = operation === "pejorative" ? "pōl-o-ā" : "tzin-o-ā";
+        targetStem = `${perfective}-0-${matrix}`;
         targetClass = "C";
         ruleFamily = operation === "pejorative" ? "pejorative-preterit-embed" : operation === "reverential" ? "reverential-double" : "honorific-preterit-embed";
+        if (operation === "honorific") {
+          objectFrame = {
+            ...cloneObjectFrameFromTyped(baseTyped),
+            stemRealization: targetStem,
+          };
+          const retainedSourceObjects = objectFramePositions(objectFrame);
+          operationFacts = {
+            ...operationFacts,
+            mainlineReflexivePreteritEmbedHonorific: true,
+            sourceReflexiveTopology: "mainline-reflexive",
+            mainlineReflexiveTopologySelectsRouteAutomatically: true,
+            attitudeRouteChoiceRequired: false,
+            userSelectsMatrix: false,
+            userSelectsPerfectiveClassForm: false,
+            userSelectsObjectReplacement: false,
+            userSelectsCompoundBracketing: false,
+            integratedCompoundPattern: true,
+            futureEmbedParallel: true,
+            embeddedPredicateAspect: "perfective",
+            embeddedPredicateStem: perfective,
+            embeddedPredicateVerbClass: text(
+              baseApplicationFrame?.normalizedRequest?.verbClass
+              || request.verbClass
+            ).toUpperCase(),
+            embeddedTense: "preterit",
+            embeddedPreteritMorph: "0",
+            embeddedPreteritMorphHasSurface: false,
+            fixedAffectiveMatrix: "tla-(tzin-o-ā)",
+            matrixStem: matrix,
+            matrixSourceNounstem: "(tzin)-tli-",
+            matrixFormationOwner: "§55.6",
+            incorporatedPredicateReplacesMatrixSpecificObject: true,
+            sourceObjectFrame,
+            retainedSourceObjectPositions: retainedSourceObjects,
+            sourceObjectPronounsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            sourceParticipantsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            ownerIssuedSourceApplicationFrame: baseApplicationFrame,
+            ownerIssuedSourceResultFrame: baseResult,
+            ownerIssuedSourceRetained: true,
+            shuntlineReflexiveUsesPreteritEmbed: false,
+            sourceShapeDeterminesPerfectiveThroughCanonicalOwner: true,
+            exampleStemWhitelistUsed: false,
+            canvasExampleAuthority: false,
+            callerFormulaAuthorityAccepted: false,
+            callerSurfaceAuthorityAccepted: false,
+          };
+        } else if (operation === "reverential") {
+          const innerHonorificFrame =
+            internalContext.attitudeSourceClosureFrame;
+          const innerOperationFrame = innerHonorificFrame?.operationFrame;
+          const innerFacts = innerOperationFrame?.operationFacts || {};
+          objectFrame = {
+            ...cloneObjectFrameFromTyped(baseTyped),
+            stemRealization: targetStem,
+          };
+          const retainedSourceObjects = objectFramePositions(objectFrame);
+          operationFacts = {
+            ...operationFacts,
+            reverentialSubtypeOfHonorific: true,
+            doubledHonorificConstruction: true,
+            reverentialIntensitySelectedByUser: true,
+            secondHonorificLayerAutomatic: true,
+            ownerIssuedHonorificSourceRequired: true,
+            ownerIssuedHonorificSourceFrame: innerHonorificFrame,
+            ownerIssuedHonorificSourceRetained: true,
+            innerHonorificOperationFrame: innerOperationFrame,
+            neutralSourceStem: text(innerOperationFrame?.sourceStem),
+            honorificSourceStem: text(innerOperationFrame?.targetStem),
+            reverentialTargetStem: targetStem,
+            neutralHonorificReverentialHierarchy: freeze([
+              text(innerOperationFrame?.sourceStem),
+              text(innerOperationFrame?.targetStem),
+              targetStem,
+            ]),
+            hierarchyDepth: 3,
+            innerHonoredParticipant:
+              text(innerFacts.honoredParticipant),
+            outerHonoredParticipant: honoredParticipant,
+            inheritedHonoredParticipantPreserved:
+              text(innerFacts.honoredParticipant) === honoredParticipant,
+            inheritedPossibleHonoredParticipants: freeze([
+              ...(innerFacts.possibleHonoredParticipants || []),
+            ]),
+            inheritedParticipantAmbiguity:
+              (innerFacts.possibleHonoredParticipants || []).length > 1,
+            inheritedParticipantChoiceWasReal:
+              innerFacts.honoredParticipantChoiceRequired === true,
+            outerIntroducesFreshParticipantChoice: false,
+            innerHonorificAnalysisPreserved: true,
+            embeddedHonorificPredicateAspect: "perfective",
+            embeddedHonorificPerfectiveStem: perfective,
+            embeddedPreteritMorph: "0",
+            embeddedPreteritMorphHasSurface: false,
+            incorporatedHonorificPredicateIsOuterObject: true,
+            fixedOuterMatrix: "tla-(tzin-o-ā)",
+            outerMatrixStem: matrix,
+            retainedSourceObjectPositions: retainedSourceObjects,
+            sourceObjectPronounsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            sourceParticipantsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            innerAndOuterBoundariesPreserved: true,
+            rawStemReentryAllowed: false,
+            copiedHonorificSpellingAuthority: false,
+            callerFormulaAuthorityAccepted: false,
+            callerSurfaceAuthorityAccepted: false,
+            canvasExampleAuthority: false,
+          };
+        } else if (operation === "pejorative") {
+          objectFrame = {
+            ...sourceObjectFrame,
+            stemRealization: targetStem,
+          };
+          const retainedSourceObjects = objectFramePositions(objectFrame);
+          const sourceHasReflexiveObject = retainedSourceObjects.some(
+            position => /reflexive/u.test(key(position.objectKind))
+          );
+          const sourceTopology = sourceHasReflexiveObject
+            ? "reflexive-object"
+            : sourceHasProjectivePatient
+              ? "projective-object"
+              : "intransitive";
+          const selectedDisparagedObjectPosition =
+            honoredParticipant === "object"
+            && sourceProjectiveObjectPositions.length === 1
+              ? sourceProjectiveObjectPositions[0]
+              : null;
+          operationFacts = {
+            ...operationFacts,
+            pejorativePreteritEmbed: true,
+            pejorativeAttitudeSelectedByUser: true,
+            sourceTopology,
+            intransitiveSourceAccepted: sourceTopology === "intransitive",
+            projectiveObjectSourceAccepted:
+              sourceTopology === "projective-object",
+            reflexiveObjectSourceAccepted:
+              sourceTopology === "reflexive-object",
+            sourceTopologySelectsSharedPreteritEmbedAutomatically: true,
+            attitudeRouteChoiceRequired: false,
+            userSelectsMatrix: false,
+            userSelectsPerfectiveClassForm: false,
+            userSelectsObjectReplacement: false,
+            userSelectsCompoundBracketing: false,
+            embeddedPredicateAspect: "perfective",
+            embeddedPredicateStem: perfective,
+            embeddedPredicateVerbClass: text(
+              baseApplicationFrame?.normalizedRequest?.verbClass
+              || request.verbClass
+            ).toUpperCase(),
+            embeddedTense: "preterit",
+            embeddedPreteritMorph: "0",
+            embeddedPreteritMorphHasSurface: false,
+            fixedAffectiveMatrix: "tla-(pōl-o-ā)",
+            matrixStem: matrix,
+            matrixSourceNounstem: "(-pōl)-Ø-",
+            matrixFormationOwner: "§54.10",
+            matrixRestrictedToPejorativeConstruction: true,
+            incorporatedPredicateReplacesMatrixSpecificObject: true,
+            sourceObjectFrame,
+            retainedSourceObjectPositions: retainedSourceObjects,
+            sourceObjectPronounsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            sourceObjectNumberAndRolesPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length
+              && retainedSourceObjects.every(position => (
+                sourceObjectPositions.some(sourcePosition => (
+                  text(sourcePosition.objectId) === text(position.objectId)
+                  && text(sourcePosition.objectKind)
+                    === text(position.objectKind)
+                  && text(sourcePosition.objectPerson)
+                    === text(position.objectPerson)
+                  && text(sourcePosition.objectNumber)
+                    === text(position.objectNumber)
+                  && text(sourcePosition.governor)
+                    === text(position.governor)
+                ))
+              )),
+            sourceParticipantsPreserved:
+              retainedSourceObjects.length === sourceObjectPositions.length,
+            possibleDisparagedParticipants,
+            disparagedParticipant: honoredParticipant,
+            selectedDisparagedObjectPosition,
+            disparagedParticipantChoiceRequired:
+              possibleDisparagedParticipants.length > 1,
+            disparagedParticipantAutomaticallySelected:
+              possibleDisparagedParticipants.length === 1
+                ? honoredParticipant
+                : "",
+            subjectObjectDisparagementAmbiguityPreserved:
+              possibleDisparagedParticipants.length > 1,
+            firstPersonSubjectMayBeDisparaged: firstPersonSubject,
+            selfDisparagementAllowed: true,
+            selfHonorificationRestrictionDoesNotApply: true,
+            ownerIssuedSourceApplicationFrame: baseApplicationFrame,
+            ownerIssuedSourceResultFrame: baseResult,
+            ownerIssuedSourceRetained: true,
+            sourceShapeDeterminesPerfectiveThroughCanonicalOwner: true,
+            exampleStemWhitelistUsed: false,
+            canvasExampleAuthority: false,
+            callerFormulaAuthorityAccepted: false,
+            callerSurfaceAuthorityAccepted: false,
+          };
+        }
       }
       operationFacts = {
         ...operationFacts,
-        honoredParticipant,
-        selfPejorativeAllowed: operation === "pejorative"
+        ...(operation === "pejorative"
+          ? {
+              disparagedParticipant: honoredParticipant,
+              selfPejorativeAllowed: true,
+            }
+          : { honoredParticipant, selfPejorativeAllowed: false })
       };
     }
     if (!targetStem) return blockedOperation(request, "licensed-operation-did-not-produce-target-stem", ruleFamily);
@@ -3037,13 +4055,19 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
           ? "honorific-causative"
           : "honorific-applicative"
       );
-      if (["ihca", "ono", "pil-ca", "ca", "ya-uh", "huāl-la-uh", "huī-tz", "miqui", "chōca"].includes(sourceStem)) {
+      if (operationFacts.documentedLexicalRealizationUsed === true) {
         ruleFamilies.add("honorific-irregular");
       }
-      if (key(request.honoredParticipant) === "object"
-        && Array.isArray(baseTyped?.slots?.prePredicate)
-        && baseTyped.slots.prePredicate.length > 0) {
+      if (operationFacts.projectiveApplicativeHonorific === true) {
         ruleFamilies.add("honorific-projective");
+        ruleFamilies.add("honorific-projective-applicative");
+      }
+      if (operationFacts.projectiveCausativeHonorific === true) {
+        ruleFamilies.add("honorific-projective");
+        ruleFamilies.add("honorific-projective-causative");
+      }
+      if (operationFacts.derivedSourceHonorific === true) {
+        ruleFamilies.add("honorific-derived-source");
       }
     }
     if (operation === "honorific" && variant === "preterit-embed") {
@@ -3259,6 +4283,23 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   }
 
   function evaluateClassicalNahuatlLateVncDerivation(request = {}, internalEvaluation = {}) {
+    const requestHasAttitudeCompoundSource = Boolean(
+      isAuthorizedClosureFrame(request.attitudeCompoundClosureFrame)
+      || (text(request.sourceEmbedStem) && text(request.sourceMatrixStem))
+    );
+    const requestedSourceValence = key(
+      request.sourceValence
+      || request.valence
+      || request.sourceApplicationFrame?.normalizedRequest?.sourceValence
+      || request.sourceApplicationFrame?.normalizedRequest?.targetValence
+    );
+    if (key(request.lateOperation) === "honorific"
+      && !key(request.lateVariant)
+      && requestedSourceValence === "mainline-reflexive") {
+      // §33.7 makes the preterit-embed route a consequence of typed object
+      // topology. The user does not choose this matrix or its bracketing.
+      request = { ...request, lateVariant: "preterit-embed" };
+    }
     const depth = Number(internalEvaluation.depth || 0);
     if (depth > 4) {
       const blocked = freeze({
@@ -3272,14 +4313,26 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       issuedClosureFrames.add(blocked);
       return blocked;
     }
-    if (key(request.lateOperation) === "honorific"
-      && text(request.sourceStem || request.stem) === "huī-tz"
-      && key(request.mood) === "optative") {
-      return blockedClosure(
+    if (
+      key(request.lateOperation) === "honorific"
+      && HONORIFIC_PRODUCTIVE_FORMATIONS.includes(key(request.lateVariant))
+      && !requestHasAttitudeCompoundSource
+    ) {
+      const earlyHonorificAnalysis = buildHonorificFormationAnalysisFrame(
         request,
-        "huica-tz-honorific-has-no-optative",
-        "honorific-irregular"
+        text(request.sourceStem || request.stem),
       );
+      if (
+        earlyHonorificAnalysis.authorizationStatus === "authorized"
+        && earlyHonorificAnalysis.moodRestriction === "no-optative"
+        && key(request.mood) === "optative"
+      ) {
+        return blockedClosure(
+          request,
+          "huica-tz-honorific-has-no-optative",
+          "honorific-irregular",
+        );
+      }
     }
     if (key(request.lateOperation) === "purposive"
       && !["none", "on", "huāl"].includes(
@@ -3304,7 +4357,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       "purposiveSeries", "purposiveIrregularPluralN", "purposiveExternalDirectional",
       "purposiveSoundedFutureMorph", "purposiveEarlySingularGlottal",
       "honoredParticipant", "honorificDerivationOptionId",
-      "honorificStemAlternative", "attitudeCompoundTarget",
+      "honorificStemAlternative", "honorificFormationAnalysis",
+      "compoundLexicalizationAnalysis",
+      "attitudeCompoundTarget",
       "compoundEmbedClosureFrame", "compoundMatrixClosureFrame",
       "attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame",
       "sourceApplicationFrame", "attitudeSourceClosureFrame",
@@ -3411,6 +4466,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       || (typeof targetObject.evaluateClassicalNahuatlVncApplication === "function"
         ? targetObject.evaluateClassicalNahuatlVncApplication(baseRequest)
         : null);
+    const honorificSourceApplicationFrame = baseApplicationFrame;
     let compoundEmbedFiniteCoordinateDecoupled = Boolean(
       key(request.lateOperation) === "compound"
       && key(request.lateVariant) === "future-embed"
@@ -3459,10 +4515,38 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     let honorificDerivationBlockReason = "";
     const lateOperation = key(request.lateOperation);
     const lateVariant = key(request.lateVariant);
-    const exactHonorificSources = new Set(["ihca", "ono", "pil-ca", "ca", "ya-uh", "huāl-la-uh", "huī-tz", "miqui", "chōca"]);
+    const honorificFormationAnalysisFrame =
+      lateOperation === "honorific"
+        && HONORIFIC_PRODUCTIVE_FORMATIONS.includes(lateVariant)
+        && !requestHasAttitudeCompoundSource
+        ? buildHonorificFormationAnalysisFrame(
+            request,
+            text(request.sourceStem || request.stem),
+          )
+        : null;
+    if (
+      honorificFormationAnalysisFrame
+      && honorificFormationAnalysisFrame.authorizationStatus !== "authorized"
+    ) {
+      return blockedClosure(
+        request,
+        honorificFormationAnalysisFrame.blockReason,
+        "honorific-gate",
+      );
+    }
+    if (
+      honorificFormationAnalysisFrame
+      && honorificFormationAnalysisFrame.selectedFormationLicensed !== true
+    ) {
+      return blockedClosure(
+        request,
+        "honorific-formation-not-licensed-by-typed-source-analysis",
+        "honorific-gate",
+      );
+    }
     if (lateOperation === "honorific"
       && ["causative", "applicative"].includes(lateVariant)
-      && !exactHonorificSources.has(text(request.sourceStem || request.stem))
+      && !honorificFormationAnalysisFrame?.selectedOption
       && typeof targetObject.evaluateClassicalNahuatlVncApplication === "function") {
       honorificDerivationAttempted = true;
       const honorificRequest = {
@@ -3644,6 +4728,9 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     let attitudeMemberPerfectiveStem = "";
     let attitudeMemberPerfectiveFrame = null;
     let attitudeTarget = "";
+    let attitudeScopeBasis = "";
+    let compoundLexicalizationAnalysisFrame = null;
+    let attitudeSourceObjectFrame = null;
     const requestsAttitudeCompound = Boolean(
       attitudeCompoundClosureFrame
       || (text(request.sourceEmbedStem) && text(request.sourceMatrixStem))
@@ -3685,13 +4772,49 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       const compoundMatrixStem = text(
         attitudeCompoundClosureFrame?.operationFrame?.operationFacts?.matrixStem
       );
+      const compoundSourceEmbedStem = text(
+        attitudeCompoundClosureFrame?.operationFrame?.operationFacts
+          ?.specialPerfectiveEmbedSource
+        || compoundEmbedStem,
+      );
+      const compoundSourceMatrixStem = text(
+        attitudeCompoundClosureFrame?.operationFrame?.operationFacts
+          ?.matrixSuppliedStem
+        || attitudeCompoundClosureFrame?.operationFrame?.operationFacts
+          ?.matrixSelectionStem
+        || compoundMatrixStem,
+      );
+      compoundLexicalizationAnalysisFrame =
+        buildCompoundLexicalizationAnalysisFrame(
+          request,
+          compoundSourceEmbedStem,
+          compoundSourceMatrixStem,
+        );
+      if (compoundLexicalizationAnalysisFrame.authorizationStatus !== "authorized") {
+        return blockedClosure(
+          request,
+          compoundLexicalizationAnalysisFrame.blockReason,
+          "attitude-compound",
+        );
+      }
+      attitudeSourceObjectFrame = cloneObjectFrameFromTyped(
+        attitudeCompoundClosureFrame?.finalTypedVncSlotFrame,
+      );
+      const selectedCompoundStructure = key(
+        compoundLexicalizationAnalysisFrame.selectedStructure,
+      );
       attitudeTarget = compoundVariant === "shared-object"
-        || (compoundEmbedStem === "cui" && compoundMatrixStem === "huetzi")
+        || selectedCompoundStructure === "lexicalized"
         ? "matrix"
         : "embed";
+      attitudeScopeBasis = compoundVariant === "shared-object"
+        ? "shared-object-compound"
+        : selectedCompoundStructure === "lexicalized"
+          ? "typed-lexicalized-unity"
+          : "compositional-intransitive-matrix";
       const memberStem = attitudeTarget === "embed"
-        ? text(attitudeCompoundClosureFrame?.operationFrame?.operationFacts?.embedStem)
-        : text(attitudeCompoundClosureFrame?.operationFrame?.operationFacts?.matrixStem);
+        ? compoundSourceEmbedStem
+        : compoundSourceMatrixStem;
       if (!attitudeMemberTransformationFrame && memberStem) {
         attitudeMemberTransformationFrame =
           evaluateClassicalNahuatlLateVncDerivation({
@@ -3700,12 +4823,21 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             sourceEmbedStem: "",
             sourceMatrixStem: "",
             attitudeCompoundTarget: "",
+            attitudeCompoundClosureFrame: null,
+            attitudeMemberTransformationFrame: null,
+            compoundLexicalizationAnalysis: undefined,
             lateOperation,
             lateVariant: lateOperation === "honorific"
-              ? "applicative"
+              ? ["applicative", "causative"].includes(lateVariant)
+                ? lateVariant
+                : "applicative"
               : "preterit-embed",
             verbClass: attitudeTarget === "matrix"
-              ? text(request.compoundMatrixClass || "A")
+              ? text(
+                  attitudeCompoundClosureFrame?.operationFrame?.targetClass
+                  || request.compoundMatrixClass
+                  || "A",
+                )
               : text(request.verbClass || "B"),
             sourceValence: attitudeTarget === "matrix"
               ? "intransitive"
@@ -3811,15 +4943,23 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             "attitudeSourceClosureFrame"
           ) && !isAuthorizedClosureFrame(request.attitudeSourceClosureFrame)),
       attitudeSourceIsHonorific: Boolean(attitudeSourceClosureFrame),
+      attitudeSourceClosureFrame,
       possessiveSupplementFrame,
       attitudeCompoundClosureFrame,
       attitudeMemberTransformationFrame,
       attitudeMemberPerfectiveStem,
       attitudeMemberPerfectiveFrame,
       attitudeCompoundTarget: attitudeTarget,
+      attitudeCompoundScopeBasis: attitudeScopeBasis,
+      compoundLexicalizationAnalysisFrame,
+      attitudeSourceObjectFrame,
       honorificDerived,
       honorificDerivationAttempted,
       honorificDerivationBlockReason,
+      honorificFormationAnalysisFrame,
+      honorificSourceApplicationFrame,
+      ownerIssuedDerivedSourceApplicationFrame: sourceApplicationFrame,
+      sourceDerivationKind,
       compoundEmbedFiniteCoordinateDecoupled
     });
     const machineryFrame = buildClassicalNahuatlMachineryFrame(operationFrame);
@@ -4049,6 +5189,7 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     VERSION,
     buildClassicalNahuatlLateSourceAgreementFrame,
     isClassicalNahuatlLateSourceAgreementFrame,
+    buildHonorificFormationAnalysisFrame,
     buildClassicalNahuatlOperationFrame,
     isClassicalNahuatlOperationFrame,
     buildClassicalNahuatlMachineryFrame,

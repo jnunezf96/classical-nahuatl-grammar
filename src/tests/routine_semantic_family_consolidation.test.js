@@ -58,7 +58,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "all 1,617 owner identities are organized behind 170 grammatical families",
+        "all installed owner identities are organized behind grammatical families",
         {
             familyCount: allFamilies.length,
             ownerAdapterCount: allFamilies.reduce(
@@ -87,13 +87,14 @@ function run(ctx = {}) {
             )),
         },
         {
-            familyCount: 170,
-            ownerAdapterCount: 1617,
+            familyCount: 174,
+            ownerAdapterCount: 1621,
             multiMemberFamilyCount: 50,
-            singletonFamilyCount: 120,
+            singletonFamilyCount: 124,
             routineFamilyCount: 164,
             routineOwnerAdapterCount: 1563,
             systemKinds: [
+                "bespoke-singleton",
                 "carrier-structure",
                 "conceptual-structure",
                 "foundational",

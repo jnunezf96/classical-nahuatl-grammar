@@ -75,7 +75,7 @@ import classical_late_grammar_nonactive_incorporated_means_instrument from "./nu
 import classical_late_grammar_textual_reanalysis_diagnostic from "./nuclear-owner-specs/classical-late-grammar-textual-reanalysis-diagnostic.mjs";
 import { createClassicalPersonalNameNncValidationSemanticOperationsApi } from "./personal_name_nnc_validation_semantic_operations.mjs";
 import { createClassicalLateGrammarValidationSemanticOperationsApi } from "./late_grammar_validation_semantic_operations.mjs";
-import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260811-canvas-fact-browser-012";
+import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
 const OWNER_SPECS = Object.freeze([
   classical_personal_name_nnc_source_opacity_analysis,
   classical_personal_name_nnc_historical_third_person_source,

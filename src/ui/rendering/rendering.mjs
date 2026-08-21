@@ -24,10 +24,26 @@ import {
   CLASSICAL_RESULT_OUTPUT_SCOPES,
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
+import {
+  buildClassicalNahuatlParticipantFrame,
+} from "../../core/classical/participant_frame.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON36_FORMULA_HOVER_AUTHORITIES,
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON37_FORMULA_HOVER_AUTHORITIES,
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON38_FORMULA_HOVER_AUTHORITIES,
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+import {
+  LESSON39_FORMULA_HOVER_AUTHORITIES,
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260821-lesson39-group23-171";
 
 export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalRuleLogicSurfaceFrame = null;
     var ActiveClassicalVncResultSourceContinuation = null;
+    var ActiveClassicalVncResultSourceApplicationFrame = null;
     var ActiveClassicalVncResultSourceProjection = null;
     var ClassicalVncResultSourceCommitInProgress = false;
     const ClassicalVncResultSourceControlSnapshots = new Map();
@@ -466,6 +482,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ActiveClassicalVncResultSourceContinuation
       );
       ActiveClassicalVncResultSourceContinuation = null;
+      ActiveClassicalVncResultSourceApplicationFrame = null;
       ActiveClassicalVncResultSourceProjection = null;
       removeClassicalVncResultSourceDynamicOptions();
       ClassicalVncResultSourceControlSnapshots.forEach(
@@ -624,12 +641,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalVncResultSourceContinuationCandidate(
       surfaceFrame = null
     ) {
+      const directLateOperationResult = Boolean(
+        surfaceFrame?.kind
+          === "classical-nahuatl-late-vnc-derivation-closure-frame"
+        && surfaceFrame.authorizationStatus === "authorized"
+      );
       if (
         !surfaceFrame
         || surfaceFrame.authorizationStatus !== "authorized"
-        || normalizeClassicalBasalUnitForRendering(
-          surfaceFrame.basalUnit
-        ) !== "vnc"
+        || (!directLateOperationResult
+          && normalizeClassicalBasalUnitForRendering(
+            surfaceFrame.basalUnit
+          ) !== "vnc")
         || typeof targetObject
           .getClassicalNahuatlVncContinuationSourceConstituents
           !== "function"
@@ -637,7 +660,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return null;
       }
       const resultFrame =
-        surfaceFrame.state?.vncLateOperationClosureFrame
+        (directLateOperationResult ? surfaceFrame : null)
+        || surfaceFrame.state?.vncLateOperationClosureFrame
         || surfaceFrame.state?.vncOrderedVoiceApplicationFrame
         || surfaceFrame.state?.vncApplicationFrame?.resultFrame
         || null;
@@ -649,8 +673,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
           .getClassicalNahuatlVncContinuationSourceConstituents(
             resultFrame
           );
+      const sourceApplicationFrame =
+        surfaceFrame.state?.vncApplicationFrame?.resultFrame === resultFrame
+          ? surfaceFrame.state.vncApplicationFrame
+          : null;
       return projection
-        ? Object.freeze({ resultFrame, projection })
+        ? Object.freeze({
+          resultFrame,
+          projection,
+          sourceApplicationFrame
+        })
         : null;
     }
     function getActiveClassicalVncResultSourceForState(state = {}) {
@@ -676,6 +708,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return Object.freeze({
           resultFrame,
           projection,
+          sourceApplicationFrame:
+            ActiveClassicalVncResultSourceApplicationFrame,
           recursiveCompoundRole: "matrix"
         });
       }
@@ -716,7 +750,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return null;
       }
       ActiveClassicalVncResultSourceProjection = projection;
-      return Object.freeze({ resultFrame, projection });
+      return Object.freeze({
+        resultFrame,
+        projection,
+        sourceApplicationFrame:
+          ActiveClassicalVncResultSourceApplicationFrame
+      });
     }
     function normalizeClassicalRuleLogicSourceTransitivity(value = "") {
       return normalizeGenerationSourceTransitivity(value);
@@ -1419,6 +1458,74 @@ export function createUiRenderingApi(targetObject = globalThis) {
         provenance: "result-control"
       });
     }
+    function getClassicalRuleLogicVncSubjectFrame(overrides = {}) {
+      const explicitAgreement = String(
+        overrides.sourceSubject
+        || overrides.embeddedSubject
+        || overrides.subject
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-subject",
+          ""
+        )
+        || ""
+      ).trim();
+      const agreementMatch = /^(1|2|3)(sg|pl|common)$/u.exec(explicitAgreement);
+      const person = String(
+        overrides.subjectPerson
+        || overrides.vncSubjectPerson
+        || (agreementMatch ? agreementMatch[1] : "")
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-vnc-subject-person",
+          "1"
+        )
+        || "1"
+      ).trim();
+      const animacy = String(
+        overrides.subjectAnimacy
+        || overrides.vncSubjectAnimacy
+        || (agreementMatch?.[2] === "common" ? "nonanimate" : "")
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-vnc-subject-animacy",
+          "animate"
+        )
+        || "animate"
+      ).trim();
+      const humanness = String(
+        overrides.subjectHumanness
+        || overrides.vncSubjectHumanness
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-vnc-subject-humanness",
+          person === "3" ? "nonhuman" : "human"
+        )
+        || (person === "3" ? "nonhuman" : "human")
+      ).trim();
+      const number = String(
+        overrides.subjectNumber
+        || overrides.vncSubjectNumber
+        || (agreementMatch?.[2] === "pl"
+          ? "plural"
+          : agreementMatch?.[2] === "common"
+            ? "common"
+            : agreementMatch?.[2] === "sg"
+              ? "singular"
+              : "")
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-vnc-subject-number",
+          "singular"
+        )
+        || "singular"
+      ).trim();
+      return buildClassicalNahuatlParticipantFrame({
+        role: "subject",
+        agreement: explicitAgreement,
+        person,
+        animacy,
+        humanness,
+        number,
+        hasReferent: true,
+        impersonal: false
+      });
+    }
     function getClassicalRuleLogicSurfaceState(overrides = {}) {
       const basalUnit = normalizeClassicalBasalUnitForRendering(overrides.basalUnit || getClassicalBasalUnitFromSurfaceForRendering("vnc"));
       const requestedExplicitSourceValue =
@@ -1510,13 +1617,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceVoiceSelectionFrame = validateClassicalNahuatlVncVoiceSelection(requestedSourceVoice, "causative-source");
       let sourceVoice = sourceVoiceSelectionFrame.voice || "active";
       const requestedSourceNonactiveOptionId = String(overrides.sourceNonactiveOptionId || overrides.causativeSourceNonactiveOptionId || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-causative-source-nonactive", "") || "").trim();
-      const sourceSubject = String(
-        overrides.sourceSubject
-        || overrides.embeddedSubject
-        || (derivationType !== "causative" ? overrides.subject : "")
-        || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-subject", "1sg")
-        || "1sg"
-      ).trim();
+      const vncSubjectFrame = getClassicalRuleLogicVncSubjectFrame(
+        derivationType === "causative"
+          ? {
+            ...overrides,
+            subject: ""
+          }
+          : overrides
+      );
+      const sourceSubject = basalUnit === "vnc"
+        ? vncSubjectFrame.agreement
+        : String(
+          overrides.sourceSubject
+          || overrides.embeddedSubject
+          || (derivationType !== "causative" ? overrides.subject : "")
+          || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-subject", "1sg")
+          || "1sg"
+        ).trim();
       const requestedCausativeObjectKind = String(Object.prototype.hasOwnProperty.call(overrides, "causativeObjectKind")
         ? overrides.causativeObjectKind || ""
         : getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-causative-causee-valence", "") || "").trim();
@@ -1588,6 +1705,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "singular"
         )
         || "singular"
+      ).trim();
+      const visibleNncHumanness = String(
+        overrides.nncHumanness
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-nnc-subject-humanness",
+          "unspecified"
+        )
+        || "unspecified"
       ).trim();
       const visibleNncSubject = basalUnit === "nnc"
         ? getValidatedProgrammaticClassicalNncSubject(overrides)
@@ -1779,6 +1904,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "literal"
           ) === "metaphorical";
       const nncAnimacy = requestedNncAnimacy;
+      let nncHumanness = visibleNncHumanness;
       const nncMetaphoricalUse = metaphoricalUseRequested;
       const allowedNncStates = ["absolutive", "possessive"];
       const nncState = allowedNncStates.includes(requestedNncState) ? requestedNncState : allowedNncStates[0];
@@ -1851,6 +1977,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               state: nncState,
               subject,
               animacy: nncAnimacy,
+              humanness: nncHumanness,
               metaphoricalUse: nncMetaphoricalUse,
               possessor:
                 normalizeClassicalOrdinaryNncApplicationPossessor(
@@ -1874,6 +2001,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             }
           )
           : null;
+      nncHumanness = String(
+        nncOperationSelectionFrame?.selectedHumanness
+        || nncHumanness
+        || "unspecified"
+      );
       if (
         nncType !== "ordinary"
         && nncOperationSelectionFrame?.authorizationStatus === "authorized"
@@ -2036,6 +2168,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         outputScopeControlInventoryFrame,
         nncReferenceCategory,
         nncAnimacy,
+        nncHumanness,
         nncMetaphoricalUse,
         nncQuantitiveMatrix,
         nncQuantitiveMatrixForm,
@@ -2061,6 +2194,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceNonactiveOptionInventory,
         selectedSourceNonactiveOptionId,
         sourceSubject,
+        vncSubjectFrame,
+        subjectPerson: vncSubjectFrame.person,
+        subjectAnimacy: vncSubjectFrame.animacy,
+        subjectHumanness: vncSubjectFrame.humanness,
+        subjectNumber: vncSubjectFrame.number,
         causativeResultSubject,
         requestedCausativeObjectKind,
         causativeObjectKind: previousCausativeObjectKindEligible ? requestedCausativeObjectKind : "",
@@ -2458,6 +2596,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceLexemeId: state.sourceLexemeId,
         sourceInitialISelection: state.sourceInitialISelection,
         subject: state.subject,
+        sourceSubjectPerson: state.subjectPerson,
+        sourceSubjectAnimacy: state.subjectAnimacy,
+        sourceSubjectHumanness: state.subjectHumanness,
+        sourceSubjectNumber: state.subjectNumber,
+        sourceSubjectFrame: state.vncSubjectFrame,
         mood: semanticSelectionBlocked ? state.requestedSemanticMood : state.mood,
         tense: semanticSelectionBlocked ? state.requestedSemanticTense : state.tense,
         verbClass: state.verbClass,
@@ -2565,6 +2708,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               state: state.nncState,
               subject: state.subject,
               animacy: state.nncAnimacy,
+              humanness: state.nncHumanness,
               metaphoricalUse: state.nncMetaphoricalUse === true,
               possessor:
                 normalizeClassicalOrdinaryNncApplicationPossessor(
@@ -2619,6 +2763,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedSubjectPerson: "",
         subjectNumberValues: [],
         selectedSubjectNumber: "",
+        humannessValues: [],
+        selectedHumanness: "",
         animacyValues: [],
         selectedAnimacy: "",
         metaphoricalUseAvailable: false,
@@ -2674,7 +2820,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
         available: available === true,
         reason,
         decisionOwner: options.decisionOwner || (available ? "user" : "canvas-context"),
-        renderInAuthority: options.renderInAuthority !== false
+        // Grammar presents genuine choices. A value fixed by the Source or by
+        // the grammar remains available to the Result account, but it is not
+        // rendered as a disabled input.
+        renderInAuthority: Object.prototype.hasOwnProperty.call(
+          options,
+          "renderInAuthority"
+        )
+          ? options.renderInAuthority === true
+          : available === true
       });
       return {
         "classical-rule-logic-nnc-output-scope": availability(true, "canvas-nnc-paradigm-contract-available", {
@@ -2766,9 +2920,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-nnc-subject-animacy": availability(contract.animacyValues.length > 1, contract.animacyValues.length > 1 ? "canvas-subject-reference-allows-animacy-selection" : "canvas-source-and-subject-context-determine-animacy", {
           decisionOwner: contract.animacyValues.length > 1 ? "user" : "canvas-context"
         }),
+        "classical-rule-logic-nnc-subject-humanness": availability((contract.humannessValues || []).length > 1, (contract.humannessValues || []).length > 1 ? "canvas-third-person-animate-reference-allows-humanness-selection" : "canvas-person-and-animacy-determine-humanness", {
+          decisionOwner: (contract.humannessValues || []).length > 1 ? "user" : "canvas-context"
+        }),
         "classical-rule-logic-nnc-subject-number": availability(!fullParadigm && contract.subjectNumberValues.length > 1, fullParadigm ? "canvas-full-paradigm-enumerates-subject-number" : contract.subjectNumberValues.length > 1 ? "canvas-person-and-animacy-allow-number-selection" : "canvas-person-and-animacy-determine-number"),
         "classical-rule-logic-nnc-metaphorical-use": availability(ordinaryNnc && contract.metaphoricalUseAvailable, !ordinaryNnc ? "canvas-pronominal-source-fixes-its-semantic-kind" : contract.metaphoricalUseAvailable ? "canvas-allows-subject-reference-against-nounstem-expectation" : "canvas-metaphorical-use-requires-an-animacy-mismatch", {
-          renderInAuthority: ordinaryNnc
+          renderInAuthority: ordinaryNnc && contract.metaphoricalUseAvailable
         }),
       };
     }
@@ -2954,6 +3111,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         {
           state: selectedState,
           subject: String(state.subject || "").trim(),
+          humanness: String(state.nncHumanness || "").trim(),
           metaphoricalUse: state.nncMetaphoricalUse === true,
           possessor: selectedState === "possessive"
             ? normalizeClassicalOrdinaryNncApplicationPossessor(
@@ -3044,6 +3202,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceFrame,
         {
           subject: String(state.subject || "").trim(),
+          humanness: String(state.nncHumanness || "").trim(),
           clausePosition: String(
             state.nncClausePosition || "initial"
           ).trim(),
@@ -3864,7 +4023,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
         : nuclearResultFrame;
       const grammarRequiredPunctuation = String(
-        canonicalNuclearResultFrame?.sentenceSurfaceFrame?.finalPunctuation || ""
+        canonicalNuclearResultFrame?.sentenceSurfaceFrame?.finalPunctuation
+        || canonicalNuclearResultFrame?.finalPunctuation
+        || ""
       ).trim();
       const finalPunctuation = ["?", "!"].includes(grammarRequiredPunctuation)
         ? grammarRequiredPunctuation
@@ -5234,6 +5395,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     const CLASSICAL_VNC_FULL_PARADIGM_ENUMERATED_CONTROL_IDS = Object.freeze([
       "classical-rule-logic-subject",
+      "classical-rule-logic-vnc-subject-person",
+      "classical-rule-logic-vnc-subject-animacy",
+      "classical-rule-logic-vnc-subject-humanness",
+      "classical-rule-logic-vnc-subject-number",
       "classical-rule-logic-mood",
       "classical-rule-logic-tense"
     ]);
@@ -6954,6 +7119,388 @@ export function createUiRenderingApi(targetObject = globalThis) {
         lessonSections: Object.freeze(["§30.3.2", "§30.3.3"]),
         atomIds: Object.freeze(["ACI-P277-L002-30373076BF","ACI-P277-L002-30373076BF-02","ACI-P277-L002-30373076BF-03","ACI-P277-L002-30373076BF-04","ACI-P277-L002-30373076BF-05","ACI-P277-L002-30373076BF-06","ACI-P277-L004-8933E6BC32","ACI-P277-L004-8933E6BC32-02","ACI-P277-L004-8933E6BC32-03","ACI-P277-L006-DBFD611ABF","ACI-P277-L008-F441206DB6","ACI-P277-L011-E8941CB926","ACI-P277-L011-E8941CB926-02","ACI-P277-L011-E8941CB926-03","ACI-P277-L011-E8941CB926-04","ACI-P277-L011-E8941CB926-05","ACI-P277-L011-E8941CB926-06","ACI-P277-L011-E8941CB926-07","ACI-P277-L011-E8941CB926-08","ACI-P277-L014-6EEAC77984","ACI-P277-L014-6EEAC77984-02","ACI-P277-L014-6EEAC77984-03","ACI-P277-L014-6EEAC77984-04","ACI-P277-L014-6EEAC77984-05","ACI-P277-L014-6EEAC77984-06","ACI-P277-L014-6EEAC77984-07","ACI-P277-L014-6EEAC77984-08","ACI-P277-L014-6EEAC77984-09","ACI-P277-L017-56ED4F7DDD","ACI-P277-L017-56ED4F7DDD-02","ACI-P277-L017-56ED4F7DDD-03","ACI-P277-L017-56ED4F7DDD-04","ACI-P277-L017-56ED4F7DDD-05","ACI-P277-L017-56ED4F7DDD-06","ACI-P277-L017-56ED4F7DDD-07","ACI-P277-L017-56ED4F7DDD-08","ACI-P277-L021-DACD042853","ACI-P277-L023-D0B11A90D0","ACI-P277-L023-D0B11A90D0-02","ACI-P277-L023-D0B11A90D0-03","ACI-P277-L023-D0B11A90D0-04","ACI-P277-L023-D0B11A90D0-05","ACI-P277-L023-D0B11A90D0-06","ACI-P277-L023-D0B11A90D0-07","ACI-P277-L023-D0B11A90D0-08","ACI-P277-L023-D0B11A90D0-09","ACI-P277-L024-D177FC5851","ACI-P277-L026-7A7D637D80","ACI-P277-L028-B2329E970D","ACI-P277-L028-B2329E970D-02","ACI-P277-L028-B2329E970D-03","ACI-P277-L031-DA9B625EC9","ACI-P277-L032-5D29263749","ACI-P277-L032-5D29263749-02","ACI-P277-L032-5D29263749-03","ACI-P277-L034-47033E1513","ACI-P277-L034-47033E1513-03","ACI-P277-L034-47033E1513-04","ACI-P277-L034-47033E1513-05","ACI-P277-L034-47033E1513-06","ACI-P277-L034-47033E1513-02","ACI-P277-L038-2A839CA282","ACI-P277-L038-2A839CA282-02","ACI-P277-L038-2A839CA282-03","ACI-P277-L038-2A839CA282-04"])
       }),
+      "lesson30-exceptional-tla-fusion-and-source-ambiguity": Object.freeze({
+        lessonSections: Object.freeze(["§30.4"]),
+        atomIds: Object.freeze(["ACI-P277-L042-C784539B2F","ACI-P278-L002-D98A91C428","ACI-P278-L002-D98A91C428-02","ACI-P278-L004-5110087B64","ACI-P278-L006-E290F33B46","ACI-P278-L007-59430F75F6","ACI-P278-L008-B0B5972FB2","ACI-P278-L011-D1B18432E9","ACI-P278-L011-D1B18432E9-02","ACI-P278-L011-D1B18432E9-03","ACI-P278-L011-D1B18432E9-04","ACI-P278-L011-D1B18432E9-05"])
+      }),
+      "lesson30-incorporated-adverb-foundation": Object.freeze({
+        lessonSections: Object.freeze(["§30.5", "§30.6"]),
+        atomIds: Object.freeze(["ACI-P278-L014-5B98923EC7","ACI-P278-L015-CEF54E67E0","ACI-P278-L015-CEF54E67E0-02","ACI-P278-L017-C9AB6E2D34","ACI-P278-L018-0981A5F319","ACI-P278-L019-22DDCA6A72","ACI-P278-L021-FFC5DEE577","ACI-P278-L022-76216DCB05","ACI-P278-L024-E5715DA36F","ACI-P278-L026-5E507CBE94","ACI-P278-L026-5E507CBE94-02","ACI-P278-L029-BA8BDF2CD0","ACI-P278-L030-7BF595A492"])
+      }),
+      "lesson30-means-and-instrument-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.7"]),
+        atomIds: Object.freeze([
+          "ACI-P278-L033-1DF50E8FE4","ACI-P278-L033-545DB74A54","ACI-P278-L035-7D102AEAC0","ACI-P278-L036-91E1607574","ACI-P278-L037-4761F31A8C","ACI-P278-L037-4761F31A8C-02","ACI-P278-L037-4761F31A8C-03","ACI-P278-L037-4761F31A8C-04","ACI-P278-L037-4761F31A8C-05","ACI-P278-L037-4761F31A8C-06",
+          "ACI-P279-L003-7F8B1B56B6","ACI-P279-L003-7F8B1B56B6-02","ACI-P279-L003-7F8B1B56B6-03","ACI-P279-L003-7F8B1B56B6-04","ACI-P279-L003-7F8B1B56B6-05","ACI-P279-L003-7F8B1B56B6-06","ACI-P279-L003-7F8B1B56B6-07","ACI-P279-L003-7F8B1B56B6-08","ACI-P279-L003-7F8B1B56B6-09","ACI-P279-L005-3D0EC697C8","ACI-P279-L005-3D0EC697C8-03","ACI-P279-L005-3D0EC697C8-04","ACI-P279-L005-3D0EC697C8-05","ACI-P279-L005-3D0EC697C8-02",
+          "ACI-P279-L008-CBB7AAEDD3","ACI-P279-L008-CBB7AAEDD3-02","ACI-P279-L008-CBB7AAEDD3-03","ACI-P279-L008-CBB7AAEDD3-04","ACI-P279-L008-CBB7AAEDD3-05","ACI-P279-L008-CBB7AAEDD3-06","ACI-P279-L008-CBB7AAEDD3-07","ACI-P279-L012-03318BD085","ACI-P279-L012-03318BD085-02","ACI-P279-L012-03318BD085-03","ACI-P279-L012-03318BD085-04","ACI-P279-L012-03318BD085-05","ACI-P279-L012-03318BD085-06","ACI-P279-L012-03318BD085-07","ACI-P279-L012-03318BD085-08",
+          "ACI-P279-L015-D301619D2B","ACI-P279-L015-D301619D2B-02","ACI-P279-L015-D301619D2B-03","ACI-P279-L015-D301619D2B-04","ACI-P279-L015-D301619D2B-05","ACI-P279-L015-D301619D2B-06","ACI-P279-L020-39AF6E0062","ACI-P279-L021-898871E350","ACI-P279-L025-27F6A3DA29","ACI-P279-L025-27F6A3DA29-02","ACI-P279-L025-27F6A3DA29-03","ACI-P279-L025-27F6A3DA29-04","ACI-P279-L025-27F6A3DA29-05","ACI-P279-L025-27F6A3DA29-06","ACI-P279-L025-27F6A3DA29-07","ACI-P279-L025-27F6A3DA29-08",
+          "ACI-P279-L027-5052E6D52A","ACI-P279-L027-5052E6D52A-02","ACI-P279-L027-5052E6D52A-03","ACI-P279-L027-5052E6D52A-04","ACI-P279-L027-5052E6D52A-05","ACI-P279-L027-5052E6D52A-06","ACI-P279-L027-5052E6D52A-07","ACI-P279-L027-5052E6D52A-08","ACI-P279-L027-5052E6D52A-09","ACI-P279-L029-ACB591EF55","ACI-P279-L029-ACB591EF55-03","ACI-P279-L029-ACB591EF55-04","ACI-P279-L029-ACB591EF55-05","ACI-P279-L029-ACB591EF55-06","ACI-P279-L029-ACB591EF55-02",
+          "ACI-P279-L032-C682FA735F","ACI-P279-L032-C682FA735F-02","ACI-P279-L032-C682FA735F-03","ACI-P279-L032-C682FA735F-04","ACI-P279-L032-C682FA735F-05","ACI-P279-L032-C682FA735F-06","ACI-P279-L032-C682FA735F-07","ACI-P279-L032-C682FA735F-08","ACI-P279-L034-CB95E3A7AA","ACI-P279-L034-CB95E3A7AA-02","ACI-P279-L034-CB95E3A7AA-03","ACI-P279-L034-CB95E3A7AA-04","ACI-P279-L034-CB95E3A7AA-05","ACI-P279-L038-CDA2A0F873","ACI-P279-L038-CDA2A0F873-02","ACI-P279-L038-CDA2A0F873-03","ACI-P279-L038-CDA2A0F873-04","ACI-P279-L038-CDA2A0F873-05","ACI-P279-L038-CDA2A0F873-06","ACI-P279-L038-CDA2A0F873-07",
+          "ACI-P280-L002-F7BA06A175","ACI-P280-L002-F7BA06A175-02","ACI-P280-L002-F7BA06A175-03","ACI-P280-L002-F7BA06A175-04","ACI-P280-L002-F7BA06A175-05","ACI-P280-L002-F7BA06A175-06","ACI-P280-L002-F7BA06A175-07","ACI-P280-L002-F7BA06A175-08","ACI-P280-L002-F7BA06A175-09","ACI-P280-L005-0717F2C58D","ACI-P280-L005-0717F2C58D-02","ACI-P280-L005-0717F2C58D-03","ACI-P280-L005-0717F2C58D-04","ACI-P280-L005-0717F2C58D-05","ACI-P280-L005-0717F2C58D-06","ACI-P280-L005-0717F2C58D-07","ACI-P280-L005-0717F2C58D-08","ACI-P280-L005-0717F2C58D-09"
+        ])
+      }),
+      "lesson30-place-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.8"]),
+        atomIds: Object.freeze([
+          "ACI-P280-L007-6304255485","ACI-P280-L009-1437A966EF","ACI-P280-L010-1FED713A63","ACI-P280-L011-7A2BED4B3C","ACI-P280-L011-7A2BED4B3C-03","ACI-P280-L011-7A2BED4B3C-04","ACI-P280-L011-7A2BED4B3C-05","ACI-P280-L011-7A2BED4B3C-06","ACI-P280-L011-7A2BED4B3C-07","ACI-P280-L011-7A2BED4B3C-02",
+          "ACI-P280-L011-7A2BED4B3C-08","ACI-P280-L016-821C240A25","ACI-P280-L016-821C240A25-02","ACI-P280-L016-821C240A25-03","ACI-P280-L016-821C240A25-04","ACI-P280-L016-821C240A25-05","ACI-P280-L016-821C240A25-06","ACI-P280-L016-821C240A25-07","ACI-P280-L016-821C240A25-08","ACI-P280-L016-821C240A25-09",
+          "ACI-P280-L022-EC3CA4A825","ACI-P280-L022-EC3CA4A825-03","ACI-P280-L022-EC3CA4A825-04","ACI-P280-L022-EC3CA4A825-05","ACI-P280-L022-EC3CA4A825-06","ACI-P280-L022-EC3CA4A825-07","ACI-P280-L022-EC3CA4A825-02","ACI-P280-L025-F3CF1DADDF","ACI-P280-L027-7294647864","ACI-P280-L028-E64A756976",
+          "ACI-P280-L028-E64A756976-02","ACI-P280-L028-E64A756976-03","ACI-P280-L028-E64A756976-04","ACI-P280-L028-E64A756976-05","ACI-P280-L028-E64A756976-06","ACI-P280-L028-E64A756976-07","ACI-P280-L028-E64A756976-08","ACI-P280-L028-E64A756976-09","ACI-P280-L031-C005456B42","ACI-P280-L031-C005456B42-03",
+          "ACI-P280-L031-C005456B42-04","ACI-P280-L031-C005456B42-05","ACI-P280-L031-C005456B42-06","ACI-P280-L031-C005456B42-07","ACI-P280-L031-C005456B42-02","ACI-P280-L034-F344A2508F","ACI-P280-L034-F344A2508F-03","ACI-P280-L034-F344A2508F-04","ACI-P280-L034-F344A2508F-05","ACI-P280-L034-F344A2508F-06",
+          "ACI-P280-L034-F344A2508F-07","ACI-P280-L034-F344A2508F-02","ACI-P280-L037-36A9FA226A","ACI-P280-L037-36A9FA226A-02","ACI-P280-L037-36A9FA226A-03","ACI-P280-L037-36A9FA226A-04","ACI-P280-L037-36A9FA226A-05","ACI-P280-L037-36A9FA226A-06","ACI-P280-L037-36A9FA226A-07","ACI-P280-L037-36A9FA226A-08",
+          "ACI-P280-L037-36A9FA226A-09","ACI-P280-L039-BA5854C65A","ACI-P280-L039-BA5854C65A-02","ACI-P280-L039-BA5854C65A-03","ACI-P280-L039-BA5854C65A-04","ACI-P280-L039-BA5854C65A-05","ACI-P280-L039-BA5854C65A-06","ACI-P280-L039-BA5854C65A-07","ACI-P280-L039-BA5854C65A-08","ACI-P280-L039-BA5854C65A-09",
+          "ACI-P280-L039-BA5854C65A-10","ACI-P280-L039-BA5854C65A-11"
+        ])
+      }),
+      "lesson30-time-duration-cause-and-purpose-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.9","§30.10"]),
+        atomIds: Object.freeze([
+          "ACI-P281-L002-8C87C9E459","ACI-P281-L004-8890986F6B","ACI-P281-L005-5FFA3F0CF1","ACI-P281-L006-6B3085EF04","ACI-P281-L008-2414289020","ACI-P281-L009-6F4C440A63","ACI-P281-L010-4D83F74DF3","ACI-P281-L010-4D83F74DF3-03","ACI-P281-L010-4D83F74DF3-04","ACI-P281-L010-4D83F74DF3-02",
+          "ACI-P281-L010-4D83F74DF3-05","ACI-P281-L013-36E63051EA","ACI-P281-L015-8C025FDA4F","ACI-P281-L017-AB63EB8E49","ACI-P281-L018-8AE815F6F2","ACI-P281-L019-61C965C9B5","ACI-P281-L019-61C965C9B5-02","ACI-P281-L019-61C965C9B5-03","ACI-P281-L019-61C965C9B5-04","ACI-P281-L019-61C965C9B5-05",
+          "ACI-P281-L022-C939673E21","ACI-P281-L022-C939673E21-02","ACI-P281-L022-C939673E21-03","ACI-P281-L022-C939673E21-04","ACI-P281-L022-C939673E21-05","ACI-P281-L022-C939673E21-06","ACI-P281-L022-C939673E21-07","ACI-P281-L022-C939673E21-08","ACI-P281-L022-C939673E21-09","ACI-P281-L022-C939673E21-10",
+          "ACI-P281-L025-4D53C857F5","ACI-P281-L025-4D53C857F5-02","ACI-P281-L025-4D53C857F5-03","ACI-P281-L025-4D53C857F5-04","ACI-P281-L025-4D53C857F5-05","ACI-P281-L025-4D53C857F5-06","ACI-P281-L025-4D53C857F5-07","ACI-P281-L025-4D53C857F5-08","ACI-P281-L027-7094EB3D85","ACI-P281-L027-7094EB3D85-03",
+          "ACI-P281-L027-7094EB3D85-04","ACI-P281-L027-7094EB3D85-05","ACI-P281-L027-7094EB3D85-06","ACI-P281-L027-7094EB3D85-07","ACI-P281-L027-7094EB3D85-02","ACI-P281-L030-4E84E1C1EC","ACI-P281-L030-4E84E1C1EC-02","ACI-P281-L030-4E84E1C1EC-03","ACI-P281-L030-4E84E1C1EC-04","ACI-P281-L030-4E84E1C1EC-05",
+          "ACI-P281-L032-6396B4C407","ACI-P281-L032-6396B4C407-02","ACI-P281-L032-6396B4C407-03","ACI-P281-L032-6396B4C407-04","ACI-P281-L032-6396B4C407-05","ACI-P281-L032-6396B4C407-06","ACI-P281-L032-6396B4C407-07","ACI-P281-L034-4BE7BF5B74","ACI-P281-L034-4BE7BF5B74-02","ACI-P281-L036-783C1AFE4E",
+          "ACI-P281-L038-8F2A0C9A56","ACI-P281-L038-8F2A0C9A56-02","ACI-P281-L038-8F2A0C9A56-03","ACI-P281-L038-8F2A0C9A56-04","ACI-P281-L038-8F2A0C9A56-05","ACI-P281-L038-8F2A0C9A56-06","ACI-P281-L038-8F2A0C9A56-07","ACI-P281-L038-8F2A0C9A56-08","ACI-P281-L038-8F2A0C9A56-09","ACI-P281-L038-8F2A0C9A56-10",
+          "ACI-P281-L038-8F2A0C9A56-11","ACI-P282-L002-84CF11005A","ACI-P282-L002-84CF11005A-03","ACI-P282-L002-84CF11005A-04","ACI-P282-L002-84CF11005A-05","ACI-P282-L002-84CF11005A-06","ACI-P282-L002-84CF11005A-02"
+        ])
+      }),
+      "lesson30-manner-and-compared-manner-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.11","§30.12","§30.12.1","§30.12.2","§30.12.2.a","§30.12.2.b"]),
+        atomIds: Object.freeze([
+          "ACI-P282-L006-4F0720B3F1","ACI-P282-L008-150ACB4CB5","ACI-P282-L009-0E7C72E67B","ACI-P282-L010-B1BCEAEC16","ACI-P282-L010-B1BCEAEC16-02","ACI-P282-L010-B1BCEAEC16-03","ACI-P282-L010-B1BCEAEC16-04","ACI-P282-L010-B1BCEAEC16-05","ACI-P282-L010-B1BCEAEC16-06","ACI-P282-L010-B1BCEAEC16-07",
+          "ACI-P282-L010-B1BCEAEC16-08","ACI-P282-L013-56550AA35D","ACI-P282-L013-56550AA35D-02","ACI-P282-L013-56550AA35D-03","ACI-P282-L013-56550AA35D-04","ACI-P282-L013-56550AA35D-05","ACI-P282-L013-56550AA35D-06","ACI-P282-L013-56550AA35D-07","ACI-P282-L016-A0D2126A3C","ACI-P282-L017-92B08D2F8D",
+          "ACI-P282-L017-92B08D2F8D-03","ACI-P282-L017-92B08D2F8D-04","ACI-P282-L017-92B08D2F8D-05","ACI-P282-L017-92B08D2F8D-06","ACI-P282-L017-92B08D2F8D-07","ACI-P282-L017-92B08D2F8D-02","ACI-P282-L020-886E7A7F69","ACI-P282-L020-886E7A7F69-02","ACI-P282-L020-886E7A7F69-03","ACI-P282-L020-886E7A7F69-04",
+          "ACI-P282-L020-886E7A7F69-05","ACI-P282-L020-886E7A7F69-06","ACI-P282-L020-886E7A7F69-07","ACI-P282-L022-1B4AA53022","ACI-P282-L022-1B4AA53022-02","ACI-P282-L022-1B4AA53022-03","ACI-P282-L022-1B4AA53022-04","ACI-P282-L022-1B4AA53022-05","ACI-P282-L022-1B4AA53022-06","ACI-P282-L026-ABE276B704",
+          "ACI-P282-L027-1A1F43021F","ACI-P282-L028-1F9328CAB1","ACI-P282-L029-0637D489F9","ACI-P282-L032-5BB2BBCA9A","ACI-P282-L034-053A0FDF2E","ACI-P282-L035-7EF4AA8BC4","ACI-P282-L036-3484465352","ACI-P282-L036-3484465352-02","ACI-P282-L036-3484465352-03","ACI-P282-L036-3484465352-04",
+          "ACI-P283-L002-7BB5113C78","ACI-P283-L002-7BB5113C78-02","ACI-P283-L002-7BB5113C78-03","ACI-P283-L002-7BB5113C78-04","ACI-P283-L002-7BB5113C78-05","ACI-P283-L002-7BB5113C78-06","ACI-P283-L002-7BB5113C78-07","ACI-P283-L005-5B04D42506","ACI-P283-L005-5B04D42506-02","ACI-P283-L005-5B04D42506-03",
+          "ACI-P283-L005-5B04D42506-04","ACI-P283-L005-5B04D42506-05","ACI-P283-L005-5B04D42506-06","ACI-P283-L005-5B04D42506-07","ACI-P283-L005-5B04D42506-08","ACI-P283-L010-3F68F4A02B","ACI-P283-L012-A1AB74D3EB","ACI-P283-L013-9C375C25DE","ACI-P283-L015-1EF52FBB3A","ACI-P283-L016-49BA9F7BB5",
+          "ACI-P283-L017-809DF97FA0","ACI-P283-L020-8CD372B06D","ACI-P283-L022-28CA1F1378","ACI-P283-L023-20D423D17C","ACI-P283-L024-08824169E2","ACI-P283-L025-A9AA27107A","ACI-P283-L028-0DFC49FB92","ACI-P283-L028-0DFC49FB92-03","ACI-P283-L028-0DFC49FB92-04","ACI-P283-L028-0DFC49FB92-05",
+          "ACI-P283-L028-0DFC49FB92-06","ACI-P283-L028-0DFC49FB92-02","ACI-P283-L031-7B9F24D55C","ACI-P283-L031-7B9F24D55C-02","ACI-P283-L031-7B9F24D55C-03"
+        ])
+      }),
+      "lesson30-unique-embed-nounstems": Object.freeze({
+        lessonSections: Object.freeze(["§30.13"]),
+        atomIds: Object.freeze([
+          "ACI-P283-L033-7CD965FCCC","ACI-P283-L035-F98EBD11E9","ACI-P283-L036-B4AF2C1291","ACI-P283-L037-558D1B1D9E","ACI-P283-L037-558D1B1D9E-02","ACI-P283-L037-558D1B1D9E-03","ACI-P283-L037-558D1B1D9E-04","ACI-P283-L039-EC1F28520A","ACI-P284-L002-09075F293B","ACI-P284-L003-79A49366FB",
+          "ACI-P284-L004-6ED203AF78","ACI-P284-L004-6ED203AF78-02","ACI-P284-L004-6ED203AF78-03","ACI-P284-L004-6ED203AF78-04","ACI-P284-L006-33A8368467","ACI-P284-L007-569D16B829","ACI-P284-L007-569D16B829-02","ACI-P284-L007-569D16B829-03","ACI-P284-L010-27018610F8","ACI-P284-L013-CC4E7A9F49",
+          "ACI-P284-L013-033AEC3B24","ACI-P284-L014-11B346FE46","ACI-P284-L014-11B346FE46-02","ACI-P284-L014-11B346FE46-03","ACI-P284-L014-11B346FE46-04","ACI-P284-L014-11B346FE46-05","ACI-P284-L014-11B346FE46-06","ACI-P284-L014-11B346FE46-07","ACI-P284-L014-11B346FE46-08","ACI-P284-L016-DED9617B53",
+          "ACI-P284-L016-DED9617B53-03","ACI-P284-L016-DED9617B53-04","ACI-P284-L016-DED9617B53-05","ACI-P284-L016-DED9617B53-06","ACI-P284-L016-DED9617B53-07","ACI-P284-L016-DED9617B53-08","ACI-P284-L016-DED9617B53-09","ACI-P284-L016-DED9617B53-02","ACI-P284-L018-397F694201","ACI-P284-L020-593267953A",
+          "ACI-P284-L020-593267953A-02","ACI-P284-L020-593267953A-03","ACI-P284-L022-87CC53EAAA","ACI-P284-L025-1F222677AB","ACI-P284-L026-6613E13D82","ACI-P284-L026-6613E13D82-02","ACI-P284-L026-6613E13D82-03","ACI-P284-L026-6613E13D82-04","ACI-P284-L026-6613E13D82-05","ACI-P284-L026-6613E13D82-06",
+          "ACI-P284-L030-DBA9B220EB","ACI-P284-L030-DBA9B220EB-02","ACI-P284-L030-DBA9B220EB-03","ACI-P284-L030-DBA9B220EB-04","ACI-P284-L030-DBA9B220EB-05","ACI-P284-L030-DBA9B220EB-06","ACI-P284-L030-DBA9B220EB-07","ACI-P284-L032-392C5B21E9","ACI-P284-L033-6BFAF0A18F","ACI-P284-L034-390D3D10B8",
+          "ACI-P284-L034-390D3D10B8-03","ACI-P284-L034-390D3D10B8-04","ACI-P284-L034-390D3D10B8-05","ACI-P284-L034-390D3D10B8-07","ACI-P284-L034-390D3D10B8-08","ACI-P284-L034-390D3D10B8-02","ACI-P284-L034-390D3D10B8-06","ACI-P284-L038-D54A619329","ACI-P284-L040-4AE915F582","ACI-P284-L042-A5513BE680",
+          "ACI-P285-L002-B9B94319F9","ACI-P285-L002-B9B94319F9-02","ACI-P285-L002-B9B94319F9-03","ACI-P285-L002-B9B94319F9-04","ACI-P285-L002-B9B94319F9-05","ACI-P285-L002-B9B94319F9-06","ACI-P285-L002-B9B94319F9-07","ACI-P285-L002-B9B94319F9-08","ACI-P285-L002-B9B94319F9-09","ACI-P285-L002-B9B94319F9-10",
+          "ACI-P285-L004-AE3DB4EBDA","ACI-P285-L006-31C7CFDA77","ACI-P285-L007-3992AE723F","ACI-P285-L008-912867C92D","ACI-P285-L009-A21BEE5A96","ACI-P285-L011-C34F350A74"
+        ])
+      }),
+      "lesson30-possessive-supplementary-subject-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.14","§30.14.1"]),
+        atomIds: Object.freeze([
+          "ACI-P285-L012-B3953F2AA3","ACI-P285-L014-D9DD6695D2","ACI-P285-L016-9A78D06B80","ACI-P285-L018-BBDDAC96DF","ACI-P285-L018-BBDDAC96DF-02","ACI-P285-L019-D7FDD24248","ACI-P285-L021-196A365BFB","ACI-P285-L023-5A2CDE7151","ACI-P285-L025-BC01989D9F","ACI-P285-L028-403E17B738",
+          "ACI-P285-L031-DBB42476D7","ACI-P285-L032-7B11C977E3","ACI-P285-L034-A1D7DF0B98","ACI-P285-L034-A1D7DF0B98-02","ACI-P285-L034-A1D7DF0B98-03","ACI-P285-L034-A1D7DF0B98-04","ACI-P285-L036-494960B736","ACI-P285-L038-7D85493735","ACI-P286-L003-7AE6819C19","ACI-P286-L003-7AE6819C19-02",
+          "ACI-P286-L003-7AE6819C19-03","ACI-P286-L003-7AE6819C19-04","ACI-P286-L003-7AE6819C19-05","ACI-P286-L003-7AE6819C19-06","ACI-P286-L003-7AE6819C19-07","ACI-P286-L003-7AE6819C19-08","ACI-P286-L005-F2693AF8D1","ACI-P286-L005-F2693AF8D1-02","ACI-P286-L005-F2693AF8D1-03","ACI-P286-L005-F2693AF8D1-04",
+          "ACI-P286-L005-F2693AF8D1-05","ACI-P286-L005-F2693AF8D1-06","ACI-P286-L005-F2693AF8D1-07","ACI-P286-L007-B0570F0A86","ACI-P286-L007-B0570F0A86-02","ACI-P286-L007-B0570F0A86-03","ACI-P286-L007-B0570F0A86-04","ACI-P286-L007-B0570F0A86-05","ACI-P286-L010-89B1ABD2EC","ACI-P286-L010-89B1ABD2EC-02",
+          "ACI-P286-L010-89B1ABD2EC-03","ACI-P286-L010-89B1ABD2EC-04","ACI-P286-L010-89B1ABD2EC-05","ACI-P286-L010-89B1ABD2EC-06","ACI-P286-L010-89B1ABD2EC-07","ACI-P286-L010-89B1ABD2EC-08","ACI-P286-L010-89B1ABD2EC-09","ACI-P286-L012-BC4D7C0801","ACI-P286-L012-BC4D7C0801-02","ACI-P286-L012-BC4D7C0801-03",
+          "ACI-P286-L012-BC4D7C0801-04","ACI-P286-L012-BC4D7C0801-05","ACI-P286-L016-C6A8C70080","ACI-P286-L016-C6A8C70080-02","ACI-P286-L016-C6A8C70080-03","ACI-P286-L016-C6A8C70080-04","ACI-P286-L016-C6A8C70080-05","ACI-P286-L016-C6A8C70080-06","ACI-P286-L016-C6A8C70080-07","ACI-P286-L016-C6A8C70080-08",
+          "ACI-P286-L018-98653B32B8","ACI-P286-L019-3F1A54879A","ACI-P286-L019-17C64B3F51","ACI-P286-L020-7FB2A0AFB9","ACI-P286-L020-7FB2A0AFB9-02","ACI-P286-L020-7FB2A0AFB9-03","ACI-P286-L020-7FB2A0AFB9-04","ACI-P286-L020-7FB2A0AFB9-05","ACI-P286-L020-7FB2A0AFB9-06","ACI-P286-L020-7FB2A0AFB9-07",
+          "ACI-P286-L020-7FB2A0AFB9-08","ACI-P286-L022-88C02761CA","ACI-P286-L022-88C02761CA-03","ACI-P286-L022-88C02761CA-04","ACI-P286-L022-88C02761CA-05","ACI-P286-L022-88C02761CA-06","ACI-P286-L022-88C02761CA-02","ACI-P286-L026-937DEC1372","ACI-P286-L026-937DEC1372-02","ACI-P286-L026-937DEC1372-03",
+          "ACI-P286-L026-937DEC1372-04","ACI-P286-L026-937DEC1372-05","ACI-P286-L026-937DEC1372-06","ACI-P286-L026-937DEC1372-07","ACI-P286-L026-937DEC1372-08","ACI-P286-L028-8475789E14","ACI-P286-L028-8475789E14-02","ACI-P286-L028-8475789E14-03","ACI-P286-L028-8475789E14-04","ACI-P286-L028-8475789E14-05",
+          "ACI-P286-L028-8475789E14-06","ACI-P286-L028-8475789E14-07","ACI-P286-L028-8475789E14-08","ACI-P286-L031-A031AF3B4B","ACI-P286-L031-A031AF3B4B-03","ACI-P286-L031-A031AF3B4B-04","ACI-P286-L031-A031AF3B4B-05","ACI-P286-L031-A031AF3B4B-06","ACI-P286-L031-A031AF3B4B-02","ACI-P286-L035-0D31DEEA86",
+          "ACI-P286-L035-0D31DEEA86-03","ACI-P286-L035-0D31DEEA86-04","ACI-P286-L035-0D31DEEA86-05","ACI-P286-L035-0D31DEEA86-06","ACI-P286-L035-0D31DEEA86-02"
+        ])
+      }),
+      "lesson30-possessive-supplementary-object-and-passive-adverbs": Object.freeze({
+        lessonSections: Object.freeze(["§30.14.2","§30.14.3"]),
+        atomIds: Object.freeze([
+          "ACI-P286-L040-A50AEB77A2","ACI-P287-L002-C1C8B99A5F","ACI-P287-L005-6D36327AE4","ACI-P287-L006-4158BBF940","ACI-P287-L006-4158BBF940-02","ACI-P287-L006-4158BBF940-03","ACI-P287-L006-4158BBF940-04","ACI-P287-L009-2C93F5EB62","ACI-P287-L011-42AB5ABA2A","ACI-P287-L011-42AB5ABA2A-02",
+          "ACI-P287-L011-42AB5ABA2A-03","ACI-P287-L011-42AB5ABA2A-04","ACI-P287-L011-42AB5ABA2A-05","ACI-P287-L011-42AB5ABA2A-06","ACI-P287-L011-42AB5ABA2A-07","ACI-P287-L011-42AB5ABA2A-08","ACI-P287-L011-42AB5ABA2A-09","ACI-P287-L014-6F2A548FBC","ACI-P287-L017-4526218C5F","ACI-P287-L020-345F11D3DB",
+          "ACI-P287-L024-1CFDFB7DFA","ACI-P287-L024-1CFDFB7DFA-03","ACI-P287-L024-1CFDFB7DFA-04","ACI-P287-L024-1CFDFB7DFA-05","ACI-P287-L024-1CFDFB7DFA-06","ACI-P287-L024-1CFDFB7DFA-02","ACI-P287-L028-6A1F97F07C","ACI-P287-L028-6A1F97F07C-03","ACI-P287-L028-6A1F97F07C-04","ACI-P287-L028-6A1F97F07C-05",
+          "ACI-P287-L028-6A1F97F07C-06","ACI-P287-L028-6A1F97F07C-02","ACI-P287-L032-4EBC2BB618","ACI-P287-L032-4EBC2BB618-02","ACI-P287-L032-4EBC2BB618-03","ACI-P287-L032-4EBC2BB618-04","ACI-P287-L032-4EBC2BB618-05","ACI-P287-L032-4EBC2BB618-06","ACI-P287-L032-4EBC2BB618-07","ACI-P287-L032-4EBC2BB618-08",
+          "ACI-P287-L032-4EBC2BB618-09","ACI-P287-L032-4EBC2BB618-10","ACI-P287-L036-C894D113A0","ACI-P287-L036-C894D113A0-02","ACI-P287-L036-C894D113A0-03","ACI-P287-L036-C894D113A0-04","ACI-P287-L036-C894D113A0-05","ACI-P287-L036-C894D113A0-06","ACI-P287-L036-C894D113A0-07","ACI-P287-L036-C894D113A0-08",
+          "ACI-P287-L036-C894D113A0-09","ACI-P287-L036-C894D113A0-10","ACI-P287-L036-C894D113A0-11","ACI-P287-L039-01F4239040","ACI-P287-L039-01F4239040-02","ACI-P287-L039-01F4239040-03","ACI-P287-L039-01F4239040-04","ACI-P287-L039-01F4239040-05","ACI-P287-L039-01F4239040-06","ACI-P287-L039-01F4239040-07",
+          "ACI-P287-L039-01F4239040-08","ACI-P287-L039-01F4239040-09","ACI-P288-L002-555B394CB5","ACI-P288-L002-555B394CB5-02","ACI-P288-L002-555B394CB5-03","ACI-P288-L002-555B394CB5-04","ACI-P288-L002-555B394CB5-05","ACI-P288-L002-555B394CB5-06","ACI-P288-L002-555B394CB5-07","ACI-P288-L002-555B394CB5-08",
+          "ACI-P288-L002-555B394CB5-09","ACI-P288-L005-F89C85B0A8","ACI-P288-L005-F89C85B0A8-03","ACI-P288-L005-F89C85B0A8-04","ACI-P288-L005-F89C85B0A8-05","ACI-P288-L005-F89C85B0A8-06","ACI-P288-L005-F89C85B0A8-02","ACI-P288-L009-202B8872A0","ACI-P288-L011-D713CF1883","ACI-P288-L012-C606BC89A9",
+          "ACI-P288-L012-C606BC89A9-02","ACI-P288-L012-C606BC89A9-03","ACI-P288-L012-C606BC89A9-04","ACI-P288-L015-3B46DDDD76","ACI-P288-L015-3B46DDDD76-03","ACI-P288-L015-3B46DDDD76-04","ACI-P288-L015-3B46DDDD76-05","ACI-P288-L015-3B46DDDD76-06","ACI-P288-L015-3B46DDDD76-02","ACI-P288-L021-A10F9CDF5A",
+          "ACI-P288-L021-A10F9CDF5A-02","ACI-P288-L021-A10F9CDF5A-03","ACI-P288-L021-A10F9CDF5A-04","ACI-P288-L021-A10F9CDF5A-05","ACI-P288-L021-A10F9CDF5A-06","ACI-P288-L021-A10F9CDF5A-07","ACI-P288-L025-E4BE549073","ACI-P288-L028-55C1332BD6","ACI-P288-L028-55C1332BD6-02","ACI-P288-L028-55C1332BD6-03",
+          "ACI-P288-L028-55C1332BD6-04","ACI-P288-L028-55C1332BD6-05","ACI-P288-L028-55C1332BD6-06","ACI-P288-L028-55C1332BD6-07","ACI-P288-L028-55C1332BD6-08","ACI-P288-L028-55C1332BD6-09","ACI-P288-L028-55C1332BD6-10","ACI-P288-L031-66053E0692","ACI-P288-L031-66053E0692-02","ACI-P288-L031-66053E0692-03",
+          "ACI-P288-L031-66053E0692-04","ACI-P288-L031-66053E0692-05","ACI-P288-L031-66053E0692-06","ACI-P288-L031-66053E0692-07","ACI-P288-L031-66053E0692-08","ACI-P288-L031-66053E0692-09","ACI-P288-L033-AC4116496D","ACI-P288-L033-AC4116496D-02","ACI-P288-L033-AC4116496D-03","ACI-P288-L033-AC4116496D-04",
+          "ACI-P288-L033-AC4116496D-05","ACI-P288-L037-89C192BEB6","ACI-P288-L039-8838B8D44E","ACI-P288-L039-8838B8D44E-03","ACI-P288-L039-8838B8D44E-05","ACI-P288-L039-8838B8D44E-06","ACI-P288-L039-8838B8D44E-07","ACI-P288-L039-8838B8D44E-02","ACI-P288-L043-5658AC2E8C","ACI-P288-L044-30942C12E0",
+          "ACI-P288-L044-30942C12E0-02","ACI-P289-L002-D44DC3A6E4","ACI-P289-L005-5BF544D501","ACI-P289-L006-3037CB1661","ACI-P289-L008-53B920742F","ACI-P289-L010-B8891AD6C1","ACI-P289-L011-254A457423"
+        ])
+      }),
+      "lesson30-incorporated-complements": Object.freeze({
+        lessonSections: Object.freeze(["§30.15","§30.15.1","§30.15.2","§30.15.2.a","§30.15.2.b"]),
+        atomIds: Object.freeze([
+          "ACI-P289-L012-65B095AA7E","ACI-P289-L015-69FD7D7244","ACI-P289-L017-01B0297053","ACI-P289-L017-01B0297053-02","ACI-P289-L017-01B0297053-03","ACI-P289-L018-E00B56146B","ACI-P289-L021-8AE77C7FA4","ACI-P289-L022-16ABAA600F","ACI-P289-L024-B654C1F980","ACI-P289-L027-BBB2D5FE7B","ACI-P289-L028-8B35CFF0FB","ACI-P289-L029-2A807D5D1D","ACI-P289-L031-A4FE9FC1EF","ACI-P289-L031-A4FE9FC1EF-02","ACI-P289-L035-3FCE0E542E","ACI-P289-L036-D2F2C25665","ACI-P289-L037-2FCA61AEA3","ACI-P289-L038-A80D4E3F1B","ACI-P290-L002-C9931AE1AF","ACI-P290-L002-C9931AE1AF-02","ACI-P290-L002-C9931AE1AF-03","ACI-P290-L002-C9931AE1AF-04","ACI-P290-L002-C9931AE1AF-05","ACI-P290-L007-EB89F39914","ACI-P290-L010-01495028F7","ACI-P290-L012-9B1EC7F8B2","ACI-P290-L012-9B1EC7F8B2-02","ACI-P290-L012-9B1EC7F8B2-03","ACI-P290-L012-9B1EC7F8B2-04","ACI-P290-L012-9B1EC7F8B2-05","ACI-P290-L012-9B1EC7F8B2-06","ACI-P290-L012-9B1EC7F8B2-07","ACI-P290-L012-9B1EC7F8B2-08","ACI-P290-L012-9B1EC7F8B2-09","ACI-P290-L014-464B8AC26B","ACI-P290-L016-CC4A056BC4","ACI-P290-L018-1AAABB1A73","ACI-P290-L018-94C6E7ADAA","ACI-P290-L020-CF974A0C56","ACI-P290-L022-C40AF2D5FF","ACI-P290-L023-7E97AE087B","ACI-P290-L024-428E008456","ACI-P290-L026-D27EB0107C","ACI-P290-L027-4E4AE50AEB","ACI-P290-L029-A81D5BC8C4","ACI-P290-L029-A81D5BC8C4-02","ACI-P290-L029-A81D5BC8C4-03","ACI-P290-L029-A81D5BC8C4-04","ACI-P290-L029-A81D5BC8C4-05","ACI-P290-L029-A81D5BC8C4-06","ACI-P290-L029-A81D5BC8C4-07","ACI-P290-L029-A81D5BC8C4-08","ACI-P290-L029-A81D5BC8C4-09","ACI-P290-L029-A81D5BC8C4-10","ACI-P290-L029-A81D5BC8C4-11","ACI-P290-L029-A81D5BC8C4-12","ACI-P290-L029-A81D5BC8C4-13"
+        ])
+      }),
+      "lesson30-reduplication-and-nonactive-continuation": Object.freeze({
+        lessonSections: Object.freeze(["§30.16","§30.17","§30.17.1","§30.17.2","§30.17.3"]),
+        atomIds: Object.freeze([
+          "ACI-P290-L032-80D813A0AC","ACI-P290-L034-12733BA628","ACI-P290-L034-12733BA628-02","ACI-P290-L034-12733BA628-03","ACI-P290-L034-12733BA628-04","ACI-P290-L034-12733BA628-05","ACI-P290-L034-12733BA628-06","ACI-P290-L034-12733BA628-07","ACI-P290-L034-12733BA628-08","ACI-P290-L034-12733BA628-09","ACI-P290-L034-12733BA628-10","ACI-P290-L037-1881619C39","ACI-P290-L037-1881619C39-02","ACI-P290-L037-1881619C39-03","ACI-P290-L037-1881619C39-04","ACI-P290-L037-1881619C39-05","ACI-P290-L037-1881619C39-06","ACI-P290-L037-1881619C39-07","ACI-P290-L037-1881619C39-08","ACI-P290-L040-0DD2B93537","ACI-P290-L040-0DD2B93537-03","ACI-P290-L040-0DD2B93537-04","ACI-P290-L040-0DD2B93537-05","ACI-P290-L040-0DD2B93537-06","ACI-P290-L040-0DD2B93537-07","ACI-P290-L040-0DD2B93537-02","ACI-P291-L004-5A3C6F1BF6","ACI-P291-L004-5A3C6F1BF6-02","ACI-P291-L004-75AA6746BD","ACI-P291-L006-8895EEF15F","ACI-P291-L006-8895EEF15F-02","ACI-P291-L006-8895EEF15F-03","ACI-P291-L006-8895EEF15F-04","ACI-P291-L006-8895EEF15F-05","ACI-P291-L006-8895EEF15F-06","ACI-P291-L006-8895EEF15F-07","ACI-P291-L008-2249C4D46E","ACI-P291-L014-D75102CFE6","ACI-P291-L016-233FC0ECB7","ACI-P291-L017-403F9797FB","ACI-P291-L018-D80705484A","ACI-P291-L019-FC1E74DDDE","ACI-P291-L019-FC1E74DDDE-02","ACI-P291-L019-FC1E74DDDE-03","ACI-P291-L019-FC1E74DDDE-04","ACI-P291-L019-FC1E74DDDE-05","ACI-P291-L019-FC1E74DDDE-06","ACI-P291-L022-14FDE2D874","ACI-P291-L024-D1D317D601","ACI-P291-L025-2720256E79","ACI-P291-L026-91F2F3BF3E","ACI-P291-L027-EAB86298BB","ACI-P291-L028-58FF4D6FB3","ACI-P291-L031-9037FB1695","ACI-P291-L032-203A06B33B","ACI-P291-L033-DAAE66CC12","ACI-P291-L034-AD3021D465","ACI-P291-L035-50BD9AD831","ACI-P291-L036-FA192F6A50","ACI-P292-L002-D7D690D9C9","ACI-P292-L002-D7D690D9C9-02","ACI-P292-L002-D7D690D9C9-03","ACI-P292-L002-D7D690D9C9-04","ACI-P292-L004-4A1C7C25A3","ACI-P292-L004-4A1C7C25A3-02","ACI-P292-L007-61AA673E10","ACI-P292-L008-55F87D3BC4","ACI-P292-L009-6D93A8A5A4","ACI-P292-L010-35C256F61E","ACI-P292-L011-49F824EBF5","ACI-P292-L012-00C40E97E1"
+        ])
+      }),
+      "lesson30-embed-is-not-agent-or-subject": Object.freeze({
+        lessonSections: Object.freeze(["§30.18"]),
+        atomIds: Object.freeze([
+          "ACI-P292-L013-96A967E577","ACI-P292-L014-46B4CEFC86","ACI-P292-L014-46B4CEFC86-02","ACI-P292-L014-46B4CEFC86-03","ACI-P292-L014-46B4CEFC86-04","ACI-P292-L017-2CC88F7360","ACI-P292-L021-7006F3809B","ACI-P292-L022-9307AB7E5A","ACI-P292-L024-F8466BDBB0","ACI-P292-L024-F8466BDBB0-02","ACI-P292-L024-F8466BDBB0-03","ACI-P292-L026-1607A3D9B1","ACI-P292-L026-1607A3D9B1-02","ACI-P292-L026-1607A3D9B1-03","ACI-P292-L028-38A2F97406","ACI-P292-L029-2B37002A75","ACI-P292-L032-1C8BE67EB7","ACI-P292-L032-1C8BE67EB7-02","ACI-P292-L032-1C8BE67EB7-03","ACI-P292-L032-1C8BE67EB7-04","ACI-P292-L032-1C8BE67EB7-05","ACI-P292-L032-1C8BE67EB7-06","ACI-P292-L033-56A91A203F","ACI-P292-L035-4657C2D480","ACI-P292-L037-7C404FCC76","ACI-P292-L038-230E88C27B","ACI-P292-L039-B8082F9086","ACI-P292-L039-B8082F9086-02","ACI-P292-L040-F8A99467F0","ACI-P292-L040-F8A99467F0-02","ACI-P292-L040-F8A99467F0-03","ACI-P293-L004-C8407BE25F","ACI-P293-L006-90701359A0"
+        ])
+      }),
+      "lesson31-compound-nounstem-foundation-and-embed-meaning": Object.freeze({
+        lessonSections: Object.freeze(["§31.1", "§31.2"]),
+        atomIds: Object.freeze(["ACI-P294-L003-00FE22E470","ACI-P294-L004-75BB08F9D3","ACI-P294-L006-9CDDF1F1AC","ACI-P294-L006-9CDDF1F1AC-02","ACI-P294-L007-1020EF3E30","ACI-P294-L007-1020EF3E30-02","ACI-P294-L009-781F6ECBAB","ACI-P294-L009-781F6ECBAB-03","ACI-P294-L009-781F6ECBAB-04","ACI-P294-L009-781F6ECBAB-02","ACI-P294-L009-781F6ECBAB-05","ACI-P294-L009-781F6ECBAB-06","ACI-P294-L012-64699F3FAF","ACI-P294-L013-260C8A4E3B","ACI-P294-L014-3B3365DE10"])
+      }),
+      "lesson31-possessor-orientation": Object.freeze({
+        lessonSections: Object.freeze(["§31.3"]),
+        atomIds: Object.freeze(["ACI-P294-L018-55C92D522D","ACI-P294-L020-4F572ECBC0","ACI-P294-L020-4F572ECBC0-02","ACI-P294-L021-FB865FA181","ACI-P294-L022-B6AFB7D3F3","ACI-P294-L023-69B2ED75FB","ACI-P294-L024-5BEC84FBCA","ACI-P294-L024-5BEC84FBCA-02","ACI-P295-L002-54AE4B1503","ACI-P295-L002-89A1EDED69","ACI-P295-L003-CF710195BD","ACI-P295-L004-675B6B8768","ACI-P295-L005-408732F3A7","ACI-P295-L007-5A83E8E98A","ACI-P295-L010-EFDED00543","ACI-P295-L010-EFDED00543-03","ACI-P295-L010-EFDED00543-04","ACI-P295-L010-EFDED00543-05","ACI-P295-L010-EFDED00543-06","ACI-P295-L010-EFDED00543-07","ACI-P295-L010-EFDED00543-02","ACI-P295-L016-995D168E71","ACI-P295-L017-A1734603DE","ACI-P295-L017-A1734603DE-02","ACI-P295-L017-A1734603DE-03","ACI-P295-L019-B11AB3ACF8","ACI-P295-L020-2B464A3360","ACI-P295-L021-775F8BD20B","ACI-P295-L023-692050067F","ACI-P295-L025-4F62F6CCE6","ACI-P295-L025-4F62F6CCE6-02","ACI-P295-L025-4F62F6CCE6-03","ACI-P295-L025-4F62F6CCE6-04","ACI-P295-L025-4F62F6CCE6-05","ACI-P295-L025-4F62F6CCE6-06","ACI-P295-L025-4F62F6CCE6-07","ACI-P295-L027-A75B092C82"])
+      }),
+      "lesson31-matrix-authority-and-translation-reversal": Object.freeze({
+        lessonSections: Object.freeze(["§31.4"]),
+        atomIds: Object.freeze(["ACI-P295-L029-BA7369E7A8","ACI-P295-L030-BC7B331B7D","ACI-P295-L032-6B43FEF273","ACI-P295-L032-6B43FEF273-02","ACI-P295-L032-6B43FEF273-03","ACI-P295-L032-6B43FEF273-04","ACI-P295-L032-6B43FEF273-05","ACI-P295-L032-6B43FEF273-06","ACI-P295-L032-6B43FEF273-07","ACI-P295-L032-6B43FEF273-08","ACI-P295-L035-FA3102EF68","ACI-P295-L037-4ADF26C192","ACI-P295-L037-4ADF26C192-02","ACI-P295-L037-4ADF26C192-03","ACI-P295-L037-4ADF26C192-04","ACI-P295-L037-4ADF26C192-05","ACI-P296-L002-919D15F9D9","ACI-P296-L003-A605333344","ACI-P296-L004-E3E3711FE3","ACI-P296-L004-68B63FC8C8","ACI-P296-L007-8D6EC5C967","ACI-P296-L008-85FAF96F50","ACI-P296-L009-DD65149A51","ACI-P296-L011-CBF45E5A16","ACI-P296-L012-644323D46E","ACI-P296-L015-230FC5B4E1","ACI-P296-L015-230FC5B4E1-02","ACI-P296-L015-230FC5B4E1-03","ACI-P296-L015-230FC5B4E1-04","ACI-P296-L015-230FC5B4E1-05","ACI-P296-L015-230FC5B4E1-06","ACI-P296-L015-230FC5B4E1-07","ACI-P296-L015-230FC5B4E1-08","ACI-P296-L015-230FC5B4E1-09","ACI-P296-L015-230FC5B4E1-10","ACI-P296-L015-230FC5B4E1-11","ACI-P296-L019-6ADC15A2D4","ACI-P296-L022-5ED2812ACD","ACI-P296-L023-D07749F536","ACI-P296-L025-F51D2EE127","ACI-P296-L025-F51D2EE127-02","ACI-P296-L025-F51D2EE127-03","ACI-P296-L025-F51D2EE127-04","ACI-P296-L025-F51D2EE127-05","ACI-P296-L025-F51D2EE127-06","ACI-P296-L027-33156A5AD6","ACI-P296-L030-6C39744B46","ACI-P296-L030-6C39744B46-03","ACI-P296-L030-6C39744B46-04","ACI-P296-L030-6C39744B46-05","ACI-P296-L030-6C39744B46-06","ACI-P296-L030-6C39744B46-07","ACI-P296-L030-6C39744B46-08","ACI-P296-L030-6C39744B46-02","ACI-P296-L033-9A7688987B","ACI-P296-L033-9A7688987B-02","ACI-P296-L034-D209F8F3EB","ACI-P296-L034-D209F8F3EB-02","ACI-P296-L034-D209F8F3EB-03","ACI-P296-L034-D209F8F3EB-04","ACI-P296-L034-D209F8F3EB-05","ACI-P296-L034-D209F8F3EB-06","ACI-P296-L034-D209F8F3EB-07","ACI-P296-L038-FD54F02A50","ACI-P296-L039-2CB5A8EBC0","ACI-P296-L039-2CB5A8EBC0-02","ACI-P296-L041-72806288EE","ACI-P296-L041-72806288EE-02","ACI-P296-L041-72806288EE-03","ACI-P296-L041-72806288EE-04","ACI-P296-L041-72806288EE-05","ACI-P296-L042-C341216608","ACI-P297-L002-D0F4E771B1","ACI-P297-L004-B01D3C8A50","ACI-P297-L004-B01D3C8A50-02","ACI-P297-L005-12D07E55FE","ACI-P297-L005-12D07E55FE-02","ACI-P297-L007-240C047F9E","ACI-P297-L008-22EE2D170C","ACI-P297-L009-C6EC102078","ACI-P297-L010-A7EDC3BE2F","ACI-P297-L011-5EE7BD602F"])
+      }),
+      "lesson31-simple-embed-class-examples": Object.freeze({
+        lessonSections: Object.freeze(["§31.5", "§31.5.1", "§31.5.2"]),
+        atomIds: Object.freeze(["ACI-P297-L013-703CDF8C41","ACI-P297-L013-703CDF8C41-02","ACI-P297-L016-58B3D64517","ACI-P297-L017-FDF593254F","ACI-P297-L018-3F8A9CEB6C","ACI-P297-L018-3F8A9CEB6C-02","ACI-P297-L020-D72DBE01DF","ACI-P297-L022-7BAA39ECCE","ACI-P297-L023-9DD5A60390","ACI-P297-L025-F0F4C3036C","ACI-P297-L026-F317097A2A","ACI-P297-L027-E7EC677F6E","ACI-P297-L028-BB29A9263C","ACI-P297-L029-25EE0443C3"])
+      }),
+      "lesson31-tl-subclass-two-and-boundary-alternations": Object.freeze({
+        lessonSections: Object.freeze(["§31.5.3"]),
+        atomIds: Object.freeze(["ACI-P297-L030-1A69969AE5","ACI-P297-L031-C4EDEB3CB7","ACI-P297-L031-C4EDEB3CB7-03","ACI-P297-L031-C4EDEB3CB7-04","ACI-P297-L031-C4EDEB3CB7-05","ACI-P297-L031-C4EDEB3CB7-06","ACI-P297-L031-C4EDEB3CB7-07","ACI-P297-L031-C4EDEB3CB7-02","ACI-P297-L033-D2B487388A","ACI-P297-L033-D2B487388A-02","ACI-P297-L033-D2B487388A-03","ACI-P297-L033-D2B487388A-04","ACI-P297-L033-D2B487388A-05","ACI-P297-L036-0F54DCC2FD","ACI-P297-L038-2FECA5467E","ACI-P298-L002-FF69B3E665","ACI-P298-L003-F2D3462CBC","ACI-P298-L004-3C88FF3CAF","ACI-P298-L005-A293779A80","ACI-P298-L006-A902663C3F","ACI-P298-L006-A902663C3F-02","ACI-P298-L009-6510F5B275","ACI-P298-L010-E54204D038","ACI-P298-L010-E54204D038-02","ACI-P298-L012-43FA64140F","ACI-P298-L014-0179053AC5","ACI-P298-L016-7D59537040","ACI-P298-L017-5D85CBD544","ACI-P298-L018-AEA63604DE","ACI-P298-L018-AEA63604DE-02","ACI-P298-L018-AEA63604DE-03","ACI-P298-L018-AEA63604DE-04","ACI-P298-L018-AEA63604DE-05","ACI-P298-L018-AEA63604DE-06","ACI-P298-L020-DB7AF2EBEE","ACI-P298-L020-DB7AF2EBEE-02","ACI-P298-L020-DB7AF2EBEE-03","ACI-P298-L020-DB7AF2EBEE-04","ACI-P298-L020-DB7AF2EBEE-05","ACI-P298-L020-DB7AF2EBEE-06","ACI-P298-L020-DB7AF2EBEE-07","ACI-P298-L022-B94757F824","ACI-P298-L022-B94757F824-02","ACI-P298-L022-B94757F824-03","ACI-P298-L024-95ADCAEF69"])
+      }),
+      "lesson31-unique-compound-only-nounstems": Object.freeze({
+        lessonSections: Object.freeze(["§31.6"]),
+        atomIds: Object.freeze(["ACI-P298-L025-CDF242B317","ACI-P298-L025-CDF242B317-02","ACI-P298-L028-E83B2BF8EE","ACI-P298-L029-B05C8E6E2C","ACI-P298-L030-B299668EC7","ACI-P298-L031-9B1B313859","ACI-P298-L032-362BCFFA57","ACI-P298-L032-362BCFFA57-02","ACI-P298-L032-362BCFFA57-03","ACI-P298-L032-362BCFFA57-04","ACI-P298-L032-362BCFFA57-05","ACI-P298-L032-362BCFFA57-06","ACI-P298-L032-362BCFFA57-07","ACI-P298-L032-362BCFFA57-08","ACI-P298-L038-C1D416540C","ACI-P298-L038-C1D416540C-03","ACI-P298-L038-C1D416540C-04","ACI-P298-L038-C1D416540C-05","ACI-P298-L038-C1D416540C-06","ACI-P298-L038-C1D416540C-07","ACI-P298-L038-C1D416540C-08","ACI-P298-L038-C1D416540C-09","ACI-P298-L038-C1D416540C-10","ACI-P298-L038-C1D416540C-11","ACI-P298-L038-C1D416540C-12","ACI-P298-L038-C1D416540C-02","ACI-P298-L041-1F1DD21429","ACI-P298-L041-1F1DD21429-02","ACI-P298-L041-1F1DD21429-03","ACI-P298-L041-1F1DD21429-04","ACI-P298-L041-1F1DD21429-05","ACI-P298-L041-1F1DD21429-06","ACI-P298-L041-1F1DD21429-07","ACI-P298-L041-1F1DD21429-08","ACI-P298-L041-1F1DD21429-09","ACI-P298-L041-1F1DD21429-10","ACI-P298-L041-1F1DD21429-11","ACI-P298-L041-1F1DD21429-12","ACI-P298-L041-1F1DD21429-13","ACI-P299-L002-6AB4A245D8"])
+      }),
+      "lesson31-ca-matrix-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§31.6.1"]),
+        atomIds: Object.freeze(["ACI-P299-L004-C175B27209","ACI-P299-L004-C175B27209-03","ACI-P299-L004-C175B27209-04","ACI-P299-L004-C175B27209-05","ACI-P299-L004-C175B27209-06","ACI-P299-L004-C175B27209-02","ACI-P299-L004-C175B27209-07","ACI-P299-L006-147DBDD1EC","ACI-P299-L008-CE1023F19C","ACI-P299-L009-0536DB670A","ACI-P299-L011-4D7134A50F","ACI-P299-L012-36AEF7CDB4","ACI-P299-L013-D4D0D3F9D8","ACI-P299-L014-F9B70F384E","ACI-P299-L015-4F187B3087","ACI-P299-L017-EE6D20E3E9","ACI-P299-L017-EE6D20E3E9-02","ACI-P299-L017-EE6D20E3E9-03","ACI-P299-L017-EE6D20E3E9-04","ACI-P299-L017-EE6D20E3E9-05","ACI-P299-L017-EE6D20E3E9-06","ACI-P299-L017-EE6D20E3E9-07","ACI-P299-L017-EE6D20E3E9-08","ACI-P299-L017-EE6D20E3E9-09","ACI-P299-L017-EE6D20E3E9-10","ACI-P299-L020-4CE84299CE","ACI-P299-L021-8BD258AC7B","ACI-P299-L021-8BD258AC7B-02","ACI-P299-L022-C53D38C201","ACI-P299-L023-FD3F260822","ACI-P299-L024-07D9723AD1","ACI-P299-L025-F3BA974ECF","ACI-P299-L026-F78DD7A076","ACI-P299-L027-32918ECD16","ACI-P299-L028-3404E57FA5","ACI-P299-L029-19E5A8A8C3","ACI-P299-L029-9D0504469A","ACI-P299-L029-9D0504469A-02","ACI-P299-L029-9D0504469A-03","ACI-P299-L029-9D0504469A-04","ACI-P299-L032-C812998720","ACI-P299-L034-8A4CD0AE81","ACI-P299-L035-9D7484FF88","ACI-P299-L036-CF528038EF","ACI-P299-L038-780975C3E4","ACI-P299-L039-EE47F2741B","ACI-P299-L040-7254F105AC","ACI-P299-L041-750EAA2C21","ACI-P299-L042-2F88C40A4E"])
+      }),
+      "lesson31-yo-matrix-and-possessive-embed": Object.freeze({
+        lessonSections: Object.freeze(["§31.6.2"]),
+        atomIds: Object.freeze(["ACI-P300-L002-A8E50FB009","ACI-P300-L003-77C958552B","ACI-P300-L004-CBEEEF8639","ACI-P300-L005-DA73B6471A","ACI-P300-L005-DA73B6471A-02","ACI-P300-L005-DA73B6471A-03","ACI-P300-L005-DA73B6471A-04","ACI-P300-L005-DA73B6471A-05","ACI-P300-L005-DA73B6471A-06","ACI-P300-L005-DA73B6471A-07","ACI-P300-L005-DA73B6471A-08","ACI-P300-L005-DA73B6471A-09","ACI-P300-L005-DA73B6471A-10","ACI-P300-L005-DA73B6471A-11","ACI-P300-L005-DA73B6471A-12","ACI-P300-L005-DA73B6471A-13","ACI-P300-L005-DA73B6471A-14","ACI-P300-L005-DA73B6471A-15","ACI-P300-L005-DA73B6471A-16","ACI-P300-L005-DA73B6471A-17","ACI-P300-L005-DA73B6471A-18","ACI-P300-L005-DA73B6471A-19","ACI-P300-L015-D0A1293B57","ACI-P300-L015-D0A1293B57-02","ACI-P300-L015-D0A1293B57-03","ACI-P300-L015-D0A1293B57-04","ACI-P300-L015-D0A1293B57-05","ACI-P300-L015-D0A1293B57-06","ACI-P300-L015-D0A1293B57-07","ACI-P300-L015-D0A1293B57-08","ACI-P300-L018-D4D02DBC63","ACI-P300-L018-D4D02DBC63-02","ACI-P300-L018-D4D02DBC63-03","ACI-P300-L018-D4D02DBC63-04","ACI-P300-L018-D4D02DBC63-05","ACI-P300-L018-D4D02DBC63-06","ACI-P300-L018-D4D02DBC63-07","ACI-P300-L018-D4D02DBC63-08","ACI-P300-L018-D4D02DBC63-09","ACI-P300-L018-D4D02DBC63-10","ACI-P300-L018-D4D02DBC63-11","ACI-P300-L018-D4D02DBC63-12","ACI-P300-L018-D4D02DBC63-13","ACI-P300-L018-D4D02DBC63-14","ACI-P300-L018-D4D02DBC63-15","ACI-P300-L018-D4D02DBC63-16","ACI-P300-L018-D4D02DBC63-17","ACI-P300-L018-D4D02DBC63-18","ACI-P300-L018-D4D02DBC63-19","ACI-P300-L018-D4D02DBC63-20","ACI-P300-L018-D4D02DBC63-21","ACI-P300-L018-D4D02DBC63-22","ACI-P300-L018-D4D02DBC63-23","ACI-P300-L018-D4D02DBC63-24","ACI-P300-L018-D4D02DBC63-25","ACI-P300-L018-D4D02DBC63-26","ACI-P300-L018-D4D02DBC63-27","ACI-P300-L018-D4D02DBC63-28","ACI-P300-L018-D4D02DBC63-29","ACI-P300-L018-D4D02DBC63-30","ACI-P300-L028-B303D66111"])
+      }),
+      "lesson31-conjunctive-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§31.7"]),
+        atomIds: Object.freeze(["ACI-P300-L030-107E33C8E6","ACI-P300-L030-107E33C8E6-02","ACI-P300-L032-95CAA2C9AA","ACI-P300-L032-95CAA2C9AA-02","ACI-P300-L032-95CAA2C9AA-03","ACI-P300-L034-217BE1784B","ACI-P300-L036-AA3E8FF2B3","ACI-P300-L036-AA3E8FF2B3-02","ACI-P300-L036-AA3E8FF2B3-03","ACI-P300-L036-AA3E8FF2B3-04","ACI-P300-L036-AA3E8FF2B3-05","ACI-P300-L036-AA3E8FF2B3-06","ACI-P300-L036-AA3E8FF2B3-07","ACI-P300-L036-AA3E8FF2B3-08","ACI-P300-L036-AA3E8FF2B3-09","ACI-P300-L036-AA3E8FF2B3-10","ACI-P300-L036-AA3E8FF2B3-11","ACI-P300-L036-AA3E8FF2B3-12","ACI-P300-L039-F176CC34A1","ACI-P301-L002-DFAD52D4D1","ACI-P301-L004-449223F35A","ACI-P301-L004-449223F35A-02","ACI-P301-L004-449223F35A-03"])
+      }),
+      "lesson31-recursive-compound-embeds": Object.freeze({
+        lessonSections: Object.freeze(["§31.8", "§31.8.1"]),
+        atomIds: Object.freeze(["ACI-P301-L006-A24E0D225E","ACI-P301-L006-A24E0D225E-02","ACI-P301-L010-B80C7045F2","ACI-P301-L012-1CABEBC652","ACI-P301-L012-1CABEBC652-02","ACI-P301-L012-1CABEBC652-03","ACI-P301-L012-1CABEBC652-04","ACI-P301-L012-1CABEBC652-05","ACI-P301-L012-1CABEBC652-06","ACI-P301-L012-1CABEBC652-07","ACI-P301-L012-1CABEBC652-08","ACI-P301-L012-1CABEBC652-09","ACI-P301-L012-1CABEBC652-10","ACI-P301-L012-1CABEBC652-11","ACI-P301-L012-1CABEBC652-12","ACI-P301-L012-1CABEBC652-13","ACI-P301-L012-1CABEBC652-14","ACI-P301-L012-1CABEBC652-15"])
+      }),
+      "lesson31-recursive-matrices-and-bracketing-ambiguity": Object.freeze({
+        lessonSections: Object.freeze(["§31.8.2", "§31.8.3"]),
+        atomIds: Object.freeze(["ACI-P301-L017-78B5EE6CF2","ACI-P301-L018-83C6DD330E","ACI-P301-L019-21AA71346C","ACI-P301-L019-21AA71346C-03","ACI-P301-L019-21AA71346C-04","ACI-P301-L019-21AA71346C-05","ACI-P301-L019-21AA71346C-06","ACI-P301-L019-21AA71346C-02","ACI-P301-L022-1C9B4D5B8D","ACI-P301-L024-EFC592D7A9","ACI-P301-L026-1EA5E9EB7D","ACI-P301-L026-F1568C2039","ACI-P301-L026-F1568C2039-02","ACI-P301-L026-F1568C2039-03"])
+      }),
+      "lesson31-sex-distinction-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§31.9"]),
+        atomIds: Object.freeze(["ACI-P301-L029-00E24264A6","ACI-P301-L032-8330A835D6","ACI-P301-L033-8666C45FC6","ACI-P301-L034-D54D7A1D11","ACI-P301-L034-D54D7A1D11-02","ACI-P301-L036-E9BE5299A4","ACI-P301-L037-48DB298A72","ACI-P302-L002-8CA5420680","ACI-P302-L003-2ACB5B7DA9"])
+      }),
+      "lesson31-progeny-and-fellowship-compounds": Object.freeze({
+        lessonSections: Object.freeze(["§31.10", "§31.11"]),
+        atomIds: Object.freeze(["ACI-P302-L005-A5FC2CC1F1","ACI-P302-L008-2D2B03EB74","ACI-P302-L009-FC577252E3","ACI-P302-L010-4428D6E82F","ACI-P302-L011-BB5226B7B8","ACI-P302-L012-DB32718D69","ACI-P302-L013-EB6CCB044C","ACI-P302-L015-474A44B04A","ACI-P302-L016-6CA3F6273D","ACI-P302-L016-98CE79268A","ACI-P302-L018-D58E5FABE1","ACI-P302-L018-D58E5FABE1-02","ACI-P302-L021-A4989178E7","ACI-P302-L023-E55BEBBC64","ACI-P302-L025-69EE9B0788","ACI-P302-L025-69EE9B0788-03","ACI-P302-L025-69EE9B0788-04","ACI-P302-L025-69EE9B0788-05","ACI-P302-L025-69EE9B0788-06","ACI-P302-L025-69EE9B0788-07","ACI-P302-L025-69EE9B0788-08","ACI-P302-L025-69EE9B0788-09","ACI-P302-L025-69EE9B0788-10","ACI-P302-L025-69EE9B0788-11","ACI-P302-L025-69EE9B0788-02","ACI-P302-L025-69EE9B0788-12","ACI-P302-L028-BBC2A34F7B"])
+      }),
+      "lesson31-affinity-reduplication-scope": Object.freeze({
+        lessonSections: Object.freeze(["§31.12"]),
+        atomIds: Object.freeze(["ACI-P302-L030-A7B7E1E099","ACI-P302-L030-A7B7E1E099-02","ACI-P302-L033-63C561A0B1","ACI-P302-L034-58DA05C6E7","ACI-P302-L035-BA2D72E76D","ACI-P302-L036-574A1B37A3","ACI-P302-L037-0B3E6A5591","ACI-P302-L038-4207C308C0","ACI-P302-L039-19FBD8513C","ACI-P303-L002-A2DB58F50D","ACI-P303-L003-9CBA488D8B","ACI-P303-L004-C33256556E","ACI-P303-L004-C33256556E-02","ACI-P303-L006-E1586EF30D","ACI-P303-L007-4F4AE4E376","ACI-P303-L008-C32330ACEA","ACI-P303-L009-5662F4877F","ACI-P303-L010-C01BB31E2F","ACI-P303-L012-E98D183BCF","ACI-P303-L013-168C6FD517","ACI-P303-L014-7A3AC33A6C","ACI-P303-L015-E5B82D511D","ACI-P303-L016-F0180AFC66","ACI-P303-L017-10CD56BEA2","ACI-P303-L018-36C2841BA0","ACI-P303-L019-5FCFC0F99D"])
+      }),
+      "lesson31-distributive-varietal-reduplication": Object.freeze({
+        lessonSections: Object.freeze(["§31.13"]),
+        atomIds: Object.freeze(["ACI-P303-L022-BCA7BCE0B5","ACI-P303-L022-BCA7BCE0B5-02","ACI-P303-L022-BCA7BCE0B5-03","ACI-P303-L024-5C5D3714D6","ACI-P303-L025-D54F9FCDDD","ACI-P303-L026-C0E8482B83","ACI-P303-L027-AC42C3E5D2","ACI-P303-L029-07C1D1E418","ACI-P303-L031-F2AE364A79","ACI-P303-L032-0763FD0019"])
+      }),
+      "lesson32-affective-nnc-foundation-and-attitude-route": Object.freeze({
+        lessonSections: Object.freeze(["§32.1"]),
+        atomIds: Object.freeze(["ACI-P304-L003-CB5811F87C","ACI-P304-L005-48EFFF29DA","ACI-P304-L005-4997BD4DE9","ACI-P304-L005-4997BD4DE9-02","ACI-P304-L005-4997BD4DE9-03","ACI-P304-L007-AC2B0C0B42","ACI-P304-L008-1628EDA605","ACI-P304-L011-30C50B03E7"])
+      }),
+      "lesson32-pil-and-pol-affective-matrices": Object.freeze({
+        lessonSections: Object.freeze(["§32.2", "§32.2.1", "§32.2.2"]),
+        atomIds: Object.freeze(["ACI-P304-L013-7DDAB4B72B","ACI-P304-L016-02B0869413","ACI-P304-L017-465FCE2581","ACI-P304-L018-913F747EAA","ACI-P304-L019-E93E617115","ACI-P304-L019-E93E617115-03","ACI-P304-L019-E93E617115-04","ACI-P304-L019-E93E617115-05","ACI-P304-L019-E93E617115-06","ACI-P304-L019-E93E617115-07","ACI-P304-L019-E93E617115-02","ACI-P304-L019-E93E617115-08","ACI-P304-L021-2057DAB6AA","ACI-P304-L022-9BAB32CE52","ACI-P304-L023-6D9CC1A7EB","ACI-P304-L024-949B06749F","ACI-P304-L025-DF8BBD9AAF","ACI-P304-L025-DF8BBD9AAF-02","ACI-P304-L025-DF8BBD9AAF-03","ACI-P304-L025-DF8BBD9AAF-04","ACI-P304-L025-DF8BBD9AAF-05","ACI-P304-L025-DF8BBD9AAF-06","ACI-P304-L025-DF8BBD9AAF-07","ACI-P304-L025-DF8BBD9AAF-08","ACI-P304-L027-3FB62E6C6A","ACI-P304-L027-3FB62E6C6A-03","ACI-P304-L027-3FB62E6C6A-04","ACI-P304-L027-3FB62E6C6A-05","ACI-P304-L027-3FB62E6C6A-06","ACI-P304-L027-3FB62E6C6A-07","ACI-P304-L027-3FB62E6C6A-08","ACI-P304-L027-3FB62E6C6A-09","ACI-P304-L027-3FB62E6C6A-02","ACI-P304-L027-3FB62E6C6A-10","ACI-P305-L002-45C51DDDC5","ACI-P305-L002-45C51DDDC5-02","ACI-P305-L002-45C51DDDC5-03","ACI-P305-L002-45C51DDDC5-04","ACI-P305-L002-45C51DDDC5-05","ACI-P305-L002-45C51DDDC5-06","ACI-P305-L002-45C51DDDC5-07","ACI-P305-L004-64A60F4A4E","ACI-P305-L006-D32D7D0317","ACI-P305-L007-560AF51BE0","ACI-P305-L008-E6DD70ECE3","ACI-P305-L009-83C7C60167"])
+      }),
+      "lesson32-tzin-matrix-class-meaning-and-vocative": Object.freeze({
+        lessonSections: Object.freeze(["§32.3", "§32.3.1"]),
+        atomIds: Object.freeze(["ACI-P305-L010-581410F3A2","ACI-P305-L011-3B339896D5","ACI-P305-L013-452631B44D","ACI-P305-L015-62185C1022","ACI-P305-L018-3780F74096","ACI-P305-L019-F6EF91C46D","ACI-P305-L020-49851A378B","ACI-P305-L021-31C550E2B2","ACI-P305-L021-31C550E2B2-03","ACI-P305-L021-31C550E2B2-04","ACI-P305-L021-31C550E2B2-05","ACI-P305-L021-31C550E2B2-02","ACI-P305-L024-EBB77C7BA4","ACI-P305-L024-EBB77C7BA4-02","ACI-P305-L024-EBB77C7BA4-03","ACI-P305-L024-EBB77C7BA4-04","ACI-P305-L024-EBB77C7BA4-05","ACI-P305-L024-EBB77C7BA4-06","ACI-P305-L024-EBB77C7BA4-07","ACI-P305-L024-EBB77C7BA4-08","ACI-P305-L024-EBB77C7BA4-09","ACI-P305-L024-EBB77C7BA4-10","ACI-P305-L024-EBB77C7BA4-11","ACI-P305-L027-BD010E7580","ACI-P305-L027-BD010E7580-02","ACI-P305-L027-BD010E7580-03","ACI-P305-L027-BD010E7580-04","ACI-P305-L027-BD010E7580-05","ACI-P305-L027-BD010E7580-06","ACI-P305-L027-BD010E7580-07","ACI-P305-L029-9F32770933","ACI-P305-L029-9F32770933-03","ACI-P305-L029-9F32770933-04","ACI-P305-L029-9F32770933-05","ACI-P305-L029-9F32770933-06","ACI-P305-L029-9F32770933-07","ACI-P305-L029-9F32770933-02","ACI-P305-L029-9F32770933-08","ACI-P305-L031-12ED30969C","ACI-P305-L033-9DF367448B","ACI-P305-L034-4974F53E12","ACI-P305-L035-8197252665","ACI-P305-L037-531D9A24FC","ACI-P305-L038-4D8526126F","ACI-P305-L040-1CAB3A5DB9","ACI-P306-L002-29BED9B96A","ACI-P306-L002-29BED9B96A-02","ACI-P306-L004-81BC9A671E","ACI-P306-L004-1DDA55F1D6","ACI-P306-L006-990A44B78D","ACI-P306-L007-50A4C6555E","ACI-P306-L008-CE1BA5EB94","ACI-P306-L008-CE1BA5EB94-02","ACI-P306-L009-111922F81A","ACI-P306-L011-3F01041F32","ACI-P306-L012-5737A4638B","ACI-P306-L014-81E4A695FE","ACI-P306-L015-CC47702820"])
+      }),
+      "lesson32-ton-matrix-and-class-exceptions": Object.freeze({
+        lessonSections: Object.freeze(["§32.3.2"]),
+        atomIds: Object.freeze(["ACI-P306-L016-3182248C30","ACI-P306-L018-E40798042B","ACI-P306-L019-0D68C8C43D","ACI-P306-L019-0D68C8C43D-02","ACI-P306-L019-0D68C8C43D-03","ACI-P306-L019-0D68C8C43D-04","ACI-P306-L019-0D68C8C43D-05","ACI-P306-L019-0D68C8C43D-06","ACI-P306-L019-0D68C8C43D-07","ACI-P306-L019-0D68C8C43D-08","ACI-P306-L022-49E0C267A2","ACI-P306-L023-77EC3588A8","ACI-P306-L025-F05E3F7453","ACI-P306-L026-FD76CC05AC","ACI-P306-L027-9A4D2D9687","ACI-P306-L029-124E19DC91","ACI-P306-L029-124E19DC91-02","ACI-P306-L030-A11220E693","ACI-P306-L030-13489A9C20","ACI-P306-L032-C5145C329B","ACI-P306-L032-C5145C329B-03","ACI-P306-L032-C5145C329B-04","ACI-P306-L032-C5145C329B-05","ACI-P306-L032-C5145C329B-06","ACI-P306-L032-C5145C329B-02","ACI-P306-L032-C5145C329B-07"])
+      }),
+      "lesson32-zol-matrix-recursion-and-denominal-continuation": Object.freeze({
+        lessonSections: Object.freeze(["§32.4"]),
+        atomIds: Object.freeze(["ACI-P306-L034-3E09AA19BE","ACI-P306-L036-3E895A0209","ACI-P306-L036-3E895A0209-02","ACI-P306-L038-CE20DC597E","ACI-P306-L039-18CE30B035","ACI-P307-L002-A08621D237","ACI-P307-L003-B5EFDBB8C1","ACI-P307-L004-D2E62F9891","ACI-P307-L005-B6BCD525BB","ACI-P307-L006-06177F0BE8","ACI-P307-L006-06177F0BE8-02","ACI-P307-L006-06177F0BE8-03","ACI-P307-L006-06177F0BE8-04","ACI-P307-L006-06177F0BE8-05","ACI-P307-L006-06177F0BE8-06","ACI-P307-L006-06177F0BE8-07","ACI-P307-L008-885E583A39","ACI-P307-L008-885E583A39-02","ACI-P307-L008-885E583A39-03","ACI-P307-L008-885E583A39-04","ACI-P307-L008-885E583A39-05","ACI-P307-L008-885E583A39-06","ACI-P307-L012-2ECD0B9EE5","ACI-P307-L013-4E8413092A","ACI-P307-L014-9FD7313444","ACI-P307-L015-2F2FCC135F","ACI-P307-L015-2F2FCC135F-03","ACI-P307-L015-2F2FCC135F-02","ACI-P307-L015-2F2FCC135F-04"])
+      }),
+      "lesson32-affective-affinity-and-absolutive-number": Object.freeze({
+        lessonSections: Object.freeze(["§32.5", "§32.5.1"]),
+        atomIds: Object.freeze(["ACI-P307-L018-640D4084F8","ACI-P307-L019-AD6ECB2E39","ACI-P307-L023-048915AD7F","ACI-P307-L025-60FF9FA233","ACI-P307-L027-7577B53ECB","ACI-P307-L029-2714B34E79","ACI-P307-L030-ACD7C134ED","ACI-P307-L031-D9C7EF86E2","ACI-P307-L032-BC06960416","ACI-P307-L033-ADDD528865","ACI-P307-L034-11047E5DF4","ACI-P307-L035-A4B8ED6C35","ACI-P307-L036-8CA07E9779","ACI-P307-L037-ADB3474C39","ACI-P307-L038-A8AF895118","ACI-P308-L002-7BE5D85AC9","ACI-P308-L004-BBB0E37D9B","ACI-P308-L005-69A227B967","ACI-P308-L006-83AA775CAD","ACI-P308-L008-383A10BCAC","ACI-P308-L009-DC8E77C9B8","ACI-P308-L010-85AA92E819","ACI-P308-L012-6C0E606650","ACI-P308-L013-EF034DCC28","ACI-P308-L014-D6928111D0","ACI-P308-L015-714ABB3FAB","ACI-P308-L016-A51A0A9C76","ACI-P308-L016-A51A0A9C76-02"])
+      }),
+      "lesson32-possessive-affinity-number-alternatives": Object.freeze({
+        lessonSections: Object.freeze(["§32.5.2"]),
+        atomIds: Object.freeze(["ACI-P308-L017-621EBEBA45","ACI-P308-L019-9EB584C712","ACI-P308-L020-90B7EBD73D","ACI-P308-L021-B0FAE7B60B","ACI-P308-L022-81110AED10","ACI-P308-L023-C7ABB28BDC","ACI-P308-L024-7D51EA8484","ACI-P308-L025-EADD2FE235","ACI-P308-L027-4F62D64D9B","ACI-P308-L028-215C1AC979","ACI-P308-L030-B41C519FBC","ACI-P308-L032-44EA13DFE5","ACI-P308-L032-BCC9CB6F7E","ACI-P308-L032-BCC9CB6F7E-02","ACI-P308-L033-8B68FA57E0","ACI-P308-L033-8B68FA57E0-02","ACI-P308-L033-8B68FA57E0-03","ACI-P308-L033-8B68FA57E0-04","ACI-P308-L033-8B68FA57E0-05"])
+      }),
+      "lesson32-pil-lexeme-and-child-formations": Object.freeze({
+        lessonSections: Object.freeze(["§32.6", "§32.6.1.a"]),
+        atomIds: Object.freeze(["ACI-P308-L035-1A2FFDAD76","ACI-P308-L036-952F62CB1E","ACI-P308-L036-952F62CB1E-03","ACI-P308-L036-952F62CB1E-04","ACI-P308-L036-952F62CB1E-02","ACI-P308-L036-952F62CB1E-05","ACI-P309-L004-315291B2DC","ACI-P309-L004-315291B2DC-02","ACI-P309-L007-27236E324D","ACI-P309-L008-27C2572B73","ACI-P309-L008-27C2572B73-03","ACI-P309-L008-27C2572B73-04","ACI-P309-L008-27C2572B73-02","ACI-P309-L011-38A0FD3D1E","ACI-P309-L015-D5FDCB8627","ACI-P309-L017-A62B01F57B","ACI-P309-L018-549FEBF4D0","ACI-P309-L020-94A62F1815","ACI-P309-L022-C3CFBABE12","ACI-P309-L022-C3CFBABE12-02","ACI-P309-L024-C138D08B05","ACI-P309-L024-C138D08B05-02","ACI-P309-L024-C138D08B05-03","ACI-P309-L024-C138D08B05-04","ACI-P309-L024-C138D08B05-05","ACI-P309-L024-C138D08B05-06","ACI-P309-L024-C138D08B05-07","ACI-P309-L024-C138D08B05-08","ACI-P309-L024-C138D08B05-09","ACI-P309-L026-B2108C8285","ACI-P309-L027-FA80FB21F7","ACI-P309-L029-8DBBA17129","ACI-P309-L030-B025FCE4B0","ACI-P309-L031-0C184E4C89","ACI-P309-L032-1195233A2A","ACI-P309-L033-9C0AB5AC26","ACI-P309-L034-7F3C67C53C"])
+      }),
+      "lesson32-affective-child-matrices": Object.freeze({
+        lessonSections: Object.freeze(["§32.6.1.b"]),
+        atomIds: Object.freeze(["ACI-P309-L036-FEDEE28730","ACI-P309-L039-E609F3A85A","ACI-P309-L040-F556E3D743","ACI-P310-L002-10607C3460","ACI-P310-L003-BC521158F0","ACI-P310-L004-34D363EE05","ACI-P310-L006-BB8DED4BA8","ACI-P310-L007-CDBCB86CA3","ACI-P310-L008-CFE792D3F2","ACI-P310-L010-7FDD7BE67B","ACI-P310-L011-F698B715EC","ACI-P310-L012-A485063908","ACI-P310-L013-14D394FD9C","ACI-P310-L015-5E23758461","ACI-P310-L017-B486296A4C","ACI-P310-L017-B486296A4C-02"])
+      }),
+      "lesson32-pil-noble-and-honorific-formations": Object.freeze({
+        lessonSections: Object.freeze(["§32.6.2.a","§32.6.2.b","§32.6.2.c"]),
+        atomIds: Object.freeze(["ACI-P310-L020-4B3F6EBFD2","ACI-P310-L022-EB7B233499","ACI-P310-L023-8A95F80305","ACI-P310-L025-F0E2DDE949","ACI-P310-L025-F0E2DDE949-03","ACI-P310-L025-F0E2DDE949-04","ACI-P310-L025-F0E2DDE949-02","ACI-P310-L027-AF4AF0982D","ACI-P310-L028-50A09FBA1F","ACI-P310-L030-A03AD97D51","ACI-P310-L030-A03AD97D51-02","ACI-P310-L030-A03AD97D51-03","ACI-P310-L034-D7B7F474B5","ACI-P310-L035-CCF5BC1DB4","ACI-P310-L036-A5D5FEEA12","ACI-P310-L037-9B99679E26","ACI-P310-L037-9B99679E26-02","ACI-P311-L002-043616E34F","ACI-P311-L002-043616E34F-02","ACI-P311-L002-043616E34F-03","ACI-P311-L002-043616E34F-04","ACI-P311-L002-043616E34F-05"])
+      }),
+      "lesson32-nonanimate-affinity-and-supplement-agreement": Object.freeze({
+        lessonSections: Object.freeze(["§32.7"]),
+        atomIds: Object.freeze(["ACI-P311-L004-C8CCD7031C","ACI-P311-L006-0EDF21CBB9","ACI-P311-L010-5E5D53805D","ACI-P311-L011-A60B29719C","ACI-P311-L012-06B8FE5485","ACI-P311-L013-C86126A042","ACI-P311-L016-997D72FFB1","ACI-P311-L016-997D72FFB1-02","ACI-P311-L016-997D72FFB1-03","ACI-P311-L019-487013A849","ACI-P311-L021-DBE423A190","ACI-P311-L022-BA992B4A69","ACI-P311-L023-8300DA00A6","ACI-P311-L027-5B968E99CF","ACI-P311-L028-E106986BE4","ACI-P311-L028-E106986BE4-03","ACI-P311-L028-E106986BE4-04","ACI-P311-L028-E106986BE4-05","ACI-P311-L028-E106986BE4-02"])
+      }),
+      "lesson32-flawed-subject-nncs": Object.freeze({
+        lessonSections: Object.freeze(["§32.8"]),
+        atomIds: Object.freeze(["ACI-P311-L032-C42F1F5460","ACI-P311-L034-087E5B5F9B","ACI-P311-L036-D69AFC64B6","ACI-P311-L038-260A6B8DF1","ACI-P312-L002-4277EE56A7","ACI-P312-L003-91823D9614","ACI-P312-L004-28057A1E74","ACI-P312-L005-1D7E9D5846","ACI-P312-L006-D9BA22F175","ACI-P312-L009-5A05A25311","ACI-P312-L010-C26209A674","ACI-P312-L011-28578C6FFD","ACI-P312-L013-81BB5D08A3","ACI-P312-L014-0C6E54450B","ACI-P312-L015-15790C58FA","ACI-P312-L015-15790C58FA-02","ACI-P312-L015-15790C58FA-03","ACI-P312-L015-15790C58FA-04","ACI-P312-L015-15790C58FA-05","ACI-P312-L017-4817E87532","ACI-P312-L017-4817E87532-02","ACI-P312-L017-4817E87532-03","ACI-P312-L017-4817E87532-04","ACI-P312-L019-87890964FA","ACI-P312-L020-41F6371978","ACI-P312-L020-41F6371978-02","ACI-P312-L020-41F6371978-03","ACI-P312-L020-41F6371978-04","ACI-P312-L020-41F6371978-05","ACI-P312-L024-896CF468D4","ACI-P312-L024-09836091AE","ACI-P312-L026-EAD2E06A42","ACI-P312-L027-13D94519E0","ACI-P312-L028-FABF77A2D4","ACI-P312-L029-180F61464E","ACI-P312-L029-180F61464E-02","ACI-P312-L029-180F61464E-03","ACI-P312-L030-5C2F77C7CC","ACI-P312-L030-5C2F77C7CC-02","ACI-P312-L032-A354BFFFAF","ACI-P312-L033-A25670456A","ACI-P312-L033-5ED05764A3","ACI-P312-L034-6902C65690","ACI-P312-L034-6902C65690-02","ACI-P312-L034-6902C65690-03","ACI-P312-L034-6902C65690-04","ACI-P312-L034-6902C65690-05","ACI-P312-L034-6902C65690-06","ACI-P312-L035-DE0F172230","ACI-P312-L036-6617831D98","ACI-P312-L039-9C8C16EA1A","ACI-P312-L041-0D13E47EC0","ACI-P312-L042-2BEAE13D64","ACI-P312-L043-8214E46CE7","ACI-P312-L043-8214E46CE7-02","ACI-P312-L043-8214E46CE7-03","ACI-P312-L043-8214E46CE7-04","ACI-P312-L043-8214E46CE7-05","ACI-P312-L043-8214E46CE7-06","ACI-P312-L043-8214E46CE7-07","ACI-P312-L043-8214E46CE7-08"])
+      }),
+      "lesson33-honorific-vnc-foundation-and-participant-gate": Object.freeze({
+        lessonSections: Object.freeze(["§33.1"]),
+        atomIds: Object.freeze(["ACI-P313-L003-B92C7948F0","ACI-P313-L004-75D7CD51E6","ACI-P313-L006-E2D3F87A5C","ACI-P313-L007-D0C61F9627","ACI-P313-L007-D0C61F9627-02","ACI-P313-L010-B419053A42","ACI-P313-L010-B419053A42-02","ACI-P313-L010-B419053A42-03","ACI-P313-L010-B419053A42-04"])
+      }),
+      "lesson33-intransitive-causative-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.2"]),
+        atomIds: Object.freeze(["ACI-P313-L013-894588B160","ACI-P313-L015-8329AA2E4A","ACI-P313-L015-8329AA2E4A-02","ACI-P313-L018-6F27F87B14","ACI-P313-L020-BF963FCB4D","ACI-P313-L021-8A0C08E910","ACI-P313-L023-9A56081C8D","ACI-P313-L027-B80B9EA202","ACI-P313-L028-38753A949C","ACI-P313-L028-38753A949C-02","ACI-P313-L028-38753A949C-03","ACI-P313-L028-38753A949C-04","ACI-P314-L002-1EB47FD9D1","ACI-P314-L002-1EB47FD9D1-02","ACI-P314-L002-1EB47FD9D1-03","ACI-P314-L002-1EB47FD9D1-04","ACI-P314-L002-1EB47FD9D1-05","ACI-P314-L005-6936BF9E14","ACI-P314-L006-B347188F7C","ACI-P314-L007-FDDB597FE4","ACI-P314-L008-B14D32C9FF","ACI-P314-L008-36ACD5AA7D","ACI-P314-L009-FBF508623E","ACI-P314-L010-EB729FEF4C","ACI-P314-L012-4F6C9B97C1","ACI-P314-L012-4F6C9B97C1-02","ACI-P314-L014-69CD9CAECC","ACI-P314-L015-7A0A3BAEF6","ACI-P314-L017-1D32EE4B06","ACI-P314-L019-469093FFD5","ACI-P314-L020-B1B159FFB1","ACI-P314-L020-B1B159FFB1-02","ACI-P314-L020-B1B159FFB1-03","ACI-P314-L020-B1B159FFB1-04","ACI-P314-L020-B1B159FFB1-05","ACI-P314-L020-B1B159FFB1-06","ACI-P314-L023-4312924642","ACI-P314-L024-5DC848BA5D","ACI-P314-L026-F9EBD2299F","ACI-P314-L027-B4695976CB","ACI-P314-L029-C08852F878","ACI-P314-L030-4A9A2B4E14","ACI-P314-L030-4A9A2B4E14-03","ACI-P314-L030-4A9A2B4E14-04","ACI-P314-L030-4A9A2B4E14-05","ACI-P314-L030-4A9A2B4E14-06","ACI-P314-L030-4A9A2B4E14-07","ACI-P314-L030-4A9A2B4E14-08","ACI-P314-L030-4A9A2B4E14-09","ACI-P314-L030-4A9A2B4E14-02","ACI-P314-L030-4A9A2B4E14-10","ACI-P314-L037-393AE60CB5","ACI-P314-L037-393AE60CB5-02","ACI-P315-L002-6801CE90E6","ACI-P315-L004-727D15836F","ACI-P315-L004-727D15836F-02","ACI-P315-L004-727D15836F-03","ACI-P315-L004-727D15836F-04","ACI-P315-L004-727D15836F-05","ACI-P315-L004-727D15836F-06","ACI-P315-L004-727D15836F-07","ACI-P315-L006-C2ABE5A050","ACI-P315-L006-C2ABE5A050-02","ACI-P315-L006-C2ABE5A050-03","ACI-P315-L006-C2ABE5A050-04","ACI-P315-L006-C2ABE5A050-05","ACI-P315-L006-C2ABE5A050-06","ACI-P315-L006-C2ABE5A050-07","ACI-P315-L008-8407F2B52D","ACI-P315-L008-8407F2B52D-02","ACI-P315-L008-8407F2B52D-03","ACI-P315-L008-8407F2B52D-04","ACI-P315-L008-8407F2B52D-05","ACI-P315-L008-8407F2B52D-06","ACI-P315-L008-8407F2B52D-07","ACI-P315-L008-8407F2B52D-08","ACI-P315-L008-8407F2B52D-09","ACI-P315-L018-3E2A733027","ACI-P315-L018-B933429087","ACI-P315-L018-B933429087-02","ACI-P315-L021-5534AFEF6A","ACI-P315-L023-390FD336C4","ACI-P315-L024-FFCD37FD58","ACI-P315-L025-EB53E4D493","ACI-P315-L026-22B9B6CAE4","ACI-P315-L027-ED6B3360C7","ACI-P315-L029-699AA8C49A","ACI-P315-L030-43BC50862D","ACI-P315-L032-6E83B11DC5","ACI-P315-L033-2E05ECC0A4","ACI-P315-L034-7EF70F0648","ACI-P315-L035-2EF55E5AAB","ACI-P315-L037-AA529DEC39","ACI-P315-L038-EDCA227CAB"])
+      }),
+      "lesson33-intransitive-applicative-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.3"]),
+        atomIds: Object.freeze(["ACI-P315-L039-4C45870A5C","ACI-P316-L002-1B1CD4B969","ACI-P316-L004-620EE2F1C8","ACI-P316-L005-2B5BCFB281","ACI-P316-L005-2B5BCFB281-02","ACI-P316-L005-2B5BCFB281-03","ACI-P316-L005-2B5BCFB281-04","ACI-P316-L005-2B5BCFB281-05","ACI-P316-L005-2B5BCFB281-06","ACI-P316-L005-2B5BCFB281-07","ACI-P316-L008-8978F02414","ACI-P316-L009-E5C7FAB3E1","ACI-P316-L011-11E1BF4FCF","ACI-P316-L011-11E1BF4FCF-02","ACI-P316-L011-11E1BF4FCF-03","ACI-P316-L011-11E1BF4FCF-04","ACI-P316-L011-11E1BF4FCF-05","ACI-P316-L011-11E1BF4FCF-06","ACI-P316-L011-11E1BF4FCF-07","ACI-P316-L011-11E1BF4FCF-08","ACI-P316-L011-11E1BF4FCF-09"])
+      }),
+      "lesson33-projective-applicative-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.4"]),
+        atomIds: Object.freeze(["ACI-P316-L015-2C1FFF1753","ACI-P316-L018-5DC375644F","ACI-P316-L019-8893604F91","ACI-P316-L019-8893604F91-02","ACI-P316-L020-3EB879C6F3","ACI-P316-L023-5FEA51D7F1","ACI-P316-L026-9780C2F849","ACI-P316-L027-122DBF3B3A","ACI-P316-L027-122DBF3B3A-02","ACI-P316-L027-122DBF3B3A-03","ACI-P316-L027-122DBF3B3A-04","ACI-P316-L027-122DBF3B3A-05","ACI-P316-L027-122DBF3B3A-06","ACI-P316-L027-122DBF3B3A-07","ACI-P316-L027-122DBF3B3A-08","ACI-P316-L029-7FBACEBEAD","ACI-P316-L031-217F83D2B1","ACI-P316-L031-217F83D2B1-02","ACI-P316-L031-217F83D2B1-03","ACI-P316-L031-217F83D2B1-04","ACI-P316-L031-217F83D2B1-05","ACI-P316-L031-217F83D2B1-06","ACI-P316-L034-02008EC225","ACI-P316-L035-3C633C3BE0","ACI-P316-L036-2DABE80A00","ACI-P316-L037-8E4DCE378A"])
+      }),
+      "lesson33-derived-causative-and-applicative-sources": Object.freeze({
+        lessonSections: Object.freeze(["§33.5"]),
+        atomIds: Object.freeze(["ACI-P316-L039-22161BB935","ACI-P317-L002-7A652B0B92","ACI-P317-L003-E086FFDBB2","ACI-P317-L003-E086FFDBB2-02","ACI-P317-L003-E086FFDBB2-03","ACI-P317-L003-E086FFDBB2-04","ACI-P317-L003-E086FFDBB2-05","ACI-P317-L003-E086FFDBB2-06","ACI-P317-L003-E086FFDBB2-07","ACI-P317-L003-E086FFDBB2-08","ACI-P317-L003-E086FFDBB2-09","ACI-P317-L006-2DCE4F3D5B","ACI-P317-L007-1D3430B445","ACI-P317-L007-1D3430B445-02","ACI-P317-L007-1D3430B445-03","ACI-P317-L007-1D3430B445-04","ACI-P317-L007-1D3430B445-05"])
+      }),
+      "lesson33-projective-causative-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.6"]),
+        atomIds: Object.freeze(["ACI-P317-L010-C09252ED01","ACI-P317-L012-09BC44AB15","ACI-P317-L012-09BC44AB15-02","ACI-P317-L016-B3B4FCD34F","ACI-P317-L017-59B7F236DB","ACI-P317-L017-59B7F236DB-02","ACI-P317-L017-59B7F236DB-03","ACI-P317-L017-59B7F236DB-04","ACI-P317-L017-59B7F236DB-05","ACI-P317-L019-792B5240DC","ACI-P317-L020-900D0EB850","ACI-P317-L021-87F78F7DDE","ACI-P317-L021-87F78F7DDE-02","ACI-P317-L021-87F78F7DDE-03","ACI-P317-L021-87F78F7DDE-04","ACI-P317-L021-87F78F7DDE-05"])
+      }),
+      "lesson33-mainline-reflexive-preterit-embed-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.7"]),
+        atomIds: Object.freeze([
+          "ACI-P317-L025-FD8368D610","ACI-P317-L027-5ABE188123","ACI-P317-L030-B35746DD15","ACI-P317-L031-36F2DEB57E","ACI-P317-L032-FC3E05EC24","ACI-P317-L035-D944B94C91","ACI-P317-L036-5D349B16E4","ACI-P317-L039-9D0F49D21F","ACI-P317-L040-DCFF1FE5E9","ACI-P318-L002-3717CEFDF0",
+          "ACI-P318-L002-3717CEFDF0-02","ACI-P318-L002-3717CEFDF0-03","ACI-P318-L002-3717CEFDF0-04","ACI-P318-L002-3717CEFDF0-05","ACI-P318-L009-CBE5A6CE55","ACI-P318-L010-86EFA5F75D","ACI-P318-L013-0B3BCD5FA5","ACI-P318-L014-E9CAB87A3E","ACI-P318-L017-45C749E905","ACI-P318-L018-EE8442E149",
+          "ACI-P318-L019-65C04D0838","ACI-P318-L020-9A47DCDD1B","ACI-P318-L022-C5061336A8","ACI-P318-L023-10F4C74168","ACI-P318-L024-E55BA0ECD0","ACI-P318-L026-AFB16C2E56","ACI-P318-L026-AFB16C2E56-02","ACI-P318-L026-AFB16C2E56-03","ACI-P318-L026-AFB16C2E56-04","ACI-P318-L026-AFB16C2E56-05",
+          "ACI-P318-L026-AFB16C2E56-06","ACI-P318-L026-AFB16C2E56-07","ACI-P318-L028-9736C930E5","ACI-P318-L028-9736C930E5-02","ACI-P318-L028-9736C930E5-03","ACI-P318-L028-9736C930E5-04","ACI-P318-L028-9736C930E5-05","ACI-P318-L028-9736C930E5-06","ACI-P318-L028-9736C930E5-07","ACI-P318-L028-9736C930E5-08"
+        ])
+      }),
+      "lesson33-reverential-double-honorifics": Object.freeze({
+        lessonSections: Object.freeze(["§33.8"]),
+        atomIds: Object.freeze([
+          "ACI-P318-L030-7860C03A25","ACI-P318-L030-F9732DC1BF","ACI-P318-L032-AC48280977","ACI-P318-L032-AC48280977-02","ACI-P318-L032-AC48280977-03","ACI-P318-L032-AC48280977-04","ACI-P318-L032-AC48280977-05","ACI-P318-L036-D2335F9BCA","ACI-P318-L037-3EF5AE2744","ACI-P318-L039-C25C156F26",
+          "ACI-P318-L039-C25C156F26-02","ACI-P318-L039-C25C156F26-03","ACI-P318-L039-C25C156F26-04","ACI-P318-L039-C25C156F26-05","ACI-P318-L039-C25C156F26-06","ACI-P318-L039-C25C156F26-07","ACI-P319-L002-045244D306","ACI-P319-L003-E01D60D7CA","ACI-P319-L003-E01D60D7CA-02","ACI-P319-L003-E01D60D7CA-03",
+          "ACI-P319-L003-E01D60D7CA-04","ACI-P319-L003-E01D60D7CA-05","ACI-P319-L003-E01D60D7CA-06","ACI-P319-L005-D3CF89DA58","ACI-P319-L005-D3CF89DA58-02","ACI-P319-L005-D3CF89DA58-03","ACI-P319-L005-D3CF89DA58-04","ACI-P319-L005-D3CF89DA58-05"
+        ])
+      }),
+      "lesson33-pejorative-preterit-embed-vncs": Object.freeze({
+        lessonSections: Object.freeze(["§33.9"]),
+        atomIds: Object.freeze([
+          "ACI-P319-L007-27405F37DA","ACI-P319-L009-782CFA0592","ACI-P319-L009-782CFA0592-02","ACI-P319-L012-BEC271F985","ACI-P319-L013-4170613EEE","ACI-P319-L013-4170613EEE-02","ACI-P319-L013-4170613EEE-03","ACI-P319-L013-4170613EEE-04","ACI-P319-L016-11399D1F26","ACI-P319-L016-11399D1F26-02",
+          "ACI-P319-L016-11399D1F26-03","ACI-P319-L019-D1E99028D3","ACI-P319-L020-B6A4550BC7","ACI-P319-L021-005EA1C193","ACI-P319-L021-005EA1C193-02","ACI-P319-L021-005EA1C193-03","ACI-P319-L021-005EA1C193-04","ACI-P319-L029-A326B7A7A2","ACI-P319-L030-1C82BA6A52","ACI-P319-L032-A7FCA7B02A",
+          "ACI-P319-L033-DCC6D73863","ACI-P319-L035-1B11452CD2","ACI-P319-L036-858DB18AA4","ACI-P319-L037-49B8680124","ACI-P319-L038-76AC5A6C59","ACI-P319-L038-76AC5A6C59-02","ACI-P319-L038-76AC5A6C59-03","ACI-P319-L038-76AC5A6C59-04","ACI-P319-L038-76AC5A6C59-05","ACI-P320-L003-42928A24E0","ACI-P320-L004-C0FBD878BB"
+        ])
+      }),
+      "lesson33-compound-verbstem-attitude-scope": Object.freeze({
+        lessonSections: Object.freeze(["§33.10"]),
+        atomIds: Object.freeze([
+          "ACI-P320-L006-B68C4819EF","ACI-P320-L008-DBD89BFAE7","ACI-P320-L008-DBD89BFAE7-02","ACI-P320-L008-DBD89BFAE7-03","ACI-P320-L010-7BA2DE868A","ACI-P320-L011-035F9D05CF","ACI-P320-L013-8E43C61FF7","ACI-P320-L014-33EE928254","ACI-P320-L016-536AA3B336","ACI-P320-L018-25F9E7A2EE",
+          "ACI-P320-L018-25F9E7A2EE-02","ACI-P320-L018-25F9E7A2EE-03","ACI-P320-L018-25F9E7A2EE-04","ACI-P320-L018-25F9E7A2EE-05","ACI-P320-L020-F51E0583B0","ACI-P320-L020-F51E0583B0-02","ACI-P320-L021-DD6E5E6D0B","ACI-P320-L024-130716E4D1","ACI-P320-L025-726F4F4D62","ACI-P320-L027-CAB19766A9",
+          "ACI-P320-L029-201FFF8784","ACI-P320-L030-0CF962D4A1","ACI-P320-L032-0E308394C0","ACI-P320-L032-0E308394C0-02","ACI-P320-L035-B7A8B61E48","ACI-P320-L037-5CC7842DFE","ACI-P320-L039-64B805557B","ACI-P321-L002-13745B00DE","ACI-P321-L002-13745B00DE-02","ACI-P321-L002-13745B00DE-03",
+          "ACI-P321-L002-13745B00DE-04","ACI-P321-L004-0981E6C160","ACI-P321-L006-05CF6A39DC","ACI-P321-L006-05CF6A39DC-02","ACI-P321-L006-05CF6A39DC-03","ACI-P321-L006-05CF6A39DC-04","ACI-P321-L006-05CF6A39DC-05","ACI-P321-L008-15B6085EDE","ACI-P321-L008-15B6085EDE-02","ACI-P321-L008-15B6085EDE-03",
+          "ACI-P321-L008-15B6085EDE-04","ACI-P321-L008-15B6085EDE-05","ACI-P321-L008-15B6085EDE-06","ACI-P321-L008-15B6085EDE-07","ACI-P321-L008-15B6085EDE-08"
+        ])
+      }),
+      "lesson34-cardinal-numeral-foundation-and-count-kind": Object.freeze({
+        lessonSections: Object.freeze(["§34.1", "§34.2"]),
+        atomIds: Object.freeze(["ACI-P322-L003-B19CBE61CF","ACI-P322-L004-81DA59C05E","ACI-P322-L006-3FBE3D3F72","ACI-P322-L006-B8758240D9","ACI-P322-L007-D61BBF4DA1","ACI-P322-L009-81D7F1C9DF","ACI-P322-L010-B751393A4F","ACI-P322-L011-ACE7583297","ACI-P322-L013-750123E9EC","ACI-P322-L013-750123E9EC-02","ACI-P322-L013-750123E9EC-03","ACI-P322-L013-750123E9EC-04","ACI-P322-L013-750123E9EC-05","ACI-P322-L015-D4456F71EE","ACI-P322-L015-D4456F71EE-02","ACI-P322-L015-D4456F71EE-03","ACI-P322-L017-564EC3E1A8","ACI-P322-L020-3AFD774108","ACI-P322-L021-83FF641DB8","ACI-P322-L022-E1BB2B6BFD","ACI-P322-L025-0E6C0765BB","ACI-P322-L029-3D26B6B72E","ACI-P322-L030-81C379FA55","ACI-P322-L030-4F072F8704","ACI-P322-L030-4F072F8704-02","ACI-P322-L030-4F072F8704-03","ACI-P322-L030-4F072F8704-04","ACI-P322-L030-4F072F8704-05","ACI-P322-L030-4F072F8704-06","ACI-P322-L030-4F072F8704-07","ACI-P322-L030-4F072F8704-08","ACI-P322-L030-4F072F8704-09","ACI-P322-L030-4F072F8704-10","ACI-P322-L030-4F072F8704-11"])
+      }),
+      "lesson34-numeral-one-and-cem-shape": Object.freeze({
+        lessonSections: Object.freeze(["§34.3"]),
+        atomIds: Object.freeze(["ACI-P323-L005-B7F51C57C7","ACI-P323-L005-A5ADACFE87","ACI-P323-L005-A5ADACFE87-02","ACI-P323-L006-D406FE03A1","ACI-P323-L007-E8C24D567C","ACI-P323-L009-747284F645","ACI-P323-L010-21A221E4D5","ACI-P323-L011-49A4CE4500","ACI-P323-L014-D748EC8D3C","ACI-P323-L015-57D575B7E8","ACI-P323-L016-D874734E17","ACI-P323-L016-D874734E17-02","ACI-P323-L016-D874734E17-03","ACI-P323-L016-D874734E17-04","ACI-P323-L016-D874734E17-05","ACI-P323-L018-9EDF1F913B","ACI-P323-L019-3D0EF977A1","ACI-P323-L019-3D0EF977A1-02","ACI-P323-L019-3D0EF977A1-03","ACI-P323-L019-3D0EF977A1-04","ACI-P323-L019-3D0EF977A1-05","ACI-P323-L019-3D0EF977A1-06","ACI-P323-L021-2C39367081","ACI-P323-L022-44311EF2C0","ACI-P323-L023-C36B17C181","ACI-P323-L024-4A5E4180A3","ACI-P323-L026-1031EAEA21","ACI-P323-L027-FAB13FF33D","ACI-P323-L028-A2CD666B37"])
+      }),
+      "lesson34-two-three-four-shapes-and-gross-count": Object.freeze({
+        lessonSections: Object.freeze(["§34.4", "§34.4.1", "§34.4.2", "§34.4.3"]),
+        atomIds: Object.freeze(["ACI-P323-L030-D9FC9C65CD","ACI-P323-L031-718A27E7F3","ACI-P323-L031-718A27E7F3-03","ACI-P323-L031-718A27E7F3-02","ACI-P323-L033-F85B152ABA","ACI-P323-L034-2D87432654","ACI-P323-L035-DD72ED8AE3","ACI-P323-L036-CD6BE907CD","ACI-P323-L038-78DDCAE223","ACI-P323-L038-78DDCAE223-02","ACI-P323-L038-78DDCAE223-03","ACI-P323-L038-78DDCAE223-04","ACI-P323-L038-78DDCAE223-05","ACI-P323-L039-D4C4922AEC","ACI-P324-L004-7EC3C2380D","ACI-P324-L005-B9F9E31AEF","ACI-P324-L006-1CFCF2D656","ACI-P324-L006-1CFCF2D656-02","ACI-P324-L006-1CFCF2D656-03","ACI-P324-L006-1CFCF2D656-04","ACI-P324-L006-1CFCF2D656-05","ACI-P324-L006-1CFCF2D656-06","ACI-P324-L006-1CFCF2D656-07","ACI-P324-L006-1CFCF2D656-08","ACI-P324-L008-252024A429","ACI-P324-L011-3B4C6468A0","ACI-P324-L012-7676F36857","ACI-P324-L013-5C9179B55C","ACI-P324-L014-368C405559","ACI-P324-L015-2FC0881396","ACI-P324-L016-98911C817E","ACI-P324-L016-98911C817E-02","ACI-P324-L016-98911C817E-03","ACI-P324-L018-14A1E117F1","ACI-P324-L020-77F8684B5E","ACI-P324-L021-2A7FC62E10","ACI-P324-L022-2BE5317E07","ACI-P324-L024-ADDF58ADD5","ACI-P324-L025-D2286834EE","ACI-P324-L026-B69EA6C94E","ACI-P324-L026-B69EA6C94E-02","ACI-P324-L027-1186C42310","ACI-P324-L029-0DB5693457","ACI-P324-L030-D7602FB4D6","ACI-P324-L031-1453F9576D","ACI-P324-L032-B3DD82D9AE","ACI-P324-L034-FDA31E4195","ACI-P324-L035-83BE8C1415"])
+      }),
+      "lesson34-five-through-nine-composition": Object.freeze({
+        lessonSections: Object.freeze(["§34.5", "§34.5.1", "§34.5.2"]),
+        atomIds: Object.freeze(["ACI-P324-L036-421226A020","ACI-P324-L037-C02B39E3E1","ACI-P324-L037-C02B39E3E1-02","ACI-P325-L003-C41F523769","ACI-P325-L005-86B8AB0639","ACI-P325-L007-82A3C9A2BC","ACI-P325-L008-BBD94CAB5F","ACI-P325-L009-787C1E2FA4","ACI-P325-L009-787C1E2FA4-02","ACI-P325-L009-787C1E2FA4-03","ACI-P325-L009-787C1E2FA4-04","ACI-P325-L009-787C1E2FA4-05","ACI-P325-L009-787C1E2FA4-06","ACI-P325-L009-787C1E2FA4-07","ACI-P325-L009-787C1E2FA4-08","ACI-P325-L009-787C1E2FA4-09","ACI-P325-L009-787C1E2FA4-10","ACI-P325-L009-787C1E2FA4-11","ACI-P325-L009-787C1E2FA4-12","ACI-P325-L009-787C1E2FA4-13","ACI-P325-L013-905EFFFEA3","ACI-P325-L016-922B691B7B","ACI-P325-L017-20DDB104B0","ACI-P325-L017-20DDB104B0-02","ACI-P325-L017-20DDB104B0-03","ACI-P325-L019-017CE12AB1","ACI-P325-L022-9826299FD8","ACI-P325-L023-45D06EE751","ACI-P325-L024-65A43C0F5E","ACI-P325-L025-4CD7BF4DAB","ACI-P325-L026-F25CA38A81","ACI-P325-L027-E718CF7658","ACI-P325-L028-702944EBF8","ACI-P325-L029-F275F827FA","ACI-P325-L030-6DB28393A3","ACI-P325-L031-9DBCBF6A79","ACI-P325-L032-371E92398D","ACI-P325-L033-3BD67D5B99"])
+      }),
+      "lesson34-ten-fifteen-and-gross-possessive": Object.freeze({
+        lessonSections: Object.freeze(["§34.6"]),
+        atomIds: Object.freeze(["ACI-P325-L034-CFB447C0A6","ACI-P325-L036-7F41E30849","ACI-P325-L037-DE531CFFCD","ACI-P325-L038-C344B1023A","ACI-P325-L041-4B40F3F1BB","ACI-P325-L042-A7D20A44AB","ACI-P326-L002-9FC6F9C55B","ACI-P326-L003-FCAC999508","ACI-P326-L004-224259DDE0","ACI-P326-L005-759618956C","ACI-P326-L006-D792A097E7","ACI-P326-L007-235B3AC316","ACI-P326-L009-CECC238C3C","ACI-P326-L011-24DDDADC03","ACI-P326-L013-79FE23FDAE","ACI-P326-L014-3DE3E99F45","ACI-P326-L015-FFF4C6016C","ACI-P326-L016-26BA7B8921","ACI-P326-L017-C5D089BDB3","ACI-P326-L019-0199E94148","ACI-P326-L020-3DD3A1E668"])
+      }),
+      "lesson34-higher-vigesimal-orders": Object.freeze({
+        lessonSections: Object.freeze(["§34.7", "§34.7.1", "§34.7.2", "§34.7.3"]),
+        atomIds: Object.freeze(["ACI-P326-L021-356352F0D4","ACI-P326-L024-3B4179610F","ACI-P326-L026-852E858276","ACI-P326-L026-852E858276-02","ACI-P326-L026-852E858276-03","ACI-P326-L027-9C5AC1070B","ACI-P326-L027-9C5AC1070B-02","ACI-P326-L027-9C5AC1070B-03","ACI-P326-L027-9C5AC1070B-04","ACI-P326-L027-9C5AC1070B-05","ACI-P326-L027-9C5AC1070B-06","ACI-P326-L027-9C5AC1070B-07","ACI-P326-L027-9C5AC1070B-08","ACI-P326-L027-9C5AC1070B-09","ACI-P326-L027-9C5AC1070B-10","ACI-P326-L027-9C5AC1070B-11","ACI-P326-L027-9C5AC1070B-12","ACI-P326-L027-9C5AC1070B-13","ACI-P326-L027-9C5AC1070B-14","ACI-P326-L027-9C5AC1070B-15","ACI-P326-L027-9C5AC1070B-16","ACI-P326-L027-9C5AC1070B-17","ACI-P326-L027-9C5AC1070B-18","ACI-P326-L027-9C5AC1070B-19","ACI-P326-L027-9C5AC1070B-20","ACI-P326-L027-9C5AC1070B-21","ACI-P326-L027-9C5AC1070B-22","ACI-P326-L027-9C5AC1070B-23","ACI-P326-L027-9C5AC1070B-24","ACI-P326-L037-2F9BCD71DD","ACI-P326-L037-2F9BCD71DD-02","ACI-P326-L037-2F9BCD71DD-03","ACI-P326-L037-2F9BCD71DD-04","ACI-P326-L037-2F9BCD71DD-05","ACI-P326-L042-38C35522E7","ACI-P326-L042-38C35522E7-02","ACI-P326-L042-38C35522E7-03","ACI-P326-L042-38C35522E7-04","ACI-P326-L042-38C35522E7-05","ACI-P326-L042-38C35522E7-06","ACI-P326-L042-38C35522E7-07","ACI-P326-L042-38C35522E7-08","ACI-P326-L042-38C35522E7-09","ACI-P327-L004-5FD9F57F86","ACI-P327-L004-5FD9F57F86-02","ACI-P327-L004-5FD9F57F86-03","ACI-P327-L004-5FD9F57F86-04","ACI-P327-L004-5FD9F57F86-05","ACI-P327-L004-5FD9F57F86-06","ACI-P327-L004-5FD9F57F86-07","ACI-P327-L004-5FD9F57F86-08","ACI-P327-L004-5FD9F57F86-09","ACI-P327-L004-5FD9F57F86-10","ACI-P327-L007-B68B73478D","ACI-P327-L008-F78F8EDCF1","ACI-P327-L008-F78F8EDCF1-02","ACI-P327-L008-F78F8EDCF1-03","ACI-P327-L008-F78F8EDCF1-04","ACI-P327-L008-F78F8EDCF1-05","ACI-P327-L011-7B138A096C","ACI-P327-L013-02F2AC9109"])
+      }),
+      "lesson34-conjoined-and-downgraded-numerals": Object.freeze({
+        lessonSections: Object.freeze(["§34.8","§34.8.1","§34.8.2","§34.8.3"]),
+        atomIds: Object.freeze(["ACI-P327-L015-23BE804DE0","ACI-P327-L015-23BE804DE0-02","ACI-P327-L020-F3C55C55F6","ACI-P327-L022-081500CDDA","ACI-P327-L024-CC7540AF7D","ACI-P327-L024-CC7540AF7D-02","ACI-P327-L024-CC7540AF7D-03","ACI-P327-L024-CC7540AF7D-04","ACI-P327-L025-FC506FC2F0","ACI-P327-L025-FC506FC2F0-02","ACI-P327-L028-DFE847B79D","ACI-P327-L029-2C79D6F751","ACI-P327-L029-2C79D6F751-02","ACI-P327-L029-2C79D6F751-03","ACI-P327-L029-2C79D6F751-04","ACI-P327-L029-2C79D6F751-05","ACI-P327-L029-2C79D6F751-06","ACI-P327-L029-2C79D6F751-07","ACI-P327-L029-2C79D6F751-08","ACI-P327-L029-2C79D6F751-09","ACI-P327-L029-2C79D6F751-10","ACI-P327-L029-2C79D6F751-11","ACI-P327-L029-2C79D6F751-12","ACI-P327-L029-2C79D6F751-13","ACI-P327-L029-2C79D6F751-14","ACI-P327-L029-2C79D6F751-15","ACI-P327-L029-2C79D6F751-16","ACI-P327-L029-2C79D6F751-17","ACI-P327-L029-2C79D6F751-18","ACI-P327-L029-2C79D6F751-19","ACI-P328-L007-281951C7FA","ACI-P328-L007-281951C7FA-02","ACI-P328-L009-3D8177FCD7","ACI-P328-L010-5E48A982EB","ACI-P328-L012-CA1A36CC90","ACI-P328-L013-9189DCE471","ACI-P328-L014-16AD6F135E","ACI-P328-L016-B6EF2F3541","ACI-P328-L019-31014EBD2E","ACI-P328-L020-D52B371D46","ACI-P328-L020-D52B371D46-02","ACI-P328-L024-2ED4DAE4CA","ACI-P328-L025-8EBC019B58","ACI-P328-L025-8EBC019B58-02","ACI-P328-L025-8EBC019B58-03","ACI-P328-L025-8EBC019B58-04","ACI-P328-L025-8EBC019B58-05","ACI-P328-L025-8EBC019B58-06","ACI-P328-L025-8EBC019B58-07","ACI-P328-L027-F711259E08","ACI-P328-L029-1EF044A8BC","ACI-P328-L029-1EF044A8BC-02","ACI-P328-L029-1EF044A8BC-03","ACI-P328-L029-1EF044A8BC-04","ACI-P328-L029-1EF044A8BC-05","ACI-P328-L029-1EF044A8BC-06","ACI-P328-L032-C34F96CB12","ACI-P328-L032-C34F96CB12-02","ACI-P328-L034-E2DFFC485D","ACI-P328-L035-5F2BEFF3CD","ACI-P328-L036-B2F8DA6B75","ACI-P328-L036-B2F8DA6B75-02","ACI-P328-L036-B2F8DA6B75-03","ACI-P328-L036-B2F8DA6B75-04","ACI-P328-L038-A611055A4D","ACI-P328-L039-500CB90AD8","ACI-P328-L039-500CB90AD8-02","ACI-P328-L039-500CB90AD8-03","ACI-P328-L039-500CB90AD8-04","ACI-P328-L041-04D13414D0","ACI-P328-L042-4E116C4618","ACI-P329-L002-234720FB07","ACI-P329-L005-B171E9C2BE","ACI-P329-L005-2B76B9E96D","ACI-P329-L005-2B76B9E96D-03","ACI-P329-L005-2B76B9E96D-02","ACI-P329-L007-1E2C1078BA"])
+      }),
+      "lesson34-unit-classifier-sets": Object.freeze({
+        lessonSections: Object.freeze(["§34.9","§34.10","§34.11","§34.12"]),
+        atomIds: Object.freeze(["ACI-P329-L008-5A3C22F44D","ACI-P329-L012-012F8A819F","ACI-P329-L013-04D234785D","ACI-P329-L014-31FA03FC23","ACI-P329-L016-4CFE4A24A7","ACI-P329-L018-E872F9A35D","ACI-P329-L018-E872F9A35D-02","ACI-P329-L018-E872F9A35D-03","ACI-P329-L018-E872F9A35D-04","ACI-P329-L018-E872F9A35D-05","ACI-P329-L018-E872F9A35D-06","ACI-P329-L018-E872F9A35D-07","ACI-P329-L020-34D847CB17","ACI-P329-L022-B55167B461","ACI-P329-L024-80DE28A31A","ACI-P329-L024-80DE28A31A-02","ACI-P329-L026-BC066DB25D","ACI-P329-L027-89113B2DFA","ACI-P329-L028-E365772329","ACI-P329-L028-E365772329-02","ACI-P329-L028-E365772329-03","ACI-P329-L028-E365772329-04","ACI-P329-L028-E365772329-05","ACI-P329-L028-E365772329-06","ACI-P329-L028-E365772329-07","ACI-P329-L028-E365772329-08","ACI-P329-L028-E365772329-09","ACI-P329-L028-E365772329-10","ACI-P329-L028-E365772329-11","ACI-P329-L028-E365772329-12","ACI-P329-L028-E365772329-13","ACI-P329-L028-E365772329-14","ACI-P329-L028-E365772329-15","ACI-P329-L028-E365772329-16","ACI-P329-L028-E365772329-17","ACI-P329-L028-E365772329-18","ACI-P329-L028-E365772329-19","ACI-P329-L028-E365772329-20","ACI-P329-L028-E365772329-21","ACI-P329-L028-E365772329-22","ACI-P329-L035-5E04EB0EB6","ACI-P329-L036-B7C32A027F","ACI-P329-L037-74E02C3B71","ACI-P329-L038-A4BBE28EC0","ACI-P329-L039-0C8133EEBF","ACI-P330-L002-2451894D07","ACI-P330-L003-2106BB015D","ACI-P330-L005-7A98873E1E","ACI-P330-L007-C4A5EF02EB","ACI-P330-L007-C4A5EF02EB-02","ACI-P330-L007-C4A5EF02EB-03","ACI-P330-L007-C4A5EF02EB-04","ACI-P330-L007-C4A5EF02EB-05","ACI-P330-L007-C4A5EF02EB-06","ACI-P330-L007-C4A5EF02EB-07","ACI-P330-L009-58A3F25BB8","ACI-P330-L014-C136914C4F","ACI-P330-L015-49D63664EF","ACI-P330-L015-49D63664EF-02","ACI-P330-L015-49D63664EF-03","ACI-P330-L015-49D63664EF-04","ACI-P330-L015-49D63664EF-05","ACI-P330-L015-49D63664EF-06","ACI-P330-L015-49D63664EF-07","ACI-P330-L015-49D63664EF-08","ACI-P330-L015-49D63664EF-09","ACI-P330-L015-49D63664EF-10","ACI-P330-L015-49D63664EF-11","ACI-P330-L015-49D63664EF-12","ACI-P330-L015-49D63664EF-13","ACI-P330-L015-49D63664EF-14","ACI-P330-L015-49D63664EF-15","ACI-P330-L020-909B494504","ACI-P330-L021-216DFFD7A4","ACI-P330-L023-FBEF0E3D0F","ACI-P330-L025-4570111AE2","ACI-P330-L025-4570111AE2-02","ACI-P330-L025-4570111AE2-03","ACI-P330-L025-4570111AE2-04","ACI-P330-L025-4570111AE2-05","ACI-P330-L025-4570111AE2-06","ACI-P330-L025-4570111AE2-07","ACI-P330-L027-28DDF033F1","ACI-P330-L028-88AF7D6625","ACI-P330-L029-51A8CEB3F9","ACI-P330-L032-D105F6EE46","ACI-P330-L033-CE4FBA5B3A","ACI-P330-L034-2367D13BDA","ACI-P330-L036-A7C4B64CF6","ACI-P330-L038-0B44E1FEB6","ACI-P330-L038-0B44E1FEB6-02","ACI-P330-L038-0B44E1FEB6-03","ACI-P330-L038-0B44E1FEB6-04","ACI-P330-L038-0B44E1FEB6-05","ACI-P330-L038-0B44E1FEB6-06","ACI-P330-L038-0B44E1FEB6-07","ACI-P331-L002-5DB03ACE29","ACI-P331-L003-917E6487CF","ACI-P331-L003-917E6487CF-02","ACI-P331-L006-6536C91089","ACI-P331-L007-27B99B560D","ACI-P331-L008-1733CE2E42","ACI-P331-L009-0B1A73EC20","ACI-P331-L010-80B861E156","ACI-P331-L011-A3A5B54FAB","ACI-P331-L012-869CC730EC","ACI-P331-L012-869CC730EC-02","ACI-P331-L013-2FDDEC083A","ACI-P331-L014-C9B8A3FD03"])
+      }),
+      "lesson34-special-twenty-count-sets": Object.freeze({
+        lessonSections: Object.freeze(["§34.13","§34.13.1","§34.13.2","§34.13.3"]),
+        atomIds: Object.freeze(["ACI-P331-L015-E433CD9C47","ACI-P331-L017-4AE687FBA1","ACI-P331-L019-2D2362A8F3","ACI-P331-L019-2D2362A8F3-02","ACI-P331-L019-2D2362A8F3-03","ACI-P331-L019-2D2362A8F3-04","ACI-P331-L019-2D2362A8F3-05","ACI-P331-L019-2D2362A8F3-06","ACI-P331-L019-2D2362A8F3-07","ACI-P331-L019-2D2362A8F3-08","ACI-P331-L019-2D2362A8F3-09","ACI-P331-L019-2D2362A8F3-10","ACI-P331-L019-2D2362A8F3-11","ACI-P331-L019-2D2362A8F3-12","ACI-P331-L019-2D2362A8F3-13","ACI-P331-L019-2D2362A8F3-14","ACI-P331-L019-2D2362A8F3-15","ACI-P331-L028-532D9D41C7","ACI-P331-L030-1EA104DB78","ACI-P331-L030-1EA104DB78-02","ACI-P331-L030-1EA104DB78-03","ACI-P331-L030-1EA104DB78-04","ACI-P331-L030-1EA104DB78-05","ACI-P331-L030-1EA104DB78-06","ACI-P331-L030-1EA104DB78-07","ACI-P331-L030-1EA104DB78-08","ACI-P331-L030-1EA104DB78-09","ACI-P331-L030-1EA104DB78-10","ACI-P331-L030-1EA104DB78-11","ACI-P331-L030-1EA104DB78-12","ACI-P331-L030-1EA104DB78-13","ACI-P331-L035-9ED6CDD5FB","ACI-P331-L036-6E947711B1","ACI-P331-L036-6E947711B1-02","ACI-P331-L036-6E947711B1-03","ACI-P331-L036-6E947711B1-04","ACI-P331-L036-6E947711B1-05","ACI-P331-L036-6E947711B1-06","ACI-P331-L036-6E947711B1-07","ACI-P331-L036-6E947711B1-08","ACI-P331-L036-6E947711B1-09","ACI-P331-L036-6E947711B1-10"])
+      }),
+      "lesson34-numeral-reduplication": Object.freeze({
+        lessonSections: Object.freeze(["§34.14"]),
+        atomIds: Object.freeze(["ACI-P332-L002-800C5745BA","ACI-P332-L002-800C5745BA-02","ACI-P332-L002-800C5745BA-03","ACI-P332-L002-800C5745BA-04","ACI-P332-L003-743D90E1FC","ACI-P332-L010-62A59E3942","ACI-P332-L011-9883220448","ACI-P332-L012-626AB6DCFD","ACI-P332-L014-779DE31650","ACI-P332-L015-646197C8A5","ACI-P332-L016-BD69414C5B","ACI-P332-L017-755B5BC202","ACI-P332-L018-D47E6A9981","ACI-P332-L019-04564B413D","ACI-P332-L020-9C740770D7","ACI-P332-L021-C496F30908","ACI-P332-L023-1561C15C14","ACI-P332-L027-971CC54F2B","ACI-P332-L028-D40968DE40","ACI-P332-L029-ED11B9DFAB","ACI-P332-L030-08C7614399","ACI-P332-L031-485A10961B","ACI-P332-L032-C0E947F9BC"])
+      }),
+      "lesson34-approximation-more-and-supplementation": Object.freeze({
+        lessonSections: Object.freeze(["§34.15"]),
+        atomIds: Object.freeze(["ACI-P332-L035-F751D0668C","ACI-P332-L038-F776081BCA","ACI-P332-L039-DF54B98F1B","ACI-P333-L002-10026519AE","ACI-P333-L003-634703C9C7","ACI-P333-L004-9A9F6F6057","ACI-P333-L005-3491925371","ACI-P333-L007-8D42D1B3A0","ACI-P333-L007-8D42D1B3A0-02","ACI-P333-L007-8D42D1B3A0-03","ACI-P333-L009-C00F2EB6D0"])
+      }),
+      "lesson34-measure-nncs-and-measured-composition": Object.freeze({
+        lessonSections: Object.freeze(["§34.16"]),
+        atomIds: Object.freeze(["ACI-P333-L010-CAC197A8D0","ACI-P333-L012-756B192497","ACI-P333-L013-E6A96EE00D","ACI-P333-L014-708A9BB370","ACI-P333-L016-43A4FBA506","ACI-P333-L017-C3E8131B32","ACI-P333-L018-21E839450B","ACI-P333-L020-37B70CC88A","ACI-P333-L021-68DFE2902C","ACI-P333-L024-CA2ED57B83","ACI-P333-L024-CA2ED57B83-02","ACI-P333-L024-CA2ED57B83-03","ACI-P333-L024-CA2ED57B83-04","ACI-P333-L024-CA2ED57B83-05","ACI-P333-L026-457B1D8FE7","ACI-P333-L028-6E553EDCE1","ACI-P333-L030-56F66CF307","ACI-P333-L030-56F66CF307-02","ACI-P333-L030-56F66CF307-03","ACI-P333-L030-56F66CF307-04","ACI-P333-L030-56F66CF307-05","ACI-P333-L032-D4D4995341","ACI-P333-L032-D4D4995341-03","ACI-P333-L032-D4D4995341-04","ACI-P333-L032-D4D4995341-05","ACI-P333-L032-D4D4995341-06","ACI-P333-L032-D4D4995341-02","ACI-P333-L034-24B2AA08CD","ACI-P333-L034-24B2AA08CD-02","ACI-P333-L034-24B2AA08CD-03","ACI-P333-L034-24B2AA08CD-04","ACI-P333-L034-24B2AA08CD-05","ACI-P333-L034-24B2AA08CD-06","ACI-P333-L034-24B2AA08CD-07","ACI-P333-L034-24B2AA08CD-08","ACI-P333-L034-24B2AA08CD-09","ACI-P333-L037-596BDB1C7F","ACI-P333-L037-596BDB1C7F-02","ACI-P333-L037-596BDB1C7F-03","ACI-P333-L037-596BDB1C7F-04","ACI-P333-L037-596BDB1C7F-05","ACI-P333-L037-596BDB1C7F-06","ACI-P333-L037-596BDB1C7F-07","ACI-P333-L037-596BDB1C7F-08"])
+      }),
+      "lesson35-nominalization-and-preterit-agentive-foundation": Object.freeze({
+        lessonSections: Object.freeze(["§35.1","§35.2"]),
+        atomIds: Object.freeze(["ACI-P334-L003-E53695D904","ACI-P334-L004-4EDC58D5B7","ACI-P334-L006-4E5CBE3B8A","ACI-P334-L012-E882A1A0A4","ACI-P334-L013-39D84405CE","ACI-P334-L016-5FA32D84DF","ACI-P334-L017-F7B2BB0008","ACI-P334-L017-1A13076110","ACI-P334-L018-DBD81A202F","ACI-P334-L019-FCBA253D41","ACI-P334-L019-564C5B2516"])
+      }),
+      "lesson35-absolutive-preterit-agentive-reanalysis": Object.freeze({
+        lessonSections: Object.freeze(["§35.3"]),
+        atomIds: Object.freeze(["ACI-P334-L021-D34BEDD973","ACI-P334-L023-610BE9045A","ACI-P334-L023-C8C451C9EC","ACI-P334-L023-C8C451C9EC-02","ACI-P334-L026-B05DE0B651","ACI-P334-L027-22575BFB8D","ACI-P335-L009-31FE84519B-02","ACI-P335-L009-31FE84519B-03","ACI-P335-L009-31FE84519B-04","ACI-P335-L009-31FE84519B-06","ACI-P335-L009-31FE84519B-07","ACI-P335-L009-31FE84519B-08","ACI-P335-L009-31FE84519B-09","ACI-P335-L009-31FE84519B-10","ACI-P335-L013-069EACCE17","ACI-P335-L013-E94E6F3CC5","ACI-P335-L014-28B8BBBCC6","ACI-P335-L017-01AAF0BB84","ACI-P335-L020-89C595B9FD","ACI-P335-L027-AB1B6CF3B4","ACI-P335-L035-5E87EF4888-02","ACI-P335-L035-5E87EF4888-03","ACI-P335-L035-5E87EF4888-04","ACI-P335-L035-5E87EF4888-06","ACI-P335-L035-5E87EF4888-07","ACI-P335-L035-5E87EF4888-08","ACI-P335-L035-5E87EF4888-09","ACI-P335-L035-5E87EF4888-10","ACI-P335-L035-5E87EF4888-11","ACI-P335-L035-5E87EF4888-12","ACI-P336-L007-ECC78156A8-02","ACI-P336-L007-ECC78156A8-03","ACI-P336-L007-ECC78156A8-04","ACI-P336-L007-ECC78156A8-05","ACI-P336-L007-ECC78156A8-06","ACI-P336-L007-ECC78156A8-07","ACI-P336-L007-ECC78156A8-08","ACI-P336-L007-ECC78156A8-09","ACI-P336-L007-ECC78156A8-10","ACI-P336-L016-5F1B94FE34-02","ACI-P336-L016-5F1B94FE34-03","ACI-P336-L016-5F1B94FE34-04","ACI-P336-L016-5F1B94FE34-05","ACI-P336-L016-5F1B94FE34-06","ACI-P336-L016-5F1B94FE34-07","ACI-P336-L016-5F1B94FE34-08","ACI-P336-L019-714759CC53-02","ACI-P336-L019-714759CC53-03","ACI-P336-L019-714759CC53-05","ACI-P336-L023-0888889807","ACI-P336-L033-18B95E6BB8-06","ACI-P336-L033-18B95E6BB8-07","ACI-P336-L033-18B95E6BB8-08","ACI-P336-L039-E576504C63","ACI-P336-L039-E576504C63-02","ACI-P337-L003-D2127F82F6","ACI-P337-L004-64DED3ECFC","ACI-P337-L005-852CBF1407","ACI-P337-L006-AAE085CED7","ACI-P337-L007-1989957AFE","ACI-P337-L007-1989957AFE-09","ACI-P337-L010-DE44DAD236-02","ACI-P337-L010-DE44DAD236-03","ACI-P337-L010-DE44DAD236-04","ACI-P337-L010-DE44DAD236-05","ACI-P337-L010-DE44DAD236-06","ACI-P337-L012-B129B32EAC-04","ACI-P337-L012-B129B32EAC-06","ACI-P337-L016-57DBEAB48A","ACI-P337-L019-34DD5B7949-03","ACI-P337-L019-34DD5B7949-04","ACI-P337-L019-34DD5B7949-05","ACI-P337-L019-34DD5B7949-06","ACI-P337-L019-34DD5B7949-09","ACI-P337-L022-9DBD5CF8BB-02","ACI-P337-L022-9DBD5CF8BB-03","ACI-P337-L022-9DBD5CF8BB-04","ACI-P337-L022-9DBD5CF8BB-05","ACI-P337-L022-9DBD5CF8BB-06","ACI-P337-L022-9DBD5CF8BB-07","ACI-P337-L022-9DBD5CF8BB-08"])
+      }),
+      "lesson35-number-animacy-and-object-activation": Object.freeze({
+        lessonSections: Object.freeze(["§35.4"]),
+        atomIds: Object.freeze(["ACI-P337-L025-24135A28F6","ACI-P337-L027-0293994300","ACI-P337-L027-61BCDF8DB9","ACI-P337-L027-61BCDF8DB9-02","ACI-P337-L031-98691466EC-02","ACI-P337-L031-98691466EC-03","ACI-P337-L031-98691466EC-04","ACI-P337-L031-98691466EC-05","ACI-P337-L031-98691466EC-06","ACI-P337-L031-98691466EC-07","ACI-P337-L031-98691466EC-08","ACI-P337-L031-98691466EC-09","ACI-P337-L031-98691466EC-10","ACI-P337-L033-52AABBC374-02","ACI-P337-L033-52AABBC374-03","ACI-P337-L033-52AABBC374-04","ACI-P337-L033-52AABBC374-05","ACI-P337-L033-52AABBC374-06","ACI-P337-L033-52AABBC374-07","ACI-P337-L035-23F7B8C9E9","ACI-P337-L038-DEA0B9C522-02","ACI-P337-L038-DEA0B9C522-03","ACI-P337-L038-DEA0B9C522-04","ACI-P337-L038-DEA0B9C522-05","ACI-P337-L038-DEA0B9C522-06","ACI-P337-L038-DEA0B9C522-07","ACI-P337-L038-DEA0B9C522-08","ACI-P337-L040-1421A4975B","ACI-P337-L041-5EFCC046D4","ACI-P337-L041-5EFCC046D4-03","ACI-P338-L007-D354B046FD","ACI-P338-L009-E7695F11C8","ACI-P338-L009-E7695F11C8-02","ACI-P338-L011-79036231DE","ACI-P338-L013-54DA6D01D5","ACI-P338-L014-3500594266","ACI-P338-L018-38C10BF9A7","ACI-P338-L018-BE1FEEA9EE","ACI-P338-L020-0432172B8E-02","ACI-P338-L020-0432172B8E-03","ACI-P338-L020-0432172B8E-04","ACI-P338-L020-0432172B8E-05","ACI-P338-L020-0432172B8E-06","ACI-P338-L021-6FBE1FAEA3","ACI-P338-L027-AB7F678845-02","ACI-P338-L027-AB7F678845-03","ACI-P338-L027-AB7F678845-04","ACI-P338-L027-AB7F678845-05","ACI-P338-L027-AB7F678845-07","ACI-P338-L027-AB7F678845-08","ACI-P338-L027-AB7F678845-09","ACI-P338-L027-AB7F678845-10","ACI-P338-L032-9BC9A7334A","ACI-P338-L034-242FCA9D57","ACI-P338-L035-A44A5BD6EF","ACI-P338-L035-A44A5BD6EF-02","ACI-P338-L035-A44A5BD6EF-03","ACI-P338-L035-A44A5BD6EF-05","ACI-P338-L035-A44A5BD6EF-06","ACI-P338-L038-6C84E5E816-02","ACI-P338-L038-6C84E5E816-03","ACI-P338-L038-6C84E5E816-04","ACI-P338-L038-6C84E5E816-05","ACI-P338-L038-6C84E5E816-06","ACI-P338-L038-6C84E5E816-07","ACI-P338-L038-6C84E5E816-08","ACI-P338-L040-6E279EF349-05"])
+      }),
+      "lesson35-general-use-ca-stem": Object.freeze({
+        lessonSections: Object.freeze(["§35.5"]),
+        atomIds: Object.freeze(["ACI-P339-L002-FF2C242BFE","ACI-P339-L002-00137744BB","ACI-P339-L004-139687B294","ACI-P339-L006-7EC9E02D87","ACI-P339-L010-913904B344","ACI-P339-L013-F79C97F544","ACI-P339-L016-0D3627E7D7","ACI-P339-L018-B8F9B43AA5","ACI-P339-L019-FD9EB39429","ACI-P339-L032-788470B425-02","ACI-P339-L032-788470B425-03","ACI-P339-L032-788470B425-04","ACI-P339-L032-788470B425-07"])
+      }),
+      "lesson35-possessive-preterit-agentive-nnc": Object.freeze({
+        lessonSections: Object.freeze(["§35.6"]),
+        atomIds: Object.freeze(["ACI-P339-L035-F8FCC7A3F0","ACI-P339-L038-CCBDF09C30","ACI-P339-L040-A1A93A88C7-02","ACI-P339-L040-A1A93A88C7-03","ACI-P339-L040-A1A93A88C7-04","ACI-P339-L040-A1A93A88C7-05","ACI-P339-L040-A1A93A88C7-06","ACI-P339-L040-A1A93A88C7-07","ACI-P339-L040-A1A93A88C7-08","ACI-P339-L040-A1A93A88C7-09","ACI-P339-L042-893C76208A-02","ACI-P339-L042-893C76208A-03","ACI-P339-L042-893C76208A-04","ACI-P339-L042-893C76208A-05","ACI-P339-L042-893C76208A-06","ACI-P339-L042-893C76208A-07","ACI-P339-L042-893C76208A-08","ACI-P339-L042-893C76208A-09","ACI-P339-L044-673CCB6011-02","ACI-P339-L044-673CCB6011-03","ACI-P339-L044-673CCB6011-04","ACI-P339-L044-673CCB6011-05","ACI-P339-L044-673CCB6011-06","ACI-P339-L044-673CCB6011-07","ACI-P339-L044-673CCB6011-08","ACI-P339-L044-673CCB6011-09","ACI-P339-L044-673CCB6011-10","ACI-P340-L002-2A6397900F-02","ACI-P340-L002-2A6397900F-03","ACI-P340-L002-2A6397900F-04","ACI-P340-L002-2A6397900F-05","ACI-P340-L002-2A6397900F-06","ACI-P340-L002-2A6397900F-07","ACI-P340-L002-2A6397900F-08","ACI-P340-L002-2A6397900F-09","ACI-P340-L002-2A6397900F-10","ACI-P340-L005-E1DE086C9C-02","ACI-P340-L005-E1DE086C9C-03","ACI-P340-L005-E1DE086C9C-04","ACI-P340-L005-E1DE086C9C-05","ACI-P340-L005-E1DE086C9C-06","ACI-P340-L005-E1DE086C9C-07","ACI-P340-L005-E1DE086C9C-08","ACI-P340-L005-E1DE086C9C-09","ACI-P340-L005-E1DE086C9C-10","ACI-P340-L008-9D5F5D6851-02","ACI-P340-L008-9D5F5D6851-03","ACI-P340-L008-9D5F5D6851-04","ACI-P340-L008-9D5F5D6851-05","ACI-P340-L008-9D5F5D6851-06","ACI-P340-L008-9D5F5D6851-07","ACI-P340-L008-9D5F5D6851-08","ACI-P340-L008-9D5F5D6851-09","ACI-P340-L011-9397C538A2-02","ACI-P340-L011-9397C538A2-03","ACI-P340-L011-9397C538A2-04","ACI-P340-L011-9397C538A2-05","ACI-P340-L011-9397C538A2-06","ACI-P340-L011-9397C538A2-07","ACI-P340-L011-9397C538A2-08","ACI-P340-L011-9397C538A2-09","ACI-P340-L011-9397C538A2-10","ACI-P340-L014-E8905F1639-02","ACI-P340-L014-E8905F1639-03","ACI-P340-L014-E8905F1639-04","ACI-P340-L014-E8905F1639-05","ACI-P340-L014-E8905F1639-06","ACI-P340-L014-E8905F1639-07","ACI-P340-L014-E8905F1639-08","ACI-P340-L014-E8905F1639-09","ACI-P340-L014-E8905F1639-10","ACI-P340-L017-DFACCBB26B","ACI-P340-L017-DFACCBB26B-04","ACI-P340-L017-DFACCBB26B-05","ACI-P340-L017-DFACCBB26B-06","ACI-P340-L017-DFACCBB26B-07","ACI-P340-L017-DFACCBB26B-09","ACI-P340-L017-DFACCBB26B-10","ACI-P340-L017-DFACCBB26B-11","ACI-P340-L017-DFACCBB26B-12","ACI-P340-L022-E075D52419-02","ACI-P340-L022-E075D52419-03","ACI-P340-L022-E075D52419-04","ACI-P340-L022-E075D52419-05","ACI-P340-L022-E075D52419-06","ACI-P340-L022-E075D52419-07","ACI-P340-L022-E075D52419-08","ACI-P340-L022-E075D52419-09","ACI-P340-L022-E075D52419-10","ACI-P340-L024-5D0269050C","ACI-P340-L026-C1CF7E0750","ACI-P340-L031-1D0AFB47E9"])
+      }),
+      "lesson35-agentive-embeds-and-affectives": Object.freeze({
+        lessonSections: Object.freeze(["§35.7","§35.7.1","§35.7.2"]),
+        atomIds: Object.freeze(["ACI-P340-L036-09BC07EE8E","ACI-P341-L006-A4513C80DE-02","ACI-P341-L006-A4513C80DE-03","ACI-P341-L006-A4513C80DE-04","ACI-P341-L006-A4513C80DE-05","ACI-P341-L006-A4513C80DE-06","ACI-P341-L006-A4513C80DE-07","ACI-P341-L006-A4513C80DE-08","ACI-P341-L006-A4513C80DE-09","ACI-P341-L008-28DFCD862D-02","ACI-P341-L008-28DFCD862D-03","ACI-P341-L008-28DFCD862D-04","ACI-P341-L008-28DFCD862D-05","ACI-P341-L008-28DFCD862D-06","ACI-P341-L008-28DFCD862D-07","ACI-P341-L020-8B04A1C36A-02","ACI-P341-L020-8B04A1C36A-03","ACI-P341-L020-8B04A1C36A-04","ACI-P341-L020-8B04A1C36A-05","ACI-P341-L020-8B04A1C36A-06","ACI-P341-L020-8B04A1C36A-07","ACI-P341-L020-8B04A1C36A-08","ACI-P341-L020-8B04A1C36A-09","ACI-P341-L025-13E4DD32A6","ACI-P341-L026-B494A6BF5D","ACI-P341-L026-B494A6BF5D-02","ACI-P341-L026-B494A6BF5D-03","ACI-P341-L026-B494A6BF5D-04","ACI-P341-L026-B494A6BF5D-05","ACI-P341-L026-B494A6BF5D-06","ACI-P341-L026-B494A6BF5D-08","ACI-P341-L026-B494A6BF5D-09"])
+      }),
+      "lesson35-old-woman-agentive-family": Object.freeze({
+        lessonSections: Object.freeze(["§35.8","§35.8.1"]),
+        atomIds: Object.freeze(["ACI-P341-L033-F71748CDA5","ACI-P341-L034-1D23C0049E","ACI-P341-L037-EE686D5A8A-04","ACI-P341-L037-EE686D5A8A-05","ACI-P341-L037-EE686D5A8A-07","ACI-P341-L037-EE686D5A8A-08","ACI-P341-L037-EE686D5A8A-09","ACI-P341-L037-EE686D5A8A-10","ACI-P341-L037-EE686D5A8A-12","ACI-P341-L037-EE686D5A8A-13","ACI-P341-L037-EE686D5A8A-14","ACI-P341-L037-EE686D5A8A-16","ACI-P341-L037-EE686D5A8A-17","ACI-P341-L037-EE686D5A8A-18","ACI-P341-L037-EE686D5A8A-19","ACI-P341-L037-EE686D5A8A-21","ACI-P341-L037-EE686D5A8A-22","ACI-P341-L037-EE686D5A8A-23","ACI-P342-L005-F54788F75B","ACI-P342-L006-0D54F8E8F7-02","ACI-P342-L006-0D54F8E8F7-03","ACI-P342-L006-0D54F8E8F7-04","ACI-P342-L006-0D54F8E8F7-05","ACI-P342-L006-0D54F8E8F7-06","ACI-P342-L006-0D54F8E8F7-07","ACI-P342-L006-0D54F8E8F7-08","ACI-P342-L006-0D54F8E8F7-09","ACI-P342-L006-0D54F8E8F7-10","ACI-P342-L006-0D54F8E8F7-11","ACI-P342-L006-0D54F8E8F7-12","ACI-P342-L006-0D54F8E8F7-13","ACI-P342-L006-0D54F8E8F7-14","ACI-P342-L015-3502EB153B","ACI-P342-L016-8E94F3CE3F"])
+      }),
+      "lesson35-old-man-and-drum-source-contrast": Object.freeze({
+        lessonSections: Object.freeze(["§35.8.2"]),
+        atomIds: Object.freeze(["ACI-P342-L023-FBD948487B-04","ACI-P342-L023-FBD948487B-05","ACI-P342-L023-FBD948487B-07","ACI-P342-L023-FBD948487B-08","ACI-P342-L023-FBD948487B-09","ACI-P342-L023-FBD948487B-10","ACI-P342-L023-FBD948487B-12","ACI-P342-L023-FBD948487B-13","ACI-P342-L023-FBD948487B-14","ACI-P342-L023-FBD948487B-16","ACI-P342-L023-FBD948487B-17","ACI-P342-L023-FBD948487B-18","ACI-P342-L023-FBD948487B-19","ACI-P342-L023-FBD948487B-21","ACI-P342-L023-FBD948487B-22","ACI-P342-L023-FBD948487B-23","ACI-P342-L031-F3C131690F","ACI-P343-L002-B3A81DB846","ACI-P343-L005-F73698D61D","ACI-P343-L011-0F77E3C280","ACI-P343-L018-DC069B1F47","ACI-P343-L019-9DBCEA841A","ACI-P343-L021-78D0C8C21F-02","ACI-P343-L023-5EABB59EF5","ACI-P343-L023-5EABB59EF5-03","ACI-P343-L030-F4C015FE2E","ACI-P343-L030-F4C015FE2E-04","ACI-P343-L030-F4C015FE2E-05","ACI-P343-L030-F4C015FE2E-06","ACI-P343-L030-F4C015FE2E-07","ACI-P343-L037-5AB194E0FE-03","ACI-P343-L037-5AB194E0FE-04","ACI-P343-L037-5AB194E0FE-05","ACI-P343-L037-5AB194E0FE-06","ACI-P343-L037-5AB194E0FE-07","ACI-P343-L037-5AB194E0FE-08","ACI-P343-L037-5AB194E0FE-09","ACI-P343-L037-5AB194E0FE-10","ACI-P343-L040-B05B32740C-02","ACI-P343-L040-B05B32740C-03","ACI-P343-L040-B05B32740C-04","ACI-P343-L040-B05B32740C-05","ACI-P343-L040-B05B32740C-06","ACI-P343-L040-B05B32740C-07","ACI-P344-L002-9C60594571","ACI-P344-L002-58FFD54E8F","ACI-P344-L004-BDFC2670B9"])
+      }),
+      "lesson35-ownerhood-e-matrix": Object.freeze({
+        lessonSections: Object.freeze(["§35.9","§35.9.1.a","§35.9.1.b","§35.9.1.c","§35.9.1.d"]),
+        atomIds: Object.freeze(["ACI-P344-L006-C50871DCD6","ACI-P344-L007-CAAEAE5B9D","ACI-P344-L008-C2AFD50625","ACI-P344-L010-756C52B237","ACI-P344-L013-2B3771911E","ACI-P344-L019-0B3A139F05","ACI-P344-L019-98CE503283","ACI-P344-L021-42FD2DA8FA","ACI-P344-L022-279E0858AA","ACI-P344-L023-7ED1F5D685","ACI-P344-L026-26A86308F5","ACI-P344-L029-E338DD0999-02","ACI-P344-L029-E338DD0999-03","ACI-P344-L029-E338DD0999-04","ACI-P344-L029-E338DD0999-05","ACI-P344-L029-E338DD0999-06","ACI-P344-L029-E338DD0999-07","ACI-P344-L029-E338DD0999-09","ACI-P344-L029-E338DD0999-10","ACI-P344-L029-E338DD0999-11","ACI-P344-L029-E338DD0999-12","ACI-P344-L029-E338DD0999-13","ACI-P344-L029-E338DD0999-14","ACI-P344-L033-4A88C177BD","ACI-P344-L036-3604F9332D","ACI-P344-L039-3EB3D6FA92","ACI-P344-L040-8DDF77A57E","ACI-P345-L002-F5730DE70C","ACI-P345-L004-117055CEE1","ACI-P345-L009-1D4AEC3465","ACI-P345-L009-1D4AEC3465-06","ACI-P345-L009-1D4AEC3465-11","ACI-P345-L018-62D632A06C","ACI-P345-L020-939555EBF1","ACI-P345-L021-8DE9FE0756","ACI-P345-L026-9144EA47D1","ACI-P345-L028-EBDBEA0500","ACI-P345-L032-991E376725","ACI-P345-L037-C88E5CF0B4","ACI-P345-L037-C88E5CF0B4-02","ACI-P345-L037-C88E5CF0B4-03","ACI-P345-L037-C88E5CF0B4-04","ACI-P345-L037-C88E5CF0B4-05","ACI-P345-L037-C88E5CF0B4-06","ACI-P345-L037-C88E5CF0B4-07","ACI-P345-L039-C309527AE9"])
+      }),
+      ...LESSON36_FORMULA_HOVER_AUTHORITIES,
+      ...LESSON37_FORMULA_HOVER_AUTHORITIES,
+      ...LESSON38_FORMULA_HOVER_AUTHORITIES,
+      ...LESSON39_FORMULA_HOVER_AUTHORITIES,
       "lesson23-object-functions-and-governors": Object.freeze({
         lessonSections: Object.freeze(["§23.1"]),
         atomIds: Object.freeze([
@@ -8872,7 +9419,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         };
         addLesson29Cue(
           "lesson29-purposive-foundation-and-future-embed",
-          `linked connectiveless Purposive · future embed ${lesson29OperationFrame.sourceStem} with ${facts.embedFutureMorph} boundary · class-conditioned future stem shape is preserved · purposeful movement comes before the intended action · ${facts.soundedFutureMorphSelected ? "rare sounded z was explicitly selected" : "normal silent future is automatic; rare sounded z remains a marked alternative"} · examples never limit typed verbstems`,
+          `linked connectiveless Purposive · the shared Class ${lesson29OperationFrame.targetClass || ""} rule ${(facts.futureEmbedSourceStem || lesson29OperationFrame.sourceStem) === (facts.futureEmbedPredicateStem || lesson29OperationFrame.sourceStem) ? `keeps typed Source ${facts.futureEmbedSourceStem || lesson29OperationFrame.sourceStem}` : `changes typed Source ${facts.futureEmbedSourceStem || lesson29OperationFrame.sourceStem} to future embed ${facts.futureEmbedPredicateStem || lesson29OperationFrame.sourceStem}`} before the ${facts.embedFutureMorph} boundary · purposeful movement comes before the intended action · ${facts.soundedFutureMorphSelected ? "rare sounded z was explicitly selected" : "normal silent future is automatic; rare sounded z remains a marked alternative"} · examples never limit typed verbstems`,
         );
         addLesson29Cue(
           "lesson29-internal-directional-matrix",
@@ -8886,7 +9433,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const progressive = facts.progressiveContrast || {};
           addLesson29Cue(
             "lesson29-outbound-nonpast-and-progressive-contrast",
-            `outbound nonpast permits ${facts.licensedReadingRange?.join(" or ")} movement readings without another form choice · singular t-ī-uh and plural t-i-hui follow subject number · the purpose action begins after the movement · purposive internal ${progressive.purposiveInternalDirectional || "t"} and future embed remain distinct from progressive connective ${progressive.progressiveExternalConnective || "ti"} and overlapping action · class-conditioned length and glottal evidence are preserved · an Analysis choice belongs only to genuinely underspecified traditional text`,
+            `outbound nonpast permits ${facts.licensedReadingRange?.join(" or ")} movement readings without another form choice · singular t-ī-uh and plural t-ī-hui follow subject number without changing vowel length · the purpose action begins after the movement · purposive internal ${progressive.purposiveInternalDirectional || "t"} and future embed remain distinct from progressive connective ${progressive.progressiveExternalConnective || "ti"} and overlapping action · class-conditioned length and glottal evidence are preserved · an Analysis choice belongs only to genuinely underspecified traditional text`,
           );
         }
         if (facts.series === "outbound-past-indicative") {
@@ -8980,6 +9527,1819 @@ export function createUiRenderingApi(targetObject = globalThis) {
           addLesson30Cue(
             "lesson30-higher-valence-object-incorporation",
             `one object level (${lesson30OperationFrame.incorporatedObjectId}) is consumed · remaining nuclear objects ${(lesson30OperationFrame.remainingObjectIds || []).join(", ")} keep their typed governors and derivational levels · ${choice} · later derivation receives the complete canonical Result`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "adverb"
+          && lesson30OperationFrame.adverbSourceStructure === "exceptional-tla-fusion"
+          && lesson30OperationFrame.semanticRole === "form-style"
+        ) {
+          addLesson30Cue(
+            "lesson30-exceptional-tla-fusion-and-source-ambiguity",
+            `exceptional ${lesson30OperationFrame.semanticRole} analysis · fused tla remains inside the intransitive matrix (${lesson30OperationFrame.matrixFormation}) while the nominal embed is adverbial · matrix valence stays ${lesson30OperationFrame.sourceMatrixValence} · ${lesson30OperationFrame.semanticRoleChoiceRequired ? "a genuine means-versus-form choice was resolved" : "Source structure determines the analysis"} · no example stem authorizes the route`,
+          );
+        }
+        if (lesson30OperationFrame.relation === "adverb") {
+          addLesson30Cue(
+            "lesson30-incorporated-adverb-foundation",
+            `incorporated adverb comes through ${lesson30OperationFrame.route} · Source histories ${(lesson30OperationFrame.sourceRouteCandidates || []).join(", ") || lesson30OperationFrame.route} remain distinct · ${lesson30OperationFrame.sourceRouteChoiceRequired ? "a genuine Source-history choice was resolved" : "one Source history is automatic"} · matrix valence remains ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} with all participants preserved`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "adverb"
+          && ["means", "instrument"].includes(
+            lesson30OperationFrame.semanticRole
+          )
+        ) {
+          const possessorReference = lesson30OperationFrame
+            .possessorReferenceFrame || {};
+          addLesson30Cue(
+            "lesson30-means-and-instrument-adverbs",
+            `${lesson30OperationFrame.semanticRole} embed is adverbial, never subject or agent · valence remains ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · possessor ${possessorReference.possessorReferenceId || "not supplied"} is ${possessorReference.possessorRepresentation || "not supplied"} from typed referent identity · ${possessorReference.referenceChoiceRequired ? "a genuine referent choice was resolved" : "no extra referent choice is needed"} · noun identity does not gate the rule`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "adverb"
+          && lesson30OperationFrame.semanticRole === "place"
+        ) {
+          const possessorReference = lesson30OperationFrame
+            .possessorReferenceFrame || {};
+          addLesson30Cue(
+            "lesson30-place-adverbs",
+            `place embed preserves internal Source parts ${(lesson30OperationFrame.embedInternalBoundaries || []).join(" + ") || lesson30OperationFrame.embedShape?.sourceStem} · matrix participants and valence remain ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · possessor is ${possessorReference.possessorRepresentation || "not supplied"} from typed referent identity · no place stem or compound template gates the rule`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "adverb"
+          && ["time", "duration", "cause", "purpose"].includes(
+            lesson30OperationFrame.semanticRole
+          )
+        ) {
+          const scope = lesson30OperationFrame.adverbScopeFrame || {};
+          addLesson30Cue(
+            "lesson30-time-duration-cause-and-purpose-adverbs",
+            `${lesson30OperationFrame.semanticRole} relation has typed scope ${scope.scope} · compatible contextual readings ${(scope.contextualReadings || []).join(", ")} remain reading facts · ${lesson30OperationFrame.semanticRoleChoiceRequired ? "a genuine relation choice was resolved" : "typed Source determines the relation"} · participants and valence remain ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · translations never authorize the route`,
+          );
+        }
+        if (
+          lesson30OperationFrame.relation === "adverb"
+          && ["manner", "form-style", "compared-manner"].includes(
+            lesson30OperationFrame.semanticRole
+          )
+        ) {
+          const scope = lesson30OperationFrame.adverbScopeFrame || {};
+          addLesson30Cue(
+            "lesson30-manner-and-compared-manner-adverbs",
+            `${lesson30OperationFrame.semanticRole} relation preserves matrix valence ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · ${lesson30OperationFrame.semanticRole === "compared-manner" ? `comparison target ${scope.comparisonTarget} (${scope.comparisonTargetChoiceRequired ? "genuine transitive choice" : "automatic from matrix structure"})` : `scope ${scope.scope}`} · ${lesson30OperationFrame.semanticRoleChoiceRequired ? "a genuine cause-versus-manner analysis was resolved" : "no extra analysis is needed"} · example identity never gates the rule`,
+          );
+        }
+        if (lesson30OperationFrame.uniqueEmbedAnalysisFrame) {
+          const unique = lesson30OperationFrame.uniqueEmbedAnalysisFrame;
+          addLesson30Cue(
+            "lesson30-unique-embed-nounstems",
+            `unique lexical embed ${unique.sourceStem} · meaning is ${unique.meaningCertainty} · initial i analysis ${unique.selectedInitialIAnalysis} · historical Source ${unique.historicalSource || "not supplied"} · morphemic boundaries ${(unique.sourceBoundaries || []).join(" + ")} continue through the ordinary productive incorporation path · lexical identity does not authorize that path`,
+          );
+        }
+        if (lesson30OperationFrame.route === "supplement-subject") {
+          const supplement = lesson30OperationFrame
+            .supplementTransformationFrame || {};
+          addLesson30Cue(
+            "lesson30-possessive-supplementary-subject-adverbs",
+            `possessive supplementary subject becomes an incorporated adverb · possessor ${supplement.possessorPerson} changes ${supplement.sourcePossessorCase} → ${supplement.targetPossessorCase} and becomes ${supplement.targetRole} · semantic attachment to the embed and referent identity remain preserved · matrix valence stays ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · supplementation and incorporation remain distinct roles`,
+          );
+        }
+        if ([
+          "supplement-object",
+          "passive-adverbialized-subject",
+        ].includes(lesson30OperationFrame.route)) {
+          const supplement = lesson30OperationFrame
+            .supplementTransformationFrame || {};
+          addLesson30Cue(
+            "lesson30-possessive-supplementary-object-and-passive-adverbs",
+            lesson30OperationFrame.route === "supplement-object"
+              ? `possessive supplementary object becomes an incorporated adverb · possessor ${supplement.possessorPerson} changes ${supplement.sourcePossessorCase} → ${supplement.targetPossessorCase} and fills ${supplement.targetRole} · ${supplement.possessionKind} possession is checked against typed ${supplement.matrixDerivationType} matrix history · valence remains ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount}`
+              : `passivization discards active subject ${supplement.sourceActiveSubject} while its supplementary subject survives as an incorporated adverb · active object ${supplement.sourceActiveObject} becomes passive subject ${supplement.targetPassiveSubject} · a passive agent remains inexpressible · Source history, participants, and passive barrier remain visible`,
+          );
+        }
+        if (lesson30OperationFrame.relation === "complement") {
+          const reference = lesson30OperationFrame.complementReferenceFrame || {};
+          const scope = lesson30OperationFrame.complementScopeFrame || {};
+          const assimilation = lesson30OperationFrame.boundaryAssimilationFrame || null;
+          addLesson30Cue(
+            "lesson30-incorporated-complements",
+            `${scope.complementKind} ${scope.orientation} complement is incorporated as a necessary internal completion · embedded subject ${reference.embedSubjectReferenceId} is deleted because it is the same referent as preserved matrix participant ${reference.complementTargetReferenceId} · matrix valence stays ${lesson30OperationFrame.sourceValencePositionCount} → ${lesson30OperationFrame.targetValencePositionCount} · ${reference.targetReferenceChoiceRequired ? "a genuine participant choice was resolved" : "referent identity makes the link automatic"}${assimilation ? ` · boundary ${assimilation.sourceFinal} + ${assimilation.matrixInitial} becomes ${assimilation.targetSequence} while Source analysis remains intact` : ""} · translations and example stems never authorize the route`,
+          );
+        }
+        const reduplication = lesson30OperationFrame.reduplicationFrame || {};
+        const nonactive = lesson30OperationFrame.nonactiveContinuationFrame || {};
+        if (
+          reduplication.targetScope !== "none"
+          || ["passive", "impersonal"].includes(nonactive.selectedVoice)
+        ) {
+          addLesson30Cue(
+            "lesson30-reduplication-and-nonactive-continuation",
+            `reduplication target ${reduplication.targetScope} preserves embed and matrix boundaries and contributes ${(reduplication.selectedSemanticScopes || []).join(", ") || "no reduplicative scope"} · completed compound ${nonactive.completedCompoundStem} has current valence ${nonactive.completedCompoundValence} · available nonactive voices ${(nonactive.availableNonactiveVoices || []).join(", ") || "none"}; selected ${nonactive.selectedVoice} · ${nonactive.selectedVoice === "passive" ? `remaining specific object ${nonactive.passiveSubjectSourceObjectId} becomes finite subject ${nonactive.targetFiniteSubject}` : nonactive.selectedVoice === "impersonal" ? `finite subject is ${nonactive.impersonalSubjectStructure}` : "active participants remain intact"} · the ordinary nonactive owner is reused without example templates`,
+          );
+        }
+        addLesson30Cue(
+          "lesson30-embed-is-not-agent-or-subject",
+          `the ${lesson30OperationFrame.relation} embed is never finite subject and never agent · finite subject remains ${nonactive.targetFiniteSubject || lesson30OperationFrame.targetMatrixSubject} · passive agent expression is forbidden · an instrument or means reading remains adverbial · ${nonactive.selectedVoice === "impersonal" ? "the impersonal has a faceless third-singular nominative subject" : "personal subject structure remains visible"} · English translation cannot override the typed participant structure`,
+        );
+      }
+      const lesson31Frame = grammarContext?.constructionKind === "compound-nnc"
+        ? grammarContext
+        : grammarContext?.nominalConstructionFrame?.constructionKind
+          === "compound-nnc"
+          ? grammarContext.nominalConstructionFrame
+          : null;
+      const lesson31OperationFrame = lesson31Frame?.operationFrame || null;
+      if (
+        lesson31Frame?.authorizationStatus === "authorized"
+        && lesson31OperationFrame?.kind
+          === "classical-nahuatl-nominal-compound-operation-frame"
+      ) {
+        const addLesson31Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => (
+                index >= annotation.start && index < annotation.end
+              )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        addLesson31Cue(
+          "lesson31-compound-nounstem-foundation-and-embed-meaning",
+          `typed NNC embed ${lesson31OperationFrame.embedStem} → ${lesson31OperationFrame.embedShape?.realizedStem} + typed NNC matrix ${lesson31OperationFrame.matrixStem} → ${lesson31OperationFrame.compoundStem} · ordered embed before matrix · boundary preserved · embed role ${lesson31OperationFrame.embedRole} · matrix supplies noun class ${lesson31OperationFrame.matrixClass} · ${lesson31OperationFrame.capturedNncConstituentCount || 0} owner-issued NNC Result(s) recaptured · compatible typed Sources remain open; Canvas examples never form a whitelist`,
+        );
+        addLesson31Cue(
+          "lesson31-possessor-orientation",
+          `possessor points to ${lesson31OperationFrame.possessorOrientation} · available orientation ${(lesson31OperationFrame.possessorOrientationOptions || []).join(" or ")} · source ${lesson31OperationFrame.possessorOrientationSource} · ${lesson31OperationFrame.possessorOrientationChoiceRequired ? "a genuine possessive integrated choice was selected" : "structure or Source history settles it automatically"} · matrix class government remains separate`,
+        );
+        addLesson31Cue(
+          "lesson31-matrix-authority-and-translation-reversal",
+          `typed matrix ${lesson31OperationFrame.matrixStem} is the grammatical head and governs ${lesson31OperationFrame.matrixClass} · constituents remain ${(lesson31OperationFrame.orderedConstituents || []).join(" before ")} · swapping them creates a different typed Source · matrix authority ${lesson31OperationFrame.matrixSelectionAuthority} · translation, dictionary wording, formula, surface, and stored examples cannot choose or authorize the analysis`,
+        );
+        addLesson31Cue(
+          "lesson31-simple-embed-class-examples",
+          `typed embed class ${lesson31OperationFrame.embedShape?.sourceClass || lesson31OperationFrame.embedShape?.nounClass} · Source ${lesson31OperationFrame.embedShape?.sourceStem} uses ${lesson31OperationFrame.embedShape?.useShape} shape → ${lesson31OperationFrame.embedShape?.realizedStem} · boundary ${lesson31OperationFrame.embedShape?.boundaryRuleId} · matrix ${lesson31OperationFrame.matrixStem} governs Result class ${lesson31OperationFrame.matrixClass} · ordinary consequences are automatic and examples never authorize stems`,
+        );
+        addLesson31Cue(
+          "lesson31-tl-subclass-two-and-boundary-alternations",
+          `fuller Source ${lesson31OperationFrame.embedShape?.sourceStem} · class ${lesson31OperationFrame.embedShape?.sourceClass} · subclass ${lesson31OperationFrame.embedShape?.subclass || "not subclassed"} · final edge ${lesson31OperationFrame.embedShape?.ephemeralFinalVowel || "stable"} · shape rule ${lesson31OperationFrame.embedShape?.sourceShapeRule} · lexical exception ${lesson31OperationFrame.embedShape?.lexicalException || "none"} · boundary ${lesson31OperationFrame.embedShape?.boundaryRuleId} · Result embed ${lesson31OperationFrame.embedShape?.realizedStem} · sound changes are automatic after a genuine lexical fact is supplied`,
+        );
+        if (lesson31OperationFrame.uniqueCompoundNounstemAnalysisFrame) {
+          const unique = lesson31OperationFrame
+            .uniqueCompoundNounstemAnalysisFrame;
+          addLesson31Cue(
+            "lesson31-unique-compound-only-nounstems",
+            `compound-only lexical Source ${unique.sourceStem} fills ${unique.position} · meaning ${unique.meaningCertainty} · historical Source ${unique.historicalSource || "not supplied"} · boundaries ${(unique.sourceBoundaries || []).join(" + ")} · related formations ${(unique.relatedFormations || []).join(", ") || "not supplied"} · productive route authority ${unique.productiveRouteAuthority} · the shared compound owner remains open without a lexical inventory gate`,
+          );
+        }
+        if (
+          lesson31OperationFrame.caMatrixFrame
+          || lesson31OperationFrame.ordinaryFinalCaFrame
+        ) {
+          const ca = lesson31OperationFrame.caMatrixFrame;
+          const ordinary = lesson31OperationFrame.ordinaryFinalCaFrame;
+          addLesson31Cue(
+            "lesson31-ca-matrix-compounds",
+            ca
+              ? `compound-only ca matrix means ${ca.semanticContribution} · typed embed ${lesson31OperationFrame.embedStem} contributes through the open productive owner · Result Source class ${ca.resultSourceClass} · later uses ${ca.laterUses.join(", ")} · lexical evidence has productive route authority ${ca.productiveRouteAuthority} · listed examples never gate compatible embeds`
+              : `ordinary final-ca Source ${ordinary.sourceStem} has typed class ${ordinary.sourceClass} · ca-matrix analysis ${ordinary.caMatrixAnalysis} · final-ca spelling authority ${ordinary.spellingAuthority} · structural Source class, not a stored noun list, keeps this distinct from compound-only ca`,
+          );
+        }
+        if (lesson31OperationFrame.yoEmbedHistoryFrame) {
+          const yo = lesson31OperationFrame.yoEmbedHistoryFrame;
+          const yoMatrix = lesson31OperationFrame.yoMatrixFrame || {};
+          addLesson31Cue(
+            "lesson31-yo-matrix-and-possessive-embed",
+            `compound-only yō matrix has typed Source class ${yoMatrix.sourceClass || lesson31OperationFrame.matrixSourceClassFrame?.sourceClass} and contributes ${yoMatrix.semanticContribution || "abundant ownership or characteristic quality"} · embed history ${yo.embedState} · nonspecific possessor ${yo.possessorKind} ${yo.possessorMorpheme ? `with ${yo.possessorMorpheme}` : "without a possessor"} · available histories ${yo.availableHistories.join(" or ")} · ${yo.historyChoiceRequired ? "a genuine typed history choice was selected" : "owner-issued Source history settles it"} · boundary ${lesson31OperationFrame.matrixBoundaryRuleId} · Source Result ${lesson31OperationFrame.compoundStem} · state realization ${lesson31OperationFrame.stateRealizedCompoundStem} by ${lesson31OperationFrame.stateStemRuleId} · later uses ${(yoMatrix.laterUses || []).join(", ")} · translation and examples have no authority`,
+          );
+        }
+        if (lesson31OperationFrame.conjunctiveStructureFrame) {
+          const conjunction = lesson31OperationFrame
+            .conjunctiveStructureFrame;
+          const continuation = lesson31OperationFrame
+            .possessiveContinuationFrame || {};
+          addLesson31Cue(
+            "lesson31-conjunctive-compounds",
+            `equal ${conjunction.constituentRoles.join(" plus ")} · first Source class ${conjunction.firstConjunctSourceClass} automatically retains ${conjunction.firstConjunctVestige} · government relation ${conjunction.governmentRelation} · Result class comes from ${lesson31OperationFrame.resultClassSource} · possessive single compound ${continuation.singleCompoundAvailable} · later separate conjoined NNCs ${continuation.separateConjoinedNncsAvailable} through ${continuation.laterOwner} · no vestige or breakup control is needed`,
+          );
+        }
+        if (lesson31OperationFrame.recursiveHierarchyFrame) {
+          const recursion = lesson31OperationFrame.recursiveHierarchyFrame;
+          if (recursion.recursiveEmbed) {
+            addLesson31Cue(
+              "lesson31-recursive-compound-embeds",
+              `owner-issued compound Result is recaptured as the outer embed · inner matrix ${recursion.innerEmbedMatrixStem || "preserved in captured Result"} · outer matrix ${recursion.outerMatrixStem} · bracketing ${recursion.bracketing} · hierarchy depth ${recursion.depth} · acyclic ${recursion.acyclic} · full inner Result and boundaries remain preserved · no depth, boundary, or example control is needed`,
+            );
+          }
+          if (recursion.recursiveMatrix) {
+            addLesson31Cue(
+              "lesson31-recursive-matrices-and-bracketing-ambiguity",
+              `owner-issued compound Result is recaptured as the outer matrix · inner matrix ${recursion.innerMatrixMatrixStem || "preserved in captured Result"} · outer Result class ${lesson31OperationFrame.resultSourceClass} · bracketing ${recursion.bracketing} · available bracketings ${recursion.bracketingOptions.join(" or ")} · choice required ${recursion.bracketingChoiceRequired} · hierarchy depth ${recursion.depth} · surface spelling cannot flatten or select the analysis`,
+            );
+          }
+        }
+        if (lesson31OperationFrame.sexDistinctionFrame) {
+          const sex = lesson31OperationFrame.sexDistinctionFrame;
+          addLesson31Cue(
+            "lesson31-sex-distinction-compounds",
+            `typed ${sex.sexValue} embed ${sex.sourceStem} specifies sex for ${sex.matrixReferentId} · matrix referent class ${sex.referentClass} · without this embed the compatible animate matrix remains sex neutral ${sex.neutralWithoutSex} · ordinary compound form and matrix-governed class are automatic · productive route authority ${sex.productiveRouteAuthority} · listed people and animals never form a whitelist`,
+          );
+        }
+        if (
+          lesson31OperationFrame.progenyRelationFrame
+          || lesson31OperationFrame.fellowshipRelationFrame
+        ) {
+          const progeny = lesson31OperationFrame.progenyRelationFrame;
+          const fellowship = lesson31OperationFrame
+            .fellowshipRelationFrame;
+          addLesson31Cue(
+            "lesson31-progeny-and-fellowship-compounds",
+            progeny
+              ? `typed ${progeny.matrixStem} matrix contributes ${progeny.semanticContribution} to open embed ${progeny.embedStem} · human nuance ${progeny.humanParentNuance} · recursive animal description preserved ${progeny.recursiveAnimalDescriptionPreserved} · Result class ${progeny.matrixClass} and ordinary NNC inflection are automatic · examples have productive route authority ${progeny.productiveRouteAuthority}`
+              : `possessive poh matrix contributes ${(fellowship.semanticContribution || []).join(", ")} to open embed ${fellowship.embedStem} · subject ${fellowship.subjectParticipantId} · possessor ${fellowship.possessorParticipantId} points to ${fellowship.possessorOrientation} · subject number ${fellowship.subjectNumber} · fellowship and huān remain distinct ${fellowship.huanFellowshipRelationKeptDistinct} · ordinary NNC inflection is automatic and examples have productive route authority ${fellowship.productiveRouteAuthority}`,
+          );
+        }
+        if (lesson31OperationFrame.affinityScopeFrame) {
+          const affinity = lesson31OperationFrame.affinityScopeFrame;
+          addLesson31Cue(
+            "lesson31-affinity-reduplication-scope",
+            `plural affinity targets ${affinity.selectedTarget} · licensed targets ${affinity.availableTargets.join(" or ")} · choice required ${affinity.targetChoiceRequired} · lexical requirement ${affinity.lexicalRequirement} · subject ${affinity.subject} satisfies plural requirement ${affinity.pluralSubjectSatisfied} · vowel quantity and the typed embed-matrix boundary remain preserved · examples have productive route authority ${affinity.productiveRouteAuthority}`,
+          );
+        }
+        if (lesson31OperationFrame.distributiveVarietalFrame) {
+          const distributive = lesson31OperationFrame
+            .distributiveVarietalFrame;
+          addLesson31Cue(
+            "lesson31-distributive-varietal-reduplication",
+            `compound ${distributive.semanticReading} reduplication targets the embed automatically · target choice required ${distributive.targetChoiceRequired} · contextual meaning choice required ${distributive.meaningChoiceRequired} · Source boundary, vowel quantity, and glottal evidence remain preserved · affinity matrix scope stays distinct · examples have productive route authority ${distributive.productiveRouteAuthority}`,
+          );
+        }
+      }
+      const lesson32Frame = grammarContext?.constructionKind === "affective-nnc"
+        ? grammarContext
+        : grammarContext?.nominalConstructionFrame?.constructionKind
+          === "affective-nnc"
+          ? grammarContext.nominalConstructionFrame
+          : null;
+      const lesson32OperationFrame = lesson32Frame?.operationFrame || null;
+      if (
+        lesson32Frame?.authorizationStatus === "authorized"
+        && lesson32OperationFrame?.kind
+          === "classical-nahuatl-affective-nominal-operation-frame"
+      ) {
+        const addLesson32Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => (
+                index >= annotation.start && index < annotation.end
+              )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        const route = lesson32OperationFrame.attitudeRouteFrame || {};
+        addLesson32Cue(
+          "lesson32-affective-nnc-foundation-and-attitude-route",
+          `attitude is carried by ${route.attitudeLocation} · selected route ${route.selectedRoute} · available routes ${(route.availableRoutes || []).join(" or ")} · ${route.routeChoiceRequired ? "both analyses survive, so the user selected the route" : "typed Source leaves only one route, so no route choice is needed"} · subject referent ${route.subjectReferentId} · order ${(route.constituentOrder || []).join(" before ")} · translation and examples cannot authorize or choose the route`,
+        );
+        const matrix = lesson32OperationFrame.affectiveMatrixFrame || {};
+        if (["pil", "pōl"].includes(matrix.matrix)) {
+          const lexical = lesson32OperationFrame
+            .lexicalizedSpecialMeaningFrame || null;
+          addLesson32Cue(
+            "lesson32-pil-and-pol-affective-matrices",
+            `${matrix.sourceStem} contributes ${matrix.semanticContribution} · compatible typed NNC embeds remain open · ordinary class rule ${matrix.classRule} → ${lesson32OperationFrame.matrixClass} · compound Source ${lesson32OperationFrame.compoundStem} preserves its internal boundary · ${lexical ? `typed lexical analysis preserves variant ${lexical.embedVariantStem || "ordinary embed"} and lexicalized tli status ${lexical.lexicalizedSpecialMeaning}` : "no exceptional lexical analysis was supplied"} · Canvas examples have productive route authority ${matrix.productiveRouteAuthority}`,
+          );
+        }
+        if (lesson32OperationFrame.tzinMatrixFrame) {
+          const tzin = lesson32OperationFrame.tzinMatrixFrame;
+          const vocative = lesson32OperationFrame.vocativeFrame || null;
+          addLesson32Cue(
+            "lesson32-tzin-matrix-class-meaning-and-vocative",
+            `tzin meaning ${tzin.selectedMeaning} · available readings ${tzin.availableMeanings.join(", ")} · ${tzin.meaningChoiceRequired ? "choose the reading only where context leaves it open" : "meaning is settled automatically"} · typed embed class ${tzin.embedClass} automatically gives Result class ${tzin.resultClass} · demonstrative and masslike embeds remain available · ${vocative ? `${vocative.selectedForm} vocative uses ${vocative.matrixStem} with automatic particle ${vocative.particle} and register ${vocative.register}; form choice required ${vocative.formChoiceRequired}` : "ordinary non-vocative form"} · examples never gate the Source`,
+          );
+        }
+        if (lesson32OperationFrame.tonMatrixFrame) {
+          const ton = lesson32OperationFrame.tonMatrixFrame;
+          addLesson32Cue(
+            "lesson32-ton-matrix-and-class-exceptions",
+            `tōn contributes ${ton.selectedMeaning} · compatible typed embeds remain open · typed embed class ${ton.embedClass} gives Result class ${ton.resultClass} ${ton.classDerivedAutomatically ? "automatically" : "through a matching typed class exception"} · ${ton.boundaryExceptionFrame ? `typed boundary variant ${ton.boundaryExceptionFrame.embedVariantStem} is preserved` : "ordinary boundary realization is automatic"} · recursive embed availability ${ton.recursiveEmbedAvailable} · examples never form an animal or exception whitelist`,
+          );
+        }
+        if (
+          lesson32OperationFrame.zolMatrixFrame
+          || lesson32OperationFrame.denominalContinuationFrame
+        ) {
+          const zol = lesson32OperationFrame.zolMatrixFrame || {};
+          const continuation = lesson32OperationFrame
+            .denominalContinuationFrame || null;
+          const recursion = lesson32OperationFrame
+            .recursiveAffectiveEmbedFrame || null;
+          addLesson32Cue(
+            "lesson32-zol-matrix-recursion-and-denominal-continuation",
+            continuation
+              ? `typed ${continuation.sourceNounstem} ${continuation.sourceNounClass} Source continues through the canonical ${continuation.selectedContinuation} owner → ${continuation.derivedVerbstem} · boundary ${continuation.derivedBoundary.join(" + ")} is automatic · manual stem assembly ${continuation.manualStemAssemblyAllowed} · tzin and pōl remain restricted to their attitude-matrix operations`
+              : `zol contributes ${zol.selectedMeaning} · required animacy ${zol.requiredAnimacy}, actual ${zol.animacy} · Result class ${zol.resultClass} by ${zol.classRule} · compatible embeds ${zol.compatibleEmbedAdmission} · ${recursion ? `owner-issued inner ${recursion.innerCompoundStem} recaptured at depth ${recursion.depth} with all boundaries preserved` : "completed zol Result remains available for recursive embedding"} · examples have no productive route authority`,
+          );
+        }
+        if (
+          lesson32OperationFrame.affectiveAffinityFrame
+          && lesson32OperationFrame.affectiveAffinityFrame
+            .matrixAffinityAutomatic
+        ) {
+          const affinity = lesson32OperationFrame.affectiveAffinityFrame;
+          addLesson32Cue(
+            "lesson32-affective-affinity-and-absolutive-number",
+            `plural subject ${affinity.subject} automatically gives matrix affinity ${affinity.matrixStem} → ${affinity.matrixAffinityStem} with a ${affinity.matrixPrefixVowelQuantity} prefix vowel · selected target ${affinity.selectedTarget}; available ${(affinity.availableTargets || []).join(" or ")} · ${affinity.targetChoiceRequired ? "typed optionality leaves a genuine embed-affinity choice" : "no embed-affinity choice is needed"} · corresponding singular num1 is ${affinity.correspondingSingularNum1}, so absolutive plural is ${affinity.absolutivePluralDyad} · Source quantity and boundaries remain preserved · Lesson 31 long-vowel affinity stays distinct`,
+          );
+        }
+        if (lesson32OperationFrame.possessiveAffinityNumberFrame) {
+          const number = lesson32OperationFrame
+            .possessiveAffinityNumberFrame;
+          addLesson32Cue(
+            "lesson32-possessive-affinity-number-alternatives",
+            `possessor ${number.possessor} and plural subject ${number.subject} are preserved · affinity compound ${number.affinityCompoundStem} · available possessive number dyads ${number.availableDyads.join(" or ")} · selected ${number.selectedDyad} · hu-ān is the more frequent variant · documentary disagreement is preserved without restricting any matrix · matrix whitelist allowed ${number.matrixWhitelistAllowed}`,
+          );
+        }
+        if (lesson32OperationFrame.pilLexemeFrame) {
+          const pil = lesson32OperationFrame.pilLexemeFrame;
+          const child = lesson32OperationFrame.pilChildFormationFrame || null;
+          const hierarchy = lesson32OperationFrame
+            .uniquePilChildHierarchyFrame || null;
+          addLesson32Cue(
+            "lesson32-pil-lexeme-and-child-formations",
+            `typed Source ${pil.sourceStem} contains simple lexeme ${pil.lexemeStem}, meaning ${pil.basicMeaning}, and remains distinct from affective matrix ${pil.affectivePilMatrixKeptDistinct} · selected reading ${pil.selectedReading}; child and noble ambiguity preserved ${pil.humanReadingChoiceRequired} · conē contrast ${pil.contrastedChildLexeme} · gender ${pil.genderSpecification}${pil.genderStem ? ` through ${pil.genderStem}` : ""} · ${child ? `formation ${child.selectedFormation}, state ${child.state}, subject ${child.subject}, possessor ${child.possessor}, distribution ${child.possessorDistribution}, automatic affinity ${child.affinityAutomatic}` : "non-child pil reading"} · ${hierarchy ? `unique automatic hierarchy ${hierarchy.innerPossessiveNncStem} plus ${hierarchy.outerAffectiveMatrix}, outer number ${hierarchy.selectedOuterNumber}` : "ordinary pil hierarchy"} · translation and examples have no route authority`,
+          );
+        }
+        if (lesson32OperationFrame.affectiveChildMatrixFrame) {
+          const child = lesson32OperationFrame.affectiveChildMatrixFrame;
+          const vocative = lesson32OperationFrame.vocativeFrame || null;
+          addLesson32Cue(
+            "lesson32-affective-child-matrices",
+            `pil child combines with selected ${child.matrixStem} matrix for ${child.matrixMeaning} · available matrices ${child.availableMatrices.join(", ")} · Result class ${child.resultClass} is automatic · plural absolutive double affinity required ${child.pluralAbsolutiveDoubleAffinityRequired} and applied ${child.doubleAffinityApplied} · possession preserved ${child.possessionPreserved} · ${vocative ? `${vocative.selectedForm} vocative gives ${child.vocativeMeaning} with automatic ${vocative.particle}` : "no vocative continuation selected"} · no child template, class control, or separate double-affinity control is used`,
+          );
+        }
+        if (
+          lesson32OperationFrame.pilNobleFormationFrame
+          || lesson32OperationFrame.pilHonorificVocativeFrame
+        ) {
+          const noble = lesson32OperationFrame.pilNobleFormationFrame || null;
+          const honor = lesson32OperationFrame
+            .pilHonorificVocativeFrame || null;
+          addLesson32Cue(
+            "lesson32-pil-noble-and-honorific-formations",
+            noble
+              ? `simple pil has selected noble reading with child-versus-noble ambiguity preserved ${noble.childNobleAmbiguityPreserved} · subject ${noble.subject}, state ${noble.state}, gender ${noble.genderSpecification}${noble.genderStem ? ` through ${noble.genderStem}` : ""} · female-specific form customarily preferred ${noble.femaleSpecificStemCustomarilyPreferred} · yō possession automatic ${noble.possessiveYoMatrixAutomatic}${noble.possessiveYoMatrixAutomatic ? ` as ${noble.possessiveStem}` : ""} · common absolutive yō reading may be nobility or childishness · no manual yō or example-stem gate`
+              : `singular honorific vocative has inner ${honor.innerStem} embedded in outer ${honor.outerMatrix} → ${honor.nestedStem} · repeated tzin is ${honor.repeatedTzinAnalysis}, not affinity · subject ${honor.subject} satisfies singular requirement ${honor.singularSubjectSatisfied} · affinity present ${honor.affinityPresent} · automatic particle ${honor.vocativeParticle} · no manual bracketing or example authority`,
+          );
+        }
+        if (lesson32OperationFrame.nonanimateAffectiveAgreementFrame) {
+          const agreement = lesson32OperationFrame
+            .nonanimateAffectiveAgreementFrame;
+          addLesson32Cue(
+            "lesson32-nonanimate-affinity-and-supplement-agreement",
+            `typed nonanimate affective Source has ${agreement.surfaceSubjectNumber} surface number with ${agreement.surfaceNumberDyad.num1}-${agreement.surfaceNumberDyad.num2} · plural t-in exception applied ${agreement.pluralTinExceptionApplied}; common number remains more frequent · as a supplement its same-referent head may remain ${agreement.supplementHeadNumber}, licensed automatically by ${agreement.supplementAgreementExceptionKind} · reduplication reading ${agreement.reduplicationReading}${agreement.reduplicationReadingChoiceRequired ? " remains a genuine contextual choice" : " is settled by typed context"} · evidence ${(agreement.contextualEvidence || []).join(", ") || "none supplied"} · shape alone never decides the meaning and examples never whitelist stems`,
+          );
+        }
+        if (lesson32OperationFrame.flawedSubjectFrame) {
+          const flawed = lesson32OperationFrame.flawedSubjectFrame;
+          addLesson32Cue(
+            "lesson32-flawed-subject-nncs",
+            `typed Source ${flawed.sourceStem} has ${flawed.semanticDomain} analysis with ${flawed.availability} availability · selected ${flawed.selectedRoute} route from ${(flawed.availableRoutes || []).join(", ")} · subject ${flawed.subject}, state ${flawed.state}, num1 ${flawed.num1Realization} · plural suppresses flawing ${flawed.pluralSuppressesFlawing} · source class ${flawed.sourceClass}, neutral class ${flawed.neutralStemClass}, flawed strategy ${flawed.flawedStemClassStrategy} · defect/entity reading ${flawed.selectedDefectEntityReading} · Source shape preserves nominative subject case · tzin/tōn forces flawing ${flawed.affectiveTzinTonForcesFlawing} · unrelated silent-num1 procedures ${(flawed.unrelatedSilentNum1Procedures || []).join(" and ")} remain distinct · example-stem whitelist allowed ${flawed.exampleStemWhitelistAllowed}`,
+          );
+        }
+      }
+      const lesson34Frame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && [
+          "classical-nahuatl-cardinal-nominal-operation-frame",
+          "classical-nahuatl-cardinal-vnc-embed-operation-frame",
+          "classical-nahuatl-cardinal-vnc-adverb-operation-frame",
+        ].includes(candidate?.operationFrame?.kind)
+      )) || null;
+      const lesson34OperationFrame = lesson34Frame?.operationFrame || null;
+      const lesson34SourceAnalysis = lesson34Frame?.sourceFrame
+        ?.numeralSourceAnalysisFrame
+        || lesson34OperationFrame?.numeralSourceAnalysisFrame
+        || null;
+      if (lesson34SourceAnalysis) {
+        const addLesson34Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => (
+                index >= annotation.start && index < annotation.end
+              )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        const analysis = lesson34SourceAnalysis;
+        addLesson34Cue(
+          "lesson34-cardinal-numeral-foundation-and-count-kind",
+          `typed vigesimal Source value ${analysis.value} · base ${analysis.numeralSystemBase} with orders ${analysis.vigesimalOrders.join(", ")} · count kind ${analysis.countKind}${analysis.grossCountMatrix ? ` through gross matrix ${analysis.grossCountMatrix} for ${analysis.grossCountMeaning}` : " with ordinary referent agreement"} · selected counting set ${analysis.classifier} from compatible sets ${(analysis.compatibleClassifiers || []).join(" or ") || "typed context or the basic set"} · counting-set choice required ${analysis.classifierChoiceRequired} · position ${analysis.position} · NNC and VNC continuation follows the selected typed operation · examples authorize Source or route ${analysis.examplesAuthorizeSourceOrRoute}`,
+        );
+        if (analysis.value === 1) {
+          addLesson34Cue(
+            "lesson34-numeral-one-and-cem-shape",
+            `underlying nounstem Source ${analysis.sourceStem} · free shape ${(analysis.freeShapes || []).join(" or ")} by final-m loss with compensatory length · embedded shape ${(analysis.embedShapes || []).join(" or ")} retains m and obeys the following boundary · selected ${analysis.selectedStem} in ${analysis.position} position · animate plural uses cem with m-eh automatically · NNC or VNC embedding never depends on an example list`,
+          );
+        }
+        if ([2, 3, 4].includes(analysis.value)) {
+          addLesson34Cue(
+            "lesson34-two-three-four-shapes-and-gross-count",
+            `typed pronominal Source ${analysis.sourceStem} · free shapes ${(analysis.freeShapes || []).join(" or ")} · embedded shapes ${(analysis.embedShapes || []).join(" or ")} · following boundary sound ${analysis.followingBoundarySound || "none in free position"} · available variants ${(analysis.availableVariants || []).join(" or ")} · selected variant ${analysis.selectedVariant} gives ${analysis.selectedStem} · genuine variant choice required ${analysis.variantChoiceRequired} · count kind ${analysis.countKind}${analysis.grossCountMatrix ? ` with ${analysis.grossCountMatrix}` : " with ordinary number marking"} · truncation, y or x behavior, assimilation, and number dyads are automatic · examples authorize Source or route ${analysis.examplesAuthorizeSourceOrRoute}`,
+          );
+        }
+        if (analysis.value >= 5 && analysis.value <= 9) {
+          addLesson34Cue(
+            "lesson34-five-through-nine-composition",
+            `typed morphemic Source ${analysis.sourceStem} with parts ${(analysis.morphemicParts || []).join(" + ")} · Source analysis ${analysis.sourceKind}${analysis.sourceHistory ? ` from ${analysis.sourceHistory}` : ""} · selected shape ${analysis.selectedStem} in ${analysis.position} position · count kind ${analysis.countKind}${analysis.grossCountMatrix ? ` through ${analysis.grossCountMatrix}` : " with ordinary number marking"} · following boundary sound ${analysis.followingBoundarySound || "none in free position"} · internal chicua-family shape, assimilation, ix, and number marking are automatic · examples authorize Source or route ${analysis.examplesAuthorizeSourceOrRoute}`,
+          );
+        }
+        if ([10, 15].includes(analysis.value) || analysis.grossPossessiveFrame) {
+          const possession = analysis.grossPossessiveFrame;
+          addLesson34Cue(
+            "lesson34-ten-fifteen-and-gross-possessive",
+            `typed numeral Source ${analysis.sourceStem} with parts ${(analysis.morphemicParts || []).join(" + ")} · selected ${analysis.selectedStem} · count kind ${analysis.countKind}${possession ? ` in exceptional possessive state with ${possession.possessorKind} possessor ${possession.possessor}, plural referent ${possession.possessorReferentPlural}, available endings ${(possession.availableNumberVariants || []).join(" or ")}, selected ${possession.selectedNumberVariant}, genuine ending choice required ${possession.numberVariantChoiceRequired}` : " in its ordinary absolutive route"} · ix and participant compatibility are automatic · ordinary numerals do not gain general possessive-state authority · examples authorize Source or route ${analysis.examplesAuthorizeSourceOrRoute}`,
+          );
+        }
+        if ((analysis.higherOrderMatrixFacts || []).length
+          && !["cob", "tecpan", "ipil", "quimil"].includes(
+            analysis.classifier
+          )) {
+          addLesson34Cue(
+            "lesson34-higher-vigesimal-orders",
+            `typed vigesimal terms ${(analysis.numeralTerms || []).map(term => `${term.multiplier} × ${term.order} as ${term.realizedStem} = ${term.computedValue}`).join(" + ")} · active orders ${(analysis.activeVigesimalOrders || []).join(", ")} · computed total ${analysis.computedTotalValue} · matrices ${(analysis.higherOrderMatrixFacts || []).map(fact => `${fact.matrixStem} (${fact.sourceMeaning})`).join(", ")} · secondary lexical readings ${(analysis.higherOrderMatrixFacts || []).flatMap(fact => fact.secondaryLexicalReadings || []).join(", ") || "none"} remain non-authorizing · multiplier shape, multiplication, matrix, and boundaries are automatic · examples authorize Source or route ${analysis.examplesAuthorizeSourceOrRoute}`,
+          );
+        }
+        const conjunction = lesson34OperationFrame?.conjunctionFrame
+          || analysis.conjunctionFrame
+          || null;
+        if (conjunction?.conjoined) {
+          const capture = lesson34OperationFrame?.conjunctionCaptureFrame
+            || null;
+          addLesson34Cue(
+            "lesson34-conjoined-and-downgraded-numerals",
+            `canonical conjuncts ${(conjunction.conjuncts || []).map(conjunct => `${conjunct.value} as ${conjunct.realizedStem}`).join(" → ")} · direction ${conjunction.conjunctionDirection} · short ${conjunction.shortOmSource} means ${conjunction.shortOmMeaning} and remains distinct from long two ${conjunction.shortOmDistinctFromLongTwo} · recursive ${conjunction.recursive} · selected form ${conjunction.selectedForm} from ${(conjunction.availableForms || []).join(" or ")} · genuine form choice required ${conjunction.formChoiceRequired} · owner-issued conjunct Results ${(capture?.conjunctResults || []).length} · downgraded embeds ${(conjunction.downgradedEmbedFrames || []).map(frame => `${frame.sourceConjunctionValue} before ${frame.outerMatrix}, ${frame.deletedPosition}`).join("; ") || "none"} · same-matrix conjunction allowed ${conjunction.sameMatrixConjunctionAllowed}`,
+          );
+        }
+        const classifier = lesson34OperationFrame?.classifierFrame
+          || analysis.classifierFrame
+          || null;
+        if (classifier && ["rock", "row", "thing", "cob"].includes(
+          classifier.classifier
+        )) {
+          const cobAgentive = lesson34OperationFrame
+            ?.cobPreteritAgentiveResultFrame
+            || null;
+          addLesson34Cue(
+            "lesson34-unit-classifier-sets",
+            `typed ${classifier.classifier} counting matrix ${classifier.matrixStem} means ${classifier.groupingMeaning} · value ${classifier.computedGroupedValue} · compatibility comes from ${classifier.compatibilityAuthority} · genuine classifier choice required ${classifier.classifierChoiceRequired} · examples authorize route ${classifier.exampleReferentsAuthorizeRoute} · classifier repeats on a rightward conjunct ${conjunction?.classifierRepeatedOnRightwardConjunct ?? false} · ${classifier.classifier === "cob" ? `direct one-through-nineteen; twenty-through-thirty-nine uses owner-issued tlamic ${cobAgentive?.authorizationStatus === "authorized"}` : "embedded numeral shape and number marking are automatic"} · compatible typed continuation remains productive`,
+          );
+        }
+        if (classifier && ["tecpan", "ipil", "quimil"].includes(
+          classifier.classifier
+        )) {
+          addLesson34Cue(
+            "lesson34-special-twenty-count-sets",
+            `typed ${classifier.matrixStem} matrix means ${classifier.groupingMeaning} · unit value ${classifier.unitValue} · multiplier ${classifier.multiplier} · computed total ${classifier.computedGroupedValue} · lower remainder ${(conjunction?.conjuncts || []).slice(1).map(conjunct => conjunct.value).join(" + ") || "none"} follows ordinary higher-to-lower conjunction · compatibility comes from ${classifier.compatibilityAuthority} · examples authorize route ${classifier.exampleReferentsAuthorizeRoute}`,
+          );
+        }
+        const reduplication = lesson34OperationFrame
+          ?.reduplicationFrame
+          || analysis.reduplicationFrame
+          || null;
+        if (reduplication) {
+          addLesson34Cue(
+            "lesson34-numeral-reduplication",
+            `selected ${reduplication.selectedMeaning} meaning expresses ${reduplication.semanticContrast} through ${reduplication.realizationContrast} · structural scope ${reduplication.targetScope} targets ${(reduplication.scopeTargets || []).join(", ")} · scope derived from morphemic structure ${reduplication.scopeDerivedFromMorphemicStructure} · manual scope choice accepted ${reduplication.manualScopeChoiceAccepted} · example numeral membership required ${reduplication.exampleNumeralMembershipRequired}`,
+          );
+        }
+        const modifier = lesson34OperationFrame?.numeralModifierFrame || null;
+        if (modifier) {
+          addLesson34Cue(
+            "lesson34-approximation-more-and-supplementation",
+            `${modifier.modifierSurface} precedes the complete numeral NNC with meaning ${modifier.meaning} · position ${modifier.position} · complete oc cē clause ${modifier.completeOcCeClause} · supplementary-subject eligible through owner-issued envelope ${modifier.supplementarySubjectEligible} · English else expressions authorize grammar ${modifier.englishElseExpressionsAuthorizeGrammar} · examples authorize route ${modifier.exampleSentencesAuthorizeRoute}`,
+          );
+        }
+        const measure = lesson34OperationFrame?.measureFrame
+          || analysis.measureFrame
+          || null;
+        if (measure) {
+          const composition = lesson34OperationFrame
+            ?.adjectivalModificationFrame
+            || null;
+          addLesson34Cue(
+            "lesson34-measure-nncs-and-measured-composition",
+            `numeral embed ${measure.numeralEmbedStem} enters open typed measure matrix ${measure.measureMatrixStem} of class ${measure.measureMatrixClass} · selected ${measure.selectedMeaning} from ${(measure.availableMeanings || []).join(" or ")} · genuine meaning choice required ${measure.meaningChoiceRequired} · example measure membership required ${measure.exampleMeasureMembershipRequired} · ${composition ? `owner-issued measure and measured-thing Results combine by ${composition.relation}; measure is principal ${composition.measureIsPrincipal}` : "measure NNC remains available for later measured-thing composition"} · copied or formula components accepted ${composition?.copiedOrStringComponentsAccepted ?? false}`,
+          );
+        }
+      }
+      const lesson35Frame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.nominalizationKind
+          === "preterit-agentive"
+      )) || null;
+      const lesson35OperationFrame = lesson35Frame?.operationFrame || null;
+      const lesson35Profile = lesson35OperationFrame?.semanticProfile || null;
+      if (lesson35Profile) {
+        const addLesson35Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => (
+                index >= annotation.start && index < annotation.end
+              )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        const capture = lesson35Profile.sourceResultCapture || {};
+        const relation = lesson35Profile.restrictedUseSourceRelation || {};
+        addLesson35Cue(
+          "lesson35-nominalization-and-preterit-agentive-foundation",
+          `structural nominalization changes an owner-issued VNC predicate into an NNC Source · exact VNC Result captured ${capture.exactOwnerIssuedVncResult === true} · copied or string Result accepted ${capture.copiedOrStringResultAccepted === true} · agentive role ${lesson35Profile.agentSemanticRole} · restricted ${lesson35OperationFrame.targetStems?.restrictedUse} versus general ${lesson35OperationFrame.targetStems?.generalUse} follows state or continuation automatically · eight nominalization families remain distinct · examples never authorize a verbstem or route`,
+        );
+        const reanalysis = lesson35Profile.predicateToNounstemReanalysis || {};
+        addLesson35Cue(
+          "lesson35-absolutive-preterit-agentive-reanalysis",
+          `typed ${reanalysis.sourceRank} ${reanalysis.sourcePredicateStem} becomes ${reanalysis.targetRank} ${relation.outputNounstem} · internal object pattern ${reanalysis.retainedInternalObjectPattern} and reflexive retention ${reanalysis.retainedReflexiveInsideNounstem} · final preterit zero ${reanalysis.finalPreteritZero} remains final ${reanalysis.finalPreteritZeroIsFinalConstituent} · antecessive ō carried into nounstem ${reanalysis.antecessiveOParticleCarriedIntoNounstem} · subject number continues ${reanalysis.sourceSubjectNumberCarriedIntoNnc} · class ${reanalysis.sourceClassPreserved}, voice ${reanalysis.sourceVoicePreserved}, and compound analysis are preserved without an example list`,
+        );
+        const number = lesson35OperationFrame.numberAnimacyFrame || {};
+        const activation = lesson35OperationFrame.activationLicenseFrame || null;
+        addLesson35Cue(
+          "lesson35-number-animacy-and-object-activation",
+          `available singular number realizations ${(number.availableSingularConnectors || []).join(" or ")} · selected ${number.selectedSingularConnector || "automatic plural"} · genuine connector choice required ${number.connectorChoiceRequired === true} · available animacy readings ${(number.availableAnimacyReadings || []).join(" or ")} · selected ${number.selectedAnimacy || lesson35OperationFrame.defaultAnimacy} · silent with nonanimate is universally required ${number.silentNonanimateTendencyIsUniversal === true} · ${activation ? `internal ${activation.sourceCarrier} activates as ${activation.targetObjectPerson} for referent ${activation.targetReferentId} through ${activation.targetRelation}; free object movement allowed ${activation.freeObjectMovementAllowed}` : "no supplementary-object activation is selected"} · example-stem membership required ${number.exampleStemMembershipRequired === true}`,
+        );
+        const generalUse = lesson35Profile.generalUseCompound || {};
+        addLesson35Cue(
+          "lesson35-general-use-ca-stem",
+          `restricted embed ${generalUse.embedStem} is demoted inside the general-use compound · final preterit zero stays immediately before matrix ${generalUse.matrixStem} ${generalUse.finalPreteritZeroImmediatelyBeforeMatrix === true} · matrix class ${generalUse.matrixNounClass} ${generalUse.matrixNounSubclass} · reflexive shuntline ne is preserved ${generalUse.reflexiveUsesShuntlineNe === true} · distribution ${(generalUse.distribution || []).join(", ")} · routine cā is automatic ${generalUse.automaticForLicensedEnvironment === true} · archaic quē requires a typed lexical license ${generalUse.archaicLexicalLicenseRequired === true}`,
+        );
+        const possessive = lesson35OperationFrame.possessiveAgentiveFrame;
+        if (possessive) {
+          addLesson35Cue(
+            "lesson35-possessive-preterit-agentive-nnc",
+            `typed general-use Source ${possessive.sourceStem} enters possessive state as ${possessive.sourceNounClass} ${possessive.sourceSubclass} · subject ${possessive.subject} and possessor ${possessive.possessor} remain distinct · number dyad ${possessive.numberDyad} is automatic, not a cā or number choice · internal object ${possessive.internalObjectPattern} · patientive counterpart ${possessive.patientiveCounterpart} · ya-uh possessor shift ${possessive.yauhInnerPossessorShift} · cā-yō lexical irregularity ${possessive.caYoMatrixIrregularity} · examples do not authorize the route`,
+          );
+        }
+        const oldPerson = lesson35OperationFrame.oldPersonAnalysisFrame;
+        if (oldPerson) {
+          const role = oldPerson.family === "old-woman"
+            ? "lesson35-old-woman-agentive-family"
+            : "lesson35-old-man-and-drum-source-contrast";
+          addLesson35Cue(
+            role,
+            `typed ${oldPerson.sourceStem} has perfective alternants ${(oldPerson.perfectiveAlternants || []).join(" and ")} · selected ${oldPerson.selectedPerfectiveStem} from ${oldPerson.selectionCondition} · singular number ${oldPerson.singularNumberRealization}, plural ${oldPerson.pluralNumberRealization} · referent ${oldPerson.referentialAnimacy}, ${oldPerson.referentialHumanness}, ${oldPerson.referentialSex} · general-use cā and later affective or yō continuations remain available · related nominal Sources ${(oldPerson.relatedNominalSources || []).join(", ")} remain morphologically distinct · examples authorize a productive route ${oldPerson.exampleStemMembershipAuthorizesProductiveRoute}`,
+          );
+        }
+      }
+      const lesson36Frame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && [
+          "customary-agentive-reanalysis",
+          "customary-agentive-full",
+          "customary-patientive",
+          "instrumentive",
+          "present-agentive",
+          "future-agentive",
+          "passive-action",
+          "active-action",
+        ].includes(candidate?.operationFrame?.nominalizationKind)
+      )) || null;
+      if (lesson36Frame) {
+        const operation = lesson36Frame.operationFrame;
+        const source = lesson36Frame.sourceFrame || {};
+        const addLesson36Cue = (role, label) => {
+          const cueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(
+              cueIndex,
+              cueIndex + 1,
+              role,
+              label,
+              "carrier",
+              role
+            );
+          }
+        };
+        if ([
+          "customary-agentive-reanalysis",
+          "customary-agentive-full",
+        ].includes(operation.nominalizationKind)) {
+          addLesson36Cue(
+            "lesson36-customary-present-nominalization-foundation",
+            `exact owner-issued customary-present VNC Result captured ${source.sourceCapturedFromExactVncResult === true} · canonical Result identity retained ${source.canonicalVncResult != null} · typed predicate ${source.sourceStem} changes from VNC predicate to NNC nounstem · selected degree ${operation.nominalizationKind} · copied strings and examples authorize nothing`,
+          );
+        }
+        if (
+          operation.nominalizationKind
+            === "customary-agentive-reanalysis"
+        ) {
+          addLesson36Cue(
+            "lesson36-customary-present-agentive-reanalysis",
+            `complete typed predicate ${source.sourceStem} becomes restricted nounstem ${operation.targetStems?.restrictedUse} · internal object pattern ${source.sourceObjectPattern} stays inside · customary-present ni is final · source subject ${source.sourceSubject}, class ${source.verbClass}, valence ${source.sourceValence}, and morphemic boundaries remain typed · example-stem membership is never required`,
+          );
+        }
+        if (operation.nominalizationKind === "customary-agentive-full") {
+          const nncSlots = lesson36Frame.canonicalResult
+            ?.nncSlotFrame?.slots || {};
+          const stateSlots = nncSlots.state?.slots || [];
+          addLesson36Cue(
+            "lesson36-fully-nominal-customary-agentive",
+            `typed customary-agentive Source ${operation.targetStems?.generalUse} enters the full NNC paradigm · available states ${(operation.allowedStates || []).join(" or ")} · subject ${nncSlots.subject?.subject || source.sourceSubject}, possessor ${stateSlots[0]?.possessorPerson || "none"}, noun class ${operation.nounClass}, singular connector ${operation.singularConnectorChoice}, plural connector ${operation.pluralConnector} · ordinary NNC choices control the paradigm while agreement and boundaries remain automatic`,
+          );
+        }
+        if (operation.agentiveContrastFrame) {
+          const contrast = operation.agentiveContrastFrame;
+          const supplement = operation
+            .customaryAgentivePossessiveSupplementFrame;
+          addLesson36Cue(
+            "lesson36-customary-agentive-meaning-and-preterit-contrast",
+            `customary analysis ${contrast.customaryAnalysis} and preterit analysis ${contrast.preteritAnalysis} remain distinct ${contrast.analysesRemainDistinct} · the same English translation merges them ${contrast.sameEnglishTranslationMergesAnalyses} · a user choice appears only for a real nominalization or meaning ambiguity · possessive customary-agentive stem supplied automatically by the exact preterit-agentive Result ${supplement?.possessiveStemSuppliedByPreteritAgentive === true}`,
+          );
+        }
+        if (operation.customaryPatientiveFrame) {
+          const patientive = operation.customaryPatientiveFrame;
+          addLesson36Cue(
+            "lesson36-customary-present-patientive",
+            `the exact passive customary-present predicate names its ${patientive.grammaticalRole} and may mean ${patientive.semanticExtension} · potential patientive and instrumentive remain different analyses · possessive state available ${patientive.possessiveStateAvailable} · projective activation available ${patientive.externalProjectiveObjectActivationAvailable} · reflexive uses shuntline ne ${patientive.reflexiveUsesShuntlineNe} · retained carrier ${patientive.retainedProjectiveCarrier || "none"} gives referent animacy ${patientive.retainedCarrierReferentAnimacy} · protected passive long ō ${patientive.passiveLongOSuffixProtectedBeforeNi} · ${patientive.nounSubclass} singular ${patientive.singularNumberDyad}, plural ${patientive.pluralNumberDyad}`,
+          );
+        }
+        if (operation.instrumentiveParticipantFrame) {
+          const participant = operation.instrumentiveParticipantFrame;
+          const pair = operation.instrumentiveSourcePairFrame;
+          addLesson36Cue(
+            "lesson36-instrumentive-two-source-foundation",
+            `selected ${participant.selectedState} uses ${participant.selectedSourcePath} · the complete paradigm requires exact customary-impersonal and imperfect-active VNC Results ${pair?.completeParadigmRequiresBothSources === true} from one typed lexical Source ${pair?.sameTypedLexicalSource === true} · source subject becomes possessor ${participant.sourceSubjectBecomesPossessor} · target subject ${participant.targetSubject} is imported outside the Source and is ${participant.targetAnimacy} · reflexive uses shuntline ne ${participant.reflexiveUsesShuntlineNe} · means, instrument, and faculty readings stay lexical or contextual, never inferred from stem spelling`,
+          );
+        }
+        if (operation.instrumentiveRealizationFrame) {
+          const realization = operation.instrumentiveRealizationFrame;
+          const shape = realization.sourceMorphemicShapeFrame || {};
+          addLesson36Cue(
+            "lesson36-instrumentive-realization-and-variants",
+            `typed ${shape.morphemicComplexity} predicate ${shape.predicateStem} with boundaries ${(shape.morphs || []).join(" + ")} realizes as instrumentive ${realization.targetStem} through ${realization.sourcePath} · Source participants stay inside ${realization.sourceParticipantsPreservedInsideNounstem} · source subject becomes possessor ${realization.sourceSubjectBecomesPossessor} · selected hua realization ${realization.selectedNonactiveHuaRealization} must arrive in the exact VNC Result · supportive initial i loss is inherited automatically ${realization.supportiveInitialIDeletionInheritedFromVncOwner} · lexicalized meaning requires typed lexical or contextual evidence · set-defined generality ${realization.setDefinedHighGenerality} · examples authorize no stem`,
+          );
+        }
+        if (operation.presentAgentiveFrame) {
+          const present = operation.presentAgentiveFrame;
+          addLesson36Cue(
+            "lesson36-present-agentive",
+            `exact active present predicate ${present.sourcePredicateStem} becomes nounstem ${present.targetStem} · present zero is final ${present.presentTenseZeroIsFinalConstituent} · Source subject ${present.sourceSubject} and number continue ${present.sourceSubjectAndNumberContinueIntoNnc} · available states ${(present.allowedStates || []).join(" or ")} · object pattern ${present.sourceObjectPattern}, subject-matched reflexive ${present.reflexiveCarrierRemainsSubjectMatched}, and compound structure remain typed · lexicalized or metaphorical continuations require separate typed evidence · examples authorize no stem`,
+          );
+        }
+        if (operation.futureAgentiveFrame) {
+          const future = operation.futureAgentiveFrame;
+          addLesson36Cue(
+            "lesson36-future-agentive",
+            `exact active future predicate ${future.sourcePredicateStem} yields restricted ${future.restrictedUseStem} and general ${future.generalUseStem} · future z preserved ${future.futureZPreserved} and cā added automatically ${future.generalUseCaAddedAfterFutureZ} · singular ${future.singularNumberDyad}, plural ${future.pluralNumberDyad} · Source subject and number continue ${future.sourceSubjectAndNumberContinueIntoNnc} · applicative object unexpressed ${future.omittedApplicativeObject} while grammatically available ${future.omittedApplicativeObjectRemainsGrammaticallyAvailable} · restricted embeds and lexicalized compounds require typed evidence · no suffix or example choice`,
+          );
+        }
+        if (operation.actionNncTaxonomyFrame) {
+          const taxonomy = operation.actionNncTaxonomyFrame;
+          addLesson36Cue(
+            "lesson36-action-nnc-taxonomy",
+            `selected ${taxonomy.selectedActionNncKind} is one of ${(taxonomy.actionNncKinds || []).join(" and ")} · passive and active structures remain distinct ${taxonomy.passiveAndActiveKindsRemainDistinct} · licensed meaning range ${(taxonomy.licensedSemanticScope || []).join(", ")} · restricted stem ${taxonomy.restrictedUseStem} is the compound while general-use ${taxonomy.generalUseStem} is the nominalized distant-past predicate · shape alone selects lexical meaning ${taxonomy.shapeAloneSelectsLexicalMeaning} · a meaning choice appears only for real contextual ambiguity`,
+          );
+        }
+        if (operation.passiveActionFrame) {
+          const passiveAction = operation.passiveActionFrame;
+          addLesson36Cue(
+            "lesson36-passive-action-nncs",
+            `exact passive distant-past predicate ${passiveAction.sourcePredicateStem} supplies general-use ${passiveAction.generalUseStem} with final ${passiveAction.generalUseFinalDistantPastMorph} and restricted ${passiveAction.restrictedUseStem} with protected ${passiveAction.restrictedUseProtectedDistantPastMorph} before matrix ${passiveAction.yoTlMatrix} · passive perspective and internal objects remain typed · Source subject ${passiveAction.sourceSubject} becomes possessor ${passiveAction.sourceSubjectBecomesPossessor} as ${passiveAction.transformedPossessor || "not in absolutive state"} · target ${passiveAction.targetSubject} is imported, ${passiveAction.targetAnimacy}, and common-number only · ${passiveAction.nounSubclass} · reflexive uses shuntline ne ${passiveAction.reflexiveUsesShuntlineNe} · tense, possessor conversion, yō, class, and examples are not manual choices`,
+          );
+        }
+        if (operation.activeActionFoundationFrame) {
+          const activeAction = operation.activeActionFoundationFrame;
+          addLesson36Cue(
+            "lesson36-active-action-foundation",
+            `selected ${activeAction.selectedFamily} remains distinct from derived active-action ${activeAction.nominalizationAndDerivationRemainDistinct} and is the active counterpart to ${activeAction.passiveCounterpart} · typed Source is ${activeAction.sourceVoice}, ${activeAction.sourceValence}, object pattern ${activeAction.sourceObjectPattern} · ordinary intransitive path ${activeAction.sourceIsOrdinaryIntransitive} · narrow reflexive transitive path ${activeAction.sourceUsesNarrowReflexiveTransitivePath} · nonreflexive transitive Sources are not authorized · examples authorize no Source`,
+          );
+        }
+        if (operation.generalUseActiveActionFrame) {
+          const general = operation.generalUseActiveActionFrame;
+          addLesson36Cue(
+            "lesson36-active-action-general-use",
+            `exact active distant-past predicate ${general.sourcePredicateStem} supplies general-use ${general.generalUseStem} with final ${general.finalDistantPastMorph} · final ca is last ${general.finalDistantPastMorphIsLastConstituent} · Source subject ${general.sourceSubject} becomes possessor ${general.sourceSubjectBecomesPossessor} as ${general.transformedPossessor || "not in absolutive state"} · reflexive uses shuntline ne ${general.reflexiveUsesShuntlineNe} and is satisfied ${general.reflexiveShuntlineSatisfied} · imported target ${general.targetSubject}, ${general.targetAnimacy}, common-number only · ${general.nounClass} ${general.nounSubclass} · lexical means, source, or result readings require typed evidence ${general.lexicalMeaningRequiresTypedEvidence} · ca, reflexive conversion, possessor conversion, class, and examples are not manual choices`,
+          );
+        }
+        if (operation.restrictedUseActiveActionFrame) {
+          const restricted = operation.restrictedUseActiveActionFrame;
+          addLesson36Cue(
+            "lesson36-active-action-restricted-use",
+            `owner-issued general-use Source ${restricted.generalUseStem} remains attached ${restricted.generalUseSourceIdentityRetained} · restricted absolutive ${restricted.restrictedUseStem} protects ${restricted.protectedDistantPastMorph} immediately before ${restricted.yoTlMatrix} ${restricted.protectedCaImmediatelyPrecedesYo} · target ${restricted.targetSubject}, ${restricted.targetAnimacy}, common-number only · ${restricted.nounClass} ${restricted.nounSubclass} · meaning range ${(restricted.semanticScope || []).join(", ")} stays contextual or lexical · cā, yō, matrix, class, and examples are automatic`,
+          );
+        }
+        if (operation.actionPreteritContrastFrame) {
+          const contrast = operation.actionPreteritContrastFrame;
+          const active = contrast.activeActionAnalysis || {};
+          const agentive = contrast.preteritAgentiveAnalysis || {};
+          const passive = contrast.passiveActionAnalysis || {};
+          const patientive = contrast.preteritPatientiveAnalysis || {};
+          addLesson36Cue(
+            "lesson36-active-action-preterit-agentive-contrast",
+            `selected typed analysis ${contrast.selectedAnalysis} · active-action keeps distant-past ${active.finalTenseMorph} and ${active.nounSubclass} for action or result, while preterit-agentive keeps preterit ${agentive.finalTenseMorph} plus matrix ${agentive.matrixNounstem} and ${agentive.nounSubclass} for an agent or thing in a state · passive-action ${passive.finalTenseMorph} names an action or resulting condition, while infrequent preterit-patientive ${patientive.finalTenseMorph}+${patientive.matrixNounstem} names an undergoer · phonological identity can occur ${contrast.phonologicalIdentityCanOccur} but merges analyses ${contrast.phonologicalIdentityMergesAnalyses} · Source history is reconstructed from surface ${contrast.sourceReconstructedFromSurfaceString} · continuation follows the typed analysis and a user choice appears only for genuine Source ambiguity`,
+          );
+        }
+        if (operation.actionCharacteristicFrame) {
+          const characteristic = operation.actionCharacteristicFrame;
+          addLesson36Cue(
+            "lesson39-characteristic-extended-notes",
+            `exact ${characteristic.actionKind} distant-past history preserved ${characteristic.exactDistantPastHistoryPreserved} · general-use action nounstem ${characteristic.characteristicEmbedStem} enters matrix ${characteristic.characteristicMatrix} and yields restricted ${characteristic.characteristicRestrictedUseStem} · action and state readings remain available ${characteristic.actionAndStateReadingsRemainAvailable} · action and preterit-agentive analyses remain distinct ${characteristic.actionAndPreteritAgentiveAnalysesRemainDistinct}; a homophonous surface can carry both ${characteristic.homophonousSurfaceMayHaveBothAnalyses} but spelling or English selects neither ${characteristic.surfaceOrEnglishTranslationSelectsAnalysis} · a choice appears only when both typed Sources remain possible ${characteristic.contextualAnalysisChoiceRequiredOnlyWhenBothTypedSourcesRemainPossible}; this exact Source already settles the analysis ${characteristic.typedSourceAlreadySettlesAnalysis} · reconstructed intermediate VNC is reading evidence only ${characteristic.reconstructedIntermediateVncIsReadingEvidenceOnly} and authorizes the route ${characteristic.reconstructedIntermediateVncAuthorizesProductiveRoute} · compatible unlisted action Results remain productive ${characteristic.compatibleUnlistedActionResultsRemainProductive}`,
+          );
+        }
+        if (operation.actionVoicePossessorRoleFrame) {
+          const role = operation.actionVoicePossessorRoleFrame;
+          addLesson36Cue(
+            "lesson37-active-passive-action-contrast",
+            `typed ${role.sourceVoice} Source selects ${role.selectedAnalysis} and preserves exact VNC identity ${role.exactOwnerIssuedVncResultPreserved} · in possessive state ${role.transformedPossessor || "the Source participant"} has the derived role ${role.possessorRole} · active possessors are ${role.activePossessorRole}, passive possessors are ${role.passivePossessorRole} · the role is manually relabeled ${role.manualPossessorRoleChoiceRequired} · translation or surface overlap merges the analyses ${role.surfaceOrTranslationOverlapMergesAnalyses}`,
+          );
+        }
+      }
+      const lesson37Frame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind === "deverbal-action"
+      )) || null;
+      if (lesson37Frame) {
+        const operation = lesson37Frame.operationFrame;
+        const source = lesson37Frame.sourceFrame || {};
+        const action = operation.deverbalActionFrame || {};
+        const addLesson37Cue = (role, label) => {
+          const cueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(
+              cueIndex,
+              cueIndex + 1,
+              role,
+              label,
+              "carrier",
+              role
+            );
+          }
+        };
+        addLesson37Cue(
+          "lesson37-deverbal-source-foundation",
+          `exact owner-issued future VNC Result captured ${action.exactVncResultIdentityPreserved === true} · lexical Source ${action.lexicalSourceStem} supplies typed verbcore ${action.futureVncCore}, not a reconstructed predicate · class ${action.verbClass}, valence ${source.sourceValence}, participants, vowel quantity, and boundaries stay attached · copied results, strings, and examples authorize nothing`,
+        );
+        if (
+          operation.actionKind === "active-action"
+          && operation.actionSuffix === "z"
+        ) {
+          addLesson37Cue(
+            "lesson37-z-active-action",
+            `future-tense carrier ${action.futureTenseCarrier} and new nominal suffix ${action.nominalSuffix} remain distinct ${action.futureTenseAndNominalZAreDistinct} · productive core rule ${operation.stemRule} gives ${operation.targetStems?.restrictedUse} · noun class ${action.nounClass}, target subject ${action.targetSubject}, animacy ${action.targetAnimacy} · Source subject ${action.sourceSubject} becomes possessor ${action.sourceSubjectBecomesPossessor} · shape alone chooses lexical meaning ${action.sourceShapeChoosesLexicalMeaning} · example-stem route gate ${action.examplesAuthorizeRoute}`,
+          );
+        }
+        if (
+          operation.actionKind === "active-action"
+          && operation.actionSuffix === "liz"
+        ) {
+          addLesson37Cue(
+            "lesson37-liz-active-action-foundation",
+            `typed future core ${action.futureVncCore} takes nominal structure ${(action.nominalSuffixStructure || []).join(" + ")} · class ${action.verbClass} shape is inherited from the VNC owner · internal object ${action.objectPrefix || "none"} · initial i ${action.supportiveInitialIKind || "not marked"} follows ${action.supportiveInitialIRule} · any displayed choice is restricted to a genuine supportive-i, replacive-stem, or root-plus-ya alternative · examples authorize no route`,
+          );
+          addLesson37Cue(
+            "lesson37-liz-replacive-stem-families",
+            `typed final boundary applies ${action.actionStemRule} · available licensed realizations ${(action.actionStemVariantOptions || []).join(", ") || "automatic base"} · choice required ${action.actionStemVariantChoiceRequired === true} only where Canvas leaves an alternative · internal destockal history remains ${action.actionStemAnalysis} · example membership required ${action.exampleStemMembershipRequired}`,
+          );
+          if (/(?:^|-)ya$/u.test(action.futureVncCore || "")) {
+            addLesson37Cue(
+              "lesson37-root-ya-liz",
+              `typed Source ${action.futureVncCore} preserves root plus ya boundaries ${action.internalBoundariesPreserved} · analysis ${action.actionStemAnalysis} licenses ${action.actionStemRule} · available retained or deleted realizations ${(action.actionStemVariantOptions || []).join(", ")} · visible final letters alone do not authorize deletion`,
+            );
+          }
+          addLesson37Cue(
+            "lesson37-way-of-and-lexical-readings",
+            `compositional action reading remains available ${action.compositionalActionReadingAlwaysAvailable} · licensed readings ${(action.lizReadingOptions || []).join(", ")} · lexical reading requires typed Source or context ${action.lexicalReadingRequiresTypedSourceOrContext} and is selected from liz shape ${action.lexicalReadingSelectedFromLizShape} · user choice appears only if context leaves real ambiguity`,
+          );
+        }
+        if (operation.actionKind === "active-action") {
+          const structure = action.sourceStructureFrame || {};
+          addLesson37Cue(
+            "lesson37-compound-active-action-sources",
+            `complete typed future core ${structure.typedFutureCore} preserves morphemes ${(structure.morphemes || []).join(" + ")} and internal boundaries ${structure.internalBoundariesPreserved} · exact VNC Source analysis identity preserved ${structure.exactSourceAnalysisIdentityPreserved} · connective-t plus matrix on-o recognized ${structure.connectiveTOnOMatrix} and is a separate t-o verbstem class ${structure.apparentFinalTOIsIndependentVerbstemClass} · examples authorize no compound route`,
+          );
+        }
+        if (["active-action", "potential-patient"].includes(
+          operation.actionKind
+        )) {
+          const contrast = action.actionPotentialPatientContrastFrame || {};
+          addLesson37Cue(
+            "lesson37-active-action-potential-patient-contrast",
+            `selected typed analysis ${contrast.selectedAnalysis} · active action keeps object ${contrast.activeActionObjectPrefix || "none"}, potential patient keeps ${contrast.potentialPatientObjectPrefix || "no object"} · intransitive homophony possible ${contrast.intransitiveActionPotentialHomophony} · third-singular ambiguity ${contrast.thirdSingularSurfaceAmbiguity}, other person or number disambiguates ${contrast.otherPersonOrNumberDisambiguates} · reflexive plus tla deletion remains active-action exception ${contrast.reflexiveAndTlaObjectDeletionIsActiveActionException} · surface identity merges analyses ${contrast.surfaceIdentityMergesAnalyses}`,
+          );
+        }
+        if (operation.actionKind === "impersonal-general-action") {
+          const general = action.impersonalGeneralActionFrame || {};
+          addLesson37Cue(
+            "lesson37-impersonal-general-action",
+            `exact owner-issued impersonal future Result preserved ${general.exactImpersonalResultIdentityPreserved} · Source path ${general.impersonalSourcePath}, operation ${general.sourceVoiceOperation}, selected formation ${general.sourceNonactiveOptionId || "owner-issued automatic"} · impersonal morphology stays inside the nounstem ${general.sourceImpersonalMorphologyPreservedInsideNounstem} · general action is performed by everyone involved ${general.generalActionPerformedByEveryoneInvolved} · spelling warning creates grammar option ${general.spellingWarningCreatesGrammarOption}`,
+          );
+        }
+        if (operation.actionVoicePossessorRoleFrame) {
+          const role = operation.actionVoicePossessorRoleFrame;
+          addLesson37Cue(
+            "lesson37-active-passive-action-contrast",
+            `typed ${role.sourceVoice} Source selects ${role.selectedAnalysis} and preserves exact VNC identity ${role.exactOwnerIssuedVncResultPreserved} · in possessive state ${role.transformedPossessor || "the Source participant"} has the derived role ${role.possessorRole} · active possessors are ${role.activePossessorRole}, passive possessors are ${role.passivePossessorRole} · no manual possessor-role choice ${role.manualPossessorRoleChoiceRequired} · translation or surface overlap merges analyses ${role.surfaceOrTranslationOverlapMergesAnalyses}`,
+          );
+        }
+      }
+      const lesson37ContinuationFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && ["nominal-continuation", "verbal-continuation"].includes(
+          candidate?.operationFrame?.constructionKind
+        )
+        && candidate?.operationFrame?.actionNncContinuationFrame
+          ?.authorizationStatus === "authorized"
+      )) || null;
+      if (lesson37ContinuationFrame) {
+        const operation = lesson37ContinuationFrame.operationFrame;
+        const continuation = operation.actionNncContinuationFrame;
+        const addContinuationCue = (role, label) => {
+          const cueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (!Number.isInteger(cueIndex)) return;
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            role,
+            label,
+            "carrier",
+            role
+          );
+        };
+        addContinuationCue(
+          "lesson37-action-nnc-continuations",
+          `exact owner-issued action NNC Result preserved ${continuation.exactActionNncResultIdentityPreserved} with its complete Source analysis ${continuation.completeCanonicalSourceAnalysisPreserved} · ${continuation.sourceNounstem} embeds before selected matrix ${continuation.selectedMatrix} through ${continuation.selectedSemanticRelation} · Result family ${continuation.resultFamily} · boundary rules ${(continuation.boundaryRules || []).join(", ") || "none"} · copied strings and examples authorize continuation ${continuation.copiedStringOrExampleIdentityAuthorizesContinuation}`,
+        );
+        if (operation.tzinBoundaryFrame?.assimilationAutomatic) {
+          const boundary = operation.tzinBoundaryFrame;
+          addContinuationCue(
+            "lesson37-z-liz-tzin-assimilation",
+            `underlying ${boundary.underlyingBoundary} at ${boundary.underlyingActionNounstem} + ${boundary.followingMatrix} gives phonological ${boundary.phonologicalOutcome} and conventional written ${boundary.conventionalWrittenBoundary} · the full z or liz analysis stays preserved ${boundary.finalZOrLizAnalysisPreserved} · assimilation and doubled spelling are user choices ${boundary.userChoosesAssimilationOrDoubledSpelling}`,
+          );
+        }
+      }
+      const lesson37SupplementationFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-supplementation-frame"
+        && candidate.operationFrames?.some(frame => (
+          frame?.kind
+            === "classical-nahuatl-action-nnc-supplementary-object-frame"
+        ))
+      )) || null;
+      if (lesson37SupplementationFrame) {
+        const relation = lesson37SupplementationFrame.operationFrames.find(
+          frame => frame?.kind
+            === "classical-nahuatl-action-nnc-supplementary-object-frame"
+        );
+        const cueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index
+        ).find(index => /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some(annotation => (
+            index >= annotation.start && index < annotation.end
+          )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson37-action-nnc-supplementation",
+            `exact owner-issued ${relation.supplementSourceKind} NNC Result serves as the ${relation.relation} · shared referent ${relation.sharedReferentId} links principal ${relation.principalParticipantRole} to supplement ${relation.supplementParticipantRole} · shared supplementation owner reused ${relation.sharedSupplementationOwnerReused} · acyclic hierarchy required ${relation.acyclicHierarchyRequired} · nounstem identity, formula, and surface authorize no link`,
+            "carrier",
+            "lesson37-action-nnc-supplementation",
+          );
+        }
+      }
+      const lesson37PatientiveFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind === "patientive"
+        && candidate?.operationFrame?.patientiveKind === "ordinary"
+      )) || null;
+      if (lesson37PatientiveFrame) {
+        const operation = lesson37PatientiveFrame.operationFrame;
+        const taxonomy = operation.patientiveTaxonomyFrame || {};
+        const truncation = operation.patientiveTruncationFrame || {};
+        const addPatientiveCue = (role, label) => {
+          const cueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(
+              cueIndex,
+              cueIndex + 1,
+              role,
+              label,
+              "carrier",
+              role
+            );
+          }
+        };
+        addPatientiveCue(
+          "lesson37-patientive-taxonomy-and-truncation",
+          `selected ${taxonomy.selectedSourceFamily} is one of ${(taxonomy.basicSourceFamilies || []).join(", ")} · full typed Source ${taxonomy.selectedSourceStage}/${taxonomy.selectedSourceVoice} remains attached · patientive meanings may name capability, an undergone action, a resulting state, or a product · typed suffix ${truncation.typedSuffixFamily || "not applicable"} removes ${truncation.removedMaterial || "no nonactive material"} and retains ${truncation.retainedStem || operation.targetStems?.restrictedUse} · vowel behavior ${truncation.precedingVowelBehavior || "not applicable"} · noun class ${operation.nounClass} · lexical or irregular meaning requires typed analysis ${taxonomy.lexicalMeaningOrIrregularFormationRequiresTypedAnalysis} · examples authorize the route ${taxonomy.examplesAuthorizeRoute}`,
+        );
+        if (operation.passivePatientiveFoundationFrame) {
+          const passive = operation.passivePatientiveFoundationFrame;
+          addPatientiveCue(
+            "lesson37-passive-patientive-foundation",
+              `exact owner-issued passive VNC Result preserved ${passive.exactPassiveResultIdentityPreserved} · active ancestry ${passive.activeSourceValence} is transitive ${passive.ultimateActiveSourceIsTransitive} and intransitive ancestry is allowed ${passive.intransitiveUltimateSourceAllowed} · passive core ${passive.passiveCore} with ${passive.nonactiveSuffix} · object pattern ${passive.sourceObjectPattern} · nonspecific projective evidence ${passive.nonspecificProjectiveEvidencePreserved}, shuntline reflexive evidence ${passive.shuntlineReflexiveEvidencePreserved}, no-object passive branch ${passive.noObjectPassiveBranch} · patient referent ${passive.patientReferent} · passive history reconstructed from surface ${passive.passiveHistoryReconstructedFromSurface}`,
+          );
+        }
+        if (operation.impersonalPatientiveFoundationFrame) {
+          const impersonal = operation.impersonalPatientiveFoundationFrame;
+          addPatientiveCue(
+            "lesson38-impersonal-patientive-foundation",
+            `exact owner-issued impersonal VNC Result preserved ${impersonal.exactImpersonalResultIdentityPreserved} · active Source ${impersonal.activeSourceStem} → impersonal core ${impersonal.impersonalCore} through ${impersonal.sourceVoiceOperation} with ${impersonal.nonactiveSuffix} · complete typed Source analysis preserved ${impersonal.completeTypedSourceAnalysisPreserved} · valence ${impersonal.sourceValence}, object pattern ${impersonal.sourceObjectPattern} · patientive names a result rather than an agent ${impersonal.patientiveNamesResultRatherThanAgent} · English participle analogy authorizes grammar ${impersonal.englishParticipleAnalogyAuthorizesGrammar} · raw nonactive-looking stem accepted ${impersonal.rawNonactiveLookingStemAccepted} · copied Result accepted ${impersonal.copiedResultAccepted}`,
+          );
+        }
+        if (operation.perfectivePatientiveFrame) {
+          const perfective = operation.perfectivePatientiveFrame;
+          addPatientiveCue(
+            "lesson39-perfective-patientive-foundation",
+            `exact owner-issued active preterit VNC Result preserved ${perfective.exactActivePreteritResultIdentityPreserved} with complete typed Source analysis ${perfective.completeTypedSourceAnalysisPreserved} · lexical Source ${perfective.lexicalSourceStem} supplies perfective predicate ${perfective.perfectivePredicateStem} · final edge ${perfective.perfectiveFinalEdge} is licensed automatically ${perfective.perfectiveShapeLicensedAutomatically} · selected ${perfective.selectedAnalogy} model from ${(perfective.analogyOptions || []).join(" or ")} · passive available ${perfective.passiveAnalogyAvailable}, genuine choice ${perfective.analogyIsGenuineUserChoice} · Source object ${perfective.sourceObjectPattern} becomes ${perfective.realizedObjectPattern} · target ${perfective.patientiveTargetStem}, noun class ${perfective.nounClass} · raw perfective-looking stem accepted ${perfective.rawPerfectiveLookingStemAccepted} · copied Result accepted ${perfective.copiedResultAccepted} · example identity authorizes route ${perfective.exampleIdentityAuthorizesProductiveRoute}`,
+          );
+          if (perfective.selectedAnalogy === "impersonal") {
+            addPatientiveCue(
+              "lesson39-perfective-impersonal-model",
+              `perfective impersonal model keeps typed Source valence ${perfective.sourceValence} and object structure ${perfective.sourceObjectPattern} → ${perfective.realizedObjectPattern} · reflexive, reciprocal, and projective structure remain Source facts · a human tē Source follows the Canvas-approved analogical tla path without changing the human referent · visible prefix alone decides neither valence nor reference · narrow ownerhood fact present ${Boolean(perfective.lexicalOwnerhoodFact)} · shape selects lexical meaning ${perfective.shapeSelectsLexicalMeaning}`,
+            );
+          }
+          if (perfective.sourceIsCompound || perfective.lexicalOwnerhoodFact) {
+            addPatientiveCue(
+              "lesson39-perfective-compounds-and-ownerhood",
+              `complete compound Source preserved ${perfective.sourceIsCompound} · exact compound frame present ${Boolean(perfective.compoundVncSourceFrame)} · acquired or abundant ownerhood fact ${perfective.lexicalOwnerhoodFact?.reading || "none"} · lexical fact authorizes only its narrow reading ${perfective.lexicalFactAuthorizesOnlyNarrowReading} · unlisted compatible Sources remain productive ${perfective.unlistedCompatibleSourceRemainsProductive} · boundaries remain owned by the exact VNC Source analysis, not a spelling choice or example gate`,
+            );
+          }
+        }
+        if (operation.imperfectivePatientiveFrame) {
+          const imperfective = operation.imperfectivePatientiveFrame;
+          addPatientiveCue(
+            "lesson39-imperfective-patientive-foundation",
+            `exact owner-issued active present VNC Result preserved ${imperfective.exactActivePresentResultIdentityPreserved} with complete typed Source analysis ${imperfective.completeTypedSourceAnalysisPreserved} · lexical Source ${imperfective.lexicalSourceStem} supplies imperfective predicate ${imperfective.imperfectivePredicateStem} · Class ${imperfective.verbClass} applies ${imperfective.selectedShapeRule} automatically ${imperfective.sourceShapeRuleDerivedAutomatically} · Class C truncated final long o or i ${imperfective.classCUsesTruncatedFinalLongOOrI}, Class D final long a ${imperfective.classDUsesFinalLongA} · selected ${imperfective.selectedAnalogy} model from ${(imperfective.analogyOptions || []).join(" or ")} · passive available ${imperfective.passiveAnalogyAvailable}, genuine choice ${imperfective.analogyIsGenuineUserChoice} · Source object ${imperfective.sourceObjectPattern} becomes ${imperfective.realizedObjectPattern} · target ${imperfective.patientiveTargetStem}, noun class ${imperfective.nounClass} · raw imperfective-looking stem accepted ${imperfective.rawImperfectiveLookingStemAccepted} · copied Result accepted ${imperfective.copiedResultAccepted} · example identity authorizes route ${imperfective.exampleIdentityAuthorizesProductiveRoute}`,
+          );
+        }
+        if (operation.imperfectiveImpersonalPatientiveFrame) {
+          const impersonal =
+            operation.imperfectiveImpersonalPatientiveFrame;
+          addPatientiveCue(
+            "lesson39-imperfective-impersonal-model",
+            `exact owner-issued active present VNC Result preserved ${impersonal.exactActivePresentResultIdentityPreserved} with complete typed Source analysis ${impersonal.completeTypedSourceAnalysisPreserved} · impersonal model accepts transitive and intransitive Sources ${impersonal.transitiveAndIntransitiveSourcesAllowed} · Source valence ${impersonal.sourceValence} and object pattern ${impersonal.sourceObjectPattern} yield ${impersonal.realizedObjectPattern} with carriers ${(impersonal.carrierSequence || []).join(" and ") || "none"} automatically ${impersonal.carrierSequenceDerivedFromTypedParticipants} · reflexive or reciprocal ne preserved ${impersonal.reflexiveOrReciprocalNePreserved} · target ${impersonal.patientiveTargetStem} · visible carrier decides valence ${impersonal.visibleCarrierDeterminesSourceValence} or referent ${impersonal.visibleCarrierDeterminesReferentIdentity} · narrow reading ${impersonal.lexicalReadingFact?.reading || "none"}, compositional reading retained ${impersonal.compositionalReadingRemainsAvailable} · Source history ${(impersonal.sourceHistoryPreserved || []).join(" → ") || "ordinary typed Source"} is inferred from visible prefix ${impersonal.sourceHistoryInferredFromVisiblePrefix} · affective continuation is separate ${impersonal.affectiveContinuationIsSeparateOperation} · unlisted compatible Sources remain productive ${impersonal.unlistedCompatibleSourceRemainsProductive} · example identity authorizes route ${impersonal.exampleIdentityAuthorizesProductiveRoute}`,
+          );
+        }
+        if (operation.rootStockPatientiveFrame) {
+          const rootStock = operation.rootStockPatientiveFrame;
+          addPatientiveCue(
+            "lesson39-root-stock-foundation",
+            `typed ${rootStock.stockKind} Source ${rootStock.sourceStem} supplies stock ${rootStock.stockBase} · stock-formative vowel ${rootStock.stockFormativeVowel || "none"}, shortening applied ${rootStock.stockFormativeShorteningApplied} · selected allomorph ${rootStock.selectedAllomorph} from ${(rootStock.availableAllomorphs || []).join(" or ")} · a user choice is required only when lexical history leaves alternatives ${rootStock.allomorphChoiceRequired} · target ${rootStock.targetStem}, noun class ${rootStock.nounClass} · witnessed fact supplies a default but authorizes no route ${rootStock.witnessedFactSuppliesDefaultButDoesNotAuthorizeRoute} · compatible unlisted typed Sources remain productive ${rootStock.compatibleUnlistedTypedSourcesRemainProductive} · shape derives lexical meaning ${rootStock.lexicalMeaningDerivedFromShape} · example membership required ${rootStock.exampleMembershipRequired} · formula or surface authority accepted ${rootStock.copiedFormulaOrSurfaceAuthorityAccepted}`,
+          );
+          if (
+            rootStock.allomorphFamilyFrame
+            && rootStock.allomorphFamilyFrame.sourceFamily === "hua-stock"
+          ) {
+            const allomorph = rootStock.allomorphFamilyFrame;
+            addPatientiveCue(
+              "lesson39-root-stock-allomorphs",
+              `typed ${allomorph.sourceFamily} Source keeps the stock boundary and selects ${allomorph.selectedFormation} · available typed alternatives ${(allomorph.availableTypedAlternatives || []).join(" or ")} from the hua family ${(allomorph.huaFamilyAllomorphs || []).join(" or ")} · c is frequent ${allomorph.cIsFrequentHuaFormation}, ch is occasional ${allomorph.chIsOccasionalHuaFormation}, zero uses the stock directly as a nounstem ${allomorph.zeroUsesStockDirectlyAsNounstem} · vowel rule ${allomorph.vowelRealizationRule}, long stock formative shortened ${allomorph.longStockFormativeShortened}, ē-stock characteristic reading available ${allomorph.eStockOftenHasCharacteristicReading} · root role ${allomorph.rootRole}, downgraded nounstem Source ${allomorph.downgradedNounstemSourceFrame?.nounstem || "none"}, compound Source ${allomorph.compoundSourceFrame?.sourceStem || "none"} · referent ${allomorph.referentProfile?.referentKind || allomorph.referentProfile?.humanness || "not lexically fixed"} · Source readings ${(allomorph.sourceReadings || []).join(" or ") || "none typed"} · Result readings ${(allomorph.resultReadings || []).join(" or ") || "none typed"} · typed alternatives only ${allomorph.typedAlternativesOnly}, free spelling accepted ${allomorph.freeSpellingChoiceAccepted}, shape derives lexical meaning ${allomorph.lexicalMeaningDerivedFromShape}, example identity authorizes route ${allomorph.exampleIdentityAuthorizesRoute}`,
+            );
+          }
+          if (
+            rootStock.rootStockExtensionFrame
+            && [
+              "ihui-ahui-stock",
+              "ihui-ahui-root",
+              "ihui-ahui-root-or-stock",
+              "causative-root",
+              "bare-stock-agentive",
+              "unknown-source-deverbal-nounstem",
+            ].includes(rootStock.rootStockExtensionFrame.structuralFamily)
+          ) {
+            const extension = rootStock.rootStockExtensionFrame;
+            addPatientiveCue(
+              "lesson39-root-stock-extensions",
+              `typed ${extension.structuralFamily} keeps ${extension.stockOrRootFormation} and Source direction ${extension.selectedSourceAnalysis} · available historical analyses ${(extension.sourceAnalysisOptions || []).join(" or ") || "settled by the typed Source"}, genuine choice required ${extension.sourceAnalysisChoiceRequired} · related Source contrast ${extension.relatedSourceContrastFrame?.relatedSourceStem || "none"} remains distinct · causative object carrier ${extension.causativeSourceFrame?.internalObjectCarrier || "none"} proves deverbal history ${extension.causativeObjectCarrierProvesDeverbalHistory} · exact governing verbstem may remain unknown ${extension.exactSourceVerbstemMayRemainUnknown} without negating the nounstem ${extension.unknownSourceDoesNotNegateNounstem} · conjectural or documentary evidence ${extension.lexicalEvidenceFrame?.selectedReadingStatus || "none"} remains lexical · homophonous or related Sources stay distinct ${extension.homophonousOrRelatedSourcesRemainDistinct} · compatible unlisted i-hui or a-hui Sources remain productive ${extension.compatibleUnlistedIhuiAhuiSourcesRemainProductive} · surface selects history ${extension.surfaceShapeSelectsHistoricalSource}, English meaning authorizes route ${extension.englishMeaningAuthorizesRoute}, examples authorize route ${extension.examplesAuthorizeRoute}`,
+            );
+          }
+        }
+        if (operation.patientiveUseFrame) {
+          const use = operation.patientiveUseFrame;
+          addPatientiveCue(
+            "lesson39-patientive-use-and-reading",
+            `selected typed procedure ${use.selectedProcedure} remains one of ${(use.procedureInventory || []).join(", ")} · one lexical Source may license more than one procedure ${use.multipleProceduresMayBeLicensedForOneLexicalSource}, but this is universal for every Source ${use.multipleProceduresAreUniversalForEverySource} · each procedure still requires its own typed Source authorization ${use.eachProcedureRequiresItsOwnTypedSourceAuthorization} · the present exact Source settles the procedure ${use.currentExactTypedSourceSettlesProcedure}, so a contextual choice is required now ${use.contextualInterpretationChoiceRequired} and appears only when typed alternatives remain ${use.contextualInterpretationChoiceRequiredOnlyWhenTypedAlternativesRemain} · similar translations may cover distinct constructions ${use.synonymousTranslationMayCoverDistinctPatientiveConstructions} without guaranteeing identical meaning ${use.synonymousTranslationGuaranteesIdenticalMeaning} · differing formation may carry an idiomatic restriction ${use.differingFormationMayCarryIdiomaticRestriction} · translation selects the procedure ${use.translationSelectsProcedure} or authorizes structure ${use.translationAuthorizesStructure} · surface identity merges procedures ${use.surfaceIdentityMergesProcedures} · examples authorize a procedure ${use.examplesAuthorizeProcedure} · compatible unlisted typed Sources remain productive ${use.compatibleUnlistedTypedSourcesRemainProductive}`,
+          );
+        }
+        if (operation.impersonalPatientiveFamilyFrame) {
+          const family = operation.impersonalPatientiveFamilyFrame;
+          const role = ({
+            "lō-impersonal-patientive":
+              "lesson38-impersonal-patientive-lo",
+            "ō-or-o-hua-impersonal-patientive":
+              "lesson38-impersonal-patientive-o-ohua",
+            "hua-impersonal-patientive":
+              "lesson38-impersonal-patientive-hua",
+            "hua-lō-impersonal-patientive":
+              "lesson38-impersonal-patientive-hua-lo",
+          })[family.selectedFamily] || "";
+          if (role) {
+            addPatientiveCue(
+              role,
+              `exact active → impersonal → patientive chain preserved ${family.completeActiveImpersonalPatientiveChainPreserved} · typed ${family.typedSuffixFamily} Source ${family.impersonalSourceStem} removes ${family.removedMaterial} and yields ${family.patientiveTargetStem} · vowel behavior ${family.precedingVowelBehavior}, manual vowel choice ${family.huaVowelBehaviorIsUserChoice} · noun class ${family.nounClass}, manual class choice ${family.nounClassIsUserChoice} · layered hua-lō ${family.layeredHuaLoSource}, inner hua preserved ${family.innerHuaBoundaryPreserved}, outer lō only ${family.outerLoDeletesOnlyFinalOAndRetainsL}, deletion layer chosen by user ${family.deletionLayerSelectedByUser} · source operation ${family.sourceVoiceOperation} with prior tla layer ${family.sourceAlreadyCarriesTlaImpersonalLayer} and inherent analysis preserved ${family.inherentImpersonalAnalysisPreserved} · root + ya choice available ${family.rootPlusYaBoundaryAvailable}, selected ${family.selectedRootPlusYaRealization}, derived from typed boundary ${family.rootPlusYaChoiceDerivedFromTypedBoundary} · irregular nonactive analysis preserved ${family.typedIrregularNonactiveRealizationPreserved} · lexical reading requires typed Source or context ${family.lexicalReadingRequiresTypedSourceOrContext} · example membership required ${family.exampleStemMembershipRequired}`,
+            );
+          }
+        }
+        if (operation.impersonalReflexivePatientiveFrame) {
+          const reflexive = operation.impersonalReflexivePatientiveFrame;
+          addPatientiveCue(
+            "lesson38-reflexive-impersonal-patientive",
+            `exact owner-issued impersonal Result preserved ${reflexive.exactImpersonalVncResultIdentityPreserved} · active ${reflexive.activeReflexiveOrReciprocalAncestry} ancestry and complete object topology preserved ${reflexive.activeObjectTopologyPreserved} · shuntline ${reflexive.shuntlineReflexiveReciprocalCarrier} inherited automatically ${reflexive.shuntlineNeInheritedAutomatically} · projective objects preserved ${reflexive.projectiveObjectsPreserved} as ${(reflexive.carrierSequence || []).join(" + ") || "none"} · projective object distinguishes passive from impersonal ${reflexive.projectiveObjectDisambiguatesPassiveFromImpersonal} · surface overlap possible ${reflexive.passiveImpersonalSurfaceOverlapPossible} while analyses remain distinct ${reflexive.passiveAndImpersonalAnalysesRemainDistinct} · choose an analysis only when exact Source remains ambiguous ${reflexive.analysisChoiceOnlyWhenExactSourceRemainsAmbiguous} · manual ne insertion accepted ${reflexive.manualNeInsertionAccepted} · reflexivity reconstructed from nounstem surface ${reflexive.reflexivityReconstructedFromNounstemSurface}`,
+          );
+        }
+        if (operation.impersonalProjectivePatientiveFrame) {
+          const projective = operation.impersonalProjectivePatientiveFrame;
+          const role = ({
+            "lō": "lesson38-projective-impersonal-patientive-lo",
+            "ō": "lesson38-projective-impersonal-patientive-o",
+            "ō-hua": "lesson38-projective-impersonal-patientive-o",
+            "o-hua": "lesson38-projective-impersonal-patientive-o",
+            "hua": "lesson38-projective-impersonal-patientive-hua",
+          })[projective.typedSuffixFamily] || "";
+          if (role) {
+            addPatientiveCue(
+              role,
+              `exact projective impersonal VNC Result preserved ${projective.exactImpersonalVncResultIdentityPreserved} · active object topology preserved ${projective.activeObjectTopologyPreserved} as ${(projective.carrierSequence || []).join(" + ")} · direct patient carrier ${projective.directPatientCarrier} is ${projective.directPatientCarrierPosition} and nonhuman ${projective.nonhumanDirectObjectPreserved} · human recipient preserved ${projective.humanRecipientPreserved} · typed ${projective.typedSuffixFamily} Source ${projective.impersonalSourceStem} yields ${projective.patientiveTargetStem} · active final vowel ${projective.activeSourceFinalVowel || "not applicable"}, derived behavior ${projective.precedingVowelBehavior} · active long vowel preserved ${projective.activeLongVowelPreserved}, active final a replaced by short i ${projective.activeFinalAReplacedByShortI} · object placement selected by user ${projective.objectPlacementSelectedByUser} · vowel behavior selected by user ${projective.vowelBehaviorSelectedByUser} · lexical reading requires typed Source or context ${projective.lexicalReadingRequiresTypedSourceOrContext} · example membership required ${projective.exampleStemMembershipRequired}`,
+            );
+          }
+        }
+        if (operation.impersonalHumanSourcePatientiveFrame) {
+          const human = operation.impersonalHumanSourcePatientiveFrame;
+          const role = human.exceptionalHumanTeRetention
+            ? "lesson38-human-source-tla-hua-exceptions"
+            : ({
+              "lō": "lesson38-human-source-tla-lo",
+              "ō": "lesson38-human-source-tla-o",
+              "ō-hua": "lesson38-human-source-tla-o",
+              "o-hua": "lesson38-human-source-tla-o",
+              "hua": "lesson38-human-source-tla-hua-exceptions",
+            })[human.typedSuffixFamily] || "";
+          if (role) {
+            addPatientiveCue(
+              role,
+              `exact human-object impersonal VNC Result preserved ${human.exactImpersonalVncResultIdentityPreserved} · active carrier ${human.activeHumanObjectCarrier} and human referent ${human.activeHumanObjectReferent} · voice path ${(human.voiceOperationSequence || []).join(" → ")} · passive promotion ${human.passivePatientPromotionApplied}, promoted subject deleted by impersonalization ${human.passivePatientSubjectThenDeletedByImpersonalization}, direct active impersonalization blocked ${human.directImpersonalizationOfActiveBlocked} · impersonalized passive ${human.impersonalizedPassiveStem} → patientive ${human.patientiveTargetStem} with ${human.patientiveCarrier} · patientive referent ${human.patientiveSubjectReferentAnimacy} · passive patientive stays distinct ${human.passivePatientiveAnalysisRemainsDistinct} · nonhuman homonym requires another typed Source ${human.homonymousNonhumanTlaPatientiveRequiresDifferentTypedSource} · rare tē retention ${human.exceptionalHumanTeRetention} is licensed by typed lexical Source ${human.exceptionalRetentionLicensedByTypedLexicalSource} · carrier chosen by user ${human.carrierSelectedByUser} · route chosen by user ${human.voicePathSelectedByUser} · example membership required ${human.exampleStemMembershipRequired}`,
+            );
+          }
+        }
+        if (operation.patientiveHumanNonhumanContrastFrame) {
+          const contrast = operation.patientiveHumanNonhumanContrastFrame;
+          addPatientiveCue(
+            "lesson38-human-nonhuman-patientive-contrast",
+            `typed active Source ${contrast.activeSourceStem} with ${contrast.activeSourceValence} and ${contrast.sourceObjectTopology} selects ${contrast.selectedReading} · patientive carrier ${contrast.patientiveCarrier} refers to ${contrast.patientiveReferent} · regular human tla ${contrast.regularHumanTla}, anomalous nonhuman tē ${contrast.anomalousNonhumanTe}, double-object passive nonhuman theme ${contrast.doubleObjectPassiveNonhumanTheme} · genuine choice required ${contrast.choiceRequired}; otherwise valence and object topology decide automatically · tē and tla alone decide neither transitivity nor referent ${contrast.teAndTlaDoNotIndependentlyDecideTransitivityOrReferent} · examples authorize the route ${contrast.examplesAuthorizeRoute}`,
+          );
+        }
+        if (operation.patientiveActiveActionContrastFrame) {
+          const overlap = operation.patientiveActiveActionContrastFrame;
+          addPatientiveCue(
+            "lesson38-patientive-active-action-translation-overlap",
+            `patientive and ${overlap.activeActionConstruction} may share an English translation ${overlap.englishTranslationMayOverlap}, but their constructions remain distinct ${overlap.constructionsRemainDistinct} and their canonical Results remain distinct ${overlap.canonicalResultsRemainDistinct} · translation merges analyses ${overlap.sharedEnglishTranslationMergesAnalyses} and authorizes analysis ${overlap.translationAuthorizesAnalysis} · choose an analysis only when typed context leaves a real ambiguity ${overlap.userSelectsAnalysisOnlyWhenTypedContextLeavesRealAmbiguity}`,
+          );
+        }
+        if (operation.compoundSourcePatientiveFrame) {
+          const compound = operation.compoundSourcePatientiveFrame;
+          addPatientiveCue(
+            "lesson38-compound-source-patientive",
+            `exact compound VNC Result and Source analysis preserved ${compound.exactResultIdentityPreserved && compound.exactSourceAnalysisIdentityPreserved} · typed Source ${compound.embedStem} → ${compound.matrixStem} stays embed before matrix · selected relation ${compound.selectedRelation} · Nahuatl order ${compound.nahuatlOrder}; English reading order ${compound.englishReadingOrder} · reversal is reading only ${compound.englishReversalIsReadingOnly} · constituent order chosen by user ${compound.constituentOrderSelectedByUser}; relation is a genuine choice ${compound.relationIsGenuineUserChoice} · compound reconstructed from surface ${compound.compoundReconstructedFromSurface} · examples authorize route ${compound.examplesAuthorizeRoute}`,
+          );
+        }
+        if (operation.passivePatientiveFamilyFrame) {
+          const family = operation.passivePatientiveFamilyFrame;
+          const role = ({
+            "lō-passive-patientive": "lesson37-passive-patientive-lo",
+            "ō-passive-patientive": "lesson37-passive-patientive-o",
+            "hua-passive-patientive": "lesson37-passive-patientive-hua",
+          })[family.selectedFamily] || "";
+          if (role) {
+            addPatientiveCue(
+              role,
+              `exact active → passive → patientive chain preserved ${family.completeActivePassivePatientiveChainPreserved} · typed ${family.typedSuffixFamily} Source ${family.passiveSourceStem} removes ${family.removedMaterial} and yields ${family.patientiveTargetStem} · vowel behavior ${family.precedingVowelBehavior} · noun class ${family.nounClass} · active Source ${family.activeSourceStem} with valence ${family.activeSourceValence} and object pattern ${family.sourceObjectPattern} · patient ${family.patientReferent}, animacy ${family.targetAnimacy}, humanness ${family.targetHumanness} · unexpected owner-issued source blocks the route ${family.unexpectedOrIrregularSourceBlocksPatientive} · lexical or figurative reading requires typed Source or context ${family.lexicalizedOrFigurativeReadingRequiresTypedSourceOrContext} · English intuition authorizes agentive reanalysis ${family.englishSemanticIntuitionAuthorizesAgentiveReanalysis} · example membership required ${family.exampleStemMembershipRequired}`,
+            );
+          }
+          const reflexive = family.reflexivePassivePatientiveFrame;
+          if (reflexive) {
+            addPatientiveCue(
+              "lesson37-reflexive-passive-patientive",
+              `active reflexive ancestry preserved ${reflexive.activeReflexiveAncestryPreserved} · passive shuntline ${reflexive.shuntlineReflexiveCarrier} inherited automatically ${reflexive.shuntlineReflexiveInheritedAutomatically} · manual ne insertion accepted ${reflexive.manualNeInsertionAccepted} · patientive ${reflexive.patientiveTargetStem} refers to ${reflexive.patientReferent}, animacy ${reflexive.targetAnimacy}, humanness ${reflexive.targetHumanness} · compositional reading ${reflexive.compositionalReading} · lexical readings ${(reflexive.lexicalReadings || []).join(" or ") || "require typed Source or context"} · reflexivity reconstructed from surface ${reflexive.reflexivityReconstructedFromSurface}`,
+            );
+          }
+          const doubleObject = family.doubleObjectPassivePatientiveFrame;
+          if (doubleObject) {
+            addPatientiveCue(
+              "lesson37-double-object-passive-patientive",
+              `active object roles retained ${doubleObject.activeObjectEvidence?.length || 0} · promoted patient ${doubleObject.promotedObjectEvidence?.objectId || doubleObject.patientiveReferent} → patientive referent ${doubleObject.patientiveReferent} · surviving internal object ${doubleObject.retainedObjectPattern} ${doubleObject.retainedObjectCarrier || "silent"} · exactly one surviving object retained ${doubleObject.onlyPassiveSurvivingObjectRetained} · tē retention or deletion licensed ${doubleObject.humanObjectDeletionLicensed} with selected realization ${doubleObject.selectedHumanObjectRealization} · arbitrary object deletion accepted ${doubleObject.arbitraryObjectDeletionAccepted} · roles inferred from prefix order ${doubleObject.participantRolesInferredFromPrefixOrder} · lexical reading requires typed Source or context ${doubleObject.lexicalReadingRequiresTypedSourceOrContext}`,
+            );
+          }
+        }
+      }
+      const lesson39CharacteristicPatientiveFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind === "patientive"
+        && candidate?.operationFrame
+          ?.characteristicPatientiveFoundationFrame?.authorizationStatus
+            === "authorized"
+      )) || null;
+      if (lesson39CharacteristicPatientiveFrame) {
+        const characteristic = lesson39CharacteristicPatientiveFrame
+          .operationFrame.characteristicPatientiveFoundationFrame;
+        const cueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index
+        ).find(index => /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some(annotation => (
+            index >= annotation.start && index < annotation.end
+          )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson39-characteristic-patientive-foundation",
+            `exact owner-issued ordinary NNC Result preserved ${characteristic.exactOwnerIssuedOrdinaryNncResultIdentityPreserved} · Source identity ${characteristic.sourceIdentityStem} and predicate ${characteristic.predicateStem} remain distinct · typed embed ${characteristic.characteristicEmbedStem} enters abundant-ownerhood matrix ${characteristic.matrixStem} as ${characteristic.incorporatedRole} · path ${characteristic.compoundSourcePath} · y assimilation environment ${characteristic.yAssimilationEnvironment}, applied ${characteristic.yAssimilationApplied}, exception ${characteristic.yAssimilationException || "none"} · target ${characteristic.characteristicPatientiveTargetStem} · noun class ${characteristic.nounClass}, subclass ${characteristic.nounSubclass} · possessive state uses 0-0 ${characteristic.possessiveStateUsesZeroZero} and shortens final o ${characteristic.possessiveStateShortensFinalO} · selected reading ${characteristic.selectedReading}, narrow lexical fact ${characteristic.lexicalReadingFact?.reading || "none"} · unlisted compatible NNC Results remain productive ${characteristic.unlistedCompatibleNncResultRemainsProductive} · copied Result accepted ${characteristic.copiedResultAccepted} · example identity authorizes route ${characteristic.exampleIdentityAuthorizesProductiveRoute}`,
+            "carrier",
+            "lesson39-characteristic-patientive-foundation",
+          );
+        }
+        const contrast = lesson39CharacteristicPatientiveFrame
+          .operationFrame.characteristicOwnerhoodContrastFrame;
+        if (contrast?.authorizationStatus === "authorized") {
+          const contrastCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(contrastCueIndex)) {
+            addAnnotation(
+              contrastCueIndex,
+              contrastCueIndex + 1,
+              "lesson39-characteristic-ownerhood-contrasts",
+              `exact ordinary NNC Result preserved ${contrast.exactOwnerIssuedOrdinaryNncResultIdentityPreserved} · selected ${contrast.selectedReading}: ${contrast.selectedRelation} from ${(contrast.compositionalReadingOptions || []).join(" or ")} · relation is a genuine user choice ${contrast.readingRelationIsGenuineUserChoice}; Source shape selects it ${contrast.sourceShapeAloneSelectsReading}; translation merges analyses ${contrast.translationSelectsOrMergesAnalysis} · embedded ownerhood ${contrast.embeddedOwnerhoodKind}${contrast.embeddedOwnerhoodMatrixConstituent ? ` in ${contrast.embeddedOwnerhoodMatrixConstituent}` : ""} remains separate from outer ${contrast.outerOwnerhoodKind} matrix ${contrast.outerOwnerhoodMatrix}: ${contrast.ordinaryAndAbundantOwnerhoodAnalysesRemainDistinct} · selected narrow reading ${contrast.selectedLexicalReading || "none"}, attested for this relation ${contrast.selectedReadingIsAttestedLexicalFact}, authorizes the route ${contrast.lexicalFactAuthorizesProductiveRoute} · reconstructed history is reading evidence only ${contrast.reconstructedHistoryIsReadingEvidenceOnly} · traditional spelling authorizes Source reanalysis ${contrast.traditionalSpellingAuthorizesSourceReanalysis} · compatible unlisted Sources remain productive ${contrast.compatibleUnlistedSourceRemainsProductive}`,
+              "carrier",
+              "lesson39-characteristic-ownerhood-contrasts",
+            );
+          }
+        }
+        const organic = lesson39CharacteristicPatientiveFrame
+          .operationFrame.characteristicOrganicPossessionFrame;
+        if (organic?.authorizationStatus === "authorized") {
+          const organicCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(organicCueIndex)) {
+            addAnnotation(
+              organicCueIndex,
+              organicCueIndex + 1,
+              "lesson39-characteristic-organic-possession",
+              `exact ordinary NNC Result preserved ${organic.exactOwnerIssuedOrdinaryNncResultIdentityPreserved} · selected organic relation by ${organic.relationSelectionAuthority} · Result state ${organic.resultState} is possessive-only ${organic.organicPossessionIsPossessiveOnly} and derived automatically ${organic.resultStateDerivedAutomatically} · possessor ${organic.possessor} is the ${organic.possessorParticipantRole}; possessum ${organic.possessumSubject} is the ${organic.possessumParticipantRole} · number options ${(organic.possessumNumberOptions || []).join(" or ")} · living or nonliving whole allowed ${organic.possessorMayBeLivingOrNonliving} · detachment alone selects the relation ${organic.detachmentPossibilityAloneSelectsRelation} · ordinary ambiguity remains ${organic.ordinaryPartWholePossessionMayRemainAmbiguous}; formal contrast is universal ${!organic.formalOrganicAdventitiousContrastIsNotUniversal} · yō shape authorizes organic possession ${organic.yōShapeAloneAuthorizesOrganicPossession}; body-part meaning authorizes it ${organic.bodyPartMeaningAloneAuthorizesOrganicPossession}; Source shape selects it ${organic.sourceShapeSelectsPossessionRelation} · lexical distribution ${organic.lexicalDistributionFact?.contrastStatus || "unlisted"} is reading evidence only and authorizes the route ${organic.lexicalFactAuthorizesProductiveRoute} · compatible unlisted Sources remain productive ${organic.compatibleUnlistedSourceRemainsProductive}`,
+              "carrier",
+              "lesson39-characteristic-organic-possession",
+            );
+          }
+        }
+        const preteritAgentiveCharacteristic =
+          lesson39CharacteristicPatientiveFrame.operationFrame
+            .characteristicPreteritAgentiveFrame;
+        if (
+          preteritAgentiveCharacteristic?.authorizationStatus
+            === "authorized"
+        ) {
+          const preteritAgentiveCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(preteritAgentiveCueIndex)) {
+            addAnnotation(
+              preteritAgentiveCueIndex,
+              preteritAgentiveCueIndex + 1,
+              "lesson39-characteristic-adventitious-possession",
+              `exact preterit-agentive NNC Result preserved ${preteritAgentiveCharacteristic.exactOwnerIssuedPreteritAgentiveNncResultIdentityPreserved} · embed ${preteritAgentiveCharacteristic.embeddedGeneralUseStem} is ${preteritAgentiveCharacteristic.embeddedNounstemKind}; matrix ${preteritAgentiveCharacteristic.matrixNounstem} supplies ${preteritAgentiveCharacteristic.matrixRole} · state ${preteritAgentiveCharacteristic.resultState} from ${(preteritAgentiveCharacteristic.resultStateOptions || []).join(" or ")} remains a genuine choice ${preteritAgentiveCharacteristic.stateChoiceIsGenuineUserChoice} · adventitious possession applies ${preteritAgentiveCharacteristic.adventitiousPossessionAnalysisApplies}; organic possession applies ${preteritAgentiveCharacteristic.organicPossessionAnalysisApplies}; naca flesh analysis applies ${preteritAgentiveCharacteristic.nacaFleshEmbedAnalysisApplies} · initial tō is a possessor ${preteritAgentiveCharacteristic.initialTōIsPossessorPronoun}; spelling authorizes reanalysis ${preteritAgentiveCharacteristic.spellingAloneAuthorizesPossessionReanalysis} · compositional readings ${(preteritAgentiveCharacteristic.compositionalReadings || []).join(" or ")} · lexical readings ${(preteritAgentiveCharacteristic.lexicalReadings || []).join(", ") || "none"} authorize the productive route ${preteritAgentiveCharacteristic.lexicalFactAuthorizesProductiveRoute} · compatible unlisted preterit-agentive Sources remain productive ${preteritAgentiveCharacteristic.compatibleUnlistedPreteritAgentiveSourcesRemainProductive} · principal selection belongs to the clause-relation owner ${preteritAgentiveCharacteristic.supplementationPrincipalChoiceBelongsToClauseRelationOwner}`,
+              "carrier",
+              "lesson39-characteristic-adventitious-possession",
+            );
+          }
+        }
+      }
+      const lesson38PatientiveMatrixCompoundFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind
+          === "patientive-matrix-continuation"
+        && candidate?.operationFrame?.patientiveMatrixCompoundFrame
+          ?.authorizationStatus === "authorized"
+      )) || null;
+      if (lesson38PatientiveMatrixCompoundFrame) {
+        const compound = lesson38PatientiveMatrixCompoundFrame
+          .operationFrame.patientiveMatrixCompoundFrame;
+        const cueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index
+        ).find(index => /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some(annotation => (
+            index >= annotation.start && index < annotation.end
+          )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson38-patientive-matrix-compound",
+            `exact owner-issued patientive NNC Result preserved ${compound.exactPatientiveResultIdentityPreserved} with exact VNC ancestry ${compound.verbalAncestryPreserved} · selected typed embed ${compound.embedStem} of Source class ${compound.embedSourceClass} stands before patientive matrix ${compound.matrixStem} · selected grammatical relation ${compound.selectedRelation} · automatic boundaries ${compound.boundaryBehaviorDerivedAutomatically} produce ${compound.compoundStem} and the matrix governs Result class ${compound.matrixGovernsResultClass} · user chooses embed and genuine relation ${compound.embedAndRelationSelectedByUser}, not the matrix identity ${compound.patientiveMatrixSelectedByUser} · compositional meaning remains available ${compound.compositionalMeaningAvailable}; narrower meaning requires typed Source or context ${compound.lexicalMeaningRequiresTypedSourceOrContext} · copied Result, formula, surface, and example identity authorize nothing`,
+            "carrier",
+            "lesson38-patientive-matrix-compound",
+          );
+        }
+        const lesson39CueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index
+        ).find(index => /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some(annotation => (
+            index >= annotation.start && index < annotation.end
+          )));
+        if (Number.isInteger(lesson39CueIndex)) {
+          addAnnotation(
+            lesson39CueIndex,
+            lesson39CueIndex + 1,
+            "lesson39-patientive-compound-matrices",
+            `exact patientive matrix Result preserved ${compound.exactPatientiveMatrixIdentityPreserved} with canonical Source analysis ${compound.canonicalSourceAnalysisPreserved} and exact VNC ancestry ${compound.verbalAncestryPreserved} · user selects typed embed ${compound.embedStem} and genuine relation ${compound.selectedRelation}; patientive matrix ${compound.matrixStem} is reselected ${compound.patientiveMatrixSelectedByUser} or rebuilt from surface spelling ${compound.matrixReconstructedFromSurfaceSpelling} · embed-before-matrix order ${(compound.sourceConstituentOrder || []).join(" then ")} and automatic boundary ${compound.boundaryBehaviorDerivedAutomatically} produce ${compound.compoundStem}; matrix governs Result class ${compound.matrixGovernsResultClass} · derivational history remains necessary for final shape and meaning ${compound.derivationalHistoryRequiredForFinalShapeAndMeaning}; recursive history stays typed ${compound.recursiveTypedSourceHistoryPreserved}; sound changes belong to that history ${compound.sourceAssimilationBelongsToTypedHistory} · compatible unlisted patientive matrices remain productive ${compound.compatibleUnlistedPatientiveMatricesRemainProductive}; narrower meaning requires typed Source or context ${compound.lexicalMeaningRequiresTypedSourceOrContext} · copied Result, formula, surface, and examples authorize nothing`,
+            "carrier",
+            "lesson39-patientive-compound-matrices",
+          );
+        }
+      }
+      const lesson39PatientiveEmbedCompoundFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind
+          === "patientive-embed-continuation"
+        && candidate?.operationFrame?.patientiveEmbedCompoundFrame
+          ?.authorizationStatus === "authorized"
+      )) || null;
+      if (lesson39PatientiveEmbedCompoundFrame) {
+        const compound = lesson39PatientiveEmbedCompoundFrame
+          .operationFrame.patientiveEmbedCompoundFrame;
+        const cueIndex = Array.from(
+          { length: text.length },
+          (_, index) => index
+        ).find(index => /[^#+()\-]/u.test(text[index] || "")
+          && !annotations.some(annotation => (
+            index >= annotation.start && index < annotation.end
+          )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson39-patientive-compound-embeds",
+            `exact owner-issued patientive NNC Result preserved ${compound.exactPatientiveResultIdentityPreserved} · patientive ${compound.patientiveEmbedStem} serves as the typed embed in a ${compound.compoundTargetKind.toUpperCase()} compound · matrix ${compound.matrixStem} remains separately typed · relation ${compound.selectedRelation} is the genuine user choice · patientive Source family ${compound.patientiveSourceFamily}, noun class ${compound.patientiveEmbedNounClass}, Source class ${compound.patientiveEmbedSourceClass}, and derivation remain attached · automatic boundary produces ${compound.compoundStem} · nominal and verbal compound targets remain available ${compound.nominalAndVerbalCompoundTargetsAvailable} · nounstem string accepted ${compound.nounstemStringAccepted} · copied Result, formula, surface, and example identity authorize nothing · compatible unlisted patientive Results remain productive ${compound.compatibleUnlistedPatientiveResultsRemainProductive}`,
+            "carrier",
+            "lesson39-patientive-compound-embeds",
+          );
+        }
+        if (compound.characteristicMatrixOmissionAvailable === true) {
+          const characteristicCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(characteristicCueIndex)) {
+            addAnnotation(
+              characteristicCueIndex,
+              characteristicCueIndex + 1,
+              "lesson39-life-heart-embed-contrast",
+              `exact characteristic-patientive Result preserved ${compound.completeCharacteristicPatientiveResultPreserved} · full embed ${compound.characteristicMatrixFullEmbedStem} and omitted-matrix embed ${compound.characteristicMatrixOmittedEmbedStem} remain licensed typed alternatives; selected realization ${compound.characteristicMatrixRealization} is the genuine user choice · the omitted form preserves the full characteristic meaning ${compound.fullCharacteristicMeaningPreservedWhenMatrixIsOmitted} · Source identity remains typed against surface reanalysis ${compound.typedSourceIdentityPreservedAgainstSurfaceReanalysis}; initial tō belongs to the verbstem ${compound.initialTōBelongsToTypedVerbstem} and is a possessor pronoun ${compound.initialTōIsPossessorPronoun}; preterit-agentive num1 connector ${compound.preteritAgentiveNum1Connector} · frequency is reading-only ${compound.frequencyFactIsReadingOnly}; homophonous surfaces merge Sources ${!compound.homophonousSurfaceDoesNotMergeTypedSources} · examples, strings, copies, formulas, surfaces, and translations authorize nothing`,
+              "carrier",
+              "lesson39-life-heart-embed-contrast",
+            );
+          }
+        }
+        const ownerhood = compound.patientiveOwnerhoodFoundationFrame;
+        if (ownerhood?.authorizationStatus === "authorized") {
+          const ownerhoodCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(ownerhoodCueIndex)) {
+            addAnnotation(
+              ownerhoodCueIndex,
+              ownerhoodCueIndex + 1,
+              "lesson39-patientive-ownerhood-foundation",
+              `exact owner-issued patientive Result preserved ${ownerhood.exactPatientiveResultIdentityPreserved} as an object complement · Source state ${ownerhood.patientiveSourceState}; licensed Source-state alternatives ${(ownerhood.patientiveSourceStateAlternatives || []).join(" or ")} · discarded patientive subject ${ownerhood.discardedPatientiveSubjectReferenceId} is ${ownerhood.discardedPatientiveSubjectRepresentation} and shares referent identity with matrix object ${ownerhood.matrixObjectReferenceId}: ${ownerhood.discardedSubjectCorefersWithMatrixObject} · referent identity follows automatically ${ownerhood.referentIdentityDerivedAutomatically} · typed matrix ${ownerhood.matrixStem} class ${ownerhood.matrixVerbClass} valence ${ownerhood.matrixValence} remains separate; perception matrices are licensed ${ownerhood.perceptionMatrixIsLicensed} and compatible unlisted perception matrices remain productive ${ownerhood.compatibleUnlistedPerceptionMatricesRemainProductive} · user chooses the matrix and genuine complement relation, not a reconstructed patientive state · copied Result, formula, surface, meaning, and examples authorize nothing`,
+              "carrier",
+              "lesson39-patientive-ownerhood-foundation",
+            );
+          }
+        }
+        const licensedMatrix =
+          compound.patientiveLicensedMatrixComplementFrame;
+        if (licensedMatrix?.authorizationStatus === "authorized") {
+          const licensedMatrixCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(licensedMatrixCueIndex)) {
+            addAnnotation(
+              licensedMatrixCueIndex,
+              licensedMatrixCueIndex + 1,
+              "lesson39-patientive-ownerhood-hua",
+              `exact owner-issued absolutive patientive Result preserved ${licensedMatrix.exactPatientiveResultIdentityPreserved} as an object complement · patientive Source ${licensedMatrix.patientiveSourceIdentityStem} keeps morphemic boundaries ${(licensedMatrix.patientiveSourceMorphemicBoundaries || []).join(" + ")}, VNC ancestry ${Boolean(licensedMatrix.canonicalPatientiveVncResult)}, nonspecific-human object history ${licensedMatrix.nonspecificHumanObjectHistoryPreserved}, and compound history ${licensedMatrix.compoundPatientiveEmbedHistoryPreserved} · typed matrix ${licensedMatrix.matrixStem} class ${licensedMatrix.matrixVerbClass} valence ${licensedMatrix.matrixValence} has analysis ${licensedMatrix.matrixSemanticFamily} and complement reading ${licensedMatrix.complementKind} · selected matrix object ${licensedMatrix.matrixObjectReferenceId} is ${licensedMatrix.matrixObjectKind || "specific"} at the ${licensedMatrix.matrixObjectGovernor || "directive"} layer; reflexive coreference preserved ${licensedMatrix.reflexiveMatrixObjectCoreferencePreserved}; applicative coreference preserved ${licensedMatrix.applicativeMatrixObjectCoreferencePreserved}; discarded patientive subject shares that object referent ${licensedMatrix.discardedSubjectCorefersWithMatrixObject} · the five Canvas matrices authorize by stem membership ${licensedMatrix.matrixStemMembershipAuthorizesRoute}; compatible unlisted typed matrices remain productive ${licensedMatrix.compatibleUnlistedTypedMatricesRemainProductive} · lexical readings require typed Source or context ${licensedMatrix.lexicalReadingRequiresTypedSourceOrContext} · copies, nounstem strings, formulas, surfaces, translations, and examples authorize nothing`,
+              "carrier",
+              "lesson39-patientive-ownerhood-hua",
+            );
+          }
+        }
+        const tlaniDesiderative =
+          compound.patientiveTlaniDesiderativeFrame;
+        if (tlaniDesiderative?.authorizationStatus === "authorized") {
+          const tlaniCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(tlaniCueIndex)) {
+            addAnnotation(
+              tlaniCueIndex,
+              tlaniCueIndex + 1,
+              "lesson39-patientive-ownerhood-yoa",
+              `exact owner-issued absolutive patientive Result preserved ${tlaniDesiderative.exactPatientiveResultIdentityPreserved} with Source ${tlaniDesiderative.patientiveSourceIdentityStem}, boundaries ${(tlaniDesiderative.patientiveSourceMorphemicBoundaries || []).join(" + ")}, and exact VNC ancestry ${tlaniDesiderative.completePatientiveSourceAndVncAncestryPreserved} · short-a matrix ${tlaniDesiderative.matrixStem} means desire someone or something to become, or be regarded as, the patientive referent and remains distinct from long-ā ${tlaniDesiderative.contrastingLongAStem}, ${tlaniDesiderative.contrastingLongAReading} · this lexical matrix occurs only in the matrix subposition ${tlaniDesiderative.onlyLicensedAsMatrixSubpositionInThisFormation} · desired object ${tlaniDesiderative.desiredObjectReferenceId} is ${tlaniDesiderative.desiredObjectKind}; carrier ${tlaniDesiderative.objectCarrier} follows automatically from typed participant structure ${tlaniDesiderative.objectCarrierDerivedFromTypedParticipantStructure}; reflexive coreference ${tlaniDesiderative.reflexiveSubjectAndDesiredHumanCoreferential} · upstream patientive procedure remains distinct and preserved ${tlaniDesiderative.upstreamPatientiveProcedurePreservedAutomatically} · compatible unlisted patientive Results remain productive ${tlaniDesiderative.compatibleUnlistedPatientiveResultsRemainProductive}; idiomatic readings require typed lexical Source or context ${tlaniDesiderative.idiomaticReadingRequiresTypedLexicalSourceOrContext} · copies, nounstem strings, formulas, surfaces, translations, and examples authorize nothing`,
+              "carrier",
+              "lesson39-patientive-ownerhood-yoa",
+            );
+          }
+        }
+        const possessiveToca =
+          compound.patientivePossessiveTocaFrame;
+        if (possessiveToca?.authorizationStatus === "authorized") {
+          const possessiveTocaCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(possessiveTocaCueIndex)) {
+            addAnnotation(
+              possessiveTocaCueIndex,
+              possessiveTocaCueIndex + 1,
+              "lesson39-patientive-ownerhood-continuation",
+              `exact owner-issued possessive patientive Result preserved ${possessiveToca.exactPatientiveResultIdentityPreserved} with Source ${possessiveToca.patientiveSourceIdentityStem}, possessor ${possessiveToca.patientiveSourcePossessor}, boundaries ${(possessiveToca.patientiveSourceMorphemicBoundaries || []).join(" + ")}, and exact VNC ancestry ${possessiveToca.completePatientiveSourceAndVncAncestryPreserved} · typed toca matrix analysis ${possessiveToca.matrixLexicalAnalysis} and pretending reading remain separate · the Source possessor changes automatically from ${possessiveToca.possessorSourceCase} ${possessiveToca.possessorSourceRole} to ${possessiveToca.possessorTargetCase} ${possessiveToca.possessorTargetRole}; object ${possessiveToca.transformedObjectId} is ${possessiveToca.transformedObjectKind} person ${possessiveToca.transformedObjectPerson} at the ${possessiveToca.transformedObjectGovernor} layer · single-object position count ${possessiveToca.sourceValencePositionCount} becomes ${possessiveToca.targetValencePositionCount} without a suffix ${possessiveToca.valenceInflationWithoutSuffix}; ordinary valence principle violated ${possessiveToca.ordinaryValencePrincipleViolated} · reflexive follows coreference ${possessiveToca.reflexiveWhenPossessorCorefersWithMatrixSubject}; otherwise projective ${possessiveToca.projectiveWhenPossessorDoesNotCorefer} · an inner ye patientive compound remains allowed ${possessiveToca.compoundYeMatrixPatientiveEmbedAllowed} · compatible unlisted patientive Results remain productive ${possessiveToca.compatibleUnlistedPatientiveResultsRemainProductive}; lexical readings require typed Source or context ${possessiveToca.lexicalReadingRequiresTypedSourceOrContext} · copies, nounstem strings, formulas, surfaces, translations, and examples authorize nothing`,
+              "carrier",
+              "lesson39-patientive-ownerhood-continuation",
+            );
+          }
+        }
+        const possessiveTlaniCausative =
+          compound.patientivePossessiveTlaniCausativeFrame;
+        if (possessiveTlaniCausative?.authorizationStatus === "authorized") {
+          const possessiveTlaniCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(possessiveTlaniCueIndex)) {
+            addAnnotation(
+              possessiveTlaniCueIndex,
+              possessiveTlaniCueIndex + 1,
+              "lesson39-patientive-ownerhood-extended",
+              `exact owner-issued possessive patientive Result preserved ${possessiveTlaniCausative.exactPatientiveResultIdentityPreserved} with Source ${possessiveTlaniCausative.patientiveSourceIdentityStem}, possessor ${possessiveTlaniCausative.patientiveSourcePossessor}, boundaries ${(possessiveTlaniCausative.patientiveSourceMorphemicBoundaries || []).join(" + ")}, and VNC ancestry ${possessiveTlaniCausative.completePatientiveSourceAndVncAncestryPreserved} · short-a matrix ${possessiveTlaniCausative.matrixStem} is a type-three causative verbstem, not a suffix, and remains distinct from long-ā ${possessiveTlaniCausative.contrastingLongAStem} · the Source possessor changes automatically from ${possessiveTlaniCausative.possessorSourceCase} ${possessiveTlaniCausative.possessorSourceRole} to ${possessiveTlaniCausative.possessorTargetCase} ${possessiveTlaniCausative.possessorTargetRole}; causee ${possessiveTlaniCausative.transformedCausativeObjectId} is ${possessiveTlaniCausative.transformedCausativeObjectKind} person ${possessiveTlaniCausative.transformedCausativeObjectPerson} at the ${possessiveTlaniCausative.transformedCausativeObjectGovernor} layer and must be mainline ${possessiveTlaniCausative.causativeObjectMustBeMainline} · the exact patientive Source object history is inherited automatically ${possessiveTlaniCausative.originalPatientiveObjectHistoryInheritedAutomatically} and becomes shuntline ${possessiveTlaniCausative.originalObjectBecomesShuntline}; reciprocal ne follows the mainline causee ${possessiveTlaniCausative.reciprocalNeFollowsMainlineCausativeObject} · patientive l plus matrix tl realizes as l-l ${possessiveTlaniCausative.patientiveLPlusTlRealizesAsLPlusL} while the fuller Source analysis remains attached · passive and impersonal continue through the canonical voice owner ${possessiveTlaniCausative.passiveAndImpersonalUseCanonicalVoiceOwner} · type two and type three may overlap or differ in meaning but remain distinct ${possessiveTlaniCausative.typeTwoTypeThreeComparisonFrame?.typeTwoAndTypeThreeRemainDistinct} · compatible unlisted patientive Results remain productive ${possessiveTlaniCausative.compatibleUnlistedPatientiveResultsRemainProductive}; copies, nounstem strings, formulas, surfaces, translations, and examples authorize nothing`,
+              "carrier",
+              "lesson39-patientive-ownerhood-extended",
+            );
+          }
+        }
+        const patientiveIncorporatedObject =
+          compound.patientiveIncorporatedObjectFrame;
+        if (patientiveIncorporatedObject?.authorizationStatus
+          === "authorized") {
+          const incorporatedObjectCueIndex = Array.from(
+            { length: text.length },
+            (_, index) => index
+          ).find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+          if (Number.isInteger(incorporatedObjectCueIndex)) {
+            addAnnotation(
+              incorporatedObjectCueIndex,
+              incorporatedObjectCueIndex + 1,
+              "lesson39-patientive-incorporated-objects",
+              `exact owner-issued possessive patientive Result preserved ${patientiveIncorporatedObject.exactPatientiveResultIdentityPreserved} with Source ${patientiveIncorporatedObject.patientiveSourceIdentityStem}, possessor ${patientiveIncorporatedObject.patientiveSourcePossessor}, and VNC ancestry ${patientiveIncorporatedObject.completePatientiveSourceAndVncAncestryPreserved} · patientive ${patientiveIncorporatedObject.patientiveEmbedStem} is the incorporated object inside the verbstem ${patientiveIncorporatedObject.incorporatedObjectInsideVerbstem}, while its possessor becomes the external ${patientiveIncorporatedObject.possessorTargetRole} in ${patientiveIncorporatedObject.possessorTargetCase} case · the incorporated object occupies an external valence position ${patientiveIncorporatedObject.incorporatedObjectOccupiesExternalValencePosition}; the external object is ${patientiveIncorporatedObject.transformedApplicativeObjectKind} person ${patientiveIncorporatedObject.transformedApplicativeObjectPerson} at the ${patientiveIncorporatedObject.transformedApplicativeObjectGovernor} layer · matrix ${patientiveIncorporatedObject.matrixStem} keeps boundaries ${(patientiveIncorporatedObject.matrixMorphemicBoundaries || []).join(" + ")} and source/target valence ${patientiveIncorporatedObject.sourceValencePositionCount}/${patientiveIncorporatedObject.targetValencePositionCount} without an applicative suffix ${patientiveIncorporatedObject.applicativeSuffixAdded} · the internal and external objects remain distinct and the Canvas valence exception is automatic · compatible unlisted typed matrices remain productive ${patientiveIncorporatedObject.compatibleUnlistedTypedMatricesRemainProductive}; matrix spelling, examples, nounstem strings, copied Results, formulas, surfaces, and translations authorize nothing`,
+              "carrier",
+              "lesson39-patientive-incorporated-objects",
+            );
+          }
+        }
+      }
+      const lesson35AgentiveEmbedFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-nominal-construction-result-frame"
+        && candidate?.sourceAuthorizationFrame?.lexicalFacts
+          ?.agentiveEmbed === true
+      )) || null;
+      if (lesson35AgentiveEmbedFrame) {
+        const facts = lesson35AgentiveEmbedFrame
+          .sourceAuthorizationFrame.lexicalFacts;
+        const captured = facts.capturedEmbedResult;
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson35-agentive-embeds-and-affectives",
+            `owner-issued general-use agentive ${captured?.operationFrame?.targetStems?.generalUse || facts.capturedEmbedResult?.formulaRealization || "typed Source"} is recaptured by exact identity · Source class ${facts.capturedEmbedSourceClass} ${facts.capturedEmbedSubclass} · cā boundary and participants remain inside the captured Result · canonical target ${lesson35AgentiveEmbedFrame.constructionKind} · affective reading ${lesson35AgentiveEmbedFrame.operationFrame?.semanticReading || "not selected"} · copied strings and example matrices authorize nothing`,
+            "carrier",
+            "lesson35-agentive-embeds-and-affectives",
+          );
+        }
+      }
+      const lesson35NominalSourceFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].map(candidate => (
+        candidate?.sourceAuthorizationFrame?.lexicalFacts
+          ?.lesson35OldPersonNominalSourceFrame
+      )).find(Boolean) || null;
+      if (lesson35NominalSourceFrame) {
+        const role = lesson35NominalSourceFrame.family.startsWith("old-woman")
+          ? "lesson35-old-woman-agentive-family"
+          : "lesson35-old-man-and-drum-source-contrast";
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            role,
+            `typed nominal Source ${lesson35NominalSourceFrame.sourceStem} means ${lesson35NominalSourceFrame.lexicalReading} in its licensed distribution ${(lesson35NominalSourceFrame.distribution || []).join(", ")} · internal boundaries and vowel quantity remain exact · surface similarity merges Sources ${!lesson35NominalSourceFrame.surfaceSimilarityDoesNotMergeSources} · ${lesson35NominalSourceFrame.distinctFromPreteritAgentive ? `distinct from preterit-agentive ${lesson35NominalSourceFrame.distinctFromPreteritAgentive}` : `related Source ${lesson35NominalSourceFrame.relatedSource}`} · example identity authorizes other routes ${lesson35NominalSourceFrame.sourceIdentityDoesNotAuthorizeOtherRoutes === false}`,
+            "carrier",
+            role,
+          );
+        }
+      }
+      const lesson35OwnerhoodFrame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.kind
+          === "classical-nahuatl-deverbal-nnc-grammar-frame"
+        && candidate?.operationFrame?.constructionKind === "ownerhood"
+      )) || null;
+      const lesson35Ownerhood = lesson35OwnerhoodFrame?.operationFrame || null;
+      if (lesson35Ownerhood) {
+        const sourceAnalysis = lesson35Ownerhood.ownerhoodSourceAnalysisFrame || {};
+        const boundary = lesson35Ownerhood.ownerhoodBoundaryFrame || {};
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson35-ownerhood-e-matrix",
+            `typed general-use nounstem ${sourceAnalysis.sourceStem} of class ${sourceAnalysis.nounClass} ${sourceAnalysis.nounSubclass || "unsubclassed"} licenses ${(sourceAnalysis.matrixOptions || []).join(" or ")} · selected fixed verbal matrix ${lesson35Ownerhood.ownerhoodMatrix} realizes as ${boundary.realizedPreteritMatrix}-0 · supportive i deletion ${boundary.supportiveFinalIDeletes}, glottal h-to-y ${boundary.glottalizedFinalHMayBecomeY}, final z-to-c spelling ${boundary.finalZSpellsC} · only preterit and connective-t VNC continuation are licensed · singular/common number choices ${(lesson35Ownerhood.singularConnectorOptions || []).join(" or ")} · cā general use and recursion are automatic · example-stem membership required ${sourceAnalysis.exampleStemMembershipRequired}`,
+            "carrier",
+            "lesson35-ownerhood-e-matrix",
+          );
+        }
+      }
+      const lesson33Frame = [
+        grammarContext,
+        grammarContext?.nominalConstructionFrame,
+        grammarContext?.canonicalResult,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && candidate?.operationFrame?.kind
+          === "classical-nahuatl-late-vnc-derivation-operation-frame"
+        && ["honorific", "reverential", "pejorative"].includes(
+          candidate.operationFrame.operation
+        )
+      )) || null;
+      const lesson33OperationFrame = lesson33Frame?.operationFrame || null;
+      if (
+        lesson33OperationFrame
+        && ["causative", "applicative"].includes(
+          lesson33OperationFrame.variant
+        )
+      ) {
+        const facts = lesson33OperationFrame.operationFacts || {};
+        const addLesson33Cue = (role, label) => {
+          const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+            .find(index => /[^#+()\-]/u.test(text[index] || "")
+              && !annotations.some(annotation => (
+                index >= annotation.start && index < annotation.end
+              )));
+          if (Number.isInteger(cueIndex)) {
+            addAnnotation(cueIndex, cueIndex + 1, role, label, "carrier", role);
+          }
+        };
+        addLesson33Cue(
+          "lesson33-honorific-vnc-foundation-and-participant-gate",
+          `honorific attitude toward ${facts.honoredParticipant || lesson33OperationFrame.operationFacts?.honoredParticipant || "the selected participant"} · neutral owner-issued Source ${lesson33OperationFrame.sourceStem} is preserved · selected ${facts.selectedFormation || lesson33OperationFrame.variant} formation · available formations ${(facts.availableFormations || []).join(" or ")} · route choice required ${facts.routeChoiceRequired} · mainline reflexive relation is automatic and coreferential with ${facts.reflexiveCoreference || "the Result subject"} · self-honorification is blocked against the actually honored participant · English H is reading evidence only`,
+        );
+        if (lesson33OperationFrame.variant === "causative"
+          && facts.projectiveCausativeHonorific !== true) {
+          addLesson33Cue(
+            "lesson33-intransitive-causative-honorifics",
+            `typed intransitive Source ${lesson33OperationFrame.sourceStem} passes through the canonical causative owner · Source morphemic profile ${facts.sourceMorphemicProfile?.sourceStem || lesson33OperationFrame.sourceStem} preserves boundaries, class ${facts.sourceMorphemicProfile?.sourceClass || "typed"}, and valence ${facts.sourceMorphemicProfile?.sourceValence || "intransitive"} · caused participant is reflexive with the Result subject · lexical realization ${facts.lexicalRealizationKind || "ordinary shape-derived"} · alternative choice required ${facts.lexicalAlternativeChoiceRequired} · selected alternative ${facts.selectedLexicalAlternative || "default"} · mood restriction ${facts.honorificFormationAnalysisFrame?.moodRestriction || "none"} · Canvas examples authorize the route ${facts.canvasExamplesAuthorizeRoute}`,
+          );
+        }
+        if (lesson33OperationFrame.variant === "applicative"
+          && facts.projectiveApplicativeHonorific !== true) {
+          addLesson33Cue(
+            "lesson33-intransitive-applicative-honorifics",
+            `typed intransitive Source ${lesson33OperationFrame.sourceStem} passes through the canonical applicative owner · acting in one's own interest reading ${facts.ownInterestReading} · applicative object is reflexive with the Result subject · available formulations ${(facts.availableFormations || []).join(" or ")} · preferred formation ${facts.preferredFormation || "none stated"} · route choice required ${facts.routeChoiceRequired} · honorific-only applicative ${facts.honorificOnlyApplicative} · Source identity and morphemic boundaries remain preserved · Canvas examples authorize the route ${facts.canvasExamplesAuthorizeRoute}`,
+          );
+        }
+        if (facts.projectiveApplicativeHonorific === true) {
+          const retainedObjects = (
+            facts.retainedProjectiveObjectPositions || []
+          ).map(position => [
+            position.objectKind,
+            position.objectPerson || "nonspecific",
+            position.objectNumber || "number supplied by Source",
+            position.governor || "source predicate",
+          ].join("/"));
+          addLesson33Cue(
+            "lesson33-projective-applicative-honorifics",
+            `projective Source ${lesson33OperationFrame.sourceStem} retains ${retainedObjects.join(" and ") || "its owner-issued object topology"} · object number and grammatical roles preserved ${facts.projectiveObjectNumberAndRolesPreserved} · applicative reflexive beneficiary added automatically ${facts.reflexiveBeneficiaryAddedAutomatically} and coreferential with ${facts.reflexiveCoreference} · literal own-benefit reading ${facts.literalOwnBenefitReading} · possible honored participants ${(facts.possibleHonoredParticipants || []).join(" or ")} · participant choice required ${facts.honoredParticipantChoiceRequired} · selected honored participant ${facts.honoredParticipant} · ambiguity preserved ${facts.participantAmbiguityPreserved} · first-person subject forces object honorification ${facts.firstPersonSubjectForcesObjectHonorification} · English H placement selects the participant ${facts.englishHonorificPlacementSelectsParticipant}`,
+          );
+        }
+        if (facts.projectiveCausativeHonorific === true) {
+          const retainedPatients = (
+            facts.retainedProjectiveObjectPositions || []
+          ).map(position => [
+            position.objectKind,
+            position.objectPerson || "nonspecific",
+            position.objectNumber || "number supplied by Source",
+            position.governor || "source predicate",
+          ].join("/"));
+          const reflexiveAgent = facts.causativeReflexiveAgentPosition || {};
+          addLesson33Cue(
+            "lesson33-projective-causative-honorifics",
+            `typed projective Source ${lesson33OperationFrame.sourceStem} uses the selected causative honorific formation · retained patient ${retainedPatients.join(" and ") || "owner-issued projective object"} · patient number and grammatical role preserved ${facts.projectiveCausativePatientNumberAndRolePreserved} · reflexive agent ${reflexiveAgent.va1 || "subject prefix"}-${reflexiveAgent.va2 || "o"} is added automatically and coreferential with the Result subject ${facts.causativeReflexiveAgentCoreferentialWithResultSubject} · literal self-causation reading ${facts.literalSelfCausationReading} · possible honored participants ${(facts.possibleHonoredParticipants || []).join(" or ")} · participant choice required ${facts.honoredParticipantChoiceRequired} · selected honored participant ${facts.honoredParticipant} · agent/patient ambiguity preserved ${facts.agentOrPatientHonorificAmbiguity} · available formations ${(facts.availableFormations || []).join(" or ")} · route choice required ${facts.routeChoiceRequired} · selected lexical realization ${facts.selectedLexicalAlternative || "automatic ordinary shape"} · alternative choice required ${facts.lexicalAlternativeChoiceRequired} · typed Source analysis supplied ${facts.typedHonorificFormationAnalysisSupplied} · route whitelist used ${facts.routeMembershipWhitelistUsed} · exact example authority ${facts.exactExampleStemRouteAuthority}`,
+          );
+        }
+        if (facts.derivedSourceHonorific === true) {
+          const lowerAgents = (
+            facts.derivedSourceLowerAgentPositions || []
+          ).map(position => [
+            position.objectKind,
+            position.objectPerson || "nonspecific",
+            position.governor,
+          ].join("/"));
+          const themes = (
+            facts.derivedSourceThemePositions || []
+          ).map(position => [
+            position.objectKind,
+            position.objectPerson || "nonspecific",
+            position.governor,
+          ].join("/"));
+          addLesson33Cue(
+            "lesson33-derived-causative-and-applicative-sources",
+            `owner-issued ${facts.derivedSourceKind} VNC Result is the Source · inner derived stem ${facts.innerDerivedSourceStem} and derivation frame are retained · higher agent ${facts.derivedSourceHigherAgent} · lower agent or source participant ${lowerAgents.join(" and ") || "none"} · retained theme ${themes.join(" and ") || "none"} · nonspecific theme permits singular or plural reading ${facts.derivedSourceNonspecificThemeAllowsSingularOrPluralReading} · inherited objects preserved ${facts.derivedSourceObjectsPreserved} · applicative reflexive beneficiary added automatically ${facts.reflexiveBeneficiaryAddedAutomatically} · possible honored participants ${(facts.possibleHonoredParticipants || []).join(" or ")} · participant choice required ${facts.honoredParticipantChoiceRequired} · selected honored participant ${facts.honoredParticipant} · inner boundaries preserved ${facts.derivedSourceBoundariesPreserved} · reconstructed formula authority ${facts.derivedSourceFormulaAuthorityAccepted} · copied surface authority ${facts.derivedSourceSurfaceAuthorityAccepted} · Canvas example authority ${facts.derivedSourceCanvasExampleAuthority}`,
+          );
+        }
+      }
+      if (
+        lesson33OperationFrame?.operation === "honorific"
+        && lesson33OperationFrame.variant === "preterit-embed"
+        && lesson33OperationFrame.operationFacts
+          ?.mainlineReflexivePreteritEmbedHonorific === true
+      ) {
+        const facts = lesson33OperationFrame.operationFacts;
+        const retainedObjects = (
+          facts.retainedSourceObjectPositions || []
+        ).map(position => [
+          position.objectKind || "mainline-reflexive",
+          position.objectPerson || "coreferential with subject",
+          position.objectNumber || "number supplied by subject",
+        ].join("/"));
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson33-mainline-reflexive-preterit-embed-honorifics",
+            `typed ${facts.sourceReflexiveTopology} Source selects preterit embed automatically ${facts.mainlineReflexiveTopologySelectsRouteAutomatically} · integrated compound pattern ${facts.integratedCompoundPattern} parallels future embed ${facts.futureEmbedParallel} · canonical ${facts.embeddedPredicateVerbClass} perfective ${facts.embeddedPredicateStem} takes zero preterit morph ${facts.embeddedPreteritMorph} with surface realization ${facts.embeddedPreteritMorphHasSurface} · incorporated predicate replaces the matrix specific object ${facts.incorporatedPredicateReplacesMatrixSpecificObject} · fixed matrix ${facts.fixedAffectiveMatrix} comes from ${facts.matrixSourceNounstem} through ${facts.matrixFormationOwner} · retained Source objects ${retainedObjects.join(" and ") || "owner-issued mainline reflexive topology"} · object pronouns preserved ${facts.sourceObjectPronounsPreserved} · shuntline reflexive uses this route ${facts.shuntlineReflexiveUsesPreteritEmbed} · route, matrix, class form, object replacement, and bracketing are automatic · example whitelist used ${facts.exampleStemWhitelistUsed} · formula and surface authority ${facts.callerFormulaAuthorityAccepted} and ${facts.callerSurfaceAuthorityAccepted}`,
+            "carrier",
+            "lesson33-mainline-reflexive-preterit-embed-honorifics",
+          );
+        }
+      }
+      if (
+        lesson33OperationFrame?.operation === "reverential"
+        && lesson33OperationFrame.operationFacts
+          ?.doubledHonorificConstruction === true
+      ) {
+        const facts = lesson33OperationFrame.operationFacts;
+        const retainedObjects = (
+          facts.retainedSourceObjectPositions || []
+        ).map(position => [
+          position.objectKind || "reflexive",
+          position.objectPerson || "coreferential or inherited",
+          position.objectNumber || "number inherited from Source",
+        ].join("/"));
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson33-reverential-double-honorifics",
+            `reverential is a doubled honorific ${facts.doubledHonorificConstruction} · owner-issued honorific Source required and retained ${facts.ownerIssuedHonorificSourceRetained} · neutral → honorific → reverential hierarchy ${(facts.neutralHonorificReverentialHierarchy || []).join(" → ")} · inner honored participant ${facts.innerHonoredParticipant} and outer participant ${facts.outerHonoredParticipant} remain identical ${facts.inheritedHonoredParticipantPreserved} · inherited possible participants ${(facts.inheritedPossibleHonoredParticipants || []).join(" or ")} · inherited ambiguity ${facts.inheritedParticipantAmbiguity}; outer fresh choice ${facts.outerIntroducesFreshParticipantChoice} · honorific perfective ${facts.embeddedHonorificPerfectiveStem} plus silent preterit ${facts.embeddedPreteritMorph} becomes the object of fixed outer matrix ${facts.fixedOuterMatrix} · retained participants ${retainedObjects.join(" and ") || "inner honorific topology"} · inner and outer boundaries preserved ${facts.innerAndOuterBoundariesPreserved} · second layer automatic ${facts.secondHonorificLayerAutomatic} · raw stem reentry ${facts.rawStemReentryAllowed} · copied spelling, formula, and surface authority ${facts.copiedHonorificSpellingAuthority}, ${facts.callerFormulaAuthorityAccepted}, and ${facts.callerSurfaceAuthorityAccepted}`,
+            "carrier",
+            "lesson33-reverential-double-honorifics",
+          );
+        }
+      }
+      if (
+        lesson33OperationFrame?.operation === "pejorative"
+        && lesson33OperationFrame.operationFacts
+          ?.pejorativePreteritEmbed === true
+      ) {
+        const facts = lesson33OperationFrame.operationFacts;
+        const retainedObjects = (
+          facts.retainedSourceObjectPositions || []
+        ).map(position => [
+          position.objectKind || "projective or reflexive object",
+          position.objectPerson || "person supplied by Source",
+          position.objectNumber || "number supplied by Source",
+          position.governor || "source predicate",
+        ].join("/"));
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson33-pejorative-preterit-embed-vncs",
+            `pejorative attitude uses typed ${facts.sourceTopology} Source · canonical ${facts.embeddedPredicateVerbClass} perfective ${facts.embeddedPredicateStem} plus silent preterit ${facts.embeddedPreteritMorph} becomes the incorporated object of fixed ${facts.fixedAffectiveMatrix} · the matrix specific object is replaced ${facts.incorporatedPredicateReplacesMatrixSpecificObject} · retained Source objects ${retainedObjects.join(" and ") || "none"} · object number and roles preserved ${facts.sourceObjectNumberAndRolesPreserved} · possible disparaged participants ${(facts.possibleDisparagedParticipants || []).join(" or ")} · selected disparaged participant ${facts.disparagedParticipant} · genuine participant choice required ${facts.disparagedParticipantChoiceRequired} · first-person self-disparagement allowed ${facts.firstPersonSubjectMayBeDisparaged && facts.selfDisparagementAllowed} · route, matrix, perfective, replacement, and bracketing are automatic · example whitelist used ${facts.exampleStemWhitelistUsed} · formula, surface, and Canvas-example authority ${facts.callerFormulaAuthorityAccepted}, ${facts.callerSurfaceAuthorityAccepted}, and ${facts.canvasExampleAuthority}`,
+            "carrier",
+            "lesson33-pejorative-preterit-embed-vncs",
+          );
+        }
+      }
+      if (
+        ["honorific", "reverential", "pejorative"].includes(
+          lesson33OperationFrame?.operation,
+        )
+        && lesson33OperationFrame?.ruleFamily === "attitude-compound"
+      ) {
+        const facts = lesson33OperationFrame.operationFacts || {};
+        const sourceObjects = (
+          facts.sourceCompoundObjectFrame?.positions
+          || (facts.sourceCompoundObjectFrame?.valenceArity
+              && facts.sourceCompoundObjectFrame.valenceArity !== "vacant"
+            ? [facts.sourceCompoundObjectFrame]
+            : [])
+        ).map(position => [
+          position.objectKind || "typed object",
+          position.objectPerson || "person supplied by Source",
+          position.objectNumber || "number supplied by Source",
+        ].join("/"));
+        const cueIndex = Array.from({ length: text.length }, (_, index) => index)
+          .find(index => /[^#+()\-]/u.test(text[index] || "")
+            && !annotations.some(annotation => (
+              index >= annotation.start && index < annotation.end
+            )));
+        if (Number.isInteger(cueIndex)) {
+          addAnnotation(
+            cueIndex,
+            cueIndex + 1,
+            "lesson33-compound-verbstem-attitude-scope",
+            `owner-issued ${facts.compoundVariant} compound Source is preserved · typed structure ${facts.selectedCompoundStructure} makes ${facts.compoundTarget} the automatic attitude target because ${facts.compoundScopeBasis} · direct embed-or-matrix choice exposed ${facts.directScopeChoiceExposed} · genuine compositional-versus-lexicalized Source-analysis choice required ${facts.compoundStructureChoiceRequired} · connective ${facts.connective} and internal boundaries preserved ${facts.typedInternalBoundariesPreserved} · Source objects ${sourceObjects.join(" and ") || "none"} preserved ${facts.compoundObjectsPreserved} · outer subject, mood, and tense preserved ${facts.outerSubjectPreserved}, ${facts.outerMoodPreserved}, and ${facts.outerTensePreserved} · example identity, formula, and surface authority ${facts.exactExampleIdentityAuthority}, ${facts.callerFormulaAuthorityAccepted}, and ${facts.callerSurfaceAuthorityAccepted}`,
+            "carrier",
+            "lesson33-compound-verbstem-attitude-scope",
           );
         }
       }
@@ -10877,7 +13237,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
             analyzedStem ? "verbstem-internal-morph" : stemJobAuthority
           );
         }
-        addAnnotation(stemStart + stemToken.length - 1, stemStart + stemToken.length, "stem-right-boundary", "stem boundary", "boundary", "stem-boundary");
+        const analyzedStemHasWholeStemJob = analyzedStem && Boolean(stemClass || operationLabel || stemAspect);
+        addAnnotation(
+          stemStart + stemToken.length - 1,
+          stemStart + stemToken.length,
+          analyzedStemHasWholeStemJob ? "predicate-stem" : "stem-right-boundary",
+          analyzedStemHasWholeStemJob ? stemJobLabel : "stem boundary",
+          analyzedStemHasWholeStemJob ? "carrier" : "boundary",
+          analyzedStemHasWholeStemJob ? stemJobAuthority : "stem-boundary"
+        );
         const tenseStart = stemStart + stemToken.length;
         const sentenceMood = String(sentenceContext?.mood || sentenceContext?.state?.mood || grammarContext?.mood || "");
         const sentenceRole = String(sentenceContext?.canvasSentenceRole || sentenceContext?.sentenceCanvasRole || "");
@@ -12152,12 +14520,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "nominal-embed-matrix-stem-required": "Switch Source to Embed + matrix, then enter the embedded nounstem and matrix verbstem.",
         "nominal-compound-matrix-stem-and-class-required": "Switch Source to Embed + matrix, then enter both nounstems. The matrix nounstem must have a recognized noun class.",
         "tzin-denominal-vnc-is-restricted-to-honorific-matrix-operation": "A denominal affective VNC uses the zol route. Choose zol, then choose inchoative or causative; tzin is reserved for honorific matrix use.",
-        "flawed-subject-requires-licensed-defect-stem": "The flawed-subject route requires a licensed defect nounstem. Choose a documented defect Source or use the compound route.",
+        "flawed-subject-requires-licensed-defect-stem": "The flawed-subject route requires matching typed lexical analysis for this Source. Supply that analysis or use the ordinary subject route.",
         "affective-zol-requires-nonanimate-embed": "zol can modify only a nonanimate embed. Set Subject animacy to nonanimate or choose a different affective matrix.",
         "pil-honorific-vocative-requires-tzin-vocative": "The pil honorific-vocative reading requires tzin and vocative state. Choose tzin and Vocative.",
         "gross-count-requires-plural-subject": "Gross count requires a plural subject. Choose plural Subject number.",
         "special-twenty-classifier-requires-one-through-nineteen-groups-of-twenty": "tecpan, ipil, and quimil count groups of twenty. Choose a value from 20 through 380 in multiples of 20.",
         "measure-classifier-requires-measure-stem": "Switch Source to Embed + matrix, enter the measured nounstem and measure nounstem, then select the measure classifier.",
+        "measure-nnc-requires-measure-class": "Choose the measure nounstem class in Source analysis.",
         "ordinary-animate-count-requires-singular-or-plural-subject": "An animate ordinary count requires a singular or plural subject, not common number. Choose singular or plural.",
         "cardinal-numeral-nnc-is-absolutive-only-except-gross-count": "A possessive numeral NNC is available only for gross count. Choose Gross count or Absolutive state.",
         "ordinary-nonanimate-count-requires-common-number-subject": "A nonanimate ordinary count requires common-number subject. Choose Common.",
@@ -12176,11 +14545,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       return "Unavailable";
     }
-    function getClassicalRuleLogicPublicResultFallback(surfaceFrame = null) {
-      const message = getClassicalRuleLogicSurfaceBlockMessage(surfaceFrame?.blockReason || "");
-      return surfaceFrame?.blockReason === "missing-stem"
-        ? `Waiting for Source: ${message}`
-        : `Unavailable: ${message}`;
+    function getClassicalResultFormatProjection(
+      display = "",
+      authorizationStatus = ""
+    ) {
+      const value = String(display || "").trim();
+      const status = String(authorizationStatus || "").trim().toLowerCase();
+      if (!value || (status && status !== "authorized")) return "";
+      return /^(?:unavailable|waiting for source)\s*:/iu.test(value)
+        ? ""
+        : value;
     }
     function formatVisibleSentenceLayerSlotValue(slot = "", value = "") {
       const normalizedSlot = String(slot || "").trim().toLowerCase();
@@ -12285,7 +14659,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             label: "Use stem",
             value: state.nncUseShape
           }] : []), {
-            label: "Referent",
+            label: "Animacy",
             value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-nnc-subject-animacy", subjectReference.animacy)
           });
         }
@@ -12314,8 +14688,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           label: "Person",
           value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-nnc-subject-person", subjectCategories.person)
         }, {
-          label: "Referent",
+          label: "Animacy",
           value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-nnc-subject-animacy", state.nncAnimacy)
+        }, {
+          label: "Humanness",
+          value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-nnc-subject-humanness", state.nncHumanness)
         }, {
           label: "Number",
           value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-nnc-subject-number", subjectCategories.number)
@@ -12637,8 +15014,29 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const orderedVoiceChainActive = state.voiceLayerChainFrame?.authorizationStatus === "authorized";
       const derivationActive = state.derivationType === "causative" || state.derivationType === "applicative";
       appendClassicalResultReceiptEntries(entries, "choice", {
-        label: state.vncVoice && state.vncVoice !== "active" || orderedVoiceChainActive ? "Source subject" : "Subject",
-        value: getClassicalRuleLogicControlDisplayValue("classical-rule-logic-subject", state.subject)
+        label: "Subject person",
+        value: getClassicalRuleLogicControlDisplayValue(
+          "classical-rule-logic-vnc-subject-person",
+          state.subjectPerson
+        )
+      }, {
+        label: "Subject animacy",
+        value: getClassicalRuleLogicControlDisplayValue(
+          "classical-rule-logic-vnc-subject-animacy",
+          state.subjectAnimacy
+        )
+      }, {
+        label: "Subject humanness",
+        value: getClassicalRuleLogicControlDisplayValue(
+          "classical-rule-logic-vnc-subject-humanness",
+          state.subjectHumanness
+        )
+      }, {
+        label: "Subject number",
+        value: getClassicalRuleLogicControlDisplayValue(
+          "classical-rule-logic-vnc-subject-number",
+          state.subjectNumber
+        )
       });
       appendClassicalResultReceiptEntries(entries, "choice", {
         label: "Mood",
@@ -12873,6 +15271,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (reason.includes("classical-vnc") && /(?:^|-)class(?:-|$)/u.test(reason)) {
         return ["classical-rule-logic-class"];
+      }
+      if (reason.includes("verbstem-class-selection-required")) {
+        return ["classical-rule-logic-class"];
+      }
+      if (reason === "lexical-noun-class-selection-required") {
+        return ["classical-rule-logic-nnc-class"];
       }
       if (reason.includes("lesson15-selected-lexical-stem") || reason.includes("secondary-general-use-stem") || reason.includes("analogical-restricted-use-stem") || reason.includes("reclassified-tl-1a-stem")) {
         return ["classical-rule-logic-nnc-predicate-form"];
@@ -13513,6 +15917,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS = Object.freeze({
       "classical-rule-logic-nnc-subject-person": "subject",
       "classical-rule-logic-nnc-subject-animacy": "subject",
+      "classical-rule-logic-nnc-subject-humanness": "subject",
       "classical-rule-logic-nnc-subject-number": "subject",
       "classical-rule-logic-nnc-state": "state",
       "classical-rule-logic-nnc-possessor": "state",
@@ -13520,6 +15925,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-rule-logic-nnc-metaphorical-use": "subject",
       "classical-rule-logic-nnc-predicate-form": "nounstem",
       "classical-rule-logic-nnc-stem-relation": "nounstem",
+      "classical-rule-logic-nnc-quantity-plural-formation": "nounstem",
       "classical-rule-logic-nnc-plural-connector": "nounstem",
       "classical-rule-logic-nnc-clause-position": "sentence",
       "classical-rule-logic-nnc-doubled-first-plural": "sentence",
@@ -13535,6 +15941,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       subject: "Subject",
       state: "State",
       nounstem: "Nounstem",
+      predicate: "Predicate",
       sentence: "Sentence"
     });
     function getClassicalNncGrammarPresentation() {
@@ -13551,9 +15958,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const section = targetObject.document.createElement("section");
           section.className = "classical-nnc-grammar-group";
           section.dataset.classicalNncGrammarSection = groupId;
-          const heading = targetObject.document.querySelector(
+          let heading = targetObject.document.querySelector(
             `[data-classical-nnc-authority-heading="${groupId}"]`
           );
+          if (!heading) {
+            heading = targetObject.document.createElement("div");
+            heading.className = "classical-nnc-authority-heading";
+            heading.dataset.classicalNncAuthorityHeading = groupId;
+            heading.textContent = label;
+            heading.hidden = true;
+            heading.setAttribute("aria-hidden", "true");
+          }
           if (heading) section.appendChild(heading);
           const body = targetObject.document.createElement("div");
           body.className = "classical-nnc-grammar-group__body classical-rule-controls-grid";
@@ -13876,6 +16291,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       const controls = targetObject.document.getElementById("classical-rule-logic-controls");
       const presentation = getClassicalNncGrammarPresentation();
+      const customNncPresentationActive = Boolean(
+        controls?.dataset?.classicalCustomConstructionActive === "true"
+        && controls.dataset.classicalCustomConstructionSurfaceUnit === "nnc"
+      );
       if (controls?.dataset) {
         controls.dataset.classicalNncGrammarContractStatus = valid ? "valid" : "inactive-or-invalid";
       }
@@ -13885,17 +16304,45 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ).forEach(control => {
         const wrapper = control.closest?.(".classical-rule-control");
         if (!wrapper?.dataset) return;
-        const group = CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS[control.id] || "";
+        const group = CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS[control.id]
+          || CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS
+            ?.[control.id]?.nnc
+          || "";
+        const customFormationControl = Object.prototype.hasOwnProperty.call(
+          CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS,
+          control.id
+        );
         wrapper.dataset.classicalNncGrammarGroup = nncActive ? group : "";
         wrapper.dataset.classicalNncGrammarContractStatus = valid ? "valid" : "inactive-or-invalid";
         const groupBody = presentation?.groups?.[group]?.body || null;
-        if (nncActive && groupBody && wrapper.parentElement !== groupBody) {
+        if (
+          nncActive
+          && groupBody
+          && !customFormationControl
+          && wrapper.parentElement !== groupBody
+        ) {
           groupBody.appendChild(wrapper);
         }
         if (nncActive && group && wrapper.hidden !== true) {
           visibleGroups.add(group);
         }
       });
+      const sentenceBody = presentation?.groups?.sentence?.body || null;
+      if (nncActive && sentenceBody) {
+        targetObject.document.querySelectorAll(
+          "#classical-rule-logic-controls [data-classical-nnc-authority-order^=\"sentence-\"]"
+        ).forEach(wrapper => {
+          if (!wrapper.classList?.contains("classical-rule-control")) return;
+          wrapper.dataset.classicalNncGrammarGroup = "sentence";
+          wrapper.dataset.classicalNncGrammarContractStatus = valid
+            ? "valid"
+            : "inactive-or-invalid";
+          if (wrapper.parentElement !== sentenceBody) {
+            sentenceBody.appendChild(wrapper);
+          }
+          if (wrapper.hidden !== true) visibleGroups.add("sentence");
+        });
+      }
       targetObject.document.querySelectorAll(
         "[data-classical-nnc-authority-heading]"
       ).forEach(heading => {
@@ -13904,7 +16351,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         heading.hidden = !visible;
         heading.setAttribute("aria-hidden", String(!visible));
       });
-      if (presentation?.organizer) {
+      if (presentation?.organizer && !customNncPresentationActive) {
         presentation.organizer.hidden = !nncActive;
         presentation.organizer.setAttribute("aria-hidden", String(!nncActive));
         Object.entries(presentation.groups).forEach(([groupId, group]) => {
@@ -14009,36 +16456,83 @@ export function createUiRenderingApi(targetObject = globalThis) {
         organizer.className = "classical-vnc-authority-organizer";
         organizer.dataset.classicalVncAuthorityOrganizer = "progressive-typed-decisions";
         organizer.setAttribute("aria-label", "Grammar choices and source-derived analysis");
-        const primary = createStage("primary", "Primary VNC and derivation decisions");
-        const nuclearClause = createPersistentSection("nuclear-clause", "Nuclear clause", "subject · predicate");
-        const particleGroup = createPersistentSection("particle-group", "Particles & sentence group", "");
+        const subject = createPersistentSection("subject", "Subject", "");
+        const valence = createPersistentSection("valence", "Valence", "");
+        const verbstem = createPersistentSection("verbstem", "Verbstem", "");
+        const tense = createPersistentSection("tense", "Tense", "");
+        const sentence = createPersistentSection("sentence", "Sentence", "");
+        [subject, valence, verbstem, tense, sentence].forEach(entry => {
+          entry.section.dataset.classicalVncGrammarSection =
+            entry.section.dataset.classicalVncAuthorityDisclosure;
+        });
         const particleFunction = createControlGroup("function", "Function");
         const particleSequence = createControlGroup("sequence", "Sequence");
         const particleDependent = createControlGroup("dependent", "Dependent operation");
-        particleGroup.body.append(particleFunction.group, particleSequence.group, particleDependent.group);
-        organizer.append(primary, nuclearClause.section, particleGroup.section);
+        sentence.body.append(particleFunction.group, particleSequence.group, particleDependent.group);
+        organizer.append(
+          subject.section,
+          valence.section,
+          verbstem.section,
+          tense.section,
+          sentence.section
+        );
         sourceGrid.appendChild(organizer);
-        Array.from(sourceGrid.children).filter(node => node !== organizer && (node.hasAttribute?.("data-classical-vnc-authority-heading") || node.hasAttribute?.("data-classical-vnc-authority-order"))).forEach(node => {
-          const headingRole = String(node.dataset?.classicalVncAuthorityHeading || "");
+        Array.from(sourceGrid.children).filter(node => node !== organizer && node.hasAttribute?.("data-classical-vnc-authority-order")).forEach(node => {
           const orderRole = String(node.dataset?.classicalVncAuthorityOrder || "");
-          const sentenceOwned = headingRole === "sentence" || orderRole.startsWith("sentence-");
-          const primaryOwned = headingRole === "verbstem"
-            || headingRole === "derivation"
-            || orderRole.startsWith("verbstem-");
           const sentenceGroup = ["sentence-before-introductory", "sentence-after-introductory"].includes(orderRole)
             ? particleSequence.body
             : orderRole === "sentence-particle-honorific"
               ? particleDependent.body
               : particleFunction.body;
-          (sentenceOwned ? sentenceGroup : primaryOwned ? primary : nuclearClause.body).appendChild(node);
+          const destination = orderRole.startsWith("sentence-")
+            ? sentenceGroup
+            : orderRole.startsWith("subject-")
+              || orderRole === "verbstem-causative-result-subject"
+              ? subject.body
+              : orderRole === "verbstem-causative-participant-choice"
+                || orderRole === "verbstem-applicative-object"
+                || orderRole.startsWith("predicate-object")
+                || orderRole === "predicate-tla-fusion"
+                ? valence.body
+                : orderRole === "predicate-mood"
+                  || orderRole === "predicate-tense"
+                  || orderRole === "predicate-directional"
+                  ? tense.body
+                  : verbstem.body;
+          destination.appendChild(node);
         });
-        sourceGrid.dataset.classicalVncAuthorityPresentation = "progressive-primary-nuclear-clause-particle-group";
+        sourceGrid.dataset.classicalVncAuthorityPresentation = "subject-valence-verbstem-tense-sentence";
+      }
+      const verbstemSection = organizer.querySelector?.(
+        '[data-classical-vnc-authority-disclosure="verbstem"]'
+      ) || null;
+      const verbstemBody = verbstemSection?.querySelector?.(
+        '[data-classical-vnc-authority-stage="verbstem"]'
+      ) || null;
+      const derivationControls = targetObject.document.querySelector?.(
+        "#classical-authority-panel .calc-operator--derivation"
+      ) || null;
+      if (
+        verbstemBody
+        && derivationControls
+        && derivationControls.parentElement !== verbstemBody
+      ) {
+        verbstemBody.insertBefore(
+          derivationControls,
+          verbstemBody.firstChild || null
+        );
+      }
+      if (derivationControls?.dataset) {
+        derivationControls.dataset.classicalVncGrammarNesting =
+          "verbstem-operation";
       }
       return {
         organizer,
-        primary: organizer.querySelector?.('[data-classical-vnc-authority-stage="primary"]') || null,
-        nuclearClause: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="nuclear-clause"]') || null,
-        particleGroup: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="particle-group"]') || null
+        subject: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="subject"]') || null,
+        valence: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="valence"]') || null,
+        verbstem: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="verbstem"]') || null,
+        tense: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="tense"]') || null,
+        sentence: organizer.querySelector?.('[data-classical-vnc-authority-disclosure="sentence"]') || null
       };
     }
     function syncClassicalVncAuthorityProgressivePresentation({ basalUnit = "", derivationType = "direct", derivationSourceAuthorized = false, surfaceFrame = null } = {}) {
@@ -14049,37 +16543,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const activeUnit = normalizeClassicalBasalUnitForRendering(basalUnit);
       const vncActive = activeUnit === "vnc";
       if (vncActive) {
-        const nuclearBody = presentation.nuclearClause?.querySelector?.(
-          '[data-classical-vnc-authority-stage="nuclear-clause"]'
+        const sectionBody = kind => presentation[kind]?.querySelector?.(
+          `[data-classical-vnc-authority-stage="${kind}"]`
         ) || null;
-        const functionBody = presentation.particleGroup?.querySelector?.(
+        const functionBody = presentation.sentence?.querySelector?.(
           '[data-classical-vnc-authority-control-group="function"] .classical-vnc-authority-control-group__body'
         ) || null;
-        const sequenceBody = presentation.particleGroup?.querySelector?.(
+        const sequenceBody = presentation.sentence?.querySelector?.(
           '[data-classical-vnc-authority-control-group="sequence"] .classical-vnc-authority-control-group__body'
         ) || null;
-        const dependentBody = presentation.particleGroup?.querySelector?.(
+        const dependentBody = presentation.sentence?.querySelector?.(
           '[data-classical-vnc-authority-control-group="dependent"] .classical-vnc-authority-control-group__body'
         ) || null;
         targetObject.document.querySelectorAll(
-          "#classical-rule-logic-controls [data-classical-vnc-authority-heading], #classical-rule-logic-controls [data-classical-vnc-authority-order]"
+          "#classical-rule-logic-controls [data-classical-vnc-authority-order]"
         ).forEach(node => {
-          const headingRole = String(node.dataset?.classicalVncAuthorityHeading || "");
           const orderRole = String(node.dataset?.classicalVncAuthorityOrder || "");
-          const sentenceOwned = headingRole === "sentence" || orderRole.startsWith("sentence-");
-          const primaryOwned = headingRole === "verbstem"
-            || headingRole === "derivation"
-            || orderRole.startsWith("verbstem-");
           const sentenceBody = ["sentence-before-introductory", "sentence-after-introductory"].includes(orderRole)
             ? sequenceBody
             : orderRole === "sentence-particle-honorific"
               ? dependentBody
               : functionBody;
-          const destination = sentenceOwned
+          const destination = orderRole.startsWith("sentence-")
             ? sentenceBody
-            : primaryOwned
-              ? presentation.primary
-              : nuclearBody;
+            : orderRole.startsWith("subject-")
+              || orderRole === "verbstem-causative-result-subject"
+              ? sectionBody("subject")
+              : orderRole === "verbstem-causative-participant-choice"
+                || orderRole === "verbstem-applicative-object"
+                || orderRole.startsWith("predicate-object")
+                || orderRole === "predicate-tla-fusion"
+                ? sectionBody("valence")
+                : orderRole === "predicate-mood"
+                  || orderRole === "predicate-tense"
+                  || orderRole === "predicate-directional"
+                  ? sectionBody("tense")
+                  : sectionBody("verbstem");
           if (destination && node.parentElement !== destination) {
             destination.appendChild(node);
           }
@@ -14093,47 +16592,24 @@ export function createUiRenderingApi(targetObject = globalThis) {
         String(!grammarOrganizerActive),
       );
       presentation.organizer.dataset.classicalVncAuthorityMode = derivationType;
-      if (presentation.primary) {
-        presentation.primary.hidden = !vncActive;
-        presentation.primary.setAttribute("aria-hidden", String(!vncActive));
-      }
-      [presentation.nuclearClause, presentation.particleGroup].filter(Boolean).forEach(section => {
+      [
+        presentation.subject,
+        presentation.valence,
+        presentation.verbstem,
+        presentation.tense,
+        presentation.sentence,
+      ].filter(Boolean).forEach(section => {
         const visibleControls = Array.from(section.querySelectorAll?.(".classical-rule-control") || []).filter(wrapper => !wrapper.hidden).length;
         section.dataset.classicalVncAuthorityVisibleControlCount = String(visibleControls);
-        section.hidden = nncActive
-          ? section !== presentation.particleGroup || visibleControls === 0
-          : false;
+        section.hidden = !vncActive || visibleControls === 0;
         section.setAttribute("aria-hidden", String(section.hidden));
-        const meta = section.querySelector?.("[data-classical-vnc-authority-disclosure-meta]");
-        if (meta) {
-          const particleGroupDisclosure = section.dataset.classicalVncAuthorityDisclosure === "particle-group";
-          const state = surfaceFrame?.state || {};
-          const activeSentenceSelections = particleGroupDisclosure ? [
-            state.sentenceNegativeMode === "negative" ? "negative" : "",
-            state.sentenceSurfaceMode && state.sentenceSurfaceMode !== "statement" ? state.sentenceSurfaceMode.replace(/-/gu, " ") : "",
-            state.requestedSentenceParticleId && state.requestedSentenceParticleId !== "none" ? "particle" : "",
-            state.requestedSentenceAdverbialId && state.requestedSentenceAdverbialId !== "none" ? "adverbial" : "",
-            state.introductoryParticle && state.introductoryParticle !== "none" ? state.introductoryParticle : "",
-            state.requestedPrefixStackMode === "antecessive" ? "ō#" : ""
-          ].filter(Boolean) : [];
-          meta.textContent = particleGroupDisclosure
-            ? activeSentenceSelections.join(" · ") || (visibleControls ? "available" : "no particle or sentence choices apply")
-            : visibleControls ? "subject · predicate" : "no nuclear-clause choices apply";
-          meta.hidden = false;
-        }
       });
-      presentation.particleGroup?.querySelectorAll?.("[data-classical-vnc-authority-control-group]").forEach(group => {
+      presentation.sentence?.querySelectorAll?.("[data-classical-vnc-authority-control-group]").forEach(group => {
         const visibleControls = Array.from(group.querySelectorAll?.(".classical-rule-control") || []).filter(wrapper => !wrapper.hidden).length;
         group.dataset.classicalVncAuthorityVisibleControlCount = String(visibleControls);
         group.hidden = visibleControls === 0;
         group.setAttribute("aria-hidden", String(group.hidden));
       });
-      const verbstemHeading = presentation.primary?.querySelector?.('[data-classical-vnc-authority-heading="verbstem"]') || null;
-      if (verbstemHeading) {
-        const visibleVerbstemDecisions = Array.from(presentation.primary.querySelectorAll?.('[data-classical-vnc-authority-order="verbstem-class"], [data-classical-vnc-authority-order="verbstem-construction"], [data-classical-vnc-authority-order="verbstem-reading"]') || []).some(node => !node.hidden);
-        verbstemHeading.hidden = activeUnit !== "vnc" || !visibleVerbstemDecisions;
-        verbstemHeading.setAttribute("aria-hidden", String(verbstemHeading.hidden));
-      }
       return true;
     }
     function buildClassicalVncAuthorityDerivationSurfaceModel(surfaceFrame = null) {
@@ -14201,20 +16677,34 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function syncClassicalVncAuthorityDerivationPreview(surfaceFrame = null, derivationType = "direct") {
       const presentation = getClassicalVncAuthorityProgressivePresentation();
-      if (!presentation?.primary || !surfaceFrame) {
+      const verbstemBody = presentation?.verbstem?.querySelector?.(
+        '[data-classical-vnc-authority-stage="verbstem"]'
+      ) || null;
+      const subjectBody = presentation?.subject?.querySelector?.(
+        '[data-classical-vnc-authority-stage="subject"]'
+      ) || null;
+      const valenceBody = presentation?.valence?.querySelector?.(
+        '[data-classical-vnc-authority-stage="valence"]'
+      ) || null;
+      if (!verbstemBody || !subjectBody || !valenceBody || !surfaceFrame) {
         return false;
       }
-      let preview = presentation.primary.querySelector?.("[data-classical-vnc-authority-preview]") || null;
+      let preview = verbstemBody.querySelector?.("[data-classical-vnc-authority-preview]") || null;
       if (!preview) {
         preview = targetObject.document.createElement("section");
         preview.className = "classical-vnc-authority-preview";
         preview.dataset.classicalVncAuthorityPreview = "typed-application-projection";
         preview.setAttribute("aria-live", "polite");
         preview.hidden = true;
-        presentation.primary.appendChild(preview);
+        verbstemBody.appendChild(preview);
       }
       const sourceSubjectControl = targetObject.document.getElementById("classical-rule-logic-subject");
-      const sourceSubjectWrapper = sourceSubjectControl?.closest?.(".classical-rule-control") || null;
+      const sourceSubjectWrappers = [
+        "classical-rule-logic-vnc-subject-person",
+        "classical-rule-logic-vnc-subject-animacy",
+        "classical-rule-logic-vnc-subject-humanness",
+        "classical-rule-logic-vnc-subject-number"
+      ].map(id => targetObject.document.getElementById(id)?.closest?.(".classical-rule-control") || null).filter(Boolean);
       const resultSubjectControl = targetObject.document.getElementById("classical-rule-logic-causative-result-subject");
       const resultSubjectWrapper = resultSubjectControl?.closest?.(".classical-rule-control") || null;
       const applicativeObjectControl = targetObject.document.getElementById("classical-rule-logic-applicative-object");
@@ -14222,25 +16712,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceVoiceWrapper = targetObject.document.getElementById("classical-rule-logic-causative-source-voice")?.closest?.(".classical-rule-control") || null;
       const sourceNonactiveWrapper = targetObject.document.getElementById("classical-rule-logic-causative-source-nonactive")?.closest?.(".classical-rule-control") || null;
       const causeeValenceWrapper = targetObject.document.getElementById("classical-rule-logic-causative-causee-valence")?.closest?.(".classical-rule-control") || null;
-      [sourceVoiceWrapper, sourceNonactiveWrapper, sourceSubjectWrapper, resultSubjectWrapper, causeeValenceWrapper, applicativeObjectWrapper].filter(Boolean).forEach(wrapper => {
-        if (wrapper.closest?.("[data-classical-vnc-authority-preview]")) {
-          presentation.primary.appendChild(wrapper);
-        }
-      });
-      const sourceSubjectLabel = sourceSubjectWrapper?.querySelector?.(".classical-rule-control__label");
-      if (sourceSubjectLabel) sourceSubjectLabel.textContent = "Source VNC subject";
+      [sourceVoiceWrapper, sourceNonactiveWrapper].filter(Boolean).forEach(
+        wrapper => verbstemBody.appendChild(wrapper)
+      );
+      [...sourceSubjectWrappers, resultSubjectWrapper].filter(Boolean).forEach(
+        wrapper => subjectBody.appendChild(wrapper)
+      );
+      [causeeValenceWrapper, applicativeObjectWrapper].filter(Boolean).forEach(
+        wrapper => valenceBody.appendChild(wrapper)
+      );
       const resultSubjectLabel = resultSubjectWrapper?.querySelector?.(".classical-rule-control__label");
       if (resultSubjectLabel) resultSubjectLabel.textContent = "Imported subject (causer)";
       const applicativeObjectLabel = applicativeObjectWrapper?.querySelector?.(".classical-rule-control__label");
       if (applicativeObjectLabel) applicativeObjectLabel.textContent = "Applicative object (added)";
-      if (sourceSubjectWrapper) {
-        presentation.primary.appendChild(sourceSubjectWrapper);
-      }
+      sourceSubjectWrappers.forEach(wrapper => subjectBody.appendChild(wrapper));
       if (derivationType === "causative" && resultSubjectWrapper) {
-        presentation.primary.appendChild(resultSubjectWrapper);
+        subjectBody.appendChild(resultSubjectWrapper);
       }
       if (derivationType === "applicative" && applicativeObjectWrapper) {
-        presentation.primary.appendChild(applicativeObjectWrapper);
+        valenceBody.appendChild(applicativeObjectWrapper);
       }
       const surfaceModel = buildClassicalVncAuthorityDerivationSurfaceModel(surfaceFrame);
       const derivedMode = derivationType === "causative" || derivationType === "applicative";
@@ -14363,7 +16853,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       preview.dataset.classicalDerivationType = derivationType;
       preview.hidden = false;
       preview.setAttribute("aria-hidden", "false");
-      presentation.primary.appendChild(preview);
+      verbstemBody.appendChild(preview);
       return true;
     }
     function syncClassicalRuleLogicControlsForSurfaceFrame(surfaceFrame = null) {
@@ -14371,6 +16861,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return;
       }
       const basalUnit = normalizeClassicalBasalUnitForRendering(surfaceFrame.basalUnit || "");
+      const constructionSourceControls = targetObject.document.getElementById(
+        "classical-construction-source-controls"
+      );
+      const sourceCommitRow = targetObject.document.querySelector(
+        "#classical-source-parts .classical-source-parts__commit-row"
+      );
+      if (
+        constructionSourceControls
+        && sourceCommitRow?.parentElement
+        && typeof sourceCommitRow.parentElement.insertBefore === "function"
+        && constructionSourceControls.nextElementSibling !== sourceCommitRow
+      ) {
+        sourceCommitRow.parentElement.insertBefore(
+          constructionSourceControls,
+          sourceCommitRow
+        );
+      }
       const capabilityFrame = surfaceFrame.authorityCapabilityFrame || (typeof targetObject.getClassicalNahuatlAuthorityCapabilityFrame === "function" ? targetObject.getClassicalNahuatlAuthorityCapabilityFrame(surfaceFrame) : null);
       const capabilities = capabilityFrame?.capabilities || {};
       const nncSupportsSharedSentenceControls = basalUnit === "nnc"
@@ -14442,7 +16949,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         nonactiveFormationControl.dataset.classicalNonactiveFormationEventBound = "true";
       }
       if (nonactiveFormationControl && nonactiveInventory?.options?.length) {
-        const selectedOptionId = surfaceFrame.state?.selectedNonactiveOptionId || "";
+        const currentlySelectedOptionId = String(
+          nonactiveFormationControl.value || "",
+        ).trim();
+        const currentSelectionStillBelongsToSource =
+          nonactiveInventory.options.some(option => (
+            option.optionId === currentlySelectedOptionId
+          ));
+        const selectedOptionId =
+          surfaceFrame.state?.selectedNonactiveOptionId
+          || (currentSelectionStillBelongsToSource
+            ? currentlySelectedOptionId
+            : "");
         const optionSignature = nonactiveInventory.options.map(option => `${option.optionId}=${option.label}`).join("|") + `|selection-required=${nonactiveInventory.selectionRequired === true}`;
         if (nonactiveFormationControl.dataset.classicalLesson20OptionSignature !== optionSignature) {
           const generatedOptionNodes = nonactiveInventory.options.map(option => {
@@ -14643,7 +17161,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const controlVisibility = {
         "classical-rule-logic-vnc-output-scope": basalUnit === "vnc",
-        "classical-rule-logic-subject": basalUnit === "vnc"
+        "classical-rule-logic-subject": false,
+        "classical-rule-logic-vnc-subject-person": basalUnit === "vnc"
+          && capabilities.subject === true
+          && !(derivationType === "causative" && causativeObjectKind === "reflexive"),
+        "classical-rule-logic-vnc-subject-animacy": basalUnit === "vnc"
+          && capabilities.subject === true
+          && !(derivationType === "causative" && causativeObjectKind === "reflexive"),
+        "classical-rule-logic-vnc-subject-humanness": basalUnit === "vnc"
+          && capabilities.subject === true
+          && !(derivationType === "causative" && causativeObjectKind === "reflexive"),
+        "classical-rule-logic-vnc-subject-number": basalUnit === "vnc"
           && capabilities.subject === true
           && !(derivationType === "causative" && causativeObjectKind === "reflexive"),
         "classical-rule-logic-mood": capabilities.mood === true || lesson11LexicalReadingRequired,
@@ -14677,7 +17205,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-voice-layer-2": basalUnit === "vnc" && vncVoiceOperation === "inherent-impersonal" && voiceLayer2Inventory?.authorizationStatus === "authorized" && voiceLayer2Inventory.options?.length > 0,
         "classical-rule-logic-voice-layer-3": basalUnit === "vnc" && surfaceFrame.state?.selectedVoiceLayer2Operation === "tla-impersonal" && voiceLayer3Inventory?.authorizationStatus === "authorized" && voiceLayer3Inventory.options?.length > 0,
         "classical-rule-logic-nonactive-family": basalUnit === "vnc" && capabilities.nonactiveStem === true && nonactiveVoice && nonactiveInventory?.selectorRequired === true,
-        "classical-rule-logic-valence": capabilities.valence === true,
+        // Valence is part of the typed VNC Source. It must remain available
+        // before later verb machinery can be built from that Source.
+        "classical-rule-logic-valence": basalUnit === "vnc",
         "classical-rule-logic-object": shouldShowClassicalRuleLogicObject(surfaceFrame),
         "classical-rule-logic-object-interpretation": basalUnit === "vnc" && valence === "mainline-reflexive",
         "classical-rule-logic-tla-fusion": shouldShowClassicalRuleLogicTlaFusion(surfaceFrame),
@@ -14701,18 +17231,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (sentenceParticleHonorificControl) {
         sentenceParticleHonorificControl.checked = surfaceFrame.state?.requestedSentenceParticleHonorificized === true;
       }
-      const vncActive = basalUnit === "vnc";
-      targetObject.document.querySelectorAll("[data-classical-vnc-authority-heading]").forEach(heading => {
-        const headingRole = String(heading.dataset?.classicalVncAuthorityHeading || "");
-        const derivationHeading = headingRole === "derivation";
-        const visible = vncActive && (!derivationHeading || derivationType === "causative" || derivationType === "applicative");
-        if (derivationHeading) {
-          heading.textContent = derivationType === "applicative" ? "Applicative" : derivationType === "causative" ? "Causative" : "Derivation";
-          heading.dataset.classicalDerivationAuthorityHeading = derivationType;
-        }
-        heading.hidden = !visible;
-        heading.setAttribute("aria-hidden", String(!visible));
-      });
       const moodBoundContract = syncClassicalRuleLogicMoodBoundControlOptions(surfaceFrame);
       const lesson11TenseContract = syncClassicalRuleLogicLesson11TenseOptions(surfaceFrame, moodBoundContract);
       const allowedVncVoices = surfaceFrame.state?.allowedVncVoices || ["active"];
@@ -14773,6 +17291,43 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (lesson11PredicateReferentAvailable) {
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-predicate-referent", ["unspecified", "wide-flat-thing", "mass-or-crowd", "individual-animate"], "unspecified");
       }
+      if (basalUnit === "vnc") {
+        const subjectFrame = surfaceFrame.state?.vncSubjectFrame || getClassicalRuleLogicVncSubjectFrame();
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-vnc-subject-person",
+          subjectFrame.animacy === "nonanimate" || subjectFrame.humanness === "nonhuman"
+            ? ["3"]
+            : ["1", "2", "3"],
+          subjectFrame.person
+        );
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-vnc-subject-animacy",
+          ["animate", "nonanimate"],
+          subjectFrame.animacy
+        );
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-vnc-subject-humanness",
+          subjectFrame.animacy === "nonanimate"
+            ? ["nonhuman"]
+            : ["human", "nonhuman"],
+          subjectFrame.humanness
+        );
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-vnc-subject-number",
+          subjectFrame.animacy === "nonanimate" ? ["common"] : ["singular", "plural"],
+          subjectFrame.number
+        );
+        const subjectPersonControl = targetObject.document.getElementById("classical-rule-logic-vnc-subject-person");
+        const subjectAnimacyControl = targetObject.document.getElementById("classical-rule-logic-vnc-subject-animacy");
+        const subjectHumannessControl = targetObject.document.getElementById("classical-rule-logic-vnc-subject-humanness");
+        const subjectNumberControl = targetObject.document.getElementById("classical-rule-logic-vnc-subject-number");
+        if (subjectPersonControl) subjectPersonControl.value = subjectFrame.person;
+        if (subjectAnimacyControl) subjectAnimacyControl.value = subjectFrame.animacy;
+        if (subjectHumannessControl) subjectHumannessControl.value = subjectFrame.humanness;
+        if (subjectNumberControl) subjectNumberControl.value = subjectFrame.number;
+        const canonicalSubjectControl = targetObject.document.getElementById("classical-rule-logic-subject");
+        if (canonicalSubjectControl) canonicalSubjectControl.value = subjectFrame.agreement;
+      }
       const classSelectionContract = surfaceFrame.state?.classSelectionContract || null;
       const lesson11ClassOverride = surfaceFrame.machineryFrame?.lesson11ParadigmPlan?.selectedClassOverride || "";
       if (lesson11ClassOverride) {
@@ -14801,14 +17356,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const retainedReadOnlyTense = id === "classical-rule-logic-tense"
           && basalUnit === "vnc"
           && canvasDisabled;
+        const retainedVncSubjectFeature = [
+          "classical-rule-logic-vnc-subject-person",
+          "classical-rule-logic-vnc-subject-animacy",
+          "classical-rule-logic-vnc-subject-humanness",
+          "classical-rule-logic-vnc-subject-number"
+        ].includes(id)
+          && basalUnit === "vnc"
+          && canvasDisabled;
         const retainedSingleChoiceControl =
-          retainedFilteredClass || retainedReadOnlyTense;
+          retainedFilteredClass || retainedReadOnlyTense || retainedVncSubjectFeature;
         const visible = !hide && (!canvasDisabled || retainedSingleChoiceControl);
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         // Stem class remains an operable dropdown even when Canvas permits only
         // one class. Its invalid options stay disabled by the typed contract.
-        control.disabled = !visible || retainedReadOnlyTense;
+        control.disabled = !visible || retainedReadOnlyTense || retainedVncSubjectFeature;
         control.setAttribute("aria-disabled", String(control.disabled));
         wrapper.dataset.classicalControlAvailability = !visible ? "hidden" : control.disabled ? "disabled" : "enabled";
         wrapper.dataset.classicalAuthorityUserInput = !visible
@@ -14972,8 +17535,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "l3-e-vocative",
         "l3-no-interjection"
       ].includes(String(surfaceFrame.state?.requestedSentenceParticleId || ""));
-      const speakerSexContextApplicable = basalUnit === "nnc"
-        || speakerSexRequiredByParticle;
+      const speakerSexContextApplicable = speakerSexRequiredByParticle
+        || (
+          basalUnit === "nnc"
+          && String(surfaceFrame.state?.nncState || "") === "vocative"
+        );
       if (speakerSexContextWrapper && speakerSexContextControl) {
         speakerSexContextWrapper.hidden = !speakerSexContextApplicable;
         speakerSexContextWrapper.setAttribute("aria-hidden", String(!speakerSexContextApplicable));
@@ -14988,7 +17554,54 @@ export function createUiRenderingApi(targetObject = globalThis) {
           speakerSexContextControl.value = "unspecified";
         }
       }
+      const supplementationContextApplicable = String(
+        ClassicalClauseRelationSelections?.relation || ""
+      ) === "supplementation";
+      [
+        "classical-source-context-group-membership",
+        "classical-source-context-named-partner"
+      ].forEach(id => {
+        const control = targetObject.document.getElementById(id);
+        const wrapper = control?.closest?.(".classical-rule-control");
+        if (!control || !wrapper) return;
+        wrapper.hidden = !supplementationContextApplicable;
+        wrapper.setAttribute(
+          "aria-hidden",
+          String(!supplementationContextApplicable)
+        );
+        control.disabled = !supplementationContextApplicable;
+        control.setAttribute(
+          "aria-disabled",
+          String(!supplementationContextApplicable)
+        );
+        if (!supplementationContextApplicable) {
+          control.value = id.endsWith("named-partner")
+            ? "none"
+            : "unspecified";
+        }
+      });
+      const sourceContextControls = targetObject.document.getElementById(
+        "classical-source-context-controls"
+      );
+      if (sourceContextControls) {
+        const hasVisibleContextChoice = Array.from(
+          sourceContextControls.querySelectorAll(".classical-rule-control")
+        ).some(wrapper => wrapper.hidden !== true);
+        sourceContextControls.hidden = !hasVisibleContextChoice;
+        sourceContextControls.setAttribute(
+          "aria-hidden",
+          String(!hasVisibleContextChoice)
+        );
+      }
       const nncActive = basalUnit === "nnc";
+      const derivationSection = targetObject.document.querySelector(
+        ".calc-operator--derivation"
+      );
+      if (derivationSection && nncActive) {
+        derivationSection.hidden = true;
+        derivationSection.style.display = "none";
+        derivationSection.setAttribute("aria-hidden", "true");
+      }
       const nncType = String(surfaceFrame.state?.nncType || "ordinary");
       const nncOptionContract = getClassicalNncAuthorityOptionContract(surfaceFrame.state);
       const nncControlAvailability = getClassicalNncAuthorityControlAvailability(surfaceFrame, nncOptionContract);
@@ -15011,6 +17624,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-person", nncOptionContract.subjectPersonValues, nncOptionContract.selectedSubjectPerson);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-animacy", nncOptionContract.animacyValues, nncOptionContract.selectedAnimacy);
+        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-humanness", nncOptionContract.humannessValues || [], nncOptionContract.selectedHumanness || "");
         const nncAnimacyControl = targetObject.document.getElementById(
           "classical-rule-logic-nnc-subject-animacy"
         );
@@ -15235,6 +17849,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
       }
       syncClassicalGrammarDependencyPresentation(surfaceFrame);
+      preserveClassicalPatientiveEmbedNncControls();
     }
     function clearClassicalRuleLogicSurfaceBlock() {
       ActiveClassicalRuleLogicSurfaceFrame = null;
@@ -15433,6 +18048,110 @@ export function createUiRenderingApi(targetObject = globalThis) {
       disclosure.hidden = !visibleChildren.some(child => !child.hidden);
       disclosure.open = !disclosure.hidden;
       return disclosure;
+    }
+    function createClassicalResultSpecificitySwitch(
+      onSelect = () => {},
+      {
+        generalAvailable = true,
+        label = "Structure and analysis",
+      } = {}
+    ) {
+      const group = targetObject.document.createElement("div");
+      group.className = "classical-rule-surface__format-switch";
+      group.dataset.classicalResultPresentationAxis = "specificity";
+      group.setAttribute("role", "group");
+      group.setAttribute(
+        "aria-label",
+        `${label}: specific or general structure`
+      );
+      const buttons = ["specific", "general"].map(mode => {
+        const button = targetObject.document.createElement("button");
+        button.type = "button";
+        button.className = "classical-rule-surface__format-switch-option";
+        button.dataset.classicalFormulaSpecificity = mode;
+        button.textContent = mode === "specific" ? "Specific" : "General";
+        button.disabled = mode === "general" && !generalAvailable;
+        button.setAttribute("aria-disabled", String(button.disabled));
+        button.addEventListener("click", event => {
+          event.preventDefault();
+          event.stopPropagation();
+          if (button.disabled) return;
+          buttons.forEach(candidate => {
+            const active = candidate === button;
+            candidate.classList.toggle("is-active", active);
+            candidate.setAttribute("aria-pressed", String(active));
+          });
+          onSelect(mode);
+        });
+        group.appendChild(button);
+        return button;
+      });
+      buttons[0].classList.add("is-active");
+      buttons[0].setAttribute("aria-pressed", "true");
+      buttons[1].setAttribute("aria-pressed", "false");
+      return group;
+    }
+    function createClassicalResultPresentationSwitchRow(
+      structureSwitch = null,
+      specificitySwitch = null
+    ) {
+      const row = targetObject.document.createElement("div");
+      row.className = "classical-rule-surface__presentation-switches";
+      row.dataset.classicalResultPresentationSwitches = "structure-specificity";
+      [structureSwitch, specificitySwitch]
+        .filter(Boolean)
+        .forEach(control => row.appendChild(control));
+      return row;
+    }
+    function createClassicalResultSentenceFormulaSection({
+      formulaDisplay = "",
+      typedSlotFrame = null,
+      grammarContext = null,
+      attachment = "",
+      prefixalStack = [],
+      authority = "",
+      status = "",
+      particlesBecomeFormulaSlots = false,
+      projection = "typed-result",
+    } = {}) {
+      const display = getClassicalResultFormatProjection(
+        formulaDisplay,
+        status
+      );
+      const section = targetObject.document.createElement("section");
+      section.className = "classical-rule-surface__format-section classical-rule-surface__format-section--sentence classical-rule-surface__sentence-formula-section";
+      section.setAttribute("aria-label", "Sentence formula");
+      section.dataset.classicalSentenceFormulaProjection = projection;
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__format-heading";
+      const title = targetObject.document.createElement("h4");
+      title.className = "classical-rule-surface__format-title";
+      title.textContent = "Sentence formula";
+      heading.appendChild(title);
+      const formula = targetObject.document.createElement("div");
+      formula.className = "classical-rule-surface__formula classical-rule-surface__formula--sentence";
+      formula.dataset.classicalLesson8SentenceFormula = "true";
+      formula.dataset.classicalLesson8SentenceFormulaAttachment = String(
+        attachment || ""
+      );
+      formula.dataset.classicalLesson8SentencePrefixalStack = Array.from(
+        prefixalStack || []
+      ).join(" ");
+      formula.dataset.classicalSentenceAuthority = String(authority || "");
+      formula.dataset.classicalSentenceStatus = String(status || "");
+      formula.dataset.classicalSentenceParticlesBecomeFormulaSlots = String(
+        particlesBecomeFormulaSlots === true
+      );
+      renderClassicalFormulaDerivedAnnotations(
+        formula,
+        display,
+        typedSlotFrame,
+        grammarContext
+      );
+      formula.hidden = !display;
+      section.hidden = !display;
+      section.append(heading, formula);
+      return section;
     }
     function createClassicalResultRecoveryAction(resultBlockReason = "") {
       const recoveryControl = getClassicalRuleLogicRecoveryControl(
@@ -15972,14 +18691,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function getClassicalWholeCanvasAuthorityChoiceSpecs() {
       return [{
-        controlId: "classical-rule-logic-subject",
-        label: "Subject"
+        controlId: "classical-rule-logic-vnc-subject-person",
+        label: "Person"
+      }, {
+        controlId: "classical-rule-logic-vnc-subject-animacy",
+        label: "Animacy"
+      }, {
+        controlId: "classical-rule-logic-vnc-subject-humanness",
+        label: "Humanness"
+      }, {
+        controlId: "classical-rule-logic-vnc-subject-number",
+        label: "Number"
       }, {
         controlId: "classical-rule-logic-nnc-subject-person",
         label: "Person"
       }, {
         controlId: "classical-rule-logic-nnc-subject-animacy",
-        label: "Referent"
+        label: "Animacy"
+      }, {
+        controlId: "classical-rule-logic-nnc-subject-humanness",
+        label: "Humanness"
       }, {
         controlId: "classical-rule-logic-nnc-subject-number",
         label: "Number"
@@ -16060,6 +18791,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
     function getClassicalAuthorityControlLayout(controlId = "") {
       const layouts = {
         "classical-rule-logic-subject": "subject",
+        "classical-rule-logic-vnc-subject-person": "subject-person",
+        "classical-rule-logic-vnc-subject-animacy": "subject-animacy",
+        "classical-rule-logic-vnc-subject-humanness": "subject-humanness",
+        "classical-rule-logic-vnc-subject-number": "subject-number",
         "classical-rule-logic-mood": "mood",
         "classical-rule-logic-tense": "tense",
         "classical-rule-logic-class": "class",
@@ -16102,6 +18837,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-nnc-possessor": "nnc-possessor",
         "classical-rule-logic-nnc-subject-person": "nnc-subject-person",
         "classical-rule-logic-nnc-subject-animacy": "nnc-subject-animacy",
+        "classical-rule-logic-nnc-subject-humanness": "nnc-subject-humanness",
         "classical-rule-logic-nnc-subject-number": "nnc-subject-number",
         "classical-rule-logic-nnc-metaphorical-use": "nnc-metaphorical-use"
       };
@@ -16218,7 +18954,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
         return false;
       }
-      const { resultFrame, projection } = continuation;
+      const {
+        resultFrame,
+        projection,
+        sourceApplicationFrame
+      } = continuation;
       const nextSource = String(projection.sourceStem || "").trim();
       const wholeInput = targetObject.document.getElementById("classical-source-whole");
       const mirrorInput = targetObject.document.getElementById("verb");
@@ -16233,6 +18973,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         { force: true }
       );
       ActiveClassicalVncResultSourceContinuation = resultFrame;
+      ActiveClassicalVncResultSourceApplicationFrame =
+        sourceApplicationFrame;
       ActiveClassicalVncResultSourceProjection = projection;
       ClassicalVncResultSourceCommitInProgress = true;
       const input = wholeInput || mirrorInput;
@@ -16250,7 +18992,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (derivationOptionControl) {
           derivationOptionControl.value = "";
         }
-        if (surfaceFrame.state?.vncLateOperationClosureFrame) {
+        if (
+          resultFrame?.kind
+            === "classical-nahuatl-late-vnc-derivation-closure-frame"
+        ) {
           [
             "classical-rule-logic-late-operation",
             "classical-rule-logic-late-variant",
@@ -17476,11 +20221,979 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "denominal-vnc": "denominal-vnc",
       "adverbial-nuclear": "adverbial-nuclear",
     });
+    const CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS = Object.freeze([
+      "classical-personal-name-source-family",
+      "classical-personal-name-derived-facts",
+      "classical-denominal-vnc-operation-path",
+      "classical-denominal-vnc-source-subject",
+      "classical-denominal-vnc-source-possessor",
+      "classical-deverbal-nnc-preterit-agentive-variant",
+      "classical-deverbal-nnc-action-stem-variant",
+      "classical-deverbal-nnc-root-stock-allomorph",
+      "classical-deverbal-nnc-root-stock-source-analysis",
+      "classical-compound-nnc-embed-source-class",
+      "classical-compound-nnc-embed-analysis",
+      "classical-compound-nnc-variant-stem",
+      "classical-compound-nnc-unique-position",
+      "classical-compound-nnc-unique-meaning",
+      "classical-compound-nnc-yo-embed-history",
+      "classical-affective-lexical-status",
+      "classical-affective-irregular-embed-stem",
+      "classical-affective-embed-affinity-requirement",
+      "classical-affective-embed-affinity-target",
+      "classical-affective-flawed-source-status",
+      "classical-affective-flawed-class-strategy",
+      "classical-affective-flawed-lexical-reading",
+      "classical-affective-defect-analysis",
+      "classical-gentilic-source-place-matrix",
+      "classical-place-affective-analysis",
+      "classical-place-gentilic-lexical-record",
+      "classical-adverbial-lexical-facts",
+      "classical-attitude-source-analysis",
+      "classical-cardinal-measure-class",
+      "classical-cardinal-measured-class",
+    ]);
+    const makeClassicalCustomFormationPlacement = (
+      nnc = "",
+      vnc = ""
+    ) => Object.freeze({ nnc, vnc });
+    const CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS =
+      Object.freeze({
+        // Place and gentilic formation.
+        "classical-place-gentilic-result-kind":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-place-gentilic-formation":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-place-affective-matrix":
+          makeClassicalCustomFormationPlacement("nounstem"),
+
+        // Denominal VNC formation and its Result participants.
+        "classical-denominal-vnc-operation":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-denominal-vnc-result-object-1":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-denominal-vnc-result-object-2":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-denominal-vnc-included-family":
+          makeClassicalCustomFormationPlacement("", "state"),
+        "classical-denominal-vnc-exclamatory":
+          makeClassicalCustomFormationPlacement("", "sentence"),
+
+        // Personal-name NNC formation and sentence continuation.
+        "classical-personal-name-affective-scope":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-personal-name-affective-matrix":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-personal-name-reranking":
+          makeClassicalCustomFormationPlacement("sentence"),
+        "classical-personal-name-sentence-operation":
+          makeClassicalCustomFormationPlacement("sentence"),
+        "classical-personal-name-sentence-operation-status":
+          makeClassicalCustomFormationPlacement("sentence"),
+
+        // Deverbal NNC formation. Lexical Source alternatives remain in #1.
+        "classical-deverbal-nnc-family":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-nominalization-kind":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-activated-object-person":
+          makeClassicalCustomFormationPlacement("predicate"),
+        "classical-deverbal-nnc-final-i-boundary":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-action-kind":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-action-suffix":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-patientive-family":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-analogy":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-target":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-characteristic-embed-realization":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-matrix-stem":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-matrix-noun-class":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-matrix-verb-class":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-matrix-valence":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-matrix-object-governor":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-relation":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-patientive-embed-complement-kind":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+        "classical-deverbal-nnc-passive-human-realization":
+          makeClassicalCustomFormationPlacement("predicate"),
+        "classical-deverbal-nnc-patientive-contrast":
+          makeClassicalCustomFormationPlacement("predicate"),
+        "classical-deverbal-nnc-patientive-compound-relation":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-patientive-matrix-embed-stem":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-patientive-matrix-embed-class":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-patientive-matrix-relation":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-characteristic-reading":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-ownerhood-matrix":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-rule-logic-nonactive-family":
+          makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
+
+        // Nominal embedding into a Result VNC.
+        "classical-nominal-embed-role":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-embed-adverbial-route":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-embed-possession-kind":
+          makeClassicalCustomFormationPlacement("", "state"),
+        "classical-nominal-embed-possessor-reference":
+          makeClassicalCustomFormationPlacement("", "state"),
+        "classical-nominal-embed-adverbial-role":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-embed-reference-orientation":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-embed-complement-relation":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+        "classical-nominal-embed-reduplication":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-nominal-matrix-reduplication":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+
+        // Compound NNC formation.
+        "classical-compound-nnc-structure":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-bracketing":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-reduplication-target":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-distributive-reading":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-sex-value":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-embed-role":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-compound-nnc-possessor-orientation":
+          makeClassicalCustomFormationPlacement("state"),
+
+        // Affective NNC formation.
+        "classical-affective-vocative-form":
+          makeClassicalCustomFormationPlacement("state"),
+        "classical-affective-pil-child-route":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-pil-gender":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-possessive-affinity-plural":
+          makeClassicalCustomFormationPlacement("state"),
+        "classical-affective-route":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-matrix":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-semantic-reading":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-embed-affinity-selected":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-nonanimate-reduplication-reading":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-affective-nonanimate-reduplication-shape":
+          makeClassicalCustomFormationPlacement("nounstem"),
+
+        // Attitude VNC formation and participant scope.
+        "classical-attitude-operation":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-attitude-formation":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-attitude-derivation-option":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-attitude-stem-alternative":
+          makeClassicalCustomFormationPlacement("", "derivation"),
+        "classical-attitude-participant":
+          makeClassicalCustomFormationPlacement("", "predicate"),
+
+        // Cardinal formation can remain an NNC or become a VNC embed.
+        "classical-cardinal-value":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-target-kind":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-numeral-variant":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-modifier":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-cardinal-count-kind":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-gross-possessor-kind":
+          makeClassicalCustomFormationPlacement("state", "state"),
+        "classical-cardinal-gross-number-variant":
+          makeClassicalCustomFormationPlacement("state", "state"),
+        "classical-cardinal-classifier":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-conjunction-form":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-measure-meaning":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-cardinal-measure-composition":
+          makeClassicalCustomFormationPlacement("sentence"),
+        "classical-construction-reduplication":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+
+        // Adverbial formation and its sentence-context choices.
+        "classical-adverbial-degree":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-adverbial-scope":
+          makeClassicalCustomFormationPlacement("nounstem", "derivation"),
+        "classical-adverbial-preceding-particle":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-negative-particle":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-stress-partner":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-variant":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-sentence-position":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-clause-type":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+        "classical-adverbial-negation-scope":
+          makeClassicalCustomFormationPlacement("sentence", "sentence"),
+      });
+    const CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_ORDERS = Object.freeze({
+      "classical-place-gentilic-result-kind": 10,
+      "classical-place-gentilic-formation": 20,
+      "classical-place-affective-matrix": 30,
+      "classical-denominal-vnc-operation": 10,
+      "classical-denominal-vnc-result-object-1": 10,
+      "classical-denominal-vnc-result-object-2": 20,
+      "classical-denominal-vnc-included-family": 10,
+      "classical-denominal-vnc-exclamatory": 10,
+      "classical-personal-name-affective-scope": 10,
+      "classical-personal-name-affective-matrix": 20,
+      "classical-personal-name-reranking": 10,
+      "classical-personal-name-sentence-operation": 20,
+      "classical-personal-name-sentence-operation-status": 30,
+      "classical-deverbal-nnc-family": 10,
+      "classical-deverbal-nnc-nominalization-kind": 20,
+      "classical-deverbal-nnc-activated-object-person": 10,
+      "classical-deverbal-nnc-final-i-boundary": 30,
+      "classical-deverbal-nnc-action-kind": 20,
+      "classical-deverbal-nnc-action-suffix": 30,
+      "classical-deverbal-nnc-patientive-family": 20,
+      "classical-rule-logic-nonactive-family": 25,
+      "classical-deverbal-nnc-patientive-analogy": 30,
+      "classical-deverbal-nnc-patientive-embed-target": 40,
+      "classical-deverbal-nnc-characteristic-embed-realization": 45,
+      "classical-deverbal-nnc-patientive-embed-matrix-stem": 50,
+      "classical-deverbal-nnc-patientive-embed-matrix-noun-class": 60,
+      "classical-deverbal-nnc-patientive-embed-matrix-verb-class": 60,
+      "classical-deverbal-nnc-patientive-embed-matrix-valence": 70,
+      "classical-deverbal-nnc-patientive-embed-matrix-object-governor": 80,
+      "classical-deverbal-nnc-patientive-embed-relation": 90,
+      "classical-deverbal-nnc-patientive-embed-complement-kind": 100,
+      "classical-deverbal-nnc-passive-human-realization": 10,
+      "classical-deverbal-nnc-patientive-contrast": 20,
+      "classical-deverbal-nnc-patientive-compound-relation": 35,
+      "classical-deverbal-nnc-patientive-matrix-embed-stem": 36,
+      "classical-deverbal-nnc-patientive-matrix-embed-class": 37,
+      "classical-deverbal-nnc-patientive-matrix-relation": 38,
+      "classical-deverbal-nnc-characteristic-reading": 30,
+      "classical-deverbal-nnc-ownerhood-matrix": 20,
+      "classical-nominal-embed-role": 10,
+      "classical-nominal-embed-adverbial-route": 20,
+      "classical-nominal-embed-possession-kind": 10,
+      "classical-nominal-embed-possessor-reference": 20,
+      "classical-nominal-embed-adverbial-role": 30,
+      "classical-nominal-embed-reference-orientation": 40,
+      "classical-nominal-embed-complement-relation": 50,
+      "classical-nominal-embed-reduplication": 10,
+      "classical-nominal-matrix-reduplication": 20,
+      "classical-compound-nnc-structure": 10,
+      "classical-compound-nnc-bracketing": 20,
+      "classical-compound-nnc-embed-role": 30,
+      "classical-compound-nnc-sex-value": 31,
+      "classical-compound-nnc-reduplication-target": 50,
+      "classical-compound-nnc-distributive-reading": 60,
+      "classical-compound-nnc-possessor-orientation": 10,
+      "classical-affective-route": 10,
+      "classical-affective-matrix": 20,
+      "classical-affective-semantic-reading": 30,
+      "classical-affective-pil-child-route": 30,
+      "classical-affective-pil-gender": 50,
+      "classical-affective-vocative-form": 10,
+      "classical-affective-possessive-affinity-plural": 20,
+      "classical-affective-embed-affinity-selected": 70,
+      "classical-affective-nonanimate-reduplication-shape": 80,
+      "classical-affective-nonanimate-reduplication-reading": 90,
+      "classical-attitude-operation": 10,
+      "classical-attitude-formation": 20,
+      "classical-attitude-derivation-option": 25,
+      "classical-attitude-stem-alternative": 30,
+      "classical-attitude-participant": 10,
+      "classical-cardinal-target-kind": 10,
+      "classical-cardinal-value": 20,
+      "classical-cardinal-numeral-variant": 25,
+      "classical-cardinal-count-kind": 30,
+      "classical-cardinal-gross-possessor-kind": 40,
+      "classical-cardinal-gross-number-variant": 50,
+      "classical-cardinal-classifier": 40,
+      "classical-cardinal-conjunction-form": 45,
+      "classical-cardinal-modifier": 10,
+      "classical-cardinal-measure-meaning": 19,
+      "classical-cardinal-measure-composition": 20,
+      "classical-adverbial-degree": 10,
+      "classical-adverbial-scope": 20,
+      "classical-adverbial-preceding-particle": 10,
+      "classical-adverbial-negative-particle": 20,
+      "classical-adverbial-stress-partner": 30,
+      "classical-adverbial-variant": 40,
+      "classical-adverbial-sentence-position": 50,
+      "classical-adverbial-clause-type": 60,
+      "classical-adverbial-negation-scope": 70,
+    });
+    function getClassicalCustomConstructionGrammarOrder(
+      id = "",
+      selectedConstruction = ""
+    ) {
+      if (id === "classical-construction-reduplication") {
+        return selectedConstruction === "cardinal-numeral-nnc" ? 50 : 40;
+      }
+      if (
+        selectedConstruction === "affective-nnc"
+        && [
+          "classical-affective-matrix",
+          "classical-affective-semantic-reading",
+        ].includes(id)
+      ) {
+        const reading = getClassicalNominalConstructionControlValue(
+          "classical-affective-semantic-reading",
+          "ordinary-affective"
+        );
+        const pilFlow = String(reading).startsWith("pil-");
+        if (id === "classical-affective-matrix") return pilFlow ? 40 : 20;
+        return pilFlow ? 20 : 30;
+      }
+      return CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_ORDERS[id] || 100;
+    }
+    const CLASSICAL_CUSTOM_CONSTRUCTION_MANAGED_CONTROL_IDS = Object.freeze([
+      ...Object.keys(CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS),
+      "classical-rule-logic-nnc-quantity-plural-formation",
+      "classical-rule-logic-subject",
+      "classical-rule-logic-vnc-subject-person",
+      "classical-rule-logic-vnc-subject-animacy",
+      "classical-rule-logic-vnc-subject-humanness",
+      "classical-rule-logic-vnc-subject-number",
+      "classical-rule-logic-class",
+      "classical-rule-logic-valence",
+      "classical-rule-logic-object",
+      "classical-rule-logic-mood",
+      "classical-rule-logic-tense",
+      "classical-rule-logic-vnc-voice",
+      "classical-rule-logic-vnc-output-scope",
+      "classical-rule-logic-nnc-output-scope",
+    ]);
+    function getClassicalCustomConstructionWrapper(id = "") {
+      const node = targetObject.document?.getElementById?.(id) || null;
+      if (!node) return null;
+      const wrapperSelector = [
+        "label",
+        ".classical-rule-control",
+        "[data-classical-rule-control]",
+        "[data-classical-source-authorizes]",
+      ].join(", ");
+      return node.matches?.(wrapperSelector)
+        ? node
+        : node.closest?.(wrapperSelector) || node;
+    }
+    function preserveClassicalPatientiveEmbedNncControls() {
+      const selectedConstruction = getClassicalNominalConstructionControlValue(
+        "classical-construction-operation",
+        "none"
+      );
+      const selectedFamily = getClassicalNominalConstructionControlValue(
+        "classical-deverbal-nnc-family",
+        ""
+      );
+      if (
+        selectedConstruction !== "deverbal-nnc"
+        || selectedFamily !== "patientive-embed-continuation"
+      ) return false;
+      const unit = getClassicalNominalConstructionControlValue(
+        "classical-deverbal-nnc-patientive-embed-target",
+        "nnc"
+      ) === "vnc" ? "vnc" : "nnc";
+      const nncPresentation = getClassicalNncGrammarPresentation();
+      const vncPresentation = getClassicalVncAuthorityProgressivePresentation();
+      const destination = unit === "vnc"
+        ? vncPresentation?.verbstem?.querySelector?.(
+          '[data-classical-vnc-authority-stage="verbstem"]'
+        ) || null
+        : nncPresentation?.groups?.state?.body || null;
+      const stateControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-nnc-state"
+      );
+      const stateIsPossessive = stateControl?.value === "possessive";
+      [
+        ["classical-rule-logic-nnc-state", true],
+        ["classical-rule-logic-nnc-possessor", stateIsPossessive],
+      ].forEach(([id, visible]) => {
+        const control = targetObject.document?.getElementById?.(id);
+        const wrapper = getClassicalCustomConstructionWrapper(id);
+        if (!control || !wrapper) return;
+        if (destination && wrapper.parentElement !== destination) {
+          destination.appendChild(wrapper);
+        }
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        wrapper.setAttribute("aria-disabled", String(!visible));
+        wrapper.dataset.classicalControlAvailability = visible
+          ? "enabled"
+          : "hidden";
+        wrapper.dataset.classicalRuleLogicCurrentVisibility = visible
+          ? "visible"
+          : "hidden";
+        wrapper.dataset.classicalRuleLogicGate = visible
+          ? "canvas-patientive-embed-nnc-choice"
+          : "canvas-possessor-requires-possessive-patientive-state";
+        wrapper.dataset.classicalAuthorityDecisionOwner = visible
+          ? "user"
+          : "canvas-context";
+        wrapper.dataset.classicalAuthorityUserInput = visible
+          ? "required"
+          : "not-required";
+        wrapper.dataset.classicalNncGrammarGroup = "state";
+        control.disabled = !visible;
+        control.setAttribute("aria-disabled", String(!visible));
+      });
+      if (unit === "nnc") {
+        const stateSection = nncPresentation?.groups?.state?.section || null;
+        if (stateSection) {
+          stateSection.hidden = false;
+          stateSection.setAttribute("aria-hidden", "false");
+        }
+        if (nncPresentation?.organizer) {
+          nncPresentation.organizer.hidden = false;
+          nncPresentation.organizer.setAttribute("aria-hidden", "false");
+        }
+      } else {
+        const verbstemSection = vncPresentation?.verbstem || null;
+        if (verbstemSection) {
+          verbstemSection.hidden = false;
+          verbstemSection.setAttribute("aria-hidden", "false");
+        }
+        if (vncPresentation?.organizer) {
+          vncPresentation.organizer.hidden = false;
+          vncPresentation.organizer.setAttribute("aria-hidden", "false");
+        }
+      }
+      return true;
+    }
+    function getClassicalCustomConstructionPresentationUnit(
+      selectedConstruction = "",
+      frame = null
+    ) {
+      const selected = String(selectedConstruction || "");
+      if ([
+        "nominal-embed-vnc",
+        "attitude-vnc",
+        "denominal-vnc",
+      ].includes(selected)) return "vnc";
+      if (
+        selected === "cardinal-numeral-nnc"
+        && getClassicalNominalConstructionControlValue(
+          "classical-cardinal-target-kind",
+          "nnc"
+        ) === "vnc-embed"
+      ) return "vnc";
+      if (
+        selected === "deverbal-nnc"
+        && getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-family",
+          ""
+        ) === "patientive-embed-continuation"
+        && getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-patientive-embed-target",
+          "nnc"
+        ) === "vnc"
+      ) return "vnc";
+      if (selected === "adverbial-nuclear") {
+        const scope = String(
+          frame?.operationFrame?.scope
+          || frame?.scope
+          || (!frame
+            ? getClassicalNominalConstructionControlValue(
+              "classical-adverbial-scope",
+              ""
+            )
+            : "")
+        );
+        if (scope === "incorporated-predicate") return "vnc";
+      }
+      return selected ? "nnc" : "";
+    }
+    function getClassicalCustomFormationDestination(
+      unit = "",
+      group = "",
+      nncPresentation = null,
+      vncPresentation = null
+    ) {
+      if (unit === "nnc") {
+        return nncPresentation?.groups?.[group]?.body || null;
+      }
+      if (unit !== "vnc") return null;
+      if (["derivation", "verbstem", "state"].includes(group)) {
+        return vncPresentation?.verbstem?.querySelector?.(
+          '[data-classical-vnc-authority-stage="verbstem"]'
+        ) || null;
+      }
+      if (group === "subject") {
+        return vncPresentation?.subject?.querySelector?.(
+          '[data-classical-vnc-authority-stage="subject"]'
+        ) || null;
+      }
+      if (group === "tense") {
+        return vncPresentation?.tense?.querySelector?.(
+          '[data-classical-vnc-authority-stage="tense"]'
+        ) || null;
+      }
+      if (group === "sentence") {
+        return vncPresentation?.sentence?.querySelector?.(
+          '[data-classical-vnc-authority-control-group="function"] '
+            + ".classical-vnc-authority-control-group__body"
+        ) || null;
+      }
+      return vncPresentation?.valence?.querySelector?.(
+        '[data-classical-vnc-authority-stage="valence"]'
+      ) || null;
+    }
+    function getClassicalCustomFormationSemanticGroup(hostGroup = "") {
+      return ["nounstem", "derivation", "verbstem"].includes(hostGroup)
+        ? "formation"
+        : hostGroup;
+    }
+    function getOrCreateClassicalCustomFormationLane(
+      destination = null,
+      unit = "",
+      hostGroup = ""
+    ) {
+      if (!destination || !unit || !hostGroup) return null;
+      const host = unit === "nnc"
+        ? hostGroup
+        : ["derivation", "verbstem", "state"].includes(hostGroup)
+          ? "verbstem"
+          : hostGroup === "predicate"
+            ? "valence"
+            : hostGroup === "sentence"
+              ? "sentence"
+              : hostGroup;
+      let lane = Array.from(destination.children || []).find(node => (
+        node.dataset?.classicalConstructionGrammarLane === `${unit}-${host}`
+      )) || null;
+      if (!lane) {
+        lane = targetObject.document.createElement("section");
+        lane.className = [
+          "classical-construction-grammar-lane",
+          "classical-rule-controls-grid",
+        ].join(" ");
+        lane.dataset.classicalConstructionGrammarLane = `${unit}-${host}`;
+        lane.dataset.classicalConstructionGrammarUnit = unit;
+        lane.dataset.classicalConstructionGrammarHost = host;
+        lane.dataset.classicalConstructionGrammarLayer = "route-specific";
+        lane.dataset.classicalConstructionSeparatedFromNormal = "false";
+        lane.setAttribute("aria-label", `${host} formation choices`);
+        lane.setAttribute("aria-hidden", "true");
+        lane.hidden = true;
+        const label = targetObject.document.createElement("span");
+        label.className = "classical-construction-grammar-lane__label";
+        label.textContent = "Formation choices";
+        lane.appendChild(label);
+      }
+      destination.appendChild(lane);
+      return lane;
+    }
+    function syncClassicalCustomFormationLanes(activeOrganizer = null) {
+      targetObject.document?.querySelectorAll?.(
+        "[data-classical-construction-grammar-lane]"
+      ).forEach(lane => {
+        const active = Boolean(activeOrganizer?.contains?.(lane));
+        const formationControls = Array.from(
+          lane.children || []
+        ).filter(node => (
+          node.dataset?.classicalConstructionGrammarLayer === "route-specific"
+        )).sort((left, right) => (
+          Number(left.dataset?.classicalConstructionGrammarOrder || 100)
+          - Number(right.dataset?.classicalConstructionGrammarOrder || 100)
+        ));
+        formationControls.forEach(node => lane.appendChild(node));
+        const visibleFormationControls = formationControls.filter(
+          node => node.hidden !== true
+        );
+        const normalVisibleCount = Array.from(
+          lane.parentElement?.querySelectorAll?.(".classical-rule-control")
+            || []
+        ).filter(wrapper => (
+          wrapper.hidden !== true
+          && !wrapper.closest?.("[data-classical-construction-grammar-lane]")
+        )).length;
+        const visible = active && visibleFormationControls.length > 0;
+        const separated = visible && normalVisibleCount > 0;
+        lane.hidden = !visible;
+        lane.dataset.classicalConstructionSeparatedFromNormal =
+          String(separated);
+        lane.setAttribute("aria-hidden", String(!visible));
+      });
+    }
+    function syncClassicalCustomConstructionGrammarPresentation(
+      selectedConstruction = "",
+      frame = null
+    ) {
+      const selected = String(selectedConstruction || "");
+      const controls = targetObject.document?.getElementById?.(
+        "classical-rule-logic-controls"
+      );
+      const nncPresentation = getClassicalNncGrammarPresentation();
+      const vncPresentation = getClassicalVncAuthorityProgressivePresentation();
+      if (!controls || !nncPresentation || !vncPresentation) return null;
+      controls.dataset.classicalCustomConstructionActive = String(
+        Boolean(selected)
+      );
+      if (!selected) {
+        controls.dataset.classicalCustomConstructionSurfaceUnit = "";
+        [nncPresentation.organizer, vncPresentation.organizer].forEach(
+          organizer => {
+            if (organizer?.style) organizer.style.display = "";
+          }
+        );
+        syncClassicalCustomFormationLanes();
+        return { unit: "", groups: [] };
+      }
+      const unit = getClassicalCustomConstructionPresentationUnit(
+        selected,
+        frame
+      );
+      controls.dataset.classicalCustomConstructionSurfaceUnit = unit;
+      controls.dataset.classicalRuleLogicSurfaceUnit = unit;
+
+      if (unit === "vnc") {
+        syncClassicalVncAuthorityProgressivePresentation({
+          basalUnit: "vnc",
+          derivationType: "direct",
+          derivationSourceAuthorized: false,
+          surfaceFrame: frame,
+        });
+        const verbstemBody = vncPresentation.verbstem?.querySelector?.(
+          '[data-classical-vnc-authority-stage="verbstem"]'
+        ) || null;
+        [
+          "classical-rule-logic-nnc-state",
+          "classical-rule-logic-nnc-possessor",
+        ].forEach(id => {
+          const wrapper = getClassicalCustomConstructionWrapper(id);
+          if (
+            wrapper
+            && wrapper.hidden !== true
+            && verbstemBody
+            && wrapper.parentElement !== verbstemBody
+          ) verbstemBody.appendChild(wrapper);
+        });
+      } else {
+        Object.entries(CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS).forEach(
+          ([id, group]) => {
+            const wrapper = getClassicalCustomConstructionWrapper(id);
+            const destination = nncPresentation.groups?.[group]?.body || null;
+            if (
+              wrapper
+              && destination
+              && wrapper.parentElement !== destination
+            ) destination.appendChild(wrapper);
+          }
+        );
+      }
+
+      const activeGroups = new Set();
+      Object.entries(
+        CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS
+      ).forEach(([id, placement]) => {
+        const wrapper = getClassicalCustomConstructionWrapper(id);
+        if (!wrapper) return;
+        const inheritedOwner = String(
+          wrapper.dataset?.constructionFor
+          || wrapper.closest?.("[data-construction-for]")?.dataset
+            ?.constructionFor
+          || ""
+        );
+        if (inheritedOwner && !wrapper.dataset?.constructionFor) {
+          wrapper.dataset.constructionFor = inheritedOwner;
+        }
+        const hostGroup = String(placement?.[unit] || "");
+        if (!hostGroup) {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          wrapper.querySelectorAll?.("select, input, button").forEach(
+            control => {
+              control.disabled = true;
+              control.setAttribute("aria-disabled", "true");
+            }
+          );
+          return;
+        }
+        wrapper.querySelectorAll?.("select, input, button").forEach(
+          control => {
+            control.setAttribute(
+              "aria-disabled",
+              String(control.disabled)
+            );
+          }
+        );
+        const semanticGroup = getClassicalCustomFormationSemanticGroup(
+          hostGroup
+        );
+        const destination = getClassicalCustomFormationDestination(
+          unit,
+          hostGroup,
+          nncPresentation,
+          vncPresentation
+        );
+        if (!destination) return;
+        const lane = getOrCreateClassicalCustomFormationLane(
+          destination,
+          unit,
+          hostGroup
+        );
+        if (!lane) return;
+        const order = getClassicalCustomConstructionGrammarOrder(id, selected);
+        wrapper.dataset.classicalConstructionGrammarLayer = "route-specific";
+        wrapper.dataset.classicalConstructionGrammarUnit = unit;
+        wrapper.dataset.classicalConstructionGrammarGroup = semanticGroup;
+        wrapper.dataset.classicalConstructionGrammarHost = hostGroup;
+        wrapper.dataset.classicalConstructionGrammarOrder = String(order);
+        if (wrapper.style) wrapper.style.order = String(order);
+        if (unit === "nnc") {
+          wrapper.dataset.classicalNncGrammarGroup = hostGroup;
+          delete wrapper.dataset.classicalVncAuthorityOrder;
+        } else {
+          delete wrapper.dataset.classicalVncAuthorityOrder;
+          delete wrapper.dataset.classicalNncGrammarGroup;
+        }
+        if (wrapper.parentElement !== lane) {
+          lane.appendChild(wrapper);
+        }
+        if (wrapper.hidden !== true) activeGroups.add(semanticGroup);
+      });
+
+      const patientiveEmbedContinuation = selected === "deverbal-nnc"
+        && getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-family",
+          ""
+        ) === "patientive-embed-continuation";
+      if (patientiveEmbedContinuation) {
+        const embeddedPatientiveState = getClassicalCustomConstructionWrapper(
+          "classical-rule-logic-nnc-state"
+        );
+        const embeddedPatientivePossessor =
+          getClassicalCustomConstructionWrapper(
+            "classical-rule-logic-nnc-possessor"
+          );
+        const stateControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-state"
+        );
+        const possessorControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-possessor"
+        );
+        const stateDestination = unit === "vnc"
+          ? vncPresentation.verbstem?.querySelector?.(
+            '[data-classical-vnc-authority-stage="verbstem"]'
+          ) || null
+          : nncPresentation.groups?.state?.body || null;
+        [
+          [embeddedPatientiveState, stateControl, true],
+          [
+            embeddedPatientivePossessor,
+            possessorControl,
+            stateControl?.value === "possessive",
+          ],
+        ].forEach(([wrapper, control, visible]) => {
+          if (!wrapper || !control) return;
+          if (stateDestination && wrapper.parentElement !== stateDestination) {
+            stateDestination.appendChild(wrapper);
+          }
+          wrapper.hidden = !visible;
+          wrapper.setAttribute("aria-hidden", String(!visible));
+          control.disabled = !visible;
+          control.setAttribute("aria-disabled", String(!visible));
+          wrapper.setAttribute("aria-disabled", String(!visible));
+        });
+        activeGroups.add("state");
+      }
+
+      const adverbialContainer = targetObject.document.getElementById(
+        "classical-adverbial-nuclear-authority"
+      );
+      if (adverbialContainer) {
+        adverbialContainer.hidden = true;
+        adverbialContainer.setAttribute("aria-hidden", "true");
+      }
+
+      const nncActive = unit === "nnc";
+      nncPresentation.organizer.hidden = !nncActive;
+      nncPresentation.organizer.setAttribute(
+        "aria-hidden",
+        String(!nncActive)
+      );
+      Object.entries(nncPresentation.groups).forEach(([groupId, group]) => {
+        const visibleControls = Array.from(group.body?.children || [])
+          .flatMap(node => (
+            node.matches?.(".classical-rule-control")
+              ? [node]
+              : Array.from(node.querySelectorAll?.(
+                '[data-classical-construction-grammar-layer="route-specific"]'
+              ) || [])
+          ))
+          .filter(node => node.hidden !== true);
+        const visible = nncActive && visibleControls.length > 0;
+        if (group.section) {
+          group.section.hidden = !visible;
+          group.section.setAttribute("aria-hidden", String(!visible));
+        }
+        const heading = group.section?.querySelector?.(
+          `[data-classical-nnc-authority-heading="${groupId}"]`
+        );
+        if (heading) {
+          heading.hidden = !visible;
+          heading.setAttribute("aria-hidden", String(!visible));
+        }
+      });
+
+      const vncActive = unit === "vnc";
+      vncPresentation.organizer.hidden = !vncActive;
+      vncPresentation.organizer.setAttribute(
+        "aria-hidden",
+        String(!vncActive)
+      );
+      if (vncActive) {
+        const sectionBody = kind => vncPresentation[kind]?.querySelector?.(
+          `[data-classical-vnc-authority-stage="${kind}"]`
+        ) || null;
+        const functionGroup = vncPresentation.sentence?.querySelector?.(
+          '[data-classical-vnc-authority-control-group="function"]'
+        ) || null;
+        const visibleControlCount = root => Array.from(
+          root?.querySelectorAll?.(".classical-rule-control") || []
+        ).filter(wrapper => wrapper.hidden !== true).length;
+        ["subject", "valence", "verbstem", "tense"].forEach(kind => {
+          const section = vncPresentation[kind];
+          if (!section) return;
+          section.hidden = visibleControlCount(sectionBody(kind)) === 0;
+          section.setAttribute("aria-hidden", String(section.hidden));
+        });
+        if (functionGroup) {
+          functionGroup.hidden = visibleControlCount(functionGroup) === 0;
+          functionGroup.setAttribute("aria-hidden", String(functionGroup.hidden));
+        }
+        if (vncPresentation.sentence) {
+          vncPresentation.sentence.hidden = Array.from(
+            vncPresentation.sentence.querySelectorAll?.(
+              "[data-classical-vnc-authority-control-group]"
+            ) || []
+          ).every(group => group.hidden === true);
+          vncPresentation.sentence.setAttribute(
+            "aria-hidden",
+            String(vncPresentation.sentence.hidden)
+          );
+        }
+      }
+      syncClassicalCustomFormationLanes(
+        unit === "nnc"
+          ? nncPresentation.organizer
+          : vncPresentation.organizer
+      );
+      preserveClassicalPatientiveEmbedNncControls();
+      return { unit, groups: [...activeGroups] };
+    }
     function getClassicalNominalConstructionControlValue(id, fallback = "") {
       const control = targetObject.document?.getElementById(id);
       if (!control) return fallback;
       if (control.type === "checkbox") return control.checked;
       return String(control.value ?? fallback);
+    }
+    function getClassicalAttitudeFormationAnalysis(
+      sourceStem = "",
+      selection = "",
+    ) {
+      const normalizedStem = String(sourceStem || "")
+        .normalize("NFC")
+        .trim()
+        .toLowerCase()
+        .replace(/^\((.*)\)$/u, "$1");
+      const normalizedSelection = String(selection || "").trim();
+      const profiles = {
+        "causative-only": {
+          availableFormations: ["causative"],
+          preferredFormation: "causative",
+        },
+        "applicative-only": {
+          availableFormations: ["applicative"],
+          preferredFormation: "applicative",
+        },
+        "both-causative-preferred": {
+          availableFormations: ["causative", "applicative"],
+          preferredFormation: "causative",
+        },
+        "both-applicative-preferred": {
+          availableFormations: ["causative", "applicative"],
+          preferredFormation: "applicative",
+        },
+        "both-no-preference": {
+          availableFormations: ["causative", "applicative"],
+          preferredFormation: "",
+        },
+      };
+      const profile = profiles[normalizedSelection] || null;
+      return profile && normalizedStem
+        ? {
+            lexicalStatus: "honorific-formation-analysis",
+            sourceStem: normalizedStem,
+            availableFormations: [...profile.availableFormations],
+            preferredFormation: profile.preferredFormation,
+          }
+        : null;
+    }
+    function getClassicalAttitudeLexicalAlternatives(
+      sourceStem = "",
+      formation = "",
+    ) {
+      const normalizedStem = String(sourceStem || "")
+        .normalize("NFC")
+        .trim()
+        .toLowerCase()
+        .replace(/^\((.*)\)$/u, "$1");
+      const alternatives = {
+        "ihca:causative": [
+          ["default", "usual ihqui-l-tiā"],
+          ["anomalous", "documented ihca-t-i-l-tiā"],
+        ],
+        "chōca:causative": [
+          ["default", "Type 1 choc-tiā"],
+          ["type-two-l", "Type 2 chōqui-l-tiā"],
+          ["type-two-long", "Type 2 chōqui-tīa"],
+        ],
+        "caqui:causative": [
+          ["default", "caqui-tīā"],
+          ["l-causative", "alternative caqui-l-tiā"],
+        ],
+        "nequi:causative": [
+          ["default", "nequi-l-tiā"],
+        ],
+        "cuepa:applicative": [
+          ["default", "cuep-i-liā"],
+        ],
+        "cuepa:causative": [
+          ["default", "cuep-i-l-tiā"],
+        ],
+      };
+      return alternatives[`${normalizedStem}:${formation}`] || [];
     }
     function setClassicalAdverbialChoiceControl(
       axis,
@@ -17540,7 +21253,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ""
         )
       ).trim();
-      const basalUnit = getClassicalBasalUnitFromSurfaceForRendering("vnc");
+      const basalUnit = String(
+        targetObject.document?.getElementById("classical-source-parts")
+          ?.dataset?.classicalSourcePathUnit
+        || targetObject.document?.getElementById(
+          "classical-basal-unit-controls"
+        )?.dataset?.classicalBasalUnit
+        || getClassicalBasalUnitFromSurfaceForRendering("vnc")
+      );
       const nncState = getClassicalNominalConstructionControlValue(
         "classical-rule-logic-nnc-state",
         "absolutive"
@@ -17662,15 +21382,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-subject",
         "3sg"
       );
-      const objectSelection = getClassicalNominalConstructionControlValue(
-        "classical-rule-logic-object",
-        "specific-projective:3sg"
-      );
-      const [, objectPerson = "3sg"] = objectSelection.split(":");
       return {
         nounStem,
-        sourceSubject: subject,
-        objectPeople: [objectPerson],
         subject,
         mood: getClassicalNominalConstructionControlValue(
           "classical-rule-logic-mood",
@@ -17791,13 +21504,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const selectedPathChoice = pathChoices.find(
         choice => choice.pathChoiceId === pathSelect.value
       ) || null;
+      const controlRequirements = selectedPathChoice?.controlRequirements || {};
       setClassicalDenominalVncConditionalControlVisible(
         "[data-denominal-vnc-operation-path]",
         pathChoices.length > 1
       );
       const includedPossessor = Boolean(
-        selectedPathChoice?.operationPath?.includes("included-possessor-ti")
+        controlRequirements.includedPossessorFamily
       );
+      setClassicalDenominalVncConditionalControlVisible(
+        "[data-denominal-vnc-source-subject]",
+        controlRequirements.sourceSubject === true
+      );
+      setClassicalDenominalVncConditionalControlVisible(
+        "[data-denominal-vnc-source-possessor]",
+        controlRequirements.sourcePossessor === true
+      );
+      [1, 2].forEach(index => {
+        setClassicalDenominalVncConditionalControlVisible(
+          `[data-denominal-vnc-result-object="${index}"]`,
+          Number(controlRequirements.resultObjectPeople || 0) >= index
+        );
+      });
       const includedFamily = getClassicalNominalConstructionControlValue(
         "classical-denominal-vnc-included-family",
         "proxy"
@@ -17815,12 +21543,96 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedPathChoice,
       };
     }
-    function syncClassicalDeverbalNncControls(selectedConstruction = "") {
-      const selectedFamily = getClassicalNominalConstructionControlValue(
+    let currentClassicalDeverbalLexicalAuthorizationFrame = null;
+    function syncClassicalDeverbalNncControls(
+      selectedConstruction = "",
+      frame = null
+    ) {
+      const active = selectedConstruction === "deverbal-nnc";
+      const activeSourceUnit =
+        getClassicalBasalUnitFromSurfaceForRendering();
+      const familyControl = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-family"
+      );
+      let selectedFamily = getClassicalNominalConstructionControlValue(
         "classical-deverbal-nnc-family",
         "predicate-nominalization"
       );
-      const active = selectedConstruction === "deverbal-nnc";
+      if (familyControl) {
+        Array.from(familyControl.options || []).forEach(option => {
+          const allowed = activeSourceUnit !== "nnc"
+            || option.value === "patientive";
+          option.hidden = !allowed;
+          option.disabled = !allowed;
+        });
+        if (active && activeSourceUnit === "nnc") {
+          familyControl.value = "patientive";
+          selectedFamily = "patientive";
+        }
+        const wrapper = familyControl.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        if (wrapper && active) {
+          wrapper.hidden = activeSourceUnit === "nnc";
+          wrapper.setAttribute(
+            "aria-hidden",
+            String(activeSourceUnit === "nnc")
+          );
+        }
+        familyControl.disabled = active && activeSourceUnit === "nnc";
+      }
+      const patientiveRoute = [
+        "patientive",
+        "patientive-embed-continuation",
+        "patientive-matrix-continuation",
+      ].includes(selectedFamily);
+      const issuedLexicalFrame = frame?.sourceFrame?.lexicalAuthorizationFrame;
+      if (
+        issuedLexicalFrame
+        && typeof targetObject.isClassicalNahuatlLexicalAuthorizationFrame
+          === "function"
+        && targetObject.isClassicalNahuatlLexicalAuthorizationFrame(
+          issuedLexicalFrame
+        )
+      ) {
+        currentClassicalDeverbalLexicalAuthorizationFrame =
+          issuedLexicalFrame;
+      }
+      const sourceParts = typeof targetObject.getClassicalSourcePartControlState
+        === "function"
+        ? targetObject.getClassicalSourcePartControlState()
+        : null;
+      const currentWholeStem = String(
+        sourceParts?.sourceWholeStem
+        || getClassicalNominalConstructionControlValue(
+          "classical-source-whole",
+          ""
+        )
+      ).normalize("NFC").trim().replace(/^\((.*)\)$/u, "$1");
+      const currentEmbedStem = String(
+        sourceParts?.sourceEmbedStem
+        || getClassicalNominalConstructionControlValue(
+          "classical-source-embed",
+          ""
+        )
+      ).normalize("NFC").trim().replace(/^\((.*)\)$/u, "$1");
+      const currentMatrixStem = String(
+        sourceParts?.sourceMatrixStem
+        || getClassicalNominalConstructionControlValue(
+          "classical-source-matrix",
+          ""
+        )
+      ).normalize("NFC").trim().replace(/^\((.*)\)$/u, "$1");
+      const currentSourceStem = currentWholeStem
+        || [currentEmbedStem, currentMatrixStem].filter(Boolean).join("-");
+      const lexicalFrame = active
+        && (
+          currentClassicalDeverbalLexicalAuthorizationFrame?.sourceStem
+            === currentSourceStem
+          || frame?.sourceFrame?.sourceImperfectiveStem === currentSourceStem
+        )
+        ? currentClassicalDeverbalLexicalAuthorizationFrame
+        : null;
       const setConditionalVisible = (selector, visible) => {
         targetObject.document?.querySelectorAll?.(selector).forEach(wrapper => {
           wrapper.hidden = !visible;
@@ -17844,10 +21656,41 @@ export function createUiRenderingApi(targetObject = globalThis) {
           control.disabled = !visible;
         });
       });
-      const patientiveFamily = getClassicalNominalConstructionControlValue(
+      let patientiveFamily = getClassicalNominalConstructionControlValue(
         "classical-deverbal-nnc-patientive-family",
         "passive-core"
       );
+      const patientiveFamilyControl = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-patientive-family"
+      );
+      if (patientiveFamilyControl) {
+        Array.from(patientiveFamilyControl.options || []).forEach(option => {
+          const allowedByContinuation =
+            selectedFamily !== "patientive-matrix-continuation"
+            || ["passive-core", "impersonal-core"].includes(option.value);
+          const allowedBySource = activeSourceUnit === "nnc"
+            ? option.value === "characteristic-property"
+            : option.value !== "characteristic-property";
+          const allowed = allowedByContinuation && allowedBySource;
+          option.disabled = !allowed;
+          option.hidden = !allowed;
+        });
+        if (patientiveFamilyControl.selectedOptions?.[0]?.disabled) {
+          patientiveFamilyControl.value = activeSourceUnit === "nnc"
+            ? "characteristic-property"
+            : "passive-core";
+          patientiveFamily = patientiveFamilyControl.value;
+        }
+        const wrapper = patientiveFamilyControl.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        if (wrapper && active && activeSourceUnit === "nnc") {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+        }
+        patientiveFamilyControl.disabled = active
+          && activeSourceUnit === "nnc";
+      }
       const nominalizationKind = getClassicalNominalConstructionControlValue(
         "classical-deverbal-nnc-nominalization-kind",
         "preterit-agentive"
@@ -17856,17 +21699,525 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-rule-logic-valence",
         "intransitive"
       );
+      const syncNonactiveSourceFormationChoice = () => {
+        const control = targetObject.document?.getElementById(
+          "classical-rule-logic-nonactive-family"
+        );
+        const wrapper = control?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        if (!control || !wrapper) return null;
+        const patientiveNonactiveVoice = ({
+          "passive-core": "passive",
+          "impersonal-core": "impersonal",
+        })[patientiveFamily] || "";
+        const relevant = active
+          && patientiveRoute
+          && Boolean(patientiveNonactiveVoice)
+          && Boolean(currentSourceStem);
+        if (!relevant) {
+          wrapper.hidden = true;
+          wrapper.setAttribute("aria-hidden", "true");
+          control.disabled = true;
+          return null;
+        }
+        const sourceClass = getClassicalNominalConstructionControlValue(
+          "classical-rule-logic-class",
+          "B"
+        );
+        const canonicalValence = ({
+          "specific-projective": "specific-projective",
+          "mainline-reflexive": "specific-projective",
+        })[sourceValence] || sourceValence;
+        const previewValence = sourceValence === "mainline-reflexive"
+          ? "mainline-reflexive"
+          : canonicalValence;
+        const objectKind = ({
+          "shuntline-reflexive": "reflexive",
+          "projective-human": "nonspecific-human",
+          "projective-nonhuman": "nonspecific-nonhuman",
+          "specific-projective": "specific-projective",
+          "mainline-reflexive": "reflexive",
+        })[sourceValence] || "none";
+        let preview = null;
+        try {
+          preview = typeof targetObject
+            .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+                sourceStem: currentSourceStem,
+                ...(currentEmbedStem && currentMatrixStem
+                  ? {
+                      sourceEmbedStem: currentEmbedStem,
+                      sourceMatrixStem: currentMatrixStem,
+                    }
+                  : {}),
+                verbClass: sourceClass,
+                sourceValence: previewValence,
+                subject: "3sg",
+                mood: "indicative",
+                tense: "present",
+                requestedDerivation: "direct",
+                requestedVoice: patientiveNonactiveVoice,
+                voice: patientiveNonactiveVoice,
+                ...(objectKind === "none"
+                  ? {}
+                  : {
+                      objectKind,
+                      ...(objectKind === "specific-projective"
+                        ? { objectPerson: "3sg" }
+                        : {}),
+                    }),
+              })
+            : null;
+        } catch {
+          preview = null;
+        }
+        const inventory = preview?.controlFrame?.nonactiveOptionInventory;
+        const options = Array.isArray(inventory?.options)
+          ? inventory.options
+          : [];
+        const prior = String(control.value || "");
+        const selected = options.some(option => option.optionId === prior)
+          ? prior
+          : String(inventory?.automaticOptionId || "");
+        const selectionRequired = inventory?.selectionRequired === true
+          && !selected;
+        const signature = options.map(option => (
+          `${option.optionId}=${option.label}`
+        )).join("|") + `|selection-required=${selectionRequired}`;
+        if (control.dataset.classicalLesson20OptionSignature !== signature) {
+          const optionNodes = options.map(option => {
+            const node = targetObject.document.createElement("option");
+            node.value = option.optionId;
+            node.textContent = option.label;
+            return node;
+          });
+          if (selectionRequired) {
+            const prompt = targetObject.document.createElement("option");
+            prompt.value = "";
+            prompt.textContent = "Choose the nonactive Source formation";
+            prompt.disabled = true;
+            optionNodes.unshift(prompt);
+          }
+          control.replaceChildren(...optionNodes);
+          control.dataset.classicalLesson20OptionSignature = signature;
+        }
+        control.value = selected;
+        control.required = selectionRequired;
+        control.setAttribute("aria-required", String(selectionRequired));
+        control.disabled = options.length < 2;
+        control.dataset.classicalDeverbalPassiveSelectionRequired = String(
+          selectionRequired
+        );
+        control.dataset.classicalDeverbalNonactiveSelectionRequired = String(
+          selectionRequired
+        );
+        control.dataset.classicalDeverbalPassiveSourceStem = currentSourceStem;
+        wrapper.hidden = options.length < 2;
+        wrapper.setAttribute("aria-hidden", String(wrapper.hidden));
+        return { inventory, selectionRequired, selectedOptionId: selected };
+      };
+      syncNonactiveSourceFormationChoice();
+      const patientiveContrastInventory = active
+        && patientiveRoute
+        && patientiveFamily === "impersonal-core"
+        && typeof targetObject
+          .getClassicalNahuatlPatientiveContrastInventory === "function"
+          ? targetObject.getClassicalNahuatlPatientiveContrastInventory({
+            sourceStem: currentSourceStem,
+            sourceValence,
+          })
+          : null;
+      const patientiveContrastControl = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-patientive-contrast"
+      );
+      if (patientiveContrastControl) {
+        const wrapper = patientiveContrastControl.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const choices = Array.from(
+          patientiveContrastInventory?.options || []
+        );
+        const visible = patientiveContrastInventory?.choiceRequired === true;
+        const prior = String(patientiveContrastControl.value || "");
+        patientiveContrastControl.replaceChildren();
+        const prompt = targetObject.document.createElement("option");
+        prompt.value = "";
+        prompt.textContent = "Choose the intended referent";
+        patientiveContrastControl.appendChild(prompt);
+        choices.forEach(value => {
+          const option = targetObject.document.createElement("option");
+          option.value = value;
+          option.textContent = value === "regular-human-tla"
+            ? "human · regular tla"
+            : "nonhuman or abstract · anomalous tē";
+          patientiveContrastControl.appendChild(option);
+        });
+        patientiveContrastControl.value = choices.includes(prior) ? prior : "";
+        patientiveContrastControl.disabled = !visible;
+        patientiveContrastControl.required = visible;
+        patientiveContrastControl.setAttribute(
+          "aria-required",
+          String(visible)
+        );
+        if (wrapper) {
+          wrapper.hidden = !visible;
+          wrapper.setAttribute("aria-hidden", String(!visible));
+        }
+      }
+      const compoundRelationControl = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-patientive-compound-relation"
+      );
+      if (compoundRelationControl) {
+        const wrapper = compoundRelationControl.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const visible = active
+          && patientiveRoute
+          && ["passive-core", "impersonal-core"].includes(patientiveFamily)
+          && Boolean(currentEmbedStem && currentMatrixStem);
+        compoundRelationControl.disabled = !visible;
+        compoundRelationControl.required = visible;
+        compoundRelationControl.setAttribute(
+          "aria-required",
+          String(visible)
+        );
+        if (!visible) compoundRelationControl.value = "";
+        if (wrapper) {
+          wrapper.hidden = !visible;
+          wrapper.setAttribute("aria-hidden", String(!visible));
+        }
+      }
+      const patientiveMatrixContinuation = active
+        && selectedFamily === "patientive-matrix-continuation";
+      setConditionalVisible(
+        "[data-deverbal-patientive-matrix-continuation]",
+        patientiveMatrixContinuation
+      );
+      targetObject.document?.querySelectorAll?.(
+        "[data-deverbal-patientive-matrix-continuation] select, "
+          + "[data-deverbal-patientive-matrix-continuation] input"
+      ).forEach(control => {
+        control.required = patientiveMatrixContinuation;
+        control.setAttribute(
+          "aria-required",
+          String(patientiveMatrixContinuation)
+        );
+      });
+      const patientiveEmbedContinuation = active
+        && selectedFamily === "patientive-embed-continuation";
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-continuation]",
+        patientiveEmbedContinuation
+      );
+      const characteristicPatientiveEmbedContinuation = Boolean(
+        patientiveEmbedContinuation
+        && [
+          "characteristic-property",
+          "preterit-agentive-characteristic-property",
+        ].includes(patientiveFamily)
+      );
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-characteristic]",
+        characteristicPatientiveEmbedContinuation
+      );
+      const characteristicEmbedRealization = targetObject.document
+        ?.getElementById?.(
+          "classical-deverbal-nnc-characteristic-embed-realization"
+        );
+      if (characteristicEmbedRealization) {
+        characteristicEmbedRealization.disabled =
+          !characteristicPatientiveEmbedContinuation;
+        characteristicEmbedRealization.required =
+          characteristicPatientiveEmbedContinuation;
+        characteristicEmbedRealization.setAttribute(
+          "aria-required",
+          String(characteristicPatientiveEmbedContinuation)
+        );
+        if (!characteristicPatientiveEmbedContinuation) {
+          characteristicEmbedRealization.value = "";
+        }
+      }
+      const patientiveEmbedTarget =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-patientive-embed-target",
+          "nnc"
+        );
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-nnc]",
+        patientiveEmbedContinuation && patientiveEmbedTarget === "nnc"
+      );
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-vnc]",
+        patientiveEmbedContinuation && patientiveEmbedTarget === "vnc"
+      );
+      const patientiveEmbedMatrixValence =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-patientive-embed-matrix-valence",
+          "intransitive"
+        );
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-vnc-object]",
+        patientiveEmbedContinuation
+          && patientiveEmbedTarget === "vnc"
+          && patientiveEmbedMatrixValence !== "intransitive"
+      );
+      const patientiveEmbedRelation = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-patientive-embed-relation"
+      );
+      if (patientiveEmbedRelation && patientiveEmbedContinuation) {
+        const previous = String(patientiveEmbedRelation.value || "");
+        const values = patientiveEmbedTarget === "vnc"
+          ? ["adverb", "complement", "object"]
+          : Array.from(targetObject.document?.querySelectorAll?.(
+            "#classical-deverbal-nnc-patientive-matrix-relation "
+              + "option[value]:not([value=''])"
+          ) || []).map(option => option.value);
+        patientiveEmbedRelation.replaceChildren();
+        const prompt = targetObject.document.createElement("option");
+        prompt.value = "";
+        prompt.textContent = "Choose the grammatical relation";
+        patientiveEmbedRelation.appendChild(prompt);
+        values.forEach(value => {
+          const option = targetObject.document.createElement("option");
+          option.value = value;
+          option.textContent = value.replaceAll("-", " ");
+          patientiveEmbedRelation.appendChild(option);
+        });
+        patientiveEmbedRelation.value = values.includes(previous)
+          ? previous
+          : "";
+      }
+      setConditionalVisible(
+        "[data-deverbal-patientive-embed-vnc-complement]",
+        patientiveEmbedContinuation
+          && patientiveEmbedTarget === "vnc"
+          && patientiveEmbedRelation?.value === "complement"
+      );
+      targetObject.document?.querySelectorAll?.(
+        "[data-deverbal-patientive-embed-continuation] select, "
+          + "[data-deverbal-patientive-embed-continuation] input, "
+          + "[data-deverbal-patientive-embed-nnc] select, "
+          + "[data-deverbal-patientive-embed-vnc] select, "
+          + "[data-deverbal-patientive-embed-vnc-object] select, "
+          + "[data-deverbal-patientive-embed-vnc-complement] select"
+      ).forEach(control => {
+        const wrapper = control.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const required = patientiveEmbedContinuation
+          && wrapper?.hidden !== true
+          && control.id !== "classical-deverbal-nnc-patientive-embed-target";
+        control.required = required;
+        control.setAttribute("aria-required", String(required));
+      });
+      const syncLexicalChoice = ({
+        id,
+        values = [],
+        fallback = "",
+        relevant = false,
+        choiceRequired = false,
+        prompt = "",
+      }) => {
+        const control = targetObject.document?.getElementById(id);
+        const wrapper = control?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        if (!control || !wrapper) return;
+        const ownerValues = (
+          lexicalFrame
+          || (
+            id === "classical-deverbal-nnc-number-connector"
+            && selectedFamily === "ownerhood"
+          )
+        )
+          ? Array.from(new Set(values.map(value => String(value || ""))))
+          : [];
+        const options = ownerValues.length ? ownerValues : [fallback];
+        const prior = String(control.value || "");
+        control.replaceChildren();
+        if (choiceRequired && ownerValues.length > 1) {
+          const promptOption = targetObject.document.createElement("option");
+          promptOption.value = "";
+          promptOption.textContent = prompt || "Choose the intended form";
+          promptOption.disabled = true;
+          control.appendChild(promptOption);
+        }
+        options.forEach(value => {
+          const option = targetObject.document.createElement("option");
+          option.value = value;
+          option.textContent = value
+            ? value.replaceAll("-", " ")
+            : "use the lexically licensed default";
+          control.appendChild(option);
+        });
+        control.value = options.includes(prior)
+          ? prior
+          : options.includes(fallback)
+            ? fallback
+            : choiceRequired && ownerValues.length > 1
+              ? ""
+              : options[0];
+        const visible = active && relevant && ownerValues.length > 1;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        control.disabled = !visible;
+        control.required = visible && choiceRequired;
+        control.setAttribute(
+          "aria-required",
+          String(visible && choiceRequired)
+        );
+      };
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-preterit-agentive-variant",
+        values: lexicalFrame?.preteritAgentiveVariants || [],
+        fallback: "ordinary",
+        relevant: selectedFamily === "predicate-nominalization"
+          && nominalizationKind === "preterit-agentive",
+      });
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-number-connector",
+        values: selectedFamily === "ownerhood"
+          ? ["silent", "qui"]
+          : lexicalFrame?.preteritAgentiveNumberOptions || [],
+        fallback: lexicalFrame?.verbClass === "A" ? "c" : "qui",
+        relevant: (
+          selectedFamily === "predicate-nominalization"
+          && nominalizationKind === "preterit-agentive"
+        ) || selectedFamily === "ownerhood",
+      });
+      const currentSubject = getClassicalNominalConstructionControlValue(
+        "classical-rule-logic-subject",
+        "3sg"
+      );
+      const affinityRequirement = lexicalFrame?.affinityRequirement || "none";
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-affinity",
+        values: currentSubject.endsWith("pl")
+          && affinityRequirement === "plural-optional"
+          ? ["plain", "affinity"]
+          : [],
+        fallback: affinityRequirement === "plural-required"
+          && currentSubject.endsWith("pl")
+          ? "affinity"
+          : "plain",
+        relevant: selectedFamily === "predicate-nominalization"
+          && nominalizationKind === "preterit-agentive",
+      });
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-action-stem-variant",
+        values: frame?.operationFrame?.actionStemVariantOptions
+          || lexicalFrame?.actionStemVariants
+          || [],
+        fallback: "",
+        relevant: [
+          "deverbal-action",
+          "nominal-continuation",
+          "verbal-continuation",
+        ].includes(selectedFamily),
+      });
+      const rootStockChoiceInventory = active
+        && patientiveRoute
+        && patientiveFamily === "root-or-stock"
+        && typeof targetObject
+          .getClassicalNahuatlRootStockPatientiveInventory === "function"
+          ? targetObject.getClassicalNahuatlRootStockPatientiveInventory({
+            sourceStem: currentSourceStem,
+            sourceStage: "root-or-stock",
+          })
+          : null;
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-root-stock-allomorph",
+        values: frame?.operationFrame?.rootStockPatientiveFrame
+          ?.availableAllomorphs
+          || lexicalFrame?.rootStockAuthorization?.allomorphs
+          || rootStockChoiceInventory?.availableAllomorphs
+          || [],
+        fallback: frame?.operationFrame?.rootStockPatientiveFrame
+          ?.selectedAllomorph
+          || lexicalFrame?.rootStockAuthorization?.defaultAllomorph
+          || rootStockChoiceInventory?.defaultAllomorph
+          || "",
+        relevant: patientiveRoute
+          && patientiveFamily === "root-or-stock",
+        choiceRequired:
+          rootStockChoiceInventory?.choiceRequired === true,
+        prompt: "Choose the root or stock allomorph",
+      });
+      const selectedRootStockAllomorph =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-root-stock-allomorph",
+          ""
+        );
+      const rootStockSourceAnalysisInventory = active
+        && patientiveRoute
+        && patientiveFamily === "root-or-stock"
+        && typeof targetObject
+          .getClassicalNahuatlRootStockPatientiveInventory === "function"
+          ? targetObject.getClassicalNahuatlRootStockPatientiveInventory({
+            sourceStem: currentSourceStem,
+            sourceStage: "root-or-stock",
+            rootStockAllomorph: selectedRootStockAllomorph,
+          })
+          : null;
+      syncLexicalChoice({
+        id: "classical-deverbal-nnc-root-stock-source-analysis",
+        values:
+          rootStockSourceAnalysisInventory?.availableSourceAnalyses || [],
+        fallback:
+          rootStockSourceAnalysisInventory?.defaultSourceAnalysis || "",
+        relevant: patientiveRoute
+          && patientiveFamily === "root-or-stock"
+          && (rootStockSourceAnalysisInventory?.availableSourceAnalyses
+            || []).length > 1,
+        choiceRequired:
+          rootStockSourceAnalysisInventory
+            ?.sourceAnalysisChoiceRequired === true,
+        prompt: "Choose the historical Source relation",
+      });
+      const ownerhoodControl = targetObject.document?.getElementById(
+        "classical-deverbal-nnc-ownerhood-matrix"
+      );
+      if (
+        ownerhoodControl
+        && active
+        && selectedFamily === "ownerhood"
+        && typeof targetObject.getClassicalNahuatlOwnerhoodSourceAnalysis
+          === "function"
+      ) {
+        const ownerSource = typeof targetObject.issueCanonicalNncSourceFrame
+          === "function"
+          ? targetObject.issueCanonicalNncSourceFrame({
+            stem: currentSourceStem,
+          })
+          : null;
+        const ownerAnalysis = frame?.operationFrame
+          ?.ownerhoodSourceAnalysisFrame
+          || targetObject.getClassicalNahuatlOwnerhoodSourceAnalysis({
+            sourceStem: currentSourceStem,
+            nounClass: ownerSource?.nounClass || "",
+            nounSubclass: ownerSource?.nounSubclass || "",
+          });
+        const available = new Set([
+          ...(ownerAnalysis?.matrixOptions || []),
+          "yō-ā",
+        ]);
+        Array.from(ownerhoodControl.options || []).forEach(option => {
+          const allowed = available.has(String(option.value || ""));
+          option.hidden = !allowed;
+          option.disabled = !allowed;
+          option.dataset.classicalOwnerDerivedAvailability = String(allowed);
+        });
+        if (ownerhoodControl.selectedOptions?.[0]?.disabled) {
+          ownerhoodControl.value = Array.from(ownerhoodControl.options || [])
+            .find(option => !option.disabled)?.value || "";
+        }
+      }
       setConditionalVisible(
         "[data-deverbal-predicate-activation]",
         active
           && selectedFamily === "predicate-nominalization"
           && ["projective-human", "projective-nonhuman"].includes(sourceValence)
-      );
-      setConditionalVisible(
-        "[data-deverbal-preterit-agentive-variant]",
-        active
-          && selectedFamily === "predicate-nominalization"
-          && nominalizationKind === "preterit-agentive"
       );
       setConditionalVisible(
         "[data-deverbal-final-i-boundary]",
@@ -17880,21 +22231,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       setConditionalVisible(
         "[data-deverbal-passive-human-realization]",
         active
-          && selectedFamily === "patientive"
+          && patientiveRoute
           && patientiveFamily === "passive-core"
-          && sourceValence === "projective-human"
-      );
-      setConditionalVisible(
-        "[data-deverbal-root-stock-allomorph]",
-        active
-          && selectedFamily === "patientive"
-          && patientiveFamily === "root-or-stock"
+          && frame?.operationFrame?.passivePatientiveFamilyFrame
+            ?.doubleObjectPassivePatientiveFrame
+            ?.humanObjectDeletionLicensed === true
       );
       targetObject.document?.querySelectorAll?.(
         "[data-deverbal-patientive-analogy]"
       ).forEach(wrapper => {
         const visible = active
-          && selectedFamily === "patientive"
+          && patientiveRoute
           && [
             "perfective-active-core",
             "imperfective-active-core",
@@ -17904,12 +22251,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
         wrapper.querySelectorAll?.("select, input, button").forEach(control => {
           control.disabled = !visible;
         });
+        const analogyControl = wrapper.querySelector?.(
+          "#classical-deverbal-nnc-patientive-analogy"
+        );
+        const passiveOption = Array.from(
+          analogyControl?.options || []
+        ).find(option => option.value === "passive");
+        const passiveAvailable = visible
+          && sourceValence !== "intransitive";
+        if (passiveOption) {
+          passiveOption.disabled = !passiveAvailable;
+          passiveOption.hidden = !passiveAvailable;
+          passiveOption.dataset.classicalDerivedAvailability = String(
+            passiveAvailable
+          );
+        }
+        if (analogyControl?.value === "passive" && !passiveAvailable) {
+          analogyControl.value = "impersonal";
+        }
       });
       targetObject.document?.querySelectorAll?.(
         "[data-deverbal-characteristic-reading]"
       ).forEach(wrapper => {
         const visible = active
-          && selectedFamily === "patientive"
+          && patientiveRoute
           && patientiveFamily === "characteristic-property";
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
@@ -17917,6 +22282,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
           control.disabled = !visible;
         });
       });
+      const characteristicReading =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-characteristic-reading",
+          "inherent-quality"
+        );
+      const nncStateControl = targetObject.document?.getElementById(
+        "classical-rule-logic-nnc-state"
+      );
+      const nncStateWrapper = nncStateControl?.closest?.(
+        "label, [data-classical-rule-control]"
+      );
+      const organicStateRuleActive = active
+        && activeSourceUnit === "nnc"
+        && patientiveRoute
+        && patientiveFamily === "characteristic-property"
+        && characteristicReading === "organic-possession";
+      if (nncStateControl && nncStateWrapper) {
+        if (organicStateRuleActive) {
+          nncStateControl.value = "possessive";
+          nncStateControl.disabled = true;
+          nncStateControl.dataset.classicalDerivedOrganicPossessionState =
+            "possessive-only";
+          nncStateWrapper.hidden = true;
+          nncStateWrapper.setAttribute("aria-hidden", "true");
+        } else if (
+          nncStateControl.dataset.classicalDerivedOrganicPossessionState
+        ) {
+          delete nncStateControl.dataset
+            .classicalDerivedOrganicPossessionState;
+          nncStateControl.disabled = false;
+          if (active && activeSourceUnit === "nnc") {
+            nncStateWrapper.hidden = false;
+            nncStateWrapper.setAttribute("aria-hidden", "false");
+          }
+        }
+      }
       return { selectedFamily, patientiveFamily };
     }
     function getClassicalPersonalNameSourceStructure() {
@@ -18071,6 +22472,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || (personalNameOperations.some(
           operation => operation.id === priorOperation
         ) ? priorOperation : "");
+      const sentenceWrapper = sentenceControl.closest?.(
+        "label, [data-classical-rule-control]"
+      );
+      if (sentenceWrapper) {
+        const sentenceChoiceVisible = active && !forcedOperation;
+        sentenceWrapper.hidden = !sentenceChoiceVisible;
+        sentenceWrapper.setAttribute(
+          "aria-hidden",
+          String(!sentenceChoiceVisible)
+        );
+      }
       sentenceControl.disabled = !active || Boolean(forcedOperation);
       sentenceControl.setAttribute(
         "aria-disabled",
@@ -18083,10 +22495,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       status.textContent = locativeOperation
         ? forcedOperation
-          ? "The selected reranking fixes the matching owner-licensed sentence operation. Place-name embedding remains unavailable until a typed locative-matrix Source exists."
+          ? `Derived sentence operation: ${getClassicalPersonalNameChoiceLabel(
+            forcedOperation.id
+          )}. Place-name embedding remains unavailable until a typed locative-matrix Source exists.`
           : "Choose an owner-licensed sentence operation, or keep the personal-name Result. Place-name embedding remains unavailable until a typed locative-matrix Source exists."
         : forcedOperation
-          ? "The selected reranking fixes the matching owner-licensed sentence operation."
+          ? `Derived sentence operation: ${getClassicalPersonalNameChoiceLabel(
+            forcedOperation.id
+          )}.`
           : "Choose an owner-licensed sentence operation, or keep the personal-name Result.";
       return {
         inventoryId: String(inventory.id || ""),
@@ -18244,21 +22660,53 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ClassicalNominalConstructionOperationHandlers,
         operationId
       ) ? operationId : "";
-      const controlsRoot = targetObject.document.getElementById("classical-construction-controls");
+      const sourceAnalysisRoot = targetObject.document.getElementById(
+        "classical-construction-source-analysis-controls"
+      );
       const grammarGrid = targetObject.document.querySelector(
         "#classical-rule-logic-controls .classical-rule-controls-grid"
       );
-      if (controlsRoot && grammarGrid && controlsRoot.parentElement !== grammarGrid) {
-        grammarGrid.prepend(controlsRoot);
+      if (sourceAnalysisRoot) {
+        CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS.forEach(id => {
+          const wrapper = getClassicalCustomConstructionWrapper(id);
+          const inheritedOwner = String(
+            wrapper?.dataset?.constructionFor
+            || wrapper?.closest?.("[data-construction-for]")?.dataset
+              ?.constructionFor
+            || ""
+          );
+          if (inheritedOwner && !wrapper?.dataset?.constructionFor) {
+            wrapper.dataset.constructionFor = inheritedOwner;
+          }
+          if (wrapper && wrapper.parentElement !== sourceAnalysisRoot) {
+            sourceAnalysisRoot.appendChild(wrapper);
+          }
+        });
       }
+      const genericLateOperation = targetObject.document.getElementById(
+        "classical-rule-logic-late-operation"
+      );
+      Array.from(genericLateOperation?.options || []).forEach(option => {
+        const ownedBySourceOperation = [
+          "honorific",
+          "reverential",
+          "pejorative",
+        ].includes(String(option.value || ""));
+        option.hidden = ownedBySourceOperation;
+        option.disabled = ownedBySourceOperation;
+      });
+      if (genericLateOperation?.selectedOptions?.[0]?.disabled) {
+        genericLateOperation.value = "none";
+      }
+      const currentBasalUnit = getClassicalBasalUnitFromSurfaceForRendering();
       const customConstructionActive = Boolean(selected);
-      [
-        targetObject.document.querySelector(".calc-operator--derivation"),
-        targetObject.document.querySelector("[data-classical-vnc-authority-organizer]"),
-      ].filter(Boolean).forEach(section => {
-        section.hidden = customConstructionActive;
-        section.style.display = customConstructionActive ? "none" : "";
-        section.setAttribute("aria-hidden", String(customConstructionActive));
+      [targetObject.document.querySelector(".calc-operator--derivation")]
+        .filter(Boolean).forEach(section => {
+        const hidden = customConstructionActive
+          || currentBasalUnit === "nnc";
+        section.hidden = hidden;
+        section.style.display = hidden ? "none" : "";
+        section.setAttribute("aria-hidden", String(hidden));
       });
       targetObject.document.querySelectorAll("[data-construction-for]").forEach(wrapper => {
         const operationIds = String(wrapper.dataset.constructionFor || wrapper.getAttribute("data-construction-for") || "")
@@ -18272,7 +22720,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (control) control.disabled = !visible;
       });
       if (selected === "denominal-vnc") syncClassicalDenominalVncControls();
-      const deverbalSelection = syncClassicalDeverbalNncControls(selected);
+      const deverbalSelection = syncClassicalDeverbalNncControls(
+        selected,
+        frame
+      );
       syncClassicalPersonalNameNncControls(selected);
       if (selected === "adverbial-nuclear") {
         syncClassicalAdverbialNuclearControls();
@@ -18285,10 +22736,171 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-nominal-embed-adverbial-route",
         "direct-adverb"
       );
-      const affectiveTargetKind = getClassicalNominalConstructionControlValue("classical-affective-target-kind", "nnc");
-      const affectiveDenominal = selected === "affective-nnc" && affectiveTargetKind === "denominal-vnc";
+      const nominalEmbedOrientation = getClassicalNominalConstructionControlValue(
+        "classical-nominal-embed-reference-orientation",
+        "subject"
+      );
+      const nominalEmbedMatrixValence = getClassicalNominalConstructionControlValue(
+        "classical-rule-logic-valence",
+        "intransitive"
+      );
+      const compoundNncStructure = getClassicalNominalConstructionControlValue(
+        "classical-compound-nnc-structure",
+        "integrated"
+      );
+      const compoundNncEmbedAnalysis =
+        getClassicalNominalConstructionControlValue(
+          "classical-compound-nnc-embed-analysis",
+          "ordinary"
+        );
+      const compoundNncUniquePosition =
+        getClassicalNominalConstructionControlValue(
+          "classical-compound-nnc-unique-position",
+          "none"
+        );
+      const compoundNncMatrixStem = String(
+        getClassicalNominalConstructionControlValue(
+          "classical-source-matrix",
+          ""
+        )
+      ).trim().toLowerCase();
+      const compoundNncEmbedRole =
+        getClassicalNominalConstructionControlValue(
+          "classical-compound-nnc-embed-role",
+          "association"
+        );
+      const compoundNncReduplication =
+        getClassicalNominalConstructionControlValue(
+          "classical-construction-reduplication",
+          "none"
+        );
+      // Affective formation now owns only the NNC route. Denominal VNC is
+      // entered once, through the standalone denominal Source operation.
+      const affectiveDenominal = false;
+      const affectiveMatrix = getClassicalNominalConstructionControlValue(
+        "classical-affective-matrix",
+        "tzin"
+      );
+      const affectiveLexicalStatus =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-lexical-status",
+          "ordinary"
+        );
+      const affectiveEmbedAffinityRequirement =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-embed-affinity-requirement",
+          "none"
+        );
+      const affectiveSourceStem = String(
+        targetObject.document.getElementById("classical-source-embed")?.value
+        || targetObject.document.getElementById("classical-source-whole")?.value
+        || ""
+      ).normalize("NFC").trim().toLowerCase().replace(/^\((.*)\)$/u, "$1");
+      const affectivePilSource = affectiveSourceStem === "pil"
+        || affectiveSourceStem.endsWith("-pil");
+      const affectiveSemanticControl = targetObject.document.getElementById(
+        "classical-affective-semantic-reading"
+      );
+      const affectiveAllowedSemanticReadings = new Set([
+        "ordinary-affective",
+        ...(affectiveMatrix === "tzin"
+          ? [
+            "special-regard",
+            "honorific",
+            "compassion",
+            "affection",
+            "cherished-smallness",
+            "mass-delimited",
+          ]
+          : []),
+        ...(affectivePilSource
+          ? ["pil-appendage", "pil-child", "pil-noble"]
+          : []),
+        ...(affectivePilSource
+          && state === "vocative"
+          && affectiveMatrix === "tzin"
+          ? ["pil-honorific-vocative"]
+          : []),
+      ]);
+      Array.from(affectiveSemanticControl?.options || []).forEach(option => {
+        const allowed = affectiveAllowedSemanticReadings.has(option.value);
+        option.hidden = !allowed;
+        option.disabled = !allowed;
+      });
+      if (
+        affectiveSemanticControl
+        && !affectiveAllowedSemanticReadings.has(
+          String(affectiveSemanticControl.value || "")
+        )
+      ) {
+        affectiveSemanticControl.value = "ordinary-affective";
+      }
+      const affectiveSemanticReading =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-semantic-reading",
+          "ordinary-affective"
+        );
+      const affectivePilChildRoute =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-pil-child-route",
+          "simple"
+        );
+      const affectivePilReading = String(affectiveSemanticReading)
+        .startsWith("pil-");
+      const affectivePilChild = affectiveSemanticReading === "pil-child";
+      const affectivePilUsesMatrix = affectiveSemanticReading
+        === "pil-honorific-vocative"
+        || (affectivePilChild && affectivePilChildRoute === "affective");
+      const affectiveRoute = getClassicalNominalConstructionControlValue(
+        "classical-affective-route",
+        "compound"
+      );
+      const affectiveFlawedSourceStatus =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-flawed-source-status",
+          "ordinary"
+        );
+      const affectiveFlawCompatible =
+        affectiveFlawedSourceStatus !== "ordinary";
+      const affectiveAnimacy =
+        getClassicalNominalConstructionControlValue(
+          "classical-rule-logic-nnc-subject-animacy",
+          "animate"
+        );
+      const affectiveNonanimateReduplicationShape =
+        getClassicalNominalConstructionControlValue(
+          "classical-affective-nonanimate-reduplication-shape",
+          "none"
+        );
+      const nominalSubjectNumber = getClassicalNominalConstructionControlValue(
+        "classical-rule-logic-nnc-subject-number",
+        "singular"
+      );
       const cardinalTargetKind = getClassicalNominalConstructionControlValue("classical-cardinal-target-kind", "nnc");
-      const cardinalVncAdverb = selected === "cardinal-numeral-nnc" && cardinalTargetKind === "vnc-adverb";
+      const cardinalVncAdverb = selected === "cardinal-numeral-nnc" && cardinalTargetKind === "vnc-embed";
+      const cardinalCountKind = getClassicalNominalConstructionControlValue(
+        "classical-cardinal-count-kind",
+        "ordinary"
+      );
+      const cardinalValue = Number(getClassicalNominalConstructionControlValue(
+        "classical-cardinal-value",
+        "1"
+      ));
+      const cardinalGrossPossessorKind =
+        getClassicalNominalConstructionControlValue(
+          "classical-cardinal-gross-possessor-kind",
+          "animate"
+        );
+      const cardinalGrossPossessive = selected === "cardinal-numeral-nnc"
+        && !cardinalVncAdverb
+        && cardinalCountKind === "gross"
+        && state === "possessive";
+      const adverbialScope = getClassicalNominalConstructionControlValue(
+        "classical-adverbial-scope",
+        ""
+      );
+      const adverbialIncorporatedPredicate = selected === "adverbial-nuclear"
+        && adverbialScope === "incorporated-predicate";
       targetObject.document.querySelectorAll("[data-nominal-embed-adverb-only]").forEach(wrapper => {
         const visible = selected === "nominal-embed-vnc" && nominalEmbedRole === "adverb";
         wrapper.hidden = !visible;
@@ -18296,8 +22908,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
+      targetObject.document.querySelectorAll("[data-nominal-embed-adverb-source-choice]").forEach(wrapper => {
+        const visible = selected === "nominal-embed-vnc"
+          && nominalEmbedRole === "adverb"
+          && frame?.operationFrame?.sourceRouteChoiceRequired === true;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select, input, button");
+        if (control) control.disabled = !visible;
+      });
       targetObject.document.querySelectorAll("[data-nominal-embed-complement-only]").forEach(wrapper => {
-        const visible = selected === "nominal-embed-vnc" && nominalEmbedRole === "complement";
+        const visible = selected === "nominal-embed-vnc"
+          && nominalEmbedRole === "complement"
+          && nominalEmbedOrientation === "object";
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         const control = wrapper.querySelector?.("select, input, button");
@@ -18312,6 +22935,33 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
+      targetObject.document.querySelectorAll("[data-nominal-embed-possessor-reference-choice]").forEach(wrapper => {
+        const objectCount = ({
+          intransitive: 0,
+          "specific-projective": 1,
+          "projective-human": 1,
+          "projective-nonhuman": 1,
+          "single-object": 1,
+          "double-object": 2,
+          "triple-object": 3,
+        })[nominalEmbedMatrixValence] || 0;
+        const visible = selected === "nominal-embed-vnc"
+          && nominalEmbedRole === "adverb"
+          && ["means", "instrument", "place"].includes(nominalEmbedAdverbialRole)
+          && state === "possessive"
+          && objectCount > 0;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          Array.from(control.options || []).forEach(option => {
+            const match = /^source-object-(\d+)$/u.exec(option.value);
+            option.disabled = Boolean(match && Number(match[1]) > objectCount);
+          });
+          if (control.selectedOptions?.[0]?.disabled) control.value = "matrix-subject";
+        }
+      });
       targetObject.document.querySelectorAll("[data-nominal-embed-source-analysis]").forEach(wrapper => {
         const visible = selected === "nominal-embed-vnc"
           && frame?.sourceAuthorizationFrame?.lexicalFacts
@@ -18324,11 +22974,101 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.document.querySelectorAll("[data-nominal-embed-orientation-choice]").forEach(wrapper => {
         const visible = selected === "nominal-embed-vnc" && (
           nominalEmbedRole === "complement"
-          || (nominalEmbedRole === "adverb" && ["manner", "compared-manner"].includes(nominalEmbedAdverbialRole))
+          || (nominalEmbedRole === "adverb"
+            && nominalEmbedAdverbialRole === "compared-manner"
+            && nominalEmbedMatrixValence !== "intransitive")
         );
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         const control = wrapper.querySelector?.("select, input, button");
+        if (control) control.disabled = !visible;
+        const label = wrapper.querySelector?.(".classical-rule-control__label");
+        if (label) {
+          label.textContent = nominalEmbedRole === "complement"
+            ? "Complement target"
+            : "Comparison target";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-possessor-orientation-choice]").forEach(wrapper => {
+        const frameChoiceRequired = frame?.operationFrame
+          ?.possessorOrientationChoiceRequired;
+        const visible = selected === "compound-nnc"
+          && state === "possessive"
+          && compoundNncStructure === "integrated"
+          && frameChoiceRequired !== false;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible && compoundNncStructure.startsWith("linked")) {
+            control.value = "embed";
+          }
+        }
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-variant-only]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && compoundNncEmbedAnalysis === "unexpected-variant";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("input");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-unique-only]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && ["embed", "matrix"].includes(compoundNncUniquePosition);
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-yo-only]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && ["yō", "yo"].includes(compoundNncMatrixStem);
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-sex-only]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && compoundNncEmbedRole === "sex";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-bracketing-choice]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && frame?.operationFrame?.recursiveHierarchyFrame
+            ?.bracketingChoiceRequired === true;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "unambiguous";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-affinity-target-choice]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && compoundNncReduplication === "affinity"
+          && frame?.operationFrame?.affinityScopeFrame
+            ?.targetChoiceRequired === true;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "embed";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-compound-nnc-distributive-reading-choice]").forEach(wrapper => {
+        const visible = selected === "compound-nnc"
+          && compoundNncReduplication === "distributive-varietal";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
         if (control) control.disabled = !visible;
       });
       targetObject.document.querySelectorAll("[data-cardinal-measure-only]").forEach(wrapper => {
@@ -18338,15 +23078,198 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
-      targetObject.document.querySelectorAll("[data-affective-denominal-only]").forEach(wrapper => {
-        wrapper.hidden = !affectiveDenominal;
-        wrapper.setAttribute("aria-hidden", String(!affectiveDenominal));
+      targetObject.document.querySelectorAll("[data-cardinal-measured-only]").forEach(wrapper => {
+        const measureComposition = getClassicalNominalConstructionControlValue(
+          "classical-cardinal-measure-composition",
+          "measure-only"
+        );
+        const visible = selected === "cardinal-numeral-nnc"
+          && classifier === "measure"
+          && measureComposition === "with-measured-nnc";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
         const control = wrapper.querySelector?.("select, input, button");
-        if (control) control.disabled = !affectiveDenominal;
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-cardinal-numeral-variant-choice]").forEach(wrapper => {
+        const control = wrapper.querySelector?.("select");
+        const value = Number(getClassicalNominalConstructionControlValue(
+          "classical-cardinal-value",
+          "1"
+        ));
+        const embedded = cardinalVncAdverb || classifier !== "basic";
+        const variants = value === 2 && embedded
+          ? [["short", "short embed · ōm with assimilation"], ["full", "full embed · ōme"]]
+          : value === 3 && embedded
+            ? [["y-loss", "embed with y lost · ē"], ["y-retained", "embed with y retained · yē"], ["y-to-x", "embed with y realized as x · ēx"]]
+            : value === 3
+              ? [["plain", "free form · ēyi"], ["initial-y", "free form with initial y · yēyi"]]
+              : [["automatic", "automatic shape"]];
+        const visible = selected === "cardinal-numeral-nnc"
+          && variants.length > 1;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        if (!control) return;
+        const previous = control.value;
+        control.replaceChildren(...variants.map(([variantValue, label]) => {
+          const option = targetObject.document.createElement("option");
+          option.value = variantValue;
+          option.textContent = label;
+          return option;
+        }));
+        control.value = variants.some(([variantValue]) => (
+          variantValue === previous
+        )) ? previous : variants[0][0];
+        control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-cardinal-gross-possessor-kind]").forEach(wrapper => {
+        wrapper.hidden = !cardinalGrossPossessive;
+        wrapper.setAttribute("aria-hidden", String(!cardinalGrossPossessive));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !cardinalGrossPossessive;
+          if (!cardinalGrossPossessive) control.value = "animate";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-cardinal-gross-number-variant]").forEach(wrapper => {
+        const visible = cardinalGrossPossessive
+          && cardinalGrossPossessorKind === "nonanimate";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "tin";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-cardinal-conjunction-form]").forEach(wrapper => {
+        const visible = selected === "cardinal-numeral-nnc"
+          && !cardinalVncAdverb
+          && classifier === "basic"
+          && cardinalValue >= 11
+          && cardinalValue <= 14;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "separate";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-route-choice]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && frame?.operationFrame?.attitudeRouteFrame
+            ?.routeChoiceRequired === true;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          const routes = frame?.operationFrame?.attitudeRouteFrame
+            ?.availableRoutes || ["compound"];
+          Array.from(control.options || []).forEach(option => {
+            option.disabled = !routes.includes(option.value);
+          });
+          if (control.selectedOptions?.[0]?.disabled) {
+            control.value = routes[0] || "compound";
+          }
+          if (!visible && !affectiveFlawCompatible) {
+            control.value = "compound";
+          }
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-semantic-choice]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && affectiveAllowedSemanticReadings.size > 1;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "ordinary-affective";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-matrix-control]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && (!affectivePilReading || (
+            affectivePilUsesMatrix
+            && affectiveSemanticReading !== "pil-honorific-vocative"
+          ));
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          Array.from(control.options || []).forEach(option => {
+            option.disabled = affectiveSemanticReading
+              === "pil-honorific-vocative"
+              ? option.value !== "tzin"
+              : affectivePilChild && affectivePilChildRoute === "affective"
+                ? option.value === "zol"
+                : false;
+          });
+          if (control.selectedOptions?.[0]?.disabled) control.value = "tzin";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-lexical-analysis-control]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && !affectivePilReading;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "ordinary";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-irregular-embed-only]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && affectiveLexicalStatus === "irregular-embed-variant";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("input");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-affective-optional-embed-affinity]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && !affectivePilChild
+          && nominalSubjectNumber === "plural"
+          && affectiveEmbedAffinityRequirement === "optional";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "matrix";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-embed-affinity-target]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && !affectivePilChild
+          && nominalSubjectNumber === "plural"
+          && affectiveEmbedAffinityRequirement !== "none";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
       });
       targetObject.document.querySelectorAll("[data-affective-vocative-only]").forEach(wrapper => {
         const visible = selected === "affective-nnc"
           && !affectiveDenominal
+          && affectiveRoute === "compound"
           && state === "vocative";
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
@@ -18356,26 +23279,109 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.document.querySelectorAll("[data-affective-pil-child-only]").forEach(wrapper => {
         const visible = selected === "affective-nnc"
           && !affectiveDenominal
-          && getClassicalNominalConstructionControlValue(
-            "classical-affective-semantic-reading",
-            "ordinary-affective"
-          ) === "pil-child";
+          && affectiveRoute === "compound"
+          && affectivePilChild;
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
+      targetObject.document.querySelectorAll("[data-affective-pil-gender-only]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && affectivePilReading
+          && ["pil-child", "pil-noble"].includes(affectiveSemanticReading);
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "unspecified";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-embed-affinity-analysis]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && !affectivePilChild;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "none";
+        }
+      });
       targetObject.document.querySelectorAll("[data-affective-possessive-affinity-only]").forEach(wrapper => {
         const visible = selected === "affective-nnc"
           && !affectiveDenominal
-          && state === "possessive"
-          && getClassicalNominalConstructionControlValue(
-            "classical-construction-reduplication",
-            "none"
-          ) === "affinity";
+          && frame?.operationFrame?.possessiveAffinityNumberFrame
+            ?.choiceRequired === true;
         wrapper.hidden = !visible;
         wrapper.setAttribute("aria-hidden", String(!visible));
         const control = wrapper.querySelector?.("select, input, button");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-affective-flawed-source-analysis]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && !affectivePilReading;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible) control.value = "ordinary";
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-flawed-class-strategy]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveFlawCompatible
+          && !affectivePilReading;
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-affective-flawed-lexical-reading]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveFlawedSourceStatus === "lexicalized-flawed";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) control.disabled = !visible;
+      });
+      targetObject.document.querySelectorAll("[data-affective-nonanimate-reduplication-shape]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && affectiveAnimacy === "nonanimate"
+          && nominalSubjectNumber === "common";
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.disabled = !visible;
+          if (!visible && nominalSubjectNumber !== "plural") {
+            control.value = "none";
+          }
+        }
+      });
+      targetObject.document.querySelectorAll("[data-affective-nonanimate-reduplication-reading]").forEach(wrapper => {
+        const visible = selected === "affective-nnc"
+          && !affectiveDenominal
+          && affectiveRoute === "compound"
+          && affectiveAnimacy === "nonanimate"
+          && (
+            nominalSubjectNumber === "plural"
+            || affectiveNonanimateReduplicationShape !== "none"
+          );
+        wrapper.hidden = !visible;
+        wrapper.setAttribute("aria-hidden", String(!visible));
+        const control = wrapper.querySelector?.("select");
         if (control) control.disabled = !visible;
       });
       targetObject.document.querySelectorAll("[data-affective-defect-analysis]").forEach(wrapper => {
@@ -18388,20 +23394,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const control = wrapper.querySelector?.("select, input, button");
         if (control) control.disabled = !visible;
       });
-      if (selected === "affective-nnc") {
-        [
-          "classical-affective-route",
-          "classical-affective-semantic-reading",
-          "classical-construction-reduplication",
-        ].forEach(id => {
-          const control = targetObject.document.getElementById(id);
-          const wrapper = control?.closest?.("label, [data-classical-rule-control]");
-          if (!control || !wrapper) return;
-          wrapper.hidden = affectiveDenominal;
-          wrapper.setAttribute("aria-hidden", String(affectiveDenominal));
-          control.disabled = affectiveDenominal;
-        });
-      }
+      targetObject.document.querySelectorAll("[data-nominal-stem-relation-control]").forEach(wrapper => {
+        if (selected !== "affective-nnc") return;
+        wrapper.hidden = true;
+        wrapper.setAttribute("aria-hidden", "true");
+        const control = wrapper.querySelector?.("select");
+        if (control) {
+          control.value = "none";
+          control.disabled = true;
+        }
+      });
       if (selected === "cardinal-numeral-nnc") {
         [
           "classical-cardinal-value",
@@ -18412,76 +23414,502 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const control = targetObject.document.getElementById(id);
           const wrapper = control?.closest?.("label, [data-classical-rule-control]");
           if (!control || !wrapper) return;
-          if (id === "classical-cardinal-value" && cardinalVncAdverb) control.value = "1";
-          wrapper.hidden = cardinalVncAdverb;
-          wrapper.setAttribute("aria-hidden", String(cardinalVncAdverb));
-          control.disabled = cardinalVncAdverb;
+          const hiddenForVncEmbed = cardinalVncAdverb
+            && id !== "classical-cardinal-value";
+          wrapper.hidden = hiddenForVncEmbed;
+          wrapper.setAttribute("aria-hidden", String(hiddenForVncEmbed));
+          control.disabled = hiddenForVncEmbed;
         });
       }
+      if (selected === "attitude-vnc") {
+        const attitudeControl = targetObject.document.getElementById(
+          "classical-attitude-operation"
+        );
+        const reverentialSourceAvailable = Boolean(
+          ActiveClassicalVncResultSourceContinuation
+          && ActiveClassicalVncResultSourceContinuation.authorizationStatus
+            === "authorized"
+          && ActiveClassicalVncResultSourceContinuation.operationFrame
+            ?.operation === "honorific"
+        );
+        Array.from(attitudeControl?.options || []).forEach(option => {
+          const available = option.value === ""
+            ? reverentialSourceAvailable
+            : option.value === "reverential"
+              ? reverentialSourceAvailable
+              : option.value === "honorific"
+                ? !reverentialSourceAvailable
+                : true;
+          option.hidden = !available;
+          option.disabled = !available;
+        });
+        if (attitudeControl) {
+          if (reverentialSourceAvailable
+            && attitudeControl.value === "honorific") {
+            attitudeControl.value = "";
+          } else if (!reverentialSourceAvailable
+            && (attitudeControl.value === ""
+              || attitudeControl.selectedOptions?.[0]?.disabled)) {
+            attitudeControl.value = "honorific";
+          }
+        }
+        const attitude = String(attitudeControl?.value || "honorific");
+        const attitudeSourceStem = String(
+          targetObject.document.getElementById("classical-source-matrix")?.value
+          || targetObject.document.getElementById("classical-source-embed")?.value
+          || targetObject.document.getElementById("classical-source-whole")?.value
+          || ""
+        ).normalize("NFC").trim().toLowerCase().replace(/^\((.*)\)$/u, "$1");
+        const sourceAnalysisControl = targetObject.document.getElementById(
+          "classical-attitude-source-analysis"
+        );
+        const sourceAnalysisWrapper = sourceAnalysisControl?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const productiveHonorificSource = attitude === "honorific"
+          && nominalEmbedMatrixValence !== "mainline-reflexive";
+        if (sourceAnalysisControl && sourceAnalysisWrapper) {
+          sourceAnalysisWrapper.hidden = !productiveHonorificSource;
+          sourceAnalysisWrapper.setAttribute(
+            "aria-hidden",
+            String(!productiveHonorificSource)
+          );
+          sourceAnalysisControl.disabled = !productiveHonorificSource;
+          sourceAnalysisControl.required = productiveHonorificSource;
+          sourceAnalysisControl.setAttribute(
+            "aria-required",
+            String(productiveHonorificSource)
+          );
+          if (!productiveHonorificSource) sourceAnalysisControl.value = "";
+        }
+        const sourceAnalysis = getClassicalAttitudeFormationAnalysis(
+          attitudeSourceStem,
+          sourceAnalysisControl?.value || "",
+        );
+        const formationControl = targetObject.document.getElementById(
+          "classical-attitude-formation"
+        );
+        const licensedFormations = attitude === "honorific"
+          ? nominalEmbedMatrixValence === "mainline-reflexive"
+            ? new Set(["preterit-embed"])
+            : new Set(sourceAnalysis?.availableFormations || [])
+          : new Set(["preterit-embed"]);
+        Array.from(formationControl?.options || []).forEach(option => {
+          const licensed = licensedFormations.has(option.value);
+          option.hidden = !licensed;
+          option.disabled = !licensed;
+          option.dataset.classicalAttitudePreferred = String(
+            option.value === sourceAnalysis?.preferredFormation
+          );
+          if (!option.dataset.classicalAttitudeBaseLabel) {
+            option.dataset.classicalAttitudeBaseLabel = option.textContent;
+          }
+          option.textContent = option.dataset.classicalAttitudeBaseLabel
+            + (option.value === sourceAnalysis?.preferredFormation
+              && licensedFormations.size > 1
+              ? " · preferred"
+              : "");
+        });
+        if (
+          formationControl
+          && !licensedFormations.has(String(formationControl.value || ""))
+        ) {
+          formationControl.value = licensedFormations.values().next().value || "";
+        }
+        const formationWrapper = formationControl?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        if (formationControl && formationWrapper) {
+          const formationChoiceVisible = licensedFormations.size > 1;
+          formationWrapper.hidden = !formationChoiceVisible;
+          formationWrapper.setAttribute(
+            "aria-hidden",
+            String(!formationChoiceVisible)
+          );
+          formationControl.disabled = !formationChoiceVisible;
+          formationWrapper.dataset.classicalAttitudeRouteChoiceRequired =
+            String(formationChoiceVisible);
+          formationWrapper.dataset.classicalAttitudeAutomaticFormation =
+            formationChoiceVisible
+              ? ""
+              : String(formationControl.value || "");
+        }
+        const lexicalAlternativeControl = targetObject.document.getElementById(
+          "classical-attitude-stem-alternative"
+        );
+        const lexicalAlternativeWrapper = lexicalAlternativeControl?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const lexicalAlternatives = getClassicalAttitudeLexicalAlternatives(
+          attitudeSourceStem,
+          String(formationControl?.value || ""),
+        );
+        if (lexicalAlternativeControl && lexicalAlternativeWrapper) {
+          const previousAlternative = String(
+            lexicalAlternativeControl.value || "default"
+          );
+          lexicalAlternativeControl.replaceChildren();
+          lexicalAlternatives.forEach(([value, label]) => {
+            const option = targetObject.document.createElement("option");
+            option.value = value;
+            option.textContent = label;
+            lexicalAlternativeControl.appendChild(option);
+          });
+          const alternativeChoiceVisible = lexicalAlternatives.length > 1;
+          lexicalAlternativeWrapper.hidden = !alternativeChoiceVisible;
+          lexicalAlternativeWrapper.setAttribute(
+            "aria-hidden",
+            String(!alternativeChoiceVisible)
+          );
+          lexicalAlternativeControl.disabled = !alternativeChoiceVisible;
+          lexicalAlternativeControl.value = lexicalAlternatives.some(
+            ([value]) => value === previousAlternative
+          ) ? previousAlternative : lexicalAlternatives[0]?.[0] || "default";
+          lexicalAlternativeWrapper.dataset.classicalAttitudeAlternativeChoiceRequired =
+            String(alternativeChoiceVisible);
+        }
+        const derivationOptionControl = targetObject.document.getElementById(
+          "classical-attitude-derivation-option"
+        );
+        const derivationOptionWrapper = derivationOptionControl?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        let derivationOptions = [];
+        if (
+          attitude === "honorific"
+          && ["causative", "applicative"].includes(
+            String(formationControl?.value || "")
+          )
+          && lexicalAlternatives.length === 0
+          && attitudeSourceStem
+          && typeof targetObject.evaluateClassicalNahuatlVncApplication
+            === "function"
+        ) {
+          const derivationType = String(formationControl.value);
+          const sourceSubject = getClassicalNominalConstructionControlValue(
+            "classical-rule-logic-subject",
+            "3sg"
+          );
+          try {
+            const preview = targetObject.evaluateClassicalNahuatlVncApplication({
+              sourceStem: attitudeSourceStem,
+              sourceValence: nominalEmbedMatrixValence,
+              verbClass: getClassicalNominalConstructionControlValue(
+                "classical-rule-logic-class",
+                "A"
+              ),
+              sourceSubject,
+              subject: sourceSubject,
+              mood: getClassicalNominalConstructionControlValue(
+                "classical-rule-logic-mood",
+                "indicative"
+              ),
+              tense: getClassicalNominalConstructionControlValue(
+                "classical-rule-logic-tense",
+                "present"
+              ),
+              requestedDerivation: derivationType,
+              derivationType,
+              requestedVoice: "active",
+              ...(derivationType === "causative"
+                ? { causativeObjectKind: "reflexive" }
+                : {
+                    applicativeObjectKind: "reflexive",
+                    applicativeObjectPerson: "",
+                  }),
+            });
+            derivationOptions = preview.controlFrame
+              ?.derivationOptionInventory?.options || [];
+          } catch {
+            derivationOptions = [];
+          }
+        }
+        if (derivationOptionControl && derivationOptionWrapper) {
+          const previousOptionId = String(
+            derivationOptionControl.value || ""
+          );
+          derivationOptionControl.replaceChildren();
+          derivationOptions.forEach(record => {
+            const option = targetObject.document.createElement("option");
+            option.value = String(record.optionId || "");
+            option.textContent = String(
+              record.label || record.targetStem || record.optionId || ""
+            );
+            derivationOptionControl.appendChild(option);
+          });
+          const shapeChoiceVisible = derivationOptions.length > 1;
+          derivationOptionWrapper.hidden = !shapeChoiceVisible;
+          derivationOptionWrapper.setAttribute(
+            "aria-hidden",
+            String(!shapeChoiceVisible)
+          );
+          derivationOptionControl.disabled = !shapeChoiceVisible;
+          derivationOptionControl.value = derivationOptions.some(record => (
+            String(record.optionId || "") === previousOptionId
+          ))
+            ? previousOptionId
+            : String(derivationOptions[0]?.optionId || "");
+          derivationOptionWrapper.dataset.classicalAttitudeShapeChoiceRequired =
+            String(shapeChoiceVisible);
+          derivationOptionWrapper.dataset.classicalAttitudeAutomaticShape =
+            shapeChoiceVisible
+              ? ""
+              : String(derivationOptions[0]?.targetStem || "");
+        }
+        const participantControl = targetObject.document.getElementById(
+          "classical-attitude-participant"
+        );
+        const participantWrapper = participantControl?.closest?.(
+          "label, [data-classical-rule-control]"
+        );
+        const participantLabel = participantWrapper?.querySelector?.(
+          "[data-classical-attitude-participant-label]"
+        );
+        const projectiveHonorificSource = [
+          "specific-projective",
+          "projective-human",
+          "projective-nonhuman",
+        ].includes(nominalEmbedMatrixValence);
+        const honorificSubject = getClassicalNominalConstructionControlValue(
+          "classical-rule-logic-subject",
+          "3sg"
+        );
+        const firstPersonHonorificSubject = /^1/u.test(honorificSubject);
+        const priorParticipantFacts =
+          ActiveClassicalRuleLogicSurfaceFrame?.operationFrame
+            ?.operation === attitude
+          && String(
+            ActiveClassicalRuleLogicSurfaceFrame.normalizedRequest
+              ?.sourceStem || ""
+          ) === attitudeSourceStem
+            ? ActiveClassicalRuleLogicSurfaceFrame.operationFrame
+              .operationFacts
+            : null;
+        const participantFacts =
+          frame?.operationFrame?.operationFacts
+          || priorParticipantFacts;
+        const canonicalParticipantChoiceKnown = attitude === "pejorative"
+          ? typeof participantFacts?.disparagedParticipantChoiceRequired
+            === "boolean"
+          : typeof participantFacts?.honoredParticipantChoiceRequired
+            === "boolean";
+        const objectParticipantAvailable = attitude === "pejorative"
+          ? canonicalParticipantChoiceKnown
+            ? participantFacts.disparagedParticipantChoiceRequired === true
+              && participantFacts.possibleDisparagedParticipants
+                ?.includes("object")
+            : projectiveHonorificSource
+          : attitude === "honorific"
+            && (canonicalParticipantChoiceKnown
+              ? participantFacts.honoredParticipantChoiceRequired === true
+                && participantFacts.possibleHonoredParticipants
+                  ?.includes("object")
+              : projectiveHonorificSource
+                && !firstPersonHonorificSubject);
+        if (participantControl && participantWrapper) {
+          if (participantLabel) {
+            participantLabel.textContent = attitude === "pejorative"
+              ? "Disparaged participant"
+              : "Respected participant";
+          }
+          participantWrapper.hidden = !objectParticipantAvailable;
+          participantWrapper.setAttribute(
+            "aria-hidden",
+            String(!objectParticipantAvailable)
+          );
+          participantControl.disabled = !objectParticipantAvailable;
+          if (!objectParticipantAvailable) {
+            participantControl.value = attitude === "honorific"
+              && firstPersonHonorificSubject
+              && projectiveHonorificSource
+              ? "object"
+              : "subject";
+          }
+          participantWrapper.dataset.classicalAttitudeParticipantChoiceRequired =
+            String(objectParticipantAvailable);
+          participantWrapper.dataset.classicalAttitudeAutomaticParticipant =
+            objectParticipantAvailable ? "" : participantControl.value;
+        }
+      }
       if (selected) {
-        const vncConstructionSelected = selected === "nominal-embed-vnc"
-          || selected === "attitude-vnc"
-          || selected === "denominal-vnc"
-          || (
-            selected === "deverbal-nnc"
-            && deverbalSelection.selectedFamily === "verbal-continuation"
-          )
-          || affectiveDenominal
-          || cardinalVncAdverb;
-        const nncConstructionSelected = !vncConstructionSelected;
-        const valenceUsed = selected === "nominal-embed-vnc"
-          || selected === "attitude-vnc"
-          || (
-            selected === "deverbal-nnc"
-            && [
-              "predicate-nominalization",
-              "deverbal-action",
-              "patientive",
-              "verbal-continuation",
-            ].includes(deverbalSelection.selectedFamily)
-          )
-          || cardinalVncAdverb;
         const deverbalVocative = selected === "deverbal-nnc"
           && deverbalSelection.selectedFamily === "vocative";
-        const explicitlyUsedControls = new Map([
-          ["classical-rule-logic-subject", !deverbalVocative],
-          ["classical-rule-logic-class", valenceUsed],
-          ["classical-rule-logic-valence", valenceUsed],
-          ["classical-rule-logic-object", vncConstructionSelected],
-          ["classical-rule-logic-mood", vncConstructionSelected],
-          ["classical-rule-logic-tense", vncConstructionSelected],
-          ["classical-rule-logic-vnc-voice", (
-            vncConstructionSelected
-            && selected !== "denominal-vnc"
-          ) || (
+        const deverbalPatientiveEmbedVnc = selected === "deverbal-nnc"
+          && deverbalSelection.selectedFamily
+            === "patientive-embed-continuation"
+          && getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-patientive-embed-target",
+            "nnc"
+          ) === "vnc";
+        const adverbialVncMatrix = selected === "adverbial-nuclear"
+          && adverbialIncorporatedPredicate;
+        const vncResultSelected = selected === "nominal-embed-vnc"
+          || selected === "attitude-vnc"
+          || selected === "denominal-vnc"
+          || deverbalPatientiveEmbedVnc
+          || cardinalVncAdverb;
+        const sourceVncGrammarUsed = selected === "nominal-embed-vnc"
+          || selected === "attitude-vnc"
+          || (
             selected === "deverbal-nnc"
             && [
               "predicate-nominalization",
               "deverbal-action",
               "patientive",
+              "patientive-embed-continuation",
             ].includes(deverbalSelection.selectedFamily)
-          )],
-          ["classical-rule-logic-vnc-output-scope", vncConstructionSelected],
-          ["classical-rule-logic-nnc-state", nncConstructionSelected
-            && !deverbalVocative
-            && selected !== "personal-name-nnc"],
-          ["classical-rule-logic-nnc-possessor", nncConstructionSelected
-            && state === "possessive"
-            && selected !== "personal-name-nnc"],
-          ["classical-rule-logic-nnc-subject-animacy", nncConstructionSelected
-            && selected !== "personal-name-nnc"],
-          ["classical-rule-logic-nnc-output-scope", nncConstructionSelected && !deverbalVocative],
+          )
+          || cardinalVncAdverb
+          || adverbialVncMatrix;
+        const nncAgreementUsed = selected === "compound-nnc"
+          || selected === "affective-nnc"
+          || (selected === "cardinal-numeral-nnc" && !cardinalVncAdverb)
+          || (selected === "deverbal-nnc"
+            && !deverbalVocative && !deverbalPatientiveEmbedVnc)
+          || selected === "personal-name-nnc";
+        const nncStateUsed = selected === "nominal-embed-vnc"
+          || selected === "compound-nnc"
+          || selected === "affective-nnc"
+          || (selected === "cardinal-numeral-nnc" && !cardinalVncAdverb)
+          || (selected === "deverbal-nnc"
+            && !deverbalVocative)
+          || selected === "adverbial-nuclear";
+        const nncAnimacyUsed = selected === "compound-nnc"
+          || selected === "affective-nnc"
+          || (selected === "cardinal-numeral-nnc" && !cardinalVncAdverb)
+          || (selected === "deverbal-nnc"
+            && !deverbalVocative && !deverbalPatientiveEmbedVnc);
+        const nncOutputUsed = selected === "compound-nnc"
+          || selected === "affective-nnc"
+          || (selected === "cardinal-numeral-nnc" && !cardinalVncAdverb)
+          || (selected === "deverbal-nnc"
+            && !deverbalVocative && !deverbalPatientiveEmbedVnc);
+        const organicPossessionStateIsDerived = selected === "deverbal-nnc"
+          && deverbalSelection.patientiveFamily === "characteristic-property"
+          && getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-characteristic-reading",
+            "inherent-quality"
+          ) === "organic-possession";
+        const explicitlyUsedControls = new Map(
+          CLASSICAL_CUSTOM_CONSTRUCTION_MANAGED_CONTROL_IDS.map(id => [id, false])
+        );
+        [
+          "classical-rule-logic-nnc-subject-person",
+          "classical-rule-logic-nnc-subject-number",
+        ].forEach(id => explicitlyUsedControls.set(id, nncAgreementUsed));
+        explicitlyUsedControls.set(
+          "classical-rule-logic-subject",
+          false
+        );
+        [
+          "classical-rule-logic-vnc-subject-person",
+          "classical-rule-logic-vnc-subject-animacy",
+          "classical-rule-logic-vnc-subject-humanness",
+          "classical-rule-logic-vnc-subject-number",
+        ].forEach(id => explicitlyUsedControls.set(
+          id,
+          vncResultSelected || adverbialVncMatrix
+        ));
+        explicitlyUsedControls.set("classical-rule-logic-class", sourceVncGrammarUsed);
+        explicitlyUsedControls.set("classical-rule-logic-valence", sourceVncGrammarUsed);
+        explicitlyUsedControls.set(
+          "classical-rule-logic-object",
+          selected === "nominal-embed-vnc" || selected === "attitude-vnc"
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-mood",
+          vncResultSelected || adverbialVncMatrix
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-tense",
+          vncResultSelected || adverbialVncMatrix
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-vnc-voice",
+          selected === "nominal-embed-vnc"
+            || selected === "attitude-vnc"
+            || cardinalVncAdverb
+            || adverbialVncMatrix
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-vnc-output-scope",
+          vncResultSelected
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-nnc-state",
+          nncStateUsed && !organicPossessionStateIsDerived
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-nnc-possessor",
+          nncStateUsed && selected !== "adverbial-nuclear" && state === "possessive"
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-nnc-subject-animacy",
+          nncAnimacyUsed
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-nnc-subject-humanness",
+          nncAnimacyUsed
+        );
+        explicitlyUsedControls.set(
+          "classical-rule-logic-nnc-output-scope",
+          nncOutputUsed
+        );
+        const sourceOwnedControlPlacements = new Map([
+          [
+            "classical-rule-logic-class",
+            {
+              destination: targetObject.document.getElementById(
+                "classical-vnc-source-guide"
+              ),
+              before: targetObject.document.getElementById(
+                "classical-vnc-source-initial-i"
+              ),
+            },
+          ],
+          [
+            "classical-rule-logic-valence",
+            {
+              destination: targetObject.document.getElementById(
+                "classical-source-identity-controls"
+              ),
+              before: targetObject.document.querySelector(
+                "#classical-source-identity-controls > "
+                  + '[data-classical-source-identity-control="voice"]'
+              ),
+            },
+          ],
         ]);
         explicitlyUsedControls.forEach((visible, id) => {
           const control = targetObject.document.getElementById(id);
           const wrapper = control?.closest?.("label, [data-classical-rule-control]");
           if (!control || !wrapper) return;
+          const resultScopeControls = targetObject.document.querySelector(
+            "#classical-result-panel .classical-result-scope-controls"
+          );
+          const nncGroup = CLASSICAL_NNC_GRAMMAR_CONTROL_GROUPS[id] || "";
+          const nncPresentation = nncGroup
+            ? getClassicalNncGrammarPresentation()
+            : null;
+          const sourcePlacement = sourceOwnedControlPlacements.get(id) || null;
+          const destination = sourcePlacement?.destination
+            || (id.endsWith("-output-scope")
+            ? resultScopeControls
+            : visible && nncGroup
+              ? nncPresentation?.groups?.[nncGroup]?.body
+              : grammarGrid);
           if (
-            visible
-            && grammarGrid
-            && wrapper.parentElement !== grammarGrid
+            destination
+            && sourcePlacement
+            && sourcePlacement.before?.parentElement === destination
+            && typeof destination.insertBefore === "function"
           ) {
-            grammarGrid.appendChild(wrapper);
+            destination.insertBefore(wrapper, sourcePlacement.before);
+          } else if (
+            destination
+            && wrapper.parentElement !== destination
+          ) {
+            destination.appendChild(wrapper);
           }
           wrapper.hidden = !visible;
           wrapper.setAttribute("aria-hidden", String(!visible));
@@ -18553,7 +23981,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           lexicalKinds.includes(placeGentilicResultKind)
         );
         setPlaceGentilicControlVisible(
-          "classical-rule-logic-subject",
+          "classical-rule-logic-nnc-subject-person",
+          inflectedKinds.includes(placeGentilicResultKind)
+        );
+        setPlaceGentilicControlVisible(
+          "classical-rule-logic-nnc-subject-number",
           inflectedKinds.includes(placeGentilicResultKind)
         );
         setPlaceGentilicControlVisible(
@@ -18566,6 +23998,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
         setPlaceGentilicControlVisible(
           "classical-rule-logic-nnc-subject-animacy",
+          inflectedKinds.includes(placeGentilicResultKind)
+        );
+        setPlaceGentilicControlVisible(
+          "classical-rule-logic-nnc-subject-humanness",
           inflectedKinds.includes(placeGentilicResultKind)
         );
         setPlaceGentilicControlVisible(
@@ -18587,6 +24023,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const firstAvailable = Array.from(lexicalControl.options).find(option => !option.disabled && option.value);
           lexicalControl.value = firstAvailable?.value || "";
         }
+      }
+      syncClassicalCustomConstructionGrammarPresentation(selected, frame);
+      if (sourceAnalysisRoot) {
+        const hasVisibleSourceAnalysis = Array.from(
+          sourceAnalysisRoot.children || []
+        ).some(wrapper => !wrapper.hidden);
+        sourceAnalysisRoot.hidden = !hasVisibleSourceAnalysis;
+        sourceAnalysisRoot.setAttribute(
+          "aria-hidden",
+          String(!hasVisibleSourceAnalysis)
+        );
       }
     }
     function parseClassicalPersonalNamePredicateMorphs(value = "") {
@@ -18640,10 +24087,59 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ).trim();
       const embedStem = String(sourceParts?.sourceEmbedStem || getClassicalNominalConstructionControlValue("classical-source-embed", "")).trim();
       const matrixStem = String(sourceParts?.sourceMatrixStem || getClassicalNominalConstructionControlValue("classical-source-matrix", "")).trim();
-      const subject = getClassicalNominalConstructionControlValue(
-        "classical-rule-logic-subject",
-        constructionKind === "cardinal-numeral-nnc" ? "3common" : "3sg"
+      const nominalSubjectPerson = getClassicalNominalConstructionControlValue(
+        "classical-rule-logic-nnc-subject-person",
+        "3"
       );
+      const nominalSubjectNumber = getClassicalNominalConstructionControlValue(
+        "classical-rule-logic-nnc-subject-number",
+        constructionKind === "cardinal-numeral-nnc" ? "common" : "singular"
+      );
+      const nominalSubject = nominalSubjectNumber === "common"
+        ? "3common"
+        : `${nominalSubjectPerson}${nominalSubjectNumber === "plural" ? "pl" : "sg"}`;
+      const cardinalTargetKind = getClassicalNominalConstructionControlValue(
+        "classical-cardinal-target-kind",
+        "nnc"
+      );
+      const adverbialScope = getClassicalNominalConstructionControlValue(
+        "classical-adverbial-scope",
+        ""
+      );
+      const patientiveEmbedTargetKind =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-patientive-embed-target",
+          "nnc"
+        );
+      const deverbalFamily =
+        getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-family",
+          "predicate-nominalization"
+        );
+      const usesVncSubject = [
+        "nominal-embed-vnc",
+        "attitude-vnc",
+        "denominal-vnc",
+      ].includes(constructionKind)
+        || (
+          constructionKind === "cardinal-numeral-nnc"
+          && cardinalTargetKind === "vnc-embed"
+        )
+        || (
+          constructionKind === "adverbial-nuclear"
+          && adverbialScope === "incorporated-predicate"
+        )
+        || (
+          constructionKind === "deverbal-nnc"
+          && deverbalFamily === "patientive-embed-continuation"
+          && patientiveEmbedTargetKind === "vnc"
+        );
+      const subject = usesVncSubject
+        ? getClassicalNominalConstructionControlValue(
+          "classical-rule-logic-subject",
+          "3sg"
+        )
+        : nominalSubject;
       const state = getClassicalNominalConstructionControlValue("classical-rule-logic-nnc-state", "absolutive");
       const animacy = getClassicalNominalConstructionControlValue(
         "classical-rule-logic-nnc-subject-animacy",
@@ -18763,10 +24259,41 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-rule-logic-class",
           "B"
         );
-        const sourceVoice = getClassicalNominalConstructionControlValue(
-          "classical-rule-logic-vnc-voice",
-          "active"
+        const nominalizationKind =
+          getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-nominalization-kind",
+            "preterit-agentive"
+          );
+        const actionKind = getClassicalNominalConstructionControlValue(
+          "classical-deverbal-nnc-action-kind",
+          "active-action"
         );
+        const patientiveSourceFamily =
+          getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-patientive-family",
+            "passive-core"
+          );
+        const sourceVoice = constructionFamily === "predicate-nominalization"
+          ? [
+            "preterit-patientive",
+            "customary-patientive",
+            "passive-action",
+          ].includes(nominalizationKind)
+            ? "passive"
+            : nominalizationKind === "instrumentive" && state === "absolutive"
+              ? "impersonal"
+              : "active"
+          : constructionFamily === "deverbal-action"
+            ? actionKind === "impersonal-general-action"
+              ? "impersonal"
+              : "active"
+            : constructionFamily === "patientive"
+              ? patientiveSourceFamily === "passive-core"
+                ? "passive"
+                : patientiveSourceFamily === "impersonal-core"
+                  ? "impersonal"
+                  : "active"
+              : "active";
         const sourceValence = ({
           "shuntline-reflexive": "intransitive",
           "projective-human": "projective-human",
@@ -18780,20 +24307,40 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "projective-nonhuman": "nonspecific-nonhuman",
           "mainline-reflexive": "reflexive",
         })[valence] || "none";
+        const canonicalVncSourceValence = ({
+          "specific-projective": "specific-projective",
+          "mainline-reflexive": "specific-projective",
+        })[valence] || sourceValence;
+        const canonicalVncObjectKind = ({
+          "specific-projective": "specific-projective",
+          "mainline-reflexive": "reflexive",
+        })[valence] || sourceObjectPattern;
+        const instrumentiveSourceSubject = nominalizationKind
+          === "instrumentive" && state === "possessive"
+          ? possessor
+          : subject;
+        const typedVncSourceStem = wholeStem
+          || [embedStem, matrixStem].filter(Boolean).join("-");
         const baseSource = {
-          sourceStem: wholeStem || embedStem,
+          sourceStem: typedVncSourceStem,
+          ...(embedStem && matrixStem
+            ? {
+                sourceEmbedStem: embedStem,
+                sourceMatrixStem: matrixStem,
+              }
+            : {}),
           verbClass,
           sourceVoice,
           sourceValence,
           sourceObjectPattern,
-          sourceSubject: subject,
+          sourceSubject: instrumentiveSourceSubject,
+          sourceInitialISelection:
+            getClassicalNominalConstructionControlValue(
+              "classical-vnc-source-initial-i-choice",
+              ""
+            ),
         };
         if (constructionFamily === "predicate-nominalization") {
-          const nominalizationKind =
-            getClassicalNominalConstructionControlValue(
-              "classical-deverbal-nnc-nominalization-kind",
-              "preterit-agentive"
-            );
           const sourceStage = ({
             "preterit-agentive": "preterit-predicate",
             "preterit-patientive": "preterit-predicate",
@@ -18817,14 +24364,131 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "preterit-agentive",
             "preterit-patientive",
           ].includes(nominalizationKind);
+          const sourceTense = ({
+            "preterit-agentive": "preterit",
+            "preterit-patientive": "preterit",
+            "customary-agentive-reanalysis": "customary-present",
+            "customary-agentive-full": "customary-present",
+            "customary-patientive": "customary-present",
+            instrumentive: state === "possessive"
+              ? "imperfect"
+              : "customary-present",
+            "present-agentive": "present",
+            "future-agentive": "future",
+            "passive-action": "distant-past",
+            "active-action": "distant-past",
+          })[nominalizationKind] || "";
+          const evaluateCanonicalSourceVnc = ({
+            tense,
+            voice,
+            sourceSubject,
+          }) => tense
+            && baseSource.sourceStem
+            && typeof targetObject
+              .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+              sourceStem: baseSource.sourceStem,
+              ...(baseSource.sourceEmbedStem && baseSource.sourceMatrixStem
+                ? {
+                    sourceEmbedStem: baseSource.sourceEmbedStem,
+                    sourceMatrixStem: baseSource.sourceMatrixStem,
+                  }
+                : {}),
+              verbClass: baseSource.verbClass,
+              sourceValence: canonicalVncSourceValence,
+              subject: sourceSubject,
+              mood: "indicative",
+              tense,
+              requestedDerivation: "direct",
+              requestedVoice: voice,
+              voice,
+              ...(canonicalVncObjectKind === "none"
+                ? {}
+                : {
+                    objectKind: canonicalVncObjectKind,
+                    ...(canonicalVncObjectKind === "specific-projective"
+                      ? { objectPerson: subject }
+                      : {}),
+                  }),
+            })
+            : null;
+          const resultFrameOf = application => (
+            application?.authorizationStatus === "authorized"
+            && application.resultFrame?.authorizationStatus === "authorized"
+              ? application.resultFrame
+              : null
+          );
+          const canonicalSourceVnc = evaluateCanonicalSourceVnc({
+            tense: sourceTense,
+            voice: baseSource.sourceVoice,
+            sourceSubject: baseSource.sourceSubject,
+          });
+          const canonicalVncResult =
+            resultFrameOf(canonicalSourceVnc);
+          const canonicalPreteritVncResult = nominalizationKind
+            === "customary-agentive-full"
+            ? resultFrameOf(evaluateCanonicalSourceVnc({
+              tense: "preterit",
+              voice: "active",
+              sourceSubject: baseSource.sourceSubject,
+            }))
+            : null;
+          const canonicalInstrumentiveAbsolutiveVncResult =
+            nominalizationKind === "instrumentive"
+              ? resultFrameOf(evaluateCanonicalSourceVnc({
+                tense: "customary-present",
+                voice: "impersonal",
+                sourceSubject: "3sg",
+              }))
+              : null;
+          const canonicalInstrumentivePossessiveVncResult =
+            nominalizationKind === "instrumentive"
+              ? resultFrameOf(evaluateCanonicalSourceVnc({
+                tense: "imperfect",
+                voice: "active",
+                sourceSubject: possessor,
+              }))
+              : null;
+          const activatedObjectPerson =
+            getClassicalNominalConstructionControlValue(
+              "classical-deverbal-nnc-activated-object-person",
+              ""
+            );
           return {
             constructionKind: constructionFamily,
             nominalizationKind,
-            activatedObjectPerson:
-              getClassicalNominalConstructionControlValue(
-                "classical-deverbal-nnc-activated-object-person",
+            ...(canonicalVncResult ? { canonicalVncResult } : {}),
+            ...(canonicalPreteritVncResult
+              ? { canonicalPreteritVncResult }
+              : {}),
+            ...(canonicalInstrumentiveAbsolutiveVncResult
+              ? { canonicalInstrumentiveAbsolutiveVncResult }
+              : {}),
+            ...(canonicalInstrumentivePossessiveVncResult
+              ? { canonicalInstrumentivePossessiveVncResult }
+              : {}),
+            activatedObjectPerson,
+            ...(activatedObjectPerson
+              ? {
+                  supplementaryObjectRelation: "supplementary-object",
+                  supplementaryObjectReferentId:
+                    `ui-supplementary-object:${activatedObjectPerson}`,
+                }
+              : {}),
+            numberConnector: targetObject.document?.getElementById(
+              "classical-deverbal-nnc-number-connector"
+            )?.disabled
+              ? ""
+              : getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-number-connector",
                 ""
               ),
+            affinity: !targetObject.document?.getElementById(
+              "classical-deverbal-nnc-affinity"
+            )?.disabled && getClassicalNominalConstructionControlValue(
+              "classical-deverbal-nnc-affinity",
+              "plain"
+            ) === "affinity",
             preteritAgentiveVariant:
               getClassicalNominalConstructionControlValue(
                 "classical-deverbal-nnc-preterit-agentive-variant",
@@ -18848,19 +24512,86 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 : {}),
               sourceStage,
             },
-            subject,
+            subject: nominalizationKind === "instrumentive"
+              ? "3common"
+              : subject,
             state,
             possessor,
-            animacy,
+            animacy: nominalizationKind === "instrumentive"
+              ? "nonanimate"
+              : animacy,
           };
         }
         if (constructionFamily === "deverbal-action") {
+          const sourceNonactiveOptionId = baseSource.sourceVoice === "impersonal"
+            ? getClassicalNominalConstructionControlValue(
+              "classical-rule-logic-nonactive-family",
+              ""
+            )
+            : "";
+          const canonicalVncRequest = {
+            sourceStem: baseSource.sourceStem,
+            ...(baseSource.sourceEmbedStem && baseSource.sourceMatrixStem
+              ? {
+                  sourceEmbedStem: baseSource.sourceEmbedStem,
+                  sourceMatrixStem: baseSource.sourceMatrixStem,
+                }
+              : {}),
+            verbClass: baseSource.verbClass,
+            sourceValence: valence === "mainline-reflexive"
+              ? "mainline-reflexive"
+              : canonicalVncSourceValence,
+            subject: baseSource.sourceSubject,
+            mood: "indicative",
+            tense: "future",
+            requestedDerivation: "direct",
+            requestedVoice: baseSource.sourceVoice,
+            voice: baseSource.sourceVoice,
+            ...(baseSource.sourceInitialISelection
+              ? {
+                  sourceInitialISelection:
+                    baseSource.sourceInitialISelection,
+                }
+              : {}),
+            ...(canonicalVncObjectKind === "none"
+              ? {}
+              : {
+                  objectKind: canonicalVncObjectKind,
+                    ...(canonicalVncObjectKind === "specific-projective"
+                    ? { objectPerson: subject }
+                    : {}),
+                }),
+            ...(sourceNonactiveOptionId
+              ? { nonactiveOptionId: sourceNonactiveOptionId }
+              : {}),
+          };
+          const canonicalVncPreview = baseSource.sourceStem
+            && typeof targetObject
+              .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication(
+              canonicalVncRequest
+            )
+            : null;
+          const automaticNonactiveOptionId = canonicalVncPreview
+            ?.controlFrame?.nonactiveOptionInventory?.automaticOptionId
+            || "";
+          const canonicalVncApplication = automaticNonactiveOptionId
+            && !sourceNonactiveOptionId
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+              ...canonicalVncRequest,
+              nonactiveOptionId: automaticNonactiveOptionId,
+            })
+            : canonicalVncPreview;
+          const canonicalVncResult =
+            canonicalVncApplication?.authorizationStatus === "authorized"
+            && canonicalVncApplication.resultFrame?.authorizationStatus
+              === "authorized"
+              ? canonicalVncApplication.resultFrame
+              : null;
           return {
             constructionKind: constructionFamily,
-            actionKind: getClassicalNominalConstructionControlValue(
-              "classical-deverbal-nnc-action-kind",
-              "active-action"
-            ),
+            ...(canonicalVncResult ? { canonicalVncResult } : {}),
+            actionKind,
             actionSuffix: getClassicalNominalConstructionControlValue(
               "classical-deverbal-nnc-action-suffix",
               "liz"
@@ -18880,34 +24611,267 @@ export function createUiRenderingApi(targetObject = globalThis) {
             animacy,
           };
         }
-        if (constructionFamily === "patientive") {
-          const patientiveSourceFamily =
-            getClassicalNominalConstructionControlValue(
-              "classical-deverbal-nnc-patientive-family",
-              "passive-core"
+        if ([
+          "patientive",
+          "patientive-embed-continuation",
+          "patientive-matrix-continuation",
+        ].includes(constructionFamily)) {
+          const buildCharacteristicPatientiveEmbedContinuationRequest = (
+            patientiveResult
+          ) => {
+            const compoundTargetKind =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-target",
+                "nnc"
+              );
+            const relation = getClassicalNominalConstructionControlValue(
+              "classical-deverbal-nnc-patientive-embed-relation",
+              ""
             );
-          if (patientiveSourceFamily === "characteristic-property") {
+            const matrixStem = getClassicalNominalConstructionControlValue(
+              "classical-deverbal-nnc-patientive-embed-matrix-stem",
+              ""
+            );
+            const matrixValence =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-matrix-valence",
+                "intransitive"
+              );
             return {
-              constructionKind: constructionFamily,
-              patientiveKind: "characteristic-property",
-              characteristicReading:
+              constructionKind: "patientive-embed-continuation",
+              compoundTargetKind,
+              characteristicMatrixRealization:
                 getClassicalNominalConstructionControlValue(
-                  "classical-deverbal-nnc-characteristic-reading",
-                  "inherent-quality"
+                  "classical-deverbal-nnc-characteristic-embed-realization",
+                  ""
                 ),
+              ...(patientiveResult?.canonicalResult
+                ? { canonicalPatientiveNncGrammarFrame: patientiveResult }
+                : {}),
               source: {
-                ...baseSource,
-                sourceUnit: "nnc-nounstem",
-                sourceStage: "nounstem-embed",
-                sourceVoice: "active",
-                sourceValence: "intransitive",
-                sourceObjectPattern: "none",
+                matrixStem,
+                ...(compoundTargetKind === "nnc"
+                  ? {
+                      matrixNounClass:
+                        getClassicalNominalConstructionControlValue(
+                          "classical-deverbal-nnc-patientive-embed-matrix-noun-class",
+                          ""
+                        ),
+                    }
+                  : {
+                      matrixVerbClass:
+                        getClassicalNominalConstructionControlValue(
+                          "classical-deverbal-nnc-patientive-embed-matrix-verb-class",
+                          "A"
+                        ),
+                      matrixValence,
+                      matrixSemanticFamily: "typed-matrix",
+                    }),
               },
+              relation,
+              ...(relation === "complement"
+                ? {
+                    orientation: "object",
+                    complementKind:
+                      getClassicalNominalConstructionControlValue(
+                        "classical-deverbal-nnc-patientive-embed-complement-kind",
+                        "considering"
+                      ),
+                  }
+                : {}),
               subject,
               state,
               possessor,
               animacy,
             };
+          };
+          if (
+            patientiveSourceFamily
+              === "preterit-agentive-characteristic-property"
+          ) {
+            const preteritApplication = baseSource.sourceStem
+              && typeof targetObject
+                .evaluateClassicalNahuatlVncApplication === "function"
+              ? targetObject.evaluateClassicalNahuatlVncApplication({
+                  sourceStem: baseSource.sourceStem,
+                  ...(baseSource.sourceEmbedStem
+                    && baseSource.sourceMatrixStem
+                    ? {
+                        sourceEmbedStem: baseSource.sourceEmbedStem,
+                        sourceMatrixStem: baseSource.sourceMatrixStem,
+                      }
+                    : {}),
+                  verbClass: baseSource.verbClass,
+                  sourceValence: valence === "mainline-reflexive"
+                    ? "mainline-reflexive"
+                    : canonicalVncSourceValence,
+                  subject: baseSource.sourceSubject,
+                  mood: "indicative",
+                  tense: "preterit",
+                  requestedDerivation: "direct",
+                  requestedVoice: "active",
+                  voice: "active",
+                  ...(baseSource.sourceInitialISelection
+                    ? {
+                        sourceInitialISelection:
+                          baseSource.sourceInitialISelection,
+                      }
+                    : {}),
+                  ...(canonicalVncObjectKind === "none"
+                    ? {}
+                    : {
+                        objectKind: canonicalVncObjectKind,
+                        ...(canonicalVncObjectKind
+                          === "specific-projective"
+                          ? { objectPerson: subject }
+                          : {}),
+                      }),
+                })
+              : null;
+            const preteritResult =
+              preteritApplication?.authorizationStatus === "authorized"
+              && preteritApplication.resultFrame?.authorizationStatus
+                === "authorized"
+                ? preteritApplication.resultFrame
+                : null;
+            const agentiveNnc = preteritResult
+              && typeof targetObject
+                .evaluateClassicalNahuatlDeverbalNnc === "function"
+              ? targetObject.evaluateClassicalNahuatlDeverbalNnc({
+                  constructionKind: "predicate-nominalization",
+                  nominalizationKind: "preterit-agentive",
+                  canonicalVncResult: preteritResult,
+                  subject: "3common",
+                  state: "absolutive",
+                  animacy: "nonanimate",
+                })
+              : null;
+            const canonicalNncSource =
+              agentiveNnc?.authorizationStatus === "authorized"
+              && agentiveNnc.canonicalResult?.authorizationStatus
+                === "authorized"
+                ? agentiveNnc
+                : null;
+            const patientiveRequest = {
+              constructionKind: constructionFamily,
+              patientiveKind: "characteristic-property",
+              ...(canonicalNncSource
+                ? { canonicalNncResult: canonicalNncSource }
+                : {}),
+              characteristicReading: "inherent-quality",
+              subject: "3common",
+              state,
+              possessor,
+              animacy: "nonanimate",
+            };
+            if (constructionFamily === "patientive") {
+              return patientiveRequest;
+            }
+            const patientiveResult =
+              typeof targetObject.evaluateClassicalNahuatlDeverbalNnc
+                === "function"
+                ? targetObject.evaluateClassicalNahuatlDeverbalNnc({
+                    ...patientiveRequest,
+                    constructionKind: "patientive",
+                  })
+                : null;
+            if (constructionFamily === "patientive-embed-continuation") {
+              return buildCharacteristicPatientiveEmbedContinuationRequest(
+                patientiveResult
+              );
+            }
+            return patientiveRequest;
+          }
+          if (patientiveSourceFamily === "characteristic-property") {
+            const characteristicNncSource = baseSource.sourceStem
+              && typeof targetObject
+                .buildClassicalNahuatlOrdinaryNncSourceFrame === "function"
+              ? targetObject.buildClassicalNahuatlOrdinaryNncSourceFrame({
+                  stem: baseSource.sourceStem,
+                  ...(requestedSourceClass
+                    ? { sourceClass: requestedSourceClass }
+                    : {}),
+                })
+              : null;
+            const characteristicSourceState =
+              characteristicNncSource?.allowedStateValues?.includes(
+                "absolutive"
+              )
+                ? "absolutive"
+                : "possessive";
+            const characteristicNncOperation =
+              characteristicNncSource?.authorizationStatus === "authorized"
+              && typeof targetObject
+                .buildClassicalNahuatlOrdinaryNncOperationFrame === "function"
+                ? targetObject.buildClassicalNahuatlOrdinaryNncOperationFrame(
+                    characteristicNncSource,
+                    {
+                      state: characteristicSourceState,
+                      subject:
+                        characteristicNncSource.referentialAnimacy
+                          === "nonanimate"
+                          ? "3common"
+                          : subject,
+                      humanness:
+                        characteristicNncSource.referentialAnimacy
+                          === "nonanimate"
+                          ? "nonhuman"
+                          : "",
+                      possessor: characteristicSourceState === "possessive"
+                        ? possessor
+                        : "",
+                      predicateFormation: "source-stem",
+                      stemFormation: "plain",
+                      sentenceType: "statement",
+                      polarity: "positive",
+                    }
+                  )
+                : null;
+            const canonicalNncResult =
+              characteristicNncOperation?.authorizationStatus === "authorized"
+              && typeof targetObject
+                .evaluateClassicalNahuatlOrdinaryNnc === "function"
+                ? targetObject.evaluateClassicalNahuatlOrdinaryNnc(
+                    characteristicNncSource,
+                    characteristicNncOperation
+                  )
+                : null;
+            const characteristicReading =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-characteristic-reading",
+                "inherent-quality"
+              );
+            const patientiveRequest = {
+              constructionKind: constructionFamily,
+              patientiveKind: "characteristic-property",
+              ...(canonicalNncResult?.authorizationStatus === "authorized"
+                ? { canonicalNncResult }
+                : {}),
+              characteristicReading,
+              subject,
+              state: characteristicReading === "organic-possession"
+                ? "possessive"
+                : state,
+              possessor,
+              animacy,
+            };
+            if (constructionFamily === "patientive") {
+              return patientiveRequest;
+            }
+            const patientiveResult =
+              typeof targetObject.evaluateClassicalNahuatlDeverbalNnc
+                === "function"
+                ? targetObject.evaluateClassicalNahuatlDeverbalNnc({
+                    ...patientiveRequest,
+                    constructionKind: "patientive",
+                  })
+                : null;
+            if (constructionFamily === "patientive-embed-continuation") {
+              return buildCharacteristicPatientiveEmbedContinuationRequest(
+                patientiveResult
+              );
+            }
+            return patientiveRequest;
           }
           const sourceStage = ({
             "passive-core": "nonactive-core",
@@ -18916,6 +24880,90 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "imperfective-active-core": "imperfective-core",
             "root-or-stock": "root-or-stock",
           })[patientiveSourceFamily] || "";
+          const sourceNonactiveOptionId = [
+            "passive-core",
+            "impersonal-core",
+          ].includes(patientiveSourceFamily)
+            ? getClassicalNominalConstructionControlValue(
+              "classical-rule-logic-nonactive-family",
+              ""
+            )
+            : "";
+          const patientiveNonactiveVoice =
+            patientiveSourceFamily === "passive-core"
+              ? "passive"
+              : [
+                "perfective-active-core",
+                "imperfective-active-core",
+              ].includes(patientiveSourceFamily)
+                ? "active"
+                : "impersonal";
+          const nonactiveVncRequest = {
+            sourceStem: baseSource.sourceStem,
+            ...(baseSource.sourceEmbedStem && baseSource.sourceMatrixStem
+              ? {
+                  sourceEmbedStem: baseSource.sourceEmbedStem,
+                  sourceMatrixStem: baseSource.sourceMatrixStem,
+                }
+              : {}),
+            verbClass: baseSource.verbClass,
+            sourceValence: valence === "mainline-reflexive"
+              ? "mainline-reflexive"
+              : canonicalVncSourceValence,
+            subject: baseSource.sourceSubject,
+            mood: "indicative",
+            tense: patientiveSourceFamily === "perfective-active-core"
+              ? "preterit"
+              : "present",
+            requestedDerivation: "direct",
+            requestedVoice: patientiveNonactiveVoice,
+            voice: patientiveNonactiveVoice,
+            ...(canonicalVncObjectKind === "none"
+              ? {}
+              : {
+                  objectKind: canonicalVncObjectKind,
+                  ...(canonicalVncObjectKind === "specific-projective"
+                    ? { objectPerson }
+                    : {}),
+                }),
+            ...(sourceNonactiveOptionId
+              ? { nonactiveOptionId: sourceNonactiveOptionId }
+              : {}),
+          };
+          const nonactiveVncPreview = [
+            "passive-core",
+            "impersonal-core",
+            "perfective-active-core",
+            "imperfective-active-core",
+          ].includes(patientiveSourceFamily)
+            && baseSource.sourceStem
+            && typeof targetObject
+              .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication(
+              nonactiveVncRequest
+            )
+            : null;
+          const automaticNonactiveOptionId = [
+            "passive-core",
+            "impersonal-core",
+          ].includes(patientiveSourceFamily)
+            ? nonactiveVncPreview
+            ?.controlFrame?.nonactiveOptionInventory?.automaticOptionId
+            || ""
+            : "";
+          const nonactiveVncApplication = automaticNonactiveOptionId
+            && !sourceNonactiveOptionId
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+              ...nonactiveVncRequest,
+              nonactiveOptionId: automaticNonactiveOptionId,
+            })
+            : nonactiveVncPreview;
+          const canonicalVncResult =
+            nonactiveVncApplication?.authorizationStatus === "authorized"
+            && nonactiveVncApplication.resultFrame?.authorizationStatus
+              === "authorized"
+              ? nonactiveVncApplication.resultFrame
+              : null;
           const nonactiveSuffix = /lō-?hua$/u.test(baseSource.sourceStem)
             ? "lō-hua"
             : /ō-?hua$/u.test(baseSource.sourceStem)
@@ -18927,9 +24975,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   : /hua$/u.test(baseSource.sourceStem)
                     ? "hua"
                     : "";
-          return {
-            constructionKind: constructionFamily,
+          const patientiveContrastControl = targetObject.document
+            ?.getElementById(
+              "classical-deverbal-nnc-patientive-contrast"
+            );
+          const patientiveCompoundRelationControl = targetObject.document
+            ?.getElementById(
+              "classical-deverbal-nnc-patientive-compound-relation"
+            );
+          const patientiveRequest = {
+            constructionKind: "patientive",
             patientiveSourceFamily,
+            ...(canonicalVncResult ? { canonicalVncResult } : {}),
             patientiveAnalogy:
               getClassicalNominalConstructionControlValue(
                 "classical-deverbal-nnc-patientive-analogy",
@@ -18940,16 +24997,182 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 "classical-deverbal-nnc-passive-human-realization",
                 "retain"
               ),
+            ...(!patientiveContrastControl?.disabled
+              && patientiveContrastControl?.value
+              ? {
+                  patientiveContrastRealization:
+                    patientiveContrastControl.value,
+                }
+              : {}),
+            ...(!patientiveCompoundRelationControl?.disabled
+              && patientiveCompoundRelationControl?.value
+              ? {
+                  patientiveCompoundRelation:
+                    patientiveCompoundRelationControl.value,
+                }
+              : {}),
             rootStockAllomorph:
               getClassicalNominalConstructionControlValue(
                 "classical-deverbal-nnc-root-stock-allomorph",
                 ""
               ),
+            rootStockSourceAnalysis:
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-root-stock-source-analysis",
+                ""
+              ),
             source: {
               ...baseSource,
               sourceStage,
-              nonactiveSuffix,
+              ...(patientiveSourceFamily === "passive-core"
+                ? {}
+                : { nonactiveSuffix }),
             },
+            subject,
+            state,
+            possessor,
+            animacy,
+          };
+          if (constructionFamily === "patientive") {
+            return patientiveRequest;
+          }
+          const patientiveResult =
+            typeof targetObject.evaluateClassicalNahuatlDeverbalNnc
+              === "function"
+            ? targetObject.evaluateClassicalNahuatlDeverbalNnc(
+              patientiveRequest
+            )
+            : null;
+          if (constructionFamily === "patientive-embed-continuation") {
+            const compoundTargetKind =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-target",
+                "nnc"
+              );
+            const matrixValence =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-matrix-valence",
+                "intransitive"
+              );
+            const matrixObjectKind = ({
+              "projective-human": "nonspecific-human",
+              "projective-nonhuman": "nonspecific-nonhuman",
+              "mainline-reflexive": "reflexive",
+            })[matrixValence] || "specific-projective";
+            const matrixObjectGovernor =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-matrix-object-governor",
+                "directive"
+              );
+            const relation =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-relation",
+                ""
+              );
+            const complementKind =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-complement-kind",
+                "considering"
+              );
+            const patientiveMatrixStem =
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-embed-matrix-stem",
+                ""
+              );
+            return {
+              constructionKind: "patientive-embed-continuation",
+              compoundTargetKind,
+              ...(patientiveResult?.canonicalResult
+                ? {
+                    canonicalPatientiveNncGrammarFrame: patientiveResult,
+                  }
+                : {}),
+              source: {
+                matrixStem: patientiveMatrixStem,
+                ...(compoundTargetKind === "nnc"
+                  ? {
+                      matrixNounClass:
+                        getClassicalNominalConstructionControlValue(
+                          "classical-deverbal-nnc-patientive-embed-matrix-noun-class",
+                          ""
+                        ),
+                    }
+                  : {
+                      matrixVerbClass:
+                        getClassicalNominalConstructionControlValue(
+                          "classical-deverbal-nnc-patientive-embed-matrix-verb-class",
+                          "A"
+                        ),
+                      matrixValence:
+                        matrixValence,
+                      matrixSemanticFamily: relation === "object"
+                        && state === "possessive"
+                        ? "patientive-incorporated-object-matrix"
+                        : complementKind === "desiring"
+                        && state === "possessive"
+                        && patientiveMatrixStem === "tlani"
+                        ? "short-a-type-three-causative-tlani"
+                        : complementKind === "desiring"
+                          ? "short-a-desiderative-tlani"
+                        : complementKind === "pretending"
+                          && state === "possessive"
+                          && patientiveMatrixStem === "toca"
+                          ? "baseless-claim-matrix"
+                        : "typed-matrix",
+                      ...(matrixValence !== "intransitive"
+                        ? {
+                            sourceObjectRequests: [{
+                              objectId: "source-object-1",
+                              objectKind: matrixObjectKind,
+                              objectPerson: matrixObjectKind === "reflexive"
+                                ? subject
+                                : matrixObjectKind === "specific-projective"
+                                  ? "3sg"
+                                  : "",
+                              governor: matrixObjectGovernor,
+                              derivationalLevel: 1,
+                            }],
+                          }
+                        : {}),
+                    }),
+              },
+              relation,
+              ...(relation === "complement"
+                ? {
+                    orientation: "object",
+                    complementKind,
+                  }
+                : {}),
+              subject,
+              state,
+              possessor,
+              animacy,
+            };
+          }
+          return {
+            constructionKind: "patientive-matrix-continuation",
+            ...(patientiveResult?.canonicalResult
+              ? {
+                  canonicalPatientiveNncGrammarFrame: patientiveResult,
+                }
+              : {}),
+            source: {
+              embedStem:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-patientive-matrix-embed-stem",
+                  ""
+                ),
+              embedSourceClass:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-patientive-matrix-embed-class",
+                  ""
+                ),
+            },
+            embedRole:
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-patientive-matrix-relation",
+                ""
+              ),
             subject,
             state,
             possessor,
@@ -18979,23 +25202,76 @@ export function createUiRenderingApi(targetObject = globalThis) {
             state,
             possessor,
             animacy,
+            numberConnector:
+              getClassicalNominalConstructionControlValue(
+                "classical-deverbal-nnc-number-connector",
+                "silent"
+              ),
           };
         }
         if (constructionFamily === "nominal-continuation") {
-          const continuationMatrixStem = matrixStem || wholeStem;
-          const matrixSource =
-            typeof targetObject.issueCanonicalNncSourceFrame === "function"
-              ? targetObject.issueCanonicalNncSourceFrame({
-                stem: continuationMatrixStem,
-              })
-              : null;
+          const actionSuffix = getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-action-suffix",
+            "liz"
+          );
+          const future = baseSource.sourceStem
+            && typeof targetObject
+              .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+              sourceStem: baseSource.sourceStem,
+              verbClass: baseSource.verbClass,
+              sourceValence: canonicalVncSourceValence,
+              subject: baseSource.sourceSubject,
+              mood: "indicative",
+              tense: "future",
+              requestedDerivation: "direct",
+              requestedVoice: "active",
+              voice: "active",
+              ...(canonicalVncObjectKind === "none"
+                ? {}
+                : {
+                    objectKind: canonicalVncObjectKind,
+                    ...(canonicalVncObjectKind === "specific-projective"
+                      ? { objectPerson: subject }
+                      : {}),
+                  }),
+            })
+            : null;
+          const action = future?.resultFrame
+            && typeof targetObject.evaluateClassicalNahuatlDeverbalNnc
+              === "function"
+            ? targetObject.evaluateClassicalNahuatlDeverbalNnc({
+              constructionKind: "deverbal-action",
+              actionKind: "active-action",
+              actionSuffix,
+              canonicalVncResult: future.resultFrame,
+              actionStemVariant:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-action-stem-variant",
+                  ""
+                ),
+              subject: "3common",
+              state: "absolutive",
+              animacy: "nonanimate",
+            })
+            : null;
+          const continuationMatrixStem =
+            getClassicalNominalConstructionControlValue(
+              "classical-deverbal-nnc-continuation-matrix-stem",
+              ""
+            );
           return {
             constructionKind: constructionFamily,
+            ...(action?.canonicalResult
+              ? { canonicalNncResult: action.canonicalResult }
+              : {}),
             source: {
-              sourceStage: "derived-nounstem",
-              sourceStem: embedStem || wholeStem,
               matrixStem: continuationMatrixStem,
-              matrixClass: matrixSource?.nounClass || "",
+              matrixClass:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-continuation-matrix-noun-class",
+                  ""
+                ),
             },
             subject,
             state,
@@ -19004,15 +25280,61 @@ export function createUiRenderingApi(targetObject = globalThis) {
           };
         }
         if (constructionFamily === "verbal-continuation") {
+          const actionSuffix = getClassicalNominalConstructionControlValue(
+            "classical-deverbal-nnc-action-suffix",
+            "liz"
+          );
+          const future = baseSource.sourceStem
+            && typeof targetObject
+              .evaluateClassicalNahuatlVncApplication === "function"
+            ? targetObject.evaluateClassicalNahuatlVncApplication({
+              sourceStem: baseSource.sourceStem,
+              verbClass: baseSource.verbClass,
+              sourceValence: canonicalVncSourceValence,
+              subject: baseSource.sourceSubject,
+              mood: "indicative",
+              tense: "future",
+              requestedDerivation: "direct",
+              requestedVoice: "active",
+              voice: "active",
+              ...(canonicalVncObjectKind === "none"
+                ? {}
+                : {
+                    objectKind: canonicalVncObjectKind,
+                    ...(canonicalVncObjectKind === "specific-projective"
+                      ? { objectPerson: subject }
+                      : {}),
+                  }),
+            })
+            : null;
+          const action = future?.resultFrame
+            && typeof targetObject.evaluateClassicalNahuatlDeverbalNnc
+              === "function"
+            ? targetObject.evaluateClassicalNahuatlDeverbalNnc({
+              constructionKind: "deverbal-action",
+              actionKind: "active-action",
+              actionSuffix,
+              canonicalVncResult: future.resultFrame,
+              actionStemVariant:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-action-stem-variant",
+                  ""
+                ),
+              subject: "3common",
+              state: "absolutive",
+              animacy: "nonanimate",
+            })
+            : null;
           const relation = getClassicalNominalConstructionControlValue(
             "classical-deverbal-nnc-continuation-relation",
             "adverb"
           );
           return {
             constructionKind: constructionFamily,
+            ...(action?.canonicalResult
+              ? { canonicalNncResult: action.canonicalResult }
+              : {}),
             source: {
-              sourceStage: "derived-nounstem",
-              sourceStem: embedStem || wholeStem,
               embedClass: "tli",
               sourceState: state,
               possessor,
@@ -19027,9 +25349,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   "classical-deverbal-nnc-matrix-family",
                   ""
                 ),
-              matrixStem,
-              matrixVerbClass: verbClass,
-              matrixValence: sourceValence,
+              matrixStem:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-continuation-matrix-stem",
+                  ""
+                ),
+              matrixVerbClass:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-continuation-matrix-verb-class",
+                  "A"
+                ),
+              matrixValence:
+                getClassicalNominalConstructionControlValue(
+                  "classical-deverbal-nnc-continuation-matrix-valence",
+                  "intransitive"
+                ),
             },
             relation,
             adverbRole: "manner",
@@ -19094,11 +25428,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (constructionKind === "adverbial-nuclear") {
         const adverbialPotentialFrame =
           syncClassicalAdverbialNuclearControls();
-        const scope = getClassicalNominalConstructionControlValue(
-          "classical-adverbial-scope",
-          adverbialPotentialFrame?.allowedScopes?.[0] || ""
-        ) || adverbialPotentialFrame?.allowedScopes?.[0] || "";
-        const context = {
+        const adverbialPotentialAuthorized =
+          adverbialPotentialFrame?.authorizationStatus === "authorized";
+        const scope = adverbialPotentialAuthorized
+          ? getClassicalNominalConstructionControlValue(
+            "classical-adverbial-scope",
+            adverbialPotentialFrame?.allowedScopes?.[0] || ""
+          ) || adverbialPotentialFrame?.allowedScopes?.[0] || ""
+          : "";
+        const context = adverbialPotentialAuthorized ? {
           precedingParticle: getClassicalNominalConstructionControlValue(
             "classical-adverbial-preceding-particle",
             adverbialPotentialFrame?.contextChoices?.precedingParticles?.[0]
@@ -19128,13 +25466,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-adverbial-negation-scope",
             ""
           ),
-        };
+        } : {};
         return {
           adverbialPotentialFrame,
-          degree: getClassicalNominalConstructionControlValue(
-            "classical-adverbial-degree",
-            adverbialPotentialFrame?.allowedDegrees?.[0] || ""
-          ) || adverbialPotentialFrame?.allowedDegrees?.[0] || "",
+          degree: adverbialPotentialAuthorized
+            ? getClassicalNominalConstructionControlValue(
+              "classical-adverbial-degree",
+              adverbialPotentialFrame?.allowedDegrees?.[0] || ""
+            ) || adverbialPotentialFrame?.allowedDegrees?.[0] || ""
+            : "",
           scope,
           context: Object.fromEntries(
             Object.entries(context).filter(([, value]) => Boolean(value))
@@ -19177,6 +25517,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
         const sourceRequest = selectedPathChoice?.sourceRequest || null;
         const sourceKind = sourceRequest?.sourceKind || "";
         const sourceState = sourceRequest?.sourceState || "";
+        const controlRequirements =
+          selectedPathChoice?.controlRequirements || {};
+        const objectPeople = Array.from(
+          {
+            length: Number(
+              controlRequirements.resultObjectPeople || 0
+            ),
+          },
+          (_, index) => getClassicalNominalConstructionControlValue(
+            `classical-denominal-vnc-result-object-${index + 1}`,
+            "3sg"
+          )
+        );
         const exclamatory = getClassicalNominalConstructionControlValue(
           "classical-denominal-vnc-exclamatory",
           false
@@ -19191,13 +25544,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
           operationPath: selectedPathChoice?.operationPath || [],
           classChoice: selectedPathChoice?.finalClassChoice || "",
           classChoices: selectedPathChoice?.classChoices || {},
-          possessor,
-          includedPossessorFamily: getClassicalNominalConstructionControlValue(
-            "classical-denominal-vnc-included-family",
-            ""
-          ),
-          sourceSubject: subject,
-          objectPeople: [objectPerson],
+          possessor: controlRequirements.sourcePossessor === true
+            ? getClassicalNominalConstructionControlValue(
+              "classical-denominal-vnc-source-possessor",
+              "3sg"
+            )
+            : "",
+          includedPossessorFamily:
+            controlRequirements.includedPossessorFamily === true
+              ? getClassicalNominalConstructionControlValue(
+                "classical-denominal-vnc-included-family",
+                "proxy"
+              )
+              : "",
+          sourceSubject: controlRequirements.sourceSubject === true
+            ? getClassicalNominalConstructionControlValue(
+              "classical-denominal-vnc-source-subject",
+              "3sg"
+            )
+            : "",
+          objectPeople,
           subject,
           mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
           tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
@@ -19211,9 +25577,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (constructionKind === "place-gentilic-nnc") {
         const lexicalId = getClassicalNominalConstructionControlValue("classical-place-gentilic-lexical-record", "");
         const titleIds = ["tlacochcalcatl", "tlacateccatl", "tocuiltecatl", "atempanecatl", "tezcacoacatl"];
+        const formation = getClassicalNominalConstructionControlValue(
+          "classical-place-gentilic-formation",
+          "n-imperfect-active"
+        );
         return {
           constructionKind: getClassicalNominalConstructionControlValue("classical-place-gentilic-result-kind", "place-name"),
-          formation: getClassicalNominalConstructionControlValue("classical-place-gentilic-formation", "n-imperfect-active"),
+          formation,
           usage: getClassicalNominalConstructionControlValue("classical-place-gentilic-result-kind", "place-name") === "place-name"
             ? "adverbial"
             : "ordinary",
@@ -19232,7 +25602,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             gentilicStem: wholeStem || embedStem,
             matrixStem,
             headStem: matrixStem,
-            sourceVoice: getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-voice", "active"),
+            sourceVoice: formation === "n-imperfect-nonactive"
+              ? "nonactive"
+              : formation === "n-imperfect-active"
+                ? "active"
+                : "",
             placeMatrix: getClassicalNominalConstructionControlValue("classical-gentilic-source-place-matrix", ""),
             analysisKind: getClassicalNominalConstructionControlValue("classical-place-affective-analysis", ""),
             affectiveMatrix: getClassicalNominalConstructionControlValue("classical-place-affective-matrix", "tzin"),
@@ -19242,26 +25616,44 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       if (constructionKind === "nominal-embed-vnc") {
         const relation = getClassicalNominalConstructionControlValue("classical-nominal-embed-role", "object");
-        const embedConstituentKind =
-          getClassicalNominalConstructionControlValue(
-            "classical-nominal-embed-source-constituent",
-            "ordinary-nnc"
-          );
+        const adverbRole = getClassicalNominalConstructionControlValue(
+          "classical-nominal-embed-adverbial-role",
+          "means"
+        );
+        const matrixObjectCount = ({
+          intransitive: 0,
+          "specific-projective": 1,
+          "projective-human": 1,
+          "projective-nonhuman": 1,
+          "single-object": 1,
+          "double-object": 2,
+          "triple-object": 3,
+        })[valence] || 0;
+        const possessorReferenceCandidates = relation === "adverb"
+          && ["means", "instrument", "place"].includes(adverbRole)
+          && state === "possessive"
+          ? [
+            "matrix-subject",
+            ...Array.from(
+              { length: matrixObjectCount },
+              (_, index) => `source-object-${index + 1}`
+            ),
+          ]
+          : [];
         return {
           constructionKind,
           relation,
           route: relation === "adverb"
             ? getClassicalNominalConstructionControlValue("classical-nominal-embed-adverbial-route", "direct-adverb")
             : relation,
-          adverbRole: getClassicalNominalConstructionControlValue("classical-nominal-embed-adverbial-role", "means"),
+          adverbRole,
           complementKind: relation === "complement"
+            && getClassicalNominalConstructionControlValue(
+              "classical-nominal-embed-reference-orientation",
+              "subject"
+            ) === "object"
             ? getClassicalNominalConstructionControlValue("classical-nominal-embed-complement-relation", "considering")
             : "",
-          sourceAnalysis:
-            getClassicalNominalConstructionControlValue(
-              "classical-nominal-embed-source-analysis",
-              "direct"
-            ),
           embedReduplication:
             getClassicalNominalConstructionControlValue(
               "classical-nominal-embed-reduplication",
@@ -19273,11 +25665,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
               "none"
             ),
           orientation: relation === "complement"
-            || (relation === "adverb" && ["manner", "compared-manner"].includes(
-              getClassicalNominalConstructionControlValue("classical-nominal-embed-adverbial-role", "means")
-            ))
+            || (relation === "adverb"
+              && adverbRole === "compared-manner"
+              && matrixObjectCount > 0)
             ? getClassicalNominalConstructionControlValue("classical-nominal-embed-reference-orientation", "subject")
-            : "not-applicable",
+            : relation === "adverb" && adverbRole === "compared-manner"
+              ? ""
+              : "not-applicable",
+          possessorReferenceId: possessorReferenceCandidates.length > 1
+            ? getClassicalNominalConstructionControlValue(
+              "classical-nominal-embed-possessor-reference",
+              "matrix-subject"
+            )
+            : "",
           subject,
           mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
           tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
@@ -19289,20 +25689,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
             matrixValence: valence,
             matrixVerbClass: getClassicalNominalConstructionControlValue("classical-rule-logic-class", "B"),
             objectPerson,
+            subjectReferenceId: "matrix-subject",
+            objectReferenceIds: Array.from(
+              { length: matrixObjectCount },
+              (_, index) => `source-object-${index + 1}`
+            ),
+            possessorReferenceCandidates,
             embedState: state,
             possessionKind:
               getClassicalNominalConstructionControlValue(
                 "classical-nominal-embed-possession-kind",
                 "intimate"
               ),
-            ...(embedConstituentKind === "preterit-agentive-nnc"
-              ? {
-                embedConstituent: {
-                  kind: "preterit-agentive-nnc",
-                  stem: embedStem,
-                },
-              }
-              : {}),
           },
         };
       }
@@ -19312,14 +25710,133 @@ export function createUiRenderingApi(targetObject = globalThis) {
             "classical-compound-nnc-bracketing",
             "unambiguous"
           );
+        const structure = getClassicalNominalConstructionControlValue(
+          "classical-compound-nnc-structure",
+          "integrated"
+        );
+        const possessorOrientation = structure.startsWith("linked")
+          ? "embed"
+          : state === "possessive"
+            ? getClassicalNominalConstructionControlValue(
+              "classical-compound-nnc-possessor-orientation",
+              "matrix"
+            )
+            : "matrix";
+        const embedSourceClass =
+          getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-embed-source-class",
+            ""
+          );
+        const embedAnalysis =
+          getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-embed-analysis",
+            "ordinary"
+          );
+        const variantStem = String(
+          getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-variant-stem",
+            ""
+          )
+        ).trim();
+        const uniquePosition =
+          getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-unique-position",
+            "none"
+          );
+        const uniqueMeaning =
+          getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-unique-meaning",
+            "uncertain"
+          );
+        const sourceBoundaries = stem => String(stem || "")
+          .split("-")
+          .map(part => part.trim())
+          .filter(Boolean);
+        const compoundEmbedAnalysis = embedAnalysis !== "ordinary"
+          ? {
+            lexicalStatus: "compound-embed-exception",
+            sourceStem: embedStem,
+            exceptionKind: embedAnalysis,
+            ...(embedAnalysis === "unexpected-variant"
+              ? { variantStem }
+              : {}),
+            meaningCertainty: "known",
+            sourceBoundaries: sourceBoundaries(embedStem),
+          }
+          : null;
+        const uniqueStem = uniquePosition === "embed"
+          ? embedStem
+          : uniquePosition === "matrix"
+            ? matrixStem
+            : "";
+        const uniqueCompoundNounstemAnalysis = uniqueStem
+          ? {
+            lexicalStatus: "unique-compound-only-nounstem",
+            position: uniquePosition,
+            sourceStem: uniqueStem,
+            meaningCertainty: uniqueMeaning,
+            sourceBoundaries: sourceBoundaries(uniqueStem),
+            relatedFormations: [],
+          }
+          : null;
+        const yoEmbedHistory = ["yō", "yo"].includes(
+          matrixStem.toLowerCase()
+        )
+          ? getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-yo-embed-history",
+            "absolutive"
+          )
+          : "";
+        const yoEmbedAnalysis = yoEmbedHistory
+          ? {
+            lexicalStatus: "yo-matrix-embed-history",
+            sourceStem: embedStem,
+            embedState: yoEmbedHistory,
+            possessorKind: yoEmbedHistory === "possessive"
+              ? "nonspecific-nonhuman"
+              : "none",
+            meaningRelation: "related-but-distinct",
+          }
+          : null;
+        const embedRole = getClassicalNominalConstructionControlValue(
+          "classical-compound-nnc-embed-role",
+          "association"
+        );
+        const sexEmbedAnalysis = embedRole === "sex"
+          ? {
+            lexicalStatus: "sex-distinction-embed",
+            sourceStem: embedStem,
+            sexValue: getClassicalNominalConstructionControlValue(
+              "classical-compound-nnc-sex-value",
+              "male"
+            ),
+            referentClass: "animate",
+            neutralWithoutSex: true,
+          }
+          : null;
+        const distributiveReading = reduplication
+          === "distributive-varietal"
+          ? getClassicalNominalConstructionControlValue(
+            "classical-compound-nnc-distributive-reading",
+            "ambiguous"
+          )
+          : "";
+        const distributiveVarietalAnalysis = distributiveReading
+          ? {
+            lexicalStatus: "compound-distributive-varietal-reading",
+            semanticReading: distributiveReading,
+            contextDecides: distributiveReading !== "ambiguous",
+          }
+          : null;
         return {
           constructionKind,
-          structure: getClassicalNominalConstructionControlValue("classical-compound-nnc-structure", "integrated"),
-          embedRole: getClassicalNominalConstructionControlValue("classical-compound-nnc-embed-role", "association"),
-          possessorOrientation: getClassicalNominalConstructionControlValue("classical-compound-nnc-possessor-orientation", "matrix"),
+          structure,
+          embedRole,
+          possessorOrientation,
           reduplication,
-          reduplicationTarget:
-            getClassicalNominalConstructionControlValue(
+          reduplicationTarget: reduplication === "distributive-varietal"
+            ? "embed"
+            : getClassicalNominalConstructionControlValue(
               "classical-compound-nnc-reduplication-target",
               "embed"
             ),
@@ -19331,21 +25848,150 @@ export function createUiRenderingApi(targetObject = globalThis) {
           pluralConnector,
           source: {
             embedStem,
+            embedClass: embedSourceClass,
+            embedSourceClass,
             matrixStem,
             matrixClass: nounClass,
-            structure: getClassicalNominalConstructionControlValue("classical-compound-nnc-structure", "integrated"),
-            embedRole: getClassicalNominalConstructionControlValue("classical-compound-nnc-embed-role", "association"),
+            matrixSourceClass: requestedSourceClass,
+            structure,
+            embedRole,
             bracketing,
+            ...(compoundEmbedAnalysis ? { compoundEmbedAnalysis } : {}),
+            ...(uniqueCompoundNounstemAnalysis
+              ? { uniqueCompoundNounstemAnalysis }
+              : {}),
+            ...(yoEmbedAnalysis ? { yoEmbedAnalysis } : {}),
+            ...(sexEmbedAnalysis ? { sexEmbedAnalysis } : {}),
+            ...(distributiveVarietalAnalysis
+              ? { distributiveVarietalAnalysis }
+              : {}),
           },
         };
       }
       if (constructionKind === "affective-nnc") {
+        const affectiveMatrix = getClassicalNominalConstructionControlValue(
+          "classical-affective-matrix",
+          "tzin"
+        );
+        const affectiveEmbedStem = embedStem || matrixStem || wholeStem;
+        const affectiveLexicalStatus =
+          getClassicalNominalConstructionControlValue(
+            "classical-affective-lexical-status",
+            "ordinary"
+          );
+        const affectiveLexicalAnalysis = affectiveLexicalStatus === "ordinary"
+          ? null
+          : {
+            lexicalStatus: "affective-compound-lexical-analysis",
+            embedStem: affectiveEmbedStem,
+            matrixStem: affectiveMatrix,
+            lexicalizedSpecialMeaning:
+              affectiveLexicalStatus === "lexicalized-tli",
+            classException:
+              affectiveLexicalStatus === "exceptional-zero",
+            resultClass: affectiveLexicalStatus === "lexicalized-tli"
+              ? "tli"
+              : affectiveLexicalStatus === "exceptional-zero"
+                ? "zero"
+                : "",
+            embedVariantStem:
+              affectiveLexicalStatus === "irregular-embed-variant"
+                ? String(getClassicalNominalConstructionControlValue(
+                  "classical-affective-irregular-embed-stem",
+                  ""
+                )).trim()
+                : "",
+            variantKind:
+              affectiveLexicalStatus === "irregular-embed-variant"
+                ? "irregular-compound-embed"
+                : "",
+          };
+        const affectiveEmbedAffinityRequirement =
+          getClassicalNominalConstructionControlValue(
+            "classical-affective-embed-affinity-requirement",
+            "none"
+          );
+        const affectiveAffinityAnalysis =
+          affectiveEmbedAffinityRequirement === "none"
+            ? null
+            : {
+              lexicalStatus: "affective-affinity-scope-analysis",
+              embedStem: affectiveEmbedStem,
+              matrixStem: affectiveMatrix,
+              embedAffinityRequirement: affectiveEmbedAffinityRequirement,
+              embedAffinityTarget:
+                getClassicalNominalConstructionControlValue(
+                  "classical-affective-embed-affinity-target",
+                  "initial"
+                ),
+            };
+        const flawedSourceStatus =
+          getClassicalNominalConstructionControlValue(
+            "classical-affective-flawed-source-status",
+            "ordinary"
+          );
+        const flawedSourceSpec = ({
+          "optional-defect": {
+            availability: "optional",
+            semanticDomain: "abnormal-or-defective-entity",
+            defectEntityAmbiguous: false,
+          },
+          "optional-defect-entity": {
+            availability: "optional",
+            semanticDomain: "abnormal-or-defective-entity",
+            defectEntityAmbiguous: true,
+          },
+          "obligatory-defect": {
+            availability: "obligatory",
+            semanticDomain: "abnormal-or-defective-entity",
+            defectEntityAmbiguous: false,
+          },
+          "optional-repugnant": {
+            availability: "optional",
+            semanticDomain: "repugnant-or-disagreeable-entity",
+            defectEntityAmbiguous: false,
+          },
+          "lexicalized-flawed": {
+            availability: "obligatory",
+            semanticDomain: "lexicalized-flawed-subject",
+            defectEntityAmbiguous: false,
+          },
+        })[flawedSourceStatus] || null;
+        const flawedSubjectAnalysis = flawedSourceSpec
+          ? {
+            lexicalStatus: "flawed-subject-lexical-analysis",
+            sourceStem: affectiveEmbedStem,
+            availability: flawedSourceSpec.availability,
+            semanticDomain: flawedSourceSpec.semanticDomain,
+            defectEntityAmbiguous:
+              flawedSourceSpec.defectEntityAmbiguous,
+            neutralStemClass: nounClass,
+            flawedStemClassStrategy:
+              getClassicalNominalConstructionControlValue(
+                "classical-affective-flawed-class-strategy",
+                "irregular-silent-num1"
+              ),
+            lexicalReading: flawedSourceStatus === "lexicalized-flawed"
+              ? getClassicalNominalConstructionControlValue(
+                "classical-affective-flawed-lexical-reading",
+                "chicken"
+              )
+              : "",
+            usuallyRooster: flawedSourceStatus === "lexicalized-flawed",
+          }
+          : null;
+        const nonanimateReduplicationShape = animacy === "nonanimate"
+          && nominalSubjectNumber === "common"
+          ? getClassicalNominalConstructionControlValue(
+            "classical-affective-nonanimate-reduplication-shape",
+            "none"
+          )
+          : "none";
         return {
           constructionKind,
-          affectiveOutputKind: getClassicalNominalConstructionControlValue("classical-affective-target-kind", "nnc"),
-          denominalKind: getClassicalNominalConstructionControlValue("classical-affective-denominal-operation", "inchoative"),
+          affectiveOutputKind: "nnc",
           affectRoute: getClassicalNominalConstructionControlValue("classical-affective-route", "compound"),
-          affectiveMatrix: getClassicalNominalConstructionControlValue("classical-affective-matrix", "tzin"),
+          affectiveMatrix,
           semanticReading: getClassicalNominalConstructionControlValue("classical-affective-semantic-reading", "ordinary-affective"),
           vocativeForm:
             getClassicalNominalConstructionControlValue(
@@ -19357,6 +26003,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
               "classical-affective-pil-child-route",
               "simple"
             ),
+          pilGenderSpecification:
+            getClassicalNominalConstructionControlValue(
+              "classical-affective-pil-gender",
+              "unspecified"
+            ),
           possessiveAffinityPlural:
             getClassicalNominalConstructionControlValue(
               "classical-affective-possessive-affinity-plural",
@@ -19367,35 +26018,70 @@ export function createUiRenderingApi(targetObject = globalThis) {
               "classical-affective-defect-analysis",
               "defect"
             ),
-          reduplication,
+          nonanimateReduplicationReading:
+            getClassicalNominalConstructionControlValue(
+              "classical-affective-nonanimate-reduplication-reading",
+              "ambiguous"
+            ),
+          affinityEmbedSelected:
+            affectiveEmbedAffinityRequirement === "optional"
+            && getClassicalNominalConstructionControlValue(
+              "classical-affective-embed-affinity-selected",
+              "matrix"
+            ) === "both",
+          reduplication: nonanimateReduplicationShape,
           subject,
-          mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
-          tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
-          voice: getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-voice", "active"),
           state,
           possessor,
           animacy,
           source: {
-            embedStem: embedStem || matrixStem || wholeStem,
+            embedStem: affectiveEmbedStem,
             embedClass: nounClass,
-            affectiveMatrix: getClassicalNominalConstructionControlValue("classical-affective-matrix", "tzin"),
+            affectiveMatrix,
             animacy,
+            ...(affectiveLexicalAnalysis ? { affectiveLexicalAnalysis } : {}),
+            ...(affectiveAffinityAnalysis ? { affectiveAffinityAnalysis } : {}),
+            ...(flawedSubjectAnalysis ? { flawedSubjectAnalysis } : {}),
           },
         };
       }
       if (constructionKind === "attitude-vnc") {
+        const compoundSourceSelected = Boolean(embedStem && matrixStem);
+        const attitudeSourceStem = compoundSourceSelected
+          ? embedStem
+          : matrixStem || embedStem || wholeStem;
+        const attitudeSourceAnalysis = getClassicalAttitudeFormationAnalysis(
+          attitudeSourceStem,
+          getClassicalNominalConstructionControlValue(
+            "classical-attitude-source-analysis",
+            ""
+          ),
+        );
         return {
           constructionKind,
           attitude: getClassicalNominalConstructionControlValue("classical-attitude-operation", "honorific"),
           attitudeFormation: getClassicalNominalConstructionControlValue("classical-attitude-formation", "applicative"),
           honoredParticipant: getClassicalNominalConstructionControlValue("classical-attitude-participant", "subject"),
+          honorificFormationAnalysis: attitudeSourceAnalysis,
+          honorificStemAlternative:
+            getClassicalNominalConstructionControlValue(
+              "classical-attitude-stem-alternative",
+              "default"
+            ),
+          honorificDerivationOptionId:
+            getClassicalNominalConstructionControlValue(
+              "classical-attitude-derivation-option",
+              ""
+            ),
           subject,
           mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
           tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
           voice: getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-voice", "active"),
           outputKind: vncOutputScope,
           source: {
-            sourceStem: matrixStem || embedStem || wholeStem,
+            sourceStem: attitudeSourceStem,
+            sourceEmbedStem: compoundSourceSelected ? embedStem : "",
+            sourceMatrixStem: compoundSourceSelected ? matrixStem : "",
             sourceValence: valence,
             verbClass: getClassicalNominalConstructionControlValue("classical-rule-logic-class", "A"),
             objectKind,
@@ -19404,37 +26090,85 @@ export function createUiRenderingApi(targetObject = globalThis) {
         };
       }
       const classifier = getClassicalNominalConstructionControlValue("classical-cardinal-classifier", "basic");
-      const numeralOutputKind = getClassicalNominalConstructionControlValue("classical-cardinal-target-kind", "nnc");
+      const numeralOutputKind = cardinalTargetKind;
+      const countKind = getClassicalNominalConstructionControlValue(
+        "classical-cardinal-count-kind",
+        "ordinary"
+      );
       return {
         constructionKind,
         numeralOutputKind,
-        value: numeralOutputKind === "vnc-adverb"
-          ? 1
-          : Number(getClassicalNominalConstructionControlValue("classical-cardinal-value", "1")),
-        countKind: getClassicalNominalConstructionControlValue("classical-cardinal-count-kind", "ordinary"),
+        value: Number(getClassicalNominalConstructionControlValue("classical-cardinal-value", "1")),
+        countKind,
         classifier,
         reduplication,
         modifier: getClassicalNominalConstructionControlValue(
           "classical-cardinal-modifier",
           "none"
         ),
-        subject,
+        subject: countKind === "gross" ? "3pl" : subject,
         state,
         possessor,
         animacy,
-        mood: getClassicalNominalConstructionControlValue("classical-rule-logic-mood", "indicative"),
-        tense: getClassicalNominalConstructionControlValue("classical-rule-logic-tense", "present"),
-        voice: getClassicalNominalConstructionControlValue("classical-rule-logic-vnc-voice", "active"),
+        ...(numeralOutputKind === "vnc-embed"
+          ? {
+            mood: getClassicalNominalConstructionControlValue(
+              "classical-rule-logic-mood",
+              "indicative"
+            ),
+            tense: getClassicalNominalConstructionControlValue(
+              "classical-rule-logic-tense",
+              "present"
+            ),
+            voice: getClassicalNominalConstructionControlValue(
+              "classical-rule-logic-vnc-voice",
+              "active"
+            ),
+          }
+          : {}),
         source: {
-          matrixStem: numeralOutputKind === "vnc-adverb" ? matrixStem || embedStem || wholeStem : "",
+          matrixStem: numeralOutputKind === "vnc-embed" ? matrixStem || embedStem || wholeStem : "",
+          numeralVariant: getClassicalNominalConstructionControlValue(
+            "classical-cardinal-numeral-variant",
+            ""
+          ),
+          grossPossessorKind:
+            getClassicalNominalConstructionControlValue(
+              "classical-cardinal-gross-possessor-kind",
+              "animate"
+            ),
+          grossPossessiveNumberVariant:
+            getClassicalNominalConstructionControlValue(
+              "classical-cardinal-gross-number-variant",
+              "tin"
+            ),
+          conjunctionForm:
+            getClassicalNominalConstructionControlValue(
+              "classical-cardinal-conjunction-form",
+              "separate"
+            ),
+          classifierSelectionExplicit: classifier !== "basic",
           matrixVerbClass: getClassicalNominalConstructionControlValue("classical-rule-logic-class", "A"),
           matrixValence: valence,
           measureStem: classifier === "measure" ? matrixStem : "",
-          measureClass: nounClass,
+          measureClass: getClassicalNominalConstructionControlValue(
+            "classical-cardinal-measure-class",
+            ""
+          ),
+          measureMeaning: getClassicalNominalConstructionControlValue(
+            "classical-cardinal-measure-meaning",
+            "amount"
+          ),
           measuredStem: classifier === "measure" ? embedStem : "",
-          measuredClass: nounClass,
-          referentClass: classifier === "quimil" ? "blankets" : classifier === "ipil" ? "paper" : classifier === "tecpan" ? "people" : "",
-          possessorReferentPlural: true,
+          measuredClass: getClassicalNominalConstructionControlValue(
+            "classical-cardinal-measured-class",
+            ""
+          ),
+          possessorReferentPlural:
+            getClassicalNominalConstructionControlValue(
+              "classical-cardinal-gross-possessor-kind",
+              "animate"
+            ) === "nonanimate",
         },
         measureComposition: getClassicalNominalConstructionControlValue("classical-cardinal-measure-composition", "measure-only"),
       };
@@ -19447,10 +26181,58 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     function buildClassicalAttitudeVncOperationRequest(request = {}) {
       const source = request?.source || {};
+      const lateOperation = String(
+        Object.prototype.hasOwnProperty.call(request, "attitude")
+          ? request.attitude
+          : "honorific"
+      ).trim();
+      const inheritedReverentialParticipant = String(
+        ActiveClassicalVncResultSourceContinuation?.operationFrame
+          ?.operationFacts?.honoredParticipant || ""
+      ).trim();
+      const derivedSourceApplicationFrame =
+        lateOperation === "honorific"
+        && ActiveClassicalVncResultSourceApplicationFrame?.resultFrame
+          === ActiveClassicalVncResultSourceContinuation
+          ? ActiveClassicalVncResultSourceApplicationFrame
+          : null;
+      const sourceEmbedStem = String(source.sourceEmbedStem || "").trim();
+      const sourceMatrixStem = String(source.sourceMatrixStem || "").trim();
+      const compoundSourceSelected = Boolean(
+        sourceEmbedStem && sourceMatrixStem
+      );
+      const compoundSourceFrame = compoundSourceSelected
+        && typeof targetObject.requestClassicalLateVncOperation === "function"
+        ? targetObject.requestClassicalLateVncOperation({
+          sourceStem: sourceEmbedStem,
+          sourceValence: String(
+            source.sourceValence || "intransitive"
+          ).trim(),
+          verbClass: String(source.verbClass || "A").trim(),
+          subject: String(request.subject || "3sg").trim(),
+          mood: String(request.mood || "indicative").trim(),
+          tense: String(request.tense || "present").trim(),
+          derivationType: "direct",
+          voice: String(request.voice || "active").trim(),
+          objectKind: String(source.objectKind || "").trim(),
+          objectPerson: String(source.objectPerson || "").trim(),
+          lateOperation: "compound",
+          lateVariant: "connective-t",
+          compoundMatrixStem: sourceMatrixStem,
+        })
+        : null;
       return {
-        sourceStem: String(source.sourceStem || "").trim(),
+        sourceStem: String(
+          compoundSourceFrame?.operationFrame?.targetStem
+          || source.sourceStem
+          || ""
+        ).trim(),
         sourceValence: String(source.sourceValence || "intransitive").trim(),
-        verbClass: String(source.verbClass || "A").trim(),
+        verbClass: String(
+          compoundSourceFrame?.operationFrame?.targetClass
+          || source.verbClass
+          || "A"
+        ).trim(),
         subject: String(request.subject || "3sg").trim(),
         mood: String(request.mood || "indicative").trim(),
         tense: String(request.tense || "present").trim(),
@@ -19458,9 +26240,59 @@ export function createUiRenderingApi(targetObject = globalThis) {
         voice: String(request.voice || "active").trim(),
         objectKind: String(source.objectKind || "").trim(),
         objectPerson: String(source.objectPerson || "").trim(),
-        lateOperation: String(request.attitude || "honorific").trim(),
-        lateVariant: String(request.attitudeFormation || "causative").trim(),
-        honoredParticipant: String(request.honoredParticipant || "subject").trim(),
+        lateOperation,
+        lateVariant: String(request.attitudeFormation || "").trim(),
+        honoredParticipant: lateOperation === "reverential"
+          ? inheritedReverentialParticipant
+            || String(request.honoredParticipant || "subject").trim()
+          : String(request.honoredParticipant || "subject").trim(),
+        honorificFormationAnalysis:
+          request.honorificFormationAnalysis || undefined,
+        honorificStemAlternative: String(
+          request.honorificStemAlternative || "default"
+        ).trim(),
+        honorificDerivationOptionId: String(
+          request.honorificDerivationOptionId || ""
+        ).trim(),
+        ...(compoundSourceFrame?.authorizationStatus === "authorized"
+          ? {
+            attitudeCompoundClosureFrame: compoundSourceFrame,
+            sourceEmbedStem,
+            sourceMatrixStem,
+          }
+          : {}),
+        ...(derivedSourceApplicationFrame
+          ? {
+            sourceApplicationFrame: derivedSourceApplicationFrame,
+            sourceDerivationKind: String(
+              derivedSourceApplicationFrame.resultFrame
+                ?.selectedDerivation
+              || derivedSourceApplicationFrame.normalizedRequest
+                ?.derivationType
+              || ""
+            ).trim(),
+            sourceSubject: String(
+              ActiveClassicalVncResultSourceProjection
+                ?.sourceSubject
+              || request.subject
+              || "3sg"
+            ).trim(),
+            sourceObjectRequests: Array.isArray(
+              ActiveClassicalVncResultSourceProjection
+                ?.sourceObjectRequests
+            )
+              ? ActiveClassicalVncResultSourceProjection
+                .sourceObjectRequests
+              : []
+          }
+          : {}),
+        ...(lateOperation === "reverential"
+          && ActiveClassicalVncResultSourceContinuation
+          ? {
+            attitudeSourceClosureFrame:
+              ActiveClassicalVncResultSourceContinuation,
+          }
+          : {}),
       };
     }
     function appendClassicalNominalConstructionFact(parent, label, value) {
@@ -19545,22 +26377,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
           && request?.constructionKind === "verbal-continuation"
         )
         || (
-          selectedConstruction === "adverbial-nuclear"
-          && frame?.sourceFrame?.clauseKind === "vnc"
+          selectedConstruction === "deverbal-nnc"
+          && request?.constructionKind === "patientive-embed-continuation"
+          && request?.compoundTargetKind === "vnc"
         )
         || (
-          selectedConstruction === "affective-nnc"
-          && getClassicalNominalConstructionControlValue(
-            "classical-affective-target-kind",
-            "nnc"
-          ) === "denominal-vnc"
+          selectedConstruction === "adverbial-nuclear"
+          && frame?.sourceFrame?.clauseKind === "vnc"
         )
         || (
           selectedConstruction === "cardinal-numeral-nnc"
           && getClassicalNominalConstructionControlValue(
             "classical-cardinal-target-kind",
             "nnc"
-          ) === "vnc-adverb"
+          ) === "vnc-embed"
         );
       return vncResult ? "vnc" : "nnc";
     }
@@ -19693,6 +26523,132 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       syncClassicalNominalConstructionControlVisibility(selectedConstruction);
       const request = buildClassicalNominalConstructionUiRequest();
+      const rootStockAllomorphChoice = selectedConstruction === "deverbal-nnc"
+        ? targetObject.document.getElementById(
+          "classical-deverbal-nnc-root-stock-allomorph"
+        )
+        : null;
+      const rootStockSourceAnalysisChoice =
+        selectedConstruction === "deverbal-nnc"
+          ? targetObject.document.getElementById(
+            "classical-deverbal-nnc-root-stock-source-analysis"
+          )
+          : null;
+      const missingRootStockAllomorph = Boolean(
+        rootStockAllomorphChoice?.required === true
+        && rootStockAllomorphChoice.disabled !== true
+        && !String(rootStockAllomorphChoice.value || "")
+      );
+      const missingRootStockSourceAnalysis = Boolean(
+        rootStockSourceAnalysisChoice?.required === true
+        && rootStockSourceAnalysisChoice.disabled !== true
+        && !String(rootStockSourceAnalysisChoice.value || "")
+      );
+      if (
+        missingRootStockAllomorph || missingRootStockSourceAnalysis
+      ) {
+        syncClassicalNominalConstructionPresentation(
+          null,
+          selectedConstruction
+        );
+        clearClassicalRuleLogicSurfaceDatasets();
+        clearClassicalNominalConstructionResultDatasets(block);
+        applyClassicalUnifiedOutputPanelShell("nnc");
+        block.hidden = false;
+        block.replaceChildren();
+        block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
+        block.dataset.classicalNahuatlSurfaceVisible = "true";
+        block.dataset.classicalNahuatlSurfaceStatus = "blocked";
+        block.dataset.classicalBasalUnit = "nnc";
+        block.dataset.classicalNominalConstruction = selectedConstruction;
+        block.dataset.classicalBlockReason = missingRootStockAllomorph
+          ? "39.4-root-stock-allomorph-choice-required"
+          : "39.4.3-root-stock-source-analysis-choice-required";
+        applyClassicalResultRootSemantics(block, "blocked");
+        const guidance = targetObject.document.createElement("section");
+        guidance.className = "grammar-inspector__section";
+        guidance.dataset.classicalResultGuidance = "required-choice";
+        markClassicalResultPrimaryAnswer(guidance);
+        const title = targetObject.document.createElement("h3");
+        title.id = CLASSICAL_RESULT_HEADING_ID;
+        title.dataset.classicalResultHeading = "true";
+        title.textContent = missingRootStockAllomorph
+          ? "Choose the root or stock allomorph"
+          : "Choose the historical Source relation";
+        const detail = targetObject.document.createElement("p");
+        detail.textContent = missingRootStockAllomorph
+          ? "This typed Source shape supports more than one historical allomorph. Choose the intended one in Source analysis."
+          : "The same visible root can be a patientive derived from the verbstem or the earlier nounstem from which the destockal verbstem was formed. Choose the intended typed history.";
+        const status = targetObject.document.createElement("div");
+        configureClassicalResultStatus(status, {
+          message: "A genuine Source-analysis choice is still required.",
+          signatureParts: [
+            missingRootStockAllomorph
+              ? "deverbal-root-stock-allomorph"
+              : "deverbal-root-stock-source-analysis",
+            "selection-required",
+            request?.source?.sourceStem || "",
+          ],
+        });
+        guidance.append(title, detail, status);
+        block.appendChild(guidance);
+        return true;
+      }
+      const passiveSourceChoice = selectedConstruction === "deverbal-nnc"
+        ? targetObject.document.getElementById(
+          "classical-rule-logic-nonactive-family"
+        )
+        : null;
+      if (
+        (
+          passiveSourceChoice?.dataset
+            ?.classicalDeverbalNonactiveSelectionRequired === "true"
+          || passiveSourceChoice?.dataset
+            ?.classicalDeverbalPassiveSelectionRequired === "true"
+        )
+        && !String(passiveSourceChoice.value || "")
+      ) {
+        syncClassicalNominalConstructionPresentation(
+          null,
+          selectedConstruction
+        );
+        clearClassicalRuleLogicSurfaceDatasets();
+        clearClassicalNominalConstructionResultDatasets(block);
+        applyClassicalUnifiedOutputPanelShell("nnc");
+        block.hidden = false;
+        block.replaceChildren();
+        block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
+        block.dataset.classicalNahuatlSurfaceVisible = "true";
+        block.dataset.classicalNahuatlSurfaceStatus = "blocked";
+        block.dataset.classicalBasalUnit = "nnc";
+        block.dataset.classicalNominalConstruction = selectedConstruction;
+        block.dataset.classicalBlockReason =
+          "classical-vnc-nonactive-formation-option-selection-required";
+        applyClassicalResultRootSemantics(block, "blocked");
+        const guidance = targetObject.document.createElement("section");
+        guidance.className = "grammar-inspector__section";
+        guidance.dataset.classicalResultGuidance = "required-choice";
+        markClassicalResultPrimaryAnswer(guidance);
+        const title = targetObject.document.createElement("h3");
+        title.id = CLASSICAL_RESULT_HEADING_ID;
+        title.dataset.classicalResultHeading = "true";
+        title.textContent = "Choose the nonactive Source formation";
+        const detail = targetObject.document.createElement("p");
+        detail.textContent =
+          "This typed Source has more than one grammar-supported nonactive formation. Choose the one used by the patientive.";
+        const status = targetObject.document.createElement("div");
+        configureClassicalResultStatus(status, {
+          message: "A genuine Grammar choice is still required.",
+          signatureParts: [
+            "deverbal-nonactive-source",
+            "selection-required",
+            request?.source?.sourceStem || "",
+          ],
+        });
+        guidance.append(title, detail, status);
+        block.appendChild(guidance);
+        return true;
+      }
       const requestKey = JSON.stringify(request);
       let frame = ClassicalNominalConstructionRenderedFrameCache.get(requestKey) || null;
       if (!frame && selectedConstruction === "nominal-embed-vnc"
@@ -19929,7 +26885,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const linearFormula = targetObject.document.createElement("div");
       linearFormula.className = "classical-rule-surface__formula";
       linearFormula.dataset.classicalNahuatlSelectedOutput = "true";
-      linearFormula.textContent = frame.formulaRealization || "";
+      const nominalConstructionTypedSlotFrame =
+        frame.canonicalResult?.resultFrame?.typedSlotFrame
+        || frame.canonicalResult?.finalTypedVncSlotFrame
+        || frame.canonicalResult?.typedSlotFrame
+        || frame.resultFrame?.typedSlotFrame
+        || frame.typedSlotFrame
+        || null;
+      const specificLinearFormula = getClassicalResultFormatProjection(
+        frame.formulaRealization,
+        frame.authorizationStatus
+      );
+      renderClassicalFormulaDerivedAnnotations(
+        linearFormula,
+        specificLinearFormula,
+        nominalConstructionTypedSlotFrame,
+        frame,
+      );
       linearFormat.append(linearHeading, linearFormula);
       linearFormat.hidden = !frame.formulaRealization;
       const diagrammaticFrame = getClassicalNominalConstructionDiagrammaticFrame(
@@ -19949,18 +26921,42 @@ export function createUiRenderingApi(targetObject = globalThis) {
       diagramHeading.appendChild(diagramTitle);
       const diagramRows = targetObject.document.createElement("div");
       diagramRows.className = "classical-rule-surface__diagram-rows";
-      (diagrammaticFrame?.rows || []).forEach(diagramRow => {
-        const row = targetObject.document.createElement("div");
-        row.className = "classical-rule-surface__diagram-row";
-        const expression = targetObject.document.createElement("code");
-        expression.className = "classical-rule-surface__diagram-expression";
-        expression.textContent = diagramRow.expression;
-        const role = targetObject.document.createElement("span");
-        role.className = "classical-rule-surface__diagram-role";
-        role.textContent = diagramRow.role;
-        row.append(expression, role);
-        diagramRows.appendChild(row);
-      });
+      const specificDiagramRows = diagrammaticFrame?.rows || [];
+      const generalDiagramRows = diagrammaticFrame?.generalRows || [];
+      const generalLinearFormula = diagrammaticFrame?.generalLinearFormula || "";
+      const generalStructureAvailable = Boolean(
+        generalLinearFormula && generalDiagramRows.length
+      );
+      const renderCustomDiagramRows = (rows = [], specificity = "specific") => {
+        diagramRows.replaceChildren();
+        rows.forEach(diagramRow => {
+          const row = targetObject.document.createElement("div");
+          row.className = "classical-rule-surface__diagram-row";
+          const expression = targetObject.document.createElement("code");
+          expression.className = "classical-rule-surface__diagram-expression";
+          if (specificity === "general") {
+            renderClassicalGeneralFormulaAnnotations(
+              expression,
+              diagramRow.expression
+            );
+          } else {
+            renderClassicalDiagramDerivedAnnotations(
+              expression,
+              diagramRow.expression,
+              diagramRow.role,
+              specificLinearFormula,
+              nominalConstructionTypedSlotFrame,
+              frame,
+            );
+          }
+          const role = targetObject.document.createElement("span");
+          role.className = "classical-rule-surface__diagram-role";
+          role.textContent = diagramRow.role;
+          row.append(expression, role);
+          diagramRows.appendChild(row);
+        });
+      };
+      renderCustomDiagramRows(specificDiagramRows, "specific");
       diagram.append(diagramHeading, diagramRows);
       diagram.hidden = !diagramRows.childElementCount;
       const viewSwitch = targetObject.document.createElement("div");
@@ -19977,7 +26973,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       diagramButton.className = "classical-rule-surface__paradigm-view-button";
       diagramButton.textContent = "Diagram";
       diagramButton.setAttribute("aria-pressed", "false");
-      diagramButton.hidden = diagram.hidden;
+      diagramButton.disabled = !diagramRows.childElementCount;
+      diagramButton.setAttribute("aria-disabled", String(diagramButton.disabled));
       viewSwitch.append(linearButton, diagramButton);
       viewSwitch.hidden = outputScope === "paradigm";
       const setStructureView = view => {
@@ -19991,12 +26988,71 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       linearButton.addEventListener("click", () => setStructureView("linear"));
       diagramButton.addEventListener("click", () => setStructureView("diagram"));
+      const specificitySwitch = createClassicalResultSpecificitySwitch(
+        specificity => {
+          const showGeneral = specificity === "general"
+            && generalStructureAvailable;
+          linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral
+            ? "general"
+            : "specific";
+          diagram.dataset.classicalDiagrammaticFormulaSpecificity = showGeneral
+            ? "general"
+            : "specific";
+          linearFormula.dataset.classicalFormulaSpecificity = showGeneral
+            ? "general"
+            : "specific";
+          linearFormula.dataset.classicalNahuatlSelectedOutput = String(
+            !showGeneral
+          );
+          if (showGeneral) {
+            renderClassicalGeneralFormulaAnnotations(
+              linearFormula,
+              generalLinearFormula
+            );
+            renderCustomDiagramRows(generalDiagramRows, "general");
+          } else {
+            renderClassicalFormulaDerivedAnnotations(
+              linearFormula,
+              specificLinearFormula,
+              nominalConstructionTypedSlotFrame,
+              frame,
+            );
+            renderCustomDiagramRows(specificDiagramRows, "specific");
+          }
+        },
+        { generalAvailable: generalStructureAvailable }
+      );
+      const sentenceFormulaSection =
+        createClassicalResultSentenceFormulaSection({
+          formulaDisplay:
+            frame.sentenceFormulaDisplay || frame.formulaRealization || "",
+          typedSlotFrame: nominalConstructionTypedSlotFrame,
+          grammarContext: frame,
+          attachment: frame.sentenceFormulaAttachment || "",
+          prefixalStack: frame.sentencePrefixalStack || [],
+          authority:
+            frame.sentenceSurfaceAuthority
+            || frame.formulaAuthority
+            || "owner-issued-construction-result",
+          status: frame.authorizationStatus,
+          particlesBecomeFormulaSlots:
+            frame.sentenceParticlesBecomeFormulaSlots === true,
+          projection: `source-operation:${selectedConstruction}`,
+        });
       setStructureView("linear");
       const formulaDisclosure = createClassicalResultAnalysisDisclosure(
-        [viewSwitch, linearFormat, diagram],
-        "Formula and diagram"
+        [
+          createClassicalResultPresentationSwitchRow(
+            viewSwitch,
+            specificitySwitch
+          ),
+          linearFormat,
+          diagram,
+          sentenceFormulaSection,
+        ],
+        "Linear or diagram · specific or general"
       );
-      formulaDisclosure.hidden = !frame.formulaRealization;
+      formulaDisclosure.hidden = !specificLinearFormula;
       answer.appendChild(formulaDisclosure);
       if (personalNameSentenceOperation?.canonicalResult) {
         const sentenceFacts = targetObject.document.createElement("div");
@@ -20493,6 +27549,25 @@ export function createUiRenderingApi(targetObject = globalThis) {
         formula.dataset.classicalRelationalNncFormula = "true";
         formula.textContent = canonical.formula;
         linear.append(linearHeading, formula);
+        const relationalGeneralProjection = typeof targetObject
+          .getClassicalNahuatlNncGeneralFormulaProjection === "function"
+          ? targetObject.getClassicalNahuatlNncGeneralFormulaProjection(
+              canonical.sourceFrame?.state === "possessive"
+                ? "dyadic"
+                : "vacant"
+            )
+          : null;
+        const relationalGeneralFormula = String(
+          relationalGeneralProjection?.linearFormula || ""
+        );
+        const relationalGeneralRows = Array.isArray(
+          relationalGeneralProjection?.rows
+        )
+          ? relationalGeneralProjection.rows
+          : [];
+        const relationalGeneralAvailable = Boolean(
+          relationalGeneralFormula && relationalGeneralRows.length
+        );
 
         const diagram = targetObject.document.createElement("section");
         diagram.className = "classical-rule-surface__format-section classical-rule-surface__diagram";
@@ -20521,24 +27596,45 @@ export function createUiRenderingApi(targetObject = globalThis) {
               [internalAnalysis.derivation || canonical.constructionKind, "operation"],
             ]
             : [[internalAnalysis.matrix || canonical.sourceFrame?.predicateStemFrame?.sourceMatrixStem || "—", "stem"]];
-        [
+        const specificRelationalRows = [
           ...sourceRows,
           [canonical.writtenPredicateStem || canonical.predicateStem || "—", "written nounstem"],
           [canonical.formula, "NNC formula"]
-        ].forEach(([expressionText, roleText]) => {
-          const row = targetObject.document.createElement("div");
-          row.className = "classical-rule-surface__diagram-row";
-          row.dataset.classicalNuclearClauseDiagramRole = roleText;
-          row.dataset.classicalNncDiagramRole = roleText;
-          const expression = targetObject.document.createElement("code");
-          expression.className = "classical-rule-surface__diagram-expression";
-          expression.textContent = String(expressionText || "—");
-          const role = targetObject.document.createElement("span");
-          role.className = "classical-rule-surface__diagram-role";
-          role.textContent = roleText;
-          row.append(expression, role);
-          diagramRows.appendChild(row);
-        });
+        ];
+        const renderRelationalDiagramRows = (
+          rows = [],
+          specificity = "specific"
+        ) => {
+          diagramRows.replaceChildren();
+          rows.forEach(rowFrame => {
+            const expressionText = Array.isArray(rowFrame)
+              ? rowFrame[0]
+              : rowFrame.expression;
+            const roleText = Array.isArray(rowFrame)
+              ? rowFrame[1]
+              : rowFrame.role;
+            const row = targetObject.document.createElement("div");
+            row.className = "classical-rule-surface__diagram-row";
+            row.dataset.classicalNuclearClauseDiagramRole = roleText;
+            row.dataset.classicalNncDiagramRole = roleText;
+            const expression = targetObject.document.createElement("code");
+            expression.className = "classical-rule-surface__diagram-expression";
+            if (specificity === "general") {
+              renderClassicalGeneralFormulaAnnotations(
+                expression,
+                expressionText
+              );
+            } else {
+              expression.textContent = String(expressionText || "—");
+            }
+            const role = targetObject.document.createElement("span");
+            role.className = "classical-rule-surface__diagram-role";
+            role.textContent = roleText;
+            row.append(expression, role);
+            diagramRows.appendChild(row);
+          });
+        };
+        renderRelationalDiagramRows(specificRelationalRows, "specific");
         diagram.append(diagramHeading, diagramRows);
         diagram.hidden = true;
         const setStructureView = view => {
@@ -20552,9 +27648,71 @@ export function createUiRenderingApi(targetObject = globalThis) {
         };
         linearButton.addEventListener("click", () => setStructureView("linear"));
         diagramButton.addEventListener("click", () => setStructureView("diagram"));
+        const specificitySwitch = createClassicalResultSpecificitySwitch(
+          specificity => {
+            const showGeneral = specificity === "general"
+              && relationalGeneralAvailable;
+            linear.dataset.classicalLinearFormulaSpecificity = showGeneral
+              ? "general"
+              : "specific";
+            diagram.dataset.classicalDiagrammaticFormulaSpecificity =
+              showGeneral ? "general" : "specific";
+            formula.dataset.classicalFormulaSpecificity = showGeneral
+              ? "general"
+              : "specific";
+            formula.dataset.classicalNahuatlSelectedOutput = String(
+              !showGeneral
+            );
+            if (showGeneral) {
+              renderClassicalGeneralFormulaAnnotations(
+                formula,
+                relationalGeneralFormula
+              );
+              renderRelationalDiagramRows(
+                relationalGeneralRows,
+                "general"
+              );
+            } else {
+              formula.textContent = canonical.formula;
+              renderRelationalDiagramRows(
+                specificRelationalRows,
+                "specific"
+              );
+            }
+          },
+          { generalAvailable: relationalGeneralAvailable }
+        );
+        const sentenceFormulaSection =
+          createClassicalResultSentenceFormulaSection({
+            formulaDisplay:
+              canonical.sentenceFormulaDisplay || canonical.formula || "",
+            typedSlotFrame:
+              canonical.typedSlotFrame
+              || canonical.resultFrame?.typedSlotFrame
+              || null,
+            grammarContext: canonical,
+            attachment: canonical.sentenceFormulaAttachment || "",
+            prefixalStack: canonical.sentencePrefixalStack || [],
+            authority:
+              canonical.sentenceSurfaceAuthority
+              || canonical.formulaAuthority
+              || "typed-relational-nnc-result",
+            status: canonical.authorizationStatus,
+            particlesBecomeFormulaSlots:
+              canonical.sentenceParticlesBecomeFormulaSlots === true,
+            projection: "relational-nnc",
+          });
         const structureDisclosure = createClassicalResultAnalysisDisclosure(
-          [viewSwitch, linear, diagram],
-          "Formula and diagram"
+          [
+            createClassicalResultPresentationSwitchRow(
+              viewSwitch,
+              specificitySwitch
+            ),
+            linear,
+            diagram,
+            sentenceFormulaSection,
+          ],
+          "Linear or diagram · specific or general"
         );
         answer.appendChild(structureDisclosure);
         if (
@@ -22026,7 +29184,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "nnc:ordinary/stem-relation": "#classical-rule-logic-nnc-stem-relation",
       "nnc:ordinary/subject-person-number": "#classical-rule-logic-nnc-subject-person, #classical-rule-logic-nnc-subject-number",
       "nnc:personal-name/name-source-family": "#classical-personal-name-source-family",
-      "nnc:personal-name/outer-subject": "#classical-rule-logic-subject",
+      "nnc:personal-name/outer-subject": "#classical-rule-logic-nnc-subject-person, #classical-rule-logic-nnc-subject-number",
       "nnc:personal-name/reranking": "#classical-personal-name-reranking",
       "nnc:personal-name/sentence-operation": "#classical-personal-name-sentence-operation",
       "nnc:place-gentilic/collectivity": "#classical-place-gentilic-result-kind",
@@ -22038,11 +29196,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "nnc:relational/relation-family": "#classical-relational-nnc-operation",
       "nnc:sentence-surface/polarity": "[data-classical-segment-control=\"classical-rule-logic-polarity\"][aria-pressed=\"true\"]",
       "nnc:sentence-surface/sentence-force": "#classical-rule-logic-sentence-surface",
+      "particle:negative-selection/polarity": "[data-classical-segment-control=\"classical-rule-logic-polarity\"][aria-pressed=\"true\"]",
+      "particle:negative-selection/sentence-kind": "#classical-rule-logic-sentence-surface",
       "sentence:particle-adjunction/honorificization": "#classical-rule-logic-sentence-particle-honorific",
       "sentence:supplementation/clause-order": "[data-classical-clause-relation-decision=\"supplementation-order\"]",
       "sentence:supplementation/supplement-relation": "[data-classical-clause-relation-decision=\"supplementation-reference-mode\"], [data-classical-clause-relation-decision=\"relation\"]",
       "vnc:denominal/denominal-operation": "#classical-denominal-vnc-operation",
-      "vnc:denominal/finite-participants": "#classical-rule-logic-subject, #classical-rule-logic-object",
+      "vnc:denominal/finite-participants": "#classical-rule-logic-subject, #classical-denominal-vnc-result-object-1, #classical-denominal-vnc-result-object-2",
       "vnc:denominal/target-verbstem-class": "#classical-denominal-vnc-operation-path",
       "vnc:derivational-operation/derivation-family": "#classical-rule-logic-late-operation",
       "vnc:finite-slot/mood": "#classical-rule-logic-mood",
@@ -23707,9 +30867,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return false;
       }
       if (renderClassicalRelationalNncSurfaceBlock(block)) {
+        targetObject.syncClassicalResultNestingStructure?.();
         return true;
       }
       if (renderClassicalNominalConstructionSurfaceBlock(block)) {
+        targetObject.syncClassicalResultNestingStructure?.();
         return true;
       }
       const priorNncParadigmState = block.querySelector(
@@ -23717,6 +30879,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       )?.dataset.classicalNncParadigmState || "";
       if (!isClassicalNahuatlMachineryActive()) {
         clearClassicalRuleLogicSurfaceBlock();
+        targetObject.syncClassicalResultNestingStructure?.();
         return false;
       }
       let surfaceFrame = buildClassicalRuleLogicSurfaceFrame({
@@ -23729,6 +30892,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalRuleLogicControlsForSurfaceFrame(surfaceFrame);
       }
       if (!allowClassicalVisibleSurfaceAtRendererBoundary(block, surfaceFrame)) {
+        targetObject.syncClassicalResultNestingStructure?.();
         return true;
       }
       ActiveClassicalRuleLogicSurfaceFrame = surfaceFrame;
@@ -24275,35 +31439,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!vncParadigmSection.hidden) {
         markClassicalResultPrimaryAnswer(vncParadigmSection);
       }
-      const createFormulaSpecificitySwitch = (formatName, onSelect) => {
-        const group = targetObject.document.createElement("div");
-        group.className = "classical-rule-surface__format-switch";
-        group.setAttribute("role", "group");
-        group.setAttribute("aria-label", `${formatName}: specific or general formula`);
-        const buttons = ["specific", "general"].map(mode => {
-          const button = targetObject.document.createElement("button");
-          button.type = "button";
-          button.className = "classical-rule-surface__format-switch-option";
-          button.dataset.classicalFormulaSpecificity = mode;
-          button.textContent = mode === "specific" ? "Specific" : "General";
-          button.addEventListener("click", event => {
-            event.preventDefault();
-            event.stopPropagation();
-            buttons.forEach(candidate => {
-              const active = candidate === button;
-              candidate.classList.toggle("is-active", active);
-              candidate.setAttribute("aria-pressed", String(active));
-            });
-            onSelect(mode);
-          });
-          group.appendChild(button);
-          return button;
-        });
-        buttons[0].classList.add("is-active");
-        buttons[0].setAttribute("aria-pressed", "true");
-        buttons[1].setAttribute("aria-pressed", "false");
-        return group;
-      };
       const linearFormat = targetObject.document.createElement("section");
       linearFormat.className = "classical-rule-surface__format-section classical-rule-surface__linear";
       linearFormat.dataset.classicalLinearFormulaSpecificity = "specific";
@@ -24316,7 +31451,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       formula.className = "classical-rule-surface__formula";
       formula.dataset.classicalNahuatlSelectedOutput = "true";
       formula.dataset.classicalFormulaAuthority = surfaceFrame.formulaAuthority || "";
-      const specificLinearFormula = (singleNncElegantActive ? singleNncDisplayFrame.selectedFormula : singleVncElegantActive ? singleVncDisplayFrame.selectedFormula : surfaceFrame.selectedFormula) || getClassicalRuleLogicPublicResultFallback(surfaceFrame);
+      const specificLinearFormula = getClassicalResultFormatProjection(
+        singleNncElegantActive
+          ? singleNncDisplayFrame.selectedFormula
+          : singleVncElegantActive
+            ? singleVncDisplayFrame.selectedFormula
+            : surfaceFrame.selectedFormula,
+        surfaceFrame.authorizationStatus
+      );
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
       const specificLinearTypedSlotFrame = surfaceFrame.basalUnit === "nnc"
         ? surfaceFrame.nncGrammarSurfaceContract?.typedSlotFrame || null
@@ -24369,18 +31511,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         specificLinearTypedSlotFrame,
         derivedAnnotationGrammarContext
       );
-      const linearFormatSwitch = createFormulaSpecificitySwitch("Linear format", mode => {
-        const showGeneral = mode === "general" && Boolean(generalLinearFormula);
-        linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral ? "general" : "specific";
-        formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
-        formula.dataset.classicalFormulaSpecificity = showGeneral ? "general" : "specific";
-        if (showGeneral) renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula);
-        else renderClassicalFormulaDerivedAnnotations(formula, specificLinearFormula, specificLinearTypedSlotFrame, derivedAnnotationGrammarContext);
-      });
-      linearFormatSwitch.hidden = !generalLinearFormula;
-      linearFormatHeading.append(linearFormatTitle, linearFormatSwitch);
+      linearFormatHeading.append(linearFormatTitle);
       linearFormat.append(linearFormatHeading, formula);
-      linearFormat.hidden = fullParadigmActive;
+      linearFormat.hidden = fullParadigmActive || !specificLinearFormula;
       const nuclearClauseDiagram = targetObject.document.createElement("section");
       nuclearClauseDiagram.className = "classical-rule-surface__format-section classical-rule-surface__diagram";
       nuclearClauseDiagram.dataset.classicalNuclearClauseDiagrammaticFormat = "true";
@@ -24458,13 +31591,41 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       };
       renderNuclearClauseDiagramRows(specificDiagramRows);
-      const diagramFormatSwitch = createFormulaSpecificitySwitch("Diagrammatic format", mode => {
-        const showGeneral = mode === "general" && generalDiagramRows.length > 0;
-        nuclearClauseDiagram.dataset.classicalDiagrammaticFormulaSpecificity = showGeneral ? "general" : "specific";
-        renderNuclearClauseDiagramRows(showGeneral ? generalDiagramRows : specificDiagramRows);
-      });
-      diagramFormatSwitch.hidden = !generalDiagramRows.length;
-      nuclearClauseDiagramTitle.append(nuclearClauseDiagramTitleText, diagramFormatSwitch);
+      const generalStructureAvailable = Boolean(
+        generalLinearFormula && generalDiagramRows.length
+      );
+      const resultSpecificitySwitch = createClassicalResultSpecificitySwitch(
+        mode => {
+          const showGeneral = mode === "general"
+            && generalStructureAvailable;
+          linearFormat.dataset.classicalLinearFormulaSpecificity = showGeneral
+            ? "general"
+            : "specific";
+          formula.dataset.classicalNahuatlSelectedOutput = String(!showGeneral);
+          formula.dataset.classicalFormulaSpecificity = showGeneral
+            ? "general"
+            : "specific";
+          nuclearClauseDiagram.dataset.classicalDiagrammaticFormulaSpecificity =
+            showGeneral ? "general" : "specific";
+          if (showGeneral) {
+            renderClassicalGeneralFormulaAnnotations(
+              formula,
+              generalLinearFormula
+            );
+            renderNuclearClauseDiagramRows(generalDiagramRows);
+          } else {
+            renderClassicalFormulaDerivedAnnotations(
+              formula,
+              specificLinearFormula,
+              specificLinearTypedSlotFrame,
+              derivedAnnotationGrammarContext
+            );
+            renderNuclearClauseDiagramRows(specificDiagramRows);
+          }
+        },
+        { generalAvailable: generalStructureAvailable }
+      );
+      nuclearClauseDiagramTitle.append(nuclearClauseDiagramTitleText);
       nuclearClauseDiagram.append(nuclearClauseDiagramTitle, nuclearClauseDiagramRows);
       nuclearClauseDiagram.hidden = fullParadigmActive || !["nnc", "vnc"].includes(surfaceFrame.basalUnit) || surfaceFrame.diagrammaticFrame?.authorizationStatus !== "authorized";
       const sentenceFormulaSection = targetObject.document.createElement("section");
@@ -24484,7 +31645,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
       sentenceFormula.dataset.classicalSentenceAuthority = surfaceFrame.sentenceSurfaceAuthority || "";
       sentenceFormula.dataset.classicalSentenceStatus = surfaceFrame.sentenceSurfaceStatus || "";
       sentenceFormula.dataset.classicalSentenceParticlesBecomeFormulaSlots = String(surfaceFrame.sentenceParticlesBecomeFormulaSlots === true);
-      const typedSentenceFormulaDisplay = singleNncElegantActive ? singleNncDisplayFrame.sentenceFormula : singleVncElegantActive ? singleVncDisplayFrame.sentenceFormula : surfaceFrame.sentenceFormulaDisplay;
+      const typedSentenceFormulaDisplay = getClassicalResultFormatProjection(
+        singleNncElegantActive
+          ? singleNncDisplayFrame.sentenceFormula
+          : singleVncElegantActive
+            ? singleVncDisplayFrame.sentenceFormula
+            : surfaceFrame.sentenceFormulaDisplay,
+        surfaceFrame.authorizationStatus
+      );
       renderClassicalFormulaDerivedAnnotations(
         sentenceFormula,
         typedSentenceFormulaDisplay || "",
@@ -24555,6 +31723,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       singleNncDiagramButton.className = "classical-rule-surface__paradigm-view-button";
       singleNncDiagramButton.textContent = "Diagram";
       singleNncDiagramButton.setAttribute("aria-pressed", "false");
+      singleNncDiagramButton.disabled = !specificDiagramRows.length
+        || surfaceFrame.diagrammaticFrame?.authorizationStatus !== "authorized";
+      singleNncDiagramButton.setAttribute(
+        "aria-disabled",
+        String(singleNncDiagramButton.disabled)
+      );
       singleNncViewSwitch.append(singleNncLinearButton, singleNncDiagramButton);
       const setSingleNncStructureView = view => {
         const showLinear = view === "linear";
@@ -24567,9 +31741,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       singleNncLinearButton.addEventListener("click", () => setSingleNncStructureView("linear"));
       singleNncDiagramButton.addEventListener("click", () => setSingleNncStructureView("diagram"));
-      const distinctSentenceFormula = Boolean(typedSentenceFormulaDisplay && typedSentenceFormulaDisplay !== singleNncDisplayFrame?.selectedFormula);
+      const singleNncSentenceFormulaAvailable = Boolean(
+        typedSentenceFormulaDisplay
+      );
       if (singleNncElegantActive) {
-        sentenceFormulaSection.hidden = !distinctSentenceFormula;
+        sentenceFormulaSection.hidden = !singleNncSentenceFormulaAvailable;
       }
       singleNncSection.hidden = !singleNncElegantActive;
       if (singleNncElegantActive) {
@@ -24577,13 +31753,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         markClassicalResultPrimaryAnswer(singleNncSection);
         const singleNncAnalysis = createClassicalResultAnalysisDisclosure(
           [
-            singleNncViewSwitch,
+            createClassicalResultPresentationSwitchRow(
+              singleNncViewSwitch,
+              resultSpecificitySwitch
+            ),
             linearFormat,
             nuclearClauseDiagram,
-            ...(distinctSentenceFormula ? [sentenceFormulaSection] : []),
+            ...(singleNncSentenceFormulaAvailable
+              ? [sentenceFormulaSection]
+              : []),
             ...(!lesson11Alternatives.hidden ? [lesson11Alternatives] : [])
           ],
-          "Formula, diagram, and alternatives"
+          "Linear or diagram · specific or general"
         );
         singleNncSection.append(
           singleNncHeading,
@@ -24628,6 +31809,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
       singleVncDiagramButton.className = "classical-rule-surface__paradigm-view-button";
       singleVncDiagramButton.textContent = "Diagram";
       singleVncDiagramButton.setAttribute("aria-pressed", "false");
+      singleVncDiagramButton.disabled = !specificDiagramRows.length
+        || surfaceFrame.diagrammaticFrame?.authorizationStatus !== "authorized";
+      singleVncDiagramButton.setAttribute(
+        "aria-disabled",
+        String(singleVncDiagramButton.disabled)
+      );
       singleVncViewSwitch.append(singleVncLinearButton, singleVncDiagramButton);
       const setSingleVncStructureView = view => {
         const showLinear = view === "linear";
@@ -24640,9 +31827,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
       };
       singleVncLinearButton.addEventListener("click", () => setSingleVncStructureView("linear"));
       singleVncDiagramButton.addEventListener("click", () => setSingleVncStructureView("diagram"));
-      const distinctVncSentenceFormula = Boolean(typedSentenceFormulaDisplay && typedSentenceFormulaDisplay !== singleVncDisplayFrame?.selectedFormula);
+      const singleVncSentenceFormulaAvailable = Boolean(
+        typedSentenceFormulaDisplay
+      );
       if (singleVncElegantActive) {
-        sentenceFormulaSection.hidden = !distinctVncSentenceFormula;
+        sentenceFormulaSection.hidden = !singleVncSentenceFormulaAvailable;
       }
       singleVncSection.hidden = !singleVncElegantActive;
       if (singleVncElegantActive) {
@@ -24650,13 +31839,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
         markClassicalResultPrimaryAnswer(singleVncSection);
         const singleVncAnalysis = createClassicalResultAnalysisDisclosure(
           [
-            singleVncViewSwitch,
+            createClassicalResultPresentationSwitchRow(
+              singleVncViewSwitch,
+              resultSpecificitySwitch
+            ),
             linearFormat,
             nuclearClauseDiagram,
-            ...(distinctVncSentenceFormula ? [sentenceFormulaSection] : []),
+            ...(singleVncSentenceFormulaAvailable
+              ? [sentenceFormulaSection]
+              : []),
             ...(!lesson11Alternatives.hidden ? [lesson11Alternatives] : [])
           ],
-          "Formula, diagram, and alternatives"
+          "Linear or diagram · specific or general"
         );
         singleVncSection.append(
           singleVncHeading,
@@ -24846,15 +32040,35 @@ export function createUiRenderingApi(targetObject = globalThis) {
         deeperResultDisclosure.hidden = false;
         body.appendChild(deeperResultDisclosure);
       }
+      const fallbackPresentationSwitches = fallbackSingleActive
+        ? createClassicalResultPresentationSwitchRow(
+            surfaceFrame.basalUnit === "nnc"
+              ? singleNncViewSwitch
+              : singleVncViewSwitch,
+            resultSpecificitySwitch
+          )
+        : null;
+      if (fallbackPresentationSwitches) {
+        fallbackPresentationSwitches.hidden =
+          !specificLinearFormula && nuclearClauseDiagram.hidden;
+      }
+      const fallbackStructureAnalysisAvailable = Boolean(
+        specificLinearFormula
+        || !nuclearClauseDiagram.hidden
+        || typedSentenceFormulaDisplay
+        || !lesson11Alternatives.hidden
+      );
       const fallbackAnalysis = fallbackSingleActive
+        && fallbackStructureAnalysisAvailable
         ? createClassicalResultAnalysisDisclosure(
             [
+              fallbackPresentationSwitches,
               linearFormat,
               lesson11Alternatives,
               nuclearClauseDiagram,
               sentenceFormulaSection
             ],
-            "Formula, diagram, and alternatives"
+            "Linear or diagram · specific or general"
           )
         : null;
       const resultFormatNodes = singleNncElegantActive
@@ -24877,6 +32091,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         body
       );
       syncClassicalSourceGrammarResultSurface(surfaceFrame, block);
+      targetObject.syncClassicalResultNestingStructure?.();
       return true;
     }
     function applyOutputPanelShellForTenseMode(tenseMode = "") {

@@ -1119,6 +1119,12 @@ function resolveOwnerIssuedDerivedSourceCarrier(
     const selectedVoiceOperation = normalizeToken(
       vncResult?.selectedVoiceOperation || "active",
     );
+    const selectedSourceVoice = normalizeToken(
+      vncResult?.selectedSourceVoice
+      || upstreamResult.normalizedRequest?.sourceVoice
+      || vncResult?.selectedVoice
+      || "active",
+    );
     const selectedTense = normalizeToken(
       upstreamResult.normalizedRequest?.tense
       || upstreamResult.normalizedRequest?.semanticTense
@@ -1126,7 +1132,10 @@ function resolveOwnerIssuedDerivedSourceCarrier(
     );
     if (
       !formationLicense
-      || !formationLicense.voiceOperations.includes(selectedVoiceOperation)
+      || !formationLicense.voiceOperations.some((voiceOperation) => (
+        voiceOperation === selectedVoiceOperation
+        || voiceOperation === selectedSourceVoice
+      ))
       || selectedTense !== formationLicense.tense
     ) {
       return {
@@ -1175,7 +1184,9 @@ function resolveOwnerIssuedDerivedSourceCarrier(
       sourceKind = "imperfect-predicate";
     }
     ownerOperationId = `vnc:application:${selectedVoiceOperation}:${selectedTense}`;
-    sourceVoice = normalizeToken(vncResult?.selectedVoice || selectedVoiceOperation);
+    sourceVoice = formationLicense.voiceOperations.includes(selectedSourceVoice)
+      ? selectedSourceVoice
+      : normalizeToken(vncResult?.selectedVoice || selectedVoiceOperation);
   }
 
   if (

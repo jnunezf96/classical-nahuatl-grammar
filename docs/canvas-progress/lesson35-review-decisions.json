@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "lesson": 35,
+  "decisions": {
+    "lesson35-nominalization-and-preterit-agentive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat structural nominalization as a typed conversion from an exact owner-issued preterit VNC Result into a preterit-agentive NNC Source, preserve the complete typed VNC and Source analysis, derive restricted versus general use from the resulting grammatical environment, and keep examples and display strings non-authorizing."
+    },
+    "lesson35-absolutive-preterit-agentive-reanalysis": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reanalyze any compatible owner-issued preterit VNC predicate as the restricted-use nounstem of an absolutive preterit-agentive or patientive NNC, retaining internal projective or reflexive structure and final preterit zero, carrying subject number, removing antecessive o, preserving class-conditioned perfective shape, and admitting typed Sources productively rather than through listed stems."
+    },
+    "lesson35-number-animacy-and-object-activation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive qui-zero, silent-zero, or a genuinely licensed alternative from the typed preterit Source and its lexical analysis, keep the silent-nonanimate association as a tendency rather than a universal rule, and permit internal-object activation only when typed participant and supplementary-object facts license the resulting hybrid."
+    },
+    "lesson35-general-use-ca-stem": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the general-use preterit-agentive nounstem as a typed compound of the restricted preterit predicate plus fixed Subclass 1-A cā, preserve final preterit zero and reflexive shuntline ne, and reserve archaic quē for an explicitly licensed lexical formation."
+    },
+    "lesson35-possessive-preterit-agentive-nnc": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Inflect the typed general-use cā Source through the canonical possessive NNC owner, derive singular uh-zero or plural hu-ān automatically, preserve subject, possessor, and internal participants, and admit only typed cā-yō, patientive, ya-uh, and secondary-possession irregularities."
+    },
+    "lesson35-agentive-embeds-and-affectives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture the exact owner-issued general-use agentive Result and pass it productively into canonical ordinary NNC, VNC, and affective compound owners while preserving cā boundaries, Source analysis, participants, and any licensed supplementary-object activation."
+    },
+    "lesson35-old-woman-agentive-family": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the distinct typed ilama-ti verbal and ilama or ilan nominal Sources; derive the old-woman perfective alternant from subject number, build silent singular or qu-eh plural agentives and automatic cā possessive continuation, and pass exact Results into canonical affective and yō owners."
+    },
+    "lesson35-old-man-and-drum-source-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve exact vowel quantity, glottalization, internal boundaries, and distribution across huē-huē-ti, huē-hue-h-zero, huē-huē, huē-hueh, hueh, and huē-huē-n Sources; derive only their licensed agentive, nominal, affective, compound, or supplementary continuations."
+    },
+    "lesson35-ownerhood-e-matrix": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build preterit-agentive ownerhood from any typed general-use nounstem whose class, subclass, final edge, and genuine lexical facts license the fixed verbal ē matrix; derive supportive-i loss, h-to-y, z-to-c spelling, final zero, number, cā general use, and connective-t restriction without example-stem gates."
+    }
+  }
+}

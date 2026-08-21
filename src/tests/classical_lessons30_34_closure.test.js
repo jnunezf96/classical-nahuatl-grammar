@@ -270,7 +270,7 @@ function familyWitnessRequest(family, ctx) {
         }
         if (family.startsWith("incorporated-complement/")) {
             if (family === "incorporated-complement/ambiguous-nuance") {
-                return lesson30Base({
+                return lesson30Object({
                     relation: "complement",
                     route: "complement",
                     orientation: "object",
@@ -279,7 +279,7 @@ function familyWitnessRequest(family, ctx) {
                 });
             }
             const kind = family.endsWith("/changing") ? "changing" : "considering";
-            return lesson30Base({
+            return (family.endsWith("/subject") ? lesson30Base : lesson30Object)({
                 relation: "complement",
                 route: "complement",
                 orientation: family.endsWith("/subject") ? "subject" : "object",
@@ -296,6 +296,8 @@ function familyWitnessRequest(family, ctx) {
         if (family === "incorporated-adverb/direct-possessor-deletion") {
             return patchSource(lesson30Base({ adverbRole: "means" }), {
                 embedStem: "mā",
+                subjectReferenceId: "actor",
+                possessorReferenceCandidates: ["actor"],
             });
         }
         if (family === "incorporated-adverb/agentive-embed") {
@@ -335,10 +337,13 @@ function familyWitnessRequest(family, ctx) {
         }
         if (family === "nominal-embed/source-ambiguity") {
             return patchSource(lesson30Base({
-                sourceAnalysis: "direct",
+                route: "direct-adverb",
+                adverbRole: "means",
             }), {
-                embedStem: "icxi",
-                matrixStem: "toh-toca",
+                adverbSourceRouteCandidates: [
+                    "direct-adverb",
+                    "supplement-subject",
+                ],
             });
         }
         if (family === "nominal-embed/reduplication") {
@@ -349,7 +354,10 @@ function familyWitnessRequest(family, ctx) {
             return patchSource(lesson30Base({
                 route: "supplement-subject",
                 adverbRole: "means",
-            }), { embedState: "possessive" });
+            }), {
+                embedState: "possessive",
+                embedPossessorPerson: "1sg",
+            });
         }
         if (family === "incorporated-adverb/supplement-object"
             || family === "incorporated-adverb/intimate-applicative-barrier"
@@ -360,13 +368,20 @@ function familyWitnessRequest(family, ctx) {
                 adverbRole: "means",
             }), {
                 embedState: "possessive",
+                embedPossessorPerson: "2sg",
                 possessionKind: family.endsWith("less-intimate") ? "less-intimate" : "intimate",
+                matrixDerivationType: family.endsWith("less-intimate")
+                    || family.endsWith("intimate-applicative-barrier")
+                    ? "applicative"
+                    : "direct",
             });
         }
         if (family === "incorporated-adverb/passive-barrier") {
-            return lesson30Base({
+            return lesson30Object({
+                relation: "adverb",
                 route: "passive-adverbialized-subject",
                 adverbRole: "means",
+                voice: "passive",
             });
         }
         const adverbRole = ({
@@ -384,6 +399,13 @@ function familyWitnessRequest(family, ctx) {
             return patchSource(lesson31Base(), {
                 embedStem: "teō",
                 matrixStem: "calli",
+                compoundEmbedAnalysis: {
+                    lexicalStatus: "compound-embed-exception",
+                    sourceStem: "teō",
+                    exceptionKind: "glottalized-long-vowel",
+                    meaningCertainty: "known",
+                    sourceBoundaries: ["teō"],
+                },
             });
         }
         if (family === "compound-nnc/negative-embed") {
@@ -398,24 +420,44 @@ function familyWitnessRequest(family, ctx) {
             });
         }
         if (family === "compound-nnc/unique-lexeme") {
-            return patchSource(lesson31Base(), { embedStem: "chi" });
+            return patchSource(lesson31Base(), {
+                embedStem: "chi",
+                uniqueCompoundNounstemAnalysis: {
+                    lexicalStatus: "unique-compound-only-nounstem",
+                    position: "embed",
+                    sourceStem: "chi",
+                    meaningCertainty: "uncertain",
+                    sourceBoundaries: ["chi"],
+                    relatedFormations: [],
+                },
+            });
         }
         if (family === "compound-nnc/ca-matrix") {
             return patchSource(lesson31Base(), {
                 matrixStem: "ca",
-                matrixClass: "zero",
+                matrixClass: "tl",
+                matrixSourceClass: "tl-1-a",
             });
         }
         if (family === "compound-nnc/ca-exclusion") {
             return patchSource(lesson31Base(), {
                 matrixStem: "naca",
                 matrixClass: "tl",
+                matrixSourceClass: "tl-2-b-a",
             });
         }
         if (family === "compound-nnc/yo-matrix") {
             return patchSource(lesson31Base(), {
                 matrixStem: "yō",
-                matrixClass: "zero",
+                matrixClass: "tl",
+                matrixSourceClass: "tl-1-b",
+                yoEmbedAnalysis: {
+                    lexicalStatus: "yo-matrix-embed-history",
+                    sourceStem: "ā",
+                    embedState: "absolutive",
+                    possessorKind: "none",
+                    meaningRelation: "related-but-distinct",
+                },
             });
         }
         if (family === "compound-nnc/conjunctive") {
@@ -424,10 +466,20 @@ function familyWitnessRequest(family, ctx) {
             }), {});
         }
         if (family === "compound-nnc/recursion" || family === "compound-nnc/bracketing") {
-            return patchSource(lesson31Base({
-                bracketing: "compound-embed",
-            }), {
-                bracketing: "compound-embed",
+            const inner = ctx.evaluateClassicalNahuatlNominalConstruction(
+                lesson31Base()
+            );
+            const stem = inner.operationFrame?.compoundStem || "";
+            const sourceClass = inner.operationFrame?.resultSourceClass || "";
+            return patchSource(lesson31Base(), {
+                embedStem: stem,
+                embedClass: sourceClass,
+                embedSourceClass: sourceClass,
+                embedConstituent: {
+                    kind: "compound-nnc",
+                    stem,
+                    resultFrame: inner,
+                },
             });
         }
         if (family === "compound-nnc/order-ambiguity") {
@@ -437,7 +489,16 @@ function familyWitnessRequest(family, ctx) {
             });
         }
         if (family === "compound-nnc/sex") {
-            return patchSource(lesson31Base({ embedRole: "sex" }), { embedStem: "cihuā" });
+            return patchSource(lesson31Base({ embedRole: "sex" }), {
+                embedStem: "zaca",
+                sexEmbedAnalysis: {
+                    lexicalStatus: "sex-distinction-embed",
+                    sourceStem: "zaca",
+                    sexValue: "female",
+                    referentClass: "animate",
+                    neutralWithoutSex: true,
+                },
+            });
         }
         if (family === "compound-nnc/progeny") {
             return patchSource(lesson31Base({ embedRole: "progeny" }), {
@@ -456,7 +517,11 @@ function familyWitnessRequest(family, ctx) {
             });
         }
         if (family === "compound-nnc/affinity") {
-            return lesson31Base({ reduplication: "affinity", reduplicationTarget: "both" });
+            return lesson31Base({
+                subject: "3pl",
+                reduplication: "affinity",
+                reduplicationTarget: "both",
+            });
         }
         if (family === "compound-nnc/distributive") {
             return lesson31Base({ reduplication: "distributive-varietal", reduplicationTarget: "embed" });
@@ -466,17 +531,29 @@ function familyWitnessRequest(family, ctx) {
     if (family.startsWith("affective/") || family.startsWith("pil/")
         || family === "nnc-to-vnc/denominal") {
         if (family === "nnc-to-vnc/denominal") {
-            return lesson32Base({
+            return patchSource(lesson32Base({
                 affectiveOutputKind: "denominal-vnc",
                 affectiveMatrix: "zol",
                 denominalKind: "inchoative",
-            });
+            }), { embedStem: "zol", embedClass: "tli" });
         }
         if (family === "affective/pil-pol") return lesson32Base({ affectiveMatrix: "pōl" });
         if (family === "affective/lexicalized-class") {
             return patchSource(
                 lesson32Base({ affectiveMatrix: "pōl" }),
-                { embedStem: "cal", embedClass: "tli" }
+                {
+                    embedStem: "cal",
+                    embedClass: "tli",
+                    affectiveLexicalAnalysis: {
+                        lexicalStatus: "affective-compound-lexical-analysis",
+                        embedStem: "cal",
+                        matrixStem: "pōl",
+                        lexicalizedSpecialMeaning: true,
+                        resultClass: "tli",
+                        embedVariantStem: "",
+                        variantKind: "",
+                    },
+                }
             );
         }
         if (family === "affective/tzin-ton-class") return lesson32Base({ affectiveMatrix: "tōn" });
@@ -485,7 +562,20 @@ function familyWitnessRequest(family, ctx) {
         }
         if (family === "affective/vocative") return lesson32Base({ state: "vocative" });
         if (family === "affective/ton-exception") {
-            return patchSource(lesson32Base({ affectiveMatrix: "tōn" }), { embedStem: "quimich" });
+            return patchSource(lesson32Base({ affectiveMatrix: "tōn" }), {
+                embedStem: "quimich",
+                embedClass: "in",
+                affectiveLexicalAnalysis: {
+                    lexicalStatus: "affective-compound-lexical-analysis",
+                    embedStem: "quimich",
+                    matrixStem: "tōn",
+                    lexicalizedSpecialMeaning: false,
+                    classException: true,
+                    resultClass: "zero",
+                    embedVariantStem: "",
+                    variantKind: "",
+                },
+            });
         }
         if (family === "affective/zol") {
             return patchSource(lesson32Base({
@@ -516,11 +606,14 @@ function familyWitnessRequest(family, ctx) {
                     : family === "pil/reading"
                         ? "pil-appendage"
                         : "pil-child";
-            return lesson32Base({
+            return patchSource(lesson32Base({
                 affectiveMatrix: family === "pil/honorific-vocative" ? "tzin" : "pil",
                 semanticReading: reading,
                 state: family === "pil/honorific-vocative" ? "vocative" : "absolutive",
                 pilChildRoute: family === "pil/child-affective" ? "affective" : "simple",
+            }), {
+                embedStem: "pil",
+                embedClass: "tli",
             });
         }
         if (family.startsWith("affective/flawed")
@@ -528,17 +621,32 @@ function familyWitnessRequest(family, ctx) {
             || family === "affective/chicken"
             || family === "affective/flawing-purpose") {
             const chicken = family === "affective/chicken";
+            const stem = chicken
+                ? "cuā-naca"
+                : family === "affective/defect-entity"
+                    ? "ix-te-coh-coy-o-c"
+                    : "tzapa";
             return patchSource(lesson32Base({
                 affectRoute: "flawed-subject",
                 affectiveMatrix: "",
                 defectAnalysis: "defect",
             }), {
-                embedStem: chicken
-                    ? "cuā-naca"
-                    : family === "affective/defect-entity"
-                        ? "ix-te-coh-coy-o-c"
-                        : "tzapa",
+                embedStem: stem,
                 embedClass: "tli",
+                flawedSubjectAnalysis: {
+                    lexicalStatus: "flawed-subject-lexical-analysis",
+                    sourceStem: stem,
+                    availability: "optional",
+                    semanticDomain: chicken
+                        ? "lexicalized-flawed-subject"
+                        : "abnormal-or-defective-entity",
+                    defectEntityAmbiguous:
+                        family === "affective/defect-entity",
+                    neutralStemClass: "tli",
+                    flawedStemClassStrategy: "irregular-silent-num1",
+                    lexicalReading: chicken ? "rooster" : "",
+                    usuallyRooster: chicken,
+                },
             });
         }
         return lesson32Base();
@@ -751,7 +859,8 @@ function familyWitnessRequest(family, ctx) {
             "numeral/measure": "measure",
             "sentence/adjectival-modification": "measure",
         })[family] || "basic";
-        const value = classifier === "cob" ? 39
+        const value = family === "numeral/gross-possessive" ? 2
+            : classifier === "cob" ? 39
             : ["tecpan", "ipil", "quimil"].includes(classifier) ? 40
                 : valueByFamily[family] || 1;
         const measureComposition = family === "sentence/adjectival-modification"
@@ -876,6 +985,7 @@ function run(ctx = {}) {
     s.eq("every substantive transcription line belongs to a classified source span", uncovered, []);
 
     const restrictionProofs = new Map([
+        ["incorporated-adverb/intimate-applicative-barrier", "intimate-supplement-object-applicative-source-blocked"],
         ["incorporated-complement/ambiguous-nuance", "nominal-embed-toca-as-if-precise-nuance-genuinely-blocked"],
     ]);
     const canonicalAttitudeRule = {
@@ -930,7 +1040,13 @@ function run(ctx = {}) {
                     && Boolean(positive.sourceFrame && positive.operationFrame
                         && positive.canonicalResult
                         && positive.canonicalTargetEvaluator)
-                    && semanticRules.includes(family);
+                    && (semanticRules.includes(family)
+                        || (family === "affective/chicken"
+                            && semanticRules.includes(
+                                "affective/typed-lexical-reading"
+                            )
+                            && positive.operationFrame?.flawedSubjectFrame
+                                ?.selectedLexicalReading === "rooster"));
         const negative = evaluateClaimOwner(
             ctx,
             familyNegativeRequest(request)
@@ -988,12 +1104,17 @@ function run(ctx = {}) {
                         === positive.authorizationStatus
                     && row.closureFrame?.formulaRealization
                         === (positive.formulaRealization || "")
-                : Boolean(row)
-                    && row.scalarEquivalent === true
-                    && row.authorizationStatus
-                        === positive.authorizationStatus
-                    && row.formulaRealization
-                        === (positive.formulaRealization || ""),
+                : expectedRestriction
+                    ? (plan.authorizationStatus === "blocked"
+                        && plan.blockReason === expectedRestriction)
+                        || (row?.authorizationStatus === "blocked"
+                            && row?.blockReason === expectedRestriction)
+                    : Boolean(row)
+                        && row.scalarEquivalent === true
+                        && row.authorizationStatus
+                            === positive.authorizationStatus
+                        && row.formulaRealization
+                            === (positive.formulaRealization || ""),
             noAuditCarrier: !findPresentationAuditKey(positive)
                 && !findPresentationAuditKey(plan)
                 && !findPresentationAuditKey(row),
@@ -1076,13 +1197,15 @@ function run(ctx = {}) {
         && !SHELL_SOURCE.includes("data-classical-construction-grammar-closure"));
     s.ok("the three-panel shell exposes explicit choices without putting grammar or audit evidence in Result",
         [
-            "classical-nominal-embed-source-constituent",
             "classical-nominal-embed-possession-kind",
             "classical-compound-nnc-bracketing",
             "classical-compound-nnc-reduplication-target",
             "classical-affective-defect-analysis",
             "classical-cardinal-modifier",
         ].every(id => SHELL_SOURCE.includes(`id="${id}"`))
+        && !SHELL_SOURCE.includes('id="classical-nominal-embed-source-constituent"')
+        && !SHELL_SOURCE.includes('id="classical-affective-target-kind"')
+        && !SHELL_SOURCE.includes('id="classical-affective-denominal-operation"')
         && !RENDERING_SOURCE.includes("#2 Grammar · typed operation")
         && !RENDERING_SOURCE.includes("Source closure ·")
         && !RENDERING_SOURCE.includes("Source audit"));
@@ -1128,7 +1251,11 @@ function run(ctx = {}) {
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson30Base({
             route: "supplement-subject",
             adverbRole: "means",
-            source: { ...lesson30Base().source, embedState: "possessive" },
+            source: {
+                ...lesson30Base().source,
+                embedState: "possessive",
+                embedPossessorPerson: "1sg",
+            },
         })).authorizationStatus,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson30Base({
             route: "supplement-subject",
@@ -1141,7 +1268,8 @@ function run(ctx = {}) {
             source: {
                 ...lesson30Object().source,
                 embedState: "possessive",
-                matrixStem: "mil-chihui-lia",
+                embedPossessorPerson: "2sg",
+                matrixDerivationType: "applicative",
             },
         })).blockReason,
     ], ["authorized", "supplement-subject-embed-must-be-possessive", "intimate-supplement-object-applicative-source-blocked"]);
@@ -1152,7 +1280,7 @@ function run(ctx = {}) {
             orientation: "subject",
             complementKind: "considering",
         })).authorizationStatus,
-        ctx.evaluateClassicalNahuatlNominalConstruction(lesson30Base({
+        ctx.evaluateClassicalNahuatlNominalConstruction(lesson30Object({
             relation: "complement",
             route: "complement",
             orientation: "object",
@@ -1301,15 +1429,26 @@ function run(ctx = {}) {
             },
         })).operationFrame?.embedShape?.realizedStem,
     ], ["may", "mah"]);
+    const lesson31RecursiveGateInner =
+        ctx.evaluateClassicalNahuatlNominalConstruction(lesson31Base());
+    const lesson31RecursiveGateStem = lesson31RecursiveGateInner
+        .operationFrame?.compoundStem || "";
+    const lesson31RecursiveGateClass = lesson31RecursiveGateInner
+        .operationFrame?.resultSourceClass || "";
     s.eq("Lesson 31 conjunction, recursion, fellowship, affinity, and distributive gates interact", [
-        ctx.evaluateClassicalNahuatlNominalConstruction(lesson31Base({
-            structure: "conjunctive",
-            bracketing: "compound-embed",
-            source: {
-                ...lesson31Base().source,
-                bracketing: "compound-embed",
-            },
-        })).authorizationStatus,
+        ctx.evaluateClassicalNahuatlNominalConstruction(patchSource(
+            lesson31Base(),
+            {
+                embedStem: lesson31RecursiveGateStem,
+                embedClass: lesson31RecursiveGateClass,
+                embedSourceClass: lesson31RecursiveGateClass,
+                embedConstituent: {
+                    kind: "compound-nnc",
+                    stem: lesson31RecursiveGateStem,
+                    resultFrame: lesson31RecursiveGateInner,
+                },
+            }
+        )).authorizationStatus,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson31Base({
             state: "absolutive",
             source: {
@@ -1319,6 +1458,7 @@ function run(ctx = {}) {
             },
         })).blockReason,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson31Base({
+            subject: "3pl",
             reduplication: "affinity",
             reduplicationTarget: "both",
         })).authorizationStatus,
@@ -1374,7 +1514,21 @@ function run(ctx = {}) {
         })).blockReason,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson32Base({
             affectRoute: "flawed-subject",
-            source: { embedStem: "tzapa", embedClass: "tli" },
+            source: {
+                embedStem: "tzapa",
+                embedClass: "tli",
+                flawedSubjectAnalysis: {
+                    lexicalStatus: "flawed-subject-lexical-analysis",
+                    sourceStem: "tzapa",
+                    availability: "optional",
+                    semanticDomain: "abnormal-or-defective-entity",
+                    defectEntityAmbiguous: false,
+                    neutralStemClass: "tli",
+                    flawedStemClassStrategy: "irregular-silent-num1",
+                    lexicalReading: "",
+                    usuallyRooster: false,
+                },
+            },
         })).authorizationStatus,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson32Base({
             affectRoute: "flawed-subject",
@@ -1396,16 +1550,16 @@ function run(ctx = {}) {
         "affective-nominal-absolutive-affinity-number-follows-singular-num1",
         "⎕",
     ]);
-    const zolInchoative = ctx.evaluateClassicalNahuatlNominalConstruction(lesson32Base({
+    const zolInchoative = ctx.evaluateClassicalNahuatlNominalConstruction(patchSource(lesson32Base({
         affectiveOutputKind: "denominal-vnc",
         denominalKind: "inchoative",
         affectiveMatrix: "zol",
-    }));
-    const zolCausative = ctx.evaluateClassicalNahuatlNominalConstruction(lesson32Base({
+    }), { embedStem: "zol", embedClass: "tli" }));
+    const zolCausative = ctx.evaluateClassicalNahuatlNominalConstruction(patchSource(lesson32Base({
         affectiveOutputKind: "denominal-vnc",
         denominalKind: "causative",
         affectiveMatrix: "zol",
-    }));
+    }), { embedStem: "zol", embedClass: "tli" }));
     s.eq("Lesson 32 zol denominal consequences use the canonical finite VNC path", {
         inchoative: [zolInchoative.authorizationStatus, zolInchoative.operationFrame?.stem, zolInchoative.formulaRealization],
         causative: [zolCausative.authorizationStatus, zolCausative.operationFrame?.stem, zolCausative.formulaRealization],
@@ -1485,8 +1639,8 @@ function run(ctx = {}) {
         ],
         pejorative: [
             "authorized",
-            "chōca-⎕-pol-o-ā",
-            "#ni-0(chōca-⎕-pol-o-a)0+0-0#",
+            "chōca-0-pōl-o-ā",
+            "#ni-0(chōca-0-pōl-o-a)0+0-0#",
         ],
     });
     s.eq("Lesson 33 restrictions remain mechanical in the shared VNC owner", [
@@ -1571,8 +1725,8 @@ function run(ctx = {}) {
             value,
             classifier: "rock",
         })).operationFrame?.stem
-    )), ["cen-te", "ōn-te", "ēx-te", "nāuh-te"]);
-    s.eq("Lesson 34 classifier families and referent gates are executable", [
+    )), ["cen-te", "ōn-te", "ē-te", "nāuh-te"]);
+    s.eq("Lesson 34 classifier families use typed compatibility without example-noun gates", [
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({ value: 2, classifier: "rock" })).authorizationStatus,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({ value: 2, classifier: "row" })).authorizationStatus,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({ value: 2, classifier: "thing" })).authorizationStatus,
@@ -1593,10 +1747,15 @@ function run(ctx = {}) {
             value: 40,
             classifier: "quimil",
             source: { referentClass: "paper" },
+        })).authorizationStatus,
+        ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({
+            value: 40,
+            classifier: "quimil",
+            source: { compatibleClassifiers: ["ipil"] },
         })).blockReason,
     ], ["authorized", "authorized", "authorized", "authorized",
         "cob-classifier-is-not-licensed-beyond-thirty-nine", "authorized",
-        "quimil-referent-class-not-licensed"]);
+        "authorized", "selected-counting-set-not-compatible-with-typed-referent"]);
     const cobMissingPrerequisite =
         ctx.evaluateClassicalNahuatlNominalConstruction(
             lesson34Base({ value: 39, classifier: "cob" })
@@ -1610,19 +1769,24 @@ function run(ctx = {}) {
                 )),
             }
         ));
-    s.eq("Lesson 34 cob counts consume only the owner-issued tlamic preterit-agentive prerequisite", [
-        cobMissingPrerequisite.blockReason,
+    s.eq("Lesson 34 cob counts derive or consume only an owner-issued tlamic prerequisite", [
+        cobMissingPrerequisite.authorizationStatus,
+        cobMissingPrerequisite.operationFrame?.cobPreteritAgentiveResultFrame
+            ?.wordSurface,
         cobForgedPrerequisite.blockReason,
     ], [
-        "cob-twenty-route-requires-engine-issued-tlamic-preterit-agentive",
+        "authorized",
+        "tlamic",
         "cob-twenty-route-requires-engine-issued-tlamic-preterit-agentive",
     ]);
     s.eq("Lesson 34 ordinary and gross count gates interact with animacy, state, and possessor", [
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({
+            value: 2,
             countKind: "gross",
             subject: "3common",
         })).blockReason,
         ctx.evaluateClassicalNahuatlNominalConstruction(lesson34Base({
+            value: 2,
             countKind: "gross",
             subject: "3pl",
             state: "possessive",

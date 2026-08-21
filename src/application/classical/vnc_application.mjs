@@ -13,6 +13,9 @@ import {
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
+import {
+  buildClassicalNahuatlParticipantFrame,
+} from "../../core/classical/participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
 
 export function createClassicalNahuatlVncApplicationModule(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION = 1;
@@ -505,12 +508,29 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const objectPerson = normalizeClassicalNahuatlVncApplicationToken(request?.objectPerson || request?.object);
       const governor = normalizeClassicalNahuatlVncApplicationToken(request?.governor || "directive");
       const derivationalLevel = Number(request?.derivationalLevel || index + 1);
+      const objectId = normalizeClassicalNahuatlVncApplicationToken(request?.objectId || `source-object-${index + 1}`);
+      const nonspecificHuman = objectKind === "nonspecific-human";
+      const nonspecificNonhuman = objectKind === "nonspecific-nonhuman";
       return Object.freeze({
-        objectId: normalizeClassicalNahuatlVncApplicationToken(request?.objectId || `source-object-${index + 1}`),
+        objectId,
         objectKind,
         objectPerson,
         governor,
-        derivationalLevel
+        derivationalLevel,
+        ...(request?.silentSpecificObject === true
+          ? { silentSpecificObject: true }
+          : {}),
+        ...(request?.mainlineLinearPriority === true
+          ? { mainlineLinearPriority: true }
+          : {}),
+        participantFrame: buildClassicalNahuatlParticipantFrame({
+          role: governor === "causative" ? "causee" : "object",
+          agreement: objectPerson,
+          animacy: request?.animacy || (nonspecificHuman ? "animate" : "unspecified"),
+          humanness: request?.humanness || (nonspecificHuman ? "human" : nonspecificNonhuman ? "nonhuman" : "unspecified"),
+          specificity: nonspecificHuman || nonspecificNonhuman ? "nonspecific" : "specific",
+          referenceId: request?.referenceId || objectId,
+        }),
       });
     }
     function getClassicalNahuatlVncApplicationSourceObjectRequests(request = {}, sourceValence = "") {
@@ -528,7 +548,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         objectKind: objectKind === "mainline-reflexive" || objectKind === "shuntline-reflexive" ? "reflexive" : objectKind,
         objectPerson: objectKind === "specific-projective" ? request.objectPerson || request.object || "" : "",
         governor: "directive",
-        derivationalLevel: 1
+        derivationalLevel: 1,
+        silentSpecificObject: request.silentSpecificObject === true,
       })]);
     }
     function getClassicalNahuatlVncApplicationSpecificCoreferenceBlockReason({
@@ -1020,9 +1041,39 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           "embeddedSubject",
         );
       const requestedSourceSubject = normalizeClassicalNahuatlVncApplicationToken(request.sourceSubject || request.embeddedSubject || "3sg");
-      const sourceSubject = derivationType === "causative" && causativeObjectKind === "reflexive"
+      const requestedSourceSubjectCategory = derivationType === "causative" && causativeObjectKind === "reflexive"
         ? subject
         : requestedSourceSubject;
+      const sourceSubjectAgreementMatch = /^(1|2|3)(sg|pl|common)$/u.exec(requestedSourceSubjectCategory);
+      const requestedSourceSubjectPerson = normalizeClassicalNahuatlVncApplicationToken(
+        request.sourceSubjectPerson || sourceSubjectAgreementMatch?.[1] || "3",
+      );
+      const requestedSourceSubjectAnimacy = normalizeClassicalNahuatlVncApplicationToken(
+        request.sourceSubjectAnimacy || "animate",
+      );
+      const requestedSourceSubjectHumanness = normalizeClassicalNahuatlVncApplicationToken(
+        request.sourceSubjectHumanness
+          || (sourceSubjectAgreementMatch?.[1] === "3" ? "unspecified" : "human"),
+      );
+      const requestedSourceSubjectNumber = normalizeClassicalNahuatlVncApplicationToken(
+        request.sourceSubjectNumber
+          || (sourceSubjectAgreementMatch?.[2] === "pl" ? "plural" : "singular"),
+      );
+      const sourceSubjectFrame = buildClassicalNahuatlParticipantFrame({
+        role: "subject",
+        agreement: requestedSourceSubjectCategory,
+        person: requestedSourceSubjectPerson,
+        animacy: requestedSourceSubjectAnimacy,
+        humanness: requestedSourceSubjectHumanness,
+        number: requestedSourceSubjectNumber,
+        hasReferent: true,
+        impersonal: false,
+      });
+      const sourceSubjectPerson = sourceSubjectFrame.person;
+      const sourceSubjectAnimacy = sourceSubjectFrame.animacy;
+      const sourceSubjectHumanness = sourceSubjectFrame.humanness;
+      const sourceSubjectNumber = sourceSubjectFrame.number;
+      const sourceSubject = sourceSubjectFrame.morphologicalAgreement;
       const requestedCausativeSpecificShuntlineRealization =
         normalizeClassicalNahuatlVncApplicationToken(
           request.causativeSpecificShuntlineRealization,
@@ -1045,6 +1096,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceInitialIAnalysis,
         subject,
         sourceSubject,
+        sourceSubjectPerson,
+        sourceSubjectAnimacy,
+        sourceSubjectHumanness,
+        sourceSubjectNumber,
+        sourceSubjectFrame,
         sourceSubjectExplicit,
         mood: normalizeClassicalNahuatlVncApplicationToken(request.mood || "indicative"),
         tense: normalizeClassicalNahuatlVncApplicationToken(request.tense || "present"),
@@ -1717,12 +1773,16 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             normalizeClassicalNahuatlVncApplicationObjectRequest,
           )
           : null;
+      const normalizedCanonicalSourceObjectRequests =
+        sourceDescriptor.sourceObjectRequests.map(
+          normalizeClassicalNahuatlVncApplicationObjectRequest,
+        );
       const explicitSourceObjectsMatch = !explicitSourceObjectRequests
         || Boolean(
           normalizedExplicitSourceObjectRequests
           && areClassicalNahuatlVncApplicationCanonicalValuesEqual(
             normalizedExplicitSourceObjectRequests,
-            sourceDescriptor.sourceObjectRequests,
+            normalizedCanonicalSourceObjectRequests,
           )
         );
       if (
@@ -2123,6 +2183,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     }
     function isClassicalNahuatlVncApplicationResultFrame(frame = null) {
       return runClassicalNahuatlVncApplicationValidationTransaction(() => isClassicalNahuatlVncApplicationResultFrameInternal(frame));
+    }
+    function isClassicalNahuatlVncApplicationIssuedResultFrame(
+      frame = null,
+    ) {
+      return Boolean(
+        classicalNahuatlVncApplicationBuiltResultFrames.has(frame)
+        && isClassicalNahuatlVncApplicationResultFrame(frame)
+      );
     }
     function interpretClassicalNahuatlVncContextualTime(
       vncApplicationFrame = null,
@@ -2912,12 +2980,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const rebuiltVoiceObjectRequests = directDerivation
         ? rebuiltCanonicalActiveDescriptor.objectRequests
         : expectedTargetObjectRequests;
-      const rebuiltLesson20NonactiveOptionInventory = runtimeTarget.getClassicalNahuatlNonactiveStemOptions(rebuiltVoiceTargetStem, {
+      const rebuiltNonactiveSourceStem = directDerivation
+        ? rebuiltSourceMachineryFrame?.sourceVerbstem
+          || rebuiltSourceAnalysisFrame?.sourceStem
+          || rebuiltCanonicalActiveDescriptor.stem
+          || rebuiltVoiceTargetStem
+        : rebuiltCanonicalActiveDescriptor.stem || rebuiltVoiceTargetStem;
+      const rebuiltLesson20NonactiveOptionInventory = runtimeTarget.getClassicalNahuatlNonactiveStemOptions(rebuiltNonactiveSourceStem, {
         verbClass: rebuiltVoiceTargetClass,
         sourceValence: rebuiltVoiceTargetValence
       });
       const rebuiltAllowedVoiceOperations = getClassicalNahuatlVncApplicationAllowedVoices({
-        sourceStem: rebuiltVoiceTargetStem,
+        sourceStem: rebuiltNonactiveSourceStem,
         sourceValence: rebuiltVoiceTargetValence,
         outputScope: frame.normalizedRequest.outputScope,
         nonactiveOptionInventory: rebuiltLesson20NonactiveOptionInventory,
@@ -4767,6 +4841,47 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     function getClassicalNahuatlVncApplicationBlockReason(machineryFrame = null, fallback = "") {
       return normalizeClassicalNahuatlVncApplicationToken(machineryFrame?.blockReason || machineryFrame?.proofFrame?.blockReason || machineryFrame?.proofFrame?.conclusion?.blockReason || fallback);
     }
+    function buildClassicalNahuatlVncApplicationParticipantProjection(
+      normalizedRequest = {},
+      derivationOperationFrame = null,
+    ) {
+      const transform = derivationOperationFrame?.participantTransformFrame || {};
+      const addedObjectId = String(transform.addedObjectRequest?.objectId || "");
+      const targetObjectRequests = Array.isArray(transform.targetObjectRequests)
+        ? transform.targetObjectRequests
+        : normalizedRequest.sourceObjectRequests || [];
+      const projectObject = (request = {}, index = 0) => {
+        const objectKind = normalizeClassicalNahuatlVncApplicationToken(request.objectKind);
+        const objectPerson = normalizeClassicalNahuatlVncApplicationToken(request.objectPerson);
+        const objectId = normalizeClassicalNahuatlVncApplicationToken(request.objectId || `object-${index + 1}`);
+        const causee = Boolean(
+          objectId === addedObjectId
+          || request.governor === "causative"
+          || transform.causativeObjectKind && request === transform.addedObjectRequest
+        );
+        return buildClassicalNahuatlParticipantFrame({
+          role: causee ? "causee" : "object",
+          agreement: objectPerson,
+          animacy: request.animacy || (objectKind === "nonspecific-human" ? "animate" : "unspecified"),
+          humanness: request.humanness
+            || (objectKind === "nonspecific-human" ? "human"
+              : objectKind === "nonspecific-nonhuman" ? "nonhuman"
+                : "unspecified"),
+          specificity: objectKind.startsWith("nonspecific-") ? "nonspecific" : "specific",
+          referenceId: request.referenceId || objectId,
+        });
+      };
+      return Object.freeze({
+        kind: "classical-nahuatl-vnc-participant-projection",
+        sourceSubject: normalizedRequest.sourceSubjectFrame,
+        targetSubject: buildClassicalNahuatlParticipantFrame({
+          role: "subject",
+          agreement: normalizedRequest.subject,
+        }),
+        sourceObjects: Object.freeze((normalizedRequest.sourceObjectRequests || []).map(projectObject)),
+        targetObjects: Object.freeze(targetObjectRequests.map(projectObject)),
+      });
+    }
     function buildClassicalNahuatlVncApplicationFrame({
       normalizedRequest,
       controlFrame,
@@ -4801,6 +4916,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const formulaRealization = finiteSurfaceFrame?.authorizationStatus === "authorized"
         ? normalizeClassicalNahuatlVncApplicationToken(finiteSurfaceFrame.formulaRealization)
         : "";
+      const participantProjection = buildClassicalNahuatlVncApplicationParticipantProjection(
+        normalizedRequest,
+        derivationOperationFrame,
+      );
       const resultFrame = {
         kind: "classical-nahuatl-vnc-application-result-frame",
         version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
@@ -4816,6 +4935,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceAnalysisFrame: authorizationStatus === "authorized" ? sourceAnalysisFrame : null,
         activeMachineryFrame,
         derivationOperationFrame,
+        participantProjection,
         selectedMachineryFrame: authorizationStatus === "authorized" ? selectedMachineryFrame : null,
         finalTypedVncSlotFrame,
         formulaRealization,
@@ -5155,7 +5275,13 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         const targetValence = requestedDerivation === "direct"
           ? canonicalActiveDescriptor.sourceValence || fallbackDirectTargetValence(targetObjectRequests)
           : getClassicalNahuatlVncApplicationTargetValence(derivationOperationFrame, effectiveSourceValence);
-        const nonactiveSourceStem = activeAuthorized ? canonicalActiveDescriptor.stem : targetStem;
+        const nonactiveSourceStem = activeAuthorized
+          ? requestedDerivation === "direct"
+            ? sourceMachineryFrame?.sourceVerbstem
+              || sourceAnalysisFrame?.sourceStem
+              || canonicalActiveDescriptor.stem
+            : canonicalActiveDescriptor.stem
+          : targetStem;
         const nonactiveSourceClass = activeAuthorized ? canonicalActiveDescriptor.verbClass || targetClass : targetClass;
         const nonactiveSourceValence = activeAuthorized ? canonicalActiveDescriptor.sourceValence || targetValence : targetValence;
         const nonactiveSourceObjectRequests = activeAuthorized ? canonicalActiveDescriptor.objectRequests : targetObjectRequests;
@@ -5678,7 +5804,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           applicationFrame?.authorizationStatus === "authorized"
           && applicationFrame.resultFrame?.authorizationStatus
             === "authorized"
-          && isClassicalNahuatlVncApplicationFrame(applicationFrame)
+          && classicalNahuatlVncApplicationBuiltFrames.has(
+            applicationFrame,
+          )
+          && classicalNahuatlVncApplicationBuiltResultFrames.has(
+            applicationFrame.resultFrame,
+          )
         ) {
           issuedApplicationResultFrames.add(applicationFrame.resultFrame);
         }
@@ -5730,12 +5861,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           : sourceResultFrame;
         const sourceMachineryFrame =
           canonicalContinuationResultFrame?.selectedMachineryFrame || null;
-        if (
-          !isCanonicalClassicalNahuatlVncApplicationDerivationSourceMachineryFrame(
-            sourceMachineryFrame,
-            dependencySource,
-          )
-        ) {
+        const continuationMachineryCanonical =
+          canonicalContinuationResultFrame?.selectedDerivation === "direct"
+            ? Boolean(
+              (applicationResultAuthorized || lateOperationResultAuthorized)
+              && sourceMachineryFrame
+                === canonicalContinuationResultFrame.selectedMachineryFrame
+            )
+            : isCanonicalClassicalNahuatlVncApplicationDerivationSourceMachineryFrame(
+              sourceMachineryFrame,
+              dependencySource,
+            );
+        if (!continuationMachineryCanonical) {
           return null;
         }
         const sourceDescriptor =
@@ -5762,7 +5899,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           getClassicalNahuatlVncApplicationRuntimeTarget();
         const lateClosureAuthorized = Boolean(
           sourceResultFrame?.authorizationStatus === "authorized"
-          && ["compound", "purposive"].includes(
+          && ["compound", "purposive", "honorific"].includes(
             sourceResultFrame.operationFrame?.operation,
           )
           && typeof currentRuntimeTarget?.isClassicalNahuatlClosureFrame
@@ -5782,12 +5919,27 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             normalizeClassicalNahuatlVncApplicationToken(
               operationFrame.targetValence,
             ) || "intransitive";
+          const targetObjectRequests = (
+            operationFrame.targetTypedVncSlotFrame?.slots?.prePredicate || []
+          ).map(slot => slot?.objectPositionFrame)
+            .filter(Boolean)
+            .map((position, index) => ({
+              objectId: position.objectId || `source-object-${index + 1}`,
+              objectKind: position.objectKind || "",
+              objectPerson: position.objectPerson || "",
+              objectNumber: position.objectNumber || "",
+              governor: position.governor || "directive",
+              derivationalLevel: Number(
+                position.derivationalLevel || index + 1
+              ),
+            }));
           const sourceObjectRequests = targetValence === "intransitive"
             ? Object.freeze([])
             : Object.freeze(
-              (sourceDescriptor.sourceObjectRequests || []).map(
-                cloneClassicalNahuatlVncApplicationCompactValue,
-              ),
+              (targetObjectRequests.length
+                ? targetObjectRequests
+                : sourceDescriptor.sourceObjectRequests || []
+              ).map(cloneClassicalNahuatlVncApplicationCompactValue),
             );
           if (
             operationFrame.targetStem
@@ -6459,6 +6611,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         projectClassicalNahuatlVncParadigmCoordinates,
         inflectClassicalNahuatlVncPredicateCoordinate,
         isClassicalNahuatlVncApplicationResultFrame,
+        isClassicalNahuatlVncApplicationIssuedResultFrame,
         isClassicalNahuatlVncApplicationFrame,
         interpretClassicalNahuatlVncContextualTime,
         isClassicalNahuatlVncContextualTimeFrame,
@@ -6511,6 +6664,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlVncParadigmPlan,
         isClassicalNahuatlVncParadigmCoordinateFrame,
         isClassicalNahuatlVncApplicationResultFrame,
+        isClassicalNahuatlVncApplicationIssuedResultFrame,
         isClassicalNahuatlVncApplicationFrame,
         interpretClassicalNahuatlVncContextualTime,
         isClassicalNahuatlVncContextualTimeFrame,
@@ -6600,6 +6754,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.getClassicalNahuatlVncApplicationTargetValence = getClassicalNahuatlVncApplicationTargetValence;
     api.getClassicalNahuatlVncApplicationFinalTypedFrame = getClassicalNahuatlVncApplicationFinalTypedFrame;
     api.isClassicalNahuatlVncApplicationResultFrame = isClassicalNahuatlVncApplicationResultFrame;
+    api.isClassicalNahuatlVncApplicationIssuedResultFrame =
+      isClassicalNahuatlVncApplicationIssuedResultFrame;
     api.isClassicalNahuatlVncApplicationFrame = isClassicalNahuatlVncApplicationFrame;
     api.interpretClassicalNahuatlVncContextualTime =
       interpretClassicalNahuatlVncContextualTime;

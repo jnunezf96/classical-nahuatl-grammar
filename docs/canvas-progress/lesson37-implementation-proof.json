@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "lesson": 37,
+  "groups": {
+    "lesson37-deverbal-source-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-z-active-action": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-liz-active-action-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-liz-replacive-stem-families": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-root-ya-liz": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-way-of-and-lexical-readings": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-compound-active-action-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-active-action-potential-patient-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-impersonal-general-action": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-action-nnc-continuations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-z-liz-tzin-assimilation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-active-passive-action-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-action-nnc-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-patientive-taxonomy-and-truncation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-passive-patientive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-passive-patientive-lo": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_16_18_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-passive-patientive-o": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_16_18_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-passive-patientive-hua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_16_18_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-reflexive-passive-patientive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_19_20_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    },
+    "lesson37-double-object-passive-patientive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson37_groups_19_20_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson37_reader_guidance.test.js"
+    }
+  }
+}

@@ -13,6 +13,54 @@
     "lesson30-higher-valence-object-incorporation": {
       "status": "ACCEPTED",
       "acceptedJob": "Apply the same productive object-incorporation rule to double- and triple-object matrices. Consume exactly one typed object level, preserve every remaining participant and shuntline relation, expose an object-role choice only where the typed Source permits a real ambiguity, and pass the complete Result into ordinary later derivation."
+    },
+    "lesson30-exceptional-tla-fusion-and-source-ambiguity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the exceptional adverbial formation structurally: an intransitive matrix beginning with fused tla leaves the nominal embed with a form-or-nature role. Keep ordinary means or instrument analysis distinct, and request an analysis only when the typed Source licenses both. Never authorize the route from an example-stem list."
+    },
+    "lesson30-incorporated-adverb-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build incorporated adverbs through the shared nominal-embed owner, preserve direct-adverb and supplementation histories as distinct typed Sources, keep matrix valence and participants unchanged, and request a Source-history choice only where more than one history remains possible."
+    },
+    "lesson30-means-and-instrument-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive means and instrument incorporation productively for open typed nounstems and verbstems. Keep the embed adverbial rather than subject or agent, preserve matrix valence, and delete an intimate possessor only when typed referent identity unifies it with a matrix participant; expose a referent choice only when identity remains genuinely unresolved."
+    },
+    "lesson30-place-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Incorporate every compatible typed place-denoting NNC Result through the shared adverb owner, including compound NNC Results. Preserve the complete embed and its internal boundaries, all matrix participants, and unchanged valence. Suppress a possessor only when typed referent identity licenses it, and never gate the rule by a place stem or compound template."
+    },
+    "lesson30-time-duration-cause-and-purpose-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the shared adverb operation to typed time, duration, cause, and purpose relations while preserving all matrix participants and valence. Derive grammatical scope and compatible contextual readings automatically, expose an Analysis only when multiple relations remain possible, and never let a translation or Canvas witness authorize admission."
+    },
+    "lesson30-manner-and-compared-manner-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply ordinary manner, form-or-style, and compared-manner relations through the shared adverb owner without changing matrix valence. Derive subject comparison automatically for intransitive matrices, request subject versus object only when a transitive Source leaves both possible, and preserve cause-versus-compared-manner ambiguity only when both typed analyses survive."
+    },
+    "lesson30-unique-embed-nounstems": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve a genuinely lexical unique-embed analysis as typed Source evidence without letting the small Canvas inventory authorize incorporation. Carry exact morphemic structure, historical uncertainty, destockal or frequentative shape, and real-versus-supportive initial i through the shared productive path and ordinary continuation."
+    },
+    "lesson30-possessive-supplementary-subject-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture an owner-issued intransitive principal and possessive supplementary NNC, incorporate the supplement adverbially, promote its possessor from possessive to nominative as finite subject, preserve referent identity and the deeper semantic link, and leave matrix valence unchanged."
+    },
+    "lesson30-possessive-supplementary-object-and-passive-adverbs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture typed supplementation, promote a possessive supplement's possessor from possessive to objective as the matrix object, and preserve unchanged matrix valence. Enforce the intimate applicative restriction from typed derivational history, allow the licensed less-intimate imitation, and under passive discard the active subject while preserving its supplement adverbially, promoting the former object to subject, and prohibiting a passive agent."
+    },
+    "lesson30-incorporated-complements": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build subject- and object-oriented incorporated complements from typed NNC and VNC Sources, preserve matrix valence and participants, and delete the embedded nominal subject only through typed referent identity with the selected matrix participant. Expose orientation, complement kind, or target referent only for genuine ambiguity; preserve boundaries and productive w-plus-m assimilation without stem or translation gates."
+    },
+    "lesson30-reduplication-and-nonactive-continuation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply reduplication to the typed embed boundary, matrix boundary, or both and expose semantic scope only where genuinely ambiguous. Recapture the completed compound through the ordinary nonactive owner, deriving passive availability from a remaining specific object and impersonal availability from intransitive or nonspecific-object valence."
+    },
+    "lesson30-embed-is-not-agent-or-subject": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the incorporated nominal's object, complement, or adverb role distinct from the finite subject and agent in every Lesson 30 Result. Prohibit passive-agent expression, derive the faceless third-singular impersonal subject automatically, and reject translation-based reanalysis without adding subject, agent, or translation controls."
     }
   }
 }

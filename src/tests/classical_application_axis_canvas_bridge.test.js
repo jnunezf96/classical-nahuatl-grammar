@@ -11,7 +11,7 @@ function readJson(relativePath) {
 function run() {
     const s = createSuite("classical_application_axis_canvas_bridge");
     const dispositions = readJson("../../docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json");
-    const bridge = readJson("../../docs/CLASSICAL_APPLICATION_AXIS_CANVAS_BRIDGE.json");
+    const bridge = dispositions.canvasProvenance;
     const semanticScope = readJson("../../docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json");
     const rendering = fs.readFileSync(
         path.resolve(__dirname, "../ui/rendering/rendering.mjs"),
@@ -76,8 +76,8 @@ function run() {
             .map((entry) => entry.applicationAxisAtomId),
         missingSelectorBindings,
     }, {
-        interactiveAxisCount: 64,
-        bridgeAxisCount: 64,
+        interactiveAxisCount: 66,
+        bridgeAxisCount: 66,
         duplicateAxisCount: 0,
         setDrift: [],
         emptyMappings: [],
@@ -100,8 +100,8 @@ function run() {
         evidenceAbsenceBlocksGeneration: bridge.authority.evidenceAbsenceBlocksGeneration,
     }, {
         bridgeVersion: 2,
-        linkedAtomCount: 95,
-        uniqueLinkedAtomCount: 86,
+        linkedAtomCount: 98,
+        uniqueLinkedAtomCount: 89,
         exhaustivelyReviewedAtomCount: 28540,
         applicationAxesCreatedByAtomAssertions: 0,
         invalidLinks: [],

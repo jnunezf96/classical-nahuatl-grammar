@@ -54,26 +54,26 @@
       "complete": false
     },
     "applicationAxisClassification": {
-      "numerator": 184,
-      "denominator": 184,
+      "numerator": 441,
+      "denominator": 441,
       "percent": 100,
       "complete": true
     },
     "genuineChoiceCanvasProvenance": {
-      "numerator": 58,
-      "denominator": 58,
+      "numerator": 66,
+      "denominator": 66,
       "percent": 100,
       "complete": true
     },
     "genuineChoiceLiveDeclarations": {
-      "numerator": 18,
-      "denominator": 58,
-      "percent": 31.03,
+      "numerator": 26,
+      "denominator": 66,
+      "percent": 39.39,
       "complete": false
     },
     "genuineChoiceBrowserDeliveryProof": {
       "numerator": null,
-      "denominator": 58,
+      "denominator": 66,
       "percent": null,
       "complete": false,
       "status": "not-measured"
@@ -1010,83 +1010,63 @@
   },
   "interaction": {
     "allAxes": {
-      "operationCount": 85,
-      "uniqueAxisCount": 344,
-      "entryCount": 392,
+      "operationCount": 100,
+      "uniqueAxisCount": 379,
+      "entryCount": 441,
       "status": {
-        "classified": 392,
+        "classified": 441,
         "unresolved": 0
       },
       "surfaceDisposition": {
-        "interactive-choice": 64,
+        "interactive-choice": 66,
         "read-only-fact": 0,
         "diagnostic-evidence": 0,
         "internal-support": 2,
-        "intentionally-unsurfaced": 326,
+        "intentionally-unsurfaced": 373,
         "unresolved": 0
       },
       "semanticFactRole": {
         "architecture-invariant": 22,
-        "boundary-conditioned-fact": 44,
-        "contextual-fact": 111,
-        "derived-fact": 114,
-        "genuine-user-choice": 64,
-        "lexical-fact": 37,
+        "boundary-conditioned-fact": 51,
+        "contextual-fact": 113,
+        "derived-fact": 131,
+        "genuine-user-choice": 66,
+        "lexical-fact": 58,
         "unresolved": 0
       },
       "roleEvidenceKind": {
-        "live-application-declaration": 312,
+        "live-application-declaration": 361,
         "canonical-owner-contract-audit": 80
       }
     },
-    "genuineChoiceCount": 64,
-    "liveDeclarationCount": 24,
+    "genuineChoiceCount": 66,
+    "liveDeclarationCount": 26,
     "contractOnlyCount": 40,
     "contractOnlyBacklog": [
       {
-        "atomId": "CAA-clause-adverbial-adjunction--clause-position",
-        "operationId": "clause:adverbial-adjunction",
-        "axisId": "clause-position"
+        "atomId": "CAA-vnc-ordered-voice-chain--voice-operation-order",
+        "operationId": "vnc:ordered-voice-chain",
+        "axisId": "voice-operation-order"
       },
       {
-        "atomId": "CAA-clause-adverbial-adjunction--relation-scope",
-        "operationId": "clause:adverbial-adjunction",
-        "axisId": "relation-scope"
+        "atomId": "CAA-vnc-ordered-voice-application--voice-operation-order",
+        "operationId": "vnc:ordered-voice-application",
+        "axisId": "voice-operation-order"
       },
       {
-        "atomId": "CAA-clause-comparison--degree-strategy",
-        "operationId": "clause:comparison",
-        "axisId": "degree-strategy"
+        "atomId": "CAA-vnc-derivational-operation--derivation-family",
+        "operationId": "vnc:derivational-operation",
+        "axisId": "derivation-family"
       },
       {
-        "atomId": "CAA-clause-comparison--superlative-strategy",
-        "operationId": "clause:comparison",
-        "axisId": "superlative-strategy"
+        "atomId": "CAA-grammar-nominal-construction--nominal-embed",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "nominal-embed"
       },
       {
-        "atomId": "CAA-clause-composition--clause-rank",
-        "operationId": "clause:composition",
-        "axisId": "clause-rank"
-      },
-      {
-        "atomId": "CAA-clause-composition--complement-relation",
-        "operationId": "clause:composition",
-        "axisId": "complement-relation"
-      },
-      {
-        "atomId": "CAA-clause-composition--conjunction-relation",
-        "operationId": "clause:composition",
-        "axisId": "conjunction-relation"
-      },
-      {
-        "atomId": "CAA-clause-composition--parallel-structure",
-        "operationId": "clause:composition",
-        "axisId": "parallel-structure"
-      },
-      {
-        "atomId": "CAA-clause-composition--relation-marker",
-        "operationId": "clause:composition",
-        "axisId": "relation-marker"
+        "atomId": "CAA-grammar-nominal-construction--compound-nnc",
+        "operationId": "grammar:nominal-construction",
+        "axisId": "compound-nnc"
       },
       {
         "atomId": "CAA-grammar-nominal-construction--affective-nnc",
@@ -1099,64 +1079,9 @@
         "axisId": "cardinal-number"
       },
       {
-        "atomId": "CAA-grammar-nominal-construction--compound-nnc",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "compound-nnc"
-      },
-      {
         "atomId": "CAA-grammar-nominal-construction--measure-modification",
         "operationId": "grammar:nominal-construction",
         "axisId": "measure-modification"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--nominal-embed",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "nominal-embed"
-      },
-      {
-        "atomId": "CAA-nnc-adjectival-modification--adjunctor",
-        "operationId": "nnc:adjectival-modification",
-        "axisId": "adjunctor"
-      },
-      {
-        "atomId": "CAA-nnc-adjectival-modification--compound-head-target",
-        "operationId": "nnc:adjectival-modification",
-        "axisId": "compound-head-target"
-      },
-      {
-        "atomId": "CAA-nnc-adjectival-modification--modification-topology",
-        "operationId": "nnc:adjectival-modification",
-        "axisId": "modification-topology"
-      },
-      {
-        "atomId": "CAA-nnc-adjectival-modification--modifier-head-order",
-        "operationId": "nnc:adjectival-modification",
-        "axisId": "modifier-head-order"
-      },
-      {
-        "atomId": "CAA-nnc-adjectival-modification--transitive-reference-contact",
-        "operationId": "nnc:adjectival-modification",
-        "axisId": "transitive-reference-contact"
-      },
-      {
-        "atomId": "CAA-nnc-adverbial--adverbial-context",
-        "operationId": "nnc:adverbial",
-        "axisId": "adverbial-context"
-      },
-      {
-        "atomId": "CAA-nnc-adverbial--clause-rank",
-        "operationId": "nnc:adverbial",
-        "axisId": "clause-rank"
-      },
-      {
-        "atomId": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
-        "operationId": "nnc:deverbal-construction",
-        "axisId": "double-nucleus-ownerhood"
-      },
-      {
-        "atomId": "CAA-nnc-deverbal-construction--external-object",
-        "operationId": "nnc:deverbal-construction",
-        "axisId": "external-object"
       },
       {
         "atomId": "CAA-nnc-deverbal-construction--nominalization-family",
@@ -1169,6 +1094,136 @@
         "axisId": "patientive-family"
       },
       {
+        "atomId": "CAA-nnc-deverbal-construction--external-object",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "external-object"
+      },
+      {
+        "atomId": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
+        "operationId": "nnc:deverbal-construction",
+        "axisId": "double-nucleus-ownerhood"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--modification-topology",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "modification-topology"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--modifier-head-order",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "modifier-head-order"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--adjunctor",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "adjunctor"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--transitive-reference-contact",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "transitive-reference-contact"
+      },
+      {
+        "atomId": "CAA-nnc-adjectival-modification--compound-head-target",
+        "operationId": "nnc:adjectival-modification",
+        "axisId": "compound-head-target"
+      },
+      {
+        "atomId": "CAA-nnc-adverbial--adverbial-context",
+        "operationId": "nnc:adverbial",
+        "axisId": "adverbial-context"
+      },
+      {
+        "atomId": "CAA-nnc-adverbial--clause-rank",
+        "operationId": "nnc:adverbial",
+        "axisId": "clause-rank"
+      },
+      {
+        "atomId": "CAA-nnc-relational--relation-family",
+        "operationId": "nnc:relational",
+        "axisId": "relation-family"
+      },
+      {
+        "atomId": "CAA-nnc-relational--possessor-structure",
+        "operationId": "nnc:relational",
+        "axisId": "possessor-structure"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--place-formation",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "place-formation"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--gentilic-formation",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "gentilic-formation"
+      },
+      {
+        "atomId": "CAA-nnc-place-gentilic--collectivity",
+        "operationId": "nnc:place-gentilic",
+        "axisId": "collectivity"
+      },
+      {
+        "atomId": "CAA-clause-adverbial-adjunction--relation-scope",
+        "operationId": "clause:adverbial-adjunction",
+        "axisId": "relation-scope"
+      },
+      {
+        "atomId": "CAA-clause-adverbial-adjunction--clause-position",
+        "operationId": "clause:adverbial-adjunction",
+        "axisId": "clause-position"
+      },
+      {
+        "atomId": "CAA-clause-composition--complement-relation",
+        "operationId": "clause:composition",
+        "axisId": "complement-relation"
+      },
+      {
+        "atomId": "CAA-clause-composition--conjunction-relation",
+        "operationId": "clause:composition",
+        "axisId": "conjunction-relation"
+      },
+      {
+        "atomId": "CAA-clause-composition--clause-rank",
+        "operationId": "clause:composition",
+        "axisId": "clause-rank"
+      },
+      {
+        "atomId": "CAA-clause-composition--relation-marker",
+        "operationId": "clause:composition",
+        "axisId": "relation-marker"
+      },
+      {
+        "atomId": "CAA-clause-composition--parallel-structure",
+        "operationId": "clause:composition",
+        "axisId": "parallel-structure"
+      },
+      {
+        "atomId": "CAA-clause-comparison--degree-strategy",
+        "operationId": "clause:comparison",
+        "axisId": "degree-strategy"
+      },
+      {
+        "atomId": "CAA-clause-comparison--superlative-strategy",
+        "operationId": "clause:comparison",
+        "axisId": "superlative-strategy"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--denominal-operation",
+        "operationId": "vnc:denominal",
+        "axisId": "denominal-operation"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--target-verbstem-class",
+        "operationId": "vnc:denominal",
+        "axisId": "target-verbstem-class"
+      },
+      {
+        "atomId": "CAA-vnc-denominal--finite-participants",
+        "operationId": "vnc:denominal",
+        "axisId": "finite-participants"
+      },
+      {
         "atomId": "CAA-nnc-personal-name--name-source-family",
         "operationId": "nnc:personal-name",
         "axisId": "name-source-family"
@@ -1179,69 +1234,14 @@
         "axisId": "outer-subject"
       },
       {
-        "atomId": "CAA-nnc-personal-name--reranking",
-        "operationId": "nnc:personal-name",
-        "axisId": "reranking"
-      },
-      {
         "atomId": "CAA-nnc-personal-name--sentence-operation",
         "operationId": "nnc:personal-name",
         "axisId": "sentence-operation"
       },
       {
-        "atomId": "CAA-nnc-place-gentilic--collectivity",
-        "operationId": "nnc:place-gentilic",
-        "axisId": "collectivity"
-      },
-      {
-        "atomId": "CAA-nnc-place-gentilic--gentilic-formation",
-        "operationId": "nnc:place-gentilic",
-        "axisId": "gentilic-formation"
-      },
-      {
-        "atomId": "CAA-nnc-place-gentilic--place-formation",
-        "operationId": "nnc:place-gentilic",
-        "axisId": "place-formation"
-      },
-      {
-        "atomId": "CAA-nnc-relational--possessor-structure",
-        "operationId": "nnc:relational",
-        "axisId": "possessor-structure"
-      },
-      {
-        "atomId": "CAA-nnc-relational--relation-family",
-        "operationId": "nnc:relational",
-        "axisId": "relation-family"
-      },
-      {
-        "atomId": "CAA-vnc-denominal--denominal-operation",
-        "operationId": "vnc:denominal",
-        "axisId": "denominal-operation"
-      },
-      {
-        "atomId": "CAA-vnc-denominal--finite-participants",
-        "operationId": "vnc:denominal",
-        "axisId": "finite-participants"
-      },
-      {
-        "atomId": "CAA-vnc-denominal--target-verbstem-class",
-        "operationId": "vnc:denominal",
-        "axisId": "target-verbstem-class"
-      },
-      {
-        "atomId": "CAA-vnc-derivational-operation--derivation-family",
-        "operationId": "vnc:derivational-operation",
-        "axisId": "derivation-family"
-      },
-      {
-        "atomId": "CAA-vnc-ordered-voice-application--voice-operation-order",
-        "operationId": "vnc:ordered-voice-application",
-        "axisId": "voice-operation-order"
-      },
-      {
-        "atomId": "CAA-vnc-ordered-voice-chain--voice-operation-order",
-        "operationId": "vnc:ordered-voice-chain",
-        "axisId": "voice-operation-order"
+        "atomId": "CAA-nnc-personal-name--reranking",
+        "operationId": "nnc:personal-name",
+        "axisId": "reranking"
       }
     ]
   },
@@ -1288,57 +1288,33 @@
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-adverbial-adjunction--clause-position",
-      "operationId": "clause:adverbial-adjunction",
-      "axisId": "clause-position"
+      "id": "CAA-vnc-ordered-voice-chain--voice-operation-order",
+      "operationId": "vnc:ordered-voice-chain",
+      "axisId": "voice-operation-order"
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-adverbial-adjunction--relation-scope",
-      "operationId": "clause:adverbial-adjunction",
-      "axisId": "relation-scope"
+      "id": "CAA-vnc-ordered-voice-application--voice-operation-order",
+      "operationId": "vnc:ordered-voice-application",
+      "axisId": "voice-operation-order"
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-comparison--degree-strategy",
-      "operationId": "clause:comparison",
-      "axisId": "degree-strategy"
+      "id": "CAA-vnc-derivational-operation--derivation-family",
+      "operationId": "vnc:derivational-operation",
+      "axisId": "derivation-family"
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-comparison--superlative-strategy",
-      "operationId": "clause:comparison",
-      "axisId": "superlative-strategy"
+      "id": "CAA-grammar-nominal-construction--nominal-embed",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "nominal-embed"
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-composition--clause-rank",
-      "operationId": "clause:composition",
-      "axisId": "clause-rank"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-composition--complement-relation",
-      "operationId": "clause:composition",
-      "axisId": "complement-relation"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-composition--conjunction-relation",
-      "operationId": "clause:composition",
-      "axisId": "conjunction-relation"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-composition--parallel-structure",
-      "operationId": "clause:composition",
-      "axisId": "parallel-structure"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-clause-composition--relation-marker",
-      "operationId": "clause:composition",
-      "axisId": "relation-marker"
+      "id": "CAA-grammar-nominal-construction--compound-nnc",
+      "operationId": "grammar:nominal-construction",
+      "axisId": "compound-nnc"
     },
     {
       "kind": "genuine-choice-not-live-declared",
@@ -1354,75 +1330,9 @@
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--compound-nnc",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "compound-nnc"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
       "id": "CAA-grammar-nominal-construction--measure-modification",
       "operationId": "grammar:nominal-construction",
       "axisId": "measure-modification"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--nominal-embed",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "nominal-embed"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adjectival-modification--adjunctor",
-      "operationId": "nnc:adjectival-modification",
-      "axisId": "adjunctor"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adjectival-modification--compound-head-target",
-      "operationId": "nnc:adjectival-modification",
-      "axisId": "compound-head-target"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adjectival-modification--modification-topology",
-      "operationId": "nnc:adjectival-modification",
-      "axisId": "modification-topology"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adjectival-modification--modifier-head-order",
-      "operationId": "nnc:adjectival-modification",
-      "axisId": "modifier-head-order"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adjectival-modification--transitive-reference-contact",
-      "operationId": "nnc:adjectival-modification",
-      "axisId": "transitive-reference-contact"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adverbial--adverbial-context",
-      "operationId": "nnc:adverbial",
-      "axisId": "adverbial-context"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-adverbial--clause-rank",
-      "operationId": "nnc:adverbial",
-      "axisId": "clause-rank"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
-      "operationId": "nnc:deverbal-construction",
-      "axisId": "double-nucleus-ownerhood"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-deverbal-construction--external-object",
-      "operationId": "nnc:deverbal-construction",
-      "axisId": "external-object"
     },
     {
       "kind": "genuine-choice-not-live-declared",
@@ -1438,6 +1348,162 @@
     },
     {
       "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--external-object",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "external-object"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-deverbal-construction--double-nucleus-ownerhood",
+      "operationId": "nnc:deverbal-construction",
+      "axisId": "double-nucleus-ownerhood"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--modification-topology",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "modification-topology"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--modifier-head-order",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "modifier-head-order"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--adjunctor",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "adjunctor"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--transitive-reference-contact",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "transitive-reference-contact"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adjectival-modification--compound-head-target",
+      "operationId": "nnc:adjectival-modification",
+      "axisId": "compound-head-target"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adverbial--adverbial-context",
+      "operationId": "nnc:adverbial",
+      "axisId": "adverbial-context"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-adverbial--clause-rank",
+      "operationId": "nnc:adverbial",
+      "axisId": "clause-rank"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-relational--relation-family",
+      "operationId": "nnc:relational",
+      "axisId": "relation-family"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-relational--possessor-structure",
+      "operationId": "nnc:relational",
+      "axisId": "possessor-structure"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--place-formation",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "place-formation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--gentilic-formation",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "gentilic-formation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-nnc-place-gentilic--collectivity",
+      "operationId": "nnc:place-gentilic",
+      "axisId": "collectivity"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-adverbial-adjunction--relation-scope",
+      "operationId": "clause:adverbial-adjunction",
+      "axisId": "relation-scope"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-adverbial-adjunction--clause-position",
+      "operationId": "clause:adverbial-adjunction",
+      "axisId": "clause-position"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--complement-relation",
+      "operationId": "clause:composition",
+      "axisId": "complement-relation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--conjunction-relation",
+      "operationId": "clause:composition",
+      "axisId": "conjunction-relation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--clause-rank",
+      "operationId": "clause:composition",
+      "axisId": "clause-rank"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--relation-marker",
+      "operationId": "clause:composition",
+      "axisId": "relation-marker"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-composition--parallel-structure",
+      "operationId": "clause:composition",
+      "axisId": "parallel-structure"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-comparison--degree-strategy",
+      "operationId": "clause:comparison",
+      "axisId": "degree-strategy"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-clause-comparison--superlative-strategy",
+      "operationId": "clause:comparison",
+      "axisId": "superlative-strategy"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--denominal-operation",
+      "operationId": "vnc:denominal",
+      "axisId": "denominal-operation"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--target-verbstem-class",
+      "operationId": "vnc:denominal",
+      "axisId": "target-verbstem-class"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
+      "id": "CAA-vnc-denominal--finite-participants",
+      "operationId": "vnc:denominal",
+      "axisId": "finite-participants"
+    },
+    {
+      "kind": "genuine-choice-not-live-declared",
       "id": "CAA-nnc-personal-name--name-source-family",
       "operationId": "nnc:personal-name",
       "axisId": "name-source-family"
@@ -1450,81 +1516,15 @@
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-personal-name--reranking",
-      "operationId": "nnc:personal-name",
-      "axisId": "reranking"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
       "id": "CAA-nnc-personal-name--sentence-operation",
       "operationId": "nnc:personal-name",
       "axisId": "sentence-operation"
     },
     {
       "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-place-gentilic--collectivity",
-      "operationId": "nnc:place-gentilic",
-      "axisId": "collectivity"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-place-gentilic--gentilic-formation",
-      "operationId": "nnc:place-gentilic",
-      "axisId": "gentilic-formation"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-place-gentilic--place-formation",
-      "operationId": "nnc:place-gentilic",
-      "axisId": "place-formation"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-relational--possessor-structure",
-      "operationId": "nnc:relational",
-      "axisId": "possessor-structure"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-nnc-relational--relation-family",
-      "operationId": "nnc:relational",
-      "axisId": "relation-family"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-denominal--denominal-operation",
-      "operationId": "vnc:denominal",
-      "axisId": "denominal-operation"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-denominal--finite-participants",
-      "operationId": "vnc:denominal",
-      "axisId": "finite-participants"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-denominal--target-verbstem-class",
-      "operationId": "vnc:denominal",
-      "axisId": "target-verbstem-class"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-derivational-operation--derivation-family",
-      "operationId": "vnc:derivational-operation",
-      "axisId": "derivation-family"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-ordered-voice-application--voice-operation-order",
-      "operationId": "vnc:ordered-voice-application",
-      "axisId": "voice-operation-order"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-ordered-voice-chain--voice-operation-order",
-      "operationId": "vnc:ordered-voice-chain",
-      "axisId": "voice-operation-order"
+      "id": "CAA-nnc-personal-name--reranking",
+      "operationId": "nnc:personal-name",
+      "axisId": "reranking"
     },
     {
       "kind": "atom-link-without-exact-canonical-behavior-proof",
@@ -88210,16 +88210,15 @@
     {
       "kind": "missing-per-axis-browser-delivery-proof-registry",
       "id": "genuine-choice-browser-delivery-proof",
-      "axisCount": 58
+      "axisCount": 66
     }
   ],
   "inputDigests": {
-    "canvas": "sha256:61cb02c8076d8266256d1ed9d2b89ecec9a14f3214f70056533c1fc7ad4934f9",
-    "semanticLedger": "sha256:e3ac696a2dd913a0d44781acd3eb00833269bb2a0ce7b559d6965f778775f4a5",
-    "atomUiReconciliation": "sha256:4685feaf32c5fe34eaed6b5c0b647a9a9eec86f50f7a65cb8b9616037db7c54f",
+    "canvas": "sha256:a20c35929a62c4705e8477eb4edf7ef07296b7c5069eea00b459736ac9fb2591",
+    "semanticLedger": "sha256:354a20630d4c47010b65ae179025a8457c1a072a8c1700095d9c3fbe61fa28db",
+    "atomUiReconciliation": "sha256:b5eda912f8332d56a93cefad2c3199c7a4afe4dbc5261a562e76256b9f756d28",
     "proofMigration": "sha256:42ac2eecced5d220ea6e360096cf81f118466acce8fa3c8a3e7edf01196e18f5",
-    "applicationBridge": "sha256:d45ffbeb562909e2886a3c11a08e5cf7ecd1c955e03293d3cead8946d11df792",
-    "applicationDispositions": "sha256:cd1a86d3f53c994aecf8bfa680fe0ddabf5c6c5ea3d6f12b04b0667dbee3c506",
+    "applicationDispositions": "sha256:e726238b573d8d3149864fd47420f949bb6b3474683b6254978a7e83ace14cbd",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
     "activeExactObservationPointer": "sha256:d5f7690e71782b5585b4c3c76d76cc0cf5a5e9ebd0620dd186abbd34c4e731e9"
   }

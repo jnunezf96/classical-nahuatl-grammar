@@ -1108,11 +1108,25 @@ function run(ctx = {}) {
         "#3 projects Andrews formation, participants, scope, and later voice from one canonical application envelope",
         (() => {
             const application = createClassicalNahuatlVncApplication(ctx);
-            const evaluateSelected = (request, targetStem) => {
+            const evaluateSelected = (
+                request, targetStem, nonactiveTargetStem = ""
+            ) => {
                 const selection = selectApplicationDerivationOption(application, request, targetStem);
-                return application.evaluate({
+                const selectedRequest = {
                     ...request,
                     derivationOptionId: selection.option?.optionId || "missing-option",
+                };
+                const preview = application.evaluate(selectedRequest);
+                if (!nonactiveTargetStem) return preview;
+                const nonactiveOption = preview.controlFrame
+                    ?.nonactiveOptionInventory?.options?.find(option => (
+                        option.lesson20OptionId?.split(":").slice(1).join(":")
+                            === nonactiveTargetStem
+                    ));
+                return application.evaluate({
+                    ...selectedRequest,
+                    nonactiveOptionId:
+                        nonactiveOption?.optionId || "missing-option",
                 });
             };
             const chihua = buildClassicalNahuatlVncDerivationExplanationProjection(evaluateSelected({
@@ -1146,7 +1160,7 @@ function run(ctx = {}) {
                 requestedDerivation: "causative",
                 causativeObjectKind: "specific-projective",
                 requestedVoice: "passive",
-            }, "tom-a"));
+            }, "tom-a", "tom-a-lō"));
             const miquiAddition = buildClassicalNahuatlVncDerivationExplanationProjection(evaluateSelected({
                 sourceStem: "miqui",
                 verbClass: "B",
@@ -1855,7 +1869,7 @@ function run(ctx = {}) {
                     { kind: "specific-projective", person: "3sg", governor: "directive" },
                     { kind: "nonspecific-human", person: "", governor: "causative" },
                 ],
-                formula: "#ti-0+⎕-0+tē(chīhua-l-tia)0+0-0#",
+                formula: "#ti-0+tē+⎕-0(chīhua-l-tia)0+0-0#",
                 canonical: true,
             },
             sourcePassiveTargetPassive: {
@@ -2060,7 +2074,11 @@ function run(ctx = {}) {
                 status: "blocked",
                 reason: "lesson20-nonactive-option-selection-required",
                 selectorRequired: true,
-                options: ["hua:mahuī-hua", "o-hua:ma-ō-hua"],
+                    options: [
+                        "hua:mahuī-hua",
+                        "hua-lō:mahui-hua-lō",
+                        "o-hua:ma-ō-hua",
+                    ],
                 internalBridgeExposed: false,
             },
             activeDerivation: {
@@ -2649,7 +2667,7 @@ function run(ctx = {}) {
                 status: "authorized",
                 sourceVoice: "passive",
                 sourceMachineryVoice: "passive",
-                formula: "#ti-0+⎕-0+tē(chīhua-l-tia)0+0-0#",
+                formula: "#ti-0+tē+⎕-0(chīhua-l-tia)0+0-0#",
                 canonicalBeforeMutationAttempts: [true, true, true],
                 canonicalAfterMutationAttempts: true,
             },
@@ -3134,11 +3152,11 @@ function run(ctx = {}) {
             shuntlineRealizations: [{
                 status: "authorized",
                 selected: "silent",
-                formula: "#0-0+⎕-0+tē(mach-tia)0+0-0#",
+                formula: "#0-0+tē+⎕-0(mach-tia)0+0-0#",
             }, {
                 status: "authorized",
                 selected: "sounded",
-                formula: "#0-0+qui-0+tē(mach-tia)0+0-0#",
+                formula: "#0-0+tē+c-0(mach-tia)0+0-0#",
             }],
             poisonedControlInventoryCanonical: false,
         }

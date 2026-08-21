@@ -312,7 +312,7 @@ function run(ctx = {}) {
         && rendering.includes("const diagramNotation = getClassicalGeneralFormulaAnnotations(text)")
         && rendering.includes("[...mapped, ...diagramNotation, ...diagramSlotJobs]")
         && rendering.includes("renderClassicalDiagramDerivedAnnotations(")
-        && rendering.includes("renderClassicalGeneralFormulaAnnotations(formula, generalLinearFormula)")
+        && rendering.includes("renderClassicalGeneralFormulaAnnotations(\n              linearFormula,\n              generalLinearFormula\n            )")
         && rendering.includes("specificLinearFormula")
         && rendering.includes("specificLinearTypedSlotFrame")
         && rendering.includes("classicalDerivedAnnotationLessons")

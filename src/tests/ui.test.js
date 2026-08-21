@@ -291,13 +291,13 @@ function run(ctx = {}) {
                     sentenceSurfaceMode: "statement",
                     polarityMode: "positive",
                 });
-                const wish = ctx.buildClassicalRuleLogicSurfaceFrame({
+                const exclamation = ctx.buildClassicalRuleLogicSurfaceFrame({
                     basalUnit: "nnc",
                     stem: "a-c-ah",
                     sourceEmbedStem: "a-c",
                     sourceMatrixStem: "ah",
                     subject: "1pl",
-                    sentenceSurfaceMode: "wish",
+                    sentenceSurfaceMode: "exclamation",
                     polarityMode: "negative",
                     sentenceParticleId: "l3-auh-conjunctor",
                 });
@@ -309,9 +309,9 @@ function run(ctx = {}) {
                     formulaAuthority: surface.formulaAuthority,
                     sentenceAuthority: surface.sentenceSurfaceAuthority,
                     stringAuthority: surface.sentenceSurfaceFrame?.formulaStringAuthority,
-                    wishMode: wish.state?.sentenceSurfaceMode,
-                    wishFormula: wish.sentenceFormulaDisplay,
-                    wishSurface: wish.sentenceSurfaceDisplay,
+                    exclamationMode: exclamation.state?.sentenceSurfaceMode,
+                    exclamationFormula: exclamation.sentenceFormulaDisplay,
+                    exclamationSurface: exclamation.sentenceSurfaceDisplay,
                 };
             })()
             : "rendering-runtime-not-loaded",
@@ -324,9 +324,9 @@ function run(ctx = {}) {
                 formulaAuthority: "NNC selected-output logic",
                 sentenceAuthority: "typed-nnc-plus-authorized-sentence-composition",
                 stringAuthority: false,
-                wishMode: "wish",
-                wishFormula: "auh mā ca#t-0(a-c-ah)m-eh#.",
-                wishSurface: "Auh mā catacahmeh.",
+                exclamationMode: "exclamation",
+                exclamationFormula: "auh ah#t-0(a-c-ah)m-eh#!",
+                exclamationSurface: "Auh ahtacahmeh!",
             }
             : "rendering-runtime-not-loaded"
     );
@@ -362,7 +362,7 @@ function run(ctx = {}) {
             ].map((options) => {
                 const surface = ctx.buildClassicalRuleLogicSurfaceFrame({
                     basalUnit: "nnc",
-                    sentenceSurfaceMode: "statement",
+                    sentenceSurfaceMode: "question",
                     polarityMode: "positive",
                     ...options,
                 });
@@ -1242,12 +1242,12 @@ function run(ctx = {}) {
             && css.includes("body.is-language-classical #classical-source-panel .verb-block__feedback")
     );
     s.ok(
-        "Classical CSS surface contract is organized by Source Authority Result",
-        (css.includes("Classical shell surface contract: Source -> Authority -> Result.")
+        "Classical CSS surface contract is organized by Source Grammar Result",
+        (css.includes("Source -> Grammar -> Result presentation")
             && html.includes('data-classical-panel-container="source"')
             && html.includes('data-classical-panel-container="authority"')
             && html.includes('data-classical-panel-container="authorized-result"'))
-            || css.includes("Classical shell surface contract: Source -> Authority -> Result.")
+            || css.includes("Source -> Grammar -> Result presentation")
             && css.includes('body.is-language-classical .panel-grid[data-andrews-layout="source-authority-authorized-result"]')
             && css.includes('grid-template-areas: "source-authority result";')
             && css.includes('body.is-language-classical [data-classical-panel-stack="source-authority-result"]')
@@ -1280,7 +1280,7 @@ function run(ctx = {}) {
             && css.includes('--classical-shell-formula-size:')
             && css.includes('body.is-language-classical [data-classical-internal-scaffold="entry-board-mirror"]')
             && css.includes('body.is-language-classical .verb-entry-board-tabs[data-classical-source-board-mirror="true"]')
-            && css.indexOf("Classical shell surface contract: Source -> Authority -> Result.") > css.indexOf(".book-map")
+            && css.indexOf("Source -> Grammar -> Result presentation") > css.indexOf(".book-map")
             && html.includes('data-classical-panel-container="source"')
             && html.includes('data-classical-panel-container="authority"')
             && html.includes('data-classical-panel-container="authorized-result"')
@@ -1591,8 +1591,9 @@ function run(ctx = {}) {
                     && !rendering.includes("const engineDeterminedClass"),
                 automaticSingleFormationHidden: rendering.includes("derivationSelectionRequired || derivationInventory.options.length > 1")
                     && !rendering.includes('derivationType === "applicative" || surfaceFrame.state?.derivationSelectorRequired === true || derivationSelectionRecoveryRequired'),
-                applicativeHeading: classicalAuthorityControlsHtml.includes('data-classical-vnc-authority-heading="derivation"')
-                    && rendering.includes('heading.textContent = derivationType === "applicative" ? "Applicative"'),
+                derivationInsideVerbstemBlock: rendering.includes(
+                    'createPersistentSection("verbstem", "Verbstem", "")'
+                ) && rendering.includes('verbstemBody.appendChild(preview);'),
                 threeDropdownRoles: [
                     'data-classical-derivation-authority-control="formation"',
                     'data-classical-derivation-authority-control="participant"',
@@ -1623,7 +1624,7 @@ function run(ctx = {}) {
             ],
             classVisibleInDirectEvenWhenDeterminate: true,
             automaticSingleFormationHidden: true,
-            applicativeHeading: true,
+            derivationInsideVerbstemBlock: true,
             threeDropdownRoles: true,
             threeDropdownOrder: true,
             generatedFormationLabel: true,
@@ -1931,6 +1932,13 @@ function run(ctx = {}) {
                     syncClassicalNncSourceAnalysisControls: () => null,
                     syncClassicalVncAuthorityOptionPresentation: () => null,
                     getClassicalRuleLogicSurfaceControlValue: () => "",
+                    getClassicalRuleLogicVncSubjectFrame: () => ({
+                        agreement: "1sg",
+                        person: "1",
+                        animacy: "animate",
+                        humanness: "human",
+                        number: "singular",
+                    }),
                     getClassicalAuthorityControlLayout: () => "other",
                     getClassicalNncAuthorityOptionContract: () => ({
                         numberValues: [],
@@ -2745,6 +2753,7 @@ function run(ctx = {}) {
                     mood: "indicative",
                     tense: "present",
                     sentenceSurfaceMode: "question-cuix",
+                    sentenceParticleId: "l3-cuix",
                 }, {
                     lesson: "6",
                     stem: "mati",
@@ -2757,6 +2766,7 @@ function run(ctx = {}) {
                     mood: "indicative",
                     tense: "present",
                     sentenceSurfaceMode: "question-cuix",
+                    sentenceParticleId: "l3-cuix",
                 }];
                 return requestRows.map((request) => {
                     const baseline = ctx.buildClassicalRuleLogicSurfaceFrame({
@@ -2906,6 +2916,7 @@ function run(ctx = {}) {
                     vncOutputScope: "single",
                     sentenceSurfaceMode: "statement",
                     sentenceNegativeMode: "positive",
+                    sourceInitialISelection: "real",
                 });
                 return {
                     status: surface.authorizationStatus,
@@ -2944,11 +2955,13 @@ function run(ctx = {}) {
                     ...common,
                     subject: "1sg",
                     sentenceSurfaceMode: "command",
+                    introductoryModifier: "tēl",
                 });
                 const secondPersonLegacyExhortation = ctx.buildClassicalRuleLogicSurfaceFrame({
                     ...common,
                     subject: "2sg",
                     sentenceSurfaceMode: "exhortation",
+                    introductoryParticle: "none",
                 });
                 const futureCommand = ctx.buildClassicalRuleLogicSurfaceFrame({
                     stem: "tequi-ti",
@@ -3489,8 +3502,8 @@ function run(ctx = {}) {
                     prefaceValues: ["none", "ihyo"],
                     modifier: "none",
                     modifierValues: ["none", "cuēl", "ye-cuēl", "cuēl-eh", "ye-cuēl-eh", "tēl"],
-                    sentence: "statement",
-                    sentenceValues: ["statement"],
+                    sentence: "question",
+                    sentenceValues: ["statement", "question", "exclamation"],
                     prefix: "antecessive",
                 },
                 optativeSecond: {
@@ -3513,8 +3526,8 @@ function run(ctx = {}) {
                     introValues: ["mā"],
                     prefaceValues: ["none"],
                     modifierValues: ["none", "nēn"],
-                    sentence: "statement",
-                    sentenceValues: ["statement"],
+                    sentence: "exclamation",
+                    sentenceValues: ["statement", "question", "exclamation"],
                     prefix: "none",
                 },
                 indicative: {
@@ -3525,9 +3538,9 @@ function run(ctx = {}) {
                     prefaceValues: ["none"],
                     modifier: "none",
                     modifierValues: ["none"],
-                    sentence: "question-cuix",
+                    sentence: "question",
                     prefix: "antecessive",
-                    sentenceValues: ["statement", "emphatic", "question-intonation", "question-cuix"],
+                    sentenceValues: ["statement", "question", "exclamation"],
                 },
                 futureOptative: {
                     tense: "future",
@@ -3735,6 +3748,7 @@ function run(ctx = {}) {
                     stem: "mati",
                     lesson: "7",
                     basalUnit: "vnc",
+                    sourceTransitivity: "transitive",
                     valence: "specific-projective",
                     subject: "1sg",
                     mood: "indicative",
@@ -3765,23 +3779,27 @@ function run(ctx = {}) {
                 const ixChixThirdObject = ctx.buildClassicalRuleLogicSurfaceFrame({
                     ...base,
                     stem: "ix-chix",
+                    sourceInitialISelection: "real",
                     objectPerson: "3sg",
                     sentenceSurfaceMode: "statement",
                 });
                 const ixChixPluralOn = ctx.buildClassicalRuleLogicSurfaceFrame({
                     ...base,
                     stem: "ix-chix",
+                    sourceInitialISelection: "real",
                     objectPerson: "3pl",
                 });
                 const ixChixPluralHual = ctx.buildClassicalRuleLogicSurfaceFrame({
                     ...base,
                     stem: "ix-chix",
+                    sourceInitialISelection: "real",
                     objectPerson: "3pl",
                     directionalPrefix: "huāl",
                 });
                 const ixChixSingularHual = ctx.buildClassicalRuleLogicSurfaceFrame({
                     ...base,
                     stem: "ix-chix",
+                    sourceInitialISelection: "real",
                     objectPerson: "3sg",
                     directionalPrefix: "huāl",
                 });
@@ -4359,6 +4377,7 @@ function run(ctx = {}) {
                         lesson: "7",
                         basalUnit: "vnc",
                         sourceTransitivity: "intransitive",
+                        sourceInitialISelection: "real",
                         valence: "intransitive",
                         subject: "1sg",
                         mood: "indicative",
@@ -4421,9 +4440,9 @@ function run(ctx = {}) {
                 surfaceSourceParts: "fuente-user",
                 surfaceEmbed: "ixi",
                 surfaceMatrix: "chihua",
-                surfaceStatus: "blocked",
-                surfaceReason: "classical-vnc-proof-not-authorized",
-                surfaceFormula: "",
+                surfaceStatus: "authorized",
+                surfaceReason: "",
+                surfaceFormula: "#n-0(ixichihua)0+0-0#",
                 surfaceDerivedStem: "",
                 surfaceBoundaryKey: "",
             }
@@ -4502,9 +4521,9 @@ function run(ctx = {}) {
             })()
             : (ctx.__TEST_RUNTIME_MODE__ === "module" ? "module-runtime-missing" : "composer-runtime-not-loaded"),
         {
-            sourceValue: "(huel-iht-o-a)",
-            builtStem: "huel-iht-o-a",
-            builtSource: "(huel-iht-o-a)",
+            sourceValue: "(hueliht-o-a)",
+            builtStem: "hueliht-o-a",
+            builtSource: "(hueliht-o-a)",
             parts: "huel + iht-o-a",
             role: "machine-mirror:built-from-typed-source-parts",
             status: "built from embed + matrix",
@@ -4520,6 +4539,7 @@ function run(ctx = {}) {
                     lesson: "7",
                     basalUnit: "vnc",
                     sourceTransitivity: "transitive",
+                    sourceInitialISelection: "real",
                     valence: "projective-nonhuman",
                     subject: "1sg",
                     mood: "indicative",
@@ -4559,7 +4579,7 @@ function run(ctx = {}) {
                 countAtLeastTwo: true,
                 sourceKind: "fuente-preservada",
                 sourceObserved: "ix + mati",
-                sourceResult: "(ix-mati)",
+                sourceResult: "(ixmati)",
                 fusionKind: "tla-fusion",
                 fusionSource: "+tla(ix-mati)",
                 fusionResult: "(ix-tla-mati)",
@@ -4675,6 +4695,7 @@ function run(ctx = {}) {
                         lesson: "7",
                         basalUnit: "vnc",
                         sourceTransitivity: "intransitive",
+                        sourceInitialISelection: "real",
                         valence: "intransitive",
                         subject: "1sg",
                         mood: "indicative",
@@ -4941,6 +4962,7 @@ function run(ctx = {}) {
                     lesson: "7",
                     basalUnit: "vnc",
                     sourceTransitivity: "transitive",
+                    sourceInitialISelection: "real",
                     valence: "projective-nonhuman",
                     subject: "1sg",
                     mood: "indicative",
@@ -4957,6 +4979,7 @@ function run(ctx = {}) {
                     lesson: "7",
                     basalUnit: "vnc",
                     sourceTransitivity: "transitive",
+                    sourceInitialISelection: "real",
                     valence: "projective-nonhuman",
                     subject: "1sg",
                     mood: "indicative",
@@ -5052,6 +5075,7 @@ function run(ctx = {}) {
                         basalUnit: "vnc",
                         stem: "ix-mati",
                         sourceTransitivity: "transitive",
+                        sourceInitialISelection: "real",
                         valence: "projective-nonhuman",
                         subject: "1sg",
                         mood: "indicative",
@@ -5888,7 +5912,6 @@ function run(ctx = {}) {
         browserRuntimeHas("src/core/clause/clause.mjs")
             && state.includes("function getCurrentNuclearClauseShell")
             && state.includes("buildNuclearClauseShellMetadata")
-            && state.includes("clauseLabel")
             && clause.includes("getNuclearClauseDisplayLabel(formulaType)")
             && clause.includes("formulaAbbreviation")
             && clause.includes("getNuclearClauseFormulaInventory")
@@ -6070,7 +6093,7 @@ function run(ctx = {}) {
                         particleHonorificized: true,
                         adverbial: "l3-oc",
                         polarity: "negative",
-                        surface: "question-cuix",
+                        surface: "question",
                         introductoryParticle: "tlā",
                         prefaceParticle: "ye",
                         introductoryModifier: "tēl",
@@ -6078,10 +6101,10 @@ function run(ctx = {}) {
                     },
                 });
                 const directSentenceRoundTrip = ctx.parseEntradaUrlSegmentString(directSentenceHash);
-                const nncWishHash = ctx.buildEntradaUrlHash({
+                const nncExclamationHash = ctx.buildEntradaUrlHash({
                     input: "(a-c-ah)",
                     board: "ordinary-nnc",
-                    sentence: { surface: "wish" },
+                    sentence: { surface: "exclamation" },
                 });
                 const invalidSentenceParticle = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-particle/l3-mec");
                 const invalidSentenceAdverbial = ctx.parseEntradaUrlSegmentString("#classical/v1/verb/(chōca)/sentence-adverbial/l3-hui");
@@ -6110,11 +6133,11 @@ function run(ctx = {}) {
                         && directSentenceHash.includes("/sentence-adverbial/l3-oc")
                         && !directSentenceHash.includes("/sentence-adverbial-position/")
                         && directSentenceHash.includes("/sentence-polarity/negative")
-                        && directSentenceHash.includes("/sentence-type/question-cuix")
+                        && directSentenceHash.includes("/sentence-type/question")
                         && directSentenceHash.includes("/sentence-antecessive/1")
                         && !directSentenceHash.includes("/v/"),
                     directSentenceRoundTrip: directSentenceRoundTrip?.sentence || null,
-                    nncWishRoundTrip: ctx.parseEntradaUrlSegmentString(nncWishHash)?.sentence?.surface || "",
+                    nncExclamationRoundTrip: ctx.parseEntradaUrlSegmentString(nncExclamationHash)?.sentence?.surface || "",
                     invalidSentenceParticleFailsClosed: invalidSentenceParticle?.sentence?.invalidFields || [],
                     invalidSentenceAdverbialFailsClosed: invalidSentenceAdverbial?.sentence?.invalidFields || [],
                     invalidSentenceHonorificFailsClosed: invalidSentenceHonorific?.sentence?.invalidFields || [],
@@ -6167,18 +6190,19 @@ function run(ctx = {}) {
             directParadigmRoundTrip: "paradigm",
             directSentenceUsesNamedSegments: true,
             directSentenceRoundTrip: {
+                combination: "none",
                 particle: "l3-auh-interjection",
                 particleHonorificized: true,
                 adverbial: "l3-oc",
                 polarity: "negative",
-                surface: "question-cuix",
+                surface: "question",
                 introductoryParticle: "tlā",
                 prefaceParticle: "ye",
                 introductoryModifier: "tēl",
                 antecessive: true,
                 invalidFields: [],
             },
-            nncWishRoundTrip: "wish",
+            nncExclamationRoundTrip: "exclamation",
             invalidSentenceParticleFailsClosed: ["particle"],
             invalidSentenceAdverbialFailsClosed: ["adverbial"],
             invalidSentenceHonorificFailsClosed: ["particleHonorificized"],
@@ -8364,8 +8388,8 @@ function run(ctx = {}) {
             && rendering.includes('nuclearClauseDiagram.className = "classical-rule-surface__format-section classical-rule-surface__diagram"')
             && rendering.includes('sentenceFormulaSection.className = "classical-rule-surface__format-section classical-rule-surface__format-section--sentence classical-rule-surface__sentence-formula-section"')
             && rendering.includes('sentenceSurfaceSection.className = "classical-rule-surface__format-section classical-rule-surface__format-section--sentence classical-rule-surface__sentence-surface-section"')
-            && rendering.includes('createFormulaSpecificitySwitch("Linear format"')
-            && rendering.includes('createFormulaSpecificitySwitch("Diagrammatic format"')
+            && rendering.includes("function createClassicalResultSpecificitySwitch(")
+            && rendering.includes("const resultSpecificitySwitch = createClassicalResultSpecificitySwitch(")
             && rendering.includes('const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || ""')
             && rendering.includes('const generalDiagramRows = surfaceFrame.diagrammaticFrame?.generalRows || []')
             && rendering.includes('row.dataset.classicalNuclearClauseDiagramRole = diagramRow.role')
@@ -8381,19 +8405,19 @@ function run(ctx = {}) {
             && css.includes("overflow-x: auto")
     );
     s.ok(
-        "Classical #1 #2 #3 flow is compact, derivation-first, keeps nuclear clause and particle layers permanently visible, and stays answer-first",
+        "Classical #1 #2 #3 flow is compact, derivation-first, keeps five named VNC Grammar blocks, and stays answer-first",
         classicalShell.includes('data-classical-source-presentation="compact-typed-reading"')
             && classicalShell.indexOf('class="calc-operator calc-operator--derivation"')
                 < classicalShell.indexOf('class="calc-operator calc-operator--classical-rule-logic"')
             && rendering.includes("function getClassicalVncAuthorityProgressivePresentation()")
             && rendering.includes('organizer.dataset.classicalVncAuthorityOrganizer = "progressive-typed-decisions"')
-            && rendering.includes('createPersistentSection("nuclear-clause", "Nuclear clause", "subject · predicate"')
-            && rendering.includes('createPersistentSection("particle-group", "Particles & sentence group", ""')
+            && ["Subject", "Valence", "Verbstem", "Tense", "Sentence"].every(
+                title => rendering.includes(`createPersistentSection("${title.toLowerCase()}", "${title}", "")`)
+            )
             && rendering.includes('createControlGroup("function", "Function"')
             && rendering.includes('createControlGroup("sequence", "Sequence"')
             && rendering.includes('createControlGroup("dependent", "Dependent operation"')
-            && rendering.includes("section.hidden = false")
-            && !rendering.includes("presentation.nuclearClause.open = true")
+            && rendering.includes("section.hidden = !vncActive || visibleControls === 0")
             && rendering.includes("function syncClassicalVncAuthorityDerivationPreview")
             && rendering.includes("function buildClassicalVncAuthorityDerivationSurfaceModel")
             && rendering.includes('"classical-vnc-authority-derivation-surface-model"')
@@ -8411,7 +8435,9 @@ function run(ctx = {}) {
             && rendering.includes('"Imported subject (causer)"')
             && rendering.includes('"Subject · preserved from Source VNC"')
             && rendering.includes("const resultValence = getClassicalRuleLogicControlDisplayValue")
-            && rendering.includes("[sourceVoiceWrapper, sourceNonactiveWrapper, sourceSubjectWrapper, resultSubjectWrapper, causeeValenceWrapper, applicativeObjectWrapper]")
+            && rendering.includes("[sourceVoiceWrapper, sourceNonactiveWrapper].filter(Boolean)")
+            && rendering.includes("[...sourceSubjectWrappers, resultSubjectWrapper].filter(Boolean)")
+            && rendering.includes("[causeeValenceWrapper, applicativeObjectWrapper].filter(Boolean)")
             && rendering.includes("derivationSelectionRequired || derivationInventory.options.length > 1")
             && rendering.includes("preview.replaceChildren();")
             && rendering.includes('const displayValue = String(valueText ?? "").trim()')
@@ -8434,7 +8460,7 @@ function run(ctx = {}) {
             && css.includes('#classical-source-parts[data-classical-source-parts-mode="whole-stem"] .classical-source-parts__grid')
             && !css.includes('#classical-source-parts[data-classical-source-parts-mode="internal-morphemes"]')
             && !css.includes(':has([data-classical-source-parts-mode=')
-            && css.includes("Final Source + Authority presentation wins after the shared Result theme")
+            && css.includes("Source, Grammar, and Result use one level of the same named-card language")
             && css.includes("background: var(--classical-shell-surface)")
             && css.includes("border: var(--classical-shell-border)")
             && css.includes("body.is-language-classical #container-header")
@@ -8453,8 +8479,8 @@ function run(ctx = {}) {
             && css.includes("Keep #2's derivation chooser quieter")
             && css.includes("body.is-language-classical.is-ui-simple #classical-authority-panel .calc-operator--derivation")
             && css.includes("body.is-language-classical #classical-authority-panel .formula-controls-grid::after")
-            && rendering.includes('createFormulaSpecificitySwitch("Linear format"')
-            && rendering.includes('createFormulaSpecificitySwitch("Diagrammatic format"')
+            && rendering.includes("function createClassicalResultSpecificitySwitch(")
+            && rendering.includes("const resultSpecificitySwitch = createClassicalResultSpecificitySwitch(")
             && rendering.includes("predicateGroup.append(predicateMembers, predicateBrace, predicateRole)")
     );
     s.ok(
@@ -8807,7 +8833,7 @@ function run(ctx = {}) {
                 stemClassAvailability: [
                     [true, "A", ["A"]],
                     [false, "D", ["A", "B", "C", "D"]],
-                    [false, "B", ["A", "B", "D"], ["cn-l7-73-class-c"]],
+                    [false, "", ["A", "B", "D"], ["cn-l7-73-class-c"]],
                     [true, "C", ["C"], ["cn-l7-73-class-c"]],
                 ],
                 staleValenceEnumerationGateAbsent: true,
@@ -9002,10 +9028,10 @@ function run(ctx = {}) {
                     "typed-class-alternative-contradicts-canvas-form-constraint",
                 incompatibleClassRecoveryAvailable: true,
                 incompatibleClassRecoveryRendered: true,
-                canonicalStatus: "authorized",
+                canonicalStatus: "blocked",
                 canonicalClass: "tli",
                 canonicalOpenSource: false,
-                canonicalClassControlRendered: false,
+                canonicalClassControlRendered: true,
             }
             : null
     );
@@ -9260,8 +9286,8 @@ function run(ctx = {}) {
                 sentenceFormula: "in #ni-0(chōca)0+0-0#.",
                 sentenceSurface: "In nichōca.",
                 ancaMiquiSentenceSurface: "Anca nāmiqui.",
-                    layeredParticleFormula: "āuhtzin",
-                layeredParticleSurface: "Āuhtzin",
+                layeredParticleFormula: "āuhtzin oc #n-0(ā-miqui)0+0-0#?",
+                layeredParticleSurface: "Āuhtzin oc nāmiqui?",
                 sentenceSurfacePresent: true,
                 diagramAuthority: "typed-vnc-slots",
                 diagramRoles: ["Subject", "Core", "Tense"],
@@ -9510,9 +9536,9 @@ function run(ctx = {}) {
                     possessors: Array.from(new Set(
                         frame.rows.map((row) => row.state.nncPossessor)
                     )),
-                    reciprocalSubjects: frame.rows
+                    reciprocalSubjects: Array.from(new Set(frame.rows
                         .filter((row) => row.state.nncPossessor === "reciprocal")
-                        .map((row) => row.state.subject),
+                        .map((row) => row.state.subject))),
                     allRowsUseCanonicalScalar: frame.rows.every((row) => (
                         ctx.isClassicalNahuatlOrdinaryNncParadigmCoordinate(
                             row.ordinaryNncParadigmCoordinate
@@ -9552,7 +9578,7 @@ function run(ctx = {}) {
                     "Stem formation",
                     "Plural connector",
                 ],
-                rows: 47,
+                rows: 106,
                 states: ["absolutive", "possessive"],
                 subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
                 possessors: [
@@ -9569,11 +9595,11 @@ function run(ctx = {}) {
                 reciprocalSubjects: ["3sg", "3pl"],
                 allRowsUseCanonicalScalar: true,
                 maps: ["absolutive", "possessive"],
-                representedRows: 47,
-                mapEntries: 47,
+                representedRows: 106,
+                mapEntries: 106,
                 completeDiagrams: true,
                 missingDiagrams: 0,
-                displayEntries: 47,
+                displayEntries: 106,
                 columnAxis: {
                     key: "subject-number",
                     label: "Subject number",
@@ -9718,8 +9744,12 @@ function run(ctx = {}) {
                 metaphoricalRowsAllFixed: true,
                 metaphoricalHasZeroH: false,
                 metaphoricalMapRows: ["first", "second", "third"],
-                metaphoricalMapColumns: ["singular"],
-                metaphoricalPluralVariantsByPerson: [],
+                    metaphoricalMapColumns: ["singular", "plural"],
+                    metaphoricalPluralVariantsByPerson: [
+                        { person: "first", formCount: 3, numberForms: ["t-in"], stemRelations: ["plain", "affinity", "distributive-varietal"] },
+                        { person: "second", formCount: 3, numberForms: ["t-in"], stemRelations: ["plain", "affinity", "distributive-varietal"] },
+                        { person: "third", formCount: 3, numberForms: ["t-in"], stemRelations: ["plain", "affinity", "distributive-varietal"] },
+                    ],
                 canonicalCoordinates: true,
                 independentProjections: true,
                 tliPluralForms: ["t-in"],
@@ -10213,17 +10243,17 @@ function run(ctx = {}) {
                     numberForms: ["m-eh"],
                 },
                 eh: {
-                    subjects: ["1sg", "2sg", "1pl", "2pl"],
-                    selected: "1sg",
+                    subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
+                    selected: "3sg",
                 },
                 yeh: {
-                    subjects: ["3sg", "3pl"],
-                    selected: "3sg",
+                    subjects: ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"],
+                    selected: "1sg",
                 },
                 quantitive: {
                     numberForms: ["t-in", "silent-silent"],
                     matrixForms: ["c"],
-                    pluralizations: ["plain-variant", "internal-n"],
+                    pluralizations: ["internal-n", "plain-variant"],
                     canAuthorizeGeneration: false,
                 },
                 possessors: [
@@ -10299,10 +10329,9 @@ function run(ctx = {}) {
                         scalar.numberRealization.internalPluralBelongsTo,
                     subjectNumberBelongsTo:
                         scalar.numberRealization.subjectNumberBelongsTo,
-                    retiredFieldsIgnored:
-                        internalState.nncQuantitivePredicatePluralization === ""
-                        && internalState.nncQuantitiveMatrixForm === "c"
-                        && internalState.nncNumberForm === "",
+                    retiredFieldsCannotAuthorize:
+                        scalar.formulaRealization === "#ti-0(miye-c)t-in#"
+                        && scalar.numberRealization.internalPluralMorph === "none",
                     derivedChoices: {
                         numberForms: selection.derivedNumberForms,
                         matrixForms: selection.derivedMatrixForms,
@@ -10347,15 +10376,15 @@ function run(ctx = {}) {
         ctx.__TEST_RUNTIME_MODE__ === "module"
             ? {
                 scalarStatus: "authorized",
-                scalarFormula: "#ti-0(miye-quī-n)t-in#",
-                internalMorph: "n-inside-stem",
+                scalarFormula: "#ti-0(miye-c)t-in#",
+                internalMorph: "none",
                 internalBelongsTo: "predicate-stem-derivation",
                 subjectNumberBelongsTo: "subject-personal-pronoun",
-                retiredFieldsIgnored: true,
+                retiredFieldsCannotAuthorize: true,
                 derivedChoices: {
                     numberForms: ["t-in", "silent-silent"],
                     matrixForms: ["c"],
-                    pluralizations: ["plain-variant", "internal-n"],
+                    pluralizations: ["internal-n", "plain-variant"],
                     canAuthorizeGeneration: false,
                 },
                 paradigmStatus: "authorized",
@@ -10466,10 +10495,10 @@ function run(ctx = {}) {
                 distributiveOption: true,
                 documentaryMetadataAbsent: true,
                 pluralValues: ["plain", "affinity", "distributive-varietal"],
-                singularValues: ["plain"],
+                singularValues: ["plain", "affinity", "distributive-varietal"],
                 commonValues: ["plain", "affinity", "distributive-varietal"],
                 pluralAvailable: true,
-                singularAvailable: false,
+                singularAvailable: true,
                 resultKind:
                     "classical-nahuatl-ordinary-nnc-result-frame",
                 operationStemFormation: "affinity",
@@ -10536,16 +10565,15 @@ function run(ctx = {}) {
                     stem: "cal",
                     nncState: "possessive",
                     nncPossessor: "1sg",
-                    subject: "3sg",
-                    nncAnimacy: "animate",
+                    subject: "3common",
+                    nncAnimacy: "nonanimate",
                 });
                 const entries =
                     ctx.buildClassicalRuleLogicAuthorityReceiptEntries(
                         surface
                     );
                 return {
-                    resultKind:
-                        surface.nncGrammarSurfaceContract?.kind,
+                    resultKind: surface.nncGrammarSurfaceContract?.kind,
                     subclassEntry:
                         entries.find((entry) => entry.label === "Subclass"),
                     constituentAnalysisAbsent:
@@ -10576,14 +10604,9 @@ function run(ctx = {}) {
     );
     s.ok(
         "VNC Authority follows the Canvas hierarchy while genuine nonactive alternatives appear only when licensed",
-        (classicalShell.includes('data-classical-vnc-authority-heading="verbstem"')
-            && sourcePanelHtml.includes('data-classical-source-identity-control="valence"')
-            && sourcePanelHtml.includes('data-classical-source-identity-control="class"')
-            && vncApplication.includes("getClassicalNahuatlVncApplicationAllowedVoices"))
-            || classicalShell.includes('data-classical-vnc-authority-heading="verbstem"')
-            && classicalShell.includes('data-classical-vnc-authority-heading="subject"')
-            && classicalShell.includes('data-classical-vnc-authority-heading="predicate"')
-            && classicalShell.includes('data-classical-vnc-authority-heading="sentence"')
+        ["Subject", "Valence", "Verbstem", "Tense", "Sentence"].every(
+            title => rendering.includes(`createPersistentSection("${title.toLowerCase()}", "${title}", "")`)
+        )
             && sourcePanelHtml.includes('data-classical-source-identity-control="valence"')
             && sourcePanelHtml.includes('id="classical-rule-logic-valence"')
             && sourcePanelHtml.includes('data-classical-source-identity-control="class"')
@@ -10591,10 +10614,10 @@ function run(ctx = {}) {
             && !classicalAuthorityControlsHtml.includes('id="classical-rule-logic-valence"')
             && !classicalAuthorityControlsHtml.includes('id="classical-rule-logic-class"')
             && classicalShell.includes('data-classical-vnc-authority-order="sentence-introductory"')
-            && rendering.includes('document.querySelectorAll("[data-classical-vnc-authority-heading]")')
+            && rendering.includes('"#classical-rule-logic-controls [data-classical-vnc-authority-order]"')
             && rendering.includes("const CLASSICAL_VNC_AUTHORITY_PRESENTATION_CONTRACT = Object.freeze({")
             && rendering.includes('"classical-rule-logic-subject": Object.freeze(["3common"])')
-            && rendering.includes('"classical-rule-logic-sentence-surface": Object.freeze(["information-question", "wish"])')
+            && rendering.includes('"classical-rule-logic-sentence-surface": Object.freeze([])')
             && rendering.includes('"classical-rule-logic-construction",')
             && rendering.includes('"classical-rule-logic-lexical-reading",')
             && rendering.includes("function syncClassicalVncAuthorityOptionPresentation")
@@ -10835,7 +10858,7 @@ function run(ctx = {}) {
             }).map((entry) => entry.label)
             : null,
         ctx.__TEST_RUNTIME_MODE__ === "module"
-            ? ["Output scope", "Source", "Person", "Referent", "Number", "Matrix family", "Matrix form", "Predicate pluralization", "Polarity", "Sentence type"]
+            ? ["Output scope", "Source", "Person", "Animacy", "Humanness", "Number", "Matrix family", "Matrix form", "Predicate pluralization", "Polarity", "Sentence type"]
             : null
     );
     s.eq(
@@ -10870,13 +10893,16 @@ function run(ctx = {}) {
                     "Output scope:view",
                     "Stem:source",
                     "Voice:choice",
-                    "Subject:choice",
+                    "Subject person:choice",
+                    "Subject animacy:choice",
+                    "Subject humanness:choice",
+                    "Subject number:choice",
                     "Mood:choice",
                     "Tense:choice",
                     "Class:analysis",
                     "Valence:analysis",
                 ],
-                poisonedLabelsPreserveRoles: ["view", "source", "choice", "choice", "choice", "choice", "analysis", "analysis"],
+                poisonedLabelsPreserveRoles: ["view", "source", "choice", "choice", "choice", "choice", "choice", "choice", "choice", "analysis", "analysis"],
                 rendererUsesTypedRole: true,
             }
             : null
@@ -10912,7 +10938,7 @@ function run(ctx = {}) {
             }).map((entry) => `${entry.label}:${entry.value}`)
             : null,
         ctx.__TEST_RUNTIME_MODE__ === "module"
-            ? ["Output scope:full paradigm", "Stem:(cal)", "Stem formation:source stem", "Noun class:tli", "Referent:animate", "Sentence type:enunciado"]
+            ? ["Output scope:full paradigm", "Stem:(cal)", "Stem formation:source stem", "Noun class:tli", "Animacy:animate", "Sentence type:enunciado"]
             : null
     );
     s.eq(
@@ -11053,12 +11079,16 @@ function run(ctx = {}) {
     );
     s.ok(
         "VNC full paradigm uses the typed source Valence in a person-first table with batched hydration",
-        rendering.includes('Object.freeze({ key: "intransitive", label: "Intransitive VNC formula" })')
-            && rendering.includes('Object.freeze({ key: "transitive", label: "Transitive VNC formulas" })')
-            && rendering.includes('Object.freeze({ key: "vacant", label: "Vacant Valence position", description: "Intransitive VNC formula" })')
-            && rendering.includes('Object.freeze({ key: "monadic", label: "Monadic Valence position", description: "Transitive VNC formula: +va(STEM)" })')
-            && rendering.includes('Object.freeze({ key: "dyadic", label: "Dyadic Valence position", description: "Transitive VNC formula: +va¹-va²(STEM)" })')
-            && rendering.includes('label: "Shuntline reflexive/reciprocative object", family: "Monadic Valence position", structure: "+ne(STEM)"')
+        rendering.includes('label: "Intransitive VNC formula"')
+            && rendering.includes('label: "Transitive VNC formulas"')
+            && rendering.includes('label: "Vacant Valence position"')
+            && rendering.includes('description: "Intransitive VNC formula"')
+            && rendering.includes('label: "Monadic Valence position"')
+            && rendering.includes('description: "Transitive VNC formula: +va(STEM)"')
+            && rendering.includes('label: "Dyadic Valence position"')
+            && rendering.includes('description: "Transitive VNC formula: +va¹-va²(STEM)"')
+            && rendering.includes('label: "Shuntline reflexive/reciprocative object"')
+            && rendering.includes('structure: "+ne(STEM)"')
             && !rendering.includes('description: "One Valence position"')
             && !rendering.includes('description: "Two Valence subpositions"')
             && !rendering.includes('transitivitySwitch.setAttribute("aria-label", "VNC formula type")')
@@ -11069,7 +11099,7 @@ function run(ctx = {}) {
             && rendering.includes('kind: "classical-nahuatl-vnc-paradigm-conjugation-projection"')
             && !rendering.includes('studyProjection')
             && !rendering.includes('classical-nahuatl-vnc-paradigm-study-projection')
-            && rendering.includes('buildClassicalVncParadigmFrame(state, { manifestOnly: true })')
+            && rendering.includes('buildClassicalVncParadigmFrame(state, {')
             && rendering.includes('buildClassicalVncParadigmFrame(paradigmFrame.generationBaseState || {}, {')
             && rendering.includes('valenceKeys: [valenceMap.key]')
             && rendering.includes('groupKeys: [group.key]')
@@ -11079,14 +11109,17 @@ function run(ctx = {}) {
             && rendering.includes('const generatedGroupCache = new Map()')
             && rendering.includes('generatedGroupCache.get(cacheKey)')
             && rendering.includes('generatedGroupCache.set(cacheKey, generatedGroupFrame)')
-            && rendering.includes('typeof requestAnimationFrame === "function"')
+            && rendering.includes('typeof targetObject.requestAnimationFrame === "function"')
             && rendering.includes('conjugationGroups.isConnected === false')
             && rendering.includes('loading.textContent = "Preparing typed forms…"')
             && rendering.includes('classicalVncFirstResultPaintMs')
             && rendering.includes('classicalVncResultCompleteMs')
             && !rendering.includes('setTimeout(scheduleHydrationStep, 40)')
-            && rendering.includes('"classical-rule-logic-subject",\n      "classical-rule-logic-mood"')
-            && !rendering.includes('"classical-rule-logic-object",\n      "classical-rule-logic-mood"')
+            && rendering.includes('"classical-rule-logic-vnc-subject-animacy"')
+            && !rendering.slice(
+                rendering.indexOf("const CLASSICAL_VNC_FULL_PARADIGM_ENUMERATED_CONTROL_IDS"),
+                rendering.indexOf("function getClassicalVncParadigmMorphologicalAspect")
+            ).includes('"classical-rule-logic-object"')
             && rendering.includes('section.dataset.classicalVncConjugationSurface = conjugationAuthorized ? "single-table" : "blocked"')
             && !rendering.includes('classical-rule-surface__vnc-presentation-switch')
             && !rendering.includes('classicalVncParadigmPresentation')
@@ -11103,10 +11136,10 @@ function run(ctx = {}) {
             && !rendering.includes('classical-rule-surface__vnc-valence-map')
             && rendering.includes("registerConjugationRows(groupRows)")
             && rendering.includes('copyProjectionAuthority: "authorized-row-surfaces-only"')
-            && rendering.includes('lines.push(["Person", ...(group.tenses || []).map(tense => tenseLabels[tense] || tense)].join("\\t"))')
+            && rendering.includes('lines.push(["Person", ...visibleTenses.map(tense => tenseLabels[tense] || tense)].join("\\t"))')
             && rendering.includes('personHeader.textContent = "Person"')
             && rendering.includes('smithSubjects.forEach(subject => {')
-            && rendering.includes('(group.tenses || []).forEach(tense => {')
+            && rendering.includes('visibleTenses.forEach(tense => {')
             && rendering.includes('td.dataset.classicalVncParadigmTense = tenseLabels[tense] || tense')
             && !rendering.includes('resultObjectSelect.dataset.classicalVncResultObject = "true"')
             && !rendering.includes('const resultObjectAvailable = selectedValenceMap?.key === "specific-projective"')
@@ -11321,8 +11354,8 @@ function run(ctx = {}) {
                 },
                 groups: [
                     "imperfective-indicative",
-                    "imperfective-optative",
                     "perfective-indicative",
+                    "imperfective-optative",
                     "perfective-optative",
                     "perfective-admonitive",
                 ],
@@ -11412,23 +11445,29 @@ function run(ctx = {}) {
             && typeof ctx.getCanonicalNncOperationSelectionFrame === "function"
             ? (() => {
             const source = ctx.issueCanonicalNncSourceFrame({ stem: "cal" });
+            const applicationSource =
+                ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+                    stem: "cal",
+                });
             const ordinary =
                 ctx.getCanonicalNncOperationSelectionFrame(source, {
                     state: "possessive",
                     possessor: "3pl",
-                    subject: "3sg",
-                    animacy: "animate",
+                    subject: "3common",
+                    animacy: "nonanimate",
                 });
-            const operation = ctx.issueCanonicalNncOperationFrame(
-                source,
+            const operation =
+                ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+                applicationSource,
                 {
                     state: "possessive",
                     possessor: "3pl",
                     subject: "3sg",
+                    metaphoricalUse: true,
                 }
             );
             const result = ctx.requestClassicalOrdinaryNncResult(
-                source,
+                applicationSource,
                 operation
             );
             return {
@@ -11479,8 +11518,8 @@ function run(ctx = {}) {
                 nncPossessor: "3pl",
                 nncNounClass: "tli",
                 nncSubclass: "tli-1",
-                subject: "3sg",
-                nncReferent: "animate",
+                subject: "3common",
+                nncAnimacy: "nonanimate",
                 nncThirdPluralPossessorSt2: "select",
             });
             return {
@@ -11618,7 +11657,8 @@ function run(ctx = {}) {
                     nncNounClass: "tli",
                     nncSubclass: "tli-1",
                     nncPossessor: "1sg",
-                    subject: "3sg",
+                    subject: "3common",
+                    nncAnimacy: "nonanimate",
                 };
                 const baseline = ctx.buildClassicalRuleLogicSurfaceFrame(shared);
                 const poisoned = ctx.buildClassicalRuleLogicSurfaceFrame({
@@ -11647,8 +11687,7 @@ function run(ctx = {}) {
                         formula: poisoned.selectedFormula,
                         surface: poisoned.sentenceSurfaceDisplay,
                     },
-                    canonicalResultKind:
-                        poisoned.nncGrammarSurfaceContract?.kind,
+                    canonicalResultKind: poisoned.machineryFrame?.kind,
                     independentProjections:
                         poisoned.nncGrammarSurfaceContract
                             ?.formulaAndWrittenDerivedIndependently === true,

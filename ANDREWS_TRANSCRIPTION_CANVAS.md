@@ -11350,40 +11350,40 @@ belong to Subclass 2-B of the ti class. For example:
 ## PDF Page 300
 
 Compound Nounstems 285
-2. (-yō)-tl-, "a thing abundantly owning . . ."; i.e., "a thinglstatelcondition/quality that pertains
-to or is characteristic of. . . ." This is a deverbal nounstem whose derivation is described
-in $ 39.3. It is frequently translated by the English abstract suffixes "-ness" and "-ity."
+2. (-yō)-tl-, "a thing abundantly owning . . ."; i.e., "a thing/state/condition/quality that pertains
+to or is characteristic of . . . ." This is a deverbal nounstem whose derivation is described
+in § 39.3. It is frequently translated by the English abstract suffixes "-ness" and "-ity."
 (ā)-tl-, "water" + (-yō)-tl- = (ā-yō)-tl-, "turtle, tortoise" [There is another meaning for
 this compound stem in which the derived nature of (-yō)-tl- is more obvious: "a
-watery thing"; see $ 39.3.1
+watery thing"; see § 39.3.]
 (yōl)-li-, "a lively thing" + (-yō)-tl- = (yōl-lō)-tl-, "heart" [There is another stem (yōllo-
-h)-tli- with the same meaning but formed according to $ 39.1.1
+h)-tli- with the same meaning but formed according to § 39.1.]
 *(xā)-tl-, "face, surface" + (-yō)-tl- = (xā-yō)-tl-, "dregs, grounds, lees, sediment"
 A number of compound stems formed on (-yō)-tl- participate in an unusual formation: the
-embed is a possessive-state predicate containing the nonspecific possessor pronoun tla (see $
+embed is a possessive-state predicate containing the nonspecific possessor pronoun tla (see §
 15.1.6). At times one finds both this stem and another one formed on an absolutive-state predicate
 as embed. The two stems have related but different meanings, as in the following four examples:
 (īx-xō)-tl- = a thing having the quality of a surface, a covering > (tla-īx-xō)-tl- = grease
 floating on the surface (e.g., in a cooking utensil) [ < (īx)-tli-, "face, surface"; notice
-the assimilation of /ŝ/ + lyl > [ŝŝ].]
-(pa-ti-yō)-tl- = payment > (tla-pa-ti-yō)-tl- = sellingprice, cost [< *(pa-ti)-tl-, "exchanged
-item" < tla-(pa-tla), "to exchange s.th."; see $ 39.3.3.1
-(ix-xip-tla-yō)-tl- = image, likeness > (tla-īx-xip-tla-yō)-tl- = painted image, portrait
-[< (īx-xīp-tla-yō)-tl-, "rēprēsentative, impersonator"; traditionally spelled (ixiptla)-tl-.]
-(me-ca-yō)-tl- = mētaphor, ancestry, descent, lineage > (tla-me-ca-yō)-tl- = safety cord
+the assimilation of /š/ + /y/ > [šš].]
+(pa-ti-yō)-tl- = payment > (tla-pa-ti-yō)-tl- = selling price, cost [< *(pa-ti)-tl-, "exchanged
+item" < tla-(pa-tla), "to exchange s.th."; see § 39.3.3.]
+(īx-xīp-tla-yō)-tl- = image, likeness > (tla-īx-xīp-tla-yō)-tl- = painted image, portrait
+[< (īx-xīp-tla)-tl-, "representative, impersonator"; traditionally spelled (ixiptla)-tl-.]
+(me-ca-yō)-tl- = metaphor, ancestry, descent, lineage > (tla-me-ca-yō)-tl- = safety cord
 or strap (to keep one from dropping an implement, etc.) [< (me-ca)-tl-, "cord, rope."]
 At times only the stem with the possessive-state embed is attested:
 (tla-ch-ca-yō)-tl- = down, fluff, soft feather [< (ich-ca)-tl-, "cotton"]
-(tla-ix-pan-yō)-tl- = the front, visible part [< (īx-pan)- -, "face-surface"; see $ 47.3.3.1
+(tla-īx-pan-yō)-tl- = the front, visible part [< (īx-pan)-⎕-, "face-surface"; see § 47.3.3.]
 There are a number of special usages of (-yō)-tl- as a matrix stem, among which are the nounstems
-of pertinency (see $ 47.9, of gentilic collectivity (see $ 48.12), and of characteristic
-properties (see $ 39.3).
+of pertinency (see § 47.5), of gentilic collectivity (see § 48.12), and of characteristic
+properties (see § 39.3).
 31.7. Conjunctive Compound Nounstems. Certain compound nounstems are exceptional in
 that the two constituent nounstems are related not through adjunction but through conjunction
-(see Lesson 52). As pointed out in $ 28.2, instead of having an "embed + matrix" structure
+(see Lesson 52). As pointed out in § 28.2, instead of having an "embed + matrix" structure
 (i.e., a governed element followed by a governing element), they have a "conjunct + conjunct"
 one (i.e., an equal cooperating with an equal). The filler of the first conjunct subposition retains
-a vestige of the source NNC's num1 filler morph tl or tli.
+a vestige of the source NNC's num¹ filler morph tl or tli.
 (ā)-tl-, "water" + (tepē)-tl-, "hill" = (ā-l-tepē)-tl-, "water-and-hill," i.e., "town, city" [The
 possessive-state stem is (ā-l-tepē)-uh-, as in tāltēpēuh = #Ø-Ø+t-(ā-l-tepē)uh-Ø# = "it
 is our town."]
@@ -15820,6 +15820,8 @@ a matrix verbstem and not a suffix (or what can be taken to be a suffix) as in t
 comment in § 24.9). At times type-two causative verbstems and type-three causative verbstems are synonymous:
 Type-2: tē+ne-(nōtza-l-tiā) }
 Type-3: tē+ne-(nōtza-l-tlani) } = to cause/make/get people to talk to one another
+<!-- Canvas coordinate placeholder retained after correcting a two-line OCR split. -->
+<!-- Canvas coordinate placeholder retained after correcting a two-line OCR split. -->
 [The source of the embed is t-o-(nōtza), "to talk to one another." The mainline reciprocal pronoun of the
 source becomes shuntline in the causative formation, because the causative object must be mainline. Notice
 the placement of the ne after the te.]

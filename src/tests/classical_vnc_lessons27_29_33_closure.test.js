@@ -499,8 +499,8 @@ function run(ctx = {}) {
             },
             pejorative: {
                 status: "authorized",
-                target: "chōca-⎕-pol-o-ā",
-                formula: "#ni-0(chōca-⎕-pol-o-a)0+0-0#",
+                target: "chōca-0-pōl-o-ā",
+                formula: "#ni-0(chōca-0-pōl-o-a)0+0-0#",
             },
         }
     );
@@ -882,6 +882,13 @@ function run(ctx = {}) {
                 lateOperation: "honorific",
                 lateVariant: "causative",
                 honoredParticipant: "subject",
+                honorificFormationAnalysis: {
+                    lexicalStatus: "honorific-formation-analysis",
+                    sourceStem: "miqui",
+                    availableFormations: ["applicative"],
+                    preferredFormation: "applicative",
+                    honorificOnlyApplicative: true,
+                },
             }));
             const nonreflexivePreterit = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
                 lateOperation: "honorific",
@@ -952,7 +959,7 @@ function run(ctx = {}) {
         })(),
         {
             chocaAlternative: ["authorized", "chōqui-l-tiā"],
-            wrongMiquiRoute: ["blocked", "licensed-honorific-transformation-for-source-required"],
+            wrongMiquiRoute: ["blocked", "honorific-formation-not-licensed-by-typed-source-analysis"],
             nonreflexivePreterit: ["blocked", "honorific-preterit-embed-requires-mainline-reflexive-source"],
             reflexivePreterit: ["authorized", "honorific-preterit-embed"],
             firstPersonNoPatient: ["blocked", "first-person-honorific-requires-projective-patient"],

@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "lesson": 31,
+  "contradictionTest": "src/tests/classical_lesson31_contradiction_audit.test.js",
+  "groups": {
+    "lesson31-compound-nounstem-foundation-and-embed-meaning": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-possessor-orientation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-matrix-authority-and-translation-reversal": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-simple-embed-class-examples": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-tl-subclass-two-and-boundary-alternations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-unique-compound-only-nounstems": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-ca-matrix-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-yo-matrix-and-possessive-embed": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-conjunctive-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-recursive-compound-embeds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-recursive-matrices-and-bracketing-ambiguity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-sex-distinction-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-progeny-and-fellowship-compounds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-affinity-reduplication-scope": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    },
+    "lesson31-distributive-varietal-reduplication": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson31_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson31_reader_guidance.test.js"
+    }
+  }
+}

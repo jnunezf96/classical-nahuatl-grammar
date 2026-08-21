@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 32,
+  "contradictionTest": "src/tests/classical_lesson32_contradiction_audit.test.js",
+  "groups": {
+    "lesson32-affective-nnc-foundation-and-attitude-route": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-pil-and-pol-affective-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-tzin-matrix-class-meaning-and-vocative": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-ton-matrix-and-class-exceptions": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-zol-matrix-recursion-and-denominal-continuation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-affective-affinity-and-absolutive-number": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-possessive-affinity-number-alternatives": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-pil-lexeme-and-child-formations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-affective-child-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-pil-noble-and-honorific-formations": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-nonanimate-affinity-and-supplement-agreement": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    },
+    "lesson32-flawed-subject-nncs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson32_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson32_reader_guidance.test.js"
+    }
+  }
+}

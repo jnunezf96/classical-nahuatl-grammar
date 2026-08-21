@@ -17,6 +17,66 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson30_groups_1_3_jobs.test.js",
       "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-exceptional-tla-fusion-and-source-ambiguity": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-incorporated-adverb-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-means-and-instrument-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-place-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-time-duration-cause-and-purpose-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-manner-and-compared-manner-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-unique-embed-nounstems": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-possessive-supplementary-subject-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-possessive-supplementary-object-and-passive-adverbs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-incorporated-complements": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-reduplication-and-nonactive-continuation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
+    },
+    "lesson30-embed-is-not-agent-or-subject": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson30_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson30_reader_guidance.test.js"
     }
   }
 }

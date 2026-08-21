@@ -1,17 +1,19 @@
 "use strict";
 
-const path = require("path");
 const { createSuite } = require("./runner");
 const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
+const {
     CLASSICAL_NAHUATL_LESSONS24_25_CANVAS_EXAMPLES,
-} = require(path.resolve(__dirname, "..", "..", "scripts", "classical_lessons24_25_canvas_catalog.js"));
+} = require(resolveLegacySupportPath("scripts/classical_lessons24_25_canvas_catalog.js"));
 const {
     buildClassicalLessons2425AuditPlan,
     coverExamplesWithSharedIndex,
     coverExample,
     shapeKey,
     surfaceKey,
-} = require(path.resolve(__dirname, "..", "..", "scripts", "audit_classical_lessons24_25_complete_examples.js"));
+} = require(resolveLegacySupportPath("scripts/audit_classical_lessons24_25_complete_examples.js"));
 
 function jsonClone(value) {
     return JSON.parse(JSON.stringify(value));

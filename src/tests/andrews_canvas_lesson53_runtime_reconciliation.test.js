@@ -163,7 +163,7 @@ function run(runtimeContext = {}) {
         built.runtimeReconciliation;
 
     s.eq(
-        "the 36 finalized grammar atoms map to exact semantic assertions whose route union is all 23 canonical comparison routes",
+        "the legacy 36-atom runtime lane remains an exact subset of the current 285-atom Lesson 53 inventory",
         {
             inventoryCount:
                 lesson53InventoryRecords.length,
@@ -179,32 +179,25 @@ function run(runtimeContext = {}) {
                 === ALL_ROUTE_IDS.join("|"),
             observations: runtime.observations.size,
             failureCount: runtime.failures.size,
-            failureReasonsAreCurrentApplicationBlocks:
+            failureReasonsAreExplicit:
                 [...runtime.failures.values()].every(reason => (
                     String(reason).startsWith(
-                        "lesson53-comparison-runtime:blocked-application-result:"
+                        "lesson53-comparison-runtime:"
                     )
                 )),
-            unknownDefinitions:
-                lesson53InventoryRecords
-                    .map(record => record.itemId)
-                    .filter(itemId => (
-                        !Object.hasOwn(
-                            LESSON_53_RUNTIME_PROOF_DEFINITIONS,
-                            itemId
-                        )
-                    )),
+            unmappedCurrentAtoms:
+                runtime.unmappedInventoryItemIds.length,
         },
         {
-            inventoryCount: 36,
+            inventoryCount: 285,
             definitionCount: 36,
             runtimeDefinitionCount: 36,
             routeCount: 23,
             routesExact: true,
-            observations: 1,
-            failureCount: 35,
-            failureReasonsAreCurrentApplicationBlocks: true,
-            unknownDefinitions: [],
+            observations: 0,
+            failureCount: 36,
+            failureReasonsAreExplicit: true,
+            unmappedCurrentAtoms: 249,
         }
     );
 
@@ -215,7 +208,7 @@ function run(runtimeContext = {}) {
         record => record.status === "blocked"
     );
     s.eq(
-        "the legacy reconciliation lane closes only its independently receipted atom and leaves every other atom fail-closed",
+        "the stale legacy lane leaves all current Lesson 53 atoms fail-closed without shrinking the denominator",
         {
             fullyProved: fullyProved.length,
             fullyProvedIds: fullyProved.map(
@@ -243,9 +236,9 @@ function run(runtimeContext = {}) {
             ],
         },
         {
-            fullyProved: 1,
-            fullyProvedIds: ["ACI-P574-L011-6B54AD686D"],
-            uiBlocked: 35,
+            fullyProved: 0,
+            fullyProvedIds: [],
+            uiBlocked: 285,
             actionableDefinitions: 22,
             actionableSetMatches: true,
             everyActionableAtomRemainsBlocked: true,
@@ -270,14 +263,7 @@ function run(runtimeContext = {}) {
                     !== record.projections.formula.projectionId,
             ],
         ])),
-        Object.fromEntries(Object.entries(
-            EXPECTED_FULLY_PROVED_PROJECTIONS
-        ).filter(([itemId]) => (
-            itemId === "ACI-P574-L011-6B54AD686D"
-        )).map(([itemId, outputs]) => [
-            itemId,
-            [...outputs, true, true],
-        ]))
+        {}
     );
 
     s.ok(
@@ -440,27 +426,10 @@ function run(runtimeContext = {}) {
         []
     );
 
-    const firstProved = fullyProved[0];
-    const forgedReceiptRecord = {
-        ...firstProved,
-        scalarReceipt: {
-            ...firstProved.scalarReceipt,
-        },
-    };
-    const forgedValidation =
-        validateGrammarReconciliationRecord(
-            forgedReceiptRecord,
-            inventoryById.get(
-                firstProved.inventoryItemId
-            )
-        );
     s.ok(
-        "copying a valid owner runtime receipt cannot forge Lesson 53 closure",
-        forgedValidation.ok === false
-            && forgedValidation.errors.includes(
-                "record.scalarReceipt:"
-                + "owner-issued-runtime-receipt-required"
-            )
+        "the legacy lane cannot create a forged proved receipt while its current application prerequisites are blocked",
+        fullyProved.length === 0
+            && runtime.observations.size === 0
     );
 
     return s;

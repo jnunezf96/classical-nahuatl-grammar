@@ -67,6 +67,7 @@ function run(ctx = {}) {
         path.join(root, "src", "ui", "rendering", "rendering.mjs"),
         "utf8"
     );
+    const renderingCompact = rendering.replace(/\s+/gu, " ");
     const composer = fs.readFileSync(
         path.join(root, "src", "ui", "composer", "composer.mjs"),
         "utf8"
@@ -116,8 +117,11 @@ function run(ctx = {}) {
     s.ok(
         "the derivation workflow selects the actual terminal Result and can feed a continued application into another late operation",
         rendering.includes(
-            "surfaceFrame.state?.vncLateOperationClosureFrame\n        || surfaceFrame.state?.vncOrderedVoiceApplicationFrame"
+            "directLateOperationResult ? surfaceFrame : null"
         )
+            && rendering.includes(
+                "|| surfaceFrame.state?.vncLateOperationClosureFrame"
+            )
             && rendering.includes(
                 "sourceApplicationFrame: continuedBaseVncApplicationFrame"
             )
@@ -128,10 +132,41 @@ function run(ctx = {}) {
                 'continueAction.textContent = "Add another derivation"'
             )
             && rendering.includes(
-                "if (surfaceFrame.state?.vncLateOperationClosureFrame)"
+                '=== "classical-nahuatl-late-vnc-derivation-closure-frame"'
             )
             && shell.includes(
                 'class="classical-rule-control__label">Add derivation</span>'
+            )
+    );
+
+    s.ok(
+        "a causative or applicative Result keeps its exact owner-issued application frame when the next operation is honorific",
+        renderingCompact.includes(
+            "ActiveClassicalVncResultSourceApplicationFrame"
+        )
+            && renderingCompact.includes(
+                "sourceApplicationFrame: ActiveClassicalVncResultSourceApplicationFrame"
+            )
+            && renderingCompact.includes(
+                "sourceApplicationFrame: derivedSourceApplicationFrame"
+            )
+            && renderingCompact.includes(
+                "sourceDerivationKind: String("
+            )
+            && renderingCompact.includes(
+                "ActiveClassicalVncResultSourceProjection ?.sourceSubject"
+            )
+            && renderingCompact.includes(
+                "ActiveClassicalVncResultSourceProjection ?.sourceObjectRequests"
+            )
+            && renderingCompact.includes(
+                "canonicalParticipantChoiceKnown"
+            )
+            && renderingCompact.includes(
+                "const priorParticipantFacts ="
+            )
+            && renderingCompact.includes(
+                "participantFacts.possibleHonoredParticipants ?.includes(\"object\")"
             )
     );
 

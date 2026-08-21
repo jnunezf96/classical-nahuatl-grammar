@@ -13,7 +13,7 @@ function run() {
     const semanticScope = readJson("../../docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json");
     const proofMigration = readJson("../../docs/ANDREWS_INDIVIDUAL_ATOM_PROOF_MIGRATION.json");
     const application = readJson("../../docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json");
-    const bridge = readJson("../../docs/CLASSICAL_APPLICATION_AXIS_CANVAS_BRIDGE.json");
+    const bridge = application.canvasProvenance;
     const atoms = semanticScope.atoms;
     const atomById = new Map(atoms.map((atom) => [atom.atomId, atom]));
     const canaryIds = [
@@ -49,9 +49,9 @@ function run() {
         uiAuthority: bridge.authority.uiAuthority,
         evidenceAbsenceBlocksGeneration: bridge.authority.evidenceAbsenceBlocksGeneration,
     }, {
-        applicationAxes: 392,
-        genuineChoices: 64,
-        nonChoices: 328,
+        applicationAxes: 441,
+        genuineChoices: 66,
+        nonChoices: 375,
         atomCreatedAxes: 0,
         uiAuthority: "none",
         evidenceAbsenceBlocksGeneration: false,
@@ -83,7 +83,7 @@ function run() {
         linkedAtomsAreGrammar: Object.values(lesson1ChoiceLinks).flat().every(atomId =>
             atomById.get(atomId)?.force === "grammar-bearing"),
     }, {
-        bridgeCounts: { interactive: 64, mapped: 64, links: 95, uniqueAtoms: 86 },
+        bridgeCounts: { interactive: 66, mapped: 66, links: 98, uniqueAtoms: 89 },
         links: lesson1ChoiceLinks,
         linkedAtomsAreGrammar: true,
     });

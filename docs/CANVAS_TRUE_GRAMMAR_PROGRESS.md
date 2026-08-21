@@ -15,10 +15,10 @@ This report deliberately has no weighted overall percentage. An atom-to-owner li
 | lessonNonGrammarAccounting | 9901 | 9901 | 100.00% | complete |
 | lessonGrammarOwnerLinked | 18639 | 18639 | 100.00% | complete |
 | lessonGrammarExactBehaviorObserved | 6256 | 18639 | 33.56% | incomplete |
-| applicationAxisClassification | 392 | 392 | 100.00% | complete |
-| genuineChoiceCanvasProvenance | 64 | 64 | 100.00% | complete |
-| genuineChoiceLiveDeclarations | 24 | 64 | 37.50% | incomplete |
-| genuineChoiceBrowserDeliveryProof | not measured | 64 | not measured | not-measured |
+| applicationAxisClassification | 441 | 441 | 100.00% | complete |
+| genuineChoiceCanvasProvenance | 66 | 66 | 100.00% | complete |
+| genuineChoiceLiveDeclarations | 26 | 66 | 39.39% | incomplete |
+| genuineChoiceBrowserDeliveryProof | not measured | 66 | not measured | not-measured |
 
 ## Exact behavior rule
 
@@ -45,48 +45,48 @@ The 87.88% source-zone figure is structural only; it is not grammatical completi
 
 ## Genuine-choice delivery backlog
 
-All 58 genuine application axes are classified and linked to Canvas. 18 are live-declared; 40 remain contract-audited:
+All 66 genuine application axes are classified and linked to Canvas. 26 are live-declared; 40 remain contract-audited:
 
-- `clause:adverbial-adjunction` / `clause-position`
-- `clause:adverbial-adjunction` / `relation-scope`
-- `clause:comparison` / `degree-strategy`
-- `clause:comparison` / `superlative-strategy`
-- `clause:composition` / `clause-rank`
-- `clause:composition` / `complement-relation`
-- `clause:composition` / `conjunction-relation`
-- `clause:composition` / `parallel-structure`
-- `clause:composition` / `relation-marker`
+- `vnc:ordered-voice-chain` / `voice-operation-order`
+- `vnc:ordered-voice-application` / `voice-operation-order`
+- `vnc:derivational-operation` / `derivation-family`
+- `grammar:nominal-construction` / `nominal-embed`
+- `grammar:nominal-construction` / `compound-nnc`
 - `grammar:nominal-construction` / `affective-nnc`
 - `grammar:nominal-construction` / `cardinal-number`
-- `grammar:nominal-construction` / `compound-nnc`
 - `grammar:nominal-construction` / `measure-modification`
-- `grammar:nominal-construction` / `nominal-embed`
-- `nnc:adjectival-modification` / `adjunctor`
-- `nnc:adjectival-modification` / `compound-head-target`
-- `nnc:adjectival-modification` / `modification-topology`
-- `nnc:adjectival-modification` / `modifier-head-order`
-- `nnc:adjectival-modification` / `transitive-reference-contact`
-- `nnc:adverbial` / `adverbial-context`
-- `nnc:adverbial` / `clause-rank`
-- `nnc:deverbal-construction` / `double-nucleus-ownerhood`
-- `nnc:deverbal-construction` / `external-object`
 - `nnc:deverbal-construction` / `nominalization-family`
 - `nnc:deverbal-construction` / `patientive-family`
+- `nnc:deverbal-construction` / `external-object`
+- `nnc:deverbal-construction` / `double-nucleus-ownerhood`
+- `nnc:adjectival-modification` / `modification-topology`
+- `nnc:adjectival-modification` / `modifier-head-order`
+- `nnc:adjectival-modification` / `adjunctor`
+- `nnc:adjectival-modification` / `transitive-reference-contact`
+- `nnc:adjectival-modification` / `compound-head-target`
+- `nnc:adverbial` / `adverbial-context`
+- `nnc:adverbial` / `clause-rank`
+- `nnc:relational` / `relation-family`
+- `nnc:relational` / `possessor-structure`
+- `nnc:place-gentilic` / `place-formation`
+- `nnc:place-gentilic` / `gentilic-formation`
+- `nnc:place-gentilic` / `collectivity`
+- `clause:adverbial-adjunction` / `relation-scope`
+- `clause:adverbial-adjunction` / `clause-position`
+- `clause:composition` / `complement-relation`
+- `clause:composition` / `conjunction-relation`
+- `clause:composition` / `clause-rank`
+- `clause:composition` / `relation-marker`
+- `clause:composition` / `parallel-structure`
+- `clause:comparison` / `degree-strategy`
+- `clause:comparison` / `superlative-strategy`
+- `vnc:denominal` / `denominal-operation`
+- `vnc:denominal` / `target-verbstem-class`
+- `vnc:denominal` / `finite-participants`
 - `nnc:personal-name` / `name-source-family`
 - `nnc:personal-name` / `outer-subject`
-- `nnc:personal-name` / `reranking`
 - `nnc:personal-name` / `sentence-operation`
-- `nnc:place-gentilic` / `collectivity`
-- `nnc:place-gentilic` / `gentilic-formation`
-- `nnc:place-gentilic` / `place-formation`
-- `nnc:relational` / `possessor-structure`
-- `nnc:relational` / `relation-family`
-- `vnc:denominal` / `denominal-operation`
-- `vnc:denominal` / `finite-participants`
-- `vnc:denominal` / `target-verbstem-class`
-- `vnc:derivational-operation` / `derivation-family`
-- `vnc:ordered-voice-application` / `voice-operation-order`
-- `vnc:ordered-voice-chain` / `voice-operation-order`
+- `nnc:personal-name` / `reranking`
 
 ## Completion rule
 

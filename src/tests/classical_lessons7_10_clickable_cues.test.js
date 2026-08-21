@@ -29,6 +29,7 @@ function run(ctx = {}) {
         return ctx.getClassicalFormulaDerivedAnnotations(formula, typedFrame, grammarContext)
             .map((cue) => ({
                 text: formula.slice(cue.start, cue.end),
+                role: cue.role,
                 label: cue.label,
                 lessons: cue.lessonSections,
             }));
@@ -44,9 +45,13 @@ function run(ctx = {}) {
 
     const hasCue = (rows, text, label) => rows.some((row) => row.text === text && row.label === label);
     s.eq("Lesson 7.1 identifies pieces inside an analyzed verbstem without inventing separate meanings", {
-        morphs: analyzedStem.filter((row) => row.label === "verbstem morph"),
-        boundaries: analyzedStem.filter((row) => row.label === "stem morph boundary"),
-        innerClassClaims: analyzedStem.filter((row) => /Class [A-D]/u.test(row.label)),
+        morphs: analyzedStem.filter((row) => row.label === "verbstem morph")
+            .map(({ role: _role, ...row }) => row),
+        boundaries: analyzedStem.filter((row) => row.label === "stem morph boundary")
+            .map(({ role: _role, ...row }) => row),
+        innerClassClaims: analyzedStem.filter((row) => (
+            row.role === "stem-internal-morph" && /Class [A-D]/u.test(row.label)
+        )),
     }, {
         morphs: [
             { text: "chip", label: "verbstem morph", lessons: ["§7.1"] },

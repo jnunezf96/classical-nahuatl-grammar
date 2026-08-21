@@ -89,41 +89,42 @@ function run(ctx = {}) {
             && renderingSource.includes('appendAccountSegment("Resulting VNC"')
             && renderingSource.includes('detailsSummary.textContent = "Grammar details"')
             && renderingSource.includes('details.dataset.classicalVncDerivationDetails = "read-only-typed-projection"')
-            && renderingSource.includes('presentation.primary.appendChild(preview);')
+            && renderingSource.includes('verbstemBody.appendChild(preview);')
             && renderingSource.includes('derivationSelectionRequired || derivationInventory.options.length > 1')
-            && renderingSource.includes('presentation.primary.appendChild(sourceSubjectWrapper);')
-            && renderingSource.includes('presentation.primary.appendChild(resultSubjectWrapper);')
+            && renderingSource.includes('sourceSubjectWrappers.forEach(wrapper => subjectBody.appendChild(wrapper));')
+            && renderingSource.includes('subjectBody.appendChild(resultSubjectWrapper);')
             && renderingSource.includes('sameSurfaceOperation')
             && !renderingSource.includes('classical-vnc-authority-preview__stage-flow')
             && !renderingSource.includes('createStage("source-vnc"')
     );
 
     s.ok(
-        "Nuclear clause and particle-group layers are persistent, while their inapplicable inner groups stay absent",
+        "Subject, Valence, Verbstem, Tense, and Sentence are persistent VNC Grammar blocks",
         (() => {
             const start = renderingSource.indexOf("function getClassicalVncAuthorityProgressivePresentation()");
             const end = renderingSource.indexOf("function buildClassicalVncAuthorityDerivationSurfaceModel", start);
             const presentationSource = start >= 0 && end > start ? renderingSource.slice(start, end) : "";
-            return presentationSource.includes('createPersistentSection("nuclear-clause", "Nuclear clause", "subject · predicate"')
-                && presentationSource.includes('createPersistentSection("particle-group", "Particles & sentence group", ""')
+            return ["Subject", "Valence", "Verbstem", "Tense", "Sentence"].every(
+                title => presentationSource.includes(`createPersistentSection("${title.toLowerCase()}", "${title}", "")`)
+            )
                 && presentationSource.includes('createControlGroup("function", "Function"')
                 && presentationSource.includes('createControlGroup("sequence", "Sequence"')
                 && presentationSource.includes('createControlGroup("dependent", "Dependent operation"')
                 && presentationSource.includes('targetObject.document.createElement("section")')
                 && presentationSource.includes("const grammarOrganizerActive = vncActive || nncActive")
-                && presentationSource.includes("section !== presentation.particleGroup || visibleControls === 0")
+                && presentationSource.includes("section.hidden = !vncActive || visibleControls === 0")
                 && presentationSource.includes("group.hidden = visibleControls === 0")
                 && !presentationSource.includes('targetObject.document.createElement("details")');
         })()
     );
 
     s.ok(
-        "Unavailable VNC controls stay absent except the filtered Stem class dropdown and read-only mood-bound Tense facts",
+        "Unavailable VNC controls stay absent except filtered Source facts and read-only mood-bound Tense facts",
         renderingSource.includes('const retainedFilteredClass = id === "classical-rule-logic-class"')
             && renderingSource.includes('const retainedReadOnlyTense = id === "classical-rule-logic-tense"')
-            && renderingSource.includes("retainedFilteredClass || retainedReadOnlyTense")
+            && renderingSource.includes("retainedFilteredClass || retainedReadOnlyTense || retainedVncSubjectFeature")
             && renderingSource.includes("const visible = !hide && (!canvasDisabled || retainedSingleChoiceControl);")
-            && renderingSource.includes("control.disabled = !visible || retainedReadOnlyTense;")
+            && renderingSource.includes("control.disabled = !visible || retainedReadOnlyTense || retainedVncSubjectFeature;")
             && renderingSource.includes('const explicitSemanticSelection = Object.prototype.hasOwnProperty.call(overrides, "mood")')
             && renderingSource.includes("const domMoodBoundSelection = !explicitSemanticSelection")
             && renderingSource.includes("domMoodBoundSelection?.tense || rawRequestedSemanticTense")
@@ -375,6 +376,7 @@ function run(ctx = {}) {
                     movedReflexiveCoordinate = ctx.buildClassicalRuleLogicSurfaceFrame({
                         ...base,
                         subject: "3pl",
+                        sourceSubject: "3pl",
                         derivationOptionId: option?.optionId || "",
                         causativeObjectKind: "reflexive",
                     });

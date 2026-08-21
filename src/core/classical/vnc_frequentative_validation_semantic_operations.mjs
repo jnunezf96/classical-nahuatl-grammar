@@ -199,6 +199,7 @@ function buildProjection(runtime) {
       objectPerson: "3sg",
       verbClass: "C",
       lateVariant: "ordinary-short-glottal",
+      sourceInitialISelection: "supportive",
     }),
     reflexivePartial: evaluate(runtime, {
       sourceStem: "ilpi-ā",

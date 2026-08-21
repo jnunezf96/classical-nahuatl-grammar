@@ -173,23 +173,38 @@ function buildProjection(runtime) {
     supplementSubject: evaluate(runtime, patchSource(baseRequest({
       route: "supplement-subject",
       adverbRole: "means",
-    }), { embedState: "possessive" })),
+    }), { embedState: "possessive", embedPossessorPerson: "1sg" })),
     supplementObject: evaluate(runtime, patchSource(objectRequest({
       relation: "adverb",
       route: "supplement-object",
       adverbRole: "means",
-    }), { embedState: "possessive", possessionKind: "less-intimate" })),
+    }), {
+      embedState: "possessive",
+      embedPossessorPerson: "2sg",
+      possessionKind: "intimate",
+      matrixDerivationType: "direct",
+    })),
     directAmbiguity: evaluate(runtime, patchSource(baseRequest({
-      sourceAnalysis: "direct",
-    }), { embedStem: "icxi", matrixStem: "toh-toca" })),
+      route: "direct-adverb",
+      adverbRole: "means",
+    }), {
+      adverbSourceRouteCandidates: ["direct-adverb", "supplement-subject"],
+    })),
     lessIntimate: evaluate(runtime, patchSource(objectRequest({
       relation: "adverb",
       route: "supplement-object",
       adverbRole: "means",
-    }), { embedState: "possessive", possessionKind: "less-intimate" })),
-    passiveBarrier: evaluate(runtime, baseRequest({
+    }), {
+      embedState: "possessive",
+      embedPossessorPerson: "2sg",
+      possessionKind: "less-intimate",
+      matrixDerivationType: "applicative",
+    })),
+    passiveBarrier: evaluate(runtime, objectRequest({
+      relation: "adverb",
       route: "passive-adverbialized-subject",
       adverbRole: "means",
+      voice: "passive",
     })),
     complementSubject: evaluate(runtime, baseRequest({
       relation: "complement",
@@ -197,13 +212,13 @@ function buildProjection(runtime) {
       orientation: "subject",
       complementKind: "considering",
     })),
-    complementConsidering: evaluate(runtime, baseRequest({
+    complementConsidering: evaluate(runtime, objectRequest({
       relation: "complement",
       route: "complement",
       orientation: "object",
       complementKind: "considering",
     })),
-    complementChanging: evaluate(runtime, baseRequest({
+    complementChanging: evaluate(runtime, objectRequest({
       relation: "complement",
       route: "complement",
       orientation: "object",
@@ -229,10 +244,11 @@ function buildProjection(runtime) {
       adverbRole: "means",
     }), {
       embedState: "possessive",
+      embedPossessorPerson: "2sg",
       possessionKind: "intimate",
-      matrixStem: "mil-chihui-lia",
+      matrixDerivationType: "applicative",
     })),
-    ambiguousNuance: evaluate(runtime, baseRequest({
+    ambiguousNuance: evaluate(runtime, objectRequest({
       relation: "complement",
       route: "complement",
       orientation: "object",
@@ -338,4 +354,3 @@ export function createClassicalNominalEmbedValidationSemanticOperationsApi(
     isClassicalNahuatlNominalEmbedValidationFrame,
   });
 }
-

@@ -164,7 +164,7 @@ function run(ctx = {}) {
         adverbials: ctx.getClassicalNahuatlSentenceAdverbialEntries().map((entry) => entry.id),
     }, {
         sentenceParticles: ["l3-in", "l3-anca", "l3-mah", "l3-auh-conjunctor"],
-        adverbials: ["l3-mec", "l3-nee", "l3-tel", "l3-oc", "l3-zan", "l3-za", "l3-ye", "l3-no-adverbial", "l3-quin", "l3-ach", "l3-at", "l3-ac"],
+        adverbials: ["l3-mec", "l3-nee", "l3-tel", "l3-oc", "l3-zan", "l3-za", "l3-ye", "l3-no-adverbial", "l3-quin", "l3-ach", "l3-at", "l3-ac", "l16-huel", "l16-achi-adverbial"],
     });
     return s;
 }

@@ -412,7 +412,7 @@ function run(ctx = {}) {
             },
             missing: [
                 "blocked",
-                "classical-vnc-derivation-authorized-source-required",
+                "classical-source-verbstem-class-selection-required",
                 "",
                 "",
             ],

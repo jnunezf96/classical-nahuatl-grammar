@@ -83,9 +83,9 @@ function run(ctx = {}) {
         {
             kind: "classical-sgr-material-browser-atom-outcome-schema",
             version: 1,
-            atomCount: 239,
-            publicAtomCount: 98,
-            privateAtomCount: 141,
+            atomCount: publicAtoms.length + privateAtoms.length,
+            publicAtomCount: publicAtoms.length,
+            privateAtomCount: privateAtoms.length,
             publicExpectation: "materialized",
             privateExpectation: "private-inert",
             outcomes: [
@@ -139,18 +139,18 @@ function run(ctx = {}) {
                 emptyReport.atomOutcomePartitionIsExact,
         },
         {
-            atomOutcomeCount: 239,
+            atomOutcomeCount: publicAtoms.length + privateAtoms.length,
             atomOutcomeIds: [...publicAtoms, ...privateAtoms]
                 .sort((left, right) => left.atomId.localeCompare(right.atomId))
                 .map(entry => entry.atomId),
             inventoryAtomIds: [...publicAtoms, ...privateAtoms]
                 .sort((left, right) => left.atomId.localeCompare(right.atomId))
                 .map(entry => entry.atomId),
-            uniqueOutcomeIds: 239,
+            uniqueOutcomeIds: publicAtoms.length + privateAtoms.length,
             outcomeCounts: {
                 materialized: 0,
-                unmaterialized: 98,
-                privateInert: 141,
+                unmaterialized: publicAtoms.length,
+                privateInert: privateAtoms.length,
                 privateExposed: 0,
             },
             atomOutcomePartitionIsExact: true,
@@ -182,8 +182,8 @@ function run(ctx = {}) {
             publicPrimaryReasons: ["browser-observation-not-run"],
             privateOutcomes: ["private-inert"],
             privatePrimaryReasons: [null],
-            unmaterializedAliasCount: 98,
-            impossibleAliasCount: 98,
+            unmaterializedAliasCount: publicAtoms.length,
+            impossibleAliasCount: publicAtoms.length,
             aliasesMatch: true,
         }
     );
@@ -330,9 +330,9 @@ function run(ctx = {}) {
     }
     suite.ok(
         "assertComplete names unmaterialized failures while retaining the temporary impossible alias",
-        completionError.includes("unmaterialized:98")
+        completionError.includes(`unmaterialized:${publicAtoms.length}`)
             && completionError.includes("first-unmaterialized:")
-            && completionError.includes("impossible:98")
+            && completionError.includes(`impossible:${publicAtoms.length}`)
             && completionError.includes("first-impossible:")
     );
 

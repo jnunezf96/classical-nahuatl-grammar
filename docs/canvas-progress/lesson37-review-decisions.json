@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "lesson": 37,
+  "decisions": {
+    "lesson37-deverbal-source-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the Lesson 37 nounstem from the exact core inside an owner-issued VNC Result while preserving its complete typed Source analysis and boundaries."
+    },
+    "lesson37-z-active-action": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive z active-action NNCs from the exact future VNC core with productive Source-shape behavior, automatic participant transfer, tli class, common number, and no example-stem admission gate."
+    },
+    "lesson37-liz-active-action-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive liz as l plus supportive i plus z from the exact typed verbcore, preserving class-conditioned vowels, projective or reflexive participants, and the genuine supportive-i variant after ne."
+    },
+    "lesson37-liz-replacive-stem-families": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply ca to qui and ci to xi automatically from typed final boundaries, while exposing only genuine hua, ti, and frequentative destockal alternatives and never using example identity as a route gate."
+    },
+    "lesson37-root-ya-liz": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve root plus ya as typed internal structure and apply licensed deletion or retention, including productive denominal ti-ya and optional hui-ya behavior, without an example-stem admission list."
+    },
+    "lesson37-way-of-and-lexical-readings": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the compositional action reading while preserving narrow way-of, nature, state, and appearance readings as typed lexical or contextual facts rather than meanings selected by liz shape."
+    },
+    "lesson37-compound-active-action-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the complete typed compound future core, its internal boundaries, and its Source analysis in the active-action noun, including connective t plus matrix on-o without inventing a t-o verbstem class or example gate."
+    },
+    "lesson37-active-action-potential-patient-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep active-action and potential-patient analyses distinct through typed valence, object presence, person, and number; preserve genuine third-singular ambiguity and the reflexive-plus-tla active-action exception."
+    },
+    "lesson37-impersonal-general-action": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the general-action noun from an exact owner-issued impersonal future VNC Result, preserving either nonactive-suffix or tla-impersonal structure while treating the spelling warning as reading guidance only."
+    },
+    "lesson37-action-nnc-continuations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue only from an exact owner-issued active-action NNC Result into a licensed NNC or VNC compound, preserving its complete Source ancestry while exposing only the intended matrix and genuinely open semantic relation."
+    },
+    "lesson37-z-liz-tzin-assimilation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive z or liz plus tzin assimilation automatically from the typed compound boundary while preserving the fuller morphemic analysis and keeping spelling out of user authority."
+    },
+    "lesson37-active-passive-action-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve typed active or passive VNC ancestry and derive the possessive-state possessor as agent for active action or patient for passive action, with a Source choice only for genuine ambiguity."
+    },
+    "lesson37-action-nnc-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Pass an exact owner-issued active-action NNC Result to the shared supplementation owner as a supplementary object, with compatibility derived from typed participant roles, referent identity, and an acyclic hierarchy rather than nounstem identity."
+    },
+    "lesson37-patientive-taxonomy-and-truncation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the five typed patientive Source families and derive licensed nonactive truncation, vowel behavior, and noun class from complete morphemic boundaries while reserving idiosyncratic formation and meaning for typed lexical analysis."
+    },
+    "lesson37-passive-patientive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive a passive patientive only from an exact owner-issued passive VNC Result with transitive active ancestry, preserving its patient, nonspecific projective or shuntline evidence, and the explicit no-object passive branch."
+    },
+    "lesson37-passive-patientive-lo": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the lō passive patientive from an exact typed passive Source by deleting final ō, retaining l, and preserving licensed vowel behavior, complete ancestry, participants, noun class, and typed lexical or figurative readings without an example gate."
+    },
+    "lesson37-passive-patientive-o": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the ō passive patientive by deleting the complete typed passive suffix while preserving the exact active-passive Source chain, participant and referent facts, noun class, and only genuinely available lexical readings."
+    },
+    "lesson37-passive-patientive-hua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the hua passive patientive by deleting typed hua, shortening preceding ī where licensed, preserving other vowel quantity and the complete owner-issued Source analysis, and respecting Nahuatl patientive construal over English intuition."
+    },
+    "lesson37-reflexive-passive-patientive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the passive shuntline reflexive ne automatically from an exact owner-issued reflexive passive VNC Result through the patientive derivation, while keeping narrow lexical readings typed or contextual."
+    },
+    "lesson37-double-object-passive-patientive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the exact double-object passive promotion and its one surviving internal object in the patientive, exposing only the Canvas-licensed retain-or-delete choice for surviving tē and no arbitrary object deletion."
+    }
+  }
+}

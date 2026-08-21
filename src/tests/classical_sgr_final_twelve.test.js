@@ -188,10 +188,10 @@ function run(ctx = {}) {
             '"grammar:nominal-construction/measure-modification": "#classical-cardinal-measure-composition"'
         )
         && rendering.includes(
-            '"nnc:personal-name/outer-subject": "#classical-rule-logic-subject"'
+            '"nnc:personal-name/outer-subject": "#classical-rule-logic-nnc-subject-person, #classical-rule-logic-nnc-subject-number"'
         )
         && rendering.includes(
-            '"vnc:denominal/finite-participants": "#classical-rule-logic-subject, #classical-rule-logic-object"'
+            '"vnc:denominal/finite-participants": "#classical-rule-logic-subject, #classical-denominal-vnc-result-object-1, #classical-denominal-vnc-result-object-2"'
         )
         && rendering.includes(
             '"nnc:adjectival-modification/compound-head-target": "[data-classical-clause-relation-decision=\\"compound-head-target\\"]"'
@@ -212,7 +212,18 @@ function run(ctx = {}) {
     });
     const adverbialCoordinates =
         ctx.projectClassicalAdverbialNncParadigmCoordinates(adverbialPlan);
-    const adverbial = project(ctx, adverbialCoordinates);
+    const adverbialApplication =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:adverbial",
+            outputKind: "coordinate-projection",
+            args: [adverbialPlan],
+        });
+    suite.eq(
+        "the convenience projection and its owner-issued application agree",
+        adverbialApplication.canonicalResult,
+        adverbialCoordinates
+    );
+    const adverbial = project(ctx, adverbialApplication);
 
     const projectedOutputIds = adverbial.outputs.map(
         node => node.dataset.classicalOutputContractId

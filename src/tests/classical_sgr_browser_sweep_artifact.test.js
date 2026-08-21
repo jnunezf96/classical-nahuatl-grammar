@@ -33,7 +33,7 @@ function run() {
         executionFailureCode: "route-evaluation-failed",
     });
     suite.eq(
-        "an unobserved failed sweep preserves all 239 outcomes and partitions all public gaps as route-missing",
+        "an unobserved failed sweep preserves all 496 outcomes and partitions all public gaps as route-missing",
         {
             digests: routeFailureArtifact.digests,
             atomOutcomeCount: routeFailureArtifact.atomOutcomes.length,
@@ -50,21 +50,21 @@ function run() {
                 inventorySha256: INVENTORY_DIGEST,
                 recipeSha256: RECIPE_DIGEST,
             },
-            atomOutcomeCount: 239,
+            atomOutcomeCount: 496,
             counts: {
-                atomOutcomeCount: 239,
-                uniqueAtomOutcomeCount: 239,
+                atomOutcomeCount: 496,
+                uniqueAtomOutcomeCount: 496,
                 public: {
-                    expected: 98,
+                    expected: 106,
                     materialized: 0,
-                    unmaterialized: 98,
+                    unmaterialized: 106,
                 },
-                private: { expected: 141, inert: 141, exposed: 0 },
+                private: { expected: 390, inert: 390, exposed: 0 },
                 unexpectedDomIds: 0,
             },
             partitions: {
                 "recipe-invalid": 0,
-                "route-missing": 98,
+                "route-missing": 106,
                 "projection-missing": 0,
                 "private-exposure": 0,
             },
@@ -103,6 +103,12 @@ function run() {
         activatesOperationIds: [projectionTarget.operationId],
         activeOperationIds: [projectionTarget.operationId],
         outcomeCodes: ["ready-for-observation", "control-applied"],
+        controlRejections: [{
+            controlKey: "source-choice",
+            requestedValue: "typed-option",
+            actualValue: "",
+            transientNode: 44,
+        }],
         elapsedMs: 9876,
         traceStart: 44,
         port: 60993,
@@ -134,15 +140,22 @@ function run() {
             containsTiming: classifiedJson.includes("elapsedMs"),
             containsTraceIndex: classifiedJson.includes("traceStart"),
             containsPort: classifiedJson.includes("60993"),
+            controlRejections:
+                classifiedArtifact.scenarioOutcomes[0].controlRejections,
         },
         {
             projectionAtomIds: [projectionTarget.atomId],
-            routeCount: 97,
+            routeCount: 105,
             privateAtomIds: [privateTarget.atomId],
             failurePartitionIsExact: true,
             containsTiming: false,
             containsTraceIndex: false,
             containsPort: false,
+            controlRejections: [{
+                controlKey: "source-choice",
+                requestedValue: "typed-option",
+                actualValue: "",
+            }],
         }
     );
 
@@ -179,7 +192,7 @@ function run() {
                 "registry-validation-failed",
                 "z-problem",
             ],
-            recipeInvalidCount: 98,
+            recipeInvalidCount: 106,
             routeMissingCount: 0,
             projectionMissingCount: 0,
             exact: true,

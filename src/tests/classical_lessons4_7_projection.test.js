@@ -42,6 +42,7 @@ function run(ctx = {}) {
     // the preterit changes final /a:/ after /i/ to /h/.
     const ilpiaBase = {
         sourceStem: "ilpi-ā",
+        sourceInitialISelection: "real",
         verbClass: "C",
         sourceValence: "specific-projective",
         objectPerson: "3sg",

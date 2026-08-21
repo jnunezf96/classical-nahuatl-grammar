@@ -4,7 +4,8 @@ import {
 
 // Run inside the delivered page. Call observe() after each real Source →
 // Grammar → Result scenario, then finalize() for the exact public-material /
-// private-inert outcome ledger or assertComplete() to require all 447 outcomes.
+// private-inert outcome ledger or assertComplete() to require every outcome in
+// the delivered Source → Grammar → Result inventory.
 
 const AUDIT_KIND = "classical-sgr-material-browser-audit";
 const MATERIAL_RECEIPT_KIND = "classical-sgr-material-dom-receipt";
@@ -63,12 +64,23 @@ function freezeRecord(value) {
   ));
 }
 
+const CURRENT_SURFACE_INVENTORY =
+  getClassicalSourceGrammarResultSurfaceInventory();
+const CURRENT_SURFACE_ATOMS = [
+  ...CURRENT_SURFACE_INVENTORY.axes,
+  ...CURRENT_SURFACE_INVENTORY.outputs,
+];
+
 export const CLASSICAL_SGR_MATERIAL_OUTCOME_SCHEMA = freezeRecord({
   kind: "classical-sgr-material-browser-atom-outcome-schema",
   version: 1,
-  atomCount: 447,
-  publicAtomCount: 104,
-  privateAtomCount: 343,
+  atomCount: CURRENT_SURFACE_ATOMS.length,
+  publicAtomCount: CURRENT_SURFACE_ATOMS.filter(
+    atom => atom.binding?.public === true,
+  ).length,
+  privateAtomCount: CURRENT_SURFACE_ATOMS.filter(
+    atom => atom.binding?.public === false,
+  ).length,
   publicExpectation: "materialized",
   privateExpectation: "private-inert",
   outcomes: [
@@ -574,13 +586,15 @@ export function createClassicalSgrMaterialBrowserAudit(targetWindow = globalThis
   const privateAtoms = allAtoms.filter(atom => atom.binding?.public === false);
   if (
     inventory.kind !== "classical-source-grammar-result-surface-inventory"
-    || inventory.version !== 2
+    || inventory.version !== CURRENT_SURFACE_INVENTORY.version
     || inventory.authority?.uiAuthority !== "none"
     || inventory.authority?.grammarAuthority !== false
-    || allAtoms.length !== 447
-    || publicAtoms.length !== 104
-    || privateAtoms.length !== 343
-    || new Set(allAtoms.map(atom => atom.atomId)).size !== 447
+    || allAtoms.length !== CLASSICAL_SGR_MATERIAL_OUTCOME_SCHEMA.atomCount
+    || publicAtoms.length
+      !== CLASSICAL_SGR_MATERIAL_OUTCOME_SCHEMA.publicAtomCount
+    || privateAtoms.length
+      !== CLASSICAL_SGR_MATERIAL_OUTCOME_SCHEMA.privateAtomCount
+    || new Set(allAtoms.map(atom => atom.atomId)).size !== allAtoms.length
   ) {
     throw new Error("classical-sgr-material-browser-inventory-drift");
   }

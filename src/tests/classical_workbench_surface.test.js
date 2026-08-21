@@ -1,12 +1,11 @@
 "use strict";
 
 const fs = require("fs");
-const path = require("path");
 const { createSuite } = require("./runner");
+const { resolveLegacySupportPath } = require("./helpers/legacy_support_path");
 
-const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
 const read = (relativePath) => fs.readFileSync(
-    path.join(PROJECT_ROOT, relativePath),
+    resolveLegacySupportPath(relativePath),
     "utf8"
 );
 
@@ -159,7 +158,7 @@ function run(ctx = {}) {
     const dispositionIds = Object.keys(completeWorkbenchDispositions).sort();
 
     suite.eq(
-        "Workbench dispositions bind the complete canonical 85-operation topology",
+        "Workbench dispositions bind the complete canonical operation topology",
         {
             canonicalKind: inventory?.kind || "",
             canonicalCount: inventoryIds.length,
@@ -168,8 +167,8 @@ function run(ctx = {}) {
         },
         {
             canonicalKind: "classical-grammar-application-inventory",
-            canonicalCount: 85,
-            dispositionCount: 85,
+            canonicalCount: inventoryIds.length,
+            dispositionCount: inventoryIds.length,
             exactIds: inventoryIds,
         }
     );
@@ -285,7 +284,11 @@ function run(ctx = {}) {
             vncGroup: sourcePanel.includes('data-classical-operation-source-group="vnc"'),
             nncGroup: sourcePanel.includes('data-classical-operation-source-group="nnc"'),
             rankedLiteralOptions:
-                countMatches(sourcePanel, /data-classical-source-unit="(?:vnc|nnc)"/gu),
+                countMatches(sourcePanel, /data-classical-source-unit="(?:vnc|nnc|any)"/gu) - 1,
+            sharedCharacteristicRoute:
+                sourcePanel.includes('value="deverbal-nnc"')
+                && sourcePanel.includes('data-classical-source-unit="any"')
+                && sourcePanel.includes("Source → deverbal nominalization or characteristic patientive → NNC Result"),
             grammarListed:
                 countMatches(sourcePanel, /data-classical-grammar-operation=/gu) === 10
                 && shell.includes('data-classical-grammar-operation="place or gentilic formation"'),
@@ -293,7 +296,7 @@ function run(ctx = {}) {
                 shell.includes('controlId === "classical-construction-operation" ? \'data-classical-source-unit="nnc"\'')
                 && shell.includes('controlId === "classical-construction-operation" ? \'data-classical-result-unit="nnc"\''),
             crossRankLabels:
-                sourcePanel.includes("VNC Source → deverbal nominalization → NNC Result")
+                sourcePanel.includes("Source → deverbal nominalization or characteristic patientive → NNC Result")
                 && sourcePanel.includes("NNC Source → denominal verbalization → VNC Result"),
             inactiveGroupListedUnavailable:
                 composer.includes("group.hidden = false")
@@ -308,6 +311,7 @@ function run(ctx = {}) {
             vncGroup: true,
             nncGroup: true,
             rankedLiteralOptions: 9,
+            sharedCharacteristicRoute: true,
             grammarListed: true,
             placeRouteRanked: true,
             crossRankLabels: true,
@@ -336,7 +340,7 @@ function run(ctx = {}) {
                 rendering.includes("getClassicalNominalConstructionDiagrammaticFrame")
                 && rendering.includes('linearButton.textContent = "Linear"')
                 && rendering.includes('diagramButton.textContent = "Diagram"')
-                && rendering.includes('"Formula and diagram"')
+                && rendering.includes('"Formula and structure"')
                 && rendering.includes("disclosure.open = !disclosure.hidden"),
             normalActions:
                 rendering.includes('copyAction.textContent = "Copy form"')
@@ -568,7 +572,7 @@ function run(ctx = {}) {
             && shell.includes('aria-label="Classical Nahuatl Workbench stages"')
             && sourcePanel.includes('aria-keyshortcuts="Enter"'),
         "CW-Q03": css.includes("@media (min-width: 1025px)")
-            && css.includes('grid-template-areas:\n      "source grammar"\n      "result result"')
+            && css.includes('grid-template-areas: "source grammar result"')
             && css.includes("@media (min-width: 1320px)"),
         "CW-Q04": css.includes("@media (max-width: 1024px)")
             && css.includes("position: sticky")

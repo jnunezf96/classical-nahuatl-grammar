@@ -3,6 +3,9 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
 
 const PROJECT_ROOT = path.resolve(__dirname, "..", "..");
 
@@ -21,7 +24,7 @@ const OUTPUT_STAGE_BY_DISPOSITION = Object.freeze({
 
 function readLedger(relativePath) {
     return JSON.parse(fs.readFileSync(
-        path.join(PROJECT_ROOT, relativePath),
+        resolveLegacySupportPath(relativePath),
         "utf8"
     ));
 }
@@ -96,9 +99,43 @@ function run(ctx = {}) {
         },
         {
             kind: "classical-source-grammar-result-surface-inventory",
-            version: 2,
+            version: 3,
             uiAuthority: "none",
             grammarAuthority: false,
+        }
+    );
+
+    const expectedCanvasProvenance = sortedByAtomId(
+        axisLedger.canvasProvenance.entries.map(entry => ({
+            atomId: entry.applicationAxisAtomId,
+            canvasAtomIds: entry.canvasAtomIds,
+        }))
+    );
+    const actualCanvasProvenance = sortedByAtomId(axes
+        .filter(entry => entry.canvasAtomIds.length > 0)
+        .map(entry => ({
+            atomId: entry.atomId,
+            canvasAtomIds: entry.canvasAtomIds,
+        })));
+    suite.eq(
+        "the production inventory carries the exact non-authorizing Canvas provenance for every genuine choice",
+        {
+            kind: inventory?.canvasProvenance?.kind,
+            mappedAxes: inventory?.canvasProvenance?.mappedAxisCount,
+            links: inventory?.canvasProvenance?.directProvenanceLinkCount,
+            grammarAuthority:
+                inventory?.canvasProvenance?.authority?.grammarAuthority,
+            drift: compareEntryProjections(
+                actualCanvasProvenance,
+                expectedCanvasProvenance
+            ),
+        },
+        {
+            kind: "classical-application-axis-canvas-provenance",
+            mappedAxes: 66,
+            links: 98,
+            grammarAuthority: false,
+            drift: { missing: [], unexpected: [], drift: [] },
         }
     );
 
@@ -110,7 +147,7 @@ function run(ctx = {}) {
     const ledgerAtomIdSet = new Set(ledgerAtomIds);
     const inventoryAtomIdSet = new Set(inventoryAtomIds);
     suite.eq(
-        "the production inventory binds the exact 447-atom parity denominator",
+        "the production inventory binds the exact 496-atom parity denominator",
         {
             axes: axes.length,
             outputs: outputs.length,
@@ -122,10 +159,10 @@ function run(ctx = {}) {
                 !ledgerAtomIdSet.has(atomId)),
         },
         {
-            axes: 392,
+            axes: 441,
             outputs: 55,
-            atoms: 447,
-            uniqueAtoms: 447,
+            atoms: 496,
+            uniqueAtoms: 496,
             missingAtomIds: [],
             unexpectedAtomIds: [],
         }
@@ -175,8 +212,8 @@ function run(ctx = {}) {
         },
         {
             axes: {
-                "intentionally-unsurfaced": 326,
-                "interactive-choice": 64,
+                "intentionally-unsurfaced": 373,
+                "interactive-choice": 66,
                 "internal-support": 2,
             },
             outputs: {
@@ -255,8 +292,8 @@ function run(ctx = {}) {
             privateAtoms: privateAtoms.length,
         },
         {
-            publicAtoms: 104,
-            privateAtoms: 343,
+            publicAtoms: 106,
+            privateAtoms: 390,
         }
     );
 
@@ -303,10 +340,10 @@ function run(ctx = {}) {
             uniquePrivateReceipts: new Set(privateReceiptIds).size,
         },
         {
-            publicReceiptCount: 208,
-            uniquePublicReceipts: 208,
-            privateReceiptCount: 686,
-            uniquePrivateReceipts: 686,
+            publicReceiptCount: 212,
+            uniquePublicReceipts: 212,
+            privateReceiptCount: 780,
+            uniquePrivateReceipts: 780,
         }
     );
 

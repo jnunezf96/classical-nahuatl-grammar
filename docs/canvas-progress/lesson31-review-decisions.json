@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "lesson": 31,
+  "decisions": {
+    "lesson31-compound-nounstem-foundation-and-embed-meaning": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Combine two typed NNC Sources or owner-issued NNC Results through the shared compound-NNC owner, preserve both morphemic Sources and their boundary, place the embed before the matrix, derive the embed general-use shape, and let the typed matrix determine the Result noun class. Keep embed meaning grammatical and productive without using Canvas examples as a stem inventory."
+    },
+    "lesson31-possessor-orientation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive possessor orientation from typed compound structure and preserved Source history: linked compounds are embed oriented automatically, integrated compounds are normally matrix oriented, and a captured possessive adjoined predicate can preserve embed orientation. Expose a choice only where an integrated typed Source genuinely permits both, while keeping matrix government distinct from possessor orientation."
+    },
+    "lesson31-matrix-authority-and-translation-reversal": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the typed matrix as the grammatical head and noun-class governor regardless of English or Spanish translation order. Preserve genuinely reversible embed-matrix analyses as distinct typed Sources, expose matrix selection only where both analyses are grammatically licensed, and prevent glosses, dictionaries, examples, formulas, or surfaces from authorizing the structure."
+    },
+    "lesson31-simple-embed-class-examples": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the shared compound rule to open typed tli, in, zero, and tl Subclass 1 embeds. Derive their ordinary general-use shape and boundary phonology automatically, preserve the matrix Source and Result class, and never use the Canvas example inventory as productive authority."
+    },
+    "lesson31-tl-subclass-two-and-boundary-alternations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive tl Subclass 2 general-use shape from the typed Source, including regular truncation, final-a retention, supportive-i repair, and automatic h-to-y boundary realization. Require a typed lexical analysis only for marked final-a loss, long-vowel glottalization, or an unexpected compound variant, and preserve the fuller Source without making example identity a route gate."
+    },
+    "lesson31-unique-compound-only-nounstems": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Carry a typed compound-only nounstem analysis in either constituent position, including meaning certainty, historical Source, morphemic boundaries, and related formations. Run it through the ordinary productive compound owner and keep lexical inventory evidence explicitly non-authorizing."
+    },
+    "lesson31-ca-matrix-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Treat compound-only ca as a lexical matrix meaning an associated, characterized, or made-of entity while keeping compatible typed embeds productively open. Derive the Result as typed tl Subclass 1-A or 2-C, preserve uncertain embed meanings and later uses as evidence, and distinguish ordinary tl Subclass 2-B final-ca stems structurally rather than by a vocabulary list."
+    },
+    "lesson31-yo-matrix-and-possessive-embed": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build yō-matrix compounds from typed absolutive or nonspecific-tla possessive embed histories. Preserve internal possession and related-but-distinct meanings, derive licensed l-plus-yō and x-plus-yō assimilation automatically, and expose embed history only where both analyses survive rather than inferring it from translation or examples."
+    },
+    "lesson31-conjunctive-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build conjunctive compounds from equal first and second NNC Sources rather than embed and governor. Derive l from a first-conjunct tl Source or tl from a tli Source, take Result class from the second conjunct without matrix government, preserve possessive continuation toward later double-nucleus conjunction, and expose conjunction only for genuine structural ambiguity."
+    },
+    "lesson31-recursive-compound-embeds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture a complete owner-issued compound NNC Result as the embed of a new compound, preserve its canonical Result, Source classes, internal hierarchy, possession, and boundaries, derive the unique outer hierarchy automatically, and enforce acyclic recursion without depth, example, or boundary controls."
+    },
+    "lesson31-recursive-matrices-and-bracketing-ambiguity": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture complete owner-issued compound NNC Results as matrix or in both subpositions, derive the outer Result class from the outer matrix Result, preserve every nested hierarchy and boundary, and expose bracketing only where the same typed constituents genuinely support more than one acyclic analysis."
+    },
+    "lesson31-sex-distinction-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use a typed male or female NNC Source to specify the referent of any compatible animate matrix, preserve referent identity, and derive ordinary compound shape and matrix-governed class automatically. Keep otherwise neutral readings distinct and never use listed human or animal stems as a productive route gate."
+    },
+    "lesson31-progeny-and-fellowship-compounds": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use typed conē or pil-tōn matrices for progeny and a possessive poh matrix for fellowship, while keeping compatible embeds productively open. Preserve the Lesson 31 human conē nuance, recursive animal descriptions, subject and possessor participants, number, and ordinary NNC inflection without turning examples into stem routes."
+    },
+    "lesson31-affinity-reduplication-scope": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply affinity reduplication only with a plural compound subject and at the embed, matrix, or both boundaries licensed by typed Source analysis. Preserve vowel quantity, possession, and optional or obligatory lexical status, and expose scope only where more than one target genuinely survives."
+    },
+    "lesson31-distributive-varietal-reduplication": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply distributive or varietal reduplication automatically to the compound embed, preserve the full boundary plus vowel and glottal evidence, keep it distinct from affinity scope, and expose distribution versus variety only where context does not decide the reading."
+    }
+  }
+}

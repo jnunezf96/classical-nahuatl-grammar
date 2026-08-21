@@ -14,10 +14,10 @@ function run(ctx = {}) {
     const ownerResult = ctx.evaluateClassicalNumeralBasicSetEvidenceAnalysis(source);
     const cases = ownerResult.payload.definition.cases;
     const observations = [
-        ["ACI-P323-L019-3D0EF977A1", "cases.vncAdverb incorporated cem", {
+        ["ACI-P323-L019-3D0EF977A1", "cases.vncAdverb incorporated cem before yā", {
             sourceKind: cases.vncAdverb.sourceKind, stem: cases.vncAdverb.stem,
             incorporatedRoute: cases.vncAdverb.rules["incorporated-adverb/source-route"],
-        }, { sourceKind: "classical-nahuatl-cardinal-vnc-adverb-source-frame", stem: "cem-yā", incorporatedRoute: true }],
+        }, { sourceKind: "classical-nahuatl-cardinal-vnc-adverb-source-frame", stem: "cen-yā", incorporatedRoute: true }],
         ["ACI-P326-L026-852E858276-02", "cases.order20 numerical unit", {
             value: cases.order20.value, stem: cases.order20.stem,
         }, { value: 20, stem: "cem-pōhu-a-l" }],

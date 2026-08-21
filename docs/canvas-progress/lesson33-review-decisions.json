@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "lesson": 33,
+  "decisions": {
+    "lesson33-honorific-vnc-foundation-and-participant-gate": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Capture a complete owner-issued neutral VNC, preserve its typed Source and participants, derive licensed honorific formations from typed Source analysis, apply a sole formation automatically, expose a formation or honored-participant choice only where a real ambiguity survives, add the required reflexive relation automatically, and block self-honorification only against the actually honored participant."
+    },
+    "lesson33-intransitive-causative-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any compatible typed intransitive Source whose analysis licenses the causative honorific, reuse the canonical causative owner, derive ordinary shape and allomorphy from morphemic Source structure, add subject-coreferential reflexive structure automatically, and preserve irregular, suppletive, connective-preferred, mood-defective, or alternative formations only as matching typed lexical facts rather than an example-stem route list."
+    },
+    "lesson33-intransitive-applicative-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For any compatible typed intransitive Source whose analysis licenses the applicative honorific, reuse the canonical applicative owner, add a subject-coreferential reflexive object automatically, preserve the own-interest reading and any honorific-only or preferred-route lexical fact, apply a sole licensed formation automatically, and expose causative versus applicative only when both are licensed."
+    },
+    "lesson33-projective-applicative-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the canonical applicative-reflexive honorific to a compatible owner-issued projective VNC while preserving every existing projective object, its number, and its grammatical role; add the subject-coreferential reflexive beneficiary automatically; expose subject-versus-object honorification only while both readings survive; and select the existing object automatically when a first-person subject cannot honor itself."
+    },
+    "lesson33-derived-causative-and-applicative-sources": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture a complete owner-issued causative or applicative VNC Result, preserve its inner derivation, higher agent, lower agent or source participant, themes, inherited object topology, and morphemic boundaries, add the canonical applicative-reflexive honorific layer automatically, exclude a first-person embedded participant from the respected-object candidates, expose subject versus eligible object only when both readings survive, and reject retyped stems, copied formulas, surfaces, and examples as continuation authority."
+    },
+    "lesson33-projective-causative-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the causative-reflexive honorific from any compatible typed projective-object Source, retain the patient and its number and role, add a subject-coreferential reflexive agent automatically, expose agent versus patient only when both honorific readings survive, expose causative versus applicative and alternate realization only when the typed Source analysis licenses them, and never treat caqui, nequi, cuepa, or any example identity as route authority."
+    },
+    "lesson33-mainline-reflexive-preterit-embed-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture the complete owner-issued mainline-reflexive Result, select the preterit-embed route automatically from that topology, derive the canonical class-specific perfective and silent preterit predicate, incorporate it as the replaced object of fixed tla-(tzin-o-ā), preserve the Source object pronouns and participants, keep shuntline reflexives on their ordinary projective path, and expose no route, matrix, class-form, object-replacement, or bracketing controls."
+    },
+    "lesson33-reverential-double-honorifics": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Offer reverential intensity only after an owner-issued honorific Result exists, recapture that complete Result and its honorific analysis, preserve its participants and resolved subject-or-object interpretation, derive its canonical perfective preterit predicate, incorporate it into a second fixed tla-(tzin-o-ā) matrix automatically, retain all inner and outer boundaries, and reject raw stems, copied spellings, formulas, surfaces, and fresh outer participant choices."
+    },
+    "lesson33-pejorative-preterit-embed-vncs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Form a pejorative from any compatible owner-issued intransitive, projective-object, or reflexive VNC Source by deriving its canonical class-specific perfective, adding silent preterit 0, and incorporating the complete predicate where the specific object of fixed tla-(pōl-o-ā) would stand; preserve all Source participants and object facts, allow first-person self-disparagement, expose subject versus object only where both readings genuinely survive, and reject example identity, formulas, and surfaces as route authority."
+    },
+    "lesson33-compound-verbstem-attitude-scope": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture a complete owner-issued compound VNC Source and derive honorific or pejorative scope from its typed structure: transform the embed in an ordinary compositional intransitive-matrix compound, transform the matrix when the whole compound is typed as a lexicalized unity, and transform the matrix in a shared-object compound; preserve the connector, objects, outer inflection, Source members, and internal boundaries; expose compositional versus lexicalized analysis only when both genuinely remain available; and never use example identity, a direct embed-or-matrix switch, formulas, or surfaces as authority."
+    }
+  }
+}

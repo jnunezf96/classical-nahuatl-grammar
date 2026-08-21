@@ -51,8 +51,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the exceptional Source analysis where intended and resolves Source history only when both analyses remain grammatically possible. All form and valence consequences are automatic.
 - Control policy: Use a conditional Analysis choice; do not infer the exceptional route from surface spelling alone or authorize it from an example list.
 - Proposal: Preserve the exceptional construction in which a nominal embed combines with a tla-fused intransitive matrix and receives an adverbial form-or-nature reading. Keep it structurally distinct from ordinary means incorporation, and expose an Analysis choice only when the same typed surface genuinely permits both Source histories.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/12
+- Status: ACCEPTED
+- Exactly observed: 12/12
 
 ## Batch 2, Group 5: Incorporated-adverb foundation
 
@@ -64,8 +64,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the NNC and VNC Results and resolves Source history only when grammar does not already determine it. The application preserves valence and derives structure and cues.
 - Control policy: Reuse conditional Analysis and canonical continuation; do not create gloss, idiom, surface-form, or example controls.
 - Proposal: Treat incorporated adverbs as one relation with two possible Source histories: an ordinary adverbial NNC adjunct or a transformed supplementary participant. Preserve matrix valence, and keep the histories distinct even when they share a surface form.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/13
+- Status: ACCEPTED
+- Exactly observed: 13/13
 
 ## Batch 2, Group 6: Means and instrument adverbs
 
@@ -77,8 +77,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the nominal and matrix Results; a referent choice appears only where identity is genuinely unspecified. The application derives possession deletion, valence, and form.
 - Control policy: Reuse referent identity; do not add possessor-deletion, subject, valence, example, or fused-stem admission controls.
 - Proposal: Derive means and instrument incorporation from the typed adverbial relation. Keep the nominal embed from becoming the subject, preserve matrix valence, and delete an intimate-possessor relation automatically only when its referent is already a matrix participant.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/108
+- Status: ACCEPTED
+- Exactly observed: 108/108
 
 ## Batch 3, Group 7: Place adverbs
 
@@ -90,8 +90,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the NNC and VNC Results and only unresolved referent identity. Place structure and its consequences are automatic.
 - Control policy: Reuse canonical capture and referent identity; do not add place-example, compound-template, possession, or valence controls.
 - Proposal: Derive place incorporation through the same adverbial owner. Preserve matrix valence and participants, allow compound NNC embeds, and apply intimate-possession deletion only from typed coreference.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/72
+- Status: ACCEPTED
+- Exactly observed: 72/72
 
 ## Batch 3, Group 8: Time, duration, cause, and purpose adverbs
 
@@ -103,8 +103,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses an Analysis only when multiple grammatical relations remain possible. The application derives all structure, scope, participants, form, and compatible readings.
 - Control policy: Do not add translation, meaning, example, valence, or stem-membership controls; reuse conditional Analysis.
 - Proposal: Apply incorporated-adverb structure to time, duration, cause, and purpose relations while preserving matrix valence. Let typed grammar choose the relation when it can; request an Analysis only where the Source genuinely leaves multiple relations possible, and never let an English gloss authorize the route.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/77
+- Status: ACCEPTED
+- Exactly observed: 77/77
 
 ## Batch 3, Group 9: Manner and compared-manner adverbs
 
@@ -116,8 +116,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the compared participant only where a transitive matrix permits both, and chooses cause versus compared manner only where Source evidence does not decide. All other orientation is automatic.
 - Control policy: Use conditional Comparison target and Analysis choices; do not add translation, witness, automatic-subject, or automatic-object controls.
 - Proposal: Derive ordinary and compared-manner incorporation from typed adverb structure. Intransitive matrices make comparison subject-oriented; transitive matrices may leave a genuine subject-versus-object comparison choice. Preserve cause-versus-manner ambiguity only where both Source analyses remain possible.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/85
+- Status: ACCEPTED
+- Exactly observed: 85/85
 
 ## Batch 4, Group 10: Unique embed nounstems
 
@@ -129,8 +129,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user supplies a genuinely lexical embed analysis when it is not already known. The application derives all productive incorporation and continuation behavior from typed structure.
 - Control policy: A lexical inventory may identify lexical facts but must never hide or block other grammatically valid incorporation Sources; do not create a productive route whitelist.
 - Proposal: Preserve the small lexical inventory of unique incorporated nounstems as lexical Source analyses, not productive route authorization. Let their typed shape participate in the ordinary incorporation pipeline and preserve destockal, frequentative, and supportive-vowel distinctions through continuation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/86
+- Status: ACCEPTED
+- Exactly observed: 86/86
 
 ## Batch 4, Group 11: Possessive supplementary-subject adverbs
 
@@ -142,8 +142,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user selects the owner-issued principal and supplementary NNC and resolves supplementation-derived versus compared-manner analysis only where both remain possible. Promotion and referent linkage are automatic.
 - Control policy: Reuse Lesson 17 capture and referent identity; do not add manual subject-copy, possessor-promotion, kin/body-part lists as route gates, or a second supplementation engine.
 - Proposal: Transform a possessive supplementary subject of an intransitive principal into an incorporated adverb while promoting its possessor to the finite nominative subject. Preserve the semantic link between possessor and embedded noun, and keep supplementation and incorporation as distinct roles in one canonical derivation history.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/105
+- Status: ACCEPTED
+- Exactly observed: 105/105
 
 ## Batch 4, Group 12: Possessive supplementary-object and passive adverbs
 
@@ -155,8 +155,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses principal, supplement, and only a genuine means-versus-supplement or possession-type analysis. The application derives promotion, passive consequences, participants, and restrictions.
 - Control policy: Reuse Lesson 17 referent structure and the ordinary nonactive owner; do not add participant-copy, manual agent, surface-spelling, example, or stem-list controls.
 - Proposal: Transform a possessive supplementary object of a transitive principal into an incorporated adverb while promoting its possessor to the matrix object. Also allow an active supplementary subject to become an incorporated adverb when ordinary passive formation discards the active subject. Preserve intimate-possession restrictions and keep passive agents unmentionable.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/137
+- Status: ACCEPTED
+- Exactly observed: 137/137
 
 ## Batch 5, Group 13: Incorporated complements
 
@@ -168,8 +168,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the NNC and VNC Results and a complement relation only where matrix grammar and lexical analysis leave more than one real option. Coreference consequences are automatic.
 - Control policy: Reuse referent identity and typed lexical analysis; do not turn matrix examples into a route whitelist or add deletion, valence, or translation controls.
 - Proposal: Build incorporated complements without changing matrix valence. Delete the embedded NNC subject only when typed referent identity links it to the matrix subject or object, and distinguish subject-oriented, object-considering, and object-changing complements through grammatical roles rather than English glosses.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/57
+- Status: ACCEPTED
+- Exactly observed: 57/57
 
 ## Batch 5, Group 14: Reduplication and nonactive continuation
 
@@ -181,8 +181,8 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses a genuine reduplication target or semantic scope and selects an available voice. The application derives form, current valence, voice availability, participant changes, and continuation.
 - Control policy: Reuse Source-boundary reduplication and the shared nonactive owner; do not add example templates, manual voice eligibility, participant-copy, or separate Lesson 30 voice machinery.
 - Proposal: Let reduplication target the embed, matrix, or both when grammar leaves a real scope choice, and let any completed incorporated compound enter the ordinary passive or impersonal path according to its derived valence. A single-object incorporated-object Result is intransitive and therefore permits only impersonal continuation, not passive.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/71
+- Status: ACCEPTED
+- Exactly observed: 71/71
 
 ## Batch 5, Group 15: The nominal embed is not an agent or subject
 
@@ -194,5 +194,5 @@ All 1004 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: These are automatic grammatical constraints and reading cues. No user control may reclassify the embed as subject or agent or let a translation override Source structure.
 - Control policy: Add no subject, agent, or translation controls; reuse typed participant roles and nonactive authority.
 - Proposal: Enforce the central reading constraint across every Lesson 30 route: the incorporated nominal embed is neither finite subject nor passive agent. Preserve the finite subject pronoun as subject or actor, prohibit passive-agent expression, and derive structure from typed Source rather than English translation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/33
+- Status: ACCEPTED
+- Exactly observed: 33/33

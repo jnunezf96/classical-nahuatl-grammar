@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "lesson": 36,
+  "decisions": {
+    "lesson36-customary-present-nominalization-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Capture an exact owner-issued customary-present VNC Result and preserve both licensed nominalization degrees without example-based admission."
+    },
+    "lesson36-customary-present-agentive-reanalysis": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Reanalyze the complete typed customary-present predicate as the restricted agentive nounstem with its participants and final ni intact."
+    },
+    "lesson36-fully-nominal-customary-agentive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Pass the typed customary-agentive Source through the ordinary NNC state, subject, possessor, number, and class owners."
+    },
+    "lesson36-customary-agentive-meaning-and-preterit-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep customary and preterit agentive analyses distinct and use the exact matching preterit-agentive Result to supply the possessive customary-agentive stem automatically."
+    },
+    "lesson36-customary-present-patientive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the fully nominal absolutive patientive from an exact passive customary-present VNC Result while preserving passive structure and blocking possessive state and outside object activation."
+    },
+    "lesson36-instrumentive-two-source-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Coordinate exact customary-present impersonal and imperfect active VNC Results from one typed lexical Source across the complete instrumentive paradigm."
+    },
+    "lesson36-instrumentive-realization-and-variants": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the two instrumentive Source pathways through exact morphemic shape, keep variants owner-issued, and keep lexicalized readings typed rather than shape-derived."
+    },
+    "lesson36-present-agentive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build an absolutive present-agentive NNC from the exact active present VNC Result while preserving its predicate, subject, number, participants, and boundaries."
+    },
+    "lesson36-future-agentive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build restricted z and general-use z-cā future-agentive Sources from the exact active future VNC Result, with automatic participant, number, state, and continuation behavior."
+    },
+    "lesson36-action-nnc-taxonomy": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Type the action-NNC meaning range while keeping passive and active structures distinct and preventing Source shape from supplying lexical meaning."
+    },
+    "lesson36-passive-action-nncs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build both passive-action stems from an exact passive distant-past Result, with automatic participant transfer, protected cā-yō structure, common number, and Subclass 1-B behavior."
+    },
+    "lesson36-active-action-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep nominalized and derived active-action families distinct and validate the nominalized route from typed voice, valence, and the narrow reflexive transitive allowance."
+    },
+    "lesson36-active-action-general-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the possessive general-use active-action Source from an exact active distant-past Result, with automatic ca, reflexive shuntline, subject-to-possessor transfer, common number, and Subclass 1-B behavior."
+    },
+    "lesson36-active-action-restricted-use": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Recapture the typed general-use active-action Source and build the restricted cā-yō-tl compound with automatic state, number, class, and Source continuity."
+    },
+    "lesson36-active-action-preterit-agentive-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve active-action versus preterit-agentive and passive-action versus preterit-patientive Source histories, boundaries, classes, meanings, and continuations despite possible surface similarity."
+    }
+  }
+}

@@ -77,7 +77,7 @@ function run(ctx = {}) {
         reduplication: "affinity",
         target: "both",
         ruleApplied: true,
-        surface: "āācālcalli",
+        surface: "āācācaltin",
     });
 
     const connector = executeOwner(ctx, "ClassicalTlSubclassTwoTruncationSystem", "classical-tl-subclass-two-truncation-system", "claim-p1553", "p1553-subclass-2-of-tl-nounstems-has-three-subclasses");
@@ -138,8 +138,8 @@ function run(ctx = {}) {
         formula: preteritHonorific.formulaRealization,
     }, {
         variant: "preterit-embed",
-        targetStem: "xīn-⎕-tzin-o-ā",
-        formula: "#0-0+m-o(xīn-⎕-tzin-o-a)0+0-0#",
+        targetStem: "xīn-0-tzin-o-ā",
+        formula: "#0-0+m-o(xīn-0-tzin-o-a)0+0-0#",
     });
 
     const sex = executeOwner(ctx, "ClassicalCompoundNncSex", "classical-compound-nnc-sex", "claim-p3117", "p3117-a-matrix-nounstem-signifying-an-animate-entity-can-incorporate").cases.sex;
@@ -149,7 +149,7 @@ function run(ctx = {}) {
         ruleApplied: sex.rules["compound-nnc/sex"],
     }, {
         embedRole: "sex",
-        stem: "cihuā-cal",
+        stem: "zaca-cal",
         ruleApplied: true,
     });
 

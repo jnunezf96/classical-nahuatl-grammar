@@ -4,6 +4,7 @@ const { createSuite } = require("./runner");
 
 function executeMiquiPreterit(ctx, {
     derivationMode = ctx.DERIVATION_MODE.nonactive,
+    verbClass = "B",
     pers1 = "",
     pers2 = "",
     tiempo = "preterito",
@@ -25,6 +26,7 @@ function executeMiquiPreterit(ctx, {
                 tenseMode: ctx.TENSE_MODE.verbo,
                 derivationMode,
                 derivationType: ctx.DERIVATION_TYPE.direct,
+                sourceVerbClass: verbClass,
                 voiceMode:
                     derivationMode === ctx.DERIVATION_MODE.nonactive
                         ? ctx.VOICE_MODE.passive

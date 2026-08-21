@@ -5,13 +5,15 @@ const path = require("path");
 const { spawnSync } = require("child_process");
 const { pathToFileURL } = require("url");
 const { createSuite } = require("./runner");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "..", "..");
-const PRIOR_REPORT = path.join(
-    ROOT,
+const PRIOR_REPORT = resolveLegacySupportPath(path.join(
     "reports/generated/classical_sgr_browser",
     "inventory-dacbf10128613891c158a5a43dc94ccc1ef0ef67e4e74e82fdc2704b59e1468a__recipe-d7467423d016f64ff9a641d42574112566acf03aa2b9865fcec69b80fbcc39d6.json"
-);
+));
 
 const PUBLIC_FINAL_THREE = Object.freeze([
     [
@@ -195,12 +197,10 @@ function run(ctx = {}) {
             ],
             ordinary: {
                 alwaysObserve: true,
-                preSelectionActions: ["apply-source"],
                 state: "absolutive",
             },
             possessive: {
                 alwaysObserve: true,
-                preSelectionActions: ["apply-source"],
                 state: "possessive",
                 possessor: "1sg",
                 lastSelection: "classical-rule-logic-nnc-possessor",

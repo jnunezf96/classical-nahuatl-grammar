@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "lesson": 39,
+  "groups": {
+    "lesson39-perfective-patientive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-perfective-impersonal-model": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-perfective-compounds-and-ownerhood": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-imperfective-patientive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_4_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-imperfective-impersonal-model": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_5_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-characteristic-patientive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-characteristic-ownerhood-contrasts": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_7_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-characteristic-organic-possession": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-characteristic-adventitious-possession": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-characteristic-extended-notes": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_10_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-root-stock-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_11_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-root-stock-allomorphs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-root-stock-extensions": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_13_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-use-and-reading": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_14_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-compound-embeds": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-compound-matrices": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_16_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-ownerhood-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_17_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-ownerhood-hua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_18_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-ownerhood-yoa": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_19_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-ownerhood-continuation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_20_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-ownerhood-extended": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_21_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-patientive-incorporated-objects": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_22_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    },
+    "lesson39-life-heart-embed-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson39_group_23_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson39_reader_guidance.test.js"
+    }
+  }
+}

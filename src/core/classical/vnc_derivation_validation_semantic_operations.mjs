@@ -485,7 +485,7 @@ function buildProjection(runtime) {
     { derivationType: "causative" },
   );
   const recursiveOption = (recursiveInventory?.options || [])
-    .find(option => option.targetStem === "caqui-ti-l-tiā");
+    .find(option => option.targetStem === "caquī-ti-l-tiā");
   const recursiveOperation = runtime.deriveClassicalNahuatlVncDerivationOperationFrame(
     doubleSpecific.machinery,
     {

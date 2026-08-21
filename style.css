@@ -4338,7 +4338,7 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
   font-family: var(--font-body, system-ui, sans-serif);
   font-size: 0.78rem;
   font-style: normal;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1.25;
   text-align: center;
   pointer-events: none;
@@ -13053,6 +13053,13 @@ body.is-language-classical #classical-authority-panel .classical-vnc-authority-s
   min-width: 0;
 }
 
+body.is-language-classical #classical-authority-panel :is(
+  .classical-vnc-authority-stage,
+  .classical-vnc-authority-section
+)[hidden] {
+  display: none !important;
+}
+
 body.is-language-classical #classical-authority-panel .classical-vnc-authority-stage[data-classical-vnc-authority-stage="primary"] {
   padding-bottom: 2px;
 }
@@ -14047,6 +14054,13 @@ body.is-language-classical #classical-authority-panel .calc-operator--classical-
   box-shadow: none;
 }
 
+body.is-language-classical #classical-authority-panel [data-classical-vnc-authority-stage="verbstem"] > .calc-operator--derivation {
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
+  margin: 0 0 2px;
+}
+
 body.is-language-classical #classical-authority-panel .calc-operator--derivation > .calc-operator__label {
   display: none;
 }
@@ -14383,9 +14397,6 @@ body.is-language-classical.is-ui-simple #classical-authority-panel .calc-operato
  */
 body.is-language-classical.is-ui-simple #classical-source-panel .classical-source-internal-morphs,
 body.is-language-classical.is-ui-simple #classical-source-panel .classical-source-constitution,
-body.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__single-vnc-view-switch,
-body.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__single-nnc-view-switch,
-body.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__diagram,
 body.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__proof-group,
 body.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__witnesses,
 body.is-language-classical.is-ui-simple #classical-result-panel .classical-authority-receipt--result,
@@ -14542,6 +14553,7 @@ body.is-language-classical .classical-authority-receipt__value {
 }
 
 body.is-language-classical #classical-authority-panel .classical-rule-control.is-conflicting,
+body.is-language-classical #classical-source-panel .classical-nnc-source-guide__field.is-conflicting,
 body.is-language-classical #panel-stack-pane-inputs .classical-source-parts__field.is-conflicting {
   padding: 6px;
   border: 1px solid var(--workbench-invalid-line);
@@ -14550,6 +14562,7 @@ body.is-language-classical #panel-stack-pane-inputs .classical-source-parts__fie
 }
 
 body.is-language-classical #classical-authority-panel .classical-rule-control.is-conflicting .classical-rule-control__label,
+body.is-language-classical #classical-source-panel .classical-nnc-source-guide__field.is-conflicting .classical-nnc-source-guide__label,
 body.is-language-classical #panel-stack-pane-inputs .classical-source-parts__field.is-conflicting .classical-source-parts__label {
   color: var(--workbench-invalid);
 }
@@ -15985,9 +15998,71 @@ body.is-language-classical #classical-result-panel select {
 
 body.is-language-classical #classical-source-panel .classical-source-parts {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   padding: 12px 0 0;
   border-top: 1px solid var(--workbench-line);
+}
+
+body.is-language-classical #classical-source-panel .classical-source-outline__section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--workbench-control-gap);
+  min-width: 0;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-panel-bg-soft);
+}
+
+body.is-language-classical #classical-source-panel .classical-source-outline__section[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-source-panel .classical-source-outline__heading {
+  margin: 0;
+  color: var(--workbench-teal-deep);
+  font-size: calc(0.78rem + var(--font-size-adjust));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+body.is-language-classical #classical-source-panel [data-classical-source-outline-section="identity"] .classical-nnc-source-guide,
+body.is-language-classical #classical-source-panel [data-classical-source-outline-section="form"] .classical-transcription-keyboard,
+body.is-language-classical #classical-source-panel [data-classical-source-path-lane="operation"] .classical-nnc-source-analysis {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.is-language-classical #classical-source-panel .classical-source-path-lane {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--workbench-control-gap);
+  min-width: 0;
+  margin: 2px 0 0;
+  padding: 10px 0 0;
+  border-top: 1px solid var(--workbench-line);
+  background: transparent;
+}
+
+body.is-language-classical #classical-source-panel .classical-source-path-lane__heading {
+  margin: 0;
+  color: var(--workbench-teal-deep);
+  font-family: var(--font-body);
+  font-size: calc(0.72rem + var(--font-size-adjust));
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+body.is-language-classical #classical-source-panel [data-classical-source-path-lane="operation"] .classical-source-parts__commit-row {
+  padding-top: 2px;
+  border-top: 0;
+}
+
+body.is-language-classical #classical-source-panel [data-classical-source-outline-section="analysis"] {
+  background: var(--workbench-paper-muted);
 }
 
 body.is-language-classical #classical-source-panel .classical-source-parts__grid {
@@ -16396,16 +16471,60 @@ body.is-language-classical .classical-whole-canvas-choice-grid[hidden] {
   display: contents;
 }
 
-body.is-language-classical #classical-authority-panel .classical-construction-controls > .classical-rule-control {
+.classical-construction-source-analysis-controls {
+  display: contents;
+}
+
+.classical-construction-source-analysis-controls[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  align-items: end;
+  gap: var(--workbench-control-gap);
+  min-width: 0;
+  margin-top: 2px;
+  order: 100;
+}
+
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane[data-classical-construction-separated-from-normal="true"] {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--workbench-line);
+}
+
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane__label {
+  grid-column: 1 / -1;
+  order: -1;
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-support);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+body.is-language-classical #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"][data-classical-custom-construction-active="true"] .classical-vnc-authority-heading:not([hidden]) {
+  display: block !important;
+}
+
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane > .classical-rule-control {
   grid-column: span 6;
 }
 
-body.is-language-classical #classical-authority-panel .classical-construction-controls > p {
+body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane > :is(p, div):not(.classical-rule-control) {
   grid-column: 1 / -1;
 }
 
 @media (max-width: 920px) {
-  body.is-language-classical #classical-authority-panel .classical-construction-controls > .classical-rule-control {
+  body.is-language-classical #classical-authority-panel .classical-construction-grammar-lane > .classical-rule-control {
     grid-column: 1 / -1;
   }
 }
@@ -16681,6 +16800,7 @@ body.is-language-classical #classical-authority-panel .classical-grammar-depende
 body.is-language-classical #classical-authority-panel .classical-nnc-authority-heading,
 body.is-language-classical #classical-authority-panel .classical-vnc-authority-section__title,
 body.is-language-classical #classical-result-panel .classical-rule-surface__title {
+  font-family: var(--font-body);
   font-size: var(--sgr-type-sub);
   line-height: 1.25;
 }
@@ -17519,6 +17639,36 @@ body.is-language-classical #classical-workbench #classical-authority-panel .clas
   line-height: 1.2;
 }
 
+/* Keep Result content at its natural height. The legacy Result grid reserved
+   a flexible third row, which stretched the rule account and its Copy action
+   to fill the height of the taller Grammar panel. */
+body.is-language-classical #classical-workbench #classical-result-panel #container-tense-grid {
+  grid-template-rows: none;
+  grid-auto-rows: max-content;
+  align-content: start;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface,
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__single-nnc,
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__single-vnc,
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__body,
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__answer {
+  align-content: start;
+  align-self: start;
+  grid-auto-rows: max-content;
+  height: auto;
+  min-height: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__actions {
+  align-items: flex-start;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__actions > button {
+  align-self: flex-start;
+  height: auto;
+}
+
 body.is-language-classical #classical-workbench #classical-authority-panel .classical-whole-canvas-choice__label,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-result-scope-controls .classical-rule-control__label {
   color: var(--workbench-muted);
@@ -17900,7 +18050,7 @@ body.is-language-classical #classical-workbench #classical-authority-panel .clas
    built-in picker and compositional picker are alternative controls within
    one task, so they do not create cards inside the Grammar panel. */
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   :is(.classical-built-in-particles, .classical-particle-combination-builder) {
   padding: 0;
   border: 0;
@@ -17910,7 +18060,7 @@ body.is-language-classical #classical-workbench #classical-authority-panel
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   .classical-particle-combination-builder {
   margin-top: 2px;
   padding-top: 10px;
@@ -17918,19 +18068,19 @@ body.is-language-classical #classical-workbench #classical-authority-panel
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   .classical-particle-combination-builder__parts {
   min-height: 0;
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   .classical-vnc-authority-control-group__header {
   display: none;
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   .classical-particle-combination-builder__field-label {
   color: var(--workbench-muted);
   font-size: var(--sgr-type-subsub);
@@ -17939,7 +18089,7 @@ body.is-language-classical #classical-workbench #classical-authority-panel
 }
 
 body.is-language-classical #classical-workbench #classical-authority-panel
-  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="particle-group"]
+  .classical-vnc-authority-section[data-classical-vnc-authority-disclosure="sentence"]
   .classical-rule-control__hint {
   color: var(--workbench-muted);
   font-size: var(--sgr-type-support);
@@ -18013,7 +18163,7 @@ body.is-language-classical #classical-workbench #classical-authority-panel [data
    single-result wrapper are layout regions; projections and disclosures keep
    their own boundaries because they are distinct views or tasks. */
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] {
-  padding-inline: 0;
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
@@ -18024,10 +18174,25 @@ body.is-language-classical #classical-workbench #classical-result-panel .classic
   .classical-rule-surface__single-nnc,
   .classical-rule-surface__single-vnc
 ) {
-  padding-inline: 0;
+  padding: 0;
   border: 0;
   border-radius: 0;
   background: transparent;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-rule-surface__presentation-switches {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--workbench-control-gap);
+  min-width: 0;
+  margin: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-rule-surface__presentation-switches[hidden] {
+  display: none !important;
 }
 
 body.is-language-classical #classical-workbench #classical-result-panel .output-meta-strip :is(
@@ -18473,11 +18638,189 @@ body.is-language-classical #classical-workbench #classical-result-panel .classic
   line-height: 1.2;
 }
 
+/* VNC and NNC use the same bounded Grammar-section language. */
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-panel-bg-soft);
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  min-width: 0;
+  padding: 0 0 5px;
+  border-bottom: 1px solid var(--workbench-line);
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__title {
+  color: var(--workbench-teal-deep);
+  font-size: var(--classical-shell-button-size);
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__body {
+  gap: 8px;
+  padding: 0;
+}
+
+body.is-language-classical #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] .classical-nnc-grammar-group[data-classical-nnc-grammar-section="sentence"] .classical-vnc-authority-control-group {
+  padding-inline: 0;
+}
+
 body.is-language-classical #classical-workbench #classical-source-panel .classical-source-commit-status.is-pending .classical-source-commit-status__badge,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface[data-classical-result-status="blocked"] .classical-rule-surface__heading .grammar-inspector__chip {
   border-color: var(--workbench-pending);
   background: var(--workbench-pending-soft);
   color: var(--workbench-pending);
+}
+
+/* Source, Grammar, and Result use one level of the same named-card language.
+   Content inside each card stays flat, so the visual boundary always means a
+   real grammatical section rather than an extra decorative wrapper. */
+body.is-language-classical #classical-workbench :is(
+  #classical-source-panel .classical-source-outline__section,
+  #classical-source-panel .classical-source-context-controls,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] .classical-nnc-grammar-group,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section,
+  #classical-result-panel .classical-result-outline__section
+) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px;
+  overflow: visible;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-panel-bg-soft);
+  box-shadow: none;
+}
+
+body.is-language-classical #classical-workbench :is(
+  #classical-source-panel .classical-source-outline__section,
+  #classical-source-panel .classical-source-context-controls,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] .classical-nnc-grammar-group,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section,
+  #classical-result-panel .classical-result-outline__section
+)[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench :is(
+  #classical-source-panel .classical-source-outline__heading,
+  #classical-source-panel .classical-source-context-controls__heading,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"] .classical-nnc-grammar-group > .classical-nnc-authority-heading,
+  #classical-authority-panel #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"] .classical-vnc-authority-section__header,
+  #classical-result-panel .classical-result-outline__heading
+) {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+  padding: 8px 0 5px;
+  border: 0;
+  border-bottom: 1px solid var(--workbench-line);
+  background: transparent;
+  color: var(--workbench-teal-deep);
+  font-family: var(--font-body);
+  font-size: var(--classical-shell-button-size);
+  font-weight: 700;
+  line-height: 1.15;
+  text-align: left;
+  text-transform: none;
+}
+
+body.is-language-classical #classical-workbench #classical-source-panel
+  .classical-source-context-controls[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench #classical-source-panel
+  .classical-source-parts {
+  padding-top: 0;
+  border-top: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="vnc"]
+  .classical-vnc-authority-section__title {
+  font-size: var(--classical-shell-button-size);
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel .classical-result-outline__section > :is(
+  .output-meta-strip,
+  .output-result-controls,
+  .classical-result-scope-controls,
+  .panel-block-actions,
+  .classical-grammar-continuation,
+  .classical-rule-surface,
+  #all-tense-conjugations
+) {
+  min-width: 0;
+  margin: 0;
+}
+
+/* A named Result section owns the only card boundary. Legacy children keep
+   their controls and subheadings, but no floating offset or second opening
+   divider. Study depth hides Continuation together with its Analysis-only
+   workflow so an empty named card is never left behind. */
+body.is-language-classical #classical-workbench #classical-result-panel
+  [data-classical-result-outline-section="view"] > .panel-block-actions {
+  width: 100%;
+  margin: 0;
+  justify-content: flex-start;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  [data-classical-result-outline-section="continuation"] > .classical-grammar-continuation {
+  min-width: 0;
+  margin: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  [data-classical-result-outline-section="continuation"]
+  > .classical-grammar-continuation
+  > .classical-clause-relation-workflow
+  > .classical-rule-surface__format-heading:first-child {
+  padding: 0 0 8px;
+  border-top: 0;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench #classical-result-panel
+  [data-classical-result-outline-section="continuation"] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  #container-tense-grid > .panel-block-title
+  + [data-classical-result-outline-section],
+body.is-language-classical #classical-workbench #classical-result-panel
+  #container-tense-grid > [data-classical-result-outline-section]
+  + [data-classical-result-outline-section] {
+  margin-top: var(--workbench-section-gap);
+}
+
+body.is-language-classical #classical-workbench #classical-source-panel
+  #container-inputs > .panel-block-title
+  + [data-classical-panel-section],
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #panel-stack-pane-tense > .panel-block-title
+  + .classical-grammar-dependency-guidance,
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #panel-stack-pane-tense > [data-classical-panel-section="primary-content"] {
+  margin-top: var(--workbench-section-gap);
 }
 
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__action:disabled {
@@ -18530,4 +18873,118 @@ body.is-language-classical .classical-reader-guidance-dialog #classical-canvas-g
   font-size: var(--classical-shell-button-size);
   font-weight: 700;
   line-height: 1.2;
+}
+
+/* Dropdowns use one predictable column rhythm inside each named SGR section.
+   Inventory pickers and multi-step task controls keep their full-row role. */
+body.is-language-classical #classical-workbench #classical-source-panel
+  .classical-source-identity-controls {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* Every route revealed by Source operation stays in the same full-width
+   Source track. The operation inventory can grow without adding route CSS. */
+body.is-language-classical #classical-workbench #classical-source-panel
+  [data-classical-source-path-lane="operation"]
+  .classical-nnc-source-analysis__grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--workbench-control-gap);
+  width: 100%;
+  min-width: 0;
+  font-family: var(--font-body);
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit]
+  :is(
+    .classical-vnc-authority-section__body,
+    .classical-vnc-authority-control-group__body,
+    .classical-nnc-grammar-group__body
+  )
+  > .classical-rule-control:not(.classical-built-in-particles):not(
+    .classical-particle-combination-builder
+  ):not(
+    [data-classical-vnc-authority-order="verbstem-derivation-option"]
+  ) {
+  grid-column: span 6 !important;
+  min-width: 0;
+}
+
+/* Route-specific Grammar choices use the same two-column rhythm as their
+   ordinary neighbors, regardless of which Source operation revealed them. */
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane]
+  > .classical-rule-control {
+  grid-column: span 6 !important;
+  min-width: 0;
+  font-family: var(--font-body);
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane]
+  > .classical-rule-control:not(:has(select, input, button)) {
+  grid-column: 1 / -1 !important;
+}
+
+body.is-language-classical #classical-workbench #classical-source-panel
+  [data-classical-source-path-lane="operation"]
+  :is(select, input:not([type="checkbox"], [type="radio"])),
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane]
+  :is(select, input:not([type="checkbox"], [type="radio"])) {
+  width: 100%;
+  inline-size: 100%;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-particle-combination-builder__parts {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-result-scope-controls {
+  grid-template-columns: minmax(0, 1fr);
+  width: 100%;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-whole-canvas-choice-grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+}
+
+body.is-language-classical #classical-workbench :is(
+  #classical-source-panel,
+  #classical-authority-panel,
+  #classical-result-panel
+) select {
+  width: 100%;
+  inline-size: 100%;
+}
+
+@media (max-width: 820px) {
+  body.is-language-classical #classical-workbench #classical-authority-panel
+    #classical-rule-logic-controls[data-classical-rule-logic-surface-unit]
+    :is(
+      .classical-vnc-authority-section__body,
+      .classical-vnc-authority-control-group__body,
+      .classical-nnc-grammar-group__body
+    )
+    > .classical-rule-control:not(.classical-built-in-particles):not(
+      .classical-particle-combination-builder
+    ):not(
+      [data-classical-vnc-authority-order="verbstem-derivation-option"]
+    ) {
+    grid-column: 1 / -1 !important;
+  }
+
+  body.is-language-classical #classical-workbench #classical-authority-panel
+    [data-classical-construction-grammar-lane]
+    > .classical-rule-control {
+    grid-column: 1 / -1 !important;
+  }
+
+  body.is-language-classical #classical-workbench #classical-authority-panel
+    .classical-particle-combination-builder__parts {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

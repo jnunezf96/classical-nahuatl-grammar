@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const { hasVersionedImport } = require("./helpers/browser_cache_chain");
 const ROOT = path.resolve(__dirname, "..", "..");
 
 function run(ctx = {}) {
@@ -14,7 +15,7 @@ function run(ctx = {}) {
     const ids = ideas.map(idea => idea.ideaId);
     const panel = ctx.ClassicalAuthorityPanel();
     const start = panel.indexOf('data-classical-reader-guidance-lesson="29"');
-    const end = panel.indexOf('id="classical-canvas-grammar-facts"');
+    const end = panel.indexOf("</details>", start);
     const visible = panel.slice(start, end);
     s.eq("accepted Lesson 29 atoms point to twelve collapsed reading ideas", {
         accepted: accepted.length, groups: new Set(accepted.map(r => r.reviewGroupId)).size,
@@ -25,6 +26,8 @@ function run(ctx = {}) {
     }, { accepted: 346, groups: 12, ideas: 12, exactIds: true, sections: 1, cards: 12, open: false });
     s.ok("Lesson 29 guidance keeps only genuine choices and open typed Sources",
         ideas[0].guidance.includes("rare sounded-future checkbox")
+        && ideas[0].guidance.includes("shared Class A, B, C, or D future-stem rule")
+        && ideas[0].guidance.includes("ihcuil-o-ā supplies ihcuil-ō")
         && ideas[1].guidance.includes("no second Direction choice")
         && ideas[1].guidance.includes("derives c versus qu")
         && ideas[2].guidance.includes("combines direction, mood, and tense")
@@ -54,20 +57,21 @@ function run(ctx = {}) {
         s.eq(`mutation:${record.atomId} fails without its reading idea`,
             ctx.isLesson29ReaderGuidanceExact(ideas.filter(entry => entry.ideaId !== record.reviewGroupId)), false);
     }
-    const key = "20260818-lesson29-groups10-12-357";
     const read = name => fs.readFileSync(path.join(ROOT, name), "utf8");
     s.eq("Lesson 29 uses the complete browser cache chain", {
-        index: read("index.html").includes(`src/browser/main.mjs?v=${key}`),
-        main: read("src/browser/main.mjs").includes(`bootstrap.mjs?v=${key}`),
+        index: hasVersionedImport(read("index.html"), "src/browser/main.mjs"),
+        main: hasVersionedImport(read("src/browser/main.mjs"), "bootstrap.mjs"),
         bootstrap: ["runtime_bridge.mjs", "create_runtime.mjs", "composer.mjs", "rendering.mjs", "classical_shell.mjs"]
-            .every(name => read("src/bootstrap/bootstrap.mjs").includes(`${name}?v=${key}`)),
-        bridge: read("src/bootstrap/runtime_bridge.mjs").includes(`create_runtime.mjs?v=${key}`),
-        runtime: ["vnc_lessons27_29_33_closure.mjs", "vnc_late_operation_ui_contract.mjs", "rendering.mjs", "classical_shell.mjs"]
-            .every(name => read("src/runtime/create_runtime.mjs").includes(`${name}?v=${key}`)),
-        semantic: read("src/runtime/create_runtime.mjs").includes(
-            `nuclear_semantic_owner_catalog.mjs?v=${key}`),
-        leaf: read("src/ui/shell/classical_shell.mjs").includes(
-            "lesson29_reader_guidance.mjs?v=20260818-lesson29-groups1-12-004"),
+            .every(name => hasVersionedImport(read("src/bootstrap/bootstrap.mjs"), name)),
+        bridge: hasVersionedImport(read("src/bootstrap/runtime_bridge.mjs"), "create_runtime.mjs"),
+        runtime: ["vnc_lessons27_29_33_closure.mjs", "rendering.mjs", "classical_shell.mjs"]
+            .every(name => hasVersionedImport(read("src/runtime/create_runtime.mjs"), name)),
+        semantic: hasVersionedImport(read("src/runtime/create_runtime.mjs"),
+            "nuclear_semantic_owner_catalog.mjs")
+            && hasVersionedImport(read("src/core/classical/nuclear_semantic_owner_catalog.mjs"),
+                "vnc_purposive_validation_semantic_operations.mjs"),
+        leaf: hasVersionedImport(read("src/ui/shell/classical_shell.mjs"),
+            "lesson29_reader_guidance.mjs"),
     }, { index: true, main: true, bootstrap: true, bridge: true, runtime: true,
         semantic: true, leaf: true });
     return s;

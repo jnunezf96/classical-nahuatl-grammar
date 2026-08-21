@@ -3,6 +3,9 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const AXIS_LEDGER = JSON.parse(fs.readFileSync(
@@ -10,7 +13,7 @@ const AXIS_LEDGER = JSON.parse(fs.readFileSync(
     "utf8"
 ));
 const OUTPUT_LEDGER = JSON.parse(fs.readFileSync(
-    path.join(ROOT, "docs", "CLASSICAL_APPLICATION_OUTPUT_DISPOSITIONS.json"),
+    resolveLegacySupportPath("docs/CLASSICAL_APPLICATION_OUTPUT_DISPOSITIONS.json"),
     "utf8"
 ));
 const INDEX_HTML = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
@@ -373,7 +376,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the private denominator is the exact 326 unsurfaced plus 17 internal-support partition",
+        "the private denominator is the exact 373 unsurfaced plus 17 internal-support partition",
         {
             ledgerIntentionallyUnsurfaced:
                 INTENTIONALLY_UNSURFACED_AXIS_ENTRIES.length,
@@ -393,7 +396,7 @@ function run(ctx = {}) {
             )),
         },
         {
-            ledgerIntentionallyUnsurfaced: 326,
+            ledgerIntentionallyUnsurfaced: 373,
             ledgerAxes: [
                 "CAA-vnc-application--coordinate-projection",
                 "CAA-vnc-application--operation-plan",
@@ -415,10 +418,10 @@ function run(ctx = {}) {
                 "CAO-vnc-transitive-object--scalar",
                 "CAO-vnc-verbstem-class--scalar",
             ],
-            inventoryCount: 343,
+            inventoryCount: 390,
             inventoryIds: expectedPrivateIds,
             dispositionCounts: {
-                "intentionally-unsurfaced": 326,
+                "intentionally-unsurfaced": 373,
                 "internal-support": 17,
             },
             stagesMatchDisposition: true,
@@ -687,7 +690,7 @@ function run(ctx = {}) {
         },
         {
             syncResult: true,
-            publicInteractiveBindings: 58,
+            publicInteractiveBindings: 66,
             emittedPrivateIds: [],
             resultAuthority: "canonical-only",
             grammarAuthority: "false",

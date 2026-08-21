@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "lesson": 34,
+  "contradictionTest": "src/tests/classical_lesson34_contradiction_audit.test.js",
+  "groups": {
+    "lesson34-cardinal-numeral-foundation-and-count-kind": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-numeral-one-and-cem-shape": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-two-three-four-shapes-and-gross-count": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-five-through-nine-composition": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-ten-fifteen-and-gross-possessive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-higher-vigesimal-orders": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-conjoined-and-downgraded-numerals": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-unit-classifier-sets": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-special-twenty-count-sets": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-numeral-reduplication": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-approximation-more-and-supplementation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    },
+    "lesson34-measure-nncs-and-measured-composition": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson34_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson34_reader_guidance.test.js"
+    }
+  }
+}

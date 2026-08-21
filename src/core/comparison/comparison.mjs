@@ -781,6 +781,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formula: "",
         formulaConstituents: null,
         stem: "",
+        sourceIdentityStem: "",
         absolutiveSuffix: "",
         grammaticalRole: "",
         lexeme: "",
@@ -913,6 +914,9 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         || canonicalResult?.operationFrame?.sourceFrame
         || canonicalResult?.resultFrame?.sourceFrame
         || null;
+      const sourceIdentityStem = text(
+        canonicalLexicalSourceFrame?.stem || normalizedStem
+      );
       const lexicalFormation = text(
         canonicalLexicalSourceFrame?.lexicalFormation || ""
       );
@@ -942,6 +946,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         formula: normalizedFormula,
         formulaConstituents,
         stem: normalizedStem,
+        sourceIdentityStem,
         absolutiveSuffix: normalizedSuffix,
         grammaticalRole: "",
         lexeme,
@@ -1260,6 +1265,12 @@ export function createComparisonApi(targetObject = globalThis, installationConte
     function slotStem(operationFrame, slotId) {
       return text(operationFrame.sourceSlots?.[slotId]?.stem);
     }
+    function slotSourceIdentityStem(operationFrame, slotId) {
+      return text(
+        operationFrame.sourceSlots?.[slotId]?.sourceIdentityStem
+        || operationFrame.sourceSlots?.[slotId]?.stem
+      );
+    }
     function choiceSurface(operationFrame, field) {
       return text(operationFrame.choices?.[field]?.surface);
     }
@@ -1332,7 +1343,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       if (routeId === "similarity-reduplicative-prefix") {
         formula = buildReduplicativeComparisonFormula(operationFrame);
       } else if (routeId === "similarity-downgraded-possessive-tla") {
-        formula = `(tla-${slotStem(operationFrame, "source")})-${text(
+        formula = `(tla-${slotSourceIdentityStem(operationFrame, "source")})-${text(
           slots.source?.absolutiveSuffix
         )}-`;
       } else if (routeId === "similarity-tloc-relational-nnc") {
@@ -1528,7 +1539,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
         surface = compact(`${prefix}${realizedStem}${continuation.suffix}`);
         formulaSlots = [prefix, realizedStem, continuation.formulaSuffix].filter(Boolean);
       } else if (routeId === "similarity-downgraded-possessive-tla") {
-        const stem = slotStem(operationFrame, "source");
+        const stem = slotSourceIdentityStem(operationFrame, "source");
         const suffix = text(slots.source.absolutiveSuffix);
         surface = compact(`tla${stem}${suffix}`);
         formulaSlots = ["tla", stem, suffix];
@@ -1541,7 +1552,7 @@ export function createComparisonApi(targetObject = globalThis, installationConte
       } else if (routeId === "similarity-incorporated-nehnequi") {
         const predicate = compact(`mo${slotStem(operationFrame, "source")}nehnequi`);
         surface = join(slotSurface(operationFrame, "comparand"), choiceSurface(operationFrame, "degreeMarker"), predicate);
-        formulaSlots = ["COMPARAND", "DEGREE", "mo", "INCORPORATED_NOUNSTEM", "nehnequi"];
+        formulaSlots = ["mo", slotStem(operationFrame, "source"), "nehnequi"];
       } else if (routeId === "similarity-resemblance-verbstem-nnc") {
         surface = join(slotSurface(operationFrame, "principal"), "in", slotSurface(operationFrame, "standard"));
         formulaSlots = ["RESEMBLANCE_NNC", "in", "STANDARD"];

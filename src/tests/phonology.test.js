@@ -4,10 +4,18 @@
  * Tests for src/core/phonology/phonology.mjs
  */
 
+const fs = require("fs");
+const path = require("path");
 const { createSuite } = require("./runner");
+
+const PHONOLOGY_FIXTURE = JSON.parse(fs.readFileSync(
+    path.resolve(__dirname, "../../data/static_phonology.json"),
+    "utf8"
+));
 
 function run(ctx) {
     const s = createSuite("phonology");
+    ctx.applyStaticPhonology(PHONOLOGY_FIXTURE);
 
     // splitVerbLetters — digraph recognition
     s.eq("splitVerbLetters: nemi", ctx.splitVerbLetters("nemi"), ["n","e","m","i"]);

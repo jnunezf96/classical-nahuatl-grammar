@@ -1,6 +1,6 @@
-import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260814-lesson16-complete-267";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260812-lesson3-groups-7-9-073";
+import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260821-lesson39-group23-171";
+import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260821-lesson39-group23-171";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260821-lesson39-group23-171";
 import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260815-lesson21-groups7-8-294";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260818-lesson29-groups10-12-357";
@@ -15,14 +15,14 @@ import { installClassicalTranscriptionSemanticOwnersGlobals } from "../core/clas
 import { installClassicalNahuatlParticlesGlobals } from "../core/classical/particle_grammar.mjs?v=20260812-sentence-type-108";
 import { installClassicalParticleSemanticOwnersGlobals } from "../core/classical/particle_owner_catalog.mjs?v=20260802-l3-particle-owners-001";
 import { installClassicalNahuatlNuclearClauseGlobals } from "../core/classical/nuclear_clause_source.mjs?v=20260801-pre-l58-gates-118";
-import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260814-lesson16-complete-267";
-import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20260818-lesson30-groups1-3-001";
-import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20260806-preterit-agentive-nemi-173";
+import { installClassicalNahuatlNncLayerEvaluatorGlobals } from "../core/classical/nnc_layer_evaluator.mjs?v=20260821-lesson39-group23-171";
+import { installClassicalNahuatlNominalConstructionGlobals } from "../core/classical/nominal_construction.mjs?v=20260821-lesson39-group23-171";
+import { installClassicalNahuatlDeverbalNncGlobals } from "../core/classical/nnc_lessons35_39_closure.mjs?v=20260821-lesson39-group23-171";
 import { installClassicalNahuatlClosureGlobals } from "../core/classical/adjectival_modification.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalNahuatlAdverbialNuclearGlobals } from "../core/classical/adverbial_nuclear_grammar.mjs?v=20260806-class-c-claim-172";
 import { installClassicalNahuatlRelationalNncGlobals } from "../core/classical/nnc_lessons45_47_closure.mjs?v=20260728-relational-owner-110";
 import { installClassicalNahuatlVncLayerEvaluatorGlobals } from "../core/classical/vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?v=20260818-lesson29-groups10-12-357";
+import { installClassicalNahuatlVncClosureGlobals } from "../core/classical/vnc_lessons27_29_33_closure.mjs?v=20260821-lesson39-group23-171";
 import { installClassicalNahuatlVncLateOperationUiContractGlobals } from "../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalNahuatlDenominalVncGrammarGlobals } from "../core/classical/denominal_vnc_grammar.mjs?v=20260728-denominal-owner-path-114";
 import { installClassicalNahuatlFiniteVncGlobals } from "../core/classical/finite_vnc_slots.mjs?v=20260812-lesson5-groups4-6-121";
@@ -30,7 +30,7 @@ import { installClassicalNahuatlTransitiveVncObjectGlobals } from "../core/class
 import { installClassicalNahuatlNuclearFactCatalogGlobals } from "../core/classical/nuclear_clause_fact_catalog.mjs?v=20260802-l4-l6-facts-001";
 import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core/classical/nuclear_clause_semantic_operations.mjs?v=20260812-lesson6-complete-002";
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
-import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260818-lesson30-groups1-3-001";
+import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260821-lesson39-group23-171";
 import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260813-lesson11-groups10-12-205";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
@@ -58,7 +58,7 @@ import { installOutputProvenanceGlobals } from "../core/output/provenance.mjs?v=
 import { installOutputSurfaceGlobals } from "../core/output/surface.mjs?v=20260818-lesson29-groups10-12-357";
 import { installClassicalResultOutputScopeGlobals } from "../core/output/scope.mjs?v=20260818-lesson29-groups10-12-357";
 import { installParsingGlobals } from "../core/parsing/parsing.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalNahuatlSupplementationGlobals } from "../core/sentence/supplementation.mjs?v=20260818-lesson29-groups10-12-357";
+import { installClassicalNahuatlSupplementationGlobals } from "../core/sentence/supplementation.mjs?v=20260821-lesson39-group23-171";
 import { installPhonologyGlobals } from "../core/phonology/phonology.mjs?v=20260818-lesson29-groups10-12-357";
 import { installPreteritContextGlobals } from "../core/preterit/context.mjs?v=20260818-lesson29-groups10-12-357";
 import { installPreteritEngineGlobals } from "../core/preterit/engine.mjs?v=20260818-lesson29-groups10-12-357";
@@ -66,15 +66,15 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260818-l
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260818-lesson29-groups10-12-357";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260811-classical-runtime-only-056";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260818-lesson29-groups10-12-357";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260821-lesson39-group23-171";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260818-lesson30-groups1-3-001";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260811-reader-guidance-033";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260821-lesson39-group23-171";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260821-lesson39-group23-171";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260818-lesson30-groups1-3-001";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260821-lesson39-group23-171";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260818-lesson29-groups10-12-357";
 import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260818-lesson29-groups10-12-357";
@@ -96,7 +96,6 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/core/classical/particle_grammar.mjs", installClassicalNahuatlParticlesGlobals],
     ["src/core/classical/particle_owner_catalog.mjs", installClassicalParticleSemanticOwnersGlobals],
     ["src/core/classical/nominal_construction.mjs", installClassicalNahuatlNominalConstructionGlobals],
-    ["src/core/classical/nnc_lessons35_39_closure.mjs", installClassicalNahuatlDeverbalNncGlobals],
     ["src/core/classical/vnc_layer_evaluator.mjs", installClassicalNahuatlVncLayerEvaluatorGlobals],
     ["src/core/classical/vnc_lessons27_29_33_closure.mjs", installClassicalNahuatlVncClosureGlobals],
     ["src/core/classical/vnc_late_operation_ui_contract.mjs", installClassicalNahuatlVncLateOperationUiContractGlobals],
@@ -146,6 +145,7 @@ export const RUNTIME_INSTALLERS = new Map([
     ["src/core/vnc/allomorphy.mjs", installAllomorphyGlobals],
     ["src/core/vnc/vnc.mjs", installVncFacadeGlobals],
     ["src/application/classical/nnc_application.mjs", installClassicalNahuatlNncApplicationGlobals],
+    ["src/core/classical/nnc_lessons35_39_closure.mjs", installClassicalNahuatlDeverbalNncGlobals],
     ["src/application/classical/grammar_application.mjs", installClassicalGrammarApplicationGlobals],
     ["src/application/classical/clause_relation_controller.mjs", installClassicalClauseRelationControllerGlobals],
     ["src/ui/composer/composer.mjs", installUiComposerGlobals],
@@ -165,6 +165,29 @@ export const RUNTIME_INSTALLERS = new Map([
 // without publishing them as public runtime controls. This is routing only:
 // the provider retains authority, and the consumer cannot add capabilities.
 const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
+    "src/core/classical/nnc_layer_evaluator.mjs": Object.freeze({
+        "src/core/classical/lesson2_writer.mjs": Object.freeze([
+            "issueClassicalNahuatlLesson2WritingSource",
+            "writeClassicalNahuatlLesson2Result",
+        ]),
+        "src/core/classical/transcription.mjs": Object.freeze([
+            "buildClassicalNahuatlSpellingChangeFrame",
+        ]),
+    }),
+    "src/core/classical/nnc_lessons35_39_closure.mjs": Object.freeze({
+        "src/core/classical/nominal_construction.mjs": Object.freeze([
+            "issueClassicalNahuatlPatientiveEmbedConstituentFrame",
+            "isClassicalNahuatlPatientiveEmbedConstituentFrame",
+            "issueClassicalNahuatlPatientiveMatrixConstituentFrame",
+            "isClassicalNahuatlPatientiveMatrixConstituentFrame",
+        ]),
+        "src/application/classical/nnc_application.mjs": Object.freeze([
+            "getClassicalNahuatlNncContinuationSourceConstituents",
+        ]),
+        "src/core/classical/nnc_layer_evaluator.mjs": Object.freeze([
+            "realizeClassicalNahuatlNncSurfaceCarriers",
+        ]),
+    }),
     "src/core/classical/lesson2_writer.mjs": Object.freeze({
         "src/core/classical/transcription.mjs": Object.freeze([
             "getInvalidClassicalNahuatlGraphemes",
@@ -207,12 +230,20 @@ const PRIVATE_INSTALLER_DEPENDENCIES = Object.freeze({
         ]),
     }),
     "src/ui/rendering/rendering.mjs": Object.freeze({
+        "src/application/classical/vnc_application.mjs": Object.freeze([
+            "getClassicalNahuatlVncContinuationSourceConstituents",
+        ]),
         "src/application/classical/nnc_application.mjs": Object.freeze([
             "getClassicalNahuatlOpenNncSourceClassInventory",
         ]),
         "src/core/classical/nnc_layer_evaluator.mjs": Object.freeze([
             "getClassicalNahuatlClassFormGuidance",
             "validateClassicalNahuatlSubclassSourceShape",
+        ]),
+        "src/core/classical/nnc_lessons35_39_closure.mjs": Object.freeze([
+            "getClassicalNahuatlOwnerhoodSourceAnalysis",
+            "getClassicalNahuatlPatientiveContrastInventory",
+            "getClassicalNahuatlRootStockPatientiveInventory",
         ]),
         "src/core/classical/nuclear_semantic_owner_catalog.mjs": Object.freeze([
             "listPreparedClassicalCanvasGrammarFactsForPresentation",

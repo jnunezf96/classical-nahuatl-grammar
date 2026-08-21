@@ -69,13 +69,40 @@ function buildProjection(runtime) {
     affectiveMatrix: "",
     defectAnalysis: "defect",
     ...extras,
-  }), { embedStem: stem, embedClass: "tli" });
+  }), {
+    embedStem: stem,
+    embedClass: "tli",
+    flawedSubjectAnalysis: {
+      lexicalStatus: "flawed-subject-lexical-analysis",
+      sourceStem: stem,
+      availability: "optional",
+      semanticDomain: "abnormal-or-defective-entity",
+      defectEntityAmbiguous: false,
+      neutralStemClass: "tli",
+      flawedStemClassStrategy: "irregular-silent-num1",
+      lexicalReading: "",
+      usuallyRooster: false,
+    },
+  });
   const cases = {
     base: evaluate(runtime, baseRequest()),
     pilPol: evaluate(runtime, baseRequest({ affectiveMatrix: "pōl" })),
     lexicalizedClass: evaluate(runtime, patchSource(
       baseRequest({ affectiveMatrix: "pōl" }),
-      { embedStem: "cal", embedClass: "tli" },
+      {
+        embedStem: "cal",
+        embedClass: "tli",
+        affectiveLexicalAnalysis: {
+          lexicalStatus: "affective-compound-lexical-analysis",
+          embedStem: "cal",
+          matrixStem: "pōl",
+          lexicalizedSpecialMeaning: true,
+          classException: false,
+          resultClass: "tli",
+          embedVariantStem: "",
+          variantKind: "",
+        },
+      },
     )),
     tzinTonClass: evaluate(runtime, baseRequest({ affectiveMatrix: "tōn" })),
     massDelimitation: evaluate(runtime, baseRequest({
@@ -85,17 +112,30 @@ function buildProjection(runtime) {
     vocative: evaluate(runtime, baseRequest({ state: "vocative" })),
     tonException: evaluate(runtime, patchSource(
       baseRequest({ affectiveMatrix: "tōn" }),
-      { embedStem: "quimich" },
+      {
+        embedStem: "quimich",
+        embedClass: "in",
+        affectiveLexicalAnalysis: {
+          lexicalStatus: "affective-compound-lexical-analysis",
+          embedStem: "quimich",
+          matrixStem: "tōn",
+          lexicalizedSpecialMeaning: false,
+          classException: true,
+          resultClass: "zero",
+          embedVariantStem: "",
+          variantKind: "",
+        },
+      },
     )),
     zol: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "zol",
       animacy: "nonanimate",
     }), { animacy: "nonanimate" })),
-    zolDenominal: evaluate(runtime, baseRequest({
+    zolDenominal: evaluate(runtime, patchSource(baseRequest({
       affectiveOutputKind: "denominal-vnc",
       affectiveMatrix: "zol",
       denominalKind: "inchoative",
-    })),
+    }), { embedStem: "zol", embedClass: "tli" })),
     affinityAbsolutive: evaluate(runtime, baseRequest({
       subject: "3pl",
       reduplication: "affinity",
@@ -105,29 +145,29 @@ function buildProjection(runtime) {
       state: "possessive",
       reduplication: "affinity",
     })),
-    pilReading: evaluate(runtime, baseRequest({
+    pilReading: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "pil",
       semanticReading: "pil-appendage",
-    })),
-    pilChildSimple: evaluate(runtime, baseRequest({
+    }), { embedStem: "pil", embedClass: "tli" })),
+    pilChildSimple: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "pil",
       semanticReading: "pil-child",
       pilChildRoute: "simple",
-    })),
-    pilChildAffective: evaluate(runtime, baseRequest({
+    }), { embedStem: "pil", embedClass: "tli" })),
+    pilChildAffective: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "pil",
       semanticReading: "pil-child",
       pilChildRoute: "affective",
-    })),
-    pilNoble: evaluate(runtime, baseRequest({
+    }), { embedStem: "pil", embedClass: "tli" })),
+    pilNoble: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "pil",
       semanticReading: "pil-noble",
-    })),
-    pilHonorificVocative: evaluate(runtime, baseRequest({
+    }), { embedStem: "pil", embedClass: "tli" })),
+    pilHonorificVocative: evaluate(runtime, patchSource(baseRequest({
       affectiveMatrix: "tzin",
       semanticReading: "pil-honorific-vocative",
       state: "vocative",
-    })),
+    }), { embedStem: "pil", embedClass: "tli" })),
     nonanimateAffinity: evaluate(runtime, patchSource(baseRequest({
       subject: "3pl",
       affectiveMatrix: "zol",
@@ -144,7 +184,19 @@ function buildProjection(runtime) {
     defectEntity: evaluate(runtime, flawed("ix-te-coh-coy-o-c")),
     flawedLexicon: evaluate(runtime, flawed()),
     flawingPurpose: evaluate(runtime, flawed()),
-    chicken: evaluate(runtime, flawed("cuā-naca")),
+    chicken: evaluate(runtime, patchSource(flawed("cuā-naca"), {
+      flawedSubjectAnalysis: {
+        lexicalStatus: "flawed-subject-lexical-analysis",
+        sourceStem: "cuā-naca",
+        availability: "obligatory",
+        semanticDomain: "lexicalized-flawed-subject",
+        defectEntityAmbiguous: false,
+        neutralStemClass: "tl",
+        flawedStemClassStrategy: "irregular-silent-num1",
+        lexicalReading: "rooster",
+        usuallyRooster: true,
+      },
+    })),
   };
   const blockedCases = {
     freeTzinDenominal: evaluate(runtime, baseRequest({

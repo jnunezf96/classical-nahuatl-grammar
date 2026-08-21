@@ -112,6 +112,7 @@ function buildProjection(runtime) {
   const cases = {
     base: evaluate(runtime, baseRequest()),
     countKind: evaluate(runtime, baseRequest({
+      value: 2,
       countKind: "gross",
       subject: "3pl",
       animacy: "animate",
@@ -207,13 +208,13 @@ function buildProjection(runtime) {
       measuredStem: "tlacuā-l",
       measuredClass: "tli",
     })),
-  };
-  const cobFrame = cobPreteritAgentiveResult(runtime);
-  const blockedCases = {
-    missingCobPrerequisite: evaluate(
+    automaticCobPrerequisite: evaluate(
       runtime,
       baseRequest({ value: 39, classifier: "cob" }),
     ),
+  };
+  const cobFrame = cobPreteritAgentiveResult(runtime);
+  const blockedCases = {
     forgedCobPrerequisite: evaluate(runtime, patchSource(
       baseRequest({ value: 39, classifier: "cob" }),
       {
@@ -243,8 +244,7 @@ function buildProjection(runtime) {
     && !record.callerSuppliedAuthorityAccepted
   ));
   const blockedValid = Boolean(
-    blockedCases.missingCobPrerequisite.blockReason
-      === "cob-twenty-route-requires-engine-issued-tlamic-preterit-agentive"
+    cases.automaticCobPrerequisite.typedCobPrerequisite === true
     && blockedCases.forgedCobPrerequisite.blockReason
       === "cob-twenty-route-requires-engine-issued-tlamic-preterit-agentive"
     && blockedCases.cobBeyond39.blockReason
@@ -277,6 +277,7 @@ function buildProjection(runtime) {
         classifierSelectionVariation: true,
       },
       cobTwentyRouteRequiresOwnerIssuedPreteritAgentive: true,
+      cobTwentyRouteDerivesItsOwnerIssuedPrerequisiteAutomatically: true,
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
       storedExampleAuthority: false,

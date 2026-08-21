@@ -423,7 +423,11 @@ function run(ctx = {}) {
             };
         })(),
         {
-            stems: ["ihc-i-ō-hua", "ihc-i-huī-hua"],
+            stems: [
+                "ihc-i-ō-hua",
+                "ihc-i-huī-hua",
+                "ihc-i-hui-hua-lō",
+            ],
             selectorRequired: true,
             resolutionPolicy: "collect-all-applicable-routes-then-apply-explicit-add-replace-block-compose-relationships",
             crossLessonExampleAuthority: false,
@@ -1045,6 +1049,7 @@ function run(ctx = {}) {
             const huaRecord = ctx.deriveClassicalNahuatlNonactiveStemRecord("cochi", {
                 verbClass: "B",
                 sourceValence: "intransitive",
+                optionId: "hua:cochī-hua",
             });
             const oRecord = ctx.deriveClassicalNahuatlNonactiveStemRecord("āna", {
                 verbClass: "B",
@@ -1054,6 +1059,7 @@ function run(ctx = {}) {
             const ayi = ctx.deriveClassicalNahuatlNonactiveStemRecord("āyi", {
                 verbClass: "B",
                 sourceValence: "specific-projective",
+                optionId: "hua:āyī-hua",
             });
             return {
                 rootPlusYa: rootPlusYa.options.map((option) => option.nonactiveStem),
@@ -1606,6 +1612,14 @@ function run(ctx = {}) {
                     optional: true,
                 },
                 {
+                    stem: "mahui-hua-lō",
+                    family: "hua-lō",
+                    rule: "cn-l20-7-final-i-o-hua-lo-possibility",
+                    authority: "shape-licensed-possibility",
+                    section: "20",
+                    optional: true,
+                },
+                {
                     stem: "ma-ō-hua",
                     family: "o-hua",
                     rule: "cn-l20-5-mahui",
@@ -1630,7 +1644,7 @@ function run(ctx = {}) {
                 optional: false,
                 reason: "lesson20-selected-option-was-not-generated",
             },
-            unlisted: ["xochī-hua"],
+            unlisted: ["xochī-hua", "xochi-hua-lō"],
             unlistedRuleAuthority: "productive-rule",
             zo: [
                 { stem: "zō-hua", role: "user-choice", authority: "productive-rule", optional: true },
@@ -1792,7 +1806,12 @@ function run(ctx = {}) {
                 tense: "future",
                 nonactiveOptionId: "ō:ān-ō",
             });
-            const ayiPreterit = buildPassive({ stem: "āyi", objectPerson: "3sg", tense: "preterit" });
+            const ayiPreterit = buildPassive({
+                stem: "āyi",
+                objectPerson: "3sg",
+                tense: "preterit",
+                nonactiveOptionId: "hua:āyī-hua",
+            });
             const chihuaPreterit = buildPassive({ stem: "chihua", tense: "preterit" });
             return {
                 ihcaliPresent: [ihcaliPresent.nonactiveTargetClass, ihcaliPresent.selectedNonactiveAspect, ihcaliPresent.formulaRealization],
@@ -1879,7 +1898,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 22 impersonal is complementary to passive and imports a referentially empty third-singular subject",
+        "Lesson 22 imports an empty third-singular subject and Lesson 38 derives the human-projective passive path",
         (() => {
             const nonactive = ctx.deriveClassicalNahuatlNonactiveStemRecord("mayāna", {
                 verbClass: "B",
@@ -1924,9 +1943,9 @@ function run(ctx = {}) {
             sourceSubjectDeleted: true,
             intransitiveFormula: "#0-0(mayāna-lo)0+0-0#",
             nonspecificStatus: "authorized",
-            nonspecificTargetValence: "projective-human",
-            nonspecificFormula: "#0-0+tē(mayāna-lo)0+0-0#",
-            nonspecificObjectPreserved: true,
+            nonspecificTargetValence: "intransitive",
+            nonspecificFormula: "#0-0(tla-mayāna-lo)0+0-0#",
+            nonspecificObjectPreserved: false,
         }
     );
 
@@ -2316,7 +2335,7 @@ function run(ctx = {}) {
                     subject: "3pl",
                     requestedVoice: "impersonal",
                     nonactiveOptionId: "lō:tla-zo-h-tla-lō",
-                    expectedFormula: "#0-0+tē(tla-zo-h-tla-lo)0+0-0#",
+                    expectedFormula: "#0-0(tla-tla-zo-h-tla-lo)0+0-0#",
                     outputScope: "paradigm",
                 },
             ];
@@ -3046,13 +3065,13 @@ function run(ctx = {}) {
             participant: ["tē", "tē", "retain-human-nonspecific-object-unchanged"],
             projection: ["tē", "te", "tē", false, true],
             slot: ["te", "tē", "contextual-formula-only", "tē"],
-            exactFormula: "#0-0+te(mac-o)z+0-0#",
-            finiteFormula: "#0-0+te(mac-o)z+0-0#",
+            exactFormula: "#0-0+te(mac-o)z+⎕-0#",
+            finiteFormula: "#0-0+te(mac-o)z+⎕-0#",
             finiteSurfaceBeginsLongTe: true,
             hostileNeighbor: {
                 participantCarrier: "tē",
                 projectionCount: 0,
-                formula: "#0-0+tē(ān-o)z+0-0#",
+                formula: "#0-0+tē(ān-o)z+⎕-0#",
             },
         }
     );
@@ -3153,7 +3172,7 @@ function run(ctx = {}) {
             && rendering.includes('nonactiveInventory?.selectorRequired === true')
             && rendering.includes('nonactiveInventory.selectionRequired === true')
             && shell.includes('Choose a grammar-supported formation')
-            && rendering.includes('surfaceFrame.state?.selectedNonactiveOptionId || ""')
+            && rendering.includes('surfaceFrame.state?.selectedNonactiveOptionId')
             && !rendering.includes('nonactiveInventory.defaultOptionId')
             && vncApplication.includes('dependencySource.deriveClassicalNahuatlNonactiveStemRecord(')
             && !rendering.includes('getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-nonactive-stem"')

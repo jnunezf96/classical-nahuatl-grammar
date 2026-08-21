@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 34,
+  "decisions": {
+    "lesson34-cardinal-numeral-foundation-and-count-kind": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build typed vigesimal cardinal-numeral Sources through the canonical NNC owner, preserve their later NNC and VNC embed rights, distinguish ordinary from ix gross count, derive state and subject-number consequences from typed count and referent facts, and expose a counting-set choice only where more than one compatible analysis is genuinely intended."
+    },
+    "lesson34-numeral-one-and-cem-shape": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the fuller morphemic Source cem, derive free cē versus embedded or plural cem with compensatory length and regular assimilation, apply plural m-eh automatically, and admit the typed numeral Source productively to compatible compound NNC and incorporated-adverb VNC owners without example-stem gates."
+    },
+    "lesson34-two-three-four-shapes-and-gross-count": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build two, three, and four from typed pronominal numeral Sources ōme, ēyi, and nāhui; derive plural n plus t-in or the silent dyad, ix gross structure, and boundary-conditioned free or embed allomorphs automatically; and preserve only genuinely licensed full, initial-y, y-loss, or y-to-x variants as concise Source choices rather than manual phonological controls."
+    },
+    "lesson34-five-through-nine-composition": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve five as the typed polymorphemic nounstem Source mā-cu-ī-l and build six through nine from the productive chicua, chiuc, or chic embed plus the one-through-four numeral matrix; derive boundary allomorphy, assimilation, ordinary plural marking, and ix gross count automatically without turning documented numeral examples into a route inventory."
+    },
+    "lesson34-ten-fifteen-and-gross-possessive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build ten and fifteen from typed mahtlāc and caxtōl nounstem Sources, derive ordinary and ix gross forms and animate plural marking, and keep the exceptional possessive-state gross formation narrow by enforcing its plural possessor or plural-referent facts while preserving documented nonanimate ti or tin uncertainty only as a genuine licensed variant."
+    },
+    "lesson34-higher-vigesimal-orders": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build productive multiplier-plus-order numeral Sources for twenty, four hundred, and eight thousand from any typed multiplier one through nineteen; derive the multiplier, order matrix, computed value, embedded shape, internal boundaries, and ordinary or gross inflection automatically while keeping secondary lexical readings separate from numeral-route authority."
+    },
+    "lesson34-conjoined-and-downgraded-numerals": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Compose canonical numeral Results from higher to lower with short om on every rightward conjunct, preserve recursive hierarchy and the long ōm versus short om distinction, expose separate-clause versus conjunctive-compound form only where both are intended, and downgrade a complete conjunction to a typed higher-order embed by deleting only its rightmost number position while blocking same-matrix conjunction."
+    },
+    "lesson34-unit-classifier-sets": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build rock, row, thing, and maize-cob counting sets from open typed numeral Sources and a compatible selected classifier analysis; derive matrix shape, boundary behavior, number marking, rightward classifier omission, and recursive continuation automatically; and enforce the cob through-nineteen limit together with an owner-issued tlamic continuation for twenty through thirty-nine without any referent-noun whitelist."
+    },
+    "lesson34-special-twenty-count-sets": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build productive tecpān, ipil, and quimil groups-of-twenty from typed grouping and referent compatibility facts, derive the embedded multiplier, score value, boundaries, and lower remainder conjunction automatically, and preserve Canvas example categories as reading evidence rather than route-authorizing noun lists."
+    },
+    "lesson34-numeral-reduplication": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the established affinity and distributive-varietal reduplication meanings to typed numeral Sources, derive first-part, double, mahtlāc-matrix, or all-conjunct scope from the numeral's morphemic structure, preserve vowel length versus glottal-stop contrast, and expose only the unresolved semantic choice rather than manual scope or spelling controls."
+    },
+    "lesson34-approximation-more-and-supplementation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply canah, quēn, ahzo quēn, or oc to an owner-issued numeral NNC according to the intended approximation or additional-count meaning, and allow the complete oc cē clause to serve as a supplementary subject through the canonical supplementation owner without turning English else expressions or examples into routes."
+    },
+    "lesson34-measure-nncs-and-measured-composition": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build measure NNCs by embedding an open typed numeral Source before any compatible typed measure matrix, preserve amount versus length meaning as a typed fact or genuine choice, and combine owner-issued measure and measured-thing NNC Results only through adjectival modification with the measure as principal, without an example-measure whitelist or manual formula controls."
+    }
+  }
+}

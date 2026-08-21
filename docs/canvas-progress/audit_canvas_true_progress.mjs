@@ -16,7 +16,6 @@ const inputPaths = {
   semanticLedger: "docs/ANDREWS_ATOM_SEMANTIC_SCOPE_AND_FORCE.json",
   atomUiReconciliation: "docs/CLASSICAL_CANVAS_ATOM_UI_RECONCILIATION.json",
   proofMigration: "docs/ANDREWS_INDIVIDUAL_ATOM_PROOF_MIGRATION.json",
-  applicationBridge: "docs/CLASSICAL_APPLICATION_AXIS_CANVAS_BRIDGE.json",
   applicationDispositions: "docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json",
   proofRelease:
     "docs/proof-refresh/v20260810-shared-oracle-broad-completion/release-manifest.json",
@@ -65,8 +64,8 @@ function assert(condition, message) {
 const semantic = await readJson(inputPaths.semanticLedger);
 const atomUi = await readJson(inputPaths.atomUiReconciliation);
 const migration = await readJson(inputPaths.proofMigration);
-const bridge = await readJson(inputPaths.applicationBridge);
 const dispositions = await readJson(inputPaths.applicationDispositions);
+const bridge = dispositions.canvasProvenance;
 const release = await readJson(inputPaths.proofRelease);
 const exactObservationPointer = await readJson(inputPaths.activeExactObservationPointer);
 const exactObservationManifest = await readJson(exactObservationPointer.activeManifest);

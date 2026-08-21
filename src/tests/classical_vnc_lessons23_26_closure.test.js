@@ -3,12 +3,13 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const { resolveLegacySupportPath } = require("./helpers/legacy_support_path");
 const {
     CLASSICAL_NAHUATL_LESSONS24_25_CANVAS_EXAMPLES,
-} = require(path.resolve(__dirname, "..", "..", "scripts", "classical_lessons24_25_canvas_catalog.js"));
+} = require(resolveLegacySupportPath("scripts/classical_lessons24_25_canvas_catalog.js"));
 const {
     CLASSICAL_NAHUATL_LESSON26_CANVAS_EXAMPLES,
-} = require(path.resolve(__dirname, "..", "..", "scripts", "classical_lesson26_canvas_catalog.js"));
+} = require(resolveLegacySupportPath("scripts/classical_lesson26_canvas_catalog.js"));
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const CANVAS_LINES = fs.readFileSync(
@@ -675,7 +676,7 @@ function run(ctx = {}) {
                 rendererProjection: renderingSource.includes("syncClassicalLessons2326Closure"),
                 shellProjection: shellSource.includes("data-classical-lessons23-26"),
                 internalLedgerPresent: fs.existsSync(
-                    path.join(ROOT, "scripts", "lib", "classical_lessons23_26_source_span_audit.mjs")
+                    resolveLegacySupportPath("scripts/lib/classical_lessons23_26_source_span_audit.mjs")
                 ),
             };
         })(),

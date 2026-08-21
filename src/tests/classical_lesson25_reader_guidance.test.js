@@ -3,6 +3,7 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const { hasVersionedImport } = require("./helpers/browser_cache_chain");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 
@@ -42,28 +43,27 @@ function run(ctx = {}) {
         afterLesson24: true,
         beforeFacts: true,
     });
-    const cacheKey = "20260818-lesson29-groups10-12-357";
     const readSource = (relativePath) => fs.readFileSync(
         path.join(ROOT, relativePath),
         "utf8",
     );
     s.eq("Lesson 25 uses the complete browser cache chain", {
-        index: readSource("index.html").includes(`src/browser/main.mjs?v=${cacheKey}`),
-        main: readSource("src/browser/main.mjs").includes(`bootstrap.mjs?v=${cacheKey}`),
+        index: hasVersionedImport(readSource("index.html"), "src/browser/main.mjs"),
+        main: hasVersionedImport(readSource("src/browser/main.mjs"), "bootstrap.mjs"),
         bootstrap: [
             "runtime_bridge.mjs",
             "create_runtime.mjs",
             "rendering.mjs",
             "classical_shell.mjs",
-        ].every((moduleName) => readSource("src/bootstrap/bootstrap.mjs")
-            .includes(`${moduleName}?v=${cacheKey}`)),
-        bridge: readSource("src/bootstrap/runtime_bridge.mjs")
-            .includes(`create_runtime.mjs?v=${cacheKey}`),
+        ].every((moduleName) => hasVersionedImport(
+            readSource("src/bootstrap/bootstrap.mjs"), moduleName)),
+        bridge: hasVersionedImport(readSource("src/bootstrap/runtime_bridge.mjs"),
+            "create_runtime.mjs"),
         runtime: ["rendering.mjs", "classical_shell.mjs"]
-            .every((moduleName) => readSource("src/runtime/create_runtime.mjs")
-                .includes(`${moduleName}?v=${cacheKey}`)),
-        leaf: readSource("src/ui/shell/classical_shell.mjs")
-            .includes("lesson25_reader_guidance.mjs?v=20260815-lesson25-groups10-12-004"),
+            .every((moduleName) => hasVersionedImport(
+                readSource("src/runtime/create_runtime.mjs"), moduleName)),
+        leaf: hasVersionedImport(readSource("src/ui/shell/classical_shell.mjs"),
+            "lesson25_reader_guidance.mjs"),
     }, {
         index: true,
         main: true,

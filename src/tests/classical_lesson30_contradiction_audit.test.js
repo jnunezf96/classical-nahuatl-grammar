@@ -15,19 +15,19 @@ function run() {
         || !record.readerObservationTest || !record.readerMutationTest
         || (record.proposedDirection === "BOTH"
             && (!record.writingObservationTest || !record.writingMutationTest)));
-    s.eq("accepted Lesson 30 Groups 1-3 are uncontradicted", {
+    s.eq("accepted Lesson 30 Groups 1-15 are uncontradicted", {
         scope: audit.scope, status: audit.status, accepted: audit.acceptedAtomCount,
         awaiting: audit.awaitingReviewAtomCount, resolved: audit.resolvedCount,
         unresolved: audit.unresolvedCount, resolutions: audit.resolutions.length,
         authority: audit.reportAuthority,
-    }, { scope: "accepted-groups-1-3", status: "UNCONTRADICTED", accepted: 148,
-        awaiting: 856, resolved: 18, unresolved: 0, resolutions: 18, authority: false });
+    }, { scope: "accepted-groups-1-15", status: "UNCONTRADICTED", accepted: 1004,
+        awaiting: 0, resolved: 91, unresolved: 0, resolutions: 91, authority: false });
     s.eq("every accepted Lesson 30 atom has exact routes", {
         accepted: accepted.length,
         exact: accepted.filter(record => record.implementationCredit === "EXACTLY_OBSERVED").length,
         missing: missing.map(record => record.atomId),
         proofGroups: Object.keys(proof.groups).sort(),
-    }, { accepted: 148, exact: 148, missing: [], proofGroups: [...new Set(
+    }, { accepted: 1004, exact: 1004, missing: [], proofGroups: [...new Set(
         accepted.map(record => record.reviewGroupId))].sort() });
     return s;
 }

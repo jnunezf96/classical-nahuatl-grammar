@@ -18,8 +18,11 @@ function run(ctx) {
             animacy: "animate",
             source: {
                 embedStem: "tenam",
+                embedClass: "zero",
+                embedSourceClass: "zero",
                 matrixStem: "ca",
                 matrixClass: "zero",
+                matrixSourceClass: "tl-1-a",
                 structure: "integrated",
                 embedRole: "association",
             },

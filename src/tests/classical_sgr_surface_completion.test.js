@@ -112,6 +112,11 @@ function run(ctx = {}) {
         rendering,
         "syncClassicalNominalConstructionControlVisibility"
     );
+    const customGrammarPresentation = functionSlice(
+        rendering,
+        "syncClassicalCustomConstructionGrammarPresentation",
+        "getClassicalNominalConstructionControlValue"
+    );
     const clauseWorkflowMount = functionSlice(
         rendering,
         "mountClassicalClauseRelationWorkflowInResult"
@@ -200,13 +205,23 @@ function run(ctx = {}) {
                 ),
             requestCarriesChoices:
                 attitudeVncOperationRequest.includes(
-                    "lateOperation: String(request.attitude"
+                    'Object.prototype.hasOwnProperty.call(request, "attitude")'
                 )
+                && attitudeVncOperationRequest.includes("lateOperation,")
                 && attitudeVncOperationRequest.includes(
                     "lateVariant: String(request.attitudeFormation"
                 )
                 && attitudeVncOperationRequest.includes(
-                    "honoredParticipant: String(request.honoredParticipant"
+                    'String(request.honoredParticipant || "subject")'
+                )
+                && attitudeVncOperationRequest.includes(
+                    "honorificFormationAnalysis:"
+                )
+                && attitudeVncOperationRequest.includes(
+                    "honorificStemAlternative: String("
+                )
+                && attitudeVncOperationRequest.includes(
+                    "honorificDerivationOptionId: String("
                 ),
             presentationCarriersIgnored:
                 !attitudeVncOperationRequest.includes("formula")
@@ -283,6 +298,7 @@ function run(ctx = {}) {
         constructionKind: "compound-nnc",
         source: {
             embedStem: "ā",
+            embedClass: "tli",
             matrixStem: "cal",
             matrixClass: "tli",
         },
@@ -364,7 +380,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the advanced construction control wrapper is runtime-mounted inside Grammar and never into Result",
+        "advanced construction controls are individually classified into Source or Grammar and never mounted into Result",
         {
             wrapperDeclaredOnce: countMatches(
                 shell,
@@ -373,31 +389,62 @@ function run(ctx = {}) {
             sourceHostDeclared: indexHtml.includes('id="classical-source-panel"'),
             grammarHostDeclared: indexHtml.includes('id="classical-authority-panel"'),
             resultHostDeclared: indexHtml.includes('id="classical-result-panel"'),
-            wrapperResolved: constructionSync.includes(
-                'getElementById("classical-construction-controls")'
+            sourceInventoryDeclared: rendering.includes(
+                "CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS"
             ),
-            grammarGridResolved: constructionSync.includes(
-                '"#classical-rule-logic-controls .classical-rule-controls-grid"'
+            sourceMovedIndividually:
+                constructionSync.includes(
+                    "CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS.forEach"
+                )
+                && constructionSync.includes(
+                    "sourceAnalysisRoot.appendChild(wrapper)"
+                ),
+            inheritedRouteOwnershipPreserved:
+                constructionSync.includes("const inheritedOwner = String(")
+                && constructionSync.includes(
+                    "wrapper.dataset.constructionFor = inheritedOwner"
+                ),
+            grammarInventoryDeclared: rendering.includes(
+                "CLASSICAL_CUSTOM_CONSTRUCTION_GRAMMAR_CONTROL_PLACEMENTS"
             ),
-            mountedIntoGrammar: constructionSync.includes(
-                "grammarGrid.prepend(controlsRoot)"
-            ),
-            parentVerified: constructionSync.includes(
-                "controlsRoot.parentElement !== grammarGrid"
+            grammarMovedIndividually:
+                customGrammarPresentation.includes("lane.appendChild(wrapper)")
+                && customGrammarPresentation.includes(
+                    'wrapper.dataset.classicalConstructionGrammarLayer = "route-specific"'
+                )
+                && customGrammarPresentation.includes(
+                    "wrapper.dataset.classicalConstructionGrammarGroup = semanticGroup"
+                ),
+            wholeWrapperNotMounted:
+                !constructionSync.includes("grammarGrid.prepend(controlsRoot)")
+                && !rendering.includes("appendChild(controlsRoot)"),
+            presentationRunsAfterVisibility: constructionSync.includes(
+                "syncClassicalCustomConstructionGrammarPresentation(selected, frame)"
             ),
             resultNotAMountTarget:
-                !constructionSync.includes("classical-result-panel")
-                && !constructionSync.includes("container-tense-grid"),
+                constructionSync.includes(
+                    '"#classical-result-panel .classical-result-scope-controls"'
+                )
+                && constructionSync.includes('id.endsWith("-output-scope")')
+                && !constructionSync.includes(
+                    "resultScopeControls.appendChild(controlsRoot)"
+                )
+                && !constructionSync.includes(
+                    "container-tense-grid.appendChild(controlsRoot)"
+                ),
         },
         {
             wrapperDeclaredOnce: 1,
             sourceHostDeclared: true,
             grammarHostDeclared: true,
             resultHostDeclared: true,
-            wrapperResolved: true,
-            grammarGridResolved: true,
-            mountedIntoGrammar: true,
-            parentVerified: true,
+            sourceInventoryDeclared: true,
+            sourceMovedIndividually: true,
+            inheritedRouteOwnershipPreserved: true,
+            grammarInventoryDeclared: true,
+            grammarMovedIndividually: true,
+            wholeWrapperNotMounted: true,
+            presentationRunsAfterVisibility: true,
             resultNotAMountTarget: true,
         }
     );
@@ -553,7 +600,7 @@ function run(ctx = {}) {
     const publicAtoms = atoms.filter(atom => atom?.binding?.public === true);
     const privateAtoms = atoms.filter(atom => atom?.binding?.public === false);
     suite.eq(
-        "DOM correlation uses the exact v2 447-atom public/private boundary",
+        "DOM correlation uses the exact v3 496-atom public/private boundary",
         {
             kind: inventory?.kind || "",
             version: inventory?.version,
@@ -566,13 +613,13 @@ function run(ctx = {}) {
         },
         {
             kind: "classical-source-grammar-result-surface-inventory",
-            version: 2,
-            axes: 392,
+            version: 3,
+            axes: 441,
             outputs: 55,
-            atoms: 447,
-            publicAtoms: 104,
-            privateAtoms: 343,
-            uniqueAtoms: 447,
+            atoms: 496,
+            publicAtoms: 106,
+            privateAtoms: 390,
+            uniqueAtoms: 496,
         }
     );
 
@@ -608,7 +655,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "all 326 unsurfaced fact and diagnostic axes retain identity without a public binding",
+        "all 373 unsurfaced fact and diagnostic axes retain identity without a public binding",
         {
             count: intentionallyUnsurfacedAxes.length,
             allPrivate: intentionallyUnsurfacedAxes.every(atom => (
@@ -618,7 +665,7 @@ function run(ctx = {}) {
                 && atom.authority?.grammarAuthority === false
             )),
         },
-        { count: 326, allPrivate: true }
+        { count: 373, allPrivate: true }
     );
 
     suite.eq(

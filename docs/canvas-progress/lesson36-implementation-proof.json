@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "lesson": 36,
+  "groups": {
+    "lesson36-customary-present-nominalization-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-customary-present-agentive-reanalysis": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-fully-nominal-customary-agentive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-customary-agentive-meaning-and-preterit-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-customary-present-patientive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-instrumentive-two-source-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-instrumentive-realization-and-variants": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-present-agentive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-future-agentive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-action-nnc-taxonomy": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-passive-action-nncs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-active-action-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-active-action-general-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-active-action-restricted-use": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    },
+    "lesson36-active-action-preterit-agentive-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson36_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson36_reader_guidance.test.js"
+    }
+  }
+}

@@ -28,6 +28,7 @@ function run(ctx) {
         ],
         ["function", "undefined"]
     );
+    const vncApplication = ctx.createClassicalNahuatlVncApplication(ctx);
 
     const buildVnc = (
         stem,
@@ -42,13 +43,15 @@ function run(ctx) {
             antecessive = false,
             sentenceType = "assertion",
             verbClass = "A",
+            sourceInitialISelection = "",
             objectRequests = [],
             construction = "",
             silentSpecificObject = false,
         } = {}
-    ) => ctx.classicalNahuatlVncApplication.evaluate({
+    ) => vncApplication.evaluate({
         sourceStem: stem,
         verbClass,
+        ...(sourceInitialISelection ? { sourceInitialISelection } : {}),
         sourceValence: valence,
         sourceSubject: subject,
         subject,
@@ -80,11 +83,13 @@ function run(ctx) {
             subject = "3sg",
             tense = "present",
             verbClass = "C",
+            sourceInitialISelection = "",
         } = {}
     ) => buildVnc(stem, {
         subject,
         tense,
         verbClass,
+        sourceInitialISelection,
         construction: stem === "i-ā" ? "pronominal-nnc" : "",
     });
     const buildNnc = (
@@ -328,6 +333,7 @@ function run(ctx) {
 
     const see1 = envelope(
         buildVnc("itta", {
+            sourceInitialISelection: "real",
             subject: "3sg",
             valence: "specific-projective",
             objectPerson: "1sg",
@@ -1504,6 +1510,7 @@ function run(ctx) {
                 sentenceKind: "assertion",
             });
             const reporter = envelope(buildVnc("il", {
+                sourceInitialISelection: "real",
                 subject: "3sg",
                 tense: "preterit",
                 valence: "specific-projective",
@@ -1527,6 +1534,7 @@ function run(ctx) {
                 objectReferenceId: "addressees",
             });
             const sayingMultiple = buildVnc("ilhuia", {
+                sourceInitialISelection: "real",
                 subject: "1sg",
                 valence: "multiple-object",
                 objectRequests: [{
@@ -1668,6 +1676,7 @@ function run(ctx) {
                     deletedPrincipal(
                         answer,
                         envelope(buildVnc("ilhuia", {
+                            sourceInitialISelection: "real",
                             subject: "1sg",
                             valence: "specific-projective",
                             objectPerson: "3pl",
@@ -1838,6 +1847,7 @@ function run(ctx) {
 
             const ambiguousPrincipal = envelope(
                 buildVnc("itta", {
+                    sourceInitialISelection: "real",
                     subject: "3sg",
                     valence: "specific-projective",
                     objectPerson: "3sg",
@@ -1933,6 +1943,7 @@ function run(ctx) {
             );
             const forgedSilent = envelope(
                 buildVnc("itta", {
+                    sourceInitialISelection: "real",
                     subject: "3sg",
                     valence: "specific-projective",
                     objectPerson: "3sg",
@@ -1945,6 +1956,7 @@ function run(ctx) {
             );
             const ichtequiContrast = envelope(
                 buildVnc("ichtequi", {
+                    sourceInitialISelection: "real",
                     subject: "1sg",
                     valence: "specific-projective",
                     objectPerson: "3sg",
@@ -1971,7 +1983,10 @@ function run(ctx) {
             );
             const demonstrativeCooperation =
                 ctx.buildClassicalNahuatlPronominalPluralCooperationFrame(
-                    buildVncSubjectSource("i-ā", { subject: "3pl" }),
+                    buildVncSubjectSource("i-ā", {
+                        subject: "3pl",
+                        sourceInitialISelection: "real",
+                    }),
                     demonstrativeClause
                 );
             const rawLesson5PrincipalBlocked =
@@ -1986,6 +2001,7 @@ function run(ctx) {
                 );
             const zeroRootPrincipal = envelope(
                 buildVnc("i-ā", {
+                    sourceInitialISelection: "real",
                     subject: "3pl",
                     verbClass: "C",
                     construction: "pronominal-nnc",
@@ -2003,7 +2019,11 @@ function run(ctx) {
                     }
                 );
             const forgedZeroRootPrincipal = envelope(
-                buildVnc("i", { subject: "3pl", tense: "preterit" }),
+                buildVnc("i", {
+                    subject: "3pl",
+                    tense: "preterit",
+                    sourceInitialISelection: "real",
+                }),
                 {
                     referenceId: "group",
                     sourceStem: "0-i-h",
@@ -2068,7 +2088,7 @@ function run(ctx) {
                 ayi: [
                     ayiClause.authorizationStatus,
                     ayiClause.objects.some((object) => (
-                        object.id === "silent-specific-object"
+                        object.silent === true
                         && object.realization === "0-0"
                     )),
                     frameOfKind(
@@ -2159,11 +2179,15 @@ function run(ctx) {
             );
             const acCooperation =
                 ctx.buildClassicalNahuatlPronominalPluralCooperationFrame(
-                    buildVncSubjectSource("i-ā", { subject: "1pl" }),
+                    buildVncSubjectSource("i-ā", {
+                        subject: "1pl",
+                        sourceInitialISelection: "real",
+                    }),
                     acSupplement
                 );
             const acPrincipal = envelope(
                 buildVnc("i-ā", {
+                    sourceInitialISelection: "real",
                     subject: "1pl",
                     verbClass: "C",
                     construction: "pronominal-nnc",
@@ -2374,6 +2398,7 @@ function run(ctx) {
             );
             const reportPrincipalClause = envelope(
                 buildVnc("il", {
+                    sourceInitialISelection: "real",
                     subject: "3sg",
                     tense: "preterit",
                     valence: "specific-projective",

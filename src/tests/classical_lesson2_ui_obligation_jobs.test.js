@@ -5,7 +5,7 @@ const path = require("path");
 const { createSuite } = require("./runner");
 
 const ATOMS = Object.freeze([
-    ["ACI-P052-L032-D1B1B21011", value => value.hue.rule === "glottalized-long-vowel" && value.hue.stem === "huehcāuh"],
+    ["ACI-P052-L032-D1B1B21011", value => value.hue.rule === "typed-long-vowel-glottalization" && value.hue.stem === "huehcāuh"],
     ["ACI-P052-L035-9FDE253771", value => value.other.authorized && value.other.rule === "general-use-embed" && value.other.stem === "xōchicalli"],
     ["ACI-P052-L035-48D4C08DCF", value => value.userChoosesStructure && value.applicationChoosesAllomorph && !value.allomorphControlExists],
     ["ACI-P052-L038-6C1A02F633", value => value.hue.stem === "huehcāuh"],
@@ -27,7 +27,26 @@ function run(ctx) {
                 subject: "3sg",
                 state: "absolutive",
                 animacy: "animate",
-                source: { embedStem, matrixStem, matrixClass: "zero", structure: "integrated", embedRole: "association" },
+                source: {
+                    embedStem,
+                    embedClass: embedStem === "māi" ? "tl-2-a" : "tl",
+                    embedSourceClass: embedStem === "māi" ? "tl-2-a" : "tl",
+                    matrixStem,
+                    matrixClass: "zero",
+                    structure: "integrated",
+                    embedRole: "association",
+                    ...(["huē", "teō", "māi"].includes(embedStem)
+                        ? {
+                            compoundEmbedAnalysis: {
+                                lexicalStatus: "compound-embed-exception",
+                                sourceStem: embedStem,
+                                exceptionKind: "glottalized-long-vowel",
+                                meaningCertainty: "known",
+                                sourceBoundaries: [embedStem],
+                            },
+                        }
+                        : {}),
+                },
             }],
         });
         return {

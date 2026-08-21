@@ -180,7 +180,11 @@ function compare(runtime, firstRequest, secondRequest, relation) {
 
 function buildProjection(runtime) {
   const activatedRequest = patchSource(
-    predicateRequest("preterit-agentive", { activatedObjectPerson: "3sg" }),
+    predicateRequest("preterit-agentive", {
+      activatedObjectPerson: "3sg",
+      supplementaryObjectRelation: "supplementary-object",
+      supplementaryObjectReferentId: "supplement:food",
+    }),
     {
       sourceStem: "mah-mat",
       verbClass: "B",
@@ -255,7 +259,7 @@ function buildProjection(runtime) {
     preteritAgentive: evaluate(runtime, predicateRequest("preterit-agentive")),
     preteritAgentiveNemi: evaluate(runtime, nemiPreteritAgentiveRequest),
     preteritRestricted: evaluate(runtime, patchSource(
-      predicateRequest("preterit-agentive", { numberConnector: "silent" }),
+      predicateRequest("preterit-agentive"),
       {
         sourceStem: "tla-mach-ti",
         verbClass: "B",
@@ -276,8 +280,11 @@ function buildProjection(runtime) {
       },
     )),
     preteritNumberSelection: evaluate(runtime, patchSource(
-      predicateRequest("preterit-agentive", { numberConnector: "silent" }),
-      { verbClass: "B" },
+      predicateRequest("preterit-agentive", {
+        numberConnector: "silent",
+        animacy: "nonanimate",
+      }),
+      { sourceStem: "izcal-i-h", verbClass: "B" },
     )),
     preteritActivated: evaluate(runtime, activatedRequest),
     preteritGeneralUse: evaluate(runtime, possessiveRequest),
@@ -359,6 +366,8 @@ function buildProjection(runtime) {
     customaryActivated: evaluate(runtime, patchSource(
       predicateRequest("customary-agentive-full", {
         activatedObjectPerson: "3sg",
+        supplementaryObjectRelation: "supplementary-object",
+        supplementaryObjectReferentId: "supplement:food",
       }),
       {
         sourceStem: "mah-mat",

@@ -50,7 +50,7 @@ const ROOT_REQUESTS = deepFreeze({
     "vowel-source": { nounStem: "ā", classChoice: "A" },
   },
   "inceptive-hui": {
-    default: { nounStem: "ix" },
+    default: { nounStem: "ix", sourceInitialISelection: "real" },
     "vowel-source": { nounStem: "xo-xō" },
   },
   "inceptive-root-ya": {
@@ -68,11 +68,11 @@ const ROOT_REQUESTS = deepFreeze({
     default: { nounStem: "tōcā-yō", sourceKind: "deverbal-yo-nounstem" },
   },
   "included-possessor-ti": {
-    default: { nounStem: "ix-xip-tla", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "proxy" },
-    proxy: { nounStem: "ix-xip-tla", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "proxy" },
+    default: { nounStem: "ix-xip-tla", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "proxy", sourceInitialISelection: "real" },
+    proxy: { nounStem: "ix-xip-tla", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "proxy", sourceInitialISelection: "real" },
     recompense: { nounStem: "icn-ō-pil", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "1sg", includedPossessorFamily: "recompense", tense: "preterit", exclamatory: true },
     misfortune: { nounStem: "tlahu-ēl-i-l", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "1sg", includedPossessorFamily: "misfortune", tense: "preterit", exclamatory: true },
-    temporal: { nounStem: "pan", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "temporal-pan" },
+    temporal: { nounStem: "pan", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", possessor: "3sg", includedPossessorFamily: "temporal-pan", sourceInitialISelection: "real" },
   },
   "possession-ti": {
     default: { nounStem: "pah" },
@@ -88,7 +88,7 @@ const ROOT_REQUESTS = deepFreeze({
     default: { nounStem: "cal", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", sourceSubject: "2sg", possessor: "1sg" },
   },
   "patientive-chain-ti-a": {
-    default: { nounStem: "", sourceVerbStem: "il-o-ā", sourceKind: "lexical-o-a-vnc", sourceState: "derived" },
+    default: { nounStem: "", sourceVerbStem: "il-o-ā", sourceKind: "lexical-o-a-vnc", sourceState: "derived", sourceInitialISelection: "real" },
   },
   "temporal-tia": {
     default: { nounStem: "ōn-xihui", sourceKind: "temporal-compound-nounstem" },
@@ -107,7 +107,7 @@ const ROOT_REQUESTS = deepFreeze({
     default: { nounStem: "tamal" },
   },
   "applicative-huia-use": {
-    default: { nounStem: "izta" },
+    default: { nounStem: "izta", sourceInitialISelection: "real" },
     instrumental: { nounStem: "tepon-āz" },
   },
   "applicative-huia-produce": {
@@ -117,7 +117,7 @@ const ROOT_REQUESTS = deepFreeze({
     default: { nounStem: "cuitla", sourceKind: "possessive-nnc-predicate", sourceState: "possessive", sourceSubject: "2sg", possessor: "1sg" },
   },
   "adverbial-huia": {
-    default: { nounStem: "ilihuiz", sourceKind: "adverbial-nounstem" },
+    default: { nounStem: "ilihuiz", sourceKind: "adverbial-nounstem", sourceInitialISelection: "real" },
   },
   "relational-o-a-transitive": {
     default: { nounStem: "quech-pan", sourceKind: "relational-compound-or-predicate" },
@@ -126,7 +126,7 @@ const ROOT_REQUESTS = deepFreeze({
     default: { nounStem: "tequi-pan", sourceKind: "relational-compound-or-predicate" },
   },
   "relational-huia": {
-    default: { nounStem: "icxi-pan", sourceKind: "relational-compound-or-predicate" },
+    default: { nounStem: "icxi-pan", sourceKind: "relational-compound-or-predicate", sourceInitialISelection: "real" },
   },
   "denominal-i-hui": {
     default: { nounStem: "tlīl" },

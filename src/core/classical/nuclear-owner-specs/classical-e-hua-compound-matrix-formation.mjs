@@ -20,7 +20,7 @@ const spec = {
     },
     "claim-p2807::p2807-m-e-uh-t-e-hua-to-get-up": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2807-m-e-uh-t-e-hua-to-get-up",
-      "canonicalPath": "cases.eHuaClassBPreterit.authorizationStatus"
+      "canonicalPath": "cases.eHuaClassBPreterit.targetStem"
     },
     "claim-p2808::p2808-tla-cauh-t-e-hua-to-leaves-th-and": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2808-tla-cauh-t-e-hua-to-leaves-th-and",
@@ -28,7 +28,7 @@ const spec = {
     },
     "claim-p2809::p2809-ti-c-ca-uh-t-e-hua-z-qu": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2809-ti-c-ca-uh-t-e-hua-z-qu",
-      "canonicalPath": "cases.eHuaClassAPreterit.authorizationStatus"
+      "canonicalPath": "cases.eHuaClassAPreterit.targetStem"
     },
     "claim-p2810::p2810-cual-a-n-t-e-hua-to-get-up": {
       "assertionId": "classical-e-hua-compound-matrix-formation:p2810-cual-a-n-t-e-hua-to-get-up",

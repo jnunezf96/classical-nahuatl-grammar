@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "lesson": 32,
+  "decisions": {
+    "lesson32-affective-nnc-foundation-and-attitude-route": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep compound-affective and flawed-subject Sources distinct, preserve the NNC subject referent, and expose the route only where both typed methods genuinely survive. Derive constituent order, matrix position, noun class, state, number, and realization through the ordinary NNC owner without translation or example authority."
+    },
+    "lesson32-pil-and-pol-affective-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use pīl for affectionate smallness and pōl for disparaging largeness with any compatible typed embed, automatically derive the ordinary zero-class Result and boundary realization, and require a typed lexical analysis for a specially lexicalized tli-class Result. Never use the Canvas examples as an embed whitelist."
+    },
+    "lesson32-tzin-matrix-class-meaning-and-vocative": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use tzin for the selected special-regard, honorific, compassionate, affectionate, cherished-smallness, or mass-delimited reading; automatically derive zero class from a zero embed and tli otherwise; preserve typed irregular embed variants and demonstrative Sources; and expose full versus abbreviated vocative only where both are licensed, with the register consequence and é particle automatic."
+    },
+    "lesson32-ton-matrix-and-class-exceptions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use tōn for smallness without tzin's admiration or affection with any compatible typed embed, automatically derive zero class from a zero embed and tli otherwise, preserve recursive affective Results, and apply a class or boundary exception only when it arrives as matching typed lexical analysis."
+    },
+    "lesson32-zol-matrix-recursion-and-denominal-continuation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Use zol with open nonanimate typed embeds for an old or worn-out entity, automatically derive tli class, preserve owner-issued zol compounds through acyclic recursive embedding, and continue the completed zol Source through the canonical inchoative or causative denominal owner while keeping restricted tzin and pōl continuations separate."
+    },
+    "lesson32-affective-affinity-and-absolutive-number": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a plural-subject affective compound, apply short-vowel affinity reduplication to the matrix automatically, derive sounded t-in or silent zero-zero from the corresponding singular num1 behavior, preserve Source quantity and boundaries, and expose embed affinity only when typed analysis leaves it genuinely optional while applying obligatory double affinity automatically."
+    },
+    "lesson32-possessive-affinity-number-alternatives": {
+      "status": "ACCEPTED",
+      "acceptedJob": "For a plural possessive affective NNC, preserve the possessor and automatically build the affinity-shaped compound, then expose only the genuinely licensed hu-ān versus silent number-dyad choice. Preserve the documented frequency tendency and disagreement as reading evidence, never as a pīl or pōl route restriction."
+    },
+    "lesson32-pil-lexeme-and-child-formations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep the simple pil lexeme distinct from affective matrix pīl, preserve its appendage, child, and noble readings, and derive child possession, plural affinity, optional gender specification, distributive possession, and the unique pil-hu-ān plus tzi-tzin hierarchy from typed structure. Expose child versus noble only for genuine ambiguity and gender only when intended."
+    },
+    "lesson32-affective-child-matrices": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Build the child reading of pil with the selected tzin, tōn, pīl, or pōl matrix; automatically apply affinity to both the pil embed and matrix for plural absolutive subjects; preserve possessive Results; and expose only the genuinely available full versus abbreviated tzin vocative form."
+    },
+    "lesson32-pil-noble-and-honorific-formations": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the noble reading of simple pil, its genuine child-versus-noble ambiguity and intended gender specification, automatically derive yō-matrix possession, and build the singular pil-tzin-tzin honorific vocative as typed recursion rather than affinity or reduplication."
+    },
+    "lesson32-nonanimate-affinity-and-supplement-agreement": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Allow a typed nonanimate affective NNC to take exceptional plural t-in while preserving the more frequent common-number form and automatically licensing its same-referent common-number supplementation head. Preserve affinity versus distributive-varietal ambiguity unless typed context settles it, without an example-stem gate."
+    },
+    "lesson32-flawed-subject-nncs": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply flawed-subject grammar from a matching typed lexical Source analysis rather than a stem list: replace sounded num1 with its irregular silent variant only in singular or common absolutive NNCs, preserve real ordinary-versus-flawed and defect-versus-entity choices, restore ordinary marking in the plural, force flawing under tzin or tōn where licensed, and keep unrelated silent-num1 procedures distinct."
+    }
+  }
+}

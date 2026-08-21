@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "lesson": 33,
+  "contradictionTest": "src/tests/classical_lesson33_contradiction_audit.test.js",
+  "groups": {
+    "lesson33-honorific-vnc-foundation-and-participant-gate": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-intransitive-causative-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-intransitive-applicative-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-projective-applicative-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_4_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-derived-causative-and-applicative-sources": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_5_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-projective-causative-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-mainline-reflexive-preterit-embed-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_7_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-reverential-double-honorifics": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_8_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-pejorative-preterit-embed-vncs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    },
+    "lesson33-compound-verbstem-attitude-scope": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson33_group_10_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson33_reader_guidance.test.js"
+    }
+  }
+}

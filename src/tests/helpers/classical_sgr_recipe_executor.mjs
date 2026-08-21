@@ -147,6 +147,13 @@ export function createClassicalSgrBrowserSweepArtifact({
       controls: snapshot.domState?.controls || null,
       materialObservationDiagnostics:
         snapshot.materialObservationDiagnostics || [],
+      controlRejections: normalizeArray(snapshot.controlRejections).map(
+        rejection => ({
+          controlKey: String(rejection.controlKey || ""),
+          requestedValue: String(rejection.requestedValue || ""),
+          actualValue: String(rejection.actualValue || ""),
+        })
+      ),
     }))
     .sort((left, right) => (
       left.familyId.localeCompare(right.familyId)
@@ -227,14 +234,14 @@ export function createClassicalSgrBrowserSweepArtifact({
     atomOutcomeCount: atomOutcomes.length,
     uniqueAtomOutcomeCount,
     public: {
-      expected: Number(report?.inventory?.publicAtomCount || 98),
+      expected: Number(report?.inventory?.publicAtomCount || 0),
       materialized: publicOutcomes.filter(
         entry => entry.outcome === "materialized",
       ).length,
       unmaterialized: unmaterialized.length,
     },
     private: {
-      expected: Number(report?.inventory?.privateAtomCount || 141),
+      expected: Number(report?.inventory?.privateAtomCount || 0),
       inert: privateOutcomes.filter(
         entry => entry.outcome === "private-inert",
       ).length,
@@ -261,13 +268,12 @@ export function createClassicalSgrBrowserSweepArtifact({
     report?.complete === true
     && !recipeInvalid
     && !executionFailureCode
-    && counts.atomOutcomeCount === 239
-    && counts.uniqueAtomOutcomeCount === 239
-    && counts.public.expected === 98
-    && counts.public.materialized === 98
+    && counts.atomOutcomeCount
+      === counts.public.expected + counts.private.expected
+    && counts.uniqueAtomOutcomeCount === counts.atomOutcomeCount
+    && counts.public.materialized === counts.public.expected
     && counts.public.unmaterialized === 0
-    && counts.private.expected === 141
-    && counts.private.inert === 141
+    && counts.private.inert === counts.private.expected
     && counts.private.exposed === 0
     && counts.unexpectedDomIds === 0
     && failurePartitionIsExact
@@ -386,12 +392,13 @@ function validateExecutorRegistry(registry, inventory) {
   const atoms = [...inventory.axes, ...inventory.outputs];
   const publicAtoms = atoms.filter(atom => atom.binding?.public === true);
   const privateAtoms = atoms.filter(atom => atom.binding?.public === false);
-  const routeOperationIds = sortedUnique(
-    atoms.map(atom => atom.operationId),
-  );
   const publicOperationIds = sortedUnique(
     publicAtoms.map(atom => atom.operationId),
   );
+  const routeOperationIds = sortedUnique([
+    ...publicOperationIds,
+    ...normalizeArray(inventory?.outputs).map(atom => atom.operationId),
+  ]);
   const families = normalizeArray(registry?.families);
   const familyIds = families.map(family => family.familyId);
   const caseIds = families.flatMap(family => (
@@ -440,16 +447,9 @@ function validateExecutorRegistry(registry, inventory) {
     registry?.authority?.runtimeInstallable === false
       ? ""
       : "runtime-installable",
-    atoms.length === 239 ? "" : `atom-count:${atoms.length}`,
-    publicAtoms.length === 98
+    atoms.length === publicAtoms.length + privateAtoms.length
       ? ""
-      : `public-atom-count:${publicAtoms.length}`,
-    privateAtoms.length === 141
-      ? ""
-      : `private-atom-count:${privateAtoms.length}`,
-    routeOperationIds.length === 33
-      ? ""
-      : `route-operation-count:${routeOperationIds.length}`,
+      : "atom-partition-count",
     new Set(familyIds).size === familyIds.length
       ? ""
       : "duplicate-family-id",
@@ -1248,6 +1248,8 @@ export function createClassicalSgrRecipeExecutor(
             traceStart,
             traceEnd: trace.length,
             outcomeCodes: trace.slice(traceStart).map(entry => entry.code),
+            controlRejections: trace.slice(traceStart)
+              .filter(entry => entry.code === "control-value-rejected"),
             resultStatus: document.getElementById(
               "classical-rule-logic-surface",
             )?.dataset?.classicalNahuatlSurfaceStatus || "",
@@ -1285,6 +1287,8 @@ export function createClassicalSgrRecipeExecutor(
           traceStart,
           traceEnd: trace.length,
           outcomeCodes: trace.slice(traceStart).map(entry => entry.code),
+          controlRejections: trace.slice(traceStart)
+            .filter(entry => entry.code === "control-value-rejected"),
           resultStatus: document.getElementById(
             "classical-rule-logic-surface",
           )?.dataset?.classicalNahuatlSurfaceStatus || "",

@@ -3,10 +3,11 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const { resolveLegacySupportPath } = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const CANVAS = fs.readFileSync(path.join(ROOT, "ANDREWS_TRANSCRIPTION_CANVAS.md"), "utf8").split(/\r?\n/u);
-const LEDGER = fs.readFileSync(path.join(ROOT, "docs", "LESSON_48_SOURCE_LEDGER.md"), "utf8");
+const LEDGER = fs.readFileSync(resolveLegacySupportPath("docs/LESSON_48_SOURCE_LEDGER.md"), "utf8");
 
 function ledgerRows() {
     return LEDGER.split(/\r?\n/u)

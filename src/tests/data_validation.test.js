@@ -1,10 +1,11 @@
 "use strict";
 
 const { createSuite } = require("./runner");
+const { resolveLegacySupportPath } = require("./helpers/legacy_support_path");
 const {
     collectAndrewsTrajectoryErrors,
     collectClassicalInterfaceLanguagePolicyErrors,
-} = require("../../scripts/check_grammar_data");
+} = require(resolveLegacySupportPath("scripts/check_grammar_data.js"));
 
 function run() {
     const s = createSuite("data_validation");

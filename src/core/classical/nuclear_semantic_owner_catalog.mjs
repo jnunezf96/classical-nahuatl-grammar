@@ -1463,10 +1463,10 @@ import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./v
 import { createClassicalApplicativeValidationSemanticOperationsApi } from "./vnc_applicative_validation_semantic_operations.mjs";
 import { createClassicalFrequentativeValidationSemanticOperationsApi } from "./vnc_frequentative_validation_semantic_operations.mjs";
 import { createClassicalCompoundValidationSemanticOperationsApi } from "./vnc_compound_validation_semantic_operations.mjs?v=20260818-lesson29-groups10-12-357";
-import { createClassicalPurposiveValidationSemanticOperationsApi } from "./vnc_purposive_validation_semantic_operations.mjs";
-import { createClassicalNominalEmbedValidationSemanticOperationsApi } from "./nominal_embed_validation_semantic_operations.mjs";
-import { createClassicalCompoundNncValidationSemanticOperationsApi } from "./compound_nnc_validation_semantic_operations.mjs";
-import { createClassicalAffectiveNncValidationSemanticOperationsApi } from "./affective_nnc_validation_semantic_operations.mjs";
+import { createClassicalPurposiveValidationSemanticOperationsApi } from "./vnc_purposive_validation_semantic_operations.mjs?v=20260820-lesson38-groups13-15-126";
+import { createClassicalNominalEmbedValidationSemanticOperationsApi } from "./nominal_embed_validation_semantic_operations.mjs?v=20260818-lesson32-complete-010";
+import { createClassicalCompoundNncValidationSemanticOperationsApi } from "./compound_nnc_validation_semantic_operations.mjs?v=20260818-lesson32-complete-010";
+import { createClassicalAffectiveNncValidationSemanticOperationsApi } from "./affective_nnc_validation_semantic_operations.mjs?v=20260818-lesson32-complete-010";
 import { createClassicalAttitudeVncValidationSemanticOperationsApi } from "./attitude_vnc_validation_semantic_operations.mjs";
 import { createClassicalCardinalNumeralValidationSemanticOperationsApi } from "./cardinal_numeral_validation_semantic_operations.mjs";
 import { createClassicalDeverbalNncValidationSemanticOperationsApi } from "./deverbal_nnc_validation_semantic_operations.mjs";
@@ -1482,7 +1482,7 @@ import { createClassicalClauseComplementValidationSemanticOperationsApi } from "
 import { createClassicalClauseConjunctionValidationSemanticOperationsApi } from "./clause_conjunction_validation_semantic_operations.mjs";
 import { createClassicalComparisonValidationSemanticOperationsApi } from "./comparison_validation_semantic_operations.mjs";
 import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs";
-import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs?v=20260811-canvas-fact-browser-012";
+import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
 const OWNER_SPECS = Object.freeze([
   classical_absolutive_nnc_formula_formation,
   classical_absolutive_nnc_subject_category_system,

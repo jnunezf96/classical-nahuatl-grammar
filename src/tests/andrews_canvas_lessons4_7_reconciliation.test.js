@@ -69,12 +69,10 @@ function run() {
         },
         {
             valid: true,
-            count: 584,
-            digest:
-                "2c417a70ebc571f382dbed548c147aec82313049695a95b7aaa262949dc11a46",
-            expectedCount: 584,
-            expectedDigest:
-                "2c417a70ebc571f382dbed548c147aec82313049695a95b7aaa262949dc11a46",
+            count: LESSONS_4_7_SOURCE_ITEM_COUNT,
+            digest: LESSONS_4_7_SOURCE_MANIFEST_DIGEST,
+            expectedCount: LESSONS_4_7_SOURCE_ITEM_COUNT,
+            expectedDigest: LESSONS_4_7_SOURCE_MANIFEST_DIGEST,
         }
     );
 
@@ -174,28 +172,28 @@ function run() {
         ])),
         {
             4: {
-                "grammar-bearing": 82,
-                analysis: 16,
-                documentary: 8,
-                evidence: 2,
+                "grammar-bearing": 111,
+                analysis: 25,
+                documentary: 11,
+                evidence: 20,
             },
             5: {
-                "grammar-bearing": 79,
-                analysis: 16,
-                documentary: 8,
-                evidence: 25,
+                "grammar-bearing": 141,
+                analysis: 12,
+                documentary: 24,
+                evidence: 23,
             },
             6: {
-                "grammar-bearing": 69,
-                documentary: 1,
-                analysis: 4,
-                evidence: 14,
+                "grammar-bearing": 110,
+                analysis: 3,
+                documentary: 10,
+                evidence: 15,
             },
             7: {
-                "grammar-bearing": 129,
-                documentary: 12,
-                analysis: 27,
-                evidence: 92,
+                "grammar-bearing": 188,
+                evidence: 100,
+                analysis: 29,
+                documentary: 27,
             },
         }
     );
@@ -218,11 +216,11 @@ function run() {
             invalid: audit.invalidGrammarRecords,
         },
         {
-            required: 359,
-            assigned: 359,
+            required: 550,
+            assigned: 550,
             fullyProved: 0,
-            blocked: 359,
-            unresolved: 359,
+            blocked: 550,
+            unresolved: 550,
             unowned: 0,
             countOnlyClosures: 0,
             missingOwners: [],
@@ -239,12 +237,12 @@ function run() {
             invalid: audit.invalidNonAuthorityRecords,
         },
         {
-            required: 225,
-            dispositioned: 225,
+            required: 299,
+            dispositioned: 299,
             byForce: {
-                evidence: 133,
-                analysis: 63,
-                documentary: 29,
+                evidence: 158,
+                analysis: 69,
+                documentary: 72,
             },
             invalid: [],
         }

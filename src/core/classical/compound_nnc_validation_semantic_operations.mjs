@@ -15,9 +15,11 @@ function baseRequest(overrides = {}) {
     constructionKind: "compound-nnc",
     source: {
       embedStem: "ā",
-      embedClass: "tl",
+      embedClass: "tl-1-a",
+      embedSourceClass: "tl-1-a",
       matrixStem: "cal",
       matrixClass: "tli",
+      matrixSourceClass: "tli-1",
     },
     structure: "integrated",
     embedRole: "association",
@@ -79,6 +81,12 @@ function evaluate(runtime, request) {
 }
 
 function buildProjection(runtime) {
+  const recursiveSourceResult = runtime
+    .evaluateClassicalNahuatlNominalConstruction(baseRequest());
+  const recursiveSourceStem = recursiveSourceResult.operationFrame
+    ?.compoundStem || "";
+  const recursiveSourceClass = recursiveSourceResult.operationFrame
+    ?.resultSourceClass || "";
   const cases = {
     base: evaluate(runtime, baseRequest()),
     embedRole: evaluate(runtime, baseRequest({ embedRole: "material" })),
@@ -107,28 +115,67 @@ function buildProjection(runtime) {
     })),
     uniqueLexeme: evaluate(runtime, patchSource(baseRequest(), {
       embedStem: "chi",
+      uniqueCompoundNounstemAnalysis: {
+        lexicalStatus: "unique-compound-only-nounstem",
+        position: "embed",
+        sourceStem: "chi",
+        meaningCertainty: "uncertain",
+        sourceBoundaries: ["chi"],
+        relatedFormations: [],
+      },
     })),
     caMatrix: evaluate(runtime, patchSource(baseRequest(), {
       matrixStem: "ca",
-      matrixClass: "zero",
+      matrixClass: "tl",
+      matrixSourceClass: "tl-1-a",
     })),
     caExclusion: evaluate(runtime, patchSource(baseRequest(), {
       matrixStem: "naca",
       matrixClass: "tl",
+      matrixSourceClass: "tl-2-b-a",
     })),
     yoMatrix: evaluate(runtime, patchSource(baseRequest(), {
       matrixStem: "yō",
-      matrixClass: "zero",
+      matrixClass: "tl",
+      matrixSourceClass: "tl-1-b",
+      yoEmbedAnalysis: {
+        lexicalStatus: "yo-matrix-embed-history",
+        sourceStem: "ā",
+        embedState: "absolutive",
+        possessorKind: "none",
+        meaningRelation: "related-but-distinct",
+      },
     })),
     conjunctive: evaluate(runtime, baseRequest({ structure: "conjunctive" })),
-    recursiveEmbed: evaluate(runtime, patchSource(baseRequest({
-      bracketing: "compound-embed",
-    }), { bracketing: "compound-embed" })),
-    recursiveMatrix: evaluate(runtime, patchSource(baseRequest({
-      bracketing: "compound-matrix",
-    }), { bracketing: "compound-matrix" })),
+    recursiveEmbed: evaluate(runtime, patchSource(baseRequest(), {
+      embedStem: recursiveSourceStem,
+      embedClass: recursiveSourceClass,
+      embedSourceClass: recursiveSourceClass,
+      embedConstituent: {
+        kind: "compound-nnc",
+        stem: recursiveSourceStem,
+        resultFrame: recursiveSourceResult,
+      },
+    })),
+    recursiveMatrix: evaluate(runtime, patchSource(baseRequest(), {
+      matrixStem: recursiveSourceStem,
+      matrixClass: recursiveSourceResult.operationFrame?.matrixClass,
+      matrixSourceClass: recursiveSourceClass,
+      matrixConstituent: {
+        kind: "compound-nnc",
+        stem: recursiveSourceStem,
+        resultFrame: recursiveSourceResult,
+      },
+    })),
     sex: evaluate(runtime, patchSource(baseRequest({ embedRole: "sex" }), {
-      embedStem: "cihuā",
+      embedStem: "zaca",
+      sexEmbedAnalysis: {
+        lexicalStatus: "sex-distinction-embed",
+        sourceStem: "zaca",
+        sexValue: "female",
+        referentClass: "animate",
+        neutralWithoutSex: true,
+      },
     })),
     progeny: evaluate(runtime, patchSource(baseRequest({
       embedRole: "progeny",
@@ -142,6 +189,7 @@ function buildProjection(runtime) {
     affinity: evaluate(runtime, baseRequest({
       reduplication: "affinity",
       reduplicationTarget: "both",
+      subject: "3pl",
     })),
     distributive: evaluate(runtime, baseRequest({
       reduplication: "distributive-varietal",

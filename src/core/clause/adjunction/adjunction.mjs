@@ -659,6 +659,12 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           || baseNormalizedRequest.sentenceAntecessive === true
           || baseNormalizedRequest.sentenceOptions?.sentenceAntecessive === true
           || input.operationFrame?.operationFacts?.antecessive === true
+          || (
+            input.operationFrame?.operationFacts?.antecessiveOrderRequested
+              === true
+            && input.operationFrame?.operationFacts
+              ?.antecessiveScopesFiniteMatrixTense === true
+          )
         );
         return Object.freeze({
           kind: "canonical-adverbial-adjunction-source-unit",

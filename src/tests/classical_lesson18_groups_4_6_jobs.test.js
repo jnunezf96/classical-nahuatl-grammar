@@ -29,6 +29,12 @@ function run(ctx = {}) {
             operationId: "vnc:application",
             args: [{
                 sourceStem,
+                ...(options.sourceInitialISelection
+                    ? {
+                        sourceInitialISelection:
+                            options.sourceInitialISelection,
+                    }
+                    : {}),
                 verbClass: options.verbClass || "A",
                 sourceValence: options.sourceValence || "intransitive",
                 objectKind: options.objectKind || "",
@@ -184,6 +190,7 @@ function run(ctx = {}) {
     });
     const forgedIchtequi = ctx.buildClassicalNahuatlSupplementationClauseEnvelope(
         issueVnc("ichtequi", {
+            sourceInitialISelection: "real",
             subject: "3sg",
             sourceValence: "specific-projective",
             objectKind: "specific-projective",

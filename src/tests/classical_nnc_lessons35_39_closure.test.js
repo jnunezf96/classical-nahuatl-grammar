@@ -3,6 +3,9 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "..", "..");
 const CANVAS_LINES = fs.readFileSync(
@@ -10,7 +13,7 @@ const CANVAS_LINES = fs.readFileSync(
     "utf8"
 ).split(/\r?\n/u);
 const LEDGER = fs.readFileSync(
-    path.join(ROOT, "docs", "LESSONS_35_39_SOURCE_LEDGER.md"),
+    resolveLegacySupportPath("docs/LESSONS_35_39_SOURCE_LEDGER.md"),
     "utf8"
 );
 const PRODUCTION = fs.readFileSync(
@@ -108,6 +111,16 @@ function deverbalRequest(overrides = {}) {
     };
 }
 
+function withSource(request, overrides = {}) {
+    return {
+        ...request,
+        source: {
+            ...(request.source || {}),
+            ...overrides,
+        },
+    };
+}
+
 function patientiveRequest(family = "passive-core", overrides = {}) {
     const profile = {
         "passive-core": {
@@ -159,23 +172,177 @@ function patientiveRequest(family = "passive-core", overrides = {}) {
     };
 }
 
-function characteristicRequest(overrides = {}) {
+function exactOrdinaryNnc(ctx, stem = "mahuiz", sourceClass = "tli-1") {
+    const source = ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+        stem,
+        sourceClass,
+    });
+    const operation = ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+        source,
+        {
+            state: "absolutive",
+            subject: "3sg",
+            predicateFormation: "source-stem",
+            stemFormation: "plain",
+            sentenceType: "statement",
+            polarity: "positive",
+        }
+    );
+    return ctx.requestClassicalOrdinaryNncResult(source, operation);
+}
+
+function characteristicRequest(ctx, overrides = {}) {
     return {
         constructionKind: "patientive",
         patientiveKind: "characteristic-property",
         characteristicReading: "inherent-quality",
-        source: {
-            sourceStage: "nounstem-embed",
-            sourceStem: "mahuiz",
-            sourceUnit: "nnc-nounstem",
-            sourceVoice: "active",
-            sourceValence: "intransitive",
-            sourceObjectPattern: "none",
-        },
+        canonicalNncResult: exactOrdinaryNnc(ctx),
         subject: "3sg",
         state: "absolutive",
         ...overrides,
     };
+}
+
+function exactPassivePatientive(ctx, suffix = "ō") {
+    const request = {
+        sourceStem: "itta",
+        verbClass: "A",
+        sourceValence: "specific-projective",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "passive",
+        voice: "passive",
+        objectKind: "specific-projective",
+        objectPerson: "3sg",
+    };
+    const preview = ctx.evaluateClassicalNahuatlVncApplication(request);
+    const option = (
+        preview.controlFrame?.nonactiveOptionInventory?.options || []
+    ).find(item => (
+        item.suffixFamily === suffix
+        || item.optionId.startsWith(`${suffix}:`)
+    ));
+    const passive = ctx.evaluateClassicalNahuatlVncApplication({
+        ...request,
+        nonactiveOptionId: option?.optionId || "",
+    });
+    return ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "patientive",
+        patientiveSourceFamily: "passive-core",
+        canonicalVncResult: passive.resultFrame,
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
+}
+
+function exactImpersonalPatientive(ctx, overrides = {}) {
+    const {
+        sourceStem = "cochi",
+        verbClass = "B",
+        sourceValence = "intransitive",
+        objectKind = "none",
+        objectPerson = "3sg",
+        suffix = "hua",
+        subject = "3sg",
+        animacy = "nonanimate",
+    } = overrides;
+    const request = {
+        sourceStem,
+        verbClass,
+        sourceValence,
+        subject,
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "impersonal",
+        voice: "impersonal",
+        ...(objectKind === "none" ? {} : {
+            objectKind,
+            ...(objectKind === "specific-projective" ? { objectPerson } : {}),
+        }),
+    };
+    const preview = ctx.evaluateClassicalNahuatlVncApplication(request);
+    const option = (
+        preview.controlFrame?.nonactiveOptionInventory?.options || []
+    ).find(item => (
+        item.suffixFamily === suffix
+        || item.optionId.startsWith(`${suffix}:`)
+    ));
+    const impersonal = ctx.evaluateClassicalNahuatlVncApplication({
+        ...request,
+        nonactiveOptionId: option?.optionId || "",
+    });
+    return ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "patientive",
+        patientiveSourceFamily: "impersonal-core",
+        canonicalVncResult: impersonal.resultFrame,
+        subject,
+        state: "absolutive",
+        animacy,
+    });
+}
+
+function exactPerfectivePatientive(ctx, overrides = {}) {
+    const {
+        patientiveAnalogy = "impersonal",
+        patientive = {},
+        ...vncOverrides
+    } = overrides;
+    const application = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: "miqui",
+        verbClass: "B",
+        sourceValence: "intransitive",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "preterit",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+        voice: "active",
+        ...vncOverrides,
+    });
+    return ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "patientive",
+        patientiveSourceFamily: "perfective-active-core",
+        patientiveAnalogy,
+        canonicalVncResult: application.resultFrame,
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+        ...patientive,
+    });
+}
+
+function exactImperfectivePatientive(ctx, overrides = {}) {
+    const {
+        patientiveAnalogy = "impersonal",
+        patientive = {},
+        ...vncOverrides
+    } = overrides;
+    const application = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: "cuica",
+        verbClass: "A",
+        sourceValence: "intransitive",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+        voice: "active",
+        ...vncOverrides,
+    });
+    return ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "patientive",
+        patientiveSourceFamily: "imperfective-active-core",
+        patientiveAnalogy,
+        canonicalVncResult: application.resultFrame,
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+        ...patientive,
+    });
 }
 
 function ownerhoodRequest(matrix = "ē", overrides = {}) {
@@ -294,21 +461,19 @@ function run(ctx = {}) {
         /\bsourceSpans\s*:/u.test(PRODUCTION),
         /\bclaimCount\s*:/u.test(PRODUCTION),
     ], [false, false, false, false]);
-    s.eq("the public workflow exposes every shared Lessons 35–39 operation without a lesson route", {
+    s.eq("the public workflow exposes each non-duplicate Lessons 35–39 operation without a lesson route", {
         sharedConstruction: SHELL.includes(
             '<option value="deverbal-nnc">'
         ) || SHELL.includes('value="deverbal-nnc"'),
         deverbalSourceToResultRoute:
-            SHELL.includes('data-classical-source-unit="vnc"')
+            SHELL.includes('data-classical-source-unit="any"')
             && SHELL.includes('data-classical-result-unit="nnc"')
-            && SHELL.includes('VNC Source → deverbal nominalization → NNC Result'),
+            && SHELL.includes('Source → deverbal nominalization or characteristic patientive → NNC Result'),
         constructionKinds: [
             "predicate-nominalization",
             "deverbal-action",
             "patientive",
             "ownerhood",
-            "nominal-continuation",
-            "verbal-continuation",
             "vocative",
             "double-nucleus-ownerhood",
         ].filter(value => SHELL.includes(`value="${value}"`)).length,
@@ -357,7 +522,7 @@ function run(ctx = {}) {
     }, {
         sharedConstruction: true,
         deverbalSourceToResultRoute: true,
-        constructionKinds: 8,
+        constructionKinds: 6,
         nominalizationKinds:
             ctx.CLASSICAL_NAHUATL_LESSONS_35_39_PREDICATE_NOMINALIZATION_KINDS
                 .length,
@@ -365,7 +530,7 @@ function run(ctx = {}) {
         appParadigm: true,
         canonicalPreteritStageSource: true,
         genuineChoiceControls: 6,
-        genuineChoiceRequestFields: 6,
+        genuineChoiceRequestFields: 5,
         staleCallerAuthorityAbsent: true,
         lessonRouteAbsent: true,
     });
@@ -515,6 +680,8 @@ function run(ctx = {}) {
                 sourceSubject: "3sg",
             },
             activatedObjectPerson: "3sg",
+            supplementaryObjectRelation: "supplementary-object",
+            supplementaryObjectReferentId: "supplement:food",
         })
     );
     s.eq("interaction witnesses realize the activated object outside the nounstem", {
@@ -716,7 +883,17 @@ function run(ctx = {}) {
 
     ctx.CLASSICAL_NAHUATL_LESSONS_35_39_PATIENTIVE_SOURCE_FAMILIES
         .forEach(family => {
-            const frame = ctx.evaluateClassicalNahuatlDeverbalNnc(patientiveRequest(family));
+            const frame = family === "passive-core"
+                ? exactPassivePatientive(ctx)
+                : family === "impersonal-core"
+                    ? exactImpersonalPatientive(ctx)
+                : family === "perfective-active-core"
+                    ? exactPerfectivePatientive(ctx)
+                : family === "imperfective-active-core"
+                    ? exactImperfectivePatientive(ctx)
+                : ctx.evaluateClassicalNahuatlDeverbalNnc(
+                    patientiveRequest(family)
+                );
             s.ok(`positive witnesses authorize patientive family ${family}`,
                 frame.authorizationStatus === "authorized"
                 && frame.operationFrame.patientiveSourceFamily === family);
@@ -776,13 +953,13 @@ function run(ctx = {}) {
         "intrinsic-aspect",
     ].forEach(characteristicReading => {
         const frame = ctx.evaluateClassicalNahuatlDeverbalNnc(
-            characteristicRequest({ characteristicReading })
+            characteristicRequest(ctx, { characteristicReading })
         );
         s.ok(`positive witnesses authorize characteristic ${characteristicReading}`,
             frame.authorizationStatus === "authorized"
             && frame.operationFrame.characteristicReading === characteristicReading);
     });
-    const organic = ctx.evaluateClassicalNahuatlDeverbalNnc(characteristicRequest({
+    const organic = ctx.evaluateClassicalNahuatlDeverbalNnc(characteristicRequest(ctx, {
         characteristicReading: "organic-possession",
         state: "possessive",
         possessor: "3sg",
@@ -805,12 +982,11 @@ function run(ctx = {}) {
             passiveHumanObjectRealization: "delete",
         })
     );
-    s.ok("positive witnesses permit only typed optional te deletion in passive patientive",
-        deletedHumanObject.authorizationStatus === "authorized"
-        && !deletedHumanObject.operationFrame.targetStems.restrictedUse.startsWith("tē-")
-        && deletedHumanObject.operationFrame.appliedSemanticRules
-            .includes("37.9.3-optional-retained-te-deletion"));
-    const humanToTla = ctx.evaluateClassicalNahuatlDeverbalNnc(
+    s.ok("raw passive stems no longer authorize optional te deletion",
+        deletedHumanObject.authorizationStatus === "blocked"
+        && deletedHumanObject.blockReason
+            === "exact-owner-issued-passive-vnc-result-required");
+    const rawHumanToTla = ctx.evaluateClassicalNahuatlDeverbalNnc(
         patientiveRequest("impersonal-core", {
             source: {
                 sourceStage: "nonactive-core",
@@ -824,44 +1000,20 @@ function run(ctx = {}) {
             },
         })
     );
-    const exceptionalTe = ctx.evaluateClassicalNahuatlDeverbalNnc(
-        patientiveRequest("impersonal-core", {
-            source: {
-                sourceStage: "nonactive-core",
-                sourceStem: "huica-lō",
-                verbClass: "A",
-                sourceVoice: "impersonal",
-                sourceValence: "single-object",
-                sourceObjectPattern: "nonspecific-human",
-                sourceSubject: "3sg",
-                nonactiveSuffix: "lō",
-            },
-        })
-    );
-    s.eq("positive witnesses distinguish productive human-to-tla from lexical te", {
-        productive: humanToTla.operationFrame.targetStems.restrictedUse,
-        exceptional: exceptionalTe.operationFrame.targetStems.restrictedUse,
-    }, {
-        productive: "tla-pach-ō-l",
-        exceptional: "tē-huica-l",
+    s.ok("raw human impersonal patientive stems cannot bypass VNC ownership",
+        rawHumanToTla.authorizationStatus === "blocked"
+        && rawHumanToTla.blockReason
+            === "exact-owner-issued-impersonal-vnc-result-required");
+    const rootPlusYaPatientive = exactImpersonalPatientive(ctx, {
+        sourceStem: "mela-ya",
+        verbClass: "B",
+        suffix: "lō",
     });
-    const rootPlusYaPatientive = ctx.evaluateClassicalNahuatlDeverbalNnc(
-        patientiveRequest("impersonal-core", {
-            source: {
-                sourceStage: "nonactive-core",
-                sourceStem: "tla-ō-ya-lō",
-                verbClass: "A",
-                sourceVoice: "impersonal",
-                sourceValence: "single-object",
-                sourceObjectPattern: "none",
-                sourceSubject: "3sg",
-                nonactiveSuffix: "lō",
-            },
-        })
-    );
-    s.ok("positive witnesses apply root-plus-ya deletion before patientive boundary realization",
+    s.ok("positive witnesses preserve VNC-owned root-plus-ya realization through the patientive",
         rootPlusYaPatientive.authorizationStatus === "authorized"
-        && rootPlusYaPatientive.operationFrame.targetStems.restrictedUse === "tla-ō-l");
+        && rootPlusYaPatientive.operationFrame.targetStems.restrictedUse === "mela-l"
+        && rootPlusYaPatientive.operationFrame.impersonalPatientiveFamilyFrame
+            .duplicatePatientiveRootPlusYaChoiceExposed === false);
 
     ["ē", "huā", "yō-ā"].forEach(matrix => {
         const request = matrix === "yō-ā"
@@ -885,22 +1037,52 @@ function run(ctx = {}) {
     s.ok("interaction witnesses authorize derived nounstem as nominal embed",
         nominalContinuation.authorizationStatus === "authorized"
         && nominalContinuation.operationFrame.continuationRelation === "compound-nnc-embed");
-    const assimilatedAction = ctx.evaluateClassicalNahuatlDeverbalNnc(
-        nominalContinuationRequest({
-            source: {
-                sourceStage: "derived-nounstem",
-                sourceStem: "miquiz",
-                derivationKind: "active-action-z",
-                matrixStem: "tzin",
-                matrixClass: "tli",
-            },
-        })
-    );
-    s.ok("interaction witnesses realize action-s before affective tz at the compound boundary",
-        assimilatedAction.authorizationStatus === "authorized"
-        && assimilatedAction.operationFrame.targetStems.restrictedUse === "miqui-tzin"
-        && assimilatedAction.operationFrame.appliedSemanticRules
-            .includes("37.5-s-to-tz-affective-assimilation"));
+    const miquiFuture = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: "miqui",
+        verbClass: "B",
+        sourceValence: "intransitive",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "future",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+    });
+    const miquiz = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "deverbal-action",
+        actionKind: "active-action",
+        actionSuffix: "z",
+        canonicalVncResult: miquiFuture.resultFrame,
+        subject: "3common",
+        state: "absolutive",
+        animacy: "nonanimate",
+    });
+    const assimilatedAction = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "nominal-continuation",
+        canonicalNncResult: miquiz.canonicalResult,
+        source: {
+            matrixStem: "tzin",
+            matrixClass: "tli",
+        },
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
+    s.eq("interaction witnesses realize action-s before affective tz at the compound boundary", {
+        source: miquiFuture.authorizationStatus,
+        action: [miquiz.authorizationStatus,
+            miquiz.operationFrame?.targetStems?.restrictedUse],
+        continuation: [assimilatedAction.authorizationStatus,
+            assimilatedAction.blockReason,
+            assimilatedAction.operationFrame?.targetStems?.restrictedUse,
+            assimilatedAction.operationFrame?.appliedSemanticRules],
+    }, {
+        source: "authorized",
+        action: ["authorized", "miqui-z"],
+        continuation: ["authorized", "", "miqui-tzin", [
+            "35.7-or-37.5.4-or-38.2-or-39.6-nominal-embed",
+            "37.5-s-to-tz-affective-assimilation",
+        ]],
+    });
     const actionSupplementPrincipal =
         ctx.buildClassicalNahuatlSupplementationClauseEnvelope(
             ctx.evaluateClassicalNahuatlVncApplication({
@@ -1110,6 +1292,18 @@ function run(ctx = {}) {
                 sourceObjectPattern: "none",
             },
         }), "37.2-z-requires-final-i-or-typed-exception"],
+        ["active deverbal action rejects nonactive source voice", withSource(
+            deverbalRequest({ actionKind: "active-action" }),
+            { sourceVoice: "passive" }
+        ), "deverbal-action-kind-source-voice-mismatch"],
+        ["potential-patient action rejects impersonal source voice", withSource(
+            deverbalRequest({ actionKind: "potential-patient" }),
+            { sourceVoice: "impersonal" }
+        ), "deverbal-action-kind-source-voice-mismatch"],
+        ["impersonal general action rejects active source voice", withSource(
+            deverbalRequest({ actionKind: "impersonal-general-action" }),
+            { sourceVoice: "active" }
+        ), "deverbal-action-kind-source-voice-mismatch"],
         ["passive patientive rejects intransitive ultimate source", patientiveRequest("passive-core", {
             source: {
                 sourceStage: "nonactive-core",
@@ -1120,7 +1314,39 @@ function run(ctx = {}) {
                 sourceObjectPattern: "none",
                 nonactiveSuffix: "lō",
             },
-        }), "37.9-passive-patientive-has-no-intransitive-ultimate-source"],
+        }), "exact-owner-issued-passive-vnc-result-required"],
+        ["passive-core patientive rejects active source voice", withSource(
+            patientiveRequest("passive-core"),
+            { sourceVoice: "active" }
+        ), "exact-owner-issued-passive-vnc-result-required"],
+        ["impersonal-core patientive rejects passive source voice", withSource(
+            patientiveRequest("impersonal-core"),
+            { sourceVoice: "passive" }
+        ), "exact-owner-issued-impersonal-vnc-result-required"],
+        ["perfective-active-core patientive rejects a raw typed-looking source", withSource(
+            patientiveRequest("perfective-active-core"),
+            { sourceVoice: "passive" }
+        ), "exact-owner-issued-active-preterit-vnc-result-required"],
+        ["imperfective-active-core patientive rejects a raw typed-looking source", withSource(
+            patientiveRequest("imperfective-active-core"),
+            { sourceVoice: "impersonal" }
+        ), "exact-owner-issued-active-present-vnc-result-required"],
+        ["root-or-stock patientive rejects passive source voice", withSource(
+            patientiveRequest("root-or-stock"),
+            { sourceVoice: "passive" }
+        ), "patientive-family-source-voice-mismatch"],
+        ["characteristic-property patientive rejects a raw nounstem", {
+            constructionKind: "patientive",
+            patientiveKind: "characteristic-property",
+            characteristicReading: "inherent-quality",
+            source: {
+                sourceStage: "nounstem-embed",
+                sourceStem: "mahuiz",
+                sourceUnit: "nnc-nounstem",
+            },
+            subject: "3sg",
+            state: "absolutive",
+        }, "exact-owner-issued-ordinary-nnc-result-required-for-characteristic-patientive"],
         ["nonactive suffix must match", patientiveRequest("impersonal-core", {
             source: {
                 sourceStage: "nonactive-core",
@@ -1131,18 +1357,27 @@ function run(ctx = {}) {
                 sourceObjectPattern: "none",
                 nonactiveSuffix: "hua",
             },
-        }), "typed-nonactive-suffix-does-not-match-source-core"],
-        ["perfective final segment must be licensed", patientiveRequest("perfective-active-core", {
-            source: {
-                sourceStage: "perfective-core",
-                sourceStem: "pā",
-                verbClass: "A",
-                sourceVoice: "active",
-                sourceValence: "intransitive",
-                sourceObjectPattern: "none",
-            },
-        }), "39.1-perfective-source-ending-not-licensed"],
-        ["organic possession is possessive only", characteristicRequest({
+        }), "exact-owner-issued-impersonal-vnc-result-required"],
+        ["perfective final segment must be licensed", {
+            constructionKind: "patientive",
+            patientiveSourceFamily: "perfective-active-core",
+            patientiveAnalogy: "impersonal",
+            canonicalVncResult:
+                ctx.evaluateClassicalNahuatlVncApplication({
+                    sourceStem: "temō",
+                    verbClass: "A",
+                    sourceValence: "intransitive",
+                    subject: "3sg",
+                    mood: "indicative",
+                    tense: "preterit",
+                    requestedDerivation: "direct",
+                    requestedVoice: "active",
+                    voice: "active",
+                }).resultFrame,
+            subject: "3sg",
+            state: "absolutive",
+        }, "39.1-perfective-source-ending-not-licensed"],
+        ["organic possession is possessive only", characteristicRequest(ctx, {
             characteristicReading: "organic-possession",
             state: "absolutive",
         }), "39.3.4-organic-possession-is-possessive-only"],
@@ -1216,7 +1451,7 @@ function run(ctx = {}) {
                     nonactiveSuffix: "lō",
                 },
             }),
-            "37.9.3-human-object-deletion-lexical-license-required"],
+            "exact-owner-issued-passive-vnc-result-required"],
         ["yo omission requires typed derivational history", nominalContinuationRequest({
             source: {
                 sourceStage: "derived-nounstem",

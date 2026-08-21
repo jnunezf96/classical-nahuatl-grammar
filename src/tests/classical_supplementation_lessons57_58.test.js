@@ -4,6 +4,7 @@ const { createSuite } = require("./runner");
 
 function run(ctx) {
     const s = createSuite("classical_supplementation_lessons57_58");
+    const vncApplication = ctx.createClassicalNahuatlVncApplication(ctx);
 
     const buildVnc = (
         stem,
@@ -13,7 +14,7 @@ function run(ctx) {
             objectKind = "none",
             objectPerson = "",
         } = {}
-    ) => ctx.classicalNahuatlVncApplication.evaluate({
+    ) => vncApplication.evaluate({
         sourceStem: stem,
         sourceSubject: subject,
         subject,
@@ -95,19 +96,19 @@ function run(ctx) {
     });
 
     const hasteRows = [
-        ["l58-oc-eh", "oc eh", "oc + eh", "Oc eh!", "oc yeh", "oc + yeh", "Oc yeh!"],
-        ["l58-tia-oc-eh", "tiā oc eh", "tiā + oc + eh", "Tiā oc eh!", "tiā oc yeh", "tiā + oc + yeh", "Tiā oc yeh!"],
-        ["l58-ma-oc-eh", "mā oc eh", "mā oc eh", "Mā oc eh!", "mā oc yeh", "mā oc yeh", "Mā oc yeh!"],
+        ["l58-oc-eh", "oc eh", "oc eh", "Oc eh!", "oc yeh", "oc + yeh", "Oc yeh!"],
+        ["l58-tia-oc-eh", "tiā oc eh", "tiā oc eh", "Tiā oc eh!", "tiā oc yeh", "tiā + oc + yeh", "Tiā oc yeh!"],
+        ["l58-ma-oc-eh", "mā oc eh", "mā oc eh", "Mā oc eh!", "mā oc yeh", "mā + oc + yeh", "Mā oc yeh!"],
         ["l58-tia-cuel", "tiā cuēl", "tiā cuēl", "Tiā cuēl!", "", "", ""],
-        ["l58-tia-cuel-eh", "tiā cuēl eh", "tiā cuēl eh", "Tiā cuēl eh!", "tiā cuēl yeh", "tiā cuēl yeh", "Tiā cuēl yeh!"],
-        ["l58-tia-cuel-ehhuatl", "tiā cuēl ehhuātl", "tiā cuēl ehhuātl", "Tiā cuēl ehhuātl!", "tiā cuēl yehhuātl", "tiā cuēl yehhuātl", "Tiā cuēl yehhuātl!"],
+        ["l58-tia-cuel-eh", "tiā cuēl eh", "tiā cuēl eh", "Tiā cuēl eh!", "tiā cuēl yeh", "tiā + cuēl + yeh", "Tiā cuēl yeh!"],
+        ["l58-tia-cuel-ehhuatl", "tiā cuēl ehhuātl", "tiā cuēl ehhuātl", "Tiā cuēl ehhuātl!", "tiā cuēl yehhuātl", "tiā + cuēl + yehhuātl", "Tiā cuēl yehhuātl!"],
         ["l58-ma-cuel", "mā cuēl", "mā cuēl", "Mā cuēl!", "", "", ""],
-        ["l58-ma-cuel-eh", "mā cuēl eh", "mā cuēl eh", "Mā cuēl eh!", "mā cuēl yeh", "mā cuēl yeh", "Mā cuēl yeh!"],
-        ["l58-ma-cuel-ehhuatl", "mā cuēl ehhuātl", "mā cuēl ehhuātl", "Mā cuēl ehhuātl!", "mā cuēl yehhuātl", "mā cuēl yehhuātl", "Mā cuēl yehhuātl!"],
+        ["l58-ma-cuel-eh", "mā cuēl eh", "mā cuēl eh", "Mā cuēl eh!", "mā cuēl yeh", "mā + cuēl + yeh", "Mā cuēl yeh!"],
+        ["l58-ma-cuel-ehhuatl", "mā cuēl ehhuātl", "mā cuēl ehhuātl", "Mā cuēl ehhuātl!", "mā cuēl yehhuātl", "mā + cuēl + yehhuātl", "Mā cuēl yehhuātl!"],
         ["l58-ma-ye-cuel", "mā ye cuēl", "mā ye cuēl", "Mā ye cuēl!", "", "", ""],
-        ["l58-ma-ye-cuel-eh", "mā ye cuēl eh", "mā ye cuēl eh", "Mā ye cuēl eh!", "mā ye cuēl yeh", "mā ye cuēl yeh", "Mā ye cuēl yeh!"],
+        ["l58-ma-ye-cuel-eh", "mā ye cuēl eh", "mā ye cuēl eh", "Mā ye cuēl eh!", "mā ye cuēl yeh", "mā + ye + cuēl + yeh", "Mā ye cuēl yeh!"],
         ["l58-tia-ye-cuel", "tiā ye cuēl", "tiā ye cuēl", "Tiā ye cuēl!", "", "", ""],
-        ["l58-tia-ye-cuel-eh", "tiā ye cuēl eh", "tiā ye cuēl eh", "Tiā ye cuēl eh!", "tiā ye cuēl yeh", "tiā ye cuēl yeh", "Tiā ye cuēl yeh!"],
+        ["l58-tia-ye-cuel-eh", "tiā ye cuēl eh", "tiā ye cuēl eh", "Tiā ye cuēl eh!", "tiā ye cuēl yeh", "tiā + ye + cuēl + yeh", "Tiā ye cuēl yeh!"],
     ];
     s.eq(
         "58.3 haste collocations and their licensed personal-pronoun variants are owner-issued particle Results",
@@ -1017,11 +1018,15 @@ function run(ctx) {
                 subject,
                 tense,
                 sourceValence,
-                objectPerson = ""
+                objectPerson = "",
+                sourceInitialISelection = ""
             ) => ctx.executeClassicalGrammarApplicationRequest({
                 operationId: "vnc:application",
                 args: [{
                     sourceStem,
+                    ...(sourceInitialISelection
+                        ? { sourceInitialISelection }
+                        : {}),
                     verbClass: "A",
                     sourceValence,
                     subject,
@@ -1041,7 +1046,8 @@ function run(ctx) {
                 "3sg",
                 "preterit",
                 "specific-projective",
-                "3sg"
+                "3sg",
+                "real"
             );
             const reported = applicationVnc(
                 "yā",
@@ -1083,7 +1089,8 @@ function run(ctx) {
                 "3sg",
                 "preterit",
                 "specific-projective",
-                "3sg"
+                "3sg",
+                "real"
             );
             wrongController.captureCurrentResult(
                 "principal",

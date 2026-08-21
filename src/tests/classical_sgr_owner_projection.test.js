@@ -107,16 +107,33 @@ function run(ctx = {}) {
         path.join(ROOT, "src/ui/shell/classical_shell.mjs"),
         "utf8"
     );
+    const dispositions = JSON.parse(fs.readFileSync(
+        path.join(ROOT, "docs/CLASSICAL_APPLICATION_AXIS_DISPOSITIONS.json"),
+        "utf8"
+    ));
     const inventory = ctx.getClassicalSourceGrammarResultSurfaceInventory();
     const intentionallyUnsurfacedAxes = inventory.axes.filter(atom => (
         atom.disposition === "intentionally-unsurfaced"
     ));
+    const declaredPrivateAxisIds = dispositions.entries
+        .filter(entry => (
+            entry.surfaceDisposition === "intentionally-unsurfaced"
+        ))
+        .map(entry => entry.atomId)
+        .sort();
+    const inventoryPrivateAxisIds = intentionallyUnsurfacedAxes
+        .map(atom => atom.atomId)
+        .sort();
 
     suite.eq(
-        "the v2 boundary keeps all 124 former fact and diagnostic axes private",
+        "the v3 boundary keeps every disposition-declared private axis private",
         {
             version: inventory.version,
             count: intentionallyUnsurfacedAxes.length,
+            declaredCount: declaredPrivateAxisIds.length,
+            exactDeclaredInventoryMatch:
+                JSON.stringify(inventoryPrivateAxisIds)
+                === JSON.stringify(declaredPrivateAxisIds),
             publicValues: Array.from(new Set(
                 intentionallyUnsurfacedAxes.map(atom => atom.binding?.public)
             )),
@@ -129,8 +146,10 @@ function run(ctx = {}) {
             )),
         },
         {
-            version: 2,
-            count: 124,
+            version: 3,
+            count: declaredPrivateAxisIds.length,
+            declaredCount: declaredPrivateAxisIds.length,
+            exactDeclaredInventoryMatch: true,
             publicValues: [false],
             proofBoundaries: ["private"],
             allInertnessBound: true,

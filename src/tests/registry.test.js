@@ -9,6 +9,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { createSuite } = require("./runner");
+const { resolveLegacySupportPath } = require("./helpers/legacy_support_path");
 
 const ROOT = path.resolve(__dirname, "../..");
 
@@ -95,7 +96,7 @@ function run(ctx = {}) {
         "hit",
         "miss",
     ]);
-    const trajectoryDoc = fs.readFileSync(path.join(ROOT, "docs/ANDREWS_TRAJECTORY.md"), "utf8");
+    const trajectoryDoc = fs.readFileSync(resolveLegacySupportPath("docs/ANDREWS_TRAJECTORY.md"), "utf8");
     s.ok(
         "Andrews trajectory ledger documents direction and redirection",
         /Directing Rule/.test(trajectoryDoc)

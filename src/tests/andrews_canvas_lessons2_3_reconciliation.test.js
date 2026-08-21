@@ -58,12 +58,10 @@ function run(runtimeContext = {}) {
         },
         {
             valid: true,
-            count: 526,
-            digest:
-                "ac7d78579482f8584af91e482978301769494027ac7ab3e3d6e8c1e0e58e4a03",
-            expectedCount: 526,
-            expectedDigest:
-                "ac7d78579482f8584af91e482978301769494027ac7ab3e3d6e8c1e0e58e4a03",
+            count: LESSONS_2_3_SOURCE_ITEM_COUNT,
+            digest: LESSONS_2_3_SOURCE_MANIFEST_DIGEST,
+            expectedCount: LESSONS_2_3_SOURCE_ITEM_COUNT,
+            expectedDigest: LESSONS_2_3_SOURCE_MANIFEST_DIGEST,
         }
     );
 
@@ -81,16 +79,16 @@ function run(runtimeContext = {}) {
         },
         {
             lesson2: {
-                "grammar-bearing": 267,
-                analysis: 9,
-                documentary: 17,
-                evidence: 94,
+                "grammar-bearing": 343,
+                documentary: 35,
+                analysis: 20,
+                evidence: 141,
             },
             lesson3: {
-                "grammar-bearing": 128,
-                analysis: 4,
-                evidence: 1,
-                documentary: 6,
+                "grammar-bearing": 176,
+                analysis: 12,
+                documentary: 11,
+                evidence: 5,
             },
         }
     );
@@ -117,11 +115,11 @@ function run(runtimeContext = {}) {
             invalid: audit.invalidGrammarRecords,
         },
         {
-            required: 395,
-            assigned: 395,
-            fullyProved: 311,
-            blocked: 84,
-            unresolved: 84,
+            required: 519,
+            assigned: 519,
+            fullyProved: 391,
+            blocked: 128,
+            unresolved: 128,
             unowned: 0,
             countOnlyClosures: 0,
             missingOwners: [],
@@ -138,12 +136,12 @@ function run(runtimeContext = {}) {
             invalid: audit.invalidNonAuthorityRecords,
         },
         {
-            required: 131,
-            dispositioned: 131,
+            required: 224,
+            dispositioned: 224,
             byForce: {
-                evidence: 95,
-                analysis: 13,
-                documentary: 23,
+                evidence: 146,
+                analysis: 32,
+                documentary: 46,
             },
             invalid: [],
         }
@@ -347,7 +345,7 @@ function run(runtimeContext = {}) {
     );
     s.ok(
         "all proved items carry exact independently issued written and formula projections",
-        proved.length === 311
+        proved.length === 391
         && proved.every(record => (
             record.projections.independent === true
             && record.projections.written.output
@@ -360,11 +358,13 @@ function run(runtimeContext = {}) {
         record => record.status === "blocked"
     );
     s.ok(
-        "only user-actionable particle identities and honorific composition remain blocked on live UI proof",
-        blocked.length === 84
+        "only missing atom-complete transcription receipts and user-actionable particle UI receipts remain blocked",
+        blocked.length === 128
         && blocked.every(record => (
-            record.blocker.blockerId
-                === "particle-live-desktop-and-narrow-ui-receipt-missing"
+            [
+                "item-complete-owner-receipt-missing",
+                "particle-live-desktop-and-narrow-ui-receipt-missing",
+            ].includes(record.blocker.blockerId)
         ))
     );
 

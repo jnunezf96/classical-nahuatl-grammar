@@ -3,16 +3,27 @@
 const fs = require("fs");
 const path = require("path");
 const { createSuite } = require("./runner");
-const lesson20Audit = require("../../scripts/audit_classical_lesson20_nonactive_examples");
-const lessons2022Audit = require("../../scripts/audit_classical_lessons20_22_canvas_examples");
+const {
+    resolveLegacySupportPath,
+} = require("./helpers/legacy_support_path");
+const lesson20Audit = require(resolveLegacySupportPath(
+    "scripts/audit_classical_lesson20_nonactive_examples.js"
+));
+const lessons2022Audit = require(resolveLegacySupportPath(
+    "scripts/audit_classical_lessons20_22_canvas_examples.js"
+));
 const lessons2426Audit = require("../../scripts/audit_classical_lessons24_26_canvas_examples");
-const lesson53Audit = require("../../scripts/audit_classical_lesson53_source_spans");
+const lesson53Audit = require(resolveLegacySupportPath(
+    "scripts/audit_classical_lesson53_source_spans.js"
+));
 const canvasCatalogEvidence = require(
     "../../scripts/lib/classical_canvas_catalog_evidence"
 );
 const {
     CLASSICAL_NAHUATL_LESSONS24_25_CANVAS_EXAMPLES,
-} = require("../../scripts/classical_lessons24_25_canvas_catalog");
+} = require(resolveLegacySupportPath(
+    "scripts/classical_lessons24_25_canvas_catalog.js"
+));
 const {
     WITNESSES: LESSON53_WITNESSES,
 } = require("./fixtures/classical_lesson53_canvas_ledger");
@@ -302,10 +313,8 @@ function run() {
         "the mandatory Lesson 20 audit contains no PDF-derived witness authority path",
         (() => {
             const source = fs.readFileSync(
-                path.join(
-                    ROOT,
-                    "scripts",
-                    "audit_classical_lesson20_nonactive_examples.js"
+                resolveLegacySupportPath(
+                    "scripts/audit_classical_lesson20_nonactive_examples.js"
                 ),
                 "utf8"
             );

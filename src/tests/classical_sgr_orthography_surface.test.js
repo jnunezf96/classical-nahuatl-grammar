@@ -262,8 +262,9 @@ function run(ctx = {}) {
                 && shell.includes("input.selectionEnd")
                 && shell.includes("input.setSelectionRange"),
             typingRemainsOpen:
-                shell.includes("You can still type anything.")
-                && !shell.includes("classicalTranscriptionKeyboardOnly"),
+                !shell.includes("classicalTranscriptionKeyboardOnly")
+                && shell.includes('id="classical-source-whole"')
+                && shell.includes('type="text"'),
             displayDoesNotAuthorize:
                 shell.includes(
                     'button.dataset.classicalGrammarAuthority = "false"'

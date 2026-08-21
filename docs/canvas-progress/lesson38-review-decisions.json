@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "lesson": 38,
+  "decisions": {
+    "lesson38-impersonal-patientive-foundation": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive the impersonal patientive only from the exact nonactive core of an owner-issued impersonal VNC Result, preserving complete typed Source history and the patientive-result versus agentive-doer contrast."
+    },
+    "lesson38-impersonal-patientive-lo": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive lō impersonal patientives productively from exact typed impersonal Results by deleting final ō and retaining l, while preserving repeated impersonal layers and typed root-plus-ya or lexical analysis without an example-stem gate."
+    },
+    "lesson38-impersonal-patientive-o-ohua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive ō and o-hua impersonal patientives from exact typed impersonal Results by removing the complete licensed nonactive material and preserving Source history, repeated impersonal layers, class, typed irregular realizations, and lexical readings."
+    },
+    "lesson38-impersonal-patientive-hua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive hua impersonal patientives from exact owner-issued impersonal Results by removing the typed hua boundary, applying typed preceding-vowel behavior automatically, and preserving the complete Source, class, alternative-formation, and reading analysis."
+    },
+    "lesson38-impersonal-patientive-hua-lo": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive layered hua-lō impersonal patientives from exact typed Source structure by removing only the outer lō material, retaining the inner hua formation and complete Source history, and exposing no manual deletion-layer choice."
+    },
+    "lesson38-reflexive-impersonal-patientive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve reflexive or reciprocal ancestry, automatic shuntline ne, and any remaining projective objects from the exact owner-issued impersonal VNC Result while keeping impersonal and passive analyses distinct and preserving genuine Source ambiguity."
+    },
+    "lesson38-projective-impersonal-patientive-lo": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve the exact projective nonhuman object topology as mainline tla or double-object tē+tla while deriving the lō patientive automatically from the owner-issued impersonal VNC Result without a stem whitelist or repeated Source choice."
+    },
+    "lesson38-projective-impersonal-patientive-o": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve mainline tla or double-object tē+tla while removing the complete typed ō-family nonactive suffix, retaining participant roles, Source-shape analysis, productive readings, and typed lexical ambiguity."
+    },
+    "lesson38-projective-impersonal-patientive-hua": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive projective hua patientives from the exact active-to-impersonal Source chain, retaining tla, preserving phonemically long active vowels, realizing active final a as short i after hua deletion, and leaving homophony or narrow meaning to typed Source or context."
+    },
+    "lesson38-human-source-tla-lo": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive human-source lō patientives through the exact active to passive to impersonalized-passive path, replacing active tē with impersonal tla, retaining the human referent, and preserving typed Source history and homonymous nonhuman analyses."
+    },
+    "lesson38-human-source-tla-o": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Apply the same typed human-source passive then impersonal pathway to ō Sources, removing ō while preserving the human patient, distinct passive patientive analysis, and complete participant and Source history."
+    },
+    "lesson38-human-source-tla-hua-exceptions": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive ordinary human-source hua patientives through passive and impersonal tla with typed vowel behavior, while retaining rare human tē formations only as automatic typed lexical exceptions rather than productive choices or stem gates."
+    },
+    "lesson38-human-nonhuman-patientive-contrast": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Preserve contrasting human tla and nonhuman or abstract tē patientives through exact typed valence, participant, voice, and lexical histories; derive fixed contrasts automatically, expose only a genuinely unresolved referent choice, and keep single-object impersonal and double-object passive Sources distinct."
+    },
+    "lesson38-patientive-active-action-translation-overlap": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Keep patientive and active-action nounstems as distinct typed constructions and owner-issued Results even when their English translations overlap, using Source history rather than translation as authority."
+    },
+    "lesson38-compound-source-patientive": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Derive patientives from exact owner-issued compound VNC Results while preserving embed, matrix, relation, participants, boundaries, Nahuatl order, and typed reading; expose only the genuine compound-relation choice and treat English reversal as reading guidance."
+    },
+    "lesson38-patientive-matrix-compound": {
+      "status": "ACCEPTED",
+      "acceptedJob": "Continue from an exact owner-issued patientive NNC Result as the matrix of a canonical compound NNC, preserving complete VNC ancestry and typed matrix identity while the user supplies the typed embed and genuine grammatical relation and the application derives order, boundaries, class, and compositional reading automatically."
+    }
+  }
+}

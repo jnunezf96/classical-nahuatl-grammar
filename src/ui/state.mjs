@@ -5,399 +5,521 @@ const CLASSICAL_SOURCE_GRAMMAR_RESULT_AUTHORITY = Object.freeze({
   grammarAuthority: false
 });
 
+// Generated from the Canvas-provenance section of the application-axis
+// dispositions record. These links explain a choice; they never authorize it.
+const CLASSICAL_SOURCE_GRAMMAR_RESULT_CANVAS_PROVENANCE = Object.freeze({
+  "CAA-classical.morpheme.inflectional-affix.demote--process-kind": Object.freeze(["ACI-P029-L016-682536CD59"]),
+  "CAA-classical.structure.group.compose--group-shape": Object.freeze(["ACI-P031-L014-D364C15A04"]),
+  "CAA-classical.structure.meaningful-rank.downgrade--downgrade-mode": Object.freeze(["ACI-P030-L006-518758C8D7","ACI-P030-L006-518758C8D7-02"]),
+  "CAA-classical.structure.meaningful-rank.source-or-upgrade.validate--transition-mode": Object.freeze(["ACI-P030-L004-D47685394D"]),
+  "CAA-classical.structure.stem.compound--compound-relation": Object.freeze(["ACI-P030-L015-A02A98BF92"]),
+  "CAA-classical.structure.stem.form-directly--formation-kind": Object.freeze(["ACI-P030-L011-9FE9D0F679","ACI-P030-L011-9FE9D0F679-02","ACI-P030-L011-9FE9D0F679-03"]),
+  "CAA-clause-adverbial-adjunction--clause-position": Object.freeze(["ACI-P527-L005-DB0BFDAE48"]),
+  "CAA-clause-adverbial-adjunction--relation-scope": Object.freeze(["ACI-P534-L010-FE034D4F51","ACI-P538-L009-DBB483A264"]),
+  "CAA-clause-comparison--degree-strategy": Object.freeze(["ACI-P578-L031-3333D447E8"]),
+  "CAA-clause-comparison--superlative-strategy": Object.freeze(["ACI-P578-L031-3333D447E8"]),
+  "CAA-clause-composition--clause-rank": Object.freeze(["ACI-P559-L010-19F97C4F5E","ACI-P559-L010-19F97C4F5E-03"]),
+  "CAA-clause-composition--complement-relation": Object.freeze(["ACI-P552-L005-3CAEC644C0"]),
+  "CAA-clause-composition--conjunction-relation": Object.freeze(["ACI-P559-L013-6DF46BF590"]),
+  "CAA-clause-composition--parallel-structure": Object.freeze(["ACI-P571-L009-6689F80046"]),
+  "CAA-clause-composition--relation-marker": Object.freeze(["ACI-P559-L014-46A7C44FB6","ACI-P559-L015-D7AD272661"]),
+  "CAA-grammar-nominal-construction--affective-nnc": Object.freeze(["ACI-P304-L005-48EFFF29DA","ACI-P304-L007-AC2B0C0B42"]),
+  "CAA-grammar-nominal-construction--cardinal-number": Object.freeze(["ACI-P322-L006-3FBE3D3F72","ACI-P322-L009-81D7F1C9DF"]),
+  "CAA-grammar-nominal-construction--compound-nnc": Object.freeze(["ACI-P294-L003-00FE22E470","ACI-P294-L004-75BB08F9D3"]),
+  "CAA-grammar-nominal-construction--measure-modification": Object.freeze(["ACI-P322-L013-750123E9EC-02","ACI-P322-L015-D4456F71EE"]),
+  "CAA-grammar-nominal-construction--nominal-embed": Object.freeze(["ACI-P275-L007-1F5E6886F4"]),
+  "CAA-nnc-adjectival-modification--adjunctor": Object.freeze(["ACI-P429-L015-E30C3DBBE3"]),
+  "CAA-nnc-adjectival-modification--compound-head-target": Object.freeze(["ACI-P431-L035-E3CCB5AF13"]),
+  "CAA-nnc-adjectival-modification--modification-topology": Object.freeze(["ACI-P428-L003-7FD746CAF2"]),
+  "CAA-nnc-adjectival-modification--modifier-head-order": Object.freeze(["ACI-P429-L018-BCFB1BD99F","ACI-P438-L003-68A80A6D32"]),
+  "CAA-nnc-adjectival-modification--transitive-reference-contact": Object.freeze(["ACI-P435-L035-48B8CFF6B3"]),
+  "CAA-nnc-adverbial--adverbial-context": Object.freeze(["ACI-P445-L024-A50A2F629D","ACI-P445-L024-A50A2F629D-02"]),
+  "CAA-nnc-adverbial--clause-rank": Object.freeze(["ACI-P445-L003-F32C9FC8DA"]),
+  "CAA-nnc-deverbal-construction--double-nucleus-ownerhood": Object.freeze(["ACI-P343-L037-5AB194E0FE-09","ACI-P343-L037-5AB194E0FE-10"]),
+  "CAA-nnc-deverbal-construction--external-object": Object.freeze(["ACI-P377-L022-3A15804D28"]),
+  "CAA-nnc-deverbal-construction--nominalization-family": Object.freeze(["ACI-P334-L003-E53695D904","ACI-P354-L003-CE5F4C1A30"]),
+  "CAA-nnc-deverbal-construction--patientive-family": Object.freeze(["ACI-P378-L004-7D27F7781B"]),
+  "CAA-nnc-ordinary--nnc-state": Object.freeze(["ACI-P115-L026-95AEA0D8A8"]),
+  "CAA-nnc-ordinary--nounstem-class": Object.freeze(["ACI-P118-L036-F2C577FAD3"]),
+  "CAA-nnc-ordinary--polarity": Object.freeze(["ACI-P139-L034-54EFCB0B88"]),
+  "CAA-nnc-ordinary--possessor-person-number": Object.freeze(["ACI-P121-L028-C394965D11"]),
+  "CAA-nnc-ordinary--possessor-reduplication": Object.freeze(["ACI-P136-L038-07EFC9417A"]),
+  "CAA-nnc-ordinary--predicate-formation": Object.freeze(["ACI-P117-L036-C8DE1C0F5B"]),
+  "CAA-nnc-ordinary--sentence-force": Object.freeze(["ACI-P139-L034-54EFCB0B88"]),
+  "CAA-nnc-ordinary--stem-relation": Object.freeze(["ACI-P125-L034-A46722AFDF","ACI-P332-L002-800C5745BA"]),
+  "CAA-nnc-ordinary--subject-person-number": Object.freeze(["ACI-P121-L028-C394965D11","ACI-P118-L022-636429F776"]),
+  "CAA-nnc-personal-name--name-source-family": Object.freeze(["ACI-P609-L015-DE4CD094D8"]),
+  "CAA-nnc-personal-name--outer-subject": Object.freeze(["ACI-P608-L025-D5F3A9D83C"]),
+  "CAA-nnc-personal-name--reranking": Object.freeze(["ACI-P608-L019-CAA9FF712D"]),
+  "CAA-nnc-personal-name--sentence-operation": Object.freeze(["ACI-P618-L009-9C72A2C50A","ACI-P620-L032-7D220FB845"]),
+  "CAA-nnc-place-gentilic--collectivity": Object.freeze(["ACI-P524-L018-5D8F2775A0"]),
+  "CAA-nnc-place-gentilic--gentilic-formation": Object.freeze(["ACI-P518-L017-B82CB53942","ACI-P520-L009-CBAC78D6D0"]),
+  "CAA-nnc-place-gentilic--place-formation": Object.freeze(["ACI-P508-L028-2BEE83626A","ACI-P510-L005-75E070BB98"]),
+  "CAA-nnc-pronominal--polarity": Object.freeze(["ACI-P144-L027-E882DBE29E"]),
+  "CAA-nnc-pronominal--sentence-force": Object.freeze(["ACI-P144-L006-A0087ECAD0","ACI-P139-L034-54EFCB0B88"]),
+  "CAA-nnc-relational--possessor-structure": Object.freeze(["ACI-P461-L018-40F785213D","ACI-P461-L026-D8FC647DE1"]),
+  "CAA-nnc-relational--relation-family": Object.freeze(["ACI-P460-L020-45E36311D5-02","ACI-P460-L020-45E36311D5-07"]),
+  "CAA-nnc-sentence-surface--polarity": Object.freeze(["ACI-P139-L034-54EFCB0B88"]),
+  "CAA-nnc-sentence-surface--sentence-force": Object.freeze(["ACI-P139-L034-54EFCB0B88"]),
+  "CAA-particle-negative-selection--polarity": Object.freeze(["ACI-P057-L020-0F1964812D"]),
+  "CAA-particle-negative-selection--sentence-kind": Object.freeze(["ACI-P057-L023-C7FBC7F91A-02","ACI-P057-L023-C7FBC7F91A-05"]),
+  "CAA-sentence-particle-adjunction--honorificization": Object.freeze(["ACI-P059-L021-7061D7CA2C"]),
+  "CAA-sentence-supplementation--clause-order": Object.freeze(["ACI-P155-L023-D6823F22B9","ACI-P155-L024-0CE3239598"]),
+  "CAA-sentence-supplementation--supplement-relation": Object.freeze(["ACI-P151-L008-F3C613FC50","ACI-P155-L004-431D79D082"]),
+  "CAA-vnc-denominal--denominal-operation": Object.freeze(["ACI-P582-L012-81EAD437BA","ACI-P582-L012-81EAD437BA-03"]),
+  "CAA-vnc-denominal--finite-participants": Object.freeze(["ACI-P599-L010-F3C7A7DFDB-11"]),
+  "CAA-vnc-denominal--target-verbstem-class": Object.freeze(["ACI-P586-L018-7A336D01DC","ACI-P586-L018-8A285881AA"]),
+  "CAA-vnc-derivational-operation--derivation-family": Object.freeze(["ACI-P243-L011-43AC2A0DA2","ACI-P252-L002-896BFC2CEA"]),
+  "CAA-vnc-finite-slot--mood": Object.freeze(["ACI-P069-L030-1A258F89B6","ACI-P069-L031-5D4049CD4B"]),
+  "CAA-vnc-finite-slot--tense": Object.freeze(["ACI-P069-L030-1A258F89B6","ACI-P069-L034-2445CDADC7"]),
+  "CAA-vnc-ordered-voice-application--voice-operation-order": Object.freeze(["ACI-P181-L029-18EC409F25-02","ACI-P187-L003-75406DCBAE"]),
+  "CAA-vnc-ordered-voice-chain--voice-operation-order": Object.freeze(["ACI-P181-L029-18EC409F25-02","ACI-P187-L003-75406DCBAE"])
+});
+
+const CLASSICAL_SOURCE_GRAMMAR_RESULT_NO_CANVAS_PROVENANCE = Object.freeze([]);
+
 const CLASSICAL_SOURCE_GRAMMAR_RESULT_AXIS_ROWS = Object.freeze(`
-classical.authority.source-language.firewall.enforce|grammar-firewall|intentionally-unsurfaced
-classical.authority.source-language.firewall.enforce|interpretive-bias|intentionally-unsurfaced
-classical.authority.source-language.firewall.enforce|interpretive-provenance|intentionally-unsurfaced
-classical.authority.source-language.firewall.enforce|source-language-authority|intentionally-unsurfaced
-classical.carrier.meaningless-unit.classify|analysis-level|intentionally-unsurfaced
+concept:classification|typed-concept-source|intentionally-unsurfaced
+concept:classification|read-only-classification|intentionally-unsurfaced
+concept:classification|concept-rank-validation|intentionally-unsurfaced
+concept:classification|concept-authority-rejection|intentionally-unsurfaced
+concept:classification|non-generative-projection|intentionally-unsurfaced
+classical.morpheme.silent.contrast.validate|silent-candidate-kind|intentionally-unsurfaced
+classical.morpheme.silent.contrast.validate|corresponding-position|intentionally-unsurfaced
+classical.morpheme.silent.contrast.validate|similar-structure|intentionally-unsurfaced
+classical.morpheme.silent.contrast.validate|related-category|intentionally-unsurfaced
+classical.morpheme.silent.contrast.validate|sounded-counterpart|intentionally-unsurfaced
+classical.linguistic.unit.compose|medium|intentionally-unsurfaced
+classical.linguistic.unit.compose|sequence-order|intentionally-unsurfaced
+classical.linguistic.unit.compose|structure-pattern|intentionally-unsurfaced
+classical.linguistic.unit.compose|constituent-units|intentionally-unsurfaced
+classical.linguistic.unit.compose|resulting-unity|intentionally-unsurfaced
+classical.linguistic.structure.recurse|prior-structured-unit|intentionally-unsurfaced
+classical.linguistic.structure.recurse|next-constituent-unit|intentionally-unsurfaced
+classical.linguistic.structure.recurse|retained-operation-lineage|intentionally-unsurfaced
+classical.linguistic.structure.recurse|recursive-unity|intentionally-unsurfaced
+classical.linguistic.unit.discontinuity.validate|typed-unit-kind|intentionally-unsurfaced
+classical.linguistic.unit.discontinuity.validate|constituent-roles|intentionally-unsurfaced
+classical.linguistic.unit.discontinuity.validate|nonjuxtaposed-topology|intentionally-unsurfaced
+classical.linguistic.unit.discontinuity.validate|functional-cohesion|intentionally-unsurfaced
+classical.linguistic.unit.discontinuity.validate|restricted-applicability|intentionally-unsurfaced
 classical.carrier.meaningless-unit.classify|candidate-kind|intentionally-unsurfaced
 classical.carrier.meaningless-unit.classify|carrier-subsystem|intentionally-unsurfaced
+classical.carrier.meaningless-unit.classify|analysis-level|intentionally-unsurfaced
 classical.carrier.meaningless-unit.classify|meaning-exclusion|intentionally-unsurfaced
-classical.carrier.phonotactic.constraints.validate|carrier-structure|intentionally-unsurfaced
-classical.carrier.phonotactic.constraints.validate|language-specific-phonotactics|intentionally-unsurfaced
-classical.carrier.phonotactic.constraints.validate|meaningful-surface-conformance|intentionally-unsurfaced
-classical.carrier.phonotactic.constraints.validate|possible-sequence|intentionally-unsurfaced
-classical.carrier.rank.form|formation-kind|intentionally-unsurfaced
-classical.carrier.rank.form|rank-upgrade|intentionally-unsurfaced
-classical.carrier.rank.form|source-unit-rank|intentionally-unsurfaced
-classical.carrier.rank.form|target-unit-rank|intentionally-unsurfaced
 classical.carrier.rank.taxonomy.classify|carrier-subsystem|intentionally-unsurfaced
+classical.carrier.rank.taxonomy.classify|rank-tier|intentionally-unsurfaced
 classical.carrier.rank.taxonomy.classify|rank-identity|intentionally-unsurfaced
 classical.carrier.rank.taxonomy.classify|rank-order|intentionally-unsurfaced
-classical.carrier.rank.taxonomy.classify|rank-tier|intentionally-unsurfaced
+classical.carrier.rank.form|source-unit-rank|intentionally-unsurfaced
+classical.carrier.rank.form|target-unit-rank|intentionally-unsurfaced
+classical.carrier.rank.form|formation-kind|intentionally-unsurfaced
+classical.carrier.rank.form|rank-upgrade|intentionally-unsurfaced
+classical.carrier.syllable.compose|vowel-center|intentionally-unsurfaced
 classical.carrier.syllable.compose|consonant-margins|intentionally-unsurfaced
 classical.carrier.syllable.compose|language-specific-structure|intentionally-unsurfaced
 classical.carrier.syllable.compose|meaningless-unit|intentionally-unsurfaced
-classical.carrier.syllable.compose|vowel-center|intentionally-unsurfaced
-classical.carrier.vocable.compose|monosyllabic-upgrade|intentionally-unsurfaced
 classical.carrier.vocable.compose|syllable-constituents|intentionally-unsurfaced
 classical.carrier.vocable.compose|vocable-rank|intentionally-unsurfaced
 classical.carrier.vocable.compose|word-syllable-perspective|intentionally-unsurfaced
+classical.carrier.vocable.compose|monosyllabic-upgrade|intentionally-unsurfaced
 classical.carrier.vocable.prosody.validate|polysyllabic-vocable|intentionally-unsurfaced
-classical.carrier.vocable.prosody.validate|stress-applicability|intentionally-unsurfaced
 classical.carrier.vocable.prosody.validate|stressed-syllable|intentionally-unsurfaced
-classical.linguistic.structure.recurse|next-constituent-unit|intentionally-unsurfaced
-classical.linguistic.structure.recurse|prior-structured-unit|intentionally-unsurfaced
-classical.linguistic.structure.recurse|recursive-unity|intentionally-unsurfaced
-classical.linguistic.structure.recurse|retained-operation-lineage|intentionally-unsurfaced
-classical.linguistic.unit.compose|constituent-units|intentionally-unsurfaced
-classical.linguistic.unit.compose|medium|intentionally-unsurfaced
-classical.linguistic.unit.compose|resulting-unity|intentionally-unsurfaced
-classical.linguistic.unit.compose|sequence-order|intentionally-unsurfaced
-classical.linguistic.unit.compose|structure-pattern|intentionally-unsurfaced
-classical.linguistic.unit.discontinuity.validate|constituent-roles|intentionally-unsurfaced
-classical.linguistic.unit.discontinuity.validate|functional-cohesion|intentionally-unsurfaced
-classical.linguistic.unit.discontinuity.validate|nonjuxtaposed-topology|intentionally-unsurfaced
-classical.linguistic.unit.discontinuity.validate|restricted-applicability|intentionally-unsurfaced
-classical.linguistic.unit.discontinuity.validate|typed-unit-kind|intentionally-unsurfaced
-classical.morpheme.affix.function.classify|affix-position|intentionally-unsurfaced
-classical.morpheme.affix.function.classify|functional-type|intentionally-unsurfaced
-classical.morpheme.affix.function.classify|information-role|intentionally-unsurfaced
-classical.morpheme.affix.function.classify|stem-boundary|intentionally-unsurfaced
-classical.morpheme.affix.position.classify|affix-position-class|intentionally-unsurfaced
+classical.carrier.vocable.prosody.validate|stress-applicability|intentionally-unsurfaced
+classical.carrier.phonotactic.constraints.validate|carrier-structure|intentionally-unsurfaced
+classical.carrier.phonotactic.constraints.validate|language-specific-phonotactics|intentionally-unsurfaced
+classical.carrier.phonotactic.constraints.validate|possible-sequence|intentionally-unsurfaced
+classical.carrier.phonotactic.constraints.validate|meaningful-surface-conformance|intentionally-unsurfaced
+classical.morpheme.meaningful-unit.classify|candidate-kind|intentionally-unsurfaced
+classical.morpheme.meaningful-unit.classify|meaningful-family|intentionally-unsurfaced
+classical.morpheme.syllable.separate|meaningful-unit|intentionally-unsurfaced
+classical.morpheme.syllable.separate|syllable-rank|intentionally-unsurfaced
+classical.morpheme.syllable.separate|rank-contrast|intentionally-unsurfaced
+classical.morpheme.syllable.separate|coterminality|intentionally-unsurfaced
+classical.morpheme.combinatorial-type.classify|meaningful-unit|intentionally-unsurfaced
+classical.morpheme.combinatorial-type.classify|major-minor-type|intentionally-unsurfaced
+classical.morpheme.combinatorial-type.classify|representational-center|intentionally-unsurfaced
+classical.morpheme.combinatorial-type.classify|affixal-status|intentionally-unsurfaced
 classical.morpheme.affix.position.classify|minor-morpheme|intentionally-unsurfaced
 classical.morpheme.affix.position.classify|sequence-position|intentionally-unsurfaced
-classical.morpheme.combinatorial-type.classify|affixal-status|intentionally-unsurfaced
-classical.morpheme.combinatorial-type.classify|major-minor-type|intentionally-unsurfaced
-classical.morpheme.combinatorial-type.classify|meaningful-unit|intentionally-unsurfaced
-classical.morpheme.combinatorial-type.classify|representational-center|intentionally-unsurfaced
+classical.morpheme.affix.position.classify|affix-position-class|intentionally-unsurfaced
+classical.morpheme.affix.function.classify|affix-position|intentionally-unsurfaced
+classical.morpheme.affix.function.classify|information-role|intentionally-unsurfaced
+classical.morpheme.affix.function.classify|stem-boundary|intentionally-unsurfaced
+classical.morpheme.affix.function.classify|functional-type|intentionally-unsurfaced
+classical.morpheme.inflectional-paradigm.classify|inflectional-affix|intentionally-unsurfaced
+classical.morpheme.inflectional-paradigm.classify|common-stem|intentionally-unsurfaced
+classical.morpheme.inflectional-paradigm.classify|stem-class|intentionally-unsurfaced
+classical.morpheme.inflectional-paradigm.classify|variant-set|intentionally-unsurfaced
+classical.structure.post-stem-unit.classify|rank-result|intentionally-unsurfaced
+classical.structure.post-stem-unit.classify|unit-disposition|intentionally-unsurfaced
+classical.structure.post-stem-unit.classify|nuclear-clause-rank|intentionally-unsurfaced
+classical.morpheme.inflectional-dyad.analyze|first-affix|intentionally-unsurfaced
+classical.morpheme.inflectional-dyad.analyze|second-affix|intentionally-unsurfaced
+classical.morpheme.inflectional-dyad.analyze|inseparable-sequence|intentionally-unsurfaced
+classical.morpheme.inflectional-dyad.analyze|dyad-structure|intentionally-unsurfaced
 classical.morpheme.inflectional-affix.demote|inflectional-affix|intentionally-unsurfaced
 classical.morpheme.inflectional-affix.demote|process-kind|interactive-choice
 classical.morpheme.inflectional-affix.demote|source-boundary|intentionally-unsurfaced
 classical.morpheme.inflectional-affix.demote|target-boundary|intentionally-unsurfaced
-classical.morpheme.inflectional-dyad.analyze|dyad-structure|intentionally-unsurfaced
-classical.morpheme.inflectional-dyad.analyze|first-affix|intentionally-unsurfaced
-classical.morpheme.inflectional-dyad.analyze|inseparable-sequence|intentionally-unsurfaced
-classical.morpheme.inflectional-dyad.analyze|second-affix|intentionally-unsurfaced
-classical.morpheme.inflectional-paradigm.classify|common-stem|intentionally-unsurfaced
-classical.morpheme.inflectional-paradigm.classify|inflectional-affix|intentionally-unsurfaced
-classical.morpheme.inflectional-paradigm.classify|stem-class|intentionally-unsurfaced
-classical.morpheme.inflectional-paradigm.classify|variant-set|intentionally-unsurfaced
-classical.morpheme.meaningful-rank.hierarchy.validate|lower-stage-dependency|intentionally-unsurfaced
 classical.morpheme.meaningful-rank.hierarchy.validate|major-type|intentionally-unsurfaced
 classical.morpheme.meaningful-rank.hierarchy.validate|minor-type|intentionally-unsurfaced
 classical.morpheme.meaningful-rank.hierarchy.validate|rank-stages|intentionally-unsurfaced
-classical.morpheme.meaningful-unit.classify|candidate-kind|intentionally-unsurfaced
-classical.morpheme.meaningful-unit.classify|meaningful-family|intentionally-unsurfaced
-classical.morpheme.silent.contrast.validate|corresponding-position|intentionally-unsurfaced
-classical.morpheme.silent.contrast.validate|related-category|intentionally-unsurfaced
-classical.morpheme.silent.contrast.validate|silent-candidate-kind|intentionally-unsurfaced
-classical.morpheme.silent.contrast.validate|similar-structure|intentionally-unsurfaced
-classical.morpheme.silent.contrast.validate|sounded-counterpart|intentionally-unsurfaced
-classical.morpheme.syllable.separate|coterminality|intentionally-unsurfaced
-classical.morpheme.syllable.separate|meaningful-unit|intentionally-unsurfaced
-classical.morpheme.syllable.separate|rank-contrast|intentionally-unsurfaced
-classical.morpheme.syllable.separate|syllable-rank|intentionally-unsurfaced
-classical.nnc.exotl.interpret|compositional-meaning|intentionally-unsurfaced
-classical.nnc.exotl.interpret|nominal-clause|intentionally-unsurfaced
-classical.nnc.exotl.interpret|semantic-weighting|intentionally-unsurfaced
-classical.nnc.exotl.interpret|silent-subject|intentionally-unsurfaced
-classical.nnc.king-praise-role-contrast.interpret|actual-forms|intentionally-unsurfaced
-classical.nnc.king-praise-role-contrast.interpret|corrected-meaning|intentionally-unsurfaced
-classical.nnc.king-praise-role-contrast.interpret|participant-roles|intentionally-unsurfaced
-classical.nnc.king-praise-role-contrast.interpret|subject-possessor-relation|intentionally-unsurfaced
-classical.nnc.king-praise-role-contrast.interpret|substituted-forms|intentionally-unsurfaced
-classical.nuclear-clause.morphosyntax.validate|morphosyntax-domain|intentionally-unsurfaced
-classical.nuclear-clause.morphosyntax.validate|nuclear-clause|intentionally-unsurfaced
-classical.nuclear-clause.morphosyntax.validate|predicate|intentionally-unsurfaced
-classical.nuclear-clause.morphosyntax.validate|subject|intentionally-unsurfaced
-classical.particle.lexical-distinction.authorize|dictionary-head|intentionally-unsurfaced
-classical.particle.lexical-distinction.authorize|liaison|intentionally-unsurfaced
-classical.particle.lexical-distinction.authorize|particle-identity|intentionally-unsurfaced
-classical.particle.lexical-distinction.authorize|particle-sequence|intentionally-unsurfaced
-classical.sentence.tleh-admonitory-pair.interpret|expected-answer|intentionally-unsurfaced
-classical.sentence.tleh-admonitory-pair.interpret|honored-subject|intentionally-unsurfaced
-classical.sentence.tleh-admonitory-pair.interpret|nonhuman-object|intentionally-unsurfaced
-classical.sentence.tleh-admonitory-pair.interpret|question-forms|intentionally-unsurfaced
-classical.sentence.tleh-admonitory-pair.interpret|rhetorical-force|intentionally-unsurfaced
-classical.sentence.tleh-closing-vocative.interpret|closing-question|intentionally-unsurfaced
-classical.sentence.tleh-closing-vocative.interpret|honored-subject|intentionally-unsurfaced
-classical.sentence.tleh-closing-vocative.interpret|pragmatic-force|intentionally-unsurfaced
-classical.sentence.tleh-closing-vocative.interpret|translation-boundary|intentionally-unsurfaced
-classical.sentence.tleh-closing-vocative.interpret|vocatives|intentionally-unsurfaced
-classical.source.phonological-identity.validate|dictionary-collapse|intentionally-unsurfaced
-classical.source.phonological-identity.validate|glottal-stop|intentionally-unsurfaced
-classical.source.phonological-identity.validate|lexical-identity|intentionally-unsurfaced
-classical.source.phonological-identity.validate|vowel-length|intentionally-unsurfaced
-classical.structure.conceptual-plane.separate|form-class-plane|intentionally-unsurfaced
-classical.structure.conceptual-plane.separate|function-unit-plane|intentionally-unsurfaced
-classical.structure.conceptual-plane.separate|lexical-item-plane|intentionally-unsurfaced
-classical.structure.conceptual-plane.separate|nonintermingling|intentionally-unsurfaced
-classical.structure.conceptual-plane.separate|participant-role-plane|intentionally-unsurfaced
-classical.structure.group.compose|group-result|intentionally-unsurfaced
-classical.structure.group.compose|group-shape|interactive-choice
-classical.structure.group.compose|nuclear-clauses|intentionally-unsurfaced
-classical.structure.group.compose|particles|intentionally-unsurfaced
-classical.structure.level-distribution.validate|cross-level-distribution|intentionally-unsurfaced
-classical.structure.level-distribution.validate|morphological-level|intentionally-unsurfaced
-classical.structure.level-distribution.validate|morphosyntactical-level|intentionally-unsurfaced
-classical.structure.level-distribution.validate|syntactical-level|intentionally-unsurfaced
-classical.structure.meaning-bearing-unit.classify|meaning-component|intentionally-unsurfaced
-classical.structure.meaning-bearing-unit.classify|unit|intentionally-unsurfaced
-classical.structure.meaning-bearing-unit.classify|unit-rank|intentionally-unsurfaced
-classical.structure.meaningful-rank.downgrade|downgrade-mode|interactive-choice
-classical.structure.meaningful-rank.downgrade|hierarchy|intentionally-unsurfaced
-classical.structure.meaningful-rank.downgrade|higher-rank|intentionally-unsurfaced
-classical.structure.meaningful-rank.downgrade|lower-rank|intentionally-unsurfaced
+classical.morpheme.meaningful-rank.hierarchy.validate|lower-stage-dependency|intentionally-unsurfaced
 classical.structure.meaningful-rank.source-or-upgrade.validate|hierarchy|intentionally-unsurfaced
 classical.structure.meaningful-rank.source-or-upgrade.validate|source-rank|intentionally-unsurfaced
 classical.structure.meaningful-rank.source-or-upgrade.validate|target-rank|intentionally-unsurfaced
 classical.structure.meaningful-rank.source-or-upgrade.validate|transition-mode|interactive-choice
-classical.structure.participant-role.analyze|entitive-function-unit|intentionally-unsurfaced
-classical.structure.participant-role.analyze|event-relation|intentionally-unsurfaced
-classical.structure.participant-role.analyze|participant|intentionally-unsurfaced
-classical.structure.participant-role.analyze|participant-role|intentionally-unsurfaced
-classical.structure.post-stem-unit.classify|nuclear-clause-rank|intentionally-unsurfaced
-classical.structure.post-stem-unit.classify|rank-result|intentionally-unsurfaced
-classical.structure.post-stem-unit.classify|unit-disposition|intentionally-unsurfaced
+classical.structure.meaningful-rank.downgrade|hierarchy|intentionally-unsurfaced
+classical.structure.meaningful-rank.downgrade|higher-rank|intentionally-unsurfaced
+classical.structure.meaningful-rank.downgrade|lower-rank|intentionally-unsurfaced
+classical.structure.meaningful-rank.downgrade|downgrade-mode|interactive-choice
 classical.structure.root.major-morpheme.validate|major-type|intentionally-unsurfaced
 classical.structure.root.major-morpheme.validate|major-unit-count|intentionally-unsurfaced
 classical.structure.root.major-morpheme.validate|root-structure|intentionally-unsurfaced
-classical.structure.root.meaning-rank.upgrade|rank-upgrade|intentionally-unsurfaced
-classical.structure.root.meaning-rank.upgrade|root|intentionally-unsurfaced
-classical.structure.root.meaning-rank.upgrade|source-meaning|intentionally-unsurfaced
-classical.structure.root.meaning-rank.upgrade|target-meaning|intentionally-unsurfaced
-classical.structure.stem-transition-zone.validate|derivation-boundary|intentionally-unsurfaced
-classical.structure.stem-transition-zone.validate|inflection-onset|intentionally-unsurfaced
-classical.structure.stem-transition-zone.validate|post-stem-unit|intentionally-unsurfaced
-classical.structure.stem-transition-zone.validate|stem|intentionally-unsurfaced
-classical.structure.stem.compound|compound-relation|interactive-choice
-classical.structure.stem.compound|first-stem|intentionally-unsurfaced
-classical.structure.stem.compound|second-stem|intentionally-unsurfaced
-classical.structure.stem.compound|stem-result|intentionally-unsurfaced
 classical.structure.stem.form-directly|base-unit|intentionally-unsurfaced
 classical.structure.stem.form-directly|derivational-affix|intentionally-unsurfaced
 classical.structure.stem.form-directly|formation-kind|interactive-choice
 classical.structure.stem.form-directly|stem-result|intentionally-unsurfaced
-classical.structure.stem.form-via-stock|derivational-suffix|intentionally-unsurfaced
 classical.structure.stem.form-via-stock|root|intentionally-unsurfaced
-classical.structure.stem.form-via-stock|stem-result|intentionally-unsurfaced
+classical.structure.stem.form-via-stock|derivational-suffix|intentionally-unsurfaced
 classical.structure.stem.form-via-stock|stock-stage|intentionally-unsurfaced
+classical.structure.stem.form-via-stock|stem-result|intentionally-unsurfaced
+classical.structure.stem.compound|first-stem|intentionally-unsurfaced
+classical.structure.stem.compound|second-stem|intentionally-unsurfaced
+classical.structure.stem.compound|compound-relation|interactive-choice
+classical.structure.stem.compound|stem-result|intentionally-unsurfaced
+classical.structure.meaning-bearing-unit.classify|unit|intentionally-unsurfaced
+classical.structure.meaning-bearing-unit.classify|unit-rank|intentionally-unsurfaced
+classical.structure.meaning-bearing-unit.classify|meaning-component|intentionally-unsurfaced
+classical.structure.stem.lexical-status.classify|stem|intentionally-unsurfaced
 classical.structure.stem.lexical-status.classify|lexical-status|intentionally-unsurfaced
 classical.structure.stem.lexical-status.classify|lexicon-membership|intentionally-unsurfaced
-classical.structure.stem.lexical-status.classify|stem|intentionally-unsurfaced
-classical.structure.syntax-domain-onset.validate|group-rank|intentionally-unsurfaced
-classical.structure.syntax-domain-onset.validate|group-result|intentionally-unsurfaced
-classical.structure.syntax-domain-onset.validate|syntax-domain|intentionally-unsurfaced
-classical.verbstem.lexicon.authorize|canonical-meaning|intentionally-unsurfaced
-classical.verbstem.lexicon.authorize|dictionary-head|intentionally-unsurfaced
-classical.verbstem.lexicon.authorize|valence|intentionally-unsurfaced
-classical.verbstem.lexicon.authorize|verbstem-identity|intentionally-unsurfaced
-classical.verbstem.object-embed.validate|embedded-nounstem|intentionally-unsurfaced
-classical.verbstem.object-embed.validate|object-prefix|intentionally-unsurfaced
-classical.verbstem.object-embed.validate|stem-boundary|intentionally-unsurfaced
-classical.verbstem.object-embed.validate|valence|intentionally-unsurfaced
-classical.vnc.compound.widowhood.interpret|compound-verbstem|intentionally-unsurfaced
-classical.vnc.compound.widowhood.interpret|participant-sex|intentionally-unsurfaced
-classical.vnc.compound.widowhood.interpret|subject-person-number|intentionally-unsurfaced
-classical.vnc.compound.widowhood.interpret|widowhood-meaning|intentionally-unsurfaced
-clause:adverbial-adjunction|adjoined-clause|intentionally-unsurfaced
-clause:adverbial-adjunction|adjunctor|intentionally-unsurfaced
-clause:adverbial-adjunction|adverbial-principal|intentionally-unsurfaced
-clause:adverbial-adjunction|clause-position|interactive-choice
-clause:adverbial-adjunction|relation-scope|interactive-choice
-clause:comparison|comparand|intentionally-unsurfaced
-clause:comparison|comparison-relation|intentionally-unsurfaced
-clause:comparison|degree-strategy|interactive-choice
-clause:comparison|dimension|intentionally-unsurfaced
-clause:comparison|standard|intentionally-unsurfaced
-clause:comparison|superlative-strategy|interactive-choice
-clause:composition|clause-rank|interactive-choice
-clause:composition|complement-relation|interactive-choice
-clause:composition|conjunction-relation|interactive-choice
-clause:composition|parallel-structure|interactive-choice
-clause:composition|reference-graph|intentionally-unsurfaced
-clause:composition|relation-marker|interactive-choice
-concept:classification|concept-authority-rejection|intentionally-unsurfaced
-concept:classification|concept-rank-validation|intentionally-unsurfaced
-concept:classification|non-generative-projection|intentionally-unsurfaced
-concept:classification|read-only-classification|intentionally-unsurfaced
-concept:classification|typed-concept-source|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|adjunct|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|adjunctor|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|agreement-case|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|function-unit-filler|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|governor|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|modification|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|predicate-structure|intentionally-unsurfaced
-concept.structure.adjunctive-governance.analyze|relation-structure|intentionally-unsurfaced
-concept.structure.conjunctive-governance.analyze|conjunct-filler-class|intentionally-unsurfaced
-concept.structure.conjunctive-governance.analyze|conjuncts|intentionally-unsurfaced
-concept.structure.conjunctive-governance.analyze|equal-governance|intentionally-unsurfaced
-concept.structure.governance-taxonomy.analyze|function-unit-coupling|intentionally-unsurfaced
-concept.structure.governance-taxonomy.analyze|general-type|intentionally-unsurfaced
-concept.structure.governance-taxonomy.analyze|governance|intentionally-unsurfaced
-concept.structure.governance-taxonomy.analyze|governance-subtype|intentionally-unsurfaced
-concept.structure.principles.analyze|concatenation|intentionally-unsurfaced
-concept.structure.principles.analyze|structure-facet|intentionally-unsurfaced
-concept.structure.principles.analyze|structuring-principles|intentionally-unsurfaced
-concept.structure.principles.analyze|unit-closure|intentionally-unsurfaced
+classical.structure.root.meaning-rank.upgrade|root|intentionally-unsurfaced
+classical.structure.root.meaning-rank.upgrade|rank-upgrade|intentionally-unsurfaced
+classical.structure.root.meaning-rank.upgrade|source-meaning|intentionally-unsurfaced
+classical.structure.root.meaning-rank.upgrade|target-meaning|intentionally-unsurfaced
+concept.word.sentence-fragment.analyze|word-rank|intentionally-unsurfaced
 concept.word.sentence-fragment.analyze|sentence-fragment|intentionally-unsurfaced
 concept.word.sentence-fragment.analyze|simple-word-exception|intentionally-unsurfaced
-concept.word.sentence-fragment.analyze|word-rank|intentionally-unsurfaced
-grammar:nominal-construction|affective-nnc|interactive-choice
-grammar:nominal-construction|cardinal-number|interactive-choice
-grammar:nominal-construction|compound-nnc|interactive-choice
-grammar:nominal-construction|measure-modification|interactive-choice
-grammar:nominal-construction|nominal-embed|interactive-choice
-grammar:nominal-construction|vacant-state|intentionally-unsurfaced
-nnc:adjectival-modification|adjunctor|interactive-choice
-nnc:adjectival-modification|compound-head-target|interactive-choice
-nnc:adjectival-modification|modification-topology|interactive-choice
-nnc:adjectival-modification|modifier-head-order|interactive-choice
-nnc:adjectival-modification|transitive-reference-contact|interactive-choice
-nnc:adverbial|adverbial-context|interactive-choice
-nnc:adverbial|adverbial-source|intentionally-unsurfaced
-nnc:adverbial|adverbialized-subject|intentionally-unsurfaced
-nnc:adverbial|clause-rank|interactive-choice
-nnc:deverbal-construction|double-nucleus-ownerhood|interactive-choice
-nnc:deverbal-construction|external-object|interactive-choice
-nnc:deverbal-construction|nominalization-family|interactive-choice
-nnc:deverbal-construction|patientive-family|interactive-choice
-nnc:deverbal-construction|source-stage|intentionally-unsurfaced
-nnc:deverbal-construction|source-voice|intentionally-unsurfaced
-nnc:diagram|nnc-slot-projection|intentionally-unsurfaced
-nnc:diagram|predicate-constituent|intentionally-unsurfaced
-nnc:diagram|subject-constituent|intentionally-unsurfaced
-nnc:ordinary|formula-projection|intentionally-unsurfaced
-nnc:ordinary|lexical-alternative|intentionally-unsurfaced
-nnc:ordinary|lexical-license|intentionally-unsurfaced
-nnc:ordinary|nnc-state|interactive-choice
-nnc:ordinary|nounstem-class|interactive-choice
+classical.structure.stem-transition-zone.validate|stem|intentionally-unsurfaced
+classical.structure.stem-transition-zone.validate|post-stem-unit|intentionally-unsurfaced
+classical.structure.stem-transition-zone.validate|derivation-boundary|intentionally-unsurfaced
+classical.structure.stem-transition-zone.validate|inflection-onset|intentionally-unsurfaced
+classical.nuclear-clause.morphosyntax.validate|nuclear-clause|intentionally-unsurfaced
+classical.nuclear-clause.morphosyntax.validate|subject|intentionally-unsurfaced
+classical.nuclear-clause.morphosyntax.validate|predicate|intentionally-unsurfaced
+classical.nuclear-clause.morphosyntax.validate|morphosyntax-domain|intentionally-unsurfaced
+classical.structure.group.compose|particles|intentionally-unsurfaced
+classical.structure.group.compose|nuclear-clauses|intentionally-unsurfaced
+classical.structure.group.compose|group-shape|interactive-choice
+classical.structure.group.compose|group-result|intentionally-unsurfaced
+classical.structure.syntax-domain-onset.validate|group-result|intentionally-unsurfaced
+classical.structure.syntax-domain-onset.validate|group-rank|intentionally-unsurfaced
+classical.structure.syntax-domain-onset.validate|syntax-domain|intentionally-unsurfaced
+concept.structure.principles.analyze|structure-facet|intentionally-unsurfaced
+concept.structure.principles.analyze|structuring-principles|intentionally-unsurfaced
+concept.structure.principles.analyze|concatenation|intentionally-unsurfaced
+concept.structure.principles.analyze|unit-closure|intentionally-unsurfaced
+concept.structure.governance-taxonomy.analyze|governance|intentionally-unsurfaced
+concept.structure.governance-taxonomy.analyze|general-type|intentionally-unsurfaced
+concept.structure.governance-taxonomy.analyze|function-unit-coupling|intentionally-unsurfaced
+concept.structure.governance-taxonomy.analyze|governance-subtype|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|governor|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|adjunct|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|predicate-structure|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|relation-structure|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|modification|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|function-unit-filler|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|adjunctor|intentionally-unsurfaced
+concept.structure.adjunctive-governance.analyze|agreement-case|intentionally-unsurfaced
+concept.structure.conjunctive-governance.analyze|conjuncts|intentionally-unsurfaced
+concept.structure.conjunctive-governance.analyze|equal-governance|intentionally-unsurfaced
+concept.structure.conjunctive-governance.analyze|conjunct-filler-class|intentionally-unsurfaced
+classical.structure.level-distribution.validate|morphological-level|intentionally-unsurfaced
+classical.structure.level-distribution.validate|morphosyntactical-level|intentionally-unsurfaced
+classical.structure.level-distribution.validate|syntactical-level|intentionally-unsurfaced
+classical.structure.level-distribution.validate|cross-level-distribution|intentionally-unsurfaced
+classical.structure.participant-role.analyze|participant|intentionally-unsurfaced
+classical.structure.participant-role.analyze|event-relation|intentionally-unsurfaced
+classical.structure.participant-role.analyze|participant-role|intentionally-unsurfaced
+classical.structure.participant-role.analyze|entitive-function-unit|intentionally-unsurfaced
+classical.structure.conceptual-plane.separate|function-unit-plane|intentionally-unsurfaced
+classical.structure.conceptual-plane.separate|form-class-plane|intentionally-unsurfaced
+classical.structure.conceptual-plane.separate|lexical-item-plane|intentionally-unsurfaced
+classical.structure.conceptual-plane.separate|participant-role-plane|intentionally-unsurfaced
+classical.structure.conceptual-plane.separate|nonintermingling|intentionally-unsurfaced
+classical.authority.source-language.firewall.enforce|interpretive-provenance|intentionally-unsurfaced
+classical.authority.source-language.firewall.enforce|source-language-authority|intentionally-unsurfaced
+classical.authority.source-language.firewall.enforce|interpretive-bias|intentionally-unsurfaced
+classical.authority.source-language.firewall.enforce|grammar-firewall|intentionally-unsurfaced
+classical.source.phonological-identity.validate|vowel-length|intentionally-unsurfaced
+classical.source.phonological-identity.validate|glottal-stop|intentionally-unsurfaced
+classical.source.phonological-identity.validate|lexical-identity|intentionally-unsurfaced
+classical.source.phonological-identity.validate|dictionary-collapse|intentionally-unsurfaced
+classical.verbstem.object-embed.validate|object-prefix|intentionally-unsurfaced
+classical.verbstem.object-embed.validate|embedded-nounstem|intentionally-unsurfaced
+classical.verbstem.object-embed.validate|valence|intentionally-unsurfaced
+classical.verbstem.object-embed.validate|stem-boundary|intentionally-unsurfaced
+classical.particle.lexical-distinction.authorize|particle-identity|intentionally-unsurfaced
+classical.particle.lexical-distinction.authorize|particle-sequence|intentionally-unsurfaced
+classical.particle.lexical-distinction.authorize|liaison|intentionally-unsurfaced
+classical.particle.lexical-distinction.authorize|dictionary-head|intentionally-unsurfaced
+classical.verbstem.lexicon.authorize|verbstem-identity|intentionally-unsurfaced
+classical.verbstem.lexicon.authorize|valence|intentionally-unsurfaced
+classical.verbstem.lexicon.authorize|canonical-meaning|intentionally-unsurfaced
+classical.verbstem.lexicon.authorize|dictionary-head|intentionally-unsurfaced
+classical.vnc.compound.widowhood.interpret|compound-verbstem|intentionally-unsurfaced
+classical.vnc.compound.widowhood.interpret|subject-person-number|intentionally-unsurfaced
+classical.vnc.compound.widowhood.interpret|participant-sex|intentionally-unsurfaced
+classical.vnc.compound.widowhood.interpret|widowhood-meaning|intentionally-unsurfaced
+classical.nnc.exotl.interpret|nominal-clause|intentionally-unsurfaced
+classical.nnc.exotl.interpret|silent-subject|intentionally-unsurfaced
+classical.nnc.exotl.interpret|compositional-meaning|intentionally-unsurfaced
+classical.nnc.exotl.interpret|semantic-weighting|intentionally-unsurfaced
+classical.sentence.tleh-admonitory-pair.interpret|question-forms|intentionally-unsurfaced
+classical.sentence.tleh-admonitory-pair.interpret|honored-subject|intentionally-unsurfaced
+classical.sentence.tleh-admonitory-pair.interpret|nonhuman-object|intentionally-unsurfaced
+classical.sentence.tleh-admonitory-pair.interpret|rhetorical-force|intentionally-unsurfaced
+classical.sentence.tleh-admonitory-pair.interpret|expected-answer|intentionally-unsurfaced
+classical.sentence.tleh-closing-vocative.interpret|closing-question|intentionally-unsurfaced
+classical.sentence.tleh-closing-vocative.interpret|honored-subject|intentionally-unsurfaced
+classical.sentence.tleh-closing-vocative.interpret|vocatives|intentionally-unsurfaced
+classical.sentence.tleh-closing-vocative.interpret|pragmatic-force|intentionally-unsurfaced
+classical.sentence.tleh-closing-vocative.interpret|translation-boundary|intentionally-unsurfaced
+classical.nnc.king-praise-role-contrast.interpret|actual-forms|intentionally-unsurfaced
+classical.nnc.king-praise-role-contrast.interpret|substituted-forms|intentionally-unsurfaced
+classical.nnc.king-praise-role-contrast.interpret|subject-possessor-relation|intentionally-unsurfaced
+classical.nnc.king-praise-role-contrast.interpret|participant-roles|intentionally-unsurfaced
+classical.nnc.king-praise-role-contrast.interpret|corrected-meaning|intentionally-unsurfaced
+orthography:transcription|transcription-source|intentionally-unsurfaced
+orthography:transcription|phonological-boundary|intentionally-unsurfaced
+orthography:transcription|orthographic-realization|intentionally-unsurfaced
+phonology:syllabify|written-vocable|intentionally-unsurfaced
+phonology:syllabify|vowel-centers|intentionally-unsurfaced
+phonology:syllabify|syllable-boundaries|intentionally-unsurfaced
+phonology:stress|written-vocable|intentionally-unsurfaced
+phonology:stress|stress-group|intentionally-unsurfaced
+phonology:stress|stressed-syllable|intentionally-unsurfaced
+phonology:spelling-change|source-segment|intentionally-unsurfaced
+phonology:spelling-change|phonological-environment|intentionally-unsurfaced
+phonology:spelling-change|written-result|intentionally-unsurfaced
+phonology:lateral-reading|written-vocable|intentionally-unsurfaced
+phonology:lateral-reading|intended-meaning|intentionally-unsurfaced
+phonology:lateral-reading|phonological-length|intentionally-unsurfaced
+phonology:lateral-reading|written-result|intentionally-unsurfaced
+phonology:supportive-vowel|source-segments|intentionally-unsurfaced
+phonology:supportive-vowel|pronounceability|intentionally-unsurfaced
+phonology:supportive-vowel|supportive-i-realization|intentionally-unsurfaced
+phonology:open-transition|first-stem-edge|intentionally-unsurfaced
+phonology:open-transition|second-stem-edge|intentionally-unsurfaced
+phonology:open-transition|open-transition-realization|intentionally-unsurfaced
+phonology:consonant-length|first-consonant|intentionally-unsurfaced
+phonology:consonant-length|second-consonant|intentionally-unsurfaced
+phonology:consonant-length|long-consonant-realization|intentionally-unsurfaced
+phonology:progressive-assimilation|left-morph|intentionally-unsurfaced
+phonology:progressive-assimilation|right-morph|intentionally-unsurfaced
+phonology:progressive-assimilation|progressive-boundary-realization|intentionally-unsurfaced
+phonology:assimilation|first-consonant|intentionally-unsurfaced
+phonology:assimilation|second-consonant|intentionally-unsurfaced
+phonology:assimilation|regressive-boundary-realization|intentionally-unsurfaced
+phonology:consonant-loss|first-consonant|intentionally-unsurfaced
+phonology:consonant-loss|second-consonant|intentionally-unsurfaced
+phonology:consonant-loss|loss-result|intentionally-unsurfaced
+phonology:consonant-shift|source-consonant|intentionally-unsurfaced
+phonology:consonant-shift|phonological-environment|intentionally-unsurfaced
+phonology:consonant-shift|shift-result|intentionally-unsurfaced
+phonology:phone-source-assignment|morphemic-source|intentionally-unsurfaced
+phonology:phone-source-assignment|underlying-phoneme|intentionally-unsurfaced
+phonology:phone-source-assignment|realized-phone|intentionally-unsurfaced
+phonology:phone-source-assignment|written-result|intentionally-unsurfaced
+phonology:segment-realization|source-segment|intentionally-unsurfaced
+phonology:segment-realization|phonic-repertory|intentionally-unsurfaced
+phonology:segment-realization|phonological-environment|intentionally-unsurfaced
+phonology:segment-realization|written-result|intentionally-unsurfaced
+phonology:vowel-elision|source-morpheme|intentionally-unsurfaced
+phonology:vowel-elision|stress-group-environment|intentionally-unsurfaced
+phonology:vowel-elision|elided-result|intentionally-unsurfaced
+vnc:nuclear-clause|basal-unit|intentionally-unsurfaced
+vnc:nuclear-clause|source-transitivity|intentionally-unsurfaced
+vnc:nuclear-clause|participant-structure|intentionally-unsurfaced
+vnc:nuclear-clause|predicate-stem|intentionally-unsurfaced
+vnc:finite-slot|subject-person-number|intentionally-unsurfaced
+vnc:finite-slot|mood|interactive-choice
+vnc:finite-slot|tense|interactive-choice
+vnc:finite-slot|finite-slot-order|intentionally-unsurfaced
+vnc:finite-surface|selected-formula|intentionally-unsurfaced
+vnc:finite-surface|finite-boundary-realization|intentionally-unsurfaced
+vnc:finite-surface|word-surface|intentionally-unsurfaced
+vnc:sentence-result|authorized-vnc-result|intentionally-unsurfaced
+vnc:sentence-result|sentence-composition|intentionally-unsurfaced
+vnc:sentence-result|sentence-realization|intentionally-unsurfaced
 nnc:ordinary|nounstem-source|intentionally-unsurfaced
-nnc:ordinary|number-dyad|intentionally-unsurfaced
-nnc:ordinary|ordinary-nnc-condition|intentionally-unsurfaced
-nnc:ordinary|polarity|interactive-choice
-nnc:ordinary|possessive-formation|intentionally-unsurfaced
+nnc:ordinary|nounstem-class|interactive-choice
+nnc:ordinary|nnc-state|interactive-choice
+nnc:ordinary|subject-person-number|interactive-choice
 nnc:ordinary|possessor-person-number|interactive-choice
+nnc:ordinary|stem-relation|interactive-choice
+nnc:ordinary|predicate-formation|interactive-choice
 nnc:ordinary|possessor-reduplication|interactive-choice
+nnc:ordinary|sentence-force|interactive-choice
+nnc:ordinary|polarity|interactive-choice
+nnc:ordinary|state-availability|intentionally-unsurfaced
+nnc:ordinary|referential-animacy|intentionally-unsurfaced
+nnc:ordinary|use-stem-shape|intentionally-unsurfaced
+nnc:ordinary|lexical-alternative|intentionally-unsurfaced
+nnc:ordinary|number-dyad|intentionally-unsurfaced
+nnc:ordinary|source-stem|intentionally-unsurfaced
+nnc:ordinary|target-stem|intentionally-unsurfaced
+nnc:ordinary|state-reentry|intentionally-unsurfaced
+nnc:ordinary|ordinary-nnc-condition|intentionally-unsurfaced
+nnc:ordinary|possessive-formation|intentionally-unsurfaced
 nnc:ordinary|possessor-st2-allomorph|intentionally-unsurfaced
 nnc:ordinary|possessor-st2-boundary-context|intentionally-unsurfaced
-nnc:ordinary|predicate-formation|interactive-choice
-nnc:ordinary|referential-animacy|intentionally-unsurfaced
 nnc:ordinary|sentence-composition|intentionally-unsurfaced
-nnc:ordinary|sentence-force|interactive-choice
-nnc:ordinary|source-stem|intentionally-unsurfaced
-nnc:ordinary|state-availability|intentionally-unsurfaced
-nnc:ordinary|state-reentry|intentionally-unsurfaced
-nnc:ordinary|stem-relation|interactive-choice
-nnc:ordinary|subject-person-number|interactive-choice
-nnc:ordinary|target-stem|intentionally-unsurfaced
-nnc:ordinary|use-stem-shape|intentionally-unsurfaced
+nnc:ordinary|lexical-license|intentionally-unsurfaced
+nnc:ordinary|formula-projection|intentionally-unsurfaced
 nnc:ordinary|written-boundary-realization|intentionally-unsurfaced
-nnc:personal-name|inner-clause|intentionally-unsurfaced
-nnc:personal-name|name-source-family|interactive-choice
-nnc:personal-name|outer-number|intentionally-unsurfaced
-nnc:personal-name|outer-subject|interactive-choice
-nnc:personal-name|reranking|interactive-choice
-nnc:personal-name|sentence-operation|interactive-choice
-nnc:place-gentilic|closed-title|intentionally-unsurfaced
-nnc:place-gentilic|collectivity|interactive-choice
-nnc:place-gentilic|gentilic-formation|interactive-choice
-nnc:place-gentilic|place-formation|interactive-choice
-nnc:place-gentilic|place-source|intentionally-unsurfaced
-nnc:place-gentilic|profession|intentionally-unsurfaced
-nnc:pronominal|clause-position|intentionally-unsurfaced
-nnc:pronominal|discourse-role|intentionally-unsurfaced
-nnc:pronominal|formula-projection|intentionally-unsurfaced
-nnc:pronominal|lexical-restriction|intentionally-unsurfaced
-nnc:pronominal|matrix-family|intentionally-unsurfaced
-nnc:pronominal|matrix-form|intentionally-unsurfaced
-nnc:pronominal|number-realization|intentionally-unsurfaced
-nnc:pronominal|polarity|interactive-choice
-nnc:pronominal|predicate-pluralization|intentionally-unsurfaced
-nnc:pronominal|pronominal-context|intentionally-unsurfaced
-nnc:pronominal|pronominal-family|intentionally-unsurfaced
-nnc:pronominal|pronominal-source|intentionally-unsurfaced
-nnc:pronominal|quantitive-embed|intentionally-unsurfaced
-nnc:pronominal|quantitive-matrix|intentionally-unsurfaced
-nnc:pronominal|sentence-force|interactive-choice
-nnc:pronominal|subject-person-number|intentionally-unsurfaced
-nnc:pronominal|written-boundary-realization|intentionally-unsurfaced
-nnc:relational|possessor-structure|interactive-choice
-nnc:relational|relation-family|interactive-choice
-nnc:relational|relational-result|intentionally-unsurfaced
-nnc:relational|relational-source|intentionally-unsurfaced
-nnc:relational|voice-source|intentionally-unsurfaced
-nnc:sentence-surface|contextual-interpretation|intentionally-unsurfaced
 nnc:sentence-surface|nnc-state|intentionally-unsurfaced
-nnc:sentence-surface|polarity|interactive-choice
 nnc:sentence-surface|sentence-force|interactive-choice
-orthography:transcription|orthographic-realization|intentionally-unsurfaced
-orthography:transcription|phonological-boundary|intentionally-unsurfaced
-orthography:transcription|transcription-source|intentionally-unsurfaced
-particle:result|particle-function|intentionally-unsurfaced
+nnc:sentence-surface|polarity|interactive-choice
+nnc:sentence-surface|contextual-interpretation|intentionally-unsurfaced
+nnc:diagram|subject-constituent|intentionally-unsurfaced
+nnc:diagram|predicate-constituent|intentionally-unsurfaced
+nnc:diagram|nnc-slot-projection|intentionally-unsurfaced
+vnc:diagram|subject-circumfix|intentionally-unsurfaced
+vnc:diagram|object-prefix|intentionally-unsurfaced
+vnc:diagram|predicate-constituent|intentionally-unsurfaced
+vnc:diagram|vnc-slot-projection|intentionally-unsurfaced
+sentence:adverbial-adjunction|sentence-adverbial|intentionally-unsurfaced
+sentence:adverbial-adjunction|clause-scope|intentionally-unsurfaced
+sentence:adverbial-adjunction|sentence-position|intentionally-unsurfaced
+sentence:particle-adjunction|sentence-particle|intentionally-unsurfaced
+sentence:particle-adjunction|honorificization|interactive-choice
+sentence:particle-adjunction|sentence-position|intentionally-unsurfaced
 particle:result|particle-identity|intentionally-unsurfaced
+particle:result|particle-function|intentionally-unsurfaced
 particle:result|particle-placement|intentionally-unsurfaced
 particle:result|particle-semantic-marker|intentionally-unsurfaced
-sentence:adverbial-adjunction|clause-scope|intentionally-unsurfaced
-sentence:adverbial-adjunction|sentence-adverbial|intentionally-unsurfaced
-sentence:adverbial-adjunction|sentence-position|intentionally-unsurfaced
-sentence:particle-adjunction|honorificization|interactive-choice
-sentence:particle-adjunction|sentence-particle|intentionally-unsurfaced
-sentence:particle-adjunction|sentence-position|intentionally-unsurfaced
-sentence:supplementation|clause-order|interactive-choice
-sentence:supplementation|principal-clause|intentionally-unsurfaced
-sentence:supplementation|reported-speech|intentionally-unsurfaced
-sentence:supplementation|shared-referent|intentionally-unsurfaced
-sentence:supplementation|supplement-clause|intentionally-unsurfaced
-sentence:supplementation|supplement-relation|interactive-choice
-sentence:supplementation|vocative|intentionally-unsurfaced
-vnc:application|coordinate-projection|internal-support
-vnc:application|operation-plan|internal-support
-vnc:application|selected-result|intentionally-unsurfaced
-vnc:application|source-analysis|intentionally-unsurfaced
-vnc:denominal|denominal-operation|interactive-choice
-vnc:denominal|denominal-source-family|intentionally-unsurfaced
-vnc:denominal|finite-participants|interactive-choice
-vnc:denominal|source-rank|intentionally-unsurfaced
-vnc:denominal|target-valence|intentionally-unsurfaced
-vnc:denominal|target-verbstem-class|interactive-choice
+particle:negative-selection|polarity|interactive-choice
+particle:negative-selection|preceding-particle|intentionally-unsurfaced
+particle:negative-selection|sentence-kind|interactive-choice
+particle:negative-selection|negative-particle-selection|intentionally-unsurfaced
+vnc:source-selection|source-stem|intentionally-unsurfaced
+vnc:source-selection|embed-matrix-structure|intentionally-unsurfaced
+vnc:source-selection|source-selection|intentionally-unsurfaced
+vnc:ordered-voice-chain|source-voice|intentionally-unsurfaced
+vnc:ordered-voice-chain|target-voice|intentionally-unsurfaced
+vnc:ordered-voice-chain|voice-operation-order|interactive-choice
+vnc:ordered-voice-chain|participant-transformation|intentionally-unsurfaced
+vnc:ordered-voice-application|source-voice|intentionally-unsurfaced
+vnc:ordered-voice-application|target-voice|intentionally-unsurfaced
+vnc:ordered-voice-application|voice-operation-order|interactive-choice
+vnc:ordered-voice-application|participant-transformation|intentionally-unsurfaced
+vnc:ordered-voice-application|selected-formula|intentionally-unsurfaced
+vnc:ordered-voice-application|finite-boundary-realization|intentionally-unsurfaced
+vnc:ordered-voice-application|word-surface|intentionally-unsurfaced
+nnc:pronominal|pronominal-source|intentionally-unsurfaced
+nnc:pronominal|pronominal-family|intentionally-unsurfaced
+nnc:pronominal|subject-person-number|intentionally-unsurfaced
+nnc:pronominal|number-realization|intentionally-unsurfaced
+nnc:pronominal|pronominal-context|intentionally-unsurfaced
+nnc:pronominal|quantitive-embed|intentionally-unsurfaced
+nnc:pronominal|quantitive-matrix|intentionally-unsurfaced
+nnc:pronominal|matrix-family|intentionally-unsurfaced
+nnc:pronominal|matrix-form|intentionally-unsurfaced
+nnc:pronominal|predicate-pluralization|intentionally-unsurfaced
+nnc:pronominal|lexical-restriction|intentionally-unsurfaced
+nnc:pronominal|clause-position|intentionally-unsurfaced
+nnc:pronominal|discourse-role|intentionally-unsurfaced
+nnc:pronominal|sentence-force|interactive-choice
+nnc:pronominal|polarity|interactive-choice
+nnc:pronominal|formula-projection|intentionally-unsurfaced
+nnc:pronominal|written-boundary-realization|intentionally-unsurfaced
 vnc:derivational-operation|derivation-family|interactive-choice
 vnc:derivational-operation|operation-order|intentionally-unsurfaced
 vnc:derivational-operation|source-participants|intentionally-unsurfaced
 vnc:derivational-operation|target-participants|intentionally-unsurfaced
-vnc:diagram|object-prefix|intentionally-unsurfaced
-vnc:diagram|predicate-constituent|intentionally-unsurfaced
-vnc:diagram|subject-circumfix|intentionally-unsurfaced
-vnc:diagram|vnc-slot-projection|intentionally-unsurfaced
-vnc:finite-slot|finite-slot-order|intentionally-unsurfaced
-vnc:finite-slot|mood|interactive-choice
-vnc:finite-slot|subject-person-number|intentionally-unsurfaced
-vnc:finite-slot|tense|interactive-choice
-vnc:finite-surface|finite-boundary-realization|intentionally-unsurfaced
-vnc:finite-surface|selected-formula|intentionally-unsurfaced
-vnc:finite-surface|word-surface|intentionally-unsurfaced
-vnc:nuclear-clause|basal-unit|intentionally-unsurfaced
-vnc:nuclear-clause|participant-structure|intentionally-unsurfaced
-vnc:nuclear-clause|predicate-stem|intentionally-unsurfaced
-vnc:nuclear-clause|source-transitivity|intentionally-unsurfaced
-vnc:ordered-voice-application|finite-boundary-realization|intentionally-unsurfaced
-vnc:ordered-voice-application|participant-transformation|intentionally-unsurfaced
-vnc:ordered-voice-application|selected-formula|intentionally-unsurfaced
-vnc:ordered-voice-application|source-voice|intentionally-unsurfaced
-vnc:ordered-voice-application|target-voice|intentionally-unsurfaced
-vnc:ordered-voice-application|voice-operation-order|interactive-choice
-vnc:ordered-voice-application|word-surface|intentionally-unsurfaced
-vnc:ordered-voice-chain|participant-transformation|intentionally-unsurfaced
-vnc:ordered-voice-chain|source-voice|intentionally-unsurfaced
-vnc:ordered-voice-chain|target-voice|intentionally-unsurfaced
-vnc:ordered-voice-chain|voice-operation-order|interactive-choice
-vnc:sentence-result|authorized-vnc-result|intentionally-unsurfaced
-vnc:sentence-result|sentence-composition|intentionally-unsurfaced
-vnc:sentence-result|sentence-realization|intentionally-unsurfaced
-vnc:source-selection|embed-matrix-structure|intentionally-unsurfaced
-vnc:source-selection|source-selection|intentionally-unsurfaced
-vnc:source-selection|source-stem|intentionally-unsurfaced
+vnc:application|source-analysis|intentionally-unsurfaced
+vnc:application|operation-plan|internal-support
+vnc:application|coordinate-projection|internal-support
+vnc:application|selected-result|intentionally-unsurfaced
 vnc:transitive-object|object-kind|intentionally-unsurfaced
 vnc:transitive-object|object-person-number|intentionally-unsurfaced
-vnc:transitive-object|object-prefix|intentionally-unsurfaced
 vnc:transitive-object|valence|intentionally-unsurfaced
-vnc:verbstem-class|finite-realization|intentionally-unsurfaced
-vnc:verbstem-class|mood-tense-allomorphy|intentionally-unsurfaced
-vnc:verbstem-class|stem-alternation|intentionally-unsurfaced
+vnc:transitive-object|object-prefix|intentionally-unsurfaced
 vnc:verbstem-class|verbstem-class|intentionally-unsurfaced
+vnc:verbstem-class|stem-alternation|intentionally-unsurfaced
+vnc:verbstem-class|mood-tense-allomorphy|intentionally-unsurfaced
+vnc:verbstem-class|finite-realization|intentionally-unsurfaced
+sentence:supplementation|principal-clause|intentionally-unsurfaced
+sentence:supplementation|supplement-clause|intentionally-unsurfaced
+sentence:supplementation|shared-referent|intentionally-unsurfaced
+sentence:supplementation|supplement-relation|interactive-choice
+sentence:supplementation|clause-order|interactive-choice
+sentence:supplementation|vocative|intentionally-unsurfaced
+sentence:supplementation|reported-speech|intentionally-unsurfaced
+grammar:nominal-construction|nominal-embed|interactive-choice
+grammar:nominal-construction|compound-nnc|interactive-choice
+grammar:nominal-construction|affective-nnc|interactive-choice
+grammar:nominal-construction|cardinal-number|interactive-choice
+grammar:nominal-construction|measure-modification|interactive-choice
+grammar:nominal-construction|vacant-state|intentionally-unsurfaced
+nnc:deverbal-construction|source-stage|intentionally-unsurfaced
+nnc:deverbal-construction|source-voice|intentionally-unsurfaced
+nnc:deverbal-construction|nominalization-family|interactive-choice
+nnc:deverbal-construction|patientive-family|interactive-choice
+nnc:deverbal-construction|external-object|interactive-choice
+nnc:deverbal-construction|double-nucleus-ownerhood|interactive-choice
+nnc:adjectival-modification|modification-topology|interactive-choice
+nnc:adjectival-modification|modifier-head-order|interactive-choice
+nnc:adjectival-modification|adjunctor|interactive-choice
+nnc:adjectival-modification|transitive-reference-contact|interactive-choice
+nnc:adjectival-modification|compound-head-target|interactive-choice
+nnc:adverbial|adverbial-source|intentionally-unsurfaced
+nnc:adverbial|adverbial-context|interactive-choice
+nnc:adverbial|adverbialized-subject|intentionally-unsurfaced
+nnc:adverbial|clause-rank|interactive-choice
+nnc:relational|relational-source|intentionally-unsurfaced
+nnc:relational|relation-family|interactive-choice
+nnc:relational|possessor-structure|interactive-choice
+nnc:relational|voice-source|intentionally-unsurfaced
+nnc:relational|relational-result|intentionally-unsurfaced
+nnc:place-gentilic|place-source|intentionally-unsurfaced
+nnc:place-gentilic|place-formation|interactive-choice
+nnc:place-gentilic|gentilic-formation|interactive-choice
+nnc:place-gentilic|collectivity|interactive-choice
+nnc:place-gentilic|profession|intentionally-unsurfaced
+nnc:place-gentilic|closed-title|intentionally-unsurfaced
+clause:adverbial-adjunction|adverbial-principal|intentionally-unsurfaced
+clause:adverbial-adjunction|adjoined-clause|intentionally-unsurfaced
+clause:adverbial-adjunction|adjunctor|intentionally-unsurfaced
+clause:adverbial-adjunction|relation-scope|interactive-choice
+clause:adverbial-adjunction|clause-position|interactive-choice
+clause:composition|complement-relation|interactive-choice
+clause:composition|conjunction-relation|interactive-choice
+clause:composition|clause-rank|interactive-choice
+clause:composition|reference-graph|intentionally-unsurfaced
+clause:composition|relation-marker|interactive-choice
+clause:composition|parallel-structure|interactive-choice
+clause:comparison|comparison-relation|intentionally-unsurfaced
+clause:comparison|comparand|intentionally-unsurfaced
+clause:comparison|standard|intentionally-unsurfaced
+clause:comparison|dimension|intentionally-unsurfaced
+clause:comparison|degree-strategy|interactive-choice
+clause:comparison|superlative-strategy|interactive-choice
+vnc:denominal|denominal-source-family|intentionally-unsurfaced
+vnc:denominal|denominal-operation|interactive-choice
+vnc:denominal|source-rank|intentionally-unsurfaced
+vnc:denominal|target-verbstem-class|interactive-choice
+vnc:denominal|target-valence|intentionally-unsurfaced
+vnc:denominal|finite-participants|interactive-choice
+nnc:personal-name|name-source-family|interactive-choice
+nnc:personal-name|inner-clause|intentionally-unsurfaced
+nnc:personal-name|outer-subject|interactive-choice
+nnc:personal-name|outer-number|intentionally-unsurfaced
+nnc:personal-name|sentence-operation|interactive-choice
+nnc:personal-name|reranking|interactive-choice
 `.trim().split("\n").map(row => Object.freeze(row.split("|"))));
 
 const CLASSICAL_SOURCE_GRAMMAR_RESULT_OUTPUT_ROWS = Object.freeze(`
@@ -491,6 +613,10 @@ function buildClassicalSourceGrammarResultSurfaceAtom({
     atomKind,
     operationId,
     ...(atomKind === "axis" ? { axisId: itemId } : { outputKind: itemId }),
+    canvasAtomIds: atomKind === "axis"
+      ? CLASSICAL_SOURCE_GRAMMAR_RESULT_CANVAS_PROVENANCE[atomId]
+        || CLASSICAL_SOURCE_GRAMMAR_RESULT_NO_CANVAS_PROVENANCE
+      : CLASSICAL_SOURCE_GRAMMAR_RESULT_NO_CANVAS_PROVENANCE,
     disposition,
     status: "bound",
     authority: CLASSICAL_SOURCE_GRAMMAR_RESULT_AUTHORITY,
@@ -516,8 +642,23 @@ function buildClassicalSourceGrammarResultSurfaceAtom({
 
 const CLASSICAL_SOURCE_GRAMMAR_RESULT_SURFACE_INVENTORY = Object.freeze({
   kind: "classical-source-grammar-result-surface-inventory",
-  version: 2,
+  version: 3,
   authority: CLASSICAL_SOURCE_GRAMMAR_RESULT_AUTHORITY,
+  canvasProvenance: Object.freeze({
+    kind: "classical-application-axis-canvas-provenance",
+    version: 1,
+    authority: Object.freeze({
+      grammarAuthority: false,
+      uiAuthority: "none",
+      evidenceAbsenceBlocksGeneration: false
+    }),
+    mappedAxisCount: Object.keys(
+      CLASSICAL_SOURCE_GRAMMAR_RESULT_CANVAS_PROVENANCE
+    ).length,
+    directProvenanceLinkCount: Object.values(
+      CLASSICAL_SOURCE_GRAMMAR_RESULT_CANVAS_PROVENANCE
+    ).reduce((sum, atomIds) => sum + atomIds.length, 0)
+  }),
   axes: Object.freeze(CLASSICAL_SOURCE_GRAMMAR_RESULT_AXIS_ROWS.map(
     ([operationId, axisId, disposition]) =>
       buildClassicalSourceGrammarResultSurfaceAtom({

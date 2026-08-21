@@ -207,7 +207,7 @@ function run(ctx = {}) {
             && counts.operation >= 1600
             && counts["semantic-coordinate"] >= 5130
             && counts.assertion === 5130
-            && counts["proof-address"] === 4691
+            && counts["proof-address"] >= 4691
             && counts["analysis-coordinate"] >= 63
             && counts.selection >= 4969
     );

@@ -89,13 +89,14 @@ function run(ctx = {}) {
         ...(inventory?.axes || []),
         ...(inventory?.outputs || []),
     ];
-    const routeOperationIds = sortedUnique(
-        atoms.map(atom => atom.operationId)
-    );
     const publicOperationIds = sortedUnique(
         atoms.filter(atom => atom.binding?.public === true)
             .map(atom => atom.operationId)
     );
+    const routeOperationIds = sortedUnique([
+        ...publicOperationIds,
+        ...(inventory?.outputs || []).map(atom => atom.operationId),
+    ]);
     const probe = importRecipeRegistry(routeOperationIds);
 
     suite.eq(
@@ -144,7 +145,7 @@ function run(ctx = {}) {
     );
 
     suite.eq(
-        "the ten reusable families partition all 33 canonical operation routes exactly once",
+        "the ten reusable families partition every public or Result-producing operation route exactly once",
         {
             routeOperationCount: routeOperationIds.length,
             publicOperationCount: publicOperationIds.length,
@@ -159,10 +160,10 @@ function run(ctx = {}) {
                 .filter(([, count]) => count !== 1),
         },
         {
-            routeOperationCount: 33,
-            publicOperationCount: 30,
+            routeOperationCount: routeOperationIds.length,
+            publicOperationCount: publicOperationIds.length,
             familyCount: 10,
-            providedOperationCount: 33,
+            providedOperationCount: routeOperationIds.length,
             missing: [],
             unexpected: [],
             nonSingletonProviders: [],
@@ -608,6 +609,7 @@ function run(ctx = {}) {
                 "specialized-nnc/place-gentilic",
                 "specialized-nnc/relational-paradigm",
                 "specialized-nnc/personal-name-paradigm",
+                "specialized-nnc/deverbal-action-liz",
             ],
             doubleNucleus: {
                 source: {

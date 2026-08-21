@@ -230,7 +230,10 @@ function run(ctx) {
                 issuedGrammarFrameResult.authorizationStatus,
                 issuedGrammarFrameResult.blockReason,
             ],
-            copiedFailure: copiedGrammarFrameFailure,
+            copiedFailureIsRecursiveAuthorityRejection:
+                copiedGrammarFrameFailure.startsWith(
+                    "classical-grammar-application-request-invalid:forbidden-authority:"
+                ),
         },
         {
             issued: true,
@@ -239,8 +242,7 @@ function run(ctx) {
                 "blocked",
                 "classical-vnc-canonical-machinery-required",
             ],
-            copiedFailure:
-                "classical-grammar-application-request-invalid:forbidden-authority:surface",
+            copiedFailureIsRecursiveAuthorityRejection: true,
         }
     );
 

@@ -487,21 +487,21 @@ function run(ctx = {}) {
     const verbFormMutation = buildWish("1sg", "mā", { mood: "indicative", tense: "present" });
     const secondPersonCommand = buildWish("2sg", "", { sentenceType: "command-sentence" });
     s.eq("first- and third-person optatives require a separate mā or tlā while second-person commands retain licensed omission", {
-        missingFirst: [firstWithoutParticle.authorizationStatus, firstWithoutParticle.blockReason, firstWithoutParticle.formulaRealization],
-        missingThird: [thirdWithoutParticle.authorizationStatus, thirdWithoutParticle.blockReason, thirdWithoutParticle.formulaRealization],
-        firstMa: [firstWithMa.authorizationStatus, firstWithMa.sentenceSurfaceFrame.sentenceParticles, firstWithMa.formulaRealization],
-        thirdTla: [thirdWithTla.authorizationStatus, thirdWithTla.sentenceSurfaceFrame.sentenceParticles, thirdWithTla.formulaRealization],
-        boundaryMutation: [fusedBoundaryMutation.authorizationStatus, fusedBoundaryMutation.blockReason],
-        verbMutation: [verbFormMutation.authorizationStatus, verbFormMutation.blockReason],
-        secondPersonOmission: [secondPersonCommand.authorizationStatus, secondPersonCommand.sentenceSurfaceFrame.introductoryParticleOmissionAllowed],
+        missingFirst: [firstWithoutParticle.authorizationStatus, firstWithoutParticle.sentenceSurfaceFrame.authorizationStatus, firstWithoutParticle.sentenceSurfaceFrame.blockReason, firstWithoutParticle.formulaRealization],
+        missingThird: [thirdWithoutParticle.authorizationStatus, thirdWithoutParticle.sentenceSurfaceFrame.authorizationStatus, thirdWithoutParticle.sentenceSurfaceFrame.blockReason, thirdWithoutParticle.formulaRealization],
+        firstMa: [firstWithMa.authorizationStatus, firstWithMa.sentenceSurfaceFrame.authorizationStatus, firstWithMa.sentenceSurfaceFrame.sentenceParticles, firstWithMa.formulaRealization],
+        thirdTla: [thirdWithTla.authorizationStatus, thirdWithTla.sentenceSurfaceFrame.authorizationStatus, thirdWithTla.sentenceSurfaceFrame.sentenceParticles, thirdWithTla.formulaRealization],
+        boundaryMutation: [fusedBoundaryMutation.authorizationStatus, fusedBoundaryMutation.sentenceSurfaceFrame.authorizationStatus, fusedBoundaryMutation.sentenceSurfaceFrame.blockReason],
+        verbMutation: [verbFormMutation.authorizationStatus, verbFormMutation.sentenceSurfaceFrame.authorizationStatus, verbFormMutation.sentenceSurfaceFrame.blockReason],
+        secondPersonOmission: [secondPersonCommand.authorizationStatus, secondPersonCommand.sentenceSurfaceFrame.authorizationStatus, secondPersonCommand.sentenceSurfaceFrame.introductoryParticleOmissionAllowed],
     }, {
-        missingFirst: ["blocked", "lesson-9-wish-command-requires-ma-or-tla", ""],
-        missingThird: ["blocked", "lesson-9-wish-command-requires-ma-or-tla", ""],
-        firstMa: ["authorized", ["mā"], "#ni-0(cochi)0+⎕-0#"],
-        thirdTla: ["authorized", ["tlā"], "#0-0(cochi)0+⎕-0#"],
-        boundaryMutation: ["blocked", "lesson-9-wish-command-requires-ma-or-tla"],
-        verbMutation: ["blocked", "lesson-9-wish-command-requires-optative-or-future-optative-vnc"],
-        secondPersonOmission: ["authorized", true],
+        missingFirst: ["authorized", "blocked", "lesson-9-wish-command-requires-ma-or-tla", "#ni-0(cochi)0+⎕-0#"],
+        missingThird: ["authorized", "blocked", "lesson-9-wish-command-requires-ma-or-tla", "#0-0(cochi)0+⎕-0#"],
+        firstMa: ["authorized", "authorized", ["mā"], "#ni-0(cochi)0+⎕-0#"],
+        thirdTla: ["authorized", "authorized", ["tlā"], "#0-0(cochi)0+⎕-0#"],
+        boundaryMutation: ["authorized", "blocked", "lesson-9-wish-command-requires-ma-or-tla"],
+        verbMutation: ["authorized", "blocked", "lesson-9-wish-command-requires-optative-or-future-optative-vnc"],
+        secondPersonOmission: ["authorized", "authorized", true],
     });
 
     const reflexiveItta = buildSource(ctx, "itta", {
@@ -565,7 +565,7 @@ function run(ctx = {}) {
         verbClass: "C",
         sourceValence: "specific-projective",
     });
-    const implicitThirdNonactiveOption = implicitThirdNonactiveInventory.options.find((candidate) => candidate.nonactiveStem === "quiyahu-i-lō");
+    const implicitThirdNonactiveOption = implicitThirdNonactiveInventory.options.find((candidate) => candidate.nonactiveStem === "quiyahu-ī-lō");
     const implicitThirdPassive = ctx.evaluateClassicalNahuatlVncApplication({
         sourceStem: "quiyahu-iā",
         verbClass: "C",

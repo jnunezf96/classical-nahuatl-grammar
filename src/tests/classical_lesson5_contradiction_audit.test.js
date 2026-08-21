@@ -45,7 +45,7 @@ function run(ctx = {}) {
         tense: shell.includes('id="classical-rule-logic-tense"'),
         valence: shell.includes('id="classical-rule-logic-valence"'),
         voice: shell.includes('id="classical-rule-logic-vnc-voice"'),
-        derivedControl: /(?:id|name)="[^"]*(?:pers2|num1|num2|number-connector|aspect-carrier|tense-morph)[^"]*"/iu.test(shell),
+        derivedControl: /(?:id|name)="classical-rule-logic-[^"]*(?:pers2|num1|num2|number-connector|aspect-carrier|tense-morph)[^"]*"/iu.test(shell),
     }, { subject: true, mood: true, tense: true, valence: true, voice: true, derivedControl: false });
     s.eq("the perfective exists even when it cannot be guessed from the imperfective", {
         imperfective: verbstem.imperfectiveStem,

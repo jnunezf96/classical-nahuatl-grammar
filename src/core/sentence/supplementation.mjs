@@ -1,3 +1,8 @@
+import {
+  buildClassicalNahuatlParticipantFrame,
+  parseClassicalNahuatlPersonNumber,
+} from "../classical/participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
+
 // Canonical typed supplementation grammar for Andrews Lessons 17-19.
 //
 // Source-span inventory and closure bookkeeping live only in test tooling.
@@ -193,22 +198,7 @@ function getSubjectCategory(slotFrame = null, sourceFrame = null) {
 }
 
 function parsePersonNumber(category = "") {
-  const normalized = String(category || "").trim();
-  const match = /^([123])(?:-|)(sg|pl|common|singular|plural)$/u.exec(normalized);
-  if (!match) {
-    return null;
-  }
-  return freezeDeep({
-    category: normalized,
-    person: match[1],
-    number: {
-      sg: "singular",
-      pl: "plural",
-      common: "common",
-      singular: "singular",
-      plural: "plural",
-    }[match[2]],
-  });
+  return parseClassicalNahuatlPersonNumber(category);
 }
 
 function areClassicalNahuatlPersonNumberFeaturesCompatible(
@@ -292,6 +282,9 @@ function getObjectRecords(frame = null, slotFrame = null) {
         || record?.slotId
         || `object-${index + 1}`
       ).trim();
+      const silentSpecificObject = Boolean(
+        record?.silentSpecificObject === true || record?.sounded === false
+      );
       return {
         id,
         category,
@@ -303,10 +296,27 @@ function getObjectRecords(frame = null, slotFrame = null) {
             ? "nonspecific"
             : "specific",
         },
+        participantFrame: buildClassicalNahuatlParticipantFrame({
+          role: record?.governor === "causative" ? "causee" : "object",
+          agreement: category,
+          animacy: record?.animacy || "unspecified",
+          humanness: record?.humanness
+            || (/nonspecific-human|tē/u.test(`${objectKind}:${record?.carrier || ""}`) ? "human"
+              : /nonspecific-nonhuman|tla/u.test(`${objectKind}:${record?.carrier || ""}`) ? "nonhuman"
+                : "unspecified"),
+          specificity: /nonspecific|tē|tla/u.test(`${category}:${objectKind}:${record?.carrier || ""}`)
+            ? "nonspecific"
+            : "specific",
+        }),
         objectKind,
-        sounded: record?.sounded !== false,
-        silent: record?.sounded === false,
-        carrier: String(record?.carrier || ""),
+        sounded: !silentSpecificObject,
+        silent: silentSpecificObject,
+        carrier: String(
+          record?.carrier || (silentSpecificObject ? "0-0" : ""),
+        ),
+        realization: silentSpecificObject ? "0-0" : String(
+          record?.carrier || "",
+        ),
       };
     })
     .filter(record => {
@@ -341,6 +351,10 @@ function getPossessorRecord(frame = null, slotFrame = null) {
         id: "possessor",
         category,
         features: parsePersonNumber(category),
+        participantFrame: buildClassicalNahuatlParticipantFrame({
+          role: "possessor",
+          agreement: category,
+        }),
       }
     : null;
 }
@@ -1508,14 +1522,25 @@ export function createClassicalNahuatlSupplementationApi(
       typeof targetObject.isClassicalNahuatlOrdinaryNncResult === "function"
       && targetObject.isClassicalNahuatlOrdinaryNncResult(sourceFrame)
     );
+    const nominalConstructionResultAuthorized = Boolean(
+      typeof targetObject.isClassicalNahuatlNominalConstructionResult
+        === "function"
+      && targetObject.isClassicalNahuatlNominalConstructionResult(
+        sourceFrame
+      )
+    );
     const deverbalNncResultAuthorized = Boolean(
       typeof targetObject.isClassicalNahuatlDeverbalNncGrammarFrame
         === "function"
       && targetObject.isClassicalNahuatlDeverbalNncGrammarFrame(sourceFrame)
-      && ["predicate-nominalization", "deverbal-action"].includes(
-        sourceFrame?.constructionKind
-      )
       && sourceFrame?.canonicalResult?.nncSlotFrame
+    );
+    const activeActionNncResultAuthorized = Boolean(
+      deverbalNncResultAuthorized
+      && sourceFrame?.constructionKind === "deverbal-action"
+      && sourceFrame?.operationFrame?.actionKind === "active-action"
+      && sourceFrame?.operationFrame?.deverbalActionFrame
+        ?.exactVncResultIdentityPreserved === true
     );
     const relationalNncResultAuthorized = Boolean(
       typeof targetObject.isClassicalNahuatlRelationalResult
@@ -1540,7 +1565,9 @@ export function createClassicalNahuatlSupplementationApi(
       && sourceFrame.sourceFrame?.clauseKind === "vnc"
     );
     const completedNncResultAuthorized =
-      pronominalNncResultAuthorized || ordinaryNncResultAuthorized;
+      pronominalNncResultAuthorized
+      || ordinaryNncResultAuthorized
+      || nominalConstructionResultAuthorized;
     const nncAuthorized = Boolean(
       relationalNncResultAuthorized
       || (
@@ -1648,8 +1675,8 @@ export function createClassicalNahuatlSupplementationApi(
     const completedNncSentenceSurface = completedNncResultAuthorized
       ? String(
           sourceFrame.surfaceRealization
-          || sourceFrame.wordSurface
           || sourceFrame.sentenceSurface
+          || sourceFrame.wordSurface
           || ""
         ).trim().replace(/[.?!]+$/u, "")
       : "";
@@ -1996,6 +2023,11 @@ export function createClassicalNahuatlSupplementationApi(
             : null;
         })()
       : null;
+    const nonanimateAffectiveAgreementFrame = unitKind === "nnc"
+      && sourceFrame?.operationFrame?.nonanimateAffectiveAgreementFrame
+        ?.authorizationStatus === "authorized"
+      ? sourceFrame.operationFrame.nonanimateAffectiveAgreementFrame
+      : null;
     const authorized = Boolean(
       unitKind
       && surface
@@ -2049,6 +2081,17 @@ export function createClassicalNahuatlSupplementationApi(
         ? sourceFrame.contextualRealizationFrame
         : null,
       sourceFrameKind: String(sourceFrame?.kind || ""),
+      activeActionNncSupplementEligible:
+        activeActionNncResultAuthorized,
+      activeActionNncSourceKind: activeActionNncResultAuthorized
+        ? normalizeToken(sourceFrame.operationFrame.actionKind)
+        : "",
+      activeActionNncSuffix: activeActionNncResultAuthorized
+        ? normalizeToken(sourceFrame.operationFrame.actionSuffix)
+        : "",
+      activeActionNncExactResultIdentityPreserved:
+        activeActionNncResultAuthorized
+        && sourceFrame.canonicalResult != null,
       lateVncOperation: lateVncClosureAuthorized
         ? normalizeToken(sourceFrame.operationFrame?.operation)
         : "",
@@ -2101,6 +2144,19 @@ export function createClassicalNahuatlSupplementationApi(
               ...parsePersonNumber(subjectCategory),
               specificity: subjectSpecificity,
             },
+            participantFrame: buildClassicalNahuatlParticipantFrame({
+              role: "subject",
+              agreement: subjectCategory,
+              animacy: sourceFrame?.normalizedRequest?.sourceSubjectFrame?.animacy
+                || slotFrame?.slots?.subject?.participantFrame?.animacy
+                || "unspecified",
+              humanness: sourceFrame?.normalizedRequest?.sourceSubjectFrame?.humanness
+                || slotFrame?.slots?.subject?.participantFrame?.humanness
+                || "unspecified",
+              specificity: subjectSpecificity,
+              referenceId: normalizedSubjectReferenceId,
+              impersonal: subjectSpecificity === "nonspecific",
+            }),
             referenceId: normalizedSubjectReferenceId,
           },
       objects,
@@ -2174,6 +2230,7 @@ export function createClassicalNahuatlSupplementationApi(
             num2: String(slotFrame?.slots?.number?.num2 || ""),
           }
         : null,
+      nonanimateAffectiveAgreementFrame,
       adverbialRole: (() => {
         const explicitRole = normalizeToken(
           sourceFrame?.adverbialRole
@@ -2394,6 +2451,26 @@ export function createClassicalNahuatlSupplementationApi(
         kind: "ac-pronominal-plural",
         licensed: true,
         sourceSection: "19.2.2",
+      };
+    }
+    if (
+      exceptionKind === "nonanimate-affective-plural-common-head"
+      && supplementClause.unitKind === "nnc"
+      && supplementClause.nonanimateAffectiveAgreementFrame
+        ?.authorizationStatus === "authorized"
+      && supplementClause.nonanimateAffectiveAgreementFrame
+        ?.supplementHeadMayRemainCommon === true
+      && principalParticipant.features?.person === "3"
+      && ["common", "singular"].includes(
+        principalParticipant.features?.number
+      )
+      && supplementParticipant.features?.person === "3"
+      && supplementParticipant.features?.number === "plural"
+    ) {
+      return {
+        kind: "nonanimate-affective-plural-common-head",
+        licensed: true,
+        sourceSection: "32.7",
       };
     }
     return {
@@ -2826,10 +2903,14 @@ export function createClassicalNahuatlSupplementationApi(
         pronominalPluralCooperationFrame
       );
     const derivedAgreementExceptionKind =
-      pronominalPluralCooperationAuthorized
-      && pronominalPluralCooperationFrame.route === "ac"
-        ? "ac-pronominal-plural"
-        : "";
+      supplementClause.nonanimateAffectiveAgreementFrame
+        ?.supplementAgreementExceptionKind
+        === "nonanimate-affective-plural-common-head"
+        ? "nonanimate-affective-plural-common-head"
+        : pronominalPluralCooperationAuthorized
+          && pronominalPluralCooperationFrame.route === "ac"
+          ? "ac-pronominal-plural"
+          : "";
     const requestedAgreementExceptionKind = normalizeToken(
       options.agreementException || ""
     );
@@ -3448,6 +3529,32 @@ export function createClassicalNahuatlSupplementationApi(
         })
       : null;
     const operationFrames = [
+      supplementClause.activeActionNncSupplementEligible
+        && referenceMode === "shared"
+        && headRole === "object"
+        && contactRole === "subject"
+        ? {
+            kind:
+              "classical-nahuatl-action-nnc-supplementary-object-frame",
+            sourceSection: "37.7",
+            relation: "supplementary-object",
+            supplementSourceKind:
+              supplementClause.activeActionNncSourceKind,
+            actionSuffix: supplementClause.activeActionNncSuffix,
+            exactOwnerIssuedActionNncResultPreserved:
+              supplementClause
+                .activeActionNncExactResultIdentityPreserved === true,
+            sharedReferentId: supplementContact.referenceId,
+            principalParticipantRole: headRole,
+            supplementParticipantRole: contactRole,
+            sharedSupplementationOwnerReused: true,
+            separateLesson37SupplementationEngineCreated: false,
+            acyclicHierarchyRequired: true,
+            nounstemIdentityAuthorizesRelation: false,
+            formulaStringAuthority: false,
+            surfaceStringAuthority: false,
+          }
+        : null,
       principalClause.unitKind === "vnc"
         && principalClause.lateVncOperation === "compound"
         && principalClause.lateVncEmbedStem === "ye"

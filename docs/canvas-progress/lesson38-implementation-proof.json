@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "lesson": 38,
+  "groups": {
+    "lesson38-impersonal-patientive-foundation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-impersonal-patientive-lo": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-impersonal-patientive-o-ohua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_1_3_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-impersonal-patientive-hua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-impersonal-patientive-hua-lo": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-reflexive-impersonal-patientive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_4_6_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-projective-impersonal-patientive-lo": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-projective-impersonal-patientive-o": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-projective-impersonal-patientive-hua": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_7_9_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-human-source-tla-lo": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-human-source-tla-o": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-human-source-tla-hua-exceptions": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-human-nonhuman-patientive-contrast": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-patientive-active-action-translation-overlap": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-compound-source-patientive": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    },
+    "lesson38-patientive-matrix-compound": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson38_group_16_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson38_reader_guidance.test.js"
+    }
+  }
+}
