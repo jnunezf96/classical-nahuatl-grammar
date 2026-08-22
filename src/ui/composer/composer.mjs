@@ -8136,8 +8136,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const directOption = construction.querySelector?.('option[value="none"]');
       if (directOption) {
         directOption.textContent = activeUnit === CLASSICAL_BASAL_UNIT.vnc
-          ? "VNC Source → direct generation → VNC Result"
-          : "NNC Source → direct generation → NNC Result";
+          ? "No added operation layer · VNC Source → VNC Result"
+          : "No added operation layer · NNC Source → NNC Result";
       }
       return activeUnit;
     }

@@ -60,7 +60,11 @@ function isVisible(element) {
   }
   try {
     const style = element.ownerDocument?.defaultView?.getComputedStyle?.(element);
-    return style?.display !== "none" && style?.visibility !== "hidden";
+    const hasRenderedBox = typeof element.getClientRects !== "function"
+      || element.getClientRects().length > 0;
+    return hasRenderedBox
+      && style?.display !== "none"
+      && style?.visibility !== "hidden";
   } catch {
     return false;
   }
@@ -273,6 +277,23 @@ function describeControl(
     },
     bindings: dataBindings(control),
     applicationAxes: applicationAxisBindings(control, axisEvidence),
+    choicePath: {
+      panel: String(control.dataset?.classicalChoicePathPanel || ""),
+      order: Number(control.dataset?.classicalChoicePathOrder || 0),
+      state: String(control.dataset?.classicalChoicePathState || ""),
+      next: String(control.dataset?.classicalChoicePathNext || ""),
+      optionCount: Number(control.dataset?.classicalChoiceOptionCount || 0),
+      kind: String(control.dataset?.classicalChoicePathKind || ""),
+      authority: String(
+        control.dataset?.classicalChoicePathAuthority || ""
+      ),
+    },
+    interfaceClassification: {
+      role: String(control.dataset?.classicalInterfaceControlRole || ""),
+      authority: String(
+        control.dataset?.classicalInterfaceControlAuthority || ""
+      ),
+    },
     state,
   };
 }
@@ -1108,6 +1129,212 @@ function describeCurrentResultRoute(documentObject, grammarRoot) {
   };
 }
 
+function describeCompositionPath(
+  documentObject,
+  currentResult = null
+) {
+  const stepSpecs = [
+    {
+      order: 1,
+      id: "source",
+      selector: "#container-inputs",
+      fallbackRole: "present-typed-facts",
+    },
+    {
+      order: 2,
+      id: "grammar",
+      selector: "#panel-stack-pane-tense",
+      fallbackRole: "genuine-open-choices",
+    },
+    {
+      order: 3,
+      id: "result",
+      selector: "#container-tense-grid",
+      fallbackRole: "owner-issued-fullness",
+    },
+  ];
+  const steps = stepSpecs.map(spec => {
+    const element = documentObject.querySelector?.(spec.selector) || null;
+    return {
+      order: spec.order,
+      panel: spec.id,
+      present: Boolean(element),
+      visible: isVisible(element),
+      role: String(
+        element?.dataset?.classicalCompositionPathRole
+        || spec.fallbackRole
+      ),
+      authority: String(
+        element?.dataset?.classicalCompositionPathAuthority
+        || "presentation-only"
+      ),
+      liveState: String(
+        element?.dataset?.classicalCompositionPathLiveState || ""
+      ),
+    };
+  });
+  const continuationHost = documentObject.getElementById?.(
+    "classical-grammar-continuation"
+  ) || null;
+  const directAction = documentObject.querySelector?.(
+    '[data-classical-result-continuation-kind="exact-result-to-source"]'
+  ) || null;
+  const cue = continuationHost?.querySelector?.(
+    ":scope > [data-classical-result-continuation-cue]"
+  ) || null;
+  const clauseWorkflow = continuationHost?.querySelector?.(
+    ":scope > .classical-clause-relation-workflow"
+  ) || null;
+  const deliveredSummary = documentObject.querySelector?.(
+    '[data-classical-composition-path-summary="true"]'
+  ) || null;
+  const deliveredSummaryValues = Object.fromEntries(
+    ["source", "grammar", "result", "continue"].map(step => [
+      step,
+      String(deliveredSummary?.querySelector?.(
+        `[data-classical-composition-path-summary-value="${step}"]`
+      )?.textContent || "").trim(),
+    ])
+  );
+  const deliveredSummaryDetails = Object.fromEntries(
+    ["source", "grammar", "result", "continue"].map(step => [
+      step,
+      String(deliveredSummary?.querySelector?.(
+        `[data-classical-composition-path-summary-detail="${step}"]`
+      )?.textContent || "").trim(),
+    ])
+  );
+  const deliveredSummaryStepStates = Object.fromEntries(
+    ["source", "grammar", "result", "continue"].map(step => [
+      step,
+      String(deliveredSummary?.querySelector?.(
+        `[data-classical-composition-path-summary-step="${step}"]`
+      )?.dataset?.classicalCompositionPathStepState || ""),
+    ])
+  );
+  const deliveredLayers = Array.from(deliveredSummary?.querySelectorAll?.(
+    "[data-classical-composition-path-layer]"
+  ) || []).map(layer => ({
+    nodeId: String(
+      layer.dataset?.classicalCompositionPathLayer || ""
+    ),
+    operationId: String(
+      layer.dataset?.classicalCompositionPathLayerOperation || ""
+    ),
+    label: String(layer.textContent || "").trim(),
+  }));
+  const deliveredNextOperations = Array.from(
+    deliveredSummary?.querySelectorAll?.(
+      "[data-classical-composition-path-next-operation]"
+    ) || []
+  ).map(layer => ({
+    operationId: String(
+      layer.dataset?.classicalCompositionPathNextOperation || ""
+    ),
+    compatibilityStatus: String(
+      layer.dataset?.classicalCompositionPathCompatibility || ""
+    ),
+    label: String(layer.textContent || "").trim(),
+  }));
+  return {
+    kind: "classical-source-grammar-result-composition-path",
+    version: 1,
+    authority: {
+      grammarAuthority: false,
+      uiAuthority: false,
+      role: "delivered-path-observation-only",
+    },
+    steps,
+    deliveredSummary: {
+      present: Boolean(deliveredSummary),
+      visible: isVisible(deliveredSummary),
+      authority: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryAuthority || ""
+      ),
+      sourceUnit: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummarySourceUnit || ""
+      ),
+      grammarOperation: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryGrammarOperation || ""
+      ),
+      layerGraph: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryLayerGraph || ""
+      ),
+      layerCount: Number(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryLayerCount || 0
+      ),
+      layerEdgeCount: Number(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryLayerEdgeCount || 0
+      ),
+      layerTopology: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryLayerTopology || ""
+      ),
+      layerOperationIds: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryLayerOperations || ""
+      ).split("|").filter(Boolean),
+      nextOperationCount: Number(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryNextOperationCount || 0
+      ),
+      layers: deliveredLayers,
+      nextOperations: deliveredNextOperations,
+      resultUnit: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryResultUnit || ""
+      ),
+      resultStatus: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryResultStatus || ""
+      ),
+      resultProjection: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryResultProjection || ""
+      ),
+      continuationStatus: String(
+        deliveredSummary?.dataset
+          ?.classicalCompositionPathSummaryContinuationStatus || ""
+      ),
+      values: deliveredSummaryValues,
+      details: deliveredSummaryDetails,
+      stepStates: deliveredSummaryStepStates,
+    },
+    handoffs: {
+      sourceToGrammar: {
+        dependencyState: String(
+          documentObject.getElementById?.("classical-authority-panel")
+            ?.dataset?.classicalGrammarDependencyState || ""
+        ),
+      },
+      grammarToResult: {
+        status: String(currentResult?.status || ""),
+        exactOwnerResultVisible: Boolean(
+          currentResult?.visible
+          && currentResult?.presentationAuthority
+        ),
+      },
+      resultToSource: {
+        status: String(
+          cue?.dataset?.classicalResultContinuationStatus || ""
+        ),
+        actionVisible: isVisible(directAction),
+        exactOwnerIssuedResultRequired: true,
+      },
+      resultToClauseComposition: {
+        workflowVisible: isVisible(clauseWorkflow),
+        exactCapturedResultsRequired: true,
+      },
+    },
+  };
+}
+
 export function buildClassicalNestedControlLedger(
   documentObject = globalThis.document,
   surfaceInventory = null
@@ -1130,8 +1357,26 @@ export function buildClassicalNestedControlLedger(
   const operation = documentObject.getElementById?.(
     "classical-construction-operation"
   );
+  const currentResult = describeCurrentResultRoute(
+    documentObject,
+    grammarRoot
+  );
+  const visibleControls = controls.filter(control => control.state.visible);
+  const classifiedVisibleControls = visibleControls.filter(
+    control => control.interfaceClassification.role
+  );
+  const unclassifiedVisibleControls = visibleControls.filter(control => (
+    control.interfaceClassification.role === "unclassified"
+    || !control.interfaceClassification.role
+  ));
+  const routeCastCounts =
+    pathways.anthillMap.sourceOperationRoutes.counts;
+  const terminalRouteComplete = currentResult.terminal && (
+    currentResult.status === "authorized"
+    || Boolean(currentResult.blockReason)
+  );
   return freezeTree({
-    schemaVersion: 3,
+    schemaVersion: 13,
     kind: LEDGER_KIND,
     authority: {
       grammarAuthority: false,
@@ -1143,15 +1388,59 @@ export function buildClassicalNestedControlLedger(
       sourceUnit: String(sourceRoot?.dataset?.classicalSourcePathUnit || ""),
       selectedOperation: String(operation?.value || ""),
       hash: String(documentObject.defaultView?.location?.hash || ""),
-      result: describeCurrentResultRoute(documentObject, grammarRoot),
+      result: currentResult,
+    },
+    compositionPath: describeCompositionPath(
+      documentObject,
+      currentResult
+    ),
+    interfaceControlExhaustion: {
+      kind: "classical-live-interface-control-exhaustion",
+      version: 1,
+      scope: "current-live-branch",
+      authority: {
+        grammarAuthority: false,
+        uiAuthority: false,
+        proofOnly: true,
+      },
+      complete: unclassifiedVisibleControls.length === 0
+        && routeCastCounts.deadEnds === 0
+        && routeCastCounts.misplacedNodes === 0
+        && routeCastCounts.staleVisibleNodes === 0
+        && terminalRouteComplete,
+      terminalRouteComplete,
+      unclassifiedControls: unclassifiedVisibleControls.map(control => ({
+        id: control.id,
+        label: control.label,
+        locator: control.locator,
+      })),
+      routeIssues: {
+        deadEnds: routeCastCounts.deadEnds,
+        misplacedNodes: routeCastCounts.misplacedNodes,
+        staleVisibleNodes: routeCastCounts.staleVisibleNodes,
+      },
     },
     counts: {
       panels: panels.filter(panel => panel.present).length,
       sections: panels.reduce((sum, panel) => sum + panel.sections.length, 0),
       controls: controls.length,
-      visibleControls: controls.filter(control => control.state.visible).length,
+      visibleControls: visibleControls.length,
       hiddenControls: controls.filter(control => !control.state.visible).length,
       disabledControls: controls.filter(control => control.state.disabled).length,
+      classifiedVisibleControls: classifiedVisibleControls.length,
+      pathChoiceControls: visibleControls.filter(control => (
+        control.interfaceClassification.role === "path-choice"
+      )).length,
+      transitionActionControls: visibleControls.filter(control => (
+        control.interfaceClassification.role === "transition-action"
+      )).length,
+      supportActionControls: visibleControls.filter(control => (
+        control.interfaceClassification.role === "support-action"
+      )).length,
+      readingCueControls: visibleControls.filter(control => (
+        control.interfaceClassification.role === "reading-cue"
+      )).length,
+      unclassifiedVisibleControls: unclassifiedVisibleControls.length,
     },
     pathways,
     panels,

@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260821-lesson39-group23-171";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260822-all-operation-layers-216";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260821-lesson39-group23-171";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260821-lesson39-group23-171";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260821-lesson39-group23-171";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260821-lesson39-group23-171";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260821-lesson39-group23-171";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260821-lesson39-group23-171";
+} from "../runtime/create_runtime.mjs?v=20260822-all-operation-layers-216";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260822-all-operation-layers-216";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260822-all-operation-layers-216";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260822-all-operation-layers-216";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260822-all-operation-layers-216";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260822-all-operation-layers-216";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260821-lesson39-group23-171";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260822-all-operation-layers-216";
 
 let browserBootstrapPromise = null;
 

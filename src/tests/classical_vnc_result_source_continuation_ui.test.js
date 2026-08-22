@@ -129,13 +129,13 @@ function run(ctx = {}) {
                 "classical-vnc-result-source-continuation-late-operation-not-licensed"
             )
             && rendering.includes(
-                'continueAction.textContent = "Add another derivation"'
+                'continueAction.textContent = "Continue this Result"'
             )
             && rendering.includes(
                 '=== "classical-nahuatl-late-vnc-derivation-closure-frame"'
             )
             && shell.includes(
-                'class="classical-rule-control__label">Add derivation</span>'
+                'class="classical-rule-control__label">Next VNC derivation layer</span>'
             )
     );
 
@@ -171,7 +171,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Add another derivation binds the exact Result, exposes inherited Source facts read-only, and runs the required second causative",
+        "Continue this Result binds the exact Result, exposes inherited Source facts read-only, and runs the required second causative",
         (() => {
             const first = buildFirstCaquiCausative(ctx);
             const used =

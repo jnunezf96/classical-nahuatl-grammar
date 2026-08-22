@@ -1,0 +1,88 @@
+import {
+  buildClassicalGrammaticalRhymeLessonDiscoveryFrame,
+  buildClassicalGrammaticalRhymeLessonPlaneFrame,
+} from "./grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+
+// This is the machine-readable form of the accepted two-pin map. It is a
+// diagnostic compression map, never a grammar or curriculum authority.
+const LESSON_RHYME_ROWS = Object.freeze([
+  [1, "Unclassified linguistic evidence and relations", "Typed structural interpretation", "R", "structure, analysis, interpretation"],
+  [2, "Underlying sound, quantity, and morpheme boundaries", "Realized sound and spelling with the Source preserved", "F↔R", "structure, analysis, boundary, realization"],
+  [3, "Particle function, order, or collocation unresolved", "Licensed particle construction and reading", "P↔R", "composition, sentence, scope, interpretation"],
+  [4, "Nuclear-clause kind and slots unresolved", "Complete typed VNC or NNC Result", "F", "structure, nuclear-clause, participant"],
+  [5, "Intransitive Source with subject, mood, or tense open", "Complete finite intransitive VNC Result", "F", "nuclear-clause, participant, tense"],
+  [6, "Transitive Source with object topology open", "Complete transitive VNC Result", "F", "nuclear-clause, participant, valence"],
+  [7, "Morphemic verbstem class and predicate shape unresolved", "Class-compatible predicate and paradigm", "F↔R", "stem-shape, boundary, realization"],
+  [8, "VNC with prefix, sentence operation, order, or scope open", "Expanded or transformed sentence Result", "P→F", "sentence, composition, order, scope"],
+  [9, "VNC with optative function, person, or polarity open", "Complete optative wish or command Result", "F→P", "tense, sentence, polarity"],
+  [10, "VNC with admonitive form, person, or polarity open", "Complete admonitive Result", "F→P", "tense, sentence, polarity"],
+  [11, "Typed lexical Source with irregular coordinate open", "Owner-issued irregular or suppletive Result", "F↔R", "stem-shape, realization, lexical-history"],
+  [12, "Nounstem with absolutive subject and number open", "Complete absolutive NNC Result", "F", "nuclear-clause, state, participant"],
+  [13, "Nounstem with subject, possessor, and state relation open", "Complete possessive NNC Result", "F", "nuclear-clause, state, possession"],
+  [14, "Nounstem class with state and number cell open", "Canonical nounstem or NNC inflection", "F↔R", "stem-shape, state, number"],
+  [15, "Nounstem with possessive relationship or lexical stem choice open", "Complete possessive form, NNC, or sentence reading", "F→P", "state, possession, lexical-history"],
+  [16, "Pronominal subtype, referent, and number open", "Complete pronominal NNC Result", "F↔R", "nuclear-clause, reference, number"],
+  [17, "Two complete clauses with their reference relation open", "Complete supplementary clause structure", "P→C", "composition, reference, continuation"],
+  [18, "Complete clauses with marking, order, agreement, or deletion open", "Complete marked, discontinuous, or exceptional supplement", "P↔R", "composition, reference, order"],
+  [19, "Principal VNC and supplement with clause relation open", "Complete cognition, wishing, speech, or report construction", "P→C", "composition, reference, continuation"],
+  [20, "Typed VNC edge with nonactive operation open", "Complete nonactive VNC Result", "F→C", "stem-shape, voice, derivation"],
+  [21, "Active VNC participant structure with passive mapping open", "Complete passive VNC Result", "F", "voice, valence, participant"],
+  [22, "VNC with impersonal source or transformation open", "Complete inherent or derived impersonal Result", "F→C", "voice, valence, participant"],
+  [23, "VNC with derived object relation and carrier order open", "Complete directive, causative, or applicative object structure", "F→C", "valence, participant, derivation"],
+  [24, "Typed Source shape and valence with Type-I causation open", "Complete productive causative Result", "F→C", "stem-shape, valence, derivation"],
+  [25, "Typed nonactive Source history with Type-II alternative open", "Complete recursive causative Result", "F→C", "stem-shape, voice, derivation, continuation"],
+  [26, "Typed Source with applicative object relation open", "Complete applicative Result", "F→C", "stem-shape, voice, derivation, continuation"],
+  [27, "Typed VNC Source with reduplication and meaning relation open", "Complete frequentative Result", "F→C", "stem-shape, derivation, continuation"],
+  [28, "Typed verbal embed and matrix with their relation open", "Complete recursively available verbal compound", "P→C", "composition, valence, continuation"],
+  [29, "Typed VNC with purposive series, direction, and number open", "Complete purposive compound Result", "P→C", "composition, tense, continuation"],
+  [30, "Typed nominal unit and matrix with incorporated role open", "Complete incorporated, adverbial, or complement Result", "P→C", "composition, valence, continuation"],
+  [31, "Two typed nounstems with relation and possessor orientation open", "Complete compound NNC Result", "P→C", "composition, possession, order, continuation"],
+  [32, "Typed NNC Source with affective attitude open", "Complete affective NNC Result", "F→C", "state, attitude, continuation"],
+  [33, "Typed VNC or compound Source with attitude derivation open", "Complete honorific, reverential, or pejorative Result", "F→C", "voice, attitude, derivation, continuation"],
+  [34, "Numeral base with multiplier, classifier, or measure structure open", "Complete numeral NNC Result", "F→P", "number, composition, state"],
+  [35, "Exact VNC Result with nominalization, state, or ownerhood open", "Complete preterit-agentive or ownerhood NNC Result", "C→F→C", "nominalization, state, possession, continuation"],
+  [36, "Exact VNC Result with nominalization function open", "Complete agentive, patientive, instrumentive, or action NNC Result", "C→F→C", "nominalization, voice, continuation"],
+  [37, "Typed or exact VNC Source with action or patientive family open", "Complete action or passive-patientive NNC Result", "C→F→C", "nominalization, voice, continuation"],
+  [38, "Exact impersonal VNC Result with patient and participant reading open", "Complete impersonal-patientive NNC or compound Result", "C→F→P", "nominalization, voice, participant, composition"],
+  [39, "Exact staged Result or typed root/stock with patientive family open", "Complete patientive NNC with licensed outgoing continuation", "C→F→C/P", "nominalization, state, possession, continuation"],
+  [40, "Exact NNC or nominalized VNC Result with adjectival function open", "Complete adjectival NNC or predicate-modification Result", "C→F/P", "modification, reference, nominalization, continuation"],
+  [41, "Typed adjectival Source with intensity, compound relation, or degree open", "Complete intensified or compound adjectival Result", "C→F/P", "modification, composition, state, continuation"],
+  [42, "Complete principal and modifier units with attachment and reference open", "Complete preposed modification or supplementary structure", "P↔R", "modification, reference, order, composition"],
+  [43, "Complete principal and modifier units with distance or head type open", "Complete nonpreposed or discontinuous modification Result", "P↔R", "modification, reference, order, composition"],
+  [44, "Complete VNC or NNC with adverbial function and scope open", "Complete adverbialized unit or incorporated modifier", "C→F→P", "composition, scope, interpretation, continuation"],
+  [45, "Typed relational Source with option-one relation and possessor open", "Complete relational NNC or supplementary relation", "F→P/C", "possession, reference, composition, continuation"],
+  [46, "Typed relational or locative Source with matrix relation open", "Complete option-two relational or locative Result", "F→P/C", "composition, possession, reference, continuation"],
+  [47, "Typed relational Source with licensed option set open", "Complete selected relational Result with outgoing continuation", "F↔R→C", "possession, reference, interpretation, continuation"],
+  [48, "Typed place or gentilic Source with reference and number open", "Complete place-name, gentilic, collective, or incorporated Result", "F→C/P", "composition, reference, number, continuation"],
+  [49, "Complete head and adverbial modifier with attachment and scope open", "Complete simple, complex, or recursive modification Result", "P→C", "composition, modification, order, scope, continuation"],
+  [50, "Complete principal clause and adjoined clause with relation open", "Complete time, place, manner, purpose, condition, or reason adjunction", "P→C", "composition, reference, tense, scope, continuation"],
+  [51, "Complete matrix and complement with participant link open", "Complete object, subject, or adverbial complementation Result", "P→C", "composition, participant, reference, continuation"],
+  [52, "Complete conjuncts with conjunction type and ordering open", "Complete marked, unmarked, or correlative conjunction Result", "P→C", "composition, order, reference, continuation"],
+  [53, "Complete compared units with standard, quality, or degree open", "Complete similarity, equality, comparative, or superlative Result", "P↔R", "composition, reference, interpretation, scope"],
+  [54, "Exact NNC Result with denominal operation and possessor relation open", "Complete inceptive, stative, possessive, causative, or applicative VNC Result", "C→F→C", "stem-shape, possession, derivation, continuation"],
+  [55, "Typed morphemic Source with denominal boundary and valence open", "Complete temporal, causative, applicative, or adverbial VNC Result", "C→F→C", "stem-shape, valence, derivation, continuation"],
+  [56, "Complete clause or nominalized predicate with name relation open", "Complete personal-name NNC or sentence Result", "C→F/P", "composition, reference, scope, continuation"],
+  [57, "Ordinary typed structure with a stated exceptional fact open", "Complete nonsystemic Result or corrected structural reading", "R→F/C", "lexical-history, participant, interpretation, continuation"],
+  [58, "Typed Source or construction problem with formation or analysis open", "Complete instrumental, exclamatory, incorporated-subject, or corrected Result", "F/P↔R", "stem-shape, composition, interpretation, continuation"],
+]);
+
+export const CLASSICAL_LESSONS_1_58_RHYME_PLANES = Object.freeze(
+  LESSON_RHYME_ROWS.map(([
+    lessonNumber,
+    emptiness,
+    fullness,
+    rotation,
+    axes,
+  ]) => buildClassicalGrammaticalRhymeLessonPlaneFrame({
+    lessonNumber,
+    emptiness,
+    fullness,
+    rotation,
+    rhymeAxes: axes.split(",").map(axis => axis.trim()),
+  })),
+);
+
+export const CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY =
+  buildClassicalGrammaticalRhymeLessonDiscoveryFrame({
+    lessonPlaneFrames: CLASSICAL_LESSONS_1_58_RHYME_PLANES,
+  });

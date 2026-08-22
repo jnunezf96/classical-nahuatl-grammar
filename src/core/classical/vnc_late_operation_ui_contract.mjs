@@ -115,7 +115,13 @@ const lateVariant = ({
 export const CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS =
   freeze({
     "classical-rule-logic-late-operation": [
-      lateOperation("none", "none", 9005, 12221, "not-applicable"),
+      lateOperation(
+        "none",
+        "no added VNC derivation layer",
+        9005,
+        12221,
+        "not-applicable"
+      ),
       lateOperation("frequentative", "frequentative", 9005, 9015),
       lateOperation("compound", "verbal compound", 9297, 9318),
       lateOperation("purposive", "purposive", 9967, 10012),

@@ -4099,10 +4099,13 @@ export function createClassicalClauseRelationControllerGlobals(
         });
       }
       const requestThroughCanonicalApplication = request => {
+        const exactCapturedResults = CAPTURE_ROLES
+          .map(role => getValidatedCapture(role)?.canonicalResult || null)
+          .filter(Boolean);
         const applicationResult =
           targetObject.executeClassicalGrammarApplicationRequest({
             operationId: "sentence:supplementation",
-            args: [request],
+            args: [request, ...exactCapturedResults],
           });
         return targetObject.isClassicalGrammarApplicationResult(
           applicationResult

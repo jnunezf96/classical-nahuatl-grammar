@@ -131,6 +131,22 @@ function valueAtPath(value, path = "") {
   }, value);
 }
 
+function canonicalBranchStatus(value, path = "") {
+  const segments = String(path || "").split(".").filter(Boolean);
+  for (let size = segments.length; size >= 0; size -= 1) {
+    const candidate = valueAtPath(value, segments.slice(0, size).join("."));
+    if (!candidate || typeof candidate !== "object") continue;
+    const status = candidate.authorizationStatus
+      || (candidate.blocksInput === false
+        || candidate.proofFrame?.conclusion?.authorized === true
+        || candidate.formulaOutputAllowed === true
+        ? "authorized"
+        : "");
+    if (status) return status;
+  }
+  return "";
+}
+
 function hasMeaningfulCanonicalWitness(value, key = "", seen = new WeakSet()) {
   if (value == null) return false;
   if (typeof value !== "object") {
@@ -223,8 +239,25 @@ function executeCanonicalSelection(target, spec, selection, familyKernel = null,
         || operationResult?.formulaOutputAllowed === true
         ? "authorized"
         : "");
-    const authorized = validator(operationResult) === true
+    const wholeFrameAuthorized = validator(operationResult) === true
       && observedStatus === expectedStatus;
+    const selectedWitness = coordinate?.canonicalPath
+      ? valueAtPath(operationResult, coordinate.canonicalPath)
+      : undefined;
+    const selectedBranchAuthorized = Boolean(
+      expectedStatus === "authorized"
+      && coordinate?.canonicalPath
+      && canonicalBranchStatus(
+        operationResult,
+        coordinate.canonicalPath
+      ) === expectedStatus
+      && hasMeaningfulCanonicalWitness(
+        selectedWitness,
+        String(coordinate.canonicalPath).split(".").at(-1) || ""
+      )
+      && Object.isFrozen(operationResult)
+    );
+    const authorized = wholeFrameAuthorized || selectedBranchAuthorized;
     const canonicalFrame = deepFreeze({
       kind: "classical-canonical-semantic-operation-frame",
       canonicalAnalysisKind: spec.canonicalAnalysisKind || "typed-semantic-operation",

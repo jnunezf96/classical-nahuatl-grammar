@@ -1003,6 +1003,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const requestedVoice = normalizeClassicalNahuatlVncApplicationToken(request.requestedVoice || request.vncVoice || request.voice || "active");
       const targetVoiceSelectionFrame = validateClassicalNahuatlVncVoiceSelection(requestedVoice, "target");
       const normalizedRequestedVoice = targetVoiceSelectionFrame.voice || "active";
+      const requestedImpersonalDerivationPath =
+        normalizeClassicalNahuatlVncApplicationToken(
+          request.requestedImpersonalDerivationPath
+          || request.impersonalDerivationPath
+          || "direct-active",
+        ).toLowerCase();
+      const impersonalDerivationPath = [
+        "direct-active",
+        "passive-then-impersonal",
+      ].includes(requestedImpersonalDerivationPath)
+        ? requestedImpersonalDerivationPath
+        : "";
       const requestedSourceVoice = normalizeClassicalNahuatlVncApplicationToken(request.requestedSourceVoice || request.sourceVoice || "active").toLowerCase();
       const sourceVoiceSelectionFrame = validateClassicalNahuatlVncVoiceSelection(requestedSourceVoice, "causative-source");
       const sourceVoice = sourceVoiceSelectionFrame.voice || "active";
@@ -1135,6 +1147,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceNonactiveOptionId: normalizeClassicalNahuatlVncApplicationToken(request.sourceNonactiveOptionId || request.selectedSourceNonactiveOptionId || ""),
         requestedVoice,
         voice: normalizedRequestedVoice,
+        requestedImpersonalDerivationPath,
+        impersonalDerivationPath,
+        requestedImpersonalDerivationPathRecognized:
+          Boolean(impersonalDerivationPath),
         requestedVoiceRecognized: targetVoiceSelectionFrame.authorizationStatus === "authorized",
         targetVoiceSelectionFrame,
         nonactiveOptionId: normalizeClassicalNahuatlVncApplicationToken(request.nonactiveOptionId || request.selectedNonactiveOptionId || ""),
@@ -1526,6 +1542,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceValence: canonicalSourceDescriptor.sourceValence || normalizedRequest.sourceValence,
         sourceSubject: normalizedRequest.sourceSubject,
         sourceObjectPerson: firstSpecificObject?.objectPerson || normalizedRequest.objectPerson || "",
+        impersonalDerivationPath: normalizedRequest.impersonalDerivationPath,
         mood: normalizedRequest.mood,
         tense: normalizedRequest.tense,
         verbClass: canonicalSourceDescriptor.verbClass || normalizedRequest.verbClass,
@@ -2002,6 +2019,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceValence: machineryFrame.sourceValence,
         sourceSubject: machineryFrame.sourceSubject,
         sourceObjectPerson: firstSpecificObject?.objectPerson || activeMachineryFrame.priorVncFrame?.objectFrame?.objectPerson || "",
+        impersonalDerivationPath:
+          machineryFrame.voiceTransformationFrame
+            ?.impersonalDerivationPath || "direct-active",
         mood: activeMachineryFrame.priorVncFrame?.personDyad?.mood || activeMachineryFrame.priorVncFrame?.mood || "indicative",
         tense: activeMachineryFrame.priorVncFrame?.tense || "present",
         verbClass: activeMachineryFrame.targetClass || activeMachineryFrame.classId || "A",
@@ -5767,6 +5787,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
                 ? normalizedRequest.sourceSubject
                 : normalizedRequest.subject,
             sourceObjectPerson: firstSpecificObject?.objectPerson || activeMachineryFrame?.priorVncFrame?.objectFrame?.objectPerson || "",
+            impersonalDerivationPath:
+              normalizedRequest.impersonalDerivationPath,
             mood: normalizedRequest.mood,
             tense: normalizedRequest.tense,
             verbClass: targetClass,
@@ -5899,9 +5921,6 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           getClassicalNahuatlVncApplicationRuntimeTarget();
         const lateClosureAuthorized = Boolean(
           sourceResultFrame?.authorizationStatus === "authorized"
-          && ["compound", "purposive", "honorific"].includes(
-            sourceResultFrame.operationFrame?.operation,
-          )
           && typeof currentRuntimeTarget?.isClassicalNahuatlClosureFrame
             === "function"
           && currentRuntimeTarget.isClassicalNahuatlClosureFrame(
@@ -5950,6 +5969,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               kind:
                 "classical-nahuatl-vnc-result-source-constituent-projection",
               version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+              canonicalResultFrame: sourceResultFrame,
+              canonicalOperationFrame: operationFrame,
+              canonicalSourceMachineryFrame:
+                operationFrame.sourceMachineryFrame,
               sourceStem: operationFrame.targetStem,
               sourceLexemeId: "",
               sourceInitialISelection: "",
@@ -5957,7 +5980,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
               sourceValence: targetValence,
               sourceSubject:
                 sourceResultFrame.normalizedRequest?.subject || "3sg",
-              sourceVoice: sourceDescriptor.sourceVoice || "active",
+              sourceVoice: normalizeClassicalNahuatlVncApplicationToken(
+                operationFrame.operationFacts?.sourceVoice,
+              ) || sourceDescriptor.sourceVoice || "active",
               sourceNonactiveOptionId:
                 sourceDescriptor.sourceNonactiveOptionId || "",
               sourceObjectRequests,
@@ -5968,6 +5993,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
                 ? "multiple"
                 : sourceObjectRequests[0]?.objectPerson || "",
               projectionRole: "read-only-source-constituents",
+              sourceHistoryPreservedByExactFrameIdentity: true,
               grammarAuthority: false,
               callerSuppliedAuthorityAccepted: false,
             });

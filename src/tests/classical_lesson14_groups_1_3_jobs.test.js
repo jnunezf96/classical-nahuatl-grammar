@@ -139,12 +139,17 @@ function run(ctx = {}) {
     const appOperation = ctx.issueCanonicalNncOperationFrame(appSource, {
         state: "absolutive", subject: "3common", stemFormation: "distributive-varietal",
     });
-    const appResult = ctx.requestClassicalOrdinaryNncResult(appSource, appOperation);
+    const appReceipt = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "nnc:ordinary",
+        args: [appSource, appOperation],
+    });
+    const appResult = appReceipt.canonicalResult;
     s.eq("the normal application route derives the selected distributive nounstem", {
         source: appSource.authorizationStatus,
         choices: appSource.stemFormationOptions,
         operation: appOperation.authorizationStatus,
         relation: appOperation.stemFormation,
+        receipt: appReceipt.authorizationStatus,
         result: appResult.authorizationStatus,
         formula: appResult.formulaRealization,
         surface: appResult.wordSurface,
@@ -153,6 +158,7 @@ function run(ctx = {}) {
         choices: ["plain", "affinity", "distributive-varietal"],
         operation: "authorized",
         relation: "distributive-varietal",
+        receipt: "authorized",
         result: "authorized",
         formula: "#0-0(cah-cal)li-0#",
         surface: "cahcalli",

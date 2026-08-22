@@ -198,6 +198,10 @@ function active(runtime, stem, {
   valence = "intransitive",
   objectPerson = "",
 } = {}) {
+  const objectKind = ({
+    "projective-human": "nonspecific-human",
+    "projective-nonhuman": "nonspecific-nonhuman",
+  })[valence] || (valence === "intransitive" ? "" : valence);
   return runtime.buildClassicalNahuatlVerbstemClassFrame(stem, {
     subject,
     mood,
@@ -206,7 +210,7 @@ function active(runtime, stem, {
     perfectiveClass: verbClass,
     valence,
     transitivity: valence === "intransitive" ? "intransitive" : "transitive",
-    objectKind: valence === "intransitive" ? "" : valence,
+    objectKind,
     objectPerson,
   });
 }

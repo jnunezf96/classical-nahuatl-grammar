@@ -192,7 +192,7 @@ function run(ctx = {}) {
         && ideas[10].guidance.includes("Traditional conditional wording is a reading")
         && ideas[10].guidance.includes("no separate controls for z")
         && ideas[10].guidance.includes("never a whitelist on general Source entry")
-        && ideas[11].guidance.includes("use Add another derivation to capture")
+        && ideas[11].guidance.includes("use Continue this Result to capture")
         && ideas[11].guidance.includes("captured Result is the new embed or the new matrix")
         && ideas[11].guidance.includes("only new choices")
         && ideas[11].guidance.includes("non-circular hierarchy")

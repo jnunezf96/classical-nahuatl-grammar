@@ -132,6 +132,7 @@ function run(ctx) {
                 sourceValence: "intransitive",
                 tense: "imperfect",
                 requestedVoice: "impersonal",
+                nonactiveOptionId: "inherent-impersonal",
             },
             "present-yohua": {
                 sourceStem: "yohua",

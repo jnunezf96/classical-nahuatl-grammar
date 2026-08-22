@@ -26,19 +26,19 @@ import {
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260821-lesson39-group23-171";
+} from "../../core/classical/participant_frame.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON36_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON37_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON38_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON39_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 
 export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalRuleLogicSurfaceFrame = null;
@@ -2414,7 +2414,14 @@ export function createUiRenderingApi(targetObject = globalThis) {
           : continuedBaseVncApplicationFrame
             ? {
               ...applicationRequest,
-              sourceApplicationFrame: continuedBaseVncApplicationFrame
+              sourceApplicationFrame: continuedBaseVncApplicationFrame,
+              ...(resultSourceContinuation?.resultFrame?.kind
+                === "classical-nahuatl-late-vnc-derivation-closure-frame"
+                ? {
+                  recursiveEmbedClosureFrame:
+                    resultSourceContinuation.resultFrame
+                }
+                : {})
             }
             : applicationRequest;
       const lessons27282933ClosureFrame = lateOperation !== "none"
@@ -9392,7 +9399,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : lesson28Facts.recursiveMatrixFrame?.operationFrame?.targetStem;
           addLesson28Cue(
             "lesson28-recursive-compounding",
-            `captured compound Result ${capturedStem || "issued Result"} is reused as the next ${capturedRole} · the user chooses only this role and the next binary bracketing · hierarchy depth ${lesson28Facts.recursiveDepth} is validated as acyclic with two distinct constituents · each layer derives its own connective, valence, tense, and participant links · outer embed valence and all typed participants remain intact · the finite boundary stays outside the completed compound · Add another derivation can continue the chain · Canvas examples are reading evidence, never a stem whitelist or depth template`,
+            `captured compound Result ${capturedStem || "issued Result"} is reused as the next ${capturedRole} · the user chooses only this role and the next binary bracketing · hierarchy depth ${lesson28Facts.recursiveDepth} is validated as acyclic with two distinct constituents · each layer derives its own connective, valence, tense, and participant links · outer embed valence and all typed participants remain intact · the finite boundary stays outside the completed compound · Continue this Result can continue the chain · Canvas examples are reading evidence, never a stem whitelist or depth template`,
           );
         }
       }
@@ -17604,7 +17611,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const nncType = String(surfaceFrame.state?.nncType || "ordinary");
       const nncOptionContract = getClassicalNncAuthorityOptionContract(surfaceFrame.state);
-      const nncControlAvailability = getClassicalNncAuthorityControlAvailability(surfaceFrame, nncOptionContract);
+      const nncSubjectPersonValues =
+        nncOptionContract.selectedAnimacy === "nonanimate"
+        || nncOptionContract.selectedHumanness === "nonhuman"
+          ? ["3"]
+          : nncOptionContract.subjectPersonValues;
+      const nncPresentationOptionContract = {
+        ...nncOptionContract,
+        subjectPersonValues: nncSubjectPersonValues,
+        selectedSubjectPerson: nncSubjectPersonValues.length === 1
+          ? nncSubjectPersonValues[0]
+          : nncOptionContract.selectedSubjectPerson,
+      };
+      const nncControlAvailability = getClassicalNncAuthorityControlAvailability(
+        surfaceFrame,
+        nncPresentationOptionContract
+      );
       targetObject.document.querySelectorAll("[data-classical-nnc-authority-heading]").forEach(heading => {
         heading.hidden = !nncActive;
         heading.setAttribute("aria-hidden", String(!nncActive));
@@ -17622,7 +17644,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           nncSourceClassControl.value =
             surfaceFrame.state.nncTypedSourceFrame.sourceClass;
         }
-        applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-person", nncOptionContract.subjectPersonValues, nncOptionContract.selectedSubjectPerson);
+        applyClassicalRuleLogicSelectOptionAvailability(
+          "classical-rule-logic-nnc-subject-person",
+          nncPresentationOptionContract.subjectPersonValues,
+          nncPresentationOptionContract.selectedSubjectPerson
+        );
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-animacy", nncOptionContract.animacyValues, nncOptionContract.selectedAnimacy);
         applyClassicalRuleLogicSelectOptionAvailability("classical-rule-logic-nnc-subject-humanness", nncOptionContract.humannessValues || [], nncOptionContract.selectedHumanness || "");
         const nncAnimacyControl = targetObject.document.getElementById(
@@ -20231,6 +20257,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-deverbal-nnc-action-stem-variant",
       "classical-deverbal-nnc-root-stock-allomorph",
       "classical-deverbal-nnc-root-stock-source-analysis",
+      "classical-deverbal-nnc-continuation-matrix-stem",
+      "classical-deverbal-nnc-continuation-matrix-noun-class",
+      "classical-deverbal-nnc-continuation-matrix-verb-class",
+      "classical-deverbal-nnc-continuation-matrix-valence",
       "classical-compound-nnc-embed-source-class",
       "classical-compound-nnc-embed-analysis",
       "classical-compound-nnc-variant-stem",
@@ -20342,6 +20372,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
           makeClassicalCustomFormationPlacement("nounstem"),
         "classical-deverbal-nnc-ownerhood-matrix":
           makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-number-connector":
+          makeClassicalCustomFormationPlacement("nounstem"),
+        "classical-deverbal-nnc-continuation-relation":
+          makeClassicalCustomFormationPlacement("", "predicate"),
         "classical-rule-logic-nonactive-family":
           makeClassicalCustomFormationPlacement("nounstem", "verbstem"),
 
@@ -20501,6 +20535,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-deverbal-nnc-patientive-matrix-relation": 38,
       "classical-deverbal-nnc-characteristic-reading": 30,
       "classical-deverbal-nnc-ownerhood-matrix": 20,
+      "classical-deverbal-nnc-number-connector": 30,
+      "classical-deverbal-nnc-continuation-relation": 20,
       "classical-nominal-embed-role": 10,
       "classical-nominal-embed-adverbial-route": 20,
       "classical-nominal-embed-possession-kind": 10,
@@ -21759,6 +21795,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 requestedDerivation: "direct",
                 requestedVoice: patientiveNonactiveVoice,
                 voice: patientiveNonactiveVoice,
+                ...(patientiveFamily === "impersonal-core"
+                  && sourceValence === "projective-human"
+                  ? {
+                      impersonalDerivationPath:
+                        "passive-then-impersonal",
+                    }
+                  : {}),
                 ...(objectKind === "none"
                   ? {}
                   : {
@@ -24918,6 +24961,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
             requestedDerivation: "direct",
             requestedVoice: patientiveNonactiveVoice,
             voice: patientiveNonactiveVoice,
+            ...(patientiveSourceFamily === "impersonal-core"
+              && canonicalVncSourceValence === "projective-human"
+              ? {
+                  impersonalDerivationPath:
+                    "passive-then-impersonal",
+                }
+              : {}),
             ...(canonicalVncObjectKind === "none"
               ? {}
               : {
@@ -26321,10 +26371,61 @@ export function createUiRenderingApi(targetObject = globalThis) {
             || key.startsWith("classicalResult")
             || key.startsWith("classicalOutput")
             || key.startsWith("classicalSgr")
+            || key.startsWith("classicalBlock")
           )
         ) return;
         delete block.dataset[key];
       });
+    }
+    function renderClassicalUnavailableNominalConstructionSelection(
+      block,
+      selectedConstruction,
+      request = null
+    ) {
+      const resultUnit = getClassicalNominalConstructionResultUnit({
+        frame: null,
+        request,
+        selectedConstruction,
+      });
+      ActiveClassicalRuleLogicSurfaceFrame = null;
+      clearClassicalRuleLogicSurfaceDatasets();
+      clearClassicalNominalConstructionResultDatasets(block);
+      applyClassicalUnifiedOutputPanelShell(resultUnit);
+      block.hidden = false;
+      block.replaceChildren();
+      block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
+      block.dataset.classicalNahuatlSurfaceVisible = "true";
+      block.dataset.classicalNahuatlSurfaceStatus = "blocked";
+      block.dataset.classicalBasalUnit = resultUnit;
+      block.dataset.classicalNominalConstruction = selectedConstruction;
+      block.dataset.classicalBlockReason =
+        "selected-source-operation-requires-more-information";
+      applyClassicalResultRootSemantics(block, "blocked");
+      const guidance = targetObject.document.createElement("section");
+      guidance.className = "grammar-inspector__section";
+      guidance.dataset.classicalResultGuidance = "required-choice";
+      markClassicalResultPrimaryAnswer(guidance);
+      const title = targetObject.document.createElement("h3");
+      title.id = CLASSICAL_RESULT_HEADING_ID;
+      title.className = "classical-rule-surface__title";
+      title.dataset.classicalResultHeading = "true";
+      title.textContent = "Complete the selected Source operation";
+      const detail = targetObject.document.createElement("p");
+      detail.textContent =
+        "This pathway needs more typed Source or Grammar information before it can issue a Result.";
+      const status = targetObject.document.createElement("div");
+      configureClassicalResultStatus(status, {
+        message: "The selected pathway is waiting for required information.",
+        signatureParts: [
+          "nominal-construction",
+          selectedConstruction,
+          "required-information",
+        ],
+      });
+      guidance.append(title, detail, status);
+      block.appendChild(guidance);
+      syncClassicalSourceGrammarResultSurface(null, block);
+      return true;
     }
     function getClassicalNominalConstructionDiagrammaticFrame(
       frame = null,
@@ -26519,6 +26620,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (!ClassicalNominalConstructionOperationHandlers[selectedConstruction]) {
         syncClassicalNominalConstructionControlVisibility("");
         syncClassicalNominalConstructionPresentation(null);
+        clearClassicalNominalConstructionResultDatasets(block);
         return false;
       }
       syncClassicalNominalConstructionControlVisibility(selectedConstruction);
@@ -26725,7 +26827,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         if (frame) ClassicalNominalConstructionRenderedFrameCache.set(requestKey, frame);
       }
       syncClassicalNominalConstructionPresentation(frame, selectedConstruction);
-      if (!frame) return false;
+      if (!frame) {
+        return renderClassicalUnavailableNominalConstructionSelection(
+          block,
+          selectedConstruction,
+          request
+        );
+      }
       const personalNameSentenceOperation =
         selectedConstruction === "personal-name-nnc"
           ? requestClassicalPersonalNameSentenceOperation(frame)
@@ -27295,7 +27403,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-whole-canvas-action classical-rule-surface__action";
         continueAction.dataset.classicalRuleSurfaceAction =
           "use-result-as-source";
-        continueAction.textContent = "Add another derivation";
+        continueAction.dataset.classicalResultContinuationKind =
+          "exact-result-to-source";
+        continueAction.setAttribute(
+          "aria-label",
+          "Continue this exact Result as the next typed Source"
+        );
+        continueAction.textContent = "Continue this Result";
         continueAction.addEventListener("click", () => (
           useClassicalWholeCanvasResultAsNextSource(frame)
         ));
@@ -30007,12 +30121,739 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return entries;
     }
 
+    function syncClassicalResultContinuationCue(
+      surfaceFrame = null
+    ) {
+      if (typeof targetObject.document === "undefined") return null;
+      const host = targetObject.document.getElementById(
+        "classical-grammar-continuation"
+      );
+      if (!host) return null;
+      host.querySelector?.(
+        ":scope > [data-classical-result-continuation-cue]"
+      )?.remove?.();
+      if (!surfaceFrame) return null;
+      const authorized =
+        surfaceFrame.authorizationStatus === "authorized";
+      const directCandidate = authorized
+        ? getClassicalVncResultSourceContinuationCandidate(surfaceFrame)
+        : null;
+      const cue = targetObject.document.createElement("p");
+      cue.className = "classical-result-continuation-cue";
+      cue.dataset.classicalResultContinuationCue = "true";
+      cue.dataset.classicalResultContinuationStatus = directCandidate
+        ? "exact-result-to-source-available"
+        : authorized
+          ? "no-direct-result-to-source-handoff"
+          : "authorized-result-required";
+      cue.dataset.classicalResultContinuationAuthority =
+        "presentation-only";
+      cue.textContent = directCandidate
+        ? "Exact Result → typed Source is available."
+        : authorized
+          ? "No direct Result → Source handoff is licensed for this Result. Use only the exact continuation choices below."
+          : "Continuation waits for an authorized Result.";
+      host.prepend(cue);
+      host.hidden = false;
+      host.setAttribute("aria-hidden", "false");
+      return cue;
+    }
+
+    function syncClassicalCompositionPathSummary(
+      surfaceFrame = null,
+      resultRoot = null
+    ) {
+      if (typeof targetObject.document === "undefined") return null;
+      const summary = targetObject.document.querySelector?.(
+        '[data-classical-composition-path-summary="true"]'
+      ) || null;
+      if (!summary) return null;
+      const sourceRoot = targetObject.document.getElementById(
+        "classical-source-parts"
+      );
+      const grammarRoot = targetObject.document.getElementById(
+        "classical-rule-logic-controls"
+      );
+      const operation = targetObject.document.getElementById(
+        "classical-construction-operation"
+      );
+      const selectedOperation = operation?.selectedOptions?.[0]
+        || Array.from(operation?.options || []).find(
+          option => option.value === operation?.value
+        )
+        || null;
+      const sourceUnit = String(
+        sourceRoot?.dataset?.classicalSourcePathUnit
+        || surfaceFrame?.basalUnit
+        || grammarRoot?.dataset?.classicalRuleLogicSurfaceUnit
+        || "vnc"
+      ).toLowerCase() === "nnc" ? "nnc" : "vnc";
+      const sourceStem = String([
+        surfaceFrame?.state?.stem,
+        surfaceFrame?.sourceFrame?.stem,
+        surfaceFrame?.canonicalResult?.sourceFrame?.stem,
+        surfaceFrame?.operationFrame?.sourceStem,
+        targetObject.document.getElementById("verb")?.value,
+      ].find(value => typeof value === "string" && value.trim()) || "")
+        .trim()
+        .replace(/^\((.*)\)$/u, "$1");
+      const selectedConstruction = String(operation?.value || "none");
+      const lateOperation = String(
+        surfaceFrame?.state?.lateOperation || ""
+      );
+      const derivationType = String(
+        surfaceFrame?.state?.derivationType || ""
+      );
+      const grammarOperation = selectedConstruction !== "none"
+        ? String(
+          selectedOperation?.dataset?.classicalGrammarOperation
+          || selectedConstruction
+        )
+        : lateOperation && lateOperation !== "none"
+          ? lateOperation
+          : derivationType && derivationType !== "direct"
+            ? derivationType
+            : String(
+              selectedOperation?.dataset?.classicalGrammarOperation
+              || "direct generation"
+            );
+      const ownerProjection = getClassicalSgrOwnerIssuedProjection(
+        surfaceFrame
+      );
+      const layerGraphCandidate = ownerProjection
+        && typeof targetObject.getClassicalGrammarApplicationLayerGraph
+          === "function"
+        ? targetObject.getClassicalGrammarApplicationLayerGraph(
+          ownerProjection.applicationResult
+        )
+        : null;
+      const layerGraph = typeof targetObject
+        .isClassicalGrammarApplicationLayerGraph === "function"
+        && targetObject.isClassicalGrammarApplicationLayerGraph(
+          layerGraphCandidate
+        )
+        ? layerGraphCandidate
+        : null;
+      const layerNodes = layerGraph?.nodes || [];
+      const nextOperationInventory = layerGraph?.nextOperationInventory
+        || (
+          ownerProjection
+          && typeof targetObject
+            .getClassicalGrammarApplicationNextOperationInventory
+            === "function"
+            ? targetObject
+              .getClassicalGrammarApplicationNextOperationInventory(
+                ownerProjection.applicationResult
+              )
+            : null
+        );
+      const resultStatus = String(
+        resultRoot?.dataset?.classicalNahuatlSurfaceStatus
+        || surfaceFrame?.authorizationStatus
+        || "waiting"
+      );
+      const resultUnit = String(
+        resultRoot?.dataset?.classicalBasalUnit
+        || grammarRoot?.dataset?.classicalRuleLogicSurfaceUnit
+        || surfaceFrame?.basalUnit
+        || sourceUnit
+      ).toLowerCase() === "nnc" ? "nnc" : "vnc";
+      const authorized = resultStatus === "authorized";
+      const resultStatusLabel = authorized
+        ? "ready"
+        : resultStatus === "blocked"
+          ? "unavailable"
+          : "waiting";
+      const grammarDependencyState = String(
+        targetObject.document.getElementById("classical-authority-panel")
+          ?.dataset?.classicalGrammarDependencyState || ""
+      );
+      const sourcePathState = sourceStem ? "ready" : "waiting";
+      const grammarPathState = grammarDependencyState !== "ready"
+        ? "waiting"
+        : resultStatus === "blocked"
+          ? "needs-choice"
+          : "ready";
+      const resultPathState = authorized
+        ? "ready"
+        : resultStatus === "blocked"
+          ? "unavailable"
+          : "waiting";
+      const directCandidate = authorized
+        ? getClassicalVncResultSourceContinuationCandidate(surfaceFrame)
+        : null;
+      const continuationStatus = directCandidate
+        ? "exact-result-to-source-and-capture"
+        : authorized
+          ? "exact-result-capture-only"
+          : "authorized-result-required";
+      const controlValue = id => String(
+        targetObject.document.getElementById(id)?.value || ""
+      ).trim();
+      const compactFact = value => String(value || "")
+        .trim()
+        .replace(/-/gu, " ");
+      const sourceClassControl = targetObject.document.getElementById(
+        sourceUnit === "nnc"
+          ? "classical-rule-logic-nnc-class"
+          : "classical-rule-logic-class"
+      );
+      const sourceClass = String(sourceClassControl?.value || "").trim();
+      const sourceFacts = [
+        sourceClass
+          ? sourceUnit === "vnc"
+            ? `Class ${sourceClass}`
+            : `${compactFact(sourceClass)} class`
+          : sourceStem && sourceClassControl && !sourceClassControl.disabled
+            ? "class needed"
+            : "",
+        sourceUnit === "vnc"
+          ? compactFact(controlValue("classical-rule-logic-valence"))
+          : "",
+      ].filter(Boolean);
+      const subjectPrefix = `classical-rule-logic-${resultUnit}-subject-`;
+      const subjectPerson = {
+        1: "first",
+        2: "second",
+        3: "third",
+      }[controlValue(`${subjectPrefix}person`)] || "";
+      const subjectNumber = compactFact(
+        controlValue(`${subjectPrefix}number`)
+      );
+      const subjectAnimacy = compactFact(
+        controlValue(`${subjectPrefix}animacy`)
+      );
+      const subjectHumanness = subjectAnimacy === "animate"
+        ? compactFact(controlValue(`${subjectPrefix}humanness`))
+        : "";
+      const subjectFacts = [
+        [subjectPerson, subjectNumber].filter(Boolean).join(" "),
+        [subjectHumanness, subjectAnimacy].filter(Boolean).join(" "),
+      ].filter(Boolean);
+      const predicateFacts = resultUnit === "vnc"
+        ? [
+          controlValue("classical-rule-logic-vnc-voice"),
+          [
+            controlValue("classical-rule-logic-mood"),
+            controlValue("classical-rule-logic-tense"),
+          ].filter(Boolean).join(" "),
+        ]
+        : [
+          controlValue("classical-rule-logic-nnc-state"),
+          controlValue("classical-rule-logic-nnc-state") === "possessive"
+            ? `${controlValue("classical-rule-logic-nnc-possessor")} possessor`
+            : "",
+        ];
+      const outputScope = compactFact(controlValue(
+        resultUnit === "nnc"
+          ? "classical-rule-logic-nnc-output-scope"
+          : "classical-rule-logic-vnc-output-scope"
+      ));
+      const primaryAnswer = resultRoot?.querySelector?.(
+        '[data-classical-result-primary-answer="true"]'
+      ) || null;
+      const canonicalSurface = authorized && outputScope === "single"
+        ? String(primaryAnswer?.querySelector?.(
+          ".classical-rule-surface__single-vnc-surface, "
+          + ".classical-rule-surface__single-nnc-surface, "
+          + ".classical-rule-surface__sentence-surface"
+        )?.textContent || "").trim()
+        : "";
+      const nextSourceStem = String(
+        directCandidate?.projection?.sourceStem || ""
+      ).trim().replace(/^\((.*)\)$/u, "$1");
+      const values = {
+        source: sourceStem
+          ? `${sourceUnit.toUpperCase()} · (${sourceStem})`
+          : `${sourceUnit.toUpperCase()} · waiting`,
+        grammar: layerNodes.length > 1
+          ? `${layerNodes.length} ordered grammatical layers`
+          : formatClassicalClauseRelationValue(
+            layerNodes[0]?.operationId || grammarOperation
+          ),
+        result: canonicalSurface
+          ? `${resultUnit.toUpperCase()} · ${canonicalSurface}`
+          : `${resultUnit.toUpperCase()} · ${resultStatusLabel}`,
+        continue: directCandidate
+          ? "Result → Source or exact capture"
+          : authorized
+            ? "exact Result capture"
+            : "authorized Result required",
+      };
+      const details = {
+        source: sourceFacts.join(" · "),
+        grammar: [...subjectFacts, ...predicateFacts]
+          .filter(Boolean)
+          .map(compactFact)
+          .join(" · "),
+        result: [
+          resultStatusLabel,
+          outputScope === "single" ? "single form" : outputScope,
+        ].filter(Boolean).join(" · "),
+        continue: nextSourceStem
+          ? `next Source (${nextSourceStem}) · exact capture also available`
+          : authorized
+            ? "owner-issued Result only"
+            : "",
+      };
+      const stepStates = {
+        source: sourcePathState,
+        grammar: grammarPathState,
+        result: resultPathState,
+        continue: authorized ? "available" : "waiting",
+      };
+      Object.entries(values).forEach(([step, value]) => {
+        const node = summary.querySelector?.(
+          `[data-classical-composition-path-summary-value="${step}"]`
+        ) || null;
+        if (node) node.textContent = value;
+        const detailNode = summary.querySelector?.(
+          `[data-classical-composition-path-summary-detail="${step}"]`
+        ) || null;
+        if (detailNode) {
+          detailNode.textContent = details[step] || "";
+          detailNode.hidden = !details[step];
+        }
+        const stepNode = summary.querySelector?.(
+          `[data-classical-composition-path-summary-step="${step}"]`
+        ) || null;
+        if (stepNode?.dataset) {
+          stepNode.dataset.classicalCompositionPathStepState =
+            stepStates[step];
+        }
+      });
+      const layersHost = summary.querySelector?.(
+        '[data-classical-composition-path-summary-layers="true"]'
+      ) || null;
+      if (layersHost) {
+        layersHost.replaceChildren();
+        const displayedLayers = layerNodes.length
+          ? layerNodes
+          : [{
+            nodeId: "current-layer",
+            layerOrder: 1,
+            operationId: grammarOperation,
+          }];
+        displayedLayers.forEach(layer => {
+          const chip = targetObject.document.createElement("span");
+          chip.className = "classical-composition-path-summary__layer";
+          chip.dataset.classicalCompositionPathLayer = layer.nodeId;
+          chip.dataset.classicalCompositionPathLayerOperation =
+            layer.operationId;
+          chip.textContent = `${layer.layerOrder}. ${
+            formatClassicalClauseRelationValue(layer.operationId)
+          }`;
+          layersHost.appendChild(chip);
+        });
+      }
+      const nextLayersHost = summary.querySelector?.(
+        '[data-classical-composition-path-summary-next-layers="true"]'
+      ) || null;
+      if (nextLayersHost) {
+        nextLayersHost.replaceChildren();
+        if (authorized && nextOperationInventory?.candidates?.length) {
+          const cue = targetObject.document.createElement("span");
+          cue.className =
+            "classical-composition-path-summary__next-layer-cue";
+          cue.textContent = "Continue, then choose the next compatible layer:";
+          nextLayersHost.appendChild(cue);
+          nextOperationInventory.candidates.forEach(candidate => {
+            const chip = targetObject.document.createElement("span");
+            chip.className =
+              "classical-composition-path-summary__next-layer";
+            chip.dataset.classicalCompositionPathNextOperation =
+              candidate.operationId;
+            chip.dataset.classicalCompositionPathCompatibility =
+              candidate.compatibilityStatus;
+            chip.textContent = formatClassicalClauseRelationValue(
+              candidate.operationId
+            );
+            nextLayersHost.appendChild(chip);
+          });
+          nextLayersHost.hidden = false;
+        } else {
+          nextLayersHost.hidden = true;
+        }
+      }
+      [
+        ["container-inputs", sourcePathState],
+        ["panel-stack-pane-tense", grammarPathState],
+        ["container-tense-grid", resultPathState],
+        ["classical-grammar-continuation", authorized ? "available" : "waiting"],
+      ].forEach(([id, state]) => {
+        const element = targetObject.document.getElementById(id);
+        if (element?.dataset) {
+          element.dataset.classicalCompositionPathLiveState = state;
+        }
+      });
+      summary.dataset.classicalCompositionPathSummarySourceUnit = sourceUnit;
+      summary.dataset.classicalCompositionPathSummaryGrammarOperation =
+        grammarOperation;
+      summary.dataset.classicalCompositionPathSummaryLayerGraph =
+        layerGraph ? "owner-issued" : "current-layer-only";
+      summary.dataset.classicalCompositionPathSummaryLayerCount = String(
+        layerNodes.length || 1
+      );
+      summary.dataset.classicalCompositionPathSummaryLayerEdgeCount = String(
+        layerGraph?.edgeCount || 0
+      );
+      summary.dataset.classicalCompositionPathSummaryLayerOperations = (
+        layerNodes.length
+          ? layerNodes.map(layer => layer.operationId)
+          : [grammarOperation]
+      ).join("|");
+      summary.dataset.classicalCompositionPathSummaryLayerTopology =
+        layerGraph?.isLinear === false ? "branched" : "ordered";
+      summary.dataset.classicalCompositionPathSummaryNextOperationCount =
+        String(nextOperationInventory?.candidateCount || 0);
+      summary.dataset.classicalCompositionPathSummaryResultUnit = resultUnit;
+      summary.dataset.classicalCompositionPathSummaryResultStatus =
+        resultStatus;
+      summary.dataset.classicalCompositionPathSummaryContinuationStatus =
+        continuationStatus;
+      summary.dataset.classicalCompositionPathSummaryResultProjection =
+        canonicalSurface ? "owner-issued-primary-answer" : "status-only";
+      summary.dataset.classicalCompositionPathSummaryAuthority =
+        "presentation-only";
+      return summary;
+    }
+
+    function syncClassicalInterfaceChoicePathways() {
+      const documentObject = targetObject.document;
+      if (!documentObject?.querySelectorAll) return [];
+      const panelSpecs = [
+        ["source", "#classical-source-panel", "Grammar"],
+        ["grammar", "#classical-authority-panel", "Result"],
+        ["result", "#classical-result-panel", "Continue"],
+      ];
+      const isVisible = element => {
+        if (!element || element.hidden === true) return false;
+        for (let node = element; node; node = node.parentElement) {
+          if (
+            node.hidden === true
+            || node.getAttribute?.("aria-hidden") === "true"
+          ) return false;
+        }
+        const style = targetObject.getComputedStyle?.(element);
+        const hasRenderedBox = typeof element.getClientRects !== "function"
+          || element.getClientRects().length > 0;
+        return hasRenderedBox && (!style || (
+          style.display !== "none"
+          && style.visibility !== "hidden"
+        ));
+      };
+      const controlLabel = control => {
+        const wrapper = control.closest?.(
+          ".classical-rule-control, .classical-nnc-source-guide__field, label"
+        ) || null;
+        const label = wrapper?.querySelector?.(
+          ":scope > .classical-rule-control__label, "
+          + ":scope > .classical-nnc-source-guide__label, "
+          + ":scope > .classical-source-parts__label, "
+          + ":scope > .classical-particle-combination-builder__field-label, "
+          + ":scope > .classical-whole-canvas-choice__label"
+        ) || null;
+        return String(
+          label?.childNodes?.[0]?.textContent
+          || label?.textContent
+          || control.getAttribute?.("aria-label")
+          || control.id
+          || "choice"
+        ).replace(/\s+/gu, " ").trim();
+      };
+      const records = [];
+      panelSpecs.forEach(([, selector]) => {
+        const root = documentObject.querySelector(selector);
+        root?.querySelectorAll?.("[data-classical-choice-path-panel]")
+          .forEach(element => {
+            delete element.dataset.classicalChoicePathPanel;
+            delete element.dataset.classicalChoicePathOrder;
+            delete element.dataset.classicalChoicePathState;
+            delete element.dataset.classicalChoicePathNext;
+            delete element.dataset.classicalChoiceOptionCount;
+            delete element.dataset.classicalChoicePathKind;
+            delete element.dataset.classicalChoicePathAuthority;
+          });
+        root?.querySelectorAll?.("[data-classical-interface-control-role]")
+          .forEach(element => {
+            delete element.dataset.classicalInterfaceControlRole;
+            delete element.dataset.classicalInterfaceControlAuthority;
+          });
+        root?.querySelectorAll?.(
+          "[data-classical-choice-option-summary]"
+        ).forEach(element => {
+          delete element.dataset.classicalChoiceOptionSummary;
+        });
+      });
+      panelSpecs.forEach(([panel, selector, terminalLabel]) => {
+        const root = documentObject.querySelector(selector);
+        if (!root?.querySelectorAll) return;
+        const fieldControls = Array.from(root.querySelectorAll(
+          'select, textarea, input:not([type="button"]):not([type="submit"])'
+        )).filter(control => {
+          if (!isVisible(control)) return false;
+          const wrapper = control.closest?.(
+            ".classical-rule-control, .classical-nnc-source-guide__field, label"
+          ) || null;
+          return Boolean(wrapper?.querySelector?.(
+            ".classical-rule-control__label, "
+            + ".classical-nnc-source-guide__label, "
+            + ".classical-source-parts__label, "
+            + ".classical-particle-combination-builder__field-label, "
+            + ".classical-whole-canvas-choice__label"
+          ));
+        });
+        const groupSelectors = [
+          "[data-classical-basal-unit-controls]",
+          ".classical-source-parts__mode",
+          ".calc-operator-grid--derivation",
+          ".classical-segmented-control",
+          ".classical-rule-surface__paradigm-view-switch",
+          ".classical-rule-surface__format-switch",
+          '[role="radiogroup"]',
+        ].join(",");
+        const choiceGroups = Array.from(root.querySelectorAll(
+          groupSelectors
+        )).filter(group => {
+          if (!isVisible(group)) return false;
+          return Array.from(group.querySelectorAll("button")).filter(
+            isVisible
+          ).length > 1;
+        });
+        const actionButtons = Array.from(root.querySelectorAll([
+          "#verb-entry-apply",
+          '[data-classical-result-continuation-kind="exact-result-to-source"]',
+          '[data-classical-rule-surface-action="use-result-as-source"]',
+          '[data-classical-result-recovery-action="true"]',
+        ].join(","))).filter(isVisible);
+        const groupLabel = group => {
+          if (group.matches?.("[data-classical-basal-unit-controls]")) {
+            return "Clause type";
+          }
+          if (group.matches?.(".classical-source-parts__mode")) {
+            return "Source form";
+          }
+          if (group.matches?.(".calc-operator-grid--derivation")) {
+            return "Derivation";
+          }
+          if (group.matches?.(
+            ".classical-rule-surface__paradigm-view-switch"
+          )) return "Result view";
+          if (group.matches?.(".classical-rule-surface__format-switch")) {
+            return "Formula scope";
+          }
+          const wrapper = group.closest?.(".classical-rule-control");
+          return String(
+            wrapper?.querySelector?.(
+              ":scope > .classical-rule-control__label"
+            )?.childNodes?.[0]?.textContent
+            || group.getAttribute?.("aria-label")
+            || "choice group"
+          ).replace(/\s+/gu, " ").trim();
+        };
+        const groupSummaryLabel = group => (
+          group.closest?.(".classical-rule-control")?.querySelector?.(
+            ":scope > .classical-rule-control__label"
+          )
+          || group.closest?.(".calc-operator")?.querySelector?.(
+            ":scope > .calc-operator__heading, :scope > h4"
+          )
+          || null
+        );
+        const nodes = [
+          ...fieldControls.map(control => ({
+            kind: "field",
+            element: control,
+            members: [control],
+            label: controlLabel(control),
+          })),
+          ...choiceGroups.map(group => ({
+            kind: "choice-group",
+            element: group,
+            members: Array.from(group.querySelectorAll("button")).filter(
+              isVisible
+            ),
+            label: groupLabel(group),
+          })),
+          ...actionButtons.map(button => ({
+            kind: "action",
+            element: button,
+            members: [button],
+            label: String(
+              button.textContent || button.getAttribute?.("aria-label") || "action"
+            ).replace(/\s+/gu, " ").trim(),
+          })),
+        ].sort((left, right) => {
+          if (
+            typeof left.element.getBoundingClientRect !== "function"
+            || typeof right.element.getBoundingClientRect !== "function"
+          ) return 0;
+          const leftRect = left.element.getBoundingClientRect();
+          const rightRect = right.element.getBoundingClientRect();
+          const rowDifference = leftRect.top - rightRect.top;
+          return Math.abs(rowDifference) > 4
+            ? rowDifference
+            : leftRect.left - rightRect.left;
+        });
+        nodes.forEach((node, index) => {
+          const control = node.element;
+          const wrapper = control.closest?.(
+            ".classical-rule-control, .classical-nnc-source-guide__field, label"
+          ) || null;
+          const label = node.kind === "choice-group"
+            ? groupSummaryLabel(control)
+            : wrapper?.querySelector?.(
+              ":scope > .classical-rule-control__label, "
+              + ":scope > .classical-nnc-source-guide__label, "
+              + ":scope > .classical-source-parts__label, "
+              + ":scope > .classical-particle-combination-builder__field-label, "
+              + ":scope > .classical-whole-canvas-choice__label"
+            ) || null;
+          const nextLabel = nodes[index + 1]?.label || terminalLabel;
+          let optionCount = 0;
+          let state = node.kind === "action" ? "available" : "selected";
+          let optionSummary = node.kind === "action" ? "" : "typed";
+          if (node.kind === "choice-group") {
+            const availableMembers = node.members.filter(member => (
+              !member.disabled && isVisible(member)
+            ));
+            optionCount = availableMembers.length;
+            state = optionCount === 0
+              ? "unavailable"
+              : availableMembers.some(member => (
+                member.getAttribute?.("aria-pressed") === "true"
+                || member.getAttribute?.("aria-selected") === "true"
+                || member.classList?.contains("is-active")
+              ))
+                ? "selected"
+                : "needs-choice";
+            optionSummary = optionCount <= 1
+              ? "automatic"
+              : `${optionCount} options`;
+          } else if (control.tagName === "SELECT") {
+            optionCount = Array.from(control.options || []).filter(option => (
+              option.value !== ""
+              && option.hidden !== true
+              && option.disabled !== true
+              && option.parentElement?.disabled !== true
+            )).length;
+            const hasCurrentValue = String(control.value || "") !== "";
+            const requiresChoice = Boolean(
+              control.required
+              || control.getAttribute?.("aria-required") === "true"
+              || control.selectedOptions?.[0]?.disabled === true
+            );
+            state = control.disabled
+              ? hasCurrentValue ? "fixed" : "unavailable"
+              : optionCount <= 1
+                ? "automatic"
+                : hasCurrentValue || !requiresChoice
+                  ? "selected"
+                  : "needs-choice";
+            optionSummary = state === "fixed"
+              ? "fixed"
+              : state === "unavailable"
+                ? "unavailable"
+                : state === "automatic"
+                  ? "automatic"
+                  : `${optionCount} options`;
+          } else if (control.type === "checkbox" || control.type === "radio") {
+            optionCount = 2;
+            state = control.disabled ? "unavailable" : "selected";
+            optionSummary = control.disabled ? "unavailable" : "2 options";
+          }
+          const annotatedElements = new Set([
+            control,
+            ...(node.kind === "field" ? [wrapper] : []),
+            ...node.members,
+          ].filter(Boolean));
+          annotatedElements.forEach(element => {
+            element.dataset.classicalChoicePathPanel = panel;
+            element.dataset.classicalChoicePathOrder = String(index + 1);
+            element.dataset.classicalChoicePathState = state;
+            element.dataset.classicalChoicePathNext = nextLabel;
+            element.dataset.classicalChoiceOptionCount = String(optionCount);
+            element.dataset.classicalChoicePathKind =
+              node.kind === "choice-group" && element !== control
+                ? "choice-option"
+                : node.kind;
+            element.dataset.classicalChoicePathAuthority =
+              "presentation-only";
+            element.dataset.classicalInterfaceControlRole =
+              node.kind === "action" ? "transition-action" : "path-choice";
+            element.dataset.classicalInterfaceControlAuthority =
+              "presentation-only";
+          });
+          if (label?.dataset && optionSummary) {
+            label.dataset.classicalChoiceOptionSummary = optionSummary;
+          }
+          records.push(Object.freeze({
+            panel,
+            controlId: String(control.id || ""),
+            kind: node.kind,
+            label: node.label,
+            order: index + 1,
+            state,
+            optionCount,
+            nextLabel,
+          }));
+        });
+        Array.from(root.querySelectorAll([
+          "button",
+          "input",
+          "select",
+          "textarea",
+          '[role="button"]',
+          '[role="checkbox"]',
+          '[role="combobox"]',
+          '[role="listbox"]',
+          '[role="radio"]',
+          '[role="slider"]',
+          '[role="spinbutton"]',
+          '[role="switch"]',
+          '[role="textbox"]',
+        ].join(","))).filter(isVisible).forEach(element => {
+          if (element.dataset.classicalInterfaceControlRole) return;
+          const readingCue = element.matches?.(
+            ".classical-formula__derived-annotation, "
+            + "[data-classical-derived-annotation]"
+          );
+          const supportTool = element.closest?.(
+            ".classical-transcription-keyboard"
+          ) || element.matches?.(
+            '[data-classical-rule-surface-action="copy-result"], '
+            + '[data-classical-rule-surface-action="copy-formula"]'
+          );
+          element.dataset.classicalInterfaceControlRole = readingCue
+            ? "reading-cue"
+            : supportTool
+              ? "support-action"
+              : "unclassified";
+          element.dataset.classicalInterfaceControlAuthority =
+            "presentation-only";
+        });
+      });
+      return Object.freeze(records);
+    }
+
+    function refreshClassicalCompositionPathSummary() {
+      const summary = syncClassicalCompositionPathSummary(
+        ActiveClassicalRuleLogicSurfaceFrame,
+        targetObject.document?.getElementById?.(
+          "classical-rule-logic-surface"
+        ) || null
+      );
+      syncClassicalInterfaceChoicePathways();
+      return summary;
+    }
+
     function syncClassicalSgrResultContracts(
       surfaceFrame = null,
       resultRoot = null,
       inventory = null
     ) {
       if (!resultRoot?.dataset) return;
+      syncClassicalResultContinuationCue(surfaceFrame);
       const ownerProjection = getClassicalSgrOwnerIssuedProjection(surfaceFrame);
       const analysisBundle = getClassicalSgrAnalysisBundle(
         surfaceFrame,
@@ -30265,6 +31106,31 @@ export function createUiRenderingApi(targetObject = globalThis) {
 
     function syncClassicalSourceGrammarResultSurface(surfaceFrame = null, resultRoot = null) {
       bindClassicalCanvasGrammarFactBrowser();
+      syncClassicalCompositionPathSummary(surfaceFrame, resultRoot);
+      syncClassicalInterfaceChoicePathways();
+      const pathwayScheduleTarget = targetObject.window
+        || targetObject.document?.defaultView
+        || targetObject;
+      const pathwaySetTimeout = pathwayScheduleTarget.setTimeout
+        || targetObject.setTimeout;
+      const pathwayRequestAnimationFrame =
+        pathwayScheduleTarget.requestAnimationFrame
+        || targetObject.requestAnimationFrame;
+      if (typeof pathwaySetTimeout === "function") {
+        pathwaySetTimeout.call(pathwayScheduleTarget, () => {
+          syncClassicalInterfaceChoicePathways();
+        }, 0);
+      } else if (
+        typeof pathwayRequestAnimationFrame === "function"
+      ) {
+        pathwayRequestAnimationFrame.call(pathwayScheduleTarget, () => {
+          syncClassicalInterfaceChoicePathways();
+        });
+      } else {
+        const enqueue = targetObject.queueMicrotask
+          || (callback => Promise.resolve().then(callback));
+        enqueue(() => syncClassicalInterfaceChoicePathways());
+      }
       const inventory = targetObject.getClassicalSourceGrammarResultSurfaceInventory?.();
       if (!inventory) return false;
       // Several reusable owner views (clause relations and specialized NNCs)
@@ -30910,6 +31776,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
       block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
       block.dataset.classicalNahuatlSurfaceVisible = "true";
       block.dataset.classicalNahuatlSurfaceStatus = surfaceFrame.authorizationStatus;
+      if (surfaceFrame.authorizationStatus === "authorized") {
+        delete block.dataset.classicalBlockReason;
+      } else {
+        block.dataset.classicalBlockReason = String(
+          surfaceFrame.blockReason || "classical-selected-output-not-authorized"
+        );
+      }
       block.dataset.classicalNahuatlSurfaceFormula = surfaceFrame.selectedFormula;
       block.dataset.classicalNahuatlLesson8SentenceFormula = surfaceFrame.sentenceFormulaDisplay || "";
       block.dataset.classicalNahuatlLesson8SentenceFormulaAttachment = surfaceFrame.sentenceFormulaAttachment || "";
@@ -31962,15 +32835,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (recoveryAction) actionRow.appendChild(recoveryAction);
       if (getClassicalVncResultSourceContinuationCandidate(surfaceFrame)) {
-        actionRow.appendChild(
-          makeAction(
-            "Add another derivation",
-            "use-result-as-source",
-            () => useClassicalWholeCanvasResultAsNextSource(
-              surfaceFrame
-            )
+        const continueAction = makeAction(
+          "Continue this Result",
+          "use-result-as-source",
+          () => useClassicalWholeCanvasResultAsNextSource(
+            surfaceFrame
           )
         );
+        continueAction.dataset.classicalResultContinuationKind =
+          "exact-result-to-source";
+        continueAction.setAttribute(
+          "aria-label",
+          "Continue this exact Result as the next typed Source"
+        );
+        actionRow.appendChild(continueAction);
       }
       actionRow.appendChild(
         makeAction(
@@ -38581,6 +39459,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       showSelectedClassicalCanvasGrammarFact;
     api.bindClassicalCanvasGrammarFactBrowser =
       bindClassicalCanvasGrammarFactBrowser;
+    api.refreshClassicalCompositionPathSummary =
+      refreshClassicalCompositionPathSummary;
+    api.syncClassicalInterfaceChoicePathways =
+      syncClassicalInterfaceChoicePathways;
     api.syncClassicalSourceGrammarResultSurface = syncClassicalSourceGrammarResultSurface;
     api.getClassicalTranscriptionOwnerSegmentTokens =
       getClassicalTranscriptionOwnerSegmentTokens;
@@ -38842,6 +39724,60 @@ export function installUiRenderingGlobals(targetObject = globalThis, installatio
     const api = createUiRenderingApi(renderingTarget);
     Object.defineProperties(targetObject, Object.getOwnPropertyDescriptors(api));
     if (typeof targetObject.document !== "undefined") {
+      const previousPathRefreshListener =
+        targetObject.document.classicalCompositionPathRefreshListener;
+      if (typeof previousPathRefreshListener === "function") {
+        targetObject.document.removeEventListener(
+          "classical:source-path-synchronized",
+          previousPathRefreshListener
+        );
+      }
+      const pathRefreshListener = () => {
+        api.refreshClassicalCompositionPathSummary();
+      };
+      targetObject.document.addEventListener(
+        "classical:source-path-synchronized",
+        pathRefreshListener
+      );
+      targetObject.document.classicalCompositionPathRefreshListener =
+        pathRefreshListener;
+      targetObject.document.classicalInterfaceChoicePathObserver
+        ?.disconnect?.();
+      const workbench = targetObject.document.getElementById?.(
+        "classical-workbench"
+      ) || null;
+      const MutationObserverConstructor = targetObject.MutationObserver
+        || targetObject.document.defaultView?.MutationObserver
+        || null;
+      let pathwayRefreshPending = false;
+      const schedulePathwayRefresh = () => {
+        if (pathwayRefreshPending) return;
+        pathwayRefreshPending = true;
+        const enqueue = targetObject.queueMicrotask
+          || (callback => Promise.resolve().then(callback));
+        enqueue(() => {
+          pathwayRefreshPending = false;
+          api.syncClassicalInterfaceChoicePathways();
+        });
+      };
+      const pathwayObserver = workbench
+        && typeof MutationObserverConstructor === "function"
+        ? new MutationObserverConstructor(schedulePathwayRefresh)
+        : null;
+      pathwayObserver?.observe(workbench, {
+        attributes: true,
+        attributeFilter: [
+          "hidden",
+          "aria-hidden",
+          "aria-disabled",
+          "disabled",
+          "style",
+        ],
+        childList: true,
+        subtree: true,
+      });
+      targetObject.document.classicalInterfaceChoicePathObserver =
+        pathwayObserver;
       if (targetObject.document.readyState === "loading") {
         targetObject.document.addEventListener(
           "DOMContentLoaded",

@@ -52,6 +52,15 @@ function run(ctx) {
         "undefined"
     );
     s.eq(
+        "the rhyme proof observer is identity-bound and separate from grammar authority",
+        [
+            typeof ctx.getClassicalGrammarApplicationRhymeOwnerProofObservations,
+            typeof ctx.isClassicalGrammarApplicationRhymeOwnerProofObservation,
+            typeof ctx.buildClassicalGrammarApplicationRhymeOwnerCalibration,
+        ],
+        Array(3).fill("function")
+    );
+    s.eq(
         "one semantic boundary exposes scalar and specialized outputs without advertising an unimplemented axis constraint",
         [
             typeof ctx.prepareClassicalNominalConstructionParadigmPlan,
@@ -657,6 +666,23 @@ function run(ctx) {
                     firstCoordinate?.formulaRealization === scalarFormula,
                     coordinateSurface === scalarSurface,
                 ],
+                calibration: [
+                    scalarReceipt,
+                    planReceipt,
+                    projectionReceipt,
+                ].map(receipt => {
+                    const frame = ctx
+                        .getClassicalGrammarApplicationRhymeCalibration(
+                            receipt
+                        );
+                    return [
+                        frame?.calibrationStatus,
+                        frame?.forwardCalibration?.status,
+                        frame?.backwardCalibration?.status,
+                        frame?.canonicalResult
+                            === receipt.canonicalResult,
+                    ];
+                }),
                 copiedPlan: [
                     copiedPlanReceipt.authorizationStatus,
                     copiedPlanReceipt.blockReason,
@@ -670,6 +696,12 @@ function run(ctx) {
             plan: ["authorized", "prepared-plan"],
             projection: ["authorized", "coordinate-projection", true],
             parity: [true, true],
+            calibration: Array(3).fill([
+                "calibrated",
+                "calibrated",
+                "calibrated",
+                true,
+            ]),
             copiedPlan: [
                 "blocked",
                 "classical-grammar-application-request-invalid:issued-authorized-prepared-plan-required",

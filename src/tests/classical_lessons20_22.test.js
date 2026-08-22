@@ -1898,7 +1898,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 22 imports an empty third-singular subject and Lesson 38 derives the human-projective passive path",
+        "Lesson 22 retains human tē while Lesson 38 explicitly derives the passive-then-impersonal path",
         (() => {
             const nonactive = ctx.deriveClassicalNahuatlNonactiveStemRecord("mayāna", {
                 verbClass: "B",
@@ -1912,9 +1912,10 @@ function run(ctx = {}) {
                 mood: "indicative",
                 tense: "present",
             });
-            const nonspecific = ctx.buildClassicalNahuatlDerivedVncFrame(buildActive({
+            const humanActive = buildActive({
                 valence: "projective-human",
-            }), {
+            });
+            const nonspecific = ctx.buildClassicalNahuatlDerivedVncFrame(humanActive, {
                 voice: "impersonal",
                 nonactiveStemRecord: nonactive,
                 sourceValence: "projective-human",
@@ -1922,6 +1923,16 @@ function run(ctx = {}) {
                 mood: "indicative",
                 tense: "present",
             });
+            const impersonalizedPassive =
+              ctx.buildClassicalNahuatlDerivedVncFrame(humanActive, {
+                voice: "impersonal",
+                nonactiveStemRecord: nonactive,
+                sourceValence: "projective-human",
+                sourceSubject: "3pl",
+                impersonalDerivationPath: "passive-then-impersonal",
+                mood: "indicative",
+                tense: "present",
+              });
             return {
                 intransitiveStatus: intransitive.proofFrame.authorizationStatus,
                 intransitiveSubject: intransitive.voiceTransformationFrame?.targetSubject,
@@ -1933,6 +1944,10 @@ function run(ctx = {}) {
                 nonspecificTargetValence: nonspecific.voiceTransformationFrame?.targetValence,
                 nonspecificFormula: nonspecific.formulaRealization,
                 nonspecificObjectPreserved: /\+tē\(/u.test(nonspecific.formulaRealization),
+                lesson38Formula: impersonalizedPassive.formulaRealization,
+                lesson38Path:
+                  impersonalizedPassive.voiceTransformationFrame
+                    ?.voiceOperationSequence,
             };
         })(),
         {
@@ -1943,9 +1958,11 @@ function run(ctx = {}) {
             sourceSubjectDeleted: true,
             intransitiveFormula: "#0-0(mayāna-lo)0+0-0#",
             nonspecificStatus: "authorized",
-            nonspecificTargetValence: "intransitive",
-            nonspecificFormula: "#0-0(tla-mayāna-lo)0+0-0#",
-            nonspecificObjectPreserved: false,
+            nonspecificTargetValence: "projective-human",
+            nonspecificFormula: "#0-0+tē(mayāna-lo)0+0-0#",
+            nonspecificObjectPreserved: true,
+            lesson38Formula: "#0-0(tla-mayāna-lo)0+0-0#",
+            lesson38Path: ["active", "passive", "impersonalized-passive"],
         }
     );
 
@@ -2335,7 +2352,7 @@ function run(ctx = {}) {
                     subject: "3pl",
                     requestedVoice: "impersonal",
                     nonactiveOptionId: "lō:tla-zo-h-tla-lō",
-                    expectedFormula: "#0-0(tla-tla-zo-h-tla-lo)0+0-0#",
+                    expectedFormula: "#0-0+tē(tla-zo-h-tla-lo)0+0-0#",
                     outputScope: "paradigm",
                 },
             ];

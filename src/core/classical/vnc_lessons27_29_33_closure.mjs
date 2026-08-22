@@ -3090,19 +3090,50 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         nonactiveEmbedUsesSharedFutureEmbedPath: baseIsNonactive,
         nonactiveEmbedNegativeParticlesRemainSentenceExternal: baseIsNonactive,
         nonactiveEmbedExampleWhitelistUsed: false,
-        recursiveCompoundEmbedAuthorized: Boolean(recursiveEmbedFrame),
+        recursiveEmbedAuthorized: Boolean(recursiveEmbedFrame),
         recursiveEmbedFrame,
-        recursiveCompoundEmbedStem: recursiveEmbedFrame
+        recursiveEmbedSourceOperation:
+          recursiveEmbedFrame?.operationFrame?.operation || "",
+        recursiveEmbedStem: recursiveEmbedFrame
           ? purposiveEmbedStem
           : "",
-        recursiveCompoundEmbedFramePreserved: Boolean(recursiveEmbedFrame),
-        recursiveCompoundInternalStructurePreserved: Boolean(recursiveEmbedFrame),
-        recursiveCompoundParticipantsPreserved: Boolean(recursiveEmbedFrame),
-        recursiveCompoundValencePreserved: Boolean(recursiveEmbedFrame),
-        recursiveCompoundVoicePreserved: Boolean(recursiveEmbedFrame),
-        recursiveCompoundEventRelationPreserved: Boolean(recursiveEmbedFrame),
-        recursivePurposiveBoundaryOutsideCompletedCompound:
+        recursiveEmbedFramePreserved: Boolean(recursiveEmbedFrame),
+        recursiveEmbedInternalStructurePreserved:
           Boolean(recursiveEmbedFrame),
+        recursiveEmbedParticipantsPreserved: Boolean(recursiveEmbedFrame),
+        recursiveEmbedValencePreserved: Boolean(recursiveEmbedFrame),
+        recursiveEmbedVoicePreserved: Boolean(recursiveEmbedFrame),
+        recursiveEmbedEventRelationPreserved: Boolean(recursiveEmbedFrame),
+        recursivePurposiveBoundaryOutsideCompletedResult:
+          Boolean(recursiveEmbedFrame),
+        recursiveCompoundEmbedAuthorized: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundEmbedStem:
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+            ? purposiveEmbedStem
+            : "",
+        recursiveCompoundEmbedFramePreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundInternalStructurePreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundParticipantsPreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundValencePreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundVoicePreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursiveCompoundEventRelationPreserved: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
+        recursivePurposiveBoundaryOutsideCompletedCompound: Boolean(
+          recursiveEmbedFrame?.operationFrame?.operation === "compound"
+        ),
         recursivePurposiveHierarchyAcyclic:
           purposiveRecursiveHierarchy.acyclic,
         recursivePurposiveContinuationAvailable: Boolean(recursiveEmbedFrame),
@@ -4360,7 +4391,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       "honorificStemAlternative", "honorificFormationAnalysis",
       "compoundLexicalizationAnalysis",
       "attitudeCompoundTarget",
-      "compoundEmbedClosureFrame", "compoundMatrixClosureFrame",
+      "recursiveEmbedClosureFrame", "compoundEmbedClosureFrame",
+      "compoundMatrixClosureFrame",
       "attitudeCompoundClosureFrame", "attitudeMemberTransformationFrame",
       "sourceApplicationFrame", "attitudeSourceClosureFrame",
       "formula", "surface", "selectedFormula", "authorizationStatus",
@@ -4492,6 +4524,11 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       compoundEmbedFiniteCoordinateDecoupled =
         baseApplicationFrame?.authorizationStatus === "authorized";
     }
+    const genericRecursiveEmbedClosureFrame = isAuthorizedClosureFrame(
+      request.recursiveEmbedClosureFrame
+    )
+      ? request.recursiveEmbedClosureFrame
+      : null;
     const compoundEmbedClosureFrame = isAuthorizedClosureFrame(
       request.compoundEmbedClosureFrame
     )
@@ -4503,7 +4540,8 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       === "honorific"
       ? request.attitudeSourceClosureFrame
       : null;
-    let recursiveEmbedClosureFrame = attitudeSourceClosureFrame
+    let recursiveEmbedClosureFrame = genericRecursiveEmbedClosureFrame
+      || attitudeSourceClosureFrame
       || compoundEmbedClosureFrame;
     const recursiveMatrixClosureFrame = isAuthorizedClosureFrame(
       request.compoundMatrixClosureFrame
@@ -4922,8 +4960,16 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       recursiveEmbedClosureFrame,
       recursiveMatrixClosureFrame,
       invalidRecursiveEmbedFrame:
-        Object.prototype.hasOwnProperty.call(request, "compoundEmbedClosureFrame")
-        && !isAuthorizedClosureFrame(request.compoundEmbedClosureFrame),
+        Object.prototype.hasOwnProperty.call(
+          request,
+          "recursiveEmbedClosureFrame"
+        )
+          ? !isAuthorizedClosureFrame(request.recursiveEmbedClosureFrame)
+          : Object.prototype.hasOwnProperty.call(
+            request,
+            "compoundEmbedClosureFrame"
+          )
+            && !isAuthorizedClosureFrame(request.compoundEmbedClosureFrame),
       invalidRecursiveMatrixFrame:
         Object.prototype.hasOwnProperty.call(request, "compoundMatrixClosureFrame")
         && !isAuthorizedClosureFrame(request.compoundMatrixClosureFrame),

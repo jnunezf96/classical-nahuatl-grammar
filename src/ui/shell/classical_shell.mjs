@@ -139,17 +139,17 @@ import {
   LESSON27_READER_GUIDANCE_GROUPS,
   isLesson27ReaderGuidanceExact,
   renderLesson27ReaderGuidance,
-} from "../curriculum/lesson27_reader_guidance.mjs?v=20260816-lesson27-groups10-11-004";
+} from "../curriculum/lesson27_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON28_READER_GUIDANCE_GROUPS,
   isLesson28ReaderGuidanceExact,
   renderLesson28ReaderGuidance,
-} from "../curriculum/lesson28_reader_guidance.mjs?v=20260816-lesson29-groups1-3-012";
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON29_READER_GUIDANCE_GROUPS,
   isLesson29ReaderGuidanceExact,
   renderLesson29ReaderGuidance,
-} from "../curriculum/lesson29_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON30_READER_GUIDANCE_GROUPS,
   isLesson30ReaderGuidanceExact,
@@ -169,37 +169,37 @@ import {
   LESSON33_READER_GUIDANCE_GROUPS,
   isLesson33ReaderGuidanceExact,
   renderLesson33ReaderGuidance,
-} from "../curriculum/lesson33_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON34_READER_GUIDANCE_GROUPS,
   isLesson34ReaderGuidanceExact,
   renderLesson34ReaderGuidance,
-} from "../curriculum/lesson34_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON35_READER_GUIDANCE_GROUPS,
   isLesson35ReaderGuidanceExact,
   renderLesson35ReaderGuidance,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON36_READER_GUIDANCE_GROUPS,
   isLesson36ReaderGuidanceExact,
   renderLesson36ReaderGuidance,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON37_READER_GUIDANCE_GROUPS,
   isLesson37ReaderGuidanceExact,
   renderLesson37ReaderGuidance,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON38_READER_GUIDANCE_GROUPS,
   isLesson38ReaderGuidanceExact,
   renderLesson38ReaderGuidance,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 import {
   LESSON39_READER_GUIDANCE_GROUPS,
   isLesson39ReaderGuidanceExact,
   renderLesson39ReaderGuidance,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260821-lesson39-group23-171";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-all-operation-layers-216";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -248,6 +248,10 @@ export function createClassicalShellModule(targetObject = globalThis) {
           `value="${escapeClassicalShellHtml(option.value)}"`,
           option.selected ? "selected" : "",
           option.disabled ? "disabled" : "",
+          controlId === "classical-rule-logic-late-operation"
+            && option.value !== "none"
+            ? 'data-classical-application-operation-id="vnc:derivational-operation"'
+            : "",
         ].filter(Boolean).join(" ");
         rows.push(`                            <option ${attributes}>${escapeClassicalShellHtml(option.label)}</option>`);
       });
@@ -916,9 +920,9 @@ export function createClassicalShellModule(targetObject = globalThis) {
                     >
                       <div class="classical-nnc-source-analysis__grid">
                         <label class="classical-rule-control" id="classical-construction-operation-field">
-                          <span class="classical-rule-control__label">Source operation</span>
+                          <span class="classical-rule-control__label">Next operation layer from this Source</span>
                           <select id="classical-construction-operation" data-classical-rule-logic-control="nominal-construction-operation">
-                            <option value="none" data-classical-source-unit="any" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>Source → direct generation → same-rank Result</option>
+                            <option value="none" data-classical-source-unit="any" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>No added operation layer · Source → same-rank Result</option>
                             <option
                               value="deverbal-nnc"
                               data-classical-source-unit="any"
@@ -3238,8 +3242,8 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         </select>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-operation">
-                        <span class="classical-rule-control__label">Add derivation</span>
-                        <select id="classical-rule-logic-late-operation" data-classical-rule-logic-control="late-operation">
+                        <span class="classical-rule-control__label">Next VNC derivation layer</span>
+                        <select id="classical-rule-logic-late-operation" data-classical-rule-logic-control="late-operation" data-classical-application-operation-control="vnc:derivational-operation">
 ${renderClassicalVncLateOperationOptions("classical-rule-logic-late-operation")}
                         </select>
                       </label>
@@ -4230,7 +4234,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         ":scope > .classical-source-path-lane__heading"
       );
       if (operationLaneHeading) {
-        operationLaneHeading.textContent = `Continue this ${activeUnitLabel} Source`;
+        operationLaneHeading.textContent = `${activeUnitLabel} compositional path`;
       }
       operationLane.dataset.classicalSourcePathUnit = activeUnit;
       operationLane.dataset.classicalSourcePathStep = "3";
@@ -4245,11 +4249,11 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         "classical-construction-operation"
       );
       if (operationLabel) {
-        operationLabel.textContent = `Operation from this ${activeUnitLabel} Source`;
+        operationLabel.textContent = `Next operation layer from this ${activeUnitLabel} Source`;
       }
       operationSelect?.setAttribute?.(
         "aria-label",
-        `Operation from this ${activeUnitLabel} Source`
+        `Next operation layer from this ${activeUnitLabel} Source`
       );
       const appendExisting = (section, ids = [], selectors = []) => {
         const nodes = [
@@ -4309,6 +4313,17 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       root.dataset.classicalSourcePathUnit = activeUnit;
       root.setAttribute("aria-label", `${activeUnitLabel} Source path`);
       root.dataset.classicalNestingLevel = "1";
+      const EventConstructor = targetObject.Event
+        || documentObject.defaultView?.Event
+        || null;
+      if (
+        typeof EventConstructor === "function"
+        && typeof documentObject.dispatchEvent === "function"
+      ) {
+        documentObject.dispatchEvent(new EventConstructor(
+          "classical:source-path-synchronized"
+        ));
+      }
       return true;
     }
     function installClassicalSourcePathSync() {
@@ -4679,6 +4694,27 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const resultPanel = documentObject?.getElementById?.("container-tense-grid") || null;
       if (!sourcePanel || !grammarPanel || !resultPanel) return false;
 
+      const workbench = documentObject.getElementById?.(
+        "classical-workbench"
+      ) || null;
+      if (workbench?.dataset) {
+        workbench.dataset.classicalCompositionPath =
+          "typed-source-grammar-result";
+        workbench.dataset.classicalCompositionPathAuthority =
+          "presentation-only";
+      }
+      [
+        [sourcePanel, "1", "source", "present-typed-facts"],
+        [grammarPanel, "2", "grammar", "genuine-open-choices"],
+        [resultPanel, "3", "result", "owner-issued-fullness"],
+      ].forEach(([panel, order, step, role]) => {
+        panel.dataset.classicalCompositionPathOrder = order;
+        panel.dataset.classicalCompositionPathStep = step;
+        panel.dataset.classicalCompositionPathRole = role;
+        panel.dataset.classicalCompositionPathAuthority =
+          "presentation-only";
+      });
+
       const markSection = (element, role) => {
         if (element?.dataset) element.dataset.classicalPanelSection = role;
         return element;
@@ -4707,7 +4743,13 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       markSection(resultControls, "primary-controls");
       markSection(resultScope, "primary-controls");
       markSection(resultSurface, "primary-content");
-      markSection(resultContinuation, "separate-task");
+      markSection(resultContinuation, "licensed-continuation");
+      if (resultContinuation?.dataset) {
+        resultContinuation.dataset.classicalCompositionPathHandoff =
+          "exact-result-to-licensed-consumer";
+        resultContinuation.dataset.classicalCompositionPathAuthority =
+          "owner-issued-result-required";
+      }
       markSection(resultMeta, "secondary-content");
       markSection(resultParadigm, "secondary-content");
       markSection(resultActions, "actions");
@@ -4791,8 +4833,60 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           </footer>
     `;
     }
+    function ClassicalCompositionPathSummary() {
+      const steps = [
+        ["source", "Source", "VNC · waiting"],
+        ["grammar", "Grammar", "waiting for typed Source"],
+        ["result", "Result", "waiting"],
+        ["continue", "Continue", "authorized Result required"],
+      ].map(([step, label, value], index) => {
+        const layerDetails = step === "grammar"
+          ? `
+          <div
+            class="classical-composition-path-summary__layers"
+            data-classical-composition-path-summary-layers="true"
+            aria-label="Accumulated grammatical layers"
+          ></div>`
+          : step === "continue"
+            ? `
+          <div
+            class="classical-composition-path-summary__next-layers"
+            data-classical-composition-path-summary-next-layers="true"
+            aria-label="Type-compatible next grammatical layers"
+          ></div>`
+            : "";
+        return `        <div
+          class="classical-composition-path-summary__step"
+          data-classical-composition-path-summary-step="${step}"
+          data-classical-composition-path-summary-order="${index + 1}"
+          data-classical-composition-path-step-state="waiting"
+        >
+          <span class="classical-composition-path-summary__label">${label}</span>
+          <span
+            class="classical-composition-path-summary__value"
+            data-classical-composition-path-summary-value="${step}"
+          >${value}</span>
+          <span
+            class="classical-composition-path-summary__detail"
+            data-classical-composition-path-summary-detail="${step}"
+          ></span>
+${layerDetails}
+        </div>`;
+      }).join("\n");
+      return `      <section
+        class="classical-composition-path-summary"
+        data-classical-composition-path-summary="true"
+        data-classical-composition-path-summary-authority="presentation-only"
+        data-classical-grammar-authority="false"
+        data-classical-formula-string-authority="false"
+        data-classical-surface-string-authority="false"
+        aria-label="Current grammatical composition path"
+      >
+${steps}
+      </section>\n`;
+    }
     function ClassicalPanelShell() {
-      return `      <div
+      return ClassicalCompositionPathSummary() + `      <div
             class="panel-grid"
             aria-label="Classical Nahuatl nuclear clause board"
             data-andrews-layout="source-authority-authorized-result"
@@ -4917,6 +5011,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;
     api.ClassicalResultPanel = ClassicalResultPanel;
+    api.ClassicalCompositionPathSummary = ClassicalCompositionPathSummary;
     api.ClassicalFooter = ClassicalFooter;
     api.ClassicalPanelShell = ClassicalPanelShell;
     api.installClassicalTranscriptionSourcePresentation =

@@ -11,12 +11,26 @@ import {
   validateClassicalGrammarFoundationRoute,
   validateClassicalGrammarLanguageIdentity,
 } from "../../core/concepts/classical_grammar_foundation.mjs?v=20260811-lesson1-multigroup-024";
+import {
+  buildClassicalGrammaticalRhymeCalibrationFrame,
+  buildClassicalGrammaticalRhymeFullPinFrame,
+  buildClassicalGrammaticalRhymeOwnerCalibrationFrame,
+  buildClassicalGrammaticalRhymeRoutePlaneFrame,
+  buildClassicalGrammaticalRhymeTopologyFrame,
+} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+import {
+  CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
+} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260822-all-operation-layers-216";
 
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";
 const APPLICATION_RESULT_DIAGNOSTIC = "classical-grammar-application-result-invalid";
 const APPLICATION_RESULT_KIND = "classical-grammar-application-result";
 const APPLICATION_RESULT_CAPTURE_KIND = "classical-grammar-application-result-capture";
+const RHYME_OWNER_PROOF_OBSERVATION_KIND =
+  "classical-grammar-application-rhyme-owner-proof-observation";
+const APPLICATION_LAYER_GRAPH_KIND =
+  "classical-grammar-application-layer-graph";
 const CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC = "classical-visible-surface-orthography-invalid";
 const CANONICAL_RUNTIME_DIAGNOSTIC =
   "classical-grammar-application-canonical-runtime-required";
@@ -1123,6 +1137,164 @@ const ROUTE_DEFINITIONS = Object.freeze({
   }),
 });
 
+// These are typed continuation interfaces, not route or lexeme admission
+// lists. A route omitted here may still execute normally; it simply does not
+// claim that its whole Result is a Source accepted by another owner. This
+// keeps Source-analysis and intermediate slot frames from masquerading as
+// complete VNC/NNC/clause Results in the rhyme proof topology.
+const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
+  Object.freeze({
+    "vnc:sentence-result": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result"]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "nnc:ordinary": Object.freeze({
+      inputUnitKinds: Object.freeze([]),
+      outputUnitKinds: Object.freeze([
+        "nnc-result",
+        "nnc-diagram-slot-frame",
+        "nnc-sentence-slot-frame",
+        "nnc-embeddable-result",
+      ]),
+    }),
+    "nnc:sentence-surface": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-sentence-slot-frame"]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "nnc:diagram": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-diagram-slot-frame"]),
+      outputUnitKinds: Object.freeze([]),
+    }),
+    "vnc:diagram": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result"]),
+      outputUnitKinds: Object.freeze([]),
+    }),
+    "sentence:adverbial-adjunction": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "sentence:particle-adjunction": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "particle-result",
+        "clause-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "particle:result": Object.freeze({
+      inputUnitKinds: Object.freeze([]),
+      outputUnitKinds: Object.freeze(["particle-result"]),
+    }),
+    "particle:negative-selection": Object.freeze({
+      inputUnitKinds: Object.freeze(["particle-result"]),
+      outputUnitKinds: Object.freeze(["particle-result"]),
+    }),
+    "vnc:ordered-voice-application": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result"]),
+      outputUnitKinds: Object.freeze(["vnc-result"]),
+    }),
+    "nnc:pronominal": Object.freeze({
+      inputUnitKinds: Object.freeze([]),
+      outputUnitKinds: Object.freeze([
+        "nnc-result",
+        "nnc-diagram-slot-frame",
+        "nnc-sentence-slot-frame",
+      ]),
+    }),
+    "vnc:derivational-operation": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result"]),
+      outputUnitKinds: Object.freeze(["vnc-result"]),
+    }),
+    "vnc:application": Object.freeze({
+      inputUnitKinds: Object.freeze([]),
+      outputUnitKinds: Object.freeze(["vnc-result"]),
+    }),
+    "sentence:supplementation": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+        "particle-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "grammar:nominal-construction": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-embeddable-result",
+      ]),
+      outputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "nnc-diagram-slot-frame",
+        "nnc-embeddable-result",
+      ]),
+    }),
+    "nnc:deverbal-construction": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result", "nnc-result"]),
+      outputUnitKinds: Object.freeze([
+        "nnc-result",
+        "nnc-diagram-slot-frame",
+        "nnc-embeddable-result",
+      ]),
+    }),
+    "nnc:adjectival-modification": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-result"]),
+      outputUnitKinds: Object.freeze(["nnc-result"]),
+    }),
+    "nnc:adverbial": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result", "nnc-result"]),
+      outputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+      ]),
+    }),
+    "nnc:relational": Object.freeze({
+      inputUnitKinds: Object.freeze(["vnc-result", "nnc-result"]),
+      outputUnitKinds: Object.freeze(["nnc-result"]),
+    }),
+    "nnc:place-gentilic": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-result"]),
+      outputUnitKinds: Object.freeze(["nnc-result"]),
+    }),
+    "clause:adverbial-adjunction": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "clause:composition": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "clause:comparison": Object.freeze({
+      inputUnitKinds: Object.freeze([
+        "vnc-result",
+        "nnc-result",
+        "clause-result",
+      ]),
+      outputUnitKinds: Object.freeze(["clause-result"]),
+    }),
+    "vnc:denominal": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-result"]),
+      outputUnitKinds: Object.freeze(["vnc-result"]),
+    }),
+    "nnc:personal-name": Object.freeze({
+      inputUnitKinds: Object.freeze(["nnc-result", "clause-result"]),
+      outputUnitKinds: Object.freeze(["nnc-result"]),
+    }),
+  });
+
 function defineAxisSemanticFactRoles(roles = {}) {
   return Object.freeze({ ...roles });
 }
@@ -2143,6 +2315,13 @@ const LCM_AXIS_OWNERS = Object.freeze(LCM_AXIS_IDS.map((axisId) => Object.freeze
   callerSuppliedValueAuthority: false,
 })));
 
+const LCM_AXIS_OWNER_COUNTS = Object.freeze(Object.fromEntries(
+  LCM_AXIS_OWNERS.map(axis => [
+    axis.axisId,
+    axis.ownerOperationIds.length,
+  ]),
+));
+
 const CANONICAL_APPLICATION_SOURCE_BUILDER_NAMES = Object.freeze([
   "buildClassicalNahuatlTranscriptionSourceFrame",
   "buildClassicalNahuatlParticleSourceFrame",
@@ -2556,6 +2735,8 @@ function canonicalCapabilityNames() {
     ...CANONICAL_ARGUMENT_VALIDATOR_NAMES,
     "getClassicalNahuatlDenominalVncOperationPathInventory",
     "isClassicalNahuatlDenominalVncOperationPathInventory",
+    "getClassicalNahuatlVncContinuationSourceConstituents",
+    "getClassicalNahuatlNncContinuationSourceConstituents",
   ].filter(Boolean))];
 }
 
@@ -2605,9 +2786,31 @@ function resolveCanonicalCallableCapability(
 
 export function createClassicalGrammarApplicationApi(targetObject = globalThis) {
   let api = null;
+  const continuationProjectionCapabilities = new Map([
+    "getClassicalNahuatlVncContinuationSourceConstituents",
+    "getClassicalNahuatlNncContinuationSourceConstituents",
+  ].map(capabilityName => [
+    capabilityName,
+    resolveCallableCapability(targetObject, capabilityName)?.capability
+      || null,
+  ]));
   const issuedApplicationResults = new WeakSet();
   const issuedCanonicalResults = new WeakSet();
   const issuedApplicationResultByCanonicalResult = new WeakMap();
+  const issuedContinuationResults = new WeakSet();
+  const issuedApplicationResultByContinuationResult = new WeakMap();
+  const continuationUnitKindsByResult = new WeakMap();
+  const rhymeFullPinByApplicationResult = new WeakMap();
+  const rhymeFullPinByCanonicalResult = new WeakMap();
+  const rhymeCalibrationByApplicationResult = new WeakMap();
+  const rhymeCalibrationByCanonicalResult = new WeakMap();
+  const rhymeOwnerProofObservationsByApplicationResult = new WeakMap();
+  const rhymeOwnerProofObservationsByCanonicalResult = new WeakMap();
+  const issuedRhymeOwnerProofObservations = new WeakSet();
+  const layerGraphByApplicationResult = new WeakMap();
+  const layerGraphByCanonicalResult = new WeakMap();
+  const issuedLayerGraphs = new WeakSet();
+  let cachedGrammarApplicationInventory = null;
 
   function isRecognizedCanonicalArgumentCarrier(value = null) {
     if (!value || typeof value !== "object") {
@@ -2918,6 +3121,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   }
 
   function getClassicalGrammarApplicationInventory() {
+    if (cachedGrammarApplicationInventory) {
+      return cachedGrammarApplicationInventory;
+    }
     const operations = Object.freeze(Object.entries(ROUTE_DEFINITIONS).map(
       ([operationId, definition]) => {
         const outputKinds = getApplicationOutputKinds(
@@ -2961,6 +3167,28 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             validatorsInstalled,
           });
         }));
+        const rhymeRoutePlaneFrame =
+          buildClassicalGrammaticalRhymeRoutePlaneFrame({
+            operationId,
+            outputKinds,
+            resultKinds: [...new Set(outputCapabilities.flatMap(
+              output => output.resultKinds,
+            ))],
+            axisIds: definition.axisIds,
+            axisRoles:
+              FOUNDATION_AXIS_SEMANTIC_FACT_ROLES[operationId] || {},
+            axisOwnerCounts: LCM_AXIS_OWNER_COUNTS,
+            axisConstraintDeclarations:
+              FOUNDATION_AXIS_CONSTRAINT_DECLARATIONS[operationId] || {},
+            continuationInputUnitKinds:
+              CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+                operationId
+              ]?.inputUnitKinds || [],
+            continuationOutputUnitKinds:
+              CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+                operationId
+              ]?.outputUnitKinds || [],
+          });
         return Object.freeze({
           operationId,
           capabilityName: definition.capabilityName,
@@ -2973,6 +3201,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           axisConstraintDeclarations:
             FOUNDATION_AXIS_CONSTRAINT_DECLARATIONS[operationId]
               || Object.freeze({}),
+          rhymeRoutePlaneFrame,
           capabilityInstalled: outputCapabilities.every(
             (output) => output.capabilityInstalled,
           ),
@@ -2994,7 +3223,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           resultKinds: output.resultKinds,
         }))),
     );
-    return Object.freeze({
+    const grammaticalRhymeTopology =
+      buildClassicalGrammaticalRhymeTopologyFrame({
+        routePlaneFrames: operations.map(
+          operation => operation.rhymeRoutePlaneFrame,
+        ),
+      });
+    cachedGrammarApplicationInventory = Object.freeze({
       kind: "classical-grammar-application-inventory",
       version: 1,
       outputKinds: CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS,
@@ -3016,12 +3251,665 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         axisOwners: LCM_AXIS_OWNERS,
         allAxesOwned: LCM_AXIS_OWNERS.every((axis) => axis.ownerOperationIds.length > 0),
       }),
+      grammaticalRhymeCalibration: Object.freeze({
+        routePlaneCount: operations.length,
+        declaredRoutePlaneCount: operations.filter(operation => (
+          operation.rhymeRoutePlaneFrame?.planeStatus === "declared"
+        )).length,
+        sharedRoutePlaneCount: operations.filter(operation => (
+          operation.rhymeRoutePlaneFrame?.rotation?.sharedAxisIds?.length
+        )).length,
+        dimensionallyDistinctRoutePlaneCount: operations.filter(operation => (
+          !operation.rhymeRoutePlaneFrame?.rotation?.sharedAxisIds?.length
+        )).length,
+        everyRouteHasSixFieldSignature:
+          grammaticalRhymeTopology.everyRouteHasSixFieldSignature,
+        everyAxisAccountedFor:
+          grammaticalRhymeTopology.everyAxisAccountedFor,
+        collapsedBoundarySeamCount:
+          grammaticalRhymeTopology.collapsedBoundarySeamCount,
+        insideOutEdgeCount:
+          grammaticalRhymeTopology.insideOutEdgeCount,
+        superimposedClassCount:
+          grammaticalRhymeTopology.superimposedClassCount,
+        topology: grammaticalRhymeTopology,
+        lessonDiscovery: CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
+        lessonNumberAuthority: false,
+        grammarAuthority: false,
+      }),
       curriculumOrderAuthority: false,
       lessonMetadataAuthority: false,
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
       displayTextAuthority: false,
     });
+    return cachedGrammarApplicationInventory;
+  }
+
+  function getClassicalGrammarApplicationRhymeOwnerProofObservations(
+    currentResult = null,
+  ) {
+    if (isClassicalGrammarApplicationResult(currentResult)) {
+      return rhymeOwnerProofObservationsByApplicationResult.get(
+        currentResult,
+      ) || Object.freeze([]);
+    }
+    return currentResult && typeof currentResult === "object"
+      ? rhymeOwnerProofObservationsByCanonicalResult.get(currentResult)
+        || Object.freeze([])
+      : Object.freeze([]);
+  }
+
+  function getCanonicalContinuationUnitKinds(value = null) {
+    if (!value || typeof value !== "object") return Object.freeze([]);
+    const unitKinds = [];
+    [
+      ["isClassicalNahuatlVncApplicationResultFrame", "vnc-result"],
+      ["isClassicalNahuatlClosureFrame", "vnc-result"],
+      ["isClassicalNahuatlOrdinaryNncResult", "nnc-result"],
+      ["isClassicalNahuatlPronominalNncResult", "nnc-result"],
+      [
+        "isClassicalNahuatlNncSlotFrame",
+        "nnc-diagram-slot-frame",
+      ],
+    ].forEach(([validatorName, unitKind]) => {
+      const resolved = resolveCanonicalCallableCapability(
+        targetObject,
+        validatorName,
+        api,
+      );
+      if (!resolved) return;
+      let accepted = false;
+      try {
+        accepted = Reflect.apply(
+          resolved.capability,
+          targetObject,
+          [value],
+        ) === true;
+      } catch {
+        accepted = false;
+      }
+      if (accepted) unitKinds.push(unitKind);
+    });
+    [
+      [
+        "getClassicalNahuatlVncContinuationSourceConstituents",
+        "vnc-result",
+      ],
+      [
+        "getClassicalNahuatlNncContinuationSourceConstituents",
+        "nnc-result",
+      ],
+    ].forEach(([capabilityName, unitKind]) => {
+      const capability = continuationProjectionCapabilities.get(
+        capabilityName,
+      );
+      if (typeof capability !== "function") return;
+      let projection = null;
+      try {
+        projection = Reflect.apply(
+          capability,
+          targetObject,
+          [value],
+        );
+      } catch {
+        projection = null;
+      }
+      if (projection && typeof projection === "object") {
+        unitKinds.push(unitKind);
+      }
+    });
+    return Object.freeze([...new Set(unitKinds)]);
+  }
+
+  function getRouteResultContinuationUnitKinds(
+    operationId = "",
+    canonicalResult = null,
+  ) {
+    const declared = Array.from(
+      CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+        operationId
+      ]?.outputUnitKinds || [],
+    );
+    if (operationId === "nnc:ordinary") {
+      return Object.freeze([
+        "nnc-result",
+        "nnc-embeddable-result",
+      ]);
+    }
+    if (operationId === "nnc:pronominal") {
+      return Object.freeze(["nnc-result"]);
+    }
+    if (operationId === "grammar:nominal-construction") {
+      if (["compound-nnc", "affective-nnc"].includes(
+        canonicalResult?.constructionKind,
+      )) {
+        return Object.freeze([
+          "nnc-result",
+          "nnc-embeddable-result",
+        ]);
+      }
+      return Object.freeze(
+        canonicalResult?.constructionKind === "cardinal-numeral-nnc"
+          ? ["nnc-result"]
+          : [],
+      );
+    }
+    if (operationId === "nnc:deverbal-construction") {
+      return Object.freeze([
+        "nnc-result",
+        ...(
+        canonicalResult?.operationFrame?.nominalizationKind
+          === "preterit-agentive"
+          ? ["nnc-embeddable-result"]
+          : []
+        ),
+      ]);
+    }
+    if (operationId === "nnc:adverbial") {
+      if (canonicalResult?.scope === "incorporated-predicate") {
+        return Object.freeze(["vnc-result"]);
+      }
+      const clauseKind = String(
+        canonicalResult?.sourceFrame?.clauseKind || "",
+      ).trim();
+      return Object.freeze(
+        /^nnc-/u.test(clauseKind)
+          ? ["nnc-result"]
+          : clauseKind === "vnc"
+            ? ["vnc-result"]
+            : canonicalResult?.scope === "external-clause"
+              ? ["clause-result"]
+              : [],
+      );
+    }
+    return Object.freeze(declared);
+  }
+
+  function collectOwnerIssuedContinuationResults(
+    value,
+    found = new Map(),
+    seen = new Set(),
+  ) {
+    if (!value || typeof value !== "object" || seen.has(value)) {
+      return found;
+    }
+    seen.add(value);
+    const unitKinds = getCanonicalContinuationUnitKinds(value);
+    if (unitKinds.length) found.set(value, unitKinds);
+    Reflect.ownKeys(value).forEach(propertyKey => {
+      let descriptor = null;
+      try {
+        descriptor = Object.getOwnPropertyDescriptor(value, propertyKey);
+      } catch {
+        descriptor = null;
+      }
+      if (
+        descriptor
+        && Object.prototype.hasOwnProperty.call(descriptor, "value")
+      ) {
+        collectOwnerIssuedContinuationResults(
+          descriptor.value,
+          found,
+          seen,
+        );
+      }
+    });
+    return found;
+  }
+
+  function getIssuedResultProvenance(value = null) {
+    if (!value || typeof value !== "object") return null;
+    const canonicalApplicationResult =
+      issuedApplicationResultByCanonicalResult.get(value) || null;
+    if (canonicalApplicationResult) {
+      return Object.freeze({
+        applicationResult: canonicalApplicationResult,
+        exactResult: value,
+        resultRole: "canonical-result",
+        continuationUnitKinds:
+          continuationUnitKindsByResult.get(value) || Object.freeze([]),
+      });
+    }
+    const continuationApplicationResult =
+      issuedApplicationResultByContinuationResult.get(value) || null;
+    return continuationApplicationResult
+      ? Object.freeze({
+        applicationResult: continuationApplicationResult,
+        exactResult: value,
+        resultRole: "continuation-result",
+        continuationUnitKinds:
+          continuationUnitKindsByResult.get(value) || Object.freeze([]),
+      })
+      : null;
+  }
+
+  function getClassicalGrammarApplicationRhymeContinuationProvenance(
+    currentResult = null,
+  ) {
+    const provenance = getIssuedResultProvenance(currentResult);
+    return provenance
+      ? Object.freeze({
+        kind:
+          "classical-grammar-application-rhyme-continuation-provenance",
+        version: 1,
+        applicationResult: provenance.applicationResult,
+        exactResult: provenance.exactResult,
+        resultRole: provenance.resultRole,
+        continuationUnitKinds: provenance.continuationUnitKinds,
+        grammarAuthority: false,
+      })
+      : null;
+  }
+
+  function getClassicalGrammarApplicationNextOperationInventory(
+    currentResult = null,
+  ) {
+    const provenance = isClassicalGrammarApplicationResult(currentResult)
+      ? Object.freeze({
+        applicationResult: currentResult,
+        exactResult: currentResult.canonicalResult,
+        continuationUnitKinds:
+          continuationUnitKindsByResult.get(currentResult.canonicalResult)
+            || Object.freeze([]),
+      })
+      : getIssuedResultProvenance(currentResult);
+    if (
+      !provenance
+      || provenance.applicationResult.authorizationStatus !== "authorized"
+    ) {
+      return null;
+    }
+    const emittedUnitKinds = Object.freeze([
+      ...new Set(provenance.continuationUnitKinds || []),
+    ]);
+    const candidates = Object.freeze(getClassicalGrammarApplicationInventory()
+      .operations.flatMap(operation => {
+        const inputUnitKinds = Object.freeze([
+          ...(CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+            operation.operationId
+          ]?.inputUnitKinds || []),
+        ]);
+        const sharedUnitKinds = Object.freeze(inputUnitKinds.filter(
+          unitKind => emittedUnitKinds.includes(unitKind),
+        ));
+        return sharedUnitKinds.length
+          ? [Object.freeze({
+            operationId: operation.operationId,
+            capabilityName: operation.capabilityName,
+            inputUnitKinds,
+            sharedUnitKinds,
+            outputUnitKinds: Object.freeze([
+              ...(CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+                operation.operationId
+              ]?.outputUnitKinds || []),
+            ]),
+            compatibilityStatus: "type-compatible-owner-check-required",
+            grammarAuthority: false,
+          })]
+          : [];
+      }));
+    return Object.freeze({
+      kind: "classical-grammar-application-next-operation-inventory",
+      version: 1,
+      applicationResult: provenance.applicationResult,
+      exactResult: provenance.exactResult,
+      emittedUnitKinds,
+      operationIds: Object.freeze(candidates.map(
+        candidate => candidate.operationId,
+      )),
+      candidates,
+      candidateCount: candidates.length,
+      typeCompatibilityOnly: true,
+      ownerAuthorizationStillRequired: true,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
+
+  function buildClassicalGrammarApplicationLayerGraph(
+    applicationResult,
+    observations = [],
+  ) {
+    const parentApplicationResults = [...new Set(observations.map(
+      observation => observation.innerApplicationResult,
+    ).filter(parent => (
+      isClassicalGrammarApplicationResult(parent)
+      && parent.authorizationStatus === "authorized"
+      && parent !== applicationResult
+    )))];
+    const applicationResults = [];
+    const edgeFacts = [];
+    const addApplicationResult = candidate => {
+      if (!applicationResults.includes(candidate)) {
+        applicationResults.push(candidate);
+      }
+    };
+    parentApplicationResults.forEach(parent => {
+      const inheritedGraph = layerGraphByApplicationResult.get(parent);
+      if (inheritedGraph && issuedLayerGraphs.has(inheritedGraph)) {
+        inheritedGraph.nodes.forEach(node => addApplicationResult(
+          node.applicationResult,
+        ));
+        inheritedGraph.edges.forEach(edge => edgeFacts.push({
+          innerApplicationResult: edge.innerApplicationResult,
+          outerApplicationResult: edge.outerApplicationResult,
+          sharedUnitKinds: edge.sharedUnitKinds,
+          exactInnerResultIdentityObservedInOuterArguments:
+            edge.exactInnerResultIdentityObservedInOuterArguments,
+        }));
+      } else {
+        addApplicationResult(parent);
+      }
+    });
+    addApplicationResult(applicationResult);
+    observations.forEach(observation => edgeFacts.push({
+      innerApplicationResult: observation.innerApplicationResult,
+      outerApplicationResult: applicationResult,
+      sharedUnitKinds: observation.sharedUnitKinds,
+      exactInnerResultIdentityObservedInOuterArguments:
+        observation.exactInnerResultIdentityObservedInOuterArguments,
+    }));
+    const indexByApplicationResult = new Map(applicationResults.map(
+      (candidate, index) => [candidate, index],
+    ));
+    const uniqueEdgeFacts = [];
+    edgeFacts.forEach(edge => {
+      if (
+        !indexByApplicationResult.has(edge.innerApplicationResult)
+        || !indexByApplicationResult.has(edge.outerApplicationResult)
+        || edge.innerApplicationResult === edge.outerApplicationResult
+        || uniqueEdgeFacts.some(existing => (
+          existing.innerApplicationResult === edge.innerApplicationResult
+          && existing.outerApplicationResult === edge.outerApplicationResult
+        ))
+      ) return;
+      uniqueEdgeFacts.push(edge);
+    });
+    const incomingCounts = new Map(applicationResults.map(result => [result, 0]));
+    const outgoingCounts = new Map(applicationResults.map(result => [result, 0]));
+    uniqueEdgeFacts.forEach(edge => {
+      incomingCounts.set(
+        edge.outerApplicationResult,
+        incomingCounts.get(edge.outerApplicationResult) + 1,
+      );
+      outgoingCounts.set(
+        edge.innerApplicationResult,
+        outgoingCounts.get(edge.innerApplicationResult) + 1,
+      );
+    });
+    const queue = applicationResults.filter(result => (
+      incomingCounts.get(result) === 0
+    ));
+    const topologicalResults = [];
+    const mutableIncomingCounts = new Map(incomingCounts);
+    while (queue.length) {
+      const current = queue.shift();
+      topologicalResults.push(current);
+      uniqueEdgeFacts.filter(edge => (
+        edge.innerApplicationResult === current
+      )).forEach(edge => {
+        const nextCount = mutableIncomingCounts.get(
+          edge.outerApplicationResult,
+        ) - 1;
+        mutableIncomingCounts.set(edge.outerApplicationResult, nextCount);
+        if (nextCount === 0) queue.push(edge.outerApplicationResult);
+      });
+    }
+    const acyclic = topologicalResults.length === applicationResults.length;
+    const orderedResults = acyclic ? topologicalResults : applicationResults;
+    const nodeIdByApplicationResult = new Map(orderedResults.map(
+      (candidate, index) => [candidate, `layer-${index + 1}`],
+    ));
+    const depthByApplicationResult = new Map();
+    orderedResults.forEach(candidate => {
+      const parentDepths = uniqueEdgeFacts.filter(edge => (
+        edge.outerApplicationResult === candidate
+      )).map(edge => depthByApplicationResult.get(
+        edge.innerApplicationResult,
+      ) || 1);
+      depthByApplicationResult.set(
+        candidate,
+        parentDepths.length ? Math.max(...parentDepths) + 1 : 1,
+      );
+    });
+    const nodes = Object.freeze(orderedResults.map((candidate, index) =>
+      Object.freeze({
+        nodeId: nodeIdByApplicationResult.get(candidate),
+        layerOrder: index + 1,
+        depth: depthByApplicationResult.get(candidate),
+        operationId: candidate.operationId,
+        outputKind: candidate.outputKind,
+        applicationResult: candidate,
+        canonicalResult: candidate.canonicalResult,
+        continuationUnitKinds: continuationUnitKindsByResult.get(
+          candidate.canonicalResult,
+        ) || Object.freeze([]),
+        exactApplicationResultIdentityValidated: true,
+        exactCanonicalResultIdentityValidated: true,
+      })
+    ));
+    const edges = Object.freeze(uniqueEdgeFacts.map((edge, index) =>
+      Object.freeze({
+        edgeId: `continuation-${index + 1}`,
+        fromNodeId: nodeIdByApplicationResult.get(
+          edge.innerApplicationResult,
+        ),
+        toNodeId: nodeIdByApplicationResult.get(
+          edge.outerApplicationResult,
+        ),
+        innerApplicationResult: edge.innerApplicationResult,
+        outerApplicationResult: edge.outerApplicationResult,
+        sharedUnitKinds: Object.freeze([...new Set(
+          edge.sharedUnitKinds || [],
+        )]),
+        exactInnerResultIdentityObservedInOuterArguments:
+          edge.exactInnerResultIdentityObservedInOuterArguments === true,
+      })
+    ));
+    const nextOperationInventory =
+      getClassicalGrammarApplicationNextOperationInventory(applicationResult);
+    const graph = Object.freeze({
+      kind: APPLICATION_LAYER_GRAPH_KIND,
+      version: 1,
+      authorizationStatus: acyclic ? "observed" : "blocked",
+      blockReason: acyclic ? "" : "circular-compositional-layer-path",
+      terminalApplicationResult: applicationResult,
+      terminalCanonicalResult: applicationResult.canonicalResult,
+      nodes,
+      edges,
+      nodeCount: nodes.length,
+      edgeCount: edges.length,
+      rootNodeIds: Object.freeze(nodes.filter(node => (
+        incomingCounts.get(node.applicationResult) === 0
+      )).map(node => node.nodeId)),
+      terminalNodeIds: Object.freeze(nodes.filter(node => (
+        outgoingCounts.get(node.applicationResult) === 0
+      )).map(node => node.nodeId)),
+      maximumDepth: Math.max(0, ...nodes.map(node => node.depth)),
+      branchNodeCount: nodes.filter(node => (
+        outgoingCounts.get(node.applicationResult) > 1
+      )).length,
+      joinNodeCount: nodes.filter(node => (
+        incomingCounts.get(node.applicationResult) > 1
+      )).length,
+      isLinear: acyclic && (
+        nodes.length === 1
+        || (
+          edges.length === nodes.length - 1
+          && nodes.every(node => (
+            incomingCounts.get(node.applicationResult) <= 1
+            && outgoingCounts.get(node.applicationResult) <= 1
+          ))
+        )
+      ),
+      operationIds: Object.freeze(nodes.map(node => node.operationId)),
+      nextOperationInventory,
+      exactOwnerIssuedResultsOnly: true,
+      typeCompatibilityDoesNotAuthorizeGrammar: true,
+      lessonNumberAuthority: false,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedLayerGraphs.add(graph);
+    return graph;
+  }
+
+  function getClassicalGrammarApplicationLayerGraph(currentResult = null) {
+    const applicationResult = isClassicalGrammarApplicationResult(currentResult)
+      ? currentResult
+      : getIssuedResultProvenance(currentResult)?.applicationResult || null;
+    return applicationResult
+      ? layerGraphByApplicationResult.get(applicationResult) || null
+      : null;
+  }
+
+  function isClassicalGrammarApplicationLayerGraph(graph = null) {
+    return Boolean(
+      graph
+      && issuedLayerGraphs.has(graph)
+      && graph.kind === APPLICATION_LAYER_GRAPH_KIND
+      && graph.version === 1
+      && graph.authorizationStatus === "observed"
+      && graph.blockReason === ""
+      && graph.terminalApplicationResult
+      && isClassicalGrammarApplicationResult(
+        graph.terminalApplicationResult,
+      )
+      && graph.terminalApplicationResult.authorizationStatus === "authorized"
+      && graph.terminalCanonicalResult
+        === graph.terminalApplicationResult.canonicalResult
+      && graph.nodes.length === graph.nodeCount
+      && graph.edges.length === graph.edgeCount
+      && graph.nodes.every(node => (
+        isClassicalGrammarApplicationResult(node.applicationResult)
+        && node.applicationResult.authorizationStatus === "authorized"
+        && node.canonicalResult === node.applicationResult.canonicalResult
+        && node.exactApplicationResultIdentityValidated === true
+        && node.exactCanonicalResultIdentityValidated === true
+      ))
+      && graph.edges.every(edge => (
+        graph.nodes.some(node => node.nodeId === edge.fromNodeId)
+        && graph.nodes.some(node => node.nodeId === edge.toNodeId)
+        && edge.innerApplicationResult !== edge.outerApplicationResult
+        && edge.exactInnerResultIdentityObservedInOuterArguments === true
+      ))
+      && graph.exactOwnerIssuedResultsOnly === true
+      && graph.grammarAuthority === false
+      && Object.isFrozen(graph)
+    );
+  }
+
+  function isClassicalGrammarApplicationRhymeOwnerProofObservation(
+    observation = null,
+  ) {
+    return Boolean(
+      observation
+      && issuedRhymeOwnerProofObservations.has(observation)
+      && observation.kind === RHYME_OWNER_PROOF_OBSERVATION_KIND
+      && observation.version === 1
+      && observation.authorizationStatus === "observed"
+      && observation.innerApplicationResult
+      && observation.outerApplicationResult
+      && isClassicalGrammarApplicationResult(
+        observation.innerApplicationResult,
+      )
+      && isClassicalGrammarApplicationResult(
+        observation.outerApplicationResult,
+      )
+      && observation.innerApplicationResult.authorizationStatus
+        === "authorized"
+      && observation.outerApplicationResult.authorizationStatus
+        === "authorized"
+      && getIssuedResultProvenance(observation.innerCanonicalResult)
+        ?.applicationResult === observation.innerApplicationResult
+      && observation.innerProducerCanonicalResult
+        === observation.innerApplicationResult.canonicalResult
+      && observation.outerCanonicalResult
+        === observation.outerApplicationResult.canonicalResult
+      && observation.innerOperationId
+        === observation.innerApplicationResult.operationId
+      && observation.outerOperationId
+        === observation.outerApplicationResult.operationId
+      && observation.exactInnerResultIdentityObservedInOuterArguments
+        === true
+      && ["canonical-result", "continuation-result"].includes(
+        observation.innerResultRole,
+      )
+      && observation.grammarAuthority === false
+      && Object.isFrozen(observation)
+    );
+  }
+
+  function buildClassicalGrammarApplicationRhymeOwnerCalibration({
+    lessonOwnerEvidenceFrames = [],
+    exactOwnerProofResults = [],
+  } = {}) {
+    const inventory = getClassicalGrammarApplicationInventory();
+    const exactOwnerProofObservationFrames = Object.freeze(
+      [...new Set((Array.isArray(exactOwnerProofResults)
+        ? exactOwnerProofResults
+        : []).flatMap(result => (
+        getClassicalGrammarApplicationRhymeOwnerProofObservations(result)
+      )))].filter(observation => (
+        isClassicalGrammarApplicationRhymeOwnerProofObservation(observation)
+      )),
+    );
+    return buildClassicalGrammaticalRhymeOwnerCalibrationFrame({
+      lessonDiscoveryFrame:
+        inventory.grammaticalRhymeCalibration.lessonDiscovery,
+      routeTopologyFrame:
+        inventory.grammaticalRhymeCalibration.topology,
+      lessonOwnerEvidenceFrames,
+      exactOwnerProofObservationFrames,
+    });
+  }
+
+  function collectIssuedCanonicalResultArguments(
+    value,
+    found = new Set(),
+    seen = new Set(),
+  ) {
+    if (!value || typeof value !== "object" || seen.has(value)) {
+      return found;
+    }
+    if (
+      issuedCanonicalResults.has(value)
+      || issuedContinuationResults.has(value)
+    ) {
+      const receipt = getIssuedResultProvenance(value)
+        ?.applicationResult || null;
+      if (
+        receipt
+        && isClassicalGrammarApplicationResult(receipt)
+        && receipt.authorizationStatus === "authorized"
+      ) {
+        found.add(value);
+      }
+      return found;
+    }
+    seen.add(value);
+    Reflect.ownKeys(value).forEach(propertyKey => {
+      let descriptor = null;
+      try {
+        descriptor = Object.getOwnPropertyDescriptor(value, propertyKey);
+      } catch {
+        descriptor = null;
+      }
+      if (
+        descriptor
+        && Object.prototype.hasOwnProperty.call(descriptor, "value")
+      ) {
+        collectIssuedCanonicalResultArguments(
+          descriptor.value,
+          found,
+          seen,
+        );
+      }
+    });
+    return found;
   }
 
   function getApplicationOutputPrerequisiteBlockReason(
@@ -3062,6 +3950,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       semanticOperationIdentity,
       authorityCarrierClear,
     } = validateClassicalGrammarApplicationRequest(request);
+    const exactInnerCanonicalResults = Object.freeze([
+      ...collectIssuedCanonicalResultArguments(args),
+    ]);
     const canonicalApplicationState = getCanonicalApplicationState(
       targetObject,
       api,
@@ -3223,8 +4114,197 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     issuedApplicationResults.add(result);
     if (canonicalResult && typeof canonicalResult === "object") {
       issuedApplicationResultByCanonicalResult.set(canonicalResult, result);
+      continuationUnitKindsByResult.set(
+        canonicalResult,
+        getRouteResultContinuationUnitKinds(operationId, canonicalResult),
+      );
+      collectOwnerIssuedContinuationResults(canonicalResult)
+        .forEach((unitKinds, continuationResult) => {
+          const existingProducer =
+            issuedApplicationResultByCanonicalResult.get(
+              continuationResult,
+            )
+            || issuedApplicationResultByContinuationResult.get(
+              continuationResult,
+            )
+            || null;
+          const routeSpecificUnitKinds = Object.freeze([
+            ...new Set([
+              ...unitKinds,
+              ...(
+                ["nnc:ordinary", "nnc:pronominal"].includes(
+                  operationId,
+                )
+                && unitKinds.includes("nnc-diagram-slot-frame")
+                  ? ["nnc-sentence-slot-frame"]
+                  : []
+              ),
+            ]),
+          ]);
+          issuedContinuationResults.add(continuationResult);
+          if (!existingProducer) {
+            issuedApplicationResultByContinuationResult.set(
+              continuationResult,
+              result,
+            );
+            continuationUnitKindsByResult.set(
+              continuationResult,
+              routeSpecificUnitKinds,
+            );
+          }
+        });
+    }
+    if (
+      authorizationStatus === "authorized"
+      && canonicalResult
+      && exactInnerCanonicalResults.length
+    ) {
+      const insideOutEdges = getClassicalGrammarApplicationInventory()
+        .grammaticalRhymeCalibration.topology.exactContinuationEdges;
+      const observations = Object.freeze(
+        exactInnerCanonicalResults.flatMap(innerCanonicalResult => {
+          const innerProvenance = getIssuedResultProvenance(
+            innerCanonicalResult,
+          );
+          const innerApplicationResult =
+            innerProvenance?.applicationResult || null;
+          if (
+            !innerApplicationResult
+            || innerApplicationResult === result
+            || innerApplicationResult.authorizationStatus !== "authorized"
+          ) {
+            return [];
+          }
+          const topologyEdge = insideOutEdges.find(edge => (
+            edge.innerOperationId === innerApplicationResult.operationId
+            && edge.outerOperationId === operationId
+            && (
+              !innerProvenance.continuationUnitKinds.length
+              || edge.sharedUnitKinds.some(unitKind => (
+                innerProvenance.continuationUnitKinds.includes(unitKind)
+              ))
+            )
+          ));
+          if (!topologyEdge) return [];
+          const observation = Object.freeze({
+            kind: RHYME_OWNER_PROOF_OBSERVATION_KIND,
+            version: 1,
+            authorizationStatus: "observed",
+            blockReason: "",
+            innerOperationId: innerApplicationResult.operationId,
+            outerOperationId: operationId,
+            innerOutputKind: innerApplicationResult.outputKind,
+            outerOutputKind: outputKind,
+            sharedUnitKinds: topologyEdge.sharedUnitKinds,
+            innerApplicationResult,
+            outerApplicationResult: result,
+            innerCanonicalResult,
+            innerProducerCanonicalResult:
+              innerApplicationResult.canonicalResult,
+            innerResultRole: innerProvenance.resultRole,
+            outerCanonicalResult: canonicalResult,
+            exactInnerResultIdentityObservedInOuterArguments: true,
+            bothResultsOwnerValidated: true,
+            topologyCompatibilityObserved: true,
+            topologyCompatibilityStatus:
+              topologyEdge.compatibilityStatus,
+            lessonNumberAuthority: false,
+            grammarAuthority: false,
+            formulaStringAuthority: false,
+            surfaceStringAuthority: false,
+          });
+          issuedRhymeOwnerProofObservations.add(observation);
+          return [observation];
+        }),
+      );
+      if (observations.length) {
+        rhymeOwnerProofObservationsByApplicationResult.set(
+          result,
+          observations,
+        );
+        rhymeOwnerProofObservationsByCanonicalResult.set(
+          canonicalResult,
+          observations,
+        );
+      }
+    }
+    if (authorizationStatus === "authorized" && canonicalResult) {
+      const rhymeFullPinFrame = buildClassicalGrammaticalRhymeFullPinFrame({
+        operationId,
+        outputKind,
+        axisIds: route.axisIds,
+        canonicalResult,
+        exactResultIdentityValidated: true,
+      });
+      rhymeFullPinByApplicationResult.set(result, rhymeFullPinFrame);
+      rhymeFullPinByCanonicalResult.set(canonicalResult, rhymeFullPinFrame);
+      const rhymeCalibrationFrame =
+        buildClassicalGrammaticalRhymeCalibrationFrame({
+          operationId,
+          outputKind,
+          axisIds: route.axisIds,
+          sharedAxisIds: LCM_AXIS_OWNERS.filter(axis => (
+            route.axisIds.includes(axis.axisId)
+            && axis.ownerOperationIds.length > 1
+          )).map(axis => axis.axisId),
+          typedArguments: args,
+          applicationResult: result,
+          canonicalResult,
+          rhymeFullPinFrame,
+          requestValidationPassed: Boolean(
+            typedApplicationRequest
+            && semanticOperationIdentity
+            && authorityCarrierClear
+          ),
+          ownerResultValidationPassed: Boolean(
+            canonicalResultRecognized
+            && canonicalAuthorizationStatus === "authorized"
+          ),
+          exactApplicationResultIdentityValidated:
+            issuedApplicationResults.has(result),
+          exactCanonicalResultIdentityValidated:
+            issuedCanonicalResults.has(canonicalResult),
+        });
+      rhymeCalibrationByApplicationResult.set(
+        result,
+        rhymeCalibrationFrame,
+      );
+      rhymeCalibrationByCanonicalResult.set(
+        canonicalResult,
+        rhymeCalibrationFrame,
+      );
+      const layerGraph = buildClassicalGrammarApplicationLayerGraph(
+        result,
+        getClassicalGrammarApplicationRhymeOwnerProofObservations(result),
+      );
+      if (layerGraph.authorizationStatus === "observed") {
+        layerGraphByApplicationResult.set(result, layerGraph);
+        layerGraphByCanonicalResult.set(canonicalResult, layerGraph);
+      }
     }
     return result;
+  }
+
+  function getClassicalGrammarApplicationRhymeFullPin(
+    currentResult = null,
+  ) {
+    if (isClassicalGrammarApplicationResult(currentResult)) {
+      return rhymeFullPinByApplicationResult.get(currentResult) || null;
+    }
+    return currentResult && typeof currentResult === "object"
+      ? rhymeFullPinByCanonicalResult.get(currentResult) || null
+      : null;
+  }
+
+  function getClassicalGrammarApplicationRhymeCalibration(
+    currentResult = null,
+  ) {
+    if (isClassicalGrammarApplicationResult(currentResult)) {
+      return rhymeCalibrationByApplicationResult.get(currentResult) || null;
+    }
+    return currentResult && typeof currentResult === "object"
+      ? rhymeCalibrationByCanonicalResult.get(currentResult) || null
+      : null;
   }
 
   function isClassicalGrammarApplicationResult(result = null) {
@@ -3346,17 +4426,24 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     slotId = "",
   ) {
     const normalizedSlotId = String(slotId || "").trim();
+    const exactResultProvenance = getIssuedResultProvenance(currentResult);
     const applicationResult = isClassicalGrammarApplicationResult(currentResult)
       ? currentResult
-      : currentResult && typeof currentResult === "object"
-        ? issuedApplicationResultByCanonicalResult.get(currentResult) || null
-        : null;
+      : exactResultProvenance?.applicationResult || null;
+    const capturedCanonicalResult =
+      isClassicalGrammarApplicationResult(currentResult)
+        ? currentResult.canonicalResult
+        : exactResultProvenance?.exactResult || null;
+    const capturedResultRole =
+      isClassicalGrammarApplicationResult(currentResult)
+        ? "canonical-result"
+        : exactResultProvenance?.resultRole || "";
     if (
       !normalizedSlotId
       || !isClassicalGrammarApplicationResult(applicationResult)
       || applicationResult.authorizationStatus !== "authorized"
-      || !applicationResult.canonicalResult
-      || typeof applicationResult.canonicalResult !== "object"
+      || !capturedCanonicalResult
+      || typeof capturedCanonicalResult !== "object"
     ) {
       return Object.freeze({
         kind: APPLICATION_RESULT_CAPTURE_KIND,
@@ -3367,8 +4454,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           : "classical-grammar-application-issued-authorized-result-required",
         slotId: normalizedSlotId,
         outputKind: "",
+        capturedResultRole: "",
         applicationResult: null,
         canonicalResult: null,
+        rhymeFullPinFrame: null,
+        rhymeCalibrationFrame: null,
         formulaStringAuthority: false,
         surfaceStringAuthority: false,
         storedAnswerAuthority: false,
@@ -3382,8 +4472,15 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       slotId: normalizedSlotId,
       operationId: applicationResult.operationId,
       outputKind: applicationResult.outputKind,
+      capturedResultRole,
       applicationResult,
-      canonicalResult: applicationResult.canonicalResult,
+      canonicalResult: capturedCanonicalResult,
+      rhymeFullPinFrame:
+        getClassicalGrammarApplicationRhymeFullPin(applicationResult),
+      rhymeCalibrationFrame:
+        getClassicalGrammarApplicationRhymeCalibration(applicationResult),
+      layerGraph:
+        getClassicalGrammarApplicationLayerGraph(applicationResult),
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
       storedAnswerAuthority: false,
@@ -3406,7 +4503,19 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       && capture.applicationResult.authorizationStatus === "authorized"
       && capture.operationId === capture.applicationResult.operationId
       && capture.outputKind === capture.applicationResult.outputKind
-      && capture.canonicalResult === capture.applicationResult.canonicalResult
+      && getIssuedResultProvenance(capture.canonicalResult)
+        ?.applicationResult === capture.applicationResult
+      && ["canonical-result", "continuation-result"].includes(
+        capture.capturedResultRole,
+      )
+      && capture.rhymeFullPinFrame
+        === getClassicalGrammarApplicationRhymeFullPin(
+          capture.applicationResult,
+        )
+      && capture.rhymeCalibrationFrame
+        === getClassicalGrammarApplicationRhymeCalibration(
+          capture.applicationResult,
+        )
       && capture.formulaStringAuthority === false
       && capture.surfaceStringAuthority === false
       && capture.storedAnswerAuthority === false
@@ -4051,6 +5160,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     APPLICATION_RESULT_DIAGNOSTIC,
     APPLICATION_RESULT_KIND,
     APPLICATION_RESULT_CAPTURE_KIND,
+    RHYME_OWNER_PROOF_OBSERVATION_KIND,
+    APPLICATION_LAYER_GRAPH_KIND,
     CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC,
     CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS,
     CLASSICAL_GRAMMAR_APPLICATION_GCD_INVARIANT_IDS: GCD_INVARIANT_IDS,
@@ -4059,6 +5170,15 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     assertClassicalVisibleSurfaceResult,
     createClassicalGrammarApplicationApi,
     getClassicalGrammarApplicationInventory,
+    buildClassicalGrammarApplicationRhymeOwnerCalibration,
+    getClassicalGrammarApplicationRhymeFullPin,
+    getClassicalGrammarApplicationRhymeCalibration,
+    getClassicalGrammarApplicationRhymeOwnerProofObservations,
+    isClassicalGrammarApplicationRhymeOwnerProofObservation,
+    getClassicalGrammarApplicationRhymeContinuationProvenance,
+    getClassicalGrammarApplicationNextOperationInventory,
+    getClassicalGrammarApplicationLayerGraph,
+    isClassicalGrammarApplicationLayerGraph,
     executeClassicalGrammarApplicationRequest,
     isClassicalGrammarApplicationResult,
     captureClassicalGrammarApplicationResult,

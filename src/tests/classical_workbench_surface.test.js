@@ -344,7 +344,7 @@ function run(ctx = {}) {
                 && rendering.includes("disclosure.open = !disclosure.hidden"),
             normalActions:
                 rendering.includes('copyAction.textContent = "Copy form"')
-                && rendering.includes('continueAction.textContent = "Add another derivation"'),
+                && rendering.includes('continueAction.textContent = "Continue this Result"'),
             paradigmNormalcy:
                 rendering.includes('paradigmCount.textContent = `${projected.length} forms`')
                 && rendering.includes('copyTable.textContent = "Copy table"')

@@ -149,6 +149,34 @@ function impersonalPatientive(ctx, sourceStem, verbClass, nonactiveSuffix) {
     });
 }
 
+function activeStagePatientive(ctx, {
+    sourceStem,
+    verbClass,
+    tense,
+    patientiveSourceFamily,
+}) {
+    const application = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem,
+        verbClass,
+        sourceValence: "intransitive",
+        subject: "3sg",
+        mood: "indicative",
+        tense,
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+        voice: "active",
+    });
+    return ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "patientive",
+        patientiveSourceFamily,
+        patientiveAnalogy: "impersonal",
+        canonicalVncResult: application.resultFrame,
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
+}
+
 function run(ctx = {}) {
     const s = createSuite("classical_lesson37_groups_13_15_jobs");
     const ledger = JSON.parse(fs.readFileSync(path.join(
@@ -258,24 +286,17 @@ function run(ctx = {}) {
         ?.patientiveTaxonomyFrame;
     const otherFamilies = [
         impersonalPatientive(ctx, "mayāna", "B", "lō"),
-        ctx.evaluateClassicalNahuatlDeverbalNnc({
-            constructionKind: "patientive",
+        activeStagePatientive(ctx, {
+            sourceStem: "miqui",
+            verbClass: "B",
+            tense: "preterit",
             patientiveSourceFamily: "perfective-active-core",
-            patientiveAnalogy: "impersonal",
-            source: { sourceStage: "perfective-core", sourceStem: "mic",
-                verbClass: "B", sourceVoice: "active",
-                sourceValence: "intransitive", sourceObjectPattern: "none" },
-            subject: "3sg", state: "absolutive",
         }),
-        ctx.evaluateClassicalNahuatlDeverbalNnc({
-            constructionKind: "patientive",
+        activeStagePatientive(ctx, {
+            sourceStem: "cuica",
+            verbClass: "A",
+            tense: "present",
             patientiveSourceFamily: "imperfective-active-core",
-            patientiveAnalogy: "impersonal",
-            source: { sourceStage: "imperfective-core",
-                sourceStem: "mictiā", verbClass: "A",
-                sourceVoice: "active", sourceValence: "single-object",
-                sourceObjectPattern: "none" },
-            subject: "3sg", state: "absolutive",
         }),
         ctx.evaluateClassicalNahuatlDeverbalNnc({
             constructionKind: "patientive",

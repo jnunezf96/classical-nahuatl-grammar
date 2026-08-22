@@ -111,7 +111,7 @@ function run(ctx = {}) {
             vncLateOperationClosureFrame: normal,
         },
     });
-    s.eq("Add another derivation passes the exact Purposive Result as a read-only typed Source", {
+    s.eq("Continue this Result passes the exact Purposive Result as a read-only typed Source", {
         used: passageUsed,
         stem: ctx.document.getElementById("classical-source-whole")?.value,
         verbClass: [

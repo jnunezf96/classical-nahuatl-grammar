@@ -67,6 +67,14 @@ function createProbeElement(tagName = "div") {
             this.children.push(node);
             return node;
         },
+        prepend(...nodes) {
+            nodes.slice().reverse().forEach(node => {
+                if (node && typeof node === "object") {
+                    node.parentNode = this;
+                }
+                this.children.unshift(node);
+            });
+        },
         replaceChildren(...nodes) {
             this.children.forEach(node => {
                 if (node && typeof node === "object") node.parentNode = null;

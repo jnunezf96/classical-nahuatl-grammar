@@ -30,6 +30,22 @@ function run(ctx = {}) {
     const hostileFuture = build({ tense: "future" });
     const hostileDont = build({ admonitiveTranslationReading: "don't" });
     const hostileMayNot = build({ admonitiveTranslationReading: "may-not" });
+    const canonicalVncReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [{
+                sourceStem: "huetz",
+                verbClass: "B",
+                sourceValence: "intransitive",
+                subject: "2sg",
+                requestedDerivation: "direct",
+                requestedVoice: "active",
+                mood: "admonitive",
+                tense: "nonpast",
+                outputScope: "single",
+                sentenceOptions: {},
+            }],
+        });
 
     const jobs = new Map();
     const add = (atomId, actual, expected) => jobs.set(atomId, { actual, expected });
@@ -87,6 +103,26 @@ function run(ctx = {}) {
         classA: ["#ni-0(tzahtzi)h+⎕-0#", "Mā nitzahtzih."],
         classB: ["#ti-0(huetz)0+⎕-0#", "Mā tihuetz."],
         plural: ["#ti-0(huetz)0+t-in#", "Mā tihuetztin."],
+    });
+    s.eq("the admonitive keeps the exact canonical VNC Result available for licensed continuation", {
+        receipt: canonicalVncReceipt.authorizationStatus,
+        result:
+            canonicalVncReceipt.canonicalResult?.resultFrame
+                ?.authorizationStatus,
+        resultKind:
+            canonicalVncReceipt.canonicalResult?.resultFrame?.kind,
+        sourcePreserved:
+            canonicalVncReceipt.canonicalResult?.resultFrame
+                ?.sourceAnalysisFrame?.sourceStem,
+        surface:
+            canonicalVncReceipt.canonicalResult?.resultFrame
+                ?.finiteSurfaceFrame?.wordRealization,
+    }, {
+        receipt: "authorized",
+        result: "authorized",
+        resultKind: "classical-nahuatl-vnc-application-result-frame",
+        sourcePreserved: "huetz",
+        surface: "tihuetz",
     });
     return s;
 }

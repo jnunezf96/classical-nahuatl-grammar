@@ -28,6 +28,15 @@ const RENDERING = fs.readFileSync(
     path.join(ROOT, "src", "ui", "rendering", "rendering.mjs"),
     "utf8"
 );
+const MINIMAL_RUN_LEDGER = fs.readFileSync(
+    path.join(
+        ROOT,
+        "docs",
+        "canvas-progress",
+        "lessons1_58-minimal-run-ledger.md"
+    ),
+    "utf8"
+);
 // Required proof families: claim-specific source inventory; positive witnesses;
 // negative restrictions; interaction witnesses; hostile authority; scalar and
 // paradigm equivalence; registered grammar contracts.
@@ -916,6 +925,368 @@ function run(ctx = {}) {
         formula: "#0-0(cual-a-x)tli-0#",
         word: "cualaxtli",
     });
+    const semanticAnthillFrames = [
+        [37, "active-action", ctx.evaluateClassicalNahuatlDeverbalNnc(
+            deverbalRequest()
+        )],
+        [37, "potential-patient",
+            ctx.evaluateClassicalNahuatlDeverbalNnc(deverbalRequest({
+                actionKind: "potential-patient",
+            }))],
+        [37, "passive-patientive", exactPassivePatientive(ctx)],
+        [37, "impersonal-general-action",
+            ctx.evaluateClassicalNahuatlDeverbalNnc(deverbalRequest({
+                actionKind: "impersonal-general-action",
+                source: {
+                    sourceStage: "future-core",
+                    sourceStem: "cua",
+                    verbClass: "A",
+                    sourceVoice: "impersonal",
+                    sourceValence: "intransitive",
+                    sourceObjectPattern: "nonspecific-nonhuman",
+                    sourceSubject: "3sg",
+                },
+            }))],
+        [38, "impersonal-patientive", exactImpersonalPatientive(ctx)],
+        [39, "perfective-patientive", exactPerfectivePatientive(ctx)],
+        [39, "imperfective-patientive", exactImperfectivePatientive(ctx)],
+        [39, "root-stock-patientive", rootStockPatientive],
+        [39, "characteristic-patientive",
+            ctx.evaluateClassicalNahuatlDeverbalNnc(
+                characteristicRequest(ctx)
+            )],
+    ];
+    const deverbalSourceContracts =
+        ctx.CLASSICAL_NAHUATL_DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS;
+    s.eq("Lessons 37–39 share one typed Deverbal Nounstem anthill", {
+        rows: semanticAnthillFrames.map(([lesson, branch, frame]) => {
+            const axis = frame.operationFrame?.deverbalNounstemAxisFrame;
+            return [
+                lesson,
+                branch,
+                axis?.sourceStage,
+                axis?.sourceVoice,
+                axis?.formationFamily,
+                axis?.sourceEvidenceKind,
+                axis?.allowedStates?.join("|"),
+            ];
+        }),
+        sharedAxisContract: semanticAnthillFrames.every(([, , frame]) => {
+            const axis = frame.operationFrame?.deverbalNounstemAxisFrame;
+            return axis?.authorizationStatus === "authorized"
+                && axis.structuralContractSatisfied === true
+                && axis.requiredSourceStage === axis.sourceStage
+                && axis.permittedSourceVoices.includes(axis.sourceVoice)
+                && axis.permittedSourceEvidenceKinds.includes(
+                    axis.sourceEvidenceKind
+                )
+                && axis.productiveRuleUsesTypedSourceProperties === true
+                && axis.sourceShapeAloneSelectsLexicalMeaning === false
+                && axis.exampleStemMembershipAuthorizesFormation === false
+                && axis.runtimeRouteFamily === "deverbal-nnc"
+                && axis.lessonQualifiedRuntimeRoute === false
+                && axis.lessonMetadataAuthorizesFormation === false
+                && axis.continuationSourceRequirement
+                    === "exact-owner-issued-canonical-result"
+                && axis.continuationConsumesExactCanonicalResult === true
+                && axis.grammarAuthority === false
+                && Object.isFrozen(axis);
+        }),
+        structuralContracts: Object.entries(deverbalSourceContracts)
+            .map(([id, contract]) => [
+                id,
+                contract.sourceStage,
+                contract.sourceVoices.join("|"),
+                contract.sourceEvidenceKinds.join("|"),
+            ]),
+        everyStructuralContractExercised: Object.keys(
+            deverbalSourceContracts
+        ).every(id => semanticAnthillFrames.some(([, , frame]) => (
+            frame.operationFrame?.deverbalNounstemAxisFrame
+                ?.structuralContractId === id
+        ))),
+        oneTargetOwner: semanticAnthillFrames.every(([, , frame]) => (
+            frame.canonicalTargetEvaluator
+                === "buildClassicalNahuatlNncSlotFrame"
+            && frame.canonicalResult?.authorizationStatus === "authorized"
+        )),
+        recurringAxes: [
+            "source-stage",
+            "voice-and-history",
+            "valence-and-participants",
+            "formation-family",
+            "nnc-state",
+            "continuation",
+        ].every(axis => MINIMAL_RUN_LEDGER.toLowerCase().includes(
+            axis.replaceAll("-", " ")
+        )),
+        path: MINIMAL_RUN_LEDGER.includes(
+            "typed VNC Source or exact Result → Source stage and voice → deverbal formation → NNC state and participants → licensed continuation"
+        ),
+        nonAuthorizing: MINIMAL_RUN_LEDGER.includes(
+            "one cross-lesson run map, not another grammar authority"
+        ),
+    }, {
+        rows: [
+            [37, "active-action", "future-core", "active",
+                "deverbal-action:active-action:liz", "typed-morphemic-source",
+                "absolutive|possessive"],
+            [37, "potential-patient", "future-core", "active",
+                "deverbal-action:potential-patient:liz",
+                "typed-morphemic-source", "absolutive|possessive"],
+            [37, "passive-patientive", "nonactive-core", "passive",
+                "patientive:passive-core", "owner-issued-vnc-result",
+                "absolutive|possessive"],
+            [37, "impersonal-general-action", "future-core", "impersonal",
+                "deverbal-action:impersonal-general-action:liz",
+                "typed-morphemic-source", "absolutive|possessive"],
+            [38, "impersonal-patientive", "nonactive-core", "impersonal",
+                "patientive:impersonal-core", "owner-issued-vnc-result",
+                "absolutive|possessive"],
+            [39, "perfective-patientive", "perfective-core", "active",
+                "patientive:perfective-active-core", "owner-issued-vnc-result",
+                "absolutive|possessive"],
+            [39, "imperfective-patientive", "imperfective-core", "active",
+                "patientive:imperfective-active-core", "owner-issued-vnc-result",
+                "absolutive|possessive"],
+            [39, "root-stock-patientive", "root-or-stock", "active",
+                "patientive:root-or-stock", "typed-morphemic-source",
+                "absolutive|possessive"],
+            [39, "characteristic-patientive", "nounstem-embed", "active",
+                "patientive:characteristic-property:inherent-quality",
+                "owner-issued-nnc-result", "absolutive|possessive"],
+        ],
+        sharedAxisContract: true,
+        structuralContracts: [
+            ["deverbal-action:active-action", "future-core", "active",
+                "typed-morphemic-source|owner-issued-vnc-result"],
+            ["deverbal-action:potential-patient", "future-core",
+                "active", "typed-morphemic-source|owner-issued-vnc-result"],
+            ["deverbal-action:impersonal-general-action", "future-core",
+                "impersonal",
+                "typed-morphemic-source|owner-issued-vnc-result"],
+            ["patientive:passive-core", "nonactive-core", "passive",
+                "owner-issued-vnc-result"],
+            ["patientive:impersonal-core", "nonactive-core",
+                "impersonal", "owner-issued-vnc-result"],
+            ["patientive:perfective-active-core", "perfective-core",
+                "active", "owner-issued-vnc-result"],
+            ["patientive:imperfective-active-core",
+                "imperfective-core", "active",
+                "owner-issued-vnc-result"],
+            ["patientive:root-or-stock", "root-or-stock", "active",
+                "typed-morphemic-source"],
+            ["patientive:characteristic-property", "nounstem-embed",
+                "active", "owner-issued-nnc-result"],
+        ],
+        everyStructuralContractExercised: true,
+        oneTargetOwner: true,
+        recurringAxes: true,
+        path: true,
+        nonAuthorizing: true,
+    });
+    const frequentativeResult = tense => (
+        ctx.evaluateClassicalNahuatlLateVncDerivation({
+            sourceStem: "miqui",
+            sourceValence: "intransitive",
+            verbClass: "B",
+            subject: "3sg",
+            mood: "indicative",
+            tense,
+            derivationType: "direct",
+            voice: "active",
+            objectKind: "none",
+            lateOperation: "frequentative",
+            lateVariant: "ordinary-short-glottal",
+            frequentativeRepetitions: 1,
+            frequentativeScope: "open",
+        })
+    );
+    const frequentativeFuture = frequentativeResult("future");
+    const frequentativeProjection =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            frequentativeFuture
+        );
+    const frequentativeAction = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "deverbal-action",
+        actionKind: "active-action",
+        actionSuffix: "liz",
+        canonicalVncResult: frequentativeFuture,
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "nonanimate",
+    });
+    const copiedFrequentativeFuture = { ...frequentativeFuture };
+    const copiedFrequentativeProjection =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            copiedFrequentativeFuture
+        );
+    const copiedFrequentativeAction =
+        ctx.evaluateClassicalNahuatlDeverbalNnc({
+            constructionKind: "deverbal-action",
+            actionKind: "active-action",
+            actionSuffix: "liz",
+            canonicalVncResult: copiedFrequentativeFuture,
+            subject: "3sg",
+            state: "absolutive",
+            animacy: "nonanimate",
+        });
+    s.eq("Lesson 27 frequentative Results remain exact productive Sources for Lesson 37", {
+        frequentative: frequentativeFuture.authorizationStatus,
+        projection: Boolean(frequentativeProjection),
+        projectionResultIdentity:
+            frequentativeProjection?.canonicalResultFrame
+                === frequentativeFuture,
+        projectionOperationIdentity:
+            frequentativeProjection?.canonicalOperationFrame
+                === frequentativeFuture.operationFrame,
+        projectionHistory:
+            frequentativeProjection?.sourceHistoryPreservedByExactFrameIdentity,
+        action: frequentativeAction.authorizationStatus,
+        actionBlockReason: frequentativeAction.blockReason,
+        sourceResultIdentity:
+            frequentativeAction.sourceFrame?.canonicalVncResult
+                === frequentativeFuture,
+        axisResultIdentity:
+            frequentativeAction.operationFrame?.deverbalNounstemAxisFrame
+                ?.canonicalSourceResult === frequentativeFuture,
+        axisOperationIdentity:
+            frequentativeAction.operationFrame?.deverbalNounstemAxisFrame
+                ?.canonicalSourceOperationFrame
+                === frequentativeFuture.operationFrame,
+        sourceDerivationOperation:
+            frequentativeAction.operationFrame?.deverbalNounstemAxisFrame
+                ?.sourceDerivationOperation,
+        copiedProjectionRejected: copiedFrequentativeProjection === null,
+        copiedActionRejected:
+            copiedFrequentativeAction.authorizationStatus === "blocked",
+    }, {
+        frequentative: "authorized",
+        projection: true,
+        projectionResultIdentity: true,
+        projectionOperationIdentity: true,
+        projectionHistory: true,
+        action: "authorized",
+        actionBlockReason: "",
+        sourceResultIdentity: true,
+        axisResultIdentity: true,
+        axisOperationIdentity: true,
+        sourceDerivationOperation: "frequentative",
+        copiedProjectionRejected: true,
+        copiedActionRejected: true,
+    });
+    const frequentativePreterit = frequentativeResult("preterit");
+    const frequentativePresent = frequentativeResult("present");
+    const frequentativePerfectivePatientive =
+        ctx.evaluateClassicalNahuatlDeverbalNnc({
+            constructionKind: "patientive",
+            patientiveSourceFamily: "perfective-active-core",
+            patientiveAnalogy: "impersonal",
+            canonicalVncResult: frequentativePreterit,
+            subject: "3sg",
+            state: "absolutive",
+            animacy: "animate",
+        });
+    const frequentativeImperfectivePatientive =
+        ctx.evaluateClassicalNahuatlDeverbalNnc({
+            constructionKind: "patientive",
+            patientiveSourceFamily: "imperfective-active-core",
+            patientiveAnalogy: "impersonal",
+            canonicalVncResult: frequentativePresent,
+            subject: "3sg",
+            state: "absolutive",
+            animacy: "animate",
+        });
+    const frequentativePreteritProjection =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            frequentativePreterit
+        );
+    const directPreterit = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: frequentativePreteritProjection.sourceStem,
+        verbClass: frequentativePreteritProjection.verbClass,
+        sourceValence: frequentativePreteritProjection.sourceValence,
+        subject: "3sg",
+        mood: "indicative",
+        tense: "preterit",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+        voice: "active",
+    });
+    const directPerfectivePatientive =
+        ctx.evaluateClassicalNahuatlDeverbalNnc({
+            constructionKind: "patientive",
+            patientiveSourceFamily: "perfective-active-core",
+            patientiveAnalogy: "impersonal",
+            canonicalVncResult: directPreterit.resultFrame,
+            subject: "3sg",
+            state: "absolutive",
+            animacy: "animate",
+        });
+    const frequentativePerfectiveRhyme =
+        frequentativePerfectivePatientive.operationFrame
+            ?.deverbalNounstemAxisFrame?.rhymeSpaceCoordinateFrame;
+    const directPerfectiveRhyme =
+        directPerfectivePatientive.operationFrame
+            ?.deverbalNounstemAxisFrame?.rhymeSpaceCoordinateFrame;
+    s.eq("the same frequentative history rotates into both Lesson 39 patientive stages", {
+        perfectiveSource: frequentativePreterit.authorizationStatus,
+        perfective: frequentativePerfectivePatientive.authorizationStatus,
+        perfectiveBlock:
+            frequentativePerfectivePatientive.blockReason,
+        perfectiveHistory:
+            frequentativePerfectivePatientive.operationFrame
+                ?.deverbalNounstemAxisFrame?.sourceDerivationOperation,
+        imperfectiveSource: frequentativePresent.authorizationStatus,
+        imperfective:
+            frequentativeImperfectivePatientive.authorizationStatus,
+        imperfectiveBlock:
+            frequentativeImperfectivePatientive.blockReason,
+        imperfectiveHistory:
+            frequentativeImperfectivePatientive.operationFrame
+                ?.deverbalNounstemAxisFrame?.sourceDerivationOperation,
+        directSource: directPreterit.authorizationStatus,
+        directPerfective: directPerfectivePatientive.authorizationStatus,
+        sameRhymeCoordinate:
+            frequentativePerfectiveRhyme?.coordinateId
+                === directPerfectiveRhyme?.coordinateId,
+        frequentativeLocalOperation:
+            frequentativePerfectiveRhyme?.rotation.localDerivationOperation,
+        directLocalOperation:
+            directPerfectiveRhyme?.rotation.localDerivationOperation,
+        frequentativeHistoryPreserved:
+            frequentativePerfectiveRhyme?.canonicalSourceResult
+                === frequentativePreterit,
+        directHistoryPreserved:
+            directPerfectiveRhyme?.canonicalSourceResult
+                === directPreterit.resultFrame,
+        collapsedOnce:
+            frequentativePerfectiveRhyme
+                ?.compatibleCoordinateCollapsedOnce
+            && directPerfectiveRhyme?.compatibleCoordinateCollapsedOnce,
+        lessonNumberDoesNotAuthorize:
+            frequentativePerfectiveRhyme
+                ?.lessonNumberParticipatesInCompatibility === false
+            && directPerfectiveRhyme
+                ?.lessonNumberParticipatesInCompatibility === false,
+    }, {
+        perfectiveSource: "authorized",
+        perfective: "authorized",
+        perfectiveBlock: "",
+        perfectiveHistory: "frequentative",
+        imperfectiveSource: "authorized",
+        imperfective: "authorized",
+        imperfectiveBlock: "",
+        imperfectiveHistory: "frequentative",
+        directSource: "authorized",
+        directPerfective: "authorized",
+        sameRhymeCoordinate: true,
+        frequentativeLocalOperation: "frequentative",
+        directLocalOperation: "direct",
+        frequentativeHistoryPreserved: true,
+        directHistoryPreserved: true,
+        collapsedOnce: true,
+        lessonNumberDoesNotAuthorize: true,
+    });
     const alternateRootStockPatientive =
         ctx.evaluateClassicalNahuatlDeverbalNnc(
             patientiveRequest("root-or-stock", {
@@ -1075,6 +1446,10 @@ function run(ctx = {}) {
             assimilatedAction.blockReason,
             assimilatedAction.operationFrame?.targetStems?.restrictedUse,
             assimilatedAction.operationFrame?.appliedSemanticRules],
+        axisPreserved:
+            assimilatedAction.operationFrame
+                ?.sourceDeverbalNounstemAxisFrame
+            === miquiz.operationFrame?.deverbalNounstemAxisFrame,
     }, {
         source: "authorized",
         action: ["authorized", "miqui-z"],
@@ -1082,6 +1457,7 @@ function run(ctx = {}) {
             "35.7-or-37.5.4-or-38.2-or-39.6-nominal-embed",
             "37.5-s-to-tz-affective-assimilation",
         ]],
+        axisPreserved: true,
     });
     const actionSupplementPrincipal =
         ctx.buildClassicalNahuatlSupplementationClauseEnvelope(

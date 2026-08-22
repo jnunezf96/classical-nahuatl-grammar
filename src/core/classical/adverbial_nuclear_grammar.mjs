@@ -222,11 +222,11 @@ const VNC_RECORDS = Object.freeze([
 const NNC_FOUNDATION_RECORDS = Object.freeze([
   makeRecord({ id: "44.4-cemilhuitl", section: "44.4.1", family: "first-degree-nnc", clauseKind: "nnc-absolutive", degree: "first-degree", domain: "duration", surface: "cemilhuitl", predicateStem: "cem-ilhui", num1: "tl" }),
   makeRecord({ id: "44.4-tequitl", section: "44.4.1", family: "first-degree-nnc", clauseKind: "nnc-absolutive", degree: "first-degree", domain: "manner", surface: "tequitl", predicateStem: "tequi", num1: "tl", restrictions: ["adverbial-reading-occurs-in-zan-tequitl"], requiredPrecedingParticles: ["zan"] }),
-  makeRecord({ id: "44.4-inchān", section: "44.4.1", family: "first-degree-nnc", clauseKind: "nnc-possessive", degree: "first-degree", domain: "location", surface: "īnchān", predicateStem: "chān", stateSlots: ["ī", "n"], num1: "Ø" }),
+  makeRecord({ id: "44.4-inchān", section: "44.4.1", family: "first-degree-nnc", clauseKind: "nnc-possessive", degree: "first-degree", domain: "location", surface: "īnchān", predicateStem: "chān", stateSlots: ["ī", "n"], num1: "Ø", writtenBoundaryRule: "source-preserving" }),
   makeRecord({ id: "44.4-cenyohoal", section: "44.4.2", family: "second-degree-nnc", clauseKind: "nnc-absolutive", degree: "second-degree", domain: "duration", surface: "cenyohoal", predicateStem: "cen-yohoa-l", num1: "⎕" }),
   makeRecord({ id: "44.4-cecemilhuitl", section: "44.4-note", family: "first-degree-nnc", clauseKind: "nnc-absolutive", degree: "first-degree", domain: "time", surface: "cēcemilhuitl", predicateStem: "cē-cem-ilhui", num1: "tl", lexicalStatus: "productive" }),
   makeRecord({ id: "44.4-cecenyohual", section: "44.4-note", family: "second-degree-nnc", clauseKind: "nnc-absolutive", degree: "second-degree", domain: "time", surface: "cēcenyohual", predicateStem: "cē-cen-yohoa-l", num1: "⎕", lexicalStatus: "productive", writtenBoundaryRule: "oa-to-ua" }),
-  makeRecord({ id: "44.4-inchahchan", section: "44.4-note", family: "first-degree-nnc", clauseKind: "nnc-possessive", degree: "first-degree", domain: "location", surface: "īnchahchān", predicateStem: "chah-chān", stateSlots: ["ī", "n"], lexicalStatus: "productive" }),
+  makeRecord({ id: "44.4-inchahchan", section: "44.4-note", family: "first-degree-nnc", clauseKind: "nnc-possessive", degree: "first-degree", domain: "location", surface: "īnchahchān", predicateStem: "chah-chān", stateSlots: ["ī", "n"], lexicalStatus: "productive", writtenBoundaryRule: "source-preserving" }),
 ]);
 
 const PARTICLE_LOOKING_RECORDS = Object.freeze([
@@ -764,9 +764,13 @@ function realizeTypedCarrier(value = "") {
 
 function realizeAdverbialWrittenBoundary(
   carrier = "",
-  writtenBoundaryRule = "identity"
+  writtenBoundaryRule = "identity",
+  sourcePreservingCarrier = "",
 ) {
   const source = normalizeToken(carrier);
+  if (writtenBoundaryRule === "source-preserving") {
+    return normalizeToken(sourcePreservingCarrier) || source;
+  }
   if (writtenBoundaryRule === "oa-to-ua") {
     return source.replace(/yohoa(?=l$)/u, "yohua");
   }
@@ -948,6 +952,7 @@ function buildTypedAdverbialNuclearProjection(
     wordSurface: realizeAdverbialWrittenBoundary(
       surfaceFrame.canonicalNuclearSurface,
       record.writtenBoundaryRule,
+      surfaceFrame.canonicalNuclearSurfaceBeforeBoundary,
     ),
   };
 }

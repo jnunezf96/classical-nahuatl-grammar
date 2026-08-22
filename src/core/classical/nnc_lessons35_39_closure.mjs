@@ -3,6 +3,11 @@
 // Production owns executable grammar only. Canvas source spans, dispositions,
 // claim counts, and audit receipts remain in documentation and tests.
 
+import {
+  buildClassicalGrammaticalRhymeCoordinateFrame as
+    buildSharedGrammaticalRhymeCoordinateFrame,
+} from "../grammar/grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();
 const ISSUED_LEXICAL_AUTHORIZATION_FRAMES = new WeakSet();
@@ -69,18 +74,91 @@ const PATIENTIVE_MATRIX_COMPOUND_RELATIONS = Object.freeze([
   "sex", "instrument", "means", "character", "progeny", "fellowship",
 ]);
 
-const DEVERBAL_ACTION_SOURCE_VOICE_BY_KIND = Object.freeze({
-  "active-action": "active",
-  "potential-patient": "active",
-  "impersonal-general-action": "impersonal",
-});
+function freezeDeverbalNounstemSourceContract({
+  sourceStage,
+  sourceVoices,
+  sourceEvidenceKinds,
+  voiceMismatchBlockReason,
+}) {
+  return Object.freeze({
+    sourceStage,
+    sourceVoices: Object.freeze([...sourceVoices]),
+    sourceEvidenceKinds: Object.freeze([...sourceEvidenceKinds]),
+    voiceMismatchBlockReason,
+  });
+}
 
-const PATIENTIVE_SOURCE_VOICE_BY_FAMILY = Object.freeze({
-  "passive-core": "passive",
-  "impersonal-core": "impersonal",
-  "perfective-active-core": "active",
-  "imperfective-active-core": "active",
-  "root-or-stock": "active",
+// One structural contract covers the recurring Lessons 37-39 path. These are
+// productive formation families, never example-stem or lesson-number routes.
+const DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS = Object.freeze({
+  "deverbal-action:active-action": freezeDeverbalNounstemSourceContract({
+    sourceStage: "future-core",
+    sourceVoices: ["active"],
+    sourceEvidenceKinds: [
+      "typed-morphemic-source",
+      "owner-issued-vnc-result",
+    ],
+    voiceMismatchBlockReason: "deverbal-action-kind-source-voice-mismatch",
+  }),
+  "deverbal-action:potential-patient": freezeDeverbalNounstemSourceContract({
+    sourceStage: "future-core",
+    sourceVoices: ["active"],
+    sourceEvidenceKinds: [
+      "typed-morphemic-source",
+      "owner-issued-vnc-result",
+    ],
+    voiceMismatchBlockReason: "deverbal-action-kind-source-voice-mismatch",
+  }),
+  "deverbal-action:impersonal-general-action":
+    freezeDeverbalNounstemSourceContract({
+      sourceStage: "future-core",
+      sourceVoices: ["impersonal"],
+      sourceEvidenceKinds: [
+        "typed-morphemic-source",
+        "owner-issued-vnc-result",
+      ],
+      voiceMismatchBlockReason:
+        "deverbal-action-kind-source-voice-mismatch",
+    }),
+  "patientive:passive-core": freezeDeverbalNounstemSourceContract({
+    sourceStage: "nonactive-core",
+    sourceVoices: ["passive"],
+    sourceEvidenceKinds: ["owner-issued-vnc-result"],
+    voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+  }),
+  "patientive:impersonal-core": freezeDeverbalNounstemSourceContract({
+    sourceStage: "nonactive-core",
+    sourceVoices: ["impersonal"],
+    sourceEvidenceKinds: ["owner-issued-vnc-result"],
+    voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+  }),
+  "patientive:perfective-active-core":
+    freezeDeverbalNounstemSourceContract({
+      sourceStage: "perfective-core",
+      sourceVoices: ["active"],
+      sourceEvidenceKinds: ["owner-issued-vnc-result"],
+      voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+    }),
+  "patientive:imperfective-active-core":
+    freezeDeverbalNounstemSourceContract({
+      sourceStage: "imperfective-core",
+      sourceVoices: ["active"],
+      sourceEvidenceKinds: ["owner-issued-vnc-result"],
+      voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+    }),
+  "patientive:root-or-stock": freezeDeverbalNounstemSourceContract({
+    sourceStage: "root-or-stock",
+    sourceVoices: ["active"],
+    sourceEvidenceKinds: ["typed-morphemic-source"],
+    voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+  }),
+  "patientive:characteristic-property":
+    freezeDeverbalNounstemSourceContract({
+      sourceStage: "nounstem-embed",
+      sourceVoices: ["active"],
+      sourceEvidenceKinds: ["owner-issued-nnc-result"],
+      voiceMismatchBlockReason: "patientive-family-source-voice-mismatch",
+    }),
 });
 
 const LCM_DISTINCTION_AXES = Object.freeze([
@@ -1762,7 +1840,8 @@ function getVncResultTense(result = null) {
     || selected?.priorVncFrame
     || null;
   return normalizeKey(
-    prior?.tense
+    result?.normalizedRequest?.tense
+      || prior?.tense
       || prior?.tenseFrame?.tense
       || active?.lesson11VncApplicationFrame?.morphologicalTense
       || selected?.lesson11VncApplicationFrame?.morphologicalTense
@@ -1948,6 +2027,7 @@ function capturePerfectivePatientiveVncResult(
     result?.selectedVoice
       || result?.normalizedRequest?.requestedVoice
       || result?.normalizedRequest?.voice
+      || projection?.sourceVoice
       || ""
   );
   if (
@@ -2090,6 +2170,7 @@ function captureImperfectivePatientiveVncResult(
     result?.selectedVoice
       || result?.normalizedRequest?.requestedVoice
       || result?.normalizedRequest?.voice
+      || projection?.sourceVoice
       || ""
   );
   if (
@@ -3154,7 +3235,11 @@ function isClassicalNahuatlPreteritVncNominalizationCaptureFrame(frame = null) {
   );
 }
 
-function findHostileAuthorityPath(value, path = "request") {
+function findHostileAuthorityPath(
+  value,
+  path = "request",
+  target = globalThis
+) {
   if (!value || typeof value !== "object") return "";
   if (
     value.kind === "classical-nahuatl-deverbal-nnc-source-frame"
@@ -3162,6 +3247,10 @@ function findHostileAuthorityPath(value, path = "request") {
     || value.kind === "classical-nahuatl-ordinary-nnc-result-frame"
     || value.kind === "classical-nahuatl-pronominal-nnc-result-frame"
     || isClassicalNahuatlDeverbalNncGrammarFrame(value)
+    || (
+      typeof target?.isClassicalNahuatlClosureFrame === "function"
+      && target.isClassicalNahuatlClosureFrame(value) === true
+    )
   ) {
     // Owner identity is checked by buildSourceFrame. Skipping the recursive
     // hostile scan preserves its exact copied/forged-frame rejection.
@@ -3178,7 +3267,7 @@ function findHostileAuthorityPath(value, path = "request") {
       return nextPath;
     }
     if (item && typeof item === "object") {
-      const nested = findHostileAuthorityPath(item, nextPath);
+      const nested = findHostileAuthorityPath(item, nextPath, target);
       if (nested) return nested;
     }
   }
@@ -4436,6 +4525,10 @@ function buildSourceFrame(
     imperfectivePatientiveVncCaptureFrame,
     characteristicPatientiveNncCaptureFrame,
     canonicalVncResult: vncCaptureFrame?.canonicalVncResult || null,
+    canonicalVncOperationFrame:
+      vncCaptureFrame?.canonicalVncOperationFrame
+      || vncCaptureFrame?.canonicalVncResult?.operationFrame
+      || null,
     canonicalVncSourceAnalysisFrame:
       vncCaptureFrame?.canonicalVncSourceAnalysisFrame || null,
     canonicalVncTypedSlotFrame:
@@ -4463,6 +4556,187 @@ function buildSourceFrame(
   });
   if (authorized) ISSUED_SOURCE_FRAMES.add(frame);
   return frame;
+}
+
+function buildGrammaticalRhymeCoordinateFrame({
+  sourceFrame = null,
+  structuralContractId = "",
+  formationFamily = "",
+  allowedStates = [],
+  sourceEvidenceKind = "",
+} = {}) {
+  const normalizedStates = [...new Set(
+    allowedStates.map(normalizeKey).filter(Boolean)
+  )];
+  const canonicalSourceResult =
+    sourceFrame?.canonicalVncResult || sourceFrame?.canonicalNncResult || null;
+  const canonicalSourceOperationFrame =
+    sourceFrame?.canonicalVncOperationFrame
+    || sourceFrame?.canonicalNncOperationFrame
+    || null;
+  const sourceDerivationOperation = normalizeKey(
+    canonicalSourceOperationFrame?.operation || ""
+  );
+  const sharedCoordinateFrame =
+    buildSharedGrammaticalRhymeCoordinateFrame({
+      canonicalSourceFrame: sourceFrame,
+      canonicalSourceResult,
+      canonicalSourceOperationFrame,
+      emptyPin: {
+        sourceUnit: sourceFrame?.sourceUnit || "",
+        sourceStage: sourceFrame?.sourceStage || "",
+        sourceVoice: sourceFrame?.sourceVoice || "",
+        sourceValence: sourceFrame?.sourceValence || "",
+        sourceObjectPattern: sourceFrame?.sourceObjectPattern || "",
+        sourceEvidenceKind,
+      },
+      fullPin: {
+        structuralContractId: normalizeKey(structuralContractId),
+        formationFamily: normalizeKey(formationFamily),
+        allowedStates: normalizedStates,
+      },
+      localResultTense:
+        canonicalSourceResult?.normalizedRequest?.tense || "",
+      localDerivationOperation: sourceDerivationOperation,
+      exactSourceIdentityValidated: Boolean(
+        ISSUED_SOURCE_FRAMES.has(sourceFrame)
+        && sourceFrame?.authorizationStatus === "authorized"
+        && canonicalSourceResult
+      ),
+    });
+  const authorized = sharedCoordinateFrame.coordinateCompleteness
+    === "complete";
+  return deepFreeze({
+    ...sharedCoordinateFrame,
+    kind: "classical-nahuatl-grammatical-rhyme-coordinate-frame",
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? ""
+      : "complete-exact-result-rhyme-coordinate-required",
+  });
+}
+
+function buildDeverbalNounstemAxisFrame({
+  sourceFrame = null,
+  structuralContractId = "",
+  formationFamily = "",
+  allowedStates = [],
+} = {}) {
+  const sourceMorphemes = normalizeStem(sourceFrame?.sourceStem)
+    .split("-").filter(Boolean);
+  const sourceEvidenceKind = sourceFrame?.sourceCapturedFromExactVncResult
+    ? "owner-issued-vnc-result"
+    : sourceFrame?.sourceCapturedFromExactNncResult
+      ? "owner-issued-nnc-result"
+      : "typed-morphemic-source";
+  const contract = DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS[
+    normalizeKey(structuralContractId)
+  ] || null;
+  const normalizedStates = [...new Set(
+    allowedStates.map(normalizeKey).filter(Boolean)
+  )];
+  const sourceFrameIsCanonical = Boolean(
+    ISSUED_SOURCE_FRAMES.has(sourceFrame)
+    && sourceFrame?.authorizationStatus === "authorized"
+  );
+  const sourceStageMatches = Boolean(
+    contract && sourceFrame?.sourceStage === contract.sourceStage
+  );
+  const sourceVoiceMatches = Boolean(
+    contract && contract.sourceVoices.includes(sourceFrame?.sourceVoice)
+  );
+  const sourceEvidenceMatches = Boolean(
+    contract && contract.sourceEvidenceKinds.includes(sourceEvidenceKind)
+  );
+  const statesAreRecognized = Boolean(
+    normalizedStates.length > 0
+    && normalizedStates.every(state => [
+      "absolutive",
+      "possessive",
+    ].includes(state))
+  );
+  const authorized = Boolean(
+    sourceFrameIsCanonical
+    && contract
+    && sourceStageMatches
+    && sourceVoiceMatches
+    && sourceEvidenceMatches
+    && statesAreRecognized
+    && normalizeKey(formationFamily)
+  );
+  const rhymeSpaceCoordinateFrame = buildGrammaticalRhymeCoordinateFrame({
+    sourceFrame,
+    structuralContractId,
+    formationFamily,
+    allowedStates: normalizedStates,
+    sourceEvidenceKind,
+  });
+  return deepFreeze({
+    kind: "classical-nahuatl-deverbal-nounstem-axis-frame",
+    version: VERSION,
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? ""
+      : !sourceFrameIsCanonical
+        ? "canonical-deverbal-nounstem-source-frame-required"
+        : !contract
+          ? "deverbal-nounstem-structural-contract-required"
+          : !sourceStageMatches
+            ? `source-stage-${contract.sourceStage}-required`
+            : !sourceVoiceMatches
+              ? contract.voiceMismatchBlockReason
+              : !sourceEvidenceMatches
+                ? "deverbal-nounstem-source-evidence-mismatch"
+                : !statesAreRecognized
+                  ? "deverbal-nounstem-state-contract-required"
+                  : "deverbal-nounstem-formation-family-required",
+    structuralContractId: normalizeKey(structuralContractId),
+    structuralContractSatisfied: authorized,
+    requiredSourceStage: contract?.sourceStage || "",
+    permittedSourceVoices: contract?.sourceVoices || Object.freeze([]),
+    permittedSourceEvidenceKinds:
+      contract?.sourceEvidenceKinds || Object.freeze([]),
+    sourceStage: sourceFrame?.sourceStage || "",
+    sourceVoice: sourceFrame?.sourceVoice || "",
+    sourceValence: sourceFrame?.sourceValence || "",
+    sourceObjectPattern: sourceFrame?.sourceObjectPattern || "",
+    sourceStem: sourceFrame?.sourceStem || "",
+    sourceMorphemes,
+    sourceShapeComplexity: sourceMorphemes.length > 1
+      ? "polymorphemic"
+      : "monomorphemic",
+    sourceEvidenceKind,
+    formationFamily,
+    allowedStates: Object.freeze(normalizedStates),
+    runtimeRouteFamily: "deverbal-nnc",
+    lessonQualifiedRuntimeRoute: false,
+    lessonMetadataAuthorizesFormation: false,
+    productiveRuleUsesTypedSourceProperties: true,
+    sourceShapeAloneSelectsLexicalMeaning: false,
+    exampleStemMembershipAuthorizesFormation: false,
+    continuationSourceRequirement: "exact-owner-issued-canonical-result",
+    continuationConsumesExactCanonicalResult: true,
+    continuationAuthorityOwnedByConsumer: true,
+    rhymeSpaceCoordinateFrame,
+    compatibleCoordinatesCollapsedBySharedContract:
+      rhymeSpaceCoordinateFrame.authorizationStatus === "authorized",
+    canonicalSourceFrame: sourceFrame,
+    canonicalSourceResult:
+      sourceFrame?.canonicalVncResult || sourceFrame?.canonicalNncResult || null,
+    canonicalSourceOperationFrame:
+      sourceFrame?.canonicalVncOperationFrame
+      || sourceFrame?.canonicalNncOperationFrame
+      || null,
+    sourceDerivationOperation: normalizeKey(
+      sourceFrame?.canonicalVncOperationFrame?.operation || ""
+    ),
+    exactSourceHistoryPreserved: Boolean(
+      sourceFrame?.canonicalVncResult || sourceFrame?.canonicalNncResult
+    ),
+    grammarAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
 }
 
 function buildCustomNumberFrame({
@@ -6242,18 +6516,21 @@ function buildDeverbalActionOperation(
   if (!["active-action", "potential-patient", "impersonal-general-action"].includes(actionKind)) {
     return { sourceFrame, operationFrame: null, blockReason: "deverbal-action-kind-not-recognized" };
   }
-  if (
-    sourceFrame.sourceVoice
-      !== DEVERBAL_ACTION_SOURCE_VOICE_BY_KIND[actionKind]
-  ) {
+  if (!["z", "liz"].includes(suffix)) {
+    return { sourceFrame, operationFrame: null, blockReason: "z-or-liz-action-suffix-required" };
+  }
+  const deverbalNounstemAxisFrame = buildDeverbalNounstemAxisFrame({
+    sourceFrame,
+    structuralContractId: `deverbal-action:${actionKind}`,
+    formationFamily: `deverbal-action:${actionKind}:${suffix}`,
+    allowedStates: ["absolutive", "possessive"],
+  });
+  if (deverbalNounstemAxisFrame.authorizationStatus !== "authorized") {
     return {
       sourceFrame,
       operationFrame: null,
-      blockReason: "deverbal-action-kind-source-voice-mismatch",
+      blockReason: deverbalNounstemAxisFrame.blockReason,
     };
-  }
-  if (!["z", "liz"].includes(suffix)) {
-    return { sourceFrame, operationFrame: null, blockReason: "z-or-liz-action-suffix-required" };
   }
   const lexicalFrame = sourceFrame.lexicalAuthorizationFrame;
   const actionCapture = sourceFrame.deverbalActionVncCaptureFrame;
@@ -6484,6 +6761,7 @@ function buildDeverbalActionOperation(
     version: VERSION,
     authorizationStatus: "authorized",
     operationId: `deverbal-action:${actionKind}:${suffix}`,
+    deverbalNounstemAxisFrame,
     constructionKind: "deverbal-action",
     actionKind,
     actionSuffix: suffix,
@@ -8159,16 +8437,24 @@ function buildPatientiveOperation(
     if (sourceFrame.authorizationStatus !== "authorized") {
       return { sourceFrame, operationFrame: null, blockReason: sourceFrame.blockReason };
     }
-    if (sourceFrame.sourceVoice !== "active") {
-      return {
-        sourceFrame,
-        operationFrame: null,
-        blockReason: "patientive-family-source-voice-mismatch",
-      };
-    }
     const reading = normalizeKey(request.characteristicReading || "inherent-quality");
     if (!["inherent-quality", "pertaining-to", "intrinsic-aspect", "organic-possession"].includes(reading)) {
       return { sourceFrame, operationFrame: null, blockReason: "39.3-characteristic-reading-required" };
+    }
+    const deverbalNounstemAxisFrame = buildDeverbalNounstemAxisFrame({
+      sourceFrame,
+      structuralContractId: "patientive:characteristic-property",
+      formationFamily: `patientive:characteristic-property:${reading}`,
+      allowedStates: reading === "organic-possession"
+        ? ["possessive"]
+        : ["absolutive", "possessive"],
+    });
+    if (deverbalNounstemAxisFrame.authorizationStatus !== "authorized") {
+      return {
+        sourceFrame,
+        operationFrame: null,
+        blockReason: deverbalNounstemAxisFrame.blockReason,
+      };
     }
     const state = normalizeKey(request.state || "absolutive");
     if (
@@ -8323,6 +8609,7 @@ function buildPatientiveOperation(
         version: VERSION,
         authorizationStatus: "authorized",
         operationId: `patientive:characteristic-property:${reading}`,
+        deverbalNounstemAxisFrame,
         constructionKind: "patientive",
         patientiveKind,
         patientiveSourceFamily: "imperfective-active-core",
@@ -8393,6 +8680,9 @@ function buildPatientiveOperation(
   if (!PATIENTIVE_SOURCE_FAMILIES.includes(sourceFamily)) {
     return { sourceFrame: null, operationFrame: null, blockReason: "patientive-source-family-required" };
   }
+  const structuralContractId = `patientive:${sourceFamily}`;
+  const structuralContract =
+    DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS[structuralContractId];
   if (sourceFamily === "passive-core") {
     if (!request.canonicalVncResult) {
       return {
@@ -8551,25 +8841,22 @@ function buildPatientiveOperation(
       },
     };
   }
-  const expectedStage = ({
-    "passive-core": "nonactive-core",
-    "impersonal-core": "nonactive-core",
-    "perfective-active-core": "perfective-core",
-    "imperfective-active-core": "imperfective-core",
-    "root-or-stock": "root-or-stock",
-  })[sourceFamily];
+  const expectedStage = structuralContract.sourceStage;
   const sourceFrame = buildSourceFrame(request, expectedStage, preparedSourceFrame);
   if (sourceFrame.authorizationStatus !== "authorized") {
     return { sourceFrame, operationFrame: null, blockReason: sourceFrame.blockReason };
   }
-  if (
-    sourceFrame.sourceVoice
-      !== PATIENTIVE_SOURCE_VOICE_BY_FAMILY[sourceFamily]
-  ) {
+  const deverbalNounstemAxisFrame = buildDeverbalNounstemAxisFrame({
+    sourceFrame,
+    structuralContractId,
+    formationFamily: structuralContractId,
+    allowedStates: ["absolutive", "possessive"],
+  });
+  if (deverbalNounstemAxisFrame.authorizationStatus !== "authorized") {
     return {
       sourceFrame,
       operationFrame: null,
-      blockReason: "patientive-family-source-voice-mismatch",
+      blockReason: deverbalNounstemAxisFrame.blockReason,
     };
   }
   const source = request.source && typeof request.source === "object" ? request.source : request;
@@ -9455,6 +9742,7 @@ function buildPatientiveOperation(
     version: VERSION,
     authorizationStatus: "authorized",
     operationId: `patientive:${sourceFamily}`,
+    deverbalNounstemAxisFrame,
     constructionKind: "patientive",
     patientiveKind: "ordinary",
     patientiveSourceFamily: sourceFamily,
@@ -9898,6 +10186,8 @@ function captureActionNncResultForContinuation(
     });
   }
   const action = context.operationFrame?.deverbalActionFrame || null;
+  const sourceDeverbalNounstemAxisFrame =
+    context.operationFrame?.deverbalNounstemAxisFrame || null;
   const predicateActionKind = context.operationFrame?.constructionKind
       === "predicate-nominalization"
     ? context.operationFrame?.nominalizationKind || ""
@@ -9910,6 +10200,9 @@ function captureActionNncResultForContinuation(
     context.operationFrame?.actionKind === "active-action"
     && ["z", "liz"].includes(context.operationFrame?.actionSuffix)
     && action?.exactVncResultIdentityPreserved
+    && sourceDeverbalNounstemAxisFrame?.authorizationStatus
+      === "authorized"
+    && sourceDeverbalNounstemAxisFrame.structuralContractSatisfied === true
   );
   if (!isPredicateAction && !isDerivedActiveAction) {
     return deepFreeze({
@@ -9943,6 +10236,9 @@ function captureActionNncResultForContinuation(
     canonicalActionNncResult: result,
     canonicalActionNncSourceFrame: context.sourceFrame,
     canonicalActionNncOperationFrame: context.operationFrame,
+    sourceDeverbalNounstemAxisFrame: isDerivedActiveAction
+      ? sourceDeverbalNounstemAxisFrame
+      : null,
     canonicalFutureVncResult: isPredicateAction
       ? context.sourceFrame?.canonicalVncResult || null
       : action.canonicalVncResult,
@@ -10039,6 +10335,8 @@ function capturePatientiveNncResultForMatrixContinuation(
     });
   }
   const operation = context.operationFrame || null;
+  const sourceDeverbalNounstemAxisFrame =
+    operation?.deverbalNounstemAxisFrame || null;
   const characteristicPropertyPatientive = Boolean(
     operation?.constructionKind === "patientive"
     && operation?.patientiveKind === "characteristic-property"
@@ -10048,6 +10346,8 @@ function capturePatientiveNncResultForMatrixContinuation(
     || !["ordinary", "characteristic-property"].includes(
       operation?.patientiveKind
     )
+    || sourceDeverbalNounstemAxisFrame?.authorizationStatus !== "authorized"
+    || sourceDeverbalNounstemAxisFrame.structuralContractSatisfied !== true
   ) {
     return deepFreeze({
       kind:
@@ -10118,6 +10418,7 @@ function capturePatientiveNncResultForMatrixContinuation(
     canonicalPatientiveNncResult: result,
     canonicalPatientiveSourceFrame: context.sourceFrame,
     canonicalPatientiveOperationFrame: operation,
+    sourceDeverbalNounstemAxisFrame,
     canonicalVncResult,
     continuationProjection: projection,
     sourceUnit: "owner-issued-patientive-nnc-result",
@@ -10185,6 +10486,8 @@ function isClassicalNahuatlPatientiveNncContinuationCaptureFrame(
     && frame.version === VERSION
     && frame.authorizationStatus === "authorized"
     && frame.exactResultIdentityPreserved === true
+    && frame.sourceDeverbalNounstemAxisFrame?.structuralContractSatisfied
+      === true
     && frame.callerSuppliedAuthorityAccepted === false
     && frame.formulaStringAuthority === false
     && frame.surfaceStringAuthority === false
@@ -10413,6 +10716,8 @@ function buildPatientiveMatrixContinuationOperation(
     operationId: "patientive-matrix-continuation:compound-nnc",
     constructionKind: "patientive-matrix-continuation",
     continuationRelation: "patientive-result-as-compound-matrix",
+    sourceDeverbalNounstemAxisFrame:
+      capture.sourceDeverbalNounstemAxisFrame,
     patientiveMatrixCompoundFrame: frame,
     targetStems: {
       restrictedUse: frame.compoundStem,
@@ -11408,6 +11713,8 @@ function buildPatientiveEmbedContinuationOperation(
     operationId: `patientive-embed-continuation:${compoundTargetKind}`,
     constructionKind: "patientive-embed-continuation",
     continuationRelation: "patientive-result-as-compound-embed",
+    sourceDeverbalNounstemAxisFrame:
+      capture.sourceDeverbalNounstemAxisFrame,
     patientiveEmbedCompoundFrame,
     targetStems: {
       restrictedUse: compoundOperation.compoundStem || "",
@@ -11653,6 +11960,8 @@ function buildContinuationOperation(
       operationId: "nominal-continuation:derived-nounstem-embed",
       constructionKind,
       continuationRelation: "compound-nnc-embed",
+      sourceDeverbalNounstemAxisFrame:
+        actionCapture?.sourceDeverbalNounstemAxisFrame || null,
       actionNncContinuationFrame:
         actionNncContinuationFrame("nnc"),
       tzinBoundaryFrame,
@@ -11751,6 +12060,8 @@ function buildContinuationOperation(
       operationId: `verbal-continuation:${relation}`,
       constructionKind,
       continuationRelation: relation,
+      sourceDeverbalNounstemAxisFrame:
+        actionCapture?.sourceDeverbalNounstemAxisFrame || null,
       actionNncContinuationFrame:
         actionNncContinuationFrame("vnc"),
       tzinBoundaryFrame,
@@ -11940,7 +12251,7 @@ function buildDoubleNucleusOwnerhoodOperation(request = {}) {
 }
 
 function evaluateGrammar(request = {}, target = globalThis, internalContext = null) {
-  const hostilePath = findHostileAuthorityPath(request);
+  const hostilePath = findHostileAuthorityPath(request, "request", target);
   if (hostilePath) {
     return buildBlockedFrame(
       `caller-supplied-derived-authority-rejected:${hostilePath}`,
@@ -12124,7 +12435,7 @@ function evaluateGrammar(request = {}, target = globalThis, internalContext = nu
 }
 
 function buildParadigmPlan(request = {}, target = globalThis) {
-  const hostilePath = findHostileAuthorityPath(request);
+  const hostilePath = findHostileAuthorityPath(request, "request", target);
   if (hostilePath) {
     return deepFreeze({
       kind: "classical-nahuatl-deverbal-nnc-paradigm-plan",
@@ -12269,7 +12580,11 @@ function projectParadigm(plan = null, coordinates = null, target = globalThis) {
     : plan.coordinates;
   const planContext = PARADIGM_PLAN_CONTEXTS.get(plan);
   return Object.freeze(selected.map(coordinate => {
-    const hostilePath = findHostileAuthorityPath(coordinate);
+    const hostilePath = findHostileAuthorityPath(
+      coordinate,
+      "request",
+      target
+    );
     if (hostilePath) {
       return buildBlockedFrame(
         `caller-supplied-derived-authority-rejected:${hostilePath}`,
@@ -12425,6 +12740,8 @@ export function installClassicalNahuatlDeverbalNncGlobals(
       PREDICATE_NOMINALIZATION_KINDS,
     CLASSICAL_NAHUATL_LESSONS_35_39_PATIENTIVE_SOURCE_FAMILIES:
       PATIENTIVE_SOURCE_FAMILIES,
+    CLASSICAL_NAHUATL_DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS:
+      DEVERBAL_NOUNSTEM_SOURCE_CONTRACTS,
     CLASSICAL_NAHUATL_LESSONS_35_39_PATIENTIVE_MATRIX_COMPOUND_RELATIONS:
       PATIENTIVE_MATRIX_COMPOUND_RELATIONS,
     CLASSICAL_NAHUATL_LESSONS_35_39_LCM_DISTINCTION_AXES:

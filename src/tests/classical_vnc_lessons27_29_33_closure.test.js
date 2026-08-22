@@ -465,6 +465,71 @@ function run(ctx = {}) {
         }
     );
 
+    const frequentativeForPurposive =
+        ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+            sourceStem: "caqui",
+            verbClass: "A",
+            subject: "1sg",
+            lateOperation: "frequentative",
+            lateVariant: "ordinary-long",
+            frequentativeRepetitions: 1,
+            frequentativeScope: "open",
+        }));
+    const purposiveFromFrequentative =
+        ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+            sourceStem:
+                frequentativeForPurposive.operationFrame?.targetStem,
+            verbClass: "A",
+            subject: "1sg",
+            lateOperation: "purposive",
+            lateVariant: "directional",
+            purposiveDirection: "outbound",
+            purposiveSeries: "outbound-nonpast-indicative",
+            recursiveEmbedClosureFrame: frequentativeForPurposive,
+        }));
+    s.eq(
+        "a frequentative Result can receive a purposive as the next general derivation layer",
+        {
+            inner: [
+                frequentativeForPurposive.authorizationStatus,
+                frequentativeForPurposive.operationFrame?.targetStem,
+            ],
+            outer: [
+                purposiveFromFrequentative.authorizationStatus,
+                purposiveFromFrequentative.operationFrame?.targetStem,
+                purposiveFromFrequentative.surfaceRealization,
+            ],
+            exactTypedSource:
+                purposiveFromFrequentative.operationFrame
+                    ?.sourceTypedVncSlotFrame
+                === frequentativeForPurposive.finalTypedVncSlotFrame,
+            generalLayerFacts: [
+                purposiveFromFrequentative.operationFrame?.operationFacts
+                    ?.recursiveEmbedAuthorized,
+                purposiveFromFrequentative.operationFrame?.operationFacts
+                    ?.recursiveEmbedSourceOperation,
+                purposiveFromFrequentative.operationFrame?.operationFacts
+                    ?.recursiveEmbedFramePreserved,
+                purposiveFromFrequentative.operationFrame?.operationFacts
+                    ?.recursivePurposiveBoundaryOutsideCompletedResult,
+            ],
+            falselyCalledCompound:
+                purposiveFromFrequentative.operationFrame?.operationFacts
+                    ?.recursiveCompoundEmbedAuthorized,
+        },
+        {
+            inner: ["authorized", "cā-caqui"],
+            outer: [
+                "authorized",
+                "cā-caqui-⎕-t-ī-uh",
+                "nicācaquitīuh",
+            ],
+            exactTypedSource: true,
+            generalLayerFacts: [true, "frequentative", true, true],
+            falselyCalledCompound: false,
+        }
+    );
+
     const honorific = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
         lateOperation: "honorific",
         lateVariant: "applicative",

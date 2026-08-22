@@ -5255,6 +5255,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       sourceValence = "",
       sourceSubject = "",
       sourceObjectPerson = "",
+      impersonalDerivationPath = "direct-active",
       mood = "indicative",
       tense = "present",
       verbClass = "A",
@@ -5276,12 +5277,20 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const sourceClusterSpecificPositions = sourceClusterPositions.filter(position => position.objectKind === "specific-projective");
       const passive = normalizedVoice === "passive";
       const impersonal = normalizedVoice === "impersonal";
+      const normalizedImpersonalDerivationPath =
+        normalizeClassicalNahuatlVncSlotCarrier(impersonalDerivationPath)
+        || "direct-active";
+      const recognizedImpersonalDerivationPath = [
+        "direct-active",
+        "passive-then-impersonal",
+      ].includes(normalizedImpersonalDerivationPath);
       const inherentImpersonal = normalizedVoice === "inherent-impersonal";
       const tlaImpersonal = normalizedVoice === "tla-impersonal";
       const humanProjectiveImpersonalizedPassive = Boolean(
         impersonal
         && normalizedSourceValence === "projective-human"
         && !multipleObjectSource
+        && normalizedImpersonalDerivationPath === "passive-then-impersonal"
       );
       if (!activeAuthorized) {
         return buildClassicalNahuatlBlockedFrame({
@@ -5303,6 +5312,31 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           nonactiveStemRecord,
           inherentImpersonalRecord,
           tlaImpersonalStemRecord,
+          sourceObjectClusterFrame: typedSourceObjectClusterFrame,
+          sourceValence: normalizedSourceValence
+        });
+      }
+      if (impersonal && !recognizedImpersonalDerivationPath) {
+        return buildClassicalNahuatlBlockedFrame({
+          voice: normalizedVoice,
+          blockReason: "lesson22-impersonal-derivation-path-not-recognized",
+          activeMachineryFrame,
+          nonactiveStemRecord,
+          sourceObjectClusterFrame: typedSourceObjectClusterFrame,
+          sourceValence: normalizedSourceValence
+        });
+      }
+      if (
+        normalizedImpersonalDerivationPath === "passive-then-impersonal"
+        && (!impersonal
+          || normalizedSourceValence !== "projective-human"
+          || multipleObjectSource)
+      ) {
+        return buildClassicalNahuatlBlockedFrame({
+          voice: normalizedVoice,
+          blockReason: "lesson38-impersonalized-passive-requires-single-human-projective-source",
+          activeMachineryFrame,
+          nonactiveStemRecord,
           sourceObjectClusterFrame: typedSourceObjectClusterFrame,
           sourceValence: normalizedSourceValence
         });
@@ -5636,6 +5670,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         selectedNonactiveAspect,
         promotedObjectBecomesSubject: passive,
         humanProjectiveImpersonalizedPassive,
+        impersonalDerivationPath: normalizedImpersonalDerivationPath,
         voiceOperationSequence: humanProjectiveImpersonalizedPassive
           ? ["active", "passive", "impersonalized-passive"]
           : ["active", normalizedVoice],

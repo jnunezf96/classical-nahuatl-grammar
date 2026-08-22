@@ -40,6 +40,10 @@ function getSelectOptions(markup = "", controlId = "") {
             return {
                 value: getAttribute(attributes, "value"),
                 documentaryTagPresent: /data-classical-authority-option/u.test(attributes),
+                applicationOperationId: getAttribute(
+                    attributes,
+                    "data-classical-application-operation-id"
+                ),
                 selected: /\sselected(?:\s|$)/u.test(attributes),
                 disabled: /\sdisabled(?:\s|$)/u.test(attributes),
             };
@@ -169,6 +173,11 @@ function run(ctx = {}) {
                 expected: expectedOptions.map(option => ({
                     value: option.value,
                     documentaryTagPresent: false,
+                    applicationOperationId:
+                        controlId === "classical-rule-logic-late-operation"
+                        && option.value !== "none"
+                            ? "vnc:derivational-operation"
+                            : "",
                     selected: option.selected === true,
                     disabled: option.disabled === true,
                 })),
@@ -207,6 +216,23 @@ function run(ctx = {}) {
             uniqueTagCount: 0,
             untaggedValues: allRenderedOptions.map(option => option.value),
         }
+    );
+
+    s.eq(
+        "every nonempty late-operation choice is one repeatable compositional layer rather than an exclusive terminal mode",
+        getSelectOptions(
+            authorityMarkup,
+            "classical-rule-logic-late-operation"
+        ).map(option => [
+            option.value,
+            option.applicationOperationId,
+        ]),
+        contracts["classical-rule-logic-late-operation"].map(option => [
+            option.value,
+            option.value === "none"
+                ? ""
+                : "vnc:derivational-operation",
+        ])
     );
 
     const renderedSwitches = Object.fromEntries(

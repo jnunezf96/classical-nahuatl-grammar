@@ -22,6 +22,7 @@ function buildHumanImpersonalVnc(ctx, fields = {}, suffix = "lō") {
         requestedDerivation: "direct",
         requestedVoice: "impersonal",
         voice: "impersonal",
+        impersonalDerivationPath: "passive-then-impersonal",
         ...fields,
     };
     const preview = ctx.evaluateClassicalNahuatlVncApplication(request);

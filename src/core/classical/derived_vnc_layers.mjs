@@ -292,6 +292,9 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
             sourceValence: machineryFrame.sourceValence,
             sourceSubject: machineryFrame.sourceSubject,
             sourceObjectPerson: machineryFrame.voiceTransformationFrame?.sourceSpecificObject || "",
+            impersonalDerivationPath:
+              machineryFrame.voiceTransformationFrame
+                ?.impersonalDerivationPath || "direct-active",
             mood: activeMachineryFrame?.priorVncFrame?.personDyad?.mood || activeMachineryFrame?.priorVncFrame?.mood || "indicative",
             tense: activeMachineryFrame?.priorVncFrame?.tense || "present",
             verbClass: activeMachineryFrame?.targetClass || activeMachineryFrame?.classId || "A"

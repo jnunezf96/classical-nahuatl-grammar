@@ -18792,6 +18792,351 @@ body.is-language-classical #classical-workbench #classical-result-panel
 body.is-language-classical #classical-workbench #classical-result-panel
   [data-classical-result-outline-section="continuation"]
   > .classical-grammar-continuation
+  > .classical-clause-relation-workflow {
+  gap: var(--workbench-section-gap);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-result-continuation-cue {
+  margin: 0 0 var(--workbench-control-gap);
+  padding: 8px 10px;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper-muted);
+  color: var(--workbench-muted);
+  font-family: var(--font-body);
+  font-size: var(--sgr-type-support);
+  line-height: 1.35;
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  .classical-result-continuation-cue[data-classical-result-continuation-status="exact-result-to-source-available"] {
+  border-color: rgba(31, 98, 87, 0.32);
+  background: var(--workbench-teal-soft);
+  color: var(--workbench-teal-deep);
+}
+
+/* One owner-observed journey sits above the three working panels. It reports
+   the live typed path without becoming a second grammar controller. */
+body.is-language-classical #classical-workbench #classical-app-root {
+  display: grid;
+  gap: var(--workbench-section-gap);
+  min-width: 0;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.82fr)
+    minmax(0, 0.98fr)
+    minmax(0, 0.67fr)
+    minmax(0, 0.67fr);
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-panel-bg-soft);
+  color: var(--workbench-ink);
+  font-family: var(--font-body);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="ready"],
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="available"] {
+  background: linear-gradient(90deg, rgba(221, 236, 229, 0.58), transparent);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="needs-choice"],
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="unavailable"] {
+  background: var(--workbench-pending-soft);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="needs-choice"]
+  .classical-composition-path-summary__label,
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step[data-classical-composition-path-step-state="unavailable"]
+  .classical-composition-path-summary__label {
+  color: var(--workbench-pending);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 3px;
+  min-width: 0;
+  min-height: 54px;
+  padding: 9px 30px 9px 12px;
+  border-right: 1px solid var(--workbench-line);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step:last-child {
+  padding-right: 12px;
+  border-right: 0;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__step:not(:last-child)::after {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  color: var(--workbench-teal);
+  content: "→";
+  font-size: 1rem;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__label {
+  color: var(--workbench-teal-deep);
+  font-size: var(--sgr-type-subsub);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__value {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--workbench-muted);
+  font-size: var(--classical-shell-button-size);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__detail {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-subsub);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__detail[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench
+  :is(
+    .classical-composition-path-summary__layers,
+    .classical-composition-path-summary__next-layers
+  ) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  margin-top: 2px;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__next-layers[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench
+  :is(
+    .classical-composition-path-summary__layer,
+    .classical-composition-path-summary__next-layer
+  ) {
+  display: inline-flex;
+  min-width: 0;
+  padding: 2px 6px;
+  border: 1px solid rgba(31, 98, 87, 0.22);
+  border-radius: 999px;
+  background: var(--workbench-paper);
+  color: var(--workbench-teal-deep);
+  font-size: var(--sgr-type-support);
+  font-weight: 600;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__next-layer {
+  color: var(--workbench-muted);
+  font-weight: 500;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary__next-layer-cue {
+  flex-basis: 100%;
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-support);
+  line-height: 1.25;
+}
+
+/* The real controls are the pathway. Each live field reports how many choices
+   remain, and reveals its next neighboring choice while the field is in use. */
+body.is-language-classical #classical-workbench
+  [data-classical-choice-option-summary]::after {
+  color: var(--workbench-muted);
+  content: " · " attr(data-classical-choice-option-summary);
+  font-size: var(--sgr-type-support);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+body.is-language-classical #classical-workbench
+  :is(
+    [data-classical-choice-path-kind="field"],
+    [data-classical-choice-path-kind="choice-group"]
+  )[data-classical-choice-path-next]::after {
+  display: none;
+  grid-column: 1 / -1;
+  justify-self: end;
+  color: var(--workbench-muted);
+  content: "Next → " attr(data-classical-choice-path-next);
+  font-family: var(--font-body);
+  font-size: var(--sgr-type-support);
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+body.is-language-classical #classical-workbench
+  :is(
+    [data-classical-choice-path-kind="field"],
+    [data-classical-choice-path-kind="choice-group"]
+  )[data-classical-choice-path-next]:is(
+    :hover,
+    :focus-within
+  )::after {
+  display: block;
+}
+
+body.is-language-classical #classical-workbench
+  [data-classical-choice-path-state="needs-choice"]
+  [data-classical-choice-option-summary]::after,
+body.is-language-classical #classical-workbench
+  [data-classical-choice-path-state="unavailable"]
+  [data-classical-choice-option-summary]::after {
+  color: var(--workbench-pending);
+}
+
+body.is-language-classical #classical-workbench
+  [data-classical-choice-path-state="automatic"]
+  [data-classical-choice-option-summary]::after,
+body.is-language-classical #classical-workbench
+  [data-classical-choice-path-state="fixed"]
+  [data-classical-choice-option-summary]::after {
+  color: var(--workbench-teal-deep);
+}
+
+/* NNC and VNC present the shared subject coordinates in the same order. */
+body.is-language-classical #classical-workbench
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"]
+  [data-classical-nnc-authority-order="subject-animacy"] {
+  order: 11;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"]
+  [data-classical-nnc-authority-order="subject-humanness"] {
+  order: 12;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"]
+  [data-classical-nnc-authority-order="subject-number"] {
+  order: 13;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"]
+  [data-classical-nnc-authority-order="subject-person"] {
+  order: 14;
+  grid-column: span 6;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-rule-logic-controls[data-classical-rule-logic-surface-unit="nnc"]
+  [data-classical-nnc-authority-order="subject-metaphorical-use"] {
+  order: 15;
+  grid-column: 1 / -1;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary[data-classical-composition-path-summary-result-status="authorized"]
+  [data-classical-composition-path-summary-step="result"]
+  .classical-composition-path-summary__value,
+body.is-language-classical #classical-workbench
+  .classical-composition-path-summary[data-classical-composition-path-summary-continuation-status^="exact-result"]
+  [data-classical-composition-path-summary-step="continue"]
+  .classical-composition-path-summary__value {
+  color: var(--workbench-teal-deep);
+}
+
+body.is-language-classical #classical-workbench #classical-source-panel
+  #container-inputs[data-classical-composition-path-live-state="ready"],
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #panel-stack-pane-tense[data-classical-composition-path-live-state="ready"],
+body.is-language-classical #classical-workbench #classical-result-panel
+  #container-tense-grid[data-classical-composition-path-live-state="ready"] {
+  box-shadow:
+    inset 3px 0 var(--workbench-teal),
+    var(--workbench-panel-shadow);
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  #panel-stack-pane-tense[data-classical-composition-path-live-state="needs-choice"],
+body.is-language-classical #classical-workbench #classical-result-panel
+  #container-tense-grid[data-classical-composition-path-live-state="unavailable"] {
+  box-shadow:
+    inset 3px 0 var(--workbench-pending),
+    var(--workbench-panel-shadow);
+}
+
+@media (max-width: 720px) {
+  body.is-language-classical #classical-workbench
+    .classical-composition-path-summary {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.is-language-classical #classical-workbench
+    .classical-composition-path-summary__step {
+    min-height: 0;
+    padding: 8px 32px 8px 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--workbench-line);
+  }
+
+  body.is-language-classical #classical-workbench
+    .classical-composition-path-summary__step:last-child {
+    border-bottom: 0;
+  }
+
+  body.is-language-classical #classical-workbench
+    .classical-composition-path-summary__step:not(:last-child)::after {
+    right: 12px;
+    content: "↓";
+  }
+}
+
+body.is-language-classical #classical-workbench #classical-result-panel
+  [data-classical-result-outline-section="continuation"]
+  > .classical-grammar-continuation
   > .classical-clause-relation-workflow
   > .classical-rule-surface__format-heading:first-child {
   padding: 0 0 8px;
@@ -18910,8 +19255,20 @@ body.is-language-classical #classical-workbench #classical-authority-panel
   min-width: 0;
 }
 
-/* Route-specific Grammar choices use the same two-column rhythm as their
-   ordinary neighbors, regardless of which Source operation revealed them. */
+/* Route-specific Grammar choices stay in a diagnostic owner wrapper, but the
+   wrapper contributes no visual island. Its controls become ordinary members
+   of the named Grammar section that owns them. */
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane] {
+  display: contents;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  [data-classical-construction-grammar-lane]
+  > .classical-construction-grammar-lane__label {
+  display: none;
+}
+
 body.is-language-classical #classical-workbench #classical-authority-panel
   [data-classical-construction-grammar-lane]
   > .classical-rule-control {

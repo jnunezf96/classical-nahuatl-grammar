@@ -272,6 +272,7 @@ const FAMILIES = [
           "vnc:ordered-voice-chain",
         ],
         source: { mode: "whole-stem", fields: { whole: "yohua" } },
+        preSelectionActions: ["apply-source"],
         selections: [
           choice("classical-rule-logic-subject", "1sg"),
           choice("classical-rule-logic-vnc-voice", "impersonal"),
@@ -289,6 +290,7 @@ const FAMILIES = [
           "vnc:ordered-voice-chain",
         ],
         source: { mode: "whole-stem", fields: { whole: "yohua" } },
+        preSelectionActions: ["apply-source"],
         selections: [
           choice("classical-rule-logic-subject", "1sg"),
           choice("classical-rule-logic-vnc-voice", "impersonal"),
