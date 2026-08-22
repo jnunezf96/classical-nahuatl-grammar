@@ -6067,24 +6067,48 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
       const completedDerivationSourceMachinery = applicationResultFrame?.authorizationStatus === "authorized"
         ? canonicalApplicationSourceMachinery
         : null;
-      const capabilityMachinery = canonicalApplicationSourceMachinery || machinery;
+      // A later VNC derivation is additive. Preserve the capabilities of its
+      // exact owner-issued Source chain; narrow Canvas exceptions are applied
+      // separately instead of being inferred from missing outer-frame fields.
+      const canonicalLateSourceMachineries = [];
+      const seenLateMachineries = new Set();
+      let lateMachineryCursor = machinery;
+      while (
+        lateMachineryCursor
+        && !seenLateMachineries.has(lateMachineryCursor)
+        && typeof targetObject.isClassicalNahuatlMachineryFrame === "function"
+        && targetObject.isClassicalNahuatlMachineryFrame(lateMachineryCursor) === true
+      ) {
+        seenLateMachineries.add(lateMachineryCursor);
+        const sourceMachinery = lateMachineryCursor.sourceMachineryFrame || null;
+        if (!sourceMachinery || sourceMachinery.authorizationStatus !== "authorized") {
+          break;
+        }
+        canonicalLateSourceMachineries.push(sourceMachinery);
+        lateMachineryCursor = sourceMachinery;
+      }
+      const capabilityMachineries = [
+        machinery,
+        canonicalApplicationSourceMachinery,
+        ...canonicalLateSourceMachineries
+      ].filter(Boolean);
       const frameKinds = new Set([
-        ...(Array.isArray(machinery.ruleLogicFrameKinds) ? machinery.ruleLogicFrameKinds : []),
-        ...(Array.isArray(capabilityMachinery.ruleLogicFrameKinds) ? capabilityMachinery.ruleLogicFrameKinds : []),
-        machinery.kind,
-        capabilityMachinery.kind,
-        capabilityMachinery.priorVncFrame?.kind,
-        capabilityMachinery.expandedVncBoundaryFrame?.kind,
-        capabilityMachinery.sentenceSurfaceFrame?.kind,
+        ...capabilityMachineries.flatMap(candidate => [
+          ...(Array.isArray(candidate.ruleLogicFrameKinds) ? candidate.ruleLogicFrameKinds : []),
+          candidate.kind,
+          candidate.priorVncFrame?.kind,
+          candidate.expandedVncBoundaryFrame?.kind,
+          candidate.sentenceSurfaceFrame?.kind
+        ]),
         surfaceFrame?.selectedOutputLogicFrame?.kind
       ].filter(Boolean));
       const isVnc = basalUnit === "vnc";
       const isNnc = basalUnit === "nnc";
       const hasTypedNnc = isNnc && Boolean(machinery.nncSlotFrame?.kind === "classical-nahuatl-nnc-slot-frame" || machinery.selectedOutputLogicFrame?.selectedNncSlotFrame?.kind === "classical-nahuatl-nnc-slot-frame");
       const hasLesson5 = isVnc && (frameKinds.has("classical-nahuatl-finite-vnc-vnc-subject-tense-frame") || frameKinds.has("classical-nahuatl-transitive-vnc-transitive-vnc-object-frame") || frameKinds.has("classical-nahuatl-verbstem-verbstem-class-machinery-frame") || frameKinds.has("classical-nahuatl-nonactive-vnc-derived-vnc-machinery-frame"));
-      const hasLesson7 = isVnc && (frameKinds.has("classical-nahuatl-verbstem-verbstem-class-machinery-frame") || frameKinds.has("classical-nahuatl-nonactive-vnc-derived-vnc-machinery-frame") || Boolean(machinery.classRuleFrame && machinery.predicateFormationRuleFrame));
-      const hasExpandedVnc = hasLesson7 && Boolean(capabilityMachinery.expandedVncBoundaryFrame || frameKinds.has("classical-nahuatl-vnc-sentence-expanded-vnc-boundary-frame"));
-      const hasSentenceSurface = hasLesson7 && Boolean(capabilityMachinery.sentenceSurfaceFrame || frameKinds.has("classical-nahuatl-vnc-sentence-sentence-surface-frame"));
+      const hasLesson7 = isVnc && (frameKinds.has("classical-nahuatl-verbstem-verbstem-class-machinery-frame") || frameKinds.has("classical-nahuatl-nonactive-vnc-derived-vnc-machinery-frame") || capabilityMachineries.some(candidate => Boolean(candidate.classRuleFrame && candidate.predicateFormationRuleFrame)));
+      const hasExpandedVnc = hasLesson7 && Boolean(capabilityMachineries.some(candidate => candidate.expandedVncBoundaryFrame) || frameKinds.has("classical-nahuatl-vnc-sentence-expanded-vnc-boundary-frame"));
+      const hasSentenceSurface = hasLesson7 && Boolean(capabilityMachineries.some(candidate => candidate.sentenceSurfaceFrame) || frameKinds.has("classical-nahuatl-vnc-sentence-sentence-surface-frame"));
       return {
         kind: "classical-nahuatl-authority-capability-frame",
         authorizationStatus: isVnc || hasTypedNnc ? "authorized" : "not-applicable",
@@ -6112,6 +6136,8 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
           ? "authorized-source-machinery-while-derived-result-pending"
           : completedDerivationSourceMachinery
             ? "authorized-source-machinery-for-derived-vnc"
+            : canonicalLateSourceMachineries.length
+              ? "authorized-source-machinery-for-late-vnc-derivation"
             : "selected-machinery",
         capabilityAuthority: "derived-from-authorized-machine-frames",
         lessonNumberAuthority: false

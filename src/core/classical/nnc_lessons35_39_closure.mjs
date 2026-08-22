@@ -6,7 +6,7 @@
 import {
   buildClassicalGrammaticalRhymeCoordinateFrame as
     buildSharedGrammaticalRhymeCoordinateFrame,
-} from "../grammar/grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+} from "../grammar/grammatical_rhyme_space.mjs?v=20260822-vnc-capability-inheritance-221";
 
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();

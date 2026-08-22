@@ -10,11 +10,11 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   normalizeGenerationSourceTransitivity,
   validateGenerationSourceTransitivitySelection,
@@ -26,19 +26,19 @@ import {
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260822-all-operation-layers-216";
+} from "../../core/classical/participant_frame.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON36_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON37_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON38_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON39_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 
 export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalRuleLogicSurfaceFrame = null;
@@ -30366,11 +30366,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         source: sourceStem
           ? `${sourceUnit.toUpperCase()} · (${sourceStem})`
           : `${sourceUnit.toUpperCase()} · waiting`,
-        grammar: layerNodes.length > 1
-          ? `${layerNodes.length} ordered grammatical layers`
-          : formatClassicalClauseRelationValue(
-            layerNodes[0]?.operationId || grammarOperation
-          ),
+        grammar: formatClassicalClauseRelationValue(grammarOperation),
         result: canonicalSurface
           ? `${resultUnit.toUpperCase()} · ${canonicalSurface}`
           : `${resultUnit.toUpperCase()} · ${resultStatusLabel}`,
@@ -30422,59 +30418,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
             stepStates[step];
         }
       });
-      const layersHost = summary.querySelector?.(
-        '[data-classical-composition-path-summary-layers="true"]'
-      ) || null;
-      if (layersHost) {
-        layersHost.replaceChildren();
-        const displayedLayers = layerNodes.length
-          ? layerNodes
-          : [{
-            nodeId: "current-layer",
-            layerOrder: 1,
-            operationId: grammarOperation,
-          }];
-        displayedLayers.forEach(layer => {
-          const chip = targetObject.document.createElement("span");
-          chip.className = "classical-composition-path-summary__layer";
-          chip.dataset.classicalCompositionPathLayer = layer.nodeId;
-          chip.dataset.classicalCompositionPathLayerOperation =
-            layer.operationId;
-          chip.textContent = `${layer.layerOrder}. ${
-            formatClassicalClauseRelationValue(layer.operationId)
-          }`;
-          layersHost.appendChild(chip);
-        });
-      }
-      const nextLayersHost = summary.querySelector?.(
-        '[data-classical-composition-path-summary-next-layers="true"]'
-      ) || null;
-      if (nextLayersHost) {
-        nextLayersHost.replaceChildren();
-        if (authorized && nextOperationInventory?.candidates?.length) {
-          const cue = targetObject.document.createElement("span");
-          cue.className =
-            "classical-composition-path-summary__next-layer-cue";
-          cue.textContent = "Continue, then choose the next compatible layer:";
-          nextLayersHost.appendChild(cue);
-          nextOperationInventory.candidates.forEach(candidate => {
-            const chip = targetObject.document.createElement("span");
-            chip.className =
-              "classical-composition-path-summary__next-layer";
-            chip.dataset.classicalCompositionPathNextOperation =
-              candidate.operationId;
-            chip.dataset.classicalCompositionPathCompatibility =
-              candidate.compatibilityStatus;
-            chip.textContent = formatClassicalClauseRelationValue(
-              candidate.operationId
-            );
-            nextLayersHost.appendChild(chip);
-          });
-          nextLayersHost.hidden = false;
-        } else {
-          nextLayersHost.hidden = true;
-        }
-      }
       [
         ["container-inputs", sourcePathState],
         ["panel-stack-pane-tense", grammarPathState],
@@ -30622,6 +30565,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         });
         const actionButtons = Array.from(root.querySelectorAll([
           "#verb-entry-apply",
+          "#verb-entry-clear",
           '[data-classical-result-continuation-kind="exact-result-to-source"]',
           '[data-classical-rule-surface-action="use-result-as-source"]',
           '[data-classical-result-recovery-action="true"]',

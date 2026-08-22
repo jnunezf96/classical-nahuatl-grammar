@@ -4,7 +4,7 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   GENERATION_SOURCE_TRANSITIVITY,
   GENERATION_SOURCE_TRANSITIVITY_ORDER,
@@ -9673,6 +9673,100 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       return true;
     }
+    function clearClassicalSourcePartsEvaluation(options = {}) {
+      const {
+        root,
+        wholeInput,
+        embedInput,
+        matrixInput,
+        internalMorphs
+      } = getClassicalSourcePartControlElements();
+      if (!root) {
+        return false;
+      }
+      targetObject.clearClassicalVncResultSourceContinuation?.(
+        options.source || "source-cleared"
+      );
+      setClassicalSourcePartsMode(CLASSICAL_SOURCE_PARTS_MODE.wholeStem, {
+        clearValues: true
+      });
+      [wholeInput, embedInput, matrixInput].filter(Boolean).forEach(input => {
+        input.value = "";
+        delete input.dataset.classicalTranscriptionSoundSource;
+        delete input.dataset.classicalTranscriptionWrittenResult;
+      });
+      if (internalMorphs) {
+        internalMorphs.replaceChildren();
+        internalMorphs.hidden = true;
+        internalMorphs.setAttribute("aria-hidden", "true");
+      }
+      const vncGuide = getClassicalVncSourceGuideElements();
+      const nncGuide = getClassicalNncSourceGuideElements();
+      if (vncGuide.select) vncGuide.select.value = "";
+      if (vncGuide.initialIChoice) vncGuide.initialIChoice.value = "";
+      if (vncGuide.sourceLexemeChoice) {
+        vncGuide.sourceLexemeChoice.value = "";
+      }
+      if (nncGuide.select) nncGuide.select.value = "";
+      [
+        [vncGuide.root, [
+          "classicalVncSourceSelectedStem",
+          "classicalVncSourceSelectedValenceDisplay",
+          "classicalVncSourceInitialIChoiceStem",
+          "classicalVncSourceLexemeChoiceStem"
+        ]],
+        [nncGuide.root, [
+          "classicalNncSourceSelectedStem",
+          "classicalNncSourceMode",
+          "classicalNncSourceEmbed",
+          "classicalNncSourceMatrix"
+        ]]
+      ].forEach(([guide, keys]) => {
+        if (!guide?.dataset) return;
+        keys.forEach(key => delete guide.dataset[key]);
+      });
+      [
+        "classical-rule-logic-class",
+        "classical-rule-logic-nnc-class",
+        "classical-rule-logic-causative-source-nonactive"
+      ].map(id => targetObject.document?.getElementById?.(id))
+        .filter(Boolean)
+        .forEach(control => {
+          control.value = "";
+        });
+      const sourceVoice = targetObject.document?.getElementById?.(
+        "classical-rule-logic-causative-source-voice"
+      );
+      if (sourceVoice) sourceVoice.value = "active";
+      const operation = targetObject.document?.getElementById?.(
+        "classical-construction-operation"
+      );
+      if (operation) {
+        operation.value = "none";
+        delete operation.dataset.classicalSourcePartsDerivedOperation;
+      }
+      syncClassicalBuiltSourceToVerbInput();
+      syncClassicalSourcePartsToEntradaUrl();
+      syncClassicalVncSourceGuide();
+      syncClassicalNncSourceGuide();
+      syncClassicalSourceReadout();
+      ClassicalSourcePartsCommittedSignature =
+        getClassicalSourcePartsEvaluationSignature();
+      setClassicalSourcePartsPendingState(false);
+      targetObject.clearClassicalRuleLogicSurfaceBlock?.();
+      operation?.dispatchEvent(new targetObject.Event("change", {
+        bubbles: true
+      }));
+      const sourceInput = targetObject.document?.getElementById?.("verb");
+      if (sourceInput && typeof scheduleVerbInputRefresh === "function") {
+        scheduleVerbInputRefresh(sourceInput.value, {
+          immediate: true,
+          source: options.source || "source-cleared"
+        });
+      }
+      wholeInput?.focus?.();
+      return true;
+    }
     function syncClassicalSourcePartControlsFromRuntime() {
       const {
         root,
@@ -13310,6 +13404,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     api.syncClassicalSourcePartsToEntradaUrl = syncClassicalSourcePartsToEntradaUrl;
     api.getClassicalSourcePartsEvaluationSignature = getClassicalSourcePartsEvaluationSignature;
     api.commitClassicalSourcePartsEvaluation = commitClassicalSourcePartsEvaluation;
+    api.clearClassicalSourcePartsEvaluation = clearClassicalSourcePartsEvaluation;
     api.syncClassicalSourcePartControlsFromRuntime = syncClassicalSourcePartControlsFromRuntime;
     api.getClassicalSourceSelectionOptionsFromRuntime = getClassicalSourceSelectionOptionsFromRuntime;
     api.stripClassicalSourceDisplayWrapping = stripClassicalSourceDisplayWrapping;

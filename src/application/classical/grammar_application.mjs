@@ -17,10 +17,10 @@ import {
   buildClassicalGrammaticalRhymeOwnerCalibrationFrame,
   buildClassicalGrammaticalRhymeRoutePlaneFrame,
   buildClassicalGrammaticalRhymeTopologyFrame,
-} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
-} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260822-all-operation-layers-216";
+} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260822-vnc-capability-inheritance-221";
 
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";

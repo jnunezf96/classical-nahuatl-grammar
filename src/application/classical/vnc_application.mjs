@@ -4,12 +4,12 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";

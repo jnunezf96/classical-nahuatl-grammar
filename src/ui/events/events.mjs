@@ -324,6 +324,15 @@ export function createUiEventsApi(targetObject = globalThis) {
             applyVerbEntryInputNow();
           });
         }
+        const verbEntryClearButton = targetObject.document.getElementById("verb-entry-clear");
+        if (verbEntryClearButton) {
+          verbEntryClearButton.addEventListener("click", event => {
+            event.preventDefault();
+            targetObject.clearClassicalSourcePartsEvaluation?.({
+              source: "clear-source-button"
+            });
+          });
+        }
         if (verbMirrorContent) {
           verbMirrorContent.addEventListener("beforeinput", targetObject.handleVerbMirrorBeforeInput);
           verbMirrorContent.addEventListener("paste", event => {

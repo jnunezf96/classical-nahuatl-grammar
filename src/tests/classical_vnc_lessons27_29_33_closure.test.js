@@ -189,6 +189,59 @@ function run(ctx = {}) {
             finiteMachineryIdentity: true,
         }
     );
+    s.eq(
+        "an authorized next VNC derivation preserves the inner VNC capabilities by default",
+        (() => {
+            const capabilityFrame =
+                ctx.getClassicalNahuatlAuthorityCapabilityFrame({
+                    basalUnit: "vnc",
+                    machineryFrame: ordinary.selectedMachineryFrame,
+                    vncApplicationFrame: ordinary.baseApplicationFrame,
+                });
+            return {
+                basis: capabilityFrame.capabilityBasis,
+                mood: capabilityFrame.capabilities.mood,
+                tense: capabilityFrame.capabilities.tense,
+                directional:
+                    capabilityFrame.capabilities.directionalLocative,
+                sentence: capabilityFrame.capabilities.sentenceSurface,
+            };
+        })(),
+        {
+            basis: "authorized-source-machinery-for-late-vnc-derivation",
+            mood: true,
+            tense: true,
+            directional: true,
+            sentence: true,
+        }
+    );
+    s.eq(
+        "a lookalike late machinery frame cannot restore inherited VNC capabilities",
+        (() => {
+            const forgedMachinery = {
+                ...ordinary.selectedMachineryFrame,
+            };
+            const capabilityFrame =
+                ctx.getClassicalNahuatlAuthorityCapabilityFrame({
+                    basalUnit: "vnc",
+                    machineryFrame: forgedMachinery,
+                    vncApplicationFrame: ordinary.baseApplicationFrame,
+                });
+            return {
+                basis: capabilityFrame.capabilityBasis,
+                mood: capabilityFrame.capabilities.mood,
+                tense: capabilityFrame.capabilities.tense,
+                directional:
+                    capabilityFrame.capabilities.directionalLocative,
+            };
+        })(),
+        {
+            basis: "selected-machinery",
+            mood: false,
+            tense: false,
+            directional: false,
+        }
+    );
 
     const base = ordinary.baseApplicationFrame;
     s.eq(
@@ -527,6 +580,34 @@ function run(ctx = {}) {
             exactTypedSource: true,
             generalLayerFacts: [true, "frequentative", true, true],
             falselyCalledCompound: false,
+        }
+    );
+    s.eq(
+        "recursive next VNC derivations preserve capabilities through every owner-issued layer",
+        (() => {
+            const capabilityFrame =
+                ctx.getClassicalNahuatlAuthorityCapabilityFrame({
+                    basalUnit: "vnc",
+                    machineryFrame:
+                        purposiveFromFrequentative.selectedMachineryFrame,
+                    vncApplicationFrame:
+                        purposiveFromFrequentative.baseApplicationFrame,
+                });
+            return {
+                basis: capabilityFrame.capabilityBasis,
+                mood: capabilityFrame.capabilities.mood,
+                tense: capabilityFrame.capabilities.tense,
+                directional:
+                    capabilityFrame.capabilities.directionalLocative,
+                sentence: capabilityFrame.capabilities.sentenceSurface,
+            };
+        })(),
+        {
+            basis: "authorized-source-machinery-for-late-vnc-derivation",
+            mood: true,
+            tense: true,
+            directional: true,
+            sentence: true,
         }
     );
 

@@ -16116,6 +16116,7 @@ body.is-language-classical .classical-source-commit-status__text {
 
 body.is-language-classical .classical-source-parts__commit-row {
   display: flex;
+  gap: var(--workbench-control-gap);
   justify-content: flex-end;
 }
 
@@ -16131,6 +16132,29 @@ body.is-language-classical #verb-entry-apply.classical-source-parts__commit-butt
   background: var(--workbench-teal-deep);
   color: #fff;
   font-weight: 700;
+}
+
+body.is-language-classical #verb-entry-clear.classical-source-parts__clear-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: var(--workbench-control-height);
+  padding: 9px 12px;
+  border: 1px solid var(--workbench-line-strong);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper);
+  color: var(--workbench-teal-deep);
+  font-family: var(--font-body);
+  font-size: var(--classical-shell-button-size);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+body.is-language-classical #verb-entry-clear.classical-source-parts__clear-button:disabled {
+  border-color: var(--workbench-line);
+  background: var(--workbench-paper-muted);
+  color: var(--workbench-muted);
+  opacity: 0.72;
 }
 
 body.is-language-classical #verb-entry-apply[data-classical-source-commit-state="pending"] {
@@ -18935,57 +18959,8 @@ body.is-language-classical #classical-workbench
   display: none !important;
 }
 
-body.is-language-classical #classical-workbench
-  :is(
-    .classical-composition-path-summary__layers,
-    .classical-composition-path-summary__next-layers
-  ) {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 4px;
-  min-width: 0;
-  margin-top: 2px;
-}
-
-body.is-language-classical #classical-workbench
-  .classical-composition-path-summary__next-layers[hidden] {
-  display: none !important;
-}
-
-body.is-language-classical #classical-workbench
-  :is(
-    .classical-composition-path-summary__layer,
-    .classical-composition-path-summary__next-layer
-  ) {
-  display: inline-flex;
-  min-width: 0;
-  padding: 2px 6px;
-  border: 1px solid rgba(31, 98, 87, 0.22);
-  border-radius: 999px;
-  background: var(--workbench-paper);
-  color: var(--workbench-teal-deep);
-  font-size: var(--sgr-type-support);
-  font-weight: 600;
-  line-height: 1.2;
-  overflow-wrap: anywhere;
-}
-
-body.is-language-classical #classical-workbench
-  .classical-composition-path-summary__next-layer {
-  color: var(--workbench-muted);
-  font-weight: 500;
-}
-
-body.is-language-classical #classical-workbench
-  .classical-composition-path-summary__next-layer-cue {
-  flex-basis: 100%;
-  color: var(--workbench-muted);
-  font-size: var(--sgr-type-support);
-  line-height: 1.25;
-}
-
 /* The real controls are the pathway. Each live field reports how many choices
-   remain, and reveals its next neighboring choice while the field is in use. */
+   remain without inserting hover content that shifts neighboring controls. */
 body.is-language-classical #classical-workbench
   [data-classical-choice-option-summary]::after {
   color: var(--workbench-muted);
@@ -18994,33 +18969,6 @@ body.is-language-classical #classical-workbench
   font-weight: 500;
   letter-spacing: 0;
   text-transform: none;
-}
-
-body.is-language-classical #classical-workbench
-  :is(
-    [data-classical-choice-path-kind="field"],
-    [data-classical-choice-path-kind="choice-group"]
-  )[data-classical-choice-path-next]::after {
-  display: none;
-  grid-column: 1 / -1;
-  justify-self: end;
-  color: var(--workbench-muted);
-  content: "Next → " attr(data-classical-choice-path-next);
-  font-family: var(--font-body);
-  font-size: var(--sgr-type-support);
-  font-weight: 500;
-  line-height: 1.2;
-}
-
-body.is-language-classical #classical-workbench
-  :is(
-    [data-classical-choice-path-kind="field"],
-    [data-classical-choice-path-kind="choice-group"]
-  )[data-classical-choice-path-next]:is(
-    :hover,
-    :focus-within
-  )::after {
-  display: block;
 }
 
 body.is-language-classical #classical-workbench

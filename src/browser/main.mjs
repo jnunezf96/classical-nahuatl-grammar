@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260822-all-operation-layers-216";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260822-vnc-capability-inheritance-221";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

@@ -7,7 +7,7 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20260818-lesson29-groups10-12-357";
+} from "./vnc_layer_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";

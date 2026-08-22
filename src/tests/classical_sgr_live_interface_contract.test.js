@@ -19,6 +19,7 @@ function run() {
     const rendering = read("src/ui/rendering/rendering.mjs");
     const shell = read("src/ui/shell/classical_shell.mjs");
     const composer = read("src/ui/composer/composer.mjs");
+    const events = read("src/ui/events/events.mjs");
     const vncApplication = read("src/application/classical/vnc_application.mjs");
     const nncApplication = read("src/application/classical/nnc_application.mjs");
     const participantFrame = read("src/core/classical/participant_frame.mjs");
@@ -65,6 +66,23 @@ function run() {
         rendering.includes("sourceCommitRow.parentElement.insertBefore(")
             && rendering.includes("constructionSourceControls,")
             && rendering.includes("sourceCommitRow")
+    );
+    suite.ok(
+        "Clear sits beside Apply source and returns the committed Source path to waiting",
+        shell.includes('id="verb-entry-clear"')
+            && shell.includes('class="classical-source-parts__clear-button"')
+            && shell.includes('>Clear</button>')
+            && shell.includes('clearButton.disabled = !draftHasSource && !committedSource')
+            && composer.includes("function clearClassicalSourcePartsEvaluation(options = {})")
+            && composer.includes("setClassicalSourcePartsMode(CLASSICAL_SOURCE_PARTS_MODE.wholeStem")
+            && composer.includes('operation.value = "none"')
+            && composer.includes("syncClassicalSourcePartsToEntradaUrl()")
+            && composer.includes("targetObject.clearClassicalRuleLogicSurfaceBlock?.()")
+            && composer.includes("api.clearClassicalSourcePartsEvaluation = clearClassicalSourcePartsEvaluation")
+            && events.includes('getElementById("verb-entry-clear")')
+            && events.includes("targetObject.clearClassicalSourcePartsEvaluation?.({")
+            && rendering.includes('"#verb-entry-clear"')
+            && css.includes("#verb-entry-clear.classical-source-parts__clear-button")
     );
     suite.ok(
         "Speaker and participant context is gated to its real discourse use",
@@ -390,8 +408,8 @@ function run() {
             && shell.includes('data-classical-composition-path-summary-step="${step}"')
             && shell.includes('data-classical-composition-path-summary-value="${step}"')
             && shell.includes('data-classical-composition-path-summary-detail="${step}"')
-            && shell.includes('data-classical-composition-path-summary-layers="true"')
-            && shell.includes('data-classical-composition-path-summary-next-layers="true"')
+            && !shell.includes('data-classical-composition-path-summary-layers="true"')
+            && !shell.includes('data-classical-composition-path-summary-next-layers="true"')
             && shell.includes('data-classical-composition-path-summary-authority="presentation-only"')
             && shell.includes('data-classical-grammar-authority="false"')
             && shell.includes('data-classical-formula-string-authority="false"')
@@ -403,10 +421,12 @@ function run() {
             && rendering.includes("getClassicalGrammarApplicationLayerGraph")
             && rendering.includes("isClassicalGrammarApplicationLayerGraph")
             && rendering.includes("getClassicalGrammarApplicationNextOperationInventory")
-            && rendering.includes('data-classical-composition-path-summary-layers="true"')
-            && rendering.includes("classicalCompositionPathLayerOperation")
-            && rendering.includes("classicalCompositionPathNextOperation")
+            && !rendering.includes('data-classical-composition-path-summary-layers="true"')
+            && !rendering.includes("classicalCompositionPathLayerOperation")
+            && !rendering.includes("classicalCompositionPathNextOperation")
             && rendering.includes("classicalCompositionPathSummaryLayerCount")
+            && !css.includes("classical-composition-path-summary__layer")
+            && !css.includes("classical-composition-path-summary__next-layer")
             && rendering.includes("resultRoot?.dataset?.classicalNahuatlSurfaceStatus")
             && rendering.includes('"exact-result-to-source-and-capture"')
             && rendering.includes('"exact-result-capture-only"')
@@ -478,8 +498,8 @@ function run() {
             && css.includes('data-classical-composition-path-live-state="needs-choice"')
             && css.includes(".classical-composition-path-summary__detail")
             && css.includes("data-classical-choice-option-summary")
-            && css.includes("data-classical-choice-path-next")
-            && css.includes('content: "Next → " attr(data-classical-choice-path-next)')
+            && rendering.includes("element.dataset.classicalChoicePathNext = nextLabel")
+            && !css.includes('content: "Next → " attr(data-classical-choice-path-next)')
             && css.includes('[data-classical-nnc-authority-order="subject-animacy"]')
             && css.includes('[data-classical-nnc-authority-order="subject-humanness"]')
             && css.includes('content: "→";')

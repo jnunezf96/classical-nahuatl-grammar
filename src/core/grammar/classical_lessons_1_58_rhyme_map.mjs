@@ -1,7 +1,7 @@
 import {
   buildClassicalGrammaticalRhymeLessonDiscoveryFrame,
   buildClassicalGrammaticalRhymeLessonPlaneFrame,
-} from "./grammatical_rhyme_space.mjs?v=20260822-all-operation-layers-216";
+} from "./grammatical_rhyme_space.mjs?v=20260822-vnc-capability-inheritance-221";
 
 // This is the machine-readable form of the accepted two-pin map. It is a
 // diagnostic compression map, never a grammar or curriculum authority.

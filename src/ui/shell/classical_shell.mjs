@@ -139,17 +139,17 @@ import {
   LESSON27_READER_GUIDANCE_GROUPS,
   isLesson27ReaderGuidanceExact,
   renderLesson27ReaderGuidance,
-} from "../curriculum/lesson27_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson27_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON28_READER_GUIDANCE_GROUPS,
   isLesson28ReaderGuidanceExact,
   renderLesson28ReaderGuidance,
-} from "../curriculum/lesson28_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON29_READER_GUIDANCE_GROUPS,
   isLesson29ReaderGuidanceExact,
   renderLesson29ReaderGuidance,
-} from "../curriculum/lesson29_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON30_READER_GUIDANCE_GROUPS,
   isLesson30ReaderGuidanceExact,
@@ -169,37 +169,37 @@ import {
   LESSON33_READER_GUIDANCE_GROUPS,
   isLesson33ReaderGuidanceExact,
   renderLesson33ReaderGuidance,
-} from "../curriculum/lesson33_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON34_READER_GUIDANCE_GROUPS,
   isLesson34ReaderGuidanceExact,
   renderLesson34ReaderGuidance,
-} from "../curriculum/lesson34_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON35_READER_GUIDANCE_GROUPS,
   isLesson35ReaderGuidanceExact,
   renderLesson35ReaderGuidance,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON36_READER_GUIDANCE_GROUPS,
   isLesson36ReaderGuidanceExact,
   renderLesson36ReaderGuidance,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON37_READER_GUIDANCE_GROUPS,
   isLesson37ReaderGuidanceExact,
   renderLesson37ReaderGuidance,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON38_READER_GUIDANCE_GROUPS,
   isLesson38ReaderGuidanceExact,
   renderLesson38ReaderGuidance,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 import {
   LESSON39_READER_GUIDANCE_GROUPS,
   isLesson39ReaderGuidanceExact,
   renderLesson39ReaderGuidance,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-all-operation-layers-216";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -843,6 +843,14 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <span class="classical-source-parts__commit-label">Apply source</span>
                           <kbd class="classical-source-parts__commit-key">Enter</kbd>
                         </button>
+                        <button
+                          type="button"
+                          id="verb-entry-clear"
+                          class="classical-source-parts__clear-button"
+                          aria-label="Clear source and return Grammar and Result to waiting"
+                          aria-describedby="classical-source-commit-status"
+                          title="Clear source"
+                        >Clear</button>
                       </div>
                       <div
                         class="classical-source-internal-morphs"
@@ -4455,6 +4463,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const badge = status?.querySelector?.("[data-classical-source-commit-badge]") || null;
       const message = status?.querySelector?.("[data-classical-source-commit-message]") || null;
       const applyButton = documentObject?.getElementById?.("verb-entry-apply") || null;
+      const clearButton = documentObject?.getElementById?.("verb-entry-clear") || null;
       if (!root || !status || !badge || !message) {
         return "unavailable";
       }
@@ -4500,6 +4509,15 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
             : "Apply source and update Grammar and Result"
         );
       }
+      if (clearButton) {
+        clearButton.disabled = !draftHasSource && !committedSource;
+        clearButton.setAttribute(
+          "aria-label",
+          clearButton.disabled
+            ? "No Source to clear"
+            : "Clear source and return Grammar and Result to waiting"
+        );
+      }
       return state;
     }
     function installClassicalSourceCommitPresentation() {
@@ -4531,6 +4549,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         });
       });
       documentObject.getElementById("verb-entry-apply")?.addEventListener(
+        "click",
+        scheduleSync
+      );
+      documentObject.getElementById("verb-entry-clear")?.addEventListener(
         "click",
         scheduleSync
       );
@@ -4840,21 +4862,6 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         ["result", "Result", "waiting"],
         ["continue", "Continue", "authorized Result required"],
       ].map(([step, label, value], index) => {
-        const layerDetails = step === "grammar"
-          ? `
-          <div
-            class="classical-composition-path-summary__layers"
-            data-classical-composition-path-summary-layers="true"
-            aria-label="Accumulated grammatical layers"
-          ></div>`
-          : step === "continue"
-            ? `
-          <div
-            class="classical-composition-path-summary__next-layers"
-            data-classical-composition-path-summary-next-layers="true"
-            aria-label="Type-compatible next grammatical layers"
-          ></div>`
-            : "";
         return `        <div
           class="classical-composition-path-summary__step"
           data-classical-composition-path-summary-step="${step}"
@@ -4870,7 +4877,6 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
             class="classical-composition-path-summary__detail"
             data-classical-composition-path-summary-detail="${step}"
           ></span>
-${layerDetails}
         </div>`;
       }).join("\n");
       return `      <section
