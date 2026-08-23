@@ -131,6 +131,10 @@ function run(ctx = {}) {
             operation(place).semanticRole,
             operation(place).embedInternalBoundaries,
             operation(place).possessorReferenceFrame?.possessorRepresentation,
+            operation(place).possessorReferenceFrame
+                ?.participantRoleTransitionFrame?.retiredSourceRoles,
+            operation(place).possessorReferenceFrame
+                ?.participantRoleTransitionFrame?.preservedParticipantFacts,
             operation(place).sourceValencePositionCount,
             operation(place).targetValencePositionCount],
         outsider: operation(placeOutsider).possessorReferenceFrame?.possessorRepresentation,
@@ -141,7 +145,9 @@ function run(ctx = {}) {
     }, {
         compound: ["authorized", "ā-cal"],
         place: ["authorized", true, "compound-nnc", "place", ["ā", "cal"],
-            "deleted-as-coreferential", 1, 1],
+            "deleted-as-coreferential", ["embedded-possessor-expression"],
+            ["possessor-referent-identity", "matrix-participant-reference",
+                "typed-source-history"], 1, 1],
         outsider: "preserved-as-noncoreferential",
         ambiguous: ["blocked", "incorporated-adverb-possessor-reference-choice-required"],
         invented: ["authorized", "tzāl-nepan-invented", 1],

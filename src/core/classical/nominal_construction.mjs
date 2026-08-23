@@ -1,6 +1,10 @@
 // Canonical typed nominal-construction grammar. Andrews lesson coordinates are
 // curriculum/evidence metadata only; they never select a runtime operation.
 
+import {
+  buildClassicalNahuatlParticipantRoleTransitionFrame,
+} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+
 const VERSION = 1;
 const GCD_IDENTITY = "typed-ordered-source-constituents+licensed-relation+matrix-governance+canonical-target-evaluator";
 const ISSUED_CONSTRUCTION_FRAMES = new WeakSet();
@@ -53,6 +57,7 @@ const HOSTILE_AUTHORITY_KEYS = Object.freeze([
   "formulaArtifact",
   "generationAllowed",
   "lessonMetadata",
+  "participantRoleTransitionFrame",
   "result",
   "resultSurface",
   "surface",
@@ -3164,6 +3169,18 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
         targetObjectKind: transferredPossessorObject.objectKind,
         targetObjectPerson: transferredPossessorObject.objectPerson,
         targetObjectGovernor: transferredPossessorObject.governor,
+        participantRoleTransitionFrame:
+          buildClassicalNahuatlParticipantRoleTransitionFrame({
+            operationId: "incorporation:possessor-to-applicative-object",
+            sourceRoles: ["source-possessor"],
+            targetRoles: ["mainline-applicative-object"],
+            retiredSourceRoles: ["source-possessor"],
+            activatedTargetRoles: ["mainline-applicative-object"],
+            preservedParticipantFacts: [
+              "possessor-participant-identity",
+              "typed-source-history",
+            ],
+          }),
         corefersWithMatrixSubject: possessorCorefersWithMatrixSubject,
         incorporatedObjectId,
         incorporatedObjectInsideVerbstem: true,
@@ -3428,6 +3445,21 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
         : possessorReferenceId
           ? "preserved-as-noncoreferential"
           : "not-supplied",
+      participantRoleTransitionFrame:
+        directPossessorSensitiveAdverb && possessorCoreferential
+          ? buildClassicalNahuatlParticipantRoleTransitionFrame({
+            operationId: "incorporation:coreferential-possessor-deletion",
+            sourceRoles: ["embedded-possessor-expression"],
+            targetRoles: ["matrix-participant-reference"],
+            retiredSourceRoles: ["embedded-possessor-expression"],
+            activatedTargetRoles: [],
+            preservedParticipantFacts: [
+              "possessor-referent-identity",
+              "matrix-participant-reference",
+              "typed-source-history",
+            ],
+          })
+          : null,
       referentIdentityAuthority: true,
       nounstemIdentityAuthority: false,
     });
@@ -3658,6 +3690,24 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
         targetObjectKind: transferredPossessorObject.objectKind,
         targetObjectPerson: transferredPossessorObject.objectPerson,
         targetObjectGovernor: transferredPossessorObject.governor,
+        participantRoleTransitionFrame:
+          buildClassicalNahuatlParticipantRoleTransitionFrame({
+            operationId: transferredObjectGovernor === "causative"
+              ? "incorporated-complement:possessor-to-causative-object"
+              : "incorporated-complement:possessor-to-applicative-object",
+            sourceRoles: ["source-possessor"],
+            targetRoles: [transferredObjectGovernor === "causative"
+              ? "mainline-causative-object"
+              : "mainline-applicative-object"],
+            retiredSourceRoles: ["source-possessor"],
+            activatedTargetRoles: [transferredObjectGovernor === "causative"
+              ? "mainline-causative-object"
+              : "mainline-applicative-object"],
+            preservedParticipantFacts: [
+              "possessor-participant-identity",
+              "typed-source-history",
+            ],
+          }),
         corefersWithMatrixSubject: possessorCorefersWithMatrixSubject,
         sourceMatrixValence: matrixValence,
         sourceValencePositionCount: sourceObjectCount,
@@ -3800,6 +3850,19 @@ function evaluateNominalEmbedConstruction(request, target, sourceAuthorizationFr
       referenceIdentityUnified: true,
       embeddedSubjectRepresentation: "deleted-as-coreferential",
       matrixParticipantRepresentation: "preserved",
+      participantRoleTransitionFrame:
+        buildClassicalNahuatlParticipantRoleTransitionFrame({
+          operationId: `incorporated-complement:${orientation}-reference-unification`,
+          sourceRoles: ["embedded-subject-expression"],
+          targetRoles: [`matrix-${orientation}-reference-carrier`],
+          retiredSourceRoles: ["embedded-subject-expression"],
+          activatedTargetRoles: [],
+          preservedParticipantFacts: [
+            "embedded-subject-referent-identity",
+            "matrix-participant-reference",
+            "typed-source-history",
+          ],
+        }),
       referenceIdentityDerivedFromComplementSelection:
         !suppliedEmbedSubjectReferenceId,
       referentIdentityAuthority: true,

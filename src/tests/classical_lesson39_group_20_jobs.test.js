@@ -140,6 +140,14 @@ function run(ctx = {}) {
         projective: frame?.projectiveWhenPossessorDoesNotCorefer,
         automatic: frame?.transformationDerivedAutomatically,
         choice: frame?.userChoiceRequired,
+        transition: {
+            retired: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.retiredSourceRoles,
+            activated: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.activatedTargetRoles,
+            preserved: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.preservedParticipantFacts,
+        },
     }, {
         roles: ["possessor", "mainline-applicative-object"],
         cases: ["possessive", "objective"],
@@ -148,6 +156,11 @@ function run(ctx = {}) {
         projective: false,
         automatic: true,
         choice: false,
+        transition: {
+            retired: ["source-possessor"],
+            activated: ["mainline-applicative-object"],
+            preserved: ["possessor-participant-identity", "typed-source-history"],
+        },
     });
 
     s.eq("toca keeps its object and inflates valence without a suffix", {

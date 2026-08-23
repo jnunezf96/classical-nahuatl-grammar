@@ -166,6 +166,147 @@ function run(ctx = {}) {
         }
     );
 
+    const classTwoBSource =
+        ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+            stem: "nemi",
+            sourceClass: "tl-2-b-i",
+        });
+    const classTwoBOperation =
+        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+            classTwoBSource,
+            {
+                state: "possessive",
+                subject: "3sg",
+                possessor: "3sg",
+            }
+        );
+    const classTwoBResult =
+        ctx.requestClassicalOrdinaryNncResult(
+            classTwoBSource,
+            classTwoBOperation
+        );
+    s.eq(
+        "open tl 2-B i Source keeps nem underneath and writes the exposed general-use edge as nen",
+        {
+            status: classTwoBResult.authorizationStatus,
+            sourceStem: classTwoBResult.sourceFrame.stem,
+            predicateStem:
+                classTwoBResult.typedSlotFrame?.slots?.predicate?.stem,
+            formula: classTwoBResult.formulaRealization,
+            written: classTwoBResult.surfaceRealization,
+        },
+        {
+            status: "authorized",
+            sourceStem: "nemi",
+            predicateStem: "nen",
+            formula: "#0-0+ī-0(nen)0-0#",
+            written: "īnen",
+        }
+    );
+
+    const finalATwoBSource =
+        ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+            stem: "petla",
+            sourceClass: "tl-2-b-a",
+        });
+    const finalATwoBOperation =
+        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+            finalATwoBSource,
+            {
+                state: "possessive",
+                subject: "3sg",
+                possessor: "3sg",
+                predicateFormation: "yo-matrix",
+            }
+        );
+    const finalATwoBResult =
+        ctx.requestClassicalOrdinaryNncResult(
+            finalATwoBSource,
+            finalATwoBOperation
+        );
+    s.eq(
+        "tl 2-B final-a Source retains a inside the yo compound matrix",
+        {
+            status: finalATwoBResult.authorizationStatus,
+            sourceStem: finalATwoBResult.sourceFrame.stem,
+            predicateStem:
+                finalATwoBResult.typedSlotFrame?.slots?.predicate?.stem,
+            formula: finalATwoBResult.formulaRealization,
+            written: finalATwoBResult.surfaceRealization,
+        },
+        {
+            status: "authorized",
+            sourceStem: "petla",
+            predicateStem: "petla-yo",
+            formula: "#0-0+ī-0(petla-yo)0-0#",
+            written: "īpetlayo",
+        }
+    );
+
+    const reclassifiedSource =
+        ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+            stem: "māi",
+            sourceClass: "tl-2-a-to-1-a",
+        });
+    const reclassifiedSelection =
+        ctx.buildClassicalNahuatlNncOperationSelectionFrame(
+            reclassifiedSource,
+            {
+                state: "possessive",
+                subject: "3sg",
+                possessor: "3sg",
+            }
+        );
+    const reclassifiedOperation =
+        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+            reclassifiedSource,
+            {
+                state: "possessive",
+                subject: "3sg",
+                possessor: "3sg",
+                predicateFormation: "source-stem",
+            }
+        );
+    const reclassifiedResult =
+        ctx.requestClassicalOrdinaryNncResult(
+            reclassifiedSource,
+            reclassifiedOperation
+        );
+    s.eq(
+        "typed tl 2-A to 1-A Source class applies reclassification without a Stem formation choice",
+        {
+            sourceStatus: reclassifiedSource.authorizationStatus,
+            sourceClass: reclassifiedSource.sourceClass,
+            visibleStemFormations:
+                reclassifiedSelection.predicateOptionValues,
+            selectedStemFormation:
+                reclassifiedOperation.predicateFormation,
+            derivedOperation:
+                reclassifiedOperation.predicateOperation,
+            authority:
+                reclassifiedOperation.predicateFormationAuthority,
+            resultStatus: reclassifiedResult.authorizationStatus,
+            formula: reclassifiedResult.formulaRealization,
+            written: reclassifiedResult.surfaceRealization,
+        },
+        {
+            sourceStatus: "authorized",
+            sourceClass: "tl-2-a-to-1-a",
+            visibleStemFormations: [
+                "source-stem",
+                "yo-matrix",
+                "secondary-general-use",
+                "analogical-restricted-use",
+            ],
+            selectedStemFormation: "source-stem",
+            derivedOperation: "tl-2a-to-1a",
+            authority: "typed-source-class",
+            resultStatus: "authorized",
+            formula: "#0-0+ī-0(mā)uh-0#",
+            written: "īmāuh",
+        }
+    );
+
     const possessiveOperation =
         ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(source, {
             state: "possessive",

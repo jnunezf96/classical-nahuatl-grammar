@@ -629,6 +629,64 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "Lesson 21 passive promotes a specific 1sg object even when the deleted active subject was also 1sg",
+        (() => {
+            const application = createClassicalNahuatlVncApplication(ctx);
+            const request = {
+                sourceStem: "ahci",
+                verbClass: "A",
+                sourceValence: "specific-projective",
+                subject: "1sg",
+                objectPerson: "1sg",
+            };
+            const active = application.evaluate({
+                ...request,
+                requestedVoice: "active",
+            });
+            const passive = application.evaluate({
+                ...request,
+                requestedVoice: "passive",
+            });
+            const transition = passive.resultFrame?.selectedMachineryFrame
+                ?.voiceTransformationFrame?.participantRoleTransitionFrame;
+            return {
+                activeStatus: active.authorizationStatus,
+                activeReason: active.blockReason,
+                passiveStatus: passive.authorizationStatus,
+                passiveReason: passive.blockReason,
+                passiveVoice: passive.controlFrame?.selectedVoice,
+                passiveSubject: passive.resultFrame?.selectedMachineryFrame?.subject,
+                passiveFormula: passive.resultFrame?.formulaRealization,
+                transitionKind: transition?.kind,
+                retiredRoles: transition?.retiredSourceRoles,
+                activatedRoles: transition?.activatedTargetRoles,
+                preservedFacts: transition?.preservedParticipantFacts,
+                rhymeShape: transition?.grammaticalRhymeShape,
+            };
+        })(),
+        {
+            activeStatus: "blocked",
+            activeReason: "classical-vnc-coreferential-specific-object-must-be-reflexive",
+            passiveStatus: "authorized",
+            passiveReason: "",
+            passiveVoice: "passive",
+            passiveSubject: "1sg",
+            passiveFormula: "#n-0(ahxī-hua)0+0-0#",
+            transitionKind: "classical-nahuatl-participant-role-transition-frame",
+            retiredRoles: [
+                "source-subject-controller",
+                "promoted-source-object-as-object",
+            ],
+            activatedRoles: ["promoted-object-as-target-subject"],
+            preservedFacts: [
+                "typed-source-history",
+                "promoted-object-participant-identity",
+            ],
+            rhymeShape: "preserve-participant-identity+retire-source-role+activate-target-role+emit-target-role-structure",
+        }
+    );
+
+    s.eq(
         "Direct application preserves the Lesson 11 typed paradigm member through selected Result",
         (() => {
             const application = createClassicalNahuatlVncApplication(ctx);
@@ -2474,6 +2532,10 @@ function run(ctx = {}) {
                     authorizationStatus: "authorized",
                     canonicalSignature: "SOURCE-ANALYSIS-POISON",
                 },
+                participantRoleTransitionFrame: {
+                    authorizationStatus: "authorized",
+                    retiredSourceRoles: ["source-subject-controller"],
+                },
                 sentenceOptions: {
                     sourceAnalysisFrame: { canonicalSignature: "NESTED-SOURCE-ANALYSIS-POISON" },
                 },
@@ -2516,7 +2578,7 @@ function run(ctx = {}) {
         {
             status: "blocked",
             reason: "classical-vnc-application-caller-authority-rejected",
-            rejected: ["sourceAnalysisFrame", "sentenceOptions.sourceAnalysisFrame"],
+            rejected: ["sourceAnalysisFrame", "participantRoleTransitionFrame", "sentenceOptions.sourceAnalysisFrame"],
             canonical: true,
             poisonSurvived: false,
             injectedFormula: "",

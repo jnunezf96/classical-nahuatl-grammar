@@ -10,11 +10,11 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260823-built-in-valence-default-236";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-built-in-valence-default-236";
 import {
   normalizeGenerationSourceTransitivity,
   validateGenerationSourceTransitivitySelection,
@@ -26,19 +26,19 @@ import {
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../../core/classical/participant_frame.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON36_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON37_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON38_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON39_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 
 export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalRuleLogicSurfaceFrame = null;
@@ -887,10 +887,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && initialSourceFrame?.blockReason
           === "lexical-noun-class-selection-required";
       if (
-        !typedSourceFrame
-        && requestedSourceClass
-        && initialSourceFrame?.blockReason
-          === "lexical-noun-class-selection-required"
+        requestedSourceClass
+        && (
+          !typedSourceFrame
+          || requestedSourceClass === "tl-2-a-to-1-a"
+        )
         && typeof targetObject.issueCanonicalNncSourceFrame === "function"
       ) {
         issuedSourceFrame = targetObject.issueCanonicalNncSourceFrame({
@@ -1652,7 +1653,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceParts = basalUnit === "vnc" && sourceTransitivitySelectionFrame.authorizationStatus === "blocked"
         ? { sourceEmbedStem: "", sourceMatrixStem: "", sourcePartsSource: "blocked-source-transitivity" }
         : getClassicalRuleLogicSurfaceSourceParts(overrides, sourceTransitivity, sourceValue);
-      const requestedValence = String(overrides.valence || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-valence", "intransitive") || "intransitive").trim();
+      const sourceValenceControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-valence"
+      );
+      const builtInValenceDefault = String(
+        sourceValenceControl?.dataset?.classicalBuiltInSourceDefault || ""
+      ).split("|")[1] || "";
+      const selectedValence = getClassicalRuleLogicSurfaceControlValue(
+        "classical-rule-logic-valence",
+        "intransitive"
+      );
+      const requestedValence = String(
+        overrides.valence
+        || (
+          builtInValenceDefault
+          && selectedValence === "intransitive"
+            ? builtInValenceDefault
+            : selectedValence
+        )
+        || "intransitive"
+      ).trim();
       const valence = requestedValence || "intransitive";
       const requestedVncVoice = String(overrides.vncVoice || overrides.voice || getClassicalRuleLogicSurfaceControlValue("classical-rule-logic-vnc-voice", "active") || "active").trim();
       const targetVoiceSelectionFrame = validateClassicalNahuatlVncVoiceSelection(requestedVncVoice, "target");
@@ -1826,10 +1846,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
         || ""
       ).trim();
+      const requestedTl2ARealization = String(
+        overrides.nncTl2ARealization
+        || getClassicalRuleLogicSurfaceControlValue(
+          "classical-rule-logic-nnc-tl2a-realization",
+          "retain-2a"
+        )
+        || "retain-2a"
+      ).trim();
+      const effectiveNncSourceClass = requestedNncSourceClass === "tl-2-a"
+        && requestedTl2ARealization === "reclassify-1a"
+          ? "tl-2-a-to-1-a"
+          : requestedNncSourceClass;
       const nncSourceIdentity = deriveClassicalNncSourceIdentity(
         sourceValue,
         sourceParts,
-        { sourceClass: requestedNncSourceClass }
+        { sourceClass: effectiveNncSourceClass }
       );
       const nncType = nncSourceIdentity.nncType || "";
       const ordinaryNncLexicalSourceFrame =
@@ -2144,7 +2176,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         nncTypedSourceFrame: nncSourceIdentity.typedSourceFrame,
         nncBlockedSourceFrame: nncSourceIdentity.blockedSourceFrame,
         requestedNncNounClass,
-        requestedNncSourceClass,
+        requestedNncSourceClass: effectiveNncSourceClass,
+        requestedNncVisibleSourceClass: requestedNncSourceClass,
+        requestedNncTl2ARealization: requestedTl2ARealization,
         nncOpenStemSource:
           ordinaryNncLexicalSourceFrame?.openStemSource === true
           || nncSourceIdentity.openStemSourceCandidate === true,
@@ -2953,7 +2987,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && sourceFrame?.openStemSource !== true
         && sourceFrame?.sourceClass
       ) {
-        return Object.freeze([sourceFrame.sourceClass]);
+        return Object.freeze([
+          sourceFrame.sourceClass === "tl-2-a-to-1-a"
+            ? "tl-2-a"
+            : sourceFrame.sourceClass
+        ]);
       }
       if (!normalizedStem) {
         return Object.freeze(inventory.map(entry => entry.sourceClass));
@@ -3024,6 +3062,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (control.value && !allowedSet.has(control.value)) {
         control.value = "";
       }
+      const tl2ARealizationField = targetObject.document.getElementById(
+        "classical-nnc-tl2a-realization-field"
+      );
+      const tl2ARealizationControl = targetObject.document.getElementById(
+        "classical-rule-logic-nnc-tl2a-realization"
+      );
+      const tl2ASelected = control.value === "tl-2-a";
+      if (tl2ARealizationField) {
+        tl2ARealizationField.hidden = !tl2ASelected;
+      }
+      if (tl2ARealizationControl) {
+        tl2ARealizationControl.disabled = !tl2ASelected;
+        if (!tl2ASelected) {
+          tl2ARealizationControl.value = "retain-2a";
+        }
+      }
       const canonicalClassFixed = Boolean(
         options.sourceFrame?.authorizationStatus === "authorized"
         && options.sourceFrame?.kind
@@ -3072,6 +3126,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const stem = String(state.stem || "")
         .trim()
         .replace(/^\((.*)\)$/u, "$1");
+      const requestedSourceClass = String(
+        state.requestedNncSourceClass || ""
+      ).trim();
       const initialSourceFrame = targetObject.issueCanonicalNncSourceFrame({
         stem,
         ...(state.sourceEmbedStem
@@ -3081,10 +3138,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? { matrixStem: String(state.sourceMatrixStem).trim() }
           : {})
       });
-      if (
-        initialSourceFrame?.blockReason
-          === "lexical-noun-class-selection-required"
-      ) {
+      if (requestedSourceClass) {
         return targetObject.issueCanonicalNncSourceFrame({
           stem,
           ...(state.sourceEmbedStem
@@ -3093,9 +3147,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ...(state.sourceMatrixStem
             ? { matrixStem: String(state.sourceMatrixStem).trim() }
             : {}),
-          sourceClass: String(
-            state.requestedNncSourceClass || ""
-          ).trim()
+          sourceClass: requestedSourceClass
         });
       }
       return initialSourceFrame;
@@ -3725,6 +3777,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const objectMorphIdentityFrame = objectFrame?.va1MorphIdentityFrame || finalBoundaryFrame?.objectMorphIdentityFrame || null;
       const selectedObjectPerson = normalizeClassicalRuleLogicSurfacePersonNumber(objectFrame?.objectPerson || objectRelationshipFrame?.selectedObjectPerson || state.objectPerson || "");
       const selectedSubject = normalizeClassicalRuleLogicSurfacePersonNumber(state.subject || "");
+      const selectedVoice = String(
+        state.vncVoice
+        || state.requestedVncVoice
+        || machineryFrame?.voice
+        || machineryFrame?.controlFrame?.selectedVoice
+        || state.voice
+        || state.requestedVoice
+        || "active"
+      ).trim().toLowerCase();
       const objectPersonClass = getClassicalRuleLogicSurfaceObjectPersonClass(selectedObjectPerson);
       const selectedObjectSlot = objectRelationshipFrame?.selectedObjectSlot || (objectFrame?.valenceArity === "dyadic" ? [objectFrame?.va1 || "", objectFrame?.va2 || ""].filter(Boolean).join("-") : objectFrame?.va || "") || "";
       const directionalPrefix = expandedVncBoundaryFrame?.directionalPrefix || state.directionalPrefix || "";
@@ -3826,7 +3887,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         pers1SupportiveIToOAuthorized: thirdPersonCOnContext,
         pers1SupportiveIToOContext: thirdPersonCOnContext ? "third-person-c-0-plus-on" : "not-authorized-in-this-object-context",
         nonThirdObjectKeepsPers1SupportiveVowelShape: Boolean(directionalPrefix === "on" && nonThirdSpecificObject),
-        sameParticipantSpecificProjectiveRouteWarning: sameFirstSecondSpecificParticipant ? "Canvas reflexive/reciprocative route reflects subject; specific-projective object is not the reflexive route." : "",
+        sameParticipantSpecificProjectiveRouteWarning: sameFirstSecondSpecificParticipant && selectedVoice === "active" ? "Canvas reflexive/reciprocative route reflects subject; specific-projective object is not the reflexive route." : "",
         subjectObjectCombination: selectedSubject && selectedObjectPerson ? `${selectedSubject}->${selectedObjectPerson}` : "",
         authorizationStatus: "authorized",
         grammarGenerationAllowed: false,
@@ -14515,6 +14576,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-vnc-derivation-selected-option-was-not-generated": "the selected derivation is stale or does not belong to this source analysis",
         "classical-vnc-derivation-source-class-contradiction": "the selected verb class contradicts the canonical source analysis",
         "classical-vnc-derivation-source-valence-contradiction": "the selected valence contradicts the canonical source analysis",
+        "recognized-frequentative-variant-required": "Choose a Grammar-supported frequentative formation. Linear and Specific appear after that genuine shape choice completes the Result.",
+        "recognized-lesson28-compound-variant-required": "Choose a Grammar-supported compound formation. Linear and Specific appear after that genuine structural choice completes the Result.",
         "self-honorific-not-authorized": "An honorific cannot honor the speaker. Choose a second- or third-person subject.",
         "first-person-honorific-requires-projective-patient": "A first-person honorific can honor only an object, but this Source has no projective patient. Choose a second- or third-person subject, or use a projective-object Source.",
         "reverential-requires-engine-issued-honorific-source": "Generate an honorific Result first, use that owner-issued Result as the next Source, then select reverential.",
@@ -15141,6 +15204,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_VNC_BLOCK_REPAIR_CONTROL_IDS = Object.freeze({
       "missing-stem": Object.freeze(["classical-source-whole"]),
       "classical-vnc-source-initial-i-selection-required": Object.freeze(["classical-vnc-source-initial-i-choice"]),
+      "recognized-frequentative-variant-required": Object.freeze(["classical-rule-logic-late-variant"]),
+      "recognized-lesson28-compound-variant-required": Object.freeze(["classical-rule-logic-late-variant"]),
       "licensed-frequentative-scope-required": Object.freeze(["classical-rule-logic-frequentative-scope"]),
       "frequentative-scope-requires-short-glottal-formation": Object.freeze(["classical-rule-logic-late-variant", "classical-rule-logic-frequentative-scope"]),
       "patient-scope-requires-typed-source-object": Object.freeze(["classical-rule-logic-valence", "classical-rule-logic-frequentative-scope"]),
@@ -17644,6 +17709,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
           nncSourceClassControl.value =
             surfaceFrame.state.nncTypedSourceFrame.sourceClass;
         }
+        const tl2ARealizationField = targetObject.document.getElementById(
+          "classical-nnc-tl2a-realization-field"
+        );
+        const tl2ARealizationControl = targetObject.document.getElementById(
+          "classical-rule-logic-nnc-tl2a-realization"
+        );
+        const visibleNncSourceClass = String(
+          surfaceFrame.state?.requestedNncVisibleSourceClass
+          || nncSourceClassControl?.value
+          || ""
+        );
+        const tl2ASelected = visibleNncSourceClass === "tl-2-a";
+        if (tl2ARealizationField) {
+          tl2ARealizationField.hidden = !tl2ASelected;
+        }
+        if (tl2ARealizationControl) {
+          tl2ARealizationControl.disabled = !tl2ASelected;
+          tl2ARealizationControl.value = tl2ASelected
+            ? surfaceFrame.state?.requestedNncTl2ARealization
+              || "retain-2a"
+            : "retain-2a";
+        }
         applyClassicalRuleLogicSelectOptionAvailability(
           "classical-rule-logic-nnc-subject-person",
           nncPresentationOptionContract.subjectPersonValues,
@@ -17795,6 +17882,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           decisionOwner: "unclassified",
           renderInAuthority: false
         };
+        const tl2ARealizationSourceChoice =
+          control?.id === "classical-rule-logic-nnc-tl2a-realization";
+        const tl2ASelectedForSourceChoice =
+          targetObject.document.getElementById(
+            "classical-rule-logic-nnc-class"
+          )?.value === "tl-2-a";
         const availability =
           control?.id === "classical-rule-logic-nnc-class"
           && sourceDraftAllowsNounstemClass
@@ -17806,6 +17899,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
                 decisionOwner: "user",
                 renderInAuthority: true
               }
+            : tl2ARealizationSourceChoice
+              ? {
+                  available: tl2ASelectedForSourceChoice,
+                  reason: tl2ASelectedForSourceChoice
+                    ? "typed-tl-2a-source-allows-retention-or-reclassification"
+                    : "tl-2a-realization-requires-typed-tl-2a-source",
+                  decisionOwner: "user",
+                  renderInAuthority: tl2ASelectedForSourceChoice
+                }
             : classifiedAvailability;
         const renderInAuthority = nncActive && availability.renderInAuthority !== false;
         wrapper.hidden = !renderInAuthority;
@@ -28260,17 +28362,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
         nestedResult?.canonicalNuclearSurface,
         nestedResult?.nuclearSurface
       ].find(value => typeof value === "string" && value.trim()) || "";
-      const formula = [
-        canonical.sentenceFormulaDisplay,
+      const linearFormula = [
         canonical.formula,
         canonical.formulaRealization,
         canonical.structuralFormula,
         canonical.selectedFormula,
-        nestedResult?.sentenceFormulaDisplay,
         nestedResult?.formula,
         nestedResult?.formulaRealization,
         nestedResult?.structuralFormula,
         nestedResult?.selectedFormula
+      ].find(value => typeof value === "string" && value.trim()) || "";
+      const sentenceFormula = [
+        canonical.sentenceFormulaDisplay,
+        canonical.sentenceFormula,
+        nestedResult?.sentenceFormulaDisplay,
+        nestedResult?.sentenceFormula
       ].find(value => typeof value === "string" && value.trim()) || "";
       if (!surface) return null;
       return Object.freeze({
@@ -28279,7 +28385,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         operationId: identityCapture.operationId,
         outputKind: identityCapture.outputKind,
         surface,
-        formula,
+        formula: linearFormula,
+        linearFormula,
+        sentenceFormula,
         formulaDerivedFromSurface: false,
         surfaceDerivedFromFormula: false,
         ownerIssued: true
@@ -31798,6 +31906,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const singleNncElegantActive = Boolean(surfaceFrame.basalUnit === "nnc" && !fullParadigmActive && singleNncDisplayFrame?.authorizationStatus === "authorized");
       const singleVncDisplayFrame = surfaceFrame.vncSingleFormDisplayFrame || null;
       const singleVncElegantActive = Boolean(surfaceFrame.basalUnit === "vnc" && !fullVncParadigmActive && singleVncDisplayFrame?.authorizationStatus === "authorized");
+      const ownerIssuedResultProjection =
+        getClassicalOwnerIssuedResultProjection(surfaceFrame);
       const paradigmSection = targetObject.document.createElement("section");
       paradigmSection.className = "classical-rule-surface__format-section classical-rule-surface__paradigm";
       paradigmSection.dataset.classicalNncParadigm = "true";
@@ -32273,7 +32383,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? singleNncDisplayFrame.selectedFormula
           : singleVncElegantActive
             ? singleVncDisplayFrame.selectedFormula
-            : surfaceFrame.selectedFormula,
+            : surfaceFrame.selectedFormula
+              || ownerIssuedResultProjection?.linearFormula
+              || "",
         surfaceFrame.authorizationStatus
       );
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
@@ -32680,7 +32792,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && !singleNncElegantActive
         && !singleVncElegantActive;
       const fallbackProjection = fallbackSingleActive
-        ? getClassicalOwnerIssuedResultProjection(surfaceFrame)
+        ? ownerIssuedResultProjection
         : null;
       const fallbackSurface = String(
         typedSentenceSurfaceDisplay

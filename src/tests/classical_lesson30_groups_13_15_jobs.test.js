@@ -137,6 +137,10 @@ function run(ctx = {}) {
             operation(subjectComplement).complementReferenceFrame?.orientation,
             operation(subjectComplement).complementReferenceFrame?.complementTargetReferenceId,
             operation(subjectComplement).complementReferenceFrame?.embeddedSubjectRepresentation,
+            operation(subjectComplement).complementReferenceFrame
+                ?.participantRoleTransitionFrame?.retiredSourceRoles,
+            operation(subjectComplement).complementReferenceFrame
+                ?.participantRoleTransitionFrame?.preservedParticipantFacts,
             operation(subjectComplement).complementScopeFrame?.matrixValencePreserved,
             operation(subjectComplement).sourceValencePositionCount,
             operation(subjectComplement).targetValencePositionCount],
@@ -150,7 +154,10 @@ function run(ctx = {}) {
             operation(changedStems).complementReferenceFrame?.complementTargetReferenceId],
         blocked: conflictingReference.blockReason,
     }, {
-        subject: ["authorized", "subject", "actor", "deleted-as-coreferential", true, 0, 0],
+        subject: ["authorized", "subject", "actor", "deleted-as-coreferential",
+            ["embedded-subject-expression"],
+            ["embedded-subject-referent-identity", "matrix-participant-reference",
+                "typed-source-history"], true, 0, 0],
         object: ["authorized", "considering", "patient", "preserved", 1, 1],
         hostile: ["authorized", "patient"],
         blocked: "incorporated-complement-embed-subject-must-be-coreferential",

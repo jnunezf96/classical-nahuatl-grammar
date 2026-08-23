@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260822-vnc-capability-inheritance-221";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260823-built-in-valence-default-236";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260822-vnc-capability-inheritance-221";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260822-vnc-capability-inheritance-221";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260822-vnc-capability-inheritance-221";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260822-vnc-capability-inheritance-221";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260822-vnc-capability-inheritance-221";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../runtime/create_runtime.mjs?v=20260823-built-in-valence-default-236";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260823-built-in-valence-default-236";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260823-built-in-valence-default-236";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260823-built-in-valence-default-236";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260823-built-in-valence-default-236";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260823-built-in-valence-default-236";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260823-built-in-valence-default-236";
 
 let browserBootstrapPromise = null;
 

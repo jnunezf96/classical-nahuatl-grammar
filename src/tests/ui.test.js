@@ -782,9 +782,11 @@ function run(ctx = {}) {
             && html.includes("<title>Classical Nahuatl Grammar</title>")
             && html.includes(">Classical Nahuatl Grammar<")
             && JSON.parse(staticLabels)?.uiLabels?.["app-title"]?.labelEs === "Gramática Andrews"
-            && html.includes('class="panel-grid"')
-            && html.includes('data-andrews-layout="source-authority-authorized-result"')
-            && html.includes('data-andrews-panel-model="whole-transcription-canvas"')
+            && html.includes('id="classical-app-root"')
+            && html.includes('data-classical-shell="source-authority-result"')
+            && html.includes('data-classical-panel-container="source"')
+            && html.includes('data-classical-panel-container="authority"')
+            && html.includes('data-classical-panel-container="authorized-result"')
             && !html.includes('data-andrews-result-can-feed-next-source=')
     );
     s.ok(
@@ -1331,9 +1333,9 @@ function run(ctx = {}) {
     );
     s.ok(
         "Classical panel columns are governed only by basal VNC and NNC buttons",
-        html.includes('data-panel-columns="classical-basal-units"')
-            && html.includes('data-classical-basal-units="vnc nnc"')
-            && html.includes('id="classical-basal-unit-controls"')
+        classicalShell.includes('data-panel-columns="classical-basal-units"')
+            && classicalShell.includes('data-classical-basal-units="vnc nnc"')
+            && classicalShell.includes('id="classical-basal-unit-controls"')
             && classicalBasalHtml.includes('data-panel-columns="basal-buttons"')
             && classicalBasalHtml.includes('data-classical-basal-unit-order="vnc nnc"')
             && !/data-classical-basal-unit="particle"/.test(classicalBasalHtml)
@@ -1344,7 +1346,7 @@ function run(ctx = {}) {
             && classicalBasalHtml.includes('data-classical-basal-scope="nominal-nuclear-clause"')
             && !classicalBasalHtml.includes('data-classical-basal-authority=')
             && !classicalBasalHtml.includes('data-nawat-pipil-')
-            && !html.includes('data-classical-fixed-surfaces="stem-input proof witness receipt"')
+            && !classicalShell.includes('data-classical-fixed-surfaces="stem-input proof witness receipt"')
             && composer.includes("var CLASSICAL_BASAL_UNIT = Object.freeze")
             && composer.includes("function applyClassicalBasalUnitMode")
             && composer.includes("function syncClassicalBasalUnitControls")
@@ -1352,7 +1354,8 @@ function run(ctx = {}) {
             && composer.includes("function renderInitialClassicalPanelContractSurface")
             && composer.includes("isClassicalPanelContractSurfaceRequested()")
             && composer.includes('new URLSearchParams(search).get("basal") === "panel-contract"')
-            && composer.includes('renderClassicalRuleLogicSurfaceBlock({ basalUnit: CLASSICAL_BASAL_UNIT.vnc })')
+            && composer.includes('renderClassicalRuleLogicSurfaceBlock({')
+            && composer.includes('basalUnit: CLASSICAL_BASAL_UNIT.vnc')
             && composer.includes("function populateClassicalSentenceParticleControl")
             && !composer.includes("CLASSICAL_BASAL_UNIT.particle")
             && !composer.includes("setOrdinaryNncGenerationModeEnabled")
@@ -1942,6 +1945,11 @@ function run(ctx = {}) {
                     getClassicalAuthorityControlLayout: () => "other",
                     getClassicalNncAuthorityOptionContract: () => ({
                         numberValues: [],
+                        subjectValues: [],
+                        subjectPersonValues: [],
+                        subjectNumberValues: [],
+                        animacyValues: [],
+                        humannessValues: [],
                         classBoundSelection: {
                             useShapeValues: [],
                             useShapeFallback: "",
@@ -5414,17 +5422,17 @@ function run(ctx = {}) {
             && html.includes('id="app-title"')
             && html.includes(">Classical Nahuatl Grammar<")
             && html.includes('class="form-container-clause hero-panel hero-panel--entrada"')
-            && html.includes('aria-label="Classical Nahuatl nuclear clause board"')
+            && classicalShell.includes('aria-label="Classical Nahuatl nuclear clause board"')
             && !html.includes('data-ui-label-key=')
-            && html.includes('id="panel-stack-tab-formula"')
-            && html.includes('data-panel-stack-tab="formula"')
-            && html.includes('data-panel-stack-pane="formula"')
-            && html.includes('data-andrews-panel="#1-source"')
-            && html.includes('data-andrews-panel="#2-authority"')
-            && html.includes('data-andrews-panel="#3-authorized-result"')
-            && html.includes('data-andrews-stage-label="2 Grammar"')
-            && html.includes(">GRAMMAR<")
-            && html.includes(">Grammar</span>")
+            && classicalShell.includes('id="panel-stack-tab-formula"')
+            && classicalShell.includes('data-panel-stack-tab="formula"')
+            && classicalShell.includes('data-panel-stack-pane="formula"')
+            && classicalShell.includes('data-andrews-panel="#1-source"')
+            && classicalShell.includes('data-andrews-panel="#2-authority"')
+            && classicalShell.includes('data-andrews-panel="#3-authorized-result"')
+            && classicalShell.includes('data-andrews-stage-label="2 Grammar"')
+            && classicalShell.includes(">GRAMMAR<")
+            && classicalShell.includes(">Grammar</span>")
             && !html.includes("Conjugador de verbos")
             && !html.includes("form-container-word")
             && !html.includes(">DERIVED<")
@@ -5588,37 +5596,37 @@ function run(ctx = {}) {
     );
     s.ok(
         "Canonical Source Grammar Result HTML encodes nuclear-clause formula architecture without curriculum dispatch",
-        !html.includes("data-andrews-lesson")
-            && html.includes('data-andrews-unit="clausula-nuclear"')
-            && html.includes('data-andrews-not-word="true"')
-            && html.includes('data-andrews-layout="source-authority-authorized-result"')
-            && html.includes('data-andrews-panel-model="whole-transcription-canvas"')
-            && html.includes('class="form-container panel nuclear-clause-source-panel"')
-            && html.includes('data-andrews-formula-role="predicate-stem-source"')
-            && html.includes('class="verb-block nuclear-clause-entry"')
-            && html.includes('data-andrews-input="stem-only"')
-            && html.includes('data-andrews-formula-slot="person-prefix"')
-            && html.includes('data-andrews-formula-slot="number-suffix"')
-            && html.includes('class="panel tense-tabs-panel formula-controls-panel panel-stack-pane"')
-            && html.includes('data-andrews-general-formula="subject-predicate"')
-            && html.includes('data-andrews-subject-formula="#person+...+number#"')
-            && html.includes('data-andrews-vnc-predicate="valence+stem+tense"')
-            && html.includes('data-andrews-nnc-predicate="state+stem"')
-            && html.includes('data-andrews-vnc-layers="verbstem > verbcore > predicate > CNV"')
-            && html.includes('data-andrews-nnc-layers="nounstem > nouncore/predicate > CNN"')
-            && html.includes('class="tense-tabs formula-slot-controls"')
-            && html.includes('data-andrews-vnc-slot="tns"')
-            && html.includes('data-andrews-nnc-slot="st"')
-            && html.includes('class="calc-operators formula-controls-grid"')
-            && html.includes('data-andrews-formula-role="formula-mode-derivation-controls"')
-            && html.includes('data-tense-mode="verbo"')
-            && html.includes('data-tense-mode="sustantivo"')
-            && html.includes('data-derivation-type="causative"')
-            && html.includes('data-derivation-type="applicative"')
-            && !html.includes('formula-controls-section--predicate-route"')
-            && html.includes('class="panel container-tense-grid nuclear-clause-output-panel panel-stack-pane"')
-            && html.includes('data-andrews-stage="authorized-result"')
-            && html.includes('data-andrews-renders="subject-predicate-formula"')
+        !classicalShell.includes("data-andrews-lesson")
+            && classicalShell.includes('data-andrews-unit="clausula-nuclear"')
+            && classicalShell.includes('data-andrews-not-word="true"')
+            && classicalShell.includes('data-andrews-layout="source-authority-authorized-result"')
+            && classicalShell.includes('data-andrews-panel-model="whole-transcription-canvas"')
+            && classicalShell.includes('class="form-container panel nuclear-clause-source-panel"')
+            && classicalShell.includes('data-andrews-formula-role="predicate-stem-source"')
+            && classicalShell.includes('class="verb-block nuclear-clause-entry"')
+            && classicalShell.includes('data-andrews-input="stem-only"')
+            && classicalShell.includes('data-andrews-formula-slot="person-prefix"')
+            && classicalShell.includes('data-andrews-formula-slot="number-suffix"')
+            && classicalShell.includes('class="panel tense-tabs-panel formula-controls-panel panel-stack-pane"')
+            && classicalShell.includes('data-andrews-general-formula="subject-predicate"')
+            && classicalShell.includes('data-andrews-subject-formula="#person+...+number#"')
+            && classicalShell.includes('data-andrews-vnc-predicate="valence+stem+tense"')
+            && classicalShell.includes('data-andrews-nnc-predicate="state+stem"')
+            && classicalShell.includes('data-andrews-vnc-layers="verbstem > verbcore > predicate > CNV"')
+            && classicalShell.includes('data-andrews-nnc-layers="nounstem > nouncore/predicate > CNN"')
+            && classicalShell.includes('class="tense-tabs formula-slot-controls"')
+            && classicalShell.includes('data-andrews-vnc-slot="tns"')
+            && classicalShell.includes('data-andrews-nnc-slot="st"')
+            && classicalShell.includes('class="calc-operators formula-controls-grid"')
+            && classicalShell.includes('data-andrews-formula-role="formula-mode-derivation-controls"')
+            && classicalShell.includes('data-tense-mode="verbo"')
+            && classicalShell.includes('data-tense-mode="sustantivo"')
+            && classicalShell.includes('data-derivation-type="causative"')
+            && classicalShell.includes('data-derivation-type="applicative"')
+            && !classicalShell.includes('formula-controls-section--predicate-route"')
+            && classicalShell.includes('class="panel container-tense-grid nuclear-clause-output-panel panel-stack-pane"')
+            && classicalShell.includes('data-andrews-stage="authorized-result"')
+            && classicalShell.includes('data-andrews-renders="subject-predicate-formula"')
             && state.includes('var PANEL_STACK_ORDER = ["inputs", "formula", "output"]')
             && state.includes('mode === "formula" || mode === "tense"')
     );
@@ -11731,8 +11739,8 @@ function run(ctx = {}) {
                     { stem: "tēuc", option: "tec-title", nncState: "possessive", subject: "3sg", nncPossessor: "1pl", nncSourceClass: "tli-1" },
                     { stem: "cal", option: "secondary-general-use", nncState: "possessive", subject: "3sg", nncPossessor: "1sg", nncSourceClass: "tli-1", nncMetaphoricalUse: true },
                     { stem: "cal", option: "analogical-restricted-use", nncState: "absolutive", subject: "3common", nncSourceClass: "tli-1" },
-                    { stem: "māi", option: "tl-2a-to-1a", nncState: "possessive", subject: "3sg", nncPossessor: "3sg", nncSourceClass: "tl-2-a" },
-                    { stem: "māi", option: "tl-2a-to-1a", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tl-2-a" },
+                    { stem: "māi", option: "source-stem", nncState: "possessive", subject: "3sg", nncPossessor: "3sg", nncSourceClass: "tl-2-a", nncTl2ARealization: "reclassify-1a" },
+                    { stem: "māi", option: "source-stem", nncState: "absolutive", subject: "3common", nncReferent: "nonanimate", nncSourceClass: "tl-2-a", nncTl2ARealization: "reclassify-1a" },
                 ];
                 const outputs = cases.map(({ option, ...input }) => {
                     const frame = ctx.buildClassicalRuleLogicSurfaceFrame({
@@ -11775,7 +11783,9 @@ function run(ctx = {}) {
                         && classicalShell.includes('>(-yō)-tl- matrix</option>')
                         && classicalShell.includes('>secondary general-use stem (tē-)</option>')
                         && classicalShell.includes('>tla possessive predicate → restricted-use stem</option>')
-                        && classicalShell.includes('>tl 2-A → 1-A by ephemeral i loss</option>')
+                        && !classicalShell.includes('>tl 2-A → 1-A by ephemeral i loss</option>')
+                        && !classicalShell.includes('<option value="tl-2-a-to-1-a">')
+                        && classicalShell.includes('id="classical-rule-logic-nnc-tl2a-realization"')
                         && !classicalShell.includes('value="suffix-lo"')
                         && !classicalShell.includes('value="suffix-yo"')
                         && !classicalShell.includes('>(ti-)</option>')
@@ -11815,8 +11825,8 @@ function run(ctx = {}) {
                     { status: "authorized", option: "tec-title", values: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tec-title"], target: "tēc", targetDerivation: "exact-canvas-lexical-option", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
                     { status: "authorized", option: "secondary-general-use", values: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use"], target: "tē-cal", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
                     { status: "authorized", option: "analogical-restricted-use", values: ["source-stem", "yo-matrix", "analogical-restricted-use"], target: "tla-cal", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
-                    { status: "authorized", option: "tl-2a-to-1a", values: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tl-2a-to-1a"], target: "mā", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
-                    { status: "authorized", option: "tl-2a-to-1a", values: ["source-stem", "yo-matrix", "analogical-restricted-use", "tl-2a-to-1a"], target: "mā", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
+                    { status: "authorized", option: "source-stem", values: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use"], target: "mā", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
+                    { status: "authorized", option: "source-stem", values: ["source-stem", "yo-matrix", "analogical-restricted-use"], target: "mā", targetDerivation: "canonical-semantic-operation", canvasOptionAuthority: false, formulaContainsDerivedPredicate: true, visible: true, enabled: true },
                 ],
             }
             : null
@@ -11845,10 +11855,12 @@ function run(ctx = {}) {
                 nncNounClass: "tl",
                 nncUseShape: "truncated-i",
                 nncSubclass: "tl-2a",
+                nncSourceClass: "tl-2-a",
+                nncTl2ARealization: "reclassify-1a",
                 nncPossessor: "3sg",
                 subject: "3sg",
                 nncReferent: "animate",
-                nncPredicateOptionId: "tl-2a-to-1a",
+                nncPredicateOptionId: "source-stem",
             });
             return {
                 oneOperationControl:
@@ -11907,8 +11919,8 @@ function run(ctx = {}) {
             selectedPredicateOption: "source-stem",
             redupAvailable: true,
             redupSelected: true,
-            reclassificationValues: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use", "tl-2a-to-1a"],
-            reclassificationSelected: "tl-2a-to-1a",
+            reclassificationValues: ["source-stem", "yo-matrix", "secondary-general-use", "analogical-restricted-use"],
+            reclassificationSelected: "source-stem",
             retiredContractFieldsAbsent: true,
             typedRouting: true,
         } : null

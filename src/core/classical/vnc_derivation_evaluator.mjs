@@ -7,10 +7,13 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "./vnc_layer_evaluator.mjs?v=20260823-built-in-valence-default-236";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
+import {
+  buildClassicalNahuatlParticipantRoleTransitionFrame,
+} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
 
 export const CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES = Object.freeze(["direct", "causative", "applicative"]);
 
@@ -6210,6 +6213,37 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         targetObjectCount: targetObjectRequests.length,
         addedObjectRequest
       });
+      const participantRoleTransitionFrame = blockReason
+        ? null
+        : buildClassicalNahuatlParticipantRoleTransitionFrame({
+          operationId: `derivation:${derivationType}`,
+          sourceRoles: [
+            "source-subject",
+            ...(sourceObjectRequests.length ? ["source-object"] : []),
+          ],
+          targetRoles: [
+            "target-subject",
+            ...(targetObjectRequests.length ? ["target-object"] : []),
+          ],
+          retiredSourceRoles: derivationType === "causative"
+            ? ["source-subject-controller"]
+            : [],
+          activatedTargetRoles: derivationType === "causative"
+            ? [
+              "new-matrix-subject-controller",
+              sourceVoice === "active"
+                ? "source-subject-as-causative-object"
+                : "implicit-agent-as-causative-object",
+            ]
+            : ["added-applicative-object"],
+          preservedParticipantFacts: [
+            "typed-source-history",
+            "source-object-participant-identities",
+            ...(derivationType === "applicative"
+              ? ["source-subject-role-and-identity"]
+              : ["source-subject-participant-identity"]),
+          ],
+        });
       const participantTransformFrame = {
         frameRole: "typed-participant-transform",
         authorizationStatus: blockReason ? "blocked" : "authorized",
@@ -6250,6 +6284,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         targetObjectCount: targetObjectRequests.length,
         newestDerivationalLevel: newestLevel,
         participantEvidenceSection,
+        participantRoleTransitionFrame,
         formulaArtifactAuthority: false,
         surfaceArtifactAuthority: false
       };
@@ -6289,6 +6324,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         targetObjectCount: participantTransformFrame.targetObjectCount,
         newestDerivationalLevel: participantTransformFrame.newestDerivationalLevel,
         participantEvidenceSection: participantTransformFrame.participantEvidenceSection || "",
+        participantRoleTransitionFrame: participantTransformFrame.participantRoleTransitionFrame || null,
         authorizationStatus: participantTransformFrame.authorizationStatus,
         blockReason: participantTransformFrame.blockReason || "",
         formulaArtifactAuthority: participantTransformFrame.formulaArtifactAuthority,

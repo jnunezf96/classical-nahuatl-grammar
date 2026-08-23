@@ -1281,6 +1281,72 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "Lesson 14 writes exposed final m as n after productive Subclass 2-B truncation",
+        [
+            ["nemi", "i"],
+            ["coma", "a"],
+            ["zami", "i"],
+        ].map(([stem, ephemeralFinalVowel]) => {
+            const source = ctx.buildClassicalNahuatlNounstemSourceFrame(stem, {
+                state: "possessive",
+                nounClass: "tl",
+                classSelectionAuthority: "user-selection",
+                generalUseShape: "truncated",
+                ephemeralFinalVowel,
+                tlSubclass: "2B",
+            });
+            const result = ctx.buildClassicalNahuatlClassGovernedNncFrame(stem, {
+                state: "possessive",
+                subject: "3sg",
+                possessor: "3sg",
+                nounClass: "tl",
+                classSelectionAuthority: "user-selection",
+                generalUseShape: "truncated",
+                ephemeralFinalVowel,
+                tlSubclass: "2B",
+            });
+            return {
+                source: source.restrictedUseStem,
+                underlying: source.underlyingGeneralUseStem,
+                generalUse: source.generalUseStem,
+                action: source.useShapeAction,
+                applies: source.exposedFinalMFrame?.applies,
+                exampleAuthority: source.exposedFinalMFrame?.exampleStemAuthority,
+                formula: result.formulaRealization,
+            };
+        }),
+        [
+            {
+                source: "nemi",
+                underlying: "nem",
+                generalUse: "nen",
+                action: "delete-tagged-ephemeral-vowel-then-realize-exposed-final-m-as-n",
+                applies: true,
+                exampleAuthority: false,
+                formula: "#0-0+ī-0(nen)0-0#",
+            },
+            {
+                source: "coma",
+                underlying: "com",
+                generalUse: "con",
+                action: "delete-tagged-ephemeral-vowel-then-realize-exposed-final-m-as-n",
+                applies: true,
+                exampleAuthority: false,
+                formula: "#0-0+ī-0(con)0-0#",
+            },
+            {
+                source: "zami",
+                underlying: "zam",
+                generalUse: "zan",
+                action: "delete-tagged-ephemeral-vowel-then-realize-exposed-final-m-as-n",
+                applies: true,
+                exampleAuthority: false,
+                formula: "#0-0+ī-0(zan)0-0#",
+            },
+        ]
+    );
+
+    s.eq(
         "Lesson 14 Subclass 2-C composes supportive i with k-before-i spelling after ephemeral-a deletion",
         (() => {
             const options = {
@@ -2409,6 +2475,28 @@ function run(ctx = {}) {
                             ?.matrixEmbedStem,
                 };
             };
+            const buildFinalATl2B = (stem) => {
+                const operationRecord =
+                    ctx.buildClassicalNahuatlStemOperationRecord(
+                        stem,
+                        {
+                            operation: "yo-matrix",
+                            state: "possessive",
+                            subject: "3sg",
+                            nounClass: "tl",
+                            useShape: "truncated-a",
+                            subclass: "tl-2b",
+                            stemFormation: "plain",
+                            selectionAuthority:
+                                "user-supplied-lexical-analysis",
+                        }
+                    );
+                return {
+                    status: operationRecord.authorizationStatus,
+                    matrixEmbed: operationRecord.matrixEmbedStem,
+                    target: operationRecord.targetStem,
+                };
+            };
             const hostile =
                 ctx.buildClassicalNahuatlStemOperationRecord(
                     "tle-māi",
@@ -2427,6 +2515,8 @@ function run(ctx = {}) {
             return {
                 absolutive: build("absolutive", "3common"),
                 possessive: build("possessive", "3sg"),
+                canvasFinalA: buildFinalATl2B("petla"),
+                unlistedFinalA: buildFinalATl2B("zaxa"),
                 hostile: [
                     hostile.authorizationStatus,
                     hostile.blockReason,
@@ -2450,6 +2540,16 @@ function run(ctx = {}) {
                 resultStatus: "authorized",
                 formula: "#0-0+ī-0(tle-mā-yo)0-0#",
                 actionEmbed: "tle-mā",
+            },
+            canvasFinalA: {
+                status: "authorized",
+                matrixEmbed: "petla",
+                target: "petla-yo",
+            },
+            unlistedFinalA: {
+                status: "authorized",
+                matrixEmbed: "zaxa",
+                target: "zaxa-yo",
             },
             hostile: [
                 "blocked",
@@ -4128,7 +4228,7 @@ function run(ctx = {}) {
     );
 
     s.eq(
-        "Lesson 15 visible stem-operation authority survives URL round trip after legacy hidden carriers are retired",
+        "Lesson 15 reclassification authority survives URL round trip as a typed Source class",
         (() => {
             const hash = ctx.buildEntradaUrlHash({
                 input: "(māi)",
@@ -4136,7 +4236,9 @@ function run(ctx = {}) {
                 ordinaryNnc: { enabled: true },
                 classicalNnc: {
                     active: true,
-                    predicateOptionId: "tl-2a-to-1a",
+                    sourceClass: "tl-2-a",
+                    tl2ARealization: "reclassify-1a",
+                    predicateOptionId: "source-stem",
                     possessiveFormation: "regular",
                     lesson15TargetStem: "",
                     state: "possessive",
@@ -4147,8 +4249,17 @@ function run(ctx = {}) {
             });
             const restored = ctx.parseEntradaUrlSegmentString(hash);
             return {
-                hasVisibleOperationSegment:
-                    hash.includes("/cn-l15-operation/tl-2a-to-1a"),
+                hasSourceClassSegment:
+                    hash.includes("/cn-source-class/tl-2-a"),
+                hasClassRealizationSegment:
+                    hash.includes(
+                        "/cn-tl2a-realization/reclassify-1a"
+                    ),
+                reclassificationOperationAbsent:
+                    !hash.includes("/cn-l15-operation/tl-2a-to-1a"),
+                sourceClass: restored.classicalNnc.sourceClass,
+                classRealization:
+                    restored.classicalNnc.tl2ARealization,
                 visibleOperation:
                     restored.classicalNnc.predicateOptionId,
                 legacyFormationAbsent:
@@ -4160,8 +4271,12 @@ function run(ctx = {}) {
             };
         })(),
         {
-            hasVisibleOperationSegment: true,
-            visibleOperation: "tl-2a-to-1a",
+            hasSourceClassSegment: true,
+            hasClassRealizationSegment: true,
+            reclassificationOperationAbsent: true,
+            sourceClass: "tl-2-a",
+            classRealization: "reclassify-1a",
+            visibleOperation: "source-stem",
             legacyFormationAbsent: true,
             targetStemAbsent: true,
             explicitVisibleOperation: true,

@@ -139,17 +139,17 @@ import {
   LESSON27_READER_GUIDANCE_GROUPS,
   isLesson27ReaderGuidanceExact,
   renderLesson27ReaderGuidance,
-} from "../curriculum/lesson27_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson27_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON28_READER_GUIDANCE_GROUPS,
   isLesson28ReaderGuidanceExact,
   renderLesson28ReaderGuidance,
-} from "../curriculum/lesson28_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON29_READER_GUIDANCE_GROUPS,
   isLesson29ReaderGuidanceExact,
   renderLesson29ReaderGuidance,
-} from "../curriculum/lesson29_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON30_READER_GUIDANCE_GROUPS,
   isLesson30ReaderGuidanceExact,
@@ -169,37 +169,37 @@ import {
   LESSON33_READER_GUIDANCE_GROUPS,
   isLesson33ReaderGuidanceExact,
   renderLesson33ReaderGuidance,
-} from "../curriculum/lesson33_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON34_READER_GUIDANCE_GROUPS,
   isLesson34ReaderGuidanceExact,
   renderLesson34ReaderGuidance,
-} from "../curriculum/lesson34_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON35_READER_GUIDANCE_GROUPS,
   isLesson35ReaderGuidanceExact,
   renderLesson35ReaderGuidance,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON36_READER_GUIDANCE_GROUPS,
   isLesson36ReaderGuidanceExact,
   renderLesson36ReaderGuidance,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON37_READER_GUIDANCE_GROUPS,
   isLesson37ReaderGuidanceExact,
   renderLesson37ReaderGuidance,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON38_READER_GUIDANCE_GROUPS,
   isLesson38ReaderGuidanceExact,
   renderLesson38ReaderGuidance,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 import {
   LESSON39_READER_GUIDANCE_GROUPS,
   isLesson39ReaderGuidanceExact,
   renderLesson39ReaderGuidance,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -660,6 +660,23 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <option value="tl-2-b-a">tl 2-B (final a)</option>
                           <option value="tl-2-b-i">tl 2-B (final i)</option>
                           <option value="tl-2-c">tl 2-C</option>
+                        </select>
+                      </label>
+                      <label
+                        class="classical-nnc-source-guide__field"
+                        id="classical-nnc-tl2a-realization-field"
+                        data-classical-nnc-authority-control="ordinary"
+                        data-classical-nnc-authority-order="tl2a-realization"
+                        hidden
+                      >
+                        <span class="classical-nnc-source-guide__label">tl 2-A realization</span>
+                        <select
+                          id="classical-rule-logic-nnc-tl2a-realization"
+                          class="classical-nnc-source-guide__select"
+                          data-classical-rule-logic-control="nnc-tl2a-realization"
+                        >
+                          <option value="retain-2a" selected>remain tl 2-A</option>
+                          <option value="reclassify-1a">reclassify as tl 1-A</option>
                         </select>
                       </label>
                       <p class="classical-nnc-source-guide__rule">Source contains the nounstem only. Subject, State, and number remain outside (STEM).</p>
@@ -2995,7 +3012,6 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="yo-matrix">(-yō)-tl- matrix</option>
                           <option value="secondary-general-use">secondary general-use stem (tē-)</option>
                           <option value="analogical-restricted-use">tla possessive predicate → restricted-use stem</option>
-                          <option value="tl-2a-to-1a">tl 2-A → 1-A by ephemeral i loss</option>
                           <option value="tec-title">special general-use stem (tēc)</option>
                         </select>
                       </label>

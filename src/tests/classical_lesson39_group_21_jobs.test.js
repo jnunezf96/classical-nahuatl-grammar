@@ -144,6 +144,14 @@ function run(ctx = {}) {
         mainline: frame?.causativeObjectMustBeMainline,
         automatic: frame?.transformationDerivedAutomatically,
         choice: frame?.userChoiceRequired,
+        transition: {
+            retired: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.retiredSourceRoles,
+            activated: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.activatedTargetRoles,
+            preserved: frame?.possessorObjectTransformationFrame
+                ?.participantRoleTransitionFrame?.preservedParticipantFacts,
+        },
     }, {
         roles: ["possessor", "mainline-causative-object"],
         cases: ["possessive", "objective"],
@@ -151,6 +159,11 @@ function run(ctx = {}) {
         mainline: true,
         automatic: true,
         choice: false,
+        transition: {
+            retired: ["source-possessor"],
+            activated: ["mainline-causative-object"],
+            preserved: ["possessor-participant-identity", "typed-source-history"],
+        },
     });
 
     s.eq("the patientive object history becomes shuntline", {

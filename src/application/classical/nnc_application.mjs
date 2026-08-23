@@ -1,6 +1,6 @@
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
+} from "../../core/classical/participant_frame.mjs?v=20260823-built-in-valence-default-236";
 
 // Canonical ordinary-NNC application service.
 //
@@ -133,6 +133,18 @@ const ORDINARY_NNC_OPEN_SOURCE_CLASS_ANALYSES = Object.freeze({
       absolutiveSingularCommon: "restricted-use stem + tl",
       absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
       possessiveSingularCommon: "truncated general-use stem + 0",
+    }),
+  }),
+  "tl-2-a-to-1-a": Object.freeze({
+    nounClass: "tl", useShape: "truncated", subclass: "tl-2-a",
+    ephemeralFinalVowel: "i", truncationRepair: "none",
+    automaticPredicateOptionId: "tl-2a-to-1a",
+    classPattern: defineOpenNncSourceClassPattern({
+      absolutiveSingularCommon:
+        "ephemeral-i-loss stem reclassified as tl 1-A + tl",
+      absolutivePlural: TL_ABSOLUTIVE_PLURAL_PATTERN,
+      possessiveSingularCommon:
+        "ephemeral-i-loss stem reclassified as tl 1-A + uh",
     }),
   }),
   "tl-2-b-a": Object.freeze({
@@ -1144,12 +1156,19 @@ export function createClassicalNahuatlNncApplicationModule(
     const canonicalSourceClass = getCanonicalNncSourceClass(
       lexicalEntry,
     );
+    const requestedCanonicalReclassification = Boolean(
+      lexicalEntry
+      && canonicalSourceClass === "tl-2-a"
+      && requestedSourceClass === "tl-2-a-to-1-a"
+    );
     const requestedOpenNounClass = normalizeNounClass(
       openSourceClassAnalysis?.nounClass || "",
     );
     const openStemSource = Boolean(!lexicalEntry && requestedOpenNounClass);
     const sourceClass = lexicalEntry
-      ? canonicalSourceClass
+      ? requestedCanonicalReclassification
+        ? requestedSourceClass
+        : canonicalSourceClass
       : requestedSourceClass;
     const sourceClassAnalysis = getOpenNncSourceClassAnalysis(sourceClass);
     const lexicalEntryId = lexicalEntry
@@ -1274,6 +1293,7 @@ export function createClassicalNahuatlNncApplicationModule(
       lexicalEntry
       && requestedSourceClass
       && requestedSourceClass !== canonicalSourceClass
+      && !requestedCanonicalReclassification
     ) {
       blockReason = "ordinary-nnc-source-class-contradicts-canonical-source";
     } else if ((embedStem && !matrixStem) || (!embedStem && matrixStem)) {
@@ -1689,7 +1709,10 @@ export function createClassicalNahuatlNncApplicationModule(
         ownDataValue(selections, "predicateFormation", "source-stem"),
       );
       const derivedPredicateHasIndependentPossessionPolicy =
-        requestedPredicateFormationInput !== "source-stem";
+        requestedPredicateFormationInput !== "source-stem"
+        || Boolean(
+          sourceFrame.sourceClassAnalysis?.automaticPredicateOptionId
+        );
       const stateValues = Object.freeze(
         sourceFrame.naturalPossessionPolicy === "never-possessive"
         && selectedMetaphoricalUse
@@ -1764,7 +1787,7 @@ export function createClassicalNahuatlNncApplicationModule(
       );
       const predicateOptionValues = Object.freeze([
         ...(predicateOptionContract?.optionIds || []),
-      ]);
+      ].filter((optionId) => optionId !== "tl-2a-to-1a"));
       const requestedPredicateFormation = requestedPredicateFormationInput;
       const selectedPredicateFormation = predicateOptionValues.includes(
         requestedPredicateFormation,
@@ -2121,6 +2144,11 @@ export function createClassicalNahuatlNncApplicationModule(
     const predicateFormation = normalizeChoice(
       ownDataValue(selections, "predicateFormation", "source-stem"),
     );
+    const sourceClassPredicateOptionId = normalizeChoice(
+      sourceFrame.sourceClassAnalysis?.automaticPredicateOptionId || "",
+    );
+    const effectivePredicateFormation =
+      sourceClassPredicateOptionId || predicateFormation;
     const useShape = sourceFrame.useShape;
     const subclass = sourceFrame.subclass;
     const possessorReduplication =
@@ -2141,7 +2169,7 @@ export function createClassicalNahuatlNncApplicationModule(
       },
     );
     const selectedPredicateOption = predicateOptionContract?.options?.find(
-      (candidate) => candidate?.optionId === predicateFormation,
+      (candidate) => candidate?.optionId === effectivePredicateFormation,
     ) || null;
     const predicateOperation = normalizeChoice(
       selectedPredicateOption?.operation || "",
@@ -2248,6 +2276,10 @@ export function createClassicalNahuatlNncApplicationModule(
       pluralConnector,
       predicateFormation,
       predicateOperation,
+      sourceClassPredicateOptionId,
+      predicateFormationAuthority: sourceClassPredicateOptionId
+        ? "typed-source-class"
+        : "grammar-selection",
       useShape,
       subclass,
       possessorReduplication,

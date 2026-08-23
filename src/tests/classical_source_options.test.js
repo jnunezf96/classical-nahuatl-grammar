@@ -96,6 +96,82 @@ function run(ctx = {}) {
         ]
     );
 
+    s.eq(
+        "built-in VNC citation shape supplies only its convenient default Valence",
+        inventoryRuntime.getClassicalNahuatlCanonicalSourceStemInventory("vnc")
+            .filter(record => ["āna", "nemi"].includes(record.stem))
+            .map(record => ({
+                citation: record.citation,
+                valenceDisplay: record.valenceDisplay,
+                defaultSourceValence: record.defaultSourceValence,
+                grammarAuthority: record.grammarAuthority,
+            })),
+        [
+            {
+                citation: "...-(āna)",
+                valenceDisplay: "transitive",
+                defaultSourceValence: "specific-projective",
+                grammarAuthority: false,
+            },
+            {
+                citation: "(nemi)",
+                valenceDisplay: "intransitive",
+                defaultSourceValence: "intransitive",
+                grammarAuthority: false,
+            },
+        ]
+    );
+
+    s.ok(
+        "every built-in VNC receives the same citation-derived default without becoming a route gate",
+        inventoryRuntime.getClassicalNahuatlCanonicalSourceStemInventory("vnc")
+            .every(record => (
+                record.defaultSourceValence === (
+                    record.valenceDisplay === "transitive"
+                        ? "specific-projective"
+                        : "intransitive"
+                )
+                && record.grammarAuthority === false
+            ))
+    );
+
+    s.eq(
+        "the VNC owner retains first-person supportive i with the built-in transitive default and antecessive",
+        typeof inventoryRuntime.buildClassicalNahuatlVerbstemClassFrame === "function"
+            ? (() => {
+                const present = inventoryRuntime.buildClassicalNahuatlVerbstemClassFrame("(āna)", {
+                    subject: "1sg",
+                    mood: "indicative",
+                    tense: "present",
+                    verbClass: "B",
+                    valence: "specific-projective",
+                });
+                const antecessive = inventoryRuntime.buildClassicalNahuatlVerbstemClassFrame("(āna)", {
+                    subject: "1sg",
+                    mood: "indicative",
+                    tense: "preterit",
+                    verbClass: "B",
+                    valence: "specific-projective",
+                    antecessive: true,
+                });
+                return {
+                    presentAuthorized: present.authorizationStatus,
+                    presentSupportiveI: present.formulaRealization.includes("ni-"),
+                    antecessiveAuthorized: antecessive.authorizationStatus,
+                    antecessiveSupportiveI: antecessive.formulaRealization.includes("ni-"),
+                    outsidePrefixes: antecessive.expandedVncBoundaryFrame?.outsidePrefixes || [],
+                };
+            })()
+            : null,
+        {
+            presentAuthorized: "authorized",
+            presentSupportiveI: true,
+            antecessiveAuthorized: "authorized",
+            antecessiveSupportiveI: true,
+            outsidePrefixes: ["ō#"],
+        }
+    );
+
     s.ok(
         "Source shell keeps the picker, two genuine source choices, and read-only morph analysis",
         shell.includes('id="classical-vnc-source-stem"')

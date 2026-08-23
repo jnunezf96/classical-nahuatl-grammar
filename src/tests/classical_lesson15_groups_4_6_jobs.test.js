@@ -274,7 +274,7 @@ function run(ctx = {}) {
         possessiveSurface: "ītlamā",
         cues: [true, true],
     });
-    s.eq("the normal application reclassifies only a matching tl 2-A source", {
+    s.eq("the normal application keeps reclassification out of Stem formation", {
         optionAvailable: normalReclassifiedAbsolutive.selection.predicateOptionValues.includes("tl-2a-to-1a"),
         absolutiveFormula: normalReclassifiedAbsolutive.result.formulaRealization,
         absolutiveSurface: normalReclassifiedAbsolutive.result.surfaceRealization,
@@ -283,7 +283,7 @@ function run(ctx = {}) {
         cues: [normalReclassifiedAbsolutive, normalReclassifiedPossessive].map((frame) => normalCueLabels(frame).includes("reclassification")),
         wrongClassMutation: mutationResults["lesson15-reclassification-and-possessor-scope"],
     }, {
-        optionAvailable: true,
+        optionAvailable: false,
         absolutiveFormula: "#0-0(mā)tl-0#",
         absolutiveSurface: "mātl",
         possessiveFormula: "#0-0+ī-0(mā)uh-0#",

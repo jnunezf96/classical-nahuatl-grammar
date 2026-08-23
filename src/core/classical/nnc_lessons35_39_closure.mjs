@@ -6,7 +6,10 @@
 import {
   buildClassicalGrammaticalRhymeCoordinateFrame as
     buildSharedGrammaticalRhymeCoordinateFrame,
-} from "../grammar/grammatical_rhyme_space.mjs?v=20260822-vnc-capability-inheritance-221";
+} from "../grammar/grammatical_rhyme_space.mjs?v=20260823-built-in-valence-default-236";
+import {
+  buildClassicalNahuatlParticipantRoleTransitionFrame,
+} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
 
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();
@@ -207,6 +210,7 @@ const HOSTILE_AUTHORITY_KEYS = Object.freeze([
   "lexicalAuthorizationIds",
   "lesson",
   "lessonMetadata",
+  "participantRoleTransitionFrame",
   "selectedSemanticOptionIds",
   "specialLexicalFamily",
   "archaicQueAbsolutive",
@@ -4077,6 +4081,67 @@ function sourceSubjectToPossessor(subject = "") {
   })[subject] || "";
 }
 
+function buildDeverbalParticipantRoleTransitionFrame({
+  operationId = "",
+  sourceFrame = null,
+  sourceSubjectBecomesPossessor = false,
+  targetSubjectImportedOutsideSource = false,
+  activatedProjectiveObject = false,
+  sourceProjectiveObjectExpressionRetired = false,
+} = {}) {
+  const movementDeclared = Boolean(
+    sourceSubjectBecomesPossessor
+    || targetSubjectImportedOutsideSource
+    || activatedProjectiveObject
+    || sourceProjectiveObjectExpressionRetired
+  );
+  if (!movementDeclared) return null;
+  return buildClassicalNahuatlParticipantRoleTransitionFrame({
+    operationId,
+    sourceRoles: [
+      "source-subject-controller",
+      ...(sourceFrame?.sourceObjectPattern
+        && sourceFrame.sourceObjectPattern !== "none"
+        ? ["source-object-expression"]
+        : []),
+    ],
+    targetRoles: [
+      ...(sourceSubjectBecomesPossessor
+        ? ["source-subject-as-nnc-possessor"]
+        : []),
+      ...(targetSubjectImportedOutsideSource
+        ? ["imported-nnc-subject"]
+        : []),
+      ...(activatedProjectiveObject
+        ? ["activated-projective-object"]
+        : []),
+    ],
+    retiredSourceRoles: [
+      ...(sourceSubjectBecomesPossessor
+        ? ["source-subject-controller"]
+        : []),
+      ...(sourceProjectiveObjectExpressionRetired
+        ? ["source-projective-object-expression"]
+        : []),
+    ],
+    activatedTargetRoles: [
+      ...(sourceSubjectBecomesPossessor
+        ? ["source-subject-as-nnc-possessor"]
+        : []),
+      ...(targetSubjectImportedOutsideSource
+        ? ["imported-nnc-subject"]
+        : []),
+      ...(activatedProjectiveObject
+        ? ["activated-projective-object"]
+        : []),
+    ],
+    preservedParticipantFacts: [
+      "typed-source-history",
+      "source-participant-identities",
+    ],
+  });
+}
+
 function buildSelectedLcmFrame({
   constructionKind = "",
   sourceFrame = null,
@@ -6207,6 +6272,19 @@ function buildPredicateNominalizationOperation(
       selectedState: normalizeKey(request.state || "absolutive"),
       transformedPossessor,
     });
+  const participantRoleTransitionFrame =
+    buildDeverbalParticipantRoleTransitionFrame({
+      operationId: `predicate-nominalization:${nominalizationKind}`,
+      sourceFrame,
+      sourceSubjectBecomesPossessor: Boolean(
+        transformedPossessor && possessorFixedBySourceSubject
+      ),
+      targetSubjectImportedOutsideSource: Boolean(
+        fixedTargetSubject
+        && fixedTargetSubject !== sourceFrame.sourceSubject
+      ),
+      activatedProjectiveObject: activationRequested,
+    });
   const operationFrame = deepFreeze({
     kind: "classical-nahuatl-deverbal-nnc-operation-frame",
     version: VERSION,
@@ -6255,6 +6333,7 @@ function buildPredicateNominalizationOperation(
     actionCharacteristicFrame,
     actionPreteritContrastFrame,
     actionVoicePossessorRoleFrame,
+    participantRoleTransitionFrame,
     agentiveContrastFrame,
     externalObjectPerson: activationRequested ? activatedObjectPerson : "",
     activatedProjectiveObject: activationRequested,
@@ -6756,6 +6835,20 @@ function buildDeverbalActionOperation(
       transformedPossessor:
         sourceSubjectToPossessor(sourceFrame.sourceSubject),
     });
+  const selectedActionState = normalizeKey(request.state || "absolutive");
+  const participantRoleTransitionFrame =
+    buildDeverbalParticipantRoleTransitionFrame({
+      operationId: `deverbal-action:${actionKind}:${suffix}`,
+      sourceFrame,
+      sourceSubjectBecomesPossessor:
+        actionKind === "active-action"
+        && selectedActionState === "possessive",
+      targetSubjectImportedOutsideSource:
+        actionKind !== "potential-patient",
+      sourceProjectiveObjectExpressionRetired:
+        actionKind === "potential-patient"
+        && sourceFrame.sourceValence !== "intransitive",
+    });
   const operationFrame = deepFreeze({
     kind: "classical-nahuatl-deverbal-nnc-operation-frame",
     version: VERSION,
@@ -6790,6 +6883,7 @@ function buildDeverbalActionOperation(
     transformedPossessor: sourceSubjectToPossessor(sourceFrame.sourceSubject),
     possessorFixedBySourceSubject: actionKind === "active-action",
     actionVoicePossessorRoleFrame,
+    participantRoleTransitionFrame,
     deverbalActionFrame: deepFreeze({
       kind: "classical-nahuatl-lesson37-deverbal-action-frame",
       version: VERSION,
@@ -12079,12 +12173,41 @@ function buildContinuationOperation(
           person: possessor,
           valenceInflationWithoutSuffix: relation === "complement",
           valencePreservedWithInsideAndOutsideObjects: relation === "object",
+          participantRoleTransitionFrame:
+            buildClassicalNahuatlParticipantRoleTransitionFrame({
+              operationId: `deverbal-continuation:possessor-to-${relation}-object`,
+              sourceRoles: ["source-possessor"],
+              targetRoles: [relation === "object"
+                ? "outside-applicative-object"
+                : "mainline-object"],
+              retiredSourceRoles: ["source-possessor"],
+              activatedTargetRoles: [relation === "object"
+                ? "outside-applicative-object"
+                : "mainline-object"],
+              preservedParticipantFacts: [
+                "possessor-participant-identity",
+                "typed-source-history",
+              ],
+            }),
         })
         : objectCoreference === "matrix-object"
           ? deepFreeze({
             sourceRole: "discarded-embedded-subject",
             targetRole: "matrix-object",
             referenceRelation: "coreferential",
+            participantRoleTransitionFrame:
+              buildClassicalNahuatlParticipantRoleTransitionFrame({
+                operationId: "deverbal-continuation:embedded-subject-reference-unification",
+                sourceRoles: ["embedded-subject-expression"],
+                targetRoles: ["matrix-object-reference-carrier"],
+                retiredSourceRoles: ["embedded-subject-expression"],
+                activatedTargetRoles: [],
+                preservedParticipantFacts: [
+                  "embedded-subject-referent-identity",
+                  "matrix-object-reference",
+                  "typed-source-history",
+                ],
+              }),
           })
           : null,
       targetStems: {

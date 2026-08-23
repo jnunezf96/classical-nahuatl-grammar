@@ -14,7 +14,7 @@ const read = relativePath => fs.readFileSync(
     "utf8"
 );
 
-function run() {
+function run(ctx = {}) {
     const suite = createSuite("classical_sgr_live_interface_contract");
     const rendering = read("src/ui/rendering/rendering.mjs");
     const shell = read("src/ui/shell/classical_shell.mjs");
@@ -83,6 +83,53 @@ function run() {
             && events.includes("targetObject.clearClassicalSourcePartsEvaluation?.({")
             && rendering.includes('"#verb-entry-clear"')
             && css.includes("#verb-entry-clear.classical-source-parts__clear-button")
+    );
+    suite.eq(
+        "Clear removes the committed mirror before the empty Source can refresh Grammar and Result",
+        (() => {
+            const documentObject = ctx.document;
+            const whole = documentObject.getElementById(
+                "classical-source-whole"
+            );
+            const mirror = documentObject.getElementById("verb");
+            const operation = documentObject.getElementById(
+                "classical-construction-operation"
+            );
+            const result = documentObject.getElementById(
+                "classical-rule-logic-surface"
+            );
+            const sourceRoot = documentObject.getElementById(
+                "classical-source-parts"
+            );
+            whole.value = "caqui";
+            mirror.value = "(caqui)";
+            operation.value = "denominal-vnc";
+            result.hidden = false;
+            result.innerHTML = "stale result";
+            sourceRoot.dataset.classicalSourceCommitState = "committed";
+            const cleared = ctx.clearClassicalSourcePartsEvaluation({
+                source: "clear-button-contract"
+            });
+            return {
+                cleared,
+                whole: whole.value,
+                mirror: mirror.value,
+                operation: operation.value,
+                resultHidden: result.hidden,
+                resultText: result.textContent,
+                commitState:
+                    sourceRoot.dataset.classicalSourceCommitState,
+            };
+        })(),
+        {
+            cleared: true,
+            whole: "",
+            mirror: "_",
+            operation: "none",
+            resultHidden: true,
+            resultText: "",
+            commitState: "committed",
+        }
     );
     suite.ok(
         "Speaker and participant context is gated to its real discourse use",
@@ -600,6 +647,38 @@ function run() {
             && rendering.includes("singleVncSentenceFormulaAvailable")
             && !rendering.includes("distinctSentenceFormula")
             && !rendering.includes("distinctVncSentenceFormula")
+    );
+    suite.ok(
+        "owner-issued fallback Results retain their canonical Linear-specific projection",
+        rendering.includes("const linearFormula = [")
+            && rendering.includes("const sentenceFormula = [")
+            && rendering.includes("linearFormula,")
+            && rendering.includes("sentenceFormula,")
+            && rendering.includes("const ownerIssuedResultProjection =")
+            && rendering.includes(
+                "surfaceFrame.selectedFormula\n              || ownerIssuedResultProjection?.linearFormula"
+            )
+            && rendering.includes(
+                "const fallbackProjection = fallbackSingleActive\n        ? ownerIssuedResultProjection"
+            )
+            && !rendering.includes(
+                "canonical.sentenceFormulaDisplay,\n        canonical.formula,"
+            )
+    );
+    suite.ok(
+        "incomplete frequentative and compound paths point to their missing formation choice",
+        rendering.includes(
+            '"recognized-frequentative-variant-required": "Choose a Grammar-supported frequentative formation.'
+        )
+            && rendering.includes(
+                '"recognized-lesson28-compound-variant-required": "Choose a Grammar-supported compound formation.'
+            )
+            && rendering.includes(
+                '"recognized-frequentative-variant-required": Object.freeze(["classical-rule-logic-late-variant"])'
+            )
+            && rendering.includes(
+                '"recognized-lesson28-compound-variant-required": Object.freeze(["classical-rule-logic-late-variant"])'
+            )
     );
 
     const cacheKey = currentBrowserCacheKey(index);

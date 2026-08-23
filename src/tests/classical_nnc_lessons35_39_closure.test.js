@@ -578,6 +578,46 @@ function run(ctx = {}) {
             && frame.canonicalResult?.authorizationStatus === "authorized");
         return frame;
     });
+    const instrumentivePossessiveTransition = positiveFrames[6]
+        .operationFrame?.participantRoleTransitionFrame;
+    const activeActionPossessive = ctx.evaluateClassicalNahuatlDeverbalNnc(
+        deverbalRequest({ state: "possessive" })
+    );
+    const activeActionPossessiveTransition = activeActionPossessive
+        .operationFrame?.participantRoleTransitionFrame;
+    s.eq("deverbal owners preserve participant identity while changing current roles", {
+        instrumentive: {
+            retired: instrumentivePossessiveTransition?.retiredSourceRoles,
+            activated: instrumentivePossessiveTransition?.activatedTargetRoles,
+            preserved: instrumentivePossessiveTransition
+                ?.preservedParticipantFacts,
+            rhymeShape: instrumentivePossessiveTransition
+                ?.grammaticalRhymeShape,
+        },
+        activeAction: {
+            status: activeActionPossessive.authorizationStatus,
+            retired: activeActionPossessiveTransition?.retiredSourceRoles,
+            activated: activeActionPossessiveTransition?.activatedTargetRoles,
+            preserved: activeActionPossessiveTransition
+                ?.preservedParticipantFacts,
+            rhymeShape: activeActionPossessiveTransition
+                ?.grammaticalRhymeShape,
+        },
+    }, {
+        instrumentive: {
+            retired: ["source-subject-controller"],
+            activated: ["source-subject-as-nnc-possessor", "imported-nnc-subject"],
+            preserved: ["typed-source-history", "source-participant-identities"],
+            rhymeShape: "preserve-participant-identity+retire-source-role+activate-target-role+emit-target-role-structure",
+        },
+        activeAction: {
+            status: "authorized",
+            retired: ["source-subject-controller"],
+            activated: ["source-subject-as-nnc-possessor", "imported-nnc-subject"],
+            preserved: ["typed-source-history", "source-participant-identities"],
+            rhymeShape: "preserve-participant-identity+retire-source-role+activate-target-role+emit-target-role-structure",
+        },
+    });
     s.eq("preterit-agentive is the reanalyzed preterit predicate inside NNC slots", {
         formula: positiveFrames[0].formulaRealization,
         word: positiveFrames[0].wordSurface,
@@ -1855,7 +1895,8 @@ function run(ctx = {}) {
         vocativeRequest(),
     ];
     hostileBases.forEach((request, index) => {
-        ["lesson", "displayFormula", "surface", "result"].forEach(key => {
+        ["lesson", "displayFormula", "surface", "result",
+            "participantRoleTransitionFrame"].forEach(key => {
             const frame = ctx.evaluateClassicalNahuatlDeverbalNnc({
                 ...request,
                 [key]: key === "lesson" ? 39 : "hostile-authority",

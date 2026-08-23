@@ -5,7 +5,7 @@ import {
 } from "../grammar/operation_owner.mjs?v=20260728-runtime-reachability-111";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260820-lesson38-groups13-15-126";
+} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();
@@ -1208,19 +1208,53 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       const repairAction = normalizeClassicalNahuatlNncToken(options.truncationRepair).toLowerCase();
       const suppliedGeneralStem = normalizeClassicalNahuatlNncStem(options.generalUseStem || "");
       let derivedGeneralStem = "";
+      let underlyingGeneralUseStem = "";
       let useShapeAction = "";
       let useShapeAuthorized = false;
       let truncationRepairFrame = null;
+      let exposedFinalMFrame = null;
       if (useShape === "base") {
         derivedGeneralStem = suppliedGeneralStem || selectedRestrictedStem;
+        underlyingGeneralUseStem = derivedGeneralStem;
         useShapeAction = "identity-base-shape";
         useShapeAuthorized = Boolean(derivedGeneralStem === selectedRestrictedStem);
       } else if (useShape === "truncated") {
         const ephemeralAllowed = ["a", "i"].includes(ephemeralFinalVowel) && selectedRestrictedStem.toLowerCase().endsWith(ephemeralFinalVowel);
         const deleted = ephemeralAllowed ? selectedRestrictedStem.slice(0, -ephemeralFinalVowel.length) : "";
         truncationRepairFrame = repairAction === "supportive-i" && deleted ? buildClassicalNahuatlSupportiveIRepairFrame(deleted) : null;
-        derivedGeneralStem = repairAction === "supportive-i" ? truncationRepairFrame?.realizedStem || "" : deleted;
-        useShapeAction = repairAction === "supportive-i" ? "delete-tagged-ephemeral-vowel-then-apply-supportive-i-and-orthographic-boundary-rules" : "delete-tagged-ephemeral-vowel";
+        underlyingGeneralUseStem = deleted;
+        const exposedFinalM = repairAction !== "supportive-i"
+          && subclassSourceShapeFrame.tlSubclass === "2B"
+          && /m$/u.test(deleted);
+        exposedFinalMFrame = {
+          kind: "classical-nahuatl-nounstem-exposed-final-m-frame",
+          version: 1,
+          authorizationStatus: exposedFinalM ? "authorized" : "not-applicable",
+          blockReason: "",
+          applies: exposedFinalM,
+          sourceStem: deleted,
+          sourceFinalPhoneme: exposedFinalM ? "/m/" : "",
+          outputPhone: exposedFinalM ? "[n̥]" : "",
+          outputSpelling: exposedFinalM ? "n" : "",
+          realizedStem: exposedFinalM ? `${deleted.slice(0, -1)}n` : deleted,
+          environment: exposedFinalM ? "general-use-stem-final-before-silent-morphs" : "not-applicable",
+          sourceShapeAuthority: "typed-tl-subclass-2b-truncation",
+          exampleStemAuthority: false,
+          formulaStringAuthority: false,
+          surfaceStringAuthority: false,
+          canvasSection: "14.7.2.b.ii; 2.13.2",
+          transcriptionLineStart: 5064,
+          transcriptionLineEnd: 5088,
+          exactWitness: "An exposed final /m/ of a Subclass 2-B truncated general-use stem has the phone [n̥] and is written n before silent morphs."
+        };
+        derivedGeneralStem = repairAction === "supportive-i"
+          ? truncationRepairFrame?.realizedStem || ""
+          : exposedFinalMFrame.realizedStem;
+        useShapeAction = repairAction === "supportive-i"
+          ? "delete-tagged-ephemeral-vowel-then-apply-supportive-i-and-orthographic-boundary-rules"
+          : exposedFinalM
+            ? "delete-tagged-ephemeral-vowel-then-realize-exposed-final-m-as-n"
+            : "delete-tagged-ephemeral-vowel";
         useShapeAuthorized = Boolean(
           subclassSourceShapeFrame.authorizationStatus === "authorized"
           && ephemeralAllowed
@@ -1258,6 +1292,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         state,
         restrictedUseStem: restrictedStem,
         selectedRestrictedUseStem: selectedRestrictedStem,
+        underlyingGeneralUseStem,
         generalUseStem: derivedGeneralStem,
         selectedUseStem: authorized ? useStem : "",
         selectedUseKind: state === "absolutive" ? "restricted-use" : "general-use",
@@ -1267,6 +1302,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         ephemeralFinalVowel,
         truncationRepair: repairAction || "none",
         truncationRepairFrame,
+        exposedFinalMFrame,
         subclassSourceShapeFrame,
         nounClass,
         classSelectionAuthority,
@@ -3614,7 +3650,7 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       if (!normalizedSourceStem || !sourceOptions) {
         return "";
       }
-      let generalUseStem = normalizedSourceStem;
+      let matrixEmbedStem = normalizedSourceStem;
       if (useShape !== "base") {
         const sourceFrame = buildClassicalNahuatlNounstemSourceFrame(
           normalizedSourceStem,
@@ -3631,13 +3667,21 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         if (sourceFrame.authorizationStatus !== "authorized") {
           return "";
         }
-        generalUseStem = sourceFrame.generalUseStem;
+        const retainsTl2BFinalAInCompound = Boolean(
+          nounClass === "tl"
+          && sourceFrame.subclassSourceShapeFrame?.tlSubclass === "2B"
+          && sourceFrame.ephemeralFinalVowel === "a"
+          && /a$/u.test(normalizedSourceStem)
+        );
+        matrixEmbedStem = retainsTl2BFinalAInCompound
+          ? normalizedSourceStem
+          : sourceFrame.generalUseStem;
       }
       const stemFormation = normalizeClassicalNahuatlStemFormation(
         context.stemFormation || context.stemRelation || "plain"
       );
       const derivedFrame = deriveClassicalNahuatlStem(
-        generalUseStem,
+        matrixEmbedStem,
         stemFormation
       );
       return derivedFrame.authorizationStatus === "authorized"

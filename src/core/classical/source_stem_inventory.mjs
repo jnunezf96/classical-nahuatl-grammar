@@ -170,6 +170,11 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         basalUnit,
         stemKind: basalUnit === "vnc" ? "verbstem" : "nounstem",
         valenceDisplay: basalUnit === "vnc" ? valence : "not-applicable",
+        defaultSourceValence: basalUnit !== "vnc"
+          ? "not-applicable"
+          : valence === "transitive"
+            ? "specific-projective"
+            : "intransitive",
         citation,
         sourceDocument: SOURCE_DOCUMENT,
         sourceSection: section || "12-16",
@@ -541,6 +546,12 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
         || record.kind !== "classical-nahuatl-canonical-source-stem-record"
         || record.version !== 1) return false;
       if (!['vnc', 'nnc'].includes(record.basalUnit) || !record.stem || record.grammarAuthority !== false || record.formulaStringAuthority !== false) return false;
+      const expectedDefaultSourceValence = record.basalUnit !== "vnc"
+        ? "not-applicable"
+        : record.valenceDisplay === "transitive"
+          ? "specific-projective"
+          : "intransitive";
+      if (record.defaultSourceValence !== expectedDefaultSourceValence) return false;
       if (/[#>+=□]/u.test(record.citation)) return false;
       if (!record.initialIAnalysis || !["not-applicable", "real", "supportive", "contextual"].includes(record.initialIAnalysis.kind)) return false;
       if (/^[iī]/iu.test(record.stem) !== (record.initialIAnalysis.kind !== "not-applicable")) return false;

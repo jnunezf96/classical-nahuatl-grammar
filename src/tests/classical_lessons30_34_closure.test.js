@@ -1883,6 +1883,20 @@ function run(ctx = {}) {
         s.ok(`Lesson ${[30, 31, 32, 34][index]} rejects display/formula authority`, hostile.authorizationStatus === "blocked"
             && hostile.blockReason.includes("caller-supplied-derived-authority-rejected"));
     });
+    const forgedRoleTransition = ctx.evaluateClassicalNahuatlNominalConstruction({
+        ...lesson30Base(),
+        participantRoleTransitionFrame: {
+            authorizationStatus: "authorized",
+            retiredSourceRoles: ["embedded-subject-expression"],
+        },
+    });
+    s.eq("caller-authored role transitions cannot authorize nominal composition", [
+        forgedRoleTransition.authorizationStatus,
+        forgedRoleTransition.blockReason,
+    ], [
+        "blocked",
+        "caller-supplied-derived-authority-rejected:request.participantRoleTransitionFrame",
+    ]);
     const hostileAttitudeReceipt = executeAttitudeDerivationApplication(ctx, {
         ...lesson33Base(),
         displayFormula: "#hostile#",

@@ -136,12 +136,34 @@ function run(ctx = {}) {
     const causee = causative.resultFrame.participantProjection.targetObjects.find(
         (participant) => participant.role === "causee",
     );
+    const causativeTransition = causative.resultFrame.derivationOperationFrame
+        ?.participantTransformFrame?.participantRoleTransitionFrame;
     suite.eq("a causative causee uses the shared objective participant frame", {
         role: causee?.role,
         case: causee?.case,
         person: causee?.person,
         number: causee?.number,
-    }, { role: "causee", case: "objective", person: "2", number: "plural" });
+        retiredRoles: causativeTransition?.retiredSourceRoles,
+        activatedRoles: causativeTransition?.activatedTargetRoles,
+        preservedFacts: causativeTransition?.preservedParticipantFacts,
+        rhymeShape: causativeTransition?.grammaticalRhymeShape,
+    }, {
+        role: "causee",
+        case: "objective",
+        person: "2",
+        number: "plural",
+        retiredRoles: ["source-subject-controller"],
+        activatedRoles: [
+            "new-matrix-subject-controller",
+            "source-subject-as-causative-object",
+        ],
+        preservedFacts: [
+            "typed-source-history",
+            "source-object-participant-identities",
+            "source-subject-participant-identity",
+        ],
+        rhymeShape: "preserve-participant-identity+retire-source-role+activate-target-role+emit-target-role-structure",
+    });
 
     const nncSubject = ctx.buildClassicalNahuatlNncSubjectPersonFrame({
         subject: "3pl",

@@ -16,6 +16,9 @@ import {
   getClassicalNahuatlInherentImpersonalSourceAnalysis,
   getClassicalNahuatlTlaImpersonalSourceAnalysis,
 } from "./vnc_lessons20_22_grammar.mjs?v=20260815-lesson23-complete-302";
+import {
+  buildClassicalNahuatlParticipantRoleTransitionFrame,
+} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
 
 export const CLASSICAL_NAHUATL_VNC_TARGET_VOICES = Object.freeze([
   "active",
@@ -5648,6 +5651,33 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         };
       }
       const formula = derivedProofConclusion.selectedFormula || derivedProofConclusion.authorizedFormula || "";
+      const participantRoleTransitionFrame =
+        buildClassicalNahuatlParticipantRoleTransitionFrame({
+          operationId: `voice:${normalizedVoice}`,
+          sourceRoles: [
+            "source-subject",
+            ...(sourceClusterPositions.length ? ["source-object"] : []),
+          ],
+          targetRoles: [
+            "target-subject",
+            ...(retainedObjectPositions.length ? ["target-object"] : []),
+          ],
+          retiredSourceRoles: [
+            "source-subject-controller",
+            ...(passive ? ["promoted-source-object-as-object"] : []),
+          ],
+          activatedTargetRoles: [
+            passive
+              ? "promoted-object-as-target-subject"
+              : "impersonal-target-subject",
+          ],
+          preservedParticipantFacts: [
+            "typed-source-history",
+            ...(passive
+              ? ["promoted-object-participant-identity"]
+              : []),
+          ],
+        });
       const voiceTransformationFrame = {
         kind: `classical-nahuatl-${passive ? "passive-vnc-passive" : `impersonal-vnc-${normalizedVoice}`}-transformation-frame`,
         authorizationStatus: "authorized",
@@ -5669,6 +5699,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         targetClass: targetClassProfile,
         selectedNonactiveAspect,
         promotedObjectBecomesSubject: passive,
+        participantRoleTransitionFrame,
         humanProjectiveImpersonalizedPassive,
         impersonalDerivationPath: normalizedImpersonalDerivationPath,
         voiceOperationSequence: humanProjectiveImpersonalizedPassive
