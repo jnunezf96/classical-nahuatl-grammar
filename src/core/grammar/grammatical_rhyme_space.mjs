@@ -1,4 +1,4 @@
-const RHYME_SPACE_VERSION = 5;
+const RHYME_SPACE_VERSION = 6;
 
 const INPUT_SEMANTIC_ROLES = Object.freeze(new Set([
   "architecture-invariant",
@@ -1240,6 +1240,246 @@ export function buildClassicalGrammaticalRhymeTopologyFrame({
       group => group.superimposed,
     ).length,
     exactOwnerValidationRequired: true,
+    lessonNumberAuthority: false,
+    exampleIdentityAuthority: false,
+    grammarAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+}
+
+function rhymeCarrierFirstSound(value = "") {
+  const normalized = text(value)
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/gu, "")
+    .toLowerCase();
+  return normalized.match(/[a-z]/u)?.[0] || "";
+}
+
+function expectedSubjectCarrierAtCompletedBoundary(
+  baseMorph = "",
+  nextSound = "",
+) {
+  const base = text(baseMorph).toLowerCase();
+  const sound = text(nextSound).toLowerCase();
+  if (!base || !sound) return "";
+  const vowel = /^[aeio]$/u.test(sound);
+  if (["n", "t", "x"].includes(base)) {
+    return vowel ? base : `${base}i`;
+  }
+  if (base === "am") {
+    if (sound === "z" || sound === "x") return `a${sound}`;
+    return vowel || sound === "m" || sound === "p" ? "am" : "an";
+  }
+  return base;
+}
+
+function collectRhymeTypedSlotFrames(
+  value,
+  path = "canonicalResult",
+  found = [],
+  seen = new Set(),
+) {
+  if (!value || typeof value !== "object" || seen.has(value)) return found;
+  seen.add(value);
+  if (
+    value.kind === "classical-nahuatl-vnc-slot-frame"
+    || value.kind === "classical-nahuatl-nnc-slot-frame"
+  ) {
+    found.push(Object.freeze({ path, frame: value }));
+    return found;
+  }
+  if (Array.isArray(value)) {
+    value.forEach((item, index) => collectRhymeTypedSlotFrames(
+      item,
+      `${path}[${index}]`,
+      found,
+      seen,
+    ));
+    return found;
+  }
+  Reflect.ownKeys(value).filter(propertyKey => {
+    const propertyName = String(propertyKey);
+    return propertyName === "canonicalResult"
+      || propertyName === "resultFrame"
+      || propertyName === "results"
+      || propertyName === "coordinates"
+      || /(?:Result|ResultFrame|SlotFrame)$/u.test(propertyName);
+  }).forEach(propertyKey => {
+    let descriptor = null;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(value, propertyKey);
+    } catch {
+      descriptor = null;
+    }
+    if (
+      descriptor
+      && Object.prototype.hasOwnProperty.call(descriptor, "value")
+      && descriptor.value
+      && typeof descriptor.value === "object"
+    ) {
+      collectRhymeTypedSlotFrames(
+        descriptor.value,
+        `${path}.${String(propertyKey)}`,
+        found,
+        seen,
+      );
+    }
+  });
+  return found;
+}
+
+function describeRhymeSubjectBoundary(slotRecord) {
+  const frame = slotRecord.frame;
+  const family = frame.kind === "classical-nahuatl-vnc-slot-frame"
+    ? "vnc"
+    : "nnc";
+  const subject = frame.slots?.subject || {};
+  const actualSubjectCarrier = text(subject.pers1);
+  const baseMorph = text(
+    subject.pers1BaseMorph || subject.baseMorph || actualSubjectCarrier,
+  ).toLowerCase();
+  const innerCarriers = family === "vnc"
+    ? [
+      ...(frame.slots?.prePredicate || []).map(slot => slot?.carrier),
+      frame.slots?.predicate?.stem,
+    ]
+    : [
+      ...(frame.slots?.participant?.slots || []).map(slot => slot?.carrier),
+      ...(frame.slots?.state?.slots || []).map(slot => slot?.carrier),
+      frame.slots?.predicate?.stem,
+    ];
+  const immediateAudibleCarrier = innerCarriers.find(
+    carrier => rhymeCarrierFirstSound(carrier),
+  ) || "";
+  const immediateSound = rhymeCarrierFirstSound(immediateAudibleCarrier);
+  const expectedSubjectCarrier = expectedSubjectCarrierAtCompletedBoundary(
+    baseMorph,
+    immediateSound,
+  );
+  const applicable = Boolean(
+    actualSubjectCarrier
+    && immediateSound
+    && expectedSubjectCarrier,
+  );
+  const aligned = !applicable
+    || actualSubjectCarrier === expectedSubjectCarrier;
+  const timingClassification = aligned
+    ? "aligned-after-inner-structure"
+    : expectedSubjectCarrier.endsWith("i")
+      && !actualSubjectCarrier.endsWith("i")
+      ? "early-evaluation-before-inner-consonant"
+      : !expectedSubjectCarrier.endsWith("i")
+        && actualSubjectCarrier.endsWith("i")
+        ? "late-or-stale-evaluation-after-neighbor-change"
+        : "boundary-evaluation-order-mismatch";
+  return Object.freeze({
+    kind: "classical-grammatical-rhyme-subject-boundary-observation",
+    version: RHYME_SPACE_VERSION,
+    slotFramePath: slotRecord.path,
+    slotFrameKind: frame.kind,
+    unitFamily: family,
+    baseMorph,
+    actualSubjectCarrier,
+    immediateAudibleCarrier: text(immediateAudibleCarrier),
+    immediateSound,
+    expectedSubjectCarrier,
+    applicable,
+    aligned,
+    timingClassification,
+    prerequisiteStage: "participants-and-state-finalized",
+    consumerStage: "subject-boundary-realization",
+    localHistoryPreserved: true,
+    grammarAuthority: false,
+  });
+}
+
+export function buildClassicalGrammaticalRhymeEvaluationOrderFrame({
+  canonicalResult = null,
+  layerGraph = null,
+  ownerResultValidated = false,
+} = {}) {
+  const slotRecords = collectRhymeTypedSlotFrames(canonicalResult);
+  const subjectBoundaryObservations = Object.freeze(
+    slotRecords.map(describeRhymeSubjectBoundary),
+  );
+  const earlyFindings = Object.freeze(
+    subjectBoundaryObservations.filter(observation => (
+      observation.aligned === false
+      && observation.timingClassification.startsWith("early-")
+    )),
+  );
+  const lateFindings = Object.freeze([
+    ...subjectBoundaryObservations.filter(observation => (
+      observation.aligned === false
+      && observation.timingClassification.startsWith("late-")
+    )),
+    ...(layerGraph?.edges || []).filter(edge => (
+      edge.exactInnerResultIdentityObservedInOuterArguments !== true
+    )).map(edge => Object.freeze({
+      kind: "classical-grammatical-rhyme-late-identity-loss-observation",
+      version: RHYME_SPACE_VERSION,
+      edgeId: text(edge.edgeId),
+      fromNodeId: text(edge.fromNodeId),
+      toNodeId: text(edge.toNodeId),
+      timingClassification: "late-evaluation-after-owner-identity-loss",
+      prerequisiteStage: "exact-inner-owner-result",
+      consumerStage: "outer-owner-operation",
+      grammarAuthority: false,
+    })),
+  ]);
+  const otherFindings = Object.freeze(
+    subjectBoundaryObservations.filter(observation => (
+      observation.aligned === false
+      && !observation.timingClassification.startsWith("early-")
+      && !observation.timingClassification.startsWith("late-")
+    )),
+  );
+  const findingCount = earlyFindings.length
+    + lateFindings.length
+    + otherFindings.length;
+  const ownerValidated = ownerResultValidated === true
+    && Boolean(canonicalResult);
+  return Object.freeze({
+    kind: "classical-grammatical-rhyme-evaluation-order-frame",
+    version: RHYME_SPACE_VERSION,
+    coordinateSystem: "classical-grammatical-rhyme-space",
+    analysisStatus: !ownerValidated
+      ? "untrusted-input"
+      : findingCount
+        ? "order-contradiction-observed"
+        : "order-aligned",
+    stageOrder: Object.freeze([
+      "exact-owner-source",
+      "inner-formation",
+      "participants-and-state-finalized",
+      "boundary-realization",
+      "surface-projection",
+    ]),
+    scope: "every-typed-slot-frame-in-owner-issued-result",
+    canonicalResult: ownerValidated ? canonicalResult : null,
+    layerGraph: ownerValidated ? layerGraph : null,
+    typedSlotFrameCount: slotRecords.length,
+    subjectBoundaryObservationCount: subjectBoundaryObservations.length,
+    subjectBoundaryObservations,
+    earlyFindings,
+    lateFindings,
+    otherFindings,
+    findingCount,
+    exactOwnerIdentityHandoffsPreserved: Boolean(
+      !layerGraph
+      || (
+        layerGraph.authorizationStatus === "observed"
+        && (layerGraph.edges || []).every(edge => (
+          edge.exactInnerResultIdentityObservedInOuterArguments === true
+        ))
+      )
+    ),
+    completedInnerStructurePrecedesOuterBoundary: findingCount === 0,
+    generatedFromStructureNotExampleIdentity: true,
+    diagnosticOnly: true,
+    ownerResultValidated: ownerValidated,
+    callerSuppliedOwnerAuthorityAccepted: false,
     lessonNumberAuthority: false,
     exampleIdentityAuthority: false,
     grammarAuthority: false,

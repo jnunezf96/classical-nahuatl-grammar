@@ -129,8 +129,8 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses a matrix only for a genuine typed alternative. The application derives the default matrix, assimilation, preterit form, nominalization, and recursive hierarchy.
 - Control policy: Do not whitelist nounstems or create manual w-deletion, cā, Ø, or recursion controls.
 - Proposal: Build ownerhood with the fixed huā matrix for typed tl, tli, in, zero, general-use agentive, and recursive Sources where class and final-edge rules license it. Derive w assimilation, permitted ē alternatives, and all recursive cā boundaries without using the listed nouns as admission gates.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/83
+- Status: ACCEPTED
+- Exactly observed: 83/83
 
 ## Batch 4, Group 11: Abundant ownerhood with yo-ā
 
@@ -142,8 +142,8 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses ordinary versus abundant ownerhood meaning. The application derives matrix, boundary assimilation, preterit shape, nominalization, and continuation.
 - Control policy: Do not reduce yo-ā to an untyped suffix, whitelist incorporated nouns, or add manual assimilation controls.
 - Proposal: Use the fixed Class C yo-ā ownerhood matrix for abundant, characteristic, or throughout possession, restricted to preterit predicate use, connective-t continuation, and preterit-agentive nominalization. Derive y assimilation from the typed boundary and allow recursive agentive incorporation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/49
+- Status: ACCEPTED
+- Exactly observed: 49/49
 
 ## Batch 4, Group 12: Ownerhood analysis and translation
 
@@ -155,8 +155,8 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses intended ownerhood meaning, subject interpretation, and compatible continuation only where genuinely open. The application derives structure and keeps translation separate from route authority.
 - Control policy: Do not create English-translation routes or example-based lexical gates. Preserve true lexicalized readings as typed facts.
 - Proposal: Apply ordinary and abundant ownerhood productively in absolutive, possessive, recursive, supplemented, and affective structures. Preserve subject animacy and lexical meaning distinctions without treating English have, covered with, married, famous, or similar translations as separate routes.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/87
+- Status: ACCEPTED
+- Exactly observed: 87/87
 
 ## Batch 5, Group 13: Preterit-agentive embeds in VNCs
 
@@ -168,8 +168,8 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses the intended compatible embed role, manner orientation, complement relation, and only a genuine ye alternative. The application derives reflexive line, agreement, valence consequences, and narrow activation.
 - Control policy: Do not use the listed matrices as a route whitelist. Require typed matrix compatibility and owner-issued agentive Results; do not permit free object escape.
 - Proposal: Use owner-issued general-use preterit-agentive Sources as incorporated objects, manner adverbs, and complements in compatible VNC matrices. Derive subject- versus object-oriented manner, mainline versus shuntline reflexive shape from matrix valence, preserve lexicalized reflexive exceptions, and license object activation only in the narrow Canvas hybrid.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/196
+- Status: ACCEPTED
+- Exactly observed: 196/196
 
 ## Batch 5, Group 14: Vocative realization of preterit-agentive NNCs
 
@@ -181,8 +181,8 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses vocative use and only a genuinely licensed h-versus-y variant. The application derives all other boundary spelling and number distinctions.
 - Control policy: Do not add manual qu spelling, supportive-i deletion, or singular/plural repair controls.
 - Proposal: Attach the vocative particle é to an owner-issued preterit-agentive NNC and derive qu spelling, supportive-i loss, stem-final k realization, and optional intervocalic h-to-y from the exact number dyad and boundary environment.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/18
+- Status: ACCEPTED
+- Exactly observed: 18/18
 
 ## Batch 5, Group 15: Double-nucleus ownerhood embeds
 
@@ -194,5 +194,5 @@ All 1136 atoms are included exactly once. Unaccepted groups remain proposals; im
 - User/application split: The user chooses a double-nucleus ownerhood use only when a typed lexicalized unit licenses it. The application derives downgrade, protected internal structure, matrix orientation, and outer agreement.
 - Control policy: Require owner-issued component Results and a typed lexicalized double-nucleus record. Do not accept strings, formulas, arbitrary clause pairs, manual deletion, or manual internal-person protection.
 - Proposal: Allow the fixed ownerhood matrices ē, huā, and yo-ā to incorporate an owner-issued, lexicalized double-nucleus NNC structure. Preserve fixed clause order, supplementation relation, internal person positions, principal number deletion, matrix orientation, and the complete canonical component Results.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/22
+- Status: ACCEPTED
+- Exactly observed: 22/22

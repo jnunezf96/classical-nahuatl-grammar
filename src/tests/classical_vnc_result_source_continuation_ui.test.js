@@ -26,7 +26,7 @@ function buildFirstCaquiCausative(ctx) {
             ?.options?.find(option =>
                 option.targetStem === "caquī-tiā"
             )?.optionId || "";
-    return ctx.evaluateClassicalNahuatlVncApplication({
+    return ctx.requestClassicalVncApplicationResult({
         ...request,
         derivationOptionId: optionId,
     });
@@ -140,6 +140,22 @@ function run(ctx = {}) {
     );
 
     s.ok(
+        "continuation clears pending operation selectors while preserving exact applied layers in Result identity",
+        rendering.includes(
+            "function reconcileClassicalCompositionOperationControls("
+        )
+            && rendering.includes(
+                '"one-pending-operation-after-exact-applied-layers"'
+            )
+            && rendering.includes("exactAppliedLayersRemainInResultIdentity: true")
+            && rendering.includes("clearAll: true")
+            && rendering.includes("resetRouteControls: true")
+            && composer.includes(
+                "targetObject.reconcileClassicalCompositionOperationControls?.("
+            )
+    );
+
+    s.ok(
         "a causative or applicative Result keeps its exact owner-issued application frame when the next operation is honorific",
         renderingCompact.includes(
             "ActiveClassicalVncResultSourceApplicationFrame"
@@ -209,6 +225,9 @@ function run(ctx = {}) {
             };
             const ambiguity = ctx.document.querySelector(
                 "[data-classical-vnc-reverse-source-analyses]"
+            );
+            const appliedAccount = ctx.document.getElementById(
+                "classical-applied-grammar-account"
             );
             return {
                 used,
@@ -295,6 +314,24 @@ function run(ctx = {}) {
                             "button, input, select, textarea"
                         ).length || 0,
                 },
+                appliedAccount: {
+                    status:
+                        appliedAccount?.dataset
+                            ?.classicalAppliedGrammarStatus || "",
+                    operationCount: String(
+                        appliedAccount?.dataset
+                            ?.classicalAppliedGrammarOperationIds || ""
+                    ).split("|").filter(Boolean).length,
+                    hasChanges:
+                        Boolean(appliedAccount?.dataset
+                            ?.classicalAppliedGrammarChangeFacts),
+                    hasPreserves:
+                        Boolean(appliedAccount?.dataset
+                            ?.classicalAppliedGrammarPreserveFacts),
+                    authority:
+                        appliedAccount?.dataset
+                            ?.classicalGrammarAuthority || "",
+                },
             };
         })(),
         {
@@ -330,6 +367,13 @@ function run(ctx = {}) {
                 // executed and kept the container non-authoritative.
                 analyses: [],
                 controls: 0,
+            },
+            appliedAccount: {
+                status: "owner-issued",
+                operationCount: 2,
+                hasChanges: true,
+                hasPreserves: true,
+                authority: "false",
             },
         }
     );
@@ -373,6 +417,84 @@ function run(ctx = {}) {
             formula:
                 "#0-0+n-ēch+⎕-⎕+⎕-0(caquī-ti-l-tia)0+0-0#",
             scalarEquivalent: true,
+        }
+    );
+
+    s.eq(
+        "an exact frequentative Result re-enters open typed Source without picker membership or stale operation state",
+        (() => {
+            const lateResult = ctx.requestClassicalLateVncOperation({
+                sourceStem: "chōca",
+                sourceValence: "intransitive",
+                verbClass: "A",
+                subject: "1sg",
+                mood: "indicative",
+                tense: "present",
+                derivationType: "direct",
+                voice: "active",
+                lateOperation: "frequentative",
+                lateVariant: "ordinary-long",
+                frequentativeRepetitions: 2,
+            });
+            const sourceOperation = ctx.document.getElementById(
+                "classical-construction-operation"
+            );
+            const lateOperation = ctx.document.getElementById(
+                "classical-rule-logic-late-operation"
+            );
+            sourceOperation.value = "attitude-vnc";
+            lateOperation.value = "frequentative";
+            const used = ctx.useClassicalWholeCanvasResultAsNextSource(
+                lateResult
+            );
+            const state = ctx.getClassicalRuleLogicSurfaceState({
+                basalUnit: "vnc",
+                mood: "indicative",
+                tense: "present",
+            });
+            const appliedAccount = ctx.document.getElementById(
+                "classical-applied-grammar-account"
+            );
+            const compositionSummary = ctx.document.querySelector(
+                '[data-classical-composition-path-summary="true"]'
+            );
+            return {
+                used,
+                source: ctx.document.getElementById(
+                    "classical-source-whole"
+                ).value,
+                sourceOperation: sourceOperation.value,
+                lateOperation: lateOperation.value,
+                status:
+                    state.vncApplicationFrame?.authorizationStatus || "",
+                reason: state.vncApplicationFrame?.blockReason || "",
+                normalizedSource:
+                    state.vncApplicationFrame?.normalizedRequest
+                        ?.sourceStem || "",
+                appliedGrammar: {
+                    operationIds:
+                        appliedAccount?.dataset
+                            ?.classicalAppliedGrammarOperationIds || "",
+                    layerCount:
+                        compositionSummary?.dataset
+                            ?.classicalCompositionPathSummaryLayerCount
+                        || "",
+                },
+            };
+        })(),
+        {
+            used: true,
+            source: "chō-chō-chōca",
+            sourceOperation: "none",
+            lateOperation: "none",
+            status: "authorized",
+            reason: "",
+            normalizedSource: "chō-chō-chōca",
+            appliedGrammar: {
+                operationIds:
+                    "vnc:derivational-operation|vnc:application",
+                layerCount: "2",
+            },
         }
     );
 

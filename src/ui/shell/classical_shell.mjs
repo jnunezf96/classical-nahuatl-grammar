@@ -139,17 +139,17 @@ import {
   LESSON27_READER_GUIDANCE_GROUPS,
   isLesson27ReaderGuidanceExact,
   renderLesson27ReaderGuidance,
-} from "../curriculum/lesson27_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson27_reader_guidance.mjs?v=20260823-passive-formation-continuity-238";
 import {
   LESSON28_READER_GUIDANCE_GROUPS,
   isLesson28ReaderGuidanceExact,
   renderLesson28ReaderGuidance,
-} from "../curriculum/lesson28_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson28_reader_guidance.mjs?v=20260823-passive-formation-continuity-238";
 import {
   LESSON29_READER_GUIDANCE_GROUPS,
   isLesson29ReaderGuidanceExact,
   renderLesson29ReaderGuidance,
-} from "../curriculum/lesson29_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson29_reader_guidance.mjs?v=20260823-passive-formation-continuity-238";
 import {
   LESSON30_READER_GUIDANCE_GROUPS,
   isLesson30ReaderGuidanceExact,
@@ -169,37 +169,37 @@ import {
   LESSON33_READER_GUIDANCE_GROUPS,
   isLesson33ReaderGuidanceExact,
   renderLesson33ReaderGuidance,
-} from "../curriculum/lesson33_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON34_READER_GUIDANCE_GROUPS,
   isLesson34ReaderGuidanceExact,
   renderLesson34ReaderGuidance,
-} from "../curriculum/lesson34_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON35_READER_GUIDANCE_GROUPS,
   isLesson35ReaderGuidanceExact,
   renderLesson35ReaderGuidance,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON36_READER_GUIDANCE_GROUPS,
   isLesson36ReaderGuidanceExact,
   renderLesson36ReaderGuidance,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON37_READER_GUIDANCE_GROUPS,
   isLesson37ReaderGuidanceExact,
   renderLesson37ReaderGuidance,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON38_READER_GUIDANCE_GROUPS,
   isLesson38ReaderGuidanceExact,
   renderLesson38ReaderGuidance,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 import {
   LESSON39_READER_GUIDANCE_GROUPS,
   isLesson39ReaderGuidanceExact,
   renderLesson39ReaderGuidance,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260823-built-in-valence-default-236";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -950,7 +950,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                             <option value="none" data-classical-source-unit="any" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>No added operation layer · Source → same-rank Result</option>
                             <option
                               value="deverbal-nnc"
-                              data-classical-source-unit="any"
+                              data-classical-source-unit="vnc"
                               data-classical-grammar-operation="deverbal nominalization or characteristic patientive"
                               data-classical-result-unit="nnc"
                             >Source → deverbal nominalization or characteristic patientive → NNC Result</option>
@@ -2869,6 +2869,34 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                     aria-label="Classical Nahuatl rule logic"
                   >
                     <div class="calc-operator__label">Logic</div>
+                    <section
+                      class="classical-applied-grammar-account"
+                      id="classical-applied-grammar-account"
+                      data-classical-applied-grammar-account="true"
+                      data-classical-applied-grammar-status="waiting"
+                      data-classical-presentation-only="true"
+                      data-classical-grammar-authority="false"
+                      aria-label="Applied grammar"
+                      aria-live="polite"
+                    >
+                      <div class="classical-applied-grammar-account__path-row">
+                        <span class="classical-applied-grammar-account__label">Applied</span>
+                        <span
+                          class="classical-applied-grammar-account__path"
+                          data-classical-applied-grammar-path="true"
+                        >Waiting for an owner-issued Result</span>
+                      </div>
+                      <dl class="classical-applied-grammar-account__facts">
+                        <div class="classical-applied-grammar-account__fact">
+                          <dt>Changes</dt>
+                          <dd data-classical-applied-grammar-changes="true">Waiting</dd>
+                        </div>
+                        <div class="classical-applied-grammar-account__fact">
+                          <dt>Preserves</dt>
+                          <dd data-classical-applied-grammar-preserves="true">Waiting</dd>
+                        </div>
+                      </dl>
+                    </section>
                     <div class="classical-rule-controls-grid">
                       <div class="classical-nnc-authority-heading" data-classical-nnc-authority-heading="subject" hidden aria-hidden="true">Subject</div>
                       <div class="classical-nnc-authority-heading" data-classical-nnc-authority-heading="state" hidden aria-hidden="true">State</div>
@@ -3287,7 +3315,6 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-late-variant")}
                           <option value="embed" selected>use captured Result as the embed</option>
                           <option value="matrix">use captured Result as the matrix</option>
                         </select>
-                        <small>Choose only how the issued compound fits into the next two-part compound.</small>
                       </label>
                       <label class="classical-rule-control" data-classical-vnc-authority-order="verbstem-late-matrix-class">
                         <span class="classical-rule-control__label">Matrix class</span>
@@ -4226,16 +4253,18 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
           heading.textContent = title;
           section.appendChild(heading);
         }
-        root.appendChild(section);
+        if (section.parentElement !== root) {
+          root.appendChild(section);
+        }
         return section;
       };
       const identity = getOrCreateSection("identity", "Source identity");
-      const form = getOrCreateSection("form", `${activeUnitLabel} Source path`);
+      const form = getOrCreateSection("form", `${activeUnitLabel} Source`);
       const analysis = getOrCreateSection("analysis", "Source analysis");
       const formHeading = form.querySelector?.(
         ":scope > .classical-source-outline__heading"
       );
-      if (formHeading) formHeading.textContent = `${activeUnitLabel} Source path`;
+      if (formHeading) formHeading.textContent = `${activeUnitLabel} Source`;
 
       let operationLane = form.querySelector?.(
         ':scope > [data-classical-source-path-lane="operation"]'
@@ -4258,7 +4287,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         ":scope > .classical-source-path-lane__heading"
       );
       if (operationLaneHeading) {
-        operationLaneHeading.textContent = `${activeUnitLabel} compositional path`;
+        operationLaneHeading.textContent = "Operation";
       }
       operationLane.dataset.classicalSourcePathUnit = activeUnit;
       operationLane.dataset.classicalSourcePathStep = "3";
@@ -4273,46 +4302,54 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         "classical-construction-operation"
       );
       if (operationLabel) {
-        operationLabel.textContent = `Next operation layer from this ${activeUnitLabel} Source`;
+        operationLabel.textContent = "Next operation";
       }
       operationSelect?.setAttribute?.(
         "aria-label",
-        `Next operation layer from this ${activeUnitLabel} Source`
+        `Next operation from this ${activeUnitLabel} Source`
       );
-      const appendExisting = (section, ids = [], selectors = []) => {
-        const nodes = [
-          ...ids.map(id => documentObject.getElementById(id)),
-          ...selectors.map(selector => root.querySelector?.(selector)),
-        ].filter(Boolean);
-        nodes.forEach(node => {
-          section.appendChild(node);
+      const mountInStableOrder = (parent, nodes = []) => {
+        const orderedNodes = nodes.filter(Boolean);
+        const heading = parent.querySelector?.(
+          ":scope > .classical-source-outline__heading, "
+            + ":scope > .classical-source-path-lane__heading"
+        ) || null;
+        let insertionPoint = heading?.nextSibling || parent.firstChild;
+        orderedNodes.forEach(node => {
+          if (node === insertionPoint) {
+            insertionPoint = node.nextSibling;
+            return;
+          }
+          parent.insertBefore(node, insertionPoint || null);
+          insertionPoint = node.nextSibling;
         });
       };
 
-      appendExisting(identity, [
-        "classical-vnc-source-guide",
-        "classical-nnc-source-guide",
-        "classical-source-identity-controls",
+      mountInStableOrder(identity, [
+        documentObject.getElementById("classical-vnc-source-guide"),
+        documentObject.getElementById("classical-nnc-source-guide"),
+        documentObject.getElementById("classical-source-identity-controls"),
       ]);
-      appendExisting(form, [], [
-        ".classical-source-parts__mode",
-        ".classical-source-parts__grid",
+      mountInStableOrder(form, [
+        root.querySelector?.(".classical-source-parts__mode"),
+        root.querySelector?.(".classical-source-parts__grid"),
+        operationLane,
+        documentObject.getElementById("classical-transcription-keyboard"),
+        documentObject.getElementById(
+          "classical-transcription-optional-controls"
+        ),
       ]);
-      form.appendChild(operationLane);
-      appendExisting(operationLane, [
-        "classical-construction-source-controls",
-      ], [
-        ".classical-source-parts__commit-row",
+      mountInStableOrder(operationLane, [
+        documentObject.getElementById(
+          "classical-construction-source-controls"
+        ),
+        root.querySelector?.(".classical-source-parts__commit-row"),
+        documentObject.getElementById("classical-source-commit-status"),
       ]);
-      appendExisting(operationLane, ["classical-source-commit-status"]);
-      appendExisting(form, [
-        "classical-transcription-keyboard",
-        "classical-transcription-optional-controls",
-      ]);
-      appendExisting(analysis, [
-        "classical-source-readout",
-        "classical-source-constitution",
-        "classical-source-internal-morphs",
+      mountInStableOrder(analysis, [
+        documentObject.getElementById("classical-source-readout"),
+        documentObject.getElementById("classical-source-constitution"),
+        documentObject.getElementById("classical-source-internal-morphs"),
       ]);
 
       const legacyOperation = root.querySelector?.(
@@ -4502,17 +4539,17 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         badge.textContent = "Not applied";
         message.textContent = !draftHasSource
           ? committedSource
-            ? `Enter a Source to apply. Grammar and Result still use ${committedSource}.`
-            : "Enter a Source to build Grammar and Result."
+            ? `Enter a Source. Using ${committedSource}.`
+            : "Enter a Source."
           : committedSource
-            ? `Grammar and Result still use ${committedSource}. Press Enter or apply the source to use your edits.`
-            : "Your entry has not been applied. Press Enter or apply the source to build Grammar and Result.";
+            ? `Edits not applied. Using ${committedSource}.`
+            : "Apply this Source.";
       } else if (committedSource) {
         badge.textContent = "Applied";
-        message.textContent = `${committedSource} is the Source currently used by Grammar and Result.`;
+        message.textContent = `Using ${committedSource}.`;
       } else {
         badge.textContent = "Waiting";
-        message.textContent = "Enter a Source, then apply it to build Grammar and Result.";
+        message.textContent = "Enter a Source.";
       }
       if (applyButton) {
         applyButton.disabled = !draftHasSource;
@@ -4873,10 +4910,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
     }
     function ClassicalCompositionPathSummary() {
       const steps = [
-        ["source", "Source", "VNC · waiting"],
-        ["grammar", "Grammar", "waiting for typed Source"],
-        ["result", "Result", "waiting"],
-        ["continue", "Continue", "authorized Result required"],
+        ["source", "Source", "VNC"],
+        ["grammar", "Grammar", "Waiting"],
+        ["result", "Result", "Waiting"],
+        ["continue", "Continue", "Waiting"],
       ].map(([step, label, value], index) => {
         return `        <div
           class="classical-composition-path-summary__step"

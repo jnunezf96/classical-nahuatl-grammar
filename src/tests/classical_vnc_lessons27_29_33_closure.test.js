@@ -812,6 +812,58 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "late formations realize first-person supportive i after restoring a specific object",
+        (() => {
+            const make = overrides => ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+                sourceStem: "āna",
+                sourceValence: "specific-projective",
+                objectKind: "specific-projective",
+                objectPerson: "3sg",
+                verbClass: "B",
+                subject: "1sg",
+                lateOperation: "frequentative",
+                ...overrides,
+            }));
+            const causative = make({
+                lateVariant: "uncertain-ca-causative",
+            });
+            const preterit = make({
+                lateVariant: "ordinary-short-glottal",
+                tense: "preterit",
+            });
+            return [causative, preterit].map(frame => ({
+                status: frame.authorizationStatus,
+                formula: frame.formulaRealization,
+                subject:
+                    frame.finalTypedVncSlotFrame?.slots?.subject?.pers1,
+                object:
+                    frame.finalTypedVncSlotFrame?.slots?.prePredicate
+                        ?.find(slot => slot.id === "valence")?.carrier,
+                boundaryAction:
+                    frame.operationFrame?.operationFacts
+                        ?.finalBoundaryRealizationFrame
+                        ?.subjectSupportiveVowelAction,
+            }));
+        })(),
+        [
+            {
+                status: "authorized",
+                formula: "#ni-0+c-0(a-āna-tz-a)0+0-0#",
+                subject: "ni",
+                object: "c-0",
+                boundaryAction: "surface-i-before-following-consonant",
+            },
+            {
+                status: "authorized",
+                formula: "#ni-0+c-0(ah-ān)0+⎕-0#",
+                subject: "ni",
+                object: "c-0",
+                boundaryAction: "surface-i-before-following-consonant",
+            },
+        ]
+    );
+
+    s.eq(
         "Lesson 28 keeps ordinary and typed carry analyses open while enforcing coreference, itz analysis, and sounded future embed",
         (() => {
             const wrongMatrixFamily = ctx.evaluateClassicalNahuatlLateVncDerivation(baseRequest({

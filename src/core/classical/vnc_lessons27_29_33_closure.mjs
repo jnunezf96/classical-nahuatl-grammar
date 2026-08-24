@@ -4187,9 +4187,13 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     }
     const expandedVncBoundaryFrame =
       baseMachinery?.expandedVncBoundaryFrame || null;
-    if (expandedVncBoundaryFrame?.directionalPrefix
-      && typeof targetObject.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary
-        === "function") {
+    // A late operation can rebuild the predicate through an intransitive
+    // coordinate and then restore the source object positions.  Final
+    // boundary realization therefore belongs after that restoration, even
+    // when there is no directional prefix: pers1 supportive i and object
+    // spelling depend on the completed neighboring slot order.
+    if (typeof targetObject.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary
+      === "function") {
       const finalBoundaryRealizationFrame =
         targetObject.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary({
           vncSlotFrame: targetTypedFrame,
@@ -4209,7 +4213,13 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       targetTypedFrame = finalBoundaryRealizationFrame.typedSlotFrame;
       operationFacts = {
         ...operationFacts,
-        externalDirectionalBoundaryFrame: finalBoundaryRealizationFrame
+        finalBoundaryRealizationFrame,
+        ...(expandedVncBoundaryFrame?.directionalPrefix
+          ? {
+            externalDirectionalBoundaryFrame:
+              finalBoundaryRealizationFrame
+          }
+          : {})
       };
     }
     if (!targetTypedFrame || typeof targetObject.isClassicalNahuatlVncSlotFrame !== "function" || !targetObject.isClassicalNahuatlVncSlotFrame(targetTypedFrame)) {

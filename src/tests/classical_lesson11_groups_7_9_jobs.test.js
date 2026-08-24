@@ -32,7 +32,10 @@ function run(ctx = {}) {
     const huitzPast = build("hui-tz", { subject: "2sg", tense: "general-past" });
     const huitzFuture = build("hui-tz", { tense: "future" });
     const huitzSecond = build("hui-tz", { subject: "2sg" });
-    const itquitz = build("itqui-tz", { valence: "projective-nonhuman" });
+    const itquitz = build("itqui-tz", {
+        valence: "projective-nonhuman",
+        sourceInitialISelection: "real",
+    });
     const ambiguousItz = build("itz", { tense: "preterit" });
     const alertItz = build("itz", { tense: "preterit", lexicalReading: "alert-observant" });
     const simpleMotionItz = build("itz", { lexicalReading: "motion" });

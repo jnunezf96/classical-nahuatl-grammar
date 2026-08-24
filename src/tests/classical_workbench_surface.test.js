@@ -287,7 +287,7 @@ function run(ctx = {}) {
                 countMatches(sourcePanel, /data-classical-source-unit="(?:vnc|nnc|any)"/gu) - 1,
             sharedCharacteristicRoute:
                 sourcePanel.includes('value="deverbal-nnc"')
-                && sourcePanel.includes('data-classical-source-unit="any"')
+                && sourcePanel.includes('data-classical-source-unit="vnc"')
                 && sourcePanel.includes("Source → deverbal nominalization or characteristic patientive → NNC Result"),
             grammarListed:
                 countMatches(sourcePanel, /data-classical-grammar-operation=/gu) === 10
@@ -298,9 +298,15 @@ function run(ctx = {}) {
             crossRankLabels:
                 sourcePanel.includes("Source → deverbal nominalization or characteristic patientive → NNC Result")
                 && sourcePanel.includes("NNC Source → denominal verbalization → VNC Result"),
-            inactiveGroupListedUnavailable:
-                composer.includes("group.hidden = false")
-                && composer.includes("group.disabled = Boolean(groupUnit && groupUnit !== activeUnit)"),
+            incompatibleRoutesHiddenAndDisabled:
+                composer.includes("option.hidden = !available")
+                && composer.includes("option.disabled = !available")
+                && composer.includes("group.hidden = !available")
+                && composer.includes("group.disabled = !available"),
+            groupOrderStable:
+                sourcePanel.indexOf('data-classical-operation-source-group="vnc"')
+                    < sourcePanel.indexOf('data-classical-operation-source-group="nnc"')
+                && !composer.includes("construction.insertBefore(activeGroup, firstSourceGroup)"),
             routeExplanation:
                 !sourcePanel.includes("classical-construction-operation-status")
                 && !composer.includes("Incompatible Source routes remain listed but unavailable")
@@ -315,7 +321,8 @@ function run(ctx = {}) {
             grammarListed: true,
             placeRouteRanked: true,
             crossRankLabels: true,
-            inactiveGroupListedUnavailable: true,
+            incompatibleRoutesHiddenAndDisabled: true,
+            groupOrderStable: true,
             routeExplanation: true,
         }
     );
@@ -338,9 +345,9 @@ function run(ctx = {}) {
                 && rendering.includes('`classical-rule-surface__single-${customResultUnit}-surface`'),
             structureViews:
                 rendering.includes("getClassicalNominalConstructionDiagrammaticFrame")
-                && rendering.includes('linearButton.textContent = "Linear"')
-                && rendering.includes('diagramButton.textContent = "Diagram"')
-                && rendering.includes('"Formula and structure"')
+                && rendering.includes('linearTitle.textContent = "Linear format"')
+                && rendering.includes('diagramTitle.textContent = "Diagrammatic format"')
+                && rendering.includes('"Linear, diagram, and sentence · specific or general"')
                 && rendering.includes("disclosure.open = !disclosure.hidden"),
             normalActions:
                 rendering.includes('copyAction.textContent = "Copy form"')

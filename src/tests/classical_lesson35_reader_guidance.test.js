@@ -19,6 +19,12 @@ const GROUPS = [
     "lesson35-old-woman-agentive-family",
     "lesson35-old-man-and-drum-source-contrast",
     "lesson35-ownerhood-e-matrix",
+    "lesson35-ownerhood-hua-matrix",
+    "lesson35-abundant-ownerhood-yoa",
+    "lesson35-ownerhood-analysis-and-translation",
+    "lesson35-agentive-embeds-in-vncs",
+    "lesson35-vocative-agentive-realization",
+    "lesson35-double-nucleus-ownerhood-embed",
 ];
 
 function run(ctx = {}) {
@@ -35,7 +41,7 @@ function run(ctx = {}) {
     const end = panel.indexOf("</details>", start) + "</details>".length;
     const visible = panel.slice(start, end);
 
-    s.eq("accepted Lesson 35 atoms point to nine collapsed reading ideas", {
+    s.eq("accepted Lesson 35 atoms point to fifteen collapsed reading ideas", {
         accepted: accepted.length,
         groups: new Set(accepted.map(record => record.reviewGroupId)).size,
         ideas: ideas.length,
@@ -46,8 +52,8 @@ function run(ctx = {}) {
             /data-classical-reader-guidance-group=/gu) || []).length,
         open: /data-classical-reader-guidance-lesson="35"[^>]*\sopen/gu
             .test(panel),
-    }, { accepted: 681, groups: 9, ideas: 9, exactIds: true,
-        sections: 1, cards: 9, open: false });
+    }, { accepted: 1136, groups: 15, ideas: 15, exactIds: true,
+        sections: 1, cards: 15, open: false });
 
     s.ok("guidance keeps productive rules, lexical facts, and choices distinct",
         ideas[0].guidance.includes("exact owner-issued preterit VNC Result")
@@ -69,7 +75,19 @@ function run(ctx = {}) {
         && ideas[7].guidance.includes("huē-hue-h-zero")
         && ideas[7].guidance.includes("never merges them")
         && ideas[8].guidance.includes("fixed verbal matrix")
-        && ideas[8].guidance.includes("without closing the productive class rule"));
+        && ideas[8].guidance.includes("without closing the productive class rule")
+        && ideas[9].guidance.includes("printed nouns do not")
+        && ideas[9].guidance.includes("licensed recursion")
+        && ideas[10].guidance.includes("abundant")
+        && ideas[10].guidance.includes("genuine meaning choice")
+        && ideas[11].guidance.includes("never create a route")
+        && ideas[11].guidance.includes("subject interpretation")
+        && ideas[12].guidance.includes("exact owner-issued")
+        && ideas[12].guidance.includes("copied Result")
+        && ideas[13].guidance.includes("exact number dyad")
+        && ideas[13].guidance.includes("reading evidence")
+        && ideas[14].guidance.includes("fixed-order double nucleus")
+        && ideas[14].guidance.includes("cannot overwrite"));
 
     for (const record of accepted) {
         const entry = ideas.find(idea => idea.ideaId === record.reviewGroupId);

@@ -94,7 +94,7 @@ function run(ctx = {}) {
         formulas: [
             "#n-0(ilama-h-0)⎕-0#",
             "#t-0(ilama-t-0)qu-eh#",
-            "#n-0+m-⎕(ilama-t-0-cā)uh-0#",
+            "#ni-0+m-⎕(ilama-t-0-cā)uh-0#",
         ],
         analysis: {
             kind: "classical-nahuatl-lesson35-old-person-source-analysis-frame",

@@ -228,9 +228,31 @@ function makePersonalNameDocument() {
 function run(ctx = {}) {
     const suite = createSuite("classical_source_operation_cascade_contract");
     const shell = read("src/ui/shell/classical_shell.mjs");
+    const deverbalOperationOption = shell.match(
+        /<option\s+value="deverbal-nnc"[^>]*>/u
+    )?.[0] || "";
     const rendering = read("src/ui/rendering/rendering.mjs");
     const composer = read("src/ui/composer/composer.mjs");
     const css = read("style.css");
+    suite.eq(
+        "deverbal and characteristic-patientive operations require a VNC Source",
+        {
+            routePresent: Boolean(deverbalOperationOption),
+            vncSourceRequired: deverbalOperationOption.includes(
+                'data-classical-source-unit="vnc"'
+            ),
+            bareNncNotAdmitted: !deverbalOperationOption.includes(
+                'data-classical-source-unit="any"'
+            ) && !deverbalOperationOption.includes(
+                'data-classical-source-unit="nnc"'
+            ),
+        },
+        {
+            routePresent: true,
+            vncSourceRequired: true,
+            bareNncNotAdmitted: true,
+        }
+    );
     const handlers = constantSlice(
         rendering,
         "ClassicalNominalConstructionOperationHandlers",

@@ -3,7 +3,7 @@
 
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
-} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 const VERSION = 1;
 const GCD_IDENTITY = "typed-ordered-source-constituents+licensed-relation+matrix-governance+canonical-target-evaluator";

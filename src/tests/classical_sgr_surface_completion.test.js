@@ -149,6 +149,10 @@ function run(ctx = {}) {
         rendering,
         "renderClassicalNominalConstructionSurfaceBlock"
     );
+    const unavailableConstructionRenderer = functionSlice(
+        rendering,
+        "renderClassicalUnavailableNominalConstructionSelection"
+    );
 
     const neutralChoca = ctx.requestClassicalVncApplicationResult({
         sourceStem: "chōca",
@@ -344,6 +348,185 @@ function run(ctx = {}) {
             blockedCompoundRetained: true,
             blockedCompoundReason:
                 "linked-compound-requires-embed-possessor-orientation",
+        }
+    );
+
+    const incompleteDeverbalRequest = {
+        constructionKind: "predicate-nominalization",
+        nominalizationKind: "preterit-agentive",
+        source: {
+            sourceStage: "preterit-predicate",
+            sourceStem: "",
+            verbClass: "A",
+            sourceVoice: "active",
+            sourceValence: "intransitive",
+            sourceObjectPattern: "none",
+        },
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    };
+    const incompleteDeverbalOwner =
+        ctx.evaluateClassicalNahuatlDeverbalNnc(
+            incompleteDeverbalRequest
+        );
+    const incompleteDeverbalReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:deverbal-construction",
+            args: [incompleteDeverbalRequest],
+        });
+    const incompleteDenominalReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:denominal",
+            args: [{}],
+        });
+    const incompletePersonalNameReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "nnc:personal-name",
+            args: [{ sourceFrame: null, outerSubject: "3sg" }],
+        });
+    const incompleteDeverbalPrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "deverbal-nnc",
+            incompleteDeverbalReceipt.blockReason
+        );
+    const incompleteDenominalPrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "denominal-vnc",
+            "denominal-operation-selection-required"
+        );
+    const incompletePersonalNamePrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "personal-name-nnc",
+            "outer-subject-required"
+        );
+    const unavailableServicePrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "deverbal-nnc",
+            "canonical-compound-nnc-evaluator-unavailable"
+        );
+    const characteristicChoicePrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "deverbal-nnc",
+            "39.9-full-or-omitted-characteristic-matrix-choice-required"
+        );
+    const vocativeSourcePrompt =
+        ctx.getClassicalSourceOperationBlockPrompt(
+            "deverbal-nnc",
+            "35.13-exact-owner-issued-absolutive-preterit-agentive-result-required"
+        );
+    suite.eq(
+        "incomplete Source operations retain the exact owner reason and present an actionable route-specific prompt",
+        {
+            ownerStatus: incompleteDeverbalOwner.authorizationStatus,
+            ownerReason: incompleteDeverbalOwner.blockReason,
+            receiptValid: ctx.isClassicalGrammarApplicationResult(
+                incompleteDeverbalReceipt
+            ),
+            receiptStatus: incompleteDeverbalReceipt.authorizationStatus,
+            receiptReason: incompleteDeverbalReceipt.blockReason,
+            canonicalResult: incompleteDeverbalReceipt.canonicalResult,
+            promptTitle: incompleteDeverbalPrompt.title,
+            promptDetail: incompleteDeverbalPrompt.detail,
+            promptReason: incompleteDeverbalPrompt.blockReason,
+            promptAuthority: incompleteDeverbalPrompt.grammarAuthority,
+            otherRouteReceipts: [
+                incompleteDenominalReceipt,
+                incompletePersonalNameReceipt,
+            ].map(receipt => ({
+                valid: ctx.isClassicalGrammarApplicationResult(receipt),
+                status: receipt.authorizationStatus,
+                reason: receipt.blockReason,
+                canonicalResult: receipt.canonicalResult,
+            })),
+            denominalDetail: incompleteDenominalPrompt.detail,
+            personalNameDetail: incompletePersonalNamePrompt.detail,
+            characteristicChoiceDetail:
+                characteristicChoicePrompt.detail,
+            vocativeSourceDetail: vocativeSourcePrompt.detail,
+            serviceFailure: [
+                unavailableServicePrompt.title,
+                unavailableServicePrompt.guidanceKind,
+                unavailableServicePrompt.detail,
+            ],
+            routeMapDeclared:
+                rendering.includes(
+                    '"deverbal-nnc": "nnc:deverbal-construction"'
+                )
+                && rendering.includes(
+                    '"denominal-vnc": "vnc:denominal"'
+                )
+                && rendering.includes(
+                    '"personal-name-nnc": "nnc:personal-name"'
+                ),
+            receiptKeptSeparate:
+                nominalConstructionRenderer.includes(
+                    "sourceOperationApplicationResult ="
+                )
+                && nominalConstructionRenderer.includes(
+                    "sourceOperationApplicationResult?.canonicalResult || null"
+                )
+                && nominalConstructionRenderer.includes(
+                    "sourceOperationApplicationResult?.blockReason"
+                ),
+            exactReasonRendered:
+                unavailableConstructionRenderer.includes(
+                    "block.dataset.classicalBlockReason = prompt.blockReason"
+                )
+                && unavailableConstructionRenderer.includes(
+                    "detail.textContent = prompt.detail"
+                ),
+            oldLossyCopyAbsent:
+                !rendering.includes(
+                    "This pathway needs more typed Source or Grammar information before it can issue a Result."
+                )
+                && !rendering.includes(
+                    "The selected pathway is waiting for required information."
+                ),
+        },
+        {
+            ownerStatus: "blocked",
+            ownerReason: "typed-source-stem-required",
+            receiptValid: true,
+            receiptStatus: "blocked",
+            receiptReason: "typed-source-stem-required",
+            canonicalResult: null,
+            promptTitle: "Complete the Deverbal NNC",
+            promptDetail:
+                "Enter and apply the verbstem required by this deverbal operation.",
+            promptReason: "typed-source-stem-required",
+            promptAuthority: false,
+            otherRouteReceipts: [
+                {
+                    valid: true,
+                    status: "blocked",
+                    reason: "denominal-source-stem-required",
+                    canonicalResult: null,
+                },
+                {
+                    valid: true,
+                    status: "blocked",
+                    reason: "issued-operation-required",
+                    canonicalResult: null,
+                },
+            ],
+            denominalDetail:
+                "Choose a denominal operation licensed for this nounstem Source.",
+            personalNameDetail:
+                "Choose a singular outer Subject: 1sg, 2sg, or 3sg.",
+            characteristicChoiceDetail:
+                "Choose whether to keep the full yō formation or omit its matrix while preserving the meaning.",
+            vocativeSourceDetail:
+                "Complete the Source verbstem, class, valence, and any object choice. The preterit-agentive Source is built automatically.",
+            serviceFailure: [
+                "Deverbal NNC unavailable",
+                "blocked",
+                "This operation could not be loaded. Your Source and Grammar choices are not the cause.",
+            ],
+            routeMapDeclared: true,
+            receiptKeptSeparate: true,
+            exactReasonRendered: true,
+            oldLossyCopyAbsent: true,
         }
     );
 
@@ -826,6 +1009,80 @@ function run(ctx = {}) {
                 "sentence-operation",
                 "sentence-name-use",
                 true,
+            ],
+        }
+    );
+
+    suite.eq(
+        "the live Deverbal vocative builder passes the exact owner-issued preterit-agentive NNC Result",
+        (() => {
+            ctx.applyClassicalBasalUnitMode("vnc", { syncSurface: false });
+            ctx.setClassicalSourcePartsMode("whole-stem", {
+                clearValues: true,
+            });
+            ctx.document.getElementById("classical-source-whole").value =
+                "chōca";
+            ctx.document.getElementById("classical-rule-logic-class").value =
+                "A";
+            ctx.document.getElementById(
+                "classical-rule-logic-valence"
+            ).value = "intransitive";
+            ctx.document.getElementById(
+                "classical-construction-operation"
+            ).value = "deverbal-nnc";
+            ctx.document.getElementById(
+                "classical-deverbal-nnc-family"
+            ).value = "vocative";
+            ctx.document.getElementById(
+                "classical-rule-logic-nnc-subject-person"
+            ).value = "3";
+            ctx.document.getElementById(
+                "classical-rule-logic-nnc-subject-number"
+            ).value = "singular";
+            ctx.document.getElementById(
+                "classical-rule-logic-nnc-state"
+            ).value = "absolutive";
+            ctx.document.getElementById(
+                "classical-rule-logic-nnc-subject-animacy"
+            ).value = "animate";
+            ctx.renderClassicalRuleLogicSurfaceBlock({ stem: "chōca" });
+            const activeFrame =
+                ctx.getActiveClassicalRuleLogicSurfaceFrame?.() || null;
+            const frame =
+                ctx.window.__CLASSICAL_NOMINAL_CONSTRUCTION_FRAME__
+                || activeFrame;
+            const capture =
+                frame?.operationFrame?.vocativeAgentiveCaptureFrame || null;
+            return {
+                route: [
+                    frame?.authorizationStatus || "",
+                    frame?.constructionKind || "",
+                    frame?.operationFrame?.operationId || "",
+                ],
+                capture: [
+                    capture?.authorizationStatus || "",
+                    capture?.exactResultIdentityPreserved === true,
+                    capture?.canonicalNncGrammarFrame?.canonicalResult
+                        === capture?.canonicalNncResult,
+                    capture?.canonicalNncResult?.nncSlotFrame
+                        === capture?.canonicalTypedSlotFrame,
+                    capture?.canonicalOperationFrame?.nominalizationKind
+                        || "",
+                ],
+            };
+        })(),
+        {
+            route: [
+                "authorized",
+                "vocative",
+                "vocative:preterit-agentive",
+            ],
+            capture: [
+                "authorized",
+                true,
+                true,
+                true,
+                "preterit-agentive",
             ],
         }
     );

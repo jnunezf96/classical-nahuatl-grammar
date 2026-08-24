@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260823-built-in-valence-default-236";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260824-source-operation-prompts-259";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

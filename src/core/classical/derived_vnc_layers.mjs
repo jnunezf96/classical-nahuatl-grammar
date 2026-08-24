@@ -252,36 +252,56 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         const canonicalActivePriorVncFrame = activeMachineryFrame?.targetLesson7MachineryFrame?.priorVncFrame
           || activeMachineryFrame?.priorVncFrame
           || null;
-        const canonicalActiveObjectRequests = activeMachineryFrame?.derivationOperationFrame?.targetObjectRequests
-          || activeMachineryFrame?.targetObjectRequests
-          || [];
-        const canonicalActiveSpecificObject = canonicalActiveObjectRequests.find(request => request?.objectKind === "specific-projective") || null;
-        const canonicalActiveRequestedSourceValence = normalizeClassicalNahuatlKey(
-          machineryFrame?.sourceValence
-          || activeMachineryFrame?.targetValence
-          || activeMachineryFrame?.classTargetValence
-          || activeMachineryFrame?.valence
-          || canonicalActivePriorVncFrame?.requestedSourceValence
-          || ""
-        );
-        const canonicalActiveObjectPerson = normalizeClassicalNahuatlKey(
-          canonicalActiveSpecificObject?.objectPerson
-          || (normalizeClassicalNahuatlKey(canonicalActivePriorVncFrame?.objectFrame?.objectKind) === "specific-projective"
-            ? canonicalActivePriorVncFrame?.objectFrame?.objectPerson
-            : "")
-        );
         const canonicalActiveConclusion = activeMachineryFrame?.proofFrame?.conclusion || {};
         const canonicalActiveExpandedBoundary = activeMachineryFrame?.expandedVncBoundaryFrame
           || canonicalActiveConclusion.expandedVncBoundaryFrame
           || {};
+        const canonicalActiveSentenceFrame = activeMachineryFrame?.sentenceSurfaceFrame
+          || canonicalActiveConclusion.sentenceSurfaceFrame
+          || {};
+        const canonicalSentenceAntecessive = canonicalActiveConclusion.antecessiveOutsideVnc === true
+          || canonicalActiveSentenceFrame.sentenceAntecessive === true
+          || canonicalActiveSentenceFrame.antecessive === true;
+        const canonicalSentenceNegative = canonicalActiveSentenceFrame.lesson9NegativeRequested === true
+          || canonicalActiveSentenceFrame.lesson10NegativeRequested === true
+          || canonicalActiveSentenceFrame.sentenceType === "negative-assertion"
+          || Boolean(canonicalActiveSentenceFrame.negativePrefix);
         const canonicalVncSentenceOptions = {
-          requestedSourceValence: canonicalActiveRequestedSourceValence,
-          object: canonicalActiveObjectPerson,
           directionalPrefix: canonicalActiveExpandedBoundary.directionalPrefix
             || canonicalActiveConclusion.directionalPrefix
             || "",
+          directionalIttaContraction: canonicalActiveExpandedBoundary
+            .directionalIttaContractionFrame?.requestedSelection || "",
           incorporatedAdverb: canonicalActiveConclusion.incorporatedAdverb || "",
-          adverbPosition: canonicalActiveConclusion.adverbPosition || ""
+          adverbPosition: canonicalActiveConclusion.adverbPosition || "",
+          sentenceType: canonicalActiveSentenceFrame.sentenceType || "",
+          negative: canonicalSentenceNegative,
+          questionMode: canonicalActiveSentenceFrame.questionMode || "",
+          introductoryParticle: canonicalActiveSentenceFrame.introductoryParticle || "",
+          prefaceParticle: canonicalActiveSentenceFrame.prefaceParticle || "",
+          lesson9PrefaceParticle: canonicalActiveSentenceFrame.requestedPrefaceParticle
+            || canonicalActiveSentenceFrame.prefaceParticle
+            || "",
+          introductoryModifier: canonicalActiveSentenceFrame.introductoryModifier || "",
+          lesson9IntroductoryModifier: canonicalActiveSentenceFrame.requestedIntroductoryModifier
+            || canonicalActiveSentenceFrame.introductoryModifier
+            || "",
+          admonitiveTranslationReading: canonicalActiveSentenceFrame.admonitiveRequestedTranslationReading || "",
+          translationReading: canonicalActiveSentenceFrame.admonitiveRequestedTranslationReading || "",
+          requestedTranslationReading: canonicalActiveSentenceFrame.admonitiveRequestedTranslationReading || "",
+          admonitiveContrastReading: canonicalActiveSentenceFrame.admonitiveRequestedContrastReading || "",
+          contrastReading: canonicalActiveSentenceFrame.admonitiveRequestedContrastReading || "",
+          requestedContrastReading: canonicalActiveSentenceFrame.admonitiveRequestedContrastReading || "",
+          sentenceAntecessive: canonicalSentenceAntecessive,
+          antecessive: canonicalSentenceAntecessive,
+          requestedNegativePrefix: canonicalActiveSentenceFrame.negativePrefix || "",
+          negativePrefix: canonicalActiveSentenceFrame.negativePrefix || "",
+          outsidePrefixes: Array.isArray(canonicalActiveConclusion.outsidePrefixes)
+            ? [...canonicalActiveConclusion.outsidePrefixes]
+            : [],
+          construction: canonicalActiveSentenceFrame.lesson11Construction || "",
+          lexicalReading: activeMachineryFrame?.lesson11VncApplicationFrame
+            ?.selectedLexicalReading || ""
         };
         const canonicalRebuildOptions = {
             voice: machineryFrame.voice,

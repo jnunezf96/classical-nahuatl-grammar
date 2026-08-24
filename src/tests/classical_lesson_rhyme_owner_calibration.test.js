@@ -127,7 +127,7 @@ function run(ctx) {
         grammarAuthority: calibration.grammarAuthority,
     }, {
         kind: "classical-grammatical-rhyme-owner-calibration-frame",
-        version: 5,
+        version: 6,
         edgeCount: inventory.grammaticalRhymeCalibration
             .lessonDiscovery.directRhymeEdgeCount,
         discoveryEdgeCount: inventory.grammaticalRhymeCalibration

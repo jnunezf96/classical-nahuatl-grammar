@@ -65,6 +65,11 @@ export const LESSON11_READER_GUIDANCE_GROUPS = freeze([
     "Recognize the fused huāl coming paradigm",
     "The coming verb is the going paradigm with huāl fused into its stem. Before yā and ya-uh, l plus y becomes ll, giving huāl-lā and huāl-la-uh; before hui and yah the corresponding members are huāl-hui and huāl-lah. Because huāl is already inside the verbstem, it is not an additional directional choice.",
   ),
+  idea(
+    "lesson11-irregular-idioms",
+    "Read irregular idioms as whole constructions",
+    "Quēn tonyezqueh can ask how we shall be there or, idiomatically, how we shall act; toyezqueh reflects its pronunciation. Ahquēn nicmati and ahquēn nocommati deny knowledge, and nocommati may also mean not being worried. Zan huītz means ‘he is a foreigner’ or ‘it is exotic’; quin yez means ‘presently’ or ‘in the future’; nihuāllamati means ‘I frequent the place’; mā ammomattin warns against dithering; and oc onyauh means ‘it is still going forward.’ These are whole-construction reading witnesses, not productive templates or stem licenses.",
+  ),
 ]);
 
 export function isLesson11ReaderGuidanceExact(candidate = []) {

@@ -99,6 +99,187 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "a selected Lesson 8 itta contraction is preserved into a later derivation and rejected when the derived Source no longer has the licensed shape",
+        (() => {
+            const application = createClassicalNahuatlVncApplication(ctx);
+            const baseRequest = {
+                sourceStem: "(itt-a)",
+                verbClass: "A",
+                sourceValence: "specific-projective",
+                objectKind: "specific-projective",
+                objectPerson: "3sg",
+                sourceSubject: "3sg",
+                subject: "1sg",
+                mood: "indicative",
+                tense: "present",
+                requestedDerivation: "causative",
+                requestedVoice: "active",
+                causativeObjectKind: "specific-projective",
+                sentenceOptions: {
+                    directionalPrefix: "on",
+                },
+            };
+            const selection = selectApplicationDerivationOption(
+                application,
+                baseRequest,
+                "itt-a-l-tiā"
+            );
+            const ordinary = application.evaluate({
+                ...baseRequest,
+                derivationOptionId:
+                    selection.option?.optionId || "missing-itta-causative-option",
+            });
+            const incompatibleContraction = application.evaluate({
+                ...baseRequest,
+                derivationOptionId:
+                    selection.option?.optionId || "missing-itta-causative-option",
+                sentenceOptions: {
+                    directionalPrefix: "on",
+                    directionalIttaContraction: "rare",
+                },
+            });
+            return {
+                selectedTarget: selection.option?.targetStem || "",
+                ordinaryStatus: ordinary.authorizationStatus,
+                ordinaryCanonical:
+                    ctx.isClassicalNahuatlVncApplicationFrame(ordinary),
+                ordinaryHasFormula: Boolean(
+                    ordinary.resultFrame?.formulaRealization
+                ),
+                preservedRequestedContraction:
+                    incompatibleContraction.normalizedRequest?.sentenceOptions
+                        ?.directionalIttaContraction,
+                incompatibleStatus:
+                    incompatibleContraction.authorizationStatus,
+                incompatibleReason: incompatibleContraction.blockReason,
+                incompatibleCanonical:
+                    ctx.isClassicalNahuatlVncApplicationFrame(
+                        incompatibleContraction
+                    ),
+                incompatibleFormula:
+                    incompatibleContraction.resultFrame?.formulaRealization,
+            };
+        })(),
+        {
+            selectedTarget: "itt-a-l-tiā",
+            ordinaryStatus: "authorized",
+            ordinaryCanonical: true,
+            ordinaryHasFormula: true,
+            preservedRequestedContraction: "rare",
+            incompatibleStatus: "blocked",
+            incompatibleReason: "classical-vnc-proof-not-authorized",
+            incompatibleCanonical: true,
+            incompatibleFormula: "",
+        }
+    );
+
+    s.eq(
+        "Canvas sentence, derivation, directional, and passive owners retain their separate coordinates in one authorized Result",
+        (() => {
+            const application = createClassicalNahuatlVncApplication(ctx);
+            const baseRequest = {
+                sourceStem: "chōca",
+                verbClass: "A",
+                sourceValence: "intransitive",
+                sourceSubject: "3sg",
+                subject: "3sg",
+                mood: "optative",
+                tense: "nonpast",
+                requestedDerivation: "applicative",
+                requestedVoice: "passive",
+                applicativeObjectKind: "specific-projective",
+                applicativeObjectPerson: "1sg",
+                sentenceOptions: {
+                    sentenceType: "wish-sentence",
+                    introductoryParticle: "mā",
+                    directionalPrefix: "huāl",
+                },
+            };
+            const selection = selectApplicationDerivationOption(
+                application,
+                baseRequest,
+                "chōqu-iā"
+            );
+            const passivePreview = application.evaluate({
+                ...baseRequest,
+                derivationOptionId:
+                    selection.option?.optionId || "missing-choqui-applicative-option",
+            });
+            const nonactiveOptionId = passivePreview.controlFrame
+                ?.nonactiveOptionInventory?.automaticOptionId
+                || passivePreview.controlFrame?.nonactiveOptionInventory
+                    ?.options?.[0]?.optionId
+                || "";
+            const result = application.evaluate({
+                ...baseRequest,
+                derivationOptionId:
+                    selection.option?.optionId || "missing-choqui-applicative-option",
+                nonactiveOptionId,
+            });
+            const activeSentence = result.resultFrame?.activeMachineryFrame
+                ?.sentenceSurfaceFrame;
+            const selectedSentence = result.resultFrame?.selectedMachineryFrame
+                ?.sentenceSurfaceFrame;
+            return {
+                status: result.authorizationStatus,
+                canonical: ctx.isClassicalNahuatlVncApplicationFrame(result),
+                selectedTarget: selection.option?.targetStem || "",
+                selectedVoice:
+                    result.controlFrame?.selectedVoice,
+                normalizedSentence: {
+                    directionalPrefix:
+                        result.normalizedRequest?.sentenceOptions
+                            ?.directionalPrefix,
+                    sentenceType:
+                        result.normalizedRequest?.sentenceOptions?.sentenceType,
+                    introductoryParticle:
+                        result.normalizedRequest?.sentenceOptions
+                            ?.introductoryParticle,
+                },
+                activeSentence: {
+                    directionalPreserved: result.resultFrame
+                        ?.activeMachineryFrame?.expandedVncBoundaryFrame
+                        ?.directionalPrefix,
+                    sentenceType: activeSentence?.sentenceType,
+                    introductoryParticle:
+                        activeSentence?.introductoryParticle,
+                },
+                selectedSentence: {
+                    directionalPreserved: result.resultFrame
+                        ?.selectedMachineryFrame?.expandedVncBoundaryFrame
+                        ?.directionalPrefix,
+                    sentenceType: selectedSentence?.sentenceType,
+                    introductoryParticle:
+                        selectedSentence?.introductoryParticle,
+                },
+                hasFormula: Boolean(result.resultFrame?.formulaRealization),
+            };
+        })(),
+        {
+            status: "authorized",
+            canonical: true,
+            selectedTarget: "chōqu-iā",
+            selectedVoice: "passive",
+            normalizedSentence: {
+                directionalPrefix: "huāl",
+                sentenceType: "wish-sentence",
+                introductoryParticle: "mā",
+            },
+            activeSentence: {
+                directionalPreserved: "huāl",
+                sentenceType: "wish-sentence",
+                introductoryParticle: "mā",
+            },
+            selectedSentence: {
+                directionalPreserved: "huāl",
+                sentenceType: "wish-sentence",
+                introductoryParticle: "mā",
+            },
+            hasFormula: true,
+        }
+    );
+
+    s.eq(
         "Unknown derivation intent is retained diagnostically and cannot authorize a Direct result",
         (() => {
             const frame = createClassicalNahuatlVncApplication(ctx).evaluate({
@@ -744,6 +925,11 @@ function run(ctx = {}) {
                     selectedKind: unresolved.resultFrame.selectedMachineryFrame?.kind,
                     selectedStatus: unresolved.resultFrame.selectedMachineryFrame?.authorizationStatus,
                     formula: unresolved.resultFrame.formulaRealization,
+                    pendingStructures: unresolved.resultFrame.choicePendingTypedVncSlotFrames.map(frame => ({
+                        valenceArity: frame.valenceArity,
+                        stem: frame.slots.predicate.stem,
+                        formula: ctx.renderClassicalNahuatlVncSlotFrameFormula(frame),
+                    })),
                 },
                 resolved: {
                     status: resolved.authorizationStatus,
@@ -763,6 +949,18 @@ function run(ctx = {}) {
                 selectedKind: undefined,
                 selectedStatus: undefined,
                 formula: "",
+                pendingStructures: [
+                    {
+                        valenceArity: "monadic",
+                        stem: "zō-hua",
+                        formula: "#0-0+ne(zō-hua)0+0-0#",
+                    },
+                    {
+                        valenceArity: "monadic",
+                        stem: "zō-lo",
+                        formula: "#0-0+ne(zō-lo)0+0-0#",
+                    },
+                ],
             },
             resolved: {
                 status: "authorized",
@@ -770,6 +968,71 @@ function run(ctx = {}) {
                 selectedOption: "lō:zō-lō",
                 formula: "#0-0+ne(zō-lo)0+0-0#",
             },
+        }
+    );
+
+    s.eq(
+        "an owner-issued nonactive choice remains valid across independent specific-participant coordinates",
+        (() => {
+            const application = createClassicalNahuatlVncApplication(ctx);
+            const objectPersons = [
+                "1sg", "2sg", "3sg", "1pl", "2pl", "3pl",
+            ];
+            const rows = objectPersons.map(objectPerson => {
+                const frame = application.evaluate({
+                    sourceStem: "āna",
+                    verbClass: "B",
+                    sourceValence: "specific-projective",
+                    subject: "1sg",
+                    objectKind: "specific-projective",
+                    objectPerson,
+                    requestedVoice: "passive",
+                    nonactiveOptionId: "lō:āna-lō",
+                });
+                return {
+                    objectPerson,
+                    status: frame.authorizationStatus,
+                    selectedOption:
+                        frame.controlFrame?.selectedNonactiveOptionId,
+                    promotedSubject:
+                        frame.resultFrame?.selectedMachineryFrame?.subject,
+                    formulaPresent: Boolean(
+                        frame.resultFrame?.formulaRealization
+                    ),
+                };
+            });
+            const forged = application.evaluate({
+                sourceStem: "āna",
+                verbClass: "B",
+                sourceValence: "specific-projective",
+                subject: "1sg",
+                objectKind: "specific-projective",
+                objectPerson: "2sg",
+                requestedVoice: "passive",
+                nonactiveOptionId: "lō:forged",
+            });
+            return {
+                rows,
+                forged: [
+                    forged.authorizationStatus,
+                    forged.blockReason,
+                ],
+            };
+        })(),
+        {
+            rows: [
+                "1sg", "2sg", "3sg", "1pl", "2pl", "3pl",
+            ].map(objectPerson => ({
+                objectPerson,
+                status: "authorized",
+                selectedOption: "lō:āna-lō",
+                promotedSubject: objectPerson,
+                formulaPresent: true,
+            })),
+            forged: [
+                "blocked",
+                "classical-vnc-nonactive-formation-option-not-authorized",
+            ],
         }
     );
 

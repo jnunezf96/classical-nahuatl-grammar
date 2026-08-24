@@ -47,6 +47,36 @@
       "status": "EXACTLY_OBSERVED",
       "writingTest": "src/tests/classical_lesson35_groups_7_9_jobs.test.js",
       "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-ownerhood-hua-matrix": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-abundant-ownerhood-yoa": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-ownerhood-analysis-and-translation": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_10_12_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-agentive-embeds-in-vncs": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-vocative-agentive-realization": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
+    },
+    "lesson35-double-nucleus-ownerhood-embed": {
+      "status": "EXACTLY_OBSERVED",
+      "writingTest": "src/tests/classical_lesson35_groups_13_15_jobs.test.js",
+      "readerTest": "src/tests/classical_lesson35_reader_guidance.test.js"
     }
   }
 }

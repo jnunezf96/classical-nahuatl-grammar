@@ -273,14 +273,14 @@ function run(ctx = {}) {
             && css.includes("align-self: flex-start;")
     );
     suite.ok(
-        "every single Result route exposes one structure axis and one specificity axis",
+        "every single Result route keeps all structures visible and exposes only the specificity axis",
         rendering.includes("function createClassicalResultSpecificitySwitch(")
             && rendering.includes("function createClassicalResultPresentationSwitchRow(")
             && rendering.includes(
                 'group.dataset.classicalResultPresentationAxis = "specificity"'
             )
             && rendering.includes(
-                'row.dataset.classicalResultPresentationSwitches = "structure-specificity"'
+                'row.dataset.classicalResultPresentationSwitches = "specificity"'
             )
             && rendering.includes(
                 "projection: `source-operation:${selectedConstruction}`"
@@ -289,18 +289,18 @@ function run(ctx = {}) {
                 'projection: "relational-nnc"'
             )
             && rendering.includes(
-                "createClassicalResultPresentationSwitchRow(\n              singleNncViewSwitch,\n              resultSpecificitySwitch"
+                "createClassicalResultPresentationSwitchRow(resultSpecificitySwitch)"
             )
             && rendering.includes(
-                "createClassicalResultPresentationSwitchRow(\n              singleVncViewSwitch,\n              resultSpecificitySwitch"
+                "createClassicalResultPresentationSwitchRow(specificitySwitch)"
             )
             && rendering.includes(
-                '"Linear or diagram · specific or general"'
+                '"Linear, diagram, and sentence · specific or general"'
             )
             && css.includes(".classical-rule-surface__presentation-switches")
-            && !css.includes(
-                "#classical-result-panel .classical-rule-surface__single-vnc-view-switch,\nbody.is-language-classical.is-ui-simple #classical-result-panel .classical-rule-surface__single-nnc-view-switch"
-            )
+            && !rendering.includes('textContent = "Linear"')
+            && !rendering.includes('textContent = "Diagram"')
+            && !rendering.includes("setStructureView")
     );
     suite.ok(
         "NNC sentence particles live inside the same Sentence block as the other sentence choices",
@@ -403,12 +403,14 @@ function run(ctx = {}) {
         "Source operation continues the active VNC or NNC Source path instead of floating as a separate card",
         shell.includes("function syncClassicalSourceNestingStructure()")
             && shell.includes('getOrCreateSection("identity", "Source identity")')
-            && shell.includes('getOrCreateSection("form", `${activeUnitLabel} Source path`)')
+            && shell.includes('getOrCreateSection("form", `${activeUnitLabel} Source`)')
             && shell.includes('getOrCreateSection("analysis", "Source analysis")')
             && shell.includes('operationLane.dataset.classicalSourcePathLane = "operation"')
-            && shell.includes('operationLaneHeading.textContent = `${activeUnitLabel} compositional path`')
-            && shell.includes('operationLabel.textContent = `Next operation layer from this ${activeUnitLabel} Source`')
-            && shell.includes('form.appendChild(operationLane);')
+            && shell.includes('operationLaneHeading.textContent = "Operation"')
+            && shell.includes('operationLabel.textContent = "Next operation"')
+            && shell.includes("const mountInStableOrder = (parent, nodes = []) =>")
+            && shell.includes("mountInStableOrder(form, [")
+            && shell.includes("operationLane,")
             && shell.includes('"classical-source-identity-controls"')
             && shell.includes('"classical-construction-source-controls"')
             && shell.includes('root.dataset.classicalSourceNesting = "identity-form-path-analysis"')
@@ -417,10 +419,13 @@ function run(ctx = {}) {
             && shell.includes("subtree: true")
             && shell.includes('attributeFilter: ["data-classical-basal-unit", "aria-pressed"]')
             && shell.includes("installClassicalSourcePathSync();")
-            && shell.indexOf('form.appendChild(operationLane);')
-                < shell.indexOf('"classical-transcription-keyboard"', shell.indexOf('form.appendChild(operationLane);'))
-            && composer.includes("const activeGroup = sourceGroups.find")
-            && composer.includes("construction.insertBefore(activeGroup, firstSourceGroup)")
+            && shell.indexOf("operationLane,", shell.indexOf("mountInStableOrder(form, ["))
+                < shell.indexOf('"classical-transcription-keyboard"', shell.indexOf("mountInStableOrder(form, ["))
+            && composer.includes("option.hidden = !available")
+            && composer.includes("option.disabled = !available")
+            && composer.includes("group.hidden = !available")
+            && composer.includes("group.disabled = !available")
+            && !composer.includes("construction.insertBefore(activeGroup, firstSourceGroup)")
             && !shell.includes('getOrCreateSection("operation", "Source operation")')
             && css.includes(".classical-source-outline__section")
             && css.includes(".classical-source-path-lane__heading")
@@ -435,8 +440,8 @@ function run(ctx = {}) {
             && shell.includes('markSection(resultContinuation, "licensed-continuation")')
             && shell.includes('"exact-result-to-licensed-consumer"')
             && rendering.includes("function syncClassicalResultContinuationCue(")
-            && rendering.includes('"Exact Result → typed Source is available."')
-            && rendering.includes('"No direct Result → Source handoff is licensed for this Result. Use only the exact continuation choices below."')
+            && rendering.includes('"Result → Source available."')
+            && rendering.includes('"No direct handoff. Choose below."')
             && rendering.includes('continueAction.textContent = "Continue this Result"')
             && rendering.includes('"exact-result-to-source"')
             && /\[data-classical-construction-grammar-lane\] \{\s*display: contents;/.test(css)
@@ -447,10 +452,10 @@ function run(ctx = {}) {
         "the workbench shows one live owner-observed Source to continuation journey",
         shell.includes("function ClassicalCompositionPathSummary()")
             && [
-                '["source", "Source", "VNC · waiting"]',
-                '["grammar", "Grammar", "waiting for typed Source"]',
-                '["result", "Result", "waiting"]',
-                '["continue", "Continue", "authorized Result required"]',
+                '["source", "Source", "VNC"]',
+                '["grammar", "Grammar", "Waiting"]',
+                '["result", "Result", "Waiting"]',
+                '["continue", "Continue", "Waiting"]',
             ].every(contract => shell.includes(contract))
             && shell.includes('data-classical-composition-path-summary-step="${step}"')
             && shell.includes('data-classical-composition-path-summary-value="${step}"')
@@ -491,7 +496,8 @@ function run(ctx = {}) {
             && rendering.includes('".classical-rule-surface__single-vnc-surface, "')
             && rendering.includes('directCandidate?.projection?.sourceStem')
             && rendering.includes('"owner-issued-primary-answer"')
-            && rendering.includes('next Source (${nextSourceStem}) · exact capture also available')
+            && rendering.includes('continue: directCandidate\n          ? "Result → Source"')
+            && rendering.includes('continue: nextSourceStem\n          ? `(${nextSourceStem})`')
             && rendering.includes("function syncClassicalInterfaceChoicePathways()")
             && rendering.includes("function syncClassicalInterfaceChoicePathways()")
             && rendering.includes('select, textarea, input:not([type="button"]):not([type="submit"])')
@@ -516,7 +522,13 @@ function run(ctx = {}) {
             && rendering.includes('"aria-hidden"')
             && rendering.includes("schedulePathwayRefresh")
             && rendering.includes("renderClassicalUnavailableNominalConstructionSelection(")
-            && rendering.includes('"selected-source-operation-requires-more-information"')
+            && rendering.includes("CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS")
+            && rendering.includes("getClassicalSourceOperationBlockPrompt(")
+            && rendering.includes("sourceOperationApplicationResult?.blockReason")
+            && rendering.includes("block.dataset.classicalBlockReason = prompt.blockReason")
+            && !rendering.includes(
+              "This pathway needs more typed Source or Grammar information before it can issue a Result."
+            )
             && rendering.includes('key.startsWith("classicalBlock")')
             && rendering.includes('clearClassicalNominalConstructionResultDatasets(block);')
             && rendering.includes('surfaceFrame.blockReason || "classical-selected-output-not-authorized"')
@@ -550,6 +562,45 @@ function run(ctx = {}) {
             && css.includes('[data-classical-nnc-authority-order="subject-animacy"]')
             && css.includes('[data-classical-nnc-authority-order="subject-humanness"]')
             && css.includes('content: "→";')
+    );
+    suite.ok(
+        "Grammar shows one compact exact applied-operation account without expanding the top path strip",
+        shell.includes('id="classical-applied-grammar-account"')
+            && shell.includes('data-classical-applied-grammar-account="true"')
+            && shell.includes('data-classical-applied-grammar-path="true"')
+            && shell.includes('data-classical-applied-grammar-changes="true"')
+            && shell.includes('data-classical-applied-grammar-preserves="true"')
+            && shell.includes('data-classical-presentation-only="true"')
+            && shell.includes('data-classical-grammar-authority="false"')
+            && rendering.includes("function syncClassicalAppliedGrammarAccount(")
+            && rendering.includes("getClassicalGrammarApplicationInventory")
+            && rendering.includes("rhymeRoutePlaneFrame?.compatibilitySignature")
+            && rendering.includes("...(signature.adds || [])")
+            && rendering.includes("...(signature.removes || []).map")
+            && rendering.includes("...(signature.emits || [])")
+            && rendering.includes("preserves.push(...(signature.preserves || []))")
+            && rendering.includes('account.dataset.classicalAppliedGrammarAuthority = "presentation-only"')
+            && rendering.includes('account.dataset.classicalGrammarAuthority = "false"')
+            && rendering.includes("syncClassicalAppliedGrammarAccount(ownerProjection, layerGraph)")
+            && css.includes(".classical-applied-grammar-account {")
+            && css.includes(".classical-applied-grammar-account__facts {")
+            && !shell.includes('data-classical-composition-path-summary-layers="true"')
+            && !shell.includes('data-classical-composition-path-summary-next-layers="true"')
+    );
+    suite.ok(
+        "one pending operation follows the exact applied chain and stable semantic mounts do not reshuffle",
+        rendering.includes("function reconcileClassicalCompositionOperationControls(")
+            && rendering.includes('"one-pending-operation-after-exact-applied-layers"')
+            && rendering.includes("exactAppliedLayersRemainInResultIdentity: true")
+            && rendering.includes('preferred === "classical-construction-operation"')
+            && rendering.includes('preferred === "classical-rule-logic-late-operation"')
+            && composer.includes("targetObject.reconcileClassicalCompositionOperationControls?.(")
+            && rendering.includes('clearAll: true')
+            && rendering.includes('resetRouteControls: true')
+            && rendering.includes("if (lane.parentElement !== destination)")
+            && rendering.includes("const orderChanged = formationControls.some(")
+            && shell.includes("node === insertionPoint")
+            && shell.includes("parent.insertBefore(node, insertionPoint || null)")
     );
     suite.ok(
         "VNC derivation is nested inside Verbstem instead of floating above the five Grammar sections",
@@ -655,9 +706,9 @@ function run(ctx = {}) {
             && rendering.includes("linearFormula,")
             && rendering.includes("sentenceFormula,")
             && rendering.includes("const ownerIssuedResultProjection =")
-            && rendering.includes(
-                "surfaceFrame.selectedFormula\n              || ownerIssuedResultProjection?.linearFormula"
-            )
+            && rendering.includes("surfaceFrame.selectedFormula")
+            && rendering.includes("ownerIssuedResultProjection?.linearFormula")
+            && rendering.includes("surfaceFrame.diagrammaticFrame?.choicePending === true")
             && rendering.includes(
                 "const fallbackProjection = fallbackSingleActive\n        ? ownerIssuedResultProjection"
             )
@@ -689,7 +740,12 @@ function run(ctx = {}) {
             && usesBrowserCacheKey(browserMain, "bootstrap.mjs", cacheKey)
             && usesBrowserCacheKey(bootstrap, "runtime_bridge.mjs", cacheKey)
             && usesBrowserCacheKey(bridge, "create_runtime.mjs", cacheKey)
-            && ["composer.mjs", "rendering.mjs", "classical_shell.mjs"]
+            && [
+                "vnc_application.mjs",
+                "composer.mjs",
+                "rendering.mjs",
+                "classical_shell.mjs",
+            ]
                 .every(moduleName => usesBrowserCacheKey(
                     runtime,
                     moduleName,

@@ -323,9 +323,163 @@ function run(ctx = {}) {
         && rendering.includes('mark.addEventListener("click"')
         && rendering.includes('mark.addEventListener("keydown"')
         && rendering.includes('message.dataset.classicalFormulaClickMessage = "true"')
-        && rendering.includes('message.textContent = mark.title')
+        && rendering.includes('function collapseClassicalFormulaClickMessage(label = "")')
+        && rendering.includes('fullLabel.split(/\\s+·\\s+/u).find(Boolean)')
+        && rendering.includes('mark.title = collapsedAnnotationLabel')
+        && rendering.includes('mark.dataset.classicalDerivedAnnotationFullLabel =')
+        && rendering.includes('message.textContent = collapseClassicalFormulaClickMessage(mark.title)')
         && css.includes(".classical-formula__derived-annotation.is-clicked")
         && css.includes(".classical-formula__click-message"));
+    const coordinateEvidence = [
+            {
+                start: 1,
+                end: 4,
+                role: "wide-lesson-reading",
+                label: "passive · full explanation",
+                presentation: "carrier",
+                lessonSections: ["§20"],
+                atomIds: ["wide"],
+            },
+            {
+                start: 1,
+                end: 2,
+                role: "subject-person",
+                label: "subject person",
+                presentation: "carrier",
+                lessonSections: ["§4"],
+                atomIds: ["subject"],
+            },
+            {
+                start: 2,
+                end: 3,
+                role: "subposition-boundary",
+                label: "subposition boundary",
+                presentation: "boundary",
+                lessonSections: ["§3"],
+                atomIds: ["boundary"],
+            },
+            {
+                start: 3,
+                end: 4,
+                role: "subject-nominative",
+                label: "nominative",
+                presentation: "carrier",
+                lessonSections: ["§4"],
+                atomIds: ["nominative"],
+            },
+        ];
+    const coordinateFrame = ctx.buildClassicalFormulaCoordinateFrame(
+        "#0-0#",
+        coordinateEvidence,
+    );
+    s.eq("one typed coordinate map exists before its lesson evidence is projected", {
+        kind: coordinateFrame.kind,
+        coordinateCount: coordinateFrame.coordinateCount,
+        coordinates: coordinateFrame.coordinates.map(coordinate => ({
+            text: coordinate.text,
+            glyphKind: coordinate.glyphKind,
+            evidenceCount: coordinate.evidence.length,
+            grammarAuthority: coordinate.grammarAuthority,
+        })),
+        projectionRole: coordinateFrame.projectionRole,
+        grammarAuthority: coordinateFrame.grammarAuthority,
+        formulaStringAuthority: coordinateFrame.formulaStringAuthority,
+    }, {
+        kind: "classical-formula-coordinate-frame",
+        coordinateCount: 5,
+        coordinates: [
+            { text: "#", glyphKind: "nuclear-boundary-glyph", evidenceCount: 0, grammarAuthority: false },
+            { text: "0", glyphKind: "carrier-glyph", evidenceCount: 2, grammarAuthority: false },
+            { text: "-", glyphKind: "subposition-boundary-glyph", evidenceCount: 2, grammarAuthority: false },
+            { text: "0", glyphKind: "carrier-glyph", evidenceCount: 2, grammarAuthority: false },
+            { text: "#", glyphKind: "nuclear-boundary-glyph", evidenceCount: 0, grammarAuthority: false },
+        ],
+        projectionRole: "typed-coordinate-reading-map",
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+    });
+    s.eq("formula collapse keeps 0-0 as three independently clickable coordinates", (
+        ctx.projectClassicalFormulaCoordinateEvidence(coordinateFrame).map(annotation => ({
+            text: "#0-0#".slice(annotation.start, annotation.end),
+            role: annotation.role,
+            atoms: annotation.atomIds,
+            coordinateKind: annotation.coordinateGlyphKind,
+        }))
+    ), [
+        { text: "0", role: "subject-person", atoms: ["subject", "wide"], coordinateKind: "carrier-glyph" },
+        { text: "-", role: "subposition-boundary", atoms: ["boundary", "wide"], coordinateKind: "subposition-boundary-glyph" },
+        { text: "0", role: "subject-nominative", atoms: ["nominative", "wide"], coordinateKind: "carrier-glyph" },
+    ]);
+    s.eq("the compatibility collapse is exactly the coordinate projection",
+        ctx.collapseClassicalFormulaAnnotationRanges("#0-0#", coordinateEvidence),
+        ctx.projectClassicalFormulaCoordinateEvidence(coordinateFrame));
+    s.ok("all three formula displays expose the same coordinate identity contract",
+        rendering.includes("buildClassicalFormulaCoordinateFrame(text, annotations)")
+        && rendering.includes("mark.dataset.classicalFormulaCoordinate = annotation.coordinateId")
+        && rendering.includes("mark.dataset.classicalFormulaCoordinateKind = annotation.coordinateGlyphKind")
+        && rendering.includes("mark.dataset.classicalFormulaCoordinateRoles = annotation.collapsedRoles.join"));
+    const earlyLessonFormula = "ah#zo #ni-0+qu-0(ce-ce-ya)0+⎕-0#.";
+    const earlyLessonAnnotations = ctx.getClassicalFormulaDerivedAnnotations(
+        earlyLessonFormula,
+        {
+            objectProfile: { objectKind: "specific-projective", objectPerson: "3sg" },
+            slots: {
+                subject: { pers1: "ni", pers2: "0", baseMorph: "n" },
+                prePredicate: [{
+                    kind: "dyadic-valence",
+                    carrier: "qu-0",
+                    va1: "qu",
+                    va2: "0",
+                    morphIdentityFrame: { morphIdentity: "/k/" },
+                }],
+                predicate: { stem: "ce-ce-ya", tns: "0" },
+                number: { num1: "⎕", num2: "0" },
+            },
+        },
+        { classId: "B" },
+    );
+    const earlyLessonProjection = ctx.projectClassicalFormulaCoordinateEvidence(
+        ctx.buildClassicalFormulaCoordinateFrame(
+            earlyLessonFormula,
+            earlyLessonAnnotations,
+        ),
+    );
+    const predicateStart = earlyLessonFormula.indexOf("(");
+    const predicateEnd = earlyLessonFormula.indexOf(")");
+    const internalStemBoundaries = earlyLessonProjection.filter(annotation => (
+        earlyLessonFormula.slice(annotation.start, annotation.end) === "-"
+        && annotation.start > predicateStart
+        && annotation.end < predicateEnd
+    ));
+    const attachedBoundary = earlyLessonProjection.find(annotation => (
+        annotation.start === earlyLessonFormula.indexOf("#")
+    ));
+    const positionBoundary = earlyLessonProjection.find(annotation => (
+        earlyLessonFormula.slice(annotation.start, annotation.end) === "+"
+    ));
+    const punctuation = earlyLessonProjection.find(annotation => (
+        earlyLessonFormula.slice(annotation.start, annotation.end) === "."
+    ));
+    s.eq("real atoms from Lessons 3, 4, 7, and 8 retain their shared coordinates", {
+        lesson3Attachment: attachedBoundary?.role === "right-attached-boundary"
+            && attachedBoundary.atomIds.includes("ACI-P056-L024-EA0D75FF38-10"),
+        lesson4Position: positionBoundary?.role === "position-boundary"
+            && positionBoundary.atomIds.includes("ACI-P061-L017-65685DB703"),
+        lesson4And7StemBoundaries: internalStemBoundaries.length === 2
+            && internalStemBoundaries.every(annotation => (
+                annotation.role === "stem-morph-boundary"
+                && annotation.collapsedRoles.includes("subposition-boundary")
+                && annotation.atomIds.includes("ACI-P062-L027-4EB4F1E6A9")
+                && annotation.atomIds.includes("ACI-P076-L011-65C1B6BAA4")
+            )),
+        lesson8Punctuation: punctuation?.role === "statement-punctuation"
+            && punctuation.atomIds.includes("ACI-P090-L025-7E541086E8"),
+    }, {
+        lesson3Attachment: true,
+        lesson4Position: true,
+        lesson4And7StemBoundaries: true,
+        lesson8Punctuation: true,
+    });
     s.ok("Formula and Diagram letters have the same increased reading space",
         css.includes('.classical-rule-surface__diagram-expression\n) {')
         && css.includes("letter-spacing: 0.055em;"));

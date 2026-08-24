@@ -16,10 +16,10 @@
     "batches": 5,
     "proposedBoth": 107,
     "proposedReadingOnly": 245,
-    "acceptedAtoms": 336,
+    "acceptedAtoms": 352,
     "declinedAtoms": 0,
-    "awaitingReview": 16,
-    "implementationCredit": 336
+    "awaitingReview": 0,
+    "implementationCredit": 352
   },
   "groups": [
     {
@@ -306,8 +306,8 @@
       "readingJob": "Guide the reader to the whole-construction meaning rather than a word-by-word false reading.",
       "decisionSplit": "The user supplies the construction; the application recognizes its authorized idiomatic reading.",
       "controlPolicy": "No idiom checkbox; recognition is automatic.",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "exactlyObserved": 0
+      "reviewStatus": "ACCEPTED",
+      "exactlyObserved": 16
     }
   ],
   "records": [
@@ -9064,14 +9064,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L036-F0CAA3F745",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L036-F0CAA3F745"
     },
     {
       "atomId": "ACI-P113-L038-1F53274843",
@@ -9090,14 +9090,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L038-1F53274843",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L038-1F53274843"
     },
     {
       "atomId": "ACI-P113-L038-D66D0DDEFF",
@@ -9116,14 +9116,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L038-D66D0DDEFF",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L038-D66D0DDEFF"
     },
     {
       "atomId": "ACI-P113-L038-D66D0DDEFF-02",
@@ -9142,14 +9142,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L038-D66D0DDEFF-02",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L038-D66D0DDEFF-02"
     },
     {
       "atomId": "ACI-P113-L038-D66D0DDEFF-03",
@@ -9168,14 +9168,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L038-D66D0DDEFF-03",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L038-D66D0DDEFF-03"
     },
     {
       "atomId": "ACI-P113-L038-B5612018DA",
@@ -9194,14 +9194,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L038-B5612018DA",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L038-B5612018DA"
     },
     {
       "atomId": "ACI-P113-L040-548E9B4F2B",
@@ -9220,14 +9220,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P113-L040-548E9B4F2B",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P113-L040-548E9B4F2B"
     },
     {
       "atomId": "ACI-P114-L002-47B97448A6",
@@ -9246,14 +9246,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L002-47B97448A6",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L002-47B97448A6"
     },
     {
       "atomId": "ACI-P114-L002-47B97448A6-02",
@@ -9272,14 +9272,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L002-47B97448A6-02",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L002-47B97448A6-02"
     },
     {
       "atomId": "ACI-P114-L002-47B97448A6-03",
@@ -9298,14 +9298,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L002-47B97448A6-03",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L002-47B97448A6-03"
     },
     {
       "atomId": "ACI-P114-L002-47B97448A6-04",
@@ -9324,14 +9324,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L002-47B97448A6-04",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L002-47B97448A6-04"
     },
     {
       "atomId": "ACI-P114-L004-465B90224C",
@@ -9350,14 +9350,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L004-465B90224C",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L004-465B90224C"
     },
     {
       "atomId": "ACI-P114-L005-D03B2D762D",
@@ -9376,14 +9376,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L005-D03B2D762D",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L005-D03B2D762D"
     },
     {
       "atomId": "ACI-P114-L006-0355A30655",
@@ -9402,14 +9402,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L006-0355A30655",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L006-0355A30655"
     },
     {
       "atomId": "ACI-P114-L007-2D0A60566E",
@@ -9428,14 +9428,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L007-2D0A60566E",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L007-2D0A60566E"
     },
     {
       "atomId": "ACI-P114-L008-68EE07FD33",
@@ -9454,14 +9454,14 @@
       "proposedUserChoiceJob": "NO_NEW_USER_CHOICE",
       "proposedApplicationJob": "Apply an idiomatic reading only when its complete authorized construction is present.",
       "proposedDerivedCueJob": "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
-      "reviewStatus": "AWAITING_USER_REVIEW",
-      "acceptedJob": "",
-      "implementationCredit": "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
+      "reviewStatus": "ACCEPTED",
+      "acceptedJob": "Read the attested whole-construction idioms without turning them into productive grammar or adding a user control.",
+      "implementationCredit": "EXACTLY_OBSERVED",
       "writingObservationTest": "",
       "writingMutationTest": "",
-      "readerGuidanceIdeaId": "",
-      "readerObservationTest": "",
-      "readerMutationTest": ""
+      "readerGuidanceIdeaId": "lesson11-irregular-idioms",
+      "readerObservationTest": "src/tests/classical_lesson11_reader_guidance.test.js#ACI-P114-L008-68EE07FD33",
+      "readerMutationTest": "src/tests/classical_lesson11_reader_guidance.test.js#mutation:ACI-P114-L008-68EE07FD33"
     }
   ]
 }

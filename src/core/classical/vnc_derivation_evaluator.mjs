@@ -7,13 +7,13 @@ import {
 import {
   normalizeClassicalNahuatlVncParadigmTense,
   normalizeClassicalNahuatlVncSemanticTense,
-} from "./vnc_layer_evaluator.mjs?v=20260823-built-in-valence-default-236";
+} from "./vnc_layer_evaluator.mjs?v=20260823-grammatical-atlas-live-bridge-256";
 import {
   getClassicalNahuatlPhoneRepertoryRelation,
 } from "../concepts/phone_repertory_facts.mjs?v=20260810-atom099-001";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
-} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 export const CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES = Object.freeze(["direct", "causative", "applicative"]);
 
@@ -6761,7 +6761,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
     }
     function getClassicalNahuatlVncDerivationSafeSentenceOptions(options = {}) {
       const source = options?.sentenceOptions && typeof options.sentenceOptions === "object" ? options.sentenceOptions : options;
-      const keys = ["directionalPrefix", "incorporatedAdverb", "adverbPosition", "sentenceType", "negative", "questionMode", "introductoryParticle", "prefaceParticle", "lesson9PrefaceParticle", "introductoryModifier", "lesson9IntroductoryModifier", "admonitiveTranslationReading", "translationReading", "requestedTranslationReading", "admonitiveContrastReading", "contrastReading", "requestedContrastReading", "sentenceAntecessive", "antecessive", "requestedNegativePrefix", "negativePrefix", "outsidePrefixes", "construction", "lesson11LexicalReading"];
+      const keys = ["directionalPrefix", "directionalIttaContraction", "incorporatedAdverb", "adverbPosition", "sentenceType", "negative", "questionMode", "introductoryParticle", "prefaceParticle", "lesson9PrefaceParticle", "introductoryModifier", "lesson9IntroductoryModifier", "admonitiveTranslationReading", "translationReading", "requestedTranslationReading", "admonitiveContrastReading", "contrastReading", "requestedContrastReading", "sentenceAntecessive", "antecessive", "requestedNegativePrefix", "negativePrefix", "outsidePrefixes", "construction", "lesson11LexicalReading"];
       return Object.fromEntries(keys.filter(key => Object.prototype.hasOwnProperty.call(source || {}, key)).map(key => [key, Array.isArray(source[key]) ? [...source[key]] : source[key]]));
     }
     function buildBlockedClassicalNahuatlDerivedVncMachineryFrame(sourceMachineryFrame = null, operationFrame = null, blockReason = "classical-vnc-derived-machinery-not-authorized") {
@@ -6814,6 +6814,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       const negative = sentenceFrame.lesson9NegativeRequested === true || sentenceFrame.lesson10NegativeRequested === true || sentenceFrame.sentenceType === "negative-assertion" || Boolean(sentenceFrame.negativePrefix);
       return getClassicalNahuatlVncDerivationSafeSentenceOptions({
         directionalPrefix: expandedBoundary.directionalPrefix || conclusion.directionalPrefix || "",
+        directionalIttaContraction: expandedBoundary.directionalIttaContractionFrame?.requestedSelection || "",
         incorporatedAdverb: conclusion.incorporatedAdverb || "",
         adverbPosition: conclusion.adverbPosition || "",
         sentenceType: sentenceFrame.sentenceType || "",

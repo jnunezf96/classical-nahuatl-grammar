@@ -4,19 +4,19 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-source-operation-prompts-259";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";
 import {
   buildClassicalNahuatlParticipantFrame,
   doesClassicalNahuatlParticipantTransitionRetireSourceRole,
-} from "../../core/classical/participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 export function createClassicalNahuatlVncApplicationModule(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION = 1;
@@ -4917,6 +4917,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       rejectedAuthorityFields = [],
       unsupportedIntentFields = [],
       forcedBlockReason = "",
+      choicePendingTypedVncSlotFrames = [],
+      choicePendingApplicationFrames = [],
       continuationSource = null,
       runtimeTarget = null
     } = {}) {
@@ -4959,6 +4961,21 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         participantProjection,
         selectedMachineryFrame: authorizationStatus === "authorized" ? selectedMachineryFrame : null,
         finalTypedVncSlotFrame,
+        choicePendingTypedVncSlotFrames: Object.freeze(
+          authorizationStatus === "blocked"
+            ? choicePendingTypedVncSlotFrames.filter(frame => (
+                applicationRuntimeTarget?.isClassicalNahuatlVncSlotFrame?.(frame) === true
+              ))
+            : []
+        ),
+        choicePendingApplicationFrames: Object.freeze(
+          authorizationStatus === "blocked"
+            ? choicePendingApplicationFrames.filter(frame => (
+                frame?.authorizationStatus === "authorized"
+                && frame.resultFrame?.authorizationStatus === "authorized"
+              ))
+            : []
+        ),
         formulaRealization,
         finiteSurfaceFrame: authorizationStatus === "authorized" ? finiteSurfaceFrame : null,
         surfaceRealization,
@@ -5638,6 +5655,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
                 : ""
           : "";
         if (nonactiveFormationChoiceBlockReason) {
+          const choicePendingApplicationFrames = nonactiveFormationChoiceBlockReason
+            === "classical-vnc-nonactive-formation-option-selection-required"
+            ? nonactiveOptionInventory.options.map(option => {
+                return evaluateWithContinuationSource({
+                  ...requestObject,
+                  nonactiveOptionId: option.optionId
+                }, continuationSource);
+              }).filter(frame => frame?.authorizationStatus === "authorized")
+            : [];
+          const choicePendingTypedVncSlotFrames = choicePendingApplicationFrames
+            .map(frame => frame.resultFrame?.finalTypedVncSlotFrame || null)
+            .filter(Boolean);
           const controlFrame = Object.freeze({
             ...controlFrameBase,
             authorizationStatus: "blocked",
@@ -5656,6 +5685,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             missingCapabilities,
             rejectedAuthorityFields,
             unsupportedIntentFields,
+            choicePendingTypedVncSlotFrames,
+            choicePendingApplicationFrames,
             forcedBlockReason: nonactiveFormationChoiceBlockReason
           }));
         }
@@ -6580,20 +6611,27 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       request = {},
       continuationSourceResultOrDependencies = null,
     ) {
+      const sharedService =
+        getClassicalNahuatlVncApplicationSharedService();
+      const sharedContinuationProjection =
+        continuationSourceResultOrDependencies
+          ? sharedService.getContinuationSourceConstituents(
+            continuationSourceResultOrDependencies,
+          )
+          : null;
       if (
         isClassicalNahuatlVncApplicationResultFrame(
           continuationSourceResultOrDependencies,
         )
+        || sharedContinuationProjection
       ) {
-        return getClassicalNahuatlVncApplicationSharedService()
-          .continueFromResult(
-            continuationSourceResultOrDependencies,
-            request,
-          );
+        return sharedService.continueFromResult(
+          continuationSourceResultOrDependencies,
+          request,
+        );
       }
       if (!continuationSourceResultOrDependencies) {
-        return getClassicalNahuatlVncApplicationSharedService()
-          .evaluate(request);
+        return sharedService.evaluate(request);
       }
       const dependencySource =
         continuationSourceResultOrDependencies

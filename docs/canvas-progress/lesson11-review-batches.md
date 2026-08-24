@@ -168,6 +168,5 @@ All 352 atoms are included exactly once. Unaccepted groups remain proposals; imp
 - User/application split: The user supplies the construction; the application recognizes its authorized idiomatic reading.
 - Control policy: No idiom checkbox; recognition is automatic.
 - Proposal: Keep idiomatic lexical meaning separate from productive paradigm formation.
-- Status: AWAITING_USER_REVIEW
-- Exactly observed: 0/16
-
+- Status: ACCEPTED
+- Exactly observed: 16/16

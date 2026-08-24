@@ -234,7 +234,7 @@ function run(ctx) {
         exampleAuthority: rhymeTopology.exampleIdentityAuthority,
     }, {
         topologyKind: "classical-grammatical-rhyme-topology-frame",
-        topologyVersion: 5,
+        topologyVersion: 6,
         routeCount: axisLedger.counts.operationCount,
         inventoryIsCached: true,
         everyRouteHasSixFields: true,
@@ -309,7 +309,7 @@ function run(ctx) {
         ),
     }, {
         kind: "classical-grammatical-rhyme-lesson-discovery-frame",
-        version: 5,
+        version: 6,
         planeCount: 58,
         lessonNumbers: Array.from(
             { length: 58 },

@@ -3749,6 +3749,75 @@ function run(ctx = {}) {
             : "rendering-runtime-not-loaded"
     );
     s.eq(
+        "passive admonitives with on or huāl retain the normal canonical single-VNC Result presentation",
+        typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function"
+            ? (() => {
+                const build = directionalPrefix =>
+                    ctx.buildClassicalRuleLogicSurfaceFrame({
+                        stem: "āna",
+                        basalUnit: "vnc",
+                        sourceTransitivity: "transitive",
+                        valence: "specific-projective",
+                        objectKind: "specific-projective",
+                        objectPerson: "3sg",
+                        subject: "1sg",
+                        mood: "admonitive",
+                        tense: "nonpast",
+                        verbClass: "B",
+                        vncVoice: "passive",
+                        nonactiveOptionId: "lō:āna-lō",
+                        directionalPrefix,
+                        introductoryParticle: "mā",
+                        vncOutputScope: "single",
+                    });
+                return ["on", "huāl"].map(directionalPrefix => {
+                    const surface = build(directionalPrefix);
+                    return {
+                        directionalPrefix,
+                        status: surface.authorizationStatus,
+                        formula: surface.selectedFormula,
+                        sentenceFormula: surface.sentenceFormulaDisplay,
+                        sentenceSurface: surface.sentenceSurfaceDisplay,
+                        singleStatus:
+                            surface.vncSingleFormDisplayFrame
+                                ?.authorizationStatus,
+                        singleReason:
+                            surface.vncSingleFormDisplayFrame?.blockReason,
+                        retiredObjectPerson:
+                            surface.machineryFrame?.selectedOutputLogicFrame
+                                ?.outputFillers?.selectedObjectPerson || "",
+                    };
+                });
+            })()
+            : (ctx.__TEST_RUNTIME_MODE__ === "module"
+                ? "module-runtime-missing"
+                : "rendering-runtime-not-loaded"),
+        ctx.__TEST_RUNTIME_MODE__ === "module"
+            ? [
+                {
+                    directionalPrefix: "on",
+                    status: "authorized",
+                    formula: "#0-0+on(āna-lo)h+⎕-0#",
+                    sentenceFormula: "mā #0-0+on(āna-lo)h+⎕-0#.",
+                    sentenceSurface: "Mā onānaloh.",
+                    singleStatus: "authorized",
+                    singleReason: "",
+                    retiredObjectPerson: "",
+                },
+                {
+                    directionalPrefix: "huāl",
+                    status: "authorized",
+                    formula: "#0-0+huāl(āna-lo)h+⎕-0#",
+                    sentenceFormula: "mā #0-0+huāl(āna-lo)h+⎕-0#.",
+                    sentenceSurface: "Mā huālānaloh.",
+                    singleStatus: "authorized",
+                    singleReason: "",
+                    retiredObjectPerson: "",
+                },
+            ]
+            : "rendering-runtime-not-loaded"
+    );
+    s.eq(
         "Classical directional object surface separates third-person c-0+on from first/second-person objects",
         typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function"
             ? (() => {
@@ -8386,7 +8455,9 @@ function run(ctx = {}) {
         rendering.includes('const nncDiagrammaticFrame = basalMeta.unit === "nnc"')
             && rendering.includes("canonicalNncResult?.typedSlotFrame || null")
             && rendering.includes('const vncDiagrammaticFrame = basalMeta.unit === "vnc"')
+            && rendering.includes("buildClassicalVncChoicePendingDiagrammaticFrame(")
             && rendering.includes("requestClassicalVncDiagrammaticFrame(finalTypedVncSlotFrame)")
+            && rendering.includes('projectionAuthority: "common-owner-issued-nonactive-choice-structure"')
             && rendering.includes('nuclearClauseDiagram.dataset.classicalNuclearClauseDiagramAuthority')
             && rendering.includes('linearFormatTitle.textContent = "Linear format"')
             && rendering.includes('nuclearClauseDiagramTitleText.textContent = "Diagrammatic format"')
@@ -8399,6 +8470,8 @@ function run(ctx = {}) {
             && rendering.includes("function createClassicalResultSpecificitySwitch(")
             && rendering.includes("const resultSpecificitySwitch = createClassicalResultSpecificitySwitch(")
             && rendering.includes('const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || ""')
+            && rendering.includes('const typedSentenceFormulaDisplay = surfaceFrame.diagrammaticFrame')
+            && rendering.includes('surfaceFrame.sentenceFormulaDisplay || ""')
             && rendering.includes('const generalDiagramRows = surfaceFrame.diagrammaticFrame?.generalRows || []')
             && rendering.includes('row.dataset.classicalNuclearClauseDiagramRole = diagramRow.role')
             && rendering.includes('const predicateGroupFrame = surfaceFrame.diagrammaticFrame?.predicateGroup || null')
@@ -8953,8 +9026,10 @@ function run(ctx = {}) {
             && rendering.includes('singleNncTitle.textContent = "Generated form"')
             && rendering.includes('singleNncAnswerLabel.textContent = "Classical Nahuatl"')
             && !rendering.includes('item.dataset.classicalNncThirdPluralPossessorVariant = variant.st2')
-            && rendering.includes('singleNncLinearButton.textContent = "Linear"')
-            && rendering.includes('singleNncDiagramButton.textContent = "Diagram"')
+            && rendering.includes('linearFormatTitle.textContent = "Linear format"')
+            && rendering.includes('nuclearClauseDiagramTitleText.textContent = "Diagrammatic format"')
+            && !rendering.includes("singleNncLinearButton")
+            && !rendering.includes("singleNncDiagramButton")
             && rendering.includes("const resultFormatNodes = singleNncElegantActive")
             && css.includes(".classical-rule-surface__single-nnc")
             && css.includes(".classical-rule-surface__single-nnc-surface")
@@ -9277,8 +9352,10 @@ function run(ctx = {}) {
                     blockedStatus: blocked.authorizationStatus,
                     blockedFormula: blocked.selectedFormula,
                     uiAnalogPresent: rendering.includes('singleVncSection.dataset.classicalVncSingleForm = "true"')
-                        && rendering.includes('singleVncLinearButton.textContent = "Linear"')
-                        && rendering.includes('singleVncDiagramButton.textContent = "Diagram"')
+                        && rendering.includes('linearFormatTitle.textContent = "Linear format"')
+                        && rendering.includes('nuclearClauseDiagramTitleText.textContent = "Diagrammatic format"')
+                        && !rendering.includes("singleVncLinearButton")
+                        && !rendering.includes("singleVncDiagramButton")
                         && rendering.includes("const resultFormatNodes = singleNncElegantActive")
                         && css.includes(".classical-rule-surface__single-vnc"),
                 };
@@ -12118,6 +12195,67 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "A pending nonactive formation previews the common new structure with only STEM unresolved",
+        typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function"
+            ? (() => {
+                const frame = ctx.buildClassicalRuleLogicSurfaceFrame({
+                    basalUnit: "vnc",
+                    lesson: "7",
+                    stem: "āna",
+                    sourceTransitivity: "transitive",
+                    verbClass: "B",
+                    valence: "specific-projective",
+                    subject: "3sg",
+                    objectKind: "specific-projective",
+                    objectPerson: "1sg",
+                    mood: "indicative",
+                    tense: "present",
+                    construction: "none",
+                    vncOutputScope: "single",
+                    vncVoice: "passive",
+                });
+                return {
+                    status: frame.authorizationStatus,
+                    reason: frame.blockReason,
+                    pendingCount: frame.state?.vncApplicationFrame?.resultFrame
+                        ?.choicePendingTypedVncSlotFrames?.length || 0,
+                    choicePending: frame.diagrammaticFrame?.choicePending === true,
+                    authority: frame.diagrammaticFrame?.projectionAuthority || "",
+                    linear: frame.diagrammaticFrame?.linearFormula || "",
+                    rows: frame.diagrammaticFrame?.rows?.map(row => [
+                        row.role,
+                        row.expression,
+                        row.foundation || "",
+                    ]) || [],
+                    general: frame.diagrammaticFrame?.generalLinearFormula || "",
+                    sentenceFormula: frame.sentenceFormulaDisplay || "",
+                    sentenceFormulaAttachment: frame.sentenceFormulaAttachment || "",
+                    resultAuthority: frame.diagrammaticFrame?.resultAuthority,
+                };
+            })()
+            : null,
+        ctx.__TEST_RUNTIME_MODE__ === "module"
+            ? {
+                status: "blocked",
+                reason: "classical-vnc-nonactive-formation-option-selection-required",
+                pendingCount: 2,
+                choicePending: true,
+                authority: "common-owner-issued-nonactive-choice-structure",
+                linear: "#n-0(STEM)0+0-0#",
+                rows: [
+                    ["Subject", "#n-0+ ... +0-0#", ""],
+                    ["Core", "(STEM)", "STEM"],
+                    ["Tense", ")0+", ""],
+                ],
+                general: "#pers¹-pers²(STEM)tns+num¹-num²#",
+                sentenceFormula: "#n-0(STEM)0+0-0#.",
+                sentenceFormulaAttachment: "single-vnc-formula-as-sentence",
+                resultAuthority: false,
+            }
+            : null
+    );
+
+    s.eq(
         "The visible surface carries its selected nonactive formation into the one application engine",
         typeof ctx.buildClassicalRuleLogicSurfaceFrame === "function"
             ? (() => {
@@ -12160,6 +12298,18 @@ function run(ctx = {}) {
             ["hua:zō-hua", "lō:zō-lō"],
             "#0-0+ne(zō-lo)0+0-0#",
         ]
+    );
+
+    s.ok(
+        "changing a neighboring Grammar choice preserves the selected licensed nonactive formation",
+        composer.includes(
+            "function getClassicalPreservedNonactiveFormationRequestOverrides("
+        )
+            && composer.includes('["passive", "impersonal"].includes(')
+            && composer.includes("selectedOption.disabled !== true")
+            && composer.includes(
+                "...getClassicalPreservedNonactiveFormationRequestOverrides(control)"
+            )
     );
 
     const sourceTransitivityValues = ["intransitive", "transitive", "bitransitive"];

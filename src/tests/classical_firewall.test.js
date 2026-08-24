@@ -4026,6 +4026,96 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "supportive i reads the first audible typed carrier even when its participant position is unsounded",
+        (() => {
+            const compositeCarrierFrame = {
+                slots: {
+                    prePredicate: [{
+                        carrier: "n-⎕",
+                        objectPositionFrame: { sounded: false },
+                    }],
+                    predicate: { stem: "āna-l" },
+                },
+            };
+            const silentCarrierFrame = {
+                slots: {
+                    prePredicate: [{
+                        carrier: "⎕-⎕",
+                        objectPositionFrame: { sounded: false },
+                    }],
+                    predicate: { stem: "āna-l" },
+                },
+            };
+            return {
+                audibleNeighbor:
+                    ctx.getClassicalNahuatlVncNextCarrierAfterSubject(
+                        compositeCarrierFrame
+                    ),
+                audibleFirstSound:
+                    ctx.getClassicalNahuatlVncSlotFirstSound(
+                        ctx.getClassicalNahuatlVncNextCarrierAfterSubject(
+                            compositeCarrierFrame
+                        )
+                    ),
+                silentFallsThroughToStem:
+                    ctx.getClassicalNahuatlVncNextCarrierAfterSubject(
+                        silentCarrierFrame
+                    ),
+            };
+        })(),
+        {
+            audibleNeighbor: "n-⎕",
+            audibleFirstSound: "n",
+            silentFallsThroughToStem: "āna-l",
+        }
+    );
+
+    s.eq(
+        "the canonical final boundary preserves supportive i before n-square-zero",
+        (() => {
+            const typedSlotFrame = ctx.buildClassicalNahuatlVncSlotFrame({
+                sourceFrameKind: "owner-issued-supportive-i-regression",
+                sourceAuthorizationStatus: "authorized",
+                stem: "āna-l",
+                personDyad: {
+                    pers1: "t",
+                    pers2: "0",
+                    pers1BaseMorph: "t",
+                },
+                tenseFrame: { tns: "0" },
+                numberDyad: { num1: "0", num2: "0" },
+                objectFrame: {
+                    valenceArity: "multiple",
+                    positions: [{
+                        valenceArity: "dyadic",
+                        va1: "n",
+                        va2: "⎕",
+                        sounded: false,
+                    }],
+                },
+            });
+            const result =
+                ctx.realizeClassicalNahuatlVncSlotFrameAtFinalBoundary({
+                    vncSlotFrame: typedSlotFrame,
+                });
+            return {
+                status: result.authorizationStatus,
+                formula: result.formulaRealization,
+                subject: result.finalSubjectCarrier,
+                action: result.actions.includes(
+                    "realize-pers1-supportive-vowel-after-slot-order"
+                ),
+            };
+        })(),
+        {
+            status: "authorized",
+            formula: "#ti-0+n-⎕(āna-l)0+0-0#",
+            subject: "ti",
+            action: true,
+        }
+    );
+
+    s.eq(
         "Classical Lesson 9.1-9.4 optative mechanics have exact Canvas spans and canonical callables",
         (() => {
             const rules = ctx.getClassicalNahuatlOptativeVncRules();

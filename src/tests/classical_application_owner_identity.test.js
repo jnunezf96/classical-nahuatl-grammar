@@ -43,12 +43,25 @@ function run(ctx) {
         voice: "active",
         outputKind: "single",
     };
+    const vocativeAgentive = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "predicate-nominalization",
+        nominalizationKind: "preterit-agentive",
+        source: {
+            sourceStage: "preterit-predicate",
+            sourceStem: "pix",
+            verbClass: "A",
+            sourceVoice: "active",
+            sourceValence: "intransitive",
+            sourceObjectPattern: "none",
+            sourceSubject: "3sg",
+        },
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
     const deverbalRequest = {
         constructionKind: "vocative",
-        source: {
-            wordStem: "pix",
-            numberConnector: "c",
-        },
+        canonicalNncResult: vocativeAgentive,
     };
     const adverbialRequest = {
         adverbialPotentialFrame:

@@ -1,7 +1,7 @@
 import {
   buildClassicalNahuatlParticipantFrame,
   parseClassicalNahuatlPersonNumber,
-} from "../classical/participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "../classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 // Canonical typed supplementation grammar for Andrews Lessons 17-19.
 //

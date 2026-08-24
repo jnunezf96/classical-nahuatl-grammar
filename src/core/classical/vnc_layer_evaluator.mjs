@@ -18,7 +18,7 @@ import {
 } from "./vnc_lessons20_22_grammar.mjs?v=20260815-lesson23-complete-302";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
-} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 export const CLASSICAL_NAHUATL_VNC_TARGET_VOICES = Object.freeze([
   "active",
@@ -898,8 +898,7 @@ export function createClassicalNahuatlVncLayerEvaluatorApi(targetObject = global
         const carrier = normalizeClassicalNahuatlVncSlotCarrier(slot?.carrier);
         const carrierParts = carrier.split("-").filter(Boolean);
         return carrier
-          && slot?.objectPositionFrame?.sounded !== false
-          && !carrierParts.every(isClassicalNahuatlVncSilentCarrier);
+          && carrierParts.some(part => !isClassicalNahuatlVncSilentCarrier(part));
       })?.carrier || "";
       return firstPrePredicate || frame?.slots?.predicate?.stem || "";
     }

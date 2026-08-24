@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
+import { spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -21,6 +23,34 @@ const decisionsPath = path.join(progressDirectory, `lesson${lesson}-review-decis
 const ledgerPath = path.join(progressDirectory, `lesson${lesson}-review-ledger.json`);
 const packetPath = path.join(progressDirectory, `lesson${lesson}-review-batches.md`);
 const proofPath = path.join(progressDirectory, `lesson${lesson}-implementation-proof.json`);
+const atlasPopulationPath = path.join(
+  ROOT,
+  "data",
+  "classical_grammatical_atlas_population.mjs",
+);
+const atlasPopulationVersionPath = path.join(
+  ROOT,
+  "data",
+  "classical_grammatical_atlas_population_version.mjs",
+);
+const atlasGeneratorPath = path.join(
+  ROOT,
+  "scripts",
+  "build_classical_grammatical_atlas_population.mjs",
+);
+const publicationLockPath = path.join(
+  ROOT,
+  "data",
+  ".classical_grammatical_atlas_publication.lock",
+);
+const publicationJournalPath = path.join(
+  ROOT,
+  "data",
+  ".classical_grammatical_atlas_publication.journal.json",
+);
+const PUBLICATION_JOURNAL_KIND =
+  "classical-grammatical-atlas-publication-journal";
+const PUBLICATION_JOURNAL_SCHEMA_VERSION = 1;
 
 for (const requiredPath of [atomLedgerPath, planPath, decisionsPath]) {
   if (!fs.existsSync(requiredPath)) {
@@ -223,10 +253,344 @@ for (const group of groups) {
 }
 
 const ledgerText = `${JSON.stringify(ledger, null, 2)}\n`;
-const packetText = `${packetLines.join("\n")}\n`;
+const packetText = `${packetLines.join("\n").trimEnd()}\n`;
+
+function fileSnapshot(filePath) {
+  const relativePath = path.relative(ROOT, filePath);
+  if (!relativePath
+    || relativePath.startsWith("..")
+    || path.isAbsolute(relativePath)) {
+    throw new Error(`Publication target leaves Web root: ${filePath}`);
+  }
+  const existed = fs.existsSync(filePath);
+  return {
+    relativePath,
+    existed,
+    contentsBase64: existed
+      ? fs.readFileSync(filePath).toString("base64")
+      : "",
+  };
+}
+
+function fsyncDirectory(directoryPath) {
+  let descriptor;
+  try {
+    descriptor = fs.openSync(directoryPath, "r");
+    fs.fsyncSync(descriptor);
+  } finally {
+    if (descriptor !== undefined) fs.closeSync(descriptor);
+  }
+}
+
+function writeFileDurably(filePath, contents, options = {}) {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  const descriptor = fs.openSync(
+    filePath,
+    options.flag || "w",
+    options.mode || 0o644,
+  );
+  try {
+    const buffer = Buffer.isBuffer(contents)
+      ? contents
+      : Buffer.from(String(contents), "utf8");
+    fs.writeSync(descriptor, buffer, 0, buffer.length, 0);
+    fs.fsyncSync(descriptor);
+  } finally {
+    fs.closeSync(descriptor);
+  }
+  fsyncDirectory(path.dirname(filePath));
+}
+
+function replaceFileAtomically(filePath, contents, options = {}) {
+  const temporaryPath = `${filePath}.tmp-${process.pid}-${crypto.randomUUID()}`;
+  try {
+    writeFileDurably(temporaryPath, contents, options);
+    fs.renameSync(temporaryPath, filePath);
+    fsyncDirectory(path.dirname(filePath));
+  } finally {
+    if (fs.existsSync(temporaryPath)) fs.unlinkSync(temporaryPath);
+  }
+}
+
+function removeFileDurably(filePath) {
+  if (!fs.existsSync(filePath)) return;
+  fs.unlinkSync(filePath);
+  fsyncDirectory(path.dirname(filePath));
+}
+
+function restoreSnapshot(snapshot) {
+  const filePath = path.resolve(ROOT, String(snapshot.relativePath || ""));
+  const relativePath = path.relative(ROOT, filePath);
+  if (!relativePath
+    || relativePath.startsWith("..")
+    || path.isAbsolute(relativePath)) {
+    throw new Error("Publication journal target leaves Web root");
+  }
+  if (snapshot.existed === true) {
+    replaceFileAtomically(
+      filePath,
+      Buffer.from(String(snapshot.contentsBase64 || ""), "base64"),
+    );
+  } else {
+    removeFileDurably(filePath);
+  }
+}
+
+function processIsAlive(pid) {
+  if (!Number.isInteger(pid) || pid <= 0) return true;
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch (error) {
+    return error?.code !== "ESRCH";
+  }
+}
+
+function acquirePublicationLock() {
+  fs.mkdirSync(path.dirname(publicationLockPath), { recursive: true });
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const token = crypto.randomUUID();
+    const owner = {
+      schemaVersion: 1,
+      pid: process.pid,
+      token,
+      actor: "lesson-review",
+      lesson,
+      startedAt: new Date().toISOString(),
+    };
+    try {
+      writeFileDurably(
+        publicationLockPath,
+        `${JSON.stringify(owner)}\n`,
+        { flag: "wx", mode: 0o600 },
+      );
+      return () => {
+        if (!fs.existsSync(publicationLockPath)) return;
+        let current;
+        try {
+          current = JSON.parse(fs.readFileSync(publicationLockPath, "utf8"));
+        } catch {
+          return;
+        }
+        if (current.token === token) removeFileDurably(publicationLockPath);
+      };
+    } catch (error) {
+      if (error?.code !== "EEXIST") throw error;
+      let existing;
+      try {
+        existing = JSON.parse(fs.readFileSync(publicationLockPath, "utf8"));
+      } catch {
+        throw new Error(
+          `Atlas publication lock exists and is unreadable: ${publicationLockPath}`,
+        );
+      }
+      if (processIsAlive(Number(existing.pid))) {
+        throw new Error(
+          `Atlas publication lock is held by pid ${existing.pid} (${existing.actor || "unknown"})`,
+        );
+      }
+      removeFileDurably(publicationLockPath);
+    }
+  }
+  throw new Error("Atlas publication lock could not be acquired");
+}
+
+function validatePublicationJournal(journal) {
+  if (journal?.schemaVersion !== PUBLICATION_JOURNAL_SCHEMA_VERSION
+    || journal?.kind !== PUBLICATION_JOURNAL_KIND
+    || path.resolve(journal.webRoot || "") !== path.resolve(ROOT)
+    || !Array.isArray(journal.targets)
+    || !Array.isArray(journal.stageRelativePaths)) {
+    throw new Error("Atlas publication journal is unreadable; refusing unsafe recovery");
+  }
+  for (const relativePath of [
+    ...journal.targets.map(target => target.relativePath),
+    ...journal.stageRelativePaths,
+  ]) {
+    const resolved = path.resolve(ROOT, String(relativePath || ""));
+    const relative = path.relative(ROOT, resolved);
+    if (!relative || relative.startsWith("..") || path.isAbsolute(relative)) {
+      throw new Error("Atlas publication journal contains an unsafe path");
+    }
+  }
+}
+
+function writePublicationJournal(journal) {
+  replaceFileAtomically(
+    publicationJournalPath,
+    `${JSON.stringify(journal, null, 2)}\n`,
+    { mode: 0o600 },
+  );
+}
+
+function recoverPublicationJournal() {
+  if (!fs.existsSync(publicationJournalPath)) return false;
+  const journal = JSON.parse(fs.readFileSync(publicationJournalPath, "utf8"));
+  validatePublicationJournal(journal);
+  const failures = [];
+  if (journal.phase !== "COMMITTED") {
+    for (const snapshot of journal.targets) {
+      try {
+        restoreSnapshot(snapshot);
+      } catch (error) {
+        failures.push(`${snapshot.relativePath}: ${error.message}`);
+      }
+    }
+  }
+  for (const relativePath of journal.stageRelativePaths) {
+    try {
+      removeFileDurably(path.resolve(ROOT, relativePath));
+    } catch (error) {
+      failures.push(`${relativePath}: ${error.message}`);
+    }
+  }
+  if (failures.length) {
+    throw new Error([
+      "Atlas publication journal recovery failed; journal was preserved.",
+      ...failures,
+    ].join("\n"));
+  }
+  removeFileDurably(publicationJournalPath);
+  return true;
+}
+
+function maybeInjectPublicationFailure(publishedCount) {
+  const caughtAt = Number(
+    process.env.CLASSICAL_LESSON_REVIEW_TEST_FAIL_AFTER_PUBLISH || 0,
+  );
+  if (caughtAt === publishedCount) {
+    throw new Error(`Injected publication failure after ${publishedCount} files`);
+  }
+  const crashAt = Number(
+    process.env.CLASSICAL_LESSON_REVIEW_TEST_CRASH_AFTER_PUBLISH || 0,
+  );
+  if (crashAt === publishedCount) process.exit(86);
+}
+
+function rollbackPublication(journal, originalError) {
+  const failures = [];
+  for (const snapshot of journal.targets) {
+    try {
+      restoreSnapshot(snapshot);
+    } catch (error) {
+      failures.push(`${snapshot.relativePath}: ${error.message}`);
+    }
+  }
+  for (const relativePath of journal.stageRelativePaths) {
+    try {
+      removeFileDurably(path.resolve(ROOT, relativePath));
+    } catch (error) {
+      failures.push(`${relativePath}: ${error.message}`);
+    }
+  }
+  if (!failures.length) removeFileDurably(publicationJournalPath);
+  if (failures.length) {
+    throw new Error([
+      originalError.message,
+      "Rollback also failed; the durable journal was preserved:",
+      ...failures,
+    ].join("\n"));
+  }
+  throw originalError;
+}
+
+function writeReviewAndAtlasTransactionally() {
+  if (!fs.existsSync(atlasGeneratorPath)) {
+    throw new Error(
+      `Missing Atlas generator: ${path.relative(path.dirname(ROOT), atlasGeneratorPath)}`,
+    );
+  }
+  const releaseLock = acquirePublicationLock();
+  try {
+    recoverPublicationJournal();
+    const transactionId = crypto.randomUUID();
+    const targetPaths = [
+      ledgerPath,
+      packetPath,
+      atlasPopulationPath,
+      atlasPopulationVersionPath,
+    ];
+    const stagePaths = targetPaths.map(targetPath => (
+      `${targetPath}.lesson-review-${transactionId}.tmp`
+    ));
+    const journal = {
+      schemaVersion: PUBLICATION_JOURNAL_SCHEMA_VERSION,
+      kind: PUBLICATION_JOURNAL_KIND,
+      webRoot: path.resolve(ROOT),
+      transactionId,
+      actor: "lesson-review",
+      lesson,
+      phase: "PREPARING",
+      targets: targetPaths.map(fileSnapshot),
+      stageRelativePaths: stagePaths.map(stagePath => (
+        path.relative(ROOT, stagePath)
+      )),
+    };
+    writePublicationJournal(journal);
+    try {
+      writeFileDurably(stagePaths[0], ledgerText);
+      writeFileDurably(stagePaths[1], packetText);
+      const generated = spawnSync(process.execPath, [
+        atlasGeneratorPath,
+        "--write",
+        "--self-test",
+        "--web-root",
+        ROOT,
+        "--output",
+        stagePaths[2],
+        "--version-output",
+        stagePaths[3],
+        "--lesson-ledger-override",
+        String(lesson),
+        stagePaths[0],
+      ], {
+        cwd: path.dirname(atlasGeneratorPath),
+        encoding: "utf8",
+        maxBuffer: 16 * 1024 * 1024,
+      });
+      if (generated.error
+        || generated.status !== 0
+        || !fs.existsSync(stagePaths[2])
+        || !fs.existsSync(stagePaths[3])) {
+        throw new Error([
+          "Atlas regeneration failed; Lesson review outputs were not kept.",
+          generated.error?.message,
+          generated.stderr,
+          generated.stdout,
+        ].filter(Boolean).join("\n"));
+      }
+      writePublicationJournal({
+        ...journal,
+        phase: "PUBLISHING",
+      });
+      targetPaths.forEach((targetPath, index) => {
+        fs.renameSync(stagePaths[index], targetPath);
+        fsyncDirectory(path.dirname(targetPath));
+        maybeInjectPublicationFailure(index + 1);
+      });
+      writePublicationJournal({
+        ...journal,
+        phase: "COMMITTED",
+      });
+      if (process.env.CLASSICAL_LESSON_REVIEW_TEST_CRASH_AFTER_COMMIT_JOURNAL
+        === "1") {
+        process.exit(87);
+      }
+      removeFileDurably(publicationJournalPath);
+    } catch (error) {
+      try {
+        rollbackPublication(journal, error);
+      } catch (rollbackError) {
+        throw rollbackError;
+      }
+    }
+  } finally {
+    releaseLock();
+  }
+}
+
 if (write) {
-  fs.writeFileSync(ledgerPath, ledgerText);
-  fs.writeFileSync(packetPath, packetText);
+  writeReviewAndAtlasTransactionally();
 } else {
   process.stdout.write(ledgerText);
 }

@@ -4,7 +4,7 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240";
 import {
   GENERATION_SOURCE_TRANSITIVITY,
   GENERATION_SOURCE_TRANSITIVITY_ORDER,
@@ -8118,7 +8118,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const available = !sourceUnit
           || sourceUnit === "any"
           || sourceUnit === activeUnit;
-        option.hidden = false;
+        option.hidden = !available;
         option.disabled = !available;
       });
       const sourceGroups = Array.from(
@@ -8128,19 +8128,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const groupUnit = String(
           group.dataset?.classicalOperationSourceGroup || ""
         ).trim();
-        group.hidden = false;
-        group.disabled = Boolean(groupUnit && groupUnit !== activeUnit);
+        const available = !groupUnit || groupUnit === activeUnit;
+        group.hidden = !available;
+        group.disabled = !available;
         group.label = groupUnit === activeUnit
           ? `Available from the current ${activeUnit.toUpperCase()} Source`
           : `Requires ${groupUnit === CLASSICAL_BASAL_UNIT.nnc ? "an" : "a"} ${groupUnit.toUpperCase()} Source`;
       });
-      const activeGroup = sourceGroups.find(group => (
-        group.dataset?.classicalOperationSourceGroup === activeUnit
-      ));
-      const firstSourceGroup = sourceGroups[0] || null;
-      if (activeGroup && firstSourceGroup && activeGroup !== firstSourceGroup) {
-        construction.insertBefore(activeGroup, firstSourceGroup);
-      }
       const selectedOption = construction.selectedOptions?.[0] || null;
       const selectedSourceUnit = String(
         selectedOption?.dataset?.classicalSourceUnit || ""
@@ -11236,15 +11230,44 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         nonactiveOptionId: String(control?.value || "").trim()
       };
     }
+    function getClassicalPreservedNonactiveFormationRequestOverrides(
+      control = null
+    ) {
+      if (isClassicalNonactiveFormationControl(control)) {
+        return getClassicalNonactiveFormationControlRequestOverrides(control);
+      }
+      const formationControl = targetObject.document?.getElementById?.(
+        CLASSICAL_NONACTIVE_FORMATION_CONTROL_ID
+      ) || null;
+      const voiceControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-vnc-voice"
+      ) || null;
+      const selectedOptionId = String(
+        formationControl?.value || ""
+      ).trim();
+      const selectedOption = selectedOptionId
+        ? Array.from(formationControl?.options || []).find(
+          option => option.value === selectedOptionId
+        ) || null
+        : null;
+      const nonactiveVoice = ["passive", "impersonal"].includes(
+        String(voiceControl?.value || "").trim()
+      );
+      return nonactiveVoice
+        && selectedOptionId
+        && selectedOption
+        && selectedOption.disabled !== true
+        ? { nonactiveOptionId: selectedOptionId }
+        : {};
+    }
     function refreshClassicalRuleLogicSurfaceFromControl(control = null) {
       if (typeof targetObject.renderClassicalRuleLogicSurfaceBlock !== "function") {
         return;
       }
-      const rendered = targetObject.renderClassicalRuleLogicSurfaceBlock(
-        isClassicalNonactiveFormationControl(control)
-          ? getClassicalNonactiveFormationControlRequestOverrides(control)
-          : getClassicalCausativeParticipantControlRequestOverrides(control)
-      );
+      const rendered = targetObject.renderClassicalRuleLogicSurfaceBlock({
+        ...getClassicalCausativeParticipantControlRequestOverrides(control),
+        ...getClassicalPreservedNonactiveFormationRequestOverrides(control)
+      });
       const derivationType = typeof targetObject.getActiveDerivationType === "function" ? targetObject.getActiveDerivationType() : "direct";
       if (["causative", "applicative"].includes(derivationType)) {
         syncEntradaUrlSegmentsFromCurrentState({
@@ -11514,6 +11537,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           if (control.id === "classical-rule-logic-polarity"
             && ClassicalParticleCombinationDraftSegments.length) {
             resolveClassicalParticleMatrix();
+          }
+          if ([
+            "classical-construction-operation",
+            "classical-rule-logic-late-operation",
+          ].includes(control.id)) {
+            targetObject.reconcileClassicalCompositionOperationControls?.(
+              control.id
+            );
           }
           if (control.id === "classical-construction-operation") {
             delete control.dataset.classicalSourcePartsDerivedOperation;

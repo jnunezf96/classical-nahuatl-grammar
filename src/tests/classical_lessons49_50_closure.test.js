@@ -311,6 +311,22 @@ function run(ctx) {
         sourceFamily: "preterit-agentive",
         clauses: [personalNameClause],
     });
+    const vocativeAgentive = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "predicate-nominalization",
+        nominalizationKind: "preterit-agentive",
+        source: {
+            sourceStage: "preterit-predicate",
+            sourceStem: "pix",
+            verbClass: "A",
+            sourceVoice: "active",
+            sourceValence: "intransitive",
+            sourceObjectPattern: "none",
+            sourceSubject: "3sg",
+        },
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
     const canonicalApplicationSources = [
         {
             id: "grammar:nominal-construction",
@@ -342,10 +358,7 @@ function run(ctx) {
             surface: "pixquē",
             result: ctx.requestClassicalDeverbalNncResult({
                 constructionKind: "vocative",
-                source: {
-                    wordStem: "pix",
-                    numberConnector: "c",
-                },
+                canonicalNncResult: vocativeAgentive,
             }),
         },
         {

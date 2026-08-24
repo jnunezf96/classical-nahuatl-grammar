@@ -43,6 +43,31 @@ function buildSecondCausativeRequest(source) {
     };
 }
 
+function buildFirstCaquiCausativeReceipt(ctx) {
+    const request = {
+        sourceStem: "caqui",
+        verbClass: "B",
+        sourceValence: "specific-projective",
+        objectKind: "specific-projective",
+        objectPerson: "3sg",
+        sourceSubject: "2sg",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "causative",
+        causativeObjectKind: "specific-projective",
+        requestedVoice: "active",
+    };
+    const preview = ctx.evaluateClassicalNahuatlVncApplication(request);
+    const optionId = preview.controlFrame?.derivationOptionInventory
+        ?.options?.find(option => option.targetStem === "caquī-tiā")
+        ?.optionId || "";
+    return ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "vnc:application",
+        args: [{ ...request, derivationOptionId: optionId }],
+    });
+}
+
 function run(ctx = {}) {
     const s = createSuite("classical_vnc_result_source_continuation");
     const service = ctx.createClassicalNahuatlVncApplication(ctx);
@@ -160,6 +185,229 @@ function run(ctx = {}) {
                 true,
                 true,
             ],
+        }
+    );
+
+    const firstReceipt = buildFirstCaquiCausativeReceipt(ctx);
+    const exactFirstResult = firstReceipt.canonicalResult.resultFrame;
+    const receiptSource =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            exactFirstResult
+        );
+    const receiptSecondRequest = buildSecondCausativeRequest(
+        receiptSource
+    );
+    const secondReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [receiptSecondRequest, exactFirstResult],
+        });
+    const secondGraph =
+        ctx.getClassicalGrammarApplicationLayerGraph(secondReceipt);
+    const directReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [{
+                ...receiptSecondRequest,
+                requestedDerivation: "direct",
+                causativeObjectKind: "",
+            }, exactFirstResult],
+        });
+    const exactDirectResult =
+        directReceipt.canonicalResult.resultFrame;
+    const directSource =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            exactDirectResult
+        );
+    const thirdReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [{
+                ...buildSecondCausativeRequest(directSource),
+            }, exactDirectResult],
+        });
+    const thirdGraph =
+        ctx.getClassicalGrammarApplicationLayerGraph(thirdReceipt);
+    const unusedExactReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [{
+                sourceStem: "cuīca",
+                verbClass: "A",
+                sourceValence: "intransitive",
+                subject: "3sg",
+                mood: "indicative",
+                tense: "present",
+                requestedDerivation: "direct",
+                requestedVoice: "active",
+                notes: [exactFirstResult],
+            }],
+        });
+    const copiedContinuationReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [receiptSecondRequest, { ...exactFirstResult }],
+        });
+    let jsonContinuationReceipt = null;
+    let jsonContinuationError = "";
+    try {
+        jsonContinuationReceipt =
+            ctx.executeClassicalGrammarApplicationRequest({
+                operationId: "vnc:application",
+                args: [
+                    receiptSecondRequest,
+                    JSON.parse(JSON.stringify(exactFirstResult)),
+                ],
+            });
+    } catch (error) {
+        jsonContinuationError = String(error?.message || error || "");
+    }
+    const topology = ctx.getClassicalGrammarApplicationInventory()
+        .grammaticalRhymeCalibration.topology;
+    s.eq(
+        "repeated same-owner applications are distinct local Result nodes without creating a topology self-route",
+        {
+            statuses: [
+                firstReceipt.authorizationStatus,
+                secondReceipt.authorizationStatus,
+                directReceipt.authorizationStatus,
+                thirdReceipt.authorizationStatus,
+            ],
+            secondGraph: {
+                valid:
+                    ctx.isClassicalGrammarApplicationLayerGraph(
+                        secondGraph
+                    ),
+                operations: secondGraph?.operationIds,
+                nodeCount: secondGraph?.nodeCount,
+                edgeCount: secondGraph?.edgeCount,
+                depth: secondGraph?.maximumDepth,
+                linear: secondGraph?.isLinear,
+                exactIdentities: [
+                    secondGraph?.nodes?.[0]?.applicationResult
+                        === firstReceipt,
+                    secondGraph?.nodes?.[1]?.applicationResult
+                        === secondReceipt,
+                    secondGraph?.edges?.[0]?.innerApplicationResult
+                        === firstReceipt,
+                    secondGraph?.edges?.[0]?.outerApplicationResult
+                        === secondReceipt,
+                ],
+                evidence:
+                    secondGraph?.edges?.[0]?.continuationEvidenceKind,
+                exactSlot:
+                    secondGraph?.edges?.[0]
+                        ?.exactContinuationSlotValidated,
+                ownerProjection:
+                    secondGraph?.edges?.[0]
+                        ?.ownerContinuationProjectionValidated,
+                topologyCompatibility:
+                    secondGraph?.edges?.[0]
+                        ?.topologyCompatibilityObserved,
+                compatibilityAuthority:
+                    secondGraph?.edges?.[0]?.compatibilityAuthority,
+            },
+            thirdGraph: {
+                operations: thirdGraph?.operationIds,
+                nodeCount: thirdGraph?.nodeCount,
+                edgeCount: thirdGraph?.edgeCount,
+                depth: thirdGraph?.maximumDepth,
+                linear: thirdGraph?.isLinear,
+                identities: thirdGraph?.nodes?.map(node => (
+                    node.applicationResult === firstReceipt
+                        ? "first"
+                        : node.applicationResult === directReceipt
+                            ? "second"
+                            : node.applicationResult === thirdReceipt
+                                ? "third"
+                                : "unknown"
+                )),
+            },
+            unusedExactArgument: {
+                status: unusedExactReceipt.authorizationStatus,
+                nodeCount:
+                    ctx.getClassicalGrammarApplicationLayerGraph(
+                        unusedExactReceipt
+                    )?.nodeCount,
+            },
+            copiedContinuation: {
+                status: copiedContinuationReceipt.authorizationStatus,
+                graph:
+                    ctx.getClassicalGrammarApplicationLayerGraph(
+                        copiedContinuationReceipt
+                    ),
+            },
+            jsonContinuation: {
+                status:
+                    jsonContinuationReceipt?.authorizationStatus
+                    || "rejected",
+                graph:
+                    ctx.getClassicalGrammarApplicationLayerGraph(
+                        jsonContinuationReceipt
+                    ),
+                forbiddenAuthorityRejected:
+                    jsonContinuationError.startsWith(
+                        "classical-grammar-application-request-invalid:"
+                        + "forbidden-authority:"
+                    ),
+            },
+            ownerProofObservationCount:
+                ctx.getClassicalGrammarApplicationRhymeOwnerProofObservations(
+                    secondReceipt
+                ).length,
+            globalSelfEdgeCount: topology.exactContinuationEdges.filter(
+                edge => edge.innerOperationId === "vnc:application"
+                    && edge.outerOperationId === "vnc:application"
+            ).length,
+        },
+        {
+            statuses: [
+                "authorized",
+                "authorized",
+                "authorized",
+                "authorized",
+            ],
+            secondGraph: {
+                valid: true,
+                operations: ["vnc:application", "vnc:application"],
+                nodeCount: 2,
+                edgeCount: 1,
+                depth: 2,
+                linear: true,
+                exactIdentities: [true, true, true, true],
+                evidence: "exact-instance-continuation",
+                exactSlot: true,
+                ownerProjection: true,
+                topologyCompatibility: false,
+                compatibilityAuthority: false,
+            },
+            thirdGraph: {
+                operations: [
+                    "vnc:application",
+                    "vnc:application",
+                    "vnc:application",
+                ],
+                nodeCount: 3,
+                edgeCount: 2,
+                depth: 3,
+                linear: true,
+                identities: ["first", "second", "third"],
+            },
+            unusedExactArgument: {
+                status: "authorized",
+                nodeCount: 1,
+            },
+            copiedContinuation: {
+                status: "blocked",
+                graph: null,
+            },
+            jsonContinuation: {
+                status: "rejected",
+                graph: null,
+                forbiddenAuthorityRejected: true,
+            },
+            ownerProofObservationCount: 0,
+            globalSelfEdgeCount: 0,
         }
     );
 
@@ -334,7 +582,7 @@ function run(ctx = {}) {
     const orderedProjection = service.getContinuationSourceConstituents(
         orderedResult
     );
-    const continuedLate = service.continueFromResult(lateResult, {
+    const lateContinuationRequest = {
         sourceStem: lateProjection?.sourceStem,
         sourceLexemeId: lateProjection?.sourceLexemeId,
         sourceInitialISelection:
@@ -349,12 +597,35 @@ function run(ctx = {}) {
         tense: "present",
         requestedDerivation: "direct",
         requestedVoice: "active",
-    });
+    };
+    const continuedLate = service.continueFromResult(
+        lateResult,
+        lateContinuationRequest
+    );
+    const evaluatedLate = ctx.evaluateClassicalNahuatlVncApplication(
+        lateContinuationRequest,
+        lateResult
+    );
+    const evaluatedCopiedLate = ctx.evaluateClassicalNahuatlVncApplication(
+        lateContinuationRequest,
+        { ...lateResult }
+    );
+    const evaluatedIneligibleOrdered =
+        ctx.evaluateClassicalNahuatlVncApplication(
+            lateContinuationRequest,
+            orderedResult
+        );
     s.ok(
-        "a late-operation terminal Result continues through its canonical target application while copied and ineligible terminal frames fail closed",
+        "the public evaluator sends every exact service-projectable Result through canonical continuation while copied and ineligible terminal frames fail closed",
         lateResult.authorizationStatus === "authorized"
             && lateProjection?.sourceStem === "chō-chō-chōca"
             && continuedLate?.authorizationStatus === "authorized"
+            && evaluatedLate?.authorizationStatus === "authorized"
+            && evaluatedLate.resultFrame?.formulaRealization
+                === continuedLate.resultFrame?.formulaRealization
+            && evaluatedCopiedLate?.authorizationStatus !== "authorized"
+            && evaluatedIneligibleOrdered?.authorizationStatus
+                !== "authorized"
             && orderedResult.authorizationStatus === "authorized"
             && orderedProjection === null
             && service.getContinuationSourceConstituents(
@@ -366,6 +637,96 @@ function run(ctx = {}) {
             && service.getContinuationSourceConstituents(
                 { ...orderedResult }
             ) === null
+    );
+
+    const lateApplicationReceipt =
+        ctx.executeClassicalGrammarApplicationRequest({
+            operationId: "vnc:application",
+            args: [lateContinuationRequest, lateResult],
+        });
+    const lateProducerProvenance =
+        ctx.getClassicalGrammarApplicationRhymeContinuationProvenance(
+            lateResult
+        );
+    const lateLayerGraph =
+        ctx.getClassicalGrammarApplicationLayerGraph(
+            lateApplicationReceipt
+        );
+    const globalTopology = ctx.getClassicalGrammarApplicationInventory()
+        .grammaticalRhymeCalibration.topology;
+    s.eq(
+        "an exact late-operation Result and its continued VNC application remain distinct local nodes without declaring global compatibility",
+        {
+            statuses: [
+                lateProducerProvenance?.applicationResult
+                    ?.authorizationStatus,
+                lateApplicationReceipt.authorizationStatus,
+            ],
+            graphValid:
+                ctx.isClassicalGrammarApplicationLayerGraph(
+                    lateLayerGraph
+                ),
+            operationIds: lateLayerGraph?.operationIds,
+            nodeCount: lateLayerGraph?.nodeCount,
+            edgeCount: lateLayerGraph?.edgeCount,
+            depth: lateLayerGraph?.maximumDepth,
+            linear: lateLayerGraph?.isLinear,
+            exactIdentities: [
+                lateLayerGraph?.nodes?.[0]?.applicationResult
+                    === lateProducerProvenance?.applicationResult,
+                lateLayerGraph?.nodes?.[0]?.canonicalResult
+                    === lateResult,
+                lateLayerGraph?.nodes?.[1]?.applicationResult
+                    === lateApplicationReceipt,
+                lateLayerGraph?.edges?.[0]?.innerApplicationResult
+                    === lateProducerProvenance?.applicationResult,
+                lateLayerGraph?.edges?.[0]?.outerApplicationResult
+                    === lateApplicationReceipt,
+            ],
+            evidence:
+                lateLayerGraph?.edges?.[0]?.continuationEvidenceKind,
+            exactSlot:
+                lateLayerGraph?.edges?.[0]
+                    ?.exactContinuationSlotValidated,
+            ownerProjection:
+                lateLayerGraph?.edges?.[0]
+                    ?.ownerContinuationProjectionValidated,
+            topologyCompatibility:
+                lateLayerGraph?.edges?.[0]
+                    ?.topologyCompatibilityObserved,
+            compatibilityAuthority:
+                lateLayerGraph?.edges?.[0]?.compatibilityAuthority,
+            ownerProofObservationCount:
+                ctx.getClassicalGrammarApplicationRhymeOwnerProofObservations(
+                    lateApplicationReceipt
+                ).length,
+            globalExactEdgeCount:
+                globalTopology.exactContinuationEdges.filter(edge => (
+                    edge.innerOperationId
+                        === "vnc:derivational-operation"
+                    && edge.outerOperationId === "vnc:application"
+                )).length,
+        },
+        {
+            statuses: ["authorized", "authorized"],
+            graphValid: true,
+            operationIds: [
+                "vnc:derivational-operation",
+                "vnc:application",
+            ],
+            nodeCount: 2,
+            edgeCount: 1,
+            depth: 2,
+            linear: true,
+            exactIdentities: [true, true, true, true, true],
+            evidence: "exact-instance-continuation",
+            exactSlot: true,
+            ownerProjection: true,
+            topologyCompatibility: false,
+            compatibilityAuthority: false,
+            ownerProofObservationCount: 0,
+            globalExactEdgeCount: 0,
+        }
     );
 
     return s;

@@ -5,7 +5,7 @@ import {
 } from "../grammar/operation_owner.mjs?v=20260728-runtime-reachability-111";
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_NNC_LAYER_VERSION = 1;
     const issuedNncSentenceSurfaceFrames = new WeakMap();

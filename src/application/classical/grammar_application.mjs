@@ -13,14 +13,15 @@ import {
 } from "../../core/concepts/classical_grammar_foundation.mjs?v=20260811-lesson1-multigroup-024";
 import {
   buildClassicalGrammaticalRhymeCalibrationFrame,
+  buildClassicalGrammaticalRhymeEvaluationOrderFrame,
   buildClassicalGrammaticalRhymeFullPinFrame,
   buildClassicalGrammaticalRhymeOwnerCalibrationFrame,
   buildClassicalGrammaticalRhymeRoutePlaneFrame,
   buildClassicalGrammaticalRhymeTopologyFrame,
-} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260823-grammatical-atlas-live-bridge-256";
 import {
   CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
-} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260823-grammatical-atlas-live-bridge-256";
 
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";
@@ -31,6 +32,8 @@ const RHYME_OWNER_PROOF_OBSERVATION_KIND =
   "classical-grammar-application-rhyme-owner-proof-observation";
 const APPLICATION_LAYER_GRAPH_KIND =
   "classical-grammar-application-layer-graph";
+const APPLICATION_ATLAS_OBSERVATION_KIND =
+  "classical-grammar-application-atlas-observation";
 const CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC = "classical-visible-surface-orthography-invalid";
 const CANONICAL_RUNTIME_DIAGNOSTIC =
   "classical-grammar-application-canonical-runtime-required";
@@ -1292,6 +1295,20 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
     "nnc:personal-name": Object.freeze({
       inputUnitKinds: Object.freeze(["nnc-result", "clause-result"]),
       outputUnitKinds: Object.freeze(["nnc-result"]),
+    }),
+  });
+
+// These slots observe an exact Result that an owner actually consumed during
+// one execution. They record local Result history only; unlike the continuation
+// type contracts above, they neither advertise nor authorize another route.
+const CLASSICAL_GRAMMAR_APPLICATION_INSTANCE_CONTINUATION_SLOTS =
+  Object.freeze({
+    "vnc:application": Object.freeze({
+      outputKind: DEFAULT_APPLICATION_OUTPUT_KIND,
+      argumentIndex: 1,
+      projectionCapabilityName:
+        "getClassicalNahuatlVncContinuationSourceConstituents",
+      unitKind: "vnc-result",
     }),
   });
 
@@ -2804,12 +2821,19 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   const rhymeFullPinByCanonicalResult = new WeakMap();
   const rhymeCalibrationByApplicationResult = new WeakMap();
   const rhymeCalibrationByCanonicalResult = new WeakMap();
+  const rhymeEvaluationOrderByApplicationResult = new WeakMap();
+  const rhymeEvaluationOrderByCanonicalResult = new WeakMap();
   const rhymeOwnerProofObservationsByApplicationResult = new WeakMap();
   const rhymeOwnerProofObservationsByCanonicalResult = new WeakMap();
   const issuedRhymeOwnerProofObservations = new WeakSet();
   const layerGraphByApplicationResult = new WeakMap();
   const layerGraphByCanonicalResult = new WeakMap();
   const issuedLayerGraphs = new WeakSet();
+  const applicationAtlasObservers = new Set();
+  const issuedApplicationAtlasObservations = new WeakSet();
+  const atlasObservationByApplicationResult = new WeakMap();
+  const atlasObservationByCanonicalResult = new WeakMap();
+  let latestApplicationAtlasObservation = null;
   let cachedGrammarApplicationInventory = null;
 
   function isRecognizedCanonicalArgumentCarrier(value = null) {
@@ -3274,6 +3298,54 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           grammaticalRhymeTopology.superimposedClassCount,
         topology: grammaticalRhymeTopology,
         lessonDiscovery: CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
+        evaluationOrderCast: Object.freeze({
+          kind: "classical-grammatical-rhyme-evaluation-order-cast",
+          version: 1,
+          entrance: "executeClassicalGrammarApplicationRequest",
+          scope: "every-authorized-owner-issued-application-result",
+          stageOrder: Object.freeze([
+            "exact-owner-source",
+            "inner-formation",
+            "participants-and-state-finalized",
+            "boundary-realization",
+            "surface-projection",
+          ]),
+          earlyEvaluationCondition:
+            "consumer-runs-before-final-inner-carrier-order",
+          lateEvaluationCondition:
+            "consumer-runs-after-required-owner-identity-is-lost",
+          discoveredFromTypedStructureNotExampleIdentity: true,
+          ownerResultValidationRequired: true,
+          grammarAuthority: false,
+        }),
+        grammaticalAtlas: Object.freeze({
+          kind: "classical-grammatical-atlas-contract",
+          version: 1,
+          coordinateSystem: "classical-grammatical-atlas",
+          localCoordinateSource:
+            "generated-current-lesson-atom-population",
+          globalGroupingFields: Object.freeze([
+            "requiresPresent",
+            "requiresAbsent",
+            "adds",
+            "removes",
+            "preserves",
+            "emits",
+          ]),
+          applicationObservationKind:
+            APPLICATION_ATLAS_OBSERVATION_KIND,
+          applicationObservationEntrance:
+            "executeClassicalGrammarApplicationRequest",
+          automaticOwnerCalibrationPopulation:
+            "normal-owner-issued-application-observations",
+          continuationEdgesRequireExactOwnerIdentity: true,
+          resultViewCoordinatesAreLocalPresentationCoordinates: true,
+          atlasMayAuthorizeGrammar: false,
+          lessonNumberAuthority: false,
+          grammarAuthority: false,
+          formulaStringAuthority: false,
+          surfaceStringAuthority: false,
+        }),
         lessonNumberAuthority: false,
         grammarAuthority: false,
       }),
@@ -3484,6 +3556,75 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       : null;
   }
 
+  function buildExactApplicationInstanceContinuationFacts({
+    operationId = "",
+    outputKind = DEFAULT_APPLICATION_OUTPUT_KIND,
+    args = [],
+    outerApplicationResult = null,
+  } = {}) {
+    const slot =
+      CLASSICAL_GRAMMAR_APPLICATION_INSTANCE_CONTINUATION_SLOTS[
+        operationId
+      ] || null;
+    if (
+      !slot
+      || slot.outputKind !== outputKind
+      || !Array.isArray(args)
+      || !isClassicalGrammarApplicationResult(outerApplicationResult)
+      || outerApplicationResult.authorizationStatus !== "authorized"
+    ) {
+      return Object.freeze([]);
+    }
+    const exactInnerResult = args[slot.argumentIndex] || null;
+    const innerProvenance = getIssuedResultProvenance(exactInnerResult);
+    const innerApplicationResult =
+      innerProvenance?.applicationResult || null;
+    if (
+      !innerApplicationResult
+      || innerApplicationResult === outerApplicationResult
+      || innerApplicationResult.authorizationStatus !== "authorized"
+      || !["canonical-result", "continuation-result"].includes(
+        innerProvenance.resultRole,
+      )
+    ) {
+      return Object.freeze([]);
+    }
+    const resolvedProjection = resolveCanonicalCallableCapability(
+      targetObject,
+      slot.projectionCapabilityName,
+      api,
+    );
+    if (!resolvedProjection) return Object.freeze([]);
+    let projection = null;
+    try {
+      projection = Reflect.apply(
+        resolvedProjection.capability,
+        targetObject,
+        [exactInnerResult],
+      );
+    } catch {
+      projection = null;
+    }
+    if (!projection || typeof projection !== "object") {
+      return Object.freeze([]);
+    }
+    return Object.freeze([Object.freeze({
+      innerApplicationResult,
+      outerApplicationResult,
+      innerCanonicalResult: exactInnerResult,
+      innerProducerCanonicalResult:
+        innerApplicationResult.canonicalResult,
+      innerResultRole: innerProvenance.resultRole,
+      sharedUnitKinds: Object.freeze([slot.unitKind]),
+      exactInnerResultIdentityObservedInOuterArguments: true,
+      exactContinuationSlotValidated: true,
+      ownerContinuationProjectionValidated: true,
+      topologyCompatibilityObserved: false,
+      compatibilityAuthority: false,
+      grammarAuthority: false,
+    })]);
+  }
+
   function getClassicalGrammarApplicationRhymeContinuationProvenance(
     currentResult = null,
   ) {
@@ -3571,9 +3712,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   function buildClassicalGrammarApplicationLayerGraph(
     applicationResult,
     observations = [],
+    instanceContinuationFacts = [],
   ) {
-    const parentApplicationResults = [...new Set(observations.map(
-      observation => observation.innerApplicationResult,
+    const continuationFacts = [
+      ...(Array.isArray(observations) ? observations : []),
+      ...(Array.isArray(instanceContinuationFacts)
+        ? instanceContinuationFacts
+        : []),
+    ];
+    const parentApplicationResults = [...new Set(continuationFacts.map(
+      fact => fact.innerApplicationResult,
     ).filter(parent => (
       isClassicalGrammarApplicationResult(parent)
       && parent.authorizationStatus === "authorized"
@@ -3598,18 +3746,39 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           sharedUnitKinds: edge.sharedUnitKinds,
           exactInnerResultIdentityObservedInOuterArguments:
             edge.exactInnerResultIdentityObservedInOuterArguments,
+          continuationEvidenceKind: edge.continuationEvidenceKind,
+          exactContinuationSlotValidated:
+            edge.exactContinuationSlotValidated,
+          ownerContinuationProjectionValidated:
+            edge.ownerContinuationProjectionValidated,
+          topologyCompatibilityObserved:
+            edge.topologyCompatibilityObserved,
+          compatibilityAuthority: false,
         }));
       } else {
         addApplicationResult(parent);
       }
     });
     addApplicationResult(applicationResult);
-    observations.forEach(observation => edgeFacts.push({
-      innerApplicationResult: observation.innerApplicationResult,
+    continuationFacts.forEach(fact => edgeFacts.push({
+      innerApplicationResult: fact.innerApplicationResult,
       outerApplicationResult: applicationResult,
-      sharedUnitKinds: observation.sharedUnitKinds,
+      sharedUnitKinds: fact.sharedUnitKinds,
       exactInnerResultIdentityObservedInOuterArguments:
-        observation.exactInnerResultIdentityObservedInOuterArguments,
+        fact.exactInnerResultIdentityObservedInOuterArguments,
+      continuationEvidenceKind:
+        fact.exactContinuationSlotValidated === true
+        && fact.ownerContinuationProjectionValidated === true
+        && fact.topologyCompatibilityObserved !== true
+          ? "exact-instance-continuation"
+          : "topology-owner-proof",
+      exactContinuationSlotValidated:
+        fact.exactContinuationSlotValidated === true,
+      ownerContinuationProjectionValidated:
+        fact.ownerContinuationProjectionValidated === true,
+      topologyCompatibilityObserved:
+        fact.topologyCompatibilityObserved === true,
+      compatibilityAuthority: false,
     }));
     const indexByApplicationResult = new Map(applicationResults.map(
       (candidate, index) => [candidate, index],
@@ -3706,6 +3875,14 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         )]),
         exactInnerResultIdentityObservedInOuterArguments:
           edge.exactInnerResultIdentityObservedInOuterArguments === true,
+        continuationEvidenceKind: edge.continuationEvidenceKind,
+        exactContinuationSlotValidated:
+          edge.exactContinuationSlotValidated === true,
+        ownerContinuationProjectionValidated:
+          edge.ownerContinuationProjectionValidated === true,
+        topologyCompatibilityObserved:
+          edge.topologyCompatibilityObserved === true,
+        compatibilityAuthority: false,
       })
     ));
     const nextOperationInventory =
@@ -3795,11 +3972,145 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         && graph.nodes.some(node => node.nodeId === edge.toNodeId)
         && edge.innerApplicationResult !== edge.outerApplicationResult
         && edge.exactInnerResultIdentityObservedInOuterArguments === true
+        && edge.compatibilityAuthority === false
+        && (
+          edge.continuationEvidenceKind === "topology-owner-proof"
+            ? edge.topologyCompatibilityObserved === true
+            : edge.continuationEvidenceKind
+                === "exact-instance-continuation"
+              && edge.exactContinuationSlotValidated === true
+              && edge.ownerContinuationProjectionValidated === true
+              && edge.topologyCompatibilityObserved === false
+        )
       ))
       && graph.exactOwnerIssuedResultsOnly === true
       && graph.grammarAuthority === false
       && Object.isFrozen(graph)
     );
+  }
+
+  function isClassicalGrammarApplicationAtlasObservation(
+    observation = null,
+  ) {
+    return Boolean(
+      observation
+      && issuedApplicationAtlasObservations.has(observation)
+      && observation.kind === APPLICATION_ATLAS_OBSERVATION_KIND
+      && observation.version === 1
+      && observation.authorizationStatus === "observed"
+      && isClassicalGrammarApplicationResult(
+        observation.applicationResult,
+      )
+      && observation.applicationResult.authorizationStatus === "authorized"
+      && observation.canonicalResult
+        === observation.applicationResult.canonicalResult
+      && observation.rhymeFullPinFrame
+        === getClassicalGrammarApplicationRhymeFullPin(
+          observation.applicationResult,
+        )
+      && observation.rhymeCalibrationFrame
+        === getClassicalGrammarApplicationRhymeCalibration(
+          observation.applicationResult,
+        )
+      && observation.layerGraph
+        === getClassicalGrammarApplicationLayerGraph(
+          observation.applicationResult,
+        )
+      && observation.evaluationOrderFrame
+        === getClassicalGrammarApplicationEvaluationOrder(
+          observation.applicationResult,
+        )
+      && observation.exactOwnerIssuedResultObserved === true
+      && observation.grammarAuthority === false
+      && observation.formulaStringAuthority === false
+      && observation.surfaceStringAuthority === false
+      && Object.isFrozen(observation)
+    );
+  }
+
+  function getClassicalGrammarApplicationAtlasObservation(
+    currentResult = null,
+  ) {
+    if (currentResult == null) return latestApplicationAtlasObservation;
+    if (isClassicalGrammarApplicationResult(currentResult)) {
+      return atlasObservationByApplicationResult.get(currentResult) || null;
+    }
+    return currentResult && typeof currentResult === "object"
+      ? atlasObservationByCanonicalResult.get(currentResult) || null
+      : null;
+  }
+
+  function subscribeClassicalGrammarApplicationAtlasObservations(
+    observer = null,
+  ) {
+    if (typeof observer !== "function") return () => false;
+    applicationAtlasObservers.add(observer);
+    if (latestApplicationAtlasObservation) {
+      try {
+        observer(latestApplicationAtlasObservation);
+      } catch {
+        // A read-only observer cannot interrupt canonical grammar.
+      }
+    }
+    let active = true;
+    return () => {
+      if (!active) return false;
+      active = false;
+      return applicationAtlasObservers.delete(observer);
+    };
+  }
+
+  function issueClassicalGrammarApplicationAtlasObservation(
+    applicationResult = null,
+  ) {
+    if (
+      !isClassicalGrammarApplicationResult(applicationResult)
+      || applicationResult.authorizationStatus !== "authorized"
+      || !applicationResult.canonicalResult
+    ) return null;
+    const existing = atlasObservationByApplicationResult.get(
+      applicationResult,
+    );
+    if (existing) return existing;
+    const observation = Object.freeze({
+      kind: APPLICATION_ATLAS_OBSERVATION_KIND,
+      version: 1,
+      authorizationStatus: "observed",
+      blockReason: "",
+      operationId: applicationResult.operationId,
+      outputKind: applicationResult.outputKind,
+      applicationResult,
+      canonicalResult: applicationResult.canonicalResult,
+      rhymeFullPinFrame:
+        getClassicalGrammarApplicationRhymeFullPin(applicationResult),
+      rhymeCalibrationFrame:
+        getClassicalGrammarApplicationRhymeCalibration(applicationResult),
+      layerGraph:
+        getClassicalGrammarApplicationLayerGraph(applicationResult),
+      evaluationOrderFrame:
+        getClassicalGrammarApplicationEvaluationOrder(applicationResult),
+      exactOwnerIssuedResultObserved: true,
+      observerMayAuthorizeGrammar: false,
+      lessonNumberAuthority: false,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedApplicationAtlasObservations.add(observation);
+    atlasObservationByApplicationResult.set(applicationResult, observation);
+    atlasObservationByCanonicalResult.set(
+      applicationResult.canonicalResult,
+      observation,
+    );
+    latestApplicationAtlasObservation = observation;
+    applicationAtlasObservers.forEach(observer => {
+      try {
+        observer(observation);
+      } catch {
+        // A read-only observer cannot interrupt canonical grammar.
+      }
+    });
+    return observation;
   }
 
   function isClassicalGrammarApplicationRhymeOwnerProofObservation(
@@ -4154,6 +4465,15 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           }
         });
     }
+    const exactInstanceContinuationFacts =
+      authorizationStatus === "authorized" && canonicalResult
+        ? buildExactApplicationInstanceContinuationFacts({
+          operationId,
+          outputKind,
+          args,
+          outerApplicationResult: result,
+        })
+        : Object.freeze([]);
     if (
       authorizationStatus === "authorized"
       && canonicalResult
@@ -4276,11 +4596,28 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       const layerGraph = buildClassicalGrammarApplicationLayerGraph(
         result,
         getClassicalGrammarApplicationRhymeOwnerProofObservations(result),
+        exactInstanceContinuationFacts,
       );
       if (layerGraph.authorizationStatus === "observed") {
         layerGraphByApplicationResult.set(result, layerGraph);
         layerGraphByCanonicalResult.set(canonicalResult, layerGraph);
       }
+      const evaluationOrderFrame =
+        buildClassicalGrammaticalRhymeEvaluationOrderFrame({
+          canonicalResult,
+          layerGraph,
+          ownerResultValidated: canonicalResultRecognized
+            && canonicalAuthorizationStatus === "authorized",
+        });
+      rhymeEvaluationOrderByApplicationResult.set(
+        result,
+        evaluationOrderFrame,
+      );
+      rhymeEvaluationOrderByCanonicalResult.set(
+        canonicalResult,
+        evaluationOrderFrame,
+      );
+      issueClassicalGrammarApplicationAtlasObservation(result);
     }
     return result;
   }
@@ -4305,6 +4642,28 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     return currentResult && typeof currentResult === "object"
       ? rhymeCalibrationByCanonicalResult.get(currentResult) || null
       : null;
+  }
+
+  function getClassicalGrammarApplicationEvaluationOrder(
+    currentResult = null,
+  ) {
+    if (isClassicalGrammarApplicationResult(currentResult)) {
+      return rhymeEvaluationOrderByApplicationResult.get(currentResult)
+        || null;
+    }
+    return currentResult && typeof currentResult === "object"
+      ? rhymeEvaluationOrderByCanonicalResult.get(currentResult) || null
+      : null;
+  }
+
+  function inspectClassicalGrammarEvaluationOrderCandidate(
+    canonicalResult = null,
+  ) {
+    return buildClassicalGrammaticalRhymeEvaluationOrderFrame({
+      canonicalResult,
+      layerGraph: null,
+      ownerResultValidated: false,
+    });
   }
 
   function isClassicalGrammarApplicationResult(result = null) {
@@ -4459,6 +4818,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         canonicalResult: null,
         rhymeFullPinFrame: null,
         rhymeCalibrationFrame: null,
+        evaluationOrderFrame: null,
         formulaStringAuthority: false,
         surfaceStringAuthority: false,
         storedAnswerAuthority: false,
@@ -4481,6 +4841,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         getClassicalGrammarApplicationRhymeCalibration(applicationResult),
       layerGraph:
         getClassicalGrammarApplicationLayerGraph(applicationResult),
+      evaluationOrderFrame:
+        getClassicalGrammarApplicationEvaluationOrder(applicationResult),
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
       storedAnswerAuthority: false,
@@ -4514,6 +4876,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         )
       && capture.rhymeCalibrationFrame
         === getClassicalGrammarApplicationRhymeCalibration(
+          capture.applicationResult,
+        )
+      && capture.evaluationOrderFrame
+        === getClassicalGrammarApplicationEvaluationOrder(
           capture.applicationResult,
         )
       && capture.formulaStringAuthority === false
@@ -5162,6 +5528,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     APPLICATION_RESULT_CAPTURE_KIND,
     RHYME_OWNER_PROOF_OBSERVATION_KIND,
     APPLICATION_LAYER_GRAPH_KIND,
+    APPLICATION_ATLAS_OBSERVATION_KIND,
     CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC,
     CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS,
     CLASSICAL_GRAMMAR_APPLICATION_GCD_INVARIANT_IDS: GCD_INVARIANT_IDS,
@@ -5173,12 +5540,17 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     buildClassicalGrammarApplicationRhymeOwnerCalibration,
     getClassicalGrammarApplicationRhymeFullPin,
     getClassicalGrammarApplicationRhymeCalibration,
+    getClassicalGrammarApplicationEvaluationOrder,
+    inspectClassicalGrammarEvaluationOrderCandidate,
     getClassicalGrammarApplicationRhymeOwnerProofObservations,
     isClassicalGrammarApplicationRhymeOwnerProofObservation,
     getClassicalGrammarApplicationRhymeContinuationProvenance,
     getClassicalGrammarApplicationNextOperationInventory,
     getClassicalGrammarApplicationLayerGraph,
     isClassicalGrammarApplicationLayerGraph,
+    getClassicalGrammarApplicationAtlasObservation,
+    isClassicalGrammarApplicationAtlasObservation,
+    subscribeClassicalGrammarApplicationAtlasObservations,
     executeClassicalGrammarApplicationRequest,
     isClassicalGrammarApplicationResult,
     captureClassicalGrammarApplicationResult,

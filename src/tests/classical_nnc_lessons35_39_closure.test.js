@@ -384,13 +384,26 @@ function nominalContinuationRequest(overrides = {}) {
     };
 }
 
-function vocativeRequest(overrides = {}) {
+function vocativeRequest(ctx, overrides = {}) {
+    const agentive = ctx.evaluateClassicalNahuatlDeverbalNnc({
+        constructionKind: "predicate-nominalization",
+        nominalizationKind: "preterit-agentive",
+        source: {
+            sourceStage: "preterit-predicate",
+            sourceStem: "pix",
+            verbClass: "A",
+            sourceVoice: "active",
+            sourceValence: "intransitive",
+            sourceObjectPattern: "none",
+            sourceSubject: "3sg",
+        },
+        subject: "3sg",
+        state: "absolutive",
+        animacy: "animate",
+    });
     return {
         constructionKind: "vocative",
-        source: {
-            wordStem: "pix",
-            numberConnector: "c",
-        },
+        canonicalNncResult: agentive.canonicalResult,
         ...overrides,
     };
 }
@@ -432,6 +445,65 @@ function findAuditMetadata(value, currentPath = "frame") {
 function run(ctx = {}) {
     const s = createSuite("classical_nnc_lessons35_39_closure");
     const rows = parseLedgerRows();
+
+    s.eq(
+        "a possessive patientive reads its state carrier before realizing subject supportive i",
+        (() => {
+            const vncRequest = {
+                sourceStem: "āna",
+                verbClass: "B",
+                sourceValence: "specific-projective",
+                subject: "3sg",
+                mood: "indicative",
+                tense: "present",
+                requestedDerivation: "direct",
+                requestedVoice: "passive",
+                voice: "passive",
+                objectKind: "specific-projective",
+                objectPerson: "3sg",
+            };
+            const preview =
+                ctx.evaluateClassicalNahuatlVncApplication(vncRequest);
+            const option = preview.controlFrame
+                ?.nonactiveOptionInventory?.options?.find(item => (
+                    item.nonactiveStem === "āna-lō"
+                    || item.optionId === "lō:āna-lō"
+                ));
+            const passive =
+                ctx.evaluateClassicalNahuatlVncApplication({
+                    ...vncRequest,
+                    nonactiveOptionId: option?.optionId || "",
+                });
+            const patientive = ctx.evaluateClassicalNahuatlDeverbalNnc({
+                constructionKind: "patientive",
+                patientiveSourceFamily: "passive-core",
+                canonicalVncResult: passive.resultFrame,
+                subject: "2sg",
+                state: "possessive",
+                possessor: "1sg",
+                animacy: "animate",
+            });
+            return {
+                passiveStem:
+                    passive.resultFrame?.selectedMachineryFrame
+                        ?.nonactiveStemRecord?.nonactiveStem || "",
+                status: patientive.authorizationStatus,
+                formula: patientive.canonicalResult?.formulaRealization,
+                subject:
+                    patientive.canonicalResult?.nncSlotFrame
+                        ?.slots?.subject?.pers1,
+                state: patientive.canonicalResult?.nncSlotFrame
+                    ?.slots?.state?.slots?.map(slot => slot.carrier),
+            };
+        })(),
+        {
+            passiveStem: "āna-lō",
+            status: "authorized",
+            formula: "#ti-0+n-⎕(āna-l)0-0#",
+            subject: "ti",
+            state: ["n", "⎕"],
+        }
+    );
 
     s.eq("claim-specific source inventory has all 72 classified rows", {
         count: rows.length,
@@ -475,7 +547,7 @@ function run(ctx = {}) {
             '<option value="deverbal-nnc">'
         ) || SHELL.includes('value="deverbal-nnc"'),
         deverbalSourceToResultRoute:
-            SHELL.includes('data-classical-source-unit="any"')
+            SHELL.includes('data-classical-source-unit="vnc"')
             && SHELL.includes('data-classical-result-unit="nnc"')
             && SHELL.includes('Source → deverbal nominalization or characteristic patientive → NNC Result'),
         constructionKinds: [
@@ -1630,7 +1702,7 @@ function run(ctx = {}) {
             === "outside-applicative-object"
         && incorporatedPatientiveObject.operationFrame.participantTransform
             ?.valencePreservedWithInsideAndOutsideObjects === true);
-    const vocative = ctx.evaluateClassicalNahuatlDeverbalNnc(vocativeRequest());
+    const vocative = ctx.evaluateClassicalNahuatlDeverbalNnc(vocativeRequest(ctx));
     s.eq("interaction witnesses apply vocative k spelling at the typed boundary", {
         status: vocative.authorizationStatus,
         rule: vocative.operationFrame.appliedSemanticRules[0],
@@ -1892,7 +1964,7 @@ function run(ctx = {}) {
         patientiveRequest("passive-core"),
         ownerhoodRequest("ē"),
         nominalContinuationRequest(),
-        vocativeRequest(),
+        vocativeRequest(ctx),
     ];
     hostileBases.forEach((request, index) => {
         ["lesson", "displayFormula", "surface", "result",

@@ -6,10 +6,10 @@
 import {
   buildClassicalGrammaticalRhymeCoordinateFrame as
     buildSharedGrammaticalRhymeCoordinateFrame,
-} from "../grammar/grammatical_rhyme_space.mjs?v=20260823-built-in-valence-default-236";
+} from "../grammar/grammatical_rhyme_space.mjs?v=20260823-grammatical-atlas-live-bridge-256";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
-} from "./participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 const VERSION = 1;
 const ISSUED_SOURCE_FRAMES = new WeakSet();
@@ -5015,10 +5015,6 @@ function buildNncTarget(target, sourceFrame, operationFrame, request = {}) {
       blockReason: `${operationFrame.operationId}-${state}-stem-unavailable`,
     });
   }
-  const personFrame = target.buildClassicalNahuatlNncSubjectPersonFrame({
-    subject,
-    followingMaterial: stem,
-  });
   const stateFrame = state === "possessive"
     ? target.buildClassicalNahuatlPossessiveStateFrame({
       possessor,
@@ -5033,6 +5029,14 @@ function buildNncTarget(target, sourceFrame, operationFrame, request = {}) {
       arity: "vacant",
       slots: [],
     });
+  const followingStateMaterial = stateFrame.slots
+    ?.map(slot => slot.carrier)
+    .filter(Boolean)
+    .join("-") || "";
+  const personFrame = target.buildClassicalNahuatlNncSubjectPersonFrame({
+    subject,
+    followingMaterial: followingStateMaterial || stem,
+  });
   const numberFrame = resolveOperationNumberFrame(operationFrame, {
     subject,
     state,
@@ -12246,8 +12250,84 @@ function buildContinuationOperation(
   return { sourceFrame, operationFrame: null, canonicalResult: null, blockReason: "continuation-kind-not-recognized" };
 }
 
-function buildVocativeOperation(request = {}, preparedSourceFrame = null) {
-  const source = request.source && typeof request.source === "object" ? request.source : request;
+function captureVocativeAgentiveNncResult(result = null) {
+  const canonicalNncGrammarFrame = result?.kind
+    === "classical-nahuatl-deverbal-nnc-grammar-frame"
+    && result.authorizationStatus === "authorized"
+    ? result
+    : null;
+  const canonicalNncResult = canonicalNncGrammarFrame?.canonicalResult
+    || result;
+  const context = PREDICATE_NNC_CONTINUATION_CONTEXTS.get(
+    canonicalNncResult
+  ) || null;
+  const typedSlotFrame = canonicalNncResult?.nncSlotFrame || null;
+  if (
+    !context
+    || context.operationFrame?.nominalizationKind !== "preterit-agentive"
+    || canonicalNncResult?.authorizationStatus !== "authorized"
+    || canonicalNncResult?.state !== "absolutive"
+    || !ISSUED_NNC_SLOT_FRAMES.has(typedSlotFrame)
+  ) {
+    return deepFreeze({
+      kind: "classical-nahuatl-lesson35-vocative-agentive-capture-frame",
+      version: VERSION,
+      authorizationStatus: "blocked",
+      blockReason:
+        "35.13-exact-owner-issued-absolutive-preterit-agentive-result-required",
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
+  const predicateStem = normalizeStem(
+    typedSlotFrame.slots?.predicate?.stem
+  ).replace(/-0$/u, "");
+  const num1 = normalizeStem(typedSlotFrame.slots?.number?.num1);
+  const num2 = normalizeStem(typedSlotFrame.slots?.number?.num2);
+  const numberConnector = num1 && num1 !== "0"
+    ? joinMorphs([num1, num2 && num2 !== "0" ? num2 : ""])
+    : "silent";
+  return deepFreeze({
+    kind: "classical-nahuatl-lesson35-vocative-agentive-capture-frame",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    blockReason: "",
+    canonicalNncGrammarFrame,
+    canonicalNncResult,
+    canonicalSourceFrame: context.sourceFrame,
+    canonicalOperationFrame: context.operationFrame,
+    canonicalTypedSlotFrame: typedSlotFrame,
+    sourceStem: predicateStem,
+    numberConnector,
+    subject: canonicalNncResult.subject,
+    exactResultIdentityPreserved: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+}
+
+function buildVocativeOperation(
+  request = {},
+  preparedSourceFrame = null
+) {
+  const suppliedResult = request.canonicalNncResult
+    || request.canonicalNncGrammarFrame
+    || request.source?.canonicalNncResult
+    || null;
+  const capture = captureVocativeAgentiveNncResult(suppliedResult);
+  if (capture.authorizationStatus !== "authorized") {
+    return {
+      sourceFrame: null,
+      operationFrame: null,
+      blockReason: capture.blockReason,
+    };
+  }
+  const source = {
+    sourceStem: capture.sourceStem,
+    wordStem: capture.sourceStem,
+    numberConnector: capture.numberConnector,
+    vocativeAgentiveCaptureFrame: capture,
+  };
   const sourceFrame = buildSourceFrame({
     ...request,
     source: {
@@ -12273,6 +12353,9 @@ function buildVocativeOperation(request = {}, preparedSourceFrame = null) {
   } else if (connector === "qui") {
     vocativeStem = `${vocativeStem}qu`;
     boundaryRule = "35.13-qui-supportive-i-loss-before-e";
+  } else if (connector === "qu-eh") {
+    vocativeStem = joinMorphs([vocativeStem, "qu", "eh"]);
+    boundaryRule = "35.13-plural-qu-eh-preserved-before-e";
   } else if (connector === "silent" && ["c", "qu"].includes(stemFinal)) {
     vocativeStem = vocativeStem.replace(/c$/u, "qu");
     boundaryRule = "35.13-final-k-spelled-qu-before-e";
@@ -12297,6 +12380,8 @@ function buildVocativeOperation(request = {}, preparedSourceFrame = null) {
     defaultState: "",
     defaultAnimacy: "animate",
     transformedPossessor: "",
+    vocativeAgentiveCaptureFrame: capture,
+    sourceNumberConnector: connector,
     vocativeParticle: "ē",
     vocativeSurface: `${vocativeStem.replace(/[0Ø⎕-]/gu, "")}ē`,
     appliedSemanticRules: [boundaryRule],
@@ -12314,7 +12399,11 @@ function buildDoubleNucleusOwnerhoodOperation(request = {}) {
   const supplementFrame = source.supplementNncFrame;
   const typedPrincipal = ISSUED_NNC_SLOT_FRAMES.has(principalFrame);
   const typedSupplement = ISSUED_NNC_SLOT_FRAMES.has(supplementFrame);
-  if (!typedPrincipal || !typedSupplement) {
+  if (
+    !typedPrincipal
+    || !typedSupplement
+    || source.lexicalizedFixedOrder !== true
+  ) {
     return {
       sourceFrame: null,
       operationFrame: null,
@@ -12339,6 +12428,9 @@ function buildDoubleNucleusOwnerhoodOperation(request = {}) {
     principalNncFrame: principalFrame,
     supplementNncFrame: supplementFrame,
     fixedOrder: true,
+    supplementationRelation: "lexicalized-fixed-order-double-nucleus",
+    internalPersonPositionsPreserved: true,
+    outerSubjectMayOverwriteInternalPersonPositions: false,
     lexicalAuthorizationFrame,
     lexicalFactsReadOnly: true,
     typedSourceAuthority: true,

@@ -1,6 +1,6 @@
 import {
   buildClassicalNahuatlParticipantFrame,
-} from "../../core/classical/participant_frame.mjs?v=20260823-built-in-valence-default-236";
+} from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 
 // Canonical ordinary-NNC application service.
 //
