@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260824-lesson58-final-278";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260824-universal-capability-navigator-280";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260824-lesson58-final-278";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260824-lesson58-final-278";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260824-lesson58-final-278";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260824-lesson58-final-278";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260824-lesson58-final-278";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260824-lesson58-final-278";
+} from "../runtime/create_runtime.mjs?v=20260824-universal-capability-navigator-280";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260824-universal-capability-navigator-280";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260824-universal-capability-navigator-280";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260824-universal-capability-navigator-280";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260824-universal-capability-navigator-280";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260824-universal-capability-navigator-280";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260824-lesson58-final-278";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260824-universal-capability-navigator-280";
 
 let browserBootstrapPromise = null;
 
@@ -161,6 +161,10 @@ export function installDeferredClassicalGrammaticalAtlas({
     loadAtlasModule = (attempt, populationVersion) => {
         const url = new URL(GRAMMATICAL_ATLAS_MODULE_URL.href);
         url.searchParams.set("v", populationVersion.version);
+        url.searchParams.set(
+            "cache",
+            "20260824-universal-capability-navigator-280"
+        );
         if (attempt > 1) url.searchParams.set("retry", String(attempt));
         return import(url.href);
     },

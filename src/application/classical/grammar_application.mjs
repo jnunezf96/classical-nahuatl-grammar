@@ -34,6 +34,10 @@ const APPLICATION_LAYER_GRAPH_KIND =
   "classical-grammar-application-layer-graph";
 const APPLICATION_ATLAS_OBSERVATION_KIND =
   "classical-grammar-application-atlas-observation";
+const APPLICATION_CAPABILITY_NAVIGATOR_KIND =
+  "classical-grammar-application-capability-navigator";
+const APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND =
+  "classical-grammar-application-typed-source-capability-navigator";
 const CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC = "classical-visible-surface-orthography-invalid";
 const CANONICAL_RUNTIME_DIAGNOSTIC =
   "classical-grammar-application-canonical-runtime-required";
@@ -1169,7 +1173,7 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
       outputUnitKinds: Object.freeze([]),
     }),
     "vnc:diagram": Object.freeze({
-      inputUnitKinds: Object.freeze(["vnc-result"]),
+      inputUnitKinds: Object.freeze(["vnc-diagram-slot-frame"]),
       outputUnitKinds: Object.freeze([]),
     }),
     "sentence:adverbial-adjunction": Object.freeze({
@@ -1212,7 +1216,7 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
       outputUnitKinds: Object.freeze(["vnc-result"]),
     }),
     "vnc:application": Object.freeze({
-      inputUnitKinds: Object.freeze([]),
+      inputUnitKinds: Object.freeze(["vnc-result"]),
       outputUnitKinds: Object.freeze(["vnc-result"]),
     }),
     "sentence:supplementation": Object.freeze({
@@ -1297,6 +1301,65 @@ const CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS =
       outputUnitKinds: Object.freeze(["nnc-result"]),
     }),
   });
+
+// Exact Source compatibility is declared separately from Result continuation.
+// The aggregate may call only these owner validators and preflights; it never
+// infers Source acceptance from a kind string, lesson, surface, or formula.
+const CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS = Object.freeze({
+  "nnc:ordinary": Object.freeze({
+    sourceUnitKind: "ordinary-nnc-source",
+    sourceValidatorNames: Object.freeze([
+      "isClassicalNahuatlOrdinaryNncSourceFrame",
+    ]),
+    preflightCapabilityName:
+      "buildClassicalNahuatlNncOperationSelectionFrame",
+    preflightValidatorNames: Object.freeze([]),
+    preflightRequests: Object.freeze([Object.freeze({})]),
+    preflightKind: "classical-nahuatl-nnc-operation-selection-frame",
+    preflightSourceProperty: "sourceFrame",
+  }),
+  "nnc:pronominal": Object.freeze({
+    sourceUnitKind: "pronominal-nnc-source",
+    sourceValidatorNames: Object.freeze([
+      "isClassicalNahuatlPronominalNncSourceFrame",
+    ]),
+    preflightCapabilityName:
+      "buildClassicalNahuatlNncOperationSelectionFrame",
+    preflightValidatorNames: Object.freeze([]),
+    preflightRequests: Object.freeze([Object.freeze({})]),
+    preflightKind: "classical-nahuatl-nnc-operation-selection-frame",
+    preflightSourceProperty: "sourceFrame",
+  }),
+  "vnc:derivational-operation": Object.freeze({
+    sourceUnitKind: "vnc-derivational-machinery-source",
+    sourceValidatorNames: Object.freeze([
+      "isClassicalNahuatlVncDerivationSourceMachineryFrame",
+    ]),
+    preflightCapabilityName:
+      "getClassicalNahuatlVncDerivationOptionInventory",
+    preflightValidatorNames: Object.freeze([
+      "isClassicalNahuatlVncDerivationOptionInventory",
+    ]),
+    preflightRequests: Object.freeze([
+      Object.freeze({ derivationType: "causative" }),
+      Object.freeze({ derivationType: "applicative" }),
+    ]),
+    preflightKind: "classical-nahuatl-vnc-derivation-option-inventory",
+    preflightSourceProperty: "sourceMachineryFrame",
+  }),
+});
+
+// These four owners accept one exact typed Result as their complete direct
+// argument. Other type-compatible routes remain pending until their owner has
+// an equally exact preflight adapter; the aggregate application never guesses
+// or supplies selections on an owner's behalf.
+const CLASSICAL_GRAMMAR_APPLICATION_DIRECT_RESULT_PROBE_OPERATION_IDS =
+  Object.freeze([
+    "vnc:sentence-result",
+    "vnc:diagram",
+    "nnc:sentence-surface",
+    "nnc:diagram",
+  ]);
 
 // These slots observe an exact Result that an owner actually consumed during
 // one execution. They record local Result history only; unlike the continuation
@@ -2750,6 +2813,12 @@ function canonicalCapabilityNames() {
     ...Object.values(AUTHORIZED_RESULT_VALIDATOR_NAMES).flat(),
     ...CANONICAL_APPLICATION_SOURCE_BUILDER_NAMES,
     ...CANONICAL_ARGUMENT_VALIDATOR_NAMES,
+    ...Object.values(
+      CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS,
+    ).flatMap((contract) => [
+      contract.preflightCapabilityName,
+      ...contract.preflightValidatorNames,
+    ]),
     "getClassicalNahuatlDenominalVncOperationPathInventory",
     "isClassicalNahuatlDenominalVncOperationPathInventory",
     "getClassicalNahuatlVncContinuationSourceConstituents",
@@ -2817,6 +2886,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   const issuedContinuationResults = new WeakSet();
   const issuedApplicationResultByContinuationResult = new WeakMap();
   const continuationUnitKindsByResult = new WeakMap();
+  const continuationResultsByApplicationResult = new WeakMap();
   const rhymeFullPinByApplicationResult = new WeakMap();
   const rhymeFullPinByCanonicalResult = new WeakMap();
   const rhymeCalibrationByApplicationResult = new WeakMap();
@@ -2829,6 +2899,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   const layerGraphByApplicationResult = new WeakMap();
   const layerGraphByCanonicalResult = new WeakMap();
   const issuedLayerGraphs = new WeakSet();
+  const issuedCapabilityNavigators = new WeakSet();
+  const capabilityNavigatorByExactInput = new WeakMap();
+  const issuedTypedSourceCapabilityNavigators = new WeakSet();
+  const typedSourceCapabilityNavigatorByExactSource = new WeakMap();
+  const typedSourceProvenanceByExactSource = new WeakMap();
   const applicationAtlasObservers = new Set();
   const issuedApplicationAtlasObservations = new WeakSet();
   const atlasObservationByApplicationResult = new WeakMap();
@@ -3378,6 +3453,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     [
       ["isClassicalNahuatlVncApplicationResultFrame", "vnc-result"],
       ["isClassicalNahuatlClosureFrame", "vnc-result"],
+      [
+        "isClassicalNahuatlVncSlotFrame",
+        "vnc-diagram-slot-frame",
+      ],
       ["isClassicalNahuatlOrdinaryNncResult", "nnc-result"],
       ["isClassicalNahuatlPronominalNncResult", "nnc-result"],
       [
@@ -3556,6 +3635,55 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       : null;
   }
 
+  function getExactOwnerProbeCandidates(provenance = null) {
+    if (
+      !provenance
+      || !provenance.applicationResult
+      || !provenance.exactResult
+      || typeof provenance.exactResult !== "object"
+    ) {
+      return Object.freeze([]);
+    }
+    const candidates = [];
+    const seen = new Set();
+    const addCandidate = (exactResult, fallbackRole = "") => {
+      if (!exactResult || typeof exactResult !== "object" || seen.has(exactResult)) {
+        return;
+      }
+      const exactProvenance = getIssuedResultProvenance(exactResult);
+      if (
+        !exactProvenance
+        || exactProvenance.applicationResult !== provenance.applicationResult
+      ) {
+        return;
+      }
+      const continuationUnitKinds = Object.freeze([
+        ...new Set(exactProvenance.continuationUnitKinds || []),
+      ]);
+      seen.add(exactResult);
+      candidates.push(Object.freeze({
+        exactResult,
+        resultRole: exactProvenance.resultRole || fallbackRole,
+        continuationUnitKinds,
+      }));
+    };
+    addCandidate(
+      provenance.exactResult,
+      provenance.resultRole === "application-result"
+        ? "canonical-result"
+        : provenance.resultRole,
+    );
+    (
+      continuationResultsByApplicationResult.get(
+        provenance.applicationResult,
+      ) || Object.freeze([])
+    ).forEach(record => addCandidate(
+      record.exactResult,
+      record.resultRole,
+    ));
+    return Object.freeze(candidates);
+  }
+
   function buildExactApplicationInstanceContinuationFacts({
     operationId = "",
     outputKind = DEFAULT_APPLICATION_OUTPUT_KIND,
@@ -3707,6 +3835,1042 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
     });
+  }
+
+  function evaluateClassicalGrammarDirectCapabilityAvailability({
+    operation = null,
+    exactOwnerProbeCandidates = [],
+    inputUnitKinds = [],
+    sharedUnitKinds = [],
+  } = {}) {
+    const typeCompatibilityStatus = inputUnitKinds.length === 0
+      ? "separate-input-required"
+      : sharedUnitKinds.length > 0
+        ? "type-compatible"
+        : "type-incompatible";
+    const directOwnerProbeInstalled =
+      CLASSICAL_GRAMMAR_APPLICATION_DIRECT_RESULT_PROBE_OPERATION_IDS
+        .includes(operation?.operationId);
+    const outputContract = getApplicationOutputContract(
+      operation?.operationId,
+      DEFAULT_APPLICATION_OUTPUT_KIND,
+      targetObject,
+    );
+    const validatorNames = Object.freeze([
+      ...(outputContract?.validatorNames || []),
+    ]);
+    const resolvedCapability = directOwnerProbeInstalled
+      && typeCompatibilityStatus === "type-compatible"
+      ? resolveCanonicalCallableCapability(
+        targetObject,
+        operation.capabilityName,
+        api,
+      )
+      : null;
+    const resolvedValidators = directOwnerProbeInstalled
+      && typeCompatibilityStatus === "type-compatible"
+      ? validatorNames.map(validatorName => (
+        resolveCanonicalCallableCapability(
+          targetObject,
+          validatorName,
+          api,
+        )
+      ))
+      : [];
+    const ownerProbeCapabilityInstalled = Boolean(resolvedCapability);
+    const ownerProbeValidatorsInstalled = Boolean(
+      validatorNames.length > 0
+      && resolvedValidators.length === validatorNames.length
+      && resolvedValidators.every(Boolean),
+    );
+    const compatibleOwnerProbeCandidates = exactOwnerProbeCandidates.filter(
+      candidate => candidate.continuationUnitKinds.some(
+        unitKind => inputUnitKinds.includes(unitKind),
+      ),
+    );
+    let ownerProbeResult = null;
+    let ownerProbeInput = null;
+    let ownerProbeThrew = false;
+    const ownerProbeInvoked = Boolean(
+      typeCompatibilityStatus === "type-compatible"
+      && directOwnerProbeInstalled
+      && ownerProbeCapabilityInstalled
+      && ownerProbeValidatorsInstalled,
+    );
+    if (ownerProbeInvoked) {
+      for (const candidate of compatibleOwnerProbeCandidates) {
+        let candidateResult = null;
+        let candidateThrew = false;
+        try {
+          candidateResult = Reflect.apply(
+            resolvedCapability.capability,
+            targetObject,
+            [candidate.exactResult],
+          );
+        } catch {
+          candidateThrew = true;
+        }
+        const candidateValidated = Boolean(
+          candidateResult
+          && !candidateThrew
+          && resolvedValidators.every(resolved => {
+            try {
+              return Reflect.apply(
+                resolved.capability,
+                targetObject,
+                [candidateResult],
+              ) === true;
+            } catch {
+              return false;
+            }
+          })
+          && getCanonicalResultAuthorizationStatus(candidateResult)
+            === "authorized"
+        );
+        if (candidateValidated) {
+          ownerProbeInput = candidate;
+          ownerProbeResult = candidateResult;
+          ownerProbeThrew = false;
+          break;
+        }
+        ownerProbeThrew = ownerProbeThrew || candidateThrew;
+      }
+    }
+    const ownerProbeResultValidated = Boolean(
+      ownerProbeResult
+      && !ownerProbeThrew
+      && ownerProbeInput,
+    );
+    // A type mismatch is evidence that the aggregate lacks a declared handoff;
+    // it is not an owner's grammatical rejection. Until an owner issues a
+    // separately validated rejection contract, the safe state is pending.
+    const ownerRejectionProven = false;
+    const availabilityStatus = ownerProbeResultValidated
+      ? "available"
+      : ownerRejectionProven
+        ? "incompatible"
+        : "missing-prerequisite";
+    const availabilityReason = availabilityStatus === "available"
+        ? "canonical-owner-direct-result-validated"
+        : typeCompatibilityStatus === "type-incompatible"
+          ? "continuation-unit-mismatch-owner-rejection-not-proven"
+        : typeCompatibilityStatus === "separate-input-required"
+          ? "separate-typed-input-required"
+          : !directOwnerProbeInstalled
+            ? "direct-owner-probe-not-installed"
+            : !ownerProbeCapabilityInstalled
+              ? "direct-owner-capability-unavailable"
+              : !ownerProbeValidatorsInstalled
+                ? "direct-owner-result-validator-unavailable"
+                : "direct-owner-requires-more-input";
+    return Object.freeze({
+      availabilityStatus,
+      availabilityReason,
+      typeCompatibilityStatus,
+      directOwnerProbeInstalled,
+      ownerProbeCapabilityName: directOwnerProbeInstalled
+        ? operation.capabilityName
+        : "",
+      ownerProbeValidatorNames: validatorNames,
+      ownerProbeCapabilityInstalled,
+      ownerProbeValidatorsInstalled,
+      ownerProbeInvoked,
+      ownerProbeThrew,
+      ownerProbeInputResult: ownerProbeResultValidated
+        ? ownerProbeInput.exactResult
+        : null,
+      ownerProbeInputResultRole: ownerProbeResultValidated
+        ? ownerProbeInput.resultRole
+        : "",
+      ownerProbeInputUnitKinds: ownerProbeResultValidated
+        ? ownerProbeInput.continuationUnitKinds
+        : Object.freeze([]),
+      ownerProbeInputExactIdentityMatched: ownerProbeResultValidated,
+      ownerProbeInputExactCanonicalResultIdentity: Boolean(
+        ownerProbeResultValidated
+        && ownerProbeInput.resultRole === "canonical-result"
+      ),
+      ownerProbeInputExactContinuationResultIdentity: Boolean(
+        ownerProbeResultValidated
+        && ownerProbeInput.resultRole === "continuation-result"
+      ),
+      ownerProbeResultKind: ownerProbeResultValidated
+        ? String(ownerProbeResult.kind || "")
+        : "",
+      ownerProbeResultValidated,
+      ownerInputAcceptanceProven: ownerProbeResultValidated,
+      ownerRejectionProven,
+      ownerEvaluationStatus: ownerProbeResultValidated
+        ? "accepted"
+        : ownerProbeInvoked
+          ? "requires-more-input"
+          : "not-evaluated",
+      availabilityAuthority: ownerProbeResultValidated
+        ? "canonical-owner-direct-probe"
+        : ownerRejectionProven
+          ? "canonical-owner-direct-rejection"
+          : "none",
+    });
+  }
+
+  function getIssuedTypedSourceProvenance(exactSource = null) {
+    if (!exactSource || typeof exactSource !== "object") return null;
+    const cached = typedSourceProvenanceByExactSource.get(exactSource);
+    if (cached) return cached;
+    const matches = Object.freeze(Object.entries(
+      CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS,
+    ).flatMap(([operationId, contract]) => {
+      for (const validatorName of contract.sourceValidatorNames) {
+        const resolved = resolveCanonicalCallableCapability(
+          targetObject,
+          validatorName,
+          api,
+        );
+        if (!resolved) continue;
+        let accepted = false;
+        try {
+          accepted = Reflect.apply(
+            resolved.capability,
+            targetObject,
+            [exactSource],
+          ) === true;
+        } catch {
+          accepted = false;
+        }
+        if (accepted) {
+          return [Object.freeze({
+            operationId,
+            sourceUnitKind: contract.sourceUnitKind,
+            sourceValidatorName: validatorName,
+          })];
+        }
+      }
+      return [];
+    }));
+    if (!matches.length) return null;
+    const provenance = Object.freeze({
+      exactSource,
+      sourceUnitKinds: Object.freeze([...new Set(matches.map(
+        match => match.sourceUnitKind,
+      ))]),
+      operationIds: Object.freeze(matches.map(match => match.operationId)),
+      matches,
+    });
+    typedSourceProvenanceByExactSource.set(exactSource, provenance);
+    return provenance;
+  }
+
+  function typedSourcePreflightRequiresChoices(preflightFrame = null) {
+    if (!preflightFrame || typeof preflightFrame !== "object") return false;
+    if ([
+      "selectionRequired",
+      "selectorRequired",
+      "analysisSelectionRequired",
+      "operationSelectionRequired",
+      "pathSelectionRequired",
+    ].some(key => preflightFrame[key] === true)) {
+      return true;
+    }
+    if ([
+      "metaphoricalUseAvailable",
+      "possessorReduplicationAvailable",
+      "doubledFirstPluralAvailable",
+      "dependentClauseIntroducedByInAvailable",
+      "specialHumanUseAvailable",
+    ].some(key => preflightFrame[key] === true)) {
+      return true;
+    }
+    return [
+      "stateValues",
+      "subjectValues",
+      "humannessValues",
+      "animacyValues",
+      "stemRelationValues",
+      "predicateOptionValues",
+      "possessorValues",
+      "pluralConnectorValues",
+      "adjunctorInValues",
+      "clausePositionValues",
+      "numberFormValues",
+      "predicatePluralizationValues",
+    ].some(key => Array.isArray(preflightFrame[key])
+      && preflightFrame[key].length > 1);
+  }
+
+  function evaluateClassicalGrammarTypedSourceAvailability({
+    operation = null,
+    provenance = null,
+  } = {}) {
+    const operationId = operation?.operationId || "";
+    const sourceContract =
+      CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS[
+        operationId
+      ] || null;
+    const sourceMatch = provenance?.matches?.find(
+      match => match.operationId === operationId,
+    ) || null;
+    const continuationContract =
+      CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+        operationId
+      ] || null;
+    const sourceValidatorNames = Object.freeze([
+      ...(sourceContract?.sourceValidatorNames || []),
+    ]);
+    const resolvedSourceValidators = sourceValidatorNames.map(
+      validatorName => resolveCanonicalCallableCapability(
+        targetObject,
+        validatorName,
+        api,
+      ),
+    );
+    const sourceValidatorsInstalled = Boolean(
+      sourceValidatorNames.length
+      && resolvedSourceValidators.every(Boolean),
+    );
+    if (!sourceMatch || !sourceContract) {
+      const availabilityReason = sourceContract
+        ? "different-owner-issued-source-required"
+        : continuationContract?.inputUnitKinds?.length
+          ? "canonical-result-required"
+          : "owner-source-preflight-not-declared";
+      return Object.freeze({
+        availabilityStatus: "missing-prerequisite",
+        availabilityReason,
+        sourceContractDeclared: Boolean(sourceContract),
+        sourceUnitKinds: Object.freeze(sourceContract
+          ? [sourceContract.sourceUnitKind]
+          : []),
+        matchedSourceUnitKinds: Object.freeze([]),
+        sourceValidatorNames,
+        sourceValidatorsInstalled,
+        sourceValidatorName: "",
+        sourceIdentityMatched: false,
+        ownerPreflightCapabilityName:
+          sourceContract?.preflightCapabilityName || "",
+        ownerPreflightValidatorNames: Object.freeze([
+          ...(sourceContract?.preflightValidatorNames || []),
+        ]),
+        ownerPreflightCapabilityInstalled: false,
+        ownerPreflightValidatorsInstalled: false,
+        ownerPreflightInvoked: false,
+        ownerPreflightThrew: false,
+        ownerPreflightFrame: null,
+        ownerPreflightFrames: Object.freeze([]),
+        ownerPreflightResultKind: "",
+        ownerPreflightFrameValidated: false,
+        ownerChoicesRequired: false,
+        ownerInputAcceptanceProven: false,
+        ownerRejectionProven: false,
+        ownerEvaluationStatus: "not-evaluated",
+        availabilityAuthority: "none",
+      });
+    }
+    const resolvedPreflight = resolveCanonicalCallableCapability(
+      targetObject,
+      sourceContract.preflightCapabilityName,
+      api,
+    );
+    const resolvedPreflightValidators =
+      sourceContract.preflightValidatorNames.map(
+        validatorName => resolveCanonicalCallableCapability(
+          targetObject,
+          validatorName,
+          api,
+        ),
+      );
+    const ownerPreflightCapabilityInstalled = Boolean(resolvedPreflight);
+    const ownerPreflightValidatorsInstalled = Boolean(
+      resolvedPreflightValidators.every(Boolean),
+    );
+    const ownerPreflightInvoked = Boolean(
+      sourceValidatorsInstalled
+      && ownerPreflightCapabilityInstalled
+      && ownerPreflightValidatorsInstalled,
+    );
+    let ownerPreflightThrew = false;
+    const preflightFrames = ownerPreflightInvoked
+      ? sourceContract.preflightRequests.map(preflightRequest => {
+        try {
+          return Reflect.apply(
+            resolvedPreflight.capability,
+            targetObject,
+            [provenance.exactSource, preflightRequest],
+          );
+        } catch {
+          ownerPreflightThrew = true;
+          return null;
+        }
+      })
+      : [];
+    const validatedPreflightFrames = Object.freeze(
+      preflightFrames.filter(preflightFrame => {
+        const structureValidated = Boolean(
+          preflightFrame
+          && typeof preflightFrame === "object"
+          && preflightFrame.kind === sourceContract.preflightKind
+          && preflightFrame.authorizationStatus === "authorized"
+          && preflightFrame[sourceContract.preflightSourceProperty]
+            === provenance.exactSource
+          && Object.isFrozen(preflightFrame),
+        );
+        if (!structureValidated) return false;
+        return resolvedPreflightValidators.every(resolved => {
+          try {
+            return Reflect.apply(
+              resolved.capability,
+              targetObject,
+              [preflightFrame],
+            ) === true;
+          } catch {
+            return false;
+          }
+        });
+      }),
+    );
+    const ownerPreflightFrameValidated = Boolean(
+      ownerPreflightInvoked
+      && validatedPreflightFrames.length,
+    );
+    const ownerChoicesRequired = ownerPreflightFrameValidated
+      && (
+        validatedPreflightFrames.length > 1
+        || validatedPreflightFrames.some(
+          typedSourcePreflightRequiresChoices,
+        )
+      );
+    const availabilityStatus = ownerPreflightFrameValidated
+      ? "available"
+      : "missing-prerequisite";
+    const availabilityReason = ownerPreflightFrameValidated
+      ? ownerChoicesRequired
+        ? "canonical-owner-choices-required"
+        : "canonical-owner-source-preflight-accepted"
+      : !sourceValidatorsInstalled
+        ? "canonical-source-validator-unavailable"
+        : !ownerPreflightCapabilityInstalled
+          ? "canonical-owner-source-preflight-unavailable"
+          : !ownerPreflightValidatorsInstalled
+            ? "canonical-owner-source-preflight-validator-unavailable"
+            : ownerPreflightThrew
+              ? "canonical-owner-source-preflight-threw"
+              : "canonical-owner-source-preflight-requires-more-input";
+    return Object.freeze({
+      availabilityStatus,
+      availabilityReason,
+      sourceContractDeclared: true,
+      sourceUnitKinds: Object.freeze([sourceContract.sourceUnitKind]),
+      matchedSourceUnitKinds: Object.freeze([sourceMatch.sourceUnitKind]),
+      sourceValidatorNames,
+      sourceValidatorsInstalled,
+      sourceValidatorName: sourceMatch.sourceValidatorName,
+      sourceIdentityMatched: true,
+      ownerPreflightCapabilityName:
+        sourceContract.preflightCapabilityName,
+      ownerPreflightValidatorNames: Object.freeze([
+        ...sourceContract.preflightValidatorNames,
+      ]),
+      ownerPreflightCapabilityInstalled,
+      ownerPreflightValidatorsInstalled,
+      ownerPreflightInvoked,
+      ownerPreflightThrew,
+      ownerPreflightFrame: ownerPreflightFrameValidated
+        ? validatedPreflightFrames[0]
+        : null,
+      ownerPreflightFrames: validatedPreflightFrames,
+      ownerPreflightResultKind: ownerPreflightFrameValidated
+        ? String(validatedPreflightFrames[0].kind || "")
+        : "",
+      ownerPreflightFrameValidated,
+      ownerChoicesRequired,
+      ownerInputAcceptanceProven: ownerPreflightFrameValidated,
+      ownerRejectionProven: false,
+      ownerEvaluationStatus: ownerPreflightFrameValidated
+        ? "accepted"
+        : ownerPreflightInvoked
+          ? "requires-more-input"
+          : "not-evaluated",
+      availabilityAuthority: ownerPreflightFrameValidated
+        ? "canonical-owner-source-preflight"
+        : "none",
+    });
+  }
+
+  function getClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+    exactSource = null,
+  ) {
+    const provenance = getIssuedTypedSourceProvenance(exactSource);
+    if (!provenance) return null;
+    const cached = typedSourceCapabilityNavigatorByExactSource.get(
+      exactSource,
+    );
+    if (cached) return cached;
+    const inventory = getClassicalGrammarApplicationInventory();
+    const operations = Object.freeze(inventory.operations.flatMap(
+      operation => {
+        const continuationContract =
+          CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+            operation.operationId
+          ];
+        if (!continuationContract) return [];
+        const ownerAvailability =
+          evaluateClassicalGrammarTypedSourceAvailability({
+            operation,
+            provenance,
+          });
+        const signature =
+          operation.rhymeRoutePlaneFrame.compatibilitySignature;
+        return [Object.freeze({
+          operationId: operation.operationId,
+          capabilityName: operation.capabilityName,
+          inputUnitKinds: Object.freeze([
+            ...continuationContract.inputUnitKinds,
+          ]),
+          outputUnitKinds: Object.freeze([
+            ...continuationContract.outputUnitKinds,
+          ]),
+          sourceUnitKinds: ownerAvailability.sourceUnitKinds,
+          matchedSourceUnitKinds:
+            ownerAvailability.matchedSourceUnitKinds,
+          availabilityStatus: ownerAvailability.availabilityStatus,
+          compatibilityStatus: ownerAvailability.availabilityStatus,
+          availabilityReason: ownerAvailability.availabilityReason,
+          capabilityInstalled: operation.capabilityInstalled,
+          installedCapabilityState: operation.capabilityInstalled
+            ? "installed"
+            : "missing",
+          allOutputsHaveOwnerValidators:
+            operation.allOutputsHaveOwnerValidators,
+          allOwnerValidatorsInstalled:
+            operation.allOwnerValidatorsInstalled,
+          installedOwnerValidatorState:
+            !operation.allOutputsHaveOwnerValidators
+            ? "missing-validator"
+            : operation.allOwnerValidatorsInstalled
+              ? "installed"
+              : "missing",
+          sourceContractDeclared:
+            ownerAvailability.sourceContractDeclared,
+          sourceValidatorNames: ownerAvailability.sourceValidatorNames,
+          sourceValidatorsInstalled:
+            ownerAvailability.sourceValidatorsInstalled,
+          sourceValidatorName: ownerAvailability.sourceValidatorName,
+          exactSource,
+          exactSourceIdentityRequired: true,
+          exactSourceIdentityMatched: true,
+          sourceIdentityMatched: ownerAvailability.sourceIdentityMatched,
+          ownerPreflightCapabilityName:
+            ownerAvailability.ownerPreflightCapabilityName,
+          ownerPreflightValidatorNames:
+            ownerAvailability.ownerPreflightValidatorNames,
+          ownerPreflightCapabilityInstalled:
+            ownerAvailability.ownerPreflightCapabilityInstalled,
+          ownerPreflightValidatorsInstalled:
+            ownerAvailability.ownerPreflightValidatorsInstalled,
+          ownerPreflightInvoked:
+            ownerAvailability.ownerPreflightInvoked,
+          ownerPreflightThrew:
+            ownerAvailability.ownerPreflightThrew,
+          ownerPreflightFrame:
+            ownerAvailability.ownerPreflightFrame,
+          ownerPreflightFrames:
+            ownerAvailability.ownerPreflightFrames,
+          ownerPreflightResultKind:
+            ownerAvailability.ownerPreflightResultKind,
+          ownerPreflightFrameValidated:
+            ownerAvailability.ownerPreflightFrameValidated,
+          ownerChoicesRequired:
+            ownerAvailability.ownerChoicesRequired,
+          ownerInputAcceptanceProven:
+            ownerAvailability.ownerInputAcceptanceProven,
+          ownerRejectionProven:
+            ownerAvailability.ownerRejectionProven,
+          ownerEvaluationStatus:
+            ownerAvailability.ownerEvaluationStatus,
+          availabilityAuthority:
+            ownerAvailability.availabilityAuthority,
+          sixFieldSignature: signature,
+          changes: Object.freeze({
+            adds: signature.adds,
+            removes: signature.removes,
+          }),
+          preserves: signature.preserves,
+          emits: signature.emits,
+          typeCompatibilityOnly:
+            ownerAvailability.ownerPreflightFrameValidated !== true,
+          ownerAuthorizationStillRequired: true,
+          lessonMetadataAuthority: false,
+          grammarAuthority: false,
+          formulaStringAuthority: false,
+          surfaceStringAuthority: false,
+        })];
+      },
+    ));
+    const navigator = Object.freeze({
+      kind: APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND,
+      version: 1,
+      scope: "canonical-typed-source-contracts-over-continuation-routes",
+      inputRole: "exact-owner-issued-source",
+      exactSource: provenance.exactSource,
+      exactSourceIdentityMatched: true,
+      sourceUnitKinds: provenance.sourceUnitKinds,
+      sourceContractOperationIds: provenance.operationIds,
+      operationIds: Object.freeze(operations.map(
+        operation => operation.operationId,
+      )),
+      operations,
+      operationCount: operations.length,
+      availableCount: operations.filter(
+        operation => operation.availabilityStatus === "available",
+      ).length,
+      missingPrerequisiteCount: operations.filter(
+        operation => operation.availabilityStatus === "missing-prerequisite",
+      ).length,
+      incompatibleCount: operations.filter(
+        operation => operation.availabilityStatus === "incompatible",
+      ).length,
+      unclassifiedOperationCount:
+        inventory.operations.length - operations.length,
+      typedSourceProjectionIncluded: true,
+      directOwnerEvaluationIncluded: true,
+      ownerAuthorizationStatus: "navigator-does-not-authorize-execution",
+      typeCompatibilityOnly: operations.every(
+        operation => operation.ownerPreflightFrameValidated !== true,
+      ),
+      ownerAuthorizationStillRequired: true,
+      lessonMetadataAuthority: false,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedTypedSourceCapabilityNavigators.add(navigator);
+    typedSourceCapabilityNavigatorByExactSource.set(exactSource, navigator);
+    return navigator;
+  }
+
+  function isClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+    navigator = null,
+  ) {
+    if (
+      !navigator
+      || !issuedTypedSourceCapabilityNavigators.has(navigator)
+      || navigator.kind
+        !== APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND
+      || navigator.version !== 1
+      || navigator.inputRole !== "exact-owner-issued-source"
+      || navigator.exactSourceIdentityMatched !== true
+      || navigator.ownerAuthorizationStatus
+        !== "navigator-does-not-authorize-execution"
+      || navigator.ownerAuthorizationStillRequired !== true
+      || navigator.grammarAuthority !== false
+      || !Object.isFrozen(navigator)
+      || !Object.isFrozen(navigator.operations)
+      || !Object.isFrozen(navigator.operationIds)
+      || navigator.operationCount !== navigator.operations.length
+      || navigator.availableCount
+        + navigator.missingPrerequisiteCount
+        + navigator.incompatibleCount !== navigator.operationCount
+    ) {
+      return false;
+    }
+    const provenance = getIssuedTypedSourceProvenance(
+      navigator.exactSource,
+    );
+    return Boolean(
+      provenance
+      && provenance.exactSource === navigator.exactSource
+      && navigator.sourceUnitKinds === provenance.sourceUnitKinds
+      && navigator.sourceContractOperationIds === provenance.operationIds
+      && navigator.operations.every(operation => {
+        const available = operation.availabilityStatus === "available";
+        return Object.isFrozen(operation)
+        && Object.isFrozen(operation.inputUnitKinds)
+        && Object.isFrozen(operation.outputUnitKinds)
+        && Object.isFrozen(operation.sourceUnitKinds)
+        && Object.isFrozen(operation.matchedSourceUnitKinds)
+        && Object.isFrozen(operation.sourceValidatorNames)
+        && Object.isFrozen(operation.ownerPreflightValidatorNames)
+        && Object.isFrozen(operation.ownerPreflightFrames)
+        && Object.isFrozen(operation.changes)
+        && [
+          "available",
+          "missing-prerequisite",
+          "incompatible",
+        ].includes(operation.availabilityStatus)
+        && operation.compatibilityStatus === operation.availabilityStatus
+        && operation.exactSource === navigator.exactSource
+        && operation.exactSourceIdentityRequired === true
+        && operation.exactSourceIdentityMatched === true
+        && operation.ownerPreflightFrameValidated === available
+        && operation.ownerInputAcceptanceProven === available
+        && operation.ownerRejectionProven
+          === (operation.availabilityStatus === "incompatible")
+        && operation.typeCompatibilityOnly === !available
+        && (
+          !available
+          || (
+            operation.sourceIdentityMatched === true
+            && operation.ownerPreflightInvoked === true
+            && operation.ownerEvaluationStatus === "accepted"
+            && operation.availabilityAuthority
+              === "canonical-owner-source-preflight"
+            && operation.ownerPreflightFrame
+            && typeof operation.ownerPreflightFrame === "object"
+            && operation.ownerPreflightFrames.length > 0
+            && operation.ownerPreflightFrames[0]
+              === operation.ownerPreflightFrame
+          )
+        )
+        && operation.ownerAuthorizationStillRequired === true
+        && operation.grammarAuthority === false;
+      })
+    );
+  }
+
+  function getClassicalGrammarApplicationCapabilityNavigator(
+    currentResult = null,
+  ) {
+    const typedSourceNavigator =
+      getClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+        currentResult,
+      );
+    if (typedSourceNavigator) return typedSourceNavigator;
+    const applicationResultInput = isClassicalGrammarApplicationResult(
+      currentResult,
+    );
+    const issuedResultProvenance = applicationResultInput
+      ? null
+      : getIssuedResultProvenance(currentResult);
+    const provenance = applicationResultInput
+      ? Object.freeze({
+        applicationResult: currentResult,
+        exactResult: currentResult.canonicalResult,
+        resultRole: "application-result",
+        continuationUnitKinds:
+          continuationUnitKindsByResult.get(currentResult.canonicalResult)
+            || Object.freeze([]),
+      })
+      : issuedResultProvenance;
+    if (
+      !provenance
+      || provenance.applicationResult.authorizationStatus !== "authorized"
+      || !provenance.exactResult
+      || typeof provenance.exactResult !== "object"
+    ) {
+      return null;
+    }
+    const cachedNavigator = capabilityNavigatorByExactInput.get(
+      currentResult,
+    );
+    if (cachedNavigator) return cachedNavigator;
+    const emittedUnitKinds = Object.freeze([
+      ...new Set(provenance.continuationUnitKinds || []),
+    ]);
+    const exactOwnerProbeCandidates = getExactOwnerProbeCandidates(
+      provenance,
+    );
+    const inventory = getClassicalGrammarApplicationInventory();
+    const operations = Object.freeze(inventory.operations.flatMap(
+      (operation) => {
+        const continuationContract =
+          CLASSICAL_GRAMMAR_APPLICATION_CONTINUATION_TYPE_CONTRACTS[
+            operation.operationId
+          ];
+        if (!continuationContract) return [];
+        const inputUnitKinds = Object.freeze([
+          ...continuationContract.inputUnitKinds,
+        ]);
+        const outputUnitKinds = Object.freeze([
+          ...continuationContract.outputUnitKinds,
+        ]);
+        const sharedUnitKinds = Object.freeze(inputUnitKinds.filter(
+          unitKind => exactOwnerProbeCandidates.some(
+            candidate => candidate.continuationUnitKinds.includes(unitKind),
+          ),
+        ));
+        const ownerAvailability =
+          evaluateClassicalGrammarDirectCapabilityAvailability({
+            operation,
+            exactOwnerProbeCandidates,
+            inputUnitKinds,
+            sharedUnitKinds,
+          });
+        const signature =
+          operation.rhymeRoutePlaneFrame.compatibilitySignature;
+        return [Object.freeze({
+          operationId: operation.operationId,
+          capabilityName: operation.capabilityName,
+          inputUnitKinds,
+          sharedUnitKinds,
+          outputUnitKinds,
+          availabilityStatus: ownerAvailability.availabilityStatus,
+          compatibilityStatus: ownerAvailability.availabilityStatus,
+          availabilityReason: ownerAvailability.availabilityReason,
+          typeCompatibilityStatus:
+            ownerAvailability.typeCompatibilityStatus,
+          compatibilityBasis:
+            ownerAvailability.typeCompatibilityStatus,
+          capabilityInstalled: operation.capabilityInstalled,
+          installedCapabilityState: operation.capabilityInstalled
+            ? "installed"
+            : "missing",
+          allOutputsHaveOwnerValidators:
+            operation.allOutputsHaveOwnerValidators,
+          allOwnerValidatorsInstalled:
+            operation.allOwnerValidatorsInstalled,
+          installedOwnerValidatorState:
+            !operation.allOutputsHaveOwnerValidators
+            ? "missing-validator"
+            : operation.allOwnerValidatorsInstalled
+              ? "installed"
+              : "missing",
+          directOwnerProbeInstalled:
+            ownerAvailability.directOwnerProbeInstalled,
+          ownerProbeCapabilityName:
+            ownerAvailability.ownerProbeCapabilityName,
+          ownerProbeValidatorNames:
+            ownerAvailability.ownerProbeValidatorNames,
+          ownerProbeCapabilityInstalled:
+            ownerAvailability.ownerProbeCapabilityInstalled,
+          ownerProbeValidatorsInstalled:
+            ownerAvailability.ownerProbeValidatorsInstalled,
+          ownerProbeInvoked: ownerAvailability.ownerProbeInvoked,
+          ownerProbeThrew: ownerAvailability.ownerProbeThrew,
+          ownerProbeInputResult:
+            ownerAvailability.ownerProbeInputResult,
+          ownerProbeInputResultRole:
+            ownerAvailability.ownerProbeInputResultRole,
+          ownerProbeInputUnitKinds:
+            ownerAvailability.ownerProbeInputUnitKinds,
+          ownerProbeInputExactIdentityMatched:
+            ownerAvailability.ownerProbeInputExactIdentityMatched,
+          ownerProbeInputExactCanonicalResultIdentity:
+            ownerAvailability
+              .ownerProbeInputExactCanonicalResultIdentity,
+          ownerProbeInputExactContinuationResultIdentity:
+            ownerAvailability
+              .ownerProbeInputExactContinuationResultIdentity,
+          ownerProbeResultKind: ownerAvailability.ownerProbeResultKind,
+          ownerProbeResultValidated:
+            ownerAvailability.ownerProbeResultValidated,
+          ownerInputAcceptanceProven:
+            ownerAvailability.ownerInputAcceptanceProven,
+          ownerRejectionProven:
+            ownerAvailability.ownerRejectionProven,
+          ownerEvaluationStatus:
+            ownerAvailability.ownerEvaluationStatus,
+          availabilityAuthority:
+            ownerAvailability.availabilityAuthority,
+          sixFieldSignature: signature,
+          changes: Object.freeze({
+            adds: signature.adds,
+            removes: signature.removes,
+          }),
+          preserves: signature.preserves,
+          emits: signature.emits,
+          exactResultIdentityRequired: true,
+          exactResultIdentityMatched: true,
+          typeCompatibilityOnly:
+            ownerAvailability.ownerProbeResultValidated !== true,
+          ownerAuthorizationStillRequired: true,
+          lessonMetadataAuthority: false,
+          grammarAuthority: false,
+          formulaStringAuthority: false,
+          surfaceStringAuthority: false,
+        })];
+      },
+    ));
+    const navigator = Object.freeze({
+      kind: APPLICATION_CAPABILITY_NAVIGATOR_KIND,
+      version: 1,
+      scope: "canonical-continuation-contracts-only",
+      inputRole: "exact-owner-issued-result",
+      resultRole: provenance.resultRole,
+      applicationResult: provenance.applicationResult,
+      exactResult: provenance.exactResult,
+      exactApplicationResultIdentity:
+        provenance.resultRole === "application-result",
+      exactCanonicalResultIdentity:
+        provenance.resultRole === "canonical-result",
+      exactContinuationResultIdentity:
+        provenance.resultRole === "continuation-result",
+      exactResultIdentityMatched: true,
+      emittedUnitKinds,
+      operationIds: Object.freeze(operations.map(
+        operation => operation.operationId,
+      )),
+      operations,
+      operationCount: operations.length,
+      availableCount: operations.filter(
+        operation => operation.availabilityStatus === "available",
+      ).length,
+      missingPrerequisiteCount: operations.filter(
+        operation => (
+          operation.availabilityStatus === "missing-prerequisite"
+        ),
+      ).length,
+      incompatibleCount: operations.filter(
+        operation => operation.availabilityStatus === "incompatible",
+      ).length,
+      unclassifiedOperationCount:
+        inventory.operations.length - operations.length,
+      typedSourceProjectionIncluded: false,
+      directOwnerEvaluationIncluded: true,
+      ownerAuthorizationStatus: "navigator-does-not-authorize-execution",
+      typeCompatibilityOnly: operations.every(
+        operation => operation.ownerProbeResultValidated !== true,
+      ),
+      ownerAuthorizationStillRequired: true,
+      lessonMetadataAuthority: false,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+    issuedCapabilityNavigators.add(navigator);
+    capabilityNavigatorByExactInput.set(currentResult, navigator);
+    return navigator;
+  }
+
+  function isClassicalGrammarApplicationCapabilityNavigator(
+    navigator = null,
+  ) {
+    if (
+      navigator?.kind
+        === APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND
+    ) {
+      return isClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+        navigator,
+      );
+    }
+    if (
+      !navigator
+      || !issuedCapabilityNavigators.has(navigator)
+      || navigator.kind !== APPLICATION_CAPABILITY_NAVIGATOR_KIND
+      || navigator.version !== 1
+      || navigator.inputRole !== "exact-owner-issued-result"
+      || navigator.exactResultIdentityMatched !== true
+      || navigator.ownerAuthorizationStatus
+        !== "navigator-does-not-authorize-execution"
+      || navigator.ownerAuthorizationStillRequired !== true
+      || navigator.grammarAuthority !== false
+      || !isClassicalGrammarApplicationResult(navigator.applicationResult)
+      || navigator.applicationResult.authorizationStatus !== "authorized"
+      || !Object.isFrozen(navigator)
+      || !Object.isFrozen(navigator.operations)
+      || !Object.isFrozen(navigator.operationIds)
+      || navigator.operationCount !== navigator.operations.length
+    ) {
+      return false;
+    }
+    const exactProvenance = getIssuedResultProvenance(
+      navigator.exactResult,
+    );
+    const exactIdentityValid = navigator.resultRole === "application-result"
+      ? navigator.exactResult === navigator.applicationResult.canonicalResult
+        && navigator.exactApplicationResultIdentity === true
+        && navigator.exactCanonicalResultIdentity === false
+        && navigator.exactContinuationResultIdentity === false
+      : exactProvenance?.applicationResult === navigator.applicationResult
+        && exactProvenance?.resultRole === navigator.resultRole
+        && navigator.exactApplicationResultIdentity === false
+        && navigator.exactCanonicalResultIdentity
+          === (navigator.resultRole === "canonical-result")
+        && navigator.exactContinuationResultIdentity
+          === (navigator.resultRole === "continuation-result");
+    return Boolean(
+      exactIdentityValid
+      && navigator.operations.every((operation) => {
+        const available = operation.availabilityStatus === "available";
+        const ownerProbeInputProvenance = available
+          ? getIssuedResultProvenance(operation.ownerProbeInputResult)
+          : null;
+        const registeredOwnerProbeInputUnitKinds = available
+          ? ownerProbeInputProvenance?.continuationUnitKinds
+            || Object.freeze([])
+          : Object.freeze([]);
+        const ownerProbeInputIdentityValid = available
+          ? ownerProbeInputProvenance?.applicationResult
+              === navigator.applicationResult
+            && ownerProbeInputProvenance?.resultRole
+              === operation.ownerProbeInputResultRole
+            && operation.ownerProbeInputExactIdentityMatched === true
+            && operation.ownerProbeInputExactCanonicalResultIdentity
+              === (
+                operation.ownerProbeInputResultRole === "canonical-result"
+              )
+            && operation.ownerProbeInputExactContinuationResultIdentity
+              === (
+                operation.ownerProbeInputResultRole
+                  === "continuation-result"
+              )
+            && operation.ownerProbeInputUnitKinds.length
+              === registeredOwnerProbeInputUnitKinds.length
+            && operation.ownerProbeInputUnitKinds.every(
+              (unitKind, index) => (
+                unitKind === registeredOwnerProbeInputUnitKinds[index]
+              ),
+            )
+            && operation.ownerProbeInputUnitKinds.some(
+              unitKind => operation.inputUnitKinds.includes(unitKind),
+            )
+          : operation.ownerProbeInputResult === null
+            && operation.ownerProbeInputResultRole === ""
+            && operation.ownerProbeInputUnitKinds.length === 0
+            && operation.ownerProbeInputExactIdentityMatched === false
+            && operation.ownerProbeInputExactCanonicalResultIdentity
+              === false
+            && operation.ownerProbeInputExactContinuationResultIdentity
+              === false;
+        return Object.isFrozen(operation)
+        && Object.isFrozen(operation.changes)
+        && Object.isFrozen(operation.inputUnitKinds)
+        && Object.isFrozen(operation.sharedUnitKinds)
+        && Object.isFrozen(operation.outputUnitKinds)
+        && Object.isFrozen(operation.ownerProbeInputUnitKinds)
+        && ownerProbeInputIdentityValid
+        && [
+          "available",
+          "missing-prerequisite",
+          "incompatible",
+        ].includes(operation.availabilityStatus)
+        && operation.compatibilityStatus === operation.availabilityStatus
+        && [
+          "type-compatible",
+          "type-incompatible",
+          "separate-input-required",
+        ].includes(
+          operation.typeCompatibilityStatus,
+        )
+        && operation.exactResultIdentityRequired === true
+        && operation.exactResultIdentityMatched === true
+        && operation.ownerProbeResultValidated
+          === (operation.availabilityStatus === "available")
+        && operation.ownerInputAcceptanceProven
+          === (operation.availabilityStatus === "available")
+        && operation.ownerRejectionProven
+          === (operation.availabilityStatus === "incompatible")
+        && operation.typeCompatibilityOnly
+          === (operation.availabilityStatus !== "available")
+        && (
+          operation.availabilityStatus !== "available"
+          || (
+            operation.availabilityAuthority
+              === "canonical-owner-direct-probe"
+            && operation.ownerProbeInvoked === true
+            && operation.ownerEvaluationStatus === "accepted"
+          )
+        )
+        && (
+          operation.availabilityStatus !== "incompatible"
+          || (
+            operation.availabilityAuthority
+              === "canonical-owner-direct-rejection"
+            && operation.ownerRejectionProven === true
+          )
+        )
+        && operation.ownerAuthorizationStillRequired === true
+        && operation.grammarAuthority === false;
+      })
+    );
   }
 
   function buildClassicalGrammarApplicationLayerGraph(
@@ -4429,6 +5593,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         canonicalResult,
         getRouteResultContinuationUnitKinds(operationId, canonicalResult),
       );
+      const registeredContinuationResults = [];
       collectOwnerIssuedContinuationResults(canonicalResult)
         .forEach((unitKinds, continuationResult) => {
           const existingProducer =
@@ -4463,7 +5628,25 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
               routeSpecificUnitKinds,
             );
           }
+          const registeredProducer = existingProducer || result;
+          const registeredUnitKinds =
+            continuationUnitKindsByResult.get(continuationResult)
+            || routeSpecificUnitKinds;
+          if (
+            continuationResult !== canonicalResult
+            && registeredProducer === result
+          ) {
+            registeredContinuationResults.push(Object.freeze({
+              exactResult: continuationResult,
+              resultRole: "continuation-result",
+              continuationUnitKinds: registeredUnitKinds,
+            }));
+          }
         });
+      continuationResultsByApplicationResult.set(
+        result,
+        Object.freeze(registeredContinuationResults),
+      );
     }
     const exactInstanceContinuationFacts =
       authorizationStatus === "authorized" && canonicalResult
@@ -5529,6 +6712,8 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     RHYME_OWNER_PROOF_OBSERVATION_KIND,
     APPLICATION_LAYER_GRAPH_KIND,
     APPLICATION_ATLAS_OBSERVATION_KIND,
+    APPLICATION_CAPABILITY_NAVIGATOR_KIND,
+    APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND,
     CLASSICAL_VISIBLE_SURFACE_DIAGNOSTIC,
     CLASSICAL_GRAMMAR_APPLICATION_OUTPUT_KINDS,
     CLASSICAL_GRAMMAR_APPLICATION_GCD_INVARIANT_IDS: GCD_INVARIANT_IDS,
@@ -5546,6 +6731,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     isClassicalGrammarApplicationRhymeOwnerProofObservation,
     getClassicalGrammarApplicationRhymeContinuationProvenance,
     getClassicalGrammarApplicationNextOperationInventory,
+    getClassicalGrammarApplicationCapabilityNavigator,
+    isClassicalGrammarApplicationCapabilityNavigator,
+    getClassicalGrammarApplicationTypedSourceCapabilityNavigator,
+    isClassicalGrammarApplicationTypedSourceCapabilityNavigator,
     getClassicalGrammarApplicationLayerGraph,
     isClassicalGrammarApplicationLayerGraph,
     getClassicalGrammarApplicationAtlasObservation,

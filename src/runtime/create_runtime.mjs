@@ -1,7 +1,7 @@
-import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260824-lesson58-final-278";
+import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260824-universal-capability-navigator-280";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260823-passive-formation-continuity-238";
-import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260824-lesson58-final-278";
-import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260824-lesson58-final-278";
+import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260824-universal-capability-navigator-280";
+import { installClassicalClauseRelationControllerGlobals } from "../application/classical/clause_relation_controller.mjs?v=20260824-universal-capability-navigator-280";
 import { installScriptRuntimeGlobals } from "../bootstrap/script_runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementGlobals } from "../core/agreement/agreement.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAgreementDisplayGlobals } from "../core/agreement/display.mjs?v=20260818-lesson29-groups10-12-357";
@@ -66,18 +66,18 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260818-l
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260818-lesson29-groups10-12-357";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260811-classical-runtime-only-056";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260824-lesson58-final-278";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260824-universal-capability-navigator-280";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260823-passive-formation-continuity-238";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260812-broad-boundaries-076";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260824-lesson58-final-278";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260824-universal-capability-navigator-280";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260823-passive-formation-continuity-238";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260824-lesson58-final-278";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260824-universal-capability-navigator-280";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260818-lesson29-groups10-12-357";
-import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260824-lesson58-final-278";
+import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260824-universal-capability-navigator-280";
 
 export const RUNTIME_INSTALLERS = new Map([
     ["src/core/grammar/frame.mjs", installGrammarFrameGlobals],

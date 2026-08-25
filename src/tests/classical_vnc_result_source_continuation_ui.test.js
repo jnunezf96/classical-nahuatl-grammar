@@ -89,8 +89,11 @@ function run(ctx = {}) {
             );
             const action = rendering.slice(actionStart, actionEnd);
             return action.includes(
-                "getClassicalVncResultSourceContinuationCandidate"
+                "getClassicalGrammarResultSourceContinuationCandidate"
             )
+                && action.includes(
+                    "universalContinuation?.vncCandidate"
+                )
                 && action.includes("projection.sourceStem")
                 && !action.includes("projection.surface")
                 && !action.includes(

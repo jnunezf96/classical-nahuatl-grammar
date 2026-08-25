@@ -305,6 +305,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
         const attributes = [
           `value="${option.value}"`,
           controlId === "classical-construction-operation" ? 'data-classical-source-unit="nnc"' : "",
+          controlId === "classical-construction-operation" ? 'data-classical-application-operation="nnc:place-gentilic"' : "",
           controlId === "classical-construction-operation" ? 'data-classical-grammar-operation="place or gentilic formation"' : "",
           controlId === "classical-construction-operation" ? 'data-classical-result-unit="nnc"' : "",
           option.formationKind ? `data-place-gentilic-formation-kind="${option.formationKind}"` : "",
@@ -1042,28 +1043,91 @@ export function createClassicalShellModule(targetObject = globalThis) {
                         <label class="classical-rule-control" id="classical-construction-operation-field">
                           <span class="classical-rule-control__label">Next operation layer from this Source</span>
                           <select id="classical-construction-operation" data-classical-rule-logic-control="nominal-construction-operation">
-                            <option value="none" data-classical-source-unit="any" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>No added operation layer · Source → same-rank Result</option>
+                            <option value="none" data-classical-source-unit="any" data-classical-application-operation="direct" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>No added operation layer · Source → same-rank Result</option>
                             <option
                               value="deverbal-nnc"
                               data-classical-source-unit="vnc"
+                              data-classical-application-operation="nnc:deverbal-construction"
                               data-classical-grammar-operation="deverbal nominalization or characteristic patientive"
                               data-classical-result-unit="nnc"
                             >Source → deverbal nominalization or characteristic patientive → NNC Result</option>
                             <optgroup label="Operations from a VNC Source" data-classical-operation-source-group="vnc">
-                            <option value="nominal-embed-vnc" data-classical-source-unit="vnc" data-classical-grammar-operation="nominal embedding" data-classical-result-unit="vnc">VNC Source → nominal embedding → VNC Result</option>
-                            <option value="attitude-vnc" data-classical-source-unit="vnc" data-classical-grammar-operation="attitude formation" data-classical-result-unit="vnc">VNC Source → honorific, reverential, or pejorative formation → VNC Result</option>
+                            <option value="nominal-embed-vnc" data-classical-source-unit="vnc" data-classical-application-operation="grammar:nominal-construction" data-classical-grammar-operation="nominal embedding" data-classical-result-unit="vnc">VNC Source → nominal embedding → VNC Result</option>
+                            <option value="attitude-vnc" data-classical-source-unit="vnc" data-classical-application-operation="vnc:derivational-operation" data-classical-grammar-operation="attitude formation" data-classical-result-unit="vnc">VNC Source → honorific, reverential, or pejorative formation → VNC Result</option>
                             </optgroup>
                             <optgroup label="Operations from an NNC Source" data-classical-operation-source-group="nnc">
-                            <option value="compound-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="nominal compounding" data-classical-result-unit="nnc">NNC Source → nominal compounding → NNC Result</option>
-                            <option value="affective-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="affective formation" data-classical-result-unit="nnc">NNC Source → affective formation → NNC Result</option>
-                            <option value="cardinal-numeral-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="cardinal-number construction" data-classical-result-unit="nnc-or-vnc">NNC Source → cardinal-number construction → NNC or VNC Result</option>
-                            <option value="personal-name-nnc" data-classical-source-unit="nnc" data-classical-grammar-operation="personal-name formation" data-classical-result-unit="nnc">NNC Source → personal-name formation → NNC Result</option>
+                            <option value="compound-nnc" data-classical-source-unit="nnc" data-classical-application-operation="grammar:nominal-construction" data-classical-grammar-operation="nominal compounding" data-classical-result-unit="nnc">NNC Source → nominal compounding → NNC Result</option>
+                            <option value="affective-nnc" data-classical-source-unit="nnc" data-classical-application-operation="grammar:nominal-construction" data-classical-grammar-operation="affective formation" data-classical-result-unit="nnc">NNC Source → affective formation → NNC Result</option>
+                            <option value="cardinal-numeral-nnc" data-classical-source-unit="nnc" data-classical-application-operation="grammar:nominal-construction" data-classical-grammar-operation="cardinal-number construction" data-classical-result-unit="nnc-or-vnc">NNC Source → cardinal-number construction → NNC or VNC Result</option>
+                            <option value="personal-name-nnc" data-classical-source-unit="nnc" data-classical-application-operation="nnc:personal-name" data-classical-grammar-operation="personal-name formation" data-classical-result-unit="nnc">NNC Source → personal-name formation → NNC Result</option>
 ${renderPlaceGentilicNncOptions("classical-construction-operation")}
-                            <option value="denominal-vnc" data-classical-source-unit="nnc" data-classical-grammar-operation="denominal verbalization" data-classical-result-unit="vnc">NNC Source → denominal verbalization → VNC Result</option>
-                            <option value="adverbial-nuclear" data-classical-source-unit="nnc" data-classical-grammar-operation="adverbial use" data-classical-result-unit="nnc-or-vnc">NNC Source → adverbial use → NNC or VNC Result</option>
+                            <option value="denominal-vnc" data-classical-source-unit="nnc" data-classical-application-operation="vnc:denominal" data-classical-grammar-operation="denominal verbalization" data-classical-result-unit="vnc">NNC Source → denominal verbalization → VNC Result</option>
+                            <option value="adverbial-nuclear" data-classical-source-unit="nnc" data-classical-application-operation="nnc:adverbial" data-classical-grammar-operation="adverbial use" data-classical-result-unit="nnc-or-vnc">NNC Source → adverbial use → NNC or VNC Result</option>
                             </optgroup>
                           </select>
                         </label>
+                        <section
+                          class="classical-capability-navigator"
+                          id="classical-capability-navigator"
+                          data-classical-capability-navigator="type-compatible-candidates"
+                          data-classical-capability-navigator-status="waiting"
+                          data-classical-presentation-only="true"
+                          data-classical-grammar-authority="false"
+                          data-classical-source-authorizes="none"
+                          data-classical-result-authorizes="none"
+                          data-classical-lesson-authority="false"
+                          data-classical-formula-string-authority="false"
+                          data-classical-surface-string-authority="false"
+                          aria-labelledby="classical-capability-navigator-heading"
+                        >
+                          <label
+                            class="classical-rule-control classical-capability-navigator__field"
+                            id="classical-capability-navigator-field"
+                          >
+                            <span
+                              class="classical-rule-control__label"
+                              id="classical-capability-navigator-heading"
+                            >Possible next pathways</span>
+                            <select
+                              id="classical-capability-navigator-operation"
+                              data-classical-capability-navigator-select="true"
+                              data-classical-capability-availability-authority="owner-issued-required"
+                              data-classical-grammar-authority="false"
+                              aria-describedby="classical-capability-navigator-status"
+                              disabled
+                            >
+                              <option value="" selected>Apply a Source to see possible next pathways</option>
+                            </select>
+                          </label>
+                          <p
+                            class="classical-capability-navigator__status"
+                            id="classical-capability-navigator-status"
+                            data-classical-capability-navigator-status-message="true"
+                            data-classical-presentation-only="true"
+                            role="status"
+                            aria-live="polite"
+                          >Waiting for an owner-issued Source or Result.</p>
+                          <dl class="classical-capability-navigator__facts">
+                            <div class="classical-capability-navigator__fact">
+                              <dt>Changes</dt>
+                              <dd data-classical-capability-navigator-changes="true">Waiting</dd>
+                            </div>
+                            <div class="classical-capability-navigator__fact">
+                              <dt>Preserves</dt>
+                              <dd data-classical-capability-navigator-preserves="true">Waiting</dd>
+                            </div>
+                          </dl>
+                          <ul
+                            class="classical-capability-navigator__pathways"
+                            id="classical-capability-navigator-pathways"
+                            data-classical-capability-navigator-pathways="type-compatible"
+                            data-classical-presentation-only="true"
+                            data-classical-grammar-authority="false"
+                            aria-label="Type-compatible next-pathway candidates"
+                            aria-hidden="true"
+                            hidden
+                          ></ul>
+                        </section>
                         <div
                           class="classical-construction-source-analysis-controls"
                           id="classical-construction-source-analysis-controls"

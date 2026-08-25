@@ -139,7 +139,7 @@ function run() {
     );
     suite.ok(
         "the live route record distinguishes Source unit, selected operation, and terminal Result state",
-        ledgerModule.includes("schemaVersion: 13")
+        ledgerModule.includes("schemaVersion: 14")
             && ledgerModule.includes("function describeCurrentResultRoute(documentObject, grammarRoot)")
             && ledgerModule.includes("sourceUnit: String(sourceRoot?.dataset?.classicalSourcePathUnit")
             && ledgerModule.includes("selectedOperation: String(operation?.value")

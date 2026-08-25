@@ -48,6 +48,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalVncResultSourceContinuation = null;
     var ActiveClassicalVncResultSourceApplicationFrame = null;
     var ActiveClassicalVncResultSourceProjection = null;
+    var ActiveClassicalGrammarResultSourceCapture = null;
+    var ActiveClassicalGrammarCapabilityNavigator = null;
     var ClassicalVncResultSourceCommitInProgress = false;
     const ClassicalVncResultSourceControlSnapshots = new Map();
     const ClassicalVncResultSourceDynamicOptions = [];
@@ -623,6 +625,87 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ClassicalVncResultSourceControlSnapshots.clear();
       return hadContinuation;
     }
+    function clearClassicalGrammarResultSourceContinuation(
+      reason = "",
+      { preserveVnc = false } = {}
+    ) {
+      const hadContinuation = Boolean(
+        ActiveClassicalGrammarResultSourceCapture
+      );
+      ActiveClassicalGrammarResultSourceCapture = null;
+      ActiveClassicalGrammarCapabilityNavigator = null;
+      const root = targetObject.document?.getElementById?.(
+        "classical-capability-navigator"
+      );
+      if (root?.dataset) {
+        delete root.dataset.classicalCapabilitySourceRole;
+        delete root.dataset.classicalCapabilitySourceUnitKinds;
+        delete root.dataset.classicalCapabilityExecutedOperation;
+        root.dataset.classicalCapabilitySourceClearReason = String(
+          reason || ""
+        );
+      }
+      const construction = targetObject.document?.getElementById?.(
+        "classical-construction-operation"
+      );
+      if (construction?.dataset) {
+        delete construction.dataset.classicalCapabilityContinuationActive;
+        delete construction.dataset
+          .classicalCapabilityIncompatibleApplicationOperations;
+      }
+      if (!preserveVnc) {
+        clearClassicalVncResultSourceContinuation(reason);
+      }
+      syncClassicalCapabilityNavigator(null);
+      return hadContinuation;
+    }
+    function bindClassicalGrammarResultSourceInvalidation() {
+      const root = targetObject.document?.getElementById?.(
+        "classical-capability-navigator"
+      );
+      if (
+        !root
+        || root.dataset.classicalCapabilityInvalidationBound === "true"
+      ) {
+        return;
+      }
+      root.dataset.classicalCapabilityInvalidationBound = "true";
+      const invalidateEditedTypedSource = event => {
+        if (
+          ClassicalVncResultSourceCommitInProgress
+          || !event?.target?.closest?.(
+            "[data-classical-source-identity-controls], "
+              + "#classical-source-whole, #classical-source-embed, "
+              + "#classical-source-matrix"
+          )
+        ) {
+          return;
+        }
+        clearClassicalGrammarResultSourceContinuation(
+          "typed-source-edited"
+        );
+      };
+      targetObject.document.addEventListener(
+        "input",
+        invalidateEditedTypedSource,
+        true
+      );
+      targetObject.document.addEventListener(
+        "change",
+        invalidateEditedTypedSource,
+        true
+      );
+      targetObject.document.addEventListener("click", event => {
+        if (!event?.target?.closest?.(
+          "#verb-entry-clear, [data-classical-basal-unit]"
+        )) {
+          return;
+        }
+        clearClassicalGrammarResultSourceContinuation(
+          "source-path-changed"
+        );
+      }, true);
+    }
     function addClassicalVncResultSourceOption(
       control = null,
       value = "",
@@ -781,6 +864,66 @@ export function createUiRenderingApi(targetObject = globalThis) {
           sourceApplicationFrame
         })
         : null;
+    }
+    function getClassicalGrammarResultSourceContinuationCandidate(
+      surfaceFrame = null
+    ) {
+      if (!surfaceFrame || surfaceFrame.authorizationStatus !== "authorized") {
+        return null;
+      }
+      const ownerProjection = getClassicalSgrOwnerIssuedProjection(
+        surfaceFrame
+      );
+      const exactVisibleResult = ownerProjection?.canonicalResult || null;
+      const capture = exactVisibleResult
+        && typeof targetObject.captureClassicalGrammarApplicationResult
+          === "function"
+        ? targetObject.captureClassicalGrammarApplicationResult(
+          exactVisibleResult,
+          "universal-capability-navigator-source"
+        )
+        : null;
+      const captureValid = Boolean(
+        capture
+        && typeof targetObject.isClassicalGrammarApplicationResultCapture
+          === "function"
+        && targetObject.isClassicalGrammarApplicationResultCapture(
+          capture,
+          "universal-capability-navigator-source"
+        )
+      );
+      const navigator = captureValid
+        && typeof targetObject
+          .getClassicalGrammarApplicationCapabilityNavigator === "function"
+        ? targetObject.getClassicalGrammarApplicationCapabilityNavigator(
+          capture.canonicalResult
+        )
+        : null;
+      const navigatorValid = Boolean(
+        navigator
+        && typeof targetObject
+          .isClassicalGrammarApplicationCapabilityNavigator === "function"
+        && targetObject.isClassicalGrammarApplicationCapabilityNavigator(
+          navigator
+        )
+      );
+      const compatibleOperationIds = navigatorValid
+        ? navigator.operations.filter(
+          operation => operation.availabilityStatus !== "incompatible"
+        ).map(operation => operation.operationId)
+        : [];
+      const vncCandidate = getClassicalVncResultSourceContinuationCandidate(
+        surfaceFrame
+      );
+      if (!compatibleOperationIds.length && !vncCandidate) return null;
+      return Object.freeze({
+        capture: captureValid ? capture : null,
+        navigator: navigatorValid ? navigator : null,
+        compatibleOperationIds: Object.freeze(compatibleOperationIds),
+        vncCandidate,
+        exactResultIdentityPreserved: captureValid || Boolean(vncCandidate),
+        grammarAuthority: false,
+      });
     }
     function getActiveClassicalVncResultSourceForState(state = {}) {
       const resultFrame =
@@ -19539,13 +19682,48 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (typeof targetObject.document === "undefined" || !surfaceFrame) {
         return false;
       }
-      const continuation =
-        getClassicalVncResultSourceContinuationCandidate(surfaceFrame);
-      if (!continuation) {
+      const universalContinuation =
+        getClassicalGrammarResultSourceContinuationCandidate(surfaceFrame);
+      const continuation = universalContinuation?.vncCandidate || null;
+      if (!universalContinuation) {
         setClassicalWholeCanvasActionStatus(
-          "This Result cannot issue the typed constituents required by the canonical VNC Source."
+          "This exact Result has no owner-declared compatible next pathway."
         );
         return false;
+      }
+      if (universalContinuation.capture) {
+        ActiveClassicalGrammarResultSourceCapture =
+          universalContinuation.capture;
+        ActiveClassicalGrammarCapabilityNavigator =
+          universalContinuation.navigator;
+      }
+      if (!continuation) {
+        reconcileClassicalCompositionOperationControls("", {
+          clearAll: true,
+          resetRouteControls: true,
+        });
+        const capabilityRoot = targetObject.document.getElementById(
+          "classical-capability-navigator"
+        );
+        if (capabilityRoot?.dataset) {
+          capabilityRoot.dataset.classicalCapabilitySourceRole =
+            "exact-owner-issued-result";
+          capabilityRoot.dataset.classicalCapabilitySourceUnitKinds =
+            (universalContinuation.navigator?.emittedUnitKinds || [])
+              .join("|");
+        }
+        syncClassicalCapabilityNavigator(surfaceFrame);
+        if (typeof targetObject.setLeftPanelStackMode === "function") {
+          targetObject.setLeftPanelStackMode("inputs");
+        }
+        const navigatorSelect = targetObject.document.getElementById(
+          "classical-capability-navigator-operation"
+        );
+        navigatorSelect?.focus?.();
+        setClassicalWholeCanvasActionStatus(
+          "Exact Result retained as the navigator's next typed Source. Each canonical owner decides its additional choices."
+        );
+        return true;
       }
       const {
         resultFrame,
@@ -19569,6 +19747,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ActiveClassicalVncResultSourceApplicationFrame =
         sourceApplicationFrame;
       ActiveClassicalVncResultSourceProjection = projection;
+      const capabilityRoot = targetObject.document.getElementById(
+        "classical-capability-navigator"
+      );
+      if (capabilityRoot?.dataset) {
+        capabilityRoot.dataset.classicalCapabilitySourceRole =
+          "exact-owner-issued-result";
+        capabilityRoot.dataset.classicalCapabilitySourceUnitKinds =
+          (universalContinuation.navigator?.emittedUnitKinds || [
+            "vnc-result",
+          ]).join("|");
+      }
       ClassicalVncResultSourceCommitInProgress = true;
       const input = wholeInput || mirrorInput;
       try {
@@ -20797,6 +20986,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "deverbal-nnc": "nnc:deverbal-construction",
       "denominal-vnc": "vnc:denominal",
       "personal-name-nnc": "nnc:personal-name",
+    });
+    const CLASSICAL_SOURCE_OPERATION_CAPABILITY_IDS = Object.freeze({
+      "nominal-embed-vnc": "grammar:nominal-construction",
+      "compound-nnc": "grammar:nominal-construction",
+      "affective-nnc": "grammar:nominal-construction",
+      "attitude-vnc": "vnc:derivational-operation",
+      "cardinal-numeral-nnc": "grammar:nominal-construction",
+      "deverbal-nnc": "nnc:deverbal-construction",
+      "place-gentilic-nnc": "nnc:place-gentilic",
+      "denominal-vnc": "vnc:denominal",
+      "personal-name-nnc": "nnc:personal-name",
+      "adverbial-nuclear": "nnc:adverbial",
     });
     const ClassicalNominalConstructionOperationHandlers = Object.freeze({
       "nominal-embed-vnc": "nominal-construction",
@@ -28169,7 +28370,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (recoveryAction) resultActions.appendChild(recoveryAction);
       const continuationCandidate =
-        getClassicalVncResultSourceContinuationCandidate(frame);
+        getClassicalGrammarResultSourceContinuationCandidate(frame);
       if (continuationCandidate) {
         const continueAction = targetObject.document.createElement("button");
         continueAction.type = "button";
@@ -30886,7 +31087,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const authorized =
         surfaceFrame.authorizationStatus === "authorized";
       const directCandidate = authorized
-        ? getClassicalVncResultSourceContinuationCandidate(surfaceFrame)
+        ? getClassicalGrammarResultSourceContinuationCandidate(surfaceFrame)
         : null;
       const cue = targetObject.document.createElement("p");
       cue.className = "classical-result-continuation-cue";
@@ -30968,6 +31169,578 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const visible = facts.slice(0, limit);
       const remaining = facts.length - visible.length;
       return `${visible.join(" · ")}${remaining > 0 ? ` · +${remaining}` : ""}`;
+    }
+
+    const CLASSICAL_CAPABILITY_NAVIGATOR_FRAME_ID =
+      "classical-capability-navigator-frame";
+
+    function getClassicalCapabilityRouteDestination(operationId = "") {
+      const normalized = String(operationId || "").trim();
+      if (!normalized) return "";
+      if (Object.values(
+        CLASSICAL_SOURCE_OPERATION_CAPABILITY_IDS
+      ).includes(normalized)) {
+        return "source-operation";
+      }
+      if (["vnc:application", "nnc:ordinary", "nnc:pronominal"].includes(
+        normalized
+      )) {
+        return "grammar";
+      }
+      if (/^(?:vnc:(?:derivational|ordered-voice)|nnc:(?:adjectival|relational))/u
+        .test(normalized)) {
+        return "grammar";
+      }
+      if (/:(?:diagram|sentence-surface)$/u.test(normalized)) {
+        return "result-view";
+      }
+      if (/^(?:sentence|clause|particle):/u.test(normalized)) {
+        return "continuation";
+      }
+      return "grammar";
+    }
+
+    function formatClassicalCapabilityOperationLabel(operationId = "") {
+      return String(operationId || "")
+        .replace(/^grammar:/u, "")
+        .replace(/^vnc:/u, "VNC ")
+        .replace(/^nnc:/u, "NNC ")
+        .replace(/^sentence:/u, "Sentence ")
+        .replace(/^clause:/u, "Clause ")
+        .replace(/^particle:/u, "Particle ")
+        .replace(/[-_:]+/gu, " ")
+        .replace(/\s+/gu, " ")
+        .trim()
+        .replace(/^./u, character => character.toUpperCase());
+    }
+
+    function getClassicalGrammarExactTypedSourceFromSurfaceFrame(
+      surfaceFrame = null
+    ) {
+      const state = surfaceFrame?.state || null;
+      const basalUnit = String(
+        state?.basalUnit || surfaceFrame?.basalUnit || ""
+      ).toLowerCase();
+      if (basalUnit === "nnc") {
+        const nncSource = state?.nncTypedSourceFrame || null;
+        return nncSource
+          && typeof targetObject.isIssuedCanonicalNncSourceFrame
+            === "function"
+          && targetObject.isIssuedCanonicalNncSourceFrame(nncSource)
+          ? nncSource
+          : null;
+      }
+      if (basalUnit === "vnc") {
+        const vncSource = state?.vncApplicationFrame?.resultFrame
+          ?.sourceMachineryFrame || null;
+        return vncSource
+          && typeof targetObject
+            .isClassicalNahuatlVncDerivationSourceMachineryFrame
+            === "function"
+          && targetObject
+            .isClassicalNahuatlVncDerivationSourceMachineryFrame(vncSource)
+          ? vncSource
+          : null;
+      }
+      return null;
+    }
+
+    function getClassicalCapabilityNavigatorFrame(surfaceFrame = null) {
+      const continuedExactResult =
+        ActiveClassicalGrammarResultSourceCapture?.canonicalResult || null;
+      const currentExactTypedSource = continuedExactResult
+        ? null
+        : getClassicalGrammarExactTypedSourceFromSurfaceFrame(surfaceFrame);
+      const visibleResultPreview = continuedExactResult
+        || currentExactTypedSource
+        ? null
+        : getClassicalSgrOwnerIssuedProjection(surfaceFrame)
+          ?.canonicalResult || null;
+      const exactInput = continuedExactResult
+        || currentExactTypedSource
+        || visibleResultPreview
+        || null;
+      if (
+        !exactInput
+        || typeof targetObject
+          .getClassicalGrammarApplicationCapabilityNavigator !== "function"
+        || typeof targetObject
+          .isClassicalGrammarApplicationCapabilityNavigator !== "function"
+      ) {
+        return null;
+      }
+      const frame = targetObject
+        .getClassicalGrammarApplicationCapabilityNavigator(
+          exactInput
+        );
+      return targetObject.isClassicalGrammarApplicationCapabilityNavigator(
+        frame
+      ) ? frame : null;
+    }
+
+    function projectClassicalCapabilityNavigatorFrame(frame = null) {
+      if (!frame) return null;
+      return Object.freeze({
+        kind: frame.kind,
+        version: frame.version,
+        inputRole: frame.inputRole,
+        resultRole: frame.resultRole,
+        sourceUnitKinds: Object.freeze([...(frame.sourceUnitKinds || [])]),
+        emittedUnitKinds: Object.freeze([...(frame.emittedUnitKinds || [])]),
+        typedSourceProjectionIncluded:
+          frame.typedSourceProjectionIncluded === true,
+        typeCompatibilityOnly: frame.typeCompatibilityOnly === true,
+        directOwnerEvaluationIncluded:
+          frame.directOwnerEvaluationIncluded === true,
+        ownerAuthorizationStatus: frame.ownerAuthorizationStatus,
+        ownerAuthorizationStillRequired: true,
+        operations: Object.freeze((frame.operations || []).map(operation => {
+          const adds = Object.freeze([
+            ...(operation.changes?.adds || []),
+          ]);
+          const removes = Object.freeze([
+            ...(operation.changes?.removes || []),
+          ]);
+          return Object.freeze({
+            operationId: operation.operationId,
+            status: operation.availabilityStatus,
+            availabilityStatus: operation.availabilityStatus,
+            compatibilityStatus: operation.compatibilityStatus,
+            typeCompatibilityStatus:
+              operation.typeCompatibilityStatus || "",
+            availabilityReason: operation.availabilityReason,
+            changes: Object.freeze({ adds, removes }),
+            preserves: Object.freeze([...(operation.preserves || [])]),
+            emits: Object.freeze([...(operation.emits || [])]),
+            routeDestination: getClassicalCapabilityRouteDestination(
+              operation.operationId
+            ),
+            installedCapabilityState:
+              operation.installedCapabilityState,
+            installedOwnerValidatorState:
+              operation.installedOwnerValidatorState,
+            ownerEvaluationStatus: operation.ownerEvaluationStatus,
+            directOwnerProbeInstalled:
+              operation.directOwnerProbeInstalled === true,
+            ownerProbeInvoked: operation.ownerProbeInvoked === true,
+            ownerProbeResultValidated:
+              operation.ownerProbeResultValidated === true,
+            sourceIdentityMatched:
+              operation.sourceIdentityMatched === true,
+            ownerPreflightFrameValidated:
+              operation.ownerPreflightFrameValidated === true,
+            ownerChoicesRequired:
+              operation.ownerChoicesRequired === true,
+            ownerInputAcceptanceProven:
+              operation.ownerInputAcceptanceProven === true,
+            availabilityAuthority: operation.availabilityAuthority,
+            ownerAuthorizationStillRequired: true,
+            grammarAuthority: false,
+          });
+        })),
+        lessonMetadataAuthority: false,
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
+    }
+
+    function updateClassicalCapabilityNavigatorSelection(
+      select = null,
+      { navigate = false } = {}
+    ) {
+      if (!select) return null;
+      const selected = select.selectedOptions?.[0] || null;
+      const status = targetObject.document.getElementById(
+        "classical-capability-navigator-status"
+      );
+      const changes = targetObject.document.querySelector(
+        "[data-classical-capability-navigator-changes]"
+      );
+      const preserves = targetObject.document.querySelector(
+        "[data-classical-capability-navigator-preserves]"
+      );
+      const operationId = String(selected?.value || "");
+      const compatibilityStatus = String(
+        selected?.dataset?.classicalCapabilityStatus || ""
+      );
+      const typeCompatibilityStatus = String(
+        selected?.dataset?.classicalCapabilityTypeStatus || ""
+      );
+      const sourceMode = ActiveClassicalGrammarCapabilityNavigator
+        ?.inputRole === "exact-owner-issued-source";
+      const sourceIdentityMatched = selected?.dataset
+        ?.classicalCapabilitySourceIdentityMatched === "true";
+      const ownerChoicesRequired = selected?.dataset
+        ?.classicalCapabilityOwnerChoicesRequired === "true";
+      let changeFacts = { adds: [], removes: [] };
+      try {
+        changeFacts = JSON.parse(
+          selected?.dataset?.classicalCapabilityPathwayChanges || "{}"
+        );
+      } catch {
+        changeFacts = { adds: [], removes: [] };
+      }
+      const preserveFacts = String(
+        selected?.dataset?.classicalCapabilityPathwayPreserves || ""
+      ).split("|").filter(Boolean);
+      const changeSummary = [
+        ...(changeFacts.adds || []),
+        ...(changeFacts.removes || []).map(value => `remove ${value}`),
+      ];
+      const emitFacts = String(
+        selected?.dataset?.classicalCapabilityPathwayEmits || ""
+      ).split("|").filter(Boolean);
+      if (changes) {
+        changes.textContent = operationId
+          ? summarizeClassicalAppliedGrammarFacts([
+            ...changeSummary,
+            ...emitFacts.map(value => `emit ${value}`),
+          ])
+          : "Waiting";
+      }
+      if (preserves) {
+        preserves.textContent = operationId
+          ? summarizeClassicalAppliedGrammarFacts(preserveFacts)
+          : "Waiting";
+      }
+      if (status) {
+        status.textContent = !operationId
+          ? "Choose a possible next pathway."
+          : selected?.dataset?.classicalCapabilityInstalled === "false"
+            ? "The owner pathway is known, but its service is unavailable."
+            : sourceMode && compatibilityStatus === "missing-prerequisite"
+              ? sourceIdentityMatched
+                ? "The owner recognizes this exact Source, but still needs Grammar information."
+                : "This pathway needs a different typed Source or an exact Result."
+              : sourceMode && ownerChoicesRequired
+                ? "The canonical owner accepts this exact Source. Complete its Grammar choices."
+                : sourceMode
+                  ? "The canonical owner accepts this exact Source. Its controls remain unchanged until you apply the operation."
+            : compatibilityStatus === "missing-prerequisite"
+              ? typeCompatibilityStatus === "type-incompatible"
+                ? "This Result does not supply the pathway's declared Source type. Only its canonical owner may rule the pathway out."
+                : typeCompatibilityStatus === "separate-input-required"
+                  ? "This pathway begins from a separate typed Source."
+                  : "The Result type fits, but this pathway still needs its own choices or a direct owner preflight."
+              : "The canonical owner accepts this exact Result as input. Execution still checks the selected choices.";
+      }
+      targetObject.document.querySelectorAll(
+        "[data-classical-capability-operation-id]"
+      ).forEach(item => {
+        const isSelected = String(
+          item.dataset.classicalCapabilityOperationId || ""
+        ) === operationId;
+        item.dataset.classicalCapabilitySelected = String(isSelected);
+        item.setAttribute("aria-current", String(isSelected));
+      });
+      if (
+        !navigate
+        || !operationId
+        || compatibilityStatus === "missing-prerequisite"
+      ) return selected;
+      if (!ActiveClassicalGrammarResultSourceCapture) {
+        if (status) {
+          status.textContent = sourceMode
+            ? "This Source pathway is a read-only owner check. Apply it through its Grammar controls."
+            : "Continue this Result before changing the current Source pathway.";
+        }
+        return selected;
+      }
+      const activeOperation = ActiveClassicalGrammarCapabilityNavigator
+        ?.operations?.find?.(
+          operation => operation.operationId === operationId
+        ) || null;
+      if (
+        activeOperation?.availabilityStatus === "available"
+        && activeOperation.directOwnerProbeInstalled === true
+        && activeOperation.ownerProbeResultValidated === true
+      ) {
+        const exactInput = activeOperation.ownerProbeInputResult
+          || ActiveClassicalGrammarResultSourceCapture.canonicalResult;
+        const applicationResult = typeof targetObject
+          .executeClassicalGrammarApplicationRequest === "function"
+          ? targetObject.executeClassicalGrammarApplicationRequest({
+            operationId,
+            args: [exactInput],
+          })
+          : null;
+        const applicationAccepted = Boolean(
+          applicationResult
+          && applicationResult.authorizationStatus === "authorized"
+          && applicationResult.canonicalResult
+          && typeof targetObject.isClassicalGrammarApplicationResult
+            === "function"
+          && targetObject.isClassicalGrammarApplicationResult(
+            applicationResult
+          )
+        );
+        const nextCapture = applicationAccepted
+          && typeof targetObject.captureClassicalGrammarApplicationResult
+            === "function"
+          ? targetObject.captureClassicalGrammarApplicationResult(
+            applicationResult.canonicalResult,
+            "universal-capability-navigator-source"
+          )
+          : null;
+        const captureAccepted = Boolean(
+          nextCapture
+          && typeof targetObject
+            .isClassicalGrammarApplicationResultCapture === "function"
+          && targetObject.isClassicalGrammarApplicationResultCapture(
+            nextCapture,
+            "universal-capability-navigator-source"
+          )
+        );
+        if (!captureAccepted) {
+          if (status) {
+            status.textContent =
+              "The canonical owner did not issue a continuable Result.";
+          }
+          return selected;
+        }
+        ActiveClassicalGrammarResultSourceCapture = nextCapture;
+        ActiveClassicalGrammarCapabilityNavigator = targetObject
+          .getClassicalGrammarApplicationCapabilityNavigator?.(
+            nextCapture.canonicalResult
+          ) || null;
+        const root = targetObject.document.getElementById(
+          "classical-capability-navigator"
+        );
+        if (root?.dataset) {
+          root.dataset.classicalCapabilitySourceRole =
+            "exact-owner-issued-result";
+          root.dataset.classicalCapabilityExecutedOperation = operationId;
+        }
+        syncClassicalCapabilityNavigator(null);
+        const refreshedStatus = targetObject.document.getElementById(
+          "classical-capability-navigator-status"
+        );
+        if (refreshedStatus) {
+          refreshedStatus.textContent =
+            "Applied by the canonical owner. Its exact Result is now the next Source.";
+        }
+        setClassicalWholeCanvasActionStatus(
+          "Canonical pathway applied; exact Result retained as Source."
+        );
+        return selected;
+      }
+      const construction = targetObject.document.getElementById(
+        "classical-construction-operation"
+      );
+      const sourceOptions = Array.from(construction?.options || []).filter(
+        option => String(
+          option.dataset?.classicalApplicationOperation || ""
+        ) === operationId && option.hidden !== true && option.disabled !== true
+      );
+      if (sourceOptions.length === 1) {
+        construction.value = sourceOptions[0].value;
+        construction.dispatchEvent(new targetObject.Event("change", {
+          bubbles: true,
+        }));
+        return selected;
+      }
+      if (sourceOptions.length > 1) {
+        construction.focus?.();
+        status.textContent =
+          "Choose the formation under Source operation; its owner will check it.";
+        return selected;
+      }
+      const destination = String(
+        selected.dataset?.classicalCapabilityRouteDestination || ""
+      );
+      const destinationNode = destination === "result-view"
+        ? targetObject.document.getElementById("classical-result-panel")
+        : destination === "continuation"
+          ? targetObject.document.getElementById(
+            "classical-grammar-continuation"
+          )
+          : targetObject.document.getElementById(
+            "classical-rule-logic-controls"
+          );
+      destinationNode?.scrollIntoView?.({ block: "nearest" });
+      destinationNode?.focus?.({ preventScroll: true });
+      return selected;
+    }
+
+    function syncClassicalCapabilityNavigator(surfaceFrame = null) {
+      if (typeof targetObject.document === "undefined") return null;
+      const root = targetObject.document.getElementById(
+        "classical-capability-navigator"
+      );
+      const select = targetObject.document.getElementById(
+        "classical-capability-navigator-operation"
+      );
+      const pathways = targetObject.document.getElementById(
+        "classical-capability-navigator-pathways"
+      );
+      const construction = targetObject.document.getElementById(
+        "classical-construction-operation"
+      );
+      if (!root || !select || !pathways) return null;
+      bindClassicalGrammarResultSourceInvalidation();
+      const frame = getClassicalCapabilityNavigatorFrame(surfaceFrame);
+      const projection = projectClassicalCapabilityNavigatorFrame(frame);
+      ActiveClassicalGrammarCapabilityNavigator = frame;
+      const previousSelection = String(select.value || "");
+      select.replaceChildren();
+      pathways.replaceChildren();
+      const placeholder = targetObject.document.createElement("option");
+      placeholder.value = "";
+      placeholder.textContent = projection
+        ? "Choose a possible next pathway"
+        : "Apply a Source to see possible next pathways";
+      select.appendChild(placeholder);
+      if (!projection) {
+        select.disabled = true;
+        root.dataset.classicalCapabilityNavigatorStatus = "waiting";
+        delete root.dataset.classicalCapabilityFrameId;
+        delete root.dataset.classicalCapabilitySourceRole;
+        delete root.dataset.classicalCapabilitySourceUnitKinds;
+        targetObject.document.getElementById(
+          CLASSICAL_CAPABILITY_NAVIGATOR_FRAME_ID
+        )?.remove?.();
+        pathways.hidden = true;
+        pathways.setAttribute("aria-hidden", "true");
+        if (construction?.dataset) {
+          delete construction.dataset.classicalCapabilityContinuationActive;
+          delete construction.dataset
+            .classicalCapabilityIncompatibleApplicationOperations;
+        }
+        targetObject.syncClassicalConstructionSourceUnitAvailability?.();
+        updateClassicalCapabilityNavigatorSelection(select);
+        return null;
+      }
+      const delivered = projection.operations.filter(
+        operation => operation.status !== "incompatible"
+      );
+      root.dataset.classicalCapabilitySourceRole = projection.inputRole;
+      root.dataset.classicalCapabilitySourceUnitKinds = (
+        projection.sourceUnitKinds.length
+          ? projection.sourceUnitKinds
+          : projection.emittedUnitKinds
+      ).join("|");
+      if (projection.inputRole === "exact-owner-issued-source") {
+        delete root.dataset.classicalCapabilityExecutedOperation;
+      }
+      delivered.forEach(operation => {
+        const label = formatClassicalCapabilityOperationLabel(
+          operation.operationId
+        );
+        const missingSuffix = operation.availabilityReason
+          === "canonical-result-required"
+          ? "needs Result"
+          : operation.sourceIdentityMatched === false
+            && projection.inputRole === "exact-owner-issued-source"
+            ? "different Source"
+          : operation.typeCompatibilityStatus
+          === "type-incompatible"
+          ? "different Source"
+          : operation.typeCompatibilityStatus === "separate-input-required"
+            ? "needs Source"
+            : "needs choices";
+        const option = targetObject.document.createElement("option");
+        option.value = operation.operationId;
+        option.textContent = operation.status === "missing-prerequisite"
+          ? `${label} · ${missingSuffix}`
+          : operation.ownerChoicesRequired
+            ? `${label} · needs choices`
+            : `${label} · available`;
+        option.dataset.classicalCapabilityStatus = operation.status;
+        option.dataset.classicalCapabilityTypeStatus =
+          operation.typeCompatibilityStatus;
+        option.dataset.classicalCapabilityRouteDestination =
+          operation.routeDestination;
+        option.dataset.classicalCapabilityPathwayChanges = JSON.stringify(
+          operation.changes
+        );
+        option.dataset.classicalCapabilityPathwayPreserves =
+          operation.preserves.join("|");
+        option.dataset.classicalCapabilityPathwayEmits =
+          operation.emits.join("|");
+        option.dataset.classicalCapabilityInstalled = String(
+          operation.installedCapabilityState === "installed"
+          && operation.installedOwnerValidatorState === "installed"
+        );
+        option.dataset.classicalCapabilitySourceIdentityMatched = String(
+          operation.sourceIdentityMatched === true
+        );
+        option.dataset.classicalCapabilityOwnerChoicesRequired = String(
+          operation.ownerChoicesRequired === true
+        );
+        select.appendChild(option);
+        const item = targetObject.document.createElement("li");
+        item.dataset.classicalCapabilityOperationId = operation.operationId;
+        item.dataset.classicalCapabilityStatus = operation.status;
+        item.dataset.classicalCapabilityTypeStatus =
+          operation.typeCompatibilityStatus;
+        item.dataset.classicalCapabilityRouteDestination =
+          operation.routeDestination;
+        item.dataset.classicalCapabilityPathwayChanges = JSON.stringify(
+          operation.changes
+        );
+        item.dataset.classicalCapabilityPathwayPreserves =
+          operation.preserves.join("|");
+        item.dataset.classicalCapabilityPathwayEmits =
+          operation.emits.join("|");
+        item.dataset.classicalCapabilitySelected = "false";
+        item.dataset.classicalGrammarAuthority = "false";
+        item.textContent = operation.status === "missing-prerequisite"
+          ? `${label} — ${missingSuffix}`
+          : operation.ownerChoicesRequired
+            ? `${label} — owner accepted; needs choices`
+            : `${label} — owner accepted`;
+        pathways.appendChild(item);
+      });
+      const script = targetObject.document.getElementById(
+        CLASSICAL_CAPABILITY_NAVIGATOR_FRAME_ID
+      ) || targetObject.document.createElement("script");
+      script.id = CLASSICAL_CAPABILITY_NAVIGATOR_FRAME_ID;
+      script.type = "application/json";
+      script.dataset.classicalCapabilityNavigatorFrame = "non-authorizing";
+      script.textContent = JSON.stringify(projection);
+      if (!script.parentElement) root.appendChild(script);
+      root.dataset.classicalCapabilityFrameId = script.id;
+      root.dataset.classicalCapabilityNavigatorStatus = "owner-checked";
+      root.dataset.classicalCapabilityOperationCount = String(
+        delivered.length
+      );
+      select.disabled = delivered.length === 0;
+      pathways.hidden = true;
+      pathways.setAttribute("aria-hidden", "true");
+      if (
+        construction?.dataset
+        && ActiveClassicalGrammarResultSourceCapture
+      ) {
+        construction.dataset.classicalCapabilityContinuationActive = "true";
+        construction.dataset
+          .classicalCapabilityIncompatibleApplicationOperations = projection
+            .operations.filter(
+              operation => operation.status === "incompatible"
+                && operation.availabilityAuthority !== "none"
+            ).map(operation => operation.operationId).join("|");
+      } else if (construction?.dataset) {
+        delete construction.dataset.classicalCapabilityContinuationActive;
+        delete construction.dataset
+          .classicalCapabilityIncompatibleApplicationOperations;
+      }
+      targetObject.syncClassicalConstructionSourceUnitAvailability?.();
+      const selectable = delivered.filter(
+        operation => operation.status === "available"
+      );
+      select.value = selectable.some(
+        operation => operation.operationId === previousSelection
+      ) ? previousSelection : selectable[0]?.operationId || "";
+      if (select.dataset.classicalCapabilityNavigatorBound !== "true") {
+        select.dataset.classicalCapabilityNavigatorBound = "true";
+        select.addEventListener("change", () => (
+          updateClassicalCapabilityNavigatorSelection(select, {
+            navigate: true,
+          })
+        ));
+      }
+      updateClassicalCapabilityNavigatorSelection(select);
+      return frame;
     }
 
     function syncClassicalAppliedGrammarAccount(
@@ -31142,6 +31915,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               )
             : null
         );
+      syncClassicalCapabilityNavigator(surfaceFrame);
       syncClassicalAppliedGrammarAccount(ownerProjection, layerGraph);
       const resultStatus = String(
         resultRoot?.dataset?.classicalNahuatlSurfaceStatus
@@ -31176,7 +31950,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ? "unavailable"
           : "waiting";
       const directCandidate = authorized
-        ? getClassicalVncResultSourceContinuationCandidate(surfaceFrame)
+        ? getClassicalGrammarResultSourceContinuationCandidate(surfaceFrame)
         : null;
       const continuationStatus = directCandidate
         ? "exact-result-to-source-and-capture"
@@ -33611,7 +34385,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         resultBlockReason
       );
       if (recoveryAction) actionRow.appendChild(recoveryAction);
-      if (getClassicalVncResultSourceContinuationCandidate(surfaceFrame)) {
+      if (getClassicalGrammarResultSourceContinuationCandidate(surfaceFrame)) {
         const continueAction = makeAction(
           "Continue this Result",
           "use-result-as-source",
@@ -40194,6 +40968,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
     api.appendClassicalWholeCanvasAuthorityChoiceControls = appendClassicalWholeCanvasAuthorityChoiceControls;
     api.clearClassicalVncResultSourceContinuation =
       clearClassicalVncResultSourceContinuation;
+    api.clearClassicalGrammarResultSourceContinuation =
+      clearClassicalGrammarResultSourceContinuation;
+    api.getClassicalGrammarResultSourceContinuationCandidate =
+      getClassicalGrammarResultSourceContinuationCandidate;
+    api.getActiveClassicalGrammarResultSourceCapture = () => (
+      ActiveClassicalGrammarResultSourceCapture
+    );
+    api.getClassicalGrammarExactTypedSourceFromSurfaceFrame =
+      getClassicalGrammarExactTypedSourceFromSurfaceFrame;
+    api.getClassicalCapabilityNavigatorFrame =
+      getClassicalCapabilityNavigatorFrame;
+    api.syncClassicalCapabilityNavigator =
+      syncClassicalCapabilityNavigator;
     api.reconcileClassicalCompositionOperationControls =
       reconcileClassicalCompositionOperationControls;
     api.useClassicalWholeCanvasResultAsNextSource = useClassicalWholeCanvasResultAsNextSource;

@@ -431,6 +431,59 @@ function run(ctx = {}) {
             && css.includes(".classical-source-path-lane__heading")
     );
     suite.ok(
+        "the existing Source operation track provides an empty non-authorizing capability navigator seam",
+        shell.includes('id="classical-capability-navigator"')
+            && shell.includes('data-classical-capability-navigator="type-compatible-candidates"')
+            && shell.includes('data-classical-capability-navigator-status="waiting"')
+            && shell.includes('id="classical-capability-navigator-operation"')
+            && shell.includes('data-classical-capability-navigator-select="true"')
+            && shell.includes('data-classical-capability-availability-authority="owner-issued-required"')
+            && shell.includes('Apply a Source to see possible next pathways')
+            && shell.includes('id="classical-capability-navigator-status"')
+            && shell.includes('data-classical-capability-navigator-changes="true"')
+            && shell.includes('data-classical-capability-navigator-preserves="true"')
+            && shell.includes('id="classical-capability-navigator-pathways"')
+            && shell.includes('data-classical-capability-navigator-pathways="type-compatible"')
+            && shell.includes('data-classical-presentation-only="true"')
+            && shell.includes('data-classical-grammar-authority="false"')
+            && shell.includes('data-classical-source-authorizes="none"')
+            && shell.includes('data-classical-result-authorizes="none"')
+            && shell.includes('data-classical-lesson-authority="false"')
+            && shell.includes('data-classical-formula-string-authority="false"')
+            && shell.includes('data-classical-surface-string-authority="false"')
+            && !shell.includes('data-classical-capability-pathway="')
+            && composer.includes(
+                "classicalCapabilityContinuationActive"
+            )
+            && composer.includes(
+                "classicalCapabilityIncompatibleApplicationOperations"
+            )
+            && composer.includes(
+                "exact-continuation-incompatible"
+            )
+            && rendering.includes(
+                "Continue this Result before changing the current Source pathway."
+            )
+            && rendering.includes(
+                'operation.availabilityAuthority !== "none"'
+            )
+            && rendering.includes(
+                "activeOperation.directOwnerProbeInstalled === true"
+            )
+            && rendering.includes(
+                'args: [exactInput]'
+            )
+            && rendering.includes(
+                "Applied by the canonical owner. Its exact Result is now the next Source."
+            )
+            && !composer.includes(
+                "classicalCapabilityCompatibleApplicationOperations"
+            )
+            && !composer.includes("classicalCapabilityAvailability")
+            && css.includes(".classical-capability-navigator__facts")
+            && css.includes(".classical-capability-navigator__pathways[hidden]")
+    );
+    suite.ok(
         "the three panels expose one typed composition path instead of three route islands",
         shell.includes('workbench.dataset.classicalCompositionPath =')
             && shell.includes('"typed-source-grammar-result"')

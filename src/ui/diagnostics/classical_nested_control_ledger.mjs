@@ -1042,6 +1042,300 @@ function buildApplicationAxisCast(
   };
 }
 
+function capabilityPathwayTextList(value = []) {
+  if (Array.isArray(value)) {
+    return [...new Set(value.map(normalizeText).filter(Boolean))].sort(
+      (left, right) => left.localeCompare(right)
+    );
+  }
+  const source = normalizeText(value);
+  if (!source) return [];
+  if (source.startsWith("[")) {
+    try {
+      return capabilityPathwayTextList(JSON.parse(source));
+    } catch {
+      // A malformed diagnostic attribute remains observable as plain text.
+    }
+  }
+  return [...new Set(source.split("|").map(normalizeText).filter(Boolean))]
+    .sort((left, right) => left.localeCompare(right));
+}
+
+function capabilityPathwayChanges(value = null) {
+  if (typeof value === "string" && normalizeText(value).startsWith("{")) {
+    try {
+      return capabilityPathwayChanges(JSON.parse(value));
+    } catch {
+      // Keep the delivered summary below; diagnostics never repair UI data.
+    }
+  }
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return {
+      adds: capabilityPathwayTextList(value.adds),
+      removes: capabilityPathwayTextList(value.removes),
+      summary: normalizeText(value.summary),
+    };
+  }
+  return {
+    adds: [],
+    removes: [],
+    summary: normalizeText(value),
+  };
+}
+
+function normalizeCapabilityPathwayRecord(record = {}) {
+  return {
+    operationId: normalizeText(record.operationId),
+    status: normalizeText(
+      record.status
+      || record.availabilityStatus
+      || record.compatibilityStatus
+    ),
+    changes: capabilityPathwayChanges(record.changes),
+    preserves: capabilityPathwayTextList(record.preserves),
+    routeDestination: normalizeText(record.routeDestination),
+    visible: record.visible !== false,
+    selected: record.selected === true,
+    locator: normalizeText(record.locator),
+  };
+}
+
+function capabilityPathwayRecordFromElement(element) {
+  const changesElement = element.matches?.(
+    "[data-classical-capability-pathway-changes]"
+  )
+    ? element
+    : element.querySelector?.(
+        "[data-classical-capability-pathway-changes]"
+      ) || null;
+  const preservesElement = element.matches?.(
+    "[data-classical-capability-pathway-preserves]"
+  )
+    ? element
+    : element.querySelector?.(
+        "[data-classical-capability-pathway-preserves]"
+      ) || null;
+  const changesSummary = capabilityPathwayChanges(
+    element.dataset?.classicalCapabilityPathwayChanges
+      || changesElement?.dataset?.classicalCapabilityPathwayChanges
+      || changesElement?.textContent
+  );
+  const explicitAdds = capabilityPathwayTextList(
+    element.dataset?.classicalCapabilityPathwayAdds
+      || changesElement?.dataset?.classicalCapabilityPathwayAdds
+  );
+  const explicitRemoves = capabilityPathwayTextList(
+    element.dataset?.classicalCapabilityPathwayRemoves
+      || changesElement?.dataset?.classicalCapabilityPathwayRemoves
+  );
+  const changes = {
+    adds: explicitAdds.length ? explicitAdds : changesSummary.adds,
+    removes: explicitRemoves.length ? explicitRemoves : changesSummary.removes,
+    summary: changesSummary.summary,
+  };
+  return normalizeCapabilityPathwayRecord({
+    operationId: element.dataset?.classicalCapabilityOperationId,
+    status: element.dataset?.classicalCapabilityStatus,
+    changes,
+    preserves:
+      element.dataset?.classicalCapabilityPathwayPreserves
+      || preservesElement?.dataset?.classicalCapabilityPathwayPreserves
+      || preservesElement?.textContent,
+    routeDestination:
+      element.dataset?.classicalCapabilityRouteDestination,
+    visible: isVisible(element),
+    selected:
+      element.dataset?.classicalCapabilitySelected === "true"
+      || element.getAttribute?.("aria-current") === "true",
+    locator: cssLocator(element),
+  });
+}
+
+function embeddedCapabilityNavigatorFrame(documentObject) {
+  const root = documentObject.getElementById?.(
+    "classical-capability-navigator"
+  ) || null;
+  if (!root) return { frame: null, frameElementId: "" };
+  const frameElementId = normalizeText(
+    root.dataset?.classicalCapabilityFrameId
+  );
+  const frameElement = (
+    frameElementId
+      ? documentObject.getElementById?.(frameElementId)
+      : null
+  ) || documentObject.querySelector?.(
+    '[data-classical-capability-navigator-frame="non-authorizing"]'
+  ) || null;
+  if (!frameElement) return { frame: null, frameElementId };
+  try {
+    return {
+      frame: JSON.parse(String(frameElement.textContent || "")),
+      frameElementId: frameElement.id || frameElementId,
+    };
+  } catch {
+    return { frame: null, frameElementId: frameElement.id || frameElementId };
+  }
+}
+
+function sameCapabilityPathwayList(left = [], right = []) {
+  return JSON.stringify(capabilityPathwayTextList(left))
+    === JSON.stringify(capabilityPathwayTextList(right));
+}
+
+function sameCapabilityPathwayChanges(left = null, right = null) {
+  const normalizedLeft = capabilityPathwayChanges(left);
+  const normalizedRight = capabilityPathwayChanges(right);
+  return sameCapabilityPathwayList(normalizedLeft.adds, normalizedRight.adds)
+    && sameCapabilityPathwayList(
+      normalizedLeft.removes,
+      normalizedRight.removes
+    );
+}
+
+export function buildClassicalCapabilityNavigatorPathwayCast({
+  capabilityFrame = null,
+  deliveredRecords = [],
+  frameElementId = "",
+} = {}) {
+  const frameAccepted = Boolean(
+    capabilityFrame
+    && typeof capabilityFrame === "object"
+    && capabilityFrame.grammarAuthority === false
+    && Array.isArray(capabilityFrame.operations)
+  );
+  const expectedRecords = frameAccepted
+    ? capabilityFrame.operations.map(normalizeCapabilityPathwayRecord)
+      .filter(record => record.operationId)
+    : [];
+  const delivered = deliveredRecords.map(normalizeCapabilityPathwayRecord)
+    .filter(record => record.operationId);
+  const expectedById = new Map(expectedRecords.map(record => [
+    record.operationId,
+    record,
+  ]));
+  const deliveredById = new Map(delivered.map(record => [
+    record.operationId,
+    record,
+  ]));
+  const frameOperationIds = [...new Set(expectedRecords.map(
+    record => record.operationId
+  ))].sort((left, right) => left.localeCompare(right));
+  const incompatibleOperationIds = expectedRecords.filter(
+    record => record.status === "incompatible"
+  ).map(record => record.operationId).sort(
+    (left, right) => left.localeCompare(right)
+  );
+  const expectedOperationIds = frameOperationIds.filter(
+    operationId => !incompatibleOperationIds.includes(operationId)
+  );
+  const deliveredOperationIds = [...deliveredById.keys()].sort(
+    (left, right) => left.localeCompare(right)
+  );
+  const matchedOperationIds = expectedOperationIds.filter(
+    operationId => deliveredById.has(operationId)
+  );
+  const comparableOperationIds = frameOperationIds.filter(
+    operationId => deliveredById.has(operationId)
+  );
+  const mismatchIds = predicate => comparableOperationIds.filter(
+    operationId => predicate(
+      expectedById.get(operationId),
+      deliveredById.get(operationId)
+    )
+  );
+  return {
+    kind: "classical-capability-navigator-pathway-cast",
+    version: 1,
+    authority: {
+      grammarAuthority: false,
+      uiAuthority: false,
+      capabilityFrameAuthorizesGrammar: false,
+      deliveredPathwaysAuthorizeGrammar: false,
+    },
+    frame: {
+      present: Boolean(capabilityFrame),
+      acceptedAsNonAuthorizingObservation: frameAccepted,
+      elementId: normalizeText(frameElementId),
+      kind: frameAccepted ? normalizeText(capabilityFrame.kind) : "",
+      version: frameAccepted ? Number(capabilityFrame.version || 0) : 0,
+      typeCompatibilityOnly:
+        frameAccepted && capabilityFrame.typeCompatibilityOnly === true,
+      directOwnerEvaluationIncluded:
+        frameAccepted
+        && capabilityFrame.directOwnerEvaluationIncluded === true,
+      ownerAuthorizationStillRequired:
+        frameAccepted
+        && capabilityFrame.ownerAuthorizationStillRequired === true,
+    },
+    counts: {
+      frameOperations: frameOperationIds.length,
+      expectedDeliveredOperations: expectedOperationIds.length,
+      deliveredOperations: deliveredOperationIds.length,
+      matchedOperations: matchedOperationIds.length,
+      missingOperations: expectedOperationIds.filter(
+        operationId => !deliveredById.has(operationId)
+      ).length,
+      unexpectedOperations: deliveredOperationIds.filter(
+        operationId => !expectedById.has(operationId)
+      ).length,
+      duplicateDeliveredOperations: delivered.length - deliveredById.size,
+    },
+    frameOperationIds,
+    expectedOperationIds,
+    incompatibleOperationIds,
+    deliveredOperationIds,
+    matchedOperationIds,
+    missingOperationIds: expectedOperationIds.filter(
+      operationId => !deliveredById.has(operationId)
+    ),
+    unexpectedOperationIds: deliveredOperationIds.filter(
+      operationId => !expectedById.has(operationId)
+    ),
+    deliveredIncompatibleOperationIds: deliveredOperationIds.filter(
+      operationId => incompatibleOperationIds.includes(operationId)
+    ),
+    duplicateDeliveredOperationIds: deliveredOperationIds.filter(
+      operationId => delivered.filter(
+        record => record.operationId === operationId
+      ).length > 1
+    ),
+    statusMismatchOperationIds: mismatchIds((expected, actual) => (
+      expected.status !== actual.status
+    )),
+    changesMismatchOperationIds: mismatchIds((expected, actual) => (
+      !sameCapabilityPathwayChanges(expected.changes, actual.changes)
+    )),
+    preservesMismatchOperationIds: mismatchIds((expected, actual) => (
+      !sameCapabilityPathwayList(expected.preserves, actual.preserves)
+    )),
+    routeDestinationMismatchOperationIds: mismatchIds((expected, actual) => (
+      Boolean(expected.routeDestination)
+      && expected.routeDestination !== actual.routeDestination
+    )),
+    expectedRecords,
+    deliveredRecords: delivered,
+  };
+}
+
+export function observeClassicalCapabilityNavigatorPathways(
+  documentObject = globalThis.document
+) {
+  const root = documentObject.getElementById?.(
+    "classical-capability-navigator"
+  ) || null;
+  const { frame, frameElementId } = embeddedCapabilityNavigatorFrame(
+    documentObject
+  );
+  const deliveredRecords = Array.from(root?.querySelectorAll?.(
+    "[data-classical-capability-operation-id]"
+  ) || []).map(capabilityPathwayRecordFromElement);
+  return buildClassicalCapabilityNavigatorPathwayCast({
+    capabilityFrame: frame,
+    deliveredRecords,
+    frameElementId,
+  });
+}
+
 function buildPathwayMap(documentObject, surfaceInventory = null) {
   const axisEvidence = applicationAxisEvidenceMap(surfaceInventory);
   const revealMap = constructionRevealMap(documentObject, axisEvidence);
@@ -1068,6 +1362,9 @@ function buildPathwayMap(documentObject, surfaceInventory = null) {
     surfaceInventory,
     axisEvidence
   );
+  const capabilityNavigatorCast = observeClassicalCapabilityNavigatorPathways(
+    documentObject
+  );
   return {
     counts: {
       branches: branches.length,
@@ -1078,8 +1375,15 @@ function buildPathwayMap(documentObject, surfaceInventory = null) {
       availableSourceOperations: sourceOperations.filter(
         choice => choice.available
       ).length,
+      capabilityPathways:
+        capabilityNavigatorCast.counts.deliveredOperations,
+      missingCapabilityPathways:
+        capabilityNavigatorCast.counts.missingOperations,
+      unexpectedCapabilityPathways:
+        capabilityNavigatorCast.counts.unexpectedOperations,
     },
     sourceOperations,
+    capabilityNavigator: capabilityNavigatorCast,
     anthillMap: {
       kind: "classical-source-grammar-result-anthill-map",
       version: 1,
@@ -1090,6 +1394,7 @@ function buildPathwayMap(documentObject, surfaceInventory = null) {
       },
       sourceOperationRoutes: sourceOperationCast,
       userChoiceAxes: applicationAxisCast,
+      capabilityNavigator: capabilityNavigatorCast,
     },
     branches,
   };
@@ -1376,7 +1681,7 @@ export function buildClassicalNestedControlLedger(
     || Boolean(currentResult.blockReason)
   );
   return freezeTree({
-    schemaVersion: 13,
+    schemaVersion: 14,
     kind: LEDGER_KIND,
     authority: {
       grammarAuthority: false,

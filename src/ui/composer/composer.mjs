@@ -8111,15 +8111,46 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (!construction) {
         return activeUnit;
       }
+      const exactContinuationActive =
+        construction.dataset?.classicalCapabilityContinuationActive
+          === "true";
+      const continuationIncompatibleOperationIds = new Set(
+        String(
+          construction.dataset
+            ?.classicalCapabilityIncompatibleApplicationOperations || ""
+        ).split("|").map(value => value.trim()).filter(Boolean)
+      );
       Array.from(construction.options || []).forEach(option => {
         const sourceUnit = String(
           option.dataset?.classicalSourceUnit || ""
         ).trim();
-        const available = !sourceUnit
+        const sourceCompatible = !sourceUnit
           || sourceUnit === "any"
           || sourceUnit === activeUnit;
+        const applicationOperationId = String(
+          option.dataset?.classicalApplicationOperation || ""
+        ).trim();
+        const effectiveApplicationOperationId =
+          applicationOperationId === "direct"
+            ? activeUnit === CLASSICAL_BASAL_UNIT.nnc
+              ? "nnc:ordinary"
+              : "vnc:application"
+            : applicationOperationId;
+        const continuationCompatible = !exactContinuationActive
+          || !effectiveApplicationOperationId
+          || !continuationIncompatibleOperationIds.has(
+            effectiveApplicationOperationId
+          );
+        const available = sourceCompatible && continuationCompatible;
         option.hidden = !available;
         option.disabled = !available;
+        option.dataset.classicalCapabilityStatus = !sourceCompatible
+          ? "source-unit-incompatible"
+          : continuationCompatible
+            ? exactContinuationActive
+              ? "exact-continuation-not-incompatible"
+              : "source-unit-compatible"
+            : "exact-continuation-incompatible";
       });
       const sourceGroups = Array.from(
         construction.querySelectorAll?.("optgroup") || []
@@ -8128,7 +8159,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const groupUnit = String(
           group.dataset?.classicalOperationSourceGroup || ""
         ).trim();
-        const available = !groupUnit || groupUnit === activeUnit;
+        const available = Array.from(group.children || []).some(
+          option => option.hidden !== true && option.disabled !== true
+        );
         group.hidden = !available;
         group.disabled = !available;
         group.label = groupUnit === activeUnit
@@ -8140,9 +8173,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         selectedOption?.dataset?.classicalSourceUnit || ""
       ).trim();
       if (
-        selectedSourceUnit
-        && selectedSourceUnit !== "any"
-        && selectedSourceUnit !== activeUnit
+        selectedOption
+        && (
+          selectedOption.hidden === true
+          || selectedOption.disabled === true
+          || (
+            selectedSourceUnit
+            && selectedSourceUnit !== "any"
+            && selectedSourceUnit !== activeUnit
+          )
+        )
       ) {
         construction.value = "none";
       }
@@ -11563,7 +11603,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             "classical-rule-logic-object"
           ].includes(control.id)) {
             targetObject
-              .clearClassicalVncResultSourceContinuation?.(
+              .clearClassicalGrammarResultSourceContinuation?.(
                 "typed-source-control-changed"
               );
           }
@@ -13493,6 +13533,8 @@ export function createUiComposerRuntime(targetObject = globalThis) {
     });
     api.normalizeClassicalBasalUnit = normalizeClassicalBasalUnit;
     api.getClassicalBasalUnitFromRuntime = getClassicalBasalUnitFromRuntime;
+    api.syncClassicalConstructionSourceUnitAvailability =
+      syncClassicalConstructionSourceUnitAvailability;
     api.getClassicalBasalUnitDatasetTargets = getClassicalBasalUnitDatasetTargets;
     Object.defineProperty(api, "CLASSICAL_SOURCE_PARTS_MODE", {
         configurable: true,

@@ -238,6 +238,10 @@ export function buildClassicalGrammaticalAtlasAnthillJoin({
   operationIds = [],
 } = {}) {
   const knownOperationIds = new Set(uniqueText(operationIds));
+  const capabilityNavigator =
+    nestedControlLedger?.pathways?.capabilityNavigator
+    || nestedControlLedger?.pathways?.anthillMap?.capabilityNavigator
+    || null;
   const layerOperationIds = uniqueText(
     nestedControlLedger?.compositionPath?.deliveredSummary
       ?.layerOperationIds || [],
@@ -245,6 +249,12 @@ export function buildClassicalGrammaticalAtlasAnthillJoin({
   const nextOperationIds = uniqueText(
     (nestedControlLedger?.compositionPath?.deliveredSummary
       ?.nextOperations || []).map(item => item?.operationId),
+  );
+  const capabilityPathwayIds = uniqueText(
+    capabilityNavigator?.deliveredOperationIds || [],
+  );
+  const expectedCapabilityPathwayIds = uniqueText(
+    capabilityNavigator?.expectedOperationIds || [],
   );
   return Object.freeze({
     kind: "classical-grammatical-atlas-anthill-join",
@@ -268,10 +278,26 @@ export function buildClassicalGrammaticalAtlasAnthillJoin({
     matchedNextOperationIds: frozenArray(nextOperationIds.filter(
       operationId => knownOperationIds.has(operationId),
     )),
+    capabilityPathwayIds,
+    expectedCapabilityPathwayIds,
+    matchedCapabilityPathwayIds: frozenArray(capabilityPathwayIds.filter(
+      operationId => knownOperationIds.has(operationId),
+    )),
+    unknownCapabilityPathwayIds: frozenArray(capabilityPathwayIds.filter(
+      operationId => !knownOperationIds.has(operationId),
+    )),
+    missingCapabilityPathwayIds: uniqueText(
+      capabilityNavigator?.missingOperationIds || [],
+    ),
+    unexpectedCapabilityPathwayIds: uniqueText(
+      capabilityNavigator?.unexpectedOperationIds || [],
+    ),
+    capabilityNavigator,
     anthillMap: nestedControlLedger?.pathways?.anthillMap || null,
     compositionPath: nestedControlLedger?.compositionPath || null,
     joinsOnlyByTypedOperationId: true,
     interfaceRouteDoesNotAuthorizeGrammar: true,
+    capabilityPathwaysDoNotAuthorizeGrammar: true,
     ...authorityBoundary(),
   });
 }
@@ -331,6 +357,14 @@ function projectionForScript(state = null) {
         state.anthillJoin.matchedLayerOperationIds,
       matchedNextOperationIds:
         state.anthillJoin.matchedNextOperationIds,
+      matchedCapabilityPathwayIds:
+        state.anthillJoin.matchedCapabilityPathwayIds,
+      unknownCapabilityPathwayIds:
+        state.anthillJoin.unknownCapabilityPathwayIds,
+      missingCapabilityPathwayIds:
+        state.anthillJoin.missingCapabilityPathwayIds,
+      unexpectedCapabilityPathwayIds:
+        state.anthillJoin.unexpectedCapabilityPathwayIds,
     },
     authority: authorityBoundary(),
   });
@@ -671,6 +705,10 @@ export function installClassicalGrammaticalAtlas({
           anthillJoin.resultUnit,
           anthillJoin.matchedLayerOperationIds,
           anthillJoin.matchedNextOperationIds,
+          anthillJoin.matchedCapabilityPathwayIds,
+          anthillJoin.unknownCapabilityPathwayIds,
+          anthillJoin.missingCapabilityPathwayIds,
+          anthillJoin.unexpectedCapabilityPathwayIds,
         ],
         atlasFrameMaterializationStatus:
           atlasFrameMaterializationDirty ? "lazy-pending" : "current",
