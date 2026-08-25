@@ -38,6 +38,23 @@ const PATH_INVENTORY_SELECTION_KEYS = Object.freeze([
   "selectedOperationId",
   "sourceOperationFrame",
 ]);
+const EXACT_NNC_SOURCE_REQUEST_FIELDS = Object.freeze([
+  "nounStem",
+  "sourceNounStem",
+  "sourceStem",
+  "nounRoot",
+  "sourceVerbStem",
+  "sourceKind",
+  "sourceState",
+  "possessor",
+  "sourceSubject",
+  "includedPossessorFamily",
+  "sourceInitialISelection",
+  "sourceInitialIKind",
+  "numeralStem",
+  "timeMatrix",
+  "sourceOperationFrame",
+]);
 
 const VOWELS = "aāeēiīoō";
 const TIME_MATRICES = Object.freeze(["ilhui", "yohua-l", "mētz", "xihui"]);
@@ -481,26 +498,53 @@ function normalizePerson(value = "") {
     : "";
 }
 
-function normalizeSourceRequest(request = {}) {
-  const possessorPerson = normalizePerson(request.possessor);
+function hasMaterialRequestValue(value) {
+  if (Array.isArray(value)) return value.length > 0;
+  if (value && typeof value === "object") return true;
+  return value !== undefined && value !== null && value !== "";
+}
+
+function normalizeSourceRequest(request = {}, exactNncBinding = null) {
+  const exact = exactNncBinding?.authorizationStatus === "authorized";
+  const exactPossessor = exact ? exactNncBinding.possessor : request.possessor;
+  const possessorPerson = normalizePerson(exactPossessor);
   return deepFreeze({
-    nounStem: normalizeStem(request.nounStem || request.sourceNounStem || request.sourceStem),
-    nounRoot: normalizeStem(request.nounRoot),
-    sourceVerbStem: normalizeStem(request.sourceVerbStem),
-    sourceKind: key(request.sourceKind || "nounstem"),
-    sourceState: key(request.sourceState || "absolutive"),
-    possessor: normalizePossessor(request.possessor),
+    nounStem: exact
+      ? exactNncBinding.nounStem
+      : normalizeStem(request.nounStem || request.sourceNounStem || request.sourceStem),
+    nounRoot: exact ? exactNncBinding.nounRoot : normalizeStem(request.nounRoot),
+    sourceVerbStem: exact
+      ? exactNncBinding.sourceVerbStem
+      : normalizeStem(request.sourceVerbStem),
+    sourceKind: exact
+      ? exactNncBinding.sourceKind
+      : key(request.sourceKind || "nounstem"),
+    sourceState: exact
+      ? exactNncBinding.sourceState
+      : key(request.sourceState || "absolutive"),
+    possessor: normalizePossessor(exactPossessor),
     possessorPerson,
-    includedPossessorFamily: key(request.includedPossessorFamily),
+    includedPossessorFamily: exact
+      ? ""
+      : key(request.includedPossessorFamily),
     sourceInitialISelection: key(
       request.sourceInitialISelection || request.sourceInitialIKind,
     ),
     numeralStem: normalizeStem(request.numeralStem),
     timeMatrix: normalizeStem(request.timeMatrix),
-    sourceOperationFrame: request.sourceOperationFrame || null,
+    sourceOperationFrame: exact
+      ? exactNncBinding.sourceOperationFrame
+      : request.sourceOperationFrame || null,
+    canonicalNncResult: exact ? exactNncBinding.canonicalNncResult : null,
+    canonicalNncSourceProjection: exact
+      ? exactNncBinding.canonicalNncSourceProjection
+      : null,
+    sourceNounClass: exact ? exactNncBinding.sourceNounClass : "",
     classChoice: text(request.classChoice).toUpperCase(),
     subject: normalizePerson(request.subject) || "3sg",
-    sourceSubject: normalizePerson(request.sourceSubject) || "3sg",
+    sourceSubject: exact
+      ? exactNncBinding.sourceSubject
+      : normalizePerson(request.sourceSubject) || "3sg",
     mood: key(request.mood || "indicative"),
     tense: key(request.tense || "present"),
     objectPeople: Array.isArray(request.objectPeople)
@@ -547,6 +591,12 @@ function sourceFrameForRequest(source, issuedOperationFrames) {
       "denominal-source-stem-required"
     );
   }
+  const canonicalNncResult = source.canonicalNncResult
+    || prior?.sourceFrame?.canonicalNncResult
+    || null;
+  const canonicalNncSourceProjection = source.canonicalNncSourceProjection
+    || prior?.sourceFrame?.canonicalNncSourceProjection
+    || null;
   return deepFreeze({
     kind: "classical-nahuatl-denominal-vnc-source-frame",
     version: VERSION,
@@ -566,6 +616,11 @@ function sourceFrameForRequest(source, issuedOperationFrames) {
     exclamatory: source.exclamatory,
     numeralStem: source.numeralStem,
     timeMatrix: source.timeMatrix,
+    canonicalNncResult,
+    canonicalNncSourceProjection,
+    sourceNounClass:
+      source.sourceNounClass || prior?.sourceFrame?.sourceNounClass || "",
+    exactResultIdentityPreserved: Boolean(canonicalNncResult),
     priorOperationFrame: prior,
     priorOperationId: prior?.operationId || "",
     priorTargetClass: prior?.targetClass || "",
@@ -868,6 +923,105 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   const issuedCoordinateFrames = new WeakSet();
   const issuedUiFrames = new WeakSet();
   const issuedInstrumentalAzSourceFrames = new WeakSet();
+  const issuedExactNncDerivedRequests = new WeakSet();
+
+  function resolveClassicalNahuatlDenominalExactNncBinding(request = {}) {
+    const canonicalNncResult = request?.canonicalNncResult || null;
+    if (!canonicalNncResult) return null;
+    const internalDerivedRequest = issuedExactNncDerivedRequests.has(request);
+    const conflictingField = internalDerivedRequest
+      ? ""
+      : EXACT_NNC_SOURCE_REQUEST_FIELDS.find(field => (
+        hasMaterialRequestValue(request?.[field])
+      )) || "";
+    if (conflictingField) {
+      return deepFreeze({
+        authorizationStatus: "blocked",
+        blockReason: "denominal-exact-nnc-source-fields-are-mutually-exclusive",
+        rejectedSourcePath: `request.${conflictingField}`,
+      });
+    }
+    if (
+      typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents
+        !== "function"
+    ) {
+      return deepFreeze({
+        authorizationStatus: "blocked",
+        blockReason: "denominal-exact-nnc-projection-capability-unavailable",
+      });
+    }
+    let projection = null;
+    try {
+      projection = targetObject
+        .getClassicalNahuatlNncContinuationSourceConstituents(
+          canonicalNncResult
+        );
+    } catch {
+      projection = null;
+    }
+    if (
+      !projection
+      || projection.canonicalResultFrame !== canonicalNncResult
+      || projection.canonicalSourceFrame !== canonicalNncResult?.sourceFrame
+      || projection.canonicalOperationFrame !== canonicalNncResult?.operationFrame
+      || projection.typedSlotFrame !== canonicalNncResult?.typedSlotFrame
+      || projection.projectionRole !== "read-only-source-constituents"
+      || projection.continuationMode !== "licensed-operation-only"
+    ) {
+      return deepFreeze({
+        authorizationStatus: "blocked",
+        blockReason: "denominal-exact-nnc-result-not-issued-by-canonical-owner",
+      });
+    }
+    if (projection.nncType !== "ordinary") {
+      return deepFreeze({
+        authorizationStatus: "blocked",
+        blockReason: "denominal-exact-nnc-source-rank-not-supported",
+        canonicalNncResult,
+        canonicalNncSourceProjection: projection,
+      });
+    }
+    const nounStem = normalizeStem(projection.predicateStem);
+    const sourceState = key(projection.state);
+    const baseSourceKind = sourceState === "possessive"
+      ? "possessive-nnc-predicate"
+      : sourceState === "absolutive"
+        ? "nounstem"
+        : "";
+    const sourceKind = internalDerivedRequest
+      ? key(request.sourceKind) || baseSourceKind
+      : baseSourceKind;
+    const sourceKindSupported = sourceState === "possessive"
+      ? sourceKind === "possessive-nnc-predicate"
+      : ["nounstem", "nounroot-or-stem-as-root"].includes(sourceKind);
+    const sourceSubject = normalizePerson(
+      projection.subjectParticipantFrame?.agreement
+    );
+    if (!nounStem || !baseSourceKind || !sourceKindSupported || !sourceSubject) {
+      return deepFreeze({
+        authorizationStatus: "blocked",
+        blockReason: "denominal-exact-nnc-projection-incomplete",
+        canonicalNncResult,
+        canonicalNncSourceProjection: projection,
+      });
+    }
+    return deepFreeze({
+      authorizationStatus: "authorized",
+      blockReason: "",
+      canonicalNncResult,
+      canonicalNncSourceProjection: projection,
+      nounStem,
+      nounRoot: sourceKind === "nounroot-or-stem-as-root" ? nounStem : "",
+      sourceVerbStem: "",
+      sourceKind,
+      sourceState,
+      possessor: projection.possessor || "",
+      sourceSubject,
+      sourceOperationFrame: null,
+      sourceNounClass: projection.sourceNounClass || "",
+      exactResultIdentityPreserved: true,
+    });
+  }
 
   function buildClassicalNahuatlInstrumentalAzSourceAuthorization(
     nounStem = ""
@@ -943,7 +1097,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       request,
       "request",
       new WeakSet(),
-      new Set(["sourceOperationFrame"])
+      new Set(["sourceOperationFrame", "canonicalNncResult"])
     );
     if (hostilePath) {
       return blocked(
@@ -952,13 +1106,50 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         { rejectedAuthorityPath: hostilePath }
       );
     }
-    const source = normalizeSourceRequest(request);
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
+    if (exactNncBinding?.authorizationStatus === "blocked") {
+      return blocked(
+        "classical-nahuatl-denominal-vnc-source-frame",
+        exactNncBinding.blockReason,
+        {
+          rejectedSourcePath: exactNncBinding.rejectedSourcePath || "",
+          canonicalNncResult: exactNncBinding.canonicalNncResult || null,
+          canonicalNncSourceProjection:
+            exactNncBinding.canonicalNncSourceProjection || null,
+        }
+      );
+    }
+    const source = normalizeSourceRequest(request, exactNncBinding);
     const frame = sourceFrameForRequest(source, issuedOperationFrames);
     if (frame.authorizationStatus === "authorized") issuedSourceFrames.add(frame);
     return frame;
   }
 
   function isClassicalNahuatlDenominalVncSourceFrame(frame = null) {
+    const exactProjection = frame?.canonicalNncResult
+      && typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents
+        === "function"
+      ? targetObject.getClassicalNahuatlNncContinuationSourceConstituents(
+        frame.canonicalNncResult
+      )
+      : null;
+    const exactCarrierValid = frame?.canonicalNncResult
+      ? frame.exactResultIdentityPreserved === true
+        && exactProjection === frame.canonicalNncSourceProjection
+        && exactProjection?.canonicalResultFrame === frame.canonicalNncResult
+        && (
+          frame.priorOperationFrame
+            ? frame.priorOperationFrame.sourceFrame?.canonicalNncResult
+                === frame.canonicalNncResult
+              && frame.priorOperationFrame.sourceFrame
+                ?.canonicalNncSourceProjection
+                === frame.canonicalNncSourceProjection
+            : normalizeStem(exactProjection?.predicateStem) === frame.nounStem
+              && key(exactProjection?.state) === frame.sourceState
+        )
+      : frame?.canonicalNncSourceProjection === null
+        && frame?.exactResultIdentityPreserved === false;
     return Boolean(
       frame
       && issuedSourceFrames.has(frame)
@@ -971,6 +1162,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       && frame.formulaStringAuthority === false
       && frame.surfaceStringAuthority === false
       && frame.sourceStem
+      && exactCarrierValid
     );
   }
 
@@ -1041,7 +1233,9 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         { sourceFrame: inventory.sourceFrame || null }
       );
     }
-    const source = normalizeSourceRequest(request);
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
+    const source = normalizeSourceRequest(request, exactNncBinding);
     const operationId = key(request.operationId || request.selectedOperationId || inventory.automaticOperationId);
     const selected = inventory.options.find(option => option.operationId === operationId) || null;
     const spec = OPERATION_BY_ID.get(operationId) || null;
@@ -1141,7 +1335,12 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   }
 
   function getClassicalNahuatlDenominalVncOperationPathInventory(request = {}) {
-    const hostilePath = findHostileAuthorityPath(request);
+    const hostilePath = findHostileAuthorityPath(
+      request,
+      "request",
+      new WeakSet(),
+      new Set(["canonicalNncResult"])
+    );
     if (hostilePath) {
       return blocked(
         "classical-nahuatl-denominal-vnc-operation-path-inventory",
@@ -1165,11 +1364,25 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       );
     }
 
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
+    if (exactNncBinding?.authorizationStatus === "blocked") {
+      return blocked(
+        "classical-nahuatl-denominal-vnc-operation-path-inventory",
+        exactNncBinding.blockReason,
+        {
+          rejectedSourcePath: exactNncBinding.rejectedSourcePath || "",
+          canonicalNncResult: exactNncBinding.canonicalNncResult || null,
+          canonicalNncSourceProjection:
+            exactNncBinding.canonicalNncSourceProjection || null,
+        }
+      );
+    }
+    const normalizedSource = normalizeSourceRequest(request, exactNncBinding);
     const sourceStem = normalizeStem(
-      request.nounStem
-      || request.nounRoot
-      || request.sourceVerbStem
-      || request.sourceStem
+      normalizedSource.nounStem
+      || normalizedSource.nounRoot
+      || normalizedSource.sourceVerbStem
     );
     if (!sourceStem) {
       return blocked(
@@ -1177,13 +1390,33 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         "denominal-source-stem-required"
       );
     }
-    const explicitSourceKind = key(request.sourceKind);
-    const explicitSourceState = key(request.sourceState);
+    const explicitSourceKind = exactNncBinding ? "" : key(request.sourceKind);
+    const explicitSourceState = exactNncBinding
+      ? exactNncBinding.sourceState
+      : key(request.sourceState);
     const pathChoices = [];
     const pathChoiceIds = new Set();
 
     function buildRootRequest(spec) {
       if (spec.continuationOf.length || spec.attestation === "category-only") {
+        return null;
+      }
+      if (
+        exactNncBinding
+        && (
+          spec.sourceState !== exactNncBinding.sourceState
+          || (
+            exactNncBinding.sourceState === "absolutive"
+            && !["nounstem", "nounroot-or-stem-as-root"].includes(
+              spec.sourceKind
+            )
+          )
+          || (
+            exactNncBinding.sourceState === "possessive"
+            && spec.sourceKind !== "possessive-nnc-predicate"
+          )
+        )
+      ) {
         return null;
       }
       if (
@@ -1205,8 +1438,8 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         "lexical-o-a-vnc",
       ].includes(spec.sourceKind);
       const sourceIsRoot = spec.sourceKind === "nounroot-or-stem-as-root";
-      const possessiveSourceDiscovery =
-        spec.sourceKind === "possessive-nnc-predicate"
+      const possessiveSourceDiscovery = !exactNncBinding
+        && spec.sourceKind === "possessive-nnc-predicate"
           ? {
             // These values let the owner enumerate structurally available
             // possessive-source paths before the user makes their dependent
@@ -1219,7 +1452,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
               : {}),
           }
           : {};
-      return {
+      const rootRequest = {
         ...request,
         ...possessiveSourceDiscovery,
         nounStem: sourceIsVnc ? "" : sourceStem,
@@ -1234,6 +1467,8 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         classChoices: undefined,
         sourceOperationFrame: null,
       };
+      if (exactNncBinding) issuedExactNncDerivedRequests.add(rootRequest);
+      return rootRequest;
     }
 
     function deriveVariants(stepRequest, spec) {
@@ -1248,11 +1483,17 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       );
       if (!option) return [];
       return option.classOptions.flatMap(classChoice => {
-        const operationFrame = deriveClassicalNahuatlDenominalVncOperation({
+        const variantRequest = {
           ...stepRequest,
           operationId: spec.id,
           classChoice,
-        });
+        };
+        if (stepRequest.canonicalNncResult) {
+          issuedExactNncDerivedRequests.add(variantRequest);
+        }
+        const operationFrame = deriveClassicalNahuatlDenominalVncOperation(
+          variantRequest
+        );
         return isClassicalNahuatlDenominalVncOperationFrame(operationFrame)
           ? [{
             operationFrame,
@@ -1316,13 +1557,17 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         controlRequirements,
         sourceKind: rootRequest.sourceKind,
         sourceState: rootRequest.sourceState,
-        sourceRequest: {
-          nounStem: rootRequest.nounStem,
-          nounRoot: rootRequest.nounRoot,
-          sourceVerbStem: rootRequest.sourceVerbStem,
-          sourceKind: rootRequest.sourceKind,
-          sourceState: rootRequest.sourceState,
-        },
+        sourceRequest: rootRequest.canonicalNncResult
+          ? {
+            canonicalNncResult: rootRequest.canonicalNncResult,
+          }
+          : {
+            nounStem: rootRequest.nounStem,
+            nounRoot: rootRequest.nounRoot,
+            sourceVerbStem: rootRequest.sourceVerbStem,
+            sourceKind: rootRequest.sourceKind,
+            sourceState: rootRequest.sourceState,
+          },
       }));
     }
 
@@ -1348,6 +1593,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         .forEach(spec => {
           const stepRequest = {
             ...request,
+            canonicalNncResult: null,
             nounStem: "",
             nounRoot: "",
             sourceVerbStem: "",
@@ -1420,6 +1666,10 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         ? ""
         : "no-andrews-licensed-denominal-operation-path-for-source",
       sourceStem,
+      canonicalNncResult: exactNncBinding?.canonicalNncResult || null,
+      canonicalNncSourceProjection:
+        exactNncBinding?.canonicalNncSourceProjection || null,
+      exactResultIdentityPreserved: Boolean(exactNncBinding),
       operationOptions,
       pathChoices,
       automaticOperationId:
@@ -1446,6 +1696,19 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   function isClassicalNahuatlDenominalVncOperationPathInventory(
     frame = null
   ) {
+    const exactProjection = frame?.canonicalNncResult
+      && typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents
+        === "function"
+      ? targetObject.getClassicalNahuatlNncContinuationSourceConstituents(
+        frame.canonicalNncResult
+      )
+      : null;
+    const exactCarrierValid = frame?.canonicalNncResult
+      ? frame.exactResultIdentityPreserved === true
+        && exactProjection === frame.canonicalNncSourceProjection
+        && exactProjection?.canonicalResultFrame === frame.canonicalNncResult
+      : frame?.canonicalNncSourceProjection === null
+        && frame?.exactResultIdentityPreserved === false;
     return Boolean(
       frame
       && issuedPathInventories.has(frame)
@@ -1459,8 +1722,14 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       && frame.pathChoices.length > 0
       && frame.pathChoices.every(choice => (
         choice.operationPath.at(-1) === choice.operationId
-        && choice.sourceRequest?.sourceKind === choice.sourceKind
-        && choice.sourceRequest?.sourceState === choice.sourceState
+        && (
+          frame.canonicalNncResult
+            ? choice.sourceRequest?.canonicalNncResult
+                === frame.canonicalNncResult
+              && Reflect.ownKeys(choice.sourceRequest).length === 1
+            : choice.sourceRequest?.sourceKind === choice.sourceKind
+              && choice.sourceRequest?.sourceState === choice.sourceState
+        )
         && typeof choice.controlRequirements?.sourceSubject === "boolean"
         && typeof choice.controlRequirements?.sourcePossessor === "boolean"
         && typeof choice.controlRequirements?.includedPossessorFamily
@@ -1477,6 +1746,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       && frame.lessonMetadataAuthority === false
       && frame.formulaStringAuthority === false
       && frame.surfaceStringAuthority === false
+      && exactCarrierValid
       && Object.isFrozen(frame)
     );
   }
@@ -1486,7 +1756,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       request,
       "request",
       new WeakSet(),
-      new Set(["sourceOperationFrame"])
+      new Set(["sourceOperationFrame", "canonicalNncResult"])
     );
     if (hostilePath) {
       return blocked(
@@ -1521,6 +1791,23 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         "denominal-operation-path-final-mismatch"
       );
     }
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
+    if (exactNncBinding?.authorizationStatus === "blocked") {
+      return blocked(
+        "classical-nahuatl-denominal-vnc-operation-frame",
+        exactNncBinding.blockReason,
+        {
+          sourceFrame: blocked(
+            "classical-nahuatl-denominal-vnc-source-frame",
+            exactNncBinding.blockReason,
+            {
+              rejectedSourcePath: exactNncBinding.rejectedSourcePath || "",
+            }
+          ),
+        }
+      );
+    }
     let operationFrame = null;
     for (let index = 0; index < operationPath.length; index += 1) {
       const operationId = operationPath[index];
@@ -1538,6 +1825,15 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       const stepRequest = index === 0
         ? {
           ...request,
+          ...(exactNncBinding
+            ? {
+              nounStem: exactNncBinding.nounStem,
+              nounRoot: spec.sourceKind === "nounroot-or-stem-as-root"
+                ? exactNncBinding.nounStem
+                : "",
+              sourceVerbStem: "",
+            }
+            : {}),
           operationId,
           selectedOperationId: "",
           operationPath: undefined,
@@ -1546,6 +1842,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         }
         : {
           ...request,
+          canonicalNncResult: null,
           nounStem: "",
           nounRoot: "",
           sourceStem: "",
@@ -1558,6 +1855,9 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
           operationPath: undefined,
           classChoice,
         };
+      if (index === 0 && exactNncBinding) {
+        issuedExactNncDerivedRequests.add(stepRequest);
+      }
       operationFrame = deriveClassicalNahuatlDenominalVncOperation(stepRequest);
       if (!isClassicalNahuatlDenominalVncOperationFrame(operationFrame)) return operationFrame;
     }
@@ -1647,7 +1947,9 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         { operationFrame }
       );
     }
-    const source = normalizeSourceRequest(request);
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
+    const source = normalizeSourceRequest(request, exactNncBinding);
     const finiteRequest = buildFiniteRequest(operationFrame, source);
     const canonicalVncFrame = targetObject.evaluateClassicalNahuatlVncApplication(finiteRequest);
     const grammarFrame = buildGrammarFrame(operationFrame, canonicalVncFrame);
@@ -1663,6 +1965,12 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
           || grammarFrame.blockReason
           || "canonical-denominal-vnc-generation-blocked",
       sourceFrame: operationFrame.sourceFrame,
+      canonicalNncResult:
+        operationFrame.sourceFrame.canonicalNncResult || null,
+      canonicalNncSourceProjection:
+        operationFrame.sourceFrame.canonicalNncSourceProjection || null,
+      exactResultIdentityPreserved:
+        operationFrame.sourceFrame.exactResultIdentityPreserved === true,
       operationFrame,
       grammarFrame,
       canonicalVncFrame: authorized ? canonicalVncFrame : null,
@@ -1689,6 +1997,21 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
   }
 
   function isClassicalNahuatlDenominalVncResultFrame(frame = null) {
+    const exactProjection = frame?.canonicalNncResult
+      && typeof targetObject.getClassicalNahuatlNncContinuationSourceConstituents
+        === "function"
+      ? targetObject.getClassicalNahuatlNncContinuationSourceConstituents(
+        frame.canonicalNncResult
+      )
+      : null;
+    const exactCarrierValid = frame?.canonicalNncResult
+      ? frame.exactResultIdentityPreserved === true
+        && frame.sourceFrame?.canonicalNncResult === frame.canonicalNncResult
+        && frame.sourceFrame?.canonicalNncSourceProjection
+          === frame.canonicalNncSourceProjection
+        && exactProjection === frame.canonicalNncSourceProjection
+      : frame?.canonicalNncSourceProjection === null
+        && frame?.exactResultIdentityPreserved === false;
     return Boolean(
       frame
       && issuedResultFrames.has(frame)
@@ -1703,6 +2026,7 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
       && frame.canonicalVncFrame?.authorizationStatus === "authorized"
       && frame.formulaRealization === frame.canonicalVncFrame.resultFrame.formulaRealization
       && frame.surfaceRealization === frame.canonicalVncFrame.resultFrame.surfaceRealization
+      && exactCarrierValid
     );
   }
 
@@ -1723,8 +2047,10 @@ export function createClassicalNahuatlDenominalVncGrammarApi(targetObject = glob
         { operationFrame }
       );
     }
+    const exactNncBinding =
+      resolveClassicalNahuatlDenominalExactNncBinding(request);
     const source = deepFreeze({
-      ...normalizeSourceRequest(request),
+      ...normalizeSourceRequest(request, exactNncBinding),
       outputScope: "paradigm",
     });
     const canonicalPlan = targetObject.prepareClassicalNahuatlVncParadigmPlan(

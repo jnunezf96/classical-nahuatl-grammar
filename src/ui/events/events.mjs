@@ -361,6 +361,9 @@ export function createUiEventsApi(targetObject = globalThis) {
         targetObject.renderVerbMirror();
         targetObject.updateVerbDisambiguation();
         targetObject.generateNuclearClauseSurface();
+        targetObject.syncClassicalCapabilityNavigator?.(
+          targetObject.getActiveClassicalRuleLogicSurfaceFrame?.() || null
+        );
       })();
       return uiRuntimeInitializationPromise;
     }

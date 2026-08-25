@@ -25,6 +25,18 @@ function ledgerRows() {
         });
 }
 
+function ordinaryNncResult(ctx, stem = "xōchi") {
+    const source = ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+        stem,
+        sourceClass: "zero",
+    });
+    const operation = ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+        source,
+        { state: "absolutive", subject: "3sg" },
+    );
+    return ctx.requestClassicalOrdinaryNncResult(source, operation);
+}
+
 function run(ctx) {
     const s = createSuite("nnc_place_gentilic");
     const rows = ledgerRows();
@@ -409,6 +421,79 @@ function run(ctx) {
         formula: "",
         surface: "",
         authority: false,
+    });
+
+    const exactNncResult = ordinaryNncResult(ctx);
+    const exactPlace = ctx.evaluatePlaceGentilicNnc({
+        constructionKind: "place-name",
+        formation: "co",
+        canonicalNncResult: exactNncResult,
+        usage: "adverbial",
+    });
+    const copiedExactPlace = ctx.evaluatePlaceGentilicNnc({
+        constructionKind: "place-name",
+        formation: "co",
+        canonicalNncResult: { ...exactNncResult },
+        usage: "adverbial",
+    });
+    const stringExactPlace = ctx.evaluatePlaceGentilicNnc({
+        constructionKind: "place-name",
+        formation: "co",
+        canonicalNncResult: "xōchi",
+        usage: "adverbial",
+    });
+    const mixedExactPlace = ctx.evaluatePlaceGentilicNnc({
+        constructionKind: "place-name",
+        formation: "co",
+        canonicalNncResult: exactNncResult,
+        source: { embedStem: "forged" },
+        usage: "adverbial",
+    });
+    const unavailableVoiceProjection = ctx.evaluatePlaceGentilicNnc({
+        constructionKind: "place-name",
+        formation: "n-imperfect-active",
+        canonicalNncResult: exactNncResult,
+        usage: "adverbial",
+    });
+    s.eq("place formation consumes only an exact owner-issued NNC Result and preserves its identity", {
+        status: exactPlace.authorizationStatus,
+        valid: ctx.isPlaceGentilicNncFrame(exactPlace),
+        surface: exactPlace.wordSurface,
+        sourceMode: exactPlace.sourceAnalysis?.sourceInputMode,
+        projectedStem: exactPlace.sourceAnalysis?.embedStem,
+        exactResult: exactPlace.canonicalNncResult === exactNncResult,
+        exactProjection: exactPlace.canonicalNncSourceProjection
+            === exactPlace.sourceAnalysis?.canonicalNncSourceProjection,
+        projectionResult: exactPlace.canonicalNncSourceProjection
+            ?.canonicalResultFrame === exactNncResult,
+        identityPreserved: exactPlace.exactNncResultIdentityPreserved,
+        copied: [copiedExactPlace.authorizationStatus, copiedExactPlace.blockReason],
+        string: [stringExactPlace.authorizationStatus, stringExactPlace.blockReason],
+        mixed: [mixedExactPlace.authorizationStatus, mixedExactPlace.blockReason],
+        unavailableVoice: [
+            unavailableVoiceProjection.authorizationStatus,
+            unavailableVoiceProjection.blockReason,
+        ],
+    }, {
+        status: "authorized",
+        valid: true,
+        surface: "xōchico",
+        sourceMode: "exact-owner-issued-ordinary-nnc-result",
+        projectedStem: "xōchi",
+        exactResult: true,
+        exactProjection: true,
+        projectionResult: true,
+        identityPreserved: true,
+        copied: ["blocked", "exact-owner-issued-ordinary-nnc-result-required"],
+        string: ["blocked", "exact-owner-issued-ordinary-nnc-result-required"],
+        mixed: [
+            "blocked",
+            "canonical-nnc-result-and-raw-source-are-mutually-exclusive",
+        ],
+        unavailableVoice: [
+            "blocked",
+            "exact-nnc-result-does-not-project-required-source-voice",
+        ],
     });
 
     const retiredSourceFrame = ctx.buildPlaceGentilicNncSourceFrame({

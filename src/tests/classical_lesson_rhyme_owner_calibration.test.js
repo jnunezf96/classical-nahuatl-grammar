@@ -59,13 +59,10 @@ function run(ctx) {
             (_, index) => index + 1
         ),
         acceptedEvidenceLessons: Array.from(
-            { length: 39 },
+            { length: 58 },
             (_, index) => index + 1
         ),
-        pendingEvidenceLessons: Array.from(
-            { length: 19 },
-            (_, index) => index + 40
-        ),
+        pendingEvidenceLessons: [],
         seamOwnerIndex: {
             4: ["vnc:nuclear-clause"],
             10: ["vnc:application"],
@@ -133,16 +130,16 @@ function run(ctx) {
         discoveryEdgeCount: inventory.grammaticalRhymeCalibration
             .lessonDiscovery.directRhymeEdgeCount,
         statusCounts: {
-            "rhyme-only-no-exact-continuation-contract": 106,
-            "lesson-owner-evidence-pending": 393,
-            "owner-contract-aligned-proof-required": 146,
-            "owner-contract-boundary-or-index-gap": 13,
+            "rhyme-only-no-exact-continuation-contract": 145,
+            "owner-contract-boundary-or-index-gap": 86,
+            "owner-contract-aligned-proof-required": 426,
+            "owner-index-pending": 1,
         },
         everyEdgeKeepsProofBoundary: true,
         noForgedAuthorizationChannel: true,
-        proofQueueCount: 146,
-        ownerContractProofQueueCount: 22,
-        ownerContractCollapseSavedExecutions: 124,
+        proofQueueCount: 426,
+        ownerContractProofQueueCount: 117,
+        ownerContractCollapseSavedExecutions: 309,
         ownerContractQueueIsExactAndNonAuthorizing: true,
         queueIsOnlyOwnerAlignedEdges: true,
         queuePriorityIsMonotonic: true,
@@ -190,10 +187,10 @@ function run(ctx) {
             "owner-contract-aligned-proof-required",
         frequentativeDeverbal39:
             "owner-contract-aligned-proof-required",
-        compoundDenominal: "lesson-owner-evidence-pending",
+        compoundDenominal: "owner-contract-aligned-proof-required",
         causativeFrequentativeOwnerPairs: true,
         frequentativeDeverbalOwnerPairs: true,
-        futureLessonHasNoInventedOwner: [],
+        futureLessonHasNoInventedOwner: ["vnc:denominal"],
     });
 
     const frequentativeReceipt =
@@ -335,16 +332,16 @@ function run(ctx) {
             "classical-grammar-application-request-invalid:forbidden-authority:shapeFormula",
         forgedObservationRejected: true,
         receiptCount: 1,
-        observedEdgeCount: 20,
-        remainingQueueCount: 126,
-        remainingOwnerContractQueueCount: 21,
-        ownerContractCollapseSavedExecutions: 124,
+        observedEdgeCount: 24,
+        remainingQueueCount: 402,
+        remainingOwnerContractQueueCount: 116,
+        ownerContractCollapseSavedExecutions: 309,
         observedStatusCounts: {
-            "rhyme-only-no-exact-continuation-contract": 106,
-            "lesson-owner-evidence-pending": 393,
-            "owner-contract-aligned-proof-required": 126,
-            "owner-contract-boundary-or-index-gap": 13,
-            "owner-contract-exactly-observed": 20,
+            "rhyme-only-no-exact-continuation-contract": 145,
+            "owner-contract-boundary-or-index-gap": 86,
+            "owner-contract-aligned-proof-required": 402,
+            "owner-contract-exactly-observed": 24,
+            "owner-index-pending": 1,
         },
         frequentativeActionStatus:
             "owner-contract-exactly-observed",
@@ -481,15 +478,15 @@ function run(ctx) {
         },
         producerReceiptValid: true,
         receiptCount: 2,
-        observedEdgeCount: 60,
-        remainingLessonQueue: 86,
-        remainingContractQueue: 20,
+        observedEdgeCount: 72,
+        remainingLessonQueue: 354,
+        remainingContractQueue: 115,
         statusCounts: {
-            "rhyme-only-no-exact-continuation-contract": 106,
-            "lesson-owner-evidence-pending": 393,
-            "owner-contract-exactly-observed": 60,
-            "owner-contract-boundary-or-index-gap": 13,
-            "owner-contract-aligned-proof-required": 86,
+            "rhyme-only-no-exact-continuation-contract": 145,
+            "owner-contract-boundary-or-index-gap": 86,
+            "owner-contract-exactly-observed": 72,
+            "owner-contract-aligned-proof-required": 354,
+            "owner-index-pending": 1,
         },
         copiedNestedRejected: true,
     });
@@ -635,15 +632,15 @@ function run(ctx) {
             exact: true,
         },
         receiptCount: 4,
-        observedEdges: 95,
-        remainingLessonQueue: 51,
-        remainingContractQueue: 18,
+        observedEdges: 111,
+        remainingLessonQueue: 315,
+        remainingContractQueue: 113,
         statusCounts: {
-            "rhyme-only-no-exact-continuation-contract": 106,
-            "lesson-owner-evidence-pending": 393,
-            "owner-contract-exactly-observed": 95,
-            "owner-contract-boundary-or-index-gap": 13,
-            "owner-contract-aligned-proof-required": 51,
+            "rhyme-only-no-exact-continuation-contract": 145,
+            "owner-contract-boundary-or-index-gap": 86,
+            "owner-contract-exactly-observed": 111,
+            "owner-contract-aligned-proof-required": 315,
+            "owner-index-pending": 1,
         },
     });
 

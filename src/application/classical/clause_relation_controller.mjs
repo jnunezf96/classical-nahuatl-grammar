@@ -2,11 +2,15 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260824-universal-capability-navigator-280";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260825-launch-ready-293";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
 const CONTROLLER_VERSION = 1;
+const BINDING_FRAME_KIND = "classical-clause-relation-binding-frame";
+const BINDING_APPLICATION_KIND =
+  "classical-clause-relation-binding-application";
+const BINDING_FRAME_VERSION = 1;
 
 const CAPTURE_ROLES = Object.freeze([
   "principal",
@@ -44,6 +48,13 @@ const NON_ADJUNCTION_RELATIONS = Object.freeze([
   ...CONJUNCTION_OPERATION_KINDS,
   COMPARISON_RELATION,
   ...SUPPLEMENTATION_RELATIONS,
+]);
+const BINDING_OPERATION_IDS = Object.freeze([
+  "sentence:supplementation",
+  "nnc:adjectival-modification",
+  "clause:adverbial-adjunction",
+  "clause:composition",
+  "clause:comparison",
 ]);
 const RELATION_AVAILABILITY = Object.freeze({
   AVAILABLE: "available",
@@ -810,6 +821,542 @@ function getCanonicalPresentation(result = null) {
 export function createClassicalClauseRelationControllerGlobals(
   targetObject = globalThis,
 ) {
+  const issuedBindingFrames = new WeakSet();
+
+  function getBindingOperationRelationIds(operationId = "") {
+    const normalizedOperationId = String(operationId || "").trim();
+    if (normalizedOperationId === "sentence:supplementation") {
+      return SUPPLEMENTATION_RELATIONS;
+    }
+    if (normalizedOperationId === "nnc:adjectival-modification") {
+      return Object.freeze([ADJECTIVAL_MODIFICATION_RELATION]);
+    }
+    if (normalizedOperationId === "clause:composition") {
+      return Object.freeze([
+        ...COMPLEMENT_OPERATION_KINDS,
+        ...CONJUNCTION_OPERATION_KINDS,
+      ]);
+    }
+    if (normalizedOperationId === "clause:comparison") {
+      return Object.freeze([COMPARISON_RELATION]);
+    }
+    if (normalizedOperationId === "clause:adverbial-adjunction") {
+      const inventory = targetObject.ADVERBIAL_ADJUNCTION_RELATION;
+      return freezeArray(unique(
+        inventory && typeof inventory === "object"
+          ? Object.values(inventory)
+            .map(normalizeToken)
+            .filter(value => !["", "unknown", "recursive"].includes(value))
+          : [],
+      ));
+    }
+    return Object.freeze([]);
+  }
+
+  function getBindingRolesForRelation(relation = "") {
+    const normalizedRelation = normalizeToken(relation);
+    if (normalizedRelation === ADJECTIVAL_MODIFICATION_RELATION) {
+      return Object.freeze(["principal", "adjoined", "dependent"]);
+    }
+    if (COMPLEMENT_OPERATION_KINDS.includes(normalizedRelation)) {
+      return Object.freeze([
+        "principal",
+        "adjoined",
+        ...(normalizedRelation === "object-complement" ? ["dependent"] : []),
+      ]);
+    }
+    if (CONJUNCTION_OPERATION_KINDS.includes(normalizedRelation)) {
+      return Object.freeze([
+        "principal",
+        "adjoined",
+        "dependent",
+        "supplement",
+      ]);
+    }
+    if (normalizedRelation === COMPARISON_RELATION) {
+      return Object.freeze([
+        "principal",
+        "adjoined",
+        "dependent",
+        "supplement",
+      ]);
+    }
+    if (normalizedRelation === "supplementation") {
+      return Object.freeze(["principal", "adjoined", "marker"]);
+    }
+    if (normalizedRelation === "vocative") {
+      return Object.freeze(["principal"]);
+    }
+    if (normalizedRelation === "rumored-report") {
+      return Object.freeze(["principal", "adjoined"]);
+    }
+    if (normalizedRelation === "deleted-principal") {
+      return Object.freeze(["principal", "adjoined", "dependent"]);
+    }
+    if ([
+      "negative-ac-plural",
+      "contextual-first-person-realization",
+    ].includes(normalizedRelation)) {
+      return Object.freeze(["principal"]);
+    }
+    if (normalizedRelation === "exclamatory-utterance") {
+      return CAPTURE_ROLES;
+    }
+    if (normalizedRelation === "such-that-adjunction") {
+      return Object.freeze(["principal", "adjoined", "dependent", "marker"]);
+    }
+    return Object.freeze(["principal", "adjoined", "marker"]);
+  }
+
+  function getBindingOwnerSourceEvidence(
+    operationId = "",
+    exactResult = null,
+    role = "",
+  ) {
+    const ownerSourceResult = Boolean(
+      typeof targetObject.isClassicalNahuatlVncSentenceResultFrame
+        === "function"
+      && targetObject.isClassicalNahuatlVncSentenceResultFrame(exactResult)
+    )
+      ? exactResult.canonicalSourceFrame || null
+      : exactResult;
+    const sourceUnit = typeof targetObject
+      .getCanonicalAdverbialAdjunctionSourceUnit === "function"
+      ? targetObject.getCanonicalAdverbialAdjunctionSourceUnit(
+        exactResult,
+        role,
+      )
+      : null;
+    const unitType = normalizeToken(
+      sourceUnit?.features?.unitKind || sourceUnit?.unitType || "",
+    );
+    let accepted = Boolean(sourceUnit?.ok);
+    let ownerEvidenceKind = "canonical-clause-source-unit";
+    let compatibleRelationIds = Object.freeze([]);
+    if (operationId === "sentence:supplementation") {
+      const envelope = (
+        typeof targetObject.isClassicalNahuatlSupplementationFrame
+          === "function"
+        && targetObject.isClassicalNahuatlSupplementationFrame(exactResult)
+      )
+        ? exactResult.principalClause || null
+        : typeof targetObject
+          .buildClassicalNahuatlSupplementationClauseEnvelope === "function"
+          ? targetObject.buildClassicalNahuatlSupplementationClauseEnvelope(
+            ownerSourceResult,
+            { referenceId: `binding-${role}` },
+          )
+          : null;
+      accepted = unitType === "particle" || Boolean(
+        typeof targetObject.isClassicalNahuatlSupplementationClauseEnvelope
+          === "function"
+        && targetObject.isClassicalNahuatlSupplementationClauseEnvelope(
+          envelope,
+        ),
+      );
+      ownerEvidenceKind = "supplementation-clause-envelope";
+    } else if (operationId === "clause:composition") {
+      const nestedComposition = Boolean(
+        (
+          typeof targetObject
+            .isClassicalNahuatlClauseComplementationResultFrame === "function"
+          && targetObject.isClassicalNahuatlClauseComplementationResultFrame(
+            exactResult,
+          )
+        )
+        || (
+          typeof targetObject
+            .isClassicalNahuatlClauseConjunctionResultFrame === "function"
+          && targetObject.isClassicalNahuatlClauseConjunctionResultFrame(
+            exactResult,
+          )
+        )
+      );
+      const sourceFrame = typeof targetObject
+        .buildClassicalNahuatlClauseCompositionSourceFrame === "function"
+        ? targetObject.buildClassicalNahuatlClauseCompositionSourceFrame(
+          ownerSourceResult,
+          {
+            referenceId: `binding-${role}`,
+            subjectReferenceId: `binding-${role}-subject`,
+            objectReferenceId: `binding-${role}-object`,
+            possessorReferenceId: `binding-${role}-possessor`,
+          },
+        )
+        : null;
+      accepted = Boolean(
+        nestedComposition
+        || (
+          typeof targetObject.isClassicalNahuatlClauseCompositionSourceFrame
+            === "function"
+          && targetObject.isClassicalNahuatlClauseCompositionSourceFrame(
+            sourceFrame,
+          )
+        ),
+      );
+      ownerEvidenceKind = "clause-composition-source-frame";
+    } else if (operationId === "clause:comparison") {
+      const sourceFrame = typeof targetObject.buildClassicalComparisonSourceUnit
+        === "function"
+        ? targetObject.buildClassicalComparisonSourceUnit({
+          sourceResult: ownerSourceResult,
+        })
+        : null;
+      accepted = Boolean(
+        typeof targetObject.isClassicalComparisonSourceUnit === "function"
+        && targetObject.isClassicalComparisonSourceUnit(sourceFrame)
+        && sourceFrame.authorizationStatus === "authorized",
+      );
+      ownerEvidenceKind = "comparison-source-unit";
+    } else if (operationId === "nnc:adjectival-modification") {
+      accepted = Boolean(
+        sourceUnit?.ok
+        && (
+          role === "principal"
+            ? unitType === "nnc"
+            : ["nnc", "vnc", "clause", "sentence"].includes(unitType)
+        )
+      );
+      ownerEvidenceKind = "adjectival-modification-clause-source";
+    } else if (operationId === "clause:adverbial-adjunction") {
+      accepted = Boolean(
+        sourceUnit?.ok
+        && (
+          role === "marker"
+            ? unitType === "particle"
+            : unitType !== "particle"
+        )
+      );
+      ownerEvidenceKind = "adverbial-adjunction-source-unit";
+      if (
+        accepted
+        && role === "adjoined"
+        && typeof targetObject.issueAdverbialAdjunctionAvailabilityContract
+          === "function"
+        && typeof targetObject.isAdverbialAdjunctionAvailabilityContract
+          === "function"
+      ) {
+        const availability =
+          targetObject.issueAdverbialAdjunctionAvailabilityContract({
+            principalClause: exactResult,
+            adjoinedUnit: exactResult,
+          });
+        if (
+          targetObject.isAdverbialAdjunctionAvailabilityContract(
+            availability,
+          )
+          && availability.authorizationStatus === "authorized"
+        ) {
+          compatibleRelationIds = freezeArray(
+            availability.availableRelations,
+          );
+        }
+      }
+    }
+    return Object.freeze({
+      accepted,
+      unitType,
+      ownerEvidenceKind,
+      compatibleRelationIds,
+    });
+  }
+
+  function bindingMarkerSupportsRelation(
+    relation = "",
+    exactResult = null,
+    sourceUnit = null,
+  ) {
+    const normalizedRelation = normalizeToken(relation);
+    if (normalizedRelation === "exclamatory-utterance") return true;
+    const markerSemantic = normalizeToken(
+      exactResult?.semanticMarker
+      || getTypedMarkerProfile(exactResult)
+      || sourceUnit?.features?.negativizedParticle
+      || "",
+    );
+    return Boolean(
+      markerSemantic
+      && (
+        (MARKING_VALUES_BY_RELATION[normalizedRelation] || []).includes(
+          markerSemantic,
+        )
+        || (
+          normalizedRelation === "proviso"
+          && markerSemantic === "ahzo"
+        )
+      )
+    );
+  }
+
+  function bindingRoleSupportsRelation({
+    operationId = "",
+    relation = "",
+    role = "",
+    exactResult = null,
+    sourceEvidence = null,
+  } = {}) {
+    if (!sourceEvidence?.accepted) return false;
+    const sourceUnit = typeof targetObject
+      .getCanonicalAdverbialAdjunctionSourceUnit === "function"
+      ? targetObject.getCanonicalAdverbialAdjunctionSourceUnit(
+        exactResult,
+        role,
+      )
+      : null;
+    if (role === "marker") {
+      return sourceEvidence.unitType === "particle"
+        && bindingMarkerSupportsRelation(
+          relation,
+          exactResult,
+          sourceUnit,
+        );
+    }
+    if (
+      operationId === "clause:adverbial-adjunction"
+      && role === "adjoined"
+      && sourceEvidence.compatibleRelationIds.length
+      && !sourceEvidence.compatibleRelationIds.includes(relation)
+    ) {
+      return false;
+    }
+    if (
+      operationId === "sentence:supplementation"
+      && relation === "such-that-adjunction"
+    ) {
+      const particleId = normalizeToken(exactResult?.particleId);
+      if (role === "principal" && sourceEvidence.unitType === "particle") {
+        return ["l58-quemah", "l58-quemahca"].includes(particleId);
+      }
+      if (role === "dependent") {
+        return particleId === "l3-in";
+      }
+      return sourceEvidence.unitType !== "particle";
+    }
+    if (
+      sourceEvidence.unitType === "particle"
+      && !(
+        operationId === "sentence:supplementation"
+        && relation === "exclamatory-utterance"
+      )
+    ) {
+      return false;
+    }
+    return true;
+  }
+
+  function issueClassicalClauseRelationBindingFrame(
+    operationId = "",
+    currentResult = null,
+  ) {
+    const normalizedOperationId = String(operationId || "").trim();
+    const operationRecognized = BINDING_OPERATION_IDS.includes(
+      normalizedOperationId,
+    );
+    const captureSlotId = "clause-relation-binding-source";
+    const resultCapture = operationRecognized
+      && typeof targetObject.captureClassicalGrammarApplicationResult
+        === "function"
+      ? targetObject.captureClassicalGrammarApplicationResult(
+        currentResult,
+        captureSlotId,
+      )
+      : null;
+    const captureValid = Boolean(
+      resultCapture
+      && typeof targetObject.isClassicalGrammarApplicationResultCapture
+        === "function"
+      && targetObject.isClassicalGrammarApplicationResultCapture(
+        resultCapture,
+        captureSlotId,
+      )
+    );
+    const exactResult = captureValid ? resultCapture.canonicalResult : null;
+    const relationIds = operationRecognized
+      ? getBindingOperationRelationIds(normalizedOperationId)
+      : Object.freeze([]);
+    const roleEvidence = new Map();
+    const roleAvailability = new Map();
+    if (captureValid) {
+      CAPTURE_ROLES.forEach(role => {
+        roleEvidence.set(
+          role,
+          getBindingOwnerSourceEvidence(
+            normalizedOperationId,
+            exactResult,
+            role,
+          ),
+        );
+        const probe = createClassicalClauseRelationController();
+        const probeCapture = probe.captureCurrentResult(role, exactResult);
+        roleAvailability.set(
+          role,
+          probeCapture.authorizationStatus === "authorized"
+            ? probe.issueRelationAvailabilityContract()
+            : null,
+        );
+      });
+    }
+    const bindingChoices = freezeArray(
+      relationIds.flatMap(relation => (
+        getBindingRolesForRelation(relation).flatMap(role => {
+          const sourceEvidence = roleEvidence.get(role) || null;
+          const availability = roleAvailability.get(role) || null;
+          const relationOption = availability?.relations?.find(
+            option => option.value === relation,
+          ) || null;
+          if (
+            !relationOption
+            || relationOption.status === RELATION_AVAILABILITY.INCOMPATIBLE
+            || !bindingRoleSupportsRelation({
+              operationId: normalizedOperationId,
+              relation,
+              role,
+              exactResult,
+              sourceEvidence,
+            })
+          ) {
+            return [];
+          }
+          return [Object.freeze({
+            id: `${relation}:${role}`,
+            relation,
+            captureRole: role,
+            relationEntryStatus: relationOption.status,
+            requiredCaptureRoles: relationOption.requiredCaptureRoles,
+            missingCaptureRolesAfterBinding:
+              relationOption.missingCaptureRoles,
+            ownerEvidenceKind: sourceEvidence.ownerEvidenceKind,
+            exactResultIdentityRequired: true,
+            formulaStringAuthority: false,
+            surfaceStringAuthority: false,
+          })];
+        })
+      )),
+    );
+    const authorizationStatus = bindingChoices.length
+      ? "authorized"
+      : "blocked";
+    const blockReason = authorizationStatus === "authorized"
+      ? ""
+      : !operationRecognized
+        ? "classical-clause-relation-binding-operation-not-recognized"
+        : !captureValid
+          ? resultCapture?.blockReason
+            || "classical-clause-relation-binding-issued-result-required"
+          : "classical-clause-relation-binding-source-incompatible";
+    const frame = Object.freeze({
+      kind: BINDING_FRAME_KIND,
+      version: BINDING_FRAME_VERSION,
+      authorizationStatus,
+      blockReason,
+      operationId: normalizedOperationId,
+      inputResult: captureValid ? currentResult : null,
+      applicationResult: captureValid
+        ? resultCapture.applicationResult
+        : null,
+      exactResult,
+      capturedResultRole: captureValid
+        ? resultCapture.capturedResultRole
+        : "",
+      resultCapture: captureValid ? resultCapture : null,
+      relationIds,
+      bindingChoices,
+      bindingIds: freezeArray(bindingChoices.map(choice => choice.id)),
+      ownerChoicesRequired: bindingChoices.length > 1,
+      ownerInputAcceptanceProven: authorizationStatus === "authorized",
+      ownerRejectionProven: Boolean(captureValid && !bindingChoices.length),
+      exactResultIdentityPreserved: captureValid,
+      ownerAuthorizationStillRequired: true,
+      sourceStringAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+      lessonMetadataAuthority: false,
+      storedStateAuthority: false,
+      grammarAuthority: false,
+    });
+    issuedBindingFrames.add(frame);
+    return frame;
+  }
+
+  function isClassicalClauseRelationBindingFrame(frame = null) {
+    if (
+      !frame
+      || !issuedBindingFrames.has(frame)
+      || frame.kind !== BINDING_FRAME_KIND
+      || frame.version !== BINDING_FRAME_VERSION
+      || !["authorized", "blocked"].includes(frame.authorizationStatus)
+      || !Array.isArray(frame.relationIds)
+      || !Array.isArray(frame.bindingChoices)
+      || !Array.isArray(frame.bindingIds)
+      || frame.bindingIds.length !== frame.bindingChoices.length
+      || frame.ownerChoicesRequired !== (frame.bindingChoices.length > 1)
+      || frame.ownerAuthorizationStillRequired !== true
+      || frame.sourceStringAuthority !== false
+      || frame.formulaStringAuthority !== false
+      || frame.surfaceStringAuthority !== false
+      || frame.lessonMetadataAuthority !== false
+      || frame.storedStateAuthority !== false
+      || frame.grammarAuthority !== false
+      || !Object.isFrozen(frame)
+      || !Object.isFrozen(frame.relationIds)
+      || !Object.isFrozen(frame.bindingChoices)
+      || !Object.isFrozen(frame.bindingIds)
+    ) {
+      return false;
+    }
+    if (frame.authorizationStatus === "blocked") {
+      return Boolean(
+        frame.blockReason
+        && frame.bindingChoices.length === 0
+        && frame.ownerInputAcceptanceProven === false
+      );
+    }
+    const captureValid = Boolean(
+      typeof targetObject.isClassicalGrammarApplicationResultCapture
+        === "function"
+      && targetObject.isClassicalGrammarApplicationResultCapture(
+        frame.resultCapture,
+        "clause-relation-binding-source",
+      )
+      && frame.resultCapture.applicationResult === frame.applicationResult
+      && frame.resultCapture.canonicalResult === frame.exactResult
+    );
+    const allowedRelations = getBindingOperationRelationIds(
+      frame.operationId,
+    );
+    return Boolean(
+      BINDING_OPERATION_IDS.includes(frame.operationId)
+      && captureValid
+      && frame.blockReason === ""
+      && frame.exactResultIdentityPreserved === true
+      && frame.ownerInputAcceptanceProven === true
+      && frame.ownerRejectionProven === false
+      && frame.bindingChoices.length > 0
+      && frame.relationIds.every(relation => (
+        allowedRelations.includes(relation)
+      ))
+      && frame.bindingChoices.every((choice, index) => (
+        Object.isFrozen(choice)
+        && choice.id === `${choice.relation}:${choice.captureRole}`
+        && frame.bindingIds[index] === choice.id
+        && frame.relationIds.includes(choice.relation)
+        && CAPTURE_ROLES.includes(choice.captureRole)
+        && getBindingRolesForRelation(choice.relation).includes(
+          choice.captureRole,
+        )
+        && [
+          RELATION_AVAILABILITY.AVAILABLE,
+          RELATION_AVAILABILITY.MISSING_PREREQUISITE,
+        ].includes(choice.relationEntryStatus)
+        && Object.isFrozen(choice.requiredCaptureRoles)
+        && Object.isFrozen(choice.missingCaptureRolesAfterBinding)
+        && choice.exactResultIdentityRequired === true
+        && choice.formulaStringAuthority === false
+        && choice.surfaceStringAuthority === false
+      ))
+    );
+  }
+
   function createClassicalClauseRelationController() {
     const captures = new Map();
     const discourseSourceContextFrames = new Map();
@@ -1047,6 +1594,143 @@ export function createClassicalClauseRelationControllerGlobals(
         surfaceStringAuthority: false,
         lessonMetadataAuthority: false,
         storedStateAuthority: false,
+      });
+    }
+
+    function applyBindingFrame(
+      bindingFrame = null,
+      bindingId = "",
+      discourseSourceContextFrame = null,
+    ) {
+      const normalizedBindingId = String(bindingId || "").trim();
+      const frameValid = isClassicalClauseRelationBindingFrame(
+        bindingFrame,
+      );
+      const bindingChoice = frameValid
+        ? bindingFrame.bindingChoices.find(
+          choice => choice.id === normalizedBindingId,
+        ) || null
+        : null;
+      const blocked = blockReason => Object.freeze({
+        kind: BINDING_APPLICATION_KIND,
+        version: BINDING_FRAME_VERSION,
+        authorizationStatus: "blocked",
+        blockReason,
+        bindingFrame: frameValid ? bindingFrame : null,
+        bindingChoice: null,
+        bindingId: normalizedBindingId,
+        operationId: frameValid ? bindingFrame.operationId : "",
+        relation: bindingChoice?.relation || "",
+        captureRole: bindingChoice?.captureRole || "",
+        captureResult: null,
+        relationAvailabilityContract: null,
+        decisionContract: null,
+        missingCaptureRoles: Object.freeze([]),
+        unresolvedDecisionIds: Object.freeze([]),
+        controllerState: getState(),
+        exactResultIdentityPreserved: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        storedStateAuthority: false,
+        grammarAuthority: false,
+      });
+      if (!frameValid) {
+        return blocked(
+          "classical-clause-relation-owner-issued-binding-frame-required",
+        );
+      }
+      if (bindingFrame.authorizationStatus !== "authorized") {
+        return blocked(
+          bindingFrame.blockReason
+          || "classical-clause-relation-authorized-binding-frame-required",
+        );
+      }
+      if (!bindingChoice) {
+        return blocked(
+          "classical-clause-relation-binding-choice-not-recognized",
+        );
+      }
+
+      const probe = createClassicalClauseRelationController();
+      for (const role of CAPTURE_ROLES) {
+        const existingCapture = getValidatedCapture(role);
+        if (!existingCapture) continue;
+        const existingProbeCapture = probe.captureCurrentResult(
+          role,
+          existingCapture.canonicalResult,
+          getDiscourseSourceContextFrame(role),
+        );
+        if (existingProbeCapture.authorizationStatus !== "authorized") {
+          return blocked(
+            existingProbeCapture.blockReason
+            || "classical-clause-relation-existing-capture-invalid",
+          );
+        }
+      }
+      const prospectiveCapture = probe.captureCurrentResult(
+        bindingChoice.captureRole,
+        bindingFrame.exactResult,
+        discourseSourceContextFrame,
+      );
+      if (prospectiveCapture.authorizationStatus !== "authorized") {
+        return blocked(prospectiveCapture.blockReason);
+      }
+      const prospectiveAvailability =
+        probe.issueRelationAvailabilityContract();
+      const prospectiveOption = prospectiveAvailability.relations.find(
+        option => option.value === bindingChoice.relation,
+      ) || null;
+      if (
+        !prospectiveOption
+        || prospectiveOption.status === RELATION_AVAILABILITY.INCOMPATIBLE
+      ) {
+        return blocked(
+          prospectiveOption?.reasonCode
+          || "classical-clause-relation-binding-incompatible-with-current-captures",
+        );
+      }
+
+      const captureResult = captureCurrentResult(
+        bindingChoice.captureRole,
+        bindingFrame.exactResult,
+        discourseSourceContextFrame,
+      );
+      if (captureResult.authorizationStatus !== "authorized") {
+        return blocked(captureResult.blockReason);
+      }
+      const relationAvailabilityContract =
+        issueRelationAvailabilityContract();
+      const relationOption = relationAvailabilityContract.relations.find(
+        option => option.value === bindingChoice.relation,
+      ) || null;
+      const decisionContract = buildDecisionContract({
+        relation: bindingChoice.relation,
+      });
+      return Object.freeze({
+        kind: BINDING_APPLICATION_KIND,
+        version: BINDING_FRAME_VERSION,
+        authorizationStatus: "authorized",
+        blockReason: "",
+        bindingFrame,
+        bindingChoice,
+        bindingId: normalizedBindingId,
+        operationId: bindingFrame.operationId,
+        relation: bindingChoice.relation,
+        captureRole: bindingChoice.captureRole,
+        captureResult,
+        relationAvailabilityContract,
+        decisionContract,
+        operationReadinessStatus: decisionContract.authorizationStatus,
+        missingCaptureRoles: relationOption?.missingCaptureRoles
+          || Object.freeze([]),
+        unresolvedDecisionIds: decisionContract.unresolvedDecisionIds,
+        controllerState: getState(),
+        exactResultIdentityPreserved:
+          bindingFrame.exactResult === bindingFrame.resultCapture.canonicalResult,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        storedStateAuthority: false,
+        grammarAuthority: false,
       });
     }
 
@@ -4947,6 +5631,7 @@ export function createClassicalClauseRelationControllerGlobals(
       captureCurrentResult,
       clearCapture,
       getState,
+      applyBindingFrame,
       getMarkerProfilesForRelation:
         getClassicalClauseRelationMarkerProfiles,
       issueRelationAvailabilityContract,
@@ -4960,6 +5645,13 @@ export function createClassicalClauseRelationControllerGlobals(
     CLASSICAL_CLAUSE_RELATION_CONTROLLER_KIND: CONTROLLER_KIND,
     CLASSICAL_CLAUSE_RELATION_CONTROLLER_RESULT_KIND: CONTROLLER_RESULT_KIND,
     CLASSICAL_CLAUSE_RELATION_CONTROLLER_VERSION: CONTROLLER_VERSION,
+    CLASSICAL_CLAUSE_RELATION_BINDING_FRAME_KIND: BINDING_FRAME_KIND,
+    CLASSICAL_CLAUSE_RELATION_BINDING_APPLICATION_KIND:
+      BINDING_APPLICATION_KIND,
+    CLASSICAL_CLAUSE_RELATION_BINDING_FRAME_VERSION:
+      BINDING_FRAME_VERSION,
+    CLASSICAL_CLAUSE_RELATION_BINDING_OPERATION_IDS:
+      BINDING_OPERATION_IDS,
     CLASSICAL_CLAUSE_RELATION_CAPTURE_ROLES: CAPTURE_ROLES,
     CLASSICAL_CLAUSE_RELATION_ORDER_VALUES: ORDER_VALUES,
     CLASSICAL_CLAUSE_RELATION_ADJECTIVAL_MODIFICATION_RELATION:
@@ -4976,6 +5668,8 @@ export function createClassicalClauseRelationControllerGlobals(
     CLASSICAL_CLAUSE_RELATION_RECURSION_VALUES: RECURSION_VALUES,
     CLASSICAL_CLAUSE_RELATION_MARKING_VALUES: MARKING_VALUES,
     getClassicalClauseRelationMarkerProfiles,
+    issueClassicalClauseRelationBindingFrame,
+    isClassicalClauseRelationBindingFrame,
     createClassicalClauseRelationControllerGlobals,
     createClassicalClauseRelationController,
   };

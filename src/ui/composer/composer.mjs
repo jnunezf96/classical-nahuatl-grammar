@@ -5392,7 +5392,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const verbEl = typeof targetObject.document !== "undefined" ? targetObject.document.getElementById("verb") : null;
       let sourceLexemeRestorationApplied = true;
       targetObject
-        .clearClassicalVncResultSourceContinuation?.(
+        .clearClassicalGrammarResultSourceContinuation?.(
           "url-or-restored-state-transaction"
         );
       IsApplyingEntradaUrlSegments = true;

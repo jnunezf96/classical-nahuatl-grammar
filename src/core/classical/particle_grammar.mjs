@@ -9,6 +9,7 @@ export function createClassicalNahuatlParticlesApi(
     const CLASSICAL_NAHUATL_LESSON3_SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
     const CLASSICAL_NAHUATL_LESSON3_PARTICLE_AUTHORITY_NOTE = "Lesson 3 authorizes particle frames only; it does not authorize nuclear-clause formulas.";
     const issuedParticleSentenceLayerFrames = new WeakMap();
+    const issuedParticleSentenceBindingFrames = new WeakSet();
     const issuedParticleSourceFrames = new WeakMap();
     const issuedParticleResultFrames = new WeakMap();
     const issuedParticleLexicalFactFrames = new WeakMap();
@@ -1007,15 +1008,34 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       const allowedKeys = new Set([
         "polarity",
         "precedingParticleId",
+        "precedingParticleResultFrame",
         "sentenceKind"
       ]);
       const unexpectedKey = Reflect.ownKeys(request || {})
         .map(String)
         .find(key => !allowedKeys.has(key));
       const polarity = String(request?.polarity || "negative").trim();
-      const precedingParticleId = String(
+      const requestedPrecedingParticleId = String(
         request?.precedingParticleId || ""
       ).trim();
+      const precedingParticleResultFrame =
+        request?.precedingParticleResultFrame || null;
+      const precedingParticleResultSupplied = Boolean(
+        precedingParticleResultFrame
+      );
+      const precedingParticleResultAuthorized =
+        !precedingParticleResultSupplied
+        || isClassicalNahuatlParticleResultFrame(
+          precedingParticleResultFrame
+        );
+      const precedingParticleInputsConflict = Boolean(
+        precedingParticleResultSupplied
+        && requestedPrecedingParticleId
+      );
+      const precedingParticleId = precedingParticleResultSupplied
+        && precedingParticleResultAuthorized
+        ? precedingParticleResultFrame.particleId
+        : requestedPrecedingParticleId;
       const sentenceKind = String(request?.sentenceKind || "statement").trim();
       const caAfterMah = precedingParticleId === "l3-mah";
       const caAfterWishOrCommandParticle = ["l3-ma", "l3-tla"]
@@ -1025,18 +1045,26 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       const selectedParticleId = caContext
         ? "l3-ca-negative"
         : "l3-ah-negative";
-      const precedingSourceFrame = caContext
-        ? buildClassicalNahuatlParticleSourceFrame(precedingParticleId)
-        : null;
+      const precedingSourceFrame = precedingParticleResultSupplied
+        && precedingParticleResultAuthorized
+        ? precedingParticleResultFrame.sourceFrame
+        : caContext
+          ? buildClassicalNahuatlParticleSourceFrame(precedingParticleId)
+          : null;
       const sourceFrame = buildClassicalNahuatlParticleSourceFrame(
         selectedParticleId
       );
-      const particleResultFrame = unexpectedKey || polarity !== "negative"
+      const particleResultFrame = unexpectedKey
+        || precedingParticleInputsConflict
+        || !precedingParticleResultAuthorized
+        || polarity !== "negative"
         ? null
         : buildClassicalNahuatlParticleResultFrame(sourceFrame, caContext
           ? { precedingParticleSourceFrame: precedingSourceFrame }
           : {}, negativeParticleSelectionCapability);
       const authorized = !unexpectedKey
+        && !precedingParticleInputsConflict
+        && precedingParticleResultAuthorized
         && polarity === "negative"
         && isClassicalNahuatlParticleResultFrame(particleResultFrame);
       const frame = freezeClassicalNahuatlLesson3ParticleResult({
@@ -1047,6 +1075,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           ? ""
           : unexpectedKey
             ? `classical-negative-particle-option-forbidden:${unexpectedKey}`
+            : precedingParticleInputsConflict
+              ? "classical-negative-particle-preceding-result-and-id-are-mutually-exclusive"
+              : !precedingParticleResultAuthorized
+                ? "classical-particle-owner-issued-result-required"
             : polarity !== "negative"
               ? "classical-negative-particle-negative-intent-required"
               : particleResultFrame?.blockReason
@@ -1064,6 +1096,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
             : "ah-elsewhere",
         sourceFrame: authorized ? sourceFrame : null,
         precedingSourceFrame: authorized ? precedingSourceFrame : null,
+        precedingParticleResultFrame:
+          authorized && precedingParticleResultSupplied
+            ? precedingParticleResultFrame
+            : null,
         particleResultFrame: authorized ? particleResultFrame : null,
         formula: authorized ? particleResultFrame.formula : "",
         surface: authorized ? particleResultFrame.surface : "",
@@ -1076,6 +1112,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         authorized,
         sourceFrame: frame.sourceFrame,
         precedingSourceFrame: frame.precedingSourceFrame,
+        precedingParticleResultFrame:
+          frame.precedingParticleResultFrame,
         particleResultFrame: frame.particleResultFrame,
         selectedParticleId: frame.selectedParticleId,
         formula: frame.formula,
@@ -1092,6 +1130,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         && frame.authorizationStatus === (receipt.authorized ? "authorized" : "blocked")
         && frame.sourceFrame === receipt.sourceFrame
         && frame.precedingSourceFrame === receipt.precedingSourceFrame
+        && frame.precedingParticleResultFrame
+          === receipt.precedingParticleResultFrame
         && frame.particleResultFrame === receipt.particleResultFrame
         && frame.selectedParticleId === receipt.selectedParticleId
         && frame.formula === receipt.formula
@@ -2221,6 +2261,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         && frame.displayStringsAreAuthority === false
         && frame.canonicalInputFrame === receipt.canonicalInputFrame
         && frame.particleSourceFrame === receipt.particleSourceFrame
+        && frame.inputParticleResultFrame
+          === receipt.inputParticleResultFrame
         && frame.particleResultFrame === receipt.particleResultFrame
         && frame.formulaProjection === receipt.formulaProjection
         && frame.writtenProjection === receipt.writtenProjection
@@ -2237,6 +2279,16 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
               frame.blockReason === ""
               && isClassicalNahuatlParticleSourceFrame(
                 frame.particleSourceFrame
+              )
+              && (
+                !frame.inputParticleResultFrame
+                || (
+                  isClassicalNahuatlParticleResultFrame(
+                    frame.inputParticleResultFrame
+                  )
+                  && frame.inputParticleResultFrame.sourceFrame
+                    === frame.particleSourceFrame
+                )
               )
               && isClassicalNahuatlSentenceParticleOutputFrame(
                 frame.particleResultFrame
@@ -2294,6 +2346,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         blockReason: issued.blockReason,
         canonicalInputFrame: issued.canonicalInputFrame,
         particleSourceFrame: issued.particleSourceFrame,
+        inputParticleResultFrame: issued.inputParticleResultFrame,
         particleResultFrame: issued.particleResultFrame,
         formulaProjection: issued.formulaProjection,
         writtenProjection: issued.writtenProjection,
@@ -2401,6 +2454,179 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         tense: ""
       };
     }
+    function issueClassicalNahuatlParticleSentenceBindingFrame(
+      operationId = "",
+      currentResult = null
+    ) {
+      const normalizedOperationId = String(operationId || "").trim();
+      const recognized = [
+        "sentence:adverbial-adjunction",
+        "sentence:particle-adjunction",
+        "particle:negative-selection"
+      ].includes(normalizedOperationId);
+      const runtimeTarget = getClassicalNahuatlParticleRuntimeTarget();
+      const exactParticleResult = isClassicalNahuatlParticleResultFrame(
+        currentResult
+      ) ? currentResult : null;
+      const exactSentenceLayer = isClassicalNahuatlIssuedParticleSentenceLayerFrame(
+        currentResult
+      ) ? currentResult : null;
+      const exactVncSentence = Boolean(
+        typeof runtimeTarget?.isClassicalNahuatlVncSentenceResultFrame
+          === "function"
+        && runtimeTarget.isClassicalNahuatlVncSentenceResultFrame(
+          currentResult
+        )
+      ) ? currentResult : null;
+      const exactNncSentence = Boolean(
+        typeof runtimeTarget?.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+          === "function"
+        && runtimeTarget.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+          currentResult
+        )
+      ) ? currentResult : null;
+      const exactHostClause = exactSentenceLayer
+        || exactVncSentence
+        || exactNncSentence
+        || null;
+      const particleEntry = exactParticleResult
+        ? getClassicalNahuatlParticleSourceEntries().find(
+          entry => entry.id === exactParticleResult.particleId
+        ) || null
+        : null;
+      const adverbialEntry = exactParticleResult
+        ? findClassicalNahuatlSentenceAdverbialEntry(
+          exactParticleResult.particleId
+        )
+        : null;
+      let inputRole = "";
+      let requiredChoiceIds = [];
+      let requiredResultRoles = [];
+      let accepted = false;
+      if (normalizedOperationId === "sentence:adverbial-adjunction") {
+        if (exactHostClause) {
+          inputRole = exactSentenceLayer
+            ? "consumed-sentence"
+            : "host-clause";
+          requiredChoiceIds = ["sentence-adverbial-id"];
+          accepted = true;
+        } else if (exactParticleResult && adverbialEntry) {
+          inputRole = "adverbial-source";
+          requiredResultRoles = ["host-clause"];
+          accepted = true;
+        }
+      } else if (normalizedOperationId === "sentence:particle-adjunction") {
+        if (exactHostClause) {
+          inputRole = exactSentenceLayer
+            ? "consumed-sentence"
+            : "host-clause";
+          requiredResultRoles = ["particle-adjunct"];
+          accepted = true;
+        } else if (exactParticleResult && particleEntry) {
+          inputRole = "particle-adjunct";
+          requiredResultRoles = ["host-clause"];
+          if (particleEntry.id === "l3-no-interjection") {
+            requiredChoiceIds = ["speaker-gender"];
+          }
+          accepted = true;
+        }
+      } else if (
+        normalizedOperationId === "particle:negative-selection"
+        && exactParticleResult
+      ) {
+        inputRole = "preceding-particle-context";
+        requiredChoiceIds = ["sentence-kind"];
+        accepted = true;
+      }
+      const frame = Object.freeze({
+        kind: "classical-nahuatl-particle-sentence-binding-frame",
+        version: 1,
+        authorizationStatus: accepted ? "authorized" : "blocked",
+        blockReason: accepted
+          ? ""
+          : !recognized
+            ? "classical-particle-sentence-binding-operation-not-recognized"
+            : "classical-particle-sentence-binding-exact-result-incompatible",
+        operationId: recognized ? normalizedOperationId : "",
+        exactResult: accepted ? currentResult : null,
+        exactHostClause: accepted ? exactHostClause : null,
+        exactParticleResult: accepted ? exactParticleResult : null,
+        inputRole,
+        bindingIds: Object.freeze(accepted ? [inputRole] : []),
+        requiredChoiceIds: Object.freeze(requiredChoiceIds),
+        requiredResultRoles: Object.freeze(requiredResultRoles),
+        ownerChoicesRequired: Boolean(
+          requiredChoiceIds.length || requiredResultRoles.length
+        ),
+        ownerInputAcceptanceProven: accepted,
+        // A nonmatching whole Result may still be seedable through its own
+        // sentence owner. This binder proves accepted roles only; it does not
+        // issue a cross-owner grammatical rejection.
+        ownerRejectionProven: false,
+        exactResultIdentityPreserved: accepted,
+        ownerAuthorizationStillRequired: true,
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false
+      });
+      issuedParticleSentenceBindingFrames.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlParticleSentenceBindingFrame(frame = null) {
+      if (
+        !frame
+        || !issuedParticleSentenceBindingFrames.has(frame)
+        || frame.kind
+          !== "classical-nahuatl-particle-sentence-binding-frame"
+        || frame.version !== 1
+        || !["authorized", "blocked"].includes(frame.authorizationStatus)
+        || !Array.isArray(frame.bindingIds)
+        || !Array.isArray(frame.requiredChoiceIds)
+        || !Array.isArray(frame.requiredResultRoles)
+        || frame.ownerAuthorizationStillRequired !== true
+        || frame.grammarAuthority !== false
+        || frame.formulaStringAuthority !== false
+        || frame.surfaceStringAuthority !== false
+        || !Object.isFrozen(frame)
+        || !Object.isFrozen(frame.bindingIds)
+        || !Object.isFrozen(frame.requiredChoiceIds)
+        || !Object.isFrozen(frame.requiredResultRoles)
+      ) return false;
+      if (frame.authorizationStatus === "blocked") {
+        return Boolean(
+          frame.blockReason
+          && frame.ownerInputAcceptanceProven === false
+          && frame.bindingIds.length === 0
+        );
+      }
+      const exactIdentityValid = frame.inputRole === "host-clause"
+        ? frame.exactResult === frame.exactHostClause
+          && Boolean(frame.exactHostClause)
+        : frame.inputRole === "consumed-sentence"
+          ? frame.exactResult === frame.exactHostClause
+            && isClassicalNahuatlIssuedParticleSentenceLayerFrame(
+              frame.exactHostClause
+            )
+          : [
+            "adverbial-source",
+            "particle-adjunct",
+            "preceding-particle-context"
+          ].includes(frame.inputRole)
+            ? frame.exactResult === frame.exactParticleResult
+              && isClassicalNahuatlParticleResultFrame(
+                frame.exactParticleResult
+              )
+            : false;
+      return Boolean(
+        frame.blockReason === ""
+        && frame.ownerInputAcceptanceProven === true
+        && frame.ownerRejectionProven === false
+        && frame.exactResultIdentityPreserved === true
+        && frame.bindingIds.length === 1
+        && frame.bindingIds[0] === frame.inputRole
+        && exactIdentityValid
+      );
+    }
     function buildClassicalNahuatlAdverbialContextualMeaningFrame(
       entry = null,
       tense = ""
@@ -2434,6 +2660,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       }
       const allowedOptionKeys = new Set([
         "particleSourceFrame",
+        "particleResultFrame",
         "nuclearResultFrame",
         "consumedSentenceFrame"
       ]);
@@ -2449,9 +2676,27 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
             [unexpectedOptionKey]: unexpectedOptionValue
           })
         : "";
-      const particleSourceFrame = options.particleSourceFrame || null;
+      const inputParticleResultFrame = options.particleResultFrame || null;
+      const inputParticleResultSupplied = Boolean(
+        inputParticleResultFrame
+      );
+      const inputParticleResultAuthorized =
+        !inputParticleResultSupplied
+        || isClassicalNahuatlParticleResultFrame(
+          inputParticleResultFrame
+        );
+      const particleInputsConflict = Boolean(
+        inputParticleResultSupplied
+        && options.particleSourceFrame
+      );
+      const particleSourceFrame = inputParticleResultSupplied
+        && inputParticleResultAuthorized
+        ? inputParticleResultFrame.sourceFrame
+        : options.particleSourceFrame || null;
       const adverbialOmitted =
-        !particleSourceFrame && !unexpectedOptionKey;
+        !particleSourceFrame
+        && !inputParticleResultSupplied
+        && !unexpectedOptionKey;
       const particleSourceAuthorized =
         isClassicalNahuatlParticleSourceFrame(particleSourceFrame);
       const requestedAdverbialId = particleSourceAuthorized
@@ -2483,9 +2728,12 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         : findClassicalNahuatlSentenceAdverbialEntry(
             requestedAdverbialId
           );
-      const particleResultFrame = particleSourceAuthorized
-        ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
-        : null;
+      const particleResultFrame = inputParticleResultSupplied
+        && inputParticleResultAuthorized
+        ? inputParticleResultFrame
+        : particleSourceAuthorized
+          ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
+          : null;
       const contextualMeaningFrame = selectedEntry
         ? buildClassicalNahuatlAdverbialContextualMeaningFrame(
             selectedEntry,
@@ -2497,6 +2745,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       const authorized = !adverbialOmitted
         && !unexpectedOptionKey
         && !authorityPath
+        && !particleInputsConflict
+        && inputParticleResultAuthorized
         && particleSourceAuthorized
         && clauseKindAllowed
         && Boolean(nuclearFormula)
@@ -2549,6 +2799,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
               )
                 ? "classical-particle-owner-issued-source-required"
                 : `classical-sentence-adverbial-option-forbidden:${unexpectedOptionKey}`
+              : particleInputsConflict
+                ? "classical-sentence-adverbial-source-and-result-are-mutually-exclusive"
+                : !inputParticleResultAuthorized
+                  ? "classical-particle-owner-issued-result-required"
               : !particleSourceAuthorized
                 ? particleSourceFrame?.blockReason
                   || "classical-particle-owner-issued-source-required"
@@ -2566,6 +2820,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           : "",
         particleSourceFrame:
           particleSourceAuthorized ? particleSourceFrame : null,
+        inputParticleResultFrame:
+          inputParticleResultAuthorized && inputParticleResultSupplied
+            ? inputParticleResultFrame
+            : null,
         particleResultFrame:
           authorized ? particleResultFrame : null,
         selectedEntry,
@@ -2608,6 +2866,7 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       }
       const allowedOptionKeys = new Set([
         "particleSourceFrame",
+        "particleResultFrame",
         "nuclearResultFrame",
         "consumedSentenceFrame",
         "honorificized",
@@ -2625,9 +2884,28 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
             [unexpectedOptionKey]: unexpectedOptionValue
           })
         : "";
-      const particleSourceFrame = options.particleSourceFrame || null;
+      const inputParticleResultFrame =
+        options.particleResultFrame || null;
+      const inputParticleResultSupplied = Boolean(
+        inputParticleResultFrame
+      );
+      const inputParticleResultAuthorized =
+        !inputParticleResultSupplied
+        || isClassicalNahuatlParticleResultFrame(
+          inputParticleResultFrame
+        );
+      const particleInputsConflict = Boolean(
+        inputParticleResultSupplied
+        && options.particleSourceFrame
+      );
+      const particleSourceFrame = inputParticleResultSupplied
+        && inputParticleResultAuthorized
+        ? inputParticleResultFrame.sourceFrame
+        : options.particleSourceFrame || null;
       const particleOmitted =
-        !particleSourceFrame && !unexpectedOptionKey;
+        !particleSourceFrame
+        && !inputParticleResultSupplied
+        && !unexpectedOptionKey;
       const particleSourceAuthorized =
         isClassicalNahuatlParticleSourceFrame(particleSourceFrame);
       const requestedParticleId = particleSourceAuthorized
@@ -2677,9 +2955,12 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         ? evaluateClassicalNahuatlParticleHonorificFormation(
             honorificSourceFrame
           )
-        : particleSourceAuthorized
-          ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
-          : null;
+        : inputParticleResultSupplied
+          && inputParticleResultAuthorized
+          ? inputParticleResultFrame
+          : particleSourceAuthorized
+            ? buildClassicalNahuatlParticleResultFrame(particleSourceFrame)
+            : null;
       const honorificizedAuthorized = !honorificizedRequested
         || Boolean(
           honorificizedEntryId
@@ -2709,6 +2990,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
       const authorized = !particleOmitted
         && !unexpectedOptionKey
         && !authorityPath
+        && !particleInputsConflict
+        && inputParticleResultAuthorized
         && particleSourceAuthorized
         && clauseKindAllowed
         && Boolean(nuclearFormula)
@@ -2773,10 +3056,14 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
               )
                 ? "classical-particle-owner-issued-source-required"
                 : `classical-sentence-particle-option-forbidden:${unexpectedOptionKey}`
-              : !particleSourceAuthorized
-                ? particleSourceFrame?.blockReason
-                  || "classical-particle-owner-issued-source-required"
-                : canonicalInput.authorizationStatus !== "authorized"
+              : particleInputsConflict
+                ? "classical-sentence-particle-source-and-result-are-mutually-exclusive"
+                : !inputParticleResultAuthorized
+                  ? "classical-particle-owner-issued-result-required"
+                  : !particleSourceAuthorized
+                    ? particleSourceFrame?.blockReason
+                      || "classical-particle-owner-issued-source-required"
+                    : canonicalInput.authorizationStatus !== "authorized"
             ? canonicalInput.blockReason
             : !clauseKindAllowed
             ? "sentence-particle-requires-vnc-or-nnc"
@@ -2799,6 +3086,10 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
           : "",
         particleSourceFrame:
           particleSourceAuthorized ? particleSourceFrame : null,
+        inputParticleResultFrame:
+          inputParticleResultAuthorized && inputParticleResultSupplied
+            ? inputParticleResultFrame
+            : null,
         particleResultFrame:
           authorized ? particleResultFrame : null,
         honorificSourceFrame:
@@ -2886,6 +3177,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
         findClassicalNahuatlParticleCombinationShortcutEntry,
         buildClassicalNahuatlSentenceParticleLayerFrame,
         isClassicalNahuatlIssuedParticleSentenceLayerFrame,
+        issueClassicalNahuatlParticleSentenceBindingFrame,
+        isClassicalNahuatlParticleSentenceBindingFrame,
         getClassicalNahuatlParticleGroups,
         getClassicalNahuatlParticleStructureRules,
         getClassicalNahuatlFunctionalClassRules,
@@ -2988,6 +3281,8 @@ l16-achi-adverbial|almost|adverbial modifier of mochi; distinct here from the qu
     api.findClassicalNahuatlParticleCombinationShortcutEntry = findClassicalNahuatlParticleCombinationShortcutEntry;
     api.buildClassicalNahuatlSentenceParticleLayerFrame = buildClassicalNahuatlSentenceParticleLayerFrame;
     api.isClassicalNahuatlIssuedParticleSentenceLayerFrame = isClassicalNahuatlIssuedParticleSentenceLayerFrame;
+    api.issueClassicalNahuatlParticleSentenceBindingFrame = issueClassicalNahuatlParticleSentenceBindingFrame;
+    api.isClassicalNahuatlParticleSentenceBindingFrame = isClassicalNahuatlParticleSentenceBindingFrame;
     api.getClassicalNahuatlSentenceAdverbialEntries = getClassicalNahuatlSentenceAdverbialEntries;
     api.findClassicalNahuatlSentenceAdverbialEntry = findClassicalNahuatlSentenceAdverbialEntry;
     api.buildClassicalNahuatlSentenceAdverbialLayerFrame = buildClassicalNahuatlSentenceAdverbialLayerFrame;

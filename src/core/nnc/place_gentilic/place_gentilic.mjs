@@ -1191,6 +1191,161 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       };
       return aliases[key] || key;
     }
+    function hasPlaceGentilicNncExactResultField(request = {}) {
+      return Boolean(
+        request
+        && typeof request === "object"
+        && Object.prototype.hasOwnProperty.call(request, "canonicalNncResult")
+      );
+    }
+    function hasPlaceGentilicNncRawSourceFields(request = {}) {
+      if (!request || typeof request !== "object") return false;
+      if (Object.prototype.hasOwnProperty.call(request, "source")
+        && request.source !== null
+        && request.source !== undefined) {
+        return true;
+      }
+      return [
+        "embedStem",
+        "sourceStem",
+        "placeStem",
+        "gentilicStem",
+        "matrixStem",
+        "headStem",
+        "sourceVoice"
+      ].some(key => normalizePlaceGentilicNncToken(request[key] || ""));
+    }
+    function resolvePlaceGentilicNncExactSource(request = {}) {
+      const exactResultFieldPresent = hasPlaceGentilicNncExactResultField(request);
+      if (!exactResultFieldPresent) {
+        return Object.freeze({
+          kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+          version: 1,
+          authorizationStatus: "not-requested",
+          blockReason: "",
+          source: Object.freeze({}),
+          canonicalNncResult: null,
+          canonicalNncSourceProjection: null,
+          exactNncResultIdentityPreserved: false
+        });
+      }
+      if (hasPlaceGentilicNncRawSourceFields(request)) {
+        return Object.freeze({
+          kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+          version: 1,
+          authorizationStatus: "blocked",
+          blockReason: "canonical-nnc-result-and-raw-source-are-mutually-exclusive",
+          source: Object.freeze({}),
+          canonicalNncResult: null,
+          canonicalNncSourceProjection: null,
+          exactNncResultIdentityPreserved: false
+        });
+      }
+      const canonicalNncResult = request.canonicalNncResult;
+      if (typeof targetObject?.isClassicalNahuatlOrdinaryNncResult !== "function"
+        || !targetObject.isClassicalNahuatlOrdinaryNncResult(canonicalNncResult)) {
+        return Object.freeze({
+          kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+          version: 1,
+          authorizationStatus: "blocked",
+          blockReason: "exact-owner-issued-ordinary-nnc-result-required",
+          source: Object.freeze({}),
+          canonicalNncResult: null,
+          canonicalNncSourceProjection: null,
+          exactNncResultIdentityPreserved: false
+        });
+      }
+      if (typeof targetObject?.getClassicalNahuatlNncContinuationSourceConstituents
+        !== "function") {
+        return Object.freeze({
+          kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+          version: 1,
+          authorizationStatus: "blocked",
+          blockReason: "canonical-nnc-result-source-projection-unavailable",
+          source: Object.freeze({}),
+          canonicalNncResult: null,
+          canonicalNncSourceProjection: null,
+          exactNncResultIdentityPreserved: false
+        });
+      }
+      const projection = targetObject
+        .getClassicalNahuatlNncContinuationSourceConstituents(canonicalNncResult);
+      const sourceStem = normalizePlaceGentilicNncStem(
+        projection?.sourceIdentityStem || ""
+      );
+      if (!projection
+        || projection.canonicalResultFrame !== canonicalNncResult
+        || projection.nncType !== "ordinary"
+        || projection.projectionRole !== "read-only-source-constituents"
+        || projection.grammarAuthority !== false
+        || !sourceStem) {
+        return Object.freeze({
+          kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+          version: 1,
+          authorizationStatus: "blocked",
+          blockReason: "canonical-nnc-result-source-projection-unavailable",
+          source: Object.freeze({}),
+          canonicalNncResult: null,
+          canonicalNncSourceProjection: null,
+          exactNncResultIdentityPreserved: false
+        });
+      }
+      const constructionKind = normalizePlaceGentilicNncConstructionKind(
+        request.constructionKind || request.placeGentilicKind
+      );
+      const formation = normalizePlaceGentilicNncFormation(
+        request.formation || request.placeFormation || request.gentilicFormation
+      );
+      let source = {};
+      let blockReason = "";
+      if (constructionKind === "place-name") {
+        if (["n-imperfect-active", "n-imperfect-nonactive"].includes(formation)) {
+          blockReason = "exact-nnc-result-does-not-project-required-source-voice";
+        } else if (formation === "gentilic-incorporated-place"
+          || formation === "gentilic-affective-co") {
+          source = { gentilicStem: sourceStem };
+        } else {
+          source = { embedStem: sourceStem };
+        }
+      } else if (constructionKind === "gentilic") {
+        if (formation === "two-clause-concatenate") {
+          blockReason = "two-clause-gentilic-requires-additional-exact-head-result";
+        } else if (formation.startsWith("ca-")) {
+          source = { placeStem: sourceStem };
+        } else {
+          source = { gentilicStem: sourceStem };
+        }
+      } else if (["gentilic-collective", "gentilic-adjectival-use"]
+        .includes(constructionKind)) {
+        source = { gentilicStem: sourceStem };
+      } else if (["profession-place-association", "profession-pertinency"]
+        .includes(constructionKind)) {
+        blockReason = "exact-nnc-result-not-used-by-closed-lexical-extension";
+      } else {
+        source = { embedStem: sourceStem };
+      }
+      return Object.freeze({
+        kind: "classical-nahuatl-place-gentilic-exact-source-resolution",
+        version: 1,
+        authorizationStatus: blockReason ? "blocked" : "authorized",
+        blockReason,
+        source: Object.freeze(source),
+        canonicalNncResult,
+        canonicalNncSourceProjection: projection,
+        sourceIdentityStem: sourceStem,
+        predicateStem: normalizePlaceGentilicNncStem(projection.predicateStem || ""),
+        sourceNounClass: normalizePlaceGentilicNncKey(
+          projection.sourceNounClass || ""
+        ),
+        sourceState: normalizePlaceGentilicNncState(projection.state || ""),
+        sourcePossessor: normalizePlaceGentilicNncKey(projection.possessor || ""),
+        exactNncResultIdentityPreserved: true,
+        callerSuppliedSourceStringsAccepted: false,
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false
+      });
+    }
     function buildPlaceGentilicNncSourceAnalysis(request = {}) {
       const constructionKind = normalizePlaceGentilicNncConstructionKind(
         request.constructionKind || request.placeGentilicKind
@@ -1198,7 +1353,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       const formation = normalizePlaceGentilicNncFormation(
         request.formation || request.placeFormation || request.gentilicFormation
       );
-      const source = request.source && typeof request.source === "object" ? request.source : {};
+      const exactSourceResolution = resolvePlaceGentilicNncExactSource(request);
+      const exactSourceRequested = exactSourceResolution.authorizationStatus !== "not-requested";
+      const source = exactSourceRequested
+        ? exactSourceResolution.source
+        : request.source && typeof request.source === "object" ? request.source : {};
       const embedStem = normalizePlaceGentilicNncStem(
         source.embedStem || source.sourceStem || request.embedStem || request.sourceStem
       );
@@ -1216,7 +1375,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       const analysisKind = normalizePlaceGentilicNncKey(request.analysisKind || source.analysisKind);
       const placeMatrix = normalizePlaceGentilicNncKey(source.placeMatrix || request.placeMatrix);
       const state = normalizePlaceGentilicNncState(request.state || "absolutive");
-      const authorized = Boolean(
+      const authorized = !exactSourceResolution.blockReason && Boolean(
         constructionKind
         && (
           constructionKind === "place-name"
@@ -1241,7 +1400,9 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         authorizationStatus: authorized ? "authorized" : "blocked",
         blockReason: authorized
           ? ""
-          : !constructionKind
+          : exactSourceResolution.blockReason
+            ? exactSourceResolution.blockReason
+            : !constructionKind
             ? "place-gentilic-construction-kind-required"
             : constructionKind === "place-name" && subjectReference !== PLACE_GENTILIC_NNC_SUBJECT_REFERENCE.uniqueSocial
               ? "place-name-requires-unique-social-reference"
@@ -1261,6 +1422,19 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         analysisKind,
         placeMatrix,
         state,
+        sourceInputMode: exactSourceRequested
+          ? "exact-owner-issued-ordinary-nnc-result"
+          : "typed-source-fields",
+        canonicalNncResult: exactSourceResolution.canonicalNncResult,
+        canonicalNncSourceProjection:
+          exactSourceResolution.canonicalNncSourceProjection,
+        exactNncResultIdentityPreserved:
+          exactSourceResolution.exactNncResultIdentityPreserved,
+        sourceIdentityStem: exactSourceResolution.sourceIdentityStem || "",
+        sourcePredicateStem: exactSourceResolution.predicateStem || "",
+        sourceNounClass: exactSourceResolution.sourceNounClass || "",
+        sourceNncState: exactSourceResolution.sourceState || "unknown",
+        sourceNncPossessor: exactSourceResolution.sourcePossessor || "",
         sourceStructure: normalizePlaceGentilicNncKey(source.structure || request.structure || "integrated"),
         lexicalId: normalizePlaceGentilicNncKey(request.lexicalId || source.lexicalId),
         affectiveMatrix: normalizePlaceGentilicNncKey(request.affectiveMatrix || source.affectiveMatrix),
@@ -1674,7 +1848,14 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       });
     }
     function evaluatePlaceGentilicNnc(request = {}) {
-      const hostileAuthorityPath = findPlaceGentilicNncHostileAuthorityPath(request);
+      const hostileAuthorityRequest = hasPlaceGentilicNncExactResultField(request)
+        ? Object.fromEntries(Object.entries(request).filter(
+          ([key]) => key !== "canonicalNncResult"
+        ))
+        : request;
+      const hostileAuthorityPath = findPlaceGentilicNncHostileAuthorityPath(
+        hostileAuthorityRequest
+      );
       if (hostileAuthorityPath) {
         return buildPlaceGentilicNncBlockedFrame(
           "caller-supplied-formula-surface-result-or-lesson-authority-blocked",
@@ -1833,6 +2014,11 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
         usage: sourceAnalysis.usage,
         state: agreementFrame?.state || sourceAnalysis.state,
         subject: agreementFrame?.subject || "3sg",
+        canonicalNncResult: sourceAnalysis.canonicalNncResult,
+        canonicalNncSourceProjection:
+          sourceAnalysis.canonicalNncSourceProjection,
+        exactNncResultIdentityPreserved:
+          sourceAnalysis.exactNncResultIdentityPreserved,
         typedFrameAuthority: true,
         callerSuppliedAuthorityAccepted: false,
         formulaStringAuthority: false,
@@ -1859,12 +2045,28 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
       if (frame.authorizationStatus === "blocked") {
         return !frame.formulaRealization && !frame.wordSurface;
       }
+      const exactSourceIdentityValid = frame.sourceAnalysis?.sourceInputMode
+        !== "exact-owner-issued-ordinary-nnc-result"
+        || Boolean(
+          frame.exactNncResultIdentityPreserved === true
+          && frame.canonicalNncResult === frame.sourceAnalysis.canonicalNncResult
+          && frame.canonicalNncSourceProjection
+            === frame.sourceAnalysis.canonicalNncSourceProjection
+          && frame.canonicalNncSourceProjection?.canonicalResultFrame
+            === frame.canonicalNncResult
+          && typeof targetObject?.isClassicalNahuatlOrdinaryNncResult
+            === "function"
+          && targetObject.isClassicalNahuatlOrdinaryNncResult(
+            frame.canonicalNncResult
+          )
+        );
       return Boolean(
         frame.sourceAnalysis?.authorizationStatus === "authorized"
         && frame.formationFrame?.authorizationStatus === "authorized"
         && frame.finiteFrame?.authorizationStatus === "authorized"
         && frame.formulaRealization
         && frame.wordSurface
+        && exactSourceIdentityValid
         && PLACE_GENTILIC_NNC_LCM_AXIS_IDS.includes(frame.lcmAxisId)
         && frame.stageOrder.join(">") === PLACE_GENTILIC_NNC_GCD.stageOrder.join(">")
       );
@@ -2146,6 +2348,7 @@ export function createPlaceGentilicNncApi(targetObject = globalThis, installatio
     api.normalizePlaceGentilicNncKey = normalizePlaceGentilicNncKey;
     api.normalizePlaceGentilicNncStem = normalizePlaceGentilicNncStem;
     api.findPlaceGentilicNncHostileAuthorityPath = findPlaceGentilicNncHostileAuthorityPath;
+    api.resolvePlaceGentilicNncExactSource = resolvePlaceGentilicNncExactSource;
     api.buildPlaceGentilicNncSourceAnalysis = buildPlaceGentilicNncSourceAnalysis;
     api.realizePlaceGentilicNncPlaceStem = realizePlaceGentilicNncPlaceStem;
     api.realizePlaceGentilicNncGentilicStem = realizePlaceGentilicNncGentilicStem;

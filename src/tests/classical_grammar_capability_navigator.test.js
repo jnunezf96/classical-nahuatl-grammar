@@ -42,6 +42,44 @@ function operation(frame, operationId) {
     ) || null;
 }
 
+const CAPABILITY_CLOSURE_BINDING_OPERATION_IDS = Object.freeze([
+    "vnc:application",
+    "vnc:ordered-voice-application",
+    "vnc:derivational-operation",
+    "sentence:adverbial-adjunction",
+    "sentence:particle-adjunction",
+    "particle:negative-selection",
+    "sentence:supplementation",
+    "nnc:adjectival-modification",
+    "clause:adverbial-adjunction",
+    "clause:composition",
+    "clause:comparison",
+    "grammar:nominal-construction",
+    "nnc:deverbal-construction",
+    "nnc:adverbial",
+    "nnc:relational",
+    "nnc:place-gentilic",
+    "vnc:denominal",
+    "nnc:personal-name",
+]);
+
+function navigatorCountsMatchRecords(frame) {
+    return Boolean(
+        frame
+        && frame.availableCount === frame.operations.filter(
+            candidate => candidate.availabilityStatus === "available"
+        ).length
+        && frame.missingPrerequisiteCount === frame.operations.filter(
+            candidate => (
+                candidate.availabilityStatus === "missing-prerequisite"
+            )
+        ).length
+        && frame.incompatibleCount === frame.operations.filter(
+            candidate => candidate.availabilityStatus === "incompatible"
+        ).length
+    );
+}
+
 function run(ctx) {
     const s = createSuite("classical_grammar_capability_navigator");
 
@@ -76,9 +114,6 @@ function run(ctx) {
     const observationsBeforeNavigator = atlasObservations.length;
     const frame =
         ctx.getClassicalGrammarApplicationCapabilityNavigator(receipt);
-    const derivation = operation(frame, "vnc:derivational-operation");
-    const denominal = operation(frame, "vnc:denominal");
-    const newVnc = operation(frame, "vnc:application");
     const sentenceResult = operation(frame, "vnc:sentence-result");
     const vncDiagram = operation(frame, "vnc:diagram");
 
@@ -95,10 +130,7 @@ function run(ctx) {
                 frame?.availableCount
                 + frame?.missingPrerequisiteCount
                 + frame?.incompatibleCount,
-            availableCount: frame?.availableCount,
-            missingPrerequisiteCount:
-                frame?.missingPrerequisiteCount,
-            incompatibleCount: frame?.incompatibleCount,
+            countsMatchRecords: navigatorCountsMatchRecords(frame),
             observerSideEffects:
                 atlasObservations.length - observationsBeforeNavigator,
             applicationIdentity:
@@ -120,9 +152,7 @@ function run(ctx) {
             scope: "canonical-continuation-contracts-only",
             operationCount: 25,
             countsAddUp: 25,
-            availableCount: 2,
-            missingPrerequisiteCount: 23,
-            incompatibleCount: 0,
+            countsMatchRecords: true,
             observerSideEffects: 0,
             applicationIdentity: true,
             canonicalIdentity: true,
@@ -134,43 +164,33 @@ function run(ctx) {
     );
 
     s.eq(
-        "only a directly accepting owner can raise a type match to available",
+        "direct owner probes preserve exact identity and carry the availability authority",
         {
-            derivationStatus: derivation?.availabilityStatus,
-            derivationTypeStatus: derivation?.typeCompatibilityStatus,
-            derivationReason: derivation?.availabilityReason,
-            derivationSharedKinds: derivation?.sharedUnitKinds,
             sentenceStatus: sentenceResult?.availabilityStatus,
             sentenceOwnerAccepted:
                 sentenceResult?.ownerInputAcceptanceProven,
             sentenceValidatorAccepted:
                 sentenceResult?.ownerProbeResultValidated,
             sentenceAuthority: sentenceResult?.availabilityAuthority,
+            sentenceExactIdentity:
+                sentenceResult?.ownerProbeInputExactIdentityMatched,
             diagramStatus: vncDiagram?.availabilityStatus,
-            diagramReason: vncDiagram?.availabilityReason,
-            denominalStatus: denominal?.availabilityStatus,
-            denominalTypeStatus: denominal?.typeCompatibilityStatus,
-            denominalReason: denominal?.availabilityReason,
-            newVncStatus: newVnc?.availabilityStatus,
-            newVncReason: newVnc?.availabilityReason,
+            diagramValidatorAccepted:
+                vncDiagram?.ownerProbeResultValidated,
+            diagramAuthority: vncDiagram?.availabilityAuthority,
+            diagramExactIdentity:
+                vncDiagram?.ownerProbeInputExactIdentityMatched,
         },
         {
-            derivationStatus: "missing-prerequisite",
-            derivationTypeStatus: "type-compatible",
-            derivationReason: "direct-owner-probe-not-installed",
-            derivationSharedKinds: ["vnc-result"],
             sentenceStatus: "available",
             sentenceOwnerAccepted: true,
             sentenceValidatorAccepted: true,
             sentenceAuthority: "canonical-owner-direct-probe",
+            sentenceExactIdentity: true,
             diagramStatus: "available",
-            diagramReason: "canonical-owner-direct-result-validated",
-            denominalStatus: "missing-prerequisite",
-            denominalTypeStatus: "type-incompatible",
-            denominalReason:
-                "continuation-unit-mismatch-owner-rejection-not-proven",
-            newVncStatus: "missing-prerequisite",
-            newVncReason: "direct-owner-probe-not-installed",
+            diagramValidatorAccepted: true,
+            diagramAuthority: "canonical-owner-direct-probe",
+            diagramExactIdentity: true,
         }
     );
 
@@ -216,16 +236,61 @@ function run(ctx) {
                 && candidate.emits
                     === candidate.sixFieldSignature.emits
             )),
-            exactOwnerEvaluation: frame?.operations.every(candidate => (
-                candidate.ownerProbeResultValidated
-                    === (candidate.availabilityStatus === "available")
-                && candidate.ownerInputAcceptanceProven
-                    === (candidate.availabilityStatus === "available")
-                && candidate.ownerRejectionProven
-                    === (candidate.availabilityStatus === "incompatible")
-                && candidate.ownerAuthorizationStillRequired === true
-                && candidate.grammarAuthority === false
-            )),
+            fixedClosureBindingsDeclared:
+                CAPABILITY_CLOSURE_BINDING_OPERATION_IDS.length === 18
+                && CAPABILITY_CLOSURE_BINDING_OPERATION_IDS.every(
+                    operationId => {
+                        const candidate = operation(frame, operationId);
+                        return Boolean(
+                            candidate
+                            && candidate.ownerBindingContractDeclared === true
+                            && candidate.ownerBindingFamily
+                            && candidate.ownerBindingIssuerCapabilityName
+                            && candidate.ownerBindingValidatorCapabilityName
+                        );
+                    }
+                ),
+            availableOnlyThroughCanonicalOwner:
+                frame?.operations.every(candidate => {
+                    if (candidate.availabilityStatus !== "available") {
+                        return true;
+                    }
+                    const acceptedByDirectProbe = Boolean(
+                        candidate.availabilityAuthority
+                            === "canonical-owner-direct-probe"
+                        && candidate.ownerProbeInvoked === true
+                        && candidate.ownerProbeResultValidated === true
+                    );
+                    const acceptedByValidatedBinding = Boolean(
+                        candidate.availabilityAuthority
+                            === "canonical-owner-result-binding"
+                        && candidate.ownerBindingInvoked === true
+                        && candidate.ownerBindingFrameValidated === true
+                        && candidate.ownerBindingInputResult
+                            === candidate.ownerProbeInputResult
+                    );
+                    return Boolean(
+                        candidate.ownerInputAcceptanceProven === true
+                        && candidate.ownerEvaluationStatus === "accepted"
+                        && (acceptedByDirectProbe
+                            || acceptedByValidatedBinding)
+                    );
+                }),
+            ownerOutcomesMatchAvailability:
+                frame?.operations.every(candidate => (
+                    candidate.ownerInputAcceptanceProven
+                        === (candidate.availabilityStatus === "available")
+                    && candidate.ownerRejectionProven
+                        === (candidate.availabilityStatus === "incompatible")
+                    && candidate.ownerAuthorizationStillRequired === true
+                    && candidate.grammarAuthority === false
+                )),
+            noAvailableTypeMismatch:
+                frame?.operations.every(candidate => (
+                    candidate.availabilityStatus !== "available"
+                    || candidate.typeCompatibilityStatus
+                        !== "type-incompatible"
+                )),
             frameNeverAuthorizes:
                 frame?.ownerAuthorizationStatus
                     === "navigator-does-not-authorize-execution"
@@ -238,7 +303,10 @@ function run(ctx) {
             allFrozen: true,
             installationStatesMatch: true,
             sixFieldsPresent: true,
-            exactOwnerEvaluation: true,
+            fixedClosureBindingsDeclared: true,
+            availableOnlyThroughCanonicalOwner: true,
+            ownerOutcomesMatchAvailability: true,
+            noAvailableTypeMismatch: true,
             frameNeverAuthorizes: true,
         }
     );
@@ -426,7 +494,7 @@ function run(ctx) {
         "nnc:sentence-surface"
     );
     s.eq(
-        "an exact ordinary NNC Source receives one owner-preflighted route and 24 truthful pending routes",
+        "an exact ordinary NNC Source receives its owner-preflighted route and truthful aggregate counts",
         {
             exactSource:
                 ctx.isIssuedCanonicalNncSourceFrame(exactOrdinarySource),
@@ -445,9 +513,10 @@ function run(ctx) {
             frame: [
                 ordinarySourceNavigator?.inputRole,
                 ordinarySourceNavigator?.operationCount,
-                ordinarySourceNavigator?.availableCount,
-                ordinarySourceNavigator?.missingPrerequisiteCount,
-                ordinarySourceNavigator?.incompatibleCount,
+                ordinarySourceNavigator?.availableCount
+                    + ordinarySourceNavigator?.missingPrerequisiteCount
+                    + ordinarySourceNavigator?.incompatibleCount,
+                navigatorCountsMatchRecords(ordinarySourceNavigator),
                 ordinarySourceNavigator?.sourceUnitKinds,
                 ordinarySourceNavigator?.sourceContractOperationIds,
             ],
@@ -484,9 +553,8 @@ function run(ctx) {
             frame: [
                 "exact-owner-issued-source",
                 25,
-                1,
-                24,
-                0,
+                25,
+                true,
                 ["ordinary-nnc-source"],
                 ["nnc:ordinary"],
             ],
@@ -531,12 +599,15 @@ function run(ctx) {
                 ctx.isClassicalGrammarApplicationTypedSourceCapabilityNavigator(
                     pronominalSourceNavigator
                 ),
-            counts: [
-                pronominalSourceNavigator?.operationCount,
-                pronominalSourceNavigator?.availableCount,
-                pronominalSourceNavigator?.missingPrerequisiteCount,
-                pronominalSourceNavigator?.incompatibleCount,
-            ],
+            counts: {
+                operationCount: pronominalSourceNavigator?.operationCount,
+                countsAddUp:
+                    pronominalSourceNavigator?.availableCount
+                    + pronominalSourceNavigator?.missingPrerequisiteCount
+                    + pronominalSourceNavigator?.incompatibleCount,
+                countsMatchRecords:
+                    navigatorCountsMatchRecords(pronominalSourceNavigator),
+            },
             operation: [
                 selectedPronominalSourceOperation?.operationId,
                 selectedPronominalSourceOperation?.availabilityStatus,
@@ -556,7 +627,11 @@ function run(ctx) {
         },
         {
             valid: true,
-            counts: [25, 1, 24, 0],
+            counts: {
+                operationCount: 25,
+                countsAddUp: 25,
+                countsMatchRecords: true,
+            },
             operation: [
                 "nnc:pronominal",
                 "available",
@@ -576,10 +651,14 @@ function run(ctx) {
         );
     const vncSourceOperation = operation(
         vncSourceNavigator,
+        "vnc:application"
+    );
+    const lateVncSourceOperation = operation(
+        vncSourceNavigator,
         "vnc:derivational-operation"
     );
     s.eq(
-        "exact VNC derivational machinery exposes both owner-issued derivation inventories",
+        "exact VNC machinery keeps causative and applicative choices under the standard application owner",
         {
             exactSource:
                 ctx.isClassicalNahuatlVncDerivationSourceMachineryFrame(
@@ -589,12 +668,15 @@ function run(ctx) {
                 ctx.isClassicalGrammarApplicationTypedSourceCapabilityNavigator(
                     vncSourceNavigator
                 ),
-            counts: [
-                vncSourceNavigator?.operationCount,
-                vncSourceNavigator?.availableCount,
-                vncSourceNavigator?.missingPrerequisiteCount,
-                vncSourceNavigator?.incompatibleCount,
-            ],
+            counts: {
+                operationCount: vncSourceNavigator?.operationCount,
+                countsAddUp:
+                    vncSourceNavigator?.availableCount
+                    + vncSourceNavigator?.missingPrerequisiteCount
+                    + vncSourceNavigator?.incompatibleCount,
+                countsMatchRecords:
+                    navigatorCountsMatchRecords(vncSourceNavigator),
+            },
             operation: [
                 vncSourceOperation?.availabilityStatus,
                 vncSourceOperation?.availabilityReason,
@@ -613,6 +695,11 @@ function run(ctx) {
                     )
                 ),
             ],
+            lateOperation: [
+                lateVncSourceOperation?.availabilityStatus,
+                lateVncSourceOperation?.availabilityReason,
+                lateVncSourceOperation?.sourceContractDeclared,
+            ],
             copiedSource:
                 ctx.getClassicalGrammarApplicationTypedSourceCapabilityNavigator({
                     ...exactVncSource,
@@ -621,7 +708,11 @@ function run(ctx) {
         {
             exactSource: true,
             valid: true,
-            counts: [25, 1, 24, 0],
+            counts: {
+                operationCount: 25,
+                countsAddUp: 25,
+                countsMatchRecords: true,
+            },
             operation: [
                 "available",
                 "canonical-owner-choices-required",
@@ -630,7 +721,115 @@ function run(ctx) {
                 ["causative", "applicative"],
                 true,
             ],
+            lateOperation: [
+                "missing-prerequisite",
+                "canonical-result-required",
+                false,
+            ],
             copiedSource: null,
+        }
+    );
+
+    const particleRoot =
+        ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+            frame,
+            "particle:result",
+            {}
+        );
+    const typedSourceIds = ordinarySourceNavigator.operations
+        .filter(candidate => candidate.sourceContractDeclared === true)
+        .map(candidate => candidate.operationId)
+        .sort();
+    const directResultIds = frame.operations
+        .filter(candidate => candidate.directOwnerProbeInstalled === true)
+        .map(candidate => candidate.operationId)
+        .sort();
+    const resultBindingIds = frame.operations
+        .filter(candidate => candidate.ownerBindingContractDeclared === true)
+        .map(candidate => candidate.operationId)
+        .sort();
+    const rootConstructorIds =
+        ctx.isClassicalGrammarTypedSourceOperationBindingFrame(particleRoot)
+        && particleRoot.family === "source-independent-root-constructor"
+            ? [particleRoot.operationId]
+            : [];
+    const modeByOperationId = new Map(
+        frame.operationIds.map(operationId => [operationId, []])
+    );
+    [
+        ["typed-source", typedSourceIds],
+        ["direct-result", directResultIds],
+        ["result-binding", resultBindingIds],
+        ["root-constructor", rootConstructorIds],
+    ].forEach(([mode, operationIds]) => {
+        operationIds.forEach(operationId => {
+            modeByOperationId.get(operationId)?.push(mode);
+        });
+    });
+    s.eq(
+        "all 25 visible pathways have a truthful entry mode, with one intentional VNC overlap and one independent particle root",
+        {
+            sameUniverse: ordinarySourceNavigator.operationIds.every(
+                operationId => frame.operationIds.includes(operationId)
+            ),
+            typedSourceIds,
+            directResultIds,
+            resultBindingIds,
+            rootConstructorIds,
+            uniqueCovered: [...modeByOperationId.values()].filter(
+                modes => modes.length > 0
+            ).length,
+            qualifiedMemberships: [...modeByOperationId.values()].reduce(
+                (count, modes) => count + modes.length,
+                0
+            ),
+            uncovered: [...modeByOperationId]
+                .filter(([, modes]) => modes.length === 0)
+                .map(([operationId]) => operationId),
+            overlaps: [...modeByOperationId]
+                .filter(([, modes]) => modes.length > 1)
+                .map(([operationId, modes]) => [
+                    operationId,
+                    [...modes].sort(),
+                ]),
+            particle: [
+                ctx.isClassicalGrammarTypedSourceOperationBindingFrame(
+                    particleRoot
+                ),
+                particleRoot?.family,
+                particleRoot?.operationId,
+                particleRoot?.navigatorInputConsumed,
+            ],
+        },
+        {
+            sameUniverse: true,
+            typedSourceIds: [
+                "nnc:ordinary",
+                "nnc:pronominal",
+                "vnc:application",
+            ],
+            directResultIds: [
+                "nnc:diagram",
+                "nnc:sentence-surface",
+                "vnc:diagram",
+                "vnc:sentence-result",
+            ],
+            resultBindingIds: [...CAPABILITY_CLOSURE_BINDING_OPERATION_IDS]
+                .sort(),
+            rootConstructorIds: ["particle:result"],
+            uniqueCovered: 25,
+            qualifiedMemberships: 26,
+            uncovered: [],
+            overlaps: [[
+                "vnc:application",
+                ["result-binding", "typed-source"],
+            ]],
+            particle: [
+                true,
+                "source-independent-root-constructor",
+                "particle:result",
+                false,
+            ],
         }
     );
 

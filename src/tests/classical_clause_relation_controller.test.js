@@ -390,6 +390,331 @@ function run(ctx) {
     );
 
     s.eq(
+        "owner-issued binding frames expose the five clause-relation families without mutating controller state",
+        (() => {
+            const harness = createHarness(ctx);
+            const vnc = harness.issue({
+                surface: "niyāuh",
+                unitKind: "vnc",
+                mood: "indicative",
+                tense: "present",
+            });
+            const nnc = harness.issue({
+                surface: "pilli",
+                unitKind: "nnc",
+            });
+            const particle = harness.issue({
+                unitKind: "particle",
+                marking: "in",
+            });
+            const before = harness.controller.getState();
+            const frames = [
+                ["sentence:supplementation", vnc.canonicalResult],
+                ["nnc:adjectival-modification", nnc.canonicalResult],
+                ["clause:adverbial-adjunction", vnc.canonicalResult],
+                ["clause:composition", vnc.canonicalResult],
+                ["clause:comparison", vnc.canonicalResult],
+            ].map(([operationId, result]) => (
+                harness.controllerTarget
+                    .issueClassicalClauseRelationBindingFrame(
+                        operationId,
+                        result
+                    )
+            ));
+            const after = harness.controller.getState();
+            const particleFrame = harness.controllerTarget
+                .issueClassicalClauseRelationBindingFrame(
+                    "sentence:supplementation",
+                    particle.canonicalResult
+                );
+            const forgedFrame = { ...frames[0] };
+            const forgedResultFrame = harness.controllerTarget
+                .issueClassicalClauseRelationBindingFrame(
+                    "clause:comparison",
+                    { ...vnc.canonicalResult }
+                );
+            const captureState = state => Object.values(state.captures)
+                .map(capture => capture.captured);
+            return {
+                api: [
+                    harness.controllerTarget
+                        .CLASSICAL_CLAUSE_RELATION_BINDING_FRAME_KIND,
+                    harness.controllerTarget
+                        .CLASSICAL_CLAUSE_RELATION_BINDING_APPLICATION_KIND,
+                    harness.controllerTarget
+                        .CLASSICAL_CLAUSE_RELATION_BINDING_OPERATION_IDS,
+                    typeof harness.controllerTarget
+                        .issueClassicalClauseRelationBindingFrame,
+                    typeof harness.controllerTarget
+                        .isClassicalClauseRelationBindingFrame,
+                    typeof harness.controller.applyBindingFrame,
+                ],
+                frameStatuses: frames.map(frame => frame.authorizationStatus),
+                framesValid: frames.every(frame => (
+                    harness.controllerTarget
+                        .isClassicalClauseRelationBindingFrame(frame)
+                )),
+                exactIdentity: frames.every((frame, index) => (
+                    frame.exactResult === (index === 1
+                        ? nnc.canonicalResult
+                        : vnc.canonicalResult)
+                    && frame.inputResult === frame.exactResult
+                    && frame.resultCapture.canonicalResult === frame.exactResult
+                    && frame.exactResultIdentityPreserved === true
+                )),
+                frozen: frames.every(frame => (
+                    Object.isFrozen(frame)
+                    && Object.isFrozen(frame.bindingChoices)
+                    && frame.bindingChoices.every(Object.isFrozen)
+                )),
+                hasFamilyBinding: frames.map(frame => (
+                    frame.bindingChoices.some(choice => (
+                        frame.relationIds.includes(choice.relation)
+                        && choice.id
+                            === `${choice.relation}:${choice.captureRole}`
+                    ))
+                )),
+                particleBindings: [
+                    "supplementation:marker",
+                    "exclamatory-utterance:principal",
+                    "such-that-adjunction:dependent",
+                    "such-that-adjunction:marker",
+                ].map(bindingId => particleFrame.bindingIds.includes(bindingId)),
+                before: captureState(before),
+                after: captureState(after),
+                forgedFrameValid: harness.controllerTarget
+                    .isClassicalClauseRelationBindingFrame(forgedFrame),
+                forgedResult: [
+                    forgedResultFrame.authorizationStatus,
+                    harness.controllerTarget
+                        .isClassicalClauseRelationBindingFrame(
+                            forgedResultFrame
+                        ),
+                ],
+            };
+        })(),
+        {
+            api: [
+                "classical-clause-relation-binding-frame",
+                "classical-clause-relation-binding-application",
+                [
+                    "sentence:supplementation",
+                    "nnc:adjectival-modification",
+                    "clause:adverbial-adjunction",
+                    "clause:composition",
+                    "clause:comparison",
+                ],
+                "function",
+                "function",
+                "function",
+            ],
+            frameStatuses: [
+                "authorized",
+                "authorized",
+                "authorized",
+                "authorized",
+                "authorized",
+            ],
+            framesValid: true,
+            exactIdentity: true,
+            frozen: true,
+            hasFamilyBinding: [true, true, true, true, true],
+            particleBindings: [true, true, true, true],
+            before: [false, false, false, false, false],
+            after: [false, false, false, false, false],
+            forgedFrameValid: false,
+            forgedResult: ["blocked", true],
+        }
+    );
+
+    s.eq(
+        "exact VNC and NNC sentence Results remain bindable through the five controller families",
+        (() => {
+            const harness = createHarness(ctx);
+            const vnc = harness.issue({
+                sourceStem: "ahci",
+                verbClass: "A",
+                surface: "ahci",
+                unitKind: "vnc",
+                subject: "3sg",
+            });
+            const vncSentence = harness.applicationTarget
+                .executeClassicalGrammarApplicationRequest({
+                    operationId: "vnc:sentence-result",
+                    args: [vnc.canonicalResult],
+                });
+            const nncSentence = harness.issue({
+                surface: "pilli",
+                unitKind: "nnc",
+            });
+            const operationIds = [
+                "sentence:supplementation",
+                "nnc:adjectival-modification",
+                "clause:adverbial-adjunction",
+                "clause:composition",
+                "clause:comparison",
+            ];
+            const issueFrames = exactResult => operationIds.map(
+                operationId => harness.controllerTarget
+                    .issueClassicalClauseRelationBindingFrame(
+                        operationId,
+                        exactResult
+                    )
+            );
+            const vncFrames = issueFrames(vncSentence.canonicalResult);
+            const nncFrames = issueFrames(nncSentence.canonicalResult);
+            const compositionFrame = vncFrames[3];
+            const applied = harness.controller.applyBindingFrame(
+                compositionFrame,
+                "conjunction:principal"
+            );
+            return {
+                sourceStatuses: [
+                    vncSentence.authorizationStatus,
+                    nncSentence.authorizationStatus,
+                ],
+                frameStatuses: [
+                    vncFrames.map(frame => frame.authorizationStatus),
+                    nncFrames.map(frame => frame.authorizationStatus),
+                ],
+                frameValidity: [vncFrames, nncFrames].map(frames => (
+                    frames.every(frame => harness.controllerTarget
+                        .isClassicalClauseRelationBindingFrame(frame))
+                )),
+                bindingsPresent: [vncFrames, nncFrames].map(frames => (
+                    frames.every(frame => frame.bindingIds.length > 0)
+                )),
+                exactIdentity: vncFrames.every(frame => (
+                    frame.inputResult === vncSentence.canonicalResult
+                    && frame.exactResult === vncSentence.canonicalResult
+                )),
+                applied: [
+                    applied.authorizationStatus,
+                    applied.captureRole,
+                    applied.captureResult?.authorizationStatus,
+                    applied.exactResultIdentityPreserved,
+                ],
+            };
+        })(),
+        {
+            sourceStatuses: ["authorized", "authorized"],
+            frameStatuses: [
+                Array(5).fill("authorized"),
+                Array(5).fill("authorized"),
+            ],
+            frameValidity: [true, true],
+            bindingsPresent: [true, true],
+            exactIdentity: true,
+            applied: ["authorized", "principal", "authorized", true],
+        }
+    );
+
+    s.eq(
+        "applying one validated binding is the only binding-frame state mutation and reuses owner contracts",
+        (() => {
+            const harness = createHarness(ctx);
+            const issued = harness.issue({
+                surface: "niyāuh",
+                unitKind: "vnc",
+                mood: "indicative",
+                tense: "present",
+            });
+            const frame = harness.controllerTarget
+                .issueClassicalClauseRelationBindingFrame(
+                    "clause:comparison",
+                    issued.canonicalResult
+                );
+            const before = harness.controller.getState();
+            const applied = harness.controller.applyBindingFrame(
+                frame,
+                "comparison:principal"
+            );
+            const after = harness.controller.getState();
+
+            const hostileHarness = createHarness(ctx);
+            const hostileBefore = hostileHarness.controller.getState();
+            const copied = hostileHarness.controller.applyBindingFrame(
+                { ...frame },
+                "comparison:principal"
+            );
+            const sameAuthorityController = harness.controllerTarget
+                .createClassicalClauseRelationController();
+            const sameAuthorityBefore = sameAuthorityController.getState();
+            const unknown = sameAuthorityController.applyBindingFrame(
+                frame,
+                "comparison:unknown"
+            );
+            const sameAuthorityAfter = sameAuthorityController.getState();
+            const hostileAfter = hostileHarness.controller.getState();
+            const captureState = state => Object.values(state.captures)
+                .map(capture => capture.captured);
+            const comparisonAvailability = applied
+                .relationAvailabilityContract.relations.find(
+                    relation => relation.value === "comparison"
+                );
+            return {
+                before: captureState(before),
+                applied: [
+                    applied.authorizationStatus,
+                    applied.bindingFrame === frame,
+                    applied.bindingChoice
+                        === frame.bindingChoices.find(
+                            choice => choice.id === "comparison:principal"
+                        ),
+                    applied.captureResult.authorizationStatus,
+                    applied.relation,
+                    applied.captureRole,
+                    applied.exactResultIdentityPreserved,
+                    harness.controller.isRelationAvailabilityContract(
+                        applied.relationAvailabilityContract
+                    ),
+                    comparisonAvailability.status,
+                    applied.decisionContract.relation,
+                    applied.operationReadinessStatus,
+                ],
+                after: captureState(after),
+                hostile: [
+                    copied.authorizationStatus,
+                    copied.blockReason,
+                    unknown.authorizationStatus,
+                    unknown.blockReason,
+                ],
+                hostileBefore: captureState(hostileBefore),
+                hostileAfter: captureState(hostileAfter),
+                sameAuthorityBefore: captureState(sameAuthorityBefore),
+                sameAuthorityAfter: captureState(sameAuthorityAfter),
+            };
+        })(),
+        {
+            before: [false, false, false, false, false],
+            applied: [
+                "authorized",
+                true,
+                true,
+                "authorized",
+                "comparison",
+                "principal",
+                true,
+                true,
+                "available",
+                "comparison",
+                "blocked",
+            ],
+            after: [true, false, false, false, false],
+            hostile: [
+                "blocked",
+                "classical-clause-relation-owner-issued-binding-frame-required",
+                "blocked",
+                "classical-clause-relation-binding-choice-not-recognized",
+            ],
+            hostileBefore: [false, false, false, false, false],
+            hostileAfter: [false, false, false, false, false],
+            sameAuthorityBefore: [false, false, false, false, false],
+            sameAuthorityAfter: [false, false, false, false, false],
+        }
+    );
+
+    s.eq(
         "one Clause composition controller captures principal and adjoined Results and delegates the selected relation to the global application wrapper",
         (() => {
             const harness = createHarness(ctx);

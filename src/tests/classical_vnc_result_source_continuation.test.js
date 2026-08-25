@@ -411,6 +411,262 @@ function run(ctx = {}) {
         }
     );
 
+    s.eq(
+        "owner-issued VNC continuation bindings preserve exact Results and expose only proven execution arguments",
+        (() => {
+            const operationIds = [
+                "vnc:application",
+                "vnc:ordered-voice-application",
+                "vnc:derivational-operation",
+            ];
+            const initialFrames = operationIds.map(operationId => (
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    operationId,
+                    exactFirstResult
+                )
+            ));
+            const applicationFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:application",
+                    exactFirstResult,
+                    {
+                        subject: "3sg",
+                        mood: "indicative",
+                        tense: "present",
+                        requestedDerivation: "direct",
+                        requestedVoice: "active",
+                    }
+                );
+            const lateFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:derivational-operation",
+                    exactFirstResult,
+                    {
+                        lateOperation: "frequentative",
+                        lateVariant: "ordinary-long",
+                        frequentativeRepetitions: 2,
+                    }
+                );
+            const additionalResultFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:derivational-operation",
+                    exactFirstResult,
+                    {
+                        lateOperation: "reverential",
+                        lateVariant: "preterit-embed",
+                    }
+                );
+            const orderedBaseReceipt =
+                ctx.executeClassicalGrammarApplicationRequest({
+                    operationId: "vnc:application",
+                    args: [{
+                        sourceStem: "yohua",
+                        verbClass: "A",
+                        sourceValence: "intransitive",
+                        subject: "1sg",
+                        mood: "indicative",
+                        tense: "present",
+                        requestedDerivation: "direct",
+                        requestedVoice: "impersonal",
+                        nonactiveOptionId: "inherent-impersonal",
+                    }],
+                });
+            const exactOrderedBaseResult =
+                orderedBaseReceipt.canonicalResult.resultFrame;
+            const orderedFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:ordered-voice-application",
+                    exactOrderedBaseResult,
+                    {
+                        operations: [
+                            "inherent-impersonal",
+                            "tla-impersonal",
+                            "nonactive-lō",
+                        ],
+                    }
+                );
+            const copiedSourceFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:application",
+                    { ...exactFirstResult }
+                );
+            return {
+                api: [
+                    ctx
+                        .CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND,
+                    ctx
+                        .CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS,
+                    ctx
+                        .CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES,
+                    typeof ctx
+                        .issueClassicalNahuatlVncContinuationBindingFrame,
+                    typeof ctx
+                        .isClassicalNahuatlVncContinuationBindingFrame,
+                ],
+                initial: initialFrames.map(frame => ({
+                    status: frame.bindingStatus,
+                    authorization: frame.authorizationStatus,
+                    choices: frame.requiredChoiceIds,
+                    roles: frame.requiredResultRoles,
+                    exact: frame.exactInputResult === exactFirstResult,
+                    executionArgs: frame.executionArgs.length,
+                    valid:
+                        ctx.isClassicalNahuatlVncContinuationBindingFrame(
+                            frame
+                        ),
+                })),
+                ready: [applicationFrame, orderedFrame, lateFrame].map(
+                    frame => ({
+                        status: frame.bindingStatus,
+                        authorization: frame.authorizationStatus,
+                        preflight: frame.ownerPreflightAuthorized,
+                        exact: frame.exactInputResult === (
+                            frame === orderedFrame
+                                ? exactOrderedBaseResult
+                                : exactFirstResult
+                        ),
+                        executionArgs: frame.executionArgs.length,
+                        valid:
+                            ctx.isClassicalNahuatlVncContinuationBindingFrame(
+                                frame
+                            ),
+                    })
+                ),
+                recapture: [
+                    lateFrame.outerVncApplicationFrame
+                        ?.normalizedRequest?.sourceStem,
+                    lateFrame.continuationSourceProjection?.sourceStem,
+                    lateFrame.outerVncApplicationFrame
+                        !== firstReceipt.canonicalResult,
+                    orderedFrame.outerVncApplicationFrame
+                        === orderedBaseReceipt.canonicalResult,
+                ],
+                executionIdentities: [
+                    applicationFrame.executionArgs[0]
+                        === applicationFrame.ownerRequest,
+                    applicationFrame.executionArgs[1]
+                        === exactFirstResult,
+                    orderedFrame.executionArgs[0]
+                        === orderedBaseReceipt.canonicalResult,
+                    orderedFrame.executionArgs[1]
+                        === orderedFrame.ownerRequest,
+                    lateFrame.executionArgs[0]
+                        === lateFrame.ownerRequest,
+                    lateFrame.ownerRequest?.sourceApplicationFrame
+                        === lateFrame.outerVncApplicationFrame,
+                ],
+                additionalResult: [
+                    additionalResultFrame.bindingStatus,
+                    additionalResultFrame.authorizationStatus,
+                    additionalResultFrame.requiredResultRoles,
+                    additionalResultFrame.executionArgs.length,
+                    ctx.isClassicalNahuatlVncContinuationBindingFrame(
+                        additionalResultFrame
+                    ),
+                ],
+                hostile: [
+                    copiedSourceFrame.bindingStatus,
+                    copiedSourceFrame.ownerRejectionProven,
+                    ctx.isClassicalNahuatlVncContinuationBindingFrame(
+                        copiedSourceFrame
+                    ),
+                    ctx.isClassicalNahuatlVncContinuationBindingFrame({
+                        ...applicationFrame,
+                    }),
+                ],
+            };
+        })(),
+        {
+            api: [
+                "classical-nahuatl-vnc-continuation-binding-frame",
+                [
+                    "vnc:application",
+                    "vnc:ordered-voice-application",
+                    "vnc:derivational-operation",
+                ],
+                [
+                    "ready",
+                    "choices-required",
+                    "additional-result-required",
+                    "rejected",
+                ],
+                "function",
+                "function",
+            ],
+            initial: [
+                {
+                    status: "choices-required",
+                    authorization: "authorized",
+                    choices: [
+                        "subject",
+                        "mood",
+                        "tense",
+                        "requestedDerivation",
+                        "requestedVoice",
+                    ],
+                    roles: [],
+                    exact: true,
+                    executionArgs: 0,
+                    valid: true,
+                },
+                {
+                    status: "choices-required",
+                    authorization: "authorized",
+                    choices: ["operations"],
+                    roles: [],
+                    exact: true,
+                    executionArgs: 0,
+                    valid: true,
+                },
+                {
+                    status: "choices-required",
+                    authorization: "authorized",
+                    choices: ["lateOperation"],
+                    roles: [],
+                    exact: true,
+                    executionArgs: 0,
+                    valid: true,
+                },
+            ],
+            ready: [
+                {
+                    status: "ready",
+                    authorization: "authorized",
+                    preflight: true,
+                    exact: true,
+                    executionArgs: 2,
+                    valid: true,
+                },
+                {
+                    status: "ready",
+                    authorization: "authorized",
+                    preflight: true,
+                    exact: true,
+                    executionArgs: 2,
+                    valid: true,
+                },
+                {
+                    status: "ready",
+                    authorization: "authorized",
+                    preflight: true,
+                    exact: true,
+                    executionArgs: 1,
+                    valid: true,
+                },
+            ],
+            recapture: ["caquī-tiā", "caquī-tiā", true, true],
+            executionIdentities: [true, true, true, true, true, true],
+            additionalResult: [
+                "additional-result-required",
+                "authorized",
+                ["attitude-source-closure"],
+                0,
+                true,
+            ],
+            hostile: ["rejected", true, true, false],
+        }
+    );
+
     const otherService = ctx.createClassicalNahuatlVncApplication(ctx);
     const otherFirst = buildFirstCaquiCausative(otherService);
     const exactExplicitObjects = service.continueFromResult(
@@ -719,13 +975,13 @@ function run(ctx = {}) {
             depth: 2,
             linear: true,
             exactIdentities: [true, true, true, true, true],
-            evidence: "exact-instance-continuation",
-            exactSlot: true,
-            ownerProjection: true,
-            topologyCompatibility: false,
+            evidence: "topology-owner-proof",
+            exactSlot: false,
+            ownerProjection: false,
+            topologyCompatibility: true,
             compatibilityAuthority: false,
-            ownerProofObservationCount: 0,
-            globalExactEdgeCount: 0,
+            ownerProofObservationCount: 1,
+            globalExactEdgeCount: 1,
         }
     );
 

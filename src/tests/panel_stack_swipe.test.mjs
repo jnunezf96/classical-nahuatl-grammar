@@ -79,7 +79,7 @@ const runtime = {
     querySelector: (selector) => selector.startsWith(".panel-grid") ? root : stack,
   },
   window: {
-    innerWidth: 390,
+    innerWidth: 800,
     matchMedia: () => ({ matches: false }),
     getComputedStyle: () => ({ overflowX: "visible" }),
   },
@@ -114,5 +114,28 @@ listeners.get("pointercancel")();
 assert.equal(classes.has("is-panel-stack-swiping"), false);
 assert.equal(classes.has("is-panel-stack-snapping-back"), true);
 assert.equal(styles.get("--panel-stack-drag-x"), "0px");
+
+runtime.window.innerWidth = 390;
+runtime.window.matchMedia = query => ({
+  matches: query === "(max-width: 720px)",
+});
+classes.clear();
+let mobilePrevented = false;
+listeners.get("pointerdown")({
+  pointerType: "touch",
+  isPrimary: true,
+  pointerId: 2,
+  clientX: 260,
+  clientY: 200,
+  target,
+});
+listeners.get("pointermove")({
+  pointerId: 2,
+  clientX: 140,
+  clientY: 204,
+  preventDefault: () => { mobilePrevented = true; },
+});
+assert.equal(mobilePrevented, false);
+assert.equal(classes.has("is-panel-stack-swiping"), false);
 
 console.log("Panel stack swipe tests passed.");

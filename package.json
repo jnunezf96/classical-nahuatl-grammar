@@ -1,0 +1,9 @@
+{
+  "name": "classical-nahuatl-grammar-web",
+  "version": "1.1.0",
+  "private": true,
+  "scripts": {
+    "build:release": "node scripts/build_grammar_os_release.mjs",
+    "verify:launch": "node scripts/verify_launch_readiness.mjs"
+  }
+}

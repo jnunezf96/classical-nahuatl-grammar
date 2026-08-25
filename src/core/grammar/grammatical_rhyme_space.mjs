@@ -30,6 +30,13 @@ const LESSON_ROTATION_MOVEMENTS = Object.freeze({
   R: "reading-analysis",
   P: "composition",
 });
+const EXACT_NESTED_CARRIER_DIRECT_PROJECTION_CONTRACTS = Object.freeze([
+  Object.freeze({
+    sourceUnitKind: "vnc-result",
+    nestedCarrierUnitKind: "vnc-diagram-slot-frame",
+    consumerOperationId: "vnc:diagram",
+  }),
+]);
 
 function text(value) {
   return String(value == null ? "" : value).trim();
@@ -45,6 +52,11 @@ function normalizedList(values = []) {
 
 function continuationFamilyUnitKind(unitKind = "") {
   const normalized = text(unitKind);
+  if (
+    normalized === "vnc-diagram-slot-frame"
+  ) {
+    return "vnc-result";
+  }
   if (
     normalized === "nnc-diagram-slot-frame"
     || normalized === "nnc-sentence-slot-frame"
@@ -1136,30 +1148,31 @@ export function buildClassicalGrammaticalRhymeTopologyFrame({
       const sharedUnitKinds = producerSignature.emittedUnitKinds.filter(
         unitKind => consumerSignature.requiredUnitKinds.includes(unitKind),
       );
-      if (!sharedUnitKinds.length) return;
-      const absenceConflicts = producerSignature.adds.filter(factId => (
-        consumerSignature.requiresAbsent.includes(factId)
-      ));
-      insideOutEdges.push(Object.freeze({
-        kind: "classical-grammatical-rhyme-inside-out-edge",
-        version: RHYME_SPACE_VERSION,
-        innerOperationId: producer.emptyPin.operationId,
-        outerOperationId: consumer.emptyPin.operationId,
-        sharedUnitKinds: Object.freeze(sharedUnitKinds),
-        sharedAxisIds: Object.freeze(
-          producer.emptyPin.requiredAxisIds.filter(axisId => (
-            consumer.emptyPin.requiredAxisIds.includes(axisId)
-          )),
-        ),
-        absenceConflicts: Object.freeze(absenceConflicts),
-        compatibilityStatus: absenceConflicts.length
-          ? "owner-review-required"
-          : "typed-boundary-aligned-owner-proof-required",
-        candidateOnlyUntilConsumerOwnerAuthorizesExactResult: true,
-        exactOwnerValidationRequired: true,
-        localHistoriesRemainDistinct: true,
-        grammarAuthority: false,
-      }));
+      if (sharedUnitKinds.length) {
+        const absenceConflicts = producerSignature.adds.filter(factId => (
+          consumerSignature.requiresAbsent.includes(factId)
+        ));
+        insideOutEdges.push(Object.freeze({
+          kind: "classical-grammatical-rhyme-inside-out-edge",
+          version: RHYME_SPACE_VERSION,
+          innerOperationId: producer.emptyPin.operationId,
+          outerOperationId: consumer.emptyPin.operationId,
+          sharedUnitKinds: Object.freeze(sharedUnitKinds),
+          sharedAxisIds: Object.freeze(
+            producer.emptyPin.requiredAxisIds.filter(axisId => (
+              consumer.emptyPin.requiredAxisIds.includes(axisId)
+            )),
+          ),
+          absenceConflicts: Object.freeze(absenceConflicts),
+          compatibilityStatus: absenceConflicts.length
+            ? "owner-review-required"
+            : "typed-boundary-aligned-owner-proof-required",
+          candidateOnlyUntilConsumerOwnerAuthorizesExactResult: true,
+          exactOwnerValidationRequired: true,
+          localHistoriesRemainDistinct: true,
+          grammarAuthority: false,
+        }));
+      }
       const exactSharedUnitKinds = producerSignature
         .exactContinuationOutputUnitKinds.filter(unitKind => (
           consumerSignature.exactContinuationInputUnitKinds.includes(
@@ -1188,6 +1201,50 @@ export function buildClassicalGrammaticalRhymeTopologyFrame({
       }
     });
   });
+  const exactNestedCarrierProjectionEdges = Object.freeze(
+    EXACT_NESTED_CARRIER_DIRECT_PROJECTION_CONTRACTS.flatMap(contract => {
+      const consumer = planes.find(plane => (
+        plane.emptyPin.operationId === contract.consumerOperationId
+        && plane.compatibilitySignature
+          .exactContinuationInputUnitKinds.includes(
+            contract.nestedCarrierUnitKind,
+          )
+      ));
+      if (!consumer) return [];
+      return planes.flatMap(producer => {
+        if (
+          producer === consumer
+          || !producer.compatibilitySignature
+            .exactContinuationOutputUnitKinds.includes(
+              contract.sourceUnitKind,
+            )
+        ) {
+          return [];
+        }
+        return [Object.freeze({
+          kind:
+            "classical-grammatical-rhyme-exact-nested-carrier-projection-edge",
+          version: RHYME_SPACE_VERSION,
+          innerOperationId: producer.emptyPin.operationId,
+          outerOperationId: consumer.emptyPin.operationId,
+          sourceUnitKind: contract.sourceUnitKind,
+          nestedCarrierUnitKind: contract.nestedCarrierUnitKind,
+          sharedFamilyUnitKinds: normalizedList([
+            continuationFamilyUnitKind(contract.sourceUnitKind),
+            continuationFamilyUnitKind(contract.nestedCarrierUnitKind),
+          ]),
+          projectionMode:
+            "exact-owner-issued-nested-carrier-direct-projection",
+          candidateOnlyUntilExactNestedCarrierObserved: true,
+          candidateOnlyUntilConsumerOwnerAuthorizesExactResult: true,
+          exactNestedCarrierIdentityRequired: true,
+          exactOwnerValidationRequired: true,
+          localHistoriesRemainDistinct: true,
+          grammarAuthority: false,
+        })];
+      });
+    }),
+  );
   const movementGroups = new Map();
   planes.forEach(plane => {
     const id = plane.compatibilitySignature.movementCoordinateId;
@@ -1231,6 +1288,9 @@ export function buildClassicalGrammaticalRhymeTopologyFrame({
     insideOutEdges: Object.freeze(insideOutEdges),
     exactContinuationEdges: Object.freeze(exactContinuationEdges),
     exactContinuationEdgeCount: exactContinuationEdges.length,
+    exactNestedCarrierProjectionEdges,
+    exactNestedCarrierProjectionEdgeCount:
+      exactNestedCarrierProjectionEdges.length,
     superpositionClasses,
     collapsedBoundarySeamCount: boundarySeams.filter(
       seam => seam.collapsed,

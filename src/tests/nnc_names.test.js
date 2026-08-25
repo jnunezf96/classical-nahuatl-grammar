@@ -57,6 +57,133 @@ function run(ctx) {
         Array(12).fill("function")
     );
 
+    const exactNncSource =
+        ctx.buildClassicalNahuatlOrdinaryNncSourceFrame({
+            stem: "xōchi",
+            sourceClass: "zero",
+        });
+    const exactNncOperation =
+        ctx.buildClassicalNahuatlOrdinaryNncOperationFrame(
+            exactNncSource,
+            { state: "absolutive", subject: "3sg" },
+        );
+    const exactNncResult = ctx.requestClassicalOrdinaryNncResult(
+        exactNncSource,
+        exactNncOperation,
+    );
+    const exactNncName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactNncResult,
+        outerSubject: "2sg",
+    });
+    const exactVncApplication =
+        ctx.evaluateClassicalNahuatlVncApplication({
+            sourceStem: "temō",
+            verbClass: "A",
+            sourceValence: "intransitive",
+            subject: "3sg",
+            mood: "indicative",
+            tense: "preterit",
+            requestedDerivation: "direct",
+            requestedVoice: "active",
+        });
+    const exactVncResult = exactVncApplication.resultFrame;
+    const exactVncName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactVncResult,
+        sourceFamily: "preterit-agentive",
+        outerSubject: "3sg",
+    });
+    const exactClauseResult =
+        ctx.buildClassicalNahuatlVncSentenceResultFrame(
+            exactVncApplication,
+        );
+    const exactClauseName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactClauseResult,
+        sourceFamily: "preterit-agentive",
+        outerSubject: "1sg",
+    });
+    const unresolvedVncFamily = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactVncResult,
+        outerSubject: "3sg",
+    });
+    const copiedExactName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: { ...exactNncResult },
+        outerSubject: "2sg",
+    });
+    const stringExactName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: "xōchi",
+        outerSubject: "2sg",
+    });
+    const mixedExactName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactNncResult,
+        sourceFrame: buildSource(ctx, "absolutive-state-nnc"),
+        outerSubject: "2sg",
+    });
+    s.eq("personal-name formation consumes exact NNC, VNC, and clause Results", {
+        nnc: [
+            exactNncName.authorizationStatus,
+            ctx.isPersonalNameNncResult(exactNncName),
+            exactNncName.sourceInputMode,
+            exactNncName.canonicalSourceResult === exactNncResult,
+            exactNncName.exactSourceResolution?.selectedSourceFamily,
+            exactNncName.exactSourceResultIdentityPreserved,
+        ],
+        vnc: [
+            exactVncName.authorizationStatus,
+            ctx.isPersonalNameNncResult(exactVncName),
+            exactVncName.canonicalSourceResult === exactVncResult,
+            exactVncName.exactSourceResolution?.sourceUnitKind,
+        ],
+        clause: [
+            exactClauseName.authorizationStatus,
+            ctx.isPersonalNameNncResult(exactClauseName),
+            exactClauseName.canonicalSourceResult === exactClauseResult,
+            exactClauseName.exactSourceResolution?.sourceUnitKind,
+        ],
+        unresolved: [
+            unresolvedVncFamily.authorizationStatus,
+            unresolvedVncFamily.blockReason,
+        ],
+        copied: [
+            copiedExactName.authorizationStatus,
+            copiedExactName.blockReason,
+        ],
+        string: [
+            stringExactName.authorizationStatus,
+            stringExactName.blockReason,
+        ],
+        mixed: [
+            mixedExactName.authorizationStatus,
+            mixedExactName.blockReason,
+        ],
+    }, {
+        nnc: [
+            "authorized",
+            true,
+            "exact-owner-issued-vnc-nnc-or-clause-result",
+            true,
+            "absolutive-state-nnc",
+            true,
+        ],
+        vnc: ["authorized", true, true, "vnc-result"],
+        clause: ["authorized", true, true, "clause-result"],
+        unresolved: [
+            "blocked",
+            "personal-name-exact-source-choice-required:source-family",
+        ],
+        copied: [
+            "blocked",
+            "exact-owner-issued-vnc-nnc-or-clause-result-required",
+        ],
+        string: [
+            "blocked",
+            "exact-owner-issued-vnc-nnc-or-clause-result-required",
+        ],
+        mixed: [
+            "blocked",
+            "canonical-source-result-and-raw-source-are-mutually-exclusive",
+        ],
+    });
+
     const canvasPath = path.resolve(__dirname, "../../ANDREWS_TRANSCRIPTION_CANVAS.md");
     const sourceAudit = auditClassicalNahuatlLesson56Canvas(fs.readFileSync(canvasPath, "utf8"));
     s.eq(

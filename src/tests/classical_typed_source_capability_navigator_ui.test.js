@@ -116,7 +116,7 @@ function run(ctx = {}) {
         [
             [ordinaryNavigator, ordinarySource, "nnc:ordinary"],
             [pronominalNavigator, pronominalSource, "nnc:pronominal"],
-            [vncNavigator, vncSource, "vnc:derivational-operation"],
+            [vncNavigator, vncSource, "vnc:application"],
         ].map(([navigator, source, operationId]) => ({
             valid:
                 ctx.isClassicalGrammarApplicationCapabilityNavigator(
@@ -159,6 +159,45 @@ function run(ctx = {}) {
         ]
     );
 
+    s.eq(
+        "typed Source choices stay with the same operation that the current owner Result actually contains",
+        [
+            [vnc, vncNavigator, "vnc:application"],
+            [ordinaryNnc, ordinaryNavigator, "nnc:ordinary"],
+        ].map(([surface, navigator, operationId]) => {
+            const operation = navigator?.operations?.find(
+                candidate => candidate.operationId === operationId
+            );
+            const ownerProjection =
+                ctx.getClassicalSgrOwnerIssuedProjection(surface);
+            const layerGraph =
+                ctx.getClassicalGrammarApplicationLayerGraph(
+                    ownerProjection?.applicationResult
+                );
+            return {
+                ownerChoicesRequired:
+                    operation?.ownerChoicesRequired === true,
+                ownerPreflightValidated:
+                    operation?.ownerPreflightFrameValidated === true,
+                exactOperationApplied: layerGraph?.nodes?.some(
+                    node => node.operationId === operationId
+                ) === true,
+            };
+        }),
+        [
+            {
+                ownerChoicesRequired: true,
+                ownerPreflightValidated: true,
+                exactOperationApplied: true,
+            },
+            {
+                ownerChoicesRequired: true,
+                ownerPreflightValidated: true,
+                exactOperationApplied: true,
+            },
+        ]
+    );
+
     const navigatorRoot = ctx.document.getElementById(
         "classical-capability-navigator"
     );
@@ -176,12 +215,26 @@ function run(ctx = {}) {
                 || "",
     };
     const syncedVnc = ctx.syncClassicalCapabilityNavigator(vnc);
+    const retainedVnc = ctx.syncClassicalCapabilityNavigator(null);
+    const navigatorControl = ctx.document.getElementById(
+        "classical-capability-navigator-operation"
+    );
+    navigatorControl.dispatchEvent(new ctx.Event("click", { bubbles: true }));
+    const retainedAfterNavigatorClick =
+        ctx.getClassicalCapabilityNavigatorFrame(null);
     s.eq(
-        "normal rerendering replaces the current Source observation without enabling Result-continuation mutation",
+        "normal rendering, presentation refresh, and a native navigator click preserve the exact current Source without enabling Result-continuation mutation",
         {
             ordinary: ordinaryPresentation,
             vnc: {
                 exactIdentity: syncedVnc?.exactSource === vncSource,
+                presentationRefreshIdentity:
+                    retainedVnc === syncedVnc,
+                nativeClickIdentity:
+                    retainedAfterNavigatorClick === syncedVnc,
+                navigatorDisabled: ctx.document.getElementById(
+                    "classical-capability-navigator-operation"
+                ).disabled,
                 role: navigatorRoot.dataset.classicalCapabilitySourceRole,
                 units:
                     navigatorRoot.dataset.classicalCapabilitySourceUnitKinds,
@@ -202,11 +255,66 @@ function run(ctx = {}) {
             },
             vnc: {
                 exactIdentity: true,
+                presentationRefreshIdentity: true,
+                nativeClickIdentity: true,
+                navigatorDisabled: false,
                 role: "exact-owner-issued-source",
                 units: "vnc-derivational-machinery-source",
                 status: "owner-checked",
                 continuationMutationEnabled: "",
             },
+        }
+    );
+
+    const incompleteRestore = ctx.applyEntradaUrlStateSnapshot(
+        ctx.normalizeEntradaUrlStateSnapshot({
+            input: "",
+            presentFields: ["input"],
+        }),
+        { triggerGenerate: false }
+    );
+    s.eq(
+        "restoring an incomplete Source clears the old exact ahci navigator before controls mutate",
+        {
+            restored: incompleteRestore,
+            retainedNavigator:
+                ctx.getClassicalCapabilityNavigatorFrame(null),
+            status:
+                navigatorRoot.dataset
+                    .classicalCapabilityNavigatorStatus || "",
+            clearReason:
+                navigatorRoot.dataset
+                    .classicalCapabilitySourceClearReason || "",
+            disabled: navigatorControl.disabled,
+        },
+        {
+            restored: true,
+            retainedNavigator: null,
+            status: "waiting",
+            clearReason: "url-or-restored-state-transaction",
+            disabled: true,
+        }
+    );
+    ctx.syncClassicalCapabilityNavigator(vnc);
+
+    const navigatorSelect = ctx.document.getElementById(
+        "classical-capability-navigator-operation"
+    );
+    navigatorSelect.value = "vnc:application";
+    navigatorSelect.dispatchEvent(new ctx.Event("change", { bubbles: true }));
+    ctx.syncClassicalCapabilityNavigator(unresolvedNnc);
+    ctx.syncClassicalCapabilityNavigator(vnc);
+    const retainedVncSelection = navigatorSelect.value;
+    ctx.syncClassicalCapabilityNavigator(ordinaryNnc);
+    s.eq(
+        "a typed Source pathway survives a transient waiting rerender but not a genuine Source-kind change",
+        {
+            afterWaitingRerender: retainedVncSelection,
+            afterSourceKindChange: navigatorSelect.value,
+        },
+        {
+            afterWaitingRerender: "vnc:application",
+            afterSourceKindChange: "",
         }
     );
 
@@ -247,6 +355,10 @@ function run(ctx = {}) {
         selectionStart
     );
     const selection = rendering.slice(selectionStart, selectionEnd);
+    const sourceApplyStart = selection.indexOf(
+        "function applyClassicalCapabilityNavigatorSelection"
+    );
+    const sourceApply = selection.slice(sourceApplyStart);
     s.ok(
         "continued Result, current Source, and Result preview have one explicit precedence order",
         precedence.indexOf("continuedExactResult")
@@ -254,20 +366,57 @@ function run(ctx = {}) {
             && precedence.indexOf("currentExactTypedSource")
                 < precedence.indexOf("visibleResultPreview")
     );
+    const sourceModeApplyEnd = sourceApply.indexOf(
+        "sourceExecutionReadiness\n        && sourceExecutionReadiness.executable !== true"
+    );
+    const sourceModeApply = sourceApply.slice(0, sourceModeApplyEnd);
     s.ok(
-        "Source-mode pathway selection remains a read-only owner check",
+        "Source-mode selection stages owner choices and Apply executes only the exact ready binding",
         selection.includes(
             '?.inputRole === "exact-owner-issued-source"'
         )
-            && selection.indexOf(
-                "if (!ActiveClassicalGrammarResultSourceCapture)"
-            ) < selection.indexOf(
-                'getElementById(\n        "classical-construction-operation"'
-            )
             && selection.includes(
-                "This Source pathway is a read-only owner check."
+                "stageClassicalGrammarTypedSourceOperationBinding(operationId);"
             )
+            && rendering.includes(
+                "function getClassicalSourceCapabilityOperationExecutionReadiness"
+            )
+            && rendering.includes(
+                "binding?.navigator === navigator"
+            )
+            && rendering.includes(
+                "binding.operation === operation"
+            )
+            && rendering.includes(
+                "binding.exactSource === exactSource"
+            )
+            && rendering.includes(
+                'binding.bindingStatus === "ready"'
+            )
+            && rendering.includes(
+                '"classical-capability-operation-choices"'
+            )
+            && rendering.includes(
+                "executeClassicalGrammarTypedSourceOperationBindingFrame?.("
+            )
+            && rendering.includes(
+                "renderClassicalTypedSourceCapabilityApplicationResult("
+            )
+            && rendering.includes(
+                "applyClassicalCapabilityNavigatorSelection(select);"
+            )
+            && rendering.includes(
+                "navigate: true,\n            execute: false"
+            )
+            && sourceModeApply.includes(
+                "sourceExecutionReadiness?.executable"
+            )
+            && !sourceModeApply.includes(
+                ".refreshClassicalRuleLogicSurfaceFromControl?.()"
+            )
+            && !sourceModeApply.includes("exactOperationApplied")
     );
+
     s.ok(
         "both text edits and select changes invalidate a continued Result before normal rerendering captures the new Source",
         rendering.includes(
@@ -278,6 +427,52 @@ function run(ctx = {}) {
             )
             && rendering.includes(
                 "syncClassicalCapabilityNavigator(surfaceFrame);"
+            )
+            && rendering.includes(
+                '"#verb-entry-clear, button[data-classical-basal-unit]"'
+            )
+            && !rendering.includes(
+                '"#verb-entry-clear, [data-classical-basal-unit]"'
+            )
+    );
+
+    const surfaceSyncStart = rendering.indexOf(
+        "function syncClassicalSourceGrammarResultSurface"
+    );
+    const surfaceSyncEnd = rendering.indexOf(
+        "function getClassicalTranscriptionOwnerSegmentTokens",
+        surfaceSyncStart
+    );
+    const surfaceSync = rendering.slice(surfaceSyncStart, surfaceSyncEnd);
+    const summaryStart = rendering.indexOf(
+        "function syncClassicalCompositionPathSummary"
+    );
+    const summaryEnd = rendering.indexOf(
+        "function syncClassicalAppliedGrammar",
+        summaryStart
+    );
+    const summary = rendering.slice(
+        summaryStart,
+        summaryEnd > summaryStart ? summaryEnd : surfaceSyncStart
+    );
+    const events = fs.readFileSync(
+        path.join(ROOT, "src", "ui", "events", "events.mjs"),
+        "utf8"
+    );
+    s.ok(
+        "startup and every exact surface commit hydrate the navigator independently of the optional path summary",
+        surfaceSync.indexOf("syncClassicalCapabilityNavigator(surfaceFrame);")
+            < surfaceSync.indexOf(
+                "syncClassicalCompositionPathSummary(surfaceFrame, resultRoot);"
+            )
+            && !summary.includes(
+                "syncClassicalCapabilityNavigator(surfaceFrame);"
+            )
+            && events.includes(
+                "targetObject.syncClassicalCapabilityNavigator?.("
+            )
+            && events.includes(
+                "targetObject.getActiveClassicalRuleLogicSurfaceFrame?.() || null"
             )
     );
 

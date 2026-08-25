@@ -952,6 +952,10 @@ export async function loadAndInstallClassicalGrammaticalAtlas({
       import.meta.url,
     );
     adapterUrl.searchParams.set("v", version);
+    adapterUrl.searchParams.set(
+      "cache",
+      "20260825-launch-ready-293",
+    );
     if (adapterLoadState.attempt > 1) {
       adapterUrl.searchParams.set(
         "retry",

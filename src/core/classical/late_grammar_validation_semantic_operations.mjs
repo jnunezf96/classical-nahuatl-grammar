@@ -1,10 +1,10 @@
 // Non-authorizing validation projection for the independent semantic owners in
 // Lessons 57-58. The projection shares typed construction mechanics only.
 
-import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260824-universal-capability-navigator-280";
+import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260825-launch-ready-293";
 import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs";
 import { createClassicalNahuatlSupplementationApi } from "../sentence/supplementation.mjs";
-import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs";
+import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs?v=20260825-launch-ready-293";
 import { installClassicalNahuatlNominalConstructionGlobals } from "./nominal_construction.mjs";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();

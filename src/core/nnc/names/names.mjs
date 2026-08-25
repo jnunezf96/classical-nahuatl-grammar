@@ -12,6 +12,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const issuedResults = new WeakSet();
   const issuedSentenceResults = new WeakSet();
   const issuedPlans = new WeakSet();
+  const issuedExactSourceResolutions = new WeakSet();
 
   const freeze = value => {
     if (Array.isArray(value)) return Object.freeze(value.map(freeze));
@@ -542,6 +543,413 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     );
   }
 
+  function hasPersonalNameExactSourceResultField(request = {}) {
+    return Boolean(
+      request
+      && typeof request === "object"
+      && Object.prototype.hasOwnProperty.call(
+        request,
+        "canonicalSourceResult",
+      )
+    );
+  }
+
+  function getPersonalNameExactRawSourceField(request = {}) {
+    if (!request || typeof request !== "object") return "";
+    return [
+      "sourceFrame",
+      "source",
+      "clauses",
+      "predicateMorphs",
+      "stem",
+      "clauseKind",
+    ].find(field => (
+      Object.prototype.hasOwnProperty.call(request, field)
+      && request[field] !== undefined
+      && request[field] !== null
+      && request[field] !== ""
+    )) || "";
+  }
+
+  function getPersonalNameExactNncSlotFrame(result = null) {
+    if (
+      typeof targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+        === "function"
+      && targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+        result,
+      )
+    ) {
+      return result.sourceNncSlotFrame || null;
+    }
+    return [
+      result?.typedSlotFrame,
+      result?.nncSlotFrame,
+      result?.canonicalResult?.nncSlotFrame,
+      result?.canonicalResult?.typedSlotFrame,
+      result?.resultFrame?.typedSlotFrame,
+    ].find(frame => (
+      typeof targetObject.isClassicalNahuatlNncSlotFrame === "function"
+      && targetObject.isClassicalNahuatlNncSlotFrame(frame)
+    )) || null;
+  }
+
+  function getPersonalNameExactVncSource(result = null) {
+    return (
+      typeof targetObject.isClassicalNahuatlVncSentenceResultFrame
+        === "function"
+      && targetObject.isClassicalNahuatlVncSentenceResultFrame(result)
+    )
+      ? result.canonicalSourceFrame || result.canonicalResultFrame || null
+      : result;
+  }
+
+  function getPersonalNameExactVncSlotFrame(result = null) {
+    const source = getPersonalNameExactVncSource(result);
+    return [
+      source?.finalTypedVncSlotFrame,
+      source?.targetTypedVncSlotFrame,
+      source?.selectedMachineryFrame?.finalTypedVncSlotFrame,
+      source?.selectedMachineryFrame?.targetTypedVncSlotFrame,
+      source?.resultFrame?.finalTypedVncSlotFrame,
+      source?.resultFrame?.targetTypedVncSlotFrame,
+      source?.resultFrame?.selectedMachineryFrame?.finalTypedVncSlotFrame,
+      source?.resultFrame?.selectedMachineryFrame?.targetTypedVncSlotFrame,
+      source?.proofFrame?.conclusion?.finalTypedVncSlotFrame,
+      source?.proofFrame?.conclusion?.finalBoundaryRealizationFrame
+        ?.typedSlotFrame,
+      source?.resultFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame,
+      source?.resultFrame?.proofFrame?.conclusion
+        ?.finalBoundaryRealizationFrame?.typedSlotFrame,
+    ].find(frame => (
+      typeof targetObject.isClassicalNahuatlVncSlotFrame === "function"
+      && targetObject.isClassicalNahuatlVncSlotFrame(frame)
+    )) || null;
+  }
+
+  function isPersonalNameExactNncResult(result = null) {
+    return [
+      "isClassicalNahuatlOrdinaryNncResult",
+      "isClassicalNahuatlPronominalNncResult",
+      "isClassicalNahuatlNominalConstructionResult",
+      "isClassicalNahuatlDeverbalNncGrammarFrame",
+      "isClassicalNahuatlRelationalResult",
+      "isClassicalNahuatlAdverbialNuclearResult",
+      "isClassicalNahuatlIssuedNncSentenceSurfaceFrame",
+    ].some(name => (
+      typeof targetObject[name] === "function"
+      && targetObject[name](result) === true
+    ));
+  }
+
+  function isPersonalNameExactVncResult(result = null) {
+    const exactApplicationCapture = (
+      typeof targetObject.captureClassicalGrammarApplicationResult
+        === "function"
+      && typeof targetObject.isClassicalGrammarApplicationResultCapture
+        === "function"
+    )
+      ? targetObject.captureClassicalGrammarApplicationResult(
+        result,
+        "personal-name-exact-vnc-source",
+      )
+      : null;
+    const applicationExact = Boolean(
+      exactApplicationCapture
+      && targetObject.isClassicalGrammarApplicationResultCapture(
+        exactApplicationCapture,
+        "personal-name-exact-vnc-source",
+      )
+      && exactApplicationCapture.canonicalResult === result
+    );
+    return applicationExact || [
+      "isClassicalNahuatlVncApplicationIssuedResultFrame",
+      "isClassicalNahuatlOrderedVoiceVncApplicationFrame",
+      "isClassicalNahuatlClosureFrame",
+      "isClassicalNahuatlDenominalVncResultFrame",
+      "isClassicalNahuatlVncSentenceResultFrame",
+    ].some(name => (
+      typeof targetObject[name] === "function"
+      && targetObject[name](result) === true
+    ));
+  }
+
+  function getPersonalNameExactVncFeature(result = null, fields = []) {
+    const source = getPersonalNameExactVncSource(result);
+    const frames = [
+      source,
+      source?.normalizedRequest,
+      source?.operationFrame,
+      source?.resultFrame,
+      source?.resultFrame?.normalizedRequest,
+      source?.selectedMachineryFrame,
+      source?.selectedMachineryFrame?.lesson11ParadigmPlan,
+      source?.selectedMachineryFrame?.proofFrame?.conclusion,
+      source?.resultFrame?.selectedMachineryFrame,
+      source?.resultFrame?.selectedMachineryFrame?.lesson11ParadigmPlan,
+      source?.resultFrame?.selectedMachineryFrame?.proofFrame?.conclusion,
+      source?.proofFrame?.conclusion,
+      source?.proofFrame?.conclusion?.lesson11ParadigmPlan,
+      source?.resultFrame?.proofFrame?.conclusion,
+      source?.resultFrame?.proofFrame?.conclusion?.lesson11ParadigmPlan,
+    ].filter(Boolean);
+    for (const frame of frames) {
+      for (const field of fields) {
+        if (
+          frame[field] !== undefined
+          && frame[field] !== null
+          && frame[field] !== ""
+        ) return key(frame[field]);
+      }
+    }
+    return "";
+  }
+
+  function getPersonalNameExactSourceFamilyIds({
+    result = null,
+    sourceType = "",
+    slotFrame = null,
+  } = {}) {
+    if (sourceType === "nnc") {
+      const nominalization = key(
+        result?.operationFrame?.nominalizationKind
+        || result?.nominalizationKind
+        || "",
+      );
+      const nominalizationFamily = ({
+        "preterit-agentive": "preterit-agentive",
+        "preterit-as-present-agentive":
+          "preterit-as-present-agentive",
+        "present-agentive": "present-agentive",
+        "customary-present-agentive": "customary-present-agentive",
+        "past-agentive": "purposive-past-agentive",
+        "preterit-patientive": "passive-preterit-patientive",
+      })[nominalization] || "";
+      if (nominalizationFamily) return [nominalizationFamily];
+      return slotFrame?.slots?.state?.arity === "vacant"
+        ? ["absolutive-state-nnc"]
+        : ["possessive-state-nnc"];
+    }
+    const voice = getPersonalNameExactVncFeature(result, [
+      "selectedVoiceOperation",
+      "sourceVoice",
+      "selectedVoice",
+      "requestedVoice",
+      "voice",
+    ]);
+    const tense = getPersonalNameExactVncFeature(result, [
+      "semanticTenseValue",
+      "requestedSemanticTense",
+      "tense",
+    ]);
+    const mood = getPersonalNameExactVncFeature(result, [
+      "requestedSemanticMood",
+      "semanticMood",
+      "mood",
+    ]);
+    if (voice.includes("passive")) {
+      return ["passive-preterit-patientive"];
+    }
+    if (voice.includes("impersonal")) {
+      return ["impersonal-preterit-agentive"];
+    }
+    if (voice.includes("purposive") || mood === "purposive") {
+      return ["purposive-past-agentive"];
+    }
+    if (tense === "preterit") {
+      return ["preterit-agentive", "preterit-as-present-agentive"];
+    }
+    if (!tense) {
+      return [
+        "preterit-agentive",
+        "preterit-as-present-agentive",
+        "present-agentive",
+        "customary-present-agentive",
+      ];
+    }
+    return ["present-agentive", "customary-present-agentive"];
+  }
+
+  function buildPersonalNameExactInnerClause(
+    sourceFamily = "",
+    sourceType = "",
+    slotFrame = null,
+  ) {
+    if (!slotFrame) return null;
+    const subject = slotFrame.slots?.subject || {};
+    const number = slotFrame.slots?.number || {};
+    const predicate = slotFrame.slots?.predicate || {};
+    const predicateMorphs = sourceType === "vnc"
+      ? [
+        ...(slotFrame.slots?.prePredicate || []).map(
+          slot => slot?.carrier,
+        ),
+        predicate.stem,
+        predicate.tns,
+      ]
+      : [
+        ...(slotFrame.slots?.participant?.slots || []).map(
+          slot => slot?.carrier,
+        ),
+        ...(slotFrame.slots?.state?.slots || []).map(
+          slot => slot?.carrier,
+        ),
+        predicate.stem,
+      ];
+    return buildPersonalNameInnerClauseFrame({
+      sourceFamily,
+      subjectPrefix: subject.pers1,
+      subjectConnector: subject.pers2,
+      predicateMorphs,
+      numberPrefix: number.num1,
+      numberSuffix: number.num2,
+      subjectReference: "independent-of-outer",
+    });
+  }
+
+  function resolvePersonalNameNncExactSource(request = {}) {
+    const canonicalSourceResult = request?.canonicalSourceResult || null;
+    const rawField = getPersonalNameExactRawSourceField(request);
+    let blockReason = "";
+    let sourceType = "";
+    let sourceUnitKind = "";
+    let slotFrame = null;
+    if (!hasPersonalNameExactSourceResultField(request)) {
+      blockReason = "canonical-source-result-required";
+    } else if (rawField) {
+      blockReason =
+        "canonical-source-result-and-raw-source-are-mutually-exclusive";
+    } else if (isPersonalNameExactNncResult(canonicalSourceResult)) {
+      sourceType = "nnc";
+      sourceUnitKind = (
+        typeof targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+          === "function"
+        && targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+          canonicalSourceResult,
+        )
+      ) ? "clause-result" : "nnc-result";
+      slotFrame = getPersonalNameExactNncSlotFrame(canonicalSourceResult);
+    } else if (isPersonalNameExactVncResult(canonicalSourceResult)) {
+      sourceType = "vnc";
+      sourceUnitKind = (
+        typeof targetObject.isClassicalNahuatlVncSentenceResultFrame
+          === "function"
+        && targetObject.isClassicalNahuatlVncSentenceResultFrame(
+          canonicalSourceResult,
+        )
+      ) ? "clause-result" : "vnc-result";
+      slotFrame = getPersonalNameExactVncSlotFrame(canonicalSourceResult);
+    } else {
+      blockReason = "exact-owner-issued-vnc-nnc-or-clause-result-required";
+    }
+    if (!blockReason && !slotFrame) {
+      blockReason = "exact-source-result-typed-nuclear-slots-unavailable";
+    }
+    const compatibleSourceFamilyIds = !blockReason
+      ? getPersonalNameExactSourceFamilyIds({
+        result: canonicalSourceResult,
+        sourceType,
+        slotFrame,
+      })
+      : [];
+    const selectedSourceFamily = key(request?.sourceFamily);
+    if (
+      !blockReason
+      && selectedSourceFamily
+      && !compatibleSourceFamilyIds.includes(selectedSourceFamily)
+    ) {
+      blockReason =
+        "selected-personal-name-source-family-incompatible-with-exact-result";
+    }
+    const sourceFamily = !blockReason
+      ? selectedSourceFamily
+        || (compatibleSourceFamilyIds.length === 1
+          ? compatibleSourceFamilyIds[0]
+          : "")
+      : "";
+    const innerClauseFrame = sourceFamily
+      ? buildPersonalNameExactInnerClause(
+        sourceFamily,
+        sourceType,
+        slotFrame,
+      )
+      : null;
+    const sourceFrame = innerClauseFrame
+      ? buildPersonalNameNncSourceFrame({
+        sourceFamily,
+        clauses: [innerClauseFrame],
+        modificationAmbiguity:
+          request.modificationAmbiguity || "unambiguous",
+        referentKind: request.referentKind || "person",
+      })
+      : null;
+    if (!blockReason && sourceFamily && !sourceFrame) {
+      blockReason =
+        "exact-source-result-cannot-fill-selected-personal-name-family";
+    }
+    const requiredChoiceIds = !blockReason ? [
+      ...(!sourceFamily ? ["source-family"] : []),
+      ...(!normalizeOuterSubject(request.outerSubject)
+        ? ["outer-subject"]
+        : []),
+    ] : [];
+    const frame = freeze({
+      kind: "classical-nahuatl-personal-name-exact-source-resolution",
+      version: VERSION,
+      authorizationStatus: blockReason ? "blocked" : "authorized",
+      blockReason,
+      readinessStatus: blockReason
+        ? "blocked"
+        : requiredChoiceIds.length
+          ? "needs-choices"
+          : "ready",
+      canonicalSourceResult: blockReason
+        && !canonicalSourceResult?.authorizationStatus
+        ? null
+        : canonicalSourceResult,
+      canonicalTypedSlotFrame: blockReason ? null : slotFrame,
+      sourceType,
+      sourceUnitKind,
+      compatibleSourceFamilyIds,
+      selectedSourceFamily: sourceFamily,
+      requiredChoiceIds,
+      innerClauseFrame: blockReason ? null : innerClauseFrame,
+      sourceFrame: blockReason ? null : sourceFrame,
+      exactSourceResultIdentityPreserved: !blockReason,
+      callerSuppliedSourceStringsAccepted: false,
+      typedFrameAuthority: true,
+      callerSuppliedFormulaAuthority: false,
+      callerSuppliedSurfaceAuthority: false,
+    });
+    issuedExactSourceResolutions.add(frame);
+    return frame;
+  }
+
+  function isPersonalNameNncExactSourceResolution(frame = null) {
+    return Boolean(
+      issuedExactSourceResolutions.has(frame)
+      && frame?.kind
+        === "classical-nahuatl-personal-name-exact-source-resolution"
+      && ["authorized", "blocked"].includes(frame.authorizationStatus)
+      && frame.typedFrameAuthority === true
+      && frame.callerSuppliedFormulaAuthority === false
+      && frame.callerSuppliedSurfaceAuthority === false
+      && (
+        frame.authorizationStatus === "blocked"
+          ? Boolean(frame.blockReason)
+          : frame.exactSourceResultIdentityPreserved === true
+            && Boolean(frame.canonicalSourceResult)
+            && Boolean(frame.canonicalTypedSlotFrame)
+            && (
+              frame.selectedSourceFamily
+                ? isPersonalNameNncSourceFrame(frame.sourceFrame)
+                  && isPersonalNameInnerClauseFrame(frame.innerClauseFrame)
+                : frame.sourceFrame === null
+                  && frame.innerClauseFrame === null
+            )
+      )
+    );
+  }
+
   function buildPersonalNameNncOperationFrame(
     sourceFrame = null,
     selections = {},
@@ -751,7 +1159,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     });
   }
 
-  function realizePersonalNameNncCoordinate(operationFrame = null, outerSubject = "") {
+  function realizePersonalNameNncCoordinate(
+    operationFrame = null,
+    outerSubject = "",
+    exactSourceResolution = null,
+  ) {
     const subject = normalizeOuterSubject(outerSubject);
     if (!issuedOperations.has(operationFrame) || !subject) {
       return makeBlockedPersonalNameResult(
@@ -798,6 +1210,15 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       formulaDerivedFromWritten: false,
       writtenDerivedFromFormula: false,
       coordinateParts,
+      sourceInputMode: exactSourceResolution
+        ? "exact-owner-issued-vnc-nnc-or-clause-result"
+        : "typed-personal-name-source-frame",
+      exactSourceResolution,
+      canonicalSourceResult:
+        exactSourceResolution?.canonicalSourceResult || null,
+      canonicalTypedSlotFrame:
+        exactSourceResolution?.canonicalTypedSlotFrame || null,
+      exactSourceResultIdentityPreserved: Boolean(exactSourceResolution),
       typedSlotFrame: freeze({
         outerSubject: { person: subject, formulaPrefix: formulaSubject[0], connector: formulaSubject[1] },
         downgradedSource: source,
@@ -846,17 +1267,47 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   }
 
   function isPersonalNameNncResult(frame = null) {
+    const exactSourceIdentityValid = frame?.sourceInputMode
+      !== "exact-owner-issued-vnc-nnc-or-clause-result"
+      || Boolean(
+        isPersonalNameNncExactSourceResolution(
+          frame.exactSourceResolution,
+        )
+        && frame.exactSourceResolution.authorizationStatus === "authorized"
+        && frame.exactSourceResolution.sourceFrame
+          === frame.typedSlotFrame?.downgradedSource
+        && frame.canonicalSourceResult
+          === frame.exactSourceResolution.canonicalSourceResult
+        && frame.canonicalTypedSlotFrame
+          === frame.exactSourceResolution.canonicalTypedSlotFrame
+        && frame.exactSourceResultIdentityPreserved === true
+      );
     return Boolean(
       issuedResults.has(frame)
       && frame?.kind === "classical-nahuatl-personal-name-result"
       && frame.authorizationStatus === "authorized"
       && hasValidPersonalNameSelectedLcmProjection(frame)
+      && exactSourceIdentityValid
     );
   }
 
   function evaluatePersonalNameNnc(request = {}) {
+    const exactSourceRequested = hasPersonalNameExactSourceResultField(
+      request,
+    );
+    const exactSourceResolution = exactSourceRequested
+      ? resolvePersonalNameNncExactSource(request)
+      : null;
     const allowedRequest = {
-      sourceFrame: request?.sourceFrame,
+      sourceFrame: exactSourceRequested
+        ? exactSourceResolution?.sourceFrame
+        : request?.sourceFrame,
+      ...(exactSourceRequested ? {
+        canonicalSourceResult: request?.canonicalSourceResult,
+        sourceFamily: request?.sourceFamily,
+        modificationAmbiguity: request?.modificationAmbiguity,
+        referentKind: request?.referentKind,
+      } : {}),
       outerSubject: request?.outerSubject,
       affectiveScope: request?.affectiveScope,
       affectiveMatrix: request?.affectiveMatrix,
@@ -872,6 +1323,22 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
           : `unsupported-request-field:request.${unsupportedField}`,
       );
     }
+    if (
+      exactSourceResolution
+      && exactSourceResolution.authorizationStatus !== "authorized"
+    ) {
+      return makeBlockedPersonalNameResult(
+        exactSourceResolution.blockReason,
+      );
+    }
+    if (
+      exactSourceResolution
+      && exactSourceResolution.requiredChoiceIds.includes("source-family")
+    ) {
+      return makeBlockedPersonalNameResult(
+        "personal-name-exact-source-choice-required:source-family",
+      );
+    }
     const operation = buildPersonalNameNncOperationFrame(
       allowedRequest.sourceFrame,
       {
@@ -879,7 +1346,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
         affectiveMatrix: allowedRequest.affectiveMatrix,
       },
     );
-    return realizePersonalNameNncCoordinate(operation, allowedRequest.outerSubject);
+    return realizePersonalNameNncCoordinate(
+      operation,
+      allowedRequest.outerSubject,
+      exactSourceResolution,
+    );
   }
 
   function preparePersonalNameNncParadigmPlan(request = {}) {
@@ -1133,6 +1604,8 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     isPersonalNameInnerClauseFrame,
     buildPersonalNameNncSourceFrame,
     isPersonalNameNncSourceFrame,
+    resolvePersonalNameNncExactSource,
+    isPersonalNameNncExactSourceResolution,
     buildPersonalNameNncOperationFrame,
     getPersonalNameNncOperationFrameMismatch,
     getPersonalNameNncBlockedDiagnostic,

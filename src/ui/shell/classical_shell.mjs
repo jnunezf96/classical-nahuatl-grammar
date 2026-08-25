@@ -1107,16 +1107,6 @@ ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                             role="status"
                             aria-live="polite"
                           >Waiting for an owner-issued Source or Result.</p>
-                          <dl class="classical-capability-navigator__facts">
-                            <div class="classical-capability-navigator__fact">
-                              <dt>Changes</dt>
-                              <dd data-classical-capability-navigator-changes="true">Waiting</dd>
-                            </div>
-                            <div class="classical-capability-navigator__fact">
-                              <dt>Preserves</dt>
-                              <dd data-classical-capability-navigator-preserves="true">Waiting</dd>
-                            </div>
-                          </dl>
                           <ul
                             class="classical-capability-navigator__pathways"
                             id="classical-capability-navigator-pathways"
@@ -2888,6 +2878,77 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
               </form>
     `;
     }
+    function ClassicalCapabilityOperationPlan() {
+      return `                    <section
+                      class="classical-capability-operation-plan"
+                      id="classical-capability-operation-plan"
+                      data-classical-capability-operation-plan="owner-selected"
+                      data-classical-presentation-only="true"
+                      data-classical-grammar-authority="false"
+                      data-classical-source-authorizes="none"
+                      data-classical-result-authorizes="none"
+                      aria-labelledby="classical-capability-operation-plan-heading"
+                    >
+                      <span
+                        class="classical-rule-control__label classical-capability-operation-plan__heading"
+                        id="classical-capability-operation-plan-heading"
+                      >Operation plan</span>
+                      <label
+                        class="classical-rule-control classical-capability-operation-plan__binding-field"
+                        id="classical-capability-navigator-binding-field"
+                        hidden
+                      >
+                        <span class="classical-rule-control__label">Use this Result as</span>
+                        <select
+                          id="classical-capability-navigator-binding"
+                          data-classical-capability-binding-choice="true"
+                          data-classical-grammar-authority="false"
+                          disabled
+                        >
+                          <option value="" selected>Choose its exact role</option>
+                        </select>
+                      </label>
+                      <p
+                        class="classical-capability-operation-plan__status"
+                        id="classical-capability-operation-plan-status"
+                        data-classical-capability-operation-plan-status="waiting"
+                        data-classical-presentation-only="true"
+                        data-classical-grammar-authority="false"
+                        aria-live="polite"
+                        aria-atomic="true"
+                      >Choose a possible next pathway under Source.</p>
+                      <div
+                        class="classical-capability-operation-plan__choices"
+                        id="classical-capability-operation-choices"
+                        data-classical-capability-operation-choices="owner-projected"
+                        data-classical-presentation-only="true"
+                        data-classical-grammar-authority="false"
+                        hidden
+                      ></div>
+                      <dl class="classical-capability-operation-plan__facts classical-capability-navigator__facts">
+                        <div class="classical-capability-operation-plan__fact">
+                          <dt>Changes</dt>
+                          <dd data-classical-capability-navigator-changes="true">Waiting</dd>
+                        </div>
+                        <div class="classical-capability-operation-plan__fact">
+                          <dt>Preserves</dt>
+                          <dd data-classical-capability-navigator-preserves="true">Waiting</dd>
+                        </div>
+                      </dl>
+                      <div class="classical-capability-operation-plan__actions">
+                        <button
+                          type="button"
+                          id="classical-capability-apply-operation"
+                          data-classical-capability-apply-operation="owner-execution-required"
+                          data-classical-presentation-only="true"
+                          data-classical-grammar-authority="false"
+                          aria-describedby="classical-capability-navigator-status"
+                          disabled
+                        >Apply operation</button>
+                      </div>
+                    </section>
+      `;
+    }
     function ClassicalAuthorityPanel() {
       return `          <section
                 class="panel tense-tabs-panel formula-controls-panel panel-stack-pane"
@@ -3984,6 +4045,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         </select>
                       </label>
                     </div>
+${ClassicalCapabilityOperationPlan()}
                   </section>
                 </div>
                 <div
@@ -4345,23 +4407,30 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const mediaQuery = targetObject.window?.matchMedia?.("(min-width: 1025px)")
         || targetObject.matchMedia?.("(min-width: 1025px)")
         || null;
-      const layout = mediaQuery?.matches ? "expanded" : "compact";
+      const stackedMediaQuery = targetObject.window?.matchMedia?.(
+        "(max-width: 720px)"
+      ) || targetObject.matchMedia?.("(max-width: 720px)") || null;
+      const layout = mediaQuery?.matches
+        ? "expanded"
+        : stackedMediaQuery?.matches
+          ? "stacked"
+          : "compact";
       const navigation = documentObject.querySelector?.(
         "[data-classical-workbench-stage-navigation]"
       ) || null;
       if (navigation) {
-        navigation.hidden = layout === "expanded";
-        navigation.setAttribute("aria-hidden", String(layout === "expanded"));
+        navigation.hidden = layout !== "compact";
+        navigation.setAttribute("aria-hidden", String(layout !== "compact"));
       }
       CLASSICAL_WORKBENCH_STAGE_SEMANTICS.forEach(stage => {
         const pane = documentObject.getElementById(stage.paneId);
         if (!pane) {
           return;
         }
-        pane.setAttribute("role", layout === "expanded" ? "region" : "tabpanel");
+        pane.setAttribute("role", layout === "compact" ? "tabpanel" : "region");
         pane.setAttribute(
           "aria-labelledby",
-          layout === "expanded" ? stage.headingId : stage.tabId
+          layout === "compact" ? stage.tabId : stage.headingId
         );
       });
       const root = documentObject.getElementById("classical-app-root");
@@ -4389,11 +4458,19 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       const mediaQuery = targetObject.window?.matchMedia?.("(min-width: 1025px)")
         || targetObject.matchMedia?.("(min-width: 1025px)")
         || null;
-      if (typeof mediaQuery?.addEventListener === "function") {
-        mediaQuery.addEventListener("change", syncClassicalWorkbenchStageSemantics);
-      } else if (typeof mediaQuery?.addListener === "function") {
-        mediaQuery.addListener(syncClassicalWorkbenchStageSemantics);
-      }
+      const stackedMediaQuery = targetObject.window?.matchMedia?.(
+        "(max-width: 720px)"
+      ) || targetObject.matchMedia?.("(max-width: 720px)") || null;
+      [mediaQuery, stackedMediaQuery].filter(Boolean).forEach(query => {
+        if (typeof query.addEventListener === "function") {
+          query.addEventListener(
+            "change",
+            syncClassicalWorkbenchStageSemantics
+          );
+        } else if (typeof query.addListener === "function") {
+          query.addListener(syncClassicalWorkbenchStageSemantics);
+        }
+      });
       navigation.dataset.classicalWorkbenchSemanticsBound = "true";
       return true;
     }
@@ -5083,6 +5160,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       return `      <footer>
             <p><span id="copyright-label">Copyright © 2026 Jaime Núñez</span></p>
             <p>Thanks to Sigfredo Olmedo</p>
+            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.1.0</p>
           </footer>
     `;
     }
@@ -5122,6 +5200,88 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
 ${steps}
       </section>\n`;
     }
+    function ClassicalGrammarWorkspaceHistory() {
+      return `      <section
+        class="classical-grammar-workspace-history"
+        id="classical-grammar-workspace-history"
+        data-classical-grammar-workspace-history="waiting"
+        data-classical-workbench-support="history"
+        data-classical-presentation-only="true"
+        data-classical-grammar-authority="false"
+        aria-labelledby="classical-grammar-workspace-history-heading"
+      >
+        <span
+          class="classical-rule-control__label"
+          id="classical-grammar-workspace-history-heading"
+        >Derivation history</span>
+        <div class="classical-grammar-workspace-history__selectors">
+          <label class="classical-rule-control">
+            <span class="classical-rule-control__label">Current path</span>
+            <select
+              id="classical-grammar-workspace-history-node"
+              data-classical-grammar-workspace-history-node="true"
+              disabled
+            >
+              <option value="" selected>No exact Results yet</option>
+            </select>
+          </label>
+          <label class="classical-rule-control">
+            <span class="classical-rule-control__label">Compare with</span>
+            <select
+              id="classical-grammar-workspace-history-compare-node"
+              data-classical-grammar-workspace-history-compare-node="true"
+              disabled
+            >
+              <option value="" selected>Choose another Result</option>
+            </select>
+          </label>
+        </div>
+        <div
+          class="classical-grammar-workspace-history__actions"
+          aria-label="Derivation history actions"
+        >
+          <button type="button" id="classical-grammar-workspace-history-undo" disabled>Undo</button>
+          <button type="button" id="classical-grammar-workspace-history-fork" disabled>Fork</button>
+          <button type="button" id="classical-grammar-workspace-history-continue" disabled>Continue</button>
+          <button type="button" id="classical-grammar-workspace-history-supply" disabled>Add to pathway</button>
+          <button type="button" id="classical-grammar-workspace-history-compare" disabled>Compare</button>
+        </div>
+        <p
+          class="classical-grammar-workspace-history__status"
+          id="classical-grammar-workspace-history-status"
+          role="status"
+          aria-live="polite"
+        >Each exact Result will appear here.</p>
+      </section>\n`;
+    }
+    function ClassicalGrammarAdvanced() {
+      return `      <details
+        class="classical-grammar-advanced"
+        id="classical-grammar-advanced"
+        data-classical-workbench-support="advanced-diagnostics"
+        data-classical-presentation-only="true"
+        data-classical-grammar-authority="false"
+        data-classical-proof-authority="false"
+        data-classical-source-authorizes="none"
+        data-classical-result-authorizes="none"
+      >
+        <summary class="classical-grammar-advanced__summary">Advanced</summary>
+        <div class="classical-grammar-advanced__body">
+          <p
+            class="classical-capability-closure-status"
+            id="classical-capability-closure-status"
+            data-classical-capability-closure-status="waiting"
+            data-classical-presentation-only="true"
+            data-classical-grammar-authority="false"
+            data-classical-proof-authority="false"
+            role="status"
+          >Capability closure will appear as exact pathways are explored.</p>
+          <p class="classical-grammar-advanced__note">
+            Atlas diagnostics report observed pathway coverage only. They do not authorize Source, Grammar, or Result.
+          </p>
+        </div>
+      </details>\n`;
+    }
     function ClassicalPanelShell() {
       return ClassicalCompositionPathSummary() + `      <div
             class="panel-grid"
@@ -5137,7 +5297,7 @@ ${steps}
             data-classical-basal-units="vnc nnc"
             data-classical-basal-unit="vnc"
           >
-    ` + '        <div class="panel-stack" data-classical-panel-stack="source-authority-result">\n' + ClassicalPanelTabs() + '          <div class="panel-main-column" data-classical-basal-unit="vnc">\n' + '            <div id="classical-source-panel" class="classical-panel-container classical-panel-container--source" data-classical-panel-container="source" data-andrews-panel="#1-source">\n' + ClassicalSourcePanel() + '            </div>\n' + '            <div id="classical-authority-panel" class="classical-panel-container classical-panel-container--authority" data-classical-panel-container="authority" data-andrews-panel="#2-authority">\n' + ClassicalAuthorityPanel() + '            </div>\n' + '          </div>\n' + '        </div>\n' + '        <div class="panel-output-column" data-classical-basal-unit="vnc">\n' + '          <div id="classical-result-panel" class="classical-panel-container classical-panel-container--result" data-classical-panel-container="authorized-result" data-andrews-panel="#3-authorized-result">\n' + ClassicalResultPanel() + '          </div>\n' + '        </div>\n' + '      </div>\n';
+    ` + '        <div class="panel-stack" data-classical-panel-stack="source-authority-result">\n' + ClassicalPanelTabs() + '          <div class="panel-main-column" data-classical-basal-unit="vnc">\n' + '            <div id="classical-source-panel" class="classical-panel-container classical-panel-container--source" data-classical-panel-container="source" data-andrews-panel="#1-source">\n' + ClassicalSourcePanel() + '            </div>\n' + '            <div id="classical-authority-panel" class="classical-panel-container classical-panel-container--authority" data-classical-panel-container="authority" data-andrews-panel="#2-authority">\n' + ClassicalAuthorityPanel() + '            </div>\n' + '          </div>\n' + '        </div>\n' + '        <div class="panel-output-column" data-classical-basal-unit="vnc">\n' + '          <div id="classical-result-panel" class="classical-panel-container classical-panel-container--result" data-classical-panel-container="authorized-result" data-andrews-panel="#3-authorized-result">\n' + ClassicalResultPanel() + '          </div>\n' + '        </div>\n' + '      </div>\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced();
     }
     function installClassicalShell() {
       const root = targetObject.document.getElementById("classical-app-root");

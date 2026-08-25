@@ -16,6 +16,7 @@ const ISSUED_ADVERBIAL_OPERATION_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_SUBJECT_OPERATION_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_CONTEXT_FRAMES = new WeakSet();
 const ISSUED_ADVERBIAL_LCM_FRAMES = new WeakSet();
+const ISSUED_ADVERBIAL_EXACT_SOURCE_RESOLUTIONS = new WeakSet();
 const RETIRED_PRODUCTIVE_SOURCE_KEYS = Object.freeze([
   "predicateSegments",
   "route",
@@ -497,7 +498,11 @@ function getAdverbialContextChoices(record) {
   });
 }
 
-function buildBlockedAdverbialPotentialFrame(blockReason, source = {}) {
+function buildBlockedAdverbialPotentialFrame(
+  blockReason,
+  source = {},
+  extra = {},
+) {
   const frame = deepFreeze({
     kind: "classical-nahuatl-adverbial-potential-frame",
     version: VERSION,
@@ -512,15 +517,312 @@ function buildBlockedAdverbialPotentialFrame(blockReason, source = {}) {
     formulaStringAuthority: false,
     surfaceStringAuthority: false,
     lessonMetadataAuthority: false,
+    ...extra,
   });
   ISSUED_ADVERBIAL_POTENTIAL_FRAMES.add(frame);
   return frame;
 }
 
+function hasAdverbialExactSourceResultField(source = {}) {
+  return Boolean(
+    source
+    && typeof source === "object"
+    && Object.prototype.hasOwnProperty.call(
+      source,
+      "canonicalSourceResult",
+    )
+  );
+}
+
+function getAdverbialExactSourceRawField(source = {}) {
+  if (!source || typeof source !== "object") return "";
+  return [
+    "stem",
+    "clauseKind",
+    "preteritAgentiveFrame",
+    "adverbialPotentialFrame",
+  ].find(field => (
+    Object.prototype.hasOwnProperty.call(source, field)
+    && source[field] !== undefined
+    && source[field] !== null
+    && source[field] !== ""
+  )) || "";
+}
+
+function getAdverbialExactNncSlotFrame(result = null, target = globalThis) {
+  if (
+    typeof target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+      === "function"
+    && target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(result)
+  ) {
+    return result.sourceNncSlotFrame || null;
+  }
+  return [
+    result?.typedSlotFrame,
+    result?.nncSlotFrame,
+    result?.canonicalResult?.nncSlotFrame,
+    result?.canonicalResult?.typedSlotFrame,
+    result?.resultFrame?.typedSlotFrame,
+  ].find(frame => (
+    typeof target.isClassicalNahuatlNncSlotFrame === "function"
+    && target.isClassicalNahuatlNncSlotFrame(frame)
+  )) || null;
+}
+
+function getAdverbialExactVncSlotFrame(result = null, target = globalThis) {
+  const source = (
+    typeof target.isClassicalNahuatlVncSentenceResultFrame === "function"
+    && target.isClassicalNahuatlVncSentenceResultFrame(result)
+  )
+    ? result.canonicalSourceFrame || result.canonicalResultFrame || null
+    : result;
+  return [
+    source?.finalTypedVncSlotFrame,
+    source?.targetTypedVncSlotFrame,
+    source?.selectedMachineryFrame?.finalTypedVncSlotFrame,
+    source?.selectedMachineryFrame?.targetTypedVncSlotFrame,
+    source?.resultFrame?.finalTypedVncSlotFrame,
+    source?.resultFrame?.targetTypedVncSlotFrame,
+    source?.resultFrame?.selectedMachineryFrame?.finalTypedVncSlotFrame,
+    source?.resultFrame?.selectedMachineryFrame?.targetTypedVncSlotFrame,
+    source?.proofFrame?.conclusion?.finalTypedVncSlotFrame,
+    source?.proofFrame?.conclusion?.finalBoundaryRealizationFrame
+      ?.typedSlotFrame,
+    source?.resultFrame?.proofFrame?.conclusion?.finalTypedVncSlotFrame,
+    source?.resultFrame?.proofFrame?.conclusion
+      ?.finalBoundaryRealizationFrame?.typedSlotFrame,
+  ].find(frame => (
+    typeof target.isClassicalNahuatlVncSlotFrame === "function"
+    && target.isClassicalNahuatlVncSlotFrame(frame)
+  )) || null;
+}
+
+function isAdverbialExactNncResult(result = null, target = globalThis) {
+  return Boolean([
+    "isClassicalNahuatlOrdinaryNncResult",
+    "isClassicalNahuatlPronominalNncResult",
+    "isClassicalNahuatlNominalConstructionResult",
+    "isClassicalNahuatlDeverbalNncGrammarFrame",
+    "isClassicalNahuatlRelationalResult",
+    "isClassicalNahuatlIssuedNncSentenceSurfaceFrame",
+  ].some(name => (
+    typeof target[name] === "function"
+    && target[name](result) === true
+  )) || isClassicalNahuatlAdverbialNuclearResult(result));
+}
+
+function isAdverbialExactVncResult(result = null, target = globalThis) {
+  const exactApplicationCapture = (
+    typeof target.captureClassicalGrammarApplicationResult === "function"
+    && typeof target.isClassicalGrammarApplicationResultCapture
+      === "function"
+  )
+    ? target.captureClassicalGrammarApplicationResult(
+      result,
+      "adverbial-exact-vnc-source",
+    )
+    : null;
+  const applicationExact = Boolean(
+    exactApplicationCapture
+    && target.isClassicalGrammarApplicationResultCapture(
+      exactApplicationCapture,
+      "adverbial-exact-vnc-source",
+    )
+    && exactApplicationCapture.canonicalResult === result
+  );
+  return applicationExact || [
+    "isClassicalNahuatlVncApplicationIssuedResultFrame",
+    "isClassicalNahuatlOrderedVoiceVncApplicationFrame",
+    "isClassicalNahuatlClosureFrame",
+    "isClassicalNahuatlDenominalVncResultFrame",
+    "isClassicalNahuatlVncSentenceResultFrame",
+  ].some(name => (
+    typeof target[name] === "function"
+    && target[name](result) === true
+  ));
+}
+
+function getAdverbialExactSourceRecord({
+  clauseKind = "",
+  slotFrame = null,
+} = {}) {
+  const predicateStem = normalizeTypedSourceStem(
+    realizeCarrier(slotFrame?.slots?.predicate?.stem || ""),
+  );
+  const exactStateSlots = (
+    slotFrame?.slots?.state?.slots
+    || slotFrame?.slots?.prePredicate
+    || []
+  ).filter(slot => (
+    !slot?.kind || slot.kind === "vnc-internal-state"
+  )).map(slot => normalizeTypedSourceStem(slot?.carrier || ""))
+    .filter(Boolean);
+  const matches = SOURCE_RECORDS.filter(record => (
+    record.clauseKind === clauseKind
+    && normalizeTypedSourceStem(realizeCarrier(record.predicateStem))
+      === predicateStem
+    && (
+      !record.stateSlots.length
+      || record.stateSlots.map(normalizeTypedSourceStem).join("|")
+        === exactStateSlots.join("|")
+    )
+  ));
+  return matches.length === 1 ? matches[0] : null;
+}
+
+function resolveClassicalNahuatlAdverbialExactSource(
+  source = {},
+  target = globalThis,
+) {
+  const canonicalSourceResult = source?.canonicalSourceResult || null;
+  const rawField = getAdverbialExactSourceRawField(source);
+  let blockReason = "";
+  let sourceUnitKind = "";
+  let slotFrame = null;
+  let record = null;
+  if (!hasAdverbialExactSourceResultField(source)) {
+    blockReason = "canonical-source-result-required";
+  } else if (rawField) {
+    blockReason =
+      "canonical-source-result-and-raw-source-are-mutually-exclusive";
+  } else if (isAdverbialExactNncResult(canonicalSourceResult, target)) {
+    sourceUnitKind = (
+      typeof target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+        === "function"
+      && target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+        canonicalSourceResult,
+      )
+    ) ? "clause" : "nnc";
+    slotFrame = getAdverbialExactNncSlotFrame(
+      canonicalSourceResult,
+      target,
+    );
+    const clauseKind = slotFrame?.slots?.state?.arity === "vacant"
+      ? "nnc-absolutive"
+      : "nnc-possessive";
+    record = getAdverbialExactSourceRecord({ clauseKind, slotFrame });
+  } else if (isAdverbialExactVncResult(canonicalSourceResult, target)) {
+    sourceUnitKind = (
+      typeof target.isClassicalNahuatlVncSentenceResultFrame === "function"
+      && target.isClassicalNahuatlVncSentenceResultFrame(
+        canonicalSourceResult,
+      )
+    ) ? "clause" : "vnc";
+    slotFrame = getAdverbialExactVncSlotFrame(
+      canonicalSourceResult,
+      target,
+    );
+    record = getAdverbialExactSourceRecord({
+      clauseKind: "vnc",
+      slotFrame,
+    });
+  } else {
+    blockReason = "exact-owner-issued-vnc-nnc-or-clause-result-required";
+  }
+  if (!blockReason && !slotFrame) {
+    blockReason = "exact-source-result-typed-nuclear-slots-unavailable";
+  }
+  if (!blockReason && !record) {
+    blockReason = "exact-source-result-has-no-licensed-adverbial-potential";
+  }
+  const allowedScopes = record ? [
+    ...(record.externalAllowed ? ["external-clause"] : []),
+    ...(record.incorporatedAllowed ? ["incorporated-predicate"] : []),
+  ] : [];
+  const requiredChoiceIds = record ? [
+    ...(record.allowedDegrees.length > 1 ? ["degree"] : []),
+    ...(allowedScopes.length > 1 ? ["scope"] : []),
+    ...(record.requiredPrecedingParticles.length > 1
+      ? ["preceding-particle"]
+      : []),
+    ...(record.allowedNegativeParticles.length
+      ? ["negative-particle", "negation-scope"]
+      : []),
+    ...(record.stressPartners.length ? ["stress-partner"] : []),
+    ...(record.variants.length ? ["surface-variant"] : []),
+    ...(record.id === "44.5-quen" ? ["sentence-position"] : []),
+    ...(record.id === "44.5-mo" ? ["clause-type"] : []),
+  ] : [];
+  const frame = deepFreeze({
+    kind: "classical-nahuatl-adverbial-exact-source-resolution",
+    version: VERSION,
+    authorizationStatus: blockReason ? "blocked" : "authorized",
+    blockReason,
+    sourceUnitKind,
+    canonicalSourceResult: blockReason
+      && !canonicalSourceResult?.authorizationStatus
+      ? null
+      : canonicalSourceResult,
+    canonicalTypedSlotFrame: blockReason ? null : slotFrame,
+    lexicalEntryId: blockReason ? "" : record.id,
+    sourceConstituents: deepFreeze(blockReason ? {} : {
+      stem: record.sourceForms[0],
+      clauseKind: record.clauseKind,
+    }),
+    allowedDegrees: record ? record.allowedDegrees.slice() : [],
+    allowedScopes,
+    requiredChoiceIds,
+    exactSourceResultIdentityPreserved: !blockReason,
+    callerSuppliedSourceStringsAccepted: false,
+    typedFrameAuthority: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  });
+  ISSUED_ADVERBIAL_EXACT_SOURCE_RESOLUTIONS.add(frame);
+  return frame;
+}
+
+function isClassicalNahuatlAdverbialExactSourceResolution(frame = null) {
+  return Boolean(
+    ISSUED_ADVERBIAL_EXACT_SOURCE_RESOLUTIONS.has(frame)
+    && frame?.kind
+      === "classical-nahuatl-adverbial-exact-source-resolution"
+    && ["authorized", "blocked"].includes(frame.authorizationStatus)
+    && frame.typedFrameAuthority === true
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && (
+      frame.authorizationStatus === "blocked"
+        ? Boolean(frame.blockReason)
+        : frame.exactSourceResultIdentityPreserved === true
+          && Boolean(frame.canonicalSourceResult)
+          && Boolean(frame.canonicalTypedSlotFrame)
+          && Boolean(frame.lexicalEntryId)
+    )
+  );
+}
+
 function resolveClassicalNahuatlAdverbialPotential(
   source = {},
-  target = globalThis
+  target = globalThis,
+  exactSourceResolution = null,
 ) {
+  if (
+    hasAdverbialExactSourceResultField(source)
+    && !exactSourceResolution
+  ) {
+    const resolution = resolveClassicalNahuatlAdverbialExactSource(
+      source,
+      target,
+    );
+    if (resolution.authorizationStatus !== "authorized") {
+      return buildBlockedAdverbialPotentialFrame(
+        resolution.blockReason,
+        {},
+        {
+          exactSourceResolution: resolution,
+          canonicalSourceResult:
+            resolution.canonicalSourceResult || null,
+          exactSourceResultIdentityPreserved: false,
+        },
+      );
+    }
+    return resolveClassicalNahuatlAdverbialPotential(
+      resolution.sourceConstituents,
+      target,
+      resolution,
+    );
+  }
   const preteritAgentiveFrame =
     source?.preteritAgentiveFrame || null;
   const sourceForAuthorityScan = {
@@ -656,6 +958,15 @@ function resolveClassicalNahuatlAdverbialPotential(
       ...(record.id === "44.5-mo" ? ["clause-type"] : []),
       ...(record.allowedNegativeParticles.length ? ["negation-scope"] : []),
     ],
+    sourceInputMode: exactSourceResolution
+      ? "exact-owner-issued-vnc-nnc-or-clause-result"
+      : "typed-source-fields",
+    exactSourceResolution,
+    canonicalSourceResult:
+      exactSourceResolution?.canonicalSourceResult || null,
+    canonicalTypedSlotFrame:
+      exactSourceResolution?.canonicalTypedSlotFrame || null,
+    exactSourceResultIdentityPreserved: Boolean(exactSourceResolution),
     typedSourceAuthority: true,
     lexicalAuthorization: true,
     formulaStringAuthority: false,
@@ -688,6 +999,21 @@ function isClassicalNahuatlAdverbialPotentialFrame(frame = null) {
     ADVERBIAL_POTENTIAL_RECORDS.has(frame)
     && frame.typedSourceAuthority === true
     && frame.lexicalAuthorization === true
+    && (
+      frame.sourceInputMode !==
+        "exact-owner-issued-vnc-nnc-or-clause-result"
+      || (
+        isClassicalNahuatlAdverbialExactSourceResolution(
+          frame.exactSourceResolution,
+        )
+        && frame.exactSourceResolution.authorizationStatus === "authorized"
+        && frame.canonicalSourceResult
+          === frame.exactSourceResolution.canonicalSourceResult
+        && frame.canonicalTypedSlotFrame
+          === frame.exactSourceResolution.canonicalTypedSlotFrame
+        && frame.exactSourceResultIdentityPreserved === true
+      )
+    )
   );
 }
 
@@ -1238,11 +1564,35 @@ function evaluateIncorporatedRecord(record, request, target) {
 }
 
 function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalThis) {
-  const hostilePath = findHostileAuthorityPath(request);
+  const exactSourceRequested = hasAdverbialExactSourceResultField(request);
+  const exactAndPotentialMixed = exactSourceRequested
+    && Object.prototype.hasOwnProperty.call(
+      request,
+      "adverbialPotentialFrame",
+    )
+    && request.adverbialPotentialFrame !== undefined
+    && request.adverbialPotentialFrame !== null;
+  if (exactAndPotentialMixed) {
+    return buildBlockedFrame(
+      "canonical-source-result-and-adverbial-potential-are-mutually-exclusive",
+      request,
+    );
+  }
+  const requestForAuthorityScan = exactSourceRequested
+    ? Object.fromEntries(Object.entries(request).filter(
+      ([field]) => field !== "canonicalSourceResult",
+    ))
+    : request;
+  const hostilePath = findHostileAuthorityPath(requestForAuthorityScan);
   if (hostilePath) {
     return buildBlockedFrame(`caller-supplied-derived-authority-rejected:${hostilePath}`, request);
   }
-  const adverbialPotentialFrame = request.adverbialPotentialFrame || null;
+  const adverbialPotentialFrame = exactSourceRequested
+    ? resolveClassicalNahuatlAdverbialPotential(
+      { canonicalSourceResult: request.canonicalSourceResult },
+      target,
+    )
+    : request.adverbialPotentialFrame || null;
   if (!isClassicalNahuatlAdverbialPotentialFrame(adverbialPotentialFrame)) {
     return buildBlockedFrame("owner-issued-adverbial-potential-frame-required", request);
   }
@@ -1341,6 +1691,15 @@ function evaluateClassicalNahuatlAdverbialNuclear(request = {}, target = globalT
     blockReason: "",
     lexicalEntryId: record.id,
     sourceFrame: deepClone(adverbialPotentialFrame.sourceConstituents),
+    sourceInputMode: adverbialPotentialFrame.sourceInputMode,
+    exactSourceResolution:
+      adverbialPotentialFrame.exactSourceResolution || null,
+    canonicalSourceResult:
+      adverbialPotentialFrame.canonicalSourceResult || null,
+    canonicalTypedSlotFrame:
+      adverbialPotentialFrame.canonicalTypedSlotFrame || null,
+    exactSourceResultIdentityPreserved:
+      adverbialPotentialFrame.exactSourceResultIdentityPreserved === true,
     lexicalAuthorizationFrame: {
       kind: "classical-nahuatl-adverbial-lexical-authorization",
       authorizationStatus: "authorized",
@@ -1449,12 +1808,26 @@ function isClassicalNahuatlAdverbialNuclearResult(frame = null) {
   if (frame.authorizationStatus === "blocked") {
     return Boolean(frame.blockReason);
   }
+  const exactSourceIdentityValid = frame.sourceInputMode
+    !== "exact-owner-issued-vnc-nnc-or-clause-result"
+    || Boolean(
+      isClassicalNahuatlAdverbialExactSourceResolution(
+        frame.exactSourceResolution,
+      )
+      && frame.exactSourceResolution.authorizationStatus === "authorized"
+      && frame.canonicalSourceResult
+        === frame.exactSourceResolution.canonicalSourceResult
+      && frame.canonicalTypedSlotFrame
+        === frame.exactSourceResolution.canonicalTypedSlotFrame
+      && frame.exactSourceResultIdentityPreserved === true
+    );
   return Boolean(
     frame.leastCommonMultiple?.projectionIdentity
       === LCM_PROJECTION_IDENTITY
     && frame.leastCommonMultiple?.selectedValuesAreTypedProjection === true
     && frame.leastCommonMultiple?.selectedAxisIds?.join("|")
       === "sourceStates|subjectOperations"
+    && exactSourceIdentityValid
   );
 }
 
@@ -1729,6 +2102,12 @@ export function installClassicalNahuatlAdverbialNuclearGlobals(targetObject = gl
         source,
         target,
       ),
+    resolveClassicalNahuatlAdverbialExactSource:
+      source => resolveClassicalNahuatlAdverbialExactSource(
+        source,
+        target,
+      ),
+    isClassicalNahuatlAdverbialExactSourceResolution,
     isClassicalNahuatlAdverbialPotentialFrame,
     evaluateClassicalNahuatlAdverbialNuclear: request => (
       evaluateClassicalNahuatlAdverbialNuclear(request, target)

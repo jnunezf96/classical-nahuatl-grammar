@@ -18,7 +18,9 @@ function acceptedProofRecords(ledger = null) {
     const records = Array.isArray(ledger?.records) ? ledger.records : [];
     if (ledger?.kind === "classical-nahuatl-lesson-atom-job-review") {
         return records.filter(record => (
-            record.reviewStatus === "ACCEPTED"
+            ["ACCEPTED", "IMPLEMENTATION_PROVEN"].includes(
+                record.reviewStatus
+            )
             && record.implementationCredit === "EXACTLY_OBSERVED"
         ));
     }

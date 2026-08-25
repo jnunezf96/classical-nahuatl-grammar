@@ -49,6 +49,59 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       new WeakMap();
     const classicalNahuatlVncContinuationSourceByResultFrame =
       new WeakMap();
+    const classicalNahuatlVncApplicationFrameByResultFrame =
+      new WeakMap();
+    const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND =
+      "classical-nahuatl-vnc-typed-source-application-binding-frame";
+    const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES =
+      Object.freeze(["choices-required", "ready", "rejected"]);
+    const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_SELECTION_FIELDS =
+      Object.freeze([
+        "subject",
+        "mood",
+        "tense",
+        "requestedDerivation",
+        "derivationOptionId",
+        "causativeObjectKind",
+        "causativeSpecificShuntlineRealization",
+        "applicativeObjectKind",
+        "applicativeObjectPerson",
+        "requestedVoice",
+        "requestedImpersonalDerivationPath",
+        "nonactiveOptionId",
+        "objectInterpretation",
+        "silentSpecificObject",
+        "tlaFusion",
+        "directionalIttaContraction",
+        "incorporatedAdverb",
+        "adverbPosition",
+        "rareThirdCausativeMeaningSupported",
+        "exceptionalSuffixOrderAuthorized",
+      ]);
+    const classicalNahuatlVncTypedSourceApplicationBindingFrames =
+      new WeakSet();
+    const classicalNahuatlVncTypedSourceApplicationBindingContexts =
+      new WeakMap();
+    const classicalNahuatlVncTypedSourceApplicationExecutedBindings =
+      new WeakSet();
+    const classicalNahuatlVncTypedSourceApplicationProvenanceBySource =
+      new WeakMap();
+    const CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND =
+      "classical-nahuatl-vnc-continuation-binding-frame";
+    const CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS =
+      Object.freeze([
+        "vnc:application",
+        "vnc:ordered-voice-application",
+        "vnc:derivational-operation",
+      ]);
+    const CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES =
+      Object.freeze([
+        "ready",
+        "choices-required",
+        "additional-result-required",
+        "rejected",
+      ]);
+    const classicalNahuatlVncContinuationBindingFrames = new WeakSet();
     const CLASSICAL_NAHUATL_ORDERED_VOICE_VNC_APPLICATION_KIND =
       "classical-nahuatl-ordered-voice-vnc-application-frame";
     const CLASSICAL_NAHUATL_ORDERED_VOICE_CALLER_AUTHORITY_FIELDS = Object.freeze([
@@ -5877,6 +5930,67 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           )
         ) {
           issuedApplicationResultFrames.add(applicationFrame.resultFrame);
+          classicalNahuatlVncApplicationFrameByResultFrame.set(
+            applicationFrame.resultFrame,
+            applicationFrame,
+          );
+          const exactSourceMachineryFrame =
+            applicationFrame.resultFrame.selectedMachineryFrame || null;
+          const sourceDescriptor = exactSourceMachineryFrame
+            ? getClassicalNahuatlVncContinuationSourceDescriptor(
+              exactSourceMachineryFrame,
+              dependencySource,
+            )
+            : null;
+          if (
+            exactSourceMachineryFrame
+            && sourceDescriptor?.sourceAnalysisFrame
+              ?.sourceMachineryFrame === exactSourceMachineryFrame
+            && sourceDescriptor.sourceStem
+            && sourceDescriptor.verbClass
+            && sourceDescriptor.sourceValence
+            && !classicalNahuatlVncTypedSourceApplicationProvenanceBySource
+              .has(exactSourceMachineryFrame)
+          ) {
+            classicalNahuatlVncTypedSourceApplicationProvenanceBySource.set(
+              exactSourceMachineryFrame,
+              Object.freeze({
+                exactSourceMachineryFrame,
+                sourceDescriptor,
+                sourceInitialISelection:
+                  applicationFrame.normalizedRequest
+                    ?.sourceInitialISelection || "",
+                defaultSelections: Object.freeze({
+                  subject:
+                    applicationFrame.normalizedRequest?.subject
+                    || sourceDescriptor.sourceSubject
+                    || "3sg",
+                  mood:
+                    applicationFrame.normalizedRequest?.mood
+                    || "indicative",
+                  tense:
+                    applicationFrame.normalizedRequest?.tense
+                    || "present",
+                  requestedVoice:
+                    applicationFrame.normalizedRequest?.requestedVoice
+                    || "active",
+                }),
+                ownerDependencies: dependencySource,
+                ownerEvaluate: request => issueApplicationResult(
+                  evaluateWithContinuationSource(
+                    request,
+                    Object.freeze({
+                      sourceResultFrame: applicationFrame.resultFrame,
+                      sourceMachineryFrame: exactSourceMachineryFrame,
+                      formationSourceMachineryFrame:
+                        sourceDescriptor.formationSourceMachineryFrame,
+                      sourceDescriptor,
+                    }),
+                  ),
+                ),
+              }),
+            );
+          }
         }
         return applicationFrame;
       };
@@ -6611,6 +6725,14 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       request = {},
       continuationSourceResultOrDependencies = null,
     ) {
+      if (
+        !continuationSourceResultOrDependencies
+        && isClassicalNahuatlVncTypedSourceApplicationBindingFrame(request)
+      ) {
+        return executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+          request,
+        );
+      }
       const sharedService =
         getClassicalNahuatlVncApplicationSharedService();
       const sharedContinuationProjection =
@@ -6654,6 +6776,1511 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       return getClassicalNahuatlVncApplicationSharedService()
         .getContinuationSourceConstituents(sourceResultFrame);
     }
+    function getClassicalNahuatlVncTypedSourceApplicationInventory(
+      provenance = null,
+      derivationType = "",
+    ) {
+      const normalizedDerivation =
+        normalizeClassicalNahuatlVncApplicationDerivation(derivationType);
+      if (
+        !provenance
+        || !["causative", "applicative"].includes(normalizedDerivation)
+      ) {
+        return null;
+      }
+      const owner = provenance.ownerDependencies;
+      const inventory =
+        owner.getClassicalNahuatlVncDerivationOptionInventory(
+          provenance.exactSourceMachineryFrame,
+          {
+            derivationType: normalizedDerivation,
+            sourceValence: provenance.sourceDescriptor.sourceValence,
+            verbClass: provenance.sourceDescriptor.verbClass,
+          },
+        );
+      return Boolean(
+        inventory?.authorizationStatus === "authorized"
+        && inventory.sourceMachineryFrame
+          === provenance.exactSourceMachineryFrame
+        && owner.isClassicalNahuatlVncDerivationOptionInventory(
+          inventory,
+        ) === true
+      ) ? inventory : null;
+    }
+    function projectClassicalNahuatlVncTypedSourceApplicationOption(
+      choiceId = "",
+      option = {},
+    ) {
+      return Object.freeze({
+        choiceId,
+        optionId: normalizeClassicalNahuatlVncApplicationToken(
+          option.optionId,
+        ),
+        label: normalizeClassicalNahuatlVncApplicationToken(
+          option.label
+          || option.displayLabel
+          || option.targetStem
+          || option.optionId,
+        ),
+        derivationType: normalizeClassicalNahuatlVncApplicationToken(
+          option.derivationType,
+        ),
+        derivationSubtype: normalizeClassicalNahuatlVncApplicationToken(
+          option.derivationSubtype || option.subtype,
+        ),
+        targetStem: normalizeClassicalNahuatlVncApplicationStem(
+          option.targetStem,
+        ),
+        targetClass: normalizeClassicalNahuatlVncApplicationToken(
+          option.targetClass,
+        ),
+        availabilityStatus: option.availabilityStatus || "available",
+        blockReason: option.blockReason || "",
+        ownerOptionProjected: true,
+        ownerOptionAuthority: false,
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
+    }
+    function buildClassicalNahuatlVncTypedSourceApplicationChoiceProjection({
+      derivationInventories = {},
+      selectedDerivation = "",
+      participantOperationFrame = null,
+      allowedVoices = ["active"],
+      nonactiveOptionInventory = null,
+    } = {}) {
+      const requestedDerivation = Object.freeze([
+        projectClassicalNahuatlVncTypedSourceApplicationOption(
+          "requestedDerivation",
+          {
+            optionId: "direct",
+            label: "Direct application",
+            derivationType: "direct",
+          },
+        ),
+        ...["causative", "applicative"].map(derivationType => {
+          const inventory = derivationInventories[derivationType] || null;
+          const available = Boolean(
+            inventory?.authorizationStatus === "authorized"
+            && inventory.options?.length
+          );
+          return projectClassicalNahuatlVncTypedSourceApplicationOption(
+            "requestedDerivation",
+            {
+              optionId: derivationType,
+              label: derivationType === "causative"
+                ? "Causative"
+                : "Applicative",
+              derivationType,
+              availabilityStatus: available
+                ? "available"
+                : "incompatible",
+              blockReason: available
+                ? ""
+                : inventory?.blockReason
+                  || "classical-vnc-typed-source-derivation-unavailable",
+            },
+          );
+        }),
+      ]);
+      const selectedInventory =
+        derivationInventories[selectedDerivation] || null;
+      const derivationOptionId = Object.freeze(
+        (selectedInventory?.options || []).map(option => (
+          projectClassicalNahuatlVncTypedSourceApplicationOption(
+            "derivationOptionId",
+            option,
+          )
+        )),
+      );
+      const allowedCausativeObjectKinds = Object.freeze(
+        participantOperationFrame?.participantTransformFrame
+          ?.allowedCausativeObjectKinds || [],
+      );
+      const causativeObjectKind = Object.freeze(
+        allowedCausativeObjectKinds.map(optionId => (
+          projectClassicalNahuatlVncTypedSourceApplicationOption(
+            "causativeObjectKind",
+            { optionId, label: optionId },
+          )
+        )),
+      );
+      const applicativeObjectKind = Object.freeze([
+        "specific-projective",
+        "reflexive",
+        "nonspecific-human",
+        "nonspecific-nonhuman",
+      ].map(optionId => (
+        projectClassicalNahuatlVncTypedSourceApplicationOption(
+          "applicativeObjectKind",
+          { optionId, label: optionId },
+        )
+      )));
+      const applicativeObjectPerson = Object.freeze([
+        "1sg", "2sg", "3sg", "1pl", "2pl", "3pl",
+      ].map(optionId => (
+        projectClassicalNahuatlVncTypedSourceApplicationOption(
+          "applicativeObjectPerson",
+          { optionId, label: optionId },
+        )
+      )));
+      const requestedVoice = Object.freeze(
+        allowedVoices.map(optionId => (
+          projectClassicalNahuatlVncTypedSourceApplicationOption(
+            "requestedVoice",
+            { optionId, label: optionId },
+          )
+        )),
+      );
+      const nonactiveOptionId = Object.freeze(
+        (nonactiveOptionInventory?.options || []).map(option => (
+          projectClassicalNahuatlVncTypedSourceApplicationOption(
+            "nonactiveOptionId",
+            {
+              ...option,
+              targetStem: option.targetStem || option.stem || "",
+            },
+          )
+        )),
+      );
+      return deepFreezeClassicalNahuatlVncApplicationValue({
+        requestedDerivation,
+        derivationOptionId,
+        causativeObjectKind,
+        applicativeObjectKind,
+        applicativeObjectPerson,
+        requestedVoice,
+        nonactiveOptionId,
+        ownerOptionAuthority: false,
+        grammarAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+      });
+    }
+    function buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(
+      provenance = null,
+      effectiveSelections = {},
+    ) {
+      const source = provenance?.sourceDescriptor || null;
+      if (!source) return null;
+      return deepFreezeClassicalNahuatlVncApplicationValue({
+        sourceStem: source.sourceStem,
+        sourceLexemeId: source.sourceLexemeId,
+        sourceInitialISelection:
+          provenance.sourceInitialISelection || "",
+        verbClass: source.verbClass,
+        sourceValence: source.sourceValence,
+        sourceSubject: source.sourceSubject,
+        sourceObjectRequests: cloneClassicalNahuatlVncApplicationCompactValue(
+          source.sourceObjectRequests || [],
+        ),
+        sourceVoice: source.sourceVoice || "active",
+        requestedSourceVoice: source.sourceVoice || "active",
+        sourceNonactiveOptionId: source.sourceNonactiveOptionId || "",
+        objectKind: source.objectKind,
+        objectPerson: source.objectPerson,
+        ...cloneClassicalNahuatlVncApplicationCompactValue(
+          effectiveSelections,
+        ),
+        outputScope: "single",
+      });
+    }
+    function issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+      exactSourceMachineryFrame = null,
+      callerSelections = {},
+    ) {
+      const provenance = exactSourceMachineryFrame
+        && typeof exactSourceMachineryFrame === "object"
+        ? classicalNahuatlVncTypedSourceApplicationProvenanceBySource.get(
+          exactSourceMachineryFrame,
+        ) || null
+        : null;
+      const selections = callerSelections
+        && typeof callerSelections === "object"
+        && !Array.isArray(callerSelections)
+        ? callerSelections
+        : null;
+      const rejectedAuthorityFields = selections
+        ? Object.freeze(Array.from(new Set([
+          ...getClassicalNahuatlVncApplicationPresentFields(
+            selections,
+            CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS,
+          ),
+          ...getClassicalNahuatlVncApplicationCurriculumCarrierFields(
+            selections,
+          ),
+        ])))
+        : Object.freeze([]);
+      const sourceFieldOverride = selections
+        ? CLASSICAL_NAHUATL_VNC_CONTINUATION_SOURCE_FIELDS.find(field => (
+          Object.prototype.hasOwnProperty.call(selections, field)
+        )) || ""
+        : "";
+      const unsupportedSelectionFields = selections
+        ? Object.freeze(Reflect.ownKeys(selections).filter(key => (
+          typeof key !== "string"
+          || !CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_SELECTION_FIELDS
+            .includes(key)
+        )).map(String))
+        : Object.freeze([]);
+      const initialBlockReason = !provenance
+        ? "classical-vnc-typed-source-application-exact-issued-source-required"
+        : !selections
+          ? "classical-vnc-typed-source-application-selections-must-be-an-object"
+          : rejectedAuthorityFields.length
+            ? "classical-vnc-typed-source-application-caller-authority-rejected"
+            : sourceFieldOverride
+              ? "classical-vnc-typed-source-application-source-provenance-is-owner-issued"
+              : unsupportedSelectionFields.length
+                ? "classical-vnc-typed-source-application-selection-not-supported"
+                : "";
+      const frozenCallerSelections = selections
+        ? deepFreezeClassicalNahuatlVncApplicationValue(
+          cloneClassicalNahuatlVncApplicationCompactValue(selections),
+        )
+        : Object.freeze({});
+      const effectiveSelections = provenance && selections
+        ? deepFreezeClassicalNahuatlVncApplicationValue({
+          ...provenance.defaultSelections,
+          ...cloneClassicalNahuatlVncApplicationCompactValue(selections),
+        })
+        : Object.freeze({});
+      const derivationInventories = provenance
+        ? Object.freeze({
+          causative:
+            getClassicalNahuatlVncTypedSourceApplicationInventory(
+              provenance,
+              "causative",
+            ),
+          applicative:
+            getClassicalNahuatlVncTypedSourceApplicationInventory(
+              provenance,
+              "applicative",
+            ),
+        })
+        : Object.freeze({ causative: null, applicative: null });
+      const selectedDerivation = normalizeClassicalNahuatlVncApplicationToken(
+        effectiveSelections.requestedDerivation,
+      ).toLowerCase();
+      const inapplicableDerivationSelectionField = (() => {
+        const present = (field) => (
+          Object.prototype.hasOwnProperty.call(selections || {}, field)
+          && selections[field] != null
+          && String(selections[field]).trim() !== ""
+        );
+        if (selectedDerivation === "direct") {
+          return [
+            "derivationOptionId",
+            "causativeObjectKind",
+            "causativeSpecificShuntlineRealization",
+            "applicativeObjectKind",
+            "applicativeObjectPerson",
+          ].find(present) || "";
+        }
+        if (selectedDerivation === "causative") {
+          return [
+            "applicativeObjectKind",
+            "applicativeObjectPerson",
+          ].find(present) || "";
+        }
+        if (selectedDerivation === "applicative") {
+          return [
+            "causativeObjectKind",
+            "causativeSpecificShuntlineRealization",
+          ].find(present) || "";
+        }
+        return "";
+      })();
+      let selectedInventory = derivationInventories[selectedDerivation] || null;
+      let participantOperationFrame = null;
+      let nonactiveOptionInventory = null;
+      let allowedVoices = Object.freeze(["active"]);
+      let requiredChoiceIds = [];
+      let bindingStatus = initialBlockReason
+        || inapplicableDerivationSelectionField
+        ? "rejected"
+        : "choices-required";
+      let blockReason = initialBlockReason
+        || (inapplicableDerivationSelectionField
+          ? `classical-vnc-typed-source-application-inapplicable-selection:${
+            inapplicableDerivationSelectionField
+          }`
+          : "");
+      if (!initialBlockReason && !inapplicableDerivationSelectionField) {
+        if (!selectedDerivation) {
+          requiredChoiceIds.push("requestedDerivation");
+          blockReason =
+            "classical-vnc-typed-source-application-owner-choices-required";
+        } else {
+          const derivationSelection =
+            validateClassicalNahuatlVncDerivationTypeSelection(
+              selectedDerivation,
+            );
+          if (derivationSelection.authorizationStatus !== "authorized") {
+            bindingStatus = "rejected";
+            blockReason = derivationSelection.blockReason
+              || "classical-vnc-typed-source-application-derivation-not-recognized";
+          } else if (
+            selectedDerivation !== "direct"
+            && !selectedInventory
+          ) {
+            bindingStatus = "rejected";
+            blockReason =
+              "classical-vnc-typed-source-application-derivation-unavailable";
+          } else if (
+            selectedInventory?.selectionRequired === true
+            && !hasClassicalNahuatlVncContinuationBindingSelection(
+              effectiveSelections,
+              "derivationOptionId",
+            )
+          ) {
+            requiredChoiceIds.push("derivationOptionId");
+            blockReason =
+              "classical-vnc-derivation-option-selection-required";
+          } else if (selectedInventory) {
+            const requestedOptionId =
+              normalizeClassicalNahuatlVncApplicationToken(
+                effectiveSelections.derivationOptionId,
+              );
+            const selectedOptionId = requestedOptionId
+              || selectedInventory.automaticOptionId
+              || "";
+            const selectedOption = selectedInventory.options.find(option => (
+              option.optionId === selectedOptionId
+              || option.optionAliases?.includes(selectedOptionId)
+            )) || null;
+            if (!selectedOption) {
+              bindingStatus = "rejected";
+              blockReason =
+                "classical-vnc-typed-source-application-derivation-option-not-authorized";
+            } else {
+              const normalizedRequest =
+                normalizeClassicalNahuatlVncApplicationRequest(
+                  buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(
+                    provenance,
+                    effectiveSelections,
+                  ),
+                );
+              participantOperationFrame =
+                deriveClassicalNahuatlVncApplicationOperationFromCanonicalInventory(
+                  provenance.ownerDependencies,
+                  exactSourceMachineryFrame,
+                  selectedInventory,
+                  buildClassicalNahuatlVncApplicationDerivationOperationRequest(
+                    normalizedRequest,
+                  ),
+                );
+              const participantBlockReason =
+                participantOperationFrame?.blockReason || "";
+              if (
+                participantBlockReason
+                  === "classical-vnc-causative-causee-valence-selection-required"
+              ) {
+                requiredChoiceIds.push("causativeObjectKind");
+                blockReason = participantBlockReason;
+              } else if (
+                participantBlockReason
+                  === "classical-vnc-applicative-specific-object-person-required"
+              ) {
+                requiredChoiceIds.push("applicativeObjectPerson");
+                blockReason = participantBlockReason;
+              } else if (
+                participantOperationFrame?.authorizationStatus !== "authorized"
+              ) {
+                bindingStatus = "rejected";
+                blockReason = participantBlockReason
+                  || "classical-vnc-typed-source-application-participant-transform-not-authorized";
+              }
+            }
+          }
+        }
+      }
+      const requestedVoice = normalizeClassicalNahuatlVncApplicationToken(
+        effectiveSelections.requestedVoice || "active",
+      ).toLowerCase();
+      if (
+        !initialBlockReason
+        && bindingStatus !== "rejected"
+        && !requiredChoiceIds.length
+      ) {
+        const voiceSelection = validateClassicalNahuatlVncVoiceSelection(
+          requestedVoice,
+          "target",
+        );
+        if (voiceSelection.authorizationStatus !== "authorized") {
+          bindingStatus = "rejected";
+          blockReason = voiceSelection.blockReason
+            || "classical-vnc-typed-source-application-target-voice-not-recognized";
+        } else {
+          const source = provenance.sourceDescriptor;
+          const targetStem = selectedDerivation === "direct"
+            ? source.sourceStem
+            : getClassicalNahuatlVncApplicationOperationTargetStem(
+              participantOperationFrame,
+            );
+          const targetClass = selectedDerivation === "direct"
+            ? source.verbClass
+            : getClassicalNahuatlVncApplicationOperationTargetClass(
+              participantOperationFrame,
+              source.verbClass,
+            );
+          const targetObjects = selectedDerivation === "direct"
+            ? source.sourceObjectRequests || []
+            : getClassicalNahuatlVncApplicationOperationObjectRequests(
+              participantOperationFrame,
+            );
+          const targetValence = selectedDerivation === "direct"
+            ? source.sourceValence
+            : getClassicalNahuatlVncApplicationTargetValence(
+              participantOperationFrame,
+              source.sourceValence,
+            );
+          const lesson20Inventory =
+            provenance.ownerDependencies
+              .getClassicalNahuatlNonactiveStemOptions(targetStem, {
+                verbClass: targetClass,
+                sourceValence: targetValence,
+              });
+          const allowedVoiceOperations =
+            getClassicalNahuatlVncApplicationAllowedVoices({
+              sourceStem: targetStem,
+              sourceValence: targetValence,
+              outputScope: "single",
+              nonactiveOptionInventory: lesson20Inventory,
+              objectRequests: targetObjects,
+            });
+          allowedVoices =
+            getClassicalNahuatlVncApplicationPublicAllowedVoices(
+              allowedVoiceOperations,
+            );
+          nonactiveOptionInventory =
+            buildClassicalNahuatlVncApplicationNonactiveFormationInventory({
+              publicVoice: requestedVoice,
+              allowedVoiceOperations,
+              lesson20OptionInventory: lesson20Inventory,
+              automaticOperationId: "",
+            });
+          if (!allowedVoices.includes(requestedVoice)) {
+            bindingStatus = "rejected";
+            blockReason =
+              "classical-vnc-typed-source-application-target-voice-not-authorized";
+          } else if (
+            requestedVoice !== "active"
+            && nonactiveOptionInventory.selectionRequired === true
+            && !hasClassicalNahuatlVncContinuationBindingSelection(
+              effectiveSelections,
+              "nonactiveOptionId",
+            )
+          ) {
+            requiredChoiceIds.push("nonactiveOptionId");
+            blockReason =
+              "classical-vnc-nonactive-formation-option-selection-required";
+          } else if (
+            requestedVoice !== "active"
+            && effectiveSelections.nonactiveOptionId
+            && !nonactiveOptionInventory.options.some(option => (
+              option.optionId === effectiveSelections.nonactiveOptionId
+            ))
+          ) {
+            bindingStatus = "rejected";
+            blockReason =
+              "classical-vnc-typed-source-application-nonactive-option-not-authorized";
+          }
+        }
+      }
+      if (!initialBlockReason && bindingStatus !== "rejected") {
+        if (requiredChoiceIds.length) {
+          bindingStatus = "choices-required";
+        } else {
+          bindingStatus = "ready";
+          blockReason = "";
+        }
+      }
+      requiredChoiceIds = Object.freeze([...new Set(requiredChoiceIds)]);
+      const choiceOptionProjection =
+        buildClassicalNahuatlVncTypedSourceApplicationChoiceProjection({
+          derivationInventories,
+          selectedDerivation,
+          participantOperationFrame,
+          allowedVoices,
+          nonactiveOptionInventory,
+        });
+      const sourceAccepted = Boolean(provenance);
+      const authorizationStatus = bindingStatus === "rejected"
+        ? "blocked"
+        : "authorized";
+      const executionArgs = Object.freeze(bindingStatus === "ready"
+        ? [exactSourceMachineryFrame, frozenCallerSelections]
+        : []);
+      const frame = Object.freeze({
+        kind:
+          CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,
+        version: 1,
+        authorizationStatus,
+        bindingStatus,
+        blockReason,
+        operationId: "vnc:application",
+        inputSourceMachineryFrame: exactSourceMachineryFrame,
+        exactSourceMachineryFrame: sourceAccepted
+          ? exactSourceMachineryFrame
+          : null,
+        callerSelections: frozenCallerSelections,
+        effectiveSelections,
+        requiredChoiceIds,
+        choiceOptionProjection,
+        ownerDerivationOptionInventory: selectedInventory,
+        ownerInventoryValidated: selectedDerivation === "direct"
+          ? true
+          : Boolean(selectedInventory),
+        executionArgs,
+        rejectedAuthorityFields,
+        unsupportedSelectionFields,
+        ownerChoicesRequired: requiredChoiceIds.length > 0,
+        ownerInputAcceptanceProven: sourceAccepted,
+        ownerRejectionProven: !sourceAccepted,
+        exactSourceIdentityPreserved: sourceAccepted,
+        ownerExecutionStillRequired: bindingStatus === "ready",
+        sourceStringAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        lessonMetadataAuthority: false,
+        storedStateAuthority: false,
+        grammarAuthority: false,
+      });
+      const ownerRequest = bindingStatus === "ready"
+        ? buildClassicalNahuatlVncTypedSourceApplicationOwnerRequest(
+          provenance,
+          effectiveSelections,
+        )
+        : null;
+      classicalNahuatlVncTypedSourceApplicationBindingFrames.add(frame);
+      classicalNahuatlVncTypedSourceApplicationBindingContexts.set(
+        frame,
+        Object.freeze({
+          provenance,
+          ownerRequest,
+          participantOperationFrame,
+          selectedInventory,
+        }),
+      );
+      return frame;
+    }
+    function isClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+      frame = null,
+    ) {
+      const context =
+        classicalNahuatlVncTypedSourceApplicationBindingContexts.get(frame)
+        || null;
+      if (
+        !frame
+        || !context
+        || !classicalNahuatlVncTypedSourceApplicationBindingFrames.has(frame)
+        || frame.kind
+          !== CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND
+        || frame.version !== 1
+        || !CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES
+          .includes(frame.bindingStatus)
+        || frame.operationId !== "vnc:application"
+        || !["authorized", "blocked"].includes(frame.authorizationStatus)
+        || frame.authorizationStatus !== (frame.bindingStatus === "rejected"
+          ? "blocked"
+          : "authorized")
+        || !Array.isArray(frame.requiredChoiceIds)
+        || !Array.isArray(frame.executionArgs)
+        || !Array.isArray(frame.rejectedAuthorityFields)
+        || !Array.isArray(frame.unsupportedSelectionFields)
+        || !Object.isFrozen(frame)
+        || !Object.isFrozen(frame.callerSelections)
+        || !Object.isFrozen(frame.effectiveSelections)
+        || !Object.isFrozen(frame.requiredChoiceIds)
+        || !Object.isFrozen(frame.choiceOptionProjection)
+        || !Object.isFrozen(frame.executionArgs)
+        || frame.ownerChoicesRequired !== Boolean(
+          frame.requiredChoiceIds.length,
+        )
+        || frame.sourceStringAuthority !== false
+        || frame.formulaStringAuthority !== false
+        || frame.surfaceStringAuthority !== false
+        || frame.lessonMetadataAuthority !== false
+        || frame.storedStateAuthority !== false
+        || frame.grammarAuthority !== false
+      ) {
+        return false;
+      }
+      if (!frame.ownerInputAcceptanceProven) {
+        return Boolean(
+          frame.bindingStatus === "rejected"
+          && frame.ownerRejectionProven === true
+          && frame.exactSourceMachineryFrame === null
+          && frame.executionArgs.length === 0
+          && frame.blockReason
+        );
+      }
+      const provenance =
+        classicalNahuatlVncTypedSourceApplicationProvenanceBySource.get(
+          frame.exactSourceMachineryFrame,
+        ) || null;
+      if (
+        !provenance
+        || provenance !== context.provenance
+        || frame.inputSourceMachineryFrame
+          !== frame.exactSourceMachineryFrame
+        || frame.exactSourceMachineryFrame
+          !== provenance.exactSourceMachineryFrame
+        || frame.ownerRejectionProven !== false
+        || frame.exactSourceIdentityPreserved !== true
+      ) {
+        return false;
+      }
+      if (frame.ownerDerivationOptionInventory) {
+        if (
+          frame.ownerDerivationOptionInventory !== context.selectedInventory
+          || frame.ownerDerivationOptionInventory.sourceMachineryFrame
+            !== frame.exactSourceMachineryFrame
+          || provenance.ownerDependencies
+            .isClassicalNahuatlVncDerivationOptionInventory(
+              frame.ownerDerivationOptionInventory,
+            ) !== true
+        ) {
+          return false;
+        }
+      } else if (
+        frame.effectiveSelections.requestedDerivation
+        && frame.effectiveSelections.requestedDerivation !== "direct"
+        && frame.bindingStatus !== "rejected"
+      ) {
+        return false;
+      }
+      if (frame.bindingStatus === "choices-required") {
+        const projectedChoicesAreUsable = frame.requiredChoiceIds.every(
+          choiceId => {
+            const options = frame.choiceOptionProjection?.[choiceId];
+            if (!Array.isArray(options) || options.length === 0) return false;
+            const optionIds = options.map(option => String(
+              option?.optionId || ""
+            ));
+            return Object.isFrozen(options)
+              && optionIds.every(Boolean)
+              && new Set(optionIds).size === optionIds.length
+              && options.every(option => (
+                Object.isFrozen(option)
+                && option.choiceId === choiceId
+                && option.ownerOptionProjected === true
+                && option.ownerOptionAuthority === false
+                && option.grammarAuthority === false
+              ))
+              && options.some(option => (
+                option.availabilityStatus === "available"
+              ));
+          },
+        );
+        return Boolean(
+          frame.blockReason
+          && frame.requiredChoiceIds.length
+          && projectedChoicesAreUsable
+          && frame.executionArgs.length === 0
+          && context.ownerRequest === null
+          && frame.ownerExecutionStillRequired === false
+        );
+      }
+      if (frame.bindingStatus === "rejected") {
+        return Boolean(
+          frame.blockReason
+          && frame.executionArgs.length === 0
+          && context.ownerRequest === null
+          && frame.ownerExecutionStillRequired === false
+        );
+      }
+      return Boolean(
+        frame.bindingStatus === "ready"
+        && frame.authorizationStatus === "authorized"
+        && frame.blockReason === ""
+        && frame.requiredChoiceIds.length === 0
+        && frame.executionArgs.length === 2
+        && frame.executionArgs[0] === frame.exactSourceMachineryFrame
+        && frame.executionArgs[1] === frame.callerSelections
+        && context.ownerRequest
+        && frame.ownerExecutionStillRequired === true
+      );
+    }
+    function executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+      bindingFrame = null,
+    ) {
+      if (
+        !isClassicalNahuatlVncTypedSourceApplicationBindingFrame(bindingFrame)
+        || bindingFrame.bindingStatus !== "ready"
+        || classicalNahuatlVncTypedSourceApplicationExecutedBindings.has(
+          bindingFrame,
+        )
+      ) {
+        return null;
+      }
+      const context =
+        classicalNahuatlVncTypedSourceApplicationBindingContexts.get(
+          bindingFrame,
+        );
+      classicalNahuatlVncTypedSourceApplicationExecutedBindings.add(
+        bindingFrame,
+      );
+      const result = context.provenance.ownerEvaluate(
+        context.ownerRequest,
+      );
+      if (
+        !isClassicalNahuatlVncApplicationFrame(result)
+        || result.authorizationStatus !== "authorized"
+        || result.resultFrame?.authorizationStatus !== "authorized"
+        || result.normalizedRequest?.sourceStem
+          !== context.ownerRequest.sourceStem
+        || result.normalizedRequest?.sourceValence
+          !== context.ownerRequest.sourceValence
+        || result.normalizedRequest?.derivationType
+          !== context.ownerRequest.requestedDerivation
+      ) {
+        return null;
+      }
+      return result;
+    }
+    const CLASSICAL_NAHUATL_VNC_CONTINUATION_SOURCE_FIELDS = Object.freeze([
+      "sourceStem",
+      "sourceLexemeId",
+      "sourceInitialISelection",
+      "verbClass",
+      "sourceValence",
+      "sourceSubject",
+      "sourceObjectRequests",
+      "sourceVoice",
+      "sourceNonactiveOptionId",
+      "objectKind",
+      "objectPerson",
+    ]);
+    const CLASSICAL_NAHUATL_VNC_CONTINUATION_ADDITIONAL_RESULT_FIELDS =
+      Object.freeze({
+        "recursive-embed-closure": "recursiveEmbedClosureFrame",
+        "compound-embed-closure": "compoundEmbedClosureFrame",
+        "recursive-matrix-closure": "compoundMatrixClosureFrame",
+        "compound-matrix-closure": "compoundMatrixClosureFrame",
+        "attitude-source-closure": "attitudeSourceClosureFrame",
+        "attitude-compound-closure": "attitudeCompoundClosureFrame",
+        "attitude-member-transformation":
+          "attitudeMemberTransformationFrame",
+      });
+    function hasClassicalNahuatlVncContinuationBindingSelection(
+      selections = {},
+      selectionId = "",
+    ) {
+      if (!Object.prototype.hasOwnProperty.call(selections, selectionId)) {
+        return false;
+      }
+      const value = selections[selectionId];
+      return Array.isArray(value)
+        ? value.length > 0
+        : typeof value === "string"
+          ? Boolean(value.trim())
+          : value !== undefined && value !== null;
+    }
+    function getClassicalNahuatlVncContinuationBindingSource(
+      exactInputResult = null,
+      operationId = "",
+    ) {
+      const service = getClassicalNahuatlVncApplicationSharedService();
+      const exactApplicationFrame = isClassicalNahuatlVncApplicationFrame(
+        exactInputResult,
+      )
+        ? exactInputResult
+        : null;
+      const continuationInputResult = exactApplicationFrame
+        ? exactApplicationFrame.resultFrame
+        : exactInputResult;
+      const continuationSourceProjection = service
+        .getContinuationSourceConstituents(continuationInputResult);
+      const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const lateClosure = Boolean(
+        continuationInputResult?.authorizationStatus === "authorized"
+        && typeof runtimeTarget?.isClassicalNahuatlClosureFrame === "function"
+        && runtimeTarget.isClassicalNahuatlClosureFrame(
+          continuationInputResult,
+        ) === true
+      );
+      const orderedVoice = isClassicalNahuatlOrderedVoiceVncApplicationFrame(
+        continuationInputResult,
+      );
+      const mappedApplicationFrame =
+        classicalNahuatlVncApplicationFrameByResultFrame.get(
+          continuationInputResult,
+        ) || null;
+      const lateTargetApplicationFrame = lateClosure
+        ? continuationInputResult.operationFrame?.targetApplicationFrame
+          || null
+        : null;
+      const outerVncApplicationFrame = [
+        exactApplicationFrame,
+        mappedApplicationFrame,
+        lateTargetApplicationFrame,
+      ].find(frame => (
+        isClassicalNahuatlVncApplicationFrame(frame)
+      )) || null;
+      const orderedOwnerAcceptsExactOuterApplication = Boolean(
+        operationId === "vnc:ordered-voice-application"
+        && outerVncApplicationFrame
+        && classicalNahuatlVncApplicationFrameByResultFrame.get(
+          outerVncApplicationFrame.resultFrame,
+        ) === outerVncApplicationFrame
+        && (
+          exactInputResult === outerVncApplicationFrame
+          || exactInputResult === outerVncApplicationFrame.resultFrame
+        )
+      );
+      if (
+        !continuationSourceProjection
+        && !orderedOwnerAcceptsExactOuterApplication
+      ) {
+        return null;
+      }
+      return Object.freeze({
+        exactInputResult,
+        continuationInputResult,
+        continuationSourceProjection,
+        outerVncApplicationFrame,
+        inputResultKind: exactApplicationFrame
+          ? "vnc-application"
+          : lateClosure
+            ? "late-vnc-closure"
+            : orderedVoice
+              ? "ordered-voice-vnc-application"
+              : "vnc-application-result",
+      });
+    }
+    function buildClassicalNahuatlVncContinuationBindingSourceRequest(
+      sourceRecord = null,
+      selections = {},
+    ) {
+      const projection = sourceRecord?.continuationSourceProjection;
+      if (!projection) return null;
+      const request = {};
+      CLASSICAL_NAHUATL_VNC_CONTINUATION_SOURCE_FIELDS.forEach(field => {
+        request[field] = projection[field];
+      });
+      Object.entries(selections).forEach(([field, value]) => {
+        request[field] = cloneClassicalNahuatlVncApplicationCompactValue(
+          value,
+        );
+      });
+      return deepFreezeClassicalNahuatlVncApplicationValue(request);
+    }
+    function buildClassicalNahuatlVncContinuationRecaptureRequest(
+      sourceRecord = null,
+    ) {
+      const projection = sourceRecord?.continuationSourceProjection;
+      if (!projection) return null;
+      const sourceCoordinate =
+        sourceRecord.outerVncApplicationFrame?.normalizedRequest
+        || sourceRecord.continuationInputResult?.normalizedRequest
+        || sourceRecord.continuationInputResult?.baseApplicationFrame
+          ?.normalizedRequest
+        || {};
+      return buildClassicalNahuatlVncContinuationBindingSourceRequest(
+        sourceRecord,
+        {
+          subject: projection.sourceSubject
+            || sourceCoordinate.subject
+            || "3sg",
+          mood: sourceCoordinate.mood || "indicative",
+          tense: sourceCoordinate.tense || "present",
+          requestedDerivation: "direct",
+          requestedVoice: "active",
+          voice: "active",
+          outputScope: "single",
+        },
+      );
+    }
+    function getClassicalNahuatlVncContinuationOuterApplicationFrame(
+      sourceRecord = null,
+      operationId = "",
+    ) {
+      const recaptureDerivedResult = Boolean(
+        [
+          "vnc:ordered-voice-application",
+          "vnc:derivational-operation",
+        ].includes(operationId)
+        && sourceRecord?.continuationSourceProjection
+        && sourceRecord.continuationInputResult?.kind
+          === "classical-nahuatl-vnc-application-result-frame"
+        && sourceRecord.continuationInputResult.selectedDerivation
+          !== "direct"
+      );
+      if (
+        !recaptureDerivedResult
+        && sourceRecord?.outerVncApplicationFrame
+        && isClassicalNahuatlVncApplicationFrame(
+          sourceRecord.outerVncApplicationFrame,
+        )
+      ) {
+        return sourceRecord.outerVncApplicationFrame;
+      }
+      const recaptureRequest =
+        buildClassicalNahuatlVncContinuationRecaptureRequest(sourceRecord);
+      const recaptured = recaptureRequest
+        ? getClassicalNahuatlVncApplicationSharedService()
+          .continueFromResult(
+            sourceRecord.continuationInputResult,
+            recaptureRequest,
+          )
+        : null;
+      return isClassicalNahuatlVncApplicationFrame(recaptured)
+        ? recaptured
+        : null;
+    }
+    function getClassicalNahuatlVncContinuationAdditionalResults(
+      additionalResults = {},
+    ) {
+      const supplied = additionalResults
+        && typeof additionalResults === "object"
+        && !Array.isArray(additionalResults)
+        ? additionalResults
+        : null;
+      if (!supplied) {
+        return Object.freeze({
+          valid: false,
+          blockReason:
+            "classical-vnc-continuation-additional-results-must-be-an-object",
+          ownerFields: Object.freeze({}),
+          suppliedRoles: Object.freeze([]),
+        });
+      }
+      const knownKeys = new Set([
+        ...Object.keys(
+          CLASSICAL_NAHUATL_VNC_CONTINUATION_ADDITIONAL_RESULT_FIELDS,
+        ),
+        ...Object.values(
+          CLASSICAL_NAHUATL_VNC_CONTINUATION_ADDITIONAL_RESULT_FIELDS,
+        ),
+      ]);
+      const unknownKey = Reflect.ownKeys(supplied).find(key => (
+        typeof key !== "string" || !knownKeys.has(key)
+      ));
+      if (unknownKey !== undefined) {
+        return Object.freeze({
+          valid: false,
+          blockReason:
+            "classical-vnc-continuation-additional-result-role-not-recognized",
+          ownerFields: Object.freeze({}),
+          suppliedRoles: Object.freeze([]),
+        });
+      }
+      const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const ownerFields = {};
+      const suppliedRoles = [];
+      for (const [role, field] of Object.entries(
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_ADDITIONAL_RESULT_FIELDS,
+      )) {
+        const exactResult = supplied[role] || supplied[field] || null;
+        if (!exactResult) continue;
+        if (
+          typeof runtimeTarget?.isClassicalNahuatlClosureFrame !== "function"
+          || runtimeTarget.isClassicalNahuatlClosureFrame(exactResult)
+            !== true
+          || exactResult.authorizationStatus !== "authorized"
+        ) {
+          return Object.freeze({
+            valid: false,
+            blockReason:
+              "classical-vnc-continuation-exact-additional-result-required",
+            ownerFields: Object.freeze({}),
+            suppliedRoles: Object.freeze([]),
+          });
+        }
+        if (ownerFields[field] && ownerFields[field] !== exactResult) {
+          return Object.freeze({
+            valid: false,
+            blockReason:
+              "classical-vnc-continuation-conflicting-additional-results",
+            ownerFields: Object.freeze({}),
+            suppliedRoles: Object.freeze([]),
+          });
+        }
+        ownerFields[field] = exactResult;
+        suppliedRoles.push(role);
+      }
+      return Object.freeze({
+        valid: true,
+        blockReason: "",
+        ownerFields: Object.freeze(ownerFields),
+        suppliedRoles: Object.freeze([...new Set(suppliedRoles)]),
+      });
+    }
+    function getClassicalNahuatlVncContinuationPreflightRequirements(
+      operationId = "",
+      blockReason = "",
+    ) {
+      const reason = String(blockReason || "");
+      const choiceIds = [];
+      const resultRoles = [];
+      const addChoice = (pattern, choiceId) => {
+        if (pattern.test(reason)) choiceIds.push(choiceId);
+      };
+      const addResult = (pattern, role) => {
+        if (pattern.test(reason)) resultRoles.push(role);
+      };
+      addChoice(/derivation-option-selection-required/u, "derivationOptionId");
+      addChoice(/source-nonactive.*selection-required/u,
+        "sourceNonactiveOptionId");
+      addChoice(/nonactive-formation-option-selection-required/u,
+        "nonactiveOptionId");
+      addChoice(/variant-required|licensed-attitude-formation-required/u,
+        "lateVariant");
+      addChoice(/positive-bounded-reduplication-count-required/u,
+        "frequentativeRepetitions");
+      addChoice(/typed-compound-matrix-required/u, "compoundMatrixStem");
+      addChoice(/licensed-compound-event-order-required/u,
+        "compoundEventOrder");
+      addChoice(/licensed-frequentative-scope-required/u,
+        "frequentativeScope");
+      addChoice(/licensed-frequentative-target-required/u,
+        "frequentativeTarget");
+      addChoice(/licensed-external-directional-required/u,
+        "purposiveExternalDirectional");
+      addChoice(/licensed-honorific-stem-alternative-required/u,
+        "honorificStemAlternative");
+      addResult(/recursive-embed-closure-required/u,
+        "recursive-embed-closure");
+      addResult(/recursive-matrix-closure-required/u,
+        "recursive-matrix-closure");
+      addResult(/reverential-requires-engine-issued-honorific-source/u,
+        "attitude-source-closure");
+      addResult(/engine-issued-typed-compound-source-required/u,
+        "attitude-compound-closure");
+      addResult(/engine-issued-attitude-member-transformation-required/u,
+        "attitude-member-transformation");
+      return Object.freeze({
+        operationId,
+        choiceIds: Object.freeze([...new Set(choiceIds)]),
+        resultRoles: Object.freeze([...new Set(resultRoles)]),
+      });
+    }
+    function issueClassicalNahuatlVncContinuationBindingFrame(
+      operationId = "",
+      exactInputResult = null,
+      callerSelections = {},
+      additionalResults = {},
+    ) {
+      const normalizedOperationId = String(operationId || "").trim();
+      const operationRecognized =
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS.includes(
+          normalizedOperationId,
+        );
+      const selections = callerSelections
+        && typeof callerSelections === "object"
+        && !Array.isArray(callerSelections)
+        ? callerSelections
+        : null;
+      const sourceRecord = operationRecognized
+        ? getClassicalNahuatlVncContinuationBindingSource(
+          exactInputResult,
+          normalizedOperationId,
+        )
+        : null;
+      const rejectedAuthorityFields = selections
+        ? Object.freeze(Array.from(new Set([
+          ...getClassicalNahuatlVncApplicationPresentFields(
+            selections,
+            CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS,
+          ),
+          ...getClassicalNahuatlVncApplicationCurriculumCarrierFields(
+            selections,
+          ),
+        ])))
+        : Object.freeze([]);
+      const sourceFieldOverride = selections
+        ? CLASSICAL_NAHUATL_VNC_CONTINUATION_SOURCE_FIELDS.find(field => (
+          Object.prototype.hasOwnProperty.call(selections, field)
+        )) || ""
+        : "";
+      const additional = getClassicalNahuatlVncContinuationAdditionalResults(
+        additionalResults,
+      );
+      const initialBlockReason = !operationRecognized
+        ? "classical-vnc-continuation-binding-operation-not-recognized"
+        : !sourceRecord
+          ? "classical-vnc-continuation-exact-issued-result-required"
+          : !selections
+            ? "classical-vnc-continuation-selections-must-be-an-object"
+            : rejectedAuthorityFields.length
+              ? "classical-vnc-continuation-caller-authority-rejected"
+              : sourceFieldOverride
+                ? "classical-vnc-continuation-source-provenance-is-owner-issued"
+                : !additional.valid
+                  ? additional.blockReason
+                  : "";
+      let bindingStatus = initialBlockReason ? "rejected" : "choices-required";
+      let blockReason = initialBlockReason;
+      let requiredChoiceIds = [];
+      let requiredResultRoles = [];
+      let ownerPreflightInvoked = false;
+      let ownerPreflightResult = null;
+      let ownerPreflightValidated = false;
+      let ownerPreflightAuthorized = false;
+      let ownerRequest = null;
+      let outerVncApplicationFrame = sourceRecord?.outerVncApplicationFrame
+        || null;
+      let executionArgs = [];
+      if (!initialBlockReason) {
+        if (normalizedOperationId === "vnc:application") {
+          requiredChoiceIds = [
+            "subject",
+            "mood",
+            "tense",
+            "requestedDerivation",
+            "requestedVoice",
+          ].filter(selectionId => (
+            !hasClassicalNahuatlVncContinuationBindingSelection(
+              selections,
+              selectionId,
+            )
+          ));
+        } else if (
+          normalizedOperationId === "vnc:ordered-voice-application"
+        ) {
+          requiredChoiceIds = hasClassicalNahuatlVncContinuationBindingSelection(
+            selections,
+            "operations",
+          ) ? [] : ["operations"];
+        } else {
+          requiredChoiceIds = hasClassicalNahuatlVncContinuationBindingSelection(
+            selections,
+            "lateOperation",
+          ) ? [] : ["lateOperation"];
+          if (
+            !requiredChoiceIds.length
+            && !hasClassicalNahuatlVncContinuationBindingSelection(
+              selections,
+              "lateVariant",
+            )
+          ) {
+            requiredChoiceIds.push("lateVariant");
+          }
+          if (
+            selections.lateOperation === "reverential"
+            && !additional.ownerFields.attitudeSourceClosureFrame
+          ) {
+            requiredResultRoles.push("attitude-source-closure");
+          }
+        }
+        if (requiredResultRoles.length) {
+          bindingStatus = "additional-result-required";
+          blockReason = "classical-vnc-continuation-additional-result-required";
+        } else if (requiredChoiceIds.length) {
+          bindingStatus = "choices-required";
+          blockReason = "classical-vnc-continuation-owner-choices-required";
+        } else {
+          if (normalizedOperationId === "vnc:application") {
+            ownerRequest =
+              buildClassicalNahuatlVncContinuationBindingSourceRequest(
+                sourceRecord,
+                selections,
+              );
+            ownerPreflightInvoked = true;
+            ownerPreflightResult = getClassicalNahuatlVncApplicationSharedService()
+              .continueFromResult(
+                sourceRecord.continuationInputResult,
+                ownerRequest,
+              );
+            ownerPreflightValidated = isClassicalNahuatlVncApplicationFrame(
+              ownerPreflightResult,
+            );
+            ownerPreflightAuthorized = ownerPreflightValidated;
+            if (ownerPreflightAuthorized) {
+              executionArgs = [
+                ownerRequest,
+                sourceRecord.continuationInputResult,
+              ];
+            }
+          } else if (
+            normalizedOperationId === "vnc:ordered-voice-application"
+          ) {
+            outerVncApplicationFrame =
+              getClassicalNahuatlVncContinuationOuterApplicationFrame(
+                sourceRecord,
+                normalizedOperationId,
+              );
+            ownerRequest = deepFreezeClassicalNahuatlVncApplicationValue({
+              operations: cloneClassicalNahuatlVncApplicationCompactValue(
+                selections.operations,
+              ),
+            });
+            ownerPreflightInvoked = Boolean(outerVncApplicationFrame);
+            ownerPreflightResult = outerVncApplicationFrame
+              ? buildClassicalNahuatlOrderedVoiceVncApplicationFrame(
+                outerVncApplicationFrame,
+                ownerRequest,
+              )
+              : null;
+            ownerPreflightValidated =
+              isClassicalNahuatlOrderedVoiceVncApplicationFrame(
+                ownerPreflightResult,
+              );
+            ownerPreflightAuthorized = ownerPreflightValidated;
+            if (ownerPreflightAuthorized) {
+              executionArgs = [outerVncApplicationFrame, ownerRequest];
+            }
+          } else {
+            outerVncApplicationFrame =
+              getClassicalNahuatlVncContinuationOuterApplicationFrame(
+                sourceRecord,
+                normalizedOperationId,
+              );
+            const outerCoordinate =
+              outerVncApplicationFrame?.normalizedRequest || {};
+            const baseRequest =
+              buildClassicalNahuatlVncContinuationBindingSourceRequest(
+                sourceRecord,
+                {
+                  subject: outerCoordinate.subject || "3sg",
+                  mood: outerCoordinate.mood || "indicative",
+                  tense: outerCoordinate.tense || "present",
+                  ...selections,
+                },
+              );
+            ownerRequest = baseRequest && outerVncApplicationFrame
+              ? deepFreezeClassicalNahuatlVncApplicationValue({
+                ...baseRequest,
+                ...additional.ownerFields,
+                sourceApplicationFrame: outerVncApplicationFrame,
+              })
+              : null;
+            const runtimeTarget =
+              getClassicalNahuatlVncApplicationRuntimeTarget();
+            const evaluator = runtimeTarget
+              ?.evaluateClassicalNahuatlLateVncDerivation
+              || runtimeTarget?.requestClassicalLateVncOperation;
+            ownerPreflightInvoked = Boolean(
+              ownerRequest && typeof evaluator === "function",
+            );
+            ownerPreflightResult = ownerPreflightInvoked
+              ? evaluator.call(runtimeTarget, ownerRequest)
+              : null;
+            ownerPreflightValidated = Boolean(
+              typeof runtimeTarget?.isClassicalNahuatlClosureFrame
+                === "function"
+              && runtimeTarget.isClassicalNahuatlClosureFrame(
+                ownerPreflightResult,
+              ) === true
+            );
+            ownerPreflightAuthorized = Boolean(
+              ownerPreflightValidated
+              && ownerPreflightResult.authorizationStatus === "authorized"
+            );
+            if (ownerPreflightAuthorized) executionArgs = [ownerRequest];
+          }
+          if (ownerPreflightAuthorized) {
+            bindingStatus = "ready";
+            blockReason = "";
+          } else {
+            const ownerBlockReason = String(
+              ownerPreflightResult?.blockReason
+              || (!outerVncApplicationFrame
+                && normalizedOperationId !== "vnc:application"
+                ? "classical-vnc-continuation-outer-application-recapture-required"
+                : "classical-vnc-continuation-owner-preflight-rejected"),
+            );
+            const requirements =
+              getClassicalNahuatlVncContinuationPreflightRequirements(
+                normalizedOperationId,
+                ownerBlockReason,
+              );
+            requiredChoiceIds = [...requirements.choiceIds];
+            requiredResultRoles = [...requirements.resultRoles];
+            if (requiredResultRoles.length) {
+              bindingStatus = "additional-result-required";
+            } else if (requiredChoiceIds.length) {
+              bindingStatus = "choices-required";
+            } else {
+              bindingStatus = "rejected";
+            }
+            blockReason = ownerBlockReason;
+            executionArgs = [];
+          }
+        }
+      }
+      requiredChoiceIds = Object.freeze([...new Set(requiredChoiceIds)]);
+      requiredResultRoles = Object.freeze([
+        ...new Set(requiredResultRoles),
+      ]);
+      executionArgs = Object.freeze(executionArgs);
+      const sourceAccepted = Boolean(sourceRecord);
+      const authorizationStatus = bindingStatus === "rejected"
+        ? "blocked"
+        : "authorized";
+      const bindingIds = Object.freeze(sourceAccepted
+        ? [`${normalizedOperationId}:source-result`]
+        : []);
+      const frame = Object.freeze({
+        kind: CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND,
+        version: 1,
+        authorizationStatus,
+        bindingStatus,
+        blockReason,
+        operationId: normalizedOperationId,
+        inputResult: sourceAccepted ? exactInputResult : null,
+        exactInputResult: sourceAccepted ? exactInputResult : null,
+        inputResultKind: sourceRecord?.inputResultKind || "",
+        continuationInputResult:
+          sourceRecord?.continuationInputResult || null,
+        continuationSourceProjection:
+          sourceRecord?.continuationSourceProjection || null,
+        outerVncApplicationFrame,
+        callerSelections: selections
+          ? deepFreezeClassicalNahuatlVncApplicationValue(
+            cloneClassicalNahuatlVncApplicationCompactValue(selections),
+          )
+          : Object.freeze({}),
+        additionalResultFrames: additional.valid
+          ? additional.ownerFields
+          : Object.freeze({}),
+        suppliedResultRoles: additional.valid
+          ? additional.suppliedRoles
+          : Object.freeze([]),
+        bindingIds,
+        requiredChoiceIds,
+        requiredResultRoles,
+        ownerRequest,
+        ownerPreflightInvoked,
+        ownerPreflightResult,
+        ownerPreflightValidated,
+        ownerPreflightAuthorized,
+        executionArgs,
+        rejectedAuthorityFields,
+        ownerChoicesRequired: Boolean(
+          requiredChoiceIds.length || requiredResultRoles.length
+        ),
+        ownerInputAcceptanceProven: sourceAccepted,
+        ownerRejectionProven: !sourceAccepted,
+        exactInputIdentityPreserved: sourceAccepted,
+        sourceHistoryPreservedByExactFrameIdentity: sourceAccepted,
+        ownerAuthorizationStillRequired: bindingStatus !== "ready",
+        sourceStringAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        lessonMetadataAuthority: false,
+        storedStateAuthority: false,
+        grammarAuthority: false,
+      });
+      classicalNahuatlVncContinuationBindingFrames.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlVncContinuationBindingFrame(frame = null) {
+      if (
+        !frame
+        || !classicalNahuatlVncContinuationBindingFrames.has(frame)
+        || frame.kind
+          !== CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND
+        || frame.version !== 1
+        || !CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES.includes(
+          frame.bindingStatus,
+        )
+        || !["authorized", "blocked"].includes(frame.authorizationStatus)
+        || frame.authorizationStatus
+          !== (frame.bindingStatus === "rejected"
+            ? "blocked"
+            : "authorized")
+        || !Array.isArray(frame.bindingIds)
+        || !Array.isArray(frame.requiredChoiceIds)
+        || !Array.isArray(frame.requiredResultRoles)
+        || !Array.isArray(frame.suppliedResultRoles)
+        || !Array.isArray(frame.executionArgs)
+        || !Array.isArray(frame.rejectedAuthorityFields)
+        || !Object.isFrozen(frame)
+        || !Object.isFrozen(frame.bindingIds)
+        || !Object.isFrozen(frame.requiredChoiceIds)
+        || !Object.isFrozen(frame.requiredResultRoles)
+        || !Object.isFrozen(frame.suppliedResultRoles)
+        || !Object.isFrozen(frame.executionArgs)
+        || frame.ownerChoicesRequired !== Boolean(
+          frame.requiredChoiceIds.length || frame.requiredResultRoles.length
+        )
+        || frame.ownerAuthorizationStillRequired
+          !== (frame.bindingStatus !== "ready")
+        || frame.sourceStringAuthority !== false
+        || frame.formulaStringAuthority !== false
+        || frame.surfaceStringAuthority !== false
+        || frame.lessonMetadataAuthority !== false
+        || frame.storedStateAuthority !== false
+        || frame.grammarAuthority !== false
+      ) {
+        return false;
+      }
+      if (!frame.ownerInputAcceptanceProven) {
+        return Boolean(
+          frame.bindingStatus === "rejected"
+          && frame.ownerRejectionProven === true
+          && frame.exactInputResult === null
+          && frame.inputResult === null
+          && frame.bindingIds.length === 0
+          && frame.executionArgs.length === 0
+          && frame.blockReason
+        );
+      }
+      const sourceRecord = getClassicalNahuatlVncContinuationBindingSource(
+        frame.exactInputResult,
+        frame.operationId,
+      );
+      if (
+        !sourceRecord
+        || frame.ownerRejectionProven !== false
+        || frame.inputResult !== frame.exactInputResult
+        || frame.continuationInputResult
+          !== sourceRecord.continuationInputResult
+        || Boolean(
+          frame.continuationSourceProjection
+          || sourceRecord.continuationSourceProjection
+        ) && !areClassicalNahuatlVncApplicationCanonicalValuesEqual(
+            frame.continuationSourceProjection,
+            sourceRecord.continuationSourceProjection,
+          )
+        || frame.exactInputIdentityPreserved !== true
+        || frame.sourceHistoryPreservedByExactFrameIdentity !== true
+        || frame.bindingIds.length !== 1
+        || frame.bindingIds[0] !== `${frame.operationId}:source-result`
+      ) {
+        return false;
+      }
+      if (frame.bindingStatus !== "ready") {
+        return frame.executionArgs.length === 0
+          && Boolean(frame.blockReason);
+      }
+      if (
+        frame.authorizationStatus !== "authorized"
+        || frame.blockReason !== ""
+        || frame.ownerPreflightInvoked !== true
+        || frame.ownerPreflightValidated !== true
+        || frame.ownerPreflightAuthorized !== true
+        || frame.executionArgs.length === 0
+      ) {
+        return false;
+      }
+      if (frame.operationId === "vnc:application") {
+        return isClassicalNahuatlVncApplicationFrame(
+          frame.ownerPreflightResult,
+        )
+          && frame.executionArgs[0] === frame.ownerRequest
+          && frame.executionArgs[1] === frame.continuationInputResult;
+      }
+      if (frame.operationId === "vnc:ordered-voice-application") {
+        return isClassicalNahuatlOrderedVoiceVncApplicationFrame(
+          frame.ownerPreflightResult,
+        )
+          && frame.executionArgs[0] === frame.outerVncApplicationFrame
+          && frame.executionArgs[1] === frame.ownerRequest;
+      }
+      const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+      return frame.operationId === "vnc:derivational-operation"
+        && typeof runtimeTarget?.isClassicalNahuatlClosureFrame === "function"
+        && runtimeTarget.isClassicalNahuatlClosureFrame(
+          frame.ownerPreflightResult,
+        ) === true
+        && frame.ownerPreflightResult.authorizationStatus === "authorized"
+        && frame.executionArgs[0] === frame.ownerRequest;
+    }
     function prepareClassicalNahuatlVncParadigmPlan(
       request = {},
       continuationSourceResultFrame = null,
@@ -6680,9 +8307,19 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const service = getClassicalNahuatlVncApplicationSharedService();
       Object.assign(globalTarget, {
         CLASSICAL_NAHUATL_VNC_APPLICATION_SOURCE_VOICES,
+        CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,
+        CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES,
         createClassicalNahuatlVncApplication,
         evaluateClassicalNahuatlVncApplication: service.evaluate,
         getClassicalNahuatlVncContinuationSourceConstituents,
+        issueClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        issueClassicalNahuatlVncContinuationBindingFrame,
+        isClassicalNahuatlVncContinuationBindingFrame,
         prepareClassicalNahuatlVncParadigmPlan,
         projectClassicalNahuatlVncParadigmCoordinates,
         inflectClassicalNahuatlVncPredicateCoordinate,
@@ -6726,6 +8363,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         CLASSICAL_NAHUATL_VNC_APPLICATION_DERIVATIONS,
         CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS,
         CLASSICAL_NAHUATL_VNC_APPLICATION_DERIVATION_REFERENCE_DIMENSIONS,
+        CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND,
+        CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS,
+        CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES,
         normalizeClassicalNahuatlVncApplicationRequest,
         getClassicalNahuatlVncApplicationAllowedVoices,
         getClassicalNahuatlVncApplicationPublicAllowedVoices,
@@ -6735,6 +8377,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         createClassicalNahuatlVncApplication,
         evaluateClassicalNahuatlVncApplication,
         getClassicalNahuatlVncContinuationSourceConstituents,
+        issueClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        isClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        executeClassicalNahuatlVncTypedSourceApplicationBindingFrame,
+        issueClassicalNahuatlVncContinuationBindingFrame,
+        isClassicalNahuatlVncContinuationBindingFrame,
         prepareClassicalNahuatlVncParadigmPlan,
         projectClassicalNahuatlVncParadigmCoordinates,
         isClassicalNahuatlVncParadigmPlan,
@@ -6789,6 +8436,46 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         enumerable: true,
         get() { return CLASSICAL_NAHUATL_VNC_APPLICATION_DERIVATIONS; },
     });
+    Object.defineProperty(api,
+      "CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND;
+        },
+      });
+    Object.defineProperty(api,
+      "CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES;
+        },
+      });
+    Object.defineProperty(api,
+      "CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_FRAME_KIND;
+        },
+      });
+    Object.defineProperty(api,
+      "CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_OPERATION_IDS;
+        },
+      });
+    Object.defineProperty(api,
+      "CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES", {
+        configurable: true,
+        enumerable: true,
+        get() {
+          return CLASSICAL_NAHUATL_VNC_CONTINUATION_BINDING_STATUSES;
+        },
+      });
     Object.defineProperty(api, "CLASSICAL_NAHUATL_VNC_APPLICATION_CALLER_AUTHORITY_FIELDS", {
         configurable: true,
         enumerable: true,
@@ -6873,6 +8560,16 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     api.evaluateClassicalNahuatlVncApplication = evaluateClassicalNahuatlVncApplication;
     api.getClassicalNahuatlVncContinuationSourceConstituents =
       getClassicalNahuatlVncContinuationSourceConstituents;
+    api.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame =
+      issueClassicalNahuatlVncTypedSourceApplicationBindingFrame;
+    api.isClassicalNahuatlVncTypedSourceApplicationBindingFrame =
+      isClassicalNahuatlVncTypedSourceApplicationBindingFrame;
+    api.executeClassicalNahuatlVncTypedSourceApplicationBindingFrame =
+      executeClassicalNahuatlVncTypedSourceApplicationBindingFrame;
+    api.issueClassicalNahuatlVncContinuationBindingFrame =
+      issueClassicalNahuatlVncContinuationBindingFrame;
+    api.isClassicalNahuatlVncContinuationBindingFrame =
+      isClassicalNahuatlVncContinuationBindingFrame;
     api.prepareClassicalNahuatlVncParadigmPlan = prepareClassicalNahuatlVncParadigmPlan;
     api.projectClassicalNahuatlVncParadigmCoordinates = projectClassicalNahuatlVncParadigmCoordinates;
     api.inflectClassicalNahuatlVncPredicateCoordinate = inflectClassicalNahuatlVncPredicateCoordinate;

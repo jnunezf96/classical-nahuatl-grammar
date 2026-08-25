@@ -2098,6 +2098,14 @@ export function createUiStateModule(targetObject = globalThis) {
     function isThreeColumnPanelLayout() {
       return typeof targetObject.window !== "undefined" && typeof targetObject.window.matchMedia === "function" && targetObject.window.matchMedia("(min-width: 1025px)").matches;
     }
+    function isStackedPanelLayout() {
+      return typeof targetObject.window !== "undefined"
+        && typeof targetObject.window.matchMedia === "function"
+        && targetObject.window.matchMedia("(max-width: 720px)").matches;
+    }
+    function showsAllPanelStackPanes() {
+      return isThreeColumnPanelLayout() || isStackedPanelLayout();
+    }
     function captureViewportAnchor(element) {
       if (!element || typeof element.getBoundingClientRect !== "function") {
         return null;
@@ -2420,7 +2428,7 @@ export function createUiStateModule(targetObject = globalThis) {
         resetDragPresentation({ animate });
       };
       root.addEventListener("pointerdown", event => {
-        if (event.pointerType !== "touch" || event.isPrimary === false || isThreeColumnPanelLayout() || isPanelStackSwipeExcludedTarget(event.target, root)) {
+        if (event.pointerType !== "touch" || event.isPrimary === false || showsAllPanelStackPanes() || isPanelStackSwipeExcludedTarget(event.target, root)) {
           return;
         }
         const viewportWidth = Number(targetObject.window.innerWidth) || 0;
@@ -2518,7 +2526,7 @@ export function createUiStateModule(targetObject = globalThis) {
       const panes = Array.from(targetObject.document.querySelectorAll("[data-panel-stack-pane]"));
       const stackRoot = targetObject.document.querySelector(".panel-stack");
       const previousMode = stackRoot?.getAttribute("data-active-pane") || "";
-      const showAllPanes = isThreeColumnPanelLayout();
+      const showAllPanes = showsAllPanelStackPanes();
       const shouldAnimateReveal = !showAllPanes && previousMode !== normalizedMode;
       const triggerPaneReveal = pane => {
         if (!pane || !shouldAnimateReveal) {
@@ -2639,10 +2647,10 @@ export function createUiStateModule(targetObject = globalThis) {
       const initialActive = buttons.find(button => button.classList.contains("is-active"));
       const initialMode = initialActive?.getAttribute("data-panel-stack-tab") || "inputs";
       setLeftPanelStackMode(initialMode);
-      let previousShowAllPanes = isThreeColumnPanelLayout();
+      let previousShowAllPanes = showsAllPanelStackPanes();
       const syncOnResize = () => {
         const stackRoot = targetObject.document.querySelector(".panel-stack");
-        const showAllPanes = isThreeColumnPanelLayout();
+        const showAllPanes = showsAllPanelStackPanes();
         const focusedElement = targetObject.document.activeElement;
         const focusedPane = focusedElement?.closest?.("[data-panel-stack-pane]") || null;
         const focusedTab = focusedElement?.closest?.("[data-panel-stack-tab]") || null;

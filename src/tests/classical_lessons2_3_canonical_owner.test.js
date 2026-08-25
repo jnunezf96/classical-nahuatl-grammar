@@ -414,11 +414,31 @@ function run(ctx) {
         ctx.buildClassicalNahuatlParticleResultFrame(caSource, {
             precedingParticleSourceFrame: maSource,
         });
+    const maResult = ctx.requestClassicalParticleResult(maSource);
     const caSelected = ctx.requestClassicalNegativeParticleSelection({
         polarity: "negative",
         precedingParticleId: "l3-ma",
         sentenceKind: "wish",
     });
+    const caSelectedFromExactResult =
+        ctx.requestClassicalNegativeParticleSelection({
+            polarity: "negative",
+            precedingParticleResultFrame: maResult,
+            sentenceKind: "wish",
+        });
+    const copiedPrecedingParticleResult =
+        ctx.selectClassicalNahuatlNegativeParticleFrame({
+            polarity: "negative",
+            precedingParticleResultFrame: { ...maResult },
+            sentenceKind: "wish",
+        });
+    const conflictingPrecedingParticleInputs =
+        ctx.selectClassicalNahuatlNegativeParticleFrame({
+            polarity: "negative",
+            precedingParticleId: "l3-ma",
+            precedingParticleResultFrame: maResult,
+            sentenceKind: "wish",
+        });
 
     s.eq(
         "particle:result licenses an exact lexical Source, preserves internal formula boundaries, and derives written form independently",
@@ -472,6 +492,27 @@ function run(ctx) {
                     caSelected.particleResultFrame.formula,
                     caSelected.particleResultFrame.surface,
                 ],
+                exactResult: [
+                    caSelectedFromExactResult.authorizationStatus,
+                    ctx.isClassicalNahuatlNegativeParticleSelectionFrame(
+                        caSelectedFromExactResult
+                    ),
+                    caSelectedFromExactResult.precedingParticleId,
+                    caSelectedFromExactResult.precedingParticleResultFrame
+                        === maResult,
+                    caSelectedFromExactResult.precedingSourceFrame
+                        === maResult.sourceFrame,
+                    caSelectedFromExactResult.selectedParticleId,
+                    caSelectedFromExactResult.formula,
+                ],
+                copiedResult: [
+                    copiedPrecedingParticleResult.authorizationStatus,
+                    copiedPrecedingParticleResult.blockReason,
+                ],
+                conflictingInputs: [
+                    conflictingPrecedingParticleInputs.authorizationStatus,
+                    conflictingPrecedingParticleInputs.blockReason,
+                ],
             },
         },
         {
@@ -499,6 +540,23 @@ function run(ctx) {
                     "classical-negative-particle-selection-required",
                     "ca#",
                     "ca",
+                ],
+                exactResult: [
+                    "authorized",
+                    true,
+                    "l3-ma",
+                    true,
+                    true,
+                    "l3-ca-negative",
+                    "ca#",
+                ],
+                copiedResult: [
+                    "blocked",
+                    "classical-particle-owner-issued-result-required",
+                ],
+                conflictingInputs: [
+                    "blocked",
+                    "classical-negative-particle-preceding-result-and-id-are-mutually-exclusive",
                 ],
             },
         }
@@ -639,11 +697,18 @@ function run(ctx) {
         ctx.buildClassicalNahuatlParticleSourceFrame(
             "l3-auh-conjunctor"
         );
+    const auhResult = ctx.requestClassicalParticleResult(auhSource);
     const sentence = ctx.requestClassicalSentenceParticleFrame({
         particleSourceFrame: auhSource,
         nuclearResultFrame: clauseResult,
         honorificized: false,
     });
+    const exactResultSentence =
+        ctx.requestClassicalSentenceParticleFrame({
+            particleResultFrame: auhResult,
+            nuclearResultFrame: clauseResult,
+            honorificized: false,
+        });
     const auhInterjectionSource =
         ctx.buildClassicalNahuatlParticleSourceFrame(
             "l3-auh-interjection"
@@ -684,6 +749,19 @@ function run(ctx) {
                 sentence.writtenProjection
                     ?.derivedFromFormulaProjection,
             ],
+            exactResultContinuation: [
+                exactResultSentence.authorizationStatus,
+                ctx.isClassicalNahuatlIssuedParticleSentenceLayerFrame(
+                    exactResultSentence
+                ),
+                exactResultSentence.inputParticleResultFrame === auhResult,
+                exactResultSentence.particleResultFrame === auhResult,
+                exactResultSentence.particleSourceFrame
+                    === auhResult.sourceFrame,
+                exactResultSentence.formulaProjection?.particleResultFrame
+                    === auhResult,
+                exactResultSentence.sentenceSurfaceDisplay,
+            ],
             honorific: [
                 honorificSentence.authorizationStatus,
                 honorificSentence.particleResultFrame?.formula,
@@ -710,6 +788,15 @@ function run(ctx) {
                 true,
                 false,
                 false,
+            ],
+            exactResultContinuation: [
+                "authorized",
+                true,
+                true,
+                true,
+                true,
+                true,
+                "Auh nitēuctli.",
             ],
             honorific: [
                 "authorized",
@@ -738,6 +825,17 @@ function run(ctx) {
             particleSourceFrame: auhSource,
             nuclearResultFrame: { ...clauseResult },
         });
+    const copiedParticleResultSentence =
+        ctx.buildClassicalNahuatlSentenceParticleLayerFrame({
+            particleResultFrame: { ...auhResult },
+            nuclearResultFrame: clauseResult,
+        });
+    const conflictingParticleInputsSentence =
+        ctx.buildClassicalNahuatlSentenceParticleLayerFrame({
+            particleSourceFrame: auhSource,
+            particleResultFrame: auhResult,
+            nuclearResultFrame: clauseResult,
+        });
     const hostileSentence =
         ctx.buildClassicalNahuatlSentenceParticleLayerFrame({
             particleSourceFrame: auhSource,
@@ -760,6 +858,14 @@ function run(ctx) {
                 copiedClause.authorizationStatus,
                 copiedClause.blockReason,
             ],
+            copiedParticleResult: [
+                copiedParticleResultSentence.authorizationStatus,
+                copiedParticleResultSentence.blockReason,
+            ],
+            conflictingParticleInputs: [
+                conflictingParticleInputsSentence.authorizationStatus,
+                conflictingParticleInputsSentence.blockReason,
+            ],
             hostile: [
                 hostileSentence.authorizationStatus,
                 hostileSentence.blockReason,
@@ -777,6 +883,14 @@ function run(ctx) {
             copied: [
                 "blocked",
                 "canonical-issued-nuclear-result-required",
+            ],
+            copiedParticleResult: [
+                "blocked",
+                "classical-particle-owner-issued-result-required",
+            ],
+            conflictingParticleInputs: [
+                "blocked",
+                "classical-sentence-particle-source-and-result-are-mutually-exclusive",
             ],
             hostile: [
                 "blocked",

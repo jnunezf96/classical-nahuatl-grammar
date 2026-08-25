@@ -554,7 +554,7 @@ function run(ctx) {
             exactOwnerProofResults: receipts,
         });
     s.eq(
-        "one exact cast closes every currently supported owner contract",
+        "the closed Lesson 1-39 cast remains exact while the all-58 queue stays explicit",
         {
             contractCount: calibration.ownerContractCount,
             observedContractCount: calibration.ownerContractObservedCount,
@@ -582,18 +582,19 @@ function run(ctx) {
                 && calibration.grammarAuthority === false,
         },
         {
-            contractCount: 22,
+            contractCount: 117,
             observedContractCount: 22,
-            remainingContractCount: 0,
-            remainingLessonEdgeCount: 0,
-            savedExecutions: 124,
+            remainingContractCount: 95,
+            remainingLessonEdgeCount: 239,
+            savedExecutions: 309,
             statusCounts: {
-                "rhyme-only-no-exact-continuation-contract": 106,
-                "lesson-owner-evidence-pending": 393,
-                "owner-contract-exactly-observed": 146,
-                "owner-contract-boundary-or-index-gap": 13,
+                "rhyme-only-no-exact-continuation-contract": 145,
+                "owner-contract-boundary-or-index-gap": 86,
+                "owner-contract-exactly-observed": 187,
+                "owner-contract-aligned-proof-required": 239,
+                "owner-index-pending": 1,
             },
-            everyContractHasExactOwnerProof: true,
+            everyContractHasExactOwnerProof: false,
             proofNeverAuthorizesGrammar: true,
         }
     );
@@ -718,7 +719,7 @@ function run(ctx) {
             )),
         },
     ];
-    s.eq("the sixteen Lesson 1-39 seams resolve into exact vertical continuation or blocked sideways rhyme", {
+    s.eq("the sixteen Lesson 1-39 seams keep exact continuation distinct from blocked sideways calls", {
         vertical: verticalSeamPairs.map(([inner, outer]) => ({
             pair: `${inner}->${outer}`,
             status: edgeStatus(inner, outer),
@@ -743,7 +744,9 @@ function run(ctx) {
         })),
         lateral: lateralSeamPairs.map(([inner, outer]) => ({
             pair: `${inner}->${outer}`,
-            status: "rhyme-only-no-exact-continuation-contract",
+            status: inner === 29 && outer === 10
+                ? "owner-contract-aligned-proof-required"
+                : "rhyme-only-no-exact-continuation-contract",
         })),
         lateralOwnerAttempts: lateralSeamPairs.map(([inner, outer]) => ({
             pair: `${inner}->${outer}`,
