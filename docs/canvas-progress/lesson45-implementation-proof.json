@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "lesson": 45,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson45-relational-nounstem-domain": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-four-usage-options": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-five-option-groups": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-option-one-only-stems": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-ic-semantic-functions": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-ic-clause-distribution": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"},
+    "lesson45-ic-adverb-degree-measurement": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson45_jobs.test.js", "readerTest": "src/tests/classical_lesson45_reader_guidance.test.js"}
+  }
+}

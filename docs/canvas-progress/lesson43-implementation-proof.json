@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 43,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson43-nonpreposed-and-supplement-distance": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-cooperation-and-discontinuity": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-interrogative-modification-structure": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-interrogative-head-readings": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-oc-ce-modified-head": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-cem-one-of-group": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-acah-ayac-one-none-of": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"},
+    "lesson43-discourse-conditioned-group-modification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson43_jobs.test.js", "readerTest": "src/tests/classical_lesson43_reader_guidance.test.js"}
+  }
+}

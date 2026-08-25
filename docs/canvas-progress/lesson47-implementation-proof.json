@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "lesson": 47,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson47-tzalan-huic-options-one-two": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-ca-icpac-options-one-three": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-tech-options-one-two-three": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-tlan-options-one-two-three": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-pan-options-one-two-three": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-associated-entity": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"},
+    "lesson47-pertinency": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson47_jobs.test.js", "readerTest": "src/tests/classical_lesson47_reader_guidance.test.js"}
+  }
+}

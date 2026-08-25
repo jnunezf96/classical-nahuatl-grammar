@@ -8,7 +8,7 @@ const crypto = require("crypto");
 const SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
 const SOURCE_LINE_START = 24705;
 const SOURCE_LINE_END = 25462;
-const SOURCE_SHA256 = "2cf52de19a3c9eb969c529d45d5bfc31bd4e463e3108cade4fe41a56f49b0205";
+const SOURCE_SHA256 = "d00364313f43c40b89320de3252cd16a5f65cc45bb99fd365389c76b6a2d6a2b";
 const EXPECTED_FORMULA_BEARING_LINE_COUNT = 30;
 
 const SECTION_SPANS = Object.freeze([
@@ -742,7 +742,7 @@ const REQUIRED_SOURCE_MARKERS = Object.freeze([
   "quimmictoccāhuah",
   "tē-(pol-i-uh-Ø-ti-tlaza)",
   "titlazohtitlācatl",
-  "(tlāl-m-Ø-āhui-I-ti-ā)",
+  "(tlāl-m-Ø-āhui-l-ti-ā)",
   "58.3. Exclamatory Expressions",
   "Oc eh!",
   "Tiā cuēl!",
@@ -1051,6 +1051,7 @@ function auditClassicalNahuatlLessons5758Runtime(target = {}) {
       requestedVoice = "active",
       nonactiveOptionId = "",
       sourceSubject = subject,
+      sourceInitialISelection = "",
     } = {},
   ) => target.evaluateClassicalNahuatlVncApplication({
       sourceStem: stem,
@@ -1065,6 +1066,7 @@ function auditClassicalNahuatlLessons5758Runtime(target = {}) {
       requestedDerivation: "direct",
       requestedVoice,
       ...(nonactiveOptionId ? { nonactiveOptionId } : {}),
+      ...(sourceInitialISelection ? { sourceInitialISelection } : {}),
       ...(objectRequests.length ? { objectRequests } : {}),
     });
   const buildNnc = (stem, subject = "3sg") => (
@@ -1702,6 +1704,7 @@ function auditClassicalNahuatlLessons5758Runtime(target = {}) {
           governor: "applicative",
           derivationalLevel: 2,
         }],
+        sourceInitialISelection: "real",
       },
     );
     const saying = envelope(
@@ -2291,7 +2294,9 @@ function auditClassicalNahuatlLessons5758Runtime(target = {}) {
   prove("iuhqui-iuh-principal", OWNER.suchThat.routeId, () => {
     const principals = [
       envelope(buildNnc("iuhqui"), { referenceId: "iuhqui-principal" }),
-      envelope(buildVnc("iuh"), { referenceId: "iuh-principal" }),
+      envelope(buildVnc("iuh", {
+        sourceInitialISelection: "real",
+      }), { referenceId: "iuh-principal" }),
     ];
     return principals.every(principalClause => {
       const frame = requestSupplementation({

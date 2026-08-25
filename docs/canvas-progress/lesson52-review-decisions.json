@@ -1,0 +1,9 @@
+{"schemaVersion":1,"lesson":52,"decisionKind":"technical-proof-only","userAcceptanceDecisionRequired":false,"decisions":{
+  "lesson52-conjunction-domain":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Compose typed conjunctions through the shared signed GCD."},
+  "lesson52-ordinary-and-marked-conjunction":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Compose ordinary, marked, nested, and shared-supplement conjunctions."},
+  "lesson52-conjunction-modifiers":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Apply all licensed conjunction modifiers and shared scopes."},
+  "lesson52-correlative-conjunction":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Compose standard and loose correlative conjunction."},
+  "lesson52-lexical-conjunction":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Compose licensed lexical conjunction profiles."},
+  "lesson52-parallel-structure":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Compose rephrasive, appositive, progressive, and combined parallel structures."},
+  "lesson52-conjunction-constraints":{"status":"IMPLEMENTATION_PROVEN","provenJob":"Enforce conjunction arity, rank, modifier, reference, and downstream boundaries."}
+}}

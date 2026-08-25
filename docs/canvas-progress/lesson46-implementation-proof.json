@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "lesson": 46,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson46-option-two-system": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-locative-n-source-formations": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-locative-n-predicate-state": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-yan-perfective-locatives": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-tlah-abundance-place": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-co-c-specific-location": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-bodypart-location-combinations": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-ca-pa-direction-frequency": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-fixed-and-restricted-matrices": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"},
+    "lesson46-numeral-modified-locations": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson46_jobs.test.js", "readerTest": "src/tests/classical_lesson46_reader_guidance.test.js"}
+  }
+}

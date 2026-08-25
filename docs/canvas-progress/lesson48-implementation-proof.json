@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "lesson": 48,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson48-place-name-domain": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-n-place-name-group": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-pan-place-name-group": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-co-c-place-name-group": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-other-place-name-groups": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-gentilic-ca-routes": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-other-gentilic-routes": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-gentilic-extensions": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-incorporation-adjectival-collectivity": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"},
+    "lesson48-professions-and-titles": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson48_jobs.test.js", "readerTest": "src/tests/classical_lesson48_reader_guidance.test.js"}
+  }
+}

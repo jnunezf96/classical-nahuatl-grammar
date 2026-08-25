@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "lesson": 49,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson49-simple-adverbial-modification": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose licensed first- and second-degree adverbial modification from exact captured Results."},
+    "lesson49-multiple-nucleus": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose multiple-nucleus structures without flattening their typed units."},
+    "lesson49-head-recursion-and-interrogatives": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Continue exact adjunction Results recursively while preserving interrogative force."},
+    "lesson49-modifier-recursion-and-collocations": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose recursive modifiers and collocations while keeping spelling and translation non-authoritative."},
+    "lesson49-intensifiers": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply licensed intensifiers with exact scope and polarity."},
+    "lesson49-modifier-internal-and-apposition": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Distinguish modifier-internal recursion, apposition, and conjunction."},
+    "lesson49-both-side-recursion": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose exact recursive Results on both sides of one outer adjunction."},
+    "lesson49-adverbial-principal-rank": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Project licensed adverbial units at principal clause rank."}
+  }
+}

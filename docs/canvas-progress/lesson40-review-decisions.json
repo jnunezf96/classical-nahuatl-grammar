@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "lesson": 40,
+  "decisions": {
+    "lesson40-adjectival-function-boundary": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Treat adjectival as a syntactic function of exact typed NNC or VNC Results, preserve their own morphology and the ordinary absolutive boundary, and keep translation non-authorizing."},
+    "lesson40-exceptional-adjectival-nncs": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve huēi, nepāpan, cēl, and el through their own exact exceptional owners before adjectival modification, without creating an adjective stem class."},
+    "lesson40-patientive-adjectival-function": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Continue only from exact owner-issued patientive or potential-patient NNC Results and preserve their resultant-state analysis inside adjectival modification."},
+    "lesson40-customary-nominalized-vnc-adjectival-function": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Continue from exact nominalized VNC Results, including customary agentive and patientive formations, while keeping nominalization and modification as separate owner operations."},
+    "lesson40-preterit-agentive-adjectival-function": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Continue exact preterit-agentive Results across classes, compounds, transitivity, denominal sources, and ownerhood formations while retaining complete upstream identity."},
+    "lesson40-root-plus-ya-adjectival-function": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve root-plus-ya and denominal-ti-ya as typed Source histories, including their exceptions, before adjectival use."},
+    "lesson40-synonymous-adjectival-systems": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Keep synonymous ni, hui, hua, ihui, ahui, ti-ya, c-ti-ya, and z-ti-ya histories distinct, exposing a Source choice only under genuine ambiguity."},
+    "lesson40-predicate-adjective-sentence": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Use ordinary owner-issued NNC sentence Results for single predicate adjectives and canonical exact-Result adjectival modification for multiple-nucleus structures."}
+  }
+}

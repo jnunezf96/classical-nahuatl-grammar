@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 45,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson45-relational-nounstem-domain": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Validate relational nounstem identity and keep contextual translation non-authoritative."},
+    "lesson45-four-usage-options": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply the four relational usage formations only through licensed typed Source modes."},
+    "lesson45-five-option-groups": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Derive selectable formations from the exact relational stem option group."},
+    "lesson45-option-one-only-stems": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Realize option-one possessive relational stems with exact participant and state restrictions."},
+    "lesson45-ic-semantic-functions": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve fixed possessor c/ic grammar across its licensed semantic functions."},
+    "lesson45-ic-clause-distribution": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose c/ic with typed position, force, negation, and fusion context."},
+    "lesson45-ic-adverb-degree-measurement": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Project ordinal, adverbial, degree, and measurement uses from the shared relational owner."}
+  }
+}

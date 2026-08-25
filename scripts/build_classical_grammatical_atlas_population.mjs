@@ -146,7 +146,9 @@ function populatedLessonNumbers(webRoot, lessonLedgerOverrides = new Map()) {
 
 function acceptedRecord(ledger, record) {
   if (ledger.kind === "classical-nahuatl-lesson-atom-job-review") {
-    return record.reviewStatus === "ACCEPTED"
+    return ["ACCEPTED", "IMPLEMENTATION_PROVEN"].includes(
+      record.reviewStatus,
+    )
       && record.implementationCredit === "EXACTLY_OBSERVED";
   }
   return /ACCEPTED|exactly-observed/iu.test(text(record.acceptanceStatus))

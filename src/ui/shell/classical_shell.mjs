@@ -169,37 +169,132 @@ import {
   LESSON33_READER_GUIDANCE_GROUPS,
   isLesson33ReaderGuidanceExact,
   renderLesson33ReaderGuidance,
-} from "../curriculum/lesson33_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson33_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON34_READER_GUIDANCE_GROUPS,
   isLesson34ReaderGuidanceExact,
   renderLesson34ReaderGuidance,
-} from "../curriculum/lesson34_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson34_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON35_READER_GUIDANCE_GROUPS,
   isLesson35ReaderGuidanceExact,
   renderLesson35ReaderGuidance,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON36_READER_GUIDANCE_GROUPS,
   isLesson36ReaderGuidanceExact,
   renderLesson36ReaderGuidance,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON37_READER_GUIDANCE_GROUPS,
   isLesson37ReaderGuidanceExact,
   renderLesson37ReaderGuidance,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON38_READER_GUIDANCE_GROUPS,
   isLesson38ReaderGuidanceExact,
   renderLesson38ReaderGuidance,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON39_READER_GUIDANCE_GROUPS,
   isLesson39ReaderGuidanceExact,
   renderLesson39ReaderGuidance,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON40_READER_GUIDANCE_GROUPS,
+  isLesson40ReaderGuidanceExact,
+  renderLesson40ReaderGuidance,
+} from "../curriculum/lesson40_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON41_READER_GUIDANCE_GROUPS,
+  isLesson41ReaderGuidanceExact,
+  renderLesson41ReaderGuidance,
+} from "../curriculum/lesson41_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON42_READER_GUIDANCE_GROUPS,
+  isLesson42ReaderGuidanceExact,
+  renderLesson42ReaderGuidance,
+} from "../curriculum/lesson42_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON43_READER_GUIDANCE_GROUPS,
+  isLesson43ReaderGuidanceExact,
+  renderLesson43ReaderGuidance,
+} from "../curriculum/lesson43_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON44_READER_GUIDANCE_GROUPS,
+  isLesson44ReaderGuidanceExact,
+  renderLesson44ReaderGuidance,
+} from "../curriculum/lesson44_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON45_READER_GUIDANCE_GROUPS,
+  isLesson45ReaderGuidanceExact,
+  renderLesson45ReaderGuidance,
+} from "../curriculum/lesson45_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON46_READER_GUIDANCE_GROUPS,
+  isLesson46ReaderGuidanceExact,
+  renderLesson46ReaderGuidance,
+} from "../curriculum/lesson46_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON47_READER_GUIDANCE_GROUPS,
+  isLesson47ReaderGuidanceExact,
+  renderLesson47ReaderGuidance,
+} from "../curriculum/lesson47_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON48_READER_GUIDANCE_GROUPS,
+  isLesson48ReaderGuidanceExact,
+  renderLesson48ReaderGuidance,
+} from "../curriculum/lesson48_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON49_READER_GUIDANCE_GROUPS,
+  isLesson49ReaderGuidanceExact,
+  renderLesson49ReaderGuidance,
+} from "../curriculum/lesson49_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON50_READER_GUIDANCE_GROUPS,
+  isLesson50ReaderGuidanceExact,
+  renderLesson50ReaderGuidance,
+} from "../curriculum/lesson50_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON51_READER_GUIDANCE_GROUPS,
+  isLesson51ReaderGuidanceExact,
+  renderLesson51ReaderGuidance,
+} from "../curriculum/lesson51_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON52_READER_GUIDANCE_GROUPS,
+  isLesson52ReaderGuidanceExact,
+  renderLesson52ReaderGuidance,
+} from "../curriculum/lesson52_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON53_READER_GUIDANCE_GROUPS,
+  isLesson53ReaderGuidanceExact,
+  renderLesson53ReaderGuidance,
+} from "../curriculum/lesson53_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON54_READER_GUIDANCE_GROUPS,
+  isLesson54ReaderGuidanceExact,
+  renderLesson54ReaderGuidance,
+} from "../curriculum/lesson54_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON55_READER_GUIDANCE_GROUPS,
+  isLesson55ReaderGuidanceExact,
+  renderLesson55ReaderGuidance,
+} from "../curriculum/lesson55_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON56_READER_GUIDANCE_GROUPS,
+  isLesson56ReaderGuidanceExact,
+  renderLesson56ReaderGuidance,
+} from "../curriculum/lesson56_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON57_READER_GUIDANCE_GROUPS,
+  isLesson57ReaderGuidanceExact,
+  renderLesson57ReaderGuidance,
+} from "../curriculum/lesson57_reader_guidance.mjs?v=20260824-lesson58-final-278";
+import {
+  LESSON58_READER_GUIDANCE_GROUPS,
+  isLesson58ReaderGuidanceExact,
+  renderLesson58ReaderGuidance,
+} from "../curriculum/lesson58_reader_guidance.mjs?v=20260824-lesson58-final-278";
 
 export function createClassicalShellModule(targetObject = globalThis) {
     function renderClassicalResultOutputScopeOptions(role = "") {
@@ -3883,6 +3978,25 @@ ${renderLesson36ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson37ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson38ReaderGuidance(escapeClassicalShellHtml)}
 ${renderLesson39ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson40ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson41ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson42ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson43ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson44ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson45ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson46ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson47ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson48ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson49ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson50ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson51ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson52ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson53ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson54ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson55ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson56ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson57ReaderGuidance(escapeClassicalShellHtml)}
+${renderLesson58ReaderGuidance(escapeClassicalShellHtml)}
                   </div>
                 </details>
                 <section
@@ -5066,6 +5180,44 @@ ${steps}
     api.isLesson38ReaderGuidanceExact = isLesson38ReaderGuidanceExact;
     api.LESSON39_READER_GUIDANCE_GROUPS = LESSON39_READER_GUIDANCE_GROUPS;
     api.isLesson39ReaderGuidanceExact = isLesson39ReaderGuidanceExact;
+    api.LESSON40_READER_GUIDANCE_GROUPS = LESSON40_READER_GUIDANCE_GROUPS;
+    api.isLesson40ReaderGuidanceExact = isLesson40ReaderGuidanceExact;
+    api.LESSON41_READER_GUIDANCE_GROUPS = LESSON41_READER_GUIDANCE_GROUPS;
+    api.isLesson41ReaderGuidanceExact = isLesson41ReaderGuidanceExact;
+    api.LESSON42_READER_GUIDANCE_GROUPS = LESSON42_READER_GUIDANCE_GROUPS;
+    api.isLesson42ReaderGuidanceExact = isLesson42ReaderGuidanceExact;
+    api.LESSON43_READER_GUIDANCE_GROUPS = LESSON43_READER_GUIDANCE_GROUPS;
+    api.isLesson43ReaderGuidanceExact = isLesson43ReaderGuidanceExact;
+    api.LESSON44_READER_GUIDANCE_GROUPS = LESSON44_READER_GUIDANCE_GROUPS;
+    api.isLesson44ReaderGuidanceExact = isLesson44ReaderGuidanceExact;
+    api.LESSON45_READER_GUIDANCE_GROUPS = LESSON45_READER_GUIDANCE_GROUPS;
+    api.isLesson45ReaderGuidanceExact = isLesson45ReaderGuidanceExact;
+    api.LESSON46_READER_GUIDANCE_GROUPS = LESSON46_READER_GUIDANCE_GROUPS;
+    api.isLesson46ReaderGuidanceExact = isLesson46ReaderGuidanceExact;
+    api.LESSON47_READER_GUIDANCE_GROUPS = LESSON47_READER_GUIDANCE_GROUPS;
+    api.isLesson47ReaderGuidanceExact = isLesson47ReaderGuidanceExact;
+    api.LESSON48_READER_GUIDANCE_GROUPS = LESSON48_READER_GUIDANCE_GROUPS;
+    api.isLesson48ReaderGuidanceExact = isLesson48ReaderGuidanceExact;
+    api.LESSON49_READER_GUIDANCE_GROUPS = LESSON49_READER_GUIDANCE_GROUPS;
+    api.isLesson49ReaderGuidanceExact = isLesson49ReaderGuidanceExact;
+    api.LESSON50_READER_GUIDANCE_GROUPS = LESSON50_READER_GUIDANCE_GROUPS;
+    api.isLesson50ReaderGuidanceExact = isLesson50ReaderGuidanceExact;
+    api.LESSON51_READER_GUIDANCE_GROUPS = LESSON51_READER_GUIDANCE_GROUPS;
+    api.isLesson51ReaderGuidanceExact = isLesson51ReaderGuidanceExact;
+    api.LESSON52_READER_GUIDANCE_GROUPS = LESSON52_READER_GUIDANCE_GROUPS;
+    api.isLesson52ReaderGuidanceExact = isLesson52ReaderGuidanceExact;
+    api.LESSON53_READER_GUIDANCE_GROUPS = LESSON53_READER_GUIDANCE_GROUPS;
+    api.isLesson53ReaderGuidanceExact = isLesson53ReaderGuidanceExact;
+    api.LESSON54_READER_GUIDANCE_GROUPS = LESSON54_READER_GUIDANCE_GROUPS;
+    api.isLesson54ReaderGuidanceExact = isLesson54ReaderGuidanceExact;
+    api.LESSON55_READER_GUIDANCE_GROUPS = LESSON55_READER_GUIDANCE_GROUPS;
+    api.isLesson55ReaderGuidanceExact = isLesson55ReaderGuidanceExact;
+    api.LESSON56_READER_GUIDANCE_GROUPS = LESSON56_READER_GUIDANCE_GROUPS;
+    api.isLesson56ReaderGuidanceExact = isLesson56ReaderGuidanceExact;
+    api.LESSON57_READER_GUIDANCE_GROUPS = LESSON57_READER_GUIDANCE_GROUPS;
+    api.isLesson57ReaderGuidanceExact = isLesson57ReaderGuidanceExact;
+    api.LESSON58_READER_GUIDANCE_GROUPS = LESSON58_READER_GUIDANCE_GROUPS;
+    api.isLesson58ReaderGuidanceExact = isLesson58ReaderGuidanceExact;
     api.ClassicalPanelTabs = ClassicalPanelTabs;
     api.ClassicalSourcePanel = ClassicalSourcePanel;
     api.ClassicalAuthorityPanel = ClassicalAuthorityPanel;

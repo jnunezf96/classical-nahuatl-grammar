@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "lesson": 50,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson50-domain-and-time": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-place": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-manner": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-consideration": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-purpose": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-condition": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-concession": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-consequence": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-proviso": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"},
+    "lesson50-reason": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson50_jobs.test.js", "readerTest": "src/tests/classical_lesson50_reader_guidance.test.js"}
+  }
+}

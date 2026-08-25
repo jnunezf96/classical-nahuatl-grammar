@@ -543,14 +543,18 @@ function readPopulationProbe() {
           (_, index) => population.scope.lastPopulatedLesson + index + 1,
         );
         const defaultLessons = {
-          scopeStillStopsAtLesson39:
-            population.scope.lastPopulatedLesson === 39
+          scopeMatchesCurrentPopulationFrontier:
+            population.scope.lastPopulatedLesson
+              === population.scope.populatedLessonNumbers.at(-1)
             && population.scope.maximumLesson === 58,
-          lessons40Through58AreExactlyTheDefaults:
+          lessonsAfterFrontierAreExactlyTheDefaults:
             JSON.stringify(frame.unpopulatedLessonNumbers)
               === JSON.stringify(expectedDefaultLessons)
             && expectedDefaultLessons.every(
-              lessonNumber => lessonNumber >= 40 && lessonNumber <= 58,
+              lessonNumber => (
+                lessonNumber > population.scope.lastPopulatedLesson
+                && lessonNumber <= 58
+              ),
             ),
           oneDefaultCoordinatePerUnpopulatedLesson:
             frame.defaultLessonLocalCoordinates.length
@@ -734,9 +738,9 @@ function run() {
         acceptedWritingOwnerLinkPendingIsZero: true,
     });
 
-    s.eq("Lessons 40 through 58 remain untouched default lesson planes", probe.defaultLessons, {
-        scopeStillStopsAtLesson39: true,
-        lessons40Through58AreExactlyTheDefaults: true,
+    s.eq("lessons after the populated frontier remain untouched default planes", probe.defaultLessons, {
+        scopeMatchesCurrentPopulationFrontier: true,
+        lessonsAfterFrontierAreExactlyTheDefaults: true,
         oneDefaultCoordinatePerUnpopulatedLesson: true,
         unpopulatedOwnerEvidenceRemainsPending: true,
     });

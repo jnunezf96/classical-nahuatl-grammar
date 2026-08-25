@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260824-source-operation-prompts-259";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260824-lesson58-final-278";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

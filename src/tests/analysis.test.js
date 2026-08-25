@@ -510,7 +510,7 @@ function run(ctx) {
         NOUNSTEM_L_EXPECTATIONS.map(([stem]) => ({
             stem,
             status: "authorized",
-            count: 46,
+            count: 52,
             pointwise: true,
         }))
     );

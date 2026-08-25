@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "lesson": 42,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson42-multiple-nucleus-rank-reversal": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Use exact typed Results in the canonical modification owner with NNC core and modifier-clause ranks preserved."},
+    "lesson42-preposed-and-unit-scope": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Generate ordinary and preposed orders and derive complete versus adjoined scope from structure."},
+    "lesson42-supplementation-modification-ambiguity": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Keep supplementation and adjectival modification as distinct owner compositions."},
+    "lesson42-compound-head-target": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve the licensed compound-matrix versus compound-whole target distinction."},
+    "lesson42-vnc-modifiers-and-reference-contact": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Validate exact VNC modifiers and typed subject or object reference contact."},
+    "lesson42-nnc-modifier-type-lattice": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Route the licensed NNC and clause types through the same modification owner without new Source classes."},
+    "lesson42-recursive-modification": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Reenter exact modification Results as larger modification heads without flattening."},
+    "lesson42-incorporated-modification-structure": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Hand an exact lexicalized modification Result to the compound owner with internal subjects and number-dyad behavior preserved."}
+  }
+}

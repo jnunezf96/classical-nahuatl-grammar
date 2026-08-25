@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 47,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson47-tzalan-huic-options-one-two": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose tzalan and huic through their licensed option-one and option-two Sources."},
+    "lesson47-ca-icpac-options-one-three": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose ca and icpac through possessive and connective-t formations."},
+    "lesson47-tech-options-one-two-three": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply all three tech formations with exact Source and boundary behavior."},
+    "lesson47-tlan-options-one-two-three": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply all three tlan formations while preserving Source-family restrictions."},
+    "lesson47-pan-options-one-two-three": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply pan formations and continuations from exact typed Source history."},
+    "lesson47-associated-entity": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build associated-entity Results from exact relational Sources and canonical boundary replacement."},
+    "lesson47-pertinency": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build pertinency from exact direct or associated-entity Results."}
+  }
+}

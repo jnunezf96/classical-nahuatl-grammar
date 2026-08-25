@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "lesson": 52,
+  "source": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "title": "Lesson 52 clause conjunction technical proof",
+  "groupsPerBatch": 2,
+  "closureChecks": ["exact-atom-jobs", "productive-rule-behavior", "owner-issued-result-identity", "scalar-paradigm-parity", "reading-guidance-and-clickable-cues", "live-delivery-and-cache-verification"],
+  "groups": [
+    {
+      "groupNumber": 1, "batchNumber": 1, "groupId": "lesson52-conjunction-domain", "title": "Typed conjunction domain", "sections": ["§52.1"],
+      "proposal": "Compose typed clause Sources through a licensed conjunction relation, reference graph, ordered realization, and signed sentence Result.",
+      "writingJob": "COMPOSE_TYPED_CLAUSE_CONJUNCTIONS", "readingJob": "Show conjunct ranks, relation, reference graph, order, and Result.",
+      "decisionSplit": "Users capture exact Results and select only licensed conjunction profiles.", "controlPolicy": "Lesson labels, formulas, surfaces, and stored answers authorize nothing.",
+      "userChoiceJob": "CAPTURE_EXACT_CONJUNCT_RESULTS", "applicationJob": "USE_THE_CANONICAL_CLAUSE_CONJUNCTION_OWNER", "derivedCueJob": "SHOW_RELATION_RANK_REFERENCE_AND_RESULT"
+    },
+    {
+      "groupNumber": 2, "batchNumber": 1, "groupId": "lesson52-ordinary-and-marked-conjunction", "title": "Ordinary and marked conjunction", "sections": ["§52.2", "§52.2.1", "§52.2.2", "§52.2.3"],
+      "proposal": "Compose unmarked, auh-marked, sentence-initial, adjoined, shared-supplement, and nested clause-group conjunctions.",
+      "writingJob": "COMPOSE_ORDINARY_AND_MARKED_CONJUNCTIONS", "readingJob": "Show marker, rank, shared supplement, nesting, and balanced conjunct structure.",
+      "decisionSplit": "Relation and rank are choices; marker and supplement placement are derived.", "controlPolicy": "Do not invent a head or reconstruct nested clauses from a sentence string.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_RELATION_AND_RANK", "applicationJob": "COMPOSE_BALANCED_EXACT_CONJUNCTS", "derivedCueJob": "SHOW_MARKER_SUPPLEMENT_RANK_AND_NESTING"
+    },
+    {
+      "groupNumber": 3, "batchNumber": 2, "groupId": "lesson52-conjunction-modifiers", "title": "Conjunction modifiers and shared scope", "sections": ["§52.3", "§52.3.1", "§52.3.2", "§52.3.3"],
+      "proposal": "Apply additive, alternative, adversative, rightward, pre-first shared-scope, in, and ihuan modifier profiles.",
+      "writingJob": "APPLY_LICENSED_CONJUNCTION_MODIFIERS", "readingJob": "Show coordination type, modifier, adjunctor role, shared scope, antecedent, and rank.",
+      "decisionSplit": "Only inventory-backed modifiers are selectable; their semantic roles remain derived.", "controlPolicy": "Do not treat in or ihuan as generic conjunctors.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_MODIFIER_PROFILE", "applicationJob": "VALIDATE_SCOPE_RANK_AND_MODIFIER_ROLE", "derivedCueJob": "SHOW_MODIFIER_SCOPE_AND_ANTECEDENT"
+    },
+    {
+      "groupNumber": 4, "batchNumber": 2, "groupId": "lesson52-correlative-conjunction", "title": "Correlative conjunction", "sections": ["§52.4", "§52.4.1.a", "§52.4.1.b", "§52.4.2.a", "§52.4.2.b", "§52.4.3.a", "§52.4.3.b"],
+      "proposal": "Compose standard and loose correlation through exact paired Results and licensed patterns.",
+      "writingJob": "COMPOSE_CORRELATIVE_CONJUNCTIONS", "readingJob": "Show correlation type, paired pattern, conjunct identity, and Result.",
+      "decisionSplit": "Correlation type and licensed pattern are choices; pairing follows captured identity.", "controlPolicy": "Do not infer a pair from repeated display text.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_CORRELATION_PATTERN", "applicationJob": "PAIR_EXACT_CONJUNCT_RESULTS", "derivedCueJob": "SHOW_PATTERN_PAIRING_AND_RESULT"
+    },
+    {
+      "groupNumber": 5, "batchNumber": 3, "groupId": "lesson52-lexical-conjunction", "title": "Lexical conjunction", "sections": ["§52.5", "§52.5.1", "§52.5.2"],
+      "proposal": "Compose lord-and-master and bread-and-butter lexical conjunctions with exact shared reference, arity, state realization, and adjunctor distribution.",
+      "writingJob": "COMPOSE_LEXICAL_CONJUNCTIONS", "readingJob": "Show lexical type, arity, reference identity, state realization, adjunctor distribution, and downstream compatibility.",
+      "decisionSplit": "Only Canvas-licensed lexical profiles are productive; downstream compatibility is read-only.", "controlPolicy": "Do not generalize lexical conjunction or manufacture a downstream handoff.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_LEXICAL_PROFILE", "applicationJob": "VALIDATE_REFERENCE_ARITY_AND_STATE", "derivedCueJob": "SHOW_LEXICAL_TYPE_AND_COMPATIBILITY"
+    },
+    {
+      "groupNumber": 6, "batchNumber": 3, "groupId": "lesson52-parallel-structure", "title": "Parallel and rephrasive structure", "sections": ["§52.6", "§52.6.1", "§52.6.2"],
+      "proposal": "Compose rephrasive, appositive, progressive, and combined parallel structures over exact clause Results.",
+      "writingJob": "COMPOSE_PARALLEL_STRUCTURES", "readingJob": "Show parallel type, rephrase axis, appositive kind, order, and Result.",
+      "decisionSplit": "Parallel type and licensed axis are choices; source facts remain attached to each conjunct.", "controlPolicy": "Do not merge rephrasing with ordinary coordination from surface similarity.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_PARALLEL_PROFILE", "applicationJob": "COMPOSE_EXACT_PARALLEL_RESULTS", "derivedCueJob": "SHOW_PARALLEL_TYPE_AXIS_AND_RESULT"
+    },
+    {
+      "groupNumber": 7, "batchNumber": 4, "groupId": "lesson52-conjunction-constraints", "title": "Conjunction constraints and extensions", "sections": ["§52.7", "§52.7.1", "§52.7.1.a", "§52.7.1.b", "§52.7.2", "§52.7.3"],
+      "proposal": "Enforce adversative arity, marked-adjoined, modifier, lexical-reference, and downstream-operation boundaries.",
+      "writingJob": "ENFORCE_CONJUNCTION_BOUNDARIES", "readingJob": "Show the exact failed prerequisite or compatible extension without changing grammar authority.",
+      "decisionSplit": "Only owner-available options appear; incompatible selections retain exact block reasons.", "controlPolicy": "Do not repair an incompatible route from URL, formula, or hidden state.",
+      "userChoiceJob": "REPLACE_INCOMPATIBLE_CAPTURE_OR_CHOICE", "applicationJob": "PRESERVE_CANONICAL_BLOCK_REASONS", "derivedCueJob": "SHOW_REQUIRED_CAPTURE_ARITY_REFERENCE_OR_RANK"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+const idea=(ideaId,title,guidance)=>Object.freeze({ideaId,title,guidance});
+export const LESSON53_READER_GUIDANCE_GROUPS=Object.freeze([
+idea("lesson53-comparison-domain-and-similarity","Comparison begins with exact typed Sources","The comparison owner projects owner-issued NNC, VNC, pronominal, or composition Results through one licensed route, operation, AST, and canonical Result."),
+idea("lesson53-equality","Equality preserves comparand and standard","Equality routes retain both captured Source identities. Translation cannot merge or replace them."),
+idea("lesson53-size-comparison","Size uses licensed typed strategies","Size comparison exposes only routes licensed by Source class and degree facts; adjective glosses remain descriptive."),
+idea("lesson53-comparative-degree","Comparatives retain object specificity","Comparative routes preserve exact object type, point of comparison, and adjunctor rather than reading them from the surface."),
+idea("lesson53-how-much-more","Degree questions use licensed collocations","Base and degree Sources remain exact. Stored Canvas wording cannot substitute for an inventory-backed question profile."),
+idea("lesson53-ordinary-superlative","Superlatives retain topic and predicate","The canonical route joins exact topic and predicate Results with a licensed adverbial and sentence type."),
+idea("lesson53-honorific-superlative","Honorific morphology stays upstream","Comparison preserves the owner-issued honorific predicate; it never reconstructs honorific status from spelling."),
+]);
+export function isLesson53ReaderGuidanceExact(candidate=[]){return JSON.stringify(candidate)===JSON.stringify(LESSON53_READER_GUIDANCE_GROUPS);}
+export function renderLesson53ReaderGuidance(escapeHtml=String){return `<details class="classical-reader-guidance__lesson" data-classical-reader-guidance-lesson="53"><summary class="classical-reader-guidance__lesson-summary"><span>Lesson 53</span><small>Comparison</small></summary><div class="classical-reader-guidance__lesson-body"><div class="classical-reader-guidance__grid">${LESSON53_READER_GUIDANCE_GROUPS.map(group=>`<section class="classical-reader-guidance__card" data-classical-reader-guidance-group="${escapeHtml(group.ideaId)}"><h5 class="classical-reader-guidance__title">${escapeHtml(group.title)}</h5><p data-classical-reader-guidance-idea="${escapeHtml(group.ideaId)}">${escapeHtml(group.guidance)}</p></section>`).join("")}</div></div></details>`;}

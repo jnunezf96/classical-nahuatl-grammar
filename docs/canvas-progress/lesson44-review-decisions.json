@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "lesson": 44,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson44-domain-and-degree-system": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Validate typed adverbial potential, degree, Source state, and subject operation."},
+    "lesson44-lexicalized-vnc-adverbials": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Realize owner-recognized VNC adverbials with exact contextual restrictions and boundaries."},
+    "lesson44-nnc-degree-formations": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply first- and second-degree NNC operations from exact Source state."},
+    "lesson44-particle-looking-nnc-system": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose particle-looking NNC Sources with licensed polarity, force, scope, and position."},
+    "lesson44-other-absolutive-inventory": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Route licensed absolutive adverbial Sources through the shared potential gate."},
+    "lesson44-preterit-agentive-adverbials": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Consume exact owner-issued preterit-agentive Results for productive adverbialization."},
+    "lesson44-possessive-state-adverbials": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve possessive Source state and its first-degree restriction."},
+    "lesson44-incorporated-adverbials": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Project licensed exact adverbial Sources into the canonical VNC incorporation path."}
+  }
+}

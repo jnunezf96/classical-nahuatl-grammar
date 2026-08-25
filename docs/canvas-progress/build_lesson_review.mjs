@@ -131,12 +131,18 @@ function proposedReaderJob(atom) {
   return "GUIDE_READING_AND_INTERPRETATION";
 }
 
+function implementationProven(decision = null) {
+  return ["ACCEPTED", "IMPLEMENTATION_PROVEN"].includes(
+    decision?.status,
+  );
+}
+
 const records = atoms.map(atom => {
   const group = groupBySection.get(atom.canvasSection);
   if (!group) throw new Error(`No Lesson ${lesson} review group covers ${atom.canvasSection}.`);
   const decision = decisions.decisions[group.groupId] || null;
   const groupProof = proof.groups?.[group.groupId] || null;
-  const proofAccepted = decision?.status === "ACCEPTED"
+  const proofAccepted = implementationProven(decision)
     && groupProof?.status === "EXACTLY_OBSERVED"
     && Boolean(groupProof.readerTest)
     && (proposedDirection(atom, group) === "READING_ONLY" || Boolean(groupProof.writingTest));
@@ -158,7 +164,9 @@ const records = atoms.map(atom => {
     proposedApplicationJob: group.applicationJob || group.writingJob,
     proposedDerivedCueJob: group.derivedCueJob || "PRESENT_ACCEPTED_AUTOMATIC_GRAMMAR_WITHOUT_AUTHORIZING_IT",
     reviewStatus: decision?.status || "AWAITING_USER_REVIEW",
-    acceptedJob: decision?.status === "ACCEPTED" ? decision.acceptedJob || group.proposal : "",
+    acceptedJob: implementationProven(decision)
+      ? decision.acceptedJob || decision.provenJob || group.proposal
+      : "",
     implementationCredit: proofAccepted ? "EXACTLY_OBSERVED" : "NONE_UNTIL_ACCEPTED_JOB_WORKS_AND_IS_EXACTLY_CHECKED",
     writingObservationTest: proofAccepted && proposedDirection(atom, group) === "BOTH"
       ? `${groupProof.writingTest}#${atom.atomId}`
@@ -220,6 +228,9 @@ const ledger = {
     proposedBoth: records.filter(record => record.proposedDirection === "BOTH").length,
     proposedReadingOnly: records.filter(record => record.proposedDirection === "READING_ONLY").length,
     acceptedAtoms: records.filter(record => record.reviewStatus === "ACCEPTED").length,
+    provenAtoms: records.filter(
+      record => record.reviewStatus === "IMPLEMENTATION_PROVEN",
+    ).length,
     declinedAtoms: records.filter(record => record.reviewStatus === "DECLINED").length,
     awaitingReview: records.filter(record => record.reviewStatus === "AWAITING_USER_REVIEW").length,
     implementationCredit: records.filter(record => record.implementationCredit === "EXACTLY_OBSERVED").length,
@@ -231,7 +242,7 @@ const ledger = {
 const packetLines = [
   `# Lesson ${lesson} atom-job review batches`,
   "",
-  `All ${records.length} atoms are included exactly once. Unaccepted groups remain proposals; implementation credit appears only after accepted jobs pass their exact checks.`,
+  `All ${records.length} atoms are included exactly once. Unproven groups remain proposals; implementation credit appears only after a technically approved job passes its exact checks.`,
   "",
 ];
 for (const group of groups) {

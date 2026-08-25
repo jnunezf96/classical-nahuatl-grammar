@@ -11,6 +11,8 @@ const CONTRACT_KIND = "classical-nahuatl-adjectival-modification-grammar-frame";
 const RESULT_CONTRACT_KIND = "classical-nahuatl-adjectival-modification-result-frame";
 const SELECTED_CLAUSE_KIND =
   "classical-nahuatl-adjectival-modification-selected-clause";
+const INCORPORATION_FRAME_KIND =
+  "classical-nahuatl-adjectival-modification-incorporation-frame";
 const OPERATION_KIND = "adjectival-modification";
 const GCD_IDENTITY =
   "typed-nnc-head+typed-clausal-modifier+licensed-shared-referent-contact+canonical-dual-projection";
@@ -123,6 +125,8 @@ const FORBIDDEN_AUTHORITY_KEYS = Object.freeze(new Set([
 ]));
 
 const OWNER_STATE_BY_TARGET = new WeakMap();
+const ISSUED_INCORPORATION_ANALYSES = new WeakSet();
+const ISSUED_INCORPORATION_FRAMES = new WeakSet();
 
 function normalizeToken(value = "") {
   return String(value ?? "").normalize("NFC").trim();
@@ -173,6 +177,8 @@ function getOwnerState(targetObject = globalThis) {
   if (!state) {
     state = Object.freeze({
       grammarFrames: new WeakSet(),
+      incorporationAnalyses: new WeakSet(),
+      incorporationFrames: new WeakSet(),
       results: new WeakSet(),
       selectedClauses: new WeakSet(),
     });
@@ -1560,6 +1566,200 @@ function isResultFrame(targetObject, frame = null) {
     );
 }
 
+function realizeNncCarriers(targetObject, carriers = []) {
+  if (
+    typeof targetObject?.realizeClassicalNahuatlNncSurfaceCarriers
+      === "function"
+  ) {
+    return normalizeStem(
+      targetObject.realizeClassicalNahuatlNncSurfaceCarriers(carriers),
+    );
+  }
+  return normalizeStem(carriers.map(value => (
+    normalizeStem(value).replace(/[0Ø⎕-]/gu, "")
+  )).join(""));
+}
+
+function buildIncorporatedClauseStem(
+  targetObject,
+  clause,
+  { deleteNumberDyad = false } = {},
+) {
+  const slotFrame = clause?.typedSlotFrame || null;
+  if (
+    clause?.unitKind !== "nnc"
+    || typeof targetObject?.isClassicalNahuatlNncSlotFrame !== "function"
+    || !targetObject.isClassicalNahuatlNncSlotFrame(slotFrame)
+  ) {
+    return null;
+  }
+  const carriers = [
+    slotFrame.slots?.subject?.pers1,
+    slotFrame.slots?.subject?.pers2,
+    ...(slotFrame.slots?.state?.slots || []).map(slot => slot.carrier),
+    slotFrame.slots?.predicate?.stem,
+    ...(deleteNumberDyad
+      ? []
+      : [
+        slotFrame.slots?.number?.num1,
+        slotFrame.slots?.number?.num2,
+      ]),
+  ];
+  const stem = realizeNncCarriers(targetObject, carriers);
+  return stem ? deepFreeze({
+    clause,
+    stem,
+    subjectPersonCarriers: deepFreeze([
+      slotFrame.slots?.subject?.pers1 || "",
+      slotFrame.slots?.subject?.pers2 || "",
+    ]),
+    numberDyadDeleted: deleteNumberDyad,
+    numberDyadPreserved: !deleteNumberDyad,
+    derivedOnlyFromOwnerIssuedTypedSlots: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+  }) : null;
+}
+
+function buildIncorporationAnalysis(targetObject, source = {}) {
+  if (
+    !source
+    || typeof source !== "object"
+    || Array.isArray(source)
+    || Reflect.ownKeys(source).some(
+      key => typeof key !== "string" || key !== "sequenceStatus",
+    )
+    || normalizeKey(source.sequenceStatus)
+      !== "lexicalized-concatenate"
+  ) {
+    return null;
+  }
+  const frame = issue(targetObject, "incorporationAnalyses", deepFreeze({
+    kind:
+      "classical-nahuatl-adjectival-modification-incorporation-analysis",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    sequenceStatus: "lexicalized-concatenate",
+    typedSourceAnalysisRequired: true,
+    CanvasExampleMembershipRequired: false,
+    grammarAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    lessonMetadataAuthority: false,
+  }));
+  ISSUED_INCORPORATION_ANALYSES.add(frame);
+  return frame;
+}
+
+function isIncorporationAnalysis(targetObject, frame = null) {
+  return Boolean(
+    frame
+    && ISSUED_INCORPORATION_ANALYSES.has(frame)
+    && frame.kind
+      === "classical-nahuatl-adjectival-modification-incorporation-analysis"
+    && frame.authorizationStatus === "authorized"
+    && frame.sequenceStatus === "lexicalized-concatenate"
+    && frame.typedSourceAnalysisRequired === true
+    && frame.CanvasExampleMembershipRequired === false
+    && frame.grammarAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
+function projectResultForIncorporation(
+  targetObject,
+  result = null,
+  incorporationAnalysis = null,
+) {
+  if (
+    !isResultFrame(targetObject, result)
+    || !isIncorporationAnalysis(targetObject, incorporationAnalysis)
+    || result.authorizationStatus !== "authorized"
+    || result.topology !== "ordinary"
+    || result.order !== "modifier-head-preposed"
+    || result.adjunctor !== "none"
+    || result.selectedClauses?.length !== 2
+    || result.linearizationTokens?.length !== 2
+  ) {
+    return null;
+  }
+  const [head, modifier] = result.selectedClauses;
+  if (
+    result.linearizationTokens[0]?.clause !== modifier
+    || result.linearizationTokens[1]?.clause !== head
+  ) {
+    return null;
+  }
+  const modifierPart = buildIncorporatedClauseStem(
+    targetObject,
+    modifier,
+  );
+  const headPart = buildIncorporatedClauseStem(
+    targetObject,
+    head,
+    { deleteNumberDyad: true },
+  );
+  if (!modifierPart || !headPart) return null;
+  const frame = deepFreeze({
+    kind: INCORPORATION_FRAME_KIND,
+    version: VERSION,
+    authorizationStatus: "authorized",
+    canonicalAdjectivalModificationResult: result,
+    incorporationAnalysis,
+    exactResultIdentityPreserved: true,
+    modifierPart,
+    headPart,
+    incorporatedStem: `${modifierPart.stem}-${headPart.stem}`,
+    constituentSubjectPronounsPreserved: true,
+    modifierNumberDyadPreserved: true,
+    headNumberDyadDeleted: true,
+    fixedModifierHeadConcatenationRequired: true,
+    lexicalizationStillRequiresTypedSourceAnalysis: true,
+    grammarAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    lessonMetadataAuthority: false,
+  });
+  issue(targetObject, "incorporationFrames", frame);
+  ISSUED_INCORPORATION_FRAMES.add(frame);
+  return frame;
+}
+
+function isIncorporationFrame(targetObject, frame = null) {
+  return Boolean(
+    frame
+    && ISSUED_INCORPORATION_FRAMES.has(frame)
+    && frame.kind === INCORPORATION_FRAME_KIND
+    && frame.authorizationStatus === "authorized"
+    && frame.canonicalAdjectivalModificationResult
+      ?.kind === RESULT_CONTRACT_KIND
+    && frame.canonicalAdjectivalModificationResult
+      ?.authorizationStatus === "authorized"
+    && isIncorporationAnalysis(
+      targetObject,
+      frame.incorporationAnalysis,
+    )
+    && frame.exactResultIdentityPreserved === true
+    && frame.modifierPart?.numberDyadPreserved === true
+    && frame.headPart?.numberDyadDeleted === true
+    && frame.incorporatedStem
+      === `${frame.modifierPart.stem}-${frame.headPart.stem}`
+    && frame.constituentSubjectPronounsPreserved === true
+    && frame.grammarAuthority === false
+    && frame.formulaStringAuthority === false
+    && frame.surfaceStringAuthority === false
+    && frame.lessonMetadataAuthority === false
+    && Object.isFrozen(frame)
+  );
+}
+
+export function isClassicalNahuatlAdjectivalModificationIncorporationFrame(
+  frame = null,
+  targetObject = globalThis,
+) {
+  return isIncorporationFrame(targetObject, frame);
+}
+
 function getLcmAxes() {
   return clone(LCM_AXES);
 }
@@ -1587,6 +1787,18 @@ export function createClassicalNahuatlClosureModule(
       frame => isGrammarFrame(targetObject, frame),
     isClassicalNahuatlResultFrame:
       frame => isResultFrame(targetObject, frame),
+    buildClassicalNahuatlAdjectivalModificationIncorporationAnalysis:
+      source => buildIncorporationAnalysis(targetObject, source),
+    isClassicalNahuatlAdjectivalModificationIncorporationAnalysis:
+      frame => isIncorporationAnalysis(targetObject, frame),
+    projectClassicalNahuatlAdjectivalModificationForIncorporation:
+      (result, analysis) => projectResultForIncorporation(
+        targetObject,
+        result,
+        analysis,
+      ),
+    isClassicalNahuatlAdjectivalModificationIncorporationFrame:
+      frame => isIncorporationFrame(targetObject, frame),
     evaluateClassicalNahuatlAdjectivalModification:
       request => evaluate(
         targetObject,

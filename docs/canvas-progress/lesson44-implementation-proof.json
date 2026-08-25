@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 44,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson44-domain-and-degree-system": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-lexicalized-vnc-adverbials": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-nnc-degree-formations": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-particle-looking-nnc-system": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-other-absolutive-inventory": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-preterit-agentive-adverbials": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-possessive-state-adverbials": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"},
+    "lesson44-incorporated-adverbials": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson44_jobs.test.js", "readerTest": "src/tests/classical_lesson44_reader_guidance.test.js"}
+  }
+}

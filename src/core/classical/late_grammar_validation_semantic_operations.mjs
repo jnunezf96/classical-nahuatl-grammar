@@ -1,7 +1,7 @@
 // Non-authorizing validation projection for the independent semantic owners in
 // Lessons 57-58. The projection shares typed construction mechanics only.
 
-import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260824-source-operation-prompts-259";
+import { createClassicalNahuatlVncApplicationModule } from "../../application/classical/vnc_application.mjs?v=20260824-lesson58-final-278";
 import { createClassicalNahuatlSourceStemInventoryApi } from "./source_stem_inventory.mjs";
 import { createClassicalNahuatlSupplementationApi } from "../sentence/supplementation.mjs";
 import { createClassicalNahuatlDenominalVncGrammarApi } from "./denominal_vnc_grammar.mjs";
@@ -327,6 +327,7 @@ export function createClassicalLateGrammarValidationSemanticOperationsApi(
         objectKind: "specific-projective",
         requestedDerivation: "direct",
         requestedVoice: "active",
+        sourceInitialISelection: "real",
         objectRequests: [{
           objectId: "reported-supplement",
           objectKind: "specific-projective",

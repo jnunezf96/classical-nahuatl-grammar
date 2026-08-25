@@ -10,7 +10,7 @@ import {
   normalizeClassicalNahuatlVncSemanticMood,
   normalizeClassicalNahuatlVncParadigmTense,
   validateClassicalNahuatlVncSemanticSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-source-operation-prompts-259";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-lesson58-final-278";
 import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   validateClassicalNahuatlVncDerivationTypeSelection,
@@ -29,19 +29,19 @@ import {
 } from "../../core/classical/participant_frame.mjs?v=20260823-passive-formation-continuity-238";
 import {
   LESSON35_PENDING_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson35_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson35_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON36_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson36_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON37_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson37_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON38_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson38_reader_guidance.mjs?v=20260824-lesson58-final-278";
 import {
   LESSON39_FORMULA_HOVER_AUTHORITIES,
-} from "../curriculum/lesson39_reader_guidance.mjs?v=20260824-source-operation-prompts-259";
+} from "../curriculum/lesson39_reader_guidance.mjs?v=20260824-lesson58-final-278";
 
 export function createUiRenderingApi(targetObject = globalThis) {
     var ActiveClassicalRuleLogicSurfaceFrame = null;

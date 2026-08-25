@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 49,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson49-simple-adverbial-modification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-multiple-nucleus": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-head-recursion-and-interrogatives": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-modifier-recursion-and-collocations": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-intensifiers": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-modifier-internal-and-apposition": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-both-side-recursion": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"},
+    "lesson49-adverbial-principal-rank": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson49_jobs.test.js", "readerTest": "src/tests/classical_lesson49_reader_guidance.test.js"}
+  }
+}

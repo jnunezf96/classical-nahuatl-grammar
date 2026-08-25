@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 46,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson46-option-two-system": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build option-two relational NNCs from typed embedded Source and matrix."},
+    "lesson46-locative-n-source-formations": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Hand off exact ordinary and derived Source Results to locative n."},
+    "lesson46-locative-n-predicate-state": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Derive locative state from exact predicate voice and participant structure."},
+    "lesson46-yan-perfective-locatives": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose yan from exact perfective Source Results."},
+    "lesson46-tlah-abundance-place": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Realize tlah abundance-place NNCs from licensed nounstem Sources."},
+    "lesson46-co-c-specific-location": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Derive co/c realization from the typed Source edge and lexical exceptions."},
+    "lesson46-bodypart-location-combinations": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose typed body-part Sources with the shared co/c owner."},
+    "lesson46-ca-pa-direction-frequency": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Separate ca and pa functions through typed Source kind and relational route."},
+    "lesson46-fixed-and-restricted-matrices": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Enforce nal, chi, ic, and teuh Source restrictions."},
+    "lesson46-numeral-modified-locations": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Require typed numeral adverbialization before co/c location composition."}
+  }
+}

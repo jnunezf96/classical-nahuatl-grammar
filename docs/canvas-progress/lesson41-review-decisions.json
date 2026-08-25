@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "lesson": 41,
+  "decisions": {
+    "lesson41-reduplicative-intensification": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Reuse the canonical reduplication owner and preserve the typed contrast between long-vowel intensity and glottal distributive or varietal scope."},
+    "lesson41-compound-matrix-intensification": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build intensified adjectival nounstems through the canonical compound-NNC owner with typed constituents, order, class, and licensed expansion facts intact."},
+    "lesson41-affective-and-metaphorical-intensification": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Reuse the affective-NNC owner for pōl, pil, tōn, and tzin and keep metaphor or simile non-authorizing."},
+    "lesson41-incorporated-adverb-and-supplement-source": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve exact incorporated-adverb and supplementation histories, reference relations, and matrix authority despite translation-perspective reversal."},
+    "lesson41-incorporated-complement-object-and-patientive": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Keep complement, object, passive-adverbial, and patientive histories distinct even when visible morphology coincides."},
+    "lesson41-denominal-compound-preterit-function": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Preserve the ordered compound-NNC to denominal-ti VNC to preterit-agentive NNC chain as separate canonical owner operations."},
+    "lesson41-adjectival-and-numeral-compound-embeds": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Admit exact adjectival and numeral NNC Results through the canonical compound owner while preserving single-nucleus structure."}
+  }
+}

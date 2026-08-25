@@ -1,0 +1,9 @@
+{"schemaVersion":1,"lesson":52,"proofKind":"technical-owner-observation","groups":{
+  "lesson52-conjunction-domain":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-ordinary-and-marked-conjunction":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-conjunction-modifiers":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-correlative-conjunction":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-lexical-conjunction":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-parallel-structure":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"},
+  "lesson52-conjunction-constraints":{"status":"EXACTLY_OBSERVED","writingTest":"src/tests/classical_lesson52_jobs.test.js","readerTest":"src/tests/classical_lesson52_reader_guidance.test.js"}
+}}

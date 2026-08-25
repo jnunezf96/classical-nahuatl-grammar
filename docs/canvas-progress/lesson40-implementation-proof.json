@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "lesson": 40,
+  "groups": {
+    "lesson40-adjectival-function-boundary": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-exceptional-adjectival-nncs": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-patientive-adjectival-function": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-customary-nominalized-vnc-adjectival-function": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-preterit-agentive-adjectival-function": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-root-plus-ya-adjectival-function": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-synonymous-adjectival-systems": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"},
+    "lesson40-predicate-adjective-sentence": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson40_jobs.test.js", "readerTest": "src/tests/classical_lesson40_reader_guidance.test.js"}
+  }
+}

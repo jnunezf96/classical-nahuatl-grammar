@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 50,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson50-domain-and-time": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose explicit and context-derived time relations from exact Results."},
+    "lesson50-place": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose place relations through the shared adjunction owner."},
+    "lesson50-manner": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose manner relations without conflating word formation."},
+    "lesson50-consideration": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply consideration with typed principal constraints."},
+    "lesson50-purpose": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose licensed purpose profiles with exact mood and marker evidence."},
+    "lesson50-condition": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose open and hypothetical conditions with matched marker, mood, tense, and scope."},
+    "lesson50-concession": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose licensed concession families from exact particle Results."},
+    "lesson50-consequence": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose consequence through the typed adverbial iuh Result."},
+    "lesson50-proviso": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose proviso through exact sentence and ahzo Results."},
+    "lesson50-reason": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose reason with ca while preserving its non-conjunction role."}
+  }
+}

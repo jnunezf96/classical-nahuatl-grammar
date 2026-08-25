@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "lesson": 48,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson48-place-name-domain": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build finite place-name NNCs from typed Source and formation."},
+    "lesson48-n-place-name-group": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose n place names from exact ordinary and derived Source Results."},
+    "lesson48-pan-place-name-group": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply integrated and connective-t pan place formations."},
+    "lesson48-co-c-place-name-group": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Derive co/c place boundaries from typed Source edges and lexical facts."},
+    "lesson48-other-place-name-groups": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose tlah, tzalan, ti-tlan, and chan place formations."},
+    "lesson48-gentilic-ca-routes": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Build ca gentilic routes from exact place-name Results with derived noun class."},
+    "lesson48-other-gentilic-routes": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Apply nonlocative, agentive, alternative, and concatenated gentilic routes."},
+    "lesson48-gentilic-extensions": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Project licensed extensions from exact gentilic Results."},
+    "lesson48-incorporation-adjectival-collectivity": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Continue exact gentilic Results into incorporation, adjectival use, and collectivity."},
+    "lesson48-professions-and-titles": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Realize the closed productive profession/title lexicon while preserving evidence-only records."}
+  }
+}

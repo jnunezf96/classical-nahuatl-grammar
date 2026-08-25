@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "lesson": 51,
+  "decisionKind": "technical-proof-only",
+  "userAcceptanceDecisionRequired": false,
+  "decisions": {
+    "lesson51-complementation-domain": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose typed clause complements through the shared signed GCD."},
+    "lesson51-object-complements": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose object complements with exact reference identity."},
+    "lesson51-subject-complements": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose ordinary and special subject-complement contacts."},
+    "lesson51-adverbial-complements": {"status": "IMPLEMENTATION_PROVEN", "provenJob": "Compose all licensed adverbial-complement families and relational pairs."}
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "lesson": 51,
+  "source": "ANDREWS_TRANSCRIPTION_CANVAS.md",
+  "title": "Lesson 51 clause complementation technical proof",
+  "groupsPerBatch": 2,
+  "closureChecks": ["exact-atom-jobs", "productive-rule-behavior", "owner-issued-result-identity", "scalar-paradigm-parity", "reading-guidance-and-clickable-cues", "live-delivery-and-cache-verification"],
+  "groups": [
+    {
+      "groupNumber": 1, "batchNumber": 1,
+      "groupId": "lesson51-complementation-domain",
+      "title": "Typed clause complementation domain",
+      "sections": ["§51.1"],
+      "proposal": "Compose complements from typed clause Sources, licensed semantic relations, and an exact reference graph.",
+      "writingJob": "COMPOSE_TYPED_CLAUSE_COMPLEMENTS",
+      "readingJob": "Show source rank, semantic relation, reference graph, clause order, and signed sentence Result.",
+      "decisionSplit": "Users capture exact Results and select only relations licensed for their typed references.",
+      "controlPolicy": "Lesson labels, stored answers, formulas, and surfaces authorize nothing.",
+      "userChoiceJob": "CAPTURE_EXACT_CLAUSE_RESULTS",
+      "applicationJob": "USE_THE_CANONICAL_CLAUSE_COMPLEMENT_OWNER",
+      "derivedCueJob": "SHOW_RELATION_REFERENCE_GRAPH_AND_RESULT"
+    },
+    {
+      "groupNumber": 2, "batchNumber": 1,
+      "groupId": "lesson51-object-complements",
+      "title": "Object complements",
+      "sections": ["§51.2", "§51.2.1", "§51.2.2", "§51.2.3", "§51.2.4"],
+      "proposal": "Compose change, material, designation, and state object complements with exact object-reference contact.",
+      "writingJob": "COMPOSE_OBJECT_COMPLEMENTS",
+      "readingJob": "Show principal object, complement referent, semantic category, designation structure, and category agreement.",
+      "decisionSplit": "Semantic category and licensed designation structure are choices; reference identity is derived.",
+      "controlPolicy": "Do not accept display claims about reflexivity, category agreement, or principal object identity.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_OBJECT_COMPLEMENT_CATEGORY",
+      "applicationJob": "UNIFY_EXACT_OBJECT_REFERENCES",
+      "derivedCueJob": "SHOW_OBJECT_CONTACT_CATEGORY_AND_STRUCTURE"
+    },
+    {
+      "groupNumber": 3, "batchNumber": 2,
+      "groupId": "lesson51-subject-complements",
+      "title": "Subject complements",
+      "sections": ["§51.3", "§51.3.1", "§51.3.2", "§51.3.3", "§51.3.3.a", "§51.3.3.b", "§51.3.3.c", "§51.3.4"],
+      "proposal": "Compose identity, composition, state, embedded-possessor, agentive-iyoh, and passive-transformed subject complements.",
+      "writingJob": "COMPOSE_SUBJECT_COMPLEMENTS",
+      "readingJob": "Show subject contact, complement category, special contact kind, passive transformation, and Result.",
+      "decisionSplit": "The semantic category is selectable; subject and possessor contact follow exact Source identity.",
+      "controlPolicy": "Do not transform an object complement from a copied or displayed passive form.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_SUBJECT_COMPLEMENT_PROFILE",
+      "applicationJob": "VALIDATE_SUBJECT_OR_POSSESSOR_CONTACT",
+      "derivedCueJob": "SHOW_CONTACT_KIND_TRANSFORMATION_AND_RESULT"
+    },
+    {
+      "groupNumber": 4, "batchNumber": 2,
+      "groupId": "lesson51-adverbial-complements",
+      "title": "Adverbial complements",
+      "sections": ["§51.4", "§51.4.1", "§51.4.2", "§51.4.3", "§51.4.4", "§51.4.5", "§51.4.6", "§51.4.7"],
+      "proposal": "Compose coverage, beginning, satisfaction, daring, cessation, tarrying, and licensed relational-lexicalized adverbial complements.",
+      "writingJob": "COMPOSE_ADVERBIAL_COMPLEMENT_FAMILIES",
+      "readingJob": "Show family, typed complement, shared reference, tense restriction, relational pair, and Result.",
+      "decisionSplit": "Family and licensed relational pair are choices; tense and reference compatibility are owner-validated.",
+      "controlPolicy": "Do not generalize lexicalized pairs or bypass nearby negative gates.",
+      "userChoiceJob": "CHOOSE_A_LICENSED_ADVERBIAL_COMPLEMENT_FAMILY",
+      "applicationJob": "APPLY_REFERENCE_TENSE_AND_LEXICAL_PAIR_CONSTRAINTS",
+      "derivedCueJob": "SHOW_FAMILY_REFERENCE_PAIR_AND_RESULT"
+    }
+  ]
+}

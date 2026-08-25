@@ -9,7 +9,7 @@ import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
   validateClassicalNahuatlVncVoiceSelection,
-} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-source-operation-prompts-259";
+} from "../../core/classical/vnc_layer_evaluator.mjs?v=20260824-lesson58-final-278";
 import {
   buildClassicalResultOutputScopeSelectionFrame,
 } from "../../core/output/scope.mjs?v=20260726-lessons2-58-one-system-094";

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "lesson": 51,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson51-complementation-domain": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson51_jobs.test.js", "readerTest": "src/tests/classical_lesson51_reader_guidance.test.js"},
+    "lesson51-object-complements": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson51_jobs.test.js", "readerTest": "src/tests/classical_lesson51_reader_guidance.test.js"},
+    "lesson51-subject-complements": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson51_jobs.test.js", "readerTest": "src/tests/classical_lesson51_reader_guidance.test.js"},
+    "lesson51-adverbial-complements": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson51_jobs.test.js", "readerTest": "src/tests/classical_lesson51_reader_guidance.test.js"}
+  }
+}

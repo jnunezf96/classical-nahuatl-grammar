@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "lesson": 42,
+  "proofKind": "technical-owner-observation",
+  "groups": {
+    "lesson42-multiple-nucleus-rank-reversal": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-preposed-and-unit-scope": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-supplementation-modification-ambiguity": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-compound-head-target": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-vnc-modifiers-and-reference-contact": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-nnc-modifier-type-lattice": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-recursive-modification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"},
+    "lesson42-incorporated-modification-structure": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson42_jobs.test.js", "readerTest": "src/tests/classical_lesson42_reader_guidance.test.js"}
+  }
+}

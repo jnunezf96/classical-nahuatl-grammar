@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "lesson": 41,
+  "groups": {
+    "lesson41-reduplicative-intensification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-compound-matrix-intensification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-affective-and-metaphorical-intensification": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-incorporated-adverb-and-supplement-source": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-incorporated-complement-object-and-patientive": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-denominal-compound-preterit-function": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"},
+    "lesson41-adjectival-and-numeral-compound-embeds": {"status": "EXACTLY_OBSERVED", "writingTest": "src/tests/classical_lesson41_jobs.test.js", "readerTest": "src/tests/classical_lesson41_reader_guidance.test.js"}
+  }
+}
