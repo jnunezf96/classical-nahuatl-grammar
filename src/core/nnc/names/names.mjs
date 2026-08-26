@@ -10,6 +10,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
   const issuedSources = new WeakSet();
   const issuedOperations = new WeakSet();
   const issuedResults = new WeakSet();
+  const issuedDiagrammaticProjections = new WeakSet();
   const issuedSentenceResults = new WeakSet();
   const issuedPlans = new WeakSet();
   const issuedExactSourceResolutions = new WeakSet();
@@ -775,10 +776,13 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     slotFrame = null,
   ) {
     if (!slotFrame) return null;
-    const subject = slotFrame.slots?.subject || {};
-    const number = slotFrame.slots?.number || {};
+    const functionalSlots =
+      getPersonalNameNncInnerClauseFunctionalSlotDefaults(
+        sourceFamily,
+      );
+    if (!functionalSlots) return null;
     const predicate = slotFrame.slots?.predicate || {};
-    const predicateMorphs = sourceType === "vnc"
+    const predicateMorphs = (sourceType === "vnc"
       ? [
         ...(slotFrame.slots?.prePredicate || []).map(
           slot => slot?.carrier,
@@ -794,15 +798,18 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
           slot => slot?.carrier,
         ),
         predicate.stem,
-      ];
+      ])
+      .flatMap(morph => String(morph || "").split("-"))
+      .map(morph => morph === "0" ? "Ø" : morph)
+      .filter(Boolean);
     return buildPersonalNameInnerClauseFrame({
       sourceFamily,
-      subjectPrefix: subject.pers1,
-      subjectConnector: subject.pers2,
+      subjectPrefix: functionalSlots.subjectPrefix,
+      subjectConnector: functionalSlots.subjectConnector,
       predicateMorphs,
-      numberPrefix: number.num1,
-      numberSuffix: number.num2,
-      subjectReference: "independent-of-outer",
+      numberPrefix: functionalSlots.numberPrefix,
+      numberSuffix: functionalSlots.numberSuffix,
+      subjectReference: functionalSlots.subjectReference,
     });
   }
 
@@ -1101,6 +1108,102 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
     });
   }
 
+  function buildPersonalNameDiagrammaticProjection(
+    operationFrame,
+    formulaSubject,
+    formulaProjection,
+  ) {
+    if (
+      !issuedOperations.has(operationFrame)
+      || formulaProjection?.kind
+        !== "classical-nahuatl-personal-name-formula-projection"
+      || !Array.isArray(formulaProjection.clauseProjections)
+      || formulaProjection.clauseProjections.length === 0
+    ) return null;
+    const source = operationFrame.sourceFrame;
+    const outerMatrix = operationFrame.affectiveScope === "outer-name"
+      ? `+${operationFrame.affectiveMatrix}`
+      : "";
+    const coordinatePredicateFormulas = source.sourceUnitKind === "conjunction"
+      ? formulaProjection.clauseProjections.map(
+        projection => `${projection.innerFormula}${outerMatrix}`,
+      )
+      : [
+        `${formulaProjection.clauseProjections
+          .map(projection => projection.innerFormula)
+          .join("+")}${outerMatrix}`,
+      ];
+    const multipleCoordinates = coordinatePredicateFormulas.length > 1;
+    const rows = coordinatePredicateFormulas.flatMap(
+      (predicateFormula, index) => [
+        freeze({
+          role: multipleCoordinates ? `Subject ${index + 1}` : "Subject",
+          expression:
+            `#${formulaSubject[0]}-${formulaSubject[1]}( ... )Ø-Ø#`,
+          hierarchyLevel: 3,
+          discontinuousConstituent: true,
+        }),
+        freeze({
+          role: multipleCoordinates
+            ? `Personal-name predicate ${index + 1}`
+            : "Personal-name predicate",
+          expression: `(${predicateFormula})`,
+          hierarchyLevel: 2,
+          foundation: source.sourceFamily,
+        }),
+      ],
+    );
+    const generalRows = coordinatePredicateFormulas.flatMap((_, index) => [
+      freeze({
+        role: multipleCoordinates ? `Subject ${index + 1}` : "Subject",
+        expression: "#pers¹-pers²( ... )Ø-Ø#",
+        hierarchyLevel: 3,
+        discontinuousConstituent: true,
+      }),
+      freeze({
+        role: multipleCoordinates
+          ? `Personal-name predicate ${index + 1}`
+          : "Personal-name predicate",
+        expression: "(STATEMENT)",
+        hierarchyLevel: 2,
+        foundation: "typed personal-name source",
+      }),
+    ]);
+    const genericCoordinateFormula = "#pers¹-pers²(STATEMENT)Ø-Ø#";
+    const projection = freeze({
+      kind: "classical-nahuatl-personal-name-diagrammatic-projection",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      blockReason: "",
+      projectionAuthority: "typed-personal-name-slots",
+      formulaStringAuthority: false,
+      linearFormula: formulaProjection.result,
+      generalLinearFormula: coordinatePredicateFormulas
+        .map(() => genericCoordinateFormula)
+        .join(" "),
+      rows,
+      generalRows,
+      hierarchy: freeze(["statement", "personal-name predicate", "NNC"]),
+      sourceUnitKind: source.sourceUnitKind,
+      sourceFamily: source.sourceFamily,
+    });
+    issuedDiagrammaticProjections.add(projection);
+    return projection;
+  }
+
+  function isPersonalNameDiagrammaticProjection(frame = null) {
+    return Boolean(
+      issuedDiagrammaticProjections.has(frame)
+      && frame?.kind
+        === "classical-nahuatl-personal-name-diagrammatic-projection"
+      && frame.authorizationStatus === "authorized"
+      && frame.projectionAuthority === "typed-personal-name-slots"
+      && frame.formulaStringAuthority === false
+      && Array.isArray(frame.rows)
+      && frame.rows.length > 0
+    );
+  }
+
   function buildPersonalNameWrittenProjection(operationFrame, subject) {
     const source = operationFrame.sourceFrame;
     const outerMatrix = operationFrame.affectiveScope === "outer-name"
@@ -1180,6 +1283,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       );
     const writtenProjection =
       buildPersonalNameWrittenProjection(operationFrame, subject);
+    const diagrammaticProjection = buildPersonalNameDiagrammaticProjection(
+      operationFrame,
+      formulaSubject,
+      formulaProjection,
+    );
     const coordinateParts = freeze(
       formulaProjection.coordinateFormulas.map((formula, index) => freeze({
         formula,
@@ -1207,6 +1315,7 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       surfaceRealization: writtenProjection.result,
       formulaProjection,
       writtenProjection,
+      diagrammaticProjection,
       formulaDerivedFromWritten: false,
       writtenDerivedFromFormula: false,
       coordinateParts,
@@ -1287,6 +1396,11 @@ export function createPersonalNameNncApi(targetObject = globalThis, installation
       && frame?.kind === "classical-nahuatl-personal-name-result"
       && frame.authorizationStatus === "authorized"
       && hasValidPersonalNameSelectedLcmProjection(frame)
+      && isPersonalNameDiagrammaticProjection(
+        frame.diagrammaticProjection,
+      )
+      && frame.diagrammaticProjection.linearFormula
+        === frame.formulaRealization
       && exactSourceIdentityValid
     );
   }

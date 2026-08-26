@@ -6,6 +6,9 @@ import {
   CLASSICAL_NAHUATL_VNC_LATE_OPERATION_UI_CONTROL_CONTRACTS,
 } from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import {
+  installClassicalPlayWitness,
+} from "../diagnostics/classical_play_witness.mjs?v=20260825-capability-closure-333";
+import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
   renderLesson1ReaderGuidance,
@@ -533,6 +536,9 @@ export function createClassicalShellModule(targetObject = globalThis) {
                       <span class="classical-basal-unit-button__sub">nominal nuclear clause</span>
                     </button>
                   </div>
+                  <p class="classical-toy-stage-prompt" data-classical-toy-stage-prompt="source">
+                    Type a stem, then use this Source.
+                  </p>
                   <div
                     class="form-group classical-source-unit"
                     data-classical-source-unit="stem-roles-readout"
@@ -590,7 +596,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                       aria-label="VNC built-in verbstems"
                     >
                       <label class="classical-nnc-source-guide__field">
-                        <span class="classical-nnc-source-guide__label">Built-in verbstems</span>
+                        <span class="classical-nnc-source-guide__label">Try an example</span>
                         <select
                           id="classical-vnc-source-stem"
                           class="classical-nnc-source-guide__select"
@@ -893,12 +899,13 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           />
                         </label>
                       </div>
-                      <div
+                      <details
                         id="classical-transcription-keyboard"
                         class="classical-transcription-keyboard classical-source-parts__keyboard"
                         aria-label="Sound keyboard for the active stem field"
                         data-classical-source-authorizes="none"
                       >
+                        <summary class="classical-transcription-keyboard__toggle">Sound keyboard</summary>
                         <details class="classical-transcription-keyboard__group" open>
                           <summary class="classical-transcription-keyboard__summary">Vowels</summary>
                           <div id="classical-transcription-keyboard-vowels" class="classical-transcription-keyboard__keys"></div>
@@ -907,7 +914,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           <summary class="classical-transcription-keyboard__summary">Consonants</summary>
                           <div id="classical-transcription-keyboard-consonants" class="classical-transcription-keyboard__keys"></div>
                         </details>
-                      </div>
+                      </details>
                       <div
                         id="classical-transcription-optional-controls"
                         class="classical-transcription-source__optional-controls"
@@ -953,7 +960,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           aria-keyshortcuts="Enter"
                           title="Apply source (Enter or Return)"
                         >
-                          <span class="classical-source-parts__commit-label">Apply source</span>
+                          <span class="classical-source-parts__commit-label">Use this Source</span>
                           <kbd class="classical-source-parts__commit-key">Enter</kbd>
                         </button>
                         <button
@@ -1087,7 +1094,7 @@ ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                             <span
                               class="classical-rule-control__label"
                               id="classical-capability-navigator-heading"
-                            >Possible next pathways</span>
+                            >What can I do next?</span>
                             <select
                               id="classical-capability-navigator-operation"
                               data-classical-capability-navigator-select="true"
@@ -2892,7 +2899,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                       <span
                         class="classical-rule-control__label classical-capability-operation-plan__heading"
                         id="classical-capability-operation-plan-heading"
-                      >Operation plan</span>
+                      >Make the change</span>
                       <label
                         class="classical-rule-control classical-capability-operation-plan__binding-field"
                         id="classical-capability-navigator-binding-field"
@@ -2944,7 +2951,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           data-classical-grammar-authority="false"
                           aria-describedby="classical-capability-navigator-status"
                           disabled
-                        >Apply operation</button>
+                        >Make Result</button>
                       </div>
                     </section>
       `;
@@ -2997,6 +3004,9 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                     <span aria-hidden="true">▶</span>
                   </button>
                 </div>
+                <p class="classical-toy-stage-prompt" data-classical-toy-stage-prompt="grammar">
+                  Choose only the change you want to make.
+                </p>
                 <div
                   class="calc-operators formula-controls-grid"
                   data-andrews-formula-role="formula-mode-derivation-controls"
@@ -3895,7 +3905,7 @@ ${renderClassicalVncLateOperationOptions("classical-rule-logic-honorific-stem-al
                         />
                       </label>
                       <label
-                        class="classical-rule-control classical-rule-control--result-surface classical-rule-control--internal-canonical-particle"
+                        class="classical-rule-control classical-rule-control--result-surface"
                         data-classical-rule-logic-result-surface-control="true"
                         data-classical-vnc-authority-order="sentence-adverbial"
                         data-classical-nnc-authority-order="sentence-adverbial"
@@ -4332,6 +4342,9 @@ ${renderLesson58ReaderGuidance(escapeClassicalShellHtml)}
                   </button>
                 </div>
               </div>
+              <p class="classical-toy-stage-prompt" data-classical-toy-stage-prompt="result">
+                See the exact Result, then continue from it.
+              </p>
               <div class="output-meta-strip">
                 <details class="tense-description" id="tense-description">
                   <summary class="tense-description__summary">
@@ -4580,16 +4593,14 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         });
       };
 
-      mountInStableOrder(identity, [
-        documentObject.getElementById("classical-vnc-source-guide"),
-        documentObject.getElementById("classical-nnc-source-guide"),
-        documentObject.getElementById("classical-source-identity-controls"),
-      ]);
       mountInStableOrder(form, [
         root.querySelector?.(".classical-source-parts__mode"),
         root.querySelector?.(".classical-source-parts__grid"),
-        operationLane,
         documentObject.getElementById("classical-transcription-keyboard"),
+        documentObject.getElementById("classical-vnc-source-guide"),
+        documentObject.getElementById("classical-nnc-source-guide"),
+        documentObject.getElementById("classical-source-identity-controls"),
+        operationLane,
         documentObject.getElementById(
           "classical-transcription-optional-controls"
         ),
@@ -5201,7 +5212,7 @@ ${steps}
       </section>\n`;
     }
     function ClassicalGrammarWorkspaceHistory() {
-      return `      <section
+      return `      <details
         class="classical-grammar-workspace-history"
         id="classical-grammar-workspace-history"
         data-classical-grammar-workspace-history="waiting"
@@ -5210,10 +5221,11 @@ ${steps}
         data-classical-grammar-authority="false"
         aria-labelledby="classical-grammar-workspace-history-heading"
       >
-        <span
-          class="classical-rule-control__label"
+        <summary
+          class="classical-grammar-workspace-history__summary"
           id="classical-grammar-workspace-history-heading"
-        >Derivation history</span>
+        >Your builds</summary>
+        <div class="classical-grammar-workspace-history__body">
         <div class="classical-grammar-workspace-history__selectors">
           <label class="classical-rule-control">
             <span class="classical-rule-control__label">Current path</span>
@@ -5252,7 +5264,8 @@ ${steps}
           role="status"
           aria-live="polite"
         >Each exact Result will appear here.</p>
-      </section>\n`;
+        </div>
+      </details>\n`;
     }
     function ClassicalGrammarAdvanced() {
       return `      <details
@@ -5279,8 +5292,30 @@ ${steps}
           <p class="classical-grammar-advanced__note">
             Atlas diagnostics report observed pathway coverage only. They do not authorize Source, Grammar, or Result.
           </p>
+          <script
+            type="application/json"
+            id="classical-play-witness-projection"
+            data-classical-play-witness-projection="off"
+            data-classical-presentation-only="true"
+            data-classical-grammar-authority="false"
+          >{"kind":"classical-grammar-toy-play-witness","enabled":false}</script>
         </div>
       </details>\n`;
+    }
+    function ClassicalPlayWitnessControls() {
+      return `      <section
+        class="classical-play-witness-controls"
+        data-classical-play-witness-controls="true"
+        data-classical-presentation-only="true"
+        data-classical-grammar-authority="false"
+        aria-label="Manufacturer play observations"
+      >
+        <span class="classical-play-witness-controls__label">How did play feel?</span>
+        <button type="button" data-classical-play-audience="baby" data-classical-play-feeling="joy">Baby joy</button>
+        <button type="button" data-classical-play-audience="baby" data-classical-play-feeling="boredom">Baby boredom</button>
+        <button type="button" data-classical-play-audience="parent" data-classical-play-feeling="joy">Parent joy</button>
+        <button type="button" data-classical-play-audience="parent" data-classical-play-feeling="concern">Parent concern</button>
+      </section>\n`;
     }
     function ClassicalPanelShell() {
       return ClassicalCompositionPathSummary() + `      <div
@@ -5297,7 +5332,7 @@ ${steps}
             data-classical-basal-units="vnc nnc"
             data-classical-basal-unit="vnc"
           >
-    ` + '        <div class="panel-stack" data-classical-panel-stack="source-authority-result">\n' + ClassicalPanelTabs() + '          <div class="panel-main-column" data-classical-basal-unit="vnc">\n' + '            <div id="classical-source-panel" class="classical-panel-container classical-panel-container--source" data-classical-panel-container="source" data-andrews-panel="#1-source">\n' + ClassicalSourcePanel() + '            </div>\n' + '            <div id="classical-authority-panel" class="classical-panel-container classical-panel-container--authority" data-classical-panel-container="authority" data-andrews-panel="#2-authority">\n' + ClassicalAuthorityPanel() + '            </div>\n' + '          </div>\n' + '        </div>\n' + '        <div class="panel-output-column" data-classical-basal-unit="vnc">\n' + '          <div id="classical-result-panel" class="classical-panel-container classical-panel-container--result" data-classical-panel-container="authorized-result" data-andrews-panel="#3-authorized-result">\n' + ClassicalResultPanel() + '          </div>\n' + '        </div>\n' + '      </div>\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced();
+    ` + '        <div class="panel-stack" data-classical-panel-stack="source-authority-result">\n' + ClassicalPanelTabs() + '          <div class="panel-main-column" data-classical-basal-unit="vnc">\n' + '            <div id="classical-source-panel" class="classical-panel-container classical-panel-container--source" data-classical-panel-container="source" data-andrews-panel="#1-source">\n' + ClassicalSourcePanel() + '            </div>\n' + '            <div id="classical-authority-panel" class="classical-panel-container classical-panel-container--authority" data-classical-panel-container="authority" data-andrews-panel="#2-authority">\n' + ClassicalAuthorityPanel() + '            </div>\n' + '          </div>\n' + '        </div>\n' + '        <div class="panel-output-column" data-classical-basal-unit="vnc">\n' + '          <div id="classical-result-panel" class="classical-panel-container classical-panel-container--result" data-classical-panel-container="authorized-result" data-andrews-panel="#3-authorized-result">\n' + ClassicalResultPanel() + '          </div>\n' + '        </div>\n' + '      </div>\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced() + ClassicalPlayWitnessControls();
     }
     function installClassicalShell() {
       const root = targetObject.document.getElementById("classical-app-root");
@@ -5306,7 +5341,10 @@ ${steps}
         root.dataset.classicalShellInstalled = "true";
       }
       if (root) {
+        root.dataset.classicalToy = "source-grammar-result-continue";
+        root.dataset.classicalToyAuthority = "false";
         installClassicalWorkbenchPresentation();
+        installClassicalPlayWitness(targetObject, root);
       }
       const footerRoot = targetObject.document.getElementById("classical-footer-root");
       if (footerRoot && footerRoot.dataset.classicalShellInstalled !== "true") {

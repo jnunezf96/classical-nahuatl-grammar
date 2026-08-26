@@ -135,6 +135,7 @@ function run(ctx = {}) {
             afterApplySurface
         );
     const continuedNavigator = ctx.getClassicalCapabilityNavigatorFrame(null);
+    const resultCapture = ctx.getActiveClassicalGrammarResultSourceCapture();
     const exactNextSource = canonical?.resultFrame?.selectedMachineryFrame;
     const continuedSourceProjection = ctx
         .getClassicalNahuatlVncContinuationSourceConstituents(
@@ -143,9 +144,12 @@ function run(ctx = {}) {
     const refreshedNavigator = ctx.syncClassicalCapabilityNavigator(
         afterApplySurface
     );
+    const sentenceOperation = continuedNavigator?.operations?.find(
+        operation => operation.operationId === "vnc:sentence-result"
+    );
 
     s.eq(
-        "Continue advances exactly once to the owner-issued output Source without recapturing or rerunning the Result",
+        "Continue retains the exact Result for Result pathways while mirroring its owner-issued output Source without rerunning",
         {
             continued,
             navigator: [
@@ -153,11 +157,20 @@ function run(ctx = {}) {
                     continuedNavigator
                 ),
                 continuedNavigator?.inputRole,
-                continuedNavigator?.exactSource === exactNextSource,
-                refreshedNavigator?.exactSource === exactNextSource,
+                continuedNavigator?.exactResult === canonical,
+                refreshedNavigator?.exactResult === canonical,
             ],
-            resultCapture:
-                ctx.getActiveClassicalGrammarResultSourceCapture(),
+            resultCapture: [
+                ctx.isClassicalGrammarApplicationResultCapture(
+                    resultCapture,
+                    "universal-capability-navigator-source"
+                ),
+                resultCapture?.canonicalResult === canonical,
+            ],
+            sentencePathway: [
+                sentenceOperation?.availabilityStatus,
+                sentenceOperation?.ownerProbeResultValidated,
+            ],
             appliedResult:
                 ctx.getActiveClassicalCapabilityApplicationResult(),
             sourceStem: ctx.document.getElementById(
@@ -169,8 +182,9 @@ function run(ctx = {}) {
         },
         {
             continued: true,
-            navigator: [true, "exact-owner-issued-source", true, true],
-            resultCapture: null,
+            navigator: [true, "exact-owner-issued-result", true, true],
+            resultCapture: [true, true],
+            sentencePathway: ["available", true],
             appliedResult: null,
             sourceStem: continuedSourceProjection.sourceStem,
             ownerSurfaceStillExact: true,

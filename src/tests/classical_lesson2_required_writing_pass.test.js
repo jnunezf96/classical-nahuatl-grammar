@@ -61,6 +61,35 @@ function run(ctx) {
         operationId: "particle:result",
         args: [particleSource],
     });
+    const auh = ctx.requestClassicalParticleResult("l3-auh-conjunctor");
+    const auhNegative = request({
+        operationId: "particle:negative-selection",
+        args: [{
+            polarity: "negative",
+            precedingParticleResultFrame: auh,
+            sentenceKind: "statement",
+        }],
+    });
+    const blockedNegative = request({
+        operationId: "particle:negative-selection",
+        args: [{
+            polarity: "positive",
+            sentenceKind: "statement",
+        }],
+    });
+    let copiedAuhFailure = "";
+    try {
+        request({
+            operationId: "particle:negative-selection",
+            args: [{
+                polarity: "negative",
+                precedingParticleResultFrame: structuredClone(auh),
+                sentenceKind: "statement",
+            }],
+        });
+    } catch (error) {
+        copiedAuhFailure = String(error?.message || error);
+    }
 
     s.eq("all normal compound writing enters every Lesson 2 family before Result", {
         authorized: compound.authorizationStatus,
@@ -147,6 +176,53 @@ function run(ctx) {
             surface: "in",
             outputs: [["in", "lesson2-writer", "authorized"]],
             complete: true,
+        },
+    });
+
+    s.eq("an exact auh negative selection becomes a displayable standard application Result while copied and blocked inputs fail closed", {
+        exact: {
+            application: ctx.isClassicalGrammarApplicationResult(auhNegative),
+            status: auhNegative.authorizationStatus,
+            canonicalStatus: auhNegative.canonicalResult?.authorizationStatus,
+            selectedParticle: auhNegative.canonicalResult?.selectedParticleId,
+            formula: auhNegative.canonicalResult?.formula,
+            surface: auhNegative.canonicalResult?.surface,
+            written: auhNegative.lesson2WrittenResult?.surface,
+            outputs: auhNegative.lesson2WritingOutputs?.map(output => [
+                output.surface,
+                output.mode,
+                output.authorizationStatus,
+            ]),
+        },
+        copiedInputRejected: copiedAuhFailure.startsWith(
+            "classical-grammar-application-request-invalid:forbidden-authority:"
+        ),
+        blocked: {
+            application: ctx.isClassicalGrammarApplicationResult(
+                blockedNegative
+            ),
+            status: blockedNegative.authorizationStatus,
+            reason: blockedNegative.blockReason,
+            canonicalStatus:
+                blockedNegative.canonicalResult?.authorizationStatus,
+        },
+    }, {
+        exact: {
+            application: true,
+            status: "authorized",
+            canonicalStatus: "authorized",
+            selectedParticle: "l3-ah-negative",
+            formula: "ah#",
+            surface: "ah",
+            written: "ah",
+            outputs: [["ah", "lesson2-writer", "authorized"]],
+        },
+        copiedInputRejected: true,
+        blocked: {
+            application: true,
+            status: "blocked",
+            reason: "classical-negative-particle-negative-intent-required",
+            canonicalStatus: "blocked",
         },
     });
 

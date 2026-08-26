@@ -1191,6 +1191,22 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         },
         conditionKind: "canvas-licensed-variable-a-b-membership"
       }),
+      yohua: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
+        sourceStem: "yohua",
+        citedForm: "(yohua)",
+        section: "22.1",
+        lineStart: 7242,
+        lineEnd: 7242,
+        exactWitness: "Ōonyohuac. = ō#Ø-Ø+on(yohua)Ø+c-Ø# = It became night. Night fell.",
+        relationRuleId: "cn-l7-765-intransitive-wa-change-a",
+        defaultClassId: "A",
+        allowedClassIds: ["A"],
+        classOptions: ["A"],
+        perfectiveStemsByClass: {
+          A: "yohua"
+        },
+        conditionKind: "intransitive-final-wa-signifies-change"
+      }),
       paca: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
         sourceStem: "pāca",
         citedForm: "tla-(pāca)",
@@ -2167,6 +2183,9 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       }
       if (["ē-hua", "ēhua"].includes(normalized)) {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.ehua);
+      }
+      if (compactKey === "yohua" && valence === "intransitive") {
+        return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.yohua);
       }
       if (compactKey === "mani") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.mani);

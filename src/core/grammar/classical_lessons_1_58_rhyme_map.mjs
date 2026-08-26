@@ -1,7 +1,7 @@
 import {
   buildClassicalGrammaticalRhymeLessonDiscoveryFrame,
   buildClassicalGrammaticalRhymeLessonPlaneFrame,
-} from "./grammatical_rhyme_space.mjs?v=20260825-launch-ready-293";
+} from "./grammatical_rhyme_space.mjs?v=20260825-capability-closure-333";
 
 // This is the machine-readable form of the accepted two-pin map. It is a
 // diagnostic compression map, never a grammar or curriculum authority.

@@ -13,6 +13,10 @@ const RUNTIME_SOURCE = fs.readFileSync(
     path.join(ROOT, "src", "runtime", "create_runtime.mjs"),
     "utf8"
 );
+const RENDERING_SOURCE = fs.readFileSync(
+    path.join(ROOT, "src", "ui", "rendering", "rendering.mjs"),
+    "utf8"
+);
 const TRANSCRIPTION_LINE_COUNT = fs.readFileSync(
     path.join(ROOT, "ANDREWS_TRANSCRIPTION_CANVAS.md"),
     "utf8"
@@ -367,6 +371,69 @@ function run(ctx = {}) {
             handwrittenLateOptions: false,
             freeTextAuthorityTags: 0,
             runtimeInstaller: true,
+        }
+    );
+
+    s.eq(
+        "a Result-stage late derivation visibly starts unanswered without changing the normal Source default",
+        (() => {
+            const start = RENDERING_SOURCE.indexOf(
+                "function syncClassicalStagedLateOperationPrompt"
+            );
+            const end = RENDERING_SOURCE.indexOf(
+                "function syncClassicalOrderedVoiceResultBindingChoices",
+                start
+            );
+            const stagedPromptSource = start >= 0 && end > start
+                ? RENDERING_SOURCE.slice(start, end)
+                : "";
+            const normalDefault = contracts[
+                "classical-rule-logic-late-operation"
+            ]?.find(option => option.value === "none") || null;
+            return {
+                normalDefault: [
+                    normalDefault?.value || "",
+                    normalDefault?.label || "",
+                    normalDefault?.selected === true,
+                ],
+                ownerGate:
+                    stagedPromptSource.includes(
+                        'binding?.operationId === "vnc:derivational-operation"'
+                    )
+                    && stagedPromptSource.includes(
+                        'binding.family === "vnc-continuation"'
+                    )
+                    && stagedPromptSource.includes(
+                        'binding.requiredChoiceIds?.includes("lateOperation")'
+                    ),
+                stagedBlank:
+                    stagedPromptSource.includes('prompt.value = ""')
+                    && stagedPromptSource.includes(
+                        'prompt.textContent = "Choose the next VNC derivation layer"'
+                    )
+                    && stagedPromptSource.includes('control.value = ""')
+                    && stagedPromptSource.includes("control.required = true"),
+                noAddedChoiceSuppressedOnlyWhileRequired:
+                    stagedPromptSource.includes("noAddedLayer.hidden = true")
+                    && stagedPromptSource.includes("noAddedLayer.disabled = true")
+                    && stagedPromptSource.includes("noAddedLayer.hidden = false")
+                    && stagedPromptSource.includes("noAddedLayer.disabled = false"),
+                lifecycleWiring:
+                    RENDERING_SOURCE.match(
+                        /syncClassicalStagedLateOperationPrompt\(binding\)/gu
+                    )?.length === 2,
+            };
+        })(),
+        {
+            normalDefault: [
+                "none",
+                "no added VNC derivation layer",
+                true,
+            ],
+            ownerGate: true,
+            stagedBlank: true,
+            noAddedChoiceSuppressedOnlyWhileRequired: true,
+            lifecycleWiring: true,
         }
     );
 

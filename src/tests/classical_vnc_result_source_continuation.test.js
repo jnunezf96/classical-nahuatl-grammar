@@ -473,6 +473,11 @@ function run(ctx = {}) {
                 });
             const exactOrderedBaseResult =
                 orderedBaseReceipt.canonicalResult.resultFrame;
+            const orderedChoiceFrame =
+                ctx.issueClassicalNahuatlVncContinuationBindingFrame(
+                    "vnc:ordered-voice-application",
+                    exactOrderedBaseResult
+                );
             const orderedFrame =
                 ctx.issueClassicalNahuatlVncContinuationBindingFrame(
                     "vnc:ordered-voice-application",
@@ -532,6 +537,21 @@ function run(ctx = {}) {
                             ),
                     })
                 ),
+                orderedChoice: {
+                    status: orderedChoiceFrame.bindingStatus,
+                    authorization: orderedChoiceFrame.authorizationStatus,
+                    choices: orderedChoiceFrame.requiredChoiceIds,
+                    baseOperations: orderedChoiceFrame
+                        .orderedVoiceBaseOperations,
+                    optionOperations: orderedChoiceFrame
+                        .orderedVoiceLayerChoiceInventory?.options
+                        ?.map(option => option.operationId)
+                        .sort() || [],
+                    valid:
+                        ctx.isClassicalNahuatlVncContinuationBindingFrame(
+                            orderedChoiceFrame
+                        ),
+                },
                 recapture: [
                     lateFrame.outerVncApplicationFrame
                         ?.normalizedRequest?.sourceStem,
@@ -610,11 +630,11 @@ function run(ctx = {}) {
                     valid: true,
                 },
                 {
-                    status: "choices-required",
-                    authorization: "authorized",
-                    choices: ["operations"],
+                    status: "rejected",
+                    authorization: "blocked",
+                    choices: [],
                     roles: [],
-                    exact: true,
+                    exact: false,
                     executionArgs: 0,
                     valid: true,
                 },
@@ -654,6 +674,14 @@ function run(ctx = {}) {
                     valid: true,
                 },
             ],
+            orderedChoice: {
+                status: "choices-required",
+                authorization: "authorized",
+                choices: ["operations"],
+                baseOperations: ["inherent-impersonal"],
+                optionOperations: ["nonactive-lō", "tla-impersonal"],
+                valid: true,
+            },
             recapture: ["caquī-tiā", "caquī-tiā", true, true],
             executionIdentities: [true, true, true, true, true, true],
             additionalResult: [

@@ -1961,7 +1961,8 @@ body.is-language-classical .calc-operator--source-authority-mirror {
 }
 
 .classical-rule-surface__single-nnc,
-.classical-rule-surface__single-vnc {
+.classical-rule-surface__single-vnc,
+.classical-rule-surface__single-result {
   display: grid;
   gap: 8px;
   min-width: 0;
@@ -1971,18 +1972,21 @@ body.is-language-classical .calc-operator--source-authority-mirror {
 }
 
 .classical-rule-surface__single-nnc[hidden],
-.classical-rule-surface__single-vnc[hidden] {
+.classical-rule-surface__single-vnc[hidden],
+.classical-rule-surface__single-result[hidden] {
   display: none;
 }
 
 .classical-rule-surface__single-nnc-title,
-.classical-rule-surface__single-vnc-title {
+.classical-rule-surface__single-vnc-title,
+.classical-rule-surface__single-result-title {
   color: #294d43;
   font-size: calc(0.76rem + var(--font-size-adjust));
 }
 
 .classical-rule-surface__single-nnc-answer,
-.classical-rule-surface__single-vnc-answer {
+.classical-rule-surface__single-vnc-answer,
+.classical-rule-surface__single-result-answer {
   display: grid;
   gap: 5px;
   min-width: 0;
@@ -1992,7 +1996,8 @@ body.is-language-classical .calc-operator--source-authority-mirror {
 }
 
 .classical-rule-surface__single-nnc-answer-label,
-.classical-rule-surface__single-vnc-answer-label {
+.classical-rule-surface__single-vnc-answer-label,
+.classical-rule-surface__single-result-answer-label {
   color: #65746f;
   font-size: var(--classical-shell-label-size);
   font-weight: 700;
@@ -2000,7 +2005,8 @@ body.is-language-classical .calc-operator--source-authority-mirror {
 }
 
 .classical-rule-surface__single-nnc-surface,
-.classical-rule-surface__single-vnc-surface {
+.classical-rule-surface__single-vnc-surface,
+.classical-rule-surface__single-result-surface {
   min-width: 0;
   color: #173f35;
   font-size: calc(1.02rem + var(--font-size-adjust));
@@ -2010,7 +2016,8 @@ body.is-language-classical .calc-operator--source-authority-mirror {
 }
 
 .classical-rule-surface__single-nnc > .classical-rule-surface__format-section,
-.classical-rule-surface__single-vnc > .classical-rule-surface__format-section {
+.classical-rule-surface__single-vnc > .classical-rule-surface__format-section,
+.classical-rule-surface__single-result > .classical-rule-surface__format-section {
   padding: 8px 2px 2px;
   border-top: 1px solid rgba(53, 105, 91, 0.16);
   border-left: 0;
@@ -4891,6 +4898,235 @@ body.is-language-classical #classical-authority-panel .calc-operator-grid--deriv
   .classical-rule-surface__proof-group {
     grid-template-columns: 1fr;
   }
+}
+
+/* Grammar toy: Play keeps one honest Source → Grammar → Result → Continue
+   loop in view. Analysis deliberately restores the workshop around it. */
+body.is-language-classical .classical-toy-stage-prompt {
+  margin: 0;
+  padding: 0 0 10px;
+  color: var(--workbench-muted);
+  font-size: var(--classical-shell-button-size);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  .classical-composition-path-summary,
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-app-root > .classical-grammar-advanced {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-source-panel :is(
+    .verb-block__display,
+    .classical-nnc-source-guide__rule,
+    .classical-source-context-controls,
+    [data-classical-source-outline-section="analysis"],
+    #classical-construction-operation-field,
+    .classical-source-path-lane__heading
+  ) {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-source-panel .classical-source-outline__section {
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-source-panel .classical-source-outline__heading {
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-support);
+  letter-spacing: 0.02em;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-source-panel .classical-source-path-lane {
+  margin: 0;
+  padding-top: 10px;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-source-panel #classical-transcription-keyboard {
+  display: block;
+  padding: 0;
+  border: 1px solid var(--workbench-line);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper-muted);
+}
+
+body.is-language-classical #classical-workbench
+  #classical-source-panel .classical-transcription-keyboard__toggle {
+  padding: 8px 10px;
+  color: var(--workbench-teal-deep);
+  cursor: pointer;
+  font-size: var(--sgr-type-support);
+  font-weight: 700;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-source-panel #classical-transcription-keyboard[open] {
+  padding-bottom: 8px;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-source-panel #classical-transcription-keyboard[open]
+  > .classical-transcription-keyboard__group {
+  margin-inline: 8px;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-authority-panel .calc-operator--source-authority-mirror,
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-authority-panel .classical-applied-grammar-account[data-classical-applied-grammar-status="waiting"] {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel :is(
+    .panel-block-actions,
+    .output-meta-strip,
+    .output-result-controls,
+    .classical-result-scope-controls
+  ) {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel
+  [data-classical-result-outline-section="view"],
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel
+  [data-classical-result-outline-section="paradigm"],
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel .classical-result-outline__heading {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel
+  [data-classical-result-outline-section="structure-analysis"] {
+  margin: 0 !important;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-rule-logic-surface[data-classical-result-status="blocked"]
+  > :is(.classical-rule-surface__heading, .classical-rule-surface__body) {
+  display: none !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-rule-logic-surface[data-classical-result-status="blocked"]
+  > .classical-rule-surface__single-vnc,
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-rule-logic-surface[data-classical-result-status="blocked"]
+  > .classical-rule-surface__single-nnc {
+  display: grid !important;
+  min-height: 0;
+  padding: 12px;
+  border: 1px dashed var(--workbench-line-strong);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper-muted);
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel
+  [data-classical-result-outline-section="continuation"]:has(
+    [data-classical-result-continuation-status^="exact-result"]
+  ) {
+  display: grid !important;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel
+  [data-classical-result-outline-section="continuation"]
+  .classical-clause-relation-workflow {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench #classical-app-root
+  > details.classical-grammar-workspace-history {
+  display: block;
+  padding: 0;
+}
+
+body.is-language-classical #classical-workbench #classical-app-root
+  > .classical-grammar-workspace-history
+  > .classical-grammar-workspace-history__summary {
+  padding: 10px 12px;
+  color: var(--workbench-teal-deep);
+  cursor: pointer;
+  font-size: var(--classical-shell-button-size);
+  font-weight: 700;
+}
+
+body.is-language-classical #classical-workbench #classical-app-root
+  > .classical-grammar-workspace-history:not([open])
+  > .classical-grammar-workspace-history__body {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench #classical-app-root
+  > .classical-grammar-workspace-history[open]
+  > .classical-grammar-workspace-history__body {
+  display: grid;
+  gap: 8px;
+  padding: 0 12px 12px;
+}
+
+body.is-language-classical #classical-workbench #classical-app-root
+  > .classical-play-witness-controls {
+  display: none;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-app-root[data-classical-play-witness="observing"]
+  > .classical-play-witness-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px dashed var(--workbench-line-strong);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper-muted);
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-support);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-play-witness-controls__label {
+  margin-right: 4px;
+  font-weight: 700;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-play-witness-controls button {
+  min-height: 30px;
+  padding: 5px 9px;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  :is(#classical-authority-panel, #classical-result-panel) {
+  transition: opacity 160ms ease, border-color 160ms ease;
+}
+
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-authority-panel[data-classical-grammar-dependency-state="empty"],
+body.is-language-classical.is-ui-simple #classical-workbench
+  #classical-result-panel:has(
+    #classical-rule-logic-surface[data-classical-result-status="blocked"]
+  ) {
+  opacity: 0.72;
 }
 
 @media (max-width: 560px) {
@@ -14894,6 +15130,7 @@ body.is-language-classical .classical-rule-surface[data-classical-result-visual-
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc,
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result,
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-authority-receipt--result,
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-vnc-derivation-explainer {
   min-width: 0;
@@ -14905,13 +15142,15 @@ body.is-language-classical .classical-rule-surface[data-classical-result-visual-
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc,
-body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc {
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result {
   gap: 10px;
   border-left: 1px solid var(--classical-result-border-soft);
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc-title,
-body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-title {
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-title,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result-title {
   color: var(--classical-result-muted);
   font-size: calc(0.61rem + var(--font-size-adjust));
   font-weight: 700;
@@ -14921,7 +15160,8 @@ body.is-language-classical .classical-rule-surface[data-classical-result-visual-
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc-answer,
-body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-answer {
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-answer,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result-answer {
   gap: 4px;
   padding: 10px 11px;
   border: 1px solid var(--workbench-line);
@@ -14930,7 +15170,8 @@ body.is-language-classical .classical-rule-surface[data-classical-result-visual-
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc-answer-label,
-body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-answer-label {
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-answer-label,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result-answer-label {
   color: var(--classical-result-muted);
   font-size: calc(0.58rem + var(--font-size-adjust));
   font-weight: 700;
@@ -14939,13 +15180,15 @@ body.is-language-classical .classical-rule-surface[data-classical-result-visual-
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc-surface,
-body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-surface {
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc-surface,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result-surface {
   color: var(--classical-result-teal-deep);
   font-size: calc(1.08rem + var(--font-size-adjust));
 }
 
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-nnc > .classical-rule-surface__format-section,
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-vnc > .classical-rule-surface__format-section,
+body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] .classical-rule-surface__single-result > .classical-rule-surface__format-section,
 body.is-language-classical .classical-rule-surface[data-classical-result-visual-system="grammar-account-surface"] > .classical-rule-surface__format-section {
   gap: 8px;
   padding: 10px;
@@ -17702,6 +17945,7 @@ body.is-language-classical #classical-workbench #classical-result-panel #contain
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__single-nnc,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__single-vnc,
+body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__single-result,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__body,
 body.is-language-classical #classical-workbench #classical-result-panel .classical-rule-surface__answer {
   align-content: start;
@@ -19401,6 +19645,19 @@ body.is-language-classical #classical-workbench #classical-authority-panel
   font-size: var(--sgr-type-subsub);
   font-weight: 700;
   letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-capability-operation-plan__choice-search {
+  min-width: 0;
+  width: 100%;
+}
+
+body.is-language-classical #classical-workbench #classical-authority-panel
+  .classical-capability-operation-plan__choice-count {
+  color: var(--workbench-muted);
+  font-size: var(--sgr-type-support);
   line-height: 1.2;
 }
 

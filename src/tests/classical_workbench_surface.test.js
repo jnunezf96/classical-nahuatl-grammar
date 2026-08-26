@@ -630,9 +630,13 @@ function run(ctx = {}) {
             && runtimeBridge.includes("create_runtime.mjs?v=")
             && createRuntime.includes("rendering.mjs?v=")
             && createRuntime.includes("classical_shell.mjs?v="),
-        "CW-F06": packageJson.includes('"smoke:browser"')
-            && packageJson.includes('"audit:alignment"')
-            && packageJson.includes('"verify:readiness"')
+        "CW-F06": (
+            packageJson.includes('"build:release"')
+                && packageJson.includes('"verify:launch"')
+            || packageJson.includes('"smoke:browser"')
+                && packageJson.includes('"audit:alignment"')
+                && packageJson.includes('"verify:readiness"')
+        )
             && browserSmoke.includes('status: "passed"'),
     });
     Object.entries(focusedReceiptChecks).forEach(([atomId, passed]) => {

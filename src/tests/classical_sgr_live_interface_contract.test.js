@@ -400,7 +400,7 @@ function run(ctx = {}) {
             && shell.includes('data-classical-source-identity-control="valence"')
     );
     suite.ok(
-        "Source operation continues the active VNC or NNC Source path instead of floating as a separate card",
+        "Source form, missing identity details, and operation remain one ordered VNC or NNC Source path",
         shell.includes("function syncClassicalSourceNestingStructure()")
             && shell.includes('getOrCreateSection("identity", "Source identity")')
             && shell.includes('getOrCreateSection("form", `${activeUnitLabel} Source`)')
@@ -419,8 +419,10 @@ function run(ctx = {}) {
             && shell.includes("subtree: true")
             && shell.includes('attributeFilter: ["data-classical-basal-unit", "aria-pressed"]')
             && shell.includes("installClassicalSourcePathSync();")
-            && shell.indexOf("operationLane,", shell.indexOf("mountInStableOrder(form, ["))
-                < shell.indexOf('"classical-transcription-keyboard"', shell.indexOf("mountInStableOrder(form, ["))
+            && shell.indexOf('"classical-transcription-keyboard"', shell.indexOf("mountInStableOrder(form, ["))
+                < shell.indexOf('"classical-vnc-source-guide"', shell.indexOf("mountInStableOrder(form, ["))
+            && shell.indexOf('"classical-source-identity-controls"', shell.indexOf("mountInStableOrder(form, ["))
+                < shell.indexOf("operationLane,", shell.indexOf("mountInStableOrder(form, ["))
             && composer.includes("option.hidden = !available")
             && composer.includes("option.disabled = !available")
             && composer.includes("group.hidden = !available")

@@ -2,7 +2,7 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260825-launch-ready-293";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260825-capability-closure-333";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
@@ -3834,7 +3834,7 @@ export function createClassicalClauseRelationControllerGlobals(
       );
     }
 
-    function buildDecisionContract(selections = {}) {
+    function buildDecisionContractUnprojected(selections = {}) {
       const selectionObject = selections && typeof selections === "object"
         && !Array.isArray(selections)
         ? selections
@@ -4527,6 +4527,27 @@ export function createClassicalClauseRelationControllerGlobals(
         surfaceStringAuthority: false,
         lessonMetadataAuthority: false,
         storedStateAuthority: false,
+      });
+    }
+
+    function buildDecisionContract(selections = {}) {
+      const contract = buildDecisionContractUnprojected(selections);
+      const diagnostics = Array.isArray(contract?.diagnostics)
+        ? contract.diagnostics
+        : [];
+      const missingCaptureRoles = CAPTURE_ROLES.filter(role => (
+        diagnostics.some(diagnostic => {
+          const reason = String(diagnostic || "");
+          return reason.includes(`${role}-capture-required`)
+            || (
+              role === "marker"
+              && reason.includes("issued-marker-capture-required")
+            );
+        })
+      ));
+      return Object.freeze({
+        ...contract,
+        missingCaptureRoles: freezeArray(missingCaptureRoles),
       });
     }
 

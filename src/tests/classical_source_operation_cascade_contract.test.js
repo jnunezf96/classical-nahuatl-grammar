@@ -25,7 +25,6 @@ const CUSTOM_ROUTES = Object.freeze([
 
 const EXPECTED_SOURCE_ANALYSIS_IDS = Object.freeze([
     "classical-attitude-source-analysis",
-    "classical-personal-name-source-family",
     "classical-personal-name-derived-facts",
     "classical-denominal-vnc-operation-path",
     "classical-denominal-vnc-source-subject",
@@ -405,20 +404,20 @@ function run(ctx = {}) {
         },
         {
             sourceIds: [...EXPECTED_SOURCE_ANALYSIS_IDS].sort(),
-            sourceKeyCount: 34,
-            grammarKeyCount: 93,
+            sourceKeyCount: 33,
+            grammarKeyCount: 94,
             classifiedNodeCount: 127,
             overlap: [],
             missingShellNode: [],
             semanticCounts: {
-                formation: 60,
+                formation: 61,
                 state: 8,
                 predicate: 12,
                 sentence: 13,
                 subject: 0,
             },
             semanticMismatches: [],
-            orderKeyCount: 92,
+            orderKeyCount: 93,
             missingOrder: [],
             sharedOrderIsRouteAware: true,
         }
@@ -444,8 +443,8 @@ function run(ctx = {}) {
                 && visibility.includes("sourcePlacement?.destination"),
         },
         {
-            sourceCount: 34,
-            grammarCount: 93,
+            sourceCount: 33,
+            grammarCount: 94,
             sourceOperationUsesOneColumn: true,
             sourceOperationUsesBodyFont: true,
             grammarLaneUsesHalfColumns: true,

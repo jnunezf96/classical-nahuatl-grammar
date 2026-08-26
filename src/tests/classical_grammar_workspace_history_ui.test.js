@@ -34,8 +34,8 @@ function run(ctx = {}) {
     const style = readSource("style.css");
     const historyId = 'id="classical-grammar-workspace-history"';
     const historyIdIndex = shell.indexOf(historyId);
-    const historyStart = shell.lastIndexOf("<section", historyIdIndex);
-    const historyEnd = shell.indexOf("</section>", historyIdIndex);
+    const historyStart = shell.lastIndexOf("<details", historyIdIndex);
+    const historyEnd = shell.indexOf("</details>", historyIdIndex);
     const historyShell = shell.slice(historyStart, historyEnd + 10);
     const navigatorIdIndex = shell.indexOf(
         'id="classical-capability-navigator"'
@@ -57,6 +57,28 @@ function run(ctx = {}) {
         renderingStart
     );
     const historyRendering = rendering.slice(renderingStart, renderingEnd);
+    const undoHandlerStart = historyRendering.indexOf(
+        'undo?.addEventListener("click"'
+    );
+    const undoHandlerEnd = historyRendering.indexOf(
+        'fork?.addEventListener("click"',
+        undoHandlerStart
+    );
+    const undoHandler = historyRendering.slice(
+        undoHandlerStart,
+        undoHandlerEnd
+    );
+    const supplyHandlerStart = historyRendering.indexOf(
+        'supply?.addEventListener("click"'
+    );
+    const supplyHandlerEnd = historyRendering.indexOf(
+        'compare?.addEventListener("click"',
+        supplyHandlerStart
+    );
+    const supplyHandler = historyRendering.slice(
+        supplyHandlerStart,
+        supplyHandlerEnd
+    );
     const bindingSelectionStart = rendering.indexOf(
         "function updateClassicalCapabilityNavigatorSelection"
     );
@@ -81,9 +103,9 @@ function run(ctx = {}) {
     );
 
     s.ok(
-        "the workbench contains one full-width, non-authoritative Derivation history after the panel grid",
+        "the workbench contains one collapsed, non-authoritative build history after the panel grid",
         historyIdIndex >= 0
-        && historyShell.includes(">Derivation history</span>")
+        && historyShell.includes(">Your builds</summary>")
         && [
             "classical-grammar-workspace-history-node",
             "classical-grammar-workspace-history-compare-node",
@@ -99,7 +121,7 @@ function run(ctx = {}) {
         && historyShell.includes('data-classical-grammar-authority="false"')
         && !navigatorShell.includes(historyId)
         && panelShell.includes(
-            "+ '      </div>\\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced();"
+            "+ '      </div>\\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced() + ClassicalPlayWitnessControls();"
         )
         && panelShell.indexOf("ClassicalGrammarWorkspaceHistory()")
             > panelShell.indexOf('class="panel-grid"')
@@ -141,6 +163,39 @@ function run(ctx = {}) {
             "capture.surface",
             "capture.formula",
         ].some(fragment => historyRendering.includes(fragment))
+    );
+
+    s.ok(
+        "Undo follows the active branch boundary, selects the restored node, and keeps its restoration message after synchronization",
+        historyRendering.includes(
+            "if (undo) undo.disabled = value?.canUndo !== true;"
+        )
+        && undoHandler.includes(
+            "const nextSnapshot = syncClassicalGrammarWorkspaceHistory();"
+        )
+        && undoHandler.includes(
+            'String(nextSnapshot?.currentNodeId || "")'
+        )
+        && undoHandler.indexOf(
+            "const nextSnapshot = syncClassicalGrammarWorkspaceHistory();"
+        ) < undoHandler.indexOf("status.textContent = restored")
+        && undoHandler.includes(
+            '"Undid one derivation step; exact Result restored as Source."'
+        )
+    );
+
+    s.ok(
+        "Add to pathway preserves the action outcome after history synchronization",
+        supplyHandler.includes(
+            "const actionMessage = String(status.textContent || \"\");"
+        )
+        && supplyHandler.indexOf("const actionMessage =")
+            < supplyHandler.indexOf("syncClassicalGrammarWorkspaceHistory();")
+        && supplyHandler.indexOf("syncClassicalGrammarWorkspaceHistory();")
+            < supplyHandler.indexOf("status.textContent = supplied")
+        && supplyHandler.includes(
+            "That exact Result does not fill the active pathway's missing role."
+        )
     );
 
     s.ok(
@@ -236,7 +291,16 @@ function run(ctx = {}) {
     );
 
     const before = ctx.getClassicalGrammarWorkspaceHistorySnapshot();
+    const firstAction = ctx.beginClassicalGrammarWorkspaceUserAction(
+        "vnc:application"
+    );
     const firstReceipt = makeDirectVncReceipt(ctx, "ahci");
+    const afterInternalReceipts =
+        ctx.getClassicalGrammarWorkspaceHistorySnapshot();
+    ctx.completeClassicalGrammarWorkspaceUserAction(
+        firstAction,
+        firstReceipt
+    );
     const afterFirst = ctx.getClassicalGrammarWorkspaceHistorySnapshot();
     const firstNode = afterFirst.nodes.find(node => {
         const capture = ctx.recoverClassicalGrammarWorkspaceResult(
@@ -259,10 +323,12 @@ function run(ctx = {}) {
         ctx.getClassicalGrammarWorkspaceHistorySnapshot().nodeCount;
 
     s.eq(
-        "the installer automatically records each authorized application as its exact Result identity and rejects copies",
+        "one explicit Make Result records its exact Result while internal receipts and copies stay out of build history",
         {
             receiptAuthorized:
                 firstReceipt.authorizationStatus === "authorized",
+            internalReceiptsAddedNodes:
+                afterInternalReceipts.nodeCount - before.nodeCount,
             addedNodes: afterFirst.nodeCount - before.nodeCount,
             applicationIdentity:
                 firstCapture?.applicationResult === firstReceipt,
@@ -282,6 +348,7 @@ function run(ctx = {}) {
         },
         {
             receiptAuthorized: true,
+            internalReceiptsAddedNodes: 0,
             addedNodes: 1,
             applicationIdentity: true,
             resultIdentity: true,
@@ -297,7 +364,14 @@ function run(ctx = {}) {
         firstNode?.nodeId,
         "Alternative"
     );
+    const secondAction = ctx.beginClassicalGrammarWorkspaceUserAction(
+        "vnc:application"
+    );
     const secondReceipt = makeDirectVncReceipt(ctx, "chōca");
+    ctx.completeClassicalGrammarWorkspaceUserAction(
+        secondAction,
+        secondReceipt
+    );
     const afterSecond = ctx.getClassicalGrammarWorkspaceHistorySnapshot();
     const secondNode = afterSecond.nodes.find(node => {
         const capture = ctx.recoverClassicalGrammarWorkspaceResult(

@@ -92,6 +92,23 @@ function run(ctx) {
         sourceFamily: "preterit-agentive",
         outerSubject: "3sg",
     });
+    const exactTransitiveVncApplication =
+        ctx.evaluateClassicalNahuatlVncApplication({
+            sourceStem: "āna",
+            verbClass: "A",
+            sourceValence: "specific-projective",
+            objectPerson: "3sg",
+            subject: "1sg",
+            mood: "indicative",
+            tense: "present",
+            requestedDerivation: "direct",
+            requestedVoice: "active",
+        });
+    const exactTransitiveVncName = ctx.evaluatePersonalNameNnc({
+        canonicalSourceResult: exactTransitiveVncApplication.resultFrame,
+        sourceFamily: "present-agentive",
+        outerSubject: "2sg",
+    });
     const exactClauseResult =
         ctx.buildClassicalNahuatlVncSentenceResultFrame(
             exactVncApplication,
@@ -183,6 +200,52 @@ function run(ctx) {
             "canonical-source-result-and-raw-source-are-mutually-exclusive",
         ],
     });
+    s.eq(
+        "personal-name formation derives its functional slots while preserving an exact transitive VNC Result",
+        {
+            authorizationStatus:
+                exactTransitiveVncName.authorizationStatus,
+            exactResultPreserved:
+                exactTransitiveVncName.canonicalSourceResult
+                    === exactTransitiveVncApplication.resultFrame,
+            sourceFamily:
+                exactTransitiveVncName.exactSourceResolution
+                    ?.selectedSourceFamily,
+            formula: exactTransitiveVncName.formulaRealization,
+            diagram: {
+                status:
+                    exactTransitiveVncName.diagrammaticProjection
+                        ?.authorizationStatus,
+                authority:
+                    exactTransitiveVncName.diagrammaticProjection
+                        ?.projectionAuthority,
+                formula:
+                    exactTransitiveVncName.diagrammaticProjection
+                        ?.linearFormula,
+                rows:
+                    exactTransitiveVncName.diagrammaticProjection
+                        ?.rows.map(row => [row.role, row.expression]),
+            },
+        },
+        {
+            authorizationStatus: "authorized",
+            exactResultPreserved: true,
+            sourceFamily: "present-agentive",
+            formula: "#ti-Ø(Ø-Ø-c-Ø-āna-Ø-c-Ø)Ø-Ø#",
+            diagram: {
+                status: "authorized",
+                authority: "typed-personal-name-slots",
+                formula: "#ti-Ø(Ø-Ø-c-Ø-āna-Ø-c-Ø)Ø-Ø#",
+                rows: [
+                    ["Subject", "#ti-Ø( ... )Ø-Ø#"],
+                    [
+                        "Personal-name predicate",
+                        "(Ø-Ø-c-Ø-āna-Ø-c-Ø)",
+                    ],
+                ],
+            },
+        }
+    );
 
     const canvasPath = path.resolve(__dirname, "../../ANDREWS_TRANSCRIPTION_CANVAS.md");
     const sourceAudit = auditClassicalNahuatlLesson56Canvas(fs.readFileSync(canvasPath, "utf8"));

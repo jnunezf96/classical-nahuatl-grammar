@@ -539,7 +539,10 @@ function run(ctx = {}) {
             "Array.isArray(result.missingCaptureRoles)"
         )
         && clauseEntrySource.includes(
-            "requiredResultRoles: missingCaptureRoles"
+            "Array.isArray(decisionContract?.missingCaptureRoles)"
+        )
+        && clauseEntrySource.includes(
+            "requiredResultRoles: ownerMissingCaptureRoles"
         )
         && clauseEntrySource.includes(
             "classicalCapabilityBindingResults"

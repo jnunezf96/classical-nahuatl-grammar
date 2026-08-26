@@ -158,13 +158,23 @@ export function createClassicalGrammarWorkspaceHistory({
     return record.capture;
   }
 
-  function undo() {
+  function canUndo() {
     const current = records.get(currentNodeId);
-    if (!current?.parentNodeId) return null;
+    const branch = branches.get(currentBranchId);
+    return Boolean(
+      current?.parentNodeId
+      && current.branchId === currentBranchId
+      && branch?.nodeIds.includes(current.nodeId)
+      && records.has(current.parentNodeId)
+    );
+  }
+
+  function undo() {
+    if (!canUndo()) return null;
+    const current = records.get(currentNodeId);
     const parent = records.get(current.parentNodeId);
     if (!parent) return null;
     currentNodeId = parent.nodeId;
-    currentBranchId = parent.branchId;
     revision += 1;
     return parent.capture;
   }
@@ -291,6 +301,7 @@ export function createClassicalGrammarWorkspaceHistory({
       revision,
       currentNodeId,
       currentBranchId,
+      canUndo: canUndo(),
       nodeCount: records.size,
       branchCount: branches.size,
       nodes: freezeList([...records.keys()].map(getNode)),
@@ -317,6 +328,7 @@ export function createClassicalGrammarWorkspaceHistory({
       && value.version === 1
       && value.nodeCount === value.nodes.length
       && value.branchCount === value.branches.length
+      && typeof value.canUndo === "boolean"
       && value.exactResultsStoredPrivately === true
       && value.grammarAuthority === false
       && Object.isFrozen(value)
@@ -329,6 +341,7 @@ export function createClassicalGrammarWorkspaceHistory({
     record,
     recover,
     continueFrom,
+    canUndo,
     undo,
     fork,
     compare,
@@ -355,21 +368,9 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
       targetObject.isClassicalGrammarApplicationCapabilityNavigator,
   });
   const observedApplicationResults = new WeakSet();
-  const recordIssuedApplication = observation => {
-    const applicationResult = observation?.applicationResult || null;
-    if (
-      !applicationResult
-      || observedApplicationResults.has(applicationResult)
-      || typeof targetObject.isClassicalGrammarApplicationResult
-        !== "function"
-      || !targetObject.isClassicalGrammarApplicationResult(applicationResult)
-      || applicationResult.authorizationStatus !== "authorized"
-    ) return false;
-    const node = history.record(applicationResult, {
-      label: applicationResult.operationId,
-    });
-    if (!node) return false;
-    observedApplicationResults.add(applicationResult);
+  const issuedUserActionTokens = new WeakSet();
+  let userActionSequence = 0;
+  const dispatchHistoryUpdate = () => {
     try {
       const EventConstructor = targetObject.CustomEvent
         || globalThis.CustomEvent;
@@ -380,22 +381,63 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     } catch {
       // Workspace history is observational and cannot interrupt grammar.
     }
-    return true;
   };
-  let unsubscribe = () => false;
-  if (
-    typeof targetObject
-      .subscribeClassicalGrammarApplicationAtlasObservations === "function"
-  ) {
-    try {
-      unsubscribe = targetObject
-        .subscribeClassicalGrammarApplicationAtlasObservations(
-          recordIssuedApplication,
-        );
-    } catch {
-      unsubscribe = () => false;
-    }
-  }
+  const getAuthorizedApplicationResult = value => {
+    if (
+      value
+      && typeof targetObject.isClassicalGrammarApplicationResult
+        === "function"
+      && targetObject.isClassicalGrammarApplicationResult(value)
+      && value.authorizationStatus === "authorized"
+    ) return value;
+    const slotId = `grammar-workspace-user-action:${userActionSequence}`;
+    const capture = targetObject.captureClassicalGrammarApplicationResult?.(
+      value,
+      slotId,
+    ) || null;
+    return targetObject.isClassicalGrammarApplicationResultCapture?.(
+      capture,
+      slotId,
+    ) && capture.applicationResult?.authorizationStatus === "authorized"
+      ? capture.applicationResult
+      : null;
+  };
+  const beginUserAction = (operationId = "") => {
+    userActionSequence += 1;
+    const token = Object.freeze({
+      kind: "classical-grammar-workspace-user-action",
+      sequence: userActionSequence,
+      operationId: String(operationId || "").trim(),
+      grammarAuthority: false,
+    });
+    issuedUserActionTokens.add(token);
+    return token;
+  };
+  const finishUserAction = (
+    token = null,
+    exactResult = null,
+    { record = true } = {},
+  ) => {
+    if (!token || !issuedUserActionTokens.delete(token)) return null;
+    if (!record) return null;
+    const applicationResult = getAuthorizedApplicationResult(exactResult);
+    if (
+      !applicationResult
+      || observedApplicationResults.has(applicationResult)
+    ) return null;
+    const node = history.record(applicationResult, {
+      label: token.operationId || applicationResult.operationId,
+    });
+    if (!node) return null;
+    observedApplicationResults.add(applicationResult);
+    dispatchHistoryUpdate();
+    return node;
+  };
+  // Owner probes and projections may issue many internal application
+  // receipts while one visible control is being evaluated. Build history is
+  // the child's action history, so only the explicit user-action transaction
+  // above may add a node. The Atlas observes the internal receipts separately.
+  const unsubscribe = () => false;
   const api = Object.freeze({
     CLASSICAL_GRAMMAR_WORKSPACE_HISTORY_KIND,
     CLASSICAL_GRAMMAR_WORKSPACE_COMPARISON_KIND,
@@ -417,6 +459,18 @@ export function installClassicalGrammarWorkspaceHistoryGlobals(
     compareClassicalGrammarWorkspaceHistory: (leftNodeId, rightNodeId) => (
       history.compare(leftNodeId, rightNodeId)
     ),
+    beginClassicalGrammarWorkspaceUserAction: operationId => (
+      beginUserAction(operationId)
+    ),
+    completeClassicalGrammarWorkspaceUserAction: (
+      token,
+      exactResult,
+    ) => finishUserAction(token, exactResult, { record: true }),
+    cancelClassicalGrammarWorkspaceUserAction: token => {
+      if (!token || !issuedUserActionTokens.has(token)) return false;
+      finishUserAction(token, null, { record: false });
+      return true;
+    },
     isClassicalGrammarWorkspaceHistorySnapshot: value => (
       history.isSnapshot(value)
     ),

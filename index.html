@@ -23,7 +23,7 @@
     />
     <meta
       name="classical-grammar-os-build"
-      content="20260825-launch-ready-293"
+      content="20260825-capability-closure-333"
     />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Classical Nahuatl Grammar — Grammar OS v1.1.0" />
@@ -40,8 +40,8 @@
       href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;1,9..144,700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css?v=20260825-launch-ready-293" />
-    <script type="module" src="src/browser/main.mjs?v=20260825-launch-ready-293"></script>
+    <link rel="stylesheet" href="style.css?v=20260825-capability-closure-333" />
+    <script type="module" src="src/browser/main.mjs?v=20260825-capability-closure-333"></script>
     <title>Classical Nahuatl Grammar — Grammar OS v1.1.0</title>
   </head>
   <body class="is-language-classical">
@@ -67,11 +67,13 @@
       data-classical-workbench="true"
       data-classical-grammar-os-version="1.1.0"
       data-classical-grammar-os-release="cross-lesson-compositional-closure"
-      data-classical-grammar-os-build="20260825-launch-ready-293"
+      data-classical-grammar-os-build="20260825-capability-closure-333"
       data-classical-shell-authority="false"
       data-classical-grammar-authority="false"
       data-classical-presentation-only="true"
+      aria-busy="true"
       aria-labelledby="app-title"
+      inert
       tabindex="-1"
     >
       <header class="form-container-clause hero-panel hero-panel--entrada" id="container-header">
@@ -85,7 +87,7 @@
           </p>
           <h1 id="app-title">Classical Nahuatl Grammar</h1>
           <p class="hero-summary">
-            Enter a typed Source, choose the applicable Grammar, and inspect the canonical Result.
+            Type a Source. Choose what to do. Make a Result. Keep going.
           </p>
         </div>
         <div class="hero-controls">
@@ -99,7 +101,7 @@
             Help
           </button>
           <div class="ui-density-control" role="group" aria-label="Presentation depth">
-            <span class="ui-density-label" id="ui-density-label">Depth</span>
+            <span class="ui-density-label" id="ui-density-label">View</span>
             <div class="ui-density-buttons">
               <button
                 type="button"
@@ -109,7 +111,7 @@
                 aria-pressed="true"
                 aria-description="Show the selected form and formula"
               >
-                <span class="button-label">Study</span>
+                <span class="button-label">Play</span>
               </button>
               <button
                 type="button"

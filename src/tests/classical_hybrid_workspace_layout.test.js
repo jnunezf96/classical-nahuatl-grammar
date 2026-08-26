@@ -45,8 +45,8 @@ function run(ctx = {}) {
     const history = elementBlock(
         shell,
         "classical-grammar-workspace-history",
-        "section",
-        "section"
+        "details",
+        "details"
     );
     const advanced = elementBlock(
         shell,
@@ -103,7 +103,7 @@ function run(ctx = {}) {
         && operationPlan.includes(
             'id="classical-capability-apply-operation"'
         )
-        && operationPlan.includes(">Apply operation</button>")
+        && operationPlan.includes(">Make Result</button>")
         && operationPlan.includes('data-classical-grammar-authority="false"')
         && operationPlan.includes("disabled")
         && !operationPlan.includes('id="verb-entry-apply"')
@@ -118,9 +118,10 @@ function run(ctx = {}) {
         && panelShell.indexOf("ClassicalGrammarAdvanced()")
             > panelShell.indexOf("ClassicalGrammarWorkspaceHistory()")
         && panelShell.includes(
-            "+ '      </div>\\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced();"
+            "+ '      </div>\\n' + ClassicalGrammarWorkspaceHistory() + ClassicalGrammarAdvanced() + ClassicalPlayWitnessControls();"
         )
         && history.includes('data-classical-workbench-support="history"')
+        && history.includes(">Your builds</summary>")
         && history.includes('data-classical-presentation-only="true"')
         && history.includes('data-classical-grammar-authority="false"')
         && advanced.includes('id="classical-capability-closure-status"')

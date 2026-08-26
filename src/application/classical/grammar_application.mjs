@@ -18,10 +18,10 @@ import {
   buildClassicalGrammaticalRhymeOwnerCalibrationFrame,
   buildClassicalGrammaticalRhymeRoutePlaneFrame,
   buildClassicalGrammaticalRhymeTopologyFrame,
-} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260825-launch-ready-293";
+} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260825-capability-closure-333";
 import {
   CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
-} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260825-launch-ready-293";
+} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260825-capability-closure-333";
 
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";
@@ -272,7 +272,9 @@ function getClassicalLesson2PrimaryWritingOutputs(
       /\s|[.!?]$/u.test(String(surface || "")) ? "sequence" : "word",
     ));
   }
-  add(candidateResult.wordSurface, "word");
+  add(candidateResult.wordSurface, /\s|[.!?]$/u.test(
+    String(candidateResult.wordSurface || ""),
+  ) ? "sequence" : "word");
   add(candidateResult.surfaceRealization, /\s|[.!?]$/u.test(
     String(candidateResult.surfaceRealization || ""),
   ) ? "sequence" : "word");
@@ -440,6 +442,13 @@ function buildClassicalLesson2OwnedWriting(
   }
   const writingCandidate = candidateResult?.personalNameResult
     || candidateResult?.scalarFrame
+    || (
+      candidateResult?.kind
+        === "classical-nahuatl-negative-particle-selection-frame"
+      && candidateResult?.authorizationStatus === "authorized"
+        ? candidateResult.particleResultFrame
+        : null
+    )
     || candidateResult;
   const sourceConstituents = writingCandidate?.sourceAuthorizationFrame
     ?.sourceConstituents;
@@ -501,11 +510,11 @@ function buildClassicalLesson2OwnedWriting(
   ) {
     parts = String(writingCandidate.formulaSlots.predicate)
       .split("-")
-      .filter(Boolean)
-      .map((value, index) => ({
-        role: index ? `relational-part-${index + 1}` : "relational-embed",
+      .map((value, index) => getClassicalLesson2NonzeroPart(
+        index ? `relational-part-${index + 1}` : "relational-embed",
         value,
-      }));
+      ))
+      .filter(Boolean);
     boundaryKind = "typed-relational-nnc";
   } else {
     const orderedFrames = findClassicalLesson2Frames(
@@ -3757,6 +3766,9 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       return Object.freeze(["nnc-result"]);
     }
     if (operationId === "grammar:nominal-construction") {
+      if (canonicalResult?.constructionKind === "nominal-embed-vnc") {
+        return Object.freeze(["vnc-result"]);
+      }
       if (["compound-nnc", "affective-nnc"].includes(
         canonicalResult?.constructionKind,
       )) {
@@ -4241,6 +4253,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
   function issueClassicalGrammarFormationResultBindingFrame(
     operationId = "",
     currentResult = null,
+    selections = {},
   ) {
     const normalizedOperationId = String(operationId || "").trim();
     const provenance = getIssuedResultProvenance(currentResult);
@@ -4254,6 +4267,13 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     let accepted = false;
     let ownerPreflightCapabilityName = "";
     let ownerPreflightValidatorName = "";
+    let ownerChoiceFrame = null;
+    let ownerChoiceFrameValidated = false;
+    let ownerChoiceOptionProjection = Object.freeze({});
+    let selectedOwnerChoices = Object.freeze({});
+    let adverbialRequiredChoiceIds = null;
+    let denominalRequiredChoiceIds = null;
+    let placeGentilicRequiredChoiceIds = null;
     let preflightThrew = false;
     if (recognized && provenance) {
       if (normalizedOperationId === "vnc:denominal") {
@@ -4290,6 +4310,53 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             && preflightFrame.authorizationStatus === "authorized"
             && preflightFrame.canonicalNncResult === currentResult
           );
+          if (accepted) {
+            const operationOptions = Array.isArray(
+              preflightFrame.operationOptions
+            ) ? preflightFrame.operationOptions : [];
+            const pathChoices = Array.isArray(preflightFrame.pathChoices)
+              ? preflightFrame.pathChoices
+              : [];
+            const selectedOperation = String(
+              selections?.denominalOperation || ""
+            ).trim();
+            const selectedPath = String(
+              selections?.denominalOperationPath || ""
+            ).trim();
+            const operationValid = operationOptions.some(option => (
+              option.operationId === selectedOperation
+            ));
+            const compatiblePaths = operationValid
+              ? pathChoices.filter(choice => (
+                choice.operationId === selectedOperation
+              ))
+              : [];
+            const pathValid = compatiblePaths.some(choice => (
+              choice.pathChoiceId === selectedPath
+            ));
+            ownerChoiceFrame = preflightFrame;
+            ownerChoiceFrameValidated = true;
+            ownerChoiceOptionProjection = Object.freeze({
+              "classical-denominal-vnc-operation": Object.freeze(
+                operationOptions.map(option => option.operationId)
+              ),
+              "classical-denominal-vnc-operation-path": Object.freeze(
+                compatiblePaths.map(choice => choice.pathChoiceId)
+              ),
+            });
+            selectedOwnerChoices = Object.freeze({
+              "classical-denominal-vnc-operation": selectedOperation,
+              "classical-denominal-vnc-operation-path": selectedPath,
+            });
+            denominalRequiredChoiceIds = Object.freeze([
+              ...(!operationValid
+                ? ["classical-denominal-vnc-operation"]
+                : []),
+              ...(operationValid && !pathValid
+                ? ["classical-denominal-vnc-operation-path"]
+                : []),
+            ]);
+          }
         } catch {
           preflightThrew = true;
           accepted = false;
@@ -4315,6 +4382,46 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             && preflightFrame.canonicalNncResult === currentResult
             && preflightFrame.exactNncResultIdentityPreserved === true
           );
+          const selectedConstructionKind = String(
+            selections?.constructionKind || ""
+          ).trim();
+          const selectedFormation = String(
+            selections?.formation || ""
+          ).trim();
+          let selectedChoiceAccepted = false;
+          if (accepted && selectedConstructionKind && selectedFormation) {
+            const selectedChoiceFrame = Reflect.apply(
+              resolvedPreflight.capability,
+              targetObject,
+              [{
+                canonicalNncResult: currentResult,
+                constructionKind: selectedConstructionKind,
+                formation: selectedFormation,
+              }],
+            );
+            selectedChoiceAccepted = Boolean(
+              selectedChoiceFrame?.authorizationStatus === "authorized"
+              && selectedChoiceFrame.canonicalNncResult === currentResult
+              && selectedChoiceFrame.exactNncResultIdentityPreserved === true
+            );
+            if (selectedChoiceAccepted) {
+              ownerChoiceFrame = selectedChoiceFrame;
+              ownerChoiceFrameValidated = true;
+            }
+          }
+          selectedOwnerChoices = Object.freeze({
+            "classical-place-gentilic-result-kind":
+              selectedConstructionKind,
+            "classical-place-gentilic-formation": selectedFormation,
+          });
+          placeGentilicRequiredChoiceIds = Object.freeze([
+            ...(!selectedConstructionKind
+              ? ["classical-place-gentilic-result-kind"]
+              : []),
+            ...(!selectedFormation || !selectedChoiceAccepted
+              ? ["classical-place-gentilic-formation"]
+              : []),
+          ]);
         } catch {
           preflightThrew = true;
           accepted = false;
@@ -4354,6 +4461,103 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             && preflightFrame.canonicalSourceResult === currentResult
             && preflightFrame.exactSourceResultIdentityPreserved === true
           );
+          if (accepted) {
+            const resolvedChoiceFrame = resolveCanonicalCallableCapability(
+              targetObject,
+              "resolveClassicalNahuatlAdverbialPotential",
+              api,
+            );
+            const resolvedChoiceValidator =
+              resolveCanonicalCallableCapability(
+                targetObject,
+                "isClassicalNahuatlAdverbialPotentialFrame",
+                api,
+              );
+            ownerChoiceFrame = resolvedChoiceFrame
+              ? Reflect.apply(
+                resolvedChoiceFrame.capability,
+                targetObject,
+                [{ canonicalSourceResult: currentResult }],
+              )
+              : null;
+            ownerChoiceFrameValidated = Boolean(
+              ownerChoiceFrame
+              && resolvedChoiceValidator
+              && Reflect.apply(
+                resolvedChoiceValidator.capability,
+                targetObject,
+                [ownerChoiceFrame],
+              ) === true
+              && ownerChoiceFrame.authorizationStatus === "authorized"
+              && ownerChoiceFrame.canonicalSourceResult === currentResult
+              && ownerChoiceFrame.exactSourceResultIdentityPreserved === true
+            );
+            accepted = ownerChoiceFrameValidated;
+            if (ownerChoiceFrameValidated) {
+              const choices = ownerChoiceFrame.contextChoices || {};
+              ownerChoiceOptionProjection = Object.freeze({
+                degree: Object.freeze([
+                  ...(ownerChoiceFrame.allowedDegrees || []),
+                ]),
+                scope: Object.freeze([
+                  ...(ownerChoiceFrame.allowedScopes || []),
+                ]),
+                "preceding-particle": Object.freeze([
+                  ...(choices.precedingParticles || []),
+                ]),
+                "negative-particle": Object.freeze([
+                  ...(choices.negativeParticles || []),
+                ]),
+                "negation-scope": Object.freeze([
+                  ...(choices.negationScopes || []),
+                ]),
+                "stress-partner": Object.freeze([
+                  ...(choices.stressPartners || []),
+                ]),
+                "surface-variant": Object.freeze([
+                  ...(choices.variants || []),
+                ]),
+                "sentence-position": Object.freeze([
+                  ...(choices.sentencePositions || []),
+                ]),
+                "clause-type": Object.freeze([
+                  ...(choices.clauseTypes || []),
+                ]),
+              });
+              selectedOwnerChoices = Object.freeze({
+                degree: String(selections?.degree || "").trim(),
+                scope: String(selections?.scope || "").trim(),
+                "preceding-particle": String(
+                  selections?.precedingParticle || ""
+                ).trim(),
+                "negative-particle": String(
+                  selections?.negativeParticle || ""
+                ).trim(),
+                "negation-scope": String(
+                  selections?.negationScope || ""
+                ).trim(),
+                "stress-partner": String(
+                  selections?.stressPartner || ""
+                ).trim(),
+                "surface-variant": String(
+                  selections?.surfaceVariant || ""
+                ).trim(),
+                "sentence-position": String(
+                  selections?.sentencePosition || ""
+                ).trim(),
+                "clause-type": String(
+                  selections?.clauseType || ""
+                ).trim(),
+              });
+              adverbialRequiredChoiceIds = Object.freeze(
+                (preflightFrame.requiredChoiceIds || []).filter(choiceId => (
+                  !ownerChoiceOptionProjection[choiceId]?.includes(
+                    selectedOwnerChoices[choiceId]
+                  )
+                ))
+              );
+            }
+          }
         } catch {
           preflightThrew = true;
           accepted = false;
@@ -4377,7 +4581,23 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             ? Reflect.apply(
               resolvedPreflight.capability,
               targetObject,
-              [{ canonicalSourceResult: currentResult }],
+              [{
+                canonicalSourceResult: currentResult,
+                ...(String(selections?.sourceFamily || "").trim()
+                  ? {
+                    sourceFamily: String(
+                      selections.sourceFamily,
+                    ).trim(),
+                  }
+                  : {}),
+                ...(String(selections?.outerSubject || "").trim()
+                  ? {
+                    outerSubject: String(
+                      selections.outerSubject,
+                    ).trim(),
+                  }
+                  : {}),
+              }],
             )
             : null;
           accepted = Boolean(
@@ -4400,15 +4620,20 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     }
     const requiredChoiceIdsByOperation = {
       "vnc:denominal": [
-        "classical-denominal-vnc-operation",
-        "classical-denominal-vnc-operation-path",
+        ...(denominalRequiredChoiceIds || [
+          "classical-denominal-vnc-operation",
+          "classical-denominal-vnc-operation-path",
+        ]),
       ],
       "nnc:place-gentilic": [
-        "classical-place-gentilic-result-kind",
-        "classical-place-gentilic-formation",
+        ...(placeGentilicRequiredChoiceIds || [
+          "classical-place-gentilic-result-kind",
+          "classical-place-gentilic-formation",
+        ]),
       ],
       "nnc:adverbial": [
-        ...(preflightFrame?.requiredChoiceIds || []),
+        ...(adverbialRequiredChoiceIds
+          || preflightFrame?.requiredChoiceIds || []),
       ],
       "nnc:personal-name": [
         ...(preflightFrame?.requiredChoiceIds || []),
@@ -4455,6 +4680,16 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       ownerPreflightValidatorName,
       ownerPreflightFrame: accepted ? preflightFrame : null,
       ownerPreflightValidated: accepted,
+      ownerChoiceFrame: accepted ? ownerChoiceFrame : null,
+      ownerChoiceFrameValidated: accepted
+        ? ownerChoiceFrameValidated
+        : false,
+      ownerChoiceOptionProjection: accepted
+        ? ownerChoiceOptionProjection
+        : Object.freeze({}),
+      selectedOwnerChoices: accepted
+        ? selectedOwnerChoices
+        : Object.freeze({}),
       ownerInputAcceptanceProven: accepted,
       ownerRejectionProven: false,
       exactResultIdentityPreserved: accepted,
@@ -4541,6 +4776,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
         "isClassicalNahuatlAdverbialExactSourceResolution",
         api,
       );
+      const resolvedChoiceValidator = resolveCanonicalCallableCapability(
+        targetObject,
+        "isClassicalNahuatlAdverbialPotentialFrame",
+        api,
+      );
       try {
         return Boolean(
           resolvedValidator
@@ -4553,6 +4793,20 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             === frame.exactResult
           && frame.ownerPreflightFrame.exactSourceResultIdentityPreserved
             === true
+          && frame.ownerChoiceFrameValidated === true
+          && resolvedChoiceValidator
+          && Reflect.apply(
+            resolvedChoiceValidator.capability,
+            targetObject,
+            [frame.ownerChoiceFrame],
+          ) === true
+          && frame.ownerChoiceFrame.authorizationStatus === "authorized"
+          && frame.ownerChoiceFrame.canonicalSourceResult
+            === frame.exactResult
+          && frame.ownerChoiceFrame.exactSourceResultIdentityPreserved
+            === true
+          && Object.isFrozen(frame.ownerChoiceOptionProjection)
+          && Object.isFrozen(frame.selectedOwnerChoices)
         );
       } catch {
         return false;
@@ -6095,6 +6349,7 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
             entry.displayForm || entry.sourceForm || optionId,
           ),
           description: String(entry.gloss || ""),
+          presentationGroupId: String(entry.functionScope || ""),
           availabilityStatus: available
             ? "available"
             : "incompatible",

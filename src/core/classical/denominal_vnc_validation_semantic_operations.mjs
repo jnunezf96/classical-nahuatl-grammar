@@ -4,7 +4,7 @@
 
 import {
   CLASSICAL_NAHUATL_DENOMINAL_VNC_LCM,
-} from "./denominal_vnc_grammar.mjs?v=20260825-launch-ready-293";
+} from "./denominal_vnc_grammar.mjs?v=20260825-capability-closure-333";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

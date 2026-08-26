@@ -13,7 +13,10 @@ function probeHistory() {
         "src/application/classical/grammar_workspace_history.mjs"
     )).href;
     const script = `
-      const { createClassicalGrammarWorkspaceHistory } =
+      const {
+        createClassicalGrammarWorkspaceHistory,
+        installClassicalGrammarWorkspaceHistoryGlobals,
+      } =
         await import(${JSON.stringify(moduleUrl)});
       const issuedApplications = new WeakSet();
       const issuedResults = new WeakMap();
@@ -103,13 +106,18 @@ function probeHistory() {
       const nodeA = history.record(a.applicationResult, { label: "base" });
       const nodeB = history.record(b.canonicalResult, { label: "verb" });
       const branch = history.fork(nodeA.nodeId, "nominal alternative");
+      const emptyForkSnapshot = history.snapshot();
+      const emptyForkUndo = history.undo();
+      const afterEmptyForkUndo = history.snapshot();
       const nodeC = history.record(c.canonicalResult, {
         parentNodeId: nodeA.nodeId,
         branchId: branch.branchId,
         label: "modifier",
       });
+      const branchResultSnapshot = history.snapshot();
       const comparison = history.compare(nodeB.nodeId, nodeC.nodeId);
       const undoCapture = history.undo();
+      const afterBranchUndo = history.snapshot();
       const continuedCapture = history.continueFrom(nodeB.nodeId);
       const snapshot = history.snapshot();
       const particleNode = history.record(particle.applicationResult, {
@@ -124,6 +132,42 @@ function probeHistory() {
       const particleUndo = history.undo();
       const clonedApplication = { ...a.applicationResult };
       const rejectedClone = history.record(clonedApplication);
+      let historyUpdateCount = 0;
+      const installedTarget = {
+        captureClassicalGrammarApplicationResult: capture,
+        isClassicalGrammarApplicationResultCapture: isCapture,
+        isClassicalGrammarApplicationResult: value =>
+          issuedApplications.has(value),
+        getClassicalGrammarApplicationCapabilityNavigator: value =>
+          navigatorByResult.get(value) || null,
+        isClassicalGrammarApplicationCapabilityNavigator: value =>
+          issuedNavigators.has(value),
+        CustomEvent: class {
+          constructor(type, init = {}) {
+            this.type = type;
+            this.detail = init.detail;
+          }
+        },
+        document: {
+          dispatchEvent: event => {
+            if (event?.type === "classical:grammar-workspace-history-updated") {
+              historyUpdateCount += 1;
+            }
+          },
+        },
+      };
+      installClassicalGrammarWorkspaceHistoryGlobals(installedTarget);
+      const applyToken = installedTarget
+        .beginClassicalGrammarWorkspaceUserAction("vnc:denominal");
+      const countBeforeApply = installedTarget
+        .getClassicalGrammarWorkspaceHistorySnapshot().nodeCount;
+      const applyNode = installedTarget
+        .completeClassicalGrammarWorkspaceUserAction(
+          applyToken,
+          b.applicationResult,
+        );
+      const applySnapshot = installedTarget
+        .getClassicalGrammarWorkspaceHistorySnapshot();
       process.stdout.write(JSON.stringify({
         nodeIds: snapshot.nodes.map(node => node.nodeId),
         branchCount: snapshot.branchCount,
@@ -133,6 +177,16 @@ function probeHistory() {
         branchAnchor: branch.anchorNodeId,
         nodeBParent: nodeB.parentNodeId,
         nodeCParent: nodeC.parentNodeId,
+        branchUndo: {
+          emptyCanUndo: emptyForkSnapshot.canUndo,
+          emptyDirectUndo: emptyForkUndo === null,
+          emptyCurrentNodeId: afterEmptyForkUndo.currentNodeId,
+          emptyCurrentBranchId: afterEmptyForkUndo.currentBranchId,
+          resultCanUndo: branchResultSnapshot.canUndo,
+          restoredNodeId: afterBranchUndo.currentNodeId,
+          preservedBranchId: afterBranchUndo.currentBranchId,
+          restoredCanUndo: afterBranchUndo.canUndo,
+        },
         undoRecoveredA: undoCapture?.canonicalResult === a.canonicalResult,
         continueRecoveredB:
           continuedCapture?.canonicalResult === b.canonicalResult,
@@ -162,6 +216,16 @@ function probeHistory() {
           branchAnchor: particleBranch?.anchorNodeId,
           branchNodeIds: particleBranch?.nodeIds,
           undoAtRoot: particleUndo === null,
+        },
+        userAction: {
+          countBeforeApply,
+          nodeCount: applySnapshot.nodeCount,
+          operations: applySnapshot.nodes.map(node => node.operationId),
+          exactFinalRecorded:
+            installedTarget.recoverClassicalGrammarWorkspaceResult(
+              applyNode.nodeId,
+            )?.applicationResult === b.applicationResult,
+          historyUpdateCount,
         },
       }));
     `;
@@ -209,6 +273,21 @@ function run() {
     );
 
     s.eq(
+        "an empty fork cannot undo, while its first Result undoes to the anchor without leaving the fork",
+        proof.branchUndo,
+        {
+            emptyCanUndo: false,
+            emptyDirectUndo: true,
+            emptyCurrentNodeId: "history-1",
+            emptyCurrentBranchId: "branch-2",
+            resultCanUndo: true,
+            restoredNodeId: "history-1",
+            preservedBranchId: "branch-2",
+            restoredCanUndo: false,
+        }
+    );
+
+    s.eq(
         "branch comparison reports divergence from the exact common ancestor",
         {
             valid: proof.comparisonValid,
@@ -249,6 +328,18 @@ function run() {
             branchAnchor: "",
             branchNodeIds: ["history-4"],
             undoAtRoot: true,
+        }
+    );
+
+    s.eq(
+        "one user Apply records only its final authorized Result",
+        proof.userAction,
+        {
+            countBeforeApply: 0,
+            nodeCount: 1,
+            operations: ["vnc:denominal"],
+            exactFinalRecorded: true,
+            historyUpdateCount: 1,
         }
     );
 

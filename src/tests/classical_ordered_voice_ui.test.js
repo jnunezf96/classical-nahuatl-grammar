@@ -66,6 +66,8 @@ function run(ctx = {}) {
                 && !rendering.includes(
                     'kind: "classical-nahuatl-ordered-voice-layer-vnc-machinery-frame"'
                 ),
+            promptLabelParticipatesInDisplayCache:
+                rendering.includes('`prompt=${keepLabel}`'),
             hostileStatus: poisoned.authorizationStatus,
             hostileReason: poisoned.blockReason,
             hostileRejected:
@@ -85,6 +87,7 @@ function run(ctx = {}) {
             sentenceSurface: "Tlayohualo.",
             target: "tla-yohua-lō",
             rendererConstructorAbsent: true,
+            promptLabelParticipatesInDisplayCache: true,
             hostileStatus: "blocked",
             hostileReason:
                 "classical-grammar-application-request-invalid:"

@@ -430,6 +430,23 @@ function probeDeverbalConstruction(
   const selectedState = ["absolutive", "possessive"].includes(
     String(ownerSelections?.state || "").trim(),
   ) ? String(ownerSelections.state).trim() : "";
+  const selectedSubject = /^(?:1|2|3)(?:sg|pl)$|^3common$/u.test(
+    String(ownerSelections?.subject || "").trim(),
+  ) ? String(ownerSelections.subject).trim() : "";
+  const selectedChoiceValue = choiceId => ({
+    "nominalization-kind": ownerSelections?.nominalizationKind,
+    "action-kind": ownerSelections?.actionKind,
+    "action-suffix": ownerSelections?.actionSuffix,
+    "patientive-family": ownerSelections?.patientiveFamily,
+    "characteristic-reading": ownerSelections?.characteristicReading,
+    "continuation-kind": ownerSelections?.continuationKind,
+    "continuation-relation": ownerSelections?.continuationRelation,
+    state: selectedState,
+    subject: selectedSubject,
+  })[choiceId];
+  const unresolvedChoiceIds = choiceIds => choiceIds.filter(
+    choiceId => !String(selectedChoiceValue(choiceId) || "").trim(),
+  );
 
   addCaptureSpec({
     bindingId: "predicate-nominalization:preterit-source",
@@ -552,7 +569,7 @@ function probeDeverbalConstruction(
       bindingId: spec.bindingId,
       inputRole: spec.inputRole,
       ownerPreflightKind: capture.value.kind,
-      requiredChoiceIds: spec.requiredChoiceIds,
+      requiredChoiceIds: unresolvedChoiceIds(spec.requiredChoiceIds),
       requiredResultRoles: spec.requiredResultRoles,
     });
     choices.push(choice);
@@ -561,7 +578,11 @@ function probeDeverbalConstruction(
   return { choices, evidence, capabilitiesComplete: true };
 }
 
-function probeRelationalConstruction(target, exactResult) {
+function probeRelationalConstruction(
+  target,
+  exactResult,
+  ownerSelections = {},
+) {
   const evaluate = callable(
     target,
     "evaluateClassicalNahuatlRelationalNnc",
@@ -572,6 +593,24 @@ function probeRelationalConstruction(target, exactResult) {
   }
   const choices = [];
   const evidence = [];
+  const selectedState = ["absolutive", "possessive"].includes(
+    String(ownerSelections?.state || "").trim(),
+  ) ? String(ownerSelections.state).trim() : "";
+  const selectedSubject = String(
+    ownerSelections?.relationalSubject
+    || ownerSelections?.subject
+    || "",
+  ).trim();
+  const selectedSubjectMode = ["adverbialized", "normal"].includes(
+    String(ownerSelections?.subjectMode || "").trim(),
+  ) ? String(ownerSelections.subjectMode).trim() : "adverbialized";
+  const selectedPossessor = String(
+    ownerSelections?.possessor || "",
+  ).trim();
+  const unresolvedChoiceIds = [
+    ...(!selectedState ? ["state"] : []),
+    ...(!selectedSubject ? ["subject"] : []),
+  ];
   RELATIONAL_EXACT_SOURCE_PROBES.forEach(spec => {
     const preflight = invoke(target, "evaluateClassicalNahuatlRelationalNnc", [{
       nounstem: {
@@ -582,8 +621,12 @@ function probeRelationalConstruction(target, exactResult) {
         sourceFormation: spec.sourceFormation,
         upstreamResult: exactResult,
       },
-      subjectMode: "adverbialized",
-      subjectId: "3common",
+      state: selectedState || "absolutive",
+      ...(selectedState === "possessive" && selectedPossessor
+        ? { possessorId: selectedPossessor }
+        : {}),
+      subjectMode: selectedSubjectMode,
+      subjectId: selectedSubject || "3common",
     }]);
     if (
       preflight.threw
@@ -601,12 +644,7 @@ function probeRelationalConstruction(target, exactResult) {
       bindingId: spec.bindingId,
       inputRole: "derived-relational-source",
       ownerPreflightKind: preflight.value.kind,
-      requiredChoiceIds: [
-        "relational-matrix",
-        "relational-formation",
-        "state",
-        "subject",
-      ],
+      requiredChoiceIds: unresolvedChoiceIds,
     });
     choices.push(choice);
     evidence.push(Object.freeze({ choice, ownerPreflight: preflight.value }));
@@ -625,8 +663,12 @@ function probeRelationalConstruction(target, exactResult) {
         pertinencySourceKind: "associated-entity",
         upstreamResult: exactResult,
       },
-      subjectMode: "adverbialized",
-      subjectId: "3common",
+      state: selectedState || "absolutive",
+      ...(selectedState === "possessive" && selectedPossessor
+        ? { possessorId: selectedPossessor }
+        : {}),
+      subjectMode: selectedSubjectMode,
+      subjectId: selectedSubject || "3common",
     }]);
     if (
       !preflight.threw
@@ -642,7 +684,7 @@ function probeRelationalConstruction(target, exactResult) {
         bindingId: "relational-source:associated-entity:pertinency",
         inputRole: "associated-entity-result",
         ownerPreflightKind: preflight.value.kind,
-        requiredChoiceIds: ["state", "subject"],
+        requiredChoiceIds: unresolvedChoiceIds,
       });
       choices.push(choice);
       evidence.push(Object.freeze({ choice, ownerPreflight: preflight.value }));
@@ -901,7 +943,11 @@ export function createClassicalNahuatlFormationResultBindingApi(
               currentResult,
               ownerSelections,
             )
-          : probeRelationalConstruction(ownerTarget, currentResult);
+          : probeRelationalConstruction(
+              ownerTarget,
+              currentResult,
+              ownerSelections,
+            );
     }
     const choices = freezeArray(probe.choices);
     const bindingIds = freezeArray(choices.map(choice => choice.id));

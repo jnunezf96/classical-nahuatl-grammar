@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260825-launch-ready-293";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260825-capability-closure-333";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
@@ -22,6 +22,16 @@ if (typeof window !== "undefined") {
 function publishBootstrapStatus(status, error = null) {
     if (typeof document === "undefined") return;
     document.documentElement.dataset.classicalBootstrapStatus = status;
+    const workbench = document.getElementById("classical-workbench");
+    if (workbench) {
+        if (status === "ready") {
+            workbench.removeAttribute("inert");
+            workbench.setAttribute("aria-busy", "false");
+        } else {
+            workbench.setAttribute("inert", "");
+            workbench.setAttribute("aria-busy", "true");
+        }
+    }
     const projection = document.getElementById("classical-bootstrap-status");
     if (!projection) return;
     projection.dataset.classicalBootstrapStatus = status;

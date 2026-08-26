@@ -30,6 +30,11 @@ function run(ctx = {}) {
         "particle:result",
         {}
     );
+    const particleSearch = ctx.document.querySelector(
+        '[data-classical-capability-choice-search="particleId"]'
+    );
+    const auhChoice = choices?.choiceOptionProjection?.particleId
+        ?.find(option => option.optionId === "l3-auh-conjunctor");
 
     suite.eq(
         "Particle Result enters as a separate root constructor without consuming or changing the current exact Source",
@@ -61,6 +66,12 @@ function run(ctx = {}) {
                 ctx.getClassicalSourceCapabilityOperationExecutionReadiness(
                     "particle:result"
                 )?.executable,
+            findability: [
+                particleSearch?.placeholder,
+                choices?.choiceOptionProjection?.particleId?.length,
+                auhChoice?.presentationGroupId,
+                auhChoice?.description,
+            ],
             unchangedResult:
                 ctx.getActiveClassicalRuleLogicSurfaceFrame()
                     === beforeSurface,
@@ -80,6 +91,12 @@ function run(ctx = {}) {
                 "available",
             ],
             readiness: false,
+            findability: [
+                "Find by form or meaning",
+                116,
+                "conjunctor",
+                "and; but",
+            ],
             unchangedResult: true,
         }
     );

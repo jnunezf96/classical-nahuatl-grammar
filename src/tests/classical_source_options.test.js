@@ -136,6 +136,88 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "the class owner resolves built-in yohua without guessing variable or unknown stems",
+        [
+            ["yohua", { valence: "intransitive" }],
+            ["ē-hua", { valence: "intransitive" }],
+            ["xemi", { valence: "intransitive" }],
+        ].map(([stem, options]) => {
+            const profile = inventoryRuntime
+                .inferClassicalNahuatlLesson7ClassProfile(stem, options);
+            return {
+                stem,
+                classId: profile.classId,
+                classOptions: profile.classOptions,
+                selectionRequired: profile.classSelectionRequired,
+                ruleId: profile.classGuidelineRuleId,
+            };
+        }),
+        [
+            {
+                stem: "yohua",
+                classId: "A",
+                classOptions: ["A"],
+                selectionRequired: false,
+                ruleId: "cn-l7-765-intransitive-wa-change-a",
+            },
+            {
+                stem: "ē-hua",
+                classId: "A",
+                classOptions: ["A", "B"],
+                selectionRequired: false,
+                ruleId: "cn-l7-75-variable-a-b-membership",
+            },
+            {
+                stem: "xemi",
+                classId: "",
+                classOptions: [],
+                selectionRequired: true,
+                ruleId: "",
+            },
+        ]
+    );
+
+    s.eq(
+        "built-in class preservation follows guideline, owner option, then claim permission",
+        ["cochi", "ē-hua", "mati"].map((stem) => {
+            const profile = inventoryRuntime
+                .inferClassicalNahuatlLesson7ClassProfile(stem, {
+                    valence: "intransitive",
+                });
+            return {
+                stem,
+                classId: profile.classId,
+                classOptions: profile.classOptions,
+                guidelineAllowed: profile.classGuidelineAllowedClassIds,
+                claimAllowed: profile.classClaimAllowedClassIds,
+            };
+        }),
+        [
+            {
+                stem: "cochi",
+                classId: "",
+                classOptions: [],
+                guidelineAllowed: [],
+                claimAllowed: ["A", "B", "D"],
+            },
+            {
+                stem: "ē-hua",
+                classId: "A",
+                classOptions: ["A", "B"],
+                guidelineAllowed: ["A", "B"],
+                claimAllowed: ["A", "B"],
+            },
+            {
+                stem: "mati",
+                classId: "B",
+                classOptions: ["B"],
+                guidelineAllowed: [],
+                claimAllowed: ["A", "B", "D"],
+            },
+        ]
+    );
+
+    s.eq(
         "the VNC owner retains first-person supportive i with the built-in transitive default and antecessive",
         typeof inventoryRuntime.buildClassicalNahuatlVerbstemClassFrame === "function"
             ? (() => {
@@ -175,7 +257,7 @@ function run(ctx = {}) {
     s.ok(
         "Source shell keeps the picker, two genuine source choices, and read-only morph analysis",
         shell.includes('id="classical-vnc-source-stem"')
-            && shell.includes('<span class="classical-nnc-source-guide__label">Built-in verbstems</span>')
+            && shell.includes('<span class="classical-nnc-source-guide__label">Try an example</span>')
             && shell.includes('Type a verbstem or choose a built-in verbstem')
             && !shell.includes('Canonical verbstem')
             && shell.includes('data-classical-source-parts-kind="whole-stem"')
@@ -187,6 +269,11 @@ function run(ctx = {}) {
         "Source choices are wired and receive distinct compact layouts",
         composer.includes("populateClassicalVncSourceStemPicker")
             && composer.includes("applyClassicalVncSourceStemSelection")
+            && composer.includes("applyClassicalVncBuiltInSourceClassDefault")
+            && composer.includes("ownerSelection?.classGuidelineAllowedClassIds?.length")
+            && composer.includes("ownerSelection?.classOptions?.length")
+            && composer.includes("ownerSelection?.classClaimAllowedClassIds || []")
+            && composer.includes("ownerAllowedClassIds.includes(currentClass)")
             && css.includes('[data-classical-source-parts-mode="whole-stem"] .classical-source-parts__grid')
             && css.includes('[data-classical-source-parts-mode="embed-matrix"] .classical-source-parts__grid')
             && css.includes('[data-classical-source-parts-mode="embed-matrix"] .classical-source-parts__field--whole')

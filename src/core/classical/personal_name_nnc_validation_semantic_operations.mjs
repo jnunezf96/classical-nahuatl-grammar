@@ -1,7 +1,7 @@
 // Non-authorizing live validation projection for canonical personal-name NNC
 // semantics. Isolated owner specs retain all grammar and atom ownership.
 
-import { createPersonalNameNncApi } from "../nnc/names/names.mjs?v=20260825-launch-ready-293";
+import { createPersonalNameNncApi } from "../nnc/names/names.mjs?v=20260825-capability-closure-333";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

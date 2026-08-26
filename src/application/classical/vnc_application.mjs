@@ -7731,6 +7731,82 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ? recaptured
         : null;
     }
+    function getClassicalNahuatlVncContinuationOrderedVoiceChoiceInventory(
+      sourceRecord = null,
+    ) {
+      const outerVncApplicationFrame =
+        getClassicalNahuatlVncContinuationOuterApplicationFrame(
+          sourceRecord,
+          "vnc:ordered-voice-application",
+        );
+      const sourceStem = normalizeClassicalNahuatlVncApplicationStem(
+        outerVncApplicationFrame?.normalizedRequest?.sourceStem,
+      );
+      const baseOperation = normalizeClassicalNahuatlVncApplicationToken(
+        outerVncApplicationFrame?.resultFrame?.selectedVoiceOperation
+          || "active",
+      );
+      const baseOperations = Object.freeze(
+        baseOperation && baseOperation !== "active"
+          ? [baseOperation]
+          : [],
+      );
+      const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const ownerInventoryInvoked = Boolean(
+        outerVncApplicationFrame
+        && sourceStem
+        && typeof runtimeTarget
+          ?.getClassicalNahuatlOrderedVoiceLayerCascadeOptions === "function"
+      );
+      const ownerInventory = ownerInventoryInvoked
+        ? runtimeTarget.getClassicalNahuatlOrderedVoiceLayerCascadeOptions(
+          sourceStem,
+          baseOperations,
+        )
+        : null;
+      const ownerInventoryValidated = Boolean(
+        ownerInventory
+        && ownerInventory.kind
+          === "classical-nahuatl-ordered-voice-layer-cascade-inventory"
+        && ownerInventory.sourceStem === sourceStem
+        && Array.isArray(ownerInventory.appliedOperations)
+        && ownerInventory.appliedOperations.length === baseOperations.length
+        && ownerInventory.appliedOperations.every(
+          (operation, index) => operation === baseOperations[index],
+        )
+        && Array.isArray(ownerInventory.options)
+        && Object.isFrozen(ownerInventory)
+        && Object.isFrozen(ownerInventory.appliedOperations)
+        && Object.isFrozen(ownerInventory.options)
+      );
+      const ownerRouteAvailable = Boolean(
+        ownerInventoryValidated
+        && ownerInventory.authorizationStatus === "authorized"
+        && ownerInventory.options.length > 0
+      );
+      const ownerRejectionProven = Boolean(
+        ownerInventoryInvoked
+        && ownerInventoryValidated
+        && !ownerRouteAvailable
+      );
+      return Object.freeze({
+        outerVncApplicationFrame,
+        sourceStem,
+        baseOperation,
+        baseOperations,
+        ownerInventory: ownerInventoryValidated ? ownerInventory : null,
+        ownerInventoryInvoked,
+        ownerInventoryValidated,
+        ownerRouteAvailable,
+        ownerRejectionProven,
+        blockReason: ownerRejectionProven
+          ? String(
+            ownerInventory?.blockReason
+            || "ordered-voice-layer-route-not-attested",
+          )
+          : "",
+      });
+    }
     function getClassicalNahuatlVncContinuationAdditionalResults(
       additionalResults = {},
     ) {
@@ -7899,6 +7975,13 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const additional = getClassicalNahuatlVncContinuationAdditionalResults(
         additionalResults,
       );
+      const orderedVoiceChoiceInventory = operationRecognized
+        && sourceRecord
+        && normalizedOperationId === "vnc:ordered-voice-application"
+        ? getClassicalNahuatlVncContinuationOrderedVoiceChoiceInventory(
+          sourceRecord,
+        )
+        : null;
       const initialBlockReason = !operationRecognized
         ? "classical-vnc-continuation-binding-operation-not-recognized"
         : !sourceRecord
@@ -7911,6 +7994,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
                 ? "classical-vnc-continuation-source-provenance-is-owner-issued"
                 : !additional.valid
                   ? additional.blockReason
+                  : orderedVoiceChoiceInventory?.ownerRejectionProven
+                    ? orderedVoiceChoiceInventory.blockReason
                   : "";
       let bindingStatus = initialBlockReason ? "rejected" : "choices-required";
       let blockReason = initialBlockReason;
@@ -7921,7 +8006,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       let ownerPreflightValidated = false;
       let ownerPreflightAuthorized = false;
       let ownerRequest = null;
-      let outerVncApplicationFrame = sourceRecord?.outerVncApplicationFrame
+      let outerVncApplicationFrame =
+        orderedVoiceChoiceInventory?.outerVncApplicationFrame
+        || sourceRecord?.outerVncApplicationFrame
         || null;
       let executionArgs = [];
       if (!initialBlockReason) {
@@ -8107,7 +8194,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         ...new Set(requiredResultRoles),
       ]);
       executionArgs = Object.freeze(executionArgs);
-      const sourceAccepted = Boolean(sourceRecord);
+      const ownerOperationRejectionProven = Boolean(
+        orderedVoiceChoiceInventory?.ownerRejectionProven,
+      );
+      const sourceAccepted = Boolean(
+        sourceRecord && !ownerOperationRejectionProven,
+      );
       const authorizationStatus = bindingStatus === "rejected"
         ? "blocked"
         : "authorized";
@@ -8129,6 +8221,11 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         continuationSourceProjection:
           sourceRecord?.continuationSourceProjection || null,
         outerVncApplicationFrame,
+        orderedVoiceBaseOperations:
+          orderedVoiceChoiceInventory?.baseOperations
+          || Object.freeze([]),
+        orderedVoiceLayerChoiceInventory:
+          orderedVoiceChoiceInventory?.ownerInventory || null,
         callerSelections: selections
           ? deepFreezeClassicalNahuatlVncApplicationValue(
             cloneClassicalNahuatlVncApplicationCompactValue(selections),
@@ -8154,7 +8251,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           requiredChoiceIds.length || requiredResultRoles.length
         ),
         ownerInputAcceptanceProven: sourceAccepted,
-        ownerRejectionProven: !sourceAccepted,
+        ownerRejectionProven: !sourceRecord
+          || ownerOperationRejectionProven,
         exactInputIdentityPreserved: sourceAccepted,
         sourceHistoryPreservedByExactFrameIdentity: sourceAccepted,
         ownerAuthorizationStillRequired: bindingStatus !== "ready",

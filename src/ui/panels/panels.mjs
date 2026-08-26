@@ -531,10 +531,15 @@ export function createUiPanelsContext(targetObject = globalThis) {
       const buttons = getUiDensityButtons();
       let initialMode = UI_DENSITY_MODE.simple;
       try {
-        const saved = targetObject.window.localStorage ? targetObject.localStorage.getItem(targetObject.UI_DENSITY_STORAGE_KEY) : null;
-        if (saved) {
-          initialMode = normalizeUiDensityMode(saved);
-        }
+        const params = new URLSearchParams(
+          targetObject.window?.location?.search || ""
+        );
+        initialMode = params.get("analysis") === "1"
+          ? UI_DENSITY_MODE.advanced
+          : UI_DENSITY_MODE.simple;
+        targetObject.window.localStorage?.removeItem?.(
+          targetObject.UI_DENSITY_STORAGE_KEY
+        );
       } catch {
         initialMode = UI_DENSITY_MODE.simple;
       }
@@ -544,7 +549,9 @@ export function createUiPanelsContext(targetObject = globalThis) {
       buttons.forEach(button => {
         button.addEventListener("click", () => {
           const mode = button.getAttribute("data-ui-density") || "";
-          applyUiDensityMode(mode);
+          applyUiDensityMode(mode, {
+            persist: false
+          });
         });
       });
     }

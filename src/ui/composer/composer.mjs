@@ -8980,6 +8980,63 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       return true;
     }
+    function applyClassicalVncBuiltInSourceClassDefault(
+      root = null,
+      option = null
+    ) {
+      const stem = normalizeClassicalFuenteSourcePartStem(
+        option?.dataset?.classicalVncSourceStem || ""
+      );
+      const classControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-class"
+      );
+      const valenceControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-valence"
+      );
+      if (
+        !root
+        || !stem
+        || !classControl
+        || typeof targetObject.inferClassicalNahuatlLesson7ClassProfile
+          !== "function"
+      ) return false;
+      const ownerSelection = targetObject
+        .inferClassicalNahuatlLesson7ClassProfile(stem, {
+          valence: String(valenceControl?.value || "").trim(),
+        });
+      const ownerPermittedClassIds = ownerSelection?.classGuidelineAllowedClassIds?.length
+        ? ownerSelection.classGuidelineAllowedClassIds
+        : ownerSelection?.classOptions?.length
+          ? ownerSelection.classOptions
+          : ownerSelection?.classClaimAllowedClassIds || [];
+      const ownerAllowedClassIds = Array.from(new Set(
+        ownerPermittedClassIds
+      ));
+      const currentClass = String(classControl.value || "").trim();
+      const ownerDeterminedClass = Boolean(
+        ownerSelection?.classSelectionRequired === false
+        && ownerAllowedClassIds.length === 1
+        && ownerSelection.classId === ownerAllowedClassIds[0]
+      )
+        ? ownerSelection.classId
+        : "";
+      if (ownerDeterminedClass) {
+        classControl.value = ownerDeterminedClass;
+        classControl.dataset.classicalBuiltInSourceDefault = [
+          stem,
+          ownerSelection.guidelineId,
+          ownerDeterminedClass,
+        ].join("|");
+        return true;
+      }
+      if (currentClass && ownerAllowedClassIds.includes(currentClass)) {
+        delete classControl.dataset.classicalBuiltInSourceDefault;
+        return false;
+      }
+      classControl.value = "";
+      delete classControl.dataset.classicalBuiltInSourceDefault;
+      return false;
+    }
     function getClassicalVncCanonicalInitialIRecord(sourceStem = "", sourceValence = "") {
       const stem = normalizeClassicalFuenteSourcePartStem(sourceStem);
       const valenceDisplay = String(sourceValence || "").trim() === "intransitive" ? "intransitive" : "transitive";
@@ -9522,6 +9579,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       applyClassicalVncBuiltInSourceValenceDefault(root, option, {
         force: true
       });
+      applyClassicalVncBuiltInSourceClassDefault(root, option);
       root.dataset.classicalVncSourceSelection = "canonical-stem";
       root.dataset.classicalVncSourceSelectedStem = sourceStem;
       root.dataset.classicalVncSourceSelectedValenceDisplay = String(option.dataset.classicalVncSourceValenceDisplay || "");
@@ -9762,9 +9820,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
       sourceState = getClassicalSourcePartControlState();
       const signature = getClassicalSourcePartsEvaluationSignature();
+      const previousSignature = ClassicalSourcePartsCommittedSignature;
       if (options.force !== true && signature === ClassicalSourcePartsCommittedSignature) {
         setClassicalSourcePartsPendingState(false);
         return false;
+      }
+      if (previousSignature && signature !== previousSignature) {
+        targetObject.reconcileClassicalCompositionOperationControls?.("", {
+          clearAll: true,
+          resetRouteControls: true
+        });
       }
       ClassicalSourcePartsCommittedSignature = signature;
       setClassicalSourcePartsPendingState(false);
@@ -9772,6 +9837,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       syncClassicalSourceReadout();
       syncClassicalVncSourceGuide();
       syncClassicalNncSourceGuide();
+      const canonicalVncSourceGuide = getClassicalVncSourceGuideElements();
+      if (
+        getClassicalBasalUnitFromRuntime() === CLASSICAL_BASAL_UNIT.vnc
+        && canonicalVncSourceGuide.select?.value
+      ) {
+        applyClassicalVncBuiltInSourceClassDefault(
+          canonicalVncSourceGuide.root,
+          canonicalVncSourceGuide.select.selectedOptions?.[0] || null,
+        );
+      }
       ClassicalSourcePartsCommittedSignature = getClassicalSourcePartsEvaluationSignature();
       const sourceInput = targetObject.document.getElementById("verb");
       if (sourceInput && typeof scheduleVerbInputRefresh === "function") {
@@ -11491,6 +11566,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       } = getVerbScreenCalculatorButtons();
       const classicalBasalButtons = targetObject.document.querySelectorAll("button[data-classical-basal-unit]");
       const classicalRuleLogicControls = targetObject.document.querySelectorAll("[data-classical-rule-logic-control]");
+      const classicalSourceDraftControlIds = new Set([
+        "classical-rule-logic-class",
+        "classical-rule-logic-valence",
+        "classical-rule-logic-nnc-class",
+        "classical-nnc-tl2a-realization",
+        "classical-vnc-source-initial-i-choice",
+        "classical-vnc-source-lexeme-choice",
+      ]);
       initClassicalCausativeParticipantControlEvents();
       initClassicalNonactiveFormationControlEvents();
       if (!ansButton && !modeButton && !transitivityButton && !supportiveIButton && !acButton && !ceButton && !delButton && !equalsButton && !classicalBasalButtons.length && !classicalRuleLogicControls.length) {
@@ -11609,6 +11692,22 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           }
           if (control.id === "classical-rule-logic-valence") {
             syncClassicalVncSourceGuide();
+          }
+          if (
+            classicalSourceDraftControlIds.has(control.id)
+            && hasCommittableClassicalSourceParts()
+          ) {
+            setClassicalSourcePartsPendingState(true);
+            return;
+          }
+          if (
+            targetObject
+              .handleClassicalCapabilityStagedGrammarControlChange?.(
+                control
+              ) === true
+          ) {
+            renderClassicalParticleCombinationBuilder();
+            return;
           }
           refreshClassicalRuleLogicSurfaceFromControl(control);
           renderClassicalParticleCombinationBuilder();

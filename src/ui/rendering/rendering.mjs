@@ -16808,6 +16808,63 @@ export function createUiRenderingApi(targetObject = globalThis) {
         )
       };
     }
+    const CLASSICAL_LATE_VARIANT_IDS_BY_OPERATION = Object.freeze({
+      frequentative: Object.freeze([
+        "ordinary-short-glottal", "ordinary-long", "ordinary-short",
+        "destockal-intransitive", "destockal-causative",
+        "destockal-causative-force", "destockal-applicative-force",
+        "destockal-lexicalized", "destockal-applicative",
+        "destockal-type-two", "uncertain-ca", "uncertain-ca-causative",
+        "uncertain-ca-applicative", "uncertain-ca-fused-tla",
+        "uncertain-tzca"
+      ]),
+      compound: Object.freeze([
+        "connective-t", "reflexive-matrix", "shared-object",
+        "huītz-carry", "future-embed"
+      ]),
+      honorific: Object.freeze([
+        "causative", "applicative", "preterit-embed"
+      ]),
+      reverential: Object.freeze(["preterit-embed"]),
+      pejorative: Object.freeze(["preterit-embed"]),
+    });
+
+    function syncClassicalLateVariantControlForOperation(
+      operation = "none"
+    ) {
+      const normalizedOperation = String(operation || "none");
+      const licensedVariants = new Set(
+        CLASSICAL_LATE_VARIANT_IDS_BY_OPERATION[normalizedOperation] || []
+      );
+      const variantControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-late-variant"
+      ) || null;
+      Array.from(variantControl?.options || []).forEach(option => {
+        if (!option.value) {
+          option.hidden = false;
+          option.disabled = false;
+          return;
+        }
+        const licensed = licensedVariants.has(option.value);
+        option.hidden = !licensed;
+        option.disabled = !licensed;
+      });
+      if (
+        variantControl?.value
+        && !licensedVariants.has(variantControl.value)
+      ) {
+        variantControl.value = "";
+      }
+      Array.from(variantControl?.querySelectorAll?.("optgroup") || [])
+        .forEach(group => {
+          const visibleOption = Array.from(group.querySelectorAll("option"))
+            .some(option => !option.hidden);
+          group.hidden = !visibleOption;
+          group.disabled = !visibleOption;
+        });
+      return Object.freeze({ variantControl, licensedVariants });
+    }
+
     function syncClassicalLessons27282933Closure(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined") return null;
       const active = surfaceFrame?.basalUnit === "vnc"
@@ -16835,50 +16892,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const pluralSubject = /pl$/u.test(
         String(surfaceFrame?.state?.subject || "")
       );
-      const variantFamilies = {
-        frequentative: new Set([
-          "ordinary-short-glottal", "ordinary-long", "ordinary-short",
-          "destockal-intransitive", "destockal-causative",
-          "destockal-causative-force", "destockal-applicative-force",
-          "destockal-lexicalized",
-          "destockal-applicative", "destockal-type-two",
-          "uncertain-ca", "uncertain-ca-causative",
-          "uncertain-ca-applicative", "uncertain-ca-fused-tla",
-          "uncertain-tzca"
-        ]),
-        compound: new Set([
-          "connective-t", "reflexive-matrix", "shared-object",
-          "huītz-carry", "future-embed"
-        ]),
-        honorific: new Set(["causative", "applicative", "preterit-embed"]),
-        reverential: new Set(["preterit-embed"]),
-        pejorative: new Set(["preterit-embed"])
-      };
-      const licensedVariants = variantFamilies[operation] || new Set();
-      const variantControl = targetObject.document.getElementById(
-        "classical-rule-logic-late-variant"
-      );
-      Array.from(variantControl?.options || []).forEach(option => {
-        if (!option.value) {
-          option.hidden = false;
-          option.disabled = false;
-          return;
-        }
-        const licensed = licensedVariants.has(option.value);
-        option.hidden = !licensed;
-        option.disabled = !licensed;
-      });
-      if (variantControl?.value
-        && !licensedVariants.has(variantControl.value)) {
-        variantControl.value = "";
-      }
-      Array.from(variantControl?.querySelectorAll?.("optgroup") || [])
-        .forEach(group => {
-          const visibleOption = Array.from(group.querySelectorAll("option"))
-            .some(option => !option.hidden);
-          group.hidden = !visibleOption;
-          group.disabled = !visibleOption;
-        });
+      const {
+        variantControl,
+        licensedVariants,
+      } = syncClassicalLateVariantControlForOperation(operation);
       const automaticCompoundMatrixClasses = new Set([
         "ca", "nemi", "ya-uh", "huāl-la-uh", "huī-tz", "ahci", "mani",
         "ihca", "o", "quiza", "huetzi", "tlehcō", "cal-aqui", "pil-ca",
@@ -17668,6 +17685,54 @@ export function createUiRenderingApi(targetObject = globalThis) {
       verbstemBody.appendChild(preview);
       return true;
     }
+    function syncClassicalVoiceLayerCascadeControl(
+      controlId,
+      inventory,
+      selectedOperation,
+      keepLabel
+    ) {
+      const control = targetObject.document.getElementById(controlId);
+      if (!control) return 0;
+      const options = inventory?.authorizationStatus === "authorized"
+        && Array.isArray(inventory.options)
+        ? inventory.options
+        : [];
+      const optionSignature = [
+        String(inventory?.sourceStem || ""),
+        ...(inventory?.appliedOperations || []),
+        `prompt=${keepLabel}`,
+        ...options.map(option => (
+          `${option.operationId}=${option.sourceStem}=${option.targetStem}`
+        )),
+      ].join("|");
+      if (control.dataset.classicalVoiceLayerOptionSignature
+        !== optionSignature) {
+        const prompt = targetObject.document.createElement("option");
+        prompt.value = "";
+        prompt.textContent = keepLabel;
+        const generatedOptions = options.map(option => {
+          const node = targetObject.document.createElement("option");
+          node.value = option.operationId;
+          const operationLabel = {
+            "nonactive-lō": "add nonactive lō",
+            "nonactive-ō": "add nonactive ō",
+            "tla-impersonal": "add tla-impersonal",
+          }[option.operationId] || `add ${option.operationId}`;
+          node.textContent = `${operationLabel} → ${option.targetStem}`;
+          node.dataset.classicalOrderedVoiceSource = option.sourceStem;
+          node.dataset.classicalOrderedVoiceTarget = option.targetStem;
+          node.dataset.classicalOwnerProjectedChoice = "true";
+          return node;
+        });
+        control.replaceChildren(prompt, ...generatedOptions);
+        control.dataset.classicalVoiceLayerOptionSignature = optionSignature;
+      }
+      const retained = options.some(option => (
+        option.operationId === selectedOperation
+      ));
+      control.value = retained ? selectedOperation : "";
+      return options.length;
+    }
     function syncClassicalRuleLogicControlsForSurfaceFrame(surfaceFrame = null) {
       if (typeof targetObject.document === "undefined" || !surfaceFrame) {
         return;
@@ -17721,38 +17786,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const allowedCausativeSpecificShuntlineRealizations = causativeSpecificShuntlineChoiceEligible
         ? (Array.isArray(surfaceFrame.state?.allowedCausativeSpecificShuntlineRealizations) ? surfaceFrame.state.allowedCausativeSpecificShuntlineRealizations : [])
         : [];
-      const syncVoiceLayerCascadeControl = (controlId, inventory, selectedOperation, keepLabel) => {
-        const control = targetObject.document.getElementById(controlId);
-        if (!control || !inventory?.options?.length) {
-          return;
-        }
-        const optionSignature = inventory.options.map(option => `${option.operationId}=${option.sourceStem}=${option.targetStem}`).join("|");
-        if (control.dataset.classicalVoiceLayerOptionSignature !== optionSignature) {
-          const prompt = targetObject.document.createElement("option");
-          prompt.value = "";
-          prompt.textContent = keepLabel;
-          const generatedOptions = inventory.options.map(option => {
-            const node = targetObject.document.createElement("option");
-            node.value = option.operationId;
-            const operationLabel = {
-              "nonactive-lō": "add nonactive lō",
-              "nonactive-ō": "add nonactive ō",
-              "tla-impersonal": "add tla-impersonal"
-            }[option.operationId] || `add ${option.operationId}`;
-            node.textContent = `${operationLabel} → ${option.targetStem}`;
-            node.dataset.classicalOrderedVoiceSource = option.sourceStem;
-            node.dataset.classicalOrderedVoiceTarget = option.targetStem;
-            return node;
-          });
-          control.replaceChildren(prompt, ...generatedOptions);
-          control.dataset.classicalVoiceLayerOptionSignature = optionSignature;
-        }
-        control.value = selectedOperation || "";
-      };
       const voiceLayer2Inventory = surfaceFrame.state?.voiceLayer2CascadeInventory || null;
       const voiceLayer3Inventory = surfaceFrame.state?.voiceLayer3CascadeInventory || null;
-      syncVoiceLayerCascadeControl("classical-rule-logic-voice-layer-2", voiceLayer2Inventory, surfaceFrame.state?.selectedVoiceLayer2Operation, "keep inherently impersonal");
-      syncVoiceLayerCascadeControl("classical-rule-logic-voice-layer-3", voiceLayer3Inventory, surfaceFrame.state?.selectedVoiceLayer3Operation, "keep tla-impersonal");
+      syncClassicalVoiceLayerCascadeControl("classical-rule-logic-voice-layer-2", voiceLayer2Inventory, surfaceFrame.state?.selectedVoiceLayer2Operation, "keep inherently impersonal");
+      syncClassicalVoiceLayerCascadeControl("classical-rule-logic-voice-layer-3", voiceLayer3Inventory, surfaceFrame.state?.selectedVoiceLayer3Operation, "keep tla-impersonal");
       const nonactiveFormationControl = targetObject.document.getElementById("classical-rule-logic-nonactive-family");
       if (nonactiveFormationControl
         && nonactiveFormationControl.dataset.classicalNonactiveFormationEventBound !== "true"
@@ -19832,6 +19869,21 @@ export function createUiRenderingApi(targetObject = globalThis) {
           exactNextSource
         )
         : null;
+      const resultCapture = canonical
+        && typeof targetObject.captureClassicalGrammarApplicationResult
+          === "function"
+        ? targetObject.captureClassicalGrammarApplicationResult(
+          canonical,
+          "universal-capability-navigator-source"
+        )
+        : null;
+      const resultNavigator = resultCapture?.canonicalResult
+        && typeof targetObject
+          .getClassicalGrammarApplicationCapabilityNavigator === "function"
+        ? targetObject.getClassicalGrammarApplicationCapabilityNavigator(
+          resultCapture.canonicalResult
+        )
+        : null;
       const accepted = Boolean(
         applicationResult
         && surfaceFrame?.authorizationStatus === "authorized"
@@ -19858,6 +19910,18 @@ export function createUiRenderingApi(targetObject = globalThis) {
           .isClassicalGrammarApplicationCapabilityNavigator === "function"
         && targetObject.isClassicalGrammarApplicationCapabilityNavigator(
           nextNavigator
+        )
+        && typeof targetObject.isClassicalGrammarApplicationResultCapture
+          === "function"
+        && targetObject.isClassicalGrammarApplicationResultCapture(
+          resultCapture,
+          "universal-capability-navigator-source"
+        )
+        && resultCapture.canonicalResult === canonical
+        && resultNavigator?.inputRole === "exact-owner-issued-result"
+        && resultNavigator.exactResult === canonical
+        && targetObject.isClassicalGrammarApplicationCapabilityNavigator(
+          resultNavigator
         )
       );
       if (!accepted) {
@@ -19887,10 +19951,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       clearClassicalGrammarTypedSourceOperationBinding(
         "capability-result-continued"
       );
-      ActiveClassicalGrammarResultSourceCapture = null;
+      ActiveClassicalGrammarResultSourceCapture = resultCapture;
       ActiveClassicalGrammarResultBinding = null;
       ActiveClassicalTypedSourceCapabilitySelection = null;
-      ActiveClassicalGrammarCapabilityNavigator = nextNavigator;
+      ActiveClassicalGrammarCapabilityNavigator = resultNavigator;
       ActiveClassicalVncResultSourceContinuation = resultFrame;
       ActiveClassicalVncResultSourceApplicationFrame = canonical;
       ActiveClassicalVncResultSourceProjection = nextSourceProjection;
@@ -19912,9 +19976,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ) || null;
       if (capabilityRoot?.dataset) {
         capabilityRoot.dataset.classicalCapabilitySourceRole =
-          "exact-owner-issued-source";
+          "exact-owner-issued-result";
         capabilityRoot.dataset.classicalCapabilitySourceUnitKinds = (
-          nextNavigator.sourceUnitKinds || []
+          resultNavigator.emittedUnitKinds || []
         ).join("|");
         capabilityRoot.dataset.classicalCapabilityContinuedResult =
           "exact-owner-issued";
@@ -19929,7 +19993,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         "classical-capability-navigator-operation"
       )?.focus?.();
       setClassicalWholeCanvasActionStatus(
-        "Exact Result continued as its owner-issued typed Source."
+        "Exact Result retained for its next pathways; its owner-issued typed Source is shown without rerunning it."
       );
       return true;
     }
@@ -21265,6 +21329,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS = Object.freeze({
       "deverbal-nnc": "nnc:deverbal-construction",
       "denominal-vnc": "vnc:denominal",
+      "place-gentilic-nnc": "nnc:place-gentilic",
       "personal-name-nnc": "nnc:personal-name",
     });
     const CLASSICAL_SOURCE_OPERATION_CAPABILITY_IDS = Object.freeze({
@@ -21292,7 +21357,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "adverbial-nuclear": "adverbial-nuclear",
     });
     const CLASSICAL_CUSTOM_CONSTRUCTION_SOURCE_ANALYSIS_CONTROL_IDS = Object.freeze([
-      "classical-personal-name-source-family",
       "classical-personal-name-derived-facts",
       "classical-denominal-vnc-operation-path",
       "classical-denominal-vnc-source-subject",
@@ -21354,6 +21418,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           makeClassicalCustomFormationPlacement("", "sentence"),
 
         // Personal-name NNC formation and sentence continuation.
+        "classical-personal-name-source-family":
+          makeClassicalCustomFormationPlacement("nounstem"),
         "classical-personal-name-affective-scope":
           makeClassicalCustomFormationPlacement("nounstem"),
         "classical-personal-name-affective-matrix":
@@ -21548,6 +21614,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       "classical-denominal-vnc-result-object-2": 20,
       "classical-denominal-vnc-included-family": 10,
       "classical-denominal-vnc-exclamatory": 10,
+      "classical-personal-name-source-family": 5,
       "classical-personal-name-affective-scope": 10,
       "classical-personal-name-affective-matrix": 20,
       "classical-personal-name-reranking": 10,
@@ -22293,6 +22360,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       values = [],
       {
         includeNone = false,
+        requireSelection = false,
         labels = {},
         visible = values.length > 1,
       } = {}
@@ -22303,7 +22371,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const select = wrapper?.querySelector?.("select");
       if (!wrapper || !select) return "";
       const options = [
-        ...(includeNone ? [""] : []),
+        ...(includeNone || requireSelection ? [""] : []),
         ...values,
       ];
       const signature = options.join("|");
@@ -22314,7 +22382,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const option = targetObject.document.createElement("option");
           option.value = value;
           option.textContent = labels[value]
-            || (value ? value.replaceAll("-", " ") : "none");
+            || (value
+              ? value.replaceAll("-", " ")
+              : requireSelection
+                ? `Choose ${axis.replaceAll("-", " ")}`
+                : "none");
           select.appendChild(option);
         });
         select.dataset.adverbialOptions = signature;
@@ -22379,16 +22451,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const potential = resolveClassicalAdverbialPotentialFromControls();
       const authorized = potential?.authorizationStatus === "authorized";
       const choices = authorized ? potential.contextChoices || {} : {};
+      const activeBinding = getActiveClassicalGrammarResultBinding(
+        "nnc:adverbial"
+      );
+      const requiresChoice = axis => Boolean(
+        activeBinding?.requiredChoiceIds?.includes(axis)
+      );
       if (authorized) {
         setClassicalAdverbialChoiceControl(
           "degree",
           potential.allowedDegrees || [],
-          { visible: (potential.allowedDegrees || []).length > 1 }
+          {
+            requireSelection: requiresChoice("degree"),
+            visible: (potential.allowedDegrees || []).length > 1,
+          }
         );
         setClassicalAdverbialChoiceControl(
           "scope",
           potential.allowedScopes || [],
-          { visible: (potential.allowedScopes || []).length > 1 }
+          {
+            requireSelection: requiresChoice("scope"),
+            visible: (potential.allowedScopes || []).length > 1,
+          }
         );
         setClassicalAdverbialChoiceControl(
           "preceding-particle",
@@ -22468,6 +22552,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
     }
     let currentClassicalDenominalVncPathInventory = null;
     let currentClassicalDenominalVncPathInventoryBlockReason = "";
+    let currentClassicalDenominalVncExactBindingResult = null;
+    let currentClassicalPlaceGentilicExactBindingResult = null;
     function buildClassicalDenominalVncPathInventoryRequest() {
       const exactBinding = getActiveClassicalGrammarResultBinding(
         "vnc:denominal"
@@ -22535,6 +22621,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
           selectedPathChoice: null,
         };
       }
+      const exactBinding = getActiveClassicalGrammarResultBinding(
+        "vnc:denominal"
+      );
+      const exactBindingResult = exactBinding?.exactResult || null;
+      if (
+        exactBindingResult
+          !== currentClassicalDenominalVncExactBindingResult
+      ) {
+        currentClassicalDenominalVncExactBindingResult = exactBindingResult;
+        if (exactBindingResult) {
+          operationSelect.value = "";
+          pathSelect.value = "";
+        }
+      }
       const inventory =
         typeof targetObject
           .prepareClassicalDenominalVncOperationPathInventory === "function"
@@ -22565,6 +22665,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
             || "enter a source stem";
           operationSelect.appendChild(option);
         } else {
+          if (exactBindingResult && licensedOperations.length > 1) {
+            const prompt = targetObject.document.createElement("option");
+            prompt.value = "";
+            prompt.textContent = "Choose a denominal operation";
+            operationSelect.appendChild(prompt);
+          }
           licensedOperations.forEach(operation => {
             const option = targetObject.document.createElement("option");
             option.value = operation.operationId;
@@ -22577,11 +22683,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
           operation => operation.operationId === selectedOperationId
         )
           ? selectedOperationId
-          : licensedOperations.find(
-            operation => operation.operationId === "inceptive-ti"
-          )?.operationId
-            || licensedOperations[0]?.operationId
-            || "";
+          : exactBindingResult && licensedOperations.length > 1
+            ? ""
+            : licensedOperations.find(
+              operation => operation.operationId === "inceptive-ti"
+            )?.operationId
+              || licensedOperations[0]?.operationId
+              || "";
       }
       const operationId = operationSelect.value;
       const selectedPathChoiceId = pathSelect.value;
@@ -22601,6 +22709,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           option.textContent = "no licensed path for this source";
           pathSelect.appendChild(option);
         } else {
+          if (exactBindingResult && pathChoices.length > 1) {
+            const prompt = targetObject.document.createElement("option");
+            prompt.value = "";
+            prompt.textContent = "Choose an operation path";
+            pathSelect.appendChild(prompt);
+          }
           pathChoices.forEach(choice => {
             const option = targetObject.document.createElement("option");
             option.value = choice.pathChoiceId;
@@ -22613,7 +22727,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           choice => choice.pathChoiceId === selectedPathChoiceId
         )
           ? selectedPathChoiceId
-          : pathChoices[0]?.pathChoiceId || "";
+          : exactBindingResult && pathChoices.length > 1
+            ? ""
+            : pathChoices[0]?.pathChoiceId || "";
       }
       const selectedPathChoice = pathChoices.find(
         choice => choice.pathChoiceId === pathSelect.value
@@ -25071,17 +25187,66 @@ export function createUiRenderingApi(targetObject = globalThis) {
         });
       }
       if (selected === "place-gentilic-nnc") {
+        const placeGentilicResultKindControl = targetObject.document
+          .getElementById("classical-place-gentilic-result-kind");
+        const exactPlaceBinding = getActiveClassicalGrammarResultBinding(
+          "nnc:place-gentilic"
+        );
+        const exactPlaceResult = exactPlaceBinding?.exactResult || null;
+        if (exactPlaceResult && placeGentilicResultKindControl) {
+          let prompt = Array.from(
+            placeGentilicResultKindControl.options || []
+          ).find(option => (
+            option.dataset?.classicalCapabilityPlaceKindPrompt === "true"
+          )) || null;
+          if (!prompt) {
+            prompt = targetObject.document.createElement("option");
+            prompt.value = "";
+            prompt.textContent = "Choose a place or gentilic Result";
+            prompt.dataset.classicalCapabilityPlaceKindPrompt = "true";
+            placeGentilicResultKindControl.prepend(prompt);
+          }
+        }
         const placeGentilicResultKind = getClassicalNominalConstructionControlValue(
           "classical-place-gentilic-result-kind",
-          "place-name"
+          ""
         );
         const formationControl = targetObject.document.getElementById("classical-place-gentilic-formation");
         Array.from(formationControl?.options || []).forEach(option => {
+          if (option.dataset?.classicalCapabilityPlaceFormationPrompt
+            === "true") {
+            option.hidden = false;
+            option.disabled = false;
+            return;
+          }
           const visible = option.dataset.placeGentilicFormationKind === placeGentilicResultKind;
           option.hidden = !visible;
           option.disabled = !visible;
         });
-        if (formationControl?.selectedOptions?.[0]?.disabled) {
+        if (
+          exactPlaceResult
+          && formationControl
+          && formationControl.dataset.classicalCapabilityPlaceKind
+            !== placeGentilicResultKind
+        ) {
+          let prompt = Array.from(formationControl.options || []).find(
+            option => option.dataset
+              ?.classicalCapabilityPlaceFormationPrompt === "true"
+          ) || null;
+          if (!prompt) {
+            prompt = targetObject.document.createElement("option");
+            prompt.value = "";
+            prompt.dataset.classicalCapabilityPlaceFormationPrompt =
+              "true";
+            formationControl.prepend(prompt);
+          }
+          prompt.textContent = placeGentilicResultKind
+            ? "Choose a formation"
+            : "Choose the Result kind first";
+          formationControl.value = "";
+          formationControl.dataset.classicalCapabilityPlaceKind =
+            placeGentilicResultKind;
+        } else if (formationControl?.selectedOptions?.[0]?.disabled) {
           const firstAvailable = Array.from(formationControl.options).find(option => !option.disabled);
           if (firstAvailable) formationControl.value = firstAvailable.value;
         }
@@ -28007,6 +28172,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       frame = null,
       resultUnit = "nnc"
     ) {
+      const ownerProjection = frame?.diagrammaticProjection || null;
+      if (
+        ownerProjection?.authorizationStatus === "authorized"
+        && ownerProjection.projectionAuthority
+          === "typed-personal-name-slots"
+        && ownerProjection.formulaStringAuthority === false
+        && Array.isArray(ownerProjection.rows)
+        && ownerProjection.rows.length
+      ) return ownerProjection;
       const candidates = resultUnit === "nnc"
         ? [
           frame?.canonicalResult?.nncSlotFrame,
@@ -28190,8 +28364,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.window.__CLASSICAL_PERSONAL_NAME_SENTENCE_OPERATION_RECEIPT__ = null;
       targetObject.window.__CLASSICAL_PERSONAL_NAME_SENTENCE_OPERATION_RESULT__ = null;
     }
-    function renderClassicalNominalConstructionSurfaceBlock(block) {
-      const selectedConstruction = getClassicalNominalConstructionControlValue("classical-construction-operation", "none");
+    function renderClassicalNominalConstructionSurfaceBlock(
+      block,
+      exactReview = null
+    ) {
+      const selectedConstruction = String(
+        exactReview?.selectedConstruction
+        || getClassicalNominalConstructionControlValue(
+          "classical-construction-operation",
+          "none"
+        )
+      );
       clearClassicalNominalConstructionMaterialMirrors();
       if (!ClassicalNominalConstructionOperationHandlers[selectedConstruction]) {
         syncClassicalNominalConstructionControlVisibility("");
@@ -28200,7 +28383,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         return false;
       }
       syncClassicalNominalConstructionControlVisibility(selectedConstruction);
-      const request = buildClassicalNominalConstructionUiRequest();
+      const request = exactReview?.request
+        && typeof exactReview.request === "object"
+        ? exactReview.request
+        : buildClassicalNominalConstructionUiRequest();
       const rootStockAllomorphChoice = selectedConstruction === "deverbal-nnc"
         ? targetObject.document.getElementById(
           "classical-deverbal-nnc-root-stock-allomorph"
@@ -28327,9 +28513,37 @@ export function createUiRenderingApi(targetObject = globalThis) {
         block.appendChild(guidance);
         return true;
       }
+      const expectedApplicationOperationId =
+        CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS[selectedConstruction]
+        || "";
+      const exactApplicationResult = exactReview?.applicationResult || null;
+      const exactCanonicalResult = exactReview?.canonicalResult || null;
+      const exactProjection = exactCanonicalResult
+        ? getClassicalOwnerIssuedResultProjection(exactCanonicalResult)
+        : null;
+      const ownerIssuedApplicationResult = Boolean(
+        exactReview
+        && exactApplicationResult
+        && exactCanonicalResult
+        && expectedApplicationOperationId
+        && exactApplicationResult.operationId
+          === expectedApplicationOperationId
+        && exactApplicationResult.authorizationStatus === "authorized"
+        && exactApplicationResult.canonicalResult === exactCanonicalResult
+        && typeof targetObject.isClassicalGrammarApplicationResult
+          === "function"
+        && targetObject.isClassicalGrammarApplicationResult(
+          exactApplicationResult
+        )
+        && exactProjection?.applicationResult === exactApplicationResult
+        && exactProjection.canonicalResult === exactCanonicalResult
+      ) ? exactApplicationResult : null;
+      if (exactReview && !ownerIssuedApplicationResult) return false;
       const requestKey = JSON.stringify(request);
-      let frame = ClassicalNominalConstructionRenderedFrameCache.get(requestKey) || null;
-      let sourceOperationApplicationResult = null;
+      let frame = ownerIssuedApplicationResult?.canonicalResult
+        || ClassicalNominalConstructionRenderedFrameCache.get(requestKey)
+        || null;
+      let sourceOperationApplicationResult = ownerIssuedApplicationResult;
       if (!frame && selectedConstruction === "nominal-embed-vnc"
         && typeof targetObject.requestClassicalNominalConstructionResult
           === "function") {
@@ -28434,6 +28648,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const personalNameSentenceOperation =
         selectedConstruction === "personal-name-nnc"
+          && !ownerIssuedApplicationResult
           ? requestClassicalPersonalNameSentenceOperation(frame)
           : null;
       const personalNameSentenceStatus = targetObject.document.getElementById(
@@ -28456,7 +28671,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         selectedConstruction,
       });
       const customResultIsVnc = customResultUnit === "vnc";
-      const outputScope = request?.constructionKind === "vocative"
+      const outputScope = ownerIssuedApplicationResult
+        ? "single"
+        : request?.constructionKind === "vocative"
         ? "single"
         : getClassicalNominalConstructionControlValue(
           customResultIsVnc
@@ -28466,6 +28683,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
         );
       ActiveClassicalRuleLogicSurfaceFrame = frame;
       exposeClassicalRuleLogicSurfaceFrameToBrowser(frame);
+      if (ownerIssuedApplicationResult) {
+        ActiveClassicalCapabilityApplicationResult =
+          ownerIssuedApplicationResult;
+      }
       if (targetObject.window) {
         targetObject.window.__CLASSICAL_NOMINAL_CONSTRUCTION_FRAME__ = frame;
         targetObject.window.__CLASSICAL_PERSONAL_NAME_SENTENCE_OPERATION_RECEIPT__ =
@@ -28511,9 +28732,20 @@ export function createUiRenderingApi(targetObject = globalThis) {
       block.dataset.classicalPersonalNameSentenceOperationStatus = String(
         personalNameSentenceOperation?.status || ""
       );
+      if (ownerIssuedApplicationResult) {
+        block.dataset.classicalCapabilityAppliedOperation =
+          ownerIssuedApplicationResult.operationId;
+        block.dataset.classicalCapabilityAppliedResult =
+          "exact-owner-issued";
+        block.dataset.classicalCapabilityInputSourceIdentity = "preserved";
+        block.dataset.classicalCapabilityNextSourceIdentity =
+          "exact-owner-issued-result";
+      }
       applyClassicalResultRootSemantics(block, frame.authorizationStatus);
       block.dataset.classicalResultPresentationOrder =
         "generated-result-only";
+      block.dataset.classicalResultPresentation =
+        "unified-result-panel";
       block.dataset.classicalResultVisualOrder =
         "canonical-written-answer-first";
       block.dataset.classicalResultVisualSystem =
@@ -29091,6 +29323,39 @@ export function createUiRenderingApi(targetObject = globalThis) {
       targetObject.window.__CLASSICAL_RELATIONAL_NNC_PARADIGM_PLAN__ = null;
       targetObject.window.__CLASSICAL_RELATIONAL_NNC_PARADIGM_COORDINATES__ = null;
     }
+    function applyClassicalRelationalExactResultBinding(
+      request = null,
+      exactBinding = null
+    ) {
+      if (!request || !exactBinding?.exactResult
+        || !exactBinding.selectedBindingId) return request;
+      const parts = exactBinding.selectedBindingId.split(":");
+      const associatedEntity = exactBinding.selectedBindingId
+        === "relational-source:associated-entity:pertinency";
+      const sourceFormation = associatedEntity
+        ? "plain-nounstem"
+        : parts[1] || "plain-nounstem";
+      const stemId = associatedEntity
+        ? String(exactBinding.exactResult?.stemId || "")
+        : parts[2] || "";
+      return {
+        ...request,
+        nounstem: {
+          kind: "classical-nahuatl-nnc-nounstem-request",
+          stemId,
+          operation: associatedEntity
+            ? "pertinency"
+            : "relational-nnc",
+          formation: "option-two",
+          sourceFormation,
+          ...(associatedEntity
+            ? { pertinencySourceKind: "associated-entity" }
+            : {}),
+          upstreamResult: exactBinding.exactResult,
+        },
+      };
+    }
+
     function renderClassicalRelationalNncSurfaceBlock(block = null) {
       clearClassicalRelationalNncMaterialMirrors();
       clearClassicalNominalConstructionMaterialMirrors();
@@ -29107,33 +29372,10 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const exactBinding = getActiveClassicalGrammarResultBinding(
         "nnc:relational"
       );
-      if (exactBinding?.exactResult && exactBinding.selectedBindingId) {
-        const parts = exactBinding.selectedBindingId.split(":");
-        const associatedEntity = exactBinding.selectedBindingId
-          === "relational-source:associated-entity:pertinency";
-        const sourceFormation = associatedEntity
-          ? "plain-nounstem"
-          : parts[1] || "plain-nounstem";
-        const stemId = associatedEntity
-          ? String(exactBinding.exactResult?.stemId || "")
-          : parts[2] || "";
-        request = {
-          ...(request || {}),
-          nounstem: {
-            kind: "classical-nahuatl-nnc-nounstem-request",
-            stemId,
-            operation: associatedEntity
-              ? "pertinency"
-              : "relational-nnc",
-            formation: "option-two",
-            sourceFormation,
-            ...(associatedEntity
-              ? { pertinencySourceKind: "associated-entity" }
-              : {}),
-            upstreamResult: exactBinding.exactResult,
-          },
-        };
-      }
+      request = applyClassicalRelationalExactResultBinding(
+        request,
+        exactBinding
+      );
       const result = request
         && typeof targetObject.requestClassicalRelationalNncResult === "function"
         ? targetObject.requestClassicalRelationalNncResult(request)
@@ -29170,6 +29412,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         authorized ? "authorized" : "blocked"
       );
       block.dataset.classicalResultPresentationOrder = "generated-result-only";
+      block.dataset.classicalResultPresentation =
+        "unified-result-panel";
       block.dataset.classicalResultVisualOrder =
         "canonical-written-answer-first";
       block.dataset.classicalResultVisualSystem = "grammar-account-surface";
@@ -29478,6 +29722,28 @@ export function createUiRenderingApi(targetObject = globalThis) {
       actionPanel.setAttribute("aria-label", "Current result status and actions");
       const actions = targetObject.document.createElement("div");
       actions.className = "classical-rule-surface__actions";
+      if (
+        authorized
+        && getClassicalGrammarResultSourceContinuationCandidate(canonical)
+      ) {
+        const continueAction = targetObject.document.createElement("button");
+        continueAction.type = "button";
+        continueAction.className =
+          "classical-whole-canvas-action classical-rule-surface__action";
+        continueAction.dataset.classicalRuleSurfaceAction =
+          "use-result-as-source";
+        continueAction.dataset.classicalResultContinuationKind =
+          "exact-result-to-source";
+        continueAction.setAttribute(
+          "aria-label",
+          "Continue this exact Result as the next typed Source"
+        );
+        continueAction.textContent = "Continue this Result";
+        continueAction.addEventListener("click", () => (
+          useClassicalWholeCanvasResultAsNextSource(canonical)
+        ));
+        actions.appendChild(continueAction);
+      }
       const relationalRecoveryAction = createClassicalResultRecoveryAction(
         canonical?.blockReason || ""
       );
@@ -30033,6 +30299,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ClassicalClauseRelationStatusMessage = normalizedValue
         ? `${CLASSICAL_CLAUSE_RELATION_DECISION_LABELS[decisionId] || "Choice"} selected.`
         : "Select the remaining clause relation choice.";
+      if (
+        ActiveClassicalGrammarResultBinding?.family === "clause-relation"
+        && ActiveClassicalGrammarResultBinding.selectedBindingId
+      ) {
+        return enterClassicalGrammarResultBindingChoice(
+          ActiveClassicalGrammarResultBinding.selectedBindingId,
+          { allowExecution: false }
+        );
+      }
       refreshClassicalClauseRelationWorkflow();
       return true;
     }
@@ -30119,6 +30394,35 @@ export function createUiRenderingApi(targetObject = globalThis) {
       });
       field.append(label, select);
       return field;
+    }
+    function syncClassicalClauseRelationCapabilityChoices(
+      decisionContract = null,
+      missingCaptureRoles = []
+    ) {
+      const host = targetObject.document?.getElementById?.(
+        "classical-capability-operation-choices"
+      ) || null;
+      if (!host) return null;
+      host.replaceChildren();
+      const decisions = Array.from(decisionContract?.decisions || []).filter(
+        decision => decision?.required === true
+      );
+      if (!missingCaptureRoles.length) {
+        decisions.forEach(decision => {
+          const control = createClassicalClauseRelationDecisionControl(
+            decision
+          );
+          if (control) host.appendChild(control);
+        });
+      }
+      host.hidden = host.childElementCount === 0;
+      host.setAttribute("aria-hidden", String(host.hidden));
+      host.dataset.classicalCapabilityChoiceSurface =
+        "clause-owner-decisions";
+      host.dataset.classicalCapabilityChoiceCount = String(
+        host.childElementCount
+      );
+      return host;
     }
     function appendClassicalClauseRelationCaptureCard(
       parent = null,
@@ -31794,6 +32098,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
     const CLASSICAL_CAPABILITY_NAVIGATOR_FRAME_ID =
       "classical-capability-navigator-frame";
 
+    const CLASSICAL_CAPABILITY_ANALYSIS_ONLY_OPERATION_IDS = new Set([
+      "nnc:diagram",
+      "vnc:diagram",
+    ]);
+
     const CLASSICAL_CAPABILITY_TYPED_SOURCE_CHOICE_LABELS = Object.freeze({
       requestedDerivation: "Derivation",
       derivationOptionId: "Formation",
@@ -31921,18 +32230,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
         select.dataset.classicalCapabilityChoiceId = choiceId;
         select.dataset.classicalCapabilityOwnerProjection = "exact-binding";
         select.dataset.classicalGrammarAuthority = "false";
-        const placeholder = targetObject.document.createElement("option");
-        placeholder.value = "";
-        placeholder.textContent = `Choose ${
-          formatClassicalCapabilityChoiceLabel(choiceId).toLowerCase()
-        }`;
-        select.appendChild(placeholder);
-        ownerOptions.forEach(ownerOption => {
+        const makeOwnerOption = ownerOption => {
           const option = targetObject.document.createElement("option");
           option.value = String(ownerOption.optionId || "");
-          option.textContent = String(
+          const optionLabel = String(
             ownerOption.label || ownerOption.optionId || "Choice"
           );
+          const description = String(ownerOption.description || "").trim();
+          option.textContent = choiceId === "particleId" && description
+            ? `${optionLabel} · ${description}`
+            : optionLabel;
           option.disabled = ownerOption.availabilityStatus !== "available";
           option.hidden = option.disabled;
           option.dataset.classicalCapabilityOwnerOption = "true";
@@ -31940,8 +32247,98 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ownerOption.availabilityStatus || "unavailable"
           );
           option.dataset.classicalGrammarAuthority = "false";
-          select.appendChild(option);
-        });
+          return option;
+        };
+        const renderOwnerOptions = (query = "") => {
+          const selectedValue = String(select.value || "").trim();
+          const placeholder = targetObject.document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = `Choose ${
+            formatClassicalCapabilityChoiceLabel(choiceId).toLowerCase()
+          }`;
+          select.replaceChildren(placeholder);
+          const normalizeSearch = value => String(value || "")
+            .normalize("NFD")
+            .replace(/\p{M}/gu, "")
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}]+/gu, " ")
+            .trim();
+          const searchTerms = normalizeSearch(query).split(/\s+/u)
+            .filter(Boolean);
+          const matches = ownerOptions.filter(ownerOption => {
+            if (ownerOption.availabilityStatus !== "available") return false;
+            const searchable = normalizeSearch([
+              ownerOption.label,
+              ownerOption.description,
+              ownerOption.optionId,
+            ].filter(Boolean).join(" "));
+            return searchTerms.every(term => searchable.includes(term));
+          });
+          if (choiceId === "particleId") {
+            const groupLabels = {
+              "clause-introducer": "Clause introducers",
+              adjunctor: "Adjunctors",
+              conjunctor: "Conjunctors",
+              "adverbial-modifier": "Adverbial modifiers",
+              interjection: "Interjections",
+              negation: "Negative expressions",
+              collocation: "Particle combinations",
+              honorificized: "Honorificized particles",
+            };
+            const groups = new Map();
+            matches.forEach(ownerOption => {
+              const groupId = String(
+                ownerOption.presentationGroupId || "other"
+              ).trim() || "other";
+              if (!groups.has(groupId)) {
+                const group = targetObject.document.createElement("optgroup");
+                group.label = groupLabels[groupId] || "Other particles";
+                group.dataset.classicalCapabilityParticleGroup = groupId;
+                groups.set(groupId, group);
+                select.appendChild(group);
+              }
+              groups.get(groupId).appendChild(makeOwnerOption(ownerOption));
+            });
+          } else {
+            matches.forEach(ownerOption => {
+              select.appendChild(makeOwnerOption(ownerOption));
+            });
+          }
+          const selectedRetained = matches.some(ownerOption => (
+            ownerOption.optionId === selectedValue
+          ));
+          select.value = selectedRetained ? selectedValue : "";
+          return matches.length;
+        };
+        let search = null;
+        let searchCount = null;
+        if (choiceId === "particleId" && ownerOptions.length > 12) {
+          search = targetObject.document.createElement("input");
+          search.type = "search";
+          search.className =
+            "classical-capability-operation-plan__choice-search";
+          search.placeholder = "Find by form or meaning";
+          search.setAttribute("aria-label", "Find a particle by form or meaning");
+          search.dataset.classicalCapabilityChoiceSearch = choiceId;
+          search.dataset.classicalGrammarAuthority = "false";
+          searchCount = targetObject.document.createElement("span");
+          searchCount.className =
+            "classical-capability-operation-plan__choice-count";
+          searchCount.dataset.classicalCapabilityChoiceSearchCount = choiceId;
+          searchCount.dataset.classicalGrammarAuthority = "false";
+          search.addEventListener("input", () => {
+            const matchCount = renderOwnerOptions(search.value);
+            searchCount.textContent = `${matchCount} of ${
+              ownerOptions.filter(option => (
+                option.availabilityStatus === "available"
+              )).length
+            } particles`;
+          });
+        }
+        const initialMatchCount = renderOwnerOptions();
+        if (searchCount) {
+          searchCount.textContent = `${initialMatchCount} particles`;
+        }
         select.addEventListener("change", () => {
           const active = getActiveClassicalGrammarTypedSourceOperationBinding();
           const selectedValue = String(select.value || "").trim();
@@ -31972,7 +32369,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           syncClassicalGrammarTypedSourceOperationChoices(nextBinding);
           syncClassicalCapabilityApplyOperationState();
         });
-        field.append(label, select);
+        field.append(
+          label,
+          ...(search ? [search, searchCount] : []),
+          select
+        );
         choices.appendChild(field);
       });
       choices.hidden = requiredChoiceIds.length === 0;
@@ -32233,6 +32634,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-rule-logic-derivation-option"
         ) || null;
       }
+      if (["subject", "outer-subject"].includes(normalized)) {
+        return targetObject.document?.getElementById?.(
+          "classical-rule-logic-nnc-subject-person"
+        ) || null;
+      }
       const mapped = CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS[normalized]
         || (normalized.startsWith("classical-") ? normalized : "");
       return mapped
@@ -32263,24 +32669,26 @@ export function createUiRenderingApi(targetObject = globalThis) {
           derivationOptionId: value(
             "classical-rule-logic-derivation-option"
           ),
-          sourceNonactiveOptionId: value(
-            "classical-rule-logic-causative-source-nonactive"
-          ),
           nonactiveOptionId: value(
             "classical-rule-logic-nonactive-family"
           ),
         });
       }
       if (operationId === "vnc:ordered-voice-application") {
+        const outerApplication = binding?.ownerBindingFrame
+          ?.outerVncApplicationFrame || null;
+        const baseOperation = String(
+          outerApplication?.resultFrame?.selectedVoiceOperation || "active"
+        ).trim();
+        const baseOperations = baseOperation && baseOperation !== "active"
+          ? [baseOperation]
+          : [];
         const nextVoiceLayer = value(
           "classical-rule-logic-voice-layer-2"
         );
         const operations = nextVoiceLayer
           ? [
-            value(
-              "classical-rule-logic-nonactive-family",
-              value("classical-rule-logic-vnc-voice", "active")
-            ),
+            ...baseOperations,
             nextVoiceLayer,
             value("classical-rule-logic-voice-layer-3"),
           ].filter(Boolean)
@@ -32328,13 +32736,147 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ));
     }
 
-    function getClassicalFormationResultBindingSelections() {
+    function getClassicalNncSubjectSelection(
+      allowImplicitDefault = true
+    ) {
+      const selectedPerson = String(
+        targetObject.document?.getElementById?.(
+          "classical-rule-logic-nnc-subject-person"
+        )?.value || ""
+      ).trim();
+      const person = selectedPerson || (allowImplicitDefault ? "3" : "");
+      const number = String(
+        targetObject.document?.getElementById?.(
+          "classical-rule-logic-nnc-subject-number"
+        )?.value || "singular"
+      ).trim();
+      if (!/^(?:1|2|3)$/u.test(person)) return "";
+      return number === "common"
+        ? "3common"
+        : `${person}${number === "plural" ? "pl" : "sg"}`;
+    }
+
+    function getClassicalFormationResultBindingSelections(
+      operationId = "",
+      binding = null
+    ) {
+      const normalizedOperationId = String(operationId || "").trim();
+      let subject = getClassicalNncSubjectSelection(
+        normalizedOperationId !== "nnc:personal-name"
+      );
+      const value = id => String(
+        targetObject.document?.getElementById?.(id)?.value || ""
+      ).trim();
+      if (normalizedOperationId === "vnc:denominal") {
+        subject = value("classical-rule-logic-subject");
+      }
+      if (normalizedOperationId === "nnc:relational") {
+        subject = value("classical-relational-nnc-subject");
+      }
+      const selectedSourceFamily = String(
+        targetObject.document?.getElementById?.(
+          "classical-personal-name-source-family"
+        )?.value || ""
+      ).trim();
+      const compatibleSourceFamilyIds = Array.isArray(
+        binding?.ownerBindingFrame?.ownerPreflightFrame
+          ?.compatibleSourceFamilyIds
+      )
+        ? binding.ownerBindingFrame.ownerPreflightFrame
+          .compatibleSourceFamilyIds
+        : [];
+      const sourceFamily = selectedSourceFamily;
+      const adverbialValue = value;
       return Object.freeze({
-        state: String(
-          targetObject.document?.getElementById?.(
-            "classical-rule-logic-nnc-state"
-          )?.value || "absolutive"
-        ).trim(),
+        state: normalizedOperationId === "nnc:relational"
+          ? value("classical-relational-nnc-state")
+          : value("classical-rule-logic-nnc-state") || "absolutive",
+        subject,
+        ...(normalizedOperationId === "nnc:deverbal-construction"
+          ? {
+            nominalizationKind: value(
+              "classical-deverbal-nnc-nominalization-kind"
+            ),
+            actionKind: value("classical-deverbal-nnc-action-kind"),
+            actionSuffix: value("classical-deverbal-nnc-action-suffix"),
+            patientiveFamily: value(
+              "classical-deverbal-nnc-patientive-family"
+            ),
+            characteristicReading: value(
+              "classical-deverbal-nnc-characteristic-reading"
+            ),
+            continuationKind: value("classical-deverbal-nnc-family"),
+            continuationRelation: value(
+              "classical-deverbal-nnc-continuation-relation"
+            ),
+          }
+          : {}),
+        ...(normalizedOperationId === "nnc:relational"
+          ? {
+            relationalSubject: subject,
+            subjectMode: value("classical-relational-nnc-subject-mode"),
+            possessor: value("classical-relational-nnc-possessor"),
+          }
+          : {}),
+        ...(normalizedOperationId === "nnc:place-gentilic"
+          ? {
+            constructionKind: value(
+              "classical-place-gentilic-result-kind"
+            ),
+            formation: targetObject.document?.getElementById?.(
+              "classical-place-gentilic-formation"
+            )?.dataset?.classicalCapabilityPlaceKind === value(
+              "classical-place-gentilic-result-kind"
+            )
+              ? value("classical-place-gentilic-formation")
+              : "",
+          }
+          : {}),
+        ...(normalizedOperationId === "vnc:denominal"
+          ? {
+            denominalOperation: value(
+              "classical-denominal-vnc-operation"
+            ),
+            denominalOperationPath: value(
+              "classical-denominal-vnc-operation-path"
+            ),
+          }
+          : {}),
+        ...(normalizedOperationId === "nnc:personal-name"
+          ? {
+            sourceFamily,
+            outerSubject: /^(?:1|2|3)sg$/u.test(subject)
+              ? subject
+              : "",
+          }
+          : {}),
+        ...(normalizedOperationId === "nnc:adverbial"
+          ? {
+            degree: adverbialValue("classical-adverbial-degree"),
+            scope: adverbialValue("classical-adverbial-scope"),
+            precedingParticle: adverbialValue(
+              "classical-adverbial-preceding-particle"
+            ),
+            negativeParticle: adverbialValue(
+              "classical-adverbial-negative-particle"
+            ),
+            negationScope: adverbialValue(
+              "classical-adverbial-negation-scope"
+            ),
+            stressPartner: adverbialValue(
+              "classical-adverbial-stress-partner"
+            ),
+            surfaceVariant: adverbialValue(
+              "classical-adverbial-variant"
+            ),
+            sentencePosition: adverbialValue(
+              "classical-adverbial-sentence-position"
+            ),
+            clauseType: adverbialValue(
+              "classical-adverbial-clause-type"
+            ),
+          }
+          : {}),
       });
     }
 
@@ -32438,7 +32980,30 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const requiredResultRoles = Object.freeze([
         ...(binding?.requiredResultRoles || []),
       ]);
+      const requiredChoiceIds = Object.freeze([
+        ...(binding?.requiredChoiceIds || []),
+      ]);
       const needsResult = requiredResultRoles.length > 0;
+      const needsChoice = requiredChoiceIds.length > 0;
+      const resultBindingOwnerReady = !binding || Boolean(
+        !needsRole
+        && !needsResult
+        && !needsChoice
+        && (
+          binding.family === "vnc-continuation"
+            ? binding.ownerBindingFrame?.bindingStatus === "ready"
+              && Array.isArray(binding.ownerBindingFrame.executionArgs)
+              && binding.ownerBindingFrame.executionArgs.length > 0
+            : binding.family === "particle-sentence"
+              ? binding.operationId === "particle:negative-selection"
+                ? Boolean(binding.exactResult)
+                : binding.particleSentenceOwnerReady === true
+              : binding.family === "clause-relation"
+                ? binding.clauseRelationDecisionContract
+                  ?.authorizationStatus === "authorized"
+                : Boolean(binding.selectedBindingId)
+        )
+      );
       const sourceNeedsChoices = Boolean(
         sourceExecutionReadiness
         && sourceExecutionReadiness.executable !== true
@@ -32454,7 +33019,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           sourceExecutionReadiness
             ? sourceExecutionReadiness.executable === true
             : availabilityStatus === "available"
-              && !needsRole && !needsResult
+              && !needsRole && !needsResult && !needsChoice
+              && resultBindingOwnerReady
         )
       );
       button.disabled = !ready;
@@ -32462,11 +33028,13 @@ export function createUiRenderingApi(targetObject = globalThis) {
         ? "Choose the Result role"
         : needsResult
           ? "Add the required Result"
+          : needsChoice
+            ? "Complete Grammar choices"
           : sourceNeedsChoices
             ? "Complete Grammar choices"
             : sourceNotReady
               ? "Selected operation is not ready"
-              : "Apply operation";
+              : "Make Result";
       button.dataset.classicalCapabilityApplyState = !operationId
         ? "waiting"
         : !sourceExecutionReadiness && availabilityStatus !== "available"
@@ -32475,9 +33043,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? "needs-role"
             : needsResult
               ? "needs-result"
+              : needsChoice
+                ? "needs-choices"
               : sourceNeedsChoices
                 ? "needs-choices"
-                : sourceNotReady
+                : sourceNotReady || !resultBindingOwnerReady
                   ? "not-ready"
                   : "ready";
       button.dataset.classicalCapabilityApplyOperationId = operationId;
@@ -32496,6 +33066,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         plan.dataset.classicalCapabilityOperationId = operationId;
         plan.dataset.classicalCapabilityRequiredResultRoles =
           requiredResultRoles.join("|");
+        plan.dataset.classicalCapabilityRequiredChoiceIds =
+          requiredChoiceIds.join("|");
         plan.dataset.classicalCapabilityOwnerExecutable = String(
           ready
         );
@@ -32503,43 +33075,69 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return button;
     }
 
-    function bindClassicalFormationResultChoiceControls(binding = null) {
-      if (binding?.family !== "formation-result") return;
-      const stateControl = getClassicalCapabilityBindingControl("state");
-      if (
-        !stateControl
-        || stateControl.dataset
-          ?.classicalCapabilityFormationBindingBound === "true"
-      ) return;
-      stateControl.dataset.classicalCapabilityFormationBindingBound = "true";
-      stateControl.addEventListener("change", () => {
-        const active = ActiveClassicalGrammarResultBinding;
+    function getClassicalFormationBindingChoiceControls(binding = null) {
+      const controls = [];
+      const requiredChoiceIds = new Set(binding?.requiredChoiceIds || []);
+      requiredChoiceIds.forEach(choiceId => {
         if (
-          active?.family === "formation-result"
-          && active.selectedBindingId
+          binding?.operationId === "nnc:relational"
+          && choiceId === "state"
         ) {
-          enterClassicalGrammarResultBindingChoice(
-            active.selectedBindingId,
-            { allowExecution: false }
-          );
+          controls.push(targetObject.document?.getElementById?.(
+            "classical-relational-nnc-state"
+          ) || null);
+          return;
         }
+        if (
+          binding?.operationId === "nnc:relational"
+          && choiceId === "subject"
+        ) {
+          controls.push(
+            targetObject.document?.getElementById?.(
+              "classical-relational-nnc-subject-mode"
+            ) || null,
+            targetObject.document?.getElementById?.(
+              "classical-relational-nnc-subject"
+            ) || null,
+          );
+          return;
+        }
+        controls.push(...getClassicalCapabilityBindingControlsForChoice(
+          choiceId
+        ));
       });
+      if (
+        binding?.operationId !== "nnc:relational"
+        && (requiredChoiceIds.has("subject")
+        || requiredChoiceIds.has("outer-subject")
+        )
+      ) {
+        controls.push(
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-nnc-subject-person"
+          ) || null,
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-nnc-subject-number"
+          ) || null
+        );
+      }
+      return [...new Set(controls.filter(Boolean))];
     }
 
-    function bindClassicalVncContinuationChoiceControls(
-      binding = null
-    ) {
-      (binding?.requiredChoiceIds || []).forEach(choiceId => {
-        const control = getClassicalCapabilityBindingControl(choiceId);
+    function bindClassicalFormationResultChoiceControls(binding = null) {
+      if (!binding || !["formation-result", "formation"].includes(
+        binding.family
+      )) return;
+      getClassicalFormationBindingChoiceControls(binding).forEach(control => {
         if (
-          !control
-          || control.dataset?.classicalCapabilityVncBindingBound === "true"
+          control.dataset
+            ?.classicalCapabilityFormationBindingBound === "true"
         ) return;
-        control.dataset.classicalCapabilityVncBindingBound = "true";
-        const refreshBinding = () => {
+        control.dataset.classicalCapabilityFormationBindingBound = "true";
+        control.addEventListener("change", () => {
           const active = ActiveClassicalGrammarResultBinding;
           if (
-            active?.family === "vnc-continuation"
+            ["formation-result", "formation"].includes(active?.family)
             && active.selectedBindingId
           ) {
             enterClassicalGrammarResultBindingChoice(
@@ -32547,11 +33145,458 @@ export function createUiRenderingApi(targetObject = globalThis) {
               { allowExecution: false }
             );
           }
-        };
-        control.addEventListener("change", refreshBinding);
-        if (control.tagName === "INPUT") {
-          control.addEventListener("input", refreshBinding);
+        });
+      });
+    }
+
+    function bindClassicalVncContinuationChoiceControls(
+      binding = null
+    ) {
+      syncClassicalActiveResultBindingChoiceVisibility(binding);
+      (binding?.requiredChoiceIds || []).forEach(choiceId => {
+        getClassicalCapabilityBindingControlsForChoice(choiceId)
+          .forEach(control => {
+            if (
+              !control
+              || control.dataset
+                ?.classicalCapabilityVncBindingBound === "true"
+            ) return;
+            control.dataset.classicalCapabilityVncBindingBound = "true";
+            const refreshBinding = () => {
+              const active = ActiveClassicalGrammarResultBinding;
+              if (
+                active?.family === "vnc-continuation"
+                && active.selectedBindingId
+              ) {
+                enterClassicalGrammarResultBindingChoice(
+                  active.selectedBindingId,
+                  { allowExecution: false }
+                );
+              }
+            };
+            control.addEventListener("change", refreshBinding);
+            if (control.tagName === "INPUT") {
+              control.addEventListener("input", refreshBinding);
+            }
+          });
+      });
+    }
+
+    function getClassicalCapabilityBindingControlsForChoice(
+      choiceId = ""
+    ) {
+      const normalized = String(choiceId || "").trim();
+      if (normalized === "operations") {
+        return [
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-voice-layer-2"
+          ) || null,
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-voice-layer-3"
+          ) || null,
+        ].filter(Boolean);
+      }
+      if (["subject", "outer-subject"].includes(normalized)) {
+        return [
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-nnc-subject-person"
+          ) || null,
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-nnc-subject-number"
+          ) || null,
+        ].filter(Boolean);
+      }
+      const control = getClassicalCapabilityBindingControl(normalized);
+      return control ? [control] : [];
+    }
+
+    function syncClassicalStagedLateOperationPrompt(binding = null) {
+      const control = targetObject.document?.getElementById?.(
+        "classical-rule-logic-late-operation"
+      ) || null;
+      if (!control) return false;
+      const stagedRequired = Boolean(
+        binding?.operationId === "vnc:derivational-operation"
+        && binding.family === "vnc-continuation"
+        && binding.requiredChoiceIds?.includes("lateOperation")
+      );
+      const options = Array.from(control.options || []);
+      let prompt = options.find(option => (
+        option.dataset?.classicalCapabilityStagedLateOperationPrompt
+          === "true"
+      )) || null;
+      const noAddedLayer = options.find(option => (
+        option !== prompt && option.value === "none"
+      )) || null;
+      if (!stagedRequired) {
+        const retainedValue = String(control.value || "").trim();
+        prompt?.remove?.();
+        if (noAddedLayer) {
+          noAddedLayer.hidden = false;
+          noAddedLayer.disabled = false;
         }
+        control.required = false;
+        control.removeAttribute?.("aria-required");
+        if (!retainedValue && noAddedLayer) control.value = "none";
+        return false;
+      }
+      if (!prompt) {
+        prompt = targetObject.document.createElement("option");
+        prompt.value = "";
+        prompt.dataset.classicalCapabilityStagedLateOperationPrompt =
+          "true";
+        control.prepend(prompt);
+      }
+      prompt.textContent = "Choose the next VNC derivation layer";
+      prompt.hidden = false;
+      prompt.disabled = true;
+      if (noAddedLayer) {
+        noAddedLayer.hidden = true;
+        noAddedLayer.disabled = true;
+      }
+      control.value = "";
+      control.required = true;
+      control.setAttribute?.("aria-required", "true");
+      return true;
+    }
+
+    function syncClassicalStagedPersonalNameOuterSubjectPrompt(
+      binding = null
+    ) {
+      const person = targetObject.document?.getElementById?.(
+        "classical-rule-logic-nnc-subject-person"
+      ) || null;
+      const number = targetObject.document?.getElementById?.(
+        "classical-rule-logic-nnc-subject-number"
+      ) || null;
+      if (!person) return false;
+      const staged = Boolean(
+        binding?.operationId === "nnc:personal-name"
+        && binding.family === "formation"
+      );
+      let prompt = Array.from(person.options || []).find(option => (
+        option.dataset?.classicalCapabilityPersonalNameSubjectPrompt
+          === "true"
+      )) || null;
+      if (!staged) {
+        prompt?.remove?.();
+        person.required = false;
+        person.removeAttribute?.("aria-required");
+        if (!String(person.value || "").trim()) person.value = "3";
+        return false;
+      }
+      if (!prompt) {
+        prompt = targetObject.document.createElement("option");
+        prompt.value = "";
+        prompt.dataset.classicalCapabilityPersonalNameSubjectPrompt =
+          "true";
+        person.prepend(prompt);
+      }
+      prompt.textContent = "Choose the outer subject person";
+      prompt.disabled = true;
+      prompt.hidden = false;
+      const awaitingSourceFamily = binding.requiredChoiceIds?.includes(
+        "source-family"
+      );
+      const awaitingOuterSubject = binding.requiredChoiceIds?.includes(
+        "outer-subject"
+      );
+      if (awaitingSourceFamily) person.value = "";
+      person.required = Boolean(
+        awaitingSourceFamily || awaitingOuterSubject
+      );
+      person.setAttribute?.(
+        "aria-required",
+        String(person.required)
+      );
+      Array.from(number?.options || []).forEach(option => {
+        const allowed = option.value === "singular";
+        option.hidden = !allowed;
+        option.disabled = !allowed;
+      });
+      if (number) number.value = "singular";
+      return true;
+    }
+
+    function syncClassicalOrderedVoiceResultBindingChoices(
+      binding = null
+    ) {
+      if (
+        binding?.operationId !== "vnc:ordered-voice-application"
+        || binding.family !== "vnc-continuation"
+      ) return false;
+      const ownerFrame = binding.ownerBindingFrame || null;
+      const outerApplication = ownerFrame?.outerVncApplicationFrame || null;
+      const sourceStem = String(
+        outerApplication?.normalizedRequest?.sourceStem || ""
+      ).trim();
+      const baseOperation = String(
+        outerApplication?.resultFrame?.selectedVoiceOperation || "active"
+      ).trim();
+      const baseOperations = baseOperation && baseOperation !== "active"
+        ? [baseOperation]
+        : [];
+      const layer2 = targetObject.document?.getElementById?.(
+        "classical-rule-logic-voice-layer-2"
+      ) || null;
+      const layer3 = targetObject.document?.getElementById?.(
+        "classical-rule-logic-voice-layer-3"
+      ) || null;
+      const layer2Inventory = ownerFrame
+        ?.orderedVoiceLayerChoiceInventory
+        || (
+          sourceStem
+          && typeof targetObject
+            .getClassicalNahuatlOrderedVoiceLayerCascadeOptions
+              === "function"
+            ? targetObject.getClassicalNahuatlOrderedVoiceLayerCascadeOptions(
+              sourceStem,
+              baseOperations
+            )
+            : null
+        );
+      const retainedLayer2 = String(layer2?.value || "").trim();
+      const layer2Count = syncClassicalVoiceLayerCascadeControl(
+        "classical-rule-logic-voice-layer-2",
+        layer2Inventory,
+        retainedLayer2,
+        "Choose the next voice layer"
+      );
+      const selectedLayer2 = String(layer2?.value || "").trim();
+      const layer3Inventory = selectedLayer2
+        && sourceStem
+        && typeof targetObject
+          .getClassicalNahuatlOrderedVoiceLayerCascadeOptions === "function"
+        ? targetObject.getClassicalNahuatlOrderedVoiceLayerCascadeOptions(
+          sourceStem,
+          [...baseOperations, selectedLayer2]
+        )
+        : null;
+      const retainedLayer3 = String(layer3?.value || "").trim();
+      const layer3Count = syncClassicalVoiceLayerCascadeControl(
+        "classical-rule-logic-voice-layer-3",
+        layer3Inventory,
+        retainedLayer3,
+        "Keep the current ordered voice"
+      );
+      [
+        [layer2, layer2Count > 0],
+        [layer3, layer3Count > 0],
+      ].forEach(([control, visible]) => {
+        if (!control) return;
+        const wrapper = control.closest?.(
+          "label, [data-classical-rule-control]"
+        ) || null;
+        if (wrapper) {
+          wrapper.hidden = !visible;
+          wrapper.setAttribute("aria-hidden", String(!visible));
+          wrapper.setAttribute("aria-disabled", String(!visible));
+        }
+        control.disabled = !visible;
+        control.setAttribute?.("aria-disabled", String(!visible));
+      });
+      return layer2Count > 0;
+    }
+
+    function syncClassicalActiveResultBindingChoiceVisibility(
+      binding = null
+    ) {
+      const lateOperationPromptStaged =
+        syncClassicalStagedLateOperationPrompt(binding);
+      const personalNameSubjectPromptStaged =
+        syncClassicalStagedPersonalNameOuterSubjectPrompt(binding);
+      if (!binding) {
+        return Boolean(
+          lateOperationPromptStaged || personalNameSubjectPromptStaged
+        );
+      }
+      if (binding.operationId === "nnc:adverbial") {
+        syncClassicalCustomConstructionGrammarPresentation(
+          "adverbial-nuclear",
+          binding.exactResult || null
+        );
+      }
+      if (
+        binding.family === "vnc-continuation"
+        && binding.requiredChoiceIds?.includes("lateVariant")
+      ) {
+        syncClassicalLateVariantControlForOperation(
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-late-operation"
+          )?.value || "none"
+        );
+      }
+      (binding.requiredChoiceIds || []).forEach(choiceId => {
+        const projectedOptions = binding.ownerBindingFrame
+          ?.ownerChoiceOptionProjection?.[choiceId] || [];
+        getClassicalCapabilityBindingControlsForChoice(choiceId)
+          .forEach(control => {
+            const wrapper = control.closest?.(
+              "label, [data-classical-rule-control]"
+            ) || null;
+            if (wrapper) {
+              wrapper.hidden = false;
+              wrapper.setAttribute("aria-hidden", "false");
+              wrapper.setAttribute("aria-disabled", "false");
+            }
+            control.disabled = false;
+            control.setAttribute?.("aria-disabled", "false");
+            if (
+              binding.operationId === "nnc:adverbial"
+              && control.tagName === "SELECT"
+              && projectedOptions.length
+            ) {
+              const signature = projectedOptions.join("|");
+              if (control.dataset.classicalCapabilityOwnerOptions
+                !== signature) {
+                control.replaceChildren();
+                const placeholder = targetObject.document.createElement(
+                  "option"
+                );
+                placeholder.value = "";
+                placeholder.textContent = `Choose ${choiceId.replaceAll(
+                  "-",
+                  " "
+                )}`;
+                control.appendChild(placeholder);
+                projectedOptions.forEach(value => {
+                  const option = targetObject.document.createElement(
+                    "option"
+                  );
+                  option.value = value;
+                  option.textContent = String(value).replaceAll("-", " ");
+                  control.appendChild(option);
+                });
+                control.dataset.classicalCapabilityOwnerOptions = signature;
+                control.value = "";
+              }
+            }
+          });
+      });
+      syncClassicalOrderedVoiceResultBindingChoices(binding);
+      if (
+        binding.operationId === "nnc:personal-name"
+        && binding.requiredChoiceIds?.includes("source-family")
+      ) {
+        const sourceFamily = targetObject.document?.getElementById?.(
+          "classical-personal-name-source-family"
+        ) || null;
+        const compatibleSourceFamilyIds = new Set(
+          binding.ownerBindingFrame?.ownerPreflightFrame
+            ?.compatibleSourceFamilyIds || []
+        );
+        Array.from(sourceFamily?.options || []).forEach(option => {
+          const compatible = option.value === ""
+            || compatibleSourceFamilyIds.has(option.value);
+          option.hidden = !compatible;
+          option.disabled = !compatible;
+        });
+        if (sourceFamily) {
+          let placeholder = Array.from(sourceFamily.options || []).find(
+            option => option.value === ""
+          ) || null;
+          if (!placeholder) {
+            placeholder = targetObject.document.createElement("option");
+            placeholder.value = "";
+            placeholder.textContent = "Choose source family";
+            sourceFamily.prepend(placeholder);
+          }
+          placeholder.hidden = false;
+          placeholder.disabled = false;
+          sourceFamily.value = "";
+        }
+      }
+      if (binding.operationId === "nnc:personal-name") {
+        syncClassicalCustomConstructionGrammarPresentation(
+          "personal-name-nnc",
+          binding.exactResult || null
+        );
+      }
+      if (
+        binding.operationId === "nnc:personal-name"
+        && binding.requiredChoiceIds?.includes("outer-subject")
+      ) {
+        const number = targetObject.document?.getElementById?.(
+          "classical-rule-logic-nnc-subject-number"
+        ) || null;
+        Array.from(number?.options || []).forEach(option => {
+          const allowed = option.value === "singular";
+          option.hidden = !allowed;
+          option.disabled = !allowed;
+        });
+        if (number) number.value = "singular";
+      }
+      return true;
+    }
+
+    function handleClassicalCapabilityStagedGrammarControlChange(
+      control = null
+    ) {
+      const binding = ActiveClassicalGrammarResultBinding;
+      const selectedBindingId = binding?.selectedBindingId
+        || binding?.bindingIds?.[0]
+        || "";
+      if (!control || !binding || !selectedBindingId) return false;
+      const familyChoiceIds = binding.family === "vnc-continuation"
+        ? Object.keys(CLASSICAL_CAPABILITY_BINDING_CONTROL_IDS)
+        : binding.family === "formation-result"
+          ? ["state", "subject"]
+          : binding.family === "formation"
+            ? Object.freeze([
+                ...new Set([
+                  ...(binding.ownerBindingFrame?.ownerPreflightFrame
+                    ?.requiredChoiceIds || []),
+                  ...(binding.requiredChoiceIds || []),
+                ]),
+              ])
+            : binding.family === "particle-sentence"
+              ? Object.freeze([
+                  ...new Set([
+                    ...(binding.ownerBindingFrame?.requiredChoiceIds || []),
+                    ...(binding.requiredChoiceIds || []),
+                  ]),
+                ])
+            : [];
+      const relevant = familyChoiceIds.some(choiceId => (
+        getClassicalCapabilityBindingControlsForChoice(choiceId)
+          .includes(control)
+      ));
+      if (!relevant) return false;
+      const staged = enterClassicalGrammarResultBindingChoice(
+        selectedBindingId,
+        { allowExecution: false }
+      );
+      syncClassicalActiveResultBindingChoiceVisibility(
+        ActiveClassicalGrammarResultBinding
+      );
+      syncClassicalCapabilityApplyOperationState();
+      return Boolean(staged || ActiveClassicalGrammarResultBinding);
+    }
+
+    function bindClassicalParticleSentenceChoiceControls(
+      binding = null
+    ) {
+      (binding?.requiredChoiceIds || []).forEach(choiceId => {
+        const control = getClassicalCapabilityBindingControl(choiceId);
+        if (
+          !control
+          || control.dataset
+            ?.classicalCapabilityParticleSentenceBindingBound === "true"
+        ) return;
+        control.dataset.classicalCapabilityParticleSentenceBindingBound =
+          "true";
+        control.addEventListener("change", () => {
+          const active = ActiveClassicalGrammarResultBinding;
+          if (
+            active?.family === "particle-sentence"
+            && active.selectedBindingId
+          ) {
+            enterClassicalGrammarResultBindingChoice(
+              active.selectedBindingId,
+              { allowExecution: false }
+            );
+          }
+        });
       });
     }
 
@@ -32567,6 +33612,49 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || !current.bindingIds.includes(normalizedBindingId)
       ) return false;
       if (
+        current.operationId === "vnc:denominal"
+        && current.exactResult
+          !== currentClassicalDenominalVncExactBindingResult
+      ) {
+        currentClassicalDenominalVncExactBindingResult = current.exactResult;
+        [
+          "classical-denominal-vnc-operation",
+          "classical-denominal-vnc-operation-path",
+        ].forEach(id => {
+          const control = targetObject.document?.getElementById?.(id);
+          if (!control) return;
+          control.value = "";
+          control.dataset.denominalVncInventorySignature = "";
+        });
+      }
+      if (
+        current.operationId === "nnc:place-gentilic"
+        && current.exactResult
+          !== currentClassicalPlaceGentilicExactBindingResult
+      ) {
+        currentClassicalPlaceGentilicExactBindingResult = current.exactResult;
+        const kind = targetObject.document?.getElementById?.(
+          "classical-place-gentilic-result-kind"
+        );
+        const formation = targetObject.document?.getElementById?.(
+          "classical-place-gentilic-formation"
+        );
+        if (kind) kind.value = "";
+        if (formation) {
+          formation.value = "";
+          formation.dataset.classicalCapabilityPlaceKind = "";
+        }
+      }
+      const retainedCompletion = current.ownerBindingCompletionFrame;
+      const retainedCompletionRole = (
+        retainedCompletion
+        && retainedCompletion.authorizationStatus === "authorized"
+        && retainedCompletion.primaryExactResult === current.exactResult
+        && retainedCompletion.selectedBindingId === normalizedBindingId
+      )
+        ? String(retainedCompletion.requiredResultRole || "").trim()
+        : "";
+      if (
         current.family === "formation-result"
         && typeof targetObject
           .issueClassicalNahuatlFormationResultBindingFrame === "function"
@@ -32577,10 +33665,53 @@ export function createUiRenderingApi(targetObject = globalThis) {
           .issueClassicalNahuatlFormationResultBindingFrame(
             current.operationId,
             current.exactResult,
-            getClassicalFormationResultBindingSelections()
+              getClassicalFormationResultBindingSelections(
+                current.operationId,
+                current
+              )
           );
         if (
           targetObject.isClassicalNahuatlFormationResultBindingFrame(
+            refreshedFrame
+          )
+          && refreshedFrame.authorizationStatus === "authorized"
+          && refreshedFrame.bindingIds.includes(normalizedBindingId)
+        ) {
+          current = Object.freeze({
+            ...current,
+            ownerBindingFrame: refreshedFrame,
+            bindingIds: Object.freeze([
+              ...(refreshedFrame.bindingIds || []),
+            ]),
+            requiredChoiceIds: Object.freeze([
+              ...(refreshedFrame.requiredChoiceIds || []),
+            ]),
+            requiredResultRoles: Object.freeze([
+              ...(refreshedFrame.requiredResultRoles || []).filter(
+                role => role !== retainedCompletionRole
+              ),
+            ]),
+          });
+        }
+      } else if (
+        current.family === "formation"
+        && current.selectedBindingId
+        && typeof targetObject
+          .issueClassicalGrammarFormationResultBindingFrame === "function"
+        && typeof targetObject
+          .isClassicalGrammarFormationResultBindingFrame === "function"
+      ) {
+        const refreshedFrame = targetObject
+          .issueClassicalGrammarFormationResultBindingFrame(
+            current.operationId,
+            current.exactResult,
+            getClassicalFormationResultBindingSelections(
+              current.operationId,
+              current
+            )
+          );
+        if (
+          targetObject.isClassicalGrammarFormationResultBindingFrame(
             refreshedFrame
           )
           && refreshedFrame.authorizationStatus === "authorized"
@@ -32615,7 +33746,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
         === "formation-result"
         && selectedOwnerBindingChoice
         ? Object.freeze([
-            ...(selectedOwnerBindingChoice.requiredResultRoles || []),
+            ...(selectedOwnerBindingChoice.requiredResultRoles || []).filter(
+              role => role !== retainedCompletionRole
+            ),
           ])
         : current.requiredResultRoles;
       ActiveClassicalGrammarResultBinding = Object.freeze({
@@ -32636,6 +33769,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       bindClassicalFormationResultChoiceControls(
         ActiveClassicalGrammarResultBinding
       );
+      syncClassicalActiveResultBindingChoiceVisibility(
+        ActiveClassicalGrammarResultBinding
+      );
       syncClassicalGrammarWorkspaceHistory();
       const status = targetObject.document?.getElementById?.(
         "classical-capability-navigator-status"
@@ -32646,9 +33782,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           current.ownerBindingFrame,
           normalizedBindingId,
           issueClassicalClauseRelationCurrentDiscourseSourceContextFrame?.(
-            current.ownerBindingFrame?.bindingChoices?.find?.(
-              choice => choice.id === normalizedBindingId
-            )?.captureRole || ""
+            controller
           ) || null
         ) || null;
         if (result?.authorizationStatus !== "authorized") {
@@ -32661,36 +33795,74 @@ export function createUiRenderingApi(targetObject = globalThis) {
             ? result.missingCaptureRoles
             : []),
         ]);
+        ClassicalClauseRelationSelections.relation = result.relation;
+        const decisionContract = controller?.buildDecisionContract?.({
+          ...ClassicalClauseRelationSelections,
+          relation: result.relation,
+        }) || result.decisionContract || null;
+        const unresolvedDecisionIds = Object.freeze([
+          ...(Array.isArray(decisionContract?.unresolvedDecisionIds)
+            ? decisionContract.unresolvedDecisionIds
+            : []),
+        ]);
+        const ownerMissingCaptureRoles = Object.freeze([
+          ...new Set([
+            ...missingCaptureRoles,
+            ...(Array.isArray(decisionContract?.missingCaptureRoles)
+              ? decisionContract.missingCaptureRoles
+              : []),
+          ]),
+        ]);
         ActiveClassicalGrammarResultBinding = Object.freeze({
           ...ActiveClassicalGrammarResultBinding,
-          requiredResultRoles: missingCaptureRoles,
+          requiredResultRoles: ownerMissingCaptureRoles,
+          requiredChoiceIds: unresolvedDecisionIds,
+          clauseRelationDecisionContract: decisionContract,
         });
         if (navigatorRoot?.dataset) {
           navigatorRoot.dataset.classicalCapabilityBindingResults =
-            missingCaptureRoles.join("|");
+            ownerMissingCaptureRoles.join("|");
+          navigatorRoot.dataset.classicalCapabilityBindingChoices =
+            unresolvedDecisionIds.join("|");
         }
-        ClassicalClauseRelationSelections.relation = result.relation;
-        const unresolvedDecisionIds = Object.freeze([
-          ...(Array.isArray(result.unresolvedDecisionIds)
-            ? result.unresolvedDecisionIds
-            : []),
-        ]);
+        syncClassicalClauseRelationCapabilityChoices(
+          decisionContract,
+          ownerMissingCaptureRoles
+        );
         if (
           allowExecution
-          && missingCaptureRoles.length === 0
+          && ownerMissingCaptureRoles.length === 0
           && unresolvedDecisionIds.length === 0
         ) {
           ActiveClassicalClauseRelationResult = controller.compose({
             ...ClassicalClauseRelationSelections,
           });
-          ClassicalClauseRelationStatusMessage =
-            ActiveClassicalClauseRelationResult?.authorizationStatus
-              === "authorized"
-              ? "Applied by the canonical clause owner."
-              : formatClassicalClauseRelationValue(
-                ActiveClassicalClauseRelationResult?.blockReason
-                || "clause-relation-not-ready"
-              );
+          const resultCapture = targetObject
+            .captureClassicalGrammarApplicationResult?.(
+              ActiveClassicalClauseRelationResult,
+              "capability-clause-relation-review"
+            ) || null;
+          const applicationResult = targetObject
+            .isClassicalGrammarApplicationResultCapture?.(
+              resultCapture,
+              "capability-clause-relation-review"
+            )
+            ? resultCapture.applicationResult
+            : null;
+          const presented = renderClassicalCapabilityApplicationResultForReview(
+            applicationResult,
+            current.operationId
+          );
+          ClassicalClauseRelationStatusMessage = presented
+            ? "Applied by the canonical clause owner. Review the Result, then Continue."
+            : formatClassicalClauseRelationValue(
+              ActiveClassicalClauseRelationResult?.blockReason
+              || "clause-relation-result-not-displayable"
+            );
+          syncClassicalGrammarWorkspaceHistory();
+          syncClassicalCapabilityApplyOperationState();
+          if (status) status.textContent = ClassicalClauseRelationStatusMessage;
+          return Boolean(presented);
         } else {
           ClassicalClauseRelationStatusMessage = missingCaptureRoles.length
           ? `Exact Result captured; add ${missingCaptureRoles.join(
@@ -32702,7 +33874,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
             }.`
             : "Exact Results are ready for the selected clause relation.";
         }
-        refreshClassicalClauseRelationWorkflow();
         syncClassicalGrammarWorkspaceHistory();
         syncClassicalCapabilityApplyOperationState();
         if (status) status.textContent = ClassicalClauseRelationStatusMessage;
@@ -32748,15 +33919,23 @@ export function createUiRenderingApi(targetObject = globalThis) {
               operationId: current.operationId,
               args: [...frame.executionArgs],
             });
-          return acceptClassicalCapabilityApplicationResultAsSource(
-            applicationResult,
-            current.operationId
+          return Boolean(
+            renderClassicalCapabilityApplicationResultForReview(
+              applicationResult,
+              current.operationId
+            )
           );
         }
         const firstMissingChoice = ActiveClassicalGrammarResultBinding
           .requiredChoiceIds
           .map(getClassicalCapabilityBindingControl)
-          .find(Boolean) || null;
+          .find(control => Boolean(
+            control
+            && control.disabled !== true
+            && control.closest?.(
+              "label, [data-classical-rule-control]"
+            )?.hidden !== true
+          )) || null;
         firstMissingChoice?.focus?.();
         firstMissingChoice?.scrollIntoView?.({ block: "nearest" });
         if (status) {
@@ -32769,6 +33948,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
             } from Derivation history.`
             : ActiveClassicalGrammarResultBinding.requiredChoiceIds.length
               ? "Exact Result retained. Complete the highlighted owner choices."
+              : frame?.bindingStatus === "ready"
+                ? "Exact Result retained. Owner choices are ready; Make Result."
               : frame?.blockReason
                 || "The VNC owner could not enter this continuation.";
         }
@@ -32782,18 +33963,108 @@ export function createUiRenderingApi(targetObject = globalThis) {
         current.family === "particle-sentence"
         && current.operationId !== "particle:negative-selection"
       ) {
-        const hostBinding = current.particleHostBinding || null;
-        const particleBinding = current.particleResultBinding || null;
-        const ready = Boolean(
-          hostBinding?.exactHostClause
+        const initialOwnerBinding = current.ownerBindingFrame || null;
+        const hostBinding = current.particleHostBinding
+          || (initialOwnerBinding?.exactHostClause
+            ? initialOwnerBinding
+            : null);
+        const particleBinding = current.particleResultBinding
+          || (initialOwnerBinding?.exactParticleResult
+            ? initialOwnerBinding
+            : null);
+        const sentenceAdverbialId = String(
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-sentence-adverbial"
+          )?.value || ""
+        ).trim();
+        const declaredChoiceIds = Object.freeze([
+          ...new Set([
+            ...(initialOwnerBinding?.requiredChoiceIds || []),
+            ...(current.requiredChoiceIds || []),
+          ]),
+        ]);
+        const unresolvedChoiceIds = Object.freeze(
+          declaredChoiceIds.filter(choiceId => {
+            if (choiceId === "sentence-adverbial-id") {
+              return !sentenceAdverbialId
+                || sentenceAdverbialId === "none";
+            }
+            const control = getClassicalCapabilityBindingControl(choiceId);
+            const value = String(control?.value || "").trim();
+            return !value || value === "unspecified";
+          })
+        );
+        const sentenceAdverbialReady = Boolean(
+          current.operationId === "sentence:adverbial-adjunction"
+          && hostBinding?.exactHostClause
+          && (
+            particleBinding?.exactParticleResult
+            || sentenceAdverbialId && sentenceAdverbialId !== "none"
+          )
+        );
+        const sentenceParticleReady = Boolean(
+          current.operationId === "sentence:particle-adjunction"
+          && hostBinding?.exactHostClause
           && particleBinding?.exactParticleResult
         );
+        const ready = Boolean(
+          unresolvedChoiceIds.length === 0
+          && (sentenceAdverbialReady || sentenceParticleReady)
+        );
+        ActiveClassicalGrammarResultBinding = Object.freeze({
+          ...current,
+          particleHostBinding: hostBinding,
+          particleResultBinding: particleBinding,
+          particleSentenceOwnerReady: ready,
+          requiredChoiceIds: unresolvedChoiceIds,
+        });
+        bindClassicalParticleSentenceChoiceControls(
+          Object.freeze({
+            ...ActiveClassicalGrammarResultBinding,
+            requiredChoiceIds: declaredChoiceIds,
+          })
+        );
+        const firstMissingChoice = ActiveClassicalGrammarResultBinding
+          .requiredChoiceIds
+          .map(getClassicalCapabilityBindingControl)
+          .find(control => Boolean(
+            control
+            && control.disabled !== true
+            && control.closest?.(
+              "label, [data-classical-rule-control]"
+            )?.hidden !== true
+          )) || null;
+        firstMissingChoice?.focus?.({ preventScroll: true });
+        firstMissingChoice?.scrollIntoView?.({ block: "center" });
         if (allowExecution && ready) {
           const hostOption = hostBinding.inputRole === "consumed-sentence"
             ? { consumedSentenceFrame: hostBinding.exactHostClause }
             : { nuclearResultFrame: hostBinding.exactHostClause };
-          const applicationResult = targetObject
-            .executeClassicalGrammarApplicationRequest?.({
+          const adverbialParticleSourceFrame = current.operationId
+            === "sentence:adverbial-adjunction"
+            && !particleBinding?.exactParticleResult
+            && typeof targetObject.buildClassicalNahuatlParticleSourceFrame
+              === "function"
+            ? targetObject.buildClassicalNahuatlParticleSourceFrame(
+              sentenceAdverbialId
+            )
+            : null;
+          const applicationResult = current.operationId
+            === "sentence:adverbial-adjunction"
+            && !particleBinding?.exactParticleResult
+            && targetObject.isClassicalNahuatlParticleSourceFrame?.(
+              adverbialParticleSourceFrame
+            )
+            && typeof targetObject.executeClassicalGrammarApplicationRequest
+              === "function"
+            ? targetObject.executeClassicalGrammarApplicationRequest({
+              operationId: current.operationId,
+              args: [{
+                particleSourceFrame: adverbialParticleSourceFrame,
+                ...hostOption,
+              }],
+            })
+            : targetObject.executeClassicalGrammarApplicationRequest?.({
               operationId: current.operationId,
               args: [{
                 particleResultFrame: particleBinding.exactParticleResult,
@@ -32810,15 +34081,19 @@ export function createUiRenderingApi(targetObject = globalThis) {
                   : {}),
               }],
             }) || null;
-          return acceptClassicalCapabilityApplicationResultAsSource(
-            applicationResult,
-            current.operationId
+          return Boolean(
+            renderClassicalCapabilityApplicationResultForReview(
+              applicationResult,
+              current.operationId
+            )
           );
         }
         if (status) {
           status.textContent = ready
-            ? "Both exact Results are ready. Apply the sentence operation."
-            : "Choose the required exact Result from Derivation history.";
+            ? "The exact inputs are ready. Apply the sentence operation."
+            : ActiveClassicalGrammarResultBinding.requiredResultRoles.length
+              ? "Choose the required exact Result from Derivation history."
+              : "Complete the visible sentence choice under Grammar.";
         }
         syncClassicalCapabilityApplyOperationState();
         return true;
@@ -32826,13 +34101,45 @@ export function createUiRenderingApi(targetObject = globalThis) {
       if (
         current.family === "particle-sentence"
         && current.operationId === "particle:negative-selection"
-        && allowExecution
       ) {
         const sentenceMode = String(
           targetObject.document?.getElementById?.(
             "classical-rule-logic-sentence-surface"
           )?.value || "statement"
         );
+        const declaredChoiceIds = Object.freeze([
+          ...new Set([
+            ...(current.ownerBindingFrame?.requiredChoiceIds || []),
+            ...(current.requiredChoiceIds || []),
+          ]),
+        ]);
+        const unresolvedChoiceIds = Object.freeze(
+          declaredChoiceIds.filter(choiceId => (
+            choiceId === "sentence-kind"
+              ? !sentenceMode
+              : !String(
+                getClassicalCapabilityBindingControl(choiceId)?.value || ""
+              ).trim()
+          ))
+        );
+        ActiveClassicalGrammarResultBinding = Object.freeze({
+          ...current,
+          requiredChoiceIds: unresolvedChoiceIds,
+          particleSentenceOwnerReady: unresolvedChoiceIds.length === 0,
+        });
+        bindClassicalParticleSentenceChoiceControls(Object.freeze({
+          ...ActiveClassicalGrammarResultBinding,
+          requiredChoiceIds: declaredChoiceIds,
+        }));
+        if (!allowExecution || unresolvedChoiceIds.length) {
+          if (status) {
+            status.textContent = unresolvedChoiceIds.length
+              ? "Complete the visible sentence choice under Grammar."
+              : "The negative-particle context is ready. Apply the operation.";
+          }
+          syncClassicalCapabilityApplyOperationState();
+          return true;
+        }
         const applicationResult = targetObject
           .executeClassicalGrammarApplicationRequest?.({
             operationId: current.operationId,
@@ -32842,10 +34149,148 @@ export function createUiRenderingApi(targetObject = globalThis) {
               precedingParticleResultFrame: current.exactResult,
             }],
           }) || null;
-        if (acceptClassicalCapabilityApplicationResultAsSource(
+        if (renderClassicalCapabilityApplicationResultForReview(
           applicationResult,
           current.operationId
         )) return true;
+        if (status) {
+          status.textContent =
+            "The particle owner did not issue a displayable Result.";
+        }
+        syncClassicalCapabilityApplyOperationState();
+        return false;
+      }
+      if (
+        current.family === "formation"
+        && current.operationId === "nnc:adverbial"
+        && allowExecution
+      ) {
+        const activeBinding = ActiveClassicalGrammarResultBinding;
+        const selections = getClassicalFormationResultBindingSelections(
+          current.operationId,
+          activeBinding
+        );
+        if (
+          activeBinding?.exactResult !== current.exactResult
+          || activeBinding.requiredChoiceIds.length
+          || activeBinding.requiredResultRoles.length
+          || activeBinding.ownerBindingFrame?.ownerPreflightValidated
+            !== true
+          || activeBinding.ownerBindingFrame?.ownerChoiceFrameValidated
+            !== true
+          || !selections.degree
+          || !selections.scope
+        ) {
+          syncClassicalCapabilityApplyOperationState();
+          return false;
+        }
+        const context = Object.fromEntries(Object.entries({
+          precedingParticle: selections.precedingParticle,
+          negativeParticle: selections.negativeParticle,
+          negationScope: selections.negationScope,
+          stressPartner: selections.stressPartner,
+          variant: selections.surfaceVariant,
+          sentencePosition: selections.sentencePosition,
+          clauseType: selections.clauseType,
+        }).filter(([, value]) => Boolean(value)));
+        const ownerRequest = Object.freeze({
+          canonicalSourceResult: current.exactResult,
+          degree: selections.degree,
+          scope: selections.scope,
+          context: Object.freeze(context),
+        });
+        const applicationResult = targetObject
+          .executeClassicalGrammarApplicationRequest?.({
+            operationId: current.operationId,
+            args: [ownerRequest],
+          }) || null;
+        const resultBlock = targetObject.document?.getElementById?.(
+          "classical-rule-logic-surface"
+        ) || null;
+        const presented = Boolean(
+          resultBlock
+          && renderClassicalNominalConstructionSurfaceBlock(
+            resultBlock,
+            Object.freeze({
+              applicationResult,
+              canonicalResult: applicationResult?.canonicalResult || null,
+              selectedConstruction: "adverbial-nuclear",
+              request: ownerRequest,
+            })
+          )
+          && resultBlock.dataset.classicalCapabilityAppliedOperation
+            === current.operationId
+          && resultBlock.dataset.classicalCapabilityAppliedResult
+            === "exact-owner-issued"
+        );
+        if (status) {
+          status.textContent = presented
+            ? "Applied by the canonical adverbial owner. Review the exact Result, then Continue."
+            : "The adverbial owner did not issue a displayable exact Result.";
+        }
+        syncClassicalCapabilityApplyOperationState();
+        return presented;
+      }
+      if (
+        current.family === "formation"
+        && current.operationId === "nnc:personal-name"
+        && allowExecution
+      ) {
+        const activeBinding = ActiveClassicalGrammarResultBinding;
+        const selections = getClassicalFormationResultBindingSelections(
+          current.operationId,
+          activeBinding
+        );
+        if (
+          activeBinding?.exactResult !== current.exactResult
+          || activeBinding.requiredChoiceIds.length
+          || activeBinding.requiredResultRoles.length
+          || activeBinding.ownerBindingFrame?.ownerPreflightValidated
+            !== true
+          || !selections.sourceFamily
+          || !selections.outerSubject
+        ) {
+          syncClassicalCapabilityApplyOperationState();
+          return false;
+        }
+        const ownerRequest = Object.freeze({
+          canonicalSourceResult: current.exactResult,
+          sourceFamily: selections.sourceFamily,
+          outerSubject: selections.outerSubject,
+          affectiveScope: "none",
+          affectiveMatrix: "none",
+        });
+        const applicationResult = targetObject
+          .executeClassicalGrammarApplicationRequest?.({
+            operationId: current.operationId,
+            args: [ownerRequest],
+          }) || null;
+        const resultBlock = targetObject.document?.getElementById?.(
+          "classical-rule-logic-surface"
+        ) || null;
+        const presented = Boolean(
+          resultBlock
+          && renderClassicalNominalConstructionSurfaceBlock(
+            resultBlock,
+            Object.freeze({
+              applicationResult,
+              canonicalResult: applicationResult?.canonicalResult || null,
+              selectedConstruction: "personal-name-nnc",
+              request: ownerRequest,
+            })
+          )
+          && resultBlock.dataset.classicalCapabilityAppliedOperation
+            === current.operationId
+          && resultBlock.dataset.classicalCapabilityAppliedResult
+            === "exact-owner-issued"
+        );
+        if (status) {
+          status.textContent = presented
+            ? "Applied by the canonical personal-name owner. Review the exact Result, then Continue."
+            : "The personal-name owner did not issue a displayable exact Result.";
+        }
+        syncClassicalCapabilityApplyOperationState();
+        return Boolean(presented);
       }
       if (current.operationId === "nnc:relational") {
         const parts = normalizedBindingId.split(":");
@@ -32892,6 +34337,35 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-relational-nnc-source-formation"
         );
         if (formation) formation.value = sourceFormation;
+        const activeBinding = ActiveClassicalGrammarResultBinding;
+        if (
+          allowExecution
+          && activeBinding?.exactResult === current.exactResult
+          && activeBinding.requiredChoiceIds.length === 0
+          && activeBinding.requiredResultRoles.length === 0
+        ) {
+          const ownerRequest = applyClassicalRelationalExactResultBinding(
+            targetObject.getClassicalRelationalNncUiRequest?.() || null,
+            activeBinding
+          );
+          const applicationResult = ownerRequest
+            ? targetObject.executeClassicalGrammarApplicationRequest?.({
+              operationId: current.operationId,
+              args: [ownerRequest],
+            }) || null
+            : null;
+          const presented = renderClassicalCapabilityApplicationResultForReview(
+            applicationResult,
+            current.operationId
+          );
+          if (status) {
+            status.textContent = presented
+              ? "Applied by the canonical relational owner. Review the exact Result, then Continue."
+              : "The relational owner did not issue a displayable exact Result.";
+          }
+          syncClassicalCapabilityApplyOperationState();
+          return Boolean(presented);
+        }
         if (status) {
           status.textContent = sourceOption
             ? "Exact Result retained as the relational Source. Complete the visible owner choices."
@@ -32936,9 +34410,60 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
       }
       const activeBinding = ActiveClassicalGrammarResultBinding;
+      if (
+        allowExecution
+        && [
+          "nnc:deverbal-construction",
+          "nnc:place-gentilic",
+          "vnc:denominal",
+        ].includes(current.operationId)
+        && activeBinding?.exactResult === current.exactResult
+        && activeBinding.requiredChoiceIds.length === 0
+        && activeBinding.requiredResultRoles.length === 0
+      ) {
+        const ownerRequest = buildClassicalNominalConstructionUiRequest();
+        const applicationResult = ownerRequest
+          ? targetObject.executeClassicalGrammarApplicationRequest?.({
+            operationId: current.operationId,
+            args: [ownerRequest],
+          }) || null
+          : null;
+        const resultBlock = targetObject.document?.getElementById?.(
+          "classical-rule-logic-surface"
+        ) || null;
+        const presented = Boolean(
+          resultBlock
+          && renderClassicalNominalConstructionSurfaceBlock(
+            resultBlock,
+            Object.freeze({
+              applicationResult,
+              canonicalResult: applicationResult?.canonicalResult || null,
+              selectedConstruction: constructionValue,
+              request: ownerRequest,
+            })
+          )
+          && resultBlock.dataset.classicalCapabilityAppliedOperation
+            === current.operationId
+          && resultBlock.dataset.classicalCapabilityAppliedResult
+            === "exact-owner-issued"
+        );
+        if (status) {
+          status.textContent = presented
+            ? "Applied by the canonical owner. Review the exact Result, then Continue."
+            : "The canonical owner did not issue a displayable exact Result.";
+        }
+        syncClassicalCapabilityApplyOperationState();
+        return presented;
+      }
       const firstChoice = activeBinding.requiredChoiceIds
         .map(getClassicalCapabilityBindingControl)
-        .find(Boolean) || null;
+        .find(control => Boolean(
+          control
+          && control.disabled !== true
+          && control.closest?.(
+            "label, [data-classical-rule-control]"
+          )?.hidden !== true
+        )) || null;
       firstChoice?.focus?.();
       firstChoice?.scrollIntoView?.({ block: "nearest" });
       if (status) {
@@ -32965,6 +34490,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       );
       if (!field || !select) return null;
       const binding = ActiveClassicalGrammarResultBinding;
+      syncClassicalStagedLateOperationPrompt(binding);
+      syncClassicalStagedPersonalNameOuterSubjectPrompt(binding);
       const bindingIds = binding ? [...binding.bindingIds] : [];
       select.replaceChildren();
       const placeholder = targetObject.document.createElement("option");
@@ -33467,7 +34994,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             args: [exactInput],
           })
           : null;
-        if (!acceptClassicalCapabilityApplicationResultAsSource(
+        if (!renderClassicalCapabilityApplicationResultForReview(
           applicationResult,
           operationId
         )) {
@@ -33475,6 +35002,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
             status.textContent =
               "The canonical owner did not issue a continuable Result.";
           }
+        } else if (status) {
+          status.textContent =
+            "Operation applied. Review the exact Result, then Continue from it when ready.";
         }
         return selected;
       }
@@ -33579,6 +35109,337 @@ export function createUiRenderingApi(targetObject = globalThis) {
       return ActiveClassicalTypedSourceCapabilitySelection;
     }
 
+    function getClassicalUnifiedCapabilityResultFamily(
+      operationId = "",
+      canonical = null
+    ) {
+      const normalizedOperationId = String(operationId || "").trim();
+      const canonicalKind = String(canonical?.kind || "").trim();
+      if (
+        normalizedOperationId.startsWith("vnc:")
+        || canonicalKind.includes("-vnc-")
+      ) return "vnc";
+      if (
+        normalizedOperationId.startsWith("nnc:")
+        || normalizedOperationId === "grammar:nominal-construction"
+        || canonicalKind.includes("-nnc-")
+      ) return "nnc";
+      if (
+        normalizedOperationId.startsWith("sentence:")
+        || normalizedOperationId.startsWith("clause:")
+      ) return "sentence";
+      if (normalizedOperationId.startsWith("particle:")) return "particle";
+      return "result";
+    }
+
+    function getClassicalUnifiedCapabilityDiagrammaticProjection(
+      canonical = null,
+      resultFamily = ""
+    ) {
+      const directProjection = [
+        canonical?.diagrammaticProjection,
+        canonical?.diagrammaticFrame,
+        canonical?.diagramFrame,
+        canonical?.resultFrame?.diagrammaticProjection,
+        canonical?.resultFrame?.diagrammaticFrame,
+        canonical?.resultFrame?.diagramFrame,
+      ].find(candidate => (
+        candidate?.authorizationStatus === "authorized"
+        && Array.isArray(candidate.rows)
+        && candidate.rows.length
+      )) || null;
+      if (directProjection) return directProjection;
+      if (!["nnc", "vnc"].includes(resultFamily)) return null;
+      return getClassicalNominalConstructionDiagrammaticFrame(
+        canonical,
+        resultFamily
+      );
+    }
+
+    function createClassicalUnifiedCapabilityLinearSection(
+      formula = ""
+    ) {
+      const normalizedFormula = String(formula || "").trim();
+      if (!normalizedFormula) return null;
+      const section = targetObject.document.createElement("section");
+      section.className =
+        "classical-rule-surface__format-section classical-rule-surface__linear";
+      section.dataset.classicalLinearFormulaSpecificity = "specific";
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__format-heading";
+      const title = targetObject.document.createElement("h4");
+      title.className = "classical-rule-surface__format-title";
+      title.textContent = "Linear format";
+      heading.appendChild(title);
+      const formulaNode = targetObject.document.createElement("div");
+      formulaNode.className = "classical-rule-surface__formula";
+      formulaNode.dataset.classicalFormulaAuthority =
+        "exact-owner-issued-result";
+      formulaNode.dataset.classicalGrammarAuthority = "false";
+      formulaNode.textContent = normalizedFormula;
+      section.append(heading, formulaNode);
+      return section;
+    }
+
+    function createClassicalUnifiedCapabilityDiagramSection(
+      projection = null
+    ) {
+      const rows = Array.isArray(projection?.rows)
+        ? projection.rows
+        : [];
+      if (
+        projection?.authorizationStatus !== "authorized"
+        || !rows.length
+      ) return null;
+      const section = targetObject.document.createElement("section");
+      section.className =
+        "classical-rule-surface__format-section classical-rule-surface__diagram";
+      section.dataset.classicalNuclearClauseDiagrammaticFormat = "true";
+      section.dataset.classicalNuclearClauseDiagramAuthority = String(
+        projection.projectionAuthority || "exact-owner-issued-result"
+      );
+      section.setAttribute("aria-label", "Diagrammatic format");
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__format-heading";
+      const title = targetObject.document.createElement("h4");
+      title.className = "classical-rule-surface__format-title";
+      title.textContent = "Diagrammatic format";
+      heading.appendChild(title);
+      const rowHost = targetObject.document.createElement("div");
+      rowHost.className = "classical-rule-surface__diagram-rows";
+      rows.forEach((rowFrame, index) => {
+        const expressionText = Array.isArray(rowFrame)
+          ? rowFrame[0]
+          : rowFrame?.expression;
+        const roleText = Array.isArray(rowFrame)
+          ? rowFrame[1]
+          : rowFrame?.role;
+        const row = targetObject.document.createElement("div");
+        row.className = "classical-rule-surface__diagram-row";
+        row.dataset.classicalNuclearClauseDiagramRole = String(
+          roleText || `Part ${index + 1}`
+        );
+        const expression = targetObject.document.createElement("code");
+        expression.className = "classical-rule-surface__diagram-expression";
+        expression.textContent = String(expressionText || "—");
+        const role = targetObject.document.createElement("span");
+        role.className = "classical-rule-surface__diagram-role";
+        role.textContent = String(roleText || `Part ${index + 1}`);
+        row.append(expression, role);
+        rowHost.appendChild(row);
+      });
+      section.append(heading, rowHost);
+      return section;
+    }
+
+    function renderClassicalUnifiedCapabilityResultPanel({
+      applicationResult = null,
+      operationId = "",
+      projection = null,
+      inputSourceIdentity = "preserved",
+    } = {}) {
+      const canonical = applicationResult?.canonicalResult || null;
+      const normalizedOperationId = String(
+        operationId || applicationResult?.operationId || ""
+      ).trim();
+      if (
+        !canonical
+        || !normalizedOperationId
+        || !projection
+        || applicationResult?.operationId !== normalizedOperationId
+        || projection.applicationResult !== applicationResult
+        || projection.canonicalResult !== canonical
+        || !String(projection.surface || "").trim()
+      ) return null;
+      const block = targetObject.document?.getElementById?.(
+        "classical-rule-logic-surface"
+      ) || null;
+      if (!block) return null;
+      const resultFamily = getClassicalUnifiedCapabilityResultFamily(
+        normalizedOperationId,
+        canonical
+      );
+      const unit = ["nnc", "vnc"].includes(resultFamily)
+        ? resultFamily
+        : "";
+      const diagrammaticProjection =
+        getClassicalUnifiedCapabilityDiagrammaticProjection(
+          canonical,
+          resultFamily
+        );
+      const linearSection =
+        createClassicalUnifiedCapabilityLinearSection(
+          projection.linearFormula || projection.formula || ""
+        );
+      const diagramSection =
+        createClassicalUnifiedCapabilityDiagramSection(
+          diagrammaticProjection
+        );
+      const sentenceFormulaSection = projection.sentenceFormula
+        ? createClassicalResultSentenceFormulaSection({
+          formulaDisplay: projection.sentenceFormula,
+          grammarContext: canonical,
+          authority: "exact-owner-issued-result",
+          status: "authorized",
+          projection: `capability:${normalizedOperationId}`,
+        })
+        : null;
+      const analysisChildren = [
+        linearSection,
+        diagramSection,
+        sentenceFormulaSection,
+      ].filter(Boolean);
+
+      ActiveClassicalRuleLogicSurfaceFrame = canonical;
+      exposeClassicalRuleLogicSurfaceFrameToBrowser(canonical);
+      ActiveClassicalCapabilityApplicationResult = applicationResult;
+      applyClassicalUnifiedOutputPanelShell(unit);
+      block.hidden = false;
+      block.replaceChildren();
+      block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
+      block.dataset.classicalNahuatlSurfaceVisible = "true";
+      block.dataset.classicalNahuatlSurfaceStatus = "authorized";
+      block.dataset.classicalCapabilityAppliedOperation =
+        normalizedOperationId;
+      block.dataset.classicalCapabilityAppliedResult = "exact-owner-issued";
+      block.dataset.classicalCapabilityInputSourceIdentity =
+        inputSourceIdentity;
+      block.dataset.classicalCapabilityNextSourceIdentity =
+        "exact-owner-issued-result";
+      block.dataset.classicalResultPresentation = "unified-result-panel";
+      block.dataset.classicalResultPresentationOrder =
+        "canonical-written-answer-first";
+      block.dataset.classicalResultVisualSystem = "grammar-account-surface";
+      block.dataset.classicalResultFamily = resultFamily;
+      if (normalizedOperationId === "particle:result") {
+        block.dataset.classicalSgrStandaloneOperation = "particle:result";
+      } else {
+        delete block.dataset.classicalSgrStandaloneOperation;
+      }
+      applyClassicalResultRootSemantics(block, "authorized");
+
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__heading";
+      const title = targetObject.document.createElement("h3");
+      title.id = CLASSICAL_RESULT_HEADING_ID;
+      title.className = "classical-rule-surface__title";
+      title.dataset.classicalResultHeading = "true";
+      title.textContent = resultFamily === "vnc"
+        ? "Classical Nahuatl VNC"
+        : resultFamily === "nnc"
+          ? "Classical Nahuatl NNC"
+          : "Classical Nahuatl Result";
+      const chips = targetObject.document.createElement("div");
+      chips.className = "classical-rule-surface__chips";
+      chips.append(
+        createGrammarInspectorChip(
+          formatClassicalCapabilityOperationLabel(normalizedOperationId)
+        ),
+        createGrammarInspectorChip("Ready")
+      );
+      heading.append(title, chips);
+
+      const primary = targetObject.document.createElement("section");
+      primary.className = "classical-rule-surface__single-result";
+      primary.dataset.classicalUnifiedResult = "exact-owner-issued";
+      primary.dataset.classicalCapabilityResult = "canonical";
+      primary.dataset.classicalGrammarAuthority = "false";
+      primary.setAttribute("aria-label", "Generated Classical Nahuatl form");
+      markClassicalResultPrimaryAnswer(primary);
+      const primaryHeading = targetObject.document.createElement("div");
+      primaryHeading.className = "classical-rule-surface__format-heading";
+      const primaryTitle = targetObject.document.createElement("h4");
+      primaryTitle.className =
+        "classical-rule-surface__format-title classical-rule-surface__single-result-title";
+      primaryTitle.textContent = "Generated form";
+      primaryHeading.appendChild(primaryTitle);
+      const selectedOutput = targetObject.document.createElement("div");
+      selectedOutput.className =
+        "classical-rule-surface__single-result-answer";
+      const selectedOutputLabel = targetObject.document.createElement("span");
+      selectedOutputLabel.className =
+        "classical-rule-surface__single-result-answer-label";
+      selectedOutputLabel.textContent = "Classical Nahuatl";
+      const surface = targetObject.document.createElement("strong");
+      surface.className = "classical-rule-surface__single-result-surface";
+      surface.dataset.classicalCapabilitySurface = "canonical-result";
+      surface.dataset.classicalGrammarAuthority = "false";
+      surface.textContent = String(projection.surface || "");
+      selectedOutput.append(selectedOutputLabel, surface);
+      primary.append(primaryHeading, selectedOutput);
+      if (analysisChildren.length) {
+        const subtitle = [
+          linearSection ? "Linear" : "",
+          diagramSection ? "diagram" : "",
+          sentenceFormulaSection ? "sentence" : "",
+        ].filter(Boolean).join(", ");
+        primary.appendChild(
+          createClassicalResultAnalysisDisclosure(
+            analysisChildren,
+            subtitle || "Formula and structure"
+          )
+        );
+      }
+
+      const body = targetObject.document.createElement("div");
+      body.className = "classical-rule-surface__body";
+      const resultSupport = targetObject.document.createElement("section");
+      resultSupport.className = "classical-rule-surface__answer";
+      resultSupport.setAttribute(
+        "aria-label",
+        "Current result status and actions"
+      );
+      const actions = targetObject.document.createElement("div");
+      actions.className = "classical-rule-surface__actions";
+      const continueAction = targetObject.document.createElement("button");
+      continueAction.type = "button";
+      continueAction.className =
+        "classical-whole-canvas-action classical-rule-surface__action";
+      continueAction.dataset.classicalRuleSurfaceAction =
+        "use-result-as-source";
+      continueAction.dataset.classicalResultContinuationKind =
+        "exact-result-to-source";
+      continueAction.setAttribute(
+        "aria-label",
+        "Continue this exact Result as the next typed Source"
+      );
+      continueAction.textContent = "Continue this Result";
+      continueAction.addEventListener("click", () => (
+        useClassicalWholeCanvasResultAsNextSource(canonical)
+      ));
+      const copyAction = targetObject.document.createElement("button");
+      copyAction.type = "button";
+      copyAction.className =
+        "classical-whole-canvas-action classical-rule-surface__action";
+      copyAction.dataset.classicalRuleSurfaceAction = "copy-result";
+      copyAction.textContent = "Copy form";
+      copyAction.addEventListener("click", () => (
+        copyClassicalRuleSurfaceResult(canonical)
+      ));
+      if (getClassicalGrammarResultSourceContinuationCandidate(canonical)) {
+        actions.appendChild(continueAction);
+      }
+      actions.appendChild(copyAction);
+      const resultStatus = targetObject.document.createElement("div");
+      resultStatus.className = "classical-rule-surface__action-status";
+      resultStatus.dataset.classicalWholeCanvasActionStatus = "true";
+      configureClassicalResultStatus(resultStatus, {
+        message: "Result ready. Continue only when you want it as Source.",
+        signatureParts: [
+          normalizedOperationId,
+          projection.surface,
+          projection.formula,
+          projection.sentenceFormula,
+        ],
+      });
+      resultSupport.append(actions, resultStatus);
+      body.appendChild(resultSupport);
+      block.append(heading, primary, body);
+      syncClassicalCapabilityClosureStatus();
+      syncClassicalGrammarWorkspaceHistory();
+      return canonical;
+    }
+
     function renderClassicalParticleCapabilityApplicationResult(
       applicationResult = null,
       binding = null
@@ -33599,102 +35460,56 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || canonical.authorizationStatus !== "authorized"
         || canonical.sourceFrame !== exactParticleSource
       ) return null;
-      const block = targetObject.document?.getElementById?.(
-        "classical-rule-logic-surface"
-      ) || null;
-      if (!block) return null;
-      ActiveClassicalRuleLogicSurfaceFrame = canonical;
-      exposeClassicalRuleLogicSurfaceFrameToBrowser(canonical);
-      ActiveClassicalCapabilityApplicationResult = applicationResult;
-      block.hidden = false;
-      block.replaceChildren();
-      block.dataset.classicalNahuatlMachinery = "visible-rule-logic";
-      block.dataset.classicalNahuatlSurfaceVisible = "true";
-      block.dataset.classicalNahuatlSurfaceStatus = "authorized";
-      block.dataset.classicalSgrStandaloneOperation = "particle:result";
-      block.dataset.classicalCapabilityAppliedOperation = "particle:result";
-      block.dataset.classicalCapabilityAppliedResult = "exact-owner-issued";
-      block.dataset.classicalCapabilityInputSourceIdentity =
-        "separate-root-source-constructor";
-      block.dataset.classicalCapabilityNextSourceIdentity =
-        "exact-owner-issued-result";
-      applyClassicalResultRootSemantics(block, "authorized");
-      block.dataset.classicalResultPresentationOrder =
-        "canonical-written-answer-first";
-
-      const heading = targetObject.document.createElement("div");
-      heading.className = "classical-rule-surface__heading";
-      const title = targetObject.document.createElement("h3");
-      title.id = CLASSICAL_RESULT_HEADING_ID;
-      title.className = "classical-rule-surface__title";
-      title.dataset.classicalResultHeading = "true";
-      title.textContent = "Particle Result";
-      const chips = targetObject.document.createElement("div");
-      chips.className = "classical-rule-surface__chips";
-      chips.append(createGrammarInspectorChip("Ready"));
-      heading.append(title, chips);
-
-      const answer = targetObject.document.createElement("section");
-      answer.className = "grammar-inspector__section";
-      answer.dataset.classicalParticleResult = "canonical";
-      answer.dataset.classicalGrammarAuthority = "false";
-      markClassicalResultPrimaryAnswer(answer);
-      const answerTitle = targetObject.document.createElement("h4");
-      answerTitle.textContent = "Classical Nahuatl";
-      const surface = targetObject.document.createElement("strong");
-      surface.className = "classical-rule-surface__sentence-surface";
-      surface.dataset.classicalParticleSurface = "canonical-result";
-      surface.dataset.classicalGrammarAuthority = "false";
-      surface.textContent = String(canonical.surface || "");
-      const formula = targetObject.document.createElement("code");
-      formula.className = "classical-rule-surface__formula";
-      formula.dataset.classicalParticleFormula = "canonical-result";
-      formula.dataset.classicalGrammarAuthority = "false";
-      formula.textContent = String(canonical.formula || "");
-      answer.append(answerTitle, surface, formula);
-
-      const resultSupport = targetObject.document.createElement("section");
-      resultSupport.className = "classical-rule-surface__answer";
-      resultSupport.setAttribute(
-        "aria-label",
-        "Result guidance and actions"
-      );
-      const actions = targetObject.document.createElement("div");
-      actions.className = "classical-rule-surface__actions";
-      const continueAction = targetObject.document.createElement("button");
-      continueAction.type = "button";
-      continueAction.className =
-        "classical-whole-canvas-action classical-rule-surface__action";
-      continueAction.dataset.classicalRuleSurfaceAction =
-        "use-result-as-source";
-      continueAction.dataset.classicalResultContinuationKind =
-        "exact-result-to-source";
-      continueAction.setAttribute(
-        "aria-label",
-        "Continue this exact Result as the next typed Source"
-      );
-      continueAction.textContent = "Continue this Result";
-      continueAction.addEventListener("click", () => (
-        useClassicalWholeCanvasResultAsNextSource(canonical)
-      ));
-      actions.appendChild(continueAction);
-      const resultStatus = targetObject.document.createElement("div");
-      resultStatus.className = "classical-rule-surface__action-status";
-      resultStatus.dataset.classicalWholeCanvasActionStatus = "true";
-      configureClassicalResultStatus(resultStatus, {
-        message: "Result ready. Continue only when you want it as Source.",
-        signatureParts: [
-          "particle-result",
-          canonical.particleId,
-          canonical.surface,
-          canonical.formula,
-        ],
+      return renderClassicalUnifiedCapabilityResultPanel({
+        applicationResult,
+        operationId: "particle:result",
+        projection: Object.freeze({
+          canonicalResult: canonical,
+          applicationResult,
+          operationId: "particle:result",
+          outputKind: "particle-result",
+          surface: String(canonical.surface || ""),
+          formula: String(canonical.formula || ""),
+          linearFormula: String(canonical.formula || ""),
+          sentenceFormula: "",
+          ownerIssued: true,
+        }),
+        inputSourceIdentity: "separate-root-source-constructor",
       });
-      resultSupport.append(actions, resultStatus);
-      block.append(heading, answer, resultSupport);
-      syncClassicalCapabilityClosureStatus();
-      syncClassicalGrammarWorkspaceHistory();
-      return canonical;
+    }
+
+    function renderClassicalCapabilityApplicationResultForReview(
+      applicationResult = null,
+      operationId = ""
+    ) {
+      const canonical = applicationResult?.canonicalResult || null;
+      const normalizedOperationId = String(
+        operationId || applicationResult?.operationId || ""
+      ).trim();
+      if (
+        !canonical
+        || !normalizedOperationId
+        || applicationResult?.operationId !== normalizedOperationId
+        || applicationResult.authorizationStatus !== "authorized"
+        || typeof targetObject.isClassicalGrammarApplicationResult
+          !== "function"
+        || !targetObject.isClassicalGrammarApplicationResult(
+          applicationResult
+        )
+      ) return null;
+      const projection = getClassicalOwnerIssuedResultProjection(canonical);
+      if (
+        !projection
+        || projection.applicationResult !== applicationResult
+        || projection.canonicalResult !== canonical
+        || !projection.surface
+      ) return null;
+      return renderClassicalUnifiedCapabilityResultPanel({
+        applicationResult,
+        operationId: normalizedOperationId,
+        projection,
+        inputSourceIdentity: "preserved",
+      });
     }
 
     function renderClassicalTypedSourceCapabilityApplicationResult(
@@ -33844,6 +35659,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
           return false;
         }
         const binding = sourceExecutionReadiness.binding;
+        const historyToken = targetObject
+          .beginClassicalGrammarWorkspaceUserAction?.(operationId) || null;
         const applicationResult = targetObject
           .executeClassicalGrammarTypedSourceOperationBindingFrame?.(
             binding
@@ -33862,6 +35679,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           "classical-capability-operation-plan-status"
         ) || null;
         if (!rendered) {
+          targetObject.cancelClassicalGrammarWorkspaceUserAction?.(
+            historyToken
+          );
           if (navigatorStatus) {
             navigatorStatus.textContent =
               "The canonical owner did not issue a displayable exact Result.";
@@ -33875,6 +35695,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
           syncClassicalCapabilityApplyOperationState(select);
           return false;
         }
+        targetObject.completeClassicalGrammarWorkspaceUserAction?.(
+          historyToken,
+          applicationResult
+        );
+        syncClassicalGrammarWorkspaceHistory();
         clearClassicalGrammarTypedSourceOperationBinding(
           "operation-applied"
         );
@@ -33914,10 +35739,78 @@ export function createUiRenderingApi(targetObject = globalThis) {
         syncClassicalCapabilityApplyOperationState(select);
         return false;
       }
+      const activeResultBinding = getActiveClassicalGrammarResultBinding(
+        operationId
+      );
+      if (activeResultBinding?.family === "particle-sentence") {
+        const selectedBindingId = activeResultBinding.selectedBindingId
+          || activeResultBinding.bindingIds?.[0]
+          || "";
+        if (
+          !selectedBindingId
+          || activeResultBinding.requiredChoiceIds.length
+          || activeResultBinding.requiredResultRoles.length
+          || activeResultBinding.particleSentenceOwnerReady !== true
+        ) {
+          syncClassicalCapabilityApplyOperationState(select);
+          return false;
+        }
+        const historyToken = targetObject
+          .beginClassicalGrammarWorkspaceUserAction?.(operationId) || null;
+        const previousApplicationResult =
+          ActiveClassicalCapabilityApplicationResult;
+        const entered = enterClassicalGrammarResultBindingChoice(
+          selectedBindingId,
+          { allowExecution: true }
+        );
+        const reviewedApplicationResult =
+          ActiveClassicalCapabilityApplicationResult
+          && ActiveClassicalCapabilityApplicationResult
+            !== previousApplicationResult
+          && ActiveClassicalCapabilityApplicationResult.operationId
+            === operationId
+            ? ActiveClassicalCapabilityApplicationResult
+            : null;
+        if (!entered || !reviewedApplicationResult) {
+          targetObject.cancelClassicalGrammarWorkspaceUserAction?.(
+            historyToken
+          );
+          syncClassicalCapabilityApplyOperationState(select);
+          return false;
+        }
+        targetObject.completeClassicalGrammarWorkspaceUserAction?.(
+          historyToken,
+          reviewedApplicationResult
+        );
+        syncClassicalGrammarWorkspaceHistory();
+        targetObject.setLeftPanelStackMode?.("output");
+        return true;
+      }
+      const historyToken = targetObject
+        .beginClassicalGrammarWorkspaceUserAction?.(operationId) || null;
+      const previousApplicationResult =
+        ActiveClassicalCapabilityApplicationResult;
       const selected = updateClassicalCapabilityNavigatorSelection(
         select,
         { navigate: true, execute: true }
       );
+      const reviewedApplicationResult =
+        ActiveClassicalCapabilityApplicationResult
+        && ActiveClassicalCapabilityApplicationResult
+          !== previousApplicationResult
+        && ActiveClassicalCapabilityApplicationResult.operationId
+          === operationId
+          ? ActiveClassicalCapabilityApplicationResult
+          : null;
+      if (reviewedApplicationResult) {
+        targetObject.completeClassicalGrammarWorkspaceUserAction?.(
+          historyToken,
+          reviewedApplicationResult
+        );
+        syncClassicalGrammarWorkspaceHistory();
+        targetObject.setLeftPanelStackMode?.("output");
+        return true;
+      }
       const binding = ActiveClassicalGrammarResultBinding?.operationId
         === operationId
         ? ActiveClassicalGrammarResultBinding
@@ -33927,9 +35820,17 @@ export function createUiRenderingApi(targetObject = globalThis) {
         || binding?.family !== "formation-result"
         || !binding.selectedBindingId
         || binding.requiredResultRoles.length
-      ) return Boolean(selected);
-      const rendered = targetObject
+      ) {
+        targetObject.cancelClassicalGrammarWorkspaceUserAction?.(
+          historyToken
+        );
+        return false;
+      }
+      const refreshResult = targetObject
         .refreshClassicalRuleLogicSurfaceFromControl?.() || null;
+      const rendered = refreshResult && typeof refreshResult === "object"
+        ? refreshResult
+        : ActiveClassicalRuleLogicSurfaceFrame;
       const ownerProjection = getClassicalSgrOwnerIssuedProjection(rendered);
       const graphCandidate = ownerProjection
         && typeof targetObject.getClassicalGrammarApplicationLayerGraph
@@ -33959,7 +35860,16 @@ export function createUiRenderingApi(targetObject = globalThis) {
             : "Complete the selected Grammar choices before applying this operation.";
       }
       if (exactOperationApplied) {
+        targetObject.completeClassicalGrammarWorkspaceUserAction?.(
+          historyToken,
+          ownerProjection?.applicationResult || null
+        );
+        syncClassicalGrammarWorkspaceHistory();
         targetObject.setLeftPanelStackMode?.("output");
+      } else {
+        targetObject.cancelClassicalGrammarWorkspaceUserAction?.(
+          historyToken
+        );
       }
       return exactOperationApplied;
     }
@@ -34043,6 +35953,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       }
       const delivered = projection.operations.filter(
         operation => operation.status !== "incompatible"
+          && !CLASSICAL_CAPABILITY_ANALYSIS_ONLY_OPERATION_IDS.has(
+            operation.operationId
+          )
       );
       root.dataset.classicalCapabilitySourceRole = projection.inputRole;
       root.dataset.classicalCapabilitySourceUnitKinds = (
@@ -34406,7 +36319,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
             role,
             exactAdditionalResult,
             issueClassicalClauseRelationCurrentDiscourseSourceContextFrame?.(
-              role
+              controller
             ) || null
           ) || null
           : null;
@@ -34429,11 +36342,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         }
         ClassicalClauseRelationStatusMessage =
           `Exact ${role} Result added to the active relation.`;
-        refreshClassicalClauseRelationWorkflow();
+        const selectedBindingId = ActiveClassicalGrammarResultBinding
+          .selectedBindingId
+          || ActiveClassicalGrammarResultBinding.bindingIds[0]
+          || "";
+        const reentered = selectedBindingId
+          ? enterClassicalGrammarResultBindingChoice(
+            selectedBindingId,
+            { allowExecution: false }
+          )
+          : false;
         syncClassicalGrammarWorkspaceHistory();
         syncClassicalCapabilityApplyOperationState();
-        if (status) status.textContent = ClassicalClauseRelationStatusMessage;
-        return true;
+        if (!reentered && status) {
+          status.textContent = ClassicalClauseRelationStatusMessage;
+        }
+        return reentered;
       }
       if (binding.family === "vnc-continuation") {
         const role = binding.requiredResultRoles[0] || "";
@@ -34505,6 +36429,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
           ...binding,
           particleHostBinding: hostBinding,
           particleResultBinding: particleBinding,
+          particleSentenceOwnerReady: true,
           additionalResults: Object.freeze({
             ...(binding.additionalResults || {}),
             exactAdditionalResult,
@@ -34657,10 +36582,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       ) ? previousCompared : "";
       nodeSelect.disabled = nodes.length === 0;
       compareSelect.disabled = nodes.length < 2;
-      const current = nodes.find(
-        node => node.nodeId === value?.currentNodeId
-      ) || null;
-      if (undo) undo.disabled = !current?.parentNodeId;
+      if (undo) undo.disabled = value?.canUndo !== true;
       if (fork) fork.disabled = !selectedId;
       if (continueButton) continueButton.disabled = !selectedId;
       if (supply) supply.disabled = !selectedId
@@ -34699,15 +36621,22 @@ export function createUiRenderingApi(targetObject = globalThis) {
         nodeSelect.addEventListener("change", updateActionState);
         compareSelect.addEventListener("change", updateActionState);
         undo?.addEventListener("click", () => {
+          const restorationMessage =
+            "Undid one derivation step; exact Result restored as Source.";
           const capture = targetObject
             .undoClassicalGrammarWorkspaceHistory?.() || null;
-          if (!activateClassicalGrammarWorkspaceCapture(
+          const restored = activateClassicalGrammarWorkspaceCapture(
             capture,
-            "Undid one derivation step; exact Result restored as Source."
-          )) {
-            status.textContent = "There is no earlier exact Result on this branch.";
-          }
-          syncClassicalGrammarWorkspaceHistory();
+            restorationMessage
+          );
+          const nextSnapshot = syncClassicalGrammarWorkspaceHistory();
+          nodeSelect.value = restored
+            ? String(nextSnapshot?.currentNodeId || "")
+            : String(nodeSelect.value || "");
+          status.textContent = restored
+            ? restorationMessage
+            : "There is no earlier exact Result on this branch.";
+          updateActionState();
         });
         fork?.addEventListener("click", () => {
           const selectedNodeId = String(nodeSelect.value || "");
@@ -34738,11 +36667,12 @@ export function createUiRenderingApi(targetObject = globalThis) {
           const capture = targetObject.recoverClassicalGrammarWorkspaceResult?.(
             selectedNodeId
           ) || null;
-          if (!supplyClassicalGrammarWorkspaceResultToBinding(capture)) {
-            status.textContent =
-              "That exact Result does not fill the active pathway's missing role.";
-          }
+          const supplied = supplyClassicalGrammarWorkspaceResultToBinding(capture);
+          const actionMessage = String(status.textContent || "");
           syncClassicalGrammarWorkspaceHistory();
+          status.textContent = supplied
+            ? actionMessage
+            : "That exact Result does not fill the active pathway's missing role.";
         });
         compare?.addEventListener("click", () => {
           const leftNodeId = String(nodeSelect.value || "");
@@ -36485,6 +38415,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       block.dataset.classicalNahuatlStemTranslationPolicy = stemStructure?.stemTranslationPolicy || "";
       applyClassicalResultRootSemantics(block, surfaceFrame.authorizationStatus);
       block.dataset.classicalResultPresentationOrder = "generated-result-only";
+      block.dataset.classicalResultPresentation =
+        "unified-result-panel";
       block.dataset.classicalResultVisualOrder =
         "canonical-written-answer-first";
       block.dataset.classicalResultVisualSystem = "grammar-account-surface";
@@ -44041,6 +45973,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
       getActiveClassicalCapabilityApplicationResult;
     api.stageClassicalGrammarTypedSourceOperationBinding =
       stageClassicalGrammarTypedSourceOperationBinding;
+    api.handleClassicalCapabilityStagedGrammarControlChange =
+      handleClassicalCapabilityStagedGrammarControlChange;
     api.getClassicalSourceCapabilityOperationExecutionReadiness =
       getClassicalSourceCapabilityOperationExecutionReadiness;
     api.renderClassicalTypedSourceCapabilityApplicationResult =
