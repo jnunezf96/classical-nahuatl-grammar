@@ -6,7 +6,7 @@
 import {
   buildClassicalGrammaticalRhymeCoordinateFrame as
     buildSharedGrammaticalRhymeCoordinateFrame,
-} from "../grammar/grammatical_rhyme_space.mjs?v=20260825-mobile-select-335";
+} from "../grammar/grammatical_rhyme_space.mjs?v=20260825-class-d-336";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
 } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";

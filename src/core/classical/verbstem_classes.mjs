@@ -2651,16 +2651,22 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       let guidelineId = "cn-l7-76-guidelines-not-majority-prediction";
       const guidelineAllowedClassIds = guidelineAuthorityRecord?.allowedClassIds || [];
       const guidelineClassOptions = guidelineAuthorityRecord?.classOptions || [];
-      const classClaimAllowedClassIds = guidelineAllowedClassIds.length
-        ? [...guidelineAllowedClassIds]
-        : ["A", "B", "D"];
-      const classClaimExcludedClassIds = guidelineAllowedClassIds.length
-        ? ["A", "B", "C", "D"].filter(candidateClassId => !guidelineAllowedClassIds.includes(candidateClassId))
-        : ["C"];
       const higherLayerClassOverride = normalizeClassicalNahuatlClassId(options.canvasHigherLayerClassOverride || "");
       const higherLayerClassOverrideApplies = Boolean(explicit && higherLayerClassOverride && explicit === higherLayerClassOverride);
-      const guidelineContradictionBlocked = Boolean(explicit && guidelineAllowedClassIds.length && !guidelineAllowedClassIds.includes(explicit) && !higherLayerClassOverrideApplies);
-      const guidelineSelectedClassAllowed = Boolean(!explicit || !guidelineAllowedClassIds.length || guidelineAllowedClassIds.includes(explicit));
+      const classDSourceLicensed = Boolean(
+        guidelineAllowedClassIds.includes("D")
+        || stemRelationship?.relationRuleId === "cn-l7-768-class-d-variant-stem"
+        || normalizeClassicalNahuatlClassId(optionalIrregularRecord?.classId || "") === "D"
+        || higherLayerClassOverride === "D"
+      );
+      const classClaimAllowedClassIds = guidelineAllowedClassIds.length
+        ? [...guidelineAllowedClassIds]
+        : ["A", "B", ...(classDSourceLicensed ? ["D"] : [])];
+      const classClaimExcludedClassIds = ["A", "B", "C", "D"].filter(candidateClassId => !classClaimAllowedClassIds.includes(candidateClassId));
+      const guidelineClassContradictionBlocked = Boolean(explicit && guidelineAllowedClassIds.length && !guidelineAllowedClassIds.includes(explicit) && !higherLayerClassOverrideApplies);
+      const classDClaimContradictionBlocked = Boolean(explicit === "D" && !classDSourceLicensed && !higherLayerClassOverrideApplies);
+      const guidelineContradictionBlocked = guidelineClassContradictionBlocked || classDClaimContradictionBlocked;
+      const guidelineSelectedClassAllowed = Boolean(!explicit || !guidelineContradictionBlocked);
       if (guidelineAuthorityRecord?.relationRuleId) {
         guidelineId = guidelineAuthorityRecord.relationRuleId;
       }
@@ -2737,10 +2743,10 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         classClaimExcludedClassIds,
         classClaimEligibilityRuleIds: guidelineAllowedClassIds.length
           ? [guidelineAuthorityRecord.relationRuleId]
-          : ["cn-l7-73-class-c"],
+          : ["cn-l7-73-class-c", "cn-l7-768-eight-class-d-stems"],
         classClaimEligibilityReason: guidelineAllowedClassIds.length
           ? "canvas-guideline-determines-source-class-options"
-          : "class-c-requires-full-imperfective-final-long-a-after-i-or-o",
+          : "classes-c-and-d-require-canonical-shape-or-lexical-license",
         classGuidelineSemanticCondition: guidelineAuthorityRecord?.conditionKind || "",
         classGuidelineExceptionKind: guidelineAuthorityRecord?.exceptionKind || "",
         classGuidelineSelectedClassAllowed: guidelineSelectedClassAllowed,

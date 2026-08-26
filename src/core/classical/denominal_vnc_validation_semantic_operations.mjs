@@ -4,7 +4,7 @@
 
 import {
   CLASSICAL_NAHUATL_DENOMINAL_VNC_LCM,
-} from "./denominal_vnc_grammar.mjs?v=20260825-mobile-select-335";
+} from "./denominal_vnc_grammar.mjs?v=20260825-class-d-336";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

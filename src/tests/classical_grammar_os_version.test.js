@@ -8,7 +8,7 @@ const ROOT = path.resolve(__dirname, "../..");
 const VERSION = "1.1.0";
 const RELEASE = "Cross-Lesson Compositional Closure";
 const RELEASE_SLUG = "cross-lesson-compositional-closure";
-const BUILD = "20260825-mobile-select-335";
+const BUILD = "20260825-class-d-336";
 
 function run(ctx = {}) {
     const suite = createSuite("classical_grammar_os_version");

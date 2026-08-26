@@ -8914,7 +8914,7 @@ function run(ctx = {}) {
                 stemClassAvailability: [
                     [true, "A", ["A"]],
                     [false, "D", ["A", "B", "C", "D"]],
-                    [false, "", ["A", "B", "D"], ["cn-l7-73-class-c"]],
+                    [false, "", ["A", "B"], ["cn-l7-73-class-c", "cn-l7-768-eight-class-d-stems"]],
                     [true, "C", ["C"], ["cn-l7-73-class-c"]],
                 ],
                 staleValenceEnumerationGateAbsent: true,

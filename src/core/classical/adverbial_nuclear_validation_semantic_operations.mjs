@@ -4,7 +4,7 @@
 
 import {
   installClassicalNahuatlAdverbialNuclearGlobals,
-} from "./adverbial_nuclear_grammar.mjs?v=20260825-mobile-select-335";
+} from "./adverbial_nuclear_grammar.mjs?v=20260825-class-d-336";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

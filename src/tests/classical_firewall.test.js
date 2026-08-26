@@ -2408,10 +2408,10 @@ function run(ctx = {}) {
             novelCausative: ["B", "cn-l7-73-class-b-causative-final-a-morph", true],
             unknown: ["cn-l7-76-guidelines-not-majority-prediction", false, true],
             shortFinalUnknown: [
-                ["A", "B", "D"],
-                ["C"],
-                ["cn-l7-73-class-c"],
-                "class-c-requires-full-imperfective-final-long-a-after-i-or-o",
+                ["A", "B"],
+                ["C", "D"],
+                ["cn-l7-73-class-c", "cn-l7-768-eight-class-d-stems"],
+                "classes-c-and-d-require-canonical-shape-or-lexical-license",
             ],
             canvasExample: ["", "cn-l7-76-guidelines-not-majority-prediction", false, true],
         }

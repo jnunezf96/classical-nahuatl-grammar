@@ -1,6 +1,6 @@
 import {
   CLASSICAL_LESSONS_1_58_RHYME_PLANES,
-} from "./classical_lessons_1_58_rhyme_map.mjs?v=20260825-mobile-select-335";
+} from "./classical_lessons_1_58_rhyme_map.mjs?v=20260825-class-d-336";
 import {
   buildClassicalGrammaticalAtlasAtomOperationProjectionFrame,
   buildClassicalGrammaticalAtlasFrame,

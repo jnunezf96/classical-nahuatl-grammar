@@ -7,7 +7,7 @@ import {
 } from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   installClassicalPlayWitness,
-} from "../diagnostics/classical_play_witness.mjs?v=20260825-mobile-select-335";
+} from "../diagnostics/classical_play_witness.mjs?v=20260825-class-d-336";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,

@@ -198,7 +198,7 @@ function run(ctx = {}) {
                 classId: "",
                 classOptions: [],
                 guidelineAllowed: [],
-                claimAllowed: ["A", "B", "D"],
+                claimAllowed: ["A", "B"],
             },
             {
                 stem: "ē-hua",
@@ -212,7 +212,80 @@ function run(ctx = {}) {
                 classId: "B",
                 classOptions: ["B"],
                 guidelineAllowed: [],
-                claimAllowed: ["A", "B", "D"],
+                claimAllowed: ["A", "B"],
+            },
+        ]
+    );
+
+    s.eq(
+        "Class D is owner-licensed only for its lexical or productive source shapes",
+        [
+            ["xemi", "D"],
+            ["cuā", "D"],
+            ["xā", "D"],
+            ["mēmē", "D"],
+            ["xōchi-cuā", "D", "D"],
+        ].map(([stem, verbClass, canvasHigherLayerClassOverride = ""]) => {
+            const frame = inventoryRuntime.buildClassicalNahuatlVerbstemClassRuleFrame(stem, {
+                verbClass,
+                valence: "intransitive",
+                canvasHigherLayerClassOverride,
+            });
+            return {
+                stem,
+                status: frame.authorizationStatus,
+                reason: frame.blockReason,
+                allowed: frame.classProfile.classClaimAllowedClassIds,
+                excluded: frame.classProfile.classClaimExcludedClassIds,
+                lexical: frame.classProfile.classDeterminedByLexicalException,
+                general: frame.classProfile.classDeterminedByGeneralFormRule,
+            };
+        }),
+        [
+            {
+                stem: "xemi",
+                status: "blocked",
+                reason: "explicit-class-not-authorized-by-canvas-guideline-witness",
+                allowed: ["A", "B"],
+                excluded: ["C", "D"],
+                lexical: false,
+                general: false,
+            },
+            {
+                stem: "cuā",
+                status: "authorized",
+                reason: "",
+                allowed: ["D"],
+                excluded: ["A", "B", "C"],
+                lexical: true,
+                general: false,
+            },
+            {
+                stem: "xā",
+                status: "authorized",
+                reason: "",
+                allowed: ["D"],
+                excluded: ["A", "B", "C"],
+                lexical: false,
+                general: true,
+            },
+            {
+                stem: "mēmē",
+                status: "authorized",
+                reason: "",
+                allowed: ["A", "B", "D"],
+                excluded: ["C"],
+                lexical: false,
+                general: false,
+            },
+            {
+                stem: "xōchi-cuā",
+                status: "authorized",
+                reason: "",
+                allowed: ["A", "B", "D"],
+                excluded: ["C"],
+                lexical: false,
+                general: false,
             },
         ]
     );
