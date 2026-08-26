@@ -18,10 +18,10 @@ import {
   buildClassicalGrammaticalRhymeOwnerCalibrationFrame,
   buildClassicalGrammaticalRhymeRoutePlaneFrame,
   buildClassicalGrammaticalRhymeTopologyFrame,
-} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260825-capability-closure-333";
+} from "../../core/grammar/grammatical_rhyme_space.mjs?v=20260825-mobile-select-335";
 import {
   CLASSICAL_LESSONS_1_58_RHYME_DISCOVERY,
-} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260825-capability-closure-333";
+} from "../../core/grammar/classical_lessons_1_58_rhyme_map.mjs?v=20260825-mobile-select-335";
 
 const REQUIRED_CAPABILITY_DIAGNOSTIC = "classical-grammar-application-required-capability-missing";
 const APPLICATION_REQUEST_DIAGNOSTIC = "classical-grammar-application-request-invalid";

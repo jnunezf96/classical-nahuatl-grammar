@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260825-capability-closure-333";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260825-mobile-select-335";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

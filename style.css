@@ -19987,3 +19987,24 @@ body.is-language-classical #classical-workbench :is(
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* Phone selects keep a 16px native font to prevent iOS focus zoom, so give
+   that text a full mobile field instead of squeezing it into the desktop
+   control height. Long selected labels remain visibly truncated. */
+@media (max-width: 720px) {
+  body.is-language-classical #classical-workbench :is(
+    #classical-source-panel,
+    #classical-authority-panel,
+    #classical-result-panel
+  ) select:not(.is-hidden-control) {
+    height: 48px;
+    min-height: 48px;
+    padding: 0 38px 0 12px;
+    overflow: hidden;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    line-height: 1.25;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

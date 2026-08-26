@@ -954,7 +954,7 @@ export async function loadAndInstallClassicalGrammaticalAtlas({
     adapterUrl.searchParams.set("v", version);
     adapterUrl.searchParams.set(
       "cache",
-      "20260825-capability-closure-333",
+      "20260825-mobile-select-335",
     );
     if (adapterLoadState.attempt > 1) {
       adapterUrl.searchParams.set(

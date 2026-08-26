@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260825-capability-closure-333";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260825-mobile-select-335";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260825-capability-closure-333";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260825-capability-closure-333";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260825-capability-closure-333";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260825-capability-closure-333";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260825-capability-closure-333";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260825-capability-closure-333";
+} from "../runtime/create_runtime.mjs?v=20260825-mobile-select-335";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260825-mobile-select-335";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260825-mobile-select-335";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260825-mobile-select-335";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260825-mobile-select-335";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260825-mobile-select-335";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260825-capability-closure-333";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260825-mobile-select-335";
 
 let browserBootstrapPromise = null;
 
@@ -163,7 +163,7 @@ export function installDeferredClassicalGrammaticalAtlas({
         url.searchParams.set("v", populationVersion.version);
         url.searchParams.set(
             "cache",
-            "20260825-capability-closure-333"
+            "20260825-mobile-select-335"
         );
         if (attempt > 1) url.searchParams.set("retry", String(attempt));
         return import(url.href);

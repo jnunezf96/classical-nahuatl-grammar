@@ -4,7 +4,7 @@
 grammar and conjugation application.
 
 Current release: **Grammar OS v1.1.0 — Cross-Lesson Compositional Closure**
-(browser build `20260825-capability-closure-333`).
+(browser build `20260825-mobile-select-335`).
 
 It lives inside:
 

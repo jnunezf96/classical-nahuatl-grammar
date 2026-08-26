@@ -58,6 +58,10 @@ assert.match(css, /--ink-muted:\s*#[a-f\d]{6}\s*;/iu);
 assert.match(css, /--classical-shell-control-size:\s*calc\([^;]+\)\s*;/u);
 assert.match(css, /--workbench-control-height:\s*42px\s*;/u);
 assert.match(css, /--workbench-control-radius:\s*8px\s*;/u);
+assert.match(
+  css,
+  /Phone selects keep a 16px native font[\s\S]+@media \(max-width: 720px\)[\s\S]+select:not\(\.is-hidden-control\) \{[\s\S]+height: 48px;[\s\S]+padding: 0 38px 0 12px;[\s\S]+font-size: 16px !important;[\s\S]+font-weight: 500 !important;[\s\S]+text-overflow: ellipsis;/u
+);
 assert.match(css, /--classical-result-teal-deep:\s*var\(--workbench-teal-deep\)\s*;/u);
 assert.match(css, /--classical-result-inner-radius:\s*var\(--workbench-control-radius\)\s*;/u);
 assert.ok(css.includes('body.is-language-classical .panel-stack-tab[aria-selected="true"]'));
