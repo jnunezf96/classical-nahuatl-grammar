@@ -164,6 +164,63 @@ function run(ctx) {
     );
 
     s.eq(
+        "one owner-issued Result distinguishes all four public pathway states",
+        [
+            ["vnc:sentence-result", "ready-now"],
+            ["vnc:application", "choose-details"],
+            ["nnc:ordinary", "needs-another-source"],
+            ["nnc:relational", "not-compatible"],
+        ].map(([operationId, publicState]) => {
+            const candidate = operation(frame, operationId);
+            return {
+                operationId,
+                publicState,
+                availabilityStatus: candidate?.availabilityStatus,
+                ownerChoicesRequired:
+                    candidate?.ownerChoicesRequired === true,
+                ownerAcceptance:
+                    candidate?.ownerInputAcceptanceProven === true,
+                ownerRejection:
+                    candidate?.ownerRejectionProven === true,
+            };
+        }),
+        [
+            {
+                operationId: "vnc:sentence-result",
+                publicState: "ready-now",
+                availabilityStatus: "available",
+                ownerChoicesRequired: false,
+                ownerAcceptance: true,
+                ownerRejection: false,
+            },
+            {
+                operationId: "vnc:application",
+                publicState: "choose-details",
+                availabilityStatus: "available",
+                ownerChoicesRequired: true,
+                ownerAcceptance: true,
+                ownerRejection: false,
+            },
+            {
+                operationId: "nnc:ordinary",
+                publicState: "needs-another-source",
+                availabilityStatus: "missing-prerequisite",
+                ownerChoicesRequired: false,
+                ownerAcceptance: false,
+                ownerRejection: false,
+            },
+            {
+                operationId: "nnc:relational",
+                publicState: "not-compatible",
+                availabilityStatus: "incompatible",
+                ownerChoicesRequired: false,
+                ownerAcceptance: false,
+                ownerRejection: true,
+            },
+        ]
+    );
+
+    s.eq(
         "direct owner probes preserve exact identity and carry the availability authority",
         {
             sentenceStatus: sentenceResult?.availabilityStatus,

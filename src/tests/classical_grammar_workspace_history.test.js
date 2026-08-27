@@ -120,6 +120,8 @@ function probeHistory() {
       const afterBranchUndo = history.snapshot();
       const continuedCapture = history.continueFrom(nodeB.nodeId);
       const snapshot = history.snapshot();
+      const invalidContinue = history.continueFrom("history-missing");
+      const afterInvalidContinue = history.snapshot();
       const particleNode = history.record(particle.applicationResult, {
         parentNodeId: nodeB.nodeId,
         branchId: nodeB.branchId,
@@ -174,6 +176,13 @@ function probeHistory() {
         nodeCount: snapshot.nodeCount,
         currentNodeId: snapshot.currentNodeId,
         currentBranchId: snapshot.currentBranchId,
+        invalidContinue: {
+          rejected: invalidContinue === null,
+          currentNodePreserved:
+            afterInvalidContinue.currentNodeId === snapshot.currentNodeId,
+          currentBranchPreserved:
+            afterInvalidContinue.currentBranchId === snapshot.currentBranchId,
+        },
         branchAnchor: branch.anchorNodeId,
         nodeBParent: nodeB.parentNodeId,
         nodeCParent: nodeC.parentNodeId,
@@ -253,6 +262,9 @@ function run() {
             branchAnchor: proof.branchAnchor,
             nodeBParent: proof.nodeBParent,
             nodeCParent: proof.nodeCParent,
+            currentNodeId: proof.currentNodeId,
+            currentBranchId: proof.currentBranchId,
+            invalidContinue: proof.invalidContinue,
             undoRecoveredA: proof.undoRecoveredA,
             continueRecoveredB: proof.continueRecoveredB,
             directRecoverC: proof.directRecoverC,
@@ -265,6 +277,13 @@ function run() {
             branchAnchor: "history-1",
             nodeBParent: "history-1",
             nodeCParent: "history-1",
+            currentNodeId: "history-2",
+            currentBranchId: "branch-1",
+            invalidContinue: {
+                rejected: true,
+                currentNodePreserved: true,
+                currentBranchPreserved: true,
+            },
             undoRecoveredA: true,
             continueRecoveredB: true,
             directRecoverC: true,

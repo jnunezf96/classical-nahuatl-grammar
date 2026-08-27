@@ -307,6 +307,12 @@ function run(ctx = {}) {
             operation?.ownerBindingIds?.length > 0,
             operation?.ownerBindingIds?.join("|")
                 === frame?.bindingIds?.join("|"),
+            operation?.ownerChoicesRequired === Boolean(
+                frame?.ownerChoicesRequired === true
+                || operation?.ownerBindingIds?.length > 1
+                || operation?.requiredChoiceIds?.length > 0
+                || operation?.requiredResultRoles?.length > 0
+            ),
             !validatorAvailable || ctx[installedValidator](frame) === true,
         ];
     });
@@ -326,6 +332,7 @@ function run(ctx = {}) {
         true,
         true,
         "authorized",
+        true,
         true,
         true,
         true,
