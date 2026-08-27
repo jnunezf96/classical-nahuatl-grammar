@@ -923,16 +923,31 @@ export function createComplementClauseGlobals(targetObject = globalThis, install
         ([key, child]) => [key, freezeClassicalNahuatlClauseComposition(child)]
       )));
     }
+    const classicalNahuatlClauseCompositionStringCache = new WeakMap();
     function stableStringifyClassicalNahuatlClauseComposition(value) {
-      if (Array.isArray(value)) {
-        return `[${value.map(stableStringifyClassicalNahuatlClauseComposition).join(",")}]`;
+      const cacheable = Boolean(
+        value && typeof value === "object" && Object.isFrozen(value)
+      );
+      if (
+        cacheable
+        && classicalNahuatlClauseCompositionStringCache.has(value)
+      ) {
+        return classicalNahuatlClauseCompositionStringCache.get(value);
       }
-      if (value && typeof value === "object") {
-        return `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
+      let serialized;
+      if (Array.isArray(value)) {
+        serialized = `[${value.map(stableStringifyClassicalNahuatlClauseComposition).join(",")}]`;
+      } else if (value && typeof value === "object") {
+        serialized = `{${Object.keys(value).filter(key => value[key] !== undefined).sort().map(
           key => `${JSON.stringify(key)}:${stableStringifyClassicalNahuatlClauseComposition(value[key])}`
         ).join(",")}}`;
+      } else {
+        serialized = JSON.stringify(value);
       }
-      return JSON.stringify(value);
+      if (cacheable) {
+        classicalNahuatlClauseCompositionStringCache.set(value, serialized);
+      }
+      return serialized;
     }
     function signClassicalNahuatlClauseComposition(value, prefix) {
       const serialized = stableStringifyClassicalNahuatlClauseComposition(value);

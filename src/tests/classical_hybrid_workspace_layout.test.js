@@ -60,6 +60,12 @@ function run(ctx = {}) {
         panelShellStart
     );
     const panelShell = shell.slice(panelShellStart, panelShellEnd);
+    const sourcePanel = elementBlock(
+        shell,
+        "panel-stack-pane-inputs",
+        "form",
+        "form"
+    );
     const grammarControlsIndex = shell.indexOf(
         'class="classical-rule-controls-grid"',
         shell.indexOf('id="classical-rule-logic-controls"')
@@ -102,6 +108,12 @@ function run(ctx = {}) {
         )
         && operationPlan.includes(
             'id="classical-capability-apply-operation"'
+        )
+        && operationPlan.includes(
+            '>Choose the Result role</span>'
+        )
+        && operationPlan.includes(
+            '<option value="" selected>Select one role</option>'
         )
         && operationPlan.includes(">Make Result</button>")
         && operationPlan.includes('data-classical-grammar-authority="false"')
@@ -191,6 +203,25 @@ function run(ctx = {}) {
         )
         && shell.includes('? "stacked"')
         && shell.includes('navigation.hidden = layout !== "compact"')
+    );
+
+    suite.ok(
+        "the Source form keeps its native landmark while layout labels and grouped identity controls remain accessible",
+        sourcePanel.includes('aria-labelledby="panel-stack-tab-inputs"')
+        && !/\srole="(?:tabpanel|region)"/u.test(sourcePanel)
+        && shell.includes('const isNativeFormPane = String(pane.tagName || "").toLowerCase() === "form";')
+        && shell.includes('isNativeFormPane) {\n          pane.removeAttribute("role");')
+        && shell.includes('id="classical-source-identity-controls"')
+        && shell.includes('role="group"\n                      aria-label="Identified source properties"')
+    );
+
+    suite.ok(
+        "hidden Grammar controls and scrollable Result details remain keyboard-accessible without conflicting ARIA",
+        rendering.includes('organizer.setAttribute("role", "group");')
+        && rendering.includes('section.inert = hidden;\n        section.removeAttribute("aria-hidden");')
+        && rendering.includes('formula.tabIndex = 0;\n        formula.dataset.classicalClauseRelationFormula')
+        && rendering.includes('formulaNode.tabIndex = 0;\n      formulaNode.dataset.classicalFormulaAuthority')
+        && rendering.includes('body.tabIndex = 0;\n      analysisAtoms.forEach')
     );
 
     suite.ok(

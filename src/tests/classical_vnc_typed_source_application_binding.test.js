@@ -15,6 +15,19 @@ function issueAhciSource(ctx) {
     });
 }
 
+function issueTlaCaquiSource(ctx) {
+    return ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: "caqui",
+        verbClass: "B",
+        sourceValence: "projective-nonhuman",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+    });
+}
+
 function summarizeOptions(binding, choiceId) {
     return (binding.choiceOptionProjection?.[choiceId] || []).map(
         option => [
@@ -157,6 +170,160 @@ function run(ctx = {}) {
             executionArgs: [2, true],
             result: ["authorized", "ahci", true],
             secondExecution: null,
+        }
+    );
+
+    const inherentYohua =
+        ctx.evaluateClassicalNahuatlVncApplication({
+            sourceStem: "yohua",
+            verbClass: "A",
+            sourceValence: "intransitive",
+            subject: "1sg",
+            mood: "indicative",
+            tense: "present",
+            requestedDerivation: "direct",
+            requestedVoice: "impersonal",
+            nonactiveOptionId: "inherent-impersonal",
+        });
+    const exactInherentYohua =
+        inherentYohua.resultFrame.sourceMachineryFrame;
+    const inherentYohuaBinding =
+        ctx.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            exactInherentYohua,
+            {
+                subject: "1sg",
+                mood: "indicative",
+                tense: "present",
+                requestedDerivation: "direct",
+            }
+        );
+    const inherentYohuaResult =
+        ctx.executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            inherentYohuaBinding
+        );
+
+    s.eq(
+        "an inherent-impersonal exact Source supplies its derived voice facts without a hidden caller choice",
+        {
+            valid:
+                ctx.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+                    inherentYohuaBinding
+                ),
+            status: inherentYohuaBinding.bindingStatus,
+            required: inherentYohuaBinding.requiredChoiceIds,
+            callerOwnsDerivedVoice: [
+                Object.prototype.hasOwnProperty.call(
+                    inherentYohuaBinding.callerSelections,
+                    "requestedVoice"
+                ),
+                Object.prototype.hasOwnProperty.call(
+                    inherentYohuaBinding.callerSelections,
+                    "nonactiveOptionId"
+                ),
+            ],
+            effectiveDerivedVoice: [
+                inherentYohuaBinding.effectiveSelections.requestedVoice,
+                inherentYohuaBinding.effectiveSelections.nonactiveOptionId,
+            ],
+            executionArgs: inherentYohuaBinding.executionArgs.length,
+            result: [
+                inherentYohuaResult?.authorizationStatus,
+                inherentYohuaResult?.resultFrame?.selectedVoiceOperation,
+            ],
+        },
+        {
+            valid: true,
+            status: "ready",
+            required: [],
+            callerOwnsDerivedVoice: [false, false],
+            effectiveDerivedVoice: [
+                "impersonal",
+                "inherent-impersonal",
+            ],
+            executionArgs: 2,
+            result: ["authorized", "inherent-impersonal"],
+        }
+    );
+
+    const tlaCaquiSourceApplication = issueTlaCaquiSource(ctx);
+    const exactTlaCaquiSource =
+        tlaCaquiSourceApplication.resultFrame.selectedMachineryFrame;
+    const imperfectImpersonalChoices =
+        ctx.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            exactTlaCaquiSource,
+            {
+                requestedDerivation: "direct",
+                requestedVoice: "impersonal",
+                tense: "imperfect",
+            }
+        );
+    const imperfectImpersonalOptionId =
+        imperfectImpersonalChoices.choiceOptionProjection
+            ?.nonactiveOptionId?.find(option => (
+                option.optionId === "ō:cac-ō"
+            ))?.optionId || "";
+    const imperfectImpersonalReady =
+        ctx.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            exactTlaCaquiSource,
+            {
+                requestedDerivation: "direct",
+                requestedVoice: "impersonal",
+                tense: "imperfect",
+                nonactiveOptionId: imperfectImpersonalOptionId,
+            }
+        );
+    const imperfectImpersonalResult =
+        ctx.executeClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            imperfectImpersonalReady
+        );
+
+    s.eq(
+        "an exact active Result can change finite controls while entering the impersonal owner",
+        {
+            choice: [
+                imperfectImpersonalChoices.bindingStatus,
+                imperfectImpersonalChoices.requiredChoiceIds,
+                imperfectImpersonalOptionId,
+            ],
+            ready: [
+                imperfectImpersonalReady.bindingStatus,
+                imperfectImpersonalReady.requiredChoiceIds,
+            ],
+            result: [
+                imperfectImpersonalResult?.authorizationStatus,
+                imperfectImpersonalResult?.resultFrame
+                    ?.finiteSurfaceFrame?.authorizationStatus,
+                imperfectImpersonalResult?.resultFrame
+                    ?.sourceMachineryFrame === exactTlaCaquiSource,
+                imperfectImpersonalResult?.resultFrame
+                    ?.formulaRealization,
+                imperfectImpersonalResult?.resultFrame
+                    ?.surfaceRealization,
+                ctx.isClassicalNahuatlVncApplicationFrame(
+                    imperfectImpersonalResult
+                ),
+            ],
+            soundedMorphemes: imperfectImpersonalResult?.resultFrame
+                ?.finiteSurfaceFrame?.orderedMorphemes
+                ?.filter(morpheme => morpheme.sounded)
+                .map(morpheme => morpheme.surface),
+        },
+        {
+            choice: [
+                "ready",
+                [],
+                "ō:cac-ō",
+            ],
+            ready: ["ready", []],
+            result: [
+                "authorized",
+                "authorized",
+                true,
+                "#0-0+tla(cac-ō)ya+0-0#",
+                "tlacacōya",
+                true,
+            ],
+            soundedMorphemes: ["tla", "cac", "ō", "ya"],
         }
     );
 

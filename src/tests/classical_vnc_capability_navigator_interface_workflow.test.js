@@ -6,6 +6,261 @@ function run(ctx = {}) {
     const s = createSuite(
         "classical_vnc_capability_navigator_interface_workflow"
     );
+    ctx.setActiveDerivationType("direct");
+    ctx.renderClassicalRuleLogicSurfaceBlock({
+        basalUnit: "vnc",
+        stem: "caqui",
+        verbClass: "B",
+        valence: "projective-nonhuman",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        vncVoice: "active",
+        requestedVoice: "active",
+        vncOutputScope: "single",
+        lateOperation: "none",
+    });
+    const exactCommittedTlaCaquiSurface =
+        ctx.getActiveClassicalRuleLogicSurfaceFrame();
+    const exactCommittedTlaCaquiSource =
+        ctx.getClassicalGrammarExactTypedSourceFromSurfaceFrame(
+            exactCommittedTlaCaquiSurface
+        );
+    ctx.syncClassicalCapabilityNavigator(exactCommittedTlaCaquiSurface);
+    ctx.renderClassicalRuleLogicSurfaceBlock({
+        basalUnit: "vnc",
+        stem: "caqui",
+        verbClass: "B",
+        valence: "projective-nonhuman",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "imperfect",
+        requestedDerivation: "direct",
+        vncVoice: "impersonal",
+        requestedVoice: "impersonal",
+        nonactiveOptionId: "ō:cac-ō",
+        vncOutputScope: "single",
+        lateOperation: "none",
+    });
+    const exactTlaCaquiSurface =
+        ctx.getActiveClassicalRuleLogicSurfaceFrame();
+    const exactTlaCaquiPreviewSource =
+        ctx.getClassicalGrammarExactTypedSourceFromSurfaceFrame(
+            exactTlaCaquiSurface
+        );
+    const exactTlaCaquiNavigator =
+        ctx.syncClassicalCapabilityNavigator(exactTlaCaquiSurface);
+    const exactTlaCaquiSource = exactTlaCaquiNavigator.exactSource;
+    const exactTlaCaquiSelections = Object.freeze({
+        subject: "1sg",
+        mood: "indicative",
+        tense: "imperfect",
+        requestedDerivation: "direct",
+        requestedVoice: "impersonal",
+        derivationOptionId: "",
+        nonactiveOptionId: "ō:cac-ō",
+    });
+    const exactTlaCaquiBinding =
+        ctx.stageClassicalGrammarTypedSourceOperationBinding(
+            "vnc:application",
+            exactTlaCaquiSelections
+        );
+    const exactTlaCaquiOwnerBinding =
+        ctx.issueClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+            exactTlaCaquiSource,
+            exactTlaCaquiSelections
+        );
+    const exactTlaCaquiAggregateBinding =
+        ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+            exactTlaCaquiNavigator,
+            "vnc:application",
+            exactTlaCaquiSelections
+        );
+    const exactTlaCaquiOperation = exactTlaCaquiNavigator.operations.find(
+        operation => operation.operationId === "vnc:application"
+    );
+    s.eq(
+        "the exact tla-caqui impersonal imperfect surface stages its visible Source choices",
+        {
+            formula: exactTlaCaquiSurface?.state?.vncApplicationFrame
+                ?.resultFrame?.formulaRealization,
+            source: Boolean(exactTlaCaquiSource),
+            sourceIdentity: [
+                exactTlaCaquiSource === exactCommittedTlaCaquiSource,
+                exactTlaCaquiPreviewSource
+                    !== exactCommittedTlaCaquiSource,
+            ],
+            navigator: exactTlaCaquiNavigator?.inputRole,
+            operation: [
+                exactTlaCaquiOperation?.availabilityStatus,
+                exactTlaCaquiOperation?.ownerPreflightFrameValidated,
+                exactTlaCaquiOperation?.exactSource
+                    === exactTlaCaquiSource,
+            ],
+            selections: exactTlaCaquiSelections,
+            owner: [
+                Boolean(exactTlaCaquiOwnerBinding),
+                ctx.isClassicalNahuatlVncTypedSourceApplicationBindingFrame(
+                    exactTlaCaquiOwnerBinding
+                ),
+                exactTlaCaquiOwnerBinding?.bindingStatus,
+                exactTlaCaquiOwnerBinding?.blockReason,
+            ],
+            aggregate: [
+                Boolean(exactTlaCaquiAggregateBinding),
+                ctx.isClassicalGrammarTypedSourceOperationBindingFrame(
+                    exactTlaCaquiAggregateBinding
+                ),
+                exactTlaCaquiAggregateBinding?.bindingStatus,
+                exactTlaCaquiAggregateBinding?.blockReason,
+            ],
+            binding: Boolean(exactTlaCaquiBinding),
+            status: exactTlaCaquiBinding?.bindingStatus,
+            reason: exactTlaCaquiBinding?.blockReason,
+        },
+        {
+            formula: "#0-0+tla(cac-ō)ya+0-0#",
+            source: true,
+            sourceIdentity: [true, true],
+            navigator: "exact-owner-issued-source",
+            operation: ["available", true, true],
+            selections: {
+                subject: "1sg",
+                mood: "indicative",
+                tense: "imperfect",
+                requestedDerivation: "direct",
+                requestedVoice: "impersonal",
+                derivationOptionId: "",
+                nonactiveOptionId: "ō:cac-ō",
+            },
+            owner: [true, true, "ready", ""],
+            aggregate: [true, true, "ready", ""],
+            binding: true,
+            status: "ready",
+            reason: "",
+        }
+    );
+    const exactTlaCaquiSelect = ctx.document.getElementById(
+        "classical-capability-navigator-operation"
+    );
+    ctx.document.getElementById(
+        "classical-rule-logic-vnc-voice"
+    ).value = "impersonal";
+    ctx.document.getElementById(
+        "classical-rule-logic-tense"
+    ).value = "imperfect";
+    ctx.document.getElementById(
+        "classical-rule-logic-nonactive-family"
+    ).value = "ō:cac-ō";
+    exactTlaCaquiSelect.value = "vnc:application";
+    const exactTlaCaquiApplied =
+        ctx.applyClassicalCapabilityNavigatorSelection(
+            exactTlaCaquiSelect
+        );
+    const exactTlaCaquiApplicationResult =
+        ctx.getActiveClassicalCapabilityApplicationResult();
+    const exactTlaCaquiAppliedSurface =
+        ctx.getActiveClassicalRuleLogicSurfaceFrame();
+    const exactTlaCaquiCanonical =
+        exactTlaCaquiApplicationResult?.canonicalResult || null;
+    const exactTlaCaquiResultFrame =
+        exactTlaCaquiCanonical?.resultFrame || null;
+    const exactTlaCaquiOwnerProjection =
+        ctx.getClassicalSgrOwnerIssuedProjection(
+            exactTlaCaquiAppliedSurface
+        );
+    const exactTlaCaquiNextSource =
+        exactTlaCaquiResultFrame?.selectedMachineryFrame || null;
+    const exactTlaCaquiInputSource =
+        exactTlaCaquiResultFrame?.sourceMachineryFrame || null;
+    const exactTlaCaquiNextSourceProjection =
+        ctx.getClassicalNahuatlVncContinuationSourceConstituents(
+            exactTlaCaquiResultFrame
+        );
+    const exactTlaCaquiNextNavigator =
+        ctx.getClassicalGrammarApplicationCapabilityNavigator(
+            exactTlaCaquiNextSource
+        );
+    const exactTlaCaquiCapture =
+        ctx.captureClassicalGrammarApplicationResult(
+            exactTlaCaquiCanonical,
+            "universal-capability-navigator-source"
+        );
+    const exactTlaCaquiResultNavigator =
+        ctx.getClassicalGrammarApplicationCapabilityNavigator(
+            exactTlaCaquiCanonical
+        );
+    const exactTlaCaquiContinued =
+        ctx.continueClassicalCapabilityApplicationResultAsTypedSource(
+            exactTlaCaquiAppliedSurface
+        );
+    const exactTlaCaquiContinuedNavigator =
+        ctx.getClassicalCapabilityNavigatorFrame(null);
+    s.eq(
+        "the exact tla-caqui Result remains review-only until Continue and then enters Result pathways",
+        {
+            applied: exactTlaCaquiApplied,
+            result: [
+                exactTlaCaquiApplicationResult?.authorizationStatus,
+                exactTlaCaquiApplicationResult?.canonicalResult?.resultFrame
+                    ?.formulaRealization,
+            ],
+            acceptance: [
+                exactTlaCaquiAppliedSurface?.authorizationStatus
+                    === "authorized",
+                exactTlaCaquiOwnerProjection?.applicationResult
+                    === exactTlaCaquiApplicationResult,
+                exactTlaCaquiOwnerProjection?.canonicalResult
+                    === exactTlaCaquiCanonical,
+                ctx.isClassicalNahuatlVncApplicationFrame(
+                    exactTlaCaquiCanonical
+                ),
+                ctx.isClassicalNahuatlVncDerivationSourceMachineryFrame(
+                    exactTlaCaquiInputSource
+                ),
+                ctx.isClassicalNahuatlVncDerivationSourceMachineryFrame(
+                    exactTlaCaquiNextSource
+                ),
+                Boolean(exactTlaCaquiNextSourceProjection),
+                exactTlaCaquiNextNavigator?.inputRole
+                    === "exact-owner-issued-source",
+                exactTlaCaquiNextNavigator?.exactSource
+                    === exactTlaCaquiNextSource,
+                ctx.isClassicalGrammarApplicationResultCapture(
+                    exactTlaCaquiCapture,
+                    "universal-capability-navigator-source"
+                ),
+                exactTlaCaquiResultNavigator?.inputRole
+                    === "exact-owner-issued-result",
+                exactTlaCaquiResultNavigator?.exactResult
+                    === exactTlaCaquiCanonical,
+            ],
+            continued: exactTlaCaquiContinued,
+            navigator: [
+                exactTlaCaquiContinuedNavigator?.inputRole,
+                exactTlaCaquiContinuedNavigator?.exactResult
+                    === exactTlaCaquiApplicationResult?.canonicalResult,
+            ],
+        },
+        {
+            applied: true,
+            result: [
+                "authorized",
+                "#0-0+tla(cac-ō)ya+0-0#",
+            ],
+            acceptance: [
+                true, true, true, true, true,
+                false, false, false, false,
+                true, true, true,
+            ],
+            continued: true,
+            navigator: ["exact-owner-issued-result", true],
+        }
+    );
+    ctx.clearClassicalGrammarResultSourceContinuation(
+        "exact-tla-caqui-test-complete"
+    );
     const construction = ctx.document.getElementById(
         "classical-construction-operation"
     );
@@ -24,6 +279,15 @@ function run(ctx = {}) {
         vncOutputScope: "single",
         lateOperation: "none",
     });
+    ctx.document.getElementById(
+        "classical-rule-logic-vnc-voice"
+    ).value = "active";
+    ctx.document.getElementById(
+        "classical-rule-logic-tense"
+    ).value = "present";
+    ctx.document.getElementById(
+        "classical-rule-logic-nonactive-family"
+    ).value = "";
     const beforeSurface = ctx.getActiveClassicalRuleLogicSurfaceFrame();
     const exactSource = ctx
         .getClassicalGrammarExactTypedSourceFromSurfaceFrame(beforeSurface);

@@ -70,6 +70,18 @@ function readPlayState(documentObject) {
   const keyboard = documentObject.getElementById?.(
     "classical-transcription-keyboard"
   );
+  const binding = documentObject.getElementById?.(
+    "classical-capability-navigator-binding"
+  );
+  const operationChoices = documentObject.getElementById?.(
+    "classical-capability-operation-choices"
+  );
+  const historyNode = documentObject.getElementById?.(
+    "classical-grammar-workspace-history-node"
+  );
+  const captureReadout = documentObject.querySelector?.(
+    "[data-classical-clause-relation-captures]"
+  );
   return freezeRecord({
     sourceDraft,
     committedSource,
@@ -89,9 +101,12 @@ function readPlayState(documentObject) {
       || "waiting",
     blockReason: result?.dataset?.classicalBlockReason || "",
     resultStatus: result?.dataset?.classicalResultStatus || "waiting",
+    appliedOperation:
+      result?.dataset?.classicalCapabilityAppliedOperation || "",
     resultText: String(
       result?.querySelector?.(
-        ".classical-rule-surface__single-vnc-answer, "
+        "[data-classical-result-primary-answer='true'], "
+          + ".classical-rule-surface__single-vnc-answer, "
           + ".classical-rule-surface__single-nnc-answer, "
           + ".classical-rule-surface__answer"
       )?.textContent || ""
@@ -99,6 +114,14 @@ function readPlayState(documentObject) {
     continuationStatus:
       continuation?.dataset?.classicalResultContinuationStatus || "waiting",
     historyOpen: history?.open === true,
+    historySelection: String(historyNode?.value || ""),
+    historyOptionCount: Number(historyNode?.options?.length || 0),
+    bindingSelection: String(binding?.value || ""),
+    requiredChoices: String(
+      operationChoices?.dataset?.classicalCapabilityChoiceCount || "0"
+    ),
+    captureState: String(captureReadout?.textContent || "")
+      .trim().replace(/\s+/gu, " ").slice(0, 500),
     keyboardOpen: keyboard?.open === true,
   });
 }
@@ -113,9 +136,15 @@ function playStateKey(state) {
     state.ownerAnswer,
     state.blockReason,
     state.resultStatus,
+    state.appliedOperation,
     state.resultText,
     state.continuationStatus,
     state.historyOpen,
+    state.historySelection,
+    state.historyOptionCount,
+    state.bindingSelection,
+    state.requiredChoices,
+    state.captureState,
     state.keyboardOpen,
   ]);
 }

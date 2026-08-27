@@ -228,8 +228,12 @@ function run() {
             && ledgerModule.includes("sourcePathStep: sectionRecord.sourcePathStep")
     );
     suite.ok(
-        "the ledger updates itself for DOM, route, and user-control changes",
-        ledgerModule.includes("new MutationObserverConstructor(schedule)")
+        "the ledger observes continuously only for the manufacturer and remains explicitly refreshable for audits",
+        ledgerModule.includes('get("manufacturer") === "1"')
+            && ledgerModule.includes("continuouslyObserve")
+            && ledgerModule.includes("globalObject.refreshClassicalNestedControlLedger = publish")
+            && ledgerModule.includes("globalObject.getClassicalNestedControlLedger")
+            && ledgerModule.includes("new MutationObserverConstructor(schedule)")
             && ["change", "click", "input"].every(eventName => (
                 ledgerModule.includes(`\"${eventName}\"`)
             ))
@@ -238,6 +242,12 @@ function run() {
             && ledgerModule.includes('"classical-nested-control-ledger"')
             && ledgerModule.includes('projection.type = "application/json"')
             && ledgerModule.includes("classical:nested-control-ledger-updated")
+    );
+    suite.ok(
+        "normal play does not pay the continuous manufacturer-observer cost",
+        ledgerModule.includes("&& continuouslyObserve")
+            && ledgerModule.includes("get continuouslyObserve() { return continuouslyObserve; }")
+            && ledgerModule.includes("if (continuouslyObserve) {")
     );
     suite.ok(
         "the descriptive ledger cannot authorize grammar or UI",

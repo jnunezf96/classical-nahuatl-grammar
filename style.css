@@ -1838,6 +1838,21 @@ body.is-language-classical .calc-operator--source-authority-mirror {
   cursor: not-allowed;
 }
 
+.classical-rule-control__derived-value {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  min-height: 30px;
+  padding: 6px 9px;
+  border: 1px solid rgba(29, 26, 21, 0.14);
+  border-radius: 6px;
+  background: rgba(229, 241, 238, 0.72);
+  color: var(--ink);
+  font: inherit;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
 .classical-rule-control__selection-summary-button {
   display: flex;
   align-items: center;
@@ -15825,7 +15840,10 @@ body.is-language-classical #classical-rule-logic-controls[data-classical-rule-lo
 }
 body[data-classical-relational-nnc-mode="true"] #classical-construction-source-controls,
 body[data-classical-relational-nnc-mode="true"] #classical-authority-panel .calc-operator--derivation,
-body[data-classical-relational-nnc-mode="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority) {
+body[data-classical-relational-nnc-mode="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority),
+body[data-classical-relational-result-binding="true"] #classical-construction-source-controls,
+body[data-classical-relational-result-binding="true"] #classical-authority-panel .calc-operator--derivation,
+body[data-classical-relational-result-binding="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority) {
   display: none !important;
 }
 
@@ -20006,5 +20024,24 @@ body.is-language-classical #classical-workbench :is(
     line-height: 1.25;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  body.is-language-classical #classical-workbench
+    .classical-rule-control__derived-value {
+    min-height: 48px;
+    padding: 10px 12px;
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  body.is-language-classical :is(
+    .hero-controls button:not(:disabled),
+    #classical-workbench button:not(:disabled),
+    #classical-workbench input:not(:disabled):not([type="hidden"]),
+    #classical-workbench summary,
+    #classical-workbench [role="button"]:not([aria-disabled="true"])
+  ) {
+    min-height: 44px !important;
+    min-block-size: 44px !important;
   }
 }

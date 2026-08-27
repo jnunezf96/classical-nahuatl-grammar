@@ -1,7 +1,7 @@
 import {
   buildClassicalGrammaticalRhymeLessonDiscoveryFrame,
   buildClassicalGrammaticalRhymeLessonPlaneFrame,
-} from "./grammatical_rhyme_space.mjs?v=20260825-class-d-336";
+} from "./grammatical_rhyme_space.mjs?v=20260826-relational-role-340";
 
 // This is the machine-readable form of the accepted two-pin map. It is a
 // diagnostic compression map, never a grammar or curriculum authority.

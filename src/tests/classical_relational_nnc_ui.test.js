@@ -112,6 +112,119 @@ function run(ctx = {}) {
             && css.includes(".classical-relational-nnc-authority {\n  grid-template-columns: minmax(0, 1fr);")
     );
 
+    s.ok(
+        "derived relational Sources never invent a VNC class and retain their visible Source parts",
+        composer.includes(
+            'getElementById?.("classical-rule-logic-class")?.value\n        || ""'
+        )
+            && !composer.includes(
+                'getElementById?.("classical-rule-logic-class")?.value\n        || "B"'
+            )
+            && composer.includes("sourceMode,\n              sourceEmbedStem,")
+            && composer.includes(
+                "sourceAdmission?.sourceMatrixStem || sourceMatrixStem"
+            )
+            && composer.includes(
+                "...(ownerIssuedDerivedSource\n            ? { upstreamResult: ownerIssuedDerivedSource }"
+            )
+    );
+
+    s.ok(
+        "an exact continued VNC Result supplies the visible relational embed while n remains the matrix",
+        rendering.includes(
+            "function getClassicalRelationalExactResultEmbedStem("
+        )
+            && rendering.includes(
+                '!["subject", "number"].includes('
+            )
+            && rendering.includes('.join("-");')
+            && rendering.includes(
+                'embed.dataset.classicalCapabilityExactResultEmbed = "true";'
+            )
+            && rendering.includes(
+                "sourceEmbedStem,\n          sourceMatrixStem,\n          upstreamResult: exactBinding.exactResult"
+            )
+    );
+
+    const imperfectImpersonal = ctx.evaluateClassicalNahuatlVncApplication({
+        sourceStem: "cochi",
+        verbClass: "B",
+        sourceValence: "intransitive",
+        subject: "3sg",
+        mood: "indicative",
+        tense: "imperfect",
+        requestedDerivation: "direct",
+        requestedVoice: "impersonal",
+        nonactiveOptionId: "inherent-impersonal",
+    });
+    const unresolvedRelationalBinding =
+        ctx.issueClassicalNahuatlFormationResultBindingFrame(
+            "nnc:relational",
+            imperfectImpersonal
+        );
+    const resolvedRelationalBinding =
+        ctx.issueClassicalNahuatlFormationResultBindingFrame(
+            "nnc:relational",
+            imperfectImpersonal,
+            {
+                state: "absolutive",
+                relationalSubject: "3common",
+                subjectMode: "adverbialized",
+            }
+        );
+    s.eq(
+        "an exact VNC Result reveals only its genuine relational choices and remains the identical owner input",
+        {
+            owner: [
+                unresolvedRelationalBinding.authorizationStatus,
+                unresolvedRelationalBinding.exactResult
+                    === imperfectImpersonal,
+                unresolvedRelationalBinding.bindingIds,
+                unresolvedRelationalBinding.requiredChoiceIds,
+                resolvedRelationalBinding.requiredChoiceIds,
+                resolvedRelationalBinding.exactResult
+                    === imperfectImpersonal,
+            ],
+            interface: [
+                rendering.includes(
+                    "function syncClassicalRelationalResultBindingChoiceVisibility("
+                ),
+                rendering.includes(
+                    'body.dataset.classicalRelationalResultBinding = "true";'
+                ),
+                rendering.includes(
+                    'state: Object.freeze([\n          "classical-relational-nnc-state",'
+                ),
+                rendering.includes(
+                    'subject: Object.freeze([\n          "classical-relational-nnc-subject-mode",\n          "classical-relational-nnc-subject",'
+                ),
+                rendering.includes(
+                    'if (binding.operationId !== "nnc:relational") {'
+                ),
+                rendering.includes(
+                    "stageClassicalRelationalResultBindingChoicePrompts(current);"
+                ),
+                rendering.includes(
+                    "syncClassicalRelationalResultBindingChoiceVisibility(null);"
+                ),
+                css.includes(
+                    'body[data-classical-relational-result-binding="true"] #classical-rule-logic-controls .classical-rule-controls-grid > :not(#classical-relational-nnc-authority)'
+                ),
+            ],
+        },
+        {
+            owner: [
+                "authorized",
+                true,
+                ["relational-source:imperfect-impersonal:n-locative"],
+                ["state", "subject"],
+                [],
+                true,
+            ],
+            interface: [true, true, true, true, true, true, true, true],
+        }
+    );
+
     s.eq(
         "Static relational Grammar options expose semantic values without documentary authority metadata",
         {
@@ -124,19 +237,25 @@ function run(ctx = {}) {
         {
             tagCount: 0,
             exactWitnessCount: 0,
-            semanticOptionCount: 39,
+            semanticOptionCount: 41,
             runtimeTagApiAbsent: true,
         }
     );
 
     s.ok(
-        "Stem families join the shared Nounstem selector from the canonical inventory",
+        "Stem families join the shared Nounstem selector and use owner-issued Source-type admission",
         composer.includes("targetObject.getClassicalNahuatlRelationalStemInventory()")
             && composer.includes('option.value = `relational:${entry.stemId}`')
             && composer.includes("option.dataset.classicalNncSourceStem = entry.classicalMatrix")
             && composer.includes("entry.allowedOptions.join(\" \")")
             && composer.includes("const sourceKind = option === \"option-one\"")
-            && composer.includes("CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_BY_STEM[stemId]")
+            && shell.includes('id="classical-relational-nnc-source-kind-field" hidden')
+            && shell.includes('id="classical-relational-nnc-source-kind" data-classical-relational-nnc-control="source-kind"')
+            && composer.includes("issueClassicalRelationalNncUiSourceAdmission({")
+            && composer.includes(".issueClassicalNahuatlRelationalSourceAdmissionFrame({")
+            && composer.includes("targetObject.isClassicalNahuatlRelationalSourceAdmissionFrame(frame)")
+            && composer.includes("frame.allowedSourceKinds.forEach(sourceKind => {")
+            && !composer.includes("CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_BY_STEM")
             && !shell.includes('<option value="relational:tlan-bottom"')
     );
 
@@ -172,6 +291,11 @@ function run(ctx = {}) {
                     status: result.authorizationStatus,
                     formula: result.formula,
                     surface: result.surface,
+                    sentenceSurface: result.sentenceSurface,
+                    sentenceFormula: result.sentenceFormulaDisplay,
+                    diagramRoles: result.diagrammaticProjection?.rows.map(
+                        row => row.role
+                    ),
                     predicate: result.predicateStem,
                     oneNncPredicate: result.predicateStemFrame?.oneNncPredicate,
                     route: result.outputKind,
@@ -184,6 +308,9 @@ function run(ctx = {}) {
             status: "authorized",
             formula: "#Ø-Ø(cal-lan)Ø-Ø#",
             surface: "callan",
+            sentenceSurface: "Callan.",
+            sentenceFormula: "#Ø-Ø(cal-lan)Ø-Ø#.",
+            diagramRoles: ["Subject", "Predicate", "embed", "matrix"],
             predicate: "callan",
             oneNncPredicate: true,
             route: "relational-nnc",
@@ -261,14 +388,24 @@ function run(ctx = {}) {
         rendering.includes("targetObject.requestClassicalRelationalNncResult(request)")
             && rendering.includes("const canonical = result;")
             && !rendering.includes("executeRelationalNncGenerationRoute")
-            && rendering.includes('surface.textContent = authorized ? canonical.surface : "Unavailable";')
+            && rendering.includes("const displaySurface = authorized")
+            && rendering.includes("surface.textContent = displaySurface;")
             && rendering.includes("formula.textContent = canonical.formula;")
             && rendering.includes('answer.className = "classical-rule-surface__single-nnc";')
             && rendering.includes('linear.className = "classical-rule-surface__format-section classical-rule-surface__linear";')
             && rendering.includes('diagram.className = "classical-rule-surface__format-section classical-rule-surface__diagram";')
-            && rendering.includes('[internalAnalysis.embed, "embed"]')
-            && rendering.includes('[internalAnalysis.matrix || "—", "matrix"]')
-            && rendering.includes('[canonical.writtenPredicateStem || canonical.predicateStem || "—", "written nounstem"]')
+            && rendering.includes("canonical.diagrammaticProjection || null")
+            && rendering.includes("relationalDiagrammaticProjection?.rows")
+            && rendering.includes('canonical.sentenceFormulaDisplay || ""')
+            && shell.includes('id="classical-relational-nnc-derived-state-field"')
+            && shell.includes('id="classical-relational-nnc-derived-subject-field"')
+            && rendering.includes('"classical-relational-nnc-derived-state-field"')
+            && rendering.includes('"classical-relational-nnc-derived-subject-field"')
+            && composer.includes('derivedStateField: byId("classical-relational-nnc-derived-state-field")')
+            && composer.includes("elements.derivedStateField.hidden = !fixedState")
+            && composer.includes('derivedSubjectField: byId("classical-relational-nnc-derived-subject-field")')
+            && composer.includes("elements.derivedSubjectField.hidden = !subjectIsDerived")
+            && css.includes(".classical-rule-control__derived-value")
             && !rendering.includes('[request.relationalSourceStem || request.embeddedStem || "—", "source"]')
             && !rendering.includes('[request.stemId || "—", "relational matrix"]')
             && !rendering.includes('join(" → "), "boundary realization"')

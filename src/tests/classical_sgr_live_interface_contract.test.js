@@ -68,6 +68,35 @@ function run(ctx = {}) {
             && rendering.includes("sourceCommitRow")
     );
     suite.ok(
+        "switching VNC and NNC stages a new Source interpretation without replacing the current Result",
+        composer.includes("options.deferSourceCommit === true")
+            && composer.includes(
+                "options.syncSurface !== false && !sourceUnitChanged"
+            )
+            && composer.includes("{ deferSourceCommit: true }")
+            && composer.includes("setClassicalSourcePartsPendingState(true)")
+            && composer.includes(
+                '"classical-source-commit-state-change"'
+            )
+            && shell.includes(
+                '"classical-source-commit-state-change",'
+            )
+    );
+    suite.ok(
+        "an explicit changed Source commit retires the prior exact Result and applied-operation account",
+        composer.includes(
+            'clearClassicalGrammarResultSourceContinuation?.(\n          "typed-source-committed"'
+        )
+            && composer.includes(
+                "targetObject.clearClassicalRuleLogicSurfaceBlock?.();"
+            )
+            && composer.indexOf(
+                'clearClassicalGrammarResultSourceContinuation?.(\n          "typed-source-committed"'
+            ) < composer.indexOf(
+                "ClassicalSourcePartsCommittedSignature = signature;"
+            )
+    );
+    suite.ok(
         "Clear sits beside Apply source and returns the committed Source path to waiting",
         shell.includes('id="verb-entry-clear"')
             && shell.includes('class="classical-source-parts__clear-button"')

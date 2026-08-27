@@ -735,9 +735,6 @@ function resolveClassicalNahuatlAdverbialExactSource(
     ...(record.requiredPrecedingParticles.length > 1
       ? ["preceding-particle"]
       : []),
-    ...(record.allowedNegativeParticles.length
-      ? ["negative-particle", "negation-scope"]
-      : []),
     ...(record.stressPartners.length ? ["stress-partner"] : []),
     ...(record.variants.length ? ["surface-variant"] : []),
     ...(record.id === "44.5-quen" ? ["sentence-position"] : []),

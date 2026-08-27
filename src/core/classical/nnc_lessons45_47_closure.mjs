@@ -268,6 +268,37 @@ export const CLASSICAL_NAHUATL_LESSONS45_47_RELATIONAL_STEMS = freeze([
   },
 ]);
 
+const CLASSICAL_NAHUATL_RELATIONAL_LEXICAL_SOURCE_ANALYSES = freeze({
+  "tlah-abundance-place:xoch": {
+    sourceKind: "varietal-nounstem",
+  },
+  "co-c-specific-location:cal": {
+    sourceKind: "nounstem",
+  },
+  "co-c-specific-location:tecoma": {
+    sourceKind: "nounstem",
+  },
+  "co-c-specific-location:tle": {
+    sourceKind: "nounstem",
+    sourceLexemeId: "tle-fire",
+  },
+  "co-c-specific-location:mōztlayō": {
+    sourceKind: "temporal-yo-stem",
+  },
+  "co-c-specific-location:mā": {
+    sourceKind: "body-part-stem",
+  },
+  "pa-direction:nē": {
+    sourceKind: "particle",
+  },
+  "pa-frequency:miec": {
+    sourceKind: "quantitive",
+  },
+  "chi-direction-toward:ātēn": {
+    sourceKind: "rare-nounstem",
+  },
+});
+
 const AXES = [
   "relational-nounstem-not-preposition",
   "translation-preposition-has-no-source-slot",
@@ -1130,12 +1161,16 @@ function resolveOwnerIssuedDerivedSourceCarrier(
       || upstreamResult.normalizedRequest?.semanticTense
       || "",
     );
+    const selectedVoiceMatchesFormation = Boolean(
+      formationLicense?.voiceOperations.includes(selectedVoiceOperation)
+      || (
+        normalized.formationId === "present-yohua"
+        && formationLicense?.voiceOperations.includes(selectedSourceVoice)
+      )
+    );
     if (
       !formationLicense
-      || !formationLicense.voiceOperations.some((voiceOperation) => (
-        voiceOperation === selectedVoiceOperation
-        || voiceOperation === selectedSourceVoice
-      ))
+      || !selectedVoiceMatchesFormation
       || selectedTense !== formationLicense.tense
     ) {
       return {
@@ -1144,16 +1179,45 @@ function resolveOwnerIssuedDerivedSourceCarrier(
         normalized,
       };
     }
-    const typedPredicateSlot =
-      vncResult?.finalTypedVncSlotFrame?.slots?.predicate || null;
+    const finitePredicateCarriers = Array.isArray(
+      vncResult?.finiteSurfaceFrame?.orderedMorphemes,
+    )
+      ? vncResult.finiteSurfaceFrame.orderedMorphemes
+        .filter(morpheme => [
+          "pre-predicate",
+          "predicate",
+          "tense",
+        ].includes(normalizeToken(morpheme?.slotRole)))
+        .map(morpheme => normalizeStemText(
+          morpheme?.formulaCarrier || morpheme?.sourceCarrier,
+        ))
+        .filter(carrier => (
+          carrier
+          && !/^(?:0|Ø)(?:-(?:0|Ø))*$/u.test(carrier)
+        ))
+      : [];
+    const typedSlots = vncResult?.finalTypedVncSlotFrame?.slots || null;
+    const typedPredicateSlot = typedSlots?.predicate || null;
+    const typedPrePredicateCarriers = Array.isArray(typedSlots?.prePredicate)
+      ? typedSlots.prePredicate
+        .map(slot => normalizeStemText(slot?.carrier))
+        .filter(carrier => (
+          carrier
+          && !/^(?:0|Ø)(?:-(?:0|Ø))*$/u.test(carrier)
+        ))
+      : [];
     const typedPredicateStem = normalizeStemText(typedPredicateSlot?.stem);
     const typedTenseCarrier = normalizeStemText(typedPredicateSlot?.tns);
-    sourceStem = [
-      typedPredicateStem,
-      typedTenseCarrier && typedTenseCarrier !== "0"
-        ? typedTenseCarrier
-        : "",
-    ].filter(Boolean).join("-");
+    sourceStem = (finitePredicateCarriers.length
+      ? finitePredicateCarriers
+      : [
+        ...typedPrePredicateCarriers,
+        typedPredicateStem,
+        typedTenseCarrier && typedTenseCarrier !== "0"
+          ? typedTenseCarrier
+          : "",
+      ].filter(Boolean)
+    ).join("-");
     if (
       !sourceStem
       || (
@@ -1329,6 +1393,17 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
     }
     if (option !== OPTION.ONE && normalized.sourceKind === "possessor") {
       return { diagnostics: ["relational-compound-option-requires-embedded-source"], normalized, stem };
+    }
+    if (
+      option !== OPTION.ONE
+      && !upstreamSourceCarrier
+      && !normalized.sourceKindSupplied
+    ) {
+      return {
+        diagnostics: ["relational-source-kind-selection-required"],
+        normalized,
+        stem,
+      };
     }
     if (!stem.allowedSourceKinds.includes(normalized.sourceKind)) {
       return { diagnostics: ["relational-source-kind-not-licensed"], normalized, stem };
@@ -1624,6 +1699,298 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
   const issuedRelationalResults = new WeakSet();
   const issuedUpstreamSourceCarriers = new WeakSet();
   const issuedPreparedPlans = new WeakSet();
+  const issuedSourceAdmissionFrames = new WeakSet();
+
+  function buildClassicalNahuatlRelationalNncPresentation(
+    sourceFrame,
+    operationFrame,
+  ) {
+    const requiredCapabilities = [
+      "buildClassicalNahuatlNncSlotFrame",
+      "isClassicalNahuatlNncSlotFrame",
+      "buildClassicalNahuatlNncSentenceSurfaceFrame",
+      "isClassicalNahuatlIssuedNncSentenceSurfaceFrame",
+      "buildClassicalNahuatlNncDiagrammaticFrame",
+      "isClassicalNahuatlNncDiagrammaticFrame",
+    ];
+    if (requiredCapabilities.some(
+      capability => typeof targetObject?.[capability] !== "function",
+    )) {
+      return null;
+    }
+    const formulaAndSurface = operationFrame?.formulaAndSurface || null;
+    const formulaSlots = formulaAndSurface?.formulaSlots || null;
+    if (!formulaSlots?.predicate) return null;
+    const possessive = sourceFrame.state === STATE.POSSESSIVE;
+    const stateOperationId = possessive
+      ? "nnc-possessive-state"
+      : "nnc-absolutive-state";
+    const stateFrame = {
+      authorizationStatus: "authorized",
+      arity: possessive ? "dyadic" : "vacant",
+      slots: possessive
+        ? [
+          {
+            id: "state-person",
+            role: "st1",
+            carrier: formulaSlots.possessor || "Ø",
+          },
+          {
+            id: "state-number-case",
+            role: "st2",
+            carrier: "Ø",
+          },
+        ]
+        : [],
+    };
+    const personFrame = {
+      authorizationStatus: "authorized",
+      subject: sourceFrame.subjectId,
+      pers1: formulaSlots.subject || "Ø",
+      pers2: "Ø",
+    };
+    const numberFrame = {
+      authorizationStatus: "authorized",
+      subject: sourceFrame.subjectId,
+      subjectNumber: sourceFrame.subjectId.endsWith("pl")
+        ? "plural"
+        : sourceFrame.subjectId === "3common"
+          ? "common"
+          : "singular",
+      num1: formulaSlots.nounConnector || "Ø",
+      num2: formulaSlots.numberConnector || "Ø",
+      numberBelongsTo: "subject-personal-pronoun",
+    };
+    const nncSlotFrame = targetObject.buildClassicalNahuatlNncSlotFrame({
+      sourceFrameKind: sourceFrame.kind,
+      sourceAuthorizationStatus: "authorized",
+      stem: formulaSlots.predicate,
+      stateFrame,
+      personFrame,
+      numberFrame,
+      formulaArtifact: formulaAndSurface.formula,
+      appliedOperationIds: ["nnc-clause-shell", stateOperationId],
+      resultOperationId: stateOperationId,
+      requestedOutputKind: possessive
+        ? "selected-possessive-nnc-formula"
+        : "selected-absolutive-nnc-formula",
+      nncFamily: "relational",
+    });
+    if (!targetObject.isClassicalNahuatlNncSlotFrame(nncSlotFrame)) {
+      return null;
+    }
+    const sentenceFrame =
+      targetObject.buildClassicalNahuatlNncSentenceSurfaceFrame(
+        nncSlotFrame,
+        {
+          sentenceType: "assertion",
+          polarity: "positive",
+          predicateKind: "relational",
+        },
+      );
+    if (!targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+      sentenceFrame,
+    )) {
+      return null;
+    }
+    const standardDiagrammaticFrame =
+      targetObject.buildClassicalNahuatlNncDiagrammaticFrame(nncSlotFrame);
+    if (!targetObject.isClassicalNahuatlNncDiagrammaticFrame(
+      standardDiagrammaticFrame,
+    ) || standardDiagrammaticFrame.authorizationStatus !== "authorized") {
+      return null;
+    }
+    const internalAnalysis =
+      sourceFrame.predicateStemFrame?.internalAnalysis || {};
+    const sourceRows = internalAnalysis.embed
+      ? [
+        {
+          role: "embed",
+          expression: internalAnalysis.embed,
+          hierarchyLevel: 1,
+          sourceAnalysis: true,
+        },
+        {
+          role: "matrix",
+          expression: internalAnalysis.matrix || "—",
+          hierarchyLevel: 1,
+          sourceAnalysis: true,
+        },
+        ...(internalAnalysis.connective
+          ? [{
+            role: "connector",
+            expression: internalAnalysis.connective,
+            hierarchyLevel: 1,
+            sourceAnalysis: true,
+          }]
+          : []),
+      ]
+      : internalAnalysis.sourcePredicate
+        ? [
+          {
+            role: "source nounstem",
+            expression: internalAnalysis.sourcePredicate,
+            hierarchyLevel: 1,
+            sourceAnalysis: true,
+          },
+          {
+            role: "operation",
+            expression:
+              internalAnalysis.derivation || sourceFrame.constructionKind,
+            hierarchyLevel: 1,
+            sourceAnalysis: true,
+          },
+        ]
+        : [{
+          role: "stem",
+          expression:
+            internalAnalysis.matrix
+            || sourceFrame.predicateStemFrame?.sourceMatrixStem
+            || "—",
+          hierarchyLevel: 1,
+          sourceAnalysis: true,
+        }];
+    const diagrammaticProjection = freeze({
+      kind: "classical-nahuatl-relational-nnc-diagrammatic-projection",
+      authorizationStatus: "authorized",
+      blockReason: "",
+      projectionAuthority: "typed-relational-nnc-slots",
+      formulaStringAuthority: false,
+      linearFormula: formulaAndSurface.formula,
+      generalLinearFormula:
+        standardDiagrammaticFrame.generalLinearFormula || "",
+      generalRows: (standardDiagrammaticFrame.generalRows || []).map(
+        row => ({ ...row }),
+      ),
+      rows: [
+        ...standardDiagrammaticFrame.rows.map(row => ({ ...row })),
+        ...sourceRows,
+      ],
+      sourceRows,
+      typedSlotFrame: nncSlotFrame,
+      sourceDiagrammaticFrame: standardDiagrammaticFrame,
+    });
+    return freeze({
+      nncSlotFrame,
+      sentenceFrame,
+      standardDiagrammaticFrame,
+      diagrammaticProjection,
+    });
+  }
+
+  function issueClassicalNahuatlRelationalSourceAdmissionFrame(request = {}) {
+    const stemId = normalizeToken(request.stemId);
+    const sourceEmbedStem = normalizeStemText(request.sourceEmbedStem);
+    const requestedSourceKind = normalizeToken(request.requestedSourceKind);
+    const sourceFormation = normalizeToken(
+      request.sourceFormation || "plain-nounstem",
+    );
+    const stem = findStem(stemId);
+    const lexicalAnalysis = stem
+      ? CLASSICAL_NAHUATL_RELATIONAL_LEXICAL_SOURCE_ANALYSES[
+        `${stem.stemId}:${sourceEmbedStem}`
+      ] || null
+      : null;
+    const allowedSourceKinds = stem
+      ? stem.stemId === "n-locative" && sourceFormation === "plain-nounstem"
+        ? ["nounstem"]
+        : [...stem.allowedSourceKinds]
+      : [];
+    const diagnostics = [];
+    if (!stem) diagnostics.push("relational-stem-license-required");
+    if (!sourceEmbedStem && stem?.fixedEmbeddedStem == null) {
+      diagnostics.push("relational-source-embed-required");
+    }
+    if (
+      requestedSourceKind
+      && !allowedSourceKinds.includes(requestedSourceKind)
+    ) {
+      diagnostics.push("relational-source-kind-not-licensed");
+    }
+    if (
+      lexicalAnalysis?.sourceKind
+      && requestedSourceKind
+      && requestedSourceKind !== lexicalAnalysis.sourceKind
+    ) {
+      diagnostics.push(
+        "relational-source-kind-conflicts-with-owner-lexical-analysis",
+      );
+    }
+    const selectedSourceKind = diagnostics.length
+      ? ""
+      : lexicalAnalysis?.sourceKind
+        || requestedSourceKind
+        || (allowedSourceKinds.length === 1 ? allowedSourceKinds[0] : "");
+    const sourceLexemeId = diagnostics.length
+      ? ""
+      : String(lexicalAnalysis?.sourceLexemeId || "");
+    const sourceMatrixStem = stem
+      ? stem.stemId === "co-c-specific-location"
+        ? sourceFrameMatrixForCoC(sourceEmbedStem, sourceLexemeId)
+        : normalizeStemText(stem.classicalMatrix)
+      : "";
+    const frame = freeze({
+      kind: "classical-nahuatl-relational-source-admission-frame",
+      contractKind:
+        "classical-nahuatl-relational-source-admission-frame",
+      version: 1,
+      authorizationStatus: diagnostics.length ? "blocked" : "authorized",
+      diagnostics,
+      stemId: stem?.stemId || "",
+      sourceEmbedStem,
+      sourceFormation,
+      allowedSourceKinds,
+      selectedSourceKind,
+      selectionRequired: Boolean(
+        !diagnostics.length && !selectedSourceKind,
+      ),
+      sourceLexemeId,
+      sourceMatrixStem,
+      lexicalAnalysisApplied: Boolean(lexicalAnalysis),
+      openSourceAdmission: true,
+      canvasExampleMembershipRequired: false,
+      typedSourceAuthority: true,
+      callerSuppliedAuthorityAccepted: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+      lessonMetadataAuthority: false,
+    });
+    issuedSourceAdmissionFrames.add(frame);
+    return frame;
+  }
+
+  function isClassicalNahuatlRelationalSourceAdmissionFrame(frame = null) {
+    return Boolean(
+      frame
+      && issuedSourceAdmissionFrames.has(frame)
+      && frame.kind
+        === "classical-nahuatl-relational-source-admission-frame"
+      && frame.contractKind === frame.kind
+      && frame.version === 1
+      && ["authorized", "blocked"].includes(frame.authorizationStatus)
+      && Array.isArray(frame.diagnostics)
+      && Array.isArray(frame.allowedSourceKinds)
+      && frame.openSourceAdmission === true
+      && frame.canvasExampleMembershipRequired === false
+      && frame.typedSourceAuthority === true
+      && frame.callerSuppliedAuthorityAccepted === false
+      && frame.formulaStringAuthority === false
+      && frame.surfaceStringAuthority === false
+      && frame.lessonMetadataAuthority === false
+      && Object.isFrozen(frame)
+      && Object.isFrozen(frame.diagnostics)
+      && Object.isFrozen(frame.allowedSourceKinds)
+      && (
+        frame.authorizationStatus === "blocked"
+          ? frame.diagnostics.length > 0
+            && !frame.selectedSourceKind
+            && frame.selectionRequired === false
+          : frame.diagnostics.length === 0
+            && frame.allowedSourceKinds.includes(frame.selectedSourceKind)
+              === !frame.selectionRequired
+      )
+    );
+  }
 
   function evaluateClassicalNahuatlRelationalNnc(request = {}) {
     const source = buildSourceFrame(
@@ -1643,6 +2010,10 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     const { formulaAndSurface } = operationFrame;
     const grammarFrame = buildGrammarFrame(sourceFrame, operationFrame);
     issuedGrammarFrames.add(grammarFrame);
+    const presentation = buildClassicalNahuatlRelationalNncPresentation(
+      sourceFrame,
+      operationFrame,
+    );
     const result = freeze({
       kind: "classical-nahuatl-relational-nnc-relational-result",
       contractKind: "classical-nahuatl-relational-nnc-relational-result",
@@ -1679,6 +2050,25 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
       writtenProjection: formulaAndSurface.writtenProjection,
       formulaDerivedFromWritten: false,
       writtenDerivedFromFormula: false,
+      ...(presentation
+        ? {
+          nncSlotFrame: presentation.nncSlotFrame,
+          typedSlotFrame: presentation.nncSlotFrame,
+          sentenceFrame: presentation.sentenceFrame,
+          sentenceSurface: presentation.sentenceFrame.sentenceSurface,
+          sentenceSurfaceDisplay: presentation.sentenceFrame.sentenceSurface,
+          sentenceFormula:
+            presentation.sentenceFrame.sentenceFormulaDisplay,
+          sentenceFormulaDisplay:
+            presentation.sentenceFrame.sentenceFormulaDisplay,
+          sentenceSurfaceAuthority:
+            presentation.sentenceFrame.sentenceSurfaceAuthority,
+          sentencePrefixalStack:
+            presentation.sentenceFrame.sentencePrefixalStack,
+          sentenceParticlesBecomeFormulaSlots: false,
+          diagrammaticProjection: presentation.diagrammaticProjection,
+        }
+        : {}),
       sourceFrame,
       operationFrame,
       grammarFrame,
@@ -1886,6 +2276,8 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     projectClassicalNahuatlPreparedCoordinate,
     projectClassicalNahuatlPreparedCoordinates,
     getClassicalNahuatlRelationalStemInventory,
+    issueClassicalNahuatlRelationalSourceAdmissionFrame,
+    isClassicalNahuatlRelationalSourceAdmissionFrame,
   };
 }
 

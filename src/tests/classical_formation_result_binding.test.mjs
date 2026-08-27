@@ -164,6 +164,32 @@ const imperfectActiveVnc =
     requestedDerivation: "direct",
     requestedVoice: "active",
   });
+const imperfectPassiveVnc =
+  runtimeObject.evaluateClassicalNahuatlVncApplication({
+    sourceStem: "pōhua",
+    verbClass: "A",
+    sourceValence: "specific-projective",
+    objectPerson: "3sg",
+    subject: "3sg",
+    mood: "indicative",
+    tense: "imperfect",
+    requestedDerivation: "direct",
+    requestedVoice: "passive",
+  });
+const imperfectImpersonalVnc =
+  runtimeObject.evaluateClassicalNahuatlVncApplication({
+    sourceStem: "cochi",
+    verbClass: "B",
+    sourceValence: "intransitive",
+    subject: "3sg",
+    mood: "indicative",
+    tense: "imperfect",
+    requestedDerivation: "direct",
+    requestedVoice: "impersonal",
+    nonactiveOptionId: "inherent-impersonal",
+  });
+assert.equal(imperfectPassiveVnc.authorizationStatus, "authorized");
+assert.equal(imperfectImpersonalVnc.authorizationStatus, "authorized");
 
 const cases = [
   [
@@ -199,6 +225,16 @@ const cases = [
     preteritVnc,
     ["relational-source:perfective-active:yan-locative"],
   ],
+  [
+    "nnc:relational",
+    imperfectPassiveVnc,
+    ["relational-source:imperfect-passive:n-locative"],
+  ],
+  [
+    "nnc:relational",
+    imperfectImpersonalVnc,
+    ["relational-source:imperfect-impersonal:n-locative"],
+  ],
 ];
 
 for (const [operationId, exactResult, expectedBindingIds] of cases) {
@@ -222,6 +258,54 @@ for (const [operationId, exactResult, expectedBindingIds] of cases) {
     false,
   );
 }
+
+const resolvedNominalEmbedBinding =
+  bindingApi.issueClassicalNahuatlFormationResultBindingFrame(
+    "grammar:nominal-construction",
+    preteritVnc.resultFrame,
+    {
+      nominalEmbedRelation: "object",
+      nominalEmbedRoute: "object",
+      subject: "3sg",
+      mood: "indicative",
+      tense: "preterit",
+      voice: "active",
+    },
+  );
+assert.deepEqual(
+  resolvedNominalEmbedBinding.bindingChoices[0].requiredChoiceIds,
+  [],
+);
+assert.equal(
+  bindingApi.isClassicalNahuatlFormationResultBindingFrame(
+    resolvedNominalEmbedBinding,
+  ),
+  true,
+);
+
+const resolvedCompoundBinding =
+  bindingApi.issueClassicalNahuatlFormationResultBindingFrame(
+    "grammar:nominal-construction",
+    ordinaryResult,
+    {
+      compoundStructure: "integrated",
+      compoundBracketing: "unambiguous",
+      state: "absolutive",
+      subject: "3sg",
+    },
+  );
+assert.equal(
+  resolvedCompoundBinding.bindingChoices.every(
+    choice => choice.requiredChoiceIds.length === 0,
+  ),
+  true,
+);
+assert.equal(
+  bindingApi.isClassicalNahuatlFormationResultBindingFrame(
+    resolvedCompoundBinding,
+  ),
+  true,
+);
 
 const unresolvedCustomaryBinding =
   bindingApi.issueClassicalNahuatlFormationResultBindingFrame(

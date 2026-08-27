@@ -5,6 +5,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
     const ADVERBIAL_ADJUNCTION_BOUNDARY_VERSION = 2;
     const issuedAdverbialAdjunctionResults = new WeakSet();
     const issuedAdverbialAdjunctionSelectionContracts = new WeakSet();
+    const issuedRelationalNumeralCoCContracts = new WeakSet();
     const ADVERBIAL_ADJUNCTION_APPLICATION_SOURCE_UNIT_BY_OPERATION =
       Object.freeze({
         "particle:result": "particle",
@@ -1019,6 +1020,125 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
       }
       return Object.freeze(ranks);
     }
+    function issueRelationalNumeralCoCAdjunctionContract(
+      principalClause = null,
+      adjoinedUnit = null,
+    ) {
+      const exactRelational = value => Boolean(
+        typeof targetObject.isClassicalNahuatlRelationalResult === "function"
+        && targetObject.isClassicalNahuatlRelationalResult(value) === true
+      );
+      const headIsCoC = exactRelational(principalClause)
+        && principalClause.stemId === "co-c-specific-location"
+        && principalClause.option === "option-two";
+      if (!headIsCoC) return null;
+      const rawCardinal = Boolean(
+        typeof targetObject.isClassicalNahuatlNominalConstructionResult
+          === "function"
+        && targetObject.isClassicalNahuatlNominalConstructionResult(
+          adjoinedUnit,
+        ) === true
+        && adjoinedUnit.constructionKind === "cardinal-numeral-nnc"
+      );
+      const modifierIsRelational = exactRelational(adjoinedUnit);
+      const modifierSource = modifierIsRelational
+        ? adjoinedUnit.sourceFrame || {}
+        : {};
+      const modifierSegments = modifierIsRelational
+        ? adjoinedUnit.operationFrame?.predicateStemFrame?.predicateSegments
+          || []
+        : [];
+      const modifierEmbed = String(
+        modifierSource.predicateStemFrame?.internalAnalysis?.embed || "",
+      );
+      const modifierMorphemes = modifierSegments.map(
+        segment => String(segment?.morpheme || ""),
+      );
+      const supportiveNShape = modifierEmbed === "cec"
+        && modifierMorphemes.length === 2
+        && modifierMorphemes[0] === "cec"
+        && modifierMorphemes[1] === "ni";
+      const positionalCanShape = modifierSource.formationId === "can-modified"
+        && ["cec", "ōc"].includes(modifierEmbed)
+        && modifierMorphemes.length === 3
+        && modifierMorphemes[0] === modifierEmbed
+        && modifierMorphemes[1] === "cā"
+        && modifierMorphemes[2] === "n";
+      const numeralLocativeShape = modifierIsRelational
+        && adjoinedUnit.stemId === "n-locative"
+        && adjoinedUnit.option === "option-two"
+        && (supportiveNShape || positionalCanShape);
+      if (!rawCardinal && !numeralLocativeShape) return null;
+      const diagnostics = [];
+      if (rawCardinal) {
+        diagnostics.push("numeral-modifier-adverbial-result-required");
+      }
+      if (
+        principalClause.sourceState !== "absolutive"
+        || principalClause.sourceFrame?.subjectMode !== "adverbialized"
+      ) {
+        diagnostics.push(
+          "co-c-head-adverbialized-absolutive-result-required",
+        );
+      }
+      if (
+        numeralLocativeShape
+        && (
+          adjoinedUnit.sourceState !== "absolutive"
+          || modifierSource.subjectMode !== "adverbialized"
+        )
+      ) {
+        diagnostics.push(
+          "numeral-modifier-adverbialized-absolutive-result-required",
+        );
+      }
+      const frame = Object.freeze({
+        kind:
+          "classical-nahuatl-relational-numeral-co-c-adjunction-contract",
+        version: ADVERBIAL_ADJUNCTION_BOUNDARY_VERSION,
+        authorizationStatus: diagnostics.length ? "blocked" : "authorized",
+        blockReason: diagnostics[0] || "",
+        diagnostics: Object.freeze(diagnostics),
+        recovery: rawCardinal
+          ? "First make the numeral locative Result (for example cecni or ceccān), then use that Result as the modifier."
+          : "",
+        principalResult: principalClause,
+        adjoinedResult: numeralLocativeShape ? adjoinedUnit : null,
+        exactResultIdentitiesPreserved: !diagnostics.length,
+        relation: ADVERBIAL_ADJUNCTION_RELATION.place,
+        degree: ADVERBIAL_ADJUNCTION_DEGREE.second,
+        structure: ADVERBIAL_ADJUNCTION_STRUCTURE.simple,
+        order: ADVERBIAL_ADJUNCTION_ORDER.modifierHead,
+        recursion: ADVERBIAL_ADJUNCTION_RECURSION.none,
+        marking: ADVERBIAL_ADJUNCTION_MARKING.unmarked,
+        sourceShape: supportiveNShape
+          ? "cec-ni"
+          : positionalCanShape
+            ? "numeral-ca-n"
+            : "raw-cardinal",
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        lessonMetadataAuthority: false,
+      });
+      issuedRelationalNumeralCoCContracts.add(frame);
+      return frame;
+    }
+    function isRelationalNumeralCoCAdjunctionContract(frame = null) {
+      return Boolean(
+        frame
+        && issuedRelationalNumeralCoCContracts.has(frame)
+        && frame.kind
+          === "classical-nahuatl-relational-numeral-co-c-adjunction-contract"
+        && frame.version === ADVERBIAL_ADJUNCTION_BOUNDARY_VERSION
+        && ["authorized", "blocked"].includes(frame.authorizationStatus)
+        && Array.isArray(frame.diagnostics)
+        && frame.formulaStringAuthority === false
+        && frame.surfaceStringAuthority === false
+        && frame.lessonMetadataAuthority === false
+        && Object.isFrozen(frame)
+        && Object.isFrozen(frame.diagnostics)
+      );
+    }
     function issueAdverbialAdjunctionAvailabilityContract({
       principalClause = null,
       adjoinedUnit = null
@@ -1053,9 +1173,24 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           "adverbial-adjunction-availability-canonical-unit-type-required"
         );
       }
+      const relationalNumeralCoCContract =
+        issueRelationalNumeralCoCAdjunctionContract(
+          principalClause,
+          adjoinedUnit,
+        );
+      if (
+        relationalNumeralCoCContract?.authorizationStatus === "blocked"
+      ) {
+        diagnostics.push(relationalNumeralCoCContract.blockReason);
+      }
       const relationRanks = diagnostics.length
         ? []
-        : Object.values(ADVERBIAL_ADJUNCTION_RELATION)
+        : relationalNumeralCoCContract?.authorizationStatus === "authorized"
+          ? [Object.freeze({
+            relation: ADVERBIAL_ADJUNCTION_RELATION.place,
+            ranks: Object.freeze([ADVERBIAL_ADJUNCTION_DEGREE.second]),
+          })]
+          : Object.values(ADVERBIAL_ADJUNCTION_RELATION)
           .filter(relation => ![
             ADVERBIAL_ADJUNCTION_RELATION.recursive,
             ADVERBIAL_ADJUNCTION_RELATION.unknown
@@ -1083,6 +1218,8 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           rejectsLessonMetadata: true,
           rejectsStoredAnswers: true
         }),
+        relationalNumeralCoCContract,
+        recovery: relationalNumeralCoCContract?.recovery || "",
         relationRanks: Object.freeze(relationRanks),
         availableRelations: Object.freeze(
           relationRanks.map(entry => entry.relation)
@@ -1104,6 +1241,12 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         && ["authorized", "blocked"].includes(contract.authorizationStatus)
         && Array.isArray(contract.relationRanks)
         && Array.isArray(contract.availableRelations)
+        && (
+          contract.relationalNumeralCoCContract == null
+          || isRelationalNumeralCoCAdjunctionContract(
+            contract.relationalNumeralCoCContract,
+          )
+        )
         && contract.formulaStringAuthority === false
         && contract.surfaceStringAuthority === false
       );
@@ -1481,7 +1624,25 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
     function evaluateAdverbialAdjunction(request = {}) {
       const principalSource = getCanonicalAdverbialAdjunctionSourceUnit(request.principalClause, "principal");
       const adjoinedSource = getCanonicalAdverbialAdjunctionSourceUnit(request.adjoinedUnit, "adjoined");
-      const profile = buildAdverbialAdjunctionRuleProfile(request);
+      const relationalNumeralCoCContract =
+        issueRelationalNumeralCoCAdjunctionContract(
+          request.principalClause,
+          request.adjoinedUnit,
+        );
+      const effectiveRequest =
+        relationalNumeralCoCContract?.authorizationStatus === "authorized"
+          ? {
+            ...request,
+            semanticRelation: relationalNumeralCoCContract.relation,
+            adverbializationDegree: relationalNumeralCoCContract.degree,
+            structureKind: relationalNumeralCoCContract.structure,
+            adjoinedUnitType: ADVERBIAL_ADJUNCTION_UNIT.nnc,
+            order: relationalNumeralCoCContract.order,
+            recursion: relationalNumeralCoCContract.recursion,
+            marking: relationalNumeralCoCContract.marking,
+          }
+          : request;
+      const profile = buildAdverbialAdjunctionRuleProfile(effectiveRequest);
       const markerSource = profile.marking === ADVERBIAL_ADJUNCTION_MARKING.unmarked
         ? Object.freeze({
           kind: "canonical-adverbial-adjunction-source-unit",
@@ -1516,7 +1677,13 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         purposeMood: adjoinedSource.features.mood,
         evidenceSource: "canonical-typed-clause-results"
       });
-      const supported = validation.ok && composed.supported === true;
+      const relationalFamilyDiagnostics =
+        relationalNumeralCoCContract?.authorizationStatus === "blocked"
+          ? [relationalNumeralCoCContract.blockReason]
+          : [];
+      const supported = validation.ok
+        && composed.supported === true
+        && relationalFamilyDiagnostics.length === 0;
       const surface = supported ? composed.surface : "";
       const artifacts = buildAdverbialAdjunctionFormulaArtifacts({
         principalSource,
@@ -1542,6 +1709,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
           rejectsLessonMetadata: true,
           rejectsStoredAnswers: true
         },
+        relationalNumeralCoCContract,
         ruleProfile: profile,
         formulaRecord: artifacts.formulaRecord,
         formulaRealizationRecord: artifacts.formulaRealizationRecord,
@@ -1552,6 +1720,7 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         generationAllowed: supported,
         diagnostics: Array.from(new Set([
           ...validation.diagnostics,
+          ...relationalFamilyDiagnostics,
           ...(supported ? composed.diagnostics.filter(diagnostic => diagnostic === "adverbial-adjunction-ca-is-not-conjunction") : [])
         ]))
       }, {
@@ -1584,6 +1753,16 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
         && frame.formulaRecord
         && frame.formulaRealizationRecord
         && frame.generationAllowed === true
+        && (
+          frame.relationalNumeralCoCContract == null
+          || (
+            isRelationalNumeralCoCAdjunctionContract(
+              frame.relationalNumeralCoCContract,
+            )
+            && frame.relationalNumeralCoCContract.authorizationStatus
+              === "authorized"
+          )
+        )
       );
     }
     function buildAdverbialAdjunctionBoundaryMetadata() {
@@ -2100,6 +2279,10 @@ export function createAdverbialAdjunctionGlobals(targetObject = globalThis, inst
     api.getAdverbialAdjunctionCapabilityInventory = getAdverbialAdjunctionCapabilityInventory;
     api.getAdverbialAdjunctionStructuralQuestions = getAdverbialAdjunctionStructuralQuestions;
     api.getCanonicalAdverbialAdjunctionSourceUnit = getCanonicalAdverbialAdjunctionSourceUnit;
+    api.issueRelationalNumeralCoCAdjunctionContract =
+      issueRelationalNumeralCoCAdjunctionContract;
+    api.isRelationalNumeralCoCAdjunctionContract =
+      isRelationalNumeralCoCAdjunctionContract;
     api.issueAdverbialAdjunctionAvailabilityContract =
       issueAdverbialAdjunctionAvailabilityContract;
     api.isAdverbialAdjunctionAvailabilityContract =

@@ -6760,7 +6760,7 @@ export function createVncAllomorphyModule(targetObject = globalThis, installatio
         modifiers: ["classC"]
       });
       if (allowTypeOne) {
-        const dropped = targetObject.dropFinalVowel(ruleBase);
+        const dropped = ruleBase.slice(0, -1);
         if (dropped) {
           let stemBase = dropped;
           if (isTransitive && finalOnset === "tz" && finalNucleus === "a") {

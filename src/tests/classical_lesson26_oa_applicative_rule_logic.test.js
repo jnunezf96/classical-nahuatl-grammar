@@ -194,6 +194,25 @@ function run(ctx = {}) {
         }
     );
 
+    const typeOneOptions = ctx.getApplicativeDerivationOptions(
+        "ana",
+        "ana",
+        { isTransitive: true, ruleBase: "ana" }
+    );
+    s.eq(
+        "Type-one applicative availability drops the final vowel without an external browser helper",
+        typeOneOptions.map(option => ({
+            stem: option.stem || "",
+            type: option.type || "",
+            rule: option.rule || "",
+        })),
+        [{
+            stem: "ania",
+            type: "type-one",
+            rule: "drop-final-vowel",
+        }]
+    );
+
     return s;
 }
 

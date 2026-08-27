@@ -1764,6 +1764,15 @@ export function installClassicalNestedControlLedger({
   let latestSignature = "";
   let latestLedger = null;
   let refreshPending = false;
+  const continuouslyObserve = (() => {
+    try {
+      return new URLSearchParams(
+        String(globalObject.location?.search || "")
+      ).get("manufacturer") === "1";
+    } catch {
+      return false;
+    }
+  })();
 
   const projectLedger = ledger => {
     let projection = documentObject.getElementById?.(
@@ -1820,6 +1829,7 @@ export function installClassicalNestedControlLedger({
     || documentObject.defaultView?.MutationObserver
     || null;
   const observer = typeof MutationObserverConstructor === "function"
+    && continuouslyObserve
     ? new MutationObserverConstructor(schedule)
     : null;
   observer?.observe(root, {
@@ -1828,20 +1838,25 @@ export function installClassicalNestedControlLedger({
     characterData: true,
     subtree: true,
   });
-  ["change", "click", "input"].forEach(type => (
-    root.addEventListener?.(type, schedule, true)
-  ));
-  globalObject.addEventListener?.("hashchange", schedule);
+  if (continuouslyObserve) {
+    ["change", "click", "input"].forEach(type => (
+      root.addEventListener?.(type, schedule, true)
+    ));
+    globalObject.addEventListener?.("hashchange", schedule);
+  }
 
   const controller = Object.freeze({
     refresh: publish,
     get current() { return latestLedger; },
+    get continuouslyObserve() { return continuouslyObserve; },
     disconnect() {
       observer?.disconnect?.();
-      ["change", "click", "input"].forEach(type => (
-        root.removeEventListener?.(type, schedule, true)
-      ));
-      globalObject.removeEventListener?.("hashchange", schedule);
+      if (continuouslyObserve) {
+        ["change", "click", "input"].forEach(type => (
+          root.removeEventListener?.(type, schedule, true)
+        ));
+        globalObject.removeEventListener?.("hashchange", schedule);
+      }
     },
   });
   root.classicalNestedControlLedgerController = controller;

@@ -252,6 +252,12 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         const canonicalActivePriorVncFrame = activeMachineryFrame?.targetLesson7MachineryFrame?.priorVncFrame
           || activeMachineryFrame?.priorVncFrame
           || null;
+        const canonicalTargetPriorVncFrame = machineryFrame
+          ?.derivedMachineryFrame?.targetLesson7MachineryFrame?.priorVncFrame
+          || machineryFrame?.derivedMachineryFrame?.priorVncFrame
+          || machineryFrame?.targetLesson7MachineryFrame?.priorVncFrame
+          || machineryFrame?.priorVncFrame
+          || canonicalActivePriorVncFrame;
         const canonicalActiveConclusion = activeMachineryFrame?.proofFrame?.conclusion || {};
         const canonicalActiveExpandedBoundary = activeMachineryFrame?.expandedVncBoundaryFrame
           || canonicalActiveConclusion.expandedVncBoundaryFrame
@@ -315,8 +321,10 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
             impersonalDerivationPath:
               machineryFrame.voiceTransformationFrame
                 ?.impersonalDerivationPath || "direct-active",
-            mood: activeMachineryFrame?.priorVncFrame?.personDyad?.mood || activeMachineryFrame?.priorVncFrame?.mood || "indicative",
-            tense: activeMachineryFrame?.priorVncFrame?.tense || "present",
+            mood: canonicalTargetPriorVncFrame?.personDyad?.mood
+              || canonicalTargetPriorVncFrame?.mood
+              || "indicative",
+            tense: canonicalTargetPriorVncFrame?.tense || "present",
             verbClass: activeMachineryFrame?.targetClass || activeMachineryFrame?.classId || "A"
           };
         const rebuiltCandidates = activeCanonical && typeof runtimeTarget?.buildClassicalNahuatlDerivedVncFrame === "function"

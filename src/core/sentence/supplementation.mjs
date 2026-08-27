@@ -81,19 +81,29 @@ const FORBIDDEN_REQUEST_AUTHORITY_FIELDS = Object.freeze([
   "storedFormula",
   "storedSurface",
 ]);
+const STABLE_STRINGIFY_CACHE = new WeakMap();
 
 function stableStringify(value) {
-  if (Array.isArray(value)) {
-    return `[${value.map(stableStringify).join(",")}]`;
+  const cacheable = Boolean(
+    value && typeof value === "object" && Object.isFrozen(value)
+  );
+  if (cacheable && STABLE_STRINGIFY_CACHE.has(value)) {
+    return STABLE_STRINGIFY_CACHE.get(value);
   }
-  if (value && typeof value === "object") {
-    return `{${Object.keys(value)
+  let serialized;
+  if (Array.isArray(value)) {
+    serialized = `[${value.map(stableStringify).join(",")}]`;
+  } else if (value && typeof value === "object") {
+    serialized = `{${Object.keys(value)
       .filter(key => value[key] !== undefined)
       .sort()
       .map(key => `${JSON.stringify(key)}:${stableStringify(value[key])}`)
       .join(",")}}`;
+  } else {
+    serialized = JSON.stringify(value);
   }
-  return JSON.stringify(value);
+  if (cacheable) STABLE_STRINGIFY_CACHE.set(value, serialized);
+  return serialized;
 }
 
 function signValue(value, prefix = "supplementation") {

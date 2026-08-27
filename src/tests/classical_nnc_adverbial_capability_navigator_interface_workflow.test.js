@@ -14,6 +14,9 @@ function run(ctx = {}) {
         path.join(ROOT, "src", "ui", "rendering", "rendering.mjs"),
         "utf8"
     );
+    const exactReviewApplicationRegistry = rendering.match(
+        /const CLASSICAL_SOURCE_OPERATION_APPLICATION_IDS = Object\.freeze\(\{([\s\S]*?)\}\);/u
+    )?.[1] || "";
     const exactSource = ctx.issueCanonicalNncSourceFrame({
         stem: "achi",
         sourceClass: "zero",
@@ -107,6 +110,171 @@ function run(ctx = {}) {
         }
     );
 
+    const moSource = ctx.issueCanonicalNncSourceFrame({
+        stem: "mō",
+        sourceClass: "zero",
+    });
+    const moSourceNavigator = ctx
+        .getClassicalGrammarApplicationCapabilityNavigator(moSource);
+    const moOrdinaryBinding = ctx
+        .issueClassicalGrammarTypedSourceOperationBindingFrame(
+            moSourceNavigator,
+            "nnc:ordinary",
+            {}
+        );
+    const moOrdinaryReceipt = ctx
+        .executeClassicalGrammarTypedSourceOperationBindingFrame(
+            moOrdinaryBinding
+        );
+    const moOrdinaryResult = moOrdinaryReceipt?.canonicalResult || null;
+    const moInitial = ctx.issueClassicalGrammarFormationResultBindingFrame(
+        "nnc:adverbial",
+        moOrdinaryResult,
+        {}
+    );
+    const moBareReady = ctx.issueClassicalGrammarFormationResultBindingFrame(
+        "nnc:adverbial",
+        moOrdinaryResult,
+        {
+            scope: "external-clause",
+            clauseType: "subordinate",
+        }
+    );
+    const moNegativeReady = ctx.issueClassicalGrammarFormationResultBindingFrame(
+        "nnc:adverbial",
+        moOrdinaryResult,
+        {
+            scope: "external-clause",
+            clauseType: "assertion",
+            negativeParticle: "ca",
+            negationScope: "principal-vnc",
+        }
+    );
+    suite.eq(
+        "mō keeps negation optional while exposing both genuine context choices",
+        {
+            source: ctx.isClassicalNahuatlOrdinaryNncResult(
+                moOrdinaryResult
+            ),
+            initial: [
+                moInitial?.requiredChoiceIds,
+                moInitial?.ownerChoiceFrame?.genuineChoiceAxes?.includes(
+                    "negative-particle"
+                ),
+                moInitial?.ownerChoiceFrame?.genuineChoiceAxes?.includes(
+                    "negation-scope"
+                ),
+                moInitial?.ownerChoiceOptionProjection?.["negative-particle"],
+                moInitial?.ownerChoiceOptionProjection?.["negation-scope"],
+            ],
+            bare: [
+                ctx.isClassicalGrammarFormationResultBindingFrame(
+                    moBareReady
+                ),
+                moBareReady?.requiredChoiceIds,
+                moBareReady?.selectedOwnerChoices?.["negative-particle"],
+                moBareReady?.selectedOwnerChoices?.["negation-scope"],
+            ],
+            negative: [
+                ctx.isClassicalGrammarFormationResultBindingFrame(
+                    moNegativeReady
+                ),
+                moNegativeReady?.requiredChoiceIds,
+                moNegativeReady?.selectedOwnerChoices?.["negative-particle"],
+                moNegativeReady?.selectedOwnerChoices?.["negation-scope"],
+            ],
+        },
+        {
+            source: true,
+            initial: [
+                ["scope", "clause-type"],
+                true,
+                true,
+                ["ah", "ca"],
+                ["adverbial-adjunct", "principal-vnc"],
+            ],
+            bare: [true, [], "", ""],
+            negative: [true, [], "ca", "principal-vnc"],
+        }
+    );
+
+    const moBareReceipt = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "nnc:adverbial",
+        args: [{
+            canonicalSourceResult: moOrdinaryResult,
+            degree: "second-degree",
+            scope: "external-clause",
+            context: { clauseType: "subordinate" },
+        }],
+    });
+    const moNegativeReceipt = ctx.executeClassicalGrammarApplicationRequest({
+        operationId: "nnc:adverbial",
+        args: [{
+            canonicalSourceResult: moOrdinaryResult,
+            degree: "second-degree",
+            scope: "external-clause",
+            context: {
+                clauseType: "assertion",
+                negativeParticle: "ca",
+                negationScope: "principal-vnc",
+            },
+        }],
+    });
+    const moBareResult = moBareReceipt?.canonicalResult || null;
+    const moNegativeResult = moNegativeReceipt?.canonicalResult || null;
+    suite.eq(
+        "bare subordinate mō and explicitly selected camō both issue exact Results",
+        {
+            bare: [
+                ctx.isClassicalGrammarApplicationResult(moBareReceipt),
+                ctx.isClassicalNahuatlAdverbialNuclearResult(moBareResult),
+                moBareResult?.canonicalSourceResult === moOrdinaryResult,
+                moBareResult?.wordSurface,
+                moBareResult?.sentenceSurface,
+                moBareResult?.operationFrame?.contextFrame?.clauseType,
+                moBareResult?.operationFrame?.contextFrame?.semanticPolarity,
+                moBareResult?.operationFrame?.contextFrame?.negativeParticle,
+            ],
+            negative: [
+                ctx.isClassicalGrammarApplicationResult(moNegativeReceipt),
+                ctx.isClassicalNahuatlAdverbialNuclearResult(
+                    moNegativeResult
+                ),
+                moNegativeResult?.canonicalSourceResult === moOrdinaryResult,
+                moNegativeResult?.wordSurface,
+                moNegativeResult?.sentenceSurface,
+                moNegativeResult?.operationFrame?.contextFrame
+                    ?.negativeParticle,
+                moNegativeResult?.operationFrame?.contextFrame
+                    ?.negationScope,
+                moNegativeResult?.operationFrame?.contextFrame
+                    ?.negativeImmediatelyPrecedes,
+            ],
+        },
+        {
+            bare: [
+                true,
+                true,
+                true,
+                "mō",
+                "mō.",
+                "subordinate",
+                "negative",
+                "",
+            ],
+            negative: [
+                true,
+                true,
+                true,
+                "camō",
+                "camō.",
+                "ca",
+                "principal-vnc",
+                "principal-vnc",
+            ],
+        }
+    );
+
     const adverbialReceipt = ctx.executeClassicalGrammarApplicationRequest({
         operationId: "nnc:adverbial",
         args: [{
@@ -142,6 +310,9 @@ function run(ctx = {}) {
                 rendering.includes(
                     'selectedConstruction: "adverbial-nuclear"'
                 ),
+                exactReviewApplicationRegistry.includes(
+                    '"adverbial-nuclear": "nnc:adverbial"'
+                ),
                 rendering.includes(
                     "renderClassicalNominalConstructionSurfaceBlock("
                 ),
@@ -153,7 +324,7 @@ function run(ctx = {}) {
         {
             receipt: [true, "authorized", "nnc:adverbial"],
             result: [true, true, "external-clause"],
-            interfaceWiring: [true, true, true, true, true],
+            interfaceWiring: [true, true, true, true, true, true],
         }
     );
 

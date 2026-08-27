@@ -52,6 +52,16 @@ function run(ctx) {
         "createClassicalClauseRelationDecisionControl",
         "appendClassicalClauseRelationCaptureCard"
     );
+    const resultBindingChoice = functionSlice(
+        rendering,
+        "enterClassicalGrammarResultBindingChoice",
+        "syncClassicalGrammarResultBindingChoices"
+    );
+    const resultContinuation = functionSlice(
+        rendering,
+        "getClassicalGrammarResultSourceContinuationCandidate",
+        "getActiveClassicalVncResultSourceForState"
+    );
 
     s.ok(
         "one semantic Clause composition workflow mounts capture and choices in Result",
@@ -134,6 +144,9 @@ function run(ctx) {
             < currentResult.indexOf("surfaceFrame.state?.vncApplicationFrame")
         && currentResult.includes("captureClassicalGrammarApplicationResult")
         && currentResult.includes("isClassicalGrammarApplicationResultCapture")
+        && !currentResult.includes(
+            'surfaceFrame.authorizationStatus !== "authorized"'
+        )
         && currentResult.includes("? candidate")
         && !currentResult.includes("selectedFormula")
         && !currentResult.includes("sentenceSurfaceDisplay")
@@ -258,6 +271,27 @@ function run(ctx) {
         && workflow.includes("recapture-composition-as-${captureRole}")
         && workflow.includes("ActiveClassicalClauseRelationResult.canonicalResult")
         && !workflow.includes("evaluateAdverbialAdjunction(")
+    );
+
+    s.ok(
+        "the universal Apply path captures the exact canonical clause Result before review",
+        resultBindingChoice.includes(
+            "ActiveClassicalClauseRelationResult?.canonicalResult"
+        )
+        && !resultBindingChoice.includes(
+            "captureClassicalGrammarApplicationResult?.(\n              ActiveClassicalClauseRelationResult,"
+        )
+    );
+
+    s.ok(
+        "exact clause Results continue through issued application provenance even when their owner shape has no authorizationStatus field",
+        resultContinuation.includes(
+            "captureClassicalGrammarApplicationResult("
+        )
+        && resultContinuation.includes("if (!surfaceFrame) return null;")
+        && !resultContinuation.includes(
+            'surfaceFrame.authorizationStatus !== "authorized"'
+        )
     );
 
     s.ok(

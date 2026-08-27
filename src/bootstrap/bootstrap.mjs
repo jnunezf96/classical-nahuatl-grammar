@@ -1,18 +1,18 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260825-class-d-336";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260826-relational-result-presentation-361";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260825-class-d-336";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260825-class-d-336";
-import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260825-class-d-336";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260825-class-d-336";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260825-class-d-336";
-import { installUiStateGlobals } from "../ui/state.mjs?v=20260825-class-d-336";
+} from "../runtime/create_runtime.mjs?v=20260826-relational-result-presentation-361";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260826-relational-result-presentation-361";
+import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260826-source-commit-359";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260826-relational-result-presentation-361";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260826-relational-result-presentation-361";
+import { installUiStateGlobals } from "../ui/state.mjs?v=20260826-source-commit-359";
 import {
     installClassicalNestedControlLedger,
-} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260825-class-d-336";
+} from "../ui/diagnostics/classical_nested_control_ledger.mjs?v=20260826-source-commit-359";
 
 let browserBootstrapPromise = null;
 
@@ -163,7 +163,7 @@ export function installDeferredClassicalGrammaticalAtlas({
         url.searchParams.set("v", populationVersion.version);
         url.searchParams.set(
             "cache",
-            "20260825-class-d-336"
+            "20260826-interface-repairs-341"
         );
         if (attempt > 1) url.searchParams.set("retry", String(attempt));
         return import(url.href);

@@ -4,6 +4,57 @@ const { createSuite } = require("./runner");
 
 function run(ctx = {}) {
     const s = createSuite("classical_typed_source_operation_binding");
+    const exactTlaCaquiResult = ctx.requestClassicalVncApplicationResult({
+        sourceStem: "caqui",
+        verbClass: "B",
+        sourceValence: "projective-nonhuman",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        requestedDerivation: "direct",
+        requestedVoice: "active",
+    });
+    const exactTlaCaquiSource =
+        exactTlaCaquiResult.resultFrame.sourceMachineryFrame;
+    const exactTlaCaquiNavigator =
+        ctx.getClassicalGrammarApplicationCapabilityNavigator(
+            exactTlaCaquiSource
+        );
+    const exactTlaCaquiBinding =
+        ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+            exactTlaCaquiNavigator,
+            "vnc:application",
+            {
+                subject: "1sg",
+                mood: "indicative",
+                tense: "imperfect",
+                requestedDerivation: "direct",
+                requestedVoice: "impersonal",
+                derivationOptionId: "",
+                nonactiveOptionId: "ō:cac-ō",
+            }
+        );
+    s.eq(
+        "the aggregate accepts the exact tla-caqui Source with the visible direct impersonal imperfect controls",
+        {
+            navigator: ctx.isClassicalGrammarApplicationCapabilityNavigator(
+                exactTlaCaquiNavigator
+            ),
+            binding: ctx.isClassicalGrammarTypedSourceOperationBindingFrame(
+                exactTlaCaquiBinding
+            ),
+            status: exactTlaCaquiBinding?.bindingStatus,
+            reason: exactTlaCaquiBinding?.blockReason,
+            required: exactTlaCaquiBinding?.requiredChoiceIds,
+        },
+        {
+            navigator: true,
+            binding: true,
+            status: "ready",
+            reason: "",
+            required: [],
+        }
+    );
     const initialResult = ctx.requestClassicalVncApplicationResult({
         sourceStem: "ahci",
         verbClass: "A",

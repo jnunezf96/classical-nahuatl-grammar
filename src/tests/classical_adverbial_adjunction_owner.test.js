@@ -20,6 +20,61 @@ function issuePlace(ctx) {
     });
 }
 
+function issueRelationalNnc(ctx, {
+    stemId,
+    embedStem,
+    matrixStem,
+    sourceKind = "nounstem",
+    sourceFormation = "plain-nounstem",
+}) {
+    return ctx.requestClassicalRelationalNncResult({
+        nounstem: {
+            kind: ctx.CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND
+                || "classical-nahuatl-nnc-nounstem-request",
+            stemId,
+            formation: "option-two",
+            operation: "relational-nnc",
+            sourceKind,
+            sourceFormation,
+            sourceMode: "embed-matrix",
+            sourceStem: embedStem,
+            sourceEmbedStem: embedStem,
+            sourceMatrixStem: matrixStem,
+        },
+        state: "absolutive",
+        subjectMode: "adverbialized",
+        subjectId: "3common",
+    });
+}
+
+function issueNumeralLocative(ctx) {
+    return issueRelationalNnc(ctx, {
+        stemId: "n-locative",
+        embedStem: "cec",
+        matrixStem: "n",
+    });
+}
+
+function issueCoCLocative(ctx) {
+    return issueRelationalNnc(ctx, {
+        stemId: "co-c-specific-location",
+        embedStem: "xahcal",
+        matrixStem: "co",
+    });
+}
+
+function issueCardinal(ctx, value) {
+    return ctx.requestClassicalNominalConstructionResult({
+        constructionKind: "cardinal-numeral-nnc",
+        value,
+        classifier: "basic",
+        countKind: "ordinary",
+        subject: "3common",
+        state: "absolutive",
+        animacy: "nonanimate",
+    });
+}
+
 function createController(ctx, overrides = {}) {
     const target = Object.create(ctx);
     Object.entries(overrides).forEach(([name, value]) => {
@@ -316,6 +371,266 @@ function run(ctx) {
                 ],
             },
         }
+    );
+
+    s.eq(
+        "the Lesson 46 owner composes an exact adverbialized numeral locative with an exact co/c Result under one fixed place profile",
+        (() => {
+            const head = issueCoCLocative(ctx);
+            const modifier = issueNumeralLocative(ctx);
+            const ownerContract =
+                ctx.issueRelationalNumeralCoCAdjunctionContract(
+                    head,
+                    modifier,
+                );
+            const availability =
+                ctx.issueAdverbialAdjunctionAvailabilityContract({
+                    principalClause: head,
+                    adjoinedUnit: modifier,
+                });
+            const result = ctx.requestClassicalAdverbialAdjunctionResult({
+                principalClause: head,
+                adjoinedUnit: modifier,
+                semanticRelation: "time",
+                adverbializationDegree: "first",
+                structureKind: "apposition",
+                adjoinedUnitType: "nnc",
+                order: "head-modifier",
+                recursion: "appositive",
+                marking: "unmarked",
+            });
+            const controller = createController(ctx);
+            const captures = [
+                controller.captureCurrentResult("principal", head),
+                controller.captureCurrentResult("adjoined", modifier),
+            ].map(capture => capture.authorizationStatus);
+            const decision = controller.buildDecisionContract({
+                relation: "place",
+            });
+            const composed = controller.compose({ relation: "place" });
+            return {
+                exactSources: [
+                    ctx.isClassicalNahuatlRelationalResult(head),
+                    ctx.isClassicalNahuatlRelationalResult(modifier),
+                    head.surface,
+                    modifier.surface,
+                ],
+                owner: {
+                    exact:
+                        ctx.isRelationalNumeralCoCAdjunctionContract(
+                            ownerContract,
+                        ),
+                    status: ownerContract.authorizationStatus,
+                    profile: [
+                        ownerContract.relation,
+                        ownerContract.degree,
+                        ownerContract.structure,
+                        ownerContract.order,
+                        ownerContract.recursion,
+                        ownerContract.marking,
+                    ],
+                    identities: [
+                        ownerContract.principalResult === head,
+                        ownerContract.adjoinedResult === modifier,
+                    ],
+                },
+                availability: {
+                    status: availability.authorizationStatus,
+                    relations: availability.availableRelations,
+                    placeRanks:
+                        ctx.getAdverbialAdjunctionRanksFromAvailability(
+                            availability,
+                            "place",
+                        ),
+                    sameOwner:
+                        availability.relationalNumeralCoCContract
+                            ?.principalResult === head
+                        && availability.relationalNumeralCoCContract
+                            ?.adjoinedResult === modifier,
+                },
+                result: {
+                    exact: ctx.isAdverbialAdjunctionResult(result),
+                    surface: result.surface,
+                    profile: [
+                        result.ruleProfile?.relation,
+                        result.ruleProfile?.degree,
+                        result.ruleProfile?.structure,
+                        result.ruleProfile?.order,
+                        result.ruleProfile?.recursion,
+                        result.ruleProfile?.marking,
+                    ],
+                    identities: [
+                        result.relationalNumeralCoCContract
+                            ?.principalResult === head,
+                        result.relationalNumeralCoCContract
+                            ?.adjoinedResult === modifier,
+                    ],
+                },
+                controller: {
+                    captures,
+                    status: decision.authorizationStatus,
+                    unresolved: decision.unresolvedDecisionIds,
+                    decisions: decision.decisions.map(item => item.id),
+                    fixed: [
+                        decision.relation,
+                        decision.degree,
+                        decision.derived?.structureKind,
+                        decision.derived?.order,
+                        decision.derived?.recursion,
+                        decision.derived?.marking,
+                        decision.derived?.relationalNumeralCoCFixedProfile,
+                    ],
+                    composed: [
+                        composed.authorizationStatus,
+                        composed.presentation?.surface,
+                        ctx.isAdverbialAdjunctionResult(
+                            composed.canonicalResult,
+                        ),
+                    ],
+                },
+            };
+        })(),
+        {
+            exactSources: [true, true, "xahcalco", "cecni"],
+            owner: {
+                exact: true,
+                status: "authorized",
+                profile: [
+                    "place",
+                    "second",
+                    "simple",
+                    "modifier-head",
+                    "none",
+                    "unmarked",
+                ],
+                identities: [true, true],
+            },
+            availability: {
+                status: "authorized",
+                relations: ["place"],
+                placeRanks: ["second"],
+                sameOwner: true,
+            },
+            result: {
+                exact: true,
+                surface: "cecni xahcalco",
+                profile: [
+                    "place",
+                    "second",
+                    "simple",
+                    "modifier-head",
+                    "none",
+                    "unmarked",
+                ],
+                identities: [true, true],
+            },
+            controller: {
+                captures: ["authorized", "authorized"],
+                status: "authorized",
+                unresolved: [],
+                decisions: ["relation"],
+                fixed: [
+                    "place",
+                    "second",
+                    "simple",
+                    "modifier-head",
+                    "none",
+                    "unmarked",
+                    true,
+                ],
+                composed: ["authorized", "cecni xahcalco", true],
+            },
+        }
+    );
+
+    s.eq(
+        "the Lesson 46 owner rejects raw cē and ōme Results and gives the exact recovery step",
+        [1, 2].map(value => {
+            const head = issueCoCLocative(ctx);
+            const rawCardinal = issueCardinal(ctx, value);
+            const ownerContract =
+                ctx.issueRelationalNumeralCoCAdjunctionContract(
+                    head,
+                    rawCardinal,
+                );
+            const availability =
+                ctx.issueAdverbialAdjunctionAvailabilityContract({
+                    principalClause: head,
+                    adjoinedUnit: rawCardinal,
+                });
+            const attempted = ctx.evaluateAdverbialAdjunction({
+                principalClause: head,
+                adjoinedUnit: rawCardinal,
+                semanticRelation: "place",
+                adverbializationDegree: "second",
+                structureKind: "simple",
+                adjoinedUnitType: "nnc",
+                order: "modifier-head",
+                recursion: "none",
+                marking: "unmarked",
+            });
+            return {
+                value,
+                rawSurface: rawCardinal.wordSurface,
+                rawExact:
+                    ctx.isClassicalNahuatlNominalConstructionResult(
+                        rawCardinal,
+                    ),
+                ownerExact:
+                    ctx.isRelationalNumeralCoCAdjunctionContract(
+                        ownerContract,
+                    ),
+                ownerStatus: ownerContract.authorizationStatus,
+                reason: ownerContract.blockReason,
+                recovery: ownerContract.recovery,
+                availability: [
+                    availability.authorizationStatus,
+                    availability.blockReason,
+                    availability.availableRelations,
+                ],
+                attempted: [
+                    attempted.supported,
+                    ctx.isAdverbialAdjunctionResult(attempted),
+                    attempted.diagnostics.includes(
+                        "numeral-modifier-adverbial-result-required",
+                    ),
+                ],
+            };
+        }),
+        [
+            {
+                value: 1,
+                rawSurface: "cē",
+                rawExact: true,
+                ownerExact: true,
+                ownerStatus: "blocked",
+                reason: "numeral-modifier-adverbial-result-required",
+                recovery:
+                    "First make the numeral locative Result (for example cecni or ceccān), then use that Result as the modifier.",
+                availability: [
+                    "blocked",
+                    "numeral-modifier-adverbial-result-required",
+                    [],
+                ],
+                attempted: [false, false, true],
+            },
+            {
+                value: 2,
+                rawSurface: "ōme",
+                rawExact: true,
+                ownerExact: true,
+                ownerStatus: "blocked",
+                reason: "numeral-modifier-adverbial-result-required",
+                recovery:
+                    "First make the numeral locative Result (for example cecni or ceccān), then use that Result as the modifier.",
+                availability: [
+                    "blocked",
+                    "numeral-modifier-adverbial-result-required",
+                    [],
+                ],
+                attempted: [false, false, true],
+            },
+        ]
     );
 
     return s;

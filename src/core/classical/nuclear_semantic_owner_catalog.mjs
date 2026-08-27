@@ -1472,16 +1472,16 @@ import { createClassicalCardinalNumeralValidationSemanticOperationsApi } from ".
 import { createClassicalDeverbalNncValidationSemanticOperationsApi } from "./deverbal_nnc_validation_semantic_operations.mjs";
 import { createClassicalDeverbalPatientiveValidationSemanticOperationsApi } from "./deverbal_patientive_validation_semantic_operations.mjs";
 import { createClassicalAdjectivalModificationValidationSemanticOperationsApi } from "./adjectival_modification_validation_semantic_operations.mjs";
-import { createClassicalAdverbialNuclearValidationSemanticOperationsApi } from "./adverbial_nuclear_validation_semantic_operations.mjs?v=20260825-class-d-336";
+import { createClassicalAdverbialNuclearValidationSemanticOperationsApi } from "./adverbial_nuclear_validation_semantic_operations.mjs?v=20260826-relational-role-340";
 import { createClassicalRelationalNncValidationSemanticOperationsApi } from "./relational_nnc_validation_semantic_operations.mjs";
 import { createClassicalLocativeRelationalNncValidationSemanticOperationsApi } from "./locative_relational_nnc_validation_semantic_operations.mjs";
 import { createClassicalRelationalContinuationValidationSemanticOperationsApi } from "./relational_continuation_validation_semantic_operations.mjs";
-import { createClassicalPlaceGentilicValidationSemanticOperationsApi } from "./place_gentilic_validation_semantic_operations.mjs?v=20260825-class-d-336";
+import { createClassicalPlaceGentilicValidationSemanticOperationsApi } from "./place_gentilic_validation_semantic_operations.mjs?v=20260826-relational-role-340";
 import { createClassicalAdverbialAdjunctionValidationSemanticOperationsApi } from "./adverbial_adjunction_validation_semantic_operations.mjs";
 import { createClassicalClauseComplementValidationSemanticOperationsApi } from "./clause_complement_validation_semantic_operations.mjs";
 import { createClassicalClauseConjunctionValidationSemanticOperationsApi } from "./clause_conjunction_validation_semantic_operations.mjs";
 import { createClassicalComparisonValidationSemanticOperationsApi } from "./comparison_validation_semantic_operations.mjs";
-import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260825-class-d-336";
+import { createClassicalDenominalVncValidationSemanticOperationsApi } from "./denominal_vnc_validation_semantic_operations.mjs?v=20260826-relational-role-340";
 import { createRoutineSemanticOwnerMechanicsApi } from "./transcription_owner_mechanics.mjs";
 const OWNER_SPECS = Object.freeze([
   classical_absolutive_nnc_formula_formation,

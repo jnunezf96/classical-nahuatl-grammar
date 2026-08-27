@@ -181,7 +181,11 @@ function makeChoice({
   });
 }
 
-function probeNominalConstruction(target, exactResult) {
+function probeNominalConstruction(
+  target,
+  exactResult,
+  ownerSelections = {},
+) {
   const evaluate = callable(
     target,
     "evaluateClassicalNahuatlNominalConstruction",
@@ -210,6 +214,21 @@ function probeNominalConstruction(target, exactResult) {
 
   const choices = [];
   const evidence = [];
+  const selectedChoiceValue = choiceId => ({
+    "nominal-embed-relation": ownerSelections?.nominalEmbedRelation,
+    "nominal-embed-route": ownerSelections?.nominalEmbedRoute,
+    subject: ownerSelections?.subject,
+    "mood-tense": ownerSelections?.mood && ownerSelections?.tense
+      ? `${ownerSelections.mood}:${ownerSelections.tense}`
+      : "",
+    voice: ownerSelections?.voice,
+    "compound-structure": ownerSelections?.compoundStructure,
+    "compound-bracketing": ownerSelections?.compoundBracketing,
+    state: ownerSelections?.state,
+  })[choiceId];
+  const unresolvedChoiceIds = choiceIds => choiceIds.filter(
+    choiceId => !String(selectedChoiceValue(choiceId) || "").trim(),
+  );
   const addAuthorizedProbe = ({
     bindingId,
     inputRole,
@@ -237,7 +256,7 @@ function probeNominalConstruction(target, exactResult) {
       bindingId,
       inputRole,
       ownerPreflightKind: sourceAuthorization.kind,
-      requiredChoiceIds,
+      requiredChoiceIds: unresolvedChoiceIds(requiredChoiceIds),
       requiredResultRoles,
     });
     choices.push(choice);
@@ -936,7 +955,11 @@ export function createClassicalNahuatlFormationResultBindingApi(
     };
     if (operationRecognized && currentResult && typeof currentResult === "object") {
       probe = normalizedOperationId === "grammar:nominal-construction"
-        ? probeNominalConstruction(ownerTarget, currentResult)
+        ? probeNominalConstruction(
+            ownerTarget,
+            currentResult,
+            ownerSelections,
+          )
         : normalizedOperationId === "nnc:deverbal-construction"
           ? probeDeverbalConstruction(
               ownerTarget,

@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260825-class-d-336";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260826-relational-result-presentation-361";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

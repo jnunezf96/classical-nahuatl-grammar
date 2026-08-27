@@ -2,7 +2,7 @@
 // results. It owns presentation decisions only; the clause engine remains the
 // sole owner of relation validation, formulas, realization, and surfaces.
 
-import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260825-class-d-336";
+import { installClassicalLateValidationOwnersGlobals } from "../../core/classical/late_validation_owner_catalog.mjs?v=20260826-relational-role-340";
 
 const CONTROLLER_KIND = "classical-clause-relation-controller";
 const CONTROLLER_RESULT_KIND = "classical-clause-relation-controller-result";
@@ -4279,6 +4279,16 @@ export function createClassicalClauseRelationControllerGlobals(
         )
         && adjunctionAvailability.authorizationStatus === "authorized",
       );
+      const relationalNumeralCoCFixedProfile = Boolean(
+        adjunctionAvailabilityVerified
+        && typeof targetObject.isRelationalNumeralCoCAdjunctionContract
+          === "function"
+        && targetObject.isRelationalNumeralCoCAdjunctionContract(
+          adjunctionAvailability.relationalNumeralCoCContract,
+        )
+        && adjunctionAvailability.relationalNumeralCoCContract
+          .authorizationStatus === "authorized"
+      );
       const unitType = String(adjoinedSource?.features?.unitKind || "");
       const degreeValues = (
         adjunctionAvailabilityVerified
@@ -4311,6 +4321,8 @@ export function createClassicalClauseRelationControllerGlobals(
       const principalIsComposition = principalSource?.sourceKind === "composition-ast";
       const adjoinedIsComposition = adjoinedSource?.sourceKind === "composition-ast";
       const relationAllowsApposition = (
+        !relationalNumeralCoCFixedProfile
+        &&
         degree === "second"
         && ["place", "time"].includes(relation)
         && unitType === "nnc"
@@ -4363,6 +4375,8 @@ export function createClassicalClauseRelationControllerGlobals(
 
       const orderValues = !relation
         ? []
+        : relationalNumeralCoCFixedProfile
+          ? ["modifier-head"]
         : structureProfile === "apposition"
           ? ["appositive-head-modifier"]
           : relation === "reason"
@@ -4491,6 +4505,7 @@ export function createClassicalClauseRelationControllerGlobals(
         recursion,
         order,
         marking: markerProfile || "unmarked",
+        relationalNumeralCoCFixedProfile,
         principalSourceKind: principalSource?.sourceKind || "",
         adjoinedSourceKind: adjoinedSource?.sourceKind || "",
       });

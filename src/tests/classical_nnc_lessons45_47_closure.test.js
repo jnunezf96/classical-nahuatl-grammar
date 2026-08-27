@@ -691,6 +691,71 @@ function run(ctx) {
         ]
     );
 
+    const tlaCaquiImperfectImpersonal =
+        ctx.requestClassicalVncApplicationResult({
+            sourceStem: "caqui",
+            verbClass: "B",
+            sourceValence: "projective-nonhuman",
+            subject: "3sg",
+            mood: "indicative",
+            tense: "imperfect",
+            requestedDerivation: "direct",
+            requestedVoice: "impersonal",
+            nonactiveOptionId: "ō:cac-ō",
+        });
+    const tlaCaquiLocative = evaluate({
+        stemId: "n-locative",
+        option: "option-two",
+        formationId: "imperfect-impersonal",
+        upstreamResult: tlaCaquiImperfectImpersonal,
+        state: "possessive",
+    });
+    s.eq(
+        "an exact tla-bearing impersonal imperfect Result retains its whole predicate before locative n",
+        {
+            upstream: [
+                tlaCaquiImperfectImpersonal.authorizationStatus,
+                tlaCaquiImperfectImpersonal.resultFrame
+                    ?.formulaRealization,
+                tlaCaquiImperfectImpersonal.resultFrame
+                    ?.surfaceRealization,
+            ],
+            result: [
+                tlaCaquiLocative.authorizationStatus,
+                tlaCaquiLocative.sourceState,
+                tlaCaquiLocative.operationFrame
+                    ?.sourceFrame?.predicateStemFrame?.sourceEmbedStem,
+                tlaCaquiLocative.operationFrame
+                    ?.sourceFrame?.predicateStemFrame?.sourceMatrixStem,
+                tlaCaquiLocative.formula,
+                tlaCaquiLocative.surface,
+                tlaCaquiLocative.sentenceSurface,
+                tlaCaquiLocative.sentenceFormulaDisplay,
+                tlaCaquiLocative.diagrammaticProjection?.rows.map(
+                    row => row.role
+                ),
+            ],
+        },
+        {
+            upstream: [
+                "authorized",
+                "#0-0+tla(cac-ō)ya+0-0#",
+                "tlacacōya",
+            ],
+            result: [
+                "authorized",
+                "absolutive",
+                "tla-cac-ō-ya",
+                "n",
+                "#Ø-Ø(tla-cac-ō-ya-n)Ø-Ø#",
+                "tlacacōyan",
+                "Tlacacōyan.",
+                "#Ø-Ø(tla-cac-ō-ya-n)Ø-Ø#.",
+                ["Subject", "Predicate", "embed", "matrix"],
+            ],
+        }
+    );
+
     s.eq(
         "all ic functions and temporal interrogative/fusion conditions remain typed context facts rather than translation authority",
         {
@@ -1047,6 +1112,98 @@ function run(ctx) {
             nonAffectiveStemIds: [],
         }
     );
+
+    const sourceAdmissionSpecs = [
+        ["tlah-abundance-place", "xoch", "varietal-nounstem", "", "tlah"],
+        ["co-c-specific-location", "tecoma", "nounstem", "", "c"],
+        ["co-c-specific-location", "tle", "nounstem", "tle-fire", "co"],
+        ["co-c-specific-location", "mōztlayō", "temporal-yo-stem", "", "c"],
+        ["co-c-specific-location", "mā", "body-part-stem", "", "c"],
+        ["pa-direction", "nē", "particle", "", "pa"],
+        ["pa-frequency", "miec", "quantitive", "", "pa"],
+        ["chi-direction-toward", "ātēn", "rare-nounstem", "", "chi"],
+    ];
+    const admissions = sourceAdmissionSpecs.map(([
+        stemId,
+        sourceEmbedStem,
+    ]) => ctx.issueClassicalNahuatlRelationalSourceAdmissionFrame({
+        stemId,
+        sourceEmbedStem,
+    }));
+    const ambiguous = ctx.issueClassicalNahuatlRelationalSourceAdmissionFrame({
+        stemId: "co-c-specific-location",
+        sourceEmbedStem: "izta",
+    });
+    const selectedAmbiguous =
+        ctx.issueClassicalNahuatlRelationalSourceAdmissionFrame({
+            stemId: "co-c-specific-location",
+            sourceEmbedStem: "izta",
+            requestedSourceKind: "temporal-yo-stem",
+        });
+    const conflicting =
+        ctx.issueClassicalNahuatlRelationalSourceAdmissionFrame({
+            stemId: "tlah-abundance-place",
+            sourceEmbedStem: "xoch",
+            requestedSourceKind: "nounstem",
+        });
+    s.eq("the owner types specialized relational embeds and leaves only real ambiguity open", {
+        known: admissions.map(frame => ({
+            valid: ctx.isClassicalNahuatlRelationalSourceAdmissionFrame(frame),
+            status: frame.authorizationStatus,
+            sourceKind: frame.selectedSourceKind,
+            lexeme: frame.sourceLexemeId,
+            matrix: frame.sourceMatrixStem,
+            choice: frame.selectionRequired,
+        })),
+        ambiguous: {
+            valid: ctx.isClassicalNahuatlRelationalSourceAdmissionFrame(ambiguous),
+            status: ambiguous.authorizationStatus,
+            selected: ambiguous.selectedSourceKind,
+            choice: ambiguous.selectionRequired,
+            matrix: ambiguous.sourceMatrixStem,
+            kinds: ambiguous.allowedSourceKinds,
+        },
+        selectedAmbiguous: [
+            selectedAmbiguous.authorizationStatus,
+            selectedAmbiguous.selectedSourceKind,
+            selectedAmbiguous.selectionRequired,
+            selectedAmbiguous.sourceMatrixStem,
+        ],
+        conflicting: [
+            conflicting.authorizationStatus,
+            conflicting.diagnostics,
+        ],
+        copyValid: ctx.isClassicalNahuatlRelationalSourceAdmissionFrame({
+            ...admissions[0],
+        }),
+    }, {
+        known: sourceAdmissionSpecs.map(([, , sourceKind, lexeme, matrix]) => ({
+            valid: true,
+            status: "authorized",
+            sourceKind,
+            lexeme,
+            matrix,
+            choice: false,
+        })),
+        ambiguous: {
+            valid: true,
+            status: "authorized",
+            selected: "",
+            choice: true,
+            matrix: "c",
+            kinds: [
+                "nounstem",
+                "compound-nounstem",
+                "temporal-yo-stem",
+                "body-part-stem",
+            ],
+        },
+        selectedAmbiguous: ["authorized", "temporal-yo-stem", false, "c"],
+        conflicting: ["blocked", [
+            "relational-source-kind-conflicts-with-owner-lexical-analysis",
+        ]],
+        copyValid: false,
+    });
 
     s.eq(
         "all explicit negative gates fail closed",

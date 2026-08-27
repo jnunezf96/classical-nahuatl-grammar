@@ -50,6 +50,17 @@ function run(ctx = {}) {
         vncVoice: "active",
         vncOutputScope: "single",
     });
+    const refreshedVncGrammar = ctx.buildClassicalRuleLogicSurfaceFrame({
+        basalUnit: "vnc",
+        stem: "ahci",
+        verbClass: "A",
+        valence: "intransitive",
+        subject: "1sg",
+        mood: "indicative",
+        tense: "present",
+        vncVoice: "active",
+        vncOutputScope: "single",
+    });
 
     const ordinarySource =
         ctx.getClassicalGrammarExactTypedSourceFromSurfaceFrame(ordinaryNnc);
@@ -266,6 +277,45 @@ function run(ctx = {}) {
         }
     );
 
+    const pathwayGroupContractStart = rendering.indexOf(
+        "const CLASSICAL_CAPABILITY_PATHWAY_GROUPS"
+    );
+    const pathwayGroupContractEnd = rendering.indexOf(
+        "function getClassicalGrammarExactTypedSourceFromSurfaceFrame",
+        pathwayGroupContractStart
+    );
+    const pathwayGroupContract = rendering.slice(
+        pathwayGroupContractStart,
+        pathwayGroupContractEnd
+    );
+    s.ok(
+        "the navigator separates readiness into four honest user-facing groups",
+        [
+            'label: "Ready now"',
+            'label: "Choose details"',
+            'label: "Needs another Source"',
+            'label: "Not compatible"',
+        ].every(label => pathwayGroupContract.includes(label))
+            && pathwayGroupContract.indexOf('id: "ready-now"')
+                < pathwayGroupContract.indexOf('id: "choose-details"')
+            && pathwayGroupContract.indexOf('id: "choose-details"')
+                < pathwayGroupContract.indexOf(
+                    'id: "needs-another-source"'
+                )
+            && pathwayGroupContract.indexOf(
+                'id: "needs-another-source"'
+            ) < pathwayGroupContract.indexOf('id: "not-compatible"')
+            && rendering.includes(
+                'targetObject.document.createElement("optgroup")'
+            )
+            && rendering.includes(
+                "option.disabled = pathwayGroup.interactive !== true;"
+            )
+            && rendering.includes(
+                "option.dataset.classicalCapabilityPathwayGroup = pathwayGroup.id;"
+            )
+    );
+
     const incompleteRestore = ctx.applyEntradaUrlStateSnapshot(
         ctx.normalizeEntradaUrlStateSnapshot({
             input: "",
@@ -305,15 +355,19 @@ function run(ctx = {}) {
     ctx.syncClassicalCapabilityNavigator(unresolvedNnc);
     ctx.syncClassicalCapabilityNavigator(vnc);
     const retainedVncSelection = navigatorSelect.value;
+    ctx.syncClassicalCapabilityNavigator(refreshedVncGrammar);
+    const retainedAfterGrammarChoice = navigatorSelect.value;
     ctx.syncClassicalCapabilityNavigator(ordinaryNnc);
     s.eq(
-        "a typed Source pathway survives a transient waiting rerender but not a genuine Source-kind change",
+        "a typed Source pathway survives waiting and equivalent Grammar rerenders but not a genuine Source-kind change",
         {
             afterWaitingRerender: retainedVncSelection,
+            afterGrammarChoice: retainedAfterGrammarChoice,
             afterSourceKindChange: navigatorSelect.value,
         },
         {
             afterWaitingRerender: "vnc:application",
+            afterGrammarChoice: "vnc:application",
             afterSourceKindChange: "",
         }
     );
@@ -376,7 +430,10 @@ function run(ctx = {}) {
             '?.inputRole === "exact-owner-issued-source"'
         )
             && selection.includes(
-                "stageClassicalGrammarTypedSourceOperationBinding(operationId);"
+                "sourceMode && operationId.startsWith(\"vnc:\")"
+            )
+            && selection.includes(
+                "getClassicalVncContinuationBindingSelections({ operationId })"
             )
             && rendering.includes(
                 "function getClassicalSourceCapabilityOperationExecutionReadiness"
@@ -397,6 +454,18 @@ function run(ctx = {}) {
                 '"classical-capability-operation-choices"'
             )
             && rendering.includes(
+                "function getClassicalGrammarTypedSourceNncSelections"
+            )
+            && rendering.includes(
+                "selection.selectedPossessorReduplication === true"
+            )
+            && rendering.includes(
+                "selection.selectedPluralConnector || \"\""
+            )
+            && rendering.includes(
+                "nncSelections || selections || {}"
+            )
+            && rendering.includes(
                 "executeClassicalGrammarTypedSourceOperationBindingFrame?.("
             )
             && rendering.includes(
@@ -410,6 +479,23 @@ function run(ctx = {}) {
             )
             && sourceModeApply.includes(
                 "sourceExecutionReadiness?.executable"
+            )
+            && sourceModeApply.indexOf(
+                "getClassicalVncContinuationBindingSelections("
+            ) < sourceModeApply.indexOf(
+                "getClassicalSourceCapabilityOperationExecutionReadiness("
+            )
+            && sourceModeApply.includes(
+                "...(activeTypedSourceBinding.callerSelections || {})"
+            )
+            && sourceModeApply.includes(
+                "subject: visibleSelections.subject"
+            )
+            && sourceModeApply.includes(
+                "tense: visibleSelections.tense"
+            )
+            && sourceModeApply.includes(
+                "requestedVoice: visibleSelections.requestedVoice"
             )
             && !sourceModeApply.includes(
                 ".refreshClassicalRuleLogicSurfaceFromControl?.()"
@@ -473,6 +559,131 @@ function run(ctx = {}) {
             )
             && events.includes(
                 "targetObject.getActiveClassicalRuleLogicSurfaceFrame?.() || null"
+            )
+    );
+
+    s.ok(
+        "a required Result role is chosen in the role picker while the one action remains Make Result",
+        rendering.includes(
+            'placeholder.textContent = "Select one role";'
+        )
+            && rendering.includes(
+                'button.textContent = needsRole\n        ? "Make Result"'
+            )
+            && !rendering.includes(
+                'button.textContent = needsRole\n        ? "Choose the Result role"'
+            )
+    );
+
+    const resultBindingSyncStart = rendering.indexOf(
+        "function syncClassicalGrammarResultBindingChoices"
+    );
+    const resultBindingSyncEnd = rendering.indexOf(
+        "function getClassicalCapabilityRouteDestination",
+        resultBindingSyncStart
+    );
+    const resultBindingSync = rendering.slice(
+        resultBindingSyncStart,
+        resultBindingSyncEnd
+    );
+    const soleRoleBranchStart = resultBindingSync.indexOf(
+        "if (bindingIds.length === 1)"
+    );
+    const explicitRoleBranchStart = resultBindingSync.indexOf(
+        "} else if (binding?.selectedBindingId)",
+        soleRoleBranchStart
+    );
+    const soleRoleBranch = resultBindingSync.slice(
+        soleRoleBranchStart,
+        explicitRoleBranchStart
+    );
+    const explicitRoleBranch = resultBindingSync.slice(
+        explicitRoleBranchStart,
+        resultBindingSync.indexOf(
+            "if (select.dataset.classicalCapabilityBindingBound",
+            explicitRoleBranchStart
+        )
+    );
+
+    s.ok(
+        "one compatible Result role is retained before history readiness and enters without applying while multiple roles remain explicit",
+        resultBindingSyncStart >= 0
+            && resultBindingSyncEnd > resultBindingSyncStart
+            && resultBindingSync.includes("autoEnterSingle = true")
+            && resultBindingSync.includes(
+                "field.hidden = bindingIds.length < 2;"
+            )
+            && resultBindingSync.includes(
+                "select.disabled = bindingIds.length < 2;"
+            )
+            && soleRoleBranch.includes("const soleBindingId = bindingIds[0]")
+            && soleRoleBranch.includes("soleBindingSelected = Boolean(")
+            && soleRoleBranch.includes(
+                "ActiveClassicalGrammarResultBinding = Object.freeze({"
+            )
+            && soleRoleBranch.includes(
+                "selectedBindingId: soleBindingId"
+            )
+            && soleRoleBranch.includes("autoEnterSingle")
+            && soleRoleBranch.includes(
+                "enterClassicalGrammarResultBindingChoice("
+            )
+            && soleRoleBranch.includes("bindingIds[0]")
+            && soleRoleBranch.includes("{ allowExecution: false }")
+            && !explicitRoleBranch.includes(
+                "enterClassicalGrammarResultBindingChoice("
+            )
+            && resultBindingSync.includes(
+                'select.addEventListener("change", () => {'
+            )
+            && resultBindingSync.includes(
+                "if (soleBindingSelected) {\n        syncClassicalGrammarWorkspaceHistory();"
+            )
+            && rendering.includes(
+                "syncClassicalGrammarResultBindingChoices({\n        autoEnterSingle: false,\n      });"
+            )
+    );
+
+    const frequentativeChoiceSyncStart = rendering.indexOf(
+        "function syncClassicalFrequentativeResultBindingChoice"
+    );
+    const frequentativeChoiceSyncEnd = rendering.indexOf(
+        "function syncClassicalActiveResultBindingChoiceVisibility",
+        frequentativeChoiceSyncStart
+    );
+    const frequentativeChoiceSync = rendering.slice(
+        frequentativeChoiceSyncStart,
+        frequentativeChoiceSyncEnd
+    );
+    const vncBindingControlsStart = rendering.indexOf(
+        "function bindClassicalVncContinuationChoiceControls"
+    );
+    const vncBindingControlsEnd = rendering.indexOf(
+        "function getClassicalCapabilityBindingControlsForChoice",
+        vncBindingControlsStart
+    );
+    const vncBindingControls = rendering.slice(
+        vncBindingControlsStart,
+        vncBindingControlsEnd
+    );
+
+    s.ok(
+        "frequentative ordinary-long exposes and binds the optional repetitions choice even when the owner is already ready",
+        frequentativeChoiceSyncStart >= 0
+            && frequentativeChoiceSync.includes(
+                'operation === "frequentative"'
+            )
+            && frequentativeChoiceSync.includes('"ordinary-long"')
+            && frequentativeChoiceSync.includes(
+                '"classical-rule-logic-frequentative-repetitions"'
+            )
+            && frequentativeChoiceSync.includes("wrapper.hidden = !visible")
+            && frequentativeChoiceSync.includes("control.disabled = !visible")
+            && vncBindingControls.includes(
+                'bindingChoiceIds.add("frequentativeRepetitions")'
+            )
+            && vncBindingControls.includes(
+                "bindingChoiceIds.forEach(choiceId =>"
             )
     );
 

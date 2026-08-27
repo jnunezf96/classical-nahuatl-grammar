@@ -9826,10 +9826,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         return false;
       }
       if (previousSignature && signature !== previousSignature) {
+        targetObject.clearClassicalGrammarResultSourceContinuation?.(
+          "typed-source-committed"
+        );
         targetObject.reconcileClassicalCompositionOperationControls?.("", {
           clearAll: true,
           resetRouteControls: true
         });
+        targetObject.clearClassicalRuleLogicSurfaceBlock?.();
       }
       ClassicalSourcePartsCommittedSignature = signature;
       setClassicalSourcePartsPendingState(false);
@@ -10455,7 +10459,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         const isActive = buttonUnit === activeUnit;
         button.classList.toggle("is-active", isActive);
         button.setAttribute("aria-pressed", String(isActive));
-        button.setAttribute("aria-selected", String(isActive));
+        button.removeAttribute("aria-selected");
       });
       syncClassicalVncSourceGuide(activeUnit);
       syncClassicalNncSourceGuide(activeUnit);
@@ -10511,32 +10515,55 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       }
     }
     function applyClassicalBasalUnitMode(unit = "", options = {}) {
+      const previousUnit = normalizeClassicalBasalUnit(
+        getClassicalBasalUnitFromRuntime()
+      );
+      const requestedUnit = normalizeClassicalBasalUnit(unit);
+      const sourceState = getClassicalSourcePartControlState();
+      const committedSource = String(
+        targetObject.document?.getElementById?.("verb")?.value || ""
+      ).trim().replace(/^_$/u, "");
+      const sourceUnitChanged = options.deferSourceCommit === true
+        && requestedUnit !== previousUnit
+        && Boolean(
+          hasCommittableClassicalSourceParts(sourceState)
+          || committedSource
+        );
       const activeUnit = syncClassicalBasalUnitControls(unit);
-      if (options.syncSurface !== false) {
+      if (options.syncSurface !== false && !sourceUnitChanged) {
         applyClassicalBasalUnitSurface(activeUnit);
       }
       syncClassicalBasalUnitControls(activeUnit);
+      if (sourceUnitChanged) {
+        setClassicalSourcePartsPendingState(true);
+        targetObject.document?.getElementById?.(
+          "classical-source-parts"
+        )?.dispatchEvent?.(new targetObject.Event(
+          "classical-source-commit-state-change"
+        ));
+      }
       return activeUnit;
     }
-    const CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_BY_STEM = Object.freeze({
-      "n-locative": "nounstem",
-      "yan-locative": "perfective-core",
-      "tlah-abundance-place": "nounstem",
-      "co-c-specific-location": "nounstem",
-      "ca-interval-distance": "quantitive",
-      "pa-direction": "nounstem",
-      "pa-frequency": "numeral",
-      "nal-far-bank": "water-stem",
-      "chi-direction-toward": "ground-stem",
-      "ic-downward-direction": "body-part-stem",
-      "teuh-similarity": "nounstem",
-      "tzalan-between": "nounstem",
-      "huic-direction": "nounstem",
-      "ca-means": "nounstem",
-      "icpac-top": "nounstem",
-      "tech-contact": "nounstem",
-      "tlan-bottom": "nounstem",
-      "pan-surface-time": "nounstem"
+    const CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_LABELS = Object.freeze({
+      "nounstem": "nounstem",
+      "varietal-nounstem": "varietal nounstem",
+      "compound-nounstem": "compound nounstem",
+      "temporal-yo-stem": "temporal -yō stem",
+      "body-part-stem": "body-part stem",
+      "quantitive": "quantitive",
+      "hueh": "hueh distance stem",
+      "lexical": "lexical distance stem",
+      "particle": "particle",
+      "relational-compound": "relational compound",
+      "can-compound": "cān compound",
+      "ican": "īcan compound",
+      "numeral": "numeral",
+      "water-stem": "water stem",
+      "ground-stem": "ground stem",
+      "rare-nounstem": "rare nounstem",
+      "negative-particle": "negative particle",
+      "temporal-nounstem": "temporal nounstem",
+      "modified-structure": "modified structure"
     });
     const CLASSICAL_RELATIONAL_NNC_STEM_LABELS = Object.freeze({
       "huan-company": "huān · company",
@@ -10577,15 +10604,21 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         optionField: byId("classical-relational-nnc-usage-field"),
         sourceFormation: byId("classical-relational-nnc-source-formation"),
         sourceFormationField: byId("classical-relational-nnc-source-formation-field"),
+        sourceKind: byId("classical-relational-nnc-source-kind"),
+        sourceKindField: byId("classical-relational-nnc-source-kind-field"),
         pertinencySource: byId("classical-relational-nnc-pertinency-source"),
         pertinencySourceField: byId("classical-relational-nnc-pertinency-source-field"),
         state: byId("classical-relational-nnc-state"),
         stateField: byId("classical-relational-nnc-state-field"),
+        derivedState: byId("classical-relational-nnc-derived-state"),
+        derivedStateField: byId("classical-relational-nnc-derived-state-field"),
         possessor: byId("classical-relational-nnc-possessor"),
         possessorField: byId("classical-relational-nnc-possessor-field"),
         subjectMode: byId("classical-relational-nnc-subject-mode"),
         subject: byId("classical-relational-nnc-subject"),
         subjectField: byId("classical-relational-nnc-subject-field"),
+        derivedSubject: byId("classical-relational-nnc-derived-subject"),
+        derivedSubjectField: byId("classical-relational-nnc-derived-subject-field"),
         affective: byId("classical-relational-nnc-affective"),
         affectiveField: byId("classical-relational-nnc-affective-field")
       };
@@ -10630,7 +10663,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       );
       const verbClass = String(
         targetObject.document?.getElementById?.("classical-rule-logic-class")?.value
-        || "B"
+        || ""
       );
       const sourceSubject = String(
         targetObject.document?.getElementById?.("classical-rule-logic-subject")?.value
@@ -10715,6 +10748,109 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         ...vncProfile,
       });
     }
+    function issueClassicalRelationalNncUiSourceAdmission({
+      resetSelection = false,
+      updateControl = true,
+    } = {}) {
+      const elements = getClassicalRelationalNncUiElements();
+      const selectedStem = elements.stem?.selectedOptions?.[0] || null;
+      const stemId = String(
+        selectedStem?.dataset?.classicalRelationalStemId || ""
+      );
+      const operation = String(
+        elements.operation?.value || "relational-nnc"
+      );
+      const option = operation === "compound-embed"
+        ? "option-four"
+        : String(elements.option?.value || "option-two");
+      const sourceFormation = String(
+        elements.sourceFormation?.value || "plain-nounstem"
+      );
+      const sourceParts = getClassicalSourcePartControlState();
+      const sourceEmbedStem = sourceParts.sourceEmbedStem;
+      const derivedSource = ["n-locative", "yan-locative"].includes(stemId)
+        && option === "option-two"
+        && sourceFormation !== "plain-nounstem";
+      if (
+        operation !== "relational-nnc"
+        || option === "option-one"
+        || derivedSource
+        || typeof targetObject.issueClassicalNahuatlRelationalSourceAdmissionFrame
+          !== "function"
+        || typeof targetObject.isClassicalNahuatlRelationalSourceAdmissionFrame
+          !== "function"
+      ) {
+        if (elements.sourceKindField) elements.sourceKindField.hidden = true;
+        if (elements.sourceKind) elements.sourceKind.disabled = true;
+        return null;
+      }
+      const signature = [stemId, sourceFormation, sourceEmbedStem].join("|");
+      const priorSignature = String(
+        elements.sourceKind?.dataset?.classicalRelationalSourceSignature || ""
+      );
+      const sourceChanged = signature !== priorSignature;
+      const requestedSourceKind = resetSelection || sourceChanged
+        ? ""
+        : String(elements.sourceKind?.value || "");
+      const frame = targetObject
+        .issueClassicalNahuatlRelationalSourceAdmissionFrame({
+          stemId,
+          sourceEmbedStem,
+          sourceFormation,
+          requestedSourceKind,
+        });
+      if (!targetObject.isClassicalNahuatlRelationalSourceAdmissionFrame(frame)) {
+        if (elements.sourceKindField) elements.sourceKindField.hidden = true;
+        if (elements.sourceKind) elements.sourceKind.disabled = true;
+        return null;
+      }
+      if (updateControl && elements.sourceKind) {
+        const currentOptions = Array.from(elements.sourceKind.options || [])
+          .map(optionElement => optionElement.value)
+          .join("|");
+        const nextOptions = ["", ...frame.allowedSourceKinds].join("|");
+        if (currentOptions !== nextOptions) {
+          elements.sourceKind.replaceChildren();
+          const placeholder = targetObject.document.createElement("option");
+          placeholder.value = "";
+          placeholder.textContent = "Choose the Source type";
+          elements.sourceKind.appendChild(placeholder);
+          frame.allowedSourceKinds.forEach(sourceKind => {
+            const sourceKindOption = targetObject.document.createElement("option");
+            sourceKindOption.value = sourceKind;
+            sourceKindOption.textContent =
+              CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_LABELS[sourceKind]
+              || sourceKind.replace(/-/gu, " ");
+            elements.sourceKind.appendChild(sourceKindOption);
+          });
+        }
+        elements.sourceKind.value = frame.selectedSourceKind || "";
+        elements.sourceKind.dataset.classicalRelationalSourceSignature =
+          signature;
+        elements.sourceKind.dataset.classicalRelationalSourceAdmission =
+          frame.selectionRequired ? "choice-required" : "owner-selected";
+      }
+      const sourceKindChoiceAvailable = Boolean(
+        frame.authorizationStatus === "authorized"
+        && frame.allowedSourceKinds.length > 1
+        && frame.lexicalAnalysisApplied !== true
+      );
+      if (elements.sourceKindField) {
+        elements.sourceKindField.hidden = !sourceKindChoiceAvailable;
+      }
+      if (elements.sourceKind) {
+        elements.sourceKind.disabled = !sourceKindChoiceAvailable;
+      }
+      const matrixInput = getClassicalSourcePartControlElements().matrixInput;
+      if (
+        matrixInput
+        && frame.authorizationStatus === "authorized"
+        && frame.sourceMatrixStem
+      ) {
+        matrixInput.value = frame.sourceMatrixStem;
+      }
+      return frame;
+    }
     function getClassicalRelationalNncUiRequest() {
       const elements = getClassicalRelationalNncUiElements();
       const selectedStem = elements.stem?.selectedOptions?.[0] || null;
@@ -10743,13 +10879,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         selectedSourceFormation,
         sourceEmbedStem,
       );
+      const sourceAdmission = ownerIssuedDerivedSource
+        ? null
+        : issueClassicalRelationalNncUiSourceAdmission({
+          updateControl: true,
+        });
       const sourceKind = option === "option-one"
         ? "possessor"
         : selectedSourceFormation === "can-interrogative"
           ? "interrogative-empty"
           : selectedSourceFormation === "can-modified"
             ? "interrogative-modifier"
-            : CLASSICAL_RELATIONAL_NNC_SOURCE_KIND_BY_STEM[stemId] || "nounstem";
+            : sourceAdmission?.selectedSourceKind || "";
       const state = operation === "relational-nnc" && option === "option-one"
         ? "possessive"
         : String(elements.state?.value || "absolutive");
@@ -10771,7 +10912,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
               sourceVoice: "active",
             }
             : {}),
-          sourceMode,
+              sourceMode,
+              sourceEmbedStem,
+              sourceMatrixStem:
+                sourceAdmission?.sourceMatrixStem || sourceMatrixStem,
+              ...(sourceAdmission?.sourceLexemeId
+                ? { sourceLexemeId: sourceAdmission.sourceLexemeId }
+                : {}),
           ...(ownerIssuedDerivedSource
             ? { upstreamResult: ownerIssuedDerivedSource }
             : operation === "relational-nnc"
@@ -10781,10 +10928,6 @@ export function createUiComposerRuntime(targetObject = globalThis) {
                   : selectedSourceFormation === "can-interrogative"
                     ? ""
                     : sourceEmbedStem,
-                sourceEmbedStem: selectedSourceFormation === "can-interrogative"
-                  ? ""
-                  : sourceEmbedStem,
-                sourceMatrixStem,
               }
               : operation === "compound-embed"
                 ? {
@@ -11034,6 +11177,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         elements.sourceFormation?.value || "plain-nounstem"
       );
       applyClassicalRelationalNncSourceStructure(selectedStem, option);
+      issueClassicalRelationalNncUiSourceAdmission();
       const sourceFormationAvailable =
         operation === "relational-nnc"
         && ["n-locative", "yan-locative"].includes(selectedStemId)
@@ -11066,6 +11210,16 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         elements.state.disabled = fixedState;
       }
       if (elements.stateField) elements.stateField.hidden = fixedState;
+      if (elements.derivedStateField) {
+        elements.derivedStateField.hidden = !fixedState;
+      }
+      if (elements.derivedState) {
+        elements.derivedState.textContent = fixedState
+          ? `${state} · fixed by Source formation`
+          : "";
+        elements.derivedState.dataset.classicalRelationalNncDerivedValue =
+          fixedState ? state : "";
+      }
       if (elements.optionField) {
         elements.optionField.hidden = ["associated-entity", "pertinency"].includes(
           operation
@@ -11083,7 +11237,18 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         elements.possessor.disabled = fixedThird;
         if (fixedThird) elements.possessor.value = "3sg";
       }
-      if (elements.subjectField) elements.subjectField.hidden = elements.subjectMode?.value !== "normal";
+      const subjectIsDerived = elements.subjectMode?.value !== "normal";
+      if (elements.subjectField) elements.subjectField.hidden = subjectIsDerived;
+      if (elements.derivedSubjectField) {
+        elements.derivedSubjectField.hidden = !subjectIsDerived;
+      }
+      if (elements.derivedSubject) {
+        elements.derivedSubject.textContent = subjectIsDerived
+          ? "Ø · adverbialized (no overt subject)"
+          : "";
+        elements.derivedSubject.dataset.classicalRelationalNncDerivedValue =
+          subjectIsDerived ? "Ø" : "";
+      }
       if (elements.affectiveField) {
         elements.affectiveField.hidden = operation !== "relational-nnc";
       }
@@ -11135,6 +11300,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             source: "classical-relational-nnc-operation"
           });
         }));
+      elements.sourceKind?.addEventListener("change", () => {
+        issueClassicalRelationalNncUiSourceAdmission();
+        commitClassicalSourcePartsEvaluation({
+          force: true,
+          source: "classical-relational-nnc-source-kind"
+        });
+      });
       nounstemSelect.dataset.classicalRelationalNncBound = "true";
       syncClassicalRelationalNncUiControls();
       return true;
@@ -11150,7 +11322,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       initClassicalRelationalNncUiControls();
       buttons.forEach(button => {
         button.addEventListener("click", () => {
-          applyClassicalBasalUnitMode(button.getAttribute("data-classical-basal-unit") || "");
+          applyClassicalBasalUnitMode(
+            button.getAttribute("data-classical-basal-unit") || "",
+            { deferSourceCommit: true }
+          );
         });
       });
       const sourceInput = targetObject.document.getElementById("verb");
@@ -11192,6 +11367,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
           && event?.target === embedInput;
         if (relationalEmbedEdit && root?.dataset) {
           root.dataset.classicalRelationalNncLastEmbed = normalizeClassicalFuenteSourcePartStem(embedInput?.value || "");
+          issueClassicalRelationalNncUiSourceAdmission({
+            resetSelection: true,
+          });
+          syncClassicalBuiltSourceToVerbInput();
         }
         if (event?.isTrusted === true && nncSourceExample && !relationalEmbedEdit) {
           nncSourceExample.value = "";
@@ -12341,7 +12520,9 @@ export function createUiComposerRuntime(targetObject = globalThis) {
         if (typeof targetObject.updateDerivationTypeControl === "function") {
           targetObject.updateDerivationTypeControl();
         }
-        targetObject.generateNuclearClauseSurface();
+        targetObject.generateNuclearClauseSurface({
+          renderOutputs: false
+        });
         const verbMeta = getVerbInputMeta();
         targetObject.renderActiveConjugations({
           verb: verbMeta.displayVerb,

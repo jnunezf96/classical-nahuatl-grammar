@@ -7,7 +7,7 @@ import {
 } from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   installClassicalPlayWitness,
-} from "../diagnostics/classical_play_witness.mjs?v=20260825-class-d-336";
+} from "../diagnostics/classical_play_witness.mjs?v=20260826-relational-role-340";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
@@ -449,7 +449,6 @@ export function createClassicalShellModule(targetObject = globalThis) {
                 data-classical-machine-generated="rank-classification"
                 data-classical-workbench-stage="source"
                 data-classical-stage-authority="false"
-                role="tabpanel"
                 aria-labelledby="panel-stack-tab-inputs"
                 autocomplete="off"
               >
@@ -787,6 +786,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                       class="classical-source-identity-controls"
                       id="classical-source-identity-controls"
                       data-classical-source-identity-controls="vnc"
+                      role="group"
                       aria-label="Identified source properties"
                     >
                       <label class="classical-rule-control" data-classical-source-identity-control="valence">
@@ -1682,6 +1682,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         <label class="classical-rule-control" data-construction-for="nominal-embed-vnc" hidden>
                           <span class="classical-rule-control__label">Embed role</span>
                           <select id="classical-nominal-embed-role" data-classical-rule-logic-control="nominal-embed-role">
+                            <option value="" selected>Choose embed role</option>
                             <option value="object">incorporated object</option>
                             <option value="adverb">incorporated adverb</option>
                             <option value="complement">incorporated complement</option>
@@ -2905,14 +2906,14 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         id="classical-capability-navigator-binding-field"
                         hidden
                       >
-                        <span class="classical-rule-control__label">Use this Result as</span>
+                        <span class="classical-rule-control__label">Choose the Result role</span>
                         <select
                           id="classical-capability-navigator-binding"
                           data-classical-capability-binding-choice="true"
                           data-classical-grammar-authority="false"
                           disabled
                         >
-                          <option value="" selected>Choose its exact role</option>
+                          <option value="" selected>Select one role</option>
                         </select>
                       </label>
                       <p
@@ -3378,6 +3379,12 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="perfective-impersonal-tla">tla-impersonal perfective core</option>
                           </select>
                         </label>
+                        <label class="classical-rule-control" id="classical-relational-nnc-source-kind-field" hidden>
+                          <span class="classical-rule-control__label">Embedded Source type</span>
+                          <select id="classical-relational-nnc-source-kind" data-classical-relational-nnc-control="source-kind">
+                            <option value="" selected>Choose the Source type</option>
+                          </select>
+                        </label>
                         <label class="classical-rule-control" id="classical-relational-nnc-pertinency-source-field" hidden>
                           <span class="classical-rule-control__label">Pertinency source</span>
                           <select id="classical-relational-nnc-pertinency-source" data-classical-relational-nnc-control="pertinency-source">
@@ -3391,6 +3398,20 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                             <option value="absolutive" selected>absolutive</option>
                             <option value="possessive">possessive</option>
                           </select>
+                        </label>
+                        <label
+                          class="classical-rule-control"
+                          id="classical-relational-nnc-derived-state-field"
+                          data-classical-relational-nnc-derived-fact="state"
+                          data-classical-grammar-authority="false"
+                          hidden
+                        >
+                          <span class="classical-rule-control__label">State</span>
+                          <output
+                            class="classical-rule-control__derived-value"
+                            id="classical-relational-nnc-derived-state"
+                            aria-live="polite"
+                          ></output>
                         </label>
                         <label class="classical-rule-control" id="classical-relational-nnc-possessor-field">
                           <span class="classical-rule-control__label">Possessor</span>
@@ -3418,11 +3439,26 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <select id="classical-relational-nnc-subject" data-classical-relational-nnc-control="subject">
                             <option value="1sg">1sg</option>
                             <option value="2sg">2sg</option>
+                            <option value="3sg">3sg</option>
                             <option value="3common" selected>3 common</option>
                             <option value="1pl">1pl</option>
                             <option value="2pl">2pl</option>
                             <option value="3pl">3pl</option>
                           </select>
+                        </label>
+                        <label
+                          class="classical-rule-control"
+                          id="classical-relational-nnc-derived-subject-field"
+                          data-classical-relational-nnc-derived-fact="subject"
+                          data-classical-grammar-authority="false"
+                          hidden
+                        >
+                          <span class="classical-rule-control__label">Subject</span>
+                          <output
+                            class="classical-rule-control__derived-value"
+                            id="classical-relational-nnc-derived-subject"
+                            aria-live="polite"
+                          ></output>
                         </label>
                         <label class="classical-rule-control" id="classical-relational-nnc-affective-field">
                           <span class="classical-rule-control__label">Affective</span>
@@ -4440,7 +4476,12 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         if (!pane) {
           return;
         }
-        pane.setAttribute("role", layout === "compact" ? "tabpanel" : "region");
+        const isNativeFormPane = String(pane.tagName || "").toLowerCase() === "form";
+        if (isNativeFormPane) {
+          pane.removeAttribute("role");
+        } else {
+          pane.setAttribute("role", layout === "compact" ? "tabpanel" : "region");
+        }
         pane.setAttribute(
           "aria-labelledby",
           layout === "compact" ? stage.tabId : stage.headingId
@@ -4873,6 +4914,10 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       );
       documentObject.getElementById("verb-entry-clear")?.addEventListener(
         "click",
+        scheduleSync
+      );
+      root.addEventListener(
+        "classical-source-commit-state-change",
         scheduleSync
       );
       ["classical-vnc-source-stem", "classical-nnc-source-example"]

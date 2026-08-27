@@ -2,7 +2,7 @@
 // semantics. The projection groups repeatable validation mechanics only; each
 // semantic owner retains independent atoms, routes, receipts, and proof.
 
-import { createPlaceGentilicNncApi } from "../nnc/place_gentilic/place_gentilic.mjs?v=20260825-class-d-336";
+import { createPlaceGentilicNncApi } from "../nnc/place_gentilic/place_gentilic.mjs?v=20260826-relational-role-340";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

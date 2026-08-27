@@ -905,6 +905,7 @@ export function createVncApi(targetObject = globalThis) {
       }
       options = targetObject.sanitizeNuclearClauseSurfaceOptions(options);
       const silent = options.silent === true;
+      const renderOutputs = options.renderOutputs !== false;
       const pers1Control = targetObject.document.getElementById("subject-prefix");
       const pers2Control = targetObject.document.getElementById("subject-suffix");
       const troncoControl = targetObject.document.getElementById("verb");
@@ -948,10 +949,12 @@ export function createVncApi(targetObject = globalThis) {
             verb: ""
           });
           targetObject.updateVerbDisambiguation("");
-          targetObject.renderAllOutputs({
-            verb: candidate,
-            objectPrefix: ""
-          });
+          if (renderOutputs) {
+            targetObject.renderAllOutputs({
+              verb: candidate,
+              objectPrefix: ""
+            });
+          }
         }
         return particleResult;
       }
@@ -1020,11 +1023,13 @@ export function createVncApi(targetObject = globalThis) {
               verb: ""
             });
             targetObject.updateVerbDisambiguation("");
-            targetObject.renderAllOutputs({
-              verb: targetObject.getVerbInputMeta().displayVerb,
-              objectPrefix: obj1Base,
-              tense: tiempo
-            });
+            if (renderOutputs) {
+              targetObject.renderAllOutputs({
+                verb: targetObject.getVerbInputMeta().displayVerb,
+                objectPrefix: obj1Base,
+                tense: tiempo
+              });
+            }
           },
           onEntradaTroncoSync: ({
             siguienteValorTronco
@@ -1073,11 +1078,13 @@ export function createVncApi(targetObject = globalThis) {
               stemProvenance: procedenciaTronco,
               tense: tiempo
             });
-            targetObject.renderAllOutputs({
-              verb: troncoRender,
-              objectPrefix: obj1Base,
-              tense: tiempo
-            });
+            if (renderOutputs) {
+              targetObject.renderAllOutputs({
+                verb: troncoRender,
+                objectPrefix: obj1Base,
+                tense: tiempo
+              });
+            }
           }
         }
       });
