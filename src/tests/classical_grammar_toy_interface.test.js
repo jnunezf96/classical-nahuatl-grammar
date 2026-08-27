@@ -25,6 +25,9 @@ function run() {
     const witness = read(
         "src/ui/diagnostics/classical_play_witness.mjs"
     );
+    const sessionRecorder = read(
+        "src/ui/diagnostics/classical_session_recorder.mjs"
+    );
     const sourceSyncStart = shell.indexOf(
         "function syncClassicalSourceNestingStructure"
     );
@@ -154,6 +157,32 @@ function run() {
         && witness.includes("grammarAuthority: false")
         && witness.includes("networkTransmission: false")
         && !/[.]fetch\(|sendBeacon|WebSocket|XMLHttpRequest/u.test(witness)
+    );
+
+    suite.ok(
+        "private play recording requires consent, masks grammar, loads on Start, and never becomes an authority or upload path",
+        shell.includes("installClassicalSessionRecorder(targetObject, root)")
+        && shell.includes('id="classical-session-recorder-consent"')
+        && shell.includes('id="classical-session-recorder-start"')
+        && shell.includes('id="classical-session-recorder-stop"')
+        && shell.includes('id="classical-session-recorder-download"')
+        && shell.includes('id="classical-session-recorder-discard"')
+        && shell.includes("Everyone being observed agreed.")
+        && sessionRecorder.includes('get("manufacturer") === "1"')
+        && sessionRecorder.includes("await loadRecorder()")
+        && sessionRecorder.includes("maskAllInputs: true")
+        && sessionRecorder.includes('maskTextSelector: "#classical-workbench"')
+        && sessionRecorder.includes('"#classical-play-witness-projection"')
+        && sessionRecorder.includes('"#classical-source-panel"')
+        && sessionRecorder.includes('"#classical-authority-panel"')
+        && sessionRecorder.includes('"#classical-result-panel"')
+        && sessionRecorder.includes("blockSelector: PRIVATE_BLOCK_SELECTOR")
+        && sessionRecorder.includes("inlineStylesheet: false")
+        && sessionRecorder.includes("persistentStorage: false")
+        && sessionRecorder.includes("networkTransmission: false")
+        && sessionRecorder.includes("grammarAuthority: false")
+        && !/[.]fetch\(|sendBeacon|WebSocket|XMLHttpRequest|localStorage|sessionStorage|indexedDB/u
+            .test(sessionRecorder)
     );
 
     suite.ok(

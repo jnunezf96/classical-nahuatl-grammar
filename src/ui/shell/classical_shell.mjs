@@ -9,6 +9,9 @@ import {
   installClassicalPlayWitness,
 } from "../diagnostics/classical_play_witness.mjs?v=20260826-relational-role-340";
 import {
+  installClassicalSessionRecorder,
+} from "../diagnostics/classical_session_recorder.mjs?v=20260827-private-play-recorder-362";
+import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
   renderLesson1ReaderGuidance,
@@ -5339,11 +5342,43 @@ ${steps}
           </p>
           <script
             type="application/json"
+            class="rr-block"
             id="classical-play-witness-projection"
             data-classical-play-witness-projection="off"
             data-classical-presentation-only="true"
             data-classical-grammar-authority="false"
           >{"kind":"classical-grammar-toy-play-witness","enabled":false}</script>
+          <section
+            class="classical-session-recorder"
+            id="classical-session-recorder"
+            data-classical-session-recorder-controls="true"
+            data-classical-presentation-only="true"
+            data-classical-grammar-authority="false"
+            aria-labelledby="classical-session-recorder-heading"
+            hidden
+          >
+            <h3 id="classical-session-recorder-heading">Private play recording</h3>
+            <p>
+              Off by default. Typed and displayed grammar is masked. Nothing is sent or stored by the site; a stopped recording stays in this tab until you download it locally or discard it.
+            </p>
+            <label class="classical-session-recorder__consent">
+              <input type="checkbox" id="classical-session-recorder-consent" />
+              <span>Everyone being observed agreed.</span>
+            </label>
+            <div class="classical-session-recorder__actions" aria-label="Private play recording actions">
+              <button type="button" id="classical-session-recorder-start" data-classical-session-recorder-action="start" disabled>Start recording</button>
+              <button type="button" id="classical-session-recorder-stop" data-classical-session-recorder-action="stop" disabled>Stop</button>
+              <button type="button" id="classical-session-recorder-download" data-classical-session-recorder-action="download" disabled>Download locally</button>
+              <button type="button" id="classical-session-recorder-discard" data-classical-session-recorder-action="discard" disabled>Discard</button>
+            </div>
+            <p
+              class="classical-session-recorder__status"
+              id="classical-session-recorder-status"
+              data-classical-session-recorder-status="off"
+              role="status"
+              aria-live="polite"
+            >Off. Nothing is recorded or sent.</p>
+          </section>
         </div>
       </details>\n`;
     }
@@ -5390,6 +5425,7 @@ ${steps}
         root.dataset.classicalToyAuthority = "false";
         installClassicalWorkbenchPresentation();
         installClassicalPlayWitness(targetObject, root);
+        installClassicalSessionRecorder(targetObject, root);
       }
       const footerRoot = targetObject.document.getElementById("classical-footer-root");
       if (footerRoot && footerRoot.dataset.classicalShellInstalled !== "true") {
