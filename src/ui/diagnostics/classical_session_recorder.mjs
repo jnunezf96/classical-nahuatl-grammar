@@ -2,7 +2,7 @@
 
 import {
   getClassicalObservationControlId,
-} from "./classical_play_witness.mjs?v=20260828-public-play-release-363";
+} from "./classical_play_witness.mjs?v=20260828-private-play-study-handoff-364";
 
 export const CLASSICAL_SESSION_RECORDER_KIND =
   "classical-grammar-private-play-recording";
@@ -38,6 +38,8 @@ const RRWEB_RECORDER_MODULE_URL = new URL(
 ).href;
 
 const CONTROL_IDS = Object.freeze({
+  studyEntry: "classical-session-recorder-entry",
+  setup: "classical-session-recorder-setup",
   section: "classical-session-recorder",
   consent: "classical-session-recorder-consent",
   start: "classical-session-recorder-start",
@@ -217,6 +219,7 @@ export function createClassicalSessionRecorder({
       ? "true"
       : "false";
     installedRoot.dataset.classicalSessionRecorderAuthority = "false";
+    if (current.studyEntry) current.studyEntry.hidden = !available;
     if (current.section) current.section.hidden = !available;
     if (!available) return;
     const consentGranted = current.consent?.checked === true;
@@ -243,10 +246,22 @@ export function createClassicalSessionRecorder({
         off: "Off. Nothing is recorded or sent.",
         loading: "Preparing the private recorder…",
         recording: "Recording masked play in this tab only.",
-        stopped: `Stopped. ${events.length} masked events are ready locally.`,
+        stopped: `Stopped. ${events.length} masked events are ready locally. Download the JSON, then give it to the person who invited you.`,
         error: "The recorder could not start. Nothing was saved.",
       })[recorderStatus] || "Recorder unavailable.";
     }
+  };
+
+  const revealControls = () => {
+    if (!available) return false;
+    const current = controls();
+    const advanced = documentObject?.getElementById?.(
+      "classical-grammar-advanced"
+    );
+    if (advanced) advanced.open = true;
+    current.section?.scrollIntoView?.({ block: "start" });
+    current.consent?.focus?.({ preventScroll: true });
+    return true;
   };
 
   const observeSensitiveInput = event => {
@@ -421,6 +436,7 @@ export function createClassicalSessionRecorder({
     updateControls();
     if (!available || controlsInstalled) return available;
     const current = controls();
+    current.setup?.addEventListener?.("click", revealControls);
     current.consent?.addEventListener?.("change", updateControls);
     current.start?.addEventListener?.("click", () => { void start(); });
     current.stop?.addEventListener?.("click", stop);

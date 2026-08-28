@@ -19823,6 +19823,50 @@ body.is-language-classical #classical-workbench #classical-app-root
   font-family: var(--font-body);
 }
 
+body.is-language-classical #classical-workbench
+  .classical-session-recorder-entry[hidden] {
+  display: none !important;
+}
+
+body.is-language-classical #classical-workbench
+  #classical-app-root[data-classical-session-recorder-available="true"]
+  > .classical-session-recorder-entry:not([hidden]) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--workbench-line-strong);
+  border-radius: var(--workbench-control-radius);
+  background: var(--workbench-paper-muted);
+  color: var(--workbench-muted);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-session-recorder-entry :is(h2, p) {
+  margin: 0;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-session-recorder-entry h2 {
+  color: var(--workbench-teal-deep);
+  font-family: var(--font-body);
+  font-size: var(--classical-shell-button-size);
+}
+
+body.is-language-classical #classical-workbench
+  .classical-session-recorder-entry p {
+  margin-top: 3px;
+  font-size: var(--sgr-type-support);
+  line-height: 1.35;
+}
+
+body.is-language-classical #classical-workbench
+  .classical-session-recorder-entry button {
+  flex: 0 0 auto;
+}
+
 body.is-language-classical #classical-workbench #classical-app-root
   > .classical-grammar-advanced > .classical-grammar-advanced__summary {
   padding: 9px 11px;
@@ -19923,6 +19967,13 @@ body.is-language-classical #classical-workbench
 }
 
 @media (max-width: 820px) {
+  body.is-language-classical #classical-workbench
+    #classical-app-root[data-classical-session-recorder-available="true"]
+    > .classical-session-recorder-entry:not([hidden]) {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
   body.is-language-classical #classical-workbench #classical-authority-panel
     .classical-capability-operation-plan__facts,
   body.is-language-classical #classical-workbench #classical-app-root

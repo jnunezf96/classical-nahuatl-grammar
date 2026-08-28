@@ -55,6 +55,9 @@ function makeRoot() {
 }
 
 const sentinel = "privacywitnesscaqui";
+const studyEntry = makeControl({ id: "classical-session-recorder-entry" });
+studyEntry.hidden = true;
+const setup = makeControl({ id: "classical-session-recorder-setup" });
 const section = makeControl({ id: "classical-session-recorder" });
 section.hidden = true;
 const consent = makeControl({ id: "classical-session-recorder-consent" });
@@ -63,11 +66,19 @@ const stop = makeControl({ id: "classical-session-recorder-stop" });
 const download = makeControl({ id: "classical-session-recorder-download" });
 const discard = makeControl({ id: "classical-session-recorder-discard" });
 const status = makeControl({ id: "classical-session-recorder-status" });
+const advanced = makeControl({ id: "classical-grammar-advanced" });
+advanced.open = false;
+let sectionScrollCalls = 0;
+let consentFocusCalls = 0;
+section.scrollIntoView = () => { sectionScrollCalls += 1; };
+consent.focus = () => { consentFocusCalls += 1; };
 const sourceInput = makeControl({
   id: "classical-source-whole",
   value: sentinel,
 });
 const controls = new Map([
+  studyEntry,
+  setup,
   section,
   consent,
   start,
@@ -75,6 +86,7 @@ const controls = new Map([
   download,
   discard,
   status,
+  advanced,
 ].map(control => [control.id, control]));
 const documentObject = {
   getElementById: id => controls.get(id) || null,
@@ -166,7 +178,12 @@ assert.equal(recorder.kind, CLASSICAL_SESSION_RECORDER_KIND);
 assert.equal(recorder.install(root), true);
 assert.equal(root.dataset.classicalSessionRecorder, "off");
 assert.equal(root.dataset.classicalSessionRecorderAuthority, "false");
+assert.equal(studyEntry.hidden, false);
 assert.equal(section.hidden, false);
+setup.dispatch("click");
+assert.equal(advanced.open, true);
+assert.equal(sectionScrollCalls, 1);
+assert.equal(consentFocusCalls, 1);
 assert.equal(start.disabled, true);
 assert.equal(loaderCalls, 0);
 assert.equal(playStartCalls, 0);
@@ -202,6 +219,7 @@ assert.equal(recorder.stop(), true);
 assert.equal(stopCalls, 1);
 assert.equal(playStopCalls, 1);
 assert.equal(root.dataset.classicalSessionRecorder, "stopped");
+assert.match(status.textContent, /give it to the person who invited you/u);
 assert.equal(download.disabled, false);
 assert.equal(await recorder.download(), true);
 assert.ok(localDownload.filename.startsWith("grammar-os-private-play-"));

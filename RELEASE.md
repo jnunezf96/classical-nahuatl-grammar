@@ -1,8 +1,8 @@
-# Grammar OS v1.2.0 release
+# Grammar OS v1.2.1 release
 
-Release name: **Public Play Release**
+Release name: **Private Play Study Handoff**
 
-Browser build: **20260828-public-play-release-363**
+Browser build: **20260828-private-play-study-handoff-364**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
@@ -16,7 +16,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.0/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.1/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
@@ -31,6 +31,15 @@ Publish only that `site/` directory. Do not publish the repository root.
 - Return 404 for development-only paths such as `/docs/`, `/scripts/`, and `/src/tests/`.
 
 The generated release manifest lists every public file and its SHA-256 digest.
+
+## Private play study handoff
+
+- The consented study URL now presents a visible setup entry before the grammar
+  workspace.
+- Setup opens the existing Advanced recorder and focuses its consent control.
+- Stopped recordings remain local and tell participants to download the JSON
+  and give it to the person who invited them.
+- The ordinary public URL does not expose the study entry.
 
 ## GitHub Pages boundary
 
