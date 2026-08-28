@@ -101,6 +101,17 @@ function run(ctx = {}) {
         bindingEntryStart,
         bindingEntryEnd
     );
+    const resultContinueStart = rendering.indexOf(
+        "function useClassicalWholeCanvasResultAsNextSource"
+    );
+    const resultContinueEnd = rendering.indexOf(
+        "function showClassicalWholeCanvasWitnesses",
+        resultContinueStart
+    );
+    const resultContinueRendering = rendering.slice(
+        resultContinueStart,
+        resultContinueEnd
+    );
 
     s.ok(
         "the workbench contains one collapsed, non-authoritative build history after the panel grid",
@@ -163,6 +174,31 @@ function run(ctx = {}) {
             "capture.surface",
             "capture.formula",
         ].some(fragment => historyRendering.includes(fragment))
+    );
+
+    s.ok(
+        "Continue retains an owner-issued base Result in build history without duplicating an already-applied Result",
+        resultContinueRendering.includes(
+            "retainContinuedApplicationResultInHistory"
+        )
+        && resultContinueRendering.includes(
+            ".beginClassicalGrammarWorkspaceUserAction("
+        )
+        && resultContinueRendering.includes(
+            ".completeClassicalGrammarWorkspaceUserAction("
+        )
+        && resultContinueRendering.includes(
+            "if (node) syncClassicalGrammarWorkspaceHistory();"
+        )
+        && resultContinueRendering.includes(
+            "if (continued) {"
+        )
+        && resultContinueRendering.includes(
+            "getClassicalSgrOwnerIssuedProjection(surfaceFrame)"
+        )
+        && resultContinueRendering.includes(
+            "continuedOwnerProjection?.applicationResult || null"
+        )
     );
 
     s.ok(
@@ -288,6 +324,69 @@ function run(ctx = {}) {
             "capture.surface",
             "capture.formula",
         ].some(fragment => historyRendering.includes(fragment))
+    );
+
+    s.ok(
+        "nominal construction offers only owner-compatible NNC embed Results inline while the full build history remains intact",
+        shell.includes('id="classical-capability-required-result-field"')
+        && shell.includes('id="classical-capability-required-result"')
+        && shell.includes('id="classical-capability-required-result-use"')
+        && shell.includes(">Add NNC embed Result</label>")
+        && shell.includes(">Use this Result</button>")
+        && !shell.includes("nominal-embed-constituent")
+        && historyRendering.includes(
+            "function syncClassicalRequiredResultChooser(snapshot = null)"
+        )
+        && historyRendering.includes(
+            'binding?.family === "formation-result"'
+        )
+        && historyRendering.includes(
+            'binding.operationId === "grammar:nominal-construction"'
+        )
+        && historyRendering.includes(
+            'binding.selectedBindingId === "nominal-embed:matrix-vnc-result"'
+        )
+        && historyRendering.includes(
+            "exactResult === binding.exactResult"
+        )
+        && historyRendering.includes(
+            "issueClassicalFormationResultCompletionEvaluation("
+        )
+        && historyRendering.includes(
+            "isClassicalAuthorizedFormationResultCompletion("
+        )
+        && historyRendering.includes(
+            'completion.authorizationStatus === "authorized"'
+        )
+        && historyRendering.includes(
+            "completion.selectedBindingId === binding.selectedBindingId"
+        )
+        && historyRendering.includes(
+            "completion.additionalExactResult === exactAdditionalResult"
+        )
+        && historyRendering.includes(
+            "completion.requiredResultRole === role"
+        )
+        && historyRendering.includes(
+            "recoverClassicalGrammarWorkspaceResult?.("
+        )
+        && historyRendering.includes(
+            "supplyClassicalGrammarWorkspaceResultToBinding(capture)"
+        )
+        && historyRendering.includes(
+            "nodeSelect.appendChild(option);"
+        )
+        && historyRendering.includes(
+            "compareSelect.appendChild(compareOption);"
+        )
+        && historyRendering.includes(
+            "Build or continue an NNC Result first; compatible Results will appear here."
+        )
+        && historyRendering.includes(
+            "NNC embed Result added. Complete any remaining choices, then Make Result."
+        )
+        && bindingSelectionRendering.includes("grammarAuthority: false")
+        && historyShell.includes('data-classical-grammar-authority="false"')
     );
 
     const before = ctx.getClassicalGrammarWorkspaceHistorySnapshot();

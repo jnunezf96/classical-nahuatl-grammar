@@ -6250,6 +6250,31 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
     return null;
   }
 
+  function hasIssuedClassicalGrammarCapabilityNavigatorExactInputIdentity(
+    navigator = null,
+    exactInput = null,
+  ) {
+    if (!navigator || !exactInput || !Object.isFrozen(navigator)) {
+      return false;
+    }
+    if (issuedTypedSourceCapabilityNavigators.has(navigator)) {
+      return Boolean(
+        navigator.kind
+          === APPLICATION_TYPED_SOURCE_CAPABILITY_NAVIGATOR_KIND
+        && navigator.version === 1
+        && navigator.inputRole === "exact-owner-issued-source"
+        && navigator.exactSource === exactInput
+      );
+    }
+    return Boolean(
+      issuedCapabilityNavigators.has(navigator)
+      && navigator.kind === APPLICATION_CAPABILITY_NAVIGATOR_KIND
+      && navigator.version === 1
+      && navigator.inputRole === "exact-owner-issued-result"
+      && navigator.exactResult === exactInput
+    );
+  }
+
   function issueCanonicalParticleRootOwnerBindingFrame(
     navigator = null,
     selections = {},
@@ -6520,11 +6545,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       || !Object.isFrozen(frame.choiceOptionProjection)
       || !Object.isFrozen(frame.choiceOptionProjection.particleId)
       || !Object.isFrozen(frame.executionArgs)
-      || !isClassicalGrammarApplicationCapabilityNavigator(
+      || !hasIssuedClassicalGrammarCapabilityNavigatorExactInputIdentity(
         context.navigator,
+        context.exactNavigatorInput,
       )
-      || getClassicalGrammarCapabilityNavigatorExactInput(context.navigator)
-        !== context.exactNavigatorInput
     ) return false;
     const currentCapabilityNames = [
       context.contract.inventoryCapabilityName,
@@ -6787,7 +6811,10 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       || frame.kind !== APPLICATION_TYPED_SOURCE_OPERATION_BINDING_KIND
       || frame.version !== 1
       || !(canonicalParticleRootBinding
-        ? isClassicalGrammarApplicationCapabilityNavigator(frame.navigator)
+        ? hasIssuedClassicalGrammarCapabilityNavigatorExactInputIdentity(
+          frame.navigator,
+          frame.exactNavigatorInput,
+        )
         : isClassicalGrammarApplicationTypedSourceCapabilityNavigator(
           frame.navigator,
         ))
@@ -6796,8 +6823,11 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
       || frame.operationId !== frame.operation.operationId
       || frame.executionOperationId
         !== context.contract.executionOperationId
-      || frame.exactNavigatorInput
-        !== getClassicalGrammarCapabilityNavigatorExactInput(frame.navigator)
+      || (!canonicalParticleRootBinding
+        && frame.exactNavigatorInput
+          !== getClassicalGrammarCapabilityNavigatorExactInput(
+            frame.navigator,
+          ))
       || frame.navigatorInputConsumed !== !canonicalParticleRootBinding
       || frame.rootSourceConstructor !== canonicalParticleRootBinding
       || frame.exactSource !== (canonicalParticleRootBinding

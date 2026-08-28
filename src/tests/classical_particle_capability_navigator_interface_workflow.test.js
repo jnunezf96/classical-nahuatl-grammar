@@ -1,10 +1,24 @@
 "use strict";
 
+const fs = require("fs");
+const path = require("path");
 const { createSuite } = require("./runner");
+
+const ROOT = path.resolve(__dirname, "..", "..");
 
 function run(ctx = {}) {
     const suite = createSuite(
         "classical_particle_capability_navigator_interface_workflow"
+    );
+    const applicationSource = fs.readFileSync(
+        path.join(
+            ROOT,
+            "src",
+            "application",
+            "classical",
+            "grammar_application.mjs"
+        ),
+        "utf8"
     );
     ctx.renderClassicalRuleLogicSurfaceBlock({
         basalUnit: "vnc",
@@ -134,6 +148,56 @@ function run(ctx = {}) {
             readiness: [true, true],
             unchangedResult: true,
         }
+    );
+
+    const particleIssueStart = applicationSource.indexOf(
+        "function issueClassicalGrammarTypedSourceOperationBindingFrame"
+    );
+    const particleLifetimeStart = applicationSource.indexOf(
+        "function isClassicalGrammarTypedSourceOperationBindingFrame"
+    );
+    const particleExecutionStart = applicationSource.indexOf(
+        "function executeClassicalGrammarTypedSourceOperationBindingFrame"
+    );
+    const ownerLifetimeStart = applicationSource.indexOf(
+        "function isCanonicalParticleRootOwnerBindingFrame"
+    );
+    const ownerLifetimeEnd = applicationSource.indexOf(
+        "function issueClassicalGrammarTypedSourceOperationBindingFrame",
+        ownerLifetimeStart
+    );
+    const particleIssue = applicationSource.slice(
+        particleIssueStart,
+        particleLifetimeStart
+    );
+    const particleLifetime = applicationSource.slice(
+        particleLifetimeStart,
+        particleExecutionStart
+    );
+    const ownerLifetime = applicationSource.slice(
+        ownerLifetimeStart,
+        ownerLifetimeEnd
+    );
+    suite.ok(
+        "particle issuance validates the full navigator once while its immutable lifetime retains only the issued exact-input block",
+        particleIssue.includes(
+            "? isClassicalGrammarApplicationCapabilityNavigator(navigator)"
+        )
+            && particleIssue.includes(
+                "getClassicalGrammarCapabilityNavigatorExactInput(navigator)"
+            )
+            && ownerLifetime.includes(
+                "hasIssuedClassicalGrammarCapabilityNavigatorExactInputIdentity("
+            )
+            && !ownerLifetime.includes(
+                "isClassicalGrammarApplicationCapabilityNavigator("
+            )
+            && particleLifetime.includes(
+                "hasIssuedClassicalGrammarCapabilityNavigatorExactInputIdentity("
+            )
+            && particleLifetime.includes(
+                "(!canonicalParticleRootBinding"
+            )
     );
 
     const applied = ctx.applyClassicalCapabilityNavigatorSelection(select);

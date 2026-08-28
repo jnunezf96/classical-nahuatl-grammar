@@ -270,6 +270,26 @@ function run(ctx = {}) {
                 shell.includes(
                     '<option value="" selected>Choose embed role</option>'
                 ),
+                shell.includes(
+                    'id="classical-capability-required-result-field"'
+                ),
+                shell.includes(">Add NNC embed Result</label>"),
+                shell.includes(">Use this Result</button>"),
+                rendering.includes(
+                    "function syncClassicalRequiredResultChooser(snapshot = null)"
+                ),
+                rendering.includes(
+                    'binding.operationId === "grammar:nominal-construction"'
+                ),
+                rendering.includes(
+                    'binding.selectedBindingId === "nominal-embed:matrix-vnc-result"'
+                ),
+                rendering.includes(
+                    "issueClassicalFormationResultCompletionEvaluation("
+                ),
+                rendering.includes(
+                    '"Exact Result retained. Choose a compatible NNC embed Result below."'
+                ),
                 nominalReadyPath.includes(
                     "renderClassicalCapabilityApplicationResultForReview("
                 ),
@@ -291,6 +311,14 @@ function run(ctx = {}) {
                 true,
             ],
             interface: [
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
+                true,
                 true,
                 true,
                 true,

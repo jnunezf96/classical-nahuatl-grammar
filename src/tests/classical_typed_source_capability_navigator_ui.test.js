@@ -687,6 +687,53 @@ function run(ctx = {}) {
             )
     );
 
+    const activeBindingGetterStart = rendering.indexOf(
+        "function getActiveClassicalGrammarTypedSourceOperationBinding"
+    );
+    const activeBindingGetterEnd = rendering.indexOf(
+        "function getActiveClassicalCapabilityApplicationResult",
+        activeBindingGetterStart
+    );
+    const activeBindingGetter = rendering.slice(
+        activeBindingGetterStart,
+        activeBindingGetterEnd
+    );
+    const activeBindingClearStart = rendering.indexOf(
+        "function clearClassicalGrammarTypedSourceOperationBinding"
+    );
+    const activeBindingClearEnd = rendering.indexOf(
+        "function syncClassicalGrammarTypedSourceOperationChoices",
+        activeBindingClearStart
+    );
+    const activeBindingClear = rendering.slice(
+        activeBindingClearStart,
+        activeBindingClearEnd
+    );
+    s.ok(
+        "an invalidated active owner binding clears stale Ready state and Apply atomically",
+        activeBindingGetter.includes("if (binding && !valid)")
+            && activeBindingGetter.includes(
+                'clearClassicalGrammarTypedSourceOperationBinding(\n          "owner-binding-invalidated"'
+            )
+            && activeBindingGetter.includes("return valid ? binding : null;")
+            && activeBindingClear.includes("button.disabled = true;")
+            && activeBindingClear.includes(
+                'button.dataset.classicalCapabilityApplyState = "not-ready";'
+            )
+            && activeBindingClear.includes(
+                'button.dataset.classicalCapabilityOwnerExecutable = "false";'
+            )
+            && activeBindingClear.includes(
+                'plan.dataset.classicalCapabilityOperationPlanStatus = "not-ready";'
+            )
+            && activeBindingClear.includes(
+                'plan.dataset.classicalCapabilityOwnerExecutable = "false";'
+            )
+            && activeBindingClear.includes(
+                "delete plan.dataset.classicalCapabilityTypedSourceBindingStatus;"
+            )
+    );
+
     return s;
 }
 

@@ -51,6 +51,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       new WeakMap();
     const classicalNahuatlVncApplicationFrameByResultFrame =
       new WeakMap();
+    const classicalNahuatlVncDirectActiveRecoordinateByResultFrame =
+      new WeakMap();
     const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_FRAME_KIND =
       "classical-nahuatl-vnc-typed-source-application-binding-frame";
     const CLASSICAL_NAHUATL_VNC_TYPED_SOURCE_APPLICATION_BINDING_STATUSES =
@@ -2233,11 +2235,96 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const sourceTypedFrame = getClassicalNahuatlVncApplicationFinalTypedFrame(frame.sourceMachineryFrame);
       const sourceFormula = getClassicalNahuatlVncApplicationCanonicalFormula(sourceTypedFrame);
       const sourceFormulaCanonical = areClassicalNahuatlVncApplicationFormulaProjectionsCanonical(frame.sourceMachineryFrame, sourceFormula);
+      const directActiveRecoordinate =
+        classicalNahuatlVncDirectActiveRecoordinateByResultFrame.get(frame)
+        || null;
+      const rebuiltDirectActiveMachineryFrame = directActiveRecoordinate
+        ? buildClassicalNahuatlVncApplicationSourceMachinery(
+          runtimeTarget,
+          directActiveRecoordinate.targetRequest,
+        )
+        : null;
+      const expectedDirectActiveTargetRequest = directActiveRecoordinate
+        ? Object.freeze({
+          ...directActiveRecoordinate.normalizedRequest,
+          sentenceOptions:
+            getClassicalNahuatlVncApplicationCanonicalSentenceOptions(
+              directActiveRecoordinate.sourceMachineryFrame,
+            ),
+        })
+        : null;
+      const rebuiltDirectActiveTypedFrame =
+        getClassicalNahuatlVncApplicationFinalTypedFrame(
+          rebuiltDirectActiveMachineryFrame,
+        );
+      const activeTypedFrame = getClassicalNahuatlVncApplicationFinalTypedFrame(frame.activeMachineryFrame);
+      const rebuiltDirectActiveDescriptor = directActiveRecoordinate
+        ? getClassicalNahuatlVncApplicationCanonicalActivePredicateDescriptor(
+          rebuiltDirectActiveMachineryFrame,
+          {
+            stem: directActiveRecoordinate.normalizedRequest.sourceStem,
+            verbClass:
+              directActiveRecoordinate.normalizedRequest.verbClass,
+            sourceValence:
+              directActiveRecoordinate.normalizedRequest.sourceValence,
+            objectRequests:
+              directActiveRecoordinate.normalizedRequest
+                .sourceObjectRequests,
+          },
+        )
+        : null;
+      const directActiveRecoordinateCanonical = Boolean(
+        directActiveRecoordinate
+        && derivationDirect
+        && continuationDirectSourceCanonical
+        && directActiveRecoordinate.continuationSource
+          === continuationSource
+        && directActiveRecoordinate.sourceMachineryFrame
+          === frame.sourceMachineryFrame
+        && directActiveRecoordinate.activeMachineryFrame
+          === frame.activeMachineryFrame
+        && directActiveRecoordinate.sourceDescriptor
+          === continuationSource?.sourceDescriptor
+        && areClassicalNahuatlVncApplicationCanonicalValuesEqual(
+          directActiveRecoordinate.targetRequest,
+          expectedDirectActiveTargetRequest,
+        )
+        && directActiveRecoordinate.normalizedRequest.derivationType
+          === "direct"
+        && directActiveRecoordinate.normalizedRequest.sourceVoice
+          === "active"
+        && directActiveRecoordinate.normalizedRequest.voice === "active"
+        && frame.selectedSourceVoice === "active"
+        && frame.selectedVoice === "active"
+        && frame.selectedVoiceOperation === "active"
+        && frame.selectedMachineryFrame === frame.activeMachineryFrame
+        && isClassicalNahuatlVncApplicationActiveFrameAuthorized(
+          rebuiltDirectActiveMachineryFrame,
+        )
+        && rebuiltDirectActiveDescriptor?.stem
+          === continuationSource?.sourceDescriptor?.sourceStem
+        && rebuiltDirectActiveDescriptor?.verbClass
+          === continuationSource?.sourceDescriptor?.verbClass
+        && rebuiltDirectActiveDescriptor?.sourceValence
+          === continuationSource?.sourceDescriptor?.sourceValence
+        && areClassicalNahuatlVncApplicationCanonicalValuesEqual(
+          rebuiltDirectActiveDescriptor?.objectRequests,
+          continuationSource?.sourceDescriptor?.sourceObjectRequests,
+        )
+        && areClassicalNahuatlVncApplicationTypedFramesEqual(
+          rebuiltDirectActiveTypedFrame,
+          activeTypedFrame,
+        )
+        && !areClassicalNahuatlVncApplicationTypedFramesEqual(
+          sourceTypedFrame,
+          activeTypedFrame,
+        )
+      );
       const sourceActiveContinuity = derivationDirect
         ? frame.sourceMachineryFrame === frame.activeMachineryFrame
+          || directActiveRecoordinateCanonical
         : frame.activeMachineryFrame?.kind === "classical-nahuatl-vnc-derived-machinery-frame"
           && frame.sourceMachineryFrame === frame.activeMachineryFrame.sourceMachineryFrame;
-      const activeTypedFrame = getClassicalNahuatlVncApplicationFinalTypedFrame(frame.activeMachineryFrame);
       const selectedVoiceOperation = normalizeClassicalNahuatlVncApplicationToken(frame.selectedVoiceOperation || "active");
       const selectedPublicVoice = getClassicalNahuatlVncApplicationPublicVoiceForOperation(selectedVoiceOperation);
       const selectedVoiceContinuity = frame.selectedVoice === "active"
@@ -3221,7 +3308,16 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       const nonactiveSelectionContinuity = selectedTargetFormationContinuity
         && frame.controlFrame.selectedSourceNonactiveOptionId === selectedSourceNonactiveOptionId
         && frame.normalizedRequest.sourceNonactiveOptionId === selectedSourceNonactiveOptionId;
-      const baseFrameCanonical = Boolean(sourceRequestContinuity && sourceAnalysisContinuity && operationParticipantRequestContinuity && derivationSelectionContinuity && requestControlContinuity && nonactiveSelectionContinuity);
+      const directActiveRecoordinate =
+        classicalNahuatlVncDirectActiveRecoordinateByResultFrame.get(
+          frame.resultFrame,
+        ) || null;
+      const directActiveRecoordinateRequestContinuity = Boolean(
+        !directActiveRecoordinate
+        || directActiveRecoordinate.normalizedRequest
+          === frame.normalizedRequest
+      );
+      const baseFrameCanonical = Boolean(sourceRequestContinuity && sourceAnalysisContinuity && operationParticipantRequestContinuity && derivationSelectionContinuity && requestControlContinuity && nonactiveSelectionContinuity && directActiveRecoordinateRequestContinuity);
       if (!baseFrameCanonical) {
         return false;
       }
@@ -5019,6 +5115,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       choicePendingTypedVncSlotFrames = [],
       choicePendingApplicationFrames = [],
       continuationSource = null,
+      directActiveRecoordinate = null,
       runtimeTarget = null
     } = {}) {
       const selectedAuthorizationStatus = normalizeClassicalNahuatlVncApplicationToken(selectedMachineryFrame?.authorizationStatus || selectedMachineryFrame?.proofFrame?.authorizationStatus);
@@ -5108,6 +5205,15 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         classicalNahuatlVncContinuationSourceByResultFrame.set(
           resultFrame,
           continuationSource,
+        );
+      }
+      if (directActiveRecoordinate) {
+        classicalNahuatlVncDirectActiveRecoordinateByResultFrame.set(
+          resultFrame,
+          Object.freeze({
+            ...directActiveRecoordinate,
+            normalizedRequest,
+          }),
         );
       }
       return finalizeBuiltClassicalNahuatlVncApplicationFrame(
@@ -5852,6 +5958,88 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
             forcedBlockReason: derivationBlockReason
           }));
         }
+        let directActiveRecoordinate = null;
+        if (
+          resultContinuationSource
+          && requestedDerivation === "direct"
+          && selectedSourceVoice
+            === resultContinuationSource.sourceDescriptor?.sourceVoice
+          && selectedVoice === "active"
+          && selectedVoiceOperation === "active"
+        ) {
+          const exactSourceDescriptor =
+            resultContinuationSource.sourceDescriptor;
+          const directActiveTargetRequest = Object.freeze({
+            ...normalizedRequest,
+            sentenceOptions:
+              getClassicalNahuatlVncApplicationCanonicalSentenceOptions(
+                sourceMachineryFrame,
+              ),
+          });
+          const rebuiltDirectActiveMachineryFrame =
+            buildClassicalNahuatlVncApplicationSourceMachinery(
+              dependencySource,
+              directActiveTargetRequest,
+            );
+          const rebuiltDirectActiveDescriptor =
+            getClassicalNahuatlVncApplicationCanonicalActivePredicateDescriptor(
+              rebuiltDirectActiveMachineryFrame,
+              {
+                stem: normalizedRequest.sourceStem,
+                verbClass: normalizedRequest.verbClass,
+                sourceValence: normalizedRequest.sourceValence,
+                objectRequests: normalizedRequest.sourceObjectRequests,
+              },
+            );
+          const sourceIdentityPreserved = Boolean(
+            isClassicalNahuatlVncApplicationActiveFrameAuthorized(
+              rebuiltDirectActiveMachineryFrame,
+            )
+            && normalizedRequest.sourceStem
+              === exactSourceDescriptor.sourceStem
+            && normalizedRequest.verbClass
+              === exactSourceDescriptor.verbClass
+            && normalizedRequest.sourceValence
+              === exactSourceDescriptor.sourceValence
+            && normalizedRequest.sourceLexemeId
+              === exactSourceDescriptor.sourceLexemeId
+            && rebuiltDirectActiveDescriptor.stem
+              === exactSourceDescriptor.sourceStem
+            && rebuiltDirectActiveDescriptor.verbClass
+              === exactSourceDescriptor.verbClass
+            && rebuiltDirectActiveDescriptor.sourceValence
+              === exactSourceDescriptor.sourceValence
+            && areClassicalNahuatlVncApplicationCanonicalValuesEqual(
+              rebuiltDirectActiveDescriptor.objectRequests,
+              exactSourceDescriptor.sourceObjectRequests,
+            )
+          );
+          const exactSourceTypedFrame =
+            getClassicalNahuatlVncApplicationFinalTypedFrame(
+              sourceMachineryFrame,
+            );
+          const rebuiltDirectActiveTypedFrame =
+            getClassicalNahuatlVncApplicationFinalTypedFrame(
+              rebuiltDirectActiveMachineryFrame,
+            );
+          if (
+            sourceIdentityPreserved
+            && rebuiltDirectActiveTypedFrame
+            && !areClassicalNahuatlVncApplicationTypedFramesEqual(
+              rebuiltDirectActiveTypedFrame,
+              exactSourceTypedFrame,
+            )
+          ) {
+            activeMachineryFrame = rebuiltDirectActiveMachineryFrame;
+            directActiveRecoordinate = Object.freeze({
+              continuationSource: resultContinuationSource,
+              sourceMachineryFrame,
+              activeMachineryFrame,
+              sourceDescriptor: exactSourceDescriptor,
+              targetRequest: directActiveTargetRequest,
+            });
+          }
+        }
         let selectedMachineryFrame = activeMachineryFrame;
         let nonactiveStemRecord = null;
         let inherentImpersonalRecord = null;
@@ -5970,7 +6158,8 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           appliedTypedFrames: [sourceMachineryFrame?.nonactiveStemRecord, sourceMachineryFrame?.voiceTransformationFrame, sourceAnalysisFrame, derivationOperationFrame, derivationOperationFrame?.participantTransformFrame, nonactiveStemRecord, inherentImpersonalRecord, tlaImpersonalStemRecord, selectedMachineryFrame?.voiceTransformationFrame],
           missingCapabilities,
           rejectedAuthorityFields,
-          unsupportedIntentFields
+          unsupportedIntentFields,
+          directActiveRecoordinate,
         }));
       });
       const issueApplicationResult = applicationFrame => {

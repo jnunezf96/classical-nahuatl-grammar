@@ -2919,6 +2919,41 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           <option value="" selected>Select one role</option>
                         </select>
                       </label>
+                      <div
+                        class="classical-rule-control classical-capability-operation-plan__binding-field"
+                        id="classical-capability-required-result-field"
+                        data-classical-capability-required-result="owner-filtered"
+                        data-classical-presentation-only="true"
+                        data-classical-grammar-authority="false"
+                        hidden
+                      >
+                        <label
+                          class="classical-rule-control__label"
+                          id="classical-capability-required-result-label"
+                          for="classical-capability-required-result"
+                        >Add NNC embed Result</label>
+                        <select
+                          id="classical-capability-required-result"
+                          data-classical-capability-required-result-choice="true"
+                          data-classical-grammar-authority="false"
+                          aria-describedby="classical-capability-required-result-status"
+                          disabled
+                        >
+                          <option value="" selected>Choose an NNC embed Result</option>
+                        </select>
+                        <button
+                          type="button"
+                          id="classical-capability-required-result-use"
+                          disabled
+                        >Use this Result</button>
+                        <p
+                          class="classical-capability-operation-plan__status"
+                          id="classical-capability-required-result-status"
+                          data-classical-presentation-only="true"
+                          data-classical-grammar-authority="false"
+                          aria-live="polite"
+                        >Compatible owner-issued Results will appear here.</p>
+                      </div>
                       <p
                         class="classical-capability-operation-plan__status"
                         id="classical-capability-operation-plan-status"
