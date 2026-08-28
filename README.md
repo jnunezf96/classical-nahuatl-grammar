@@ -6,6 +6,8 @@ grammar and conjugation application.
 Current release: **Grammar OS v1.2.1 — Private Play Study Handoff**
 (browser build `20260828-private-play-study-handoff-364`).
 
+See [Version History](CHANGELOG.md) for user-facing “What’s New” notes.
+
 Production: <https://jnunezf96.github.io/classical-nahuatl-grammar/>
 
 Consented study mode: <https://jnunezf96.github.io/classical-nahuatl-grammar/?manufacturer=1>

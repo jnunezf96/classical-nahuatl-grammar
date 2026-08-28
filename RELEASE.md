@@ -6,6 +6,17 @@ Browser build: **20260828-private-play-study-handoff-364**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
+## What's New
+
+- Added a guided entrance to the optional private play study.
+- Kept study controls hidden during ordinary grammar use.
+- Made setup open the recorder and focus the consent step.
+- Added clear instructions for downloading and privately returning a stopped recording.
+- Expanded the privacy explanation for the local-only, consent-based recorder.
+- Added focused desktop, mobile, privacy, and study-boundary checks.
+
+See [Version History](CHANGELOG.md) for notes from earlier releases.
+
 ## Build the public site
 
 ```text
