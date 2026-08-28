@@ -23,7 +23,10 @@ const packageJson = JSON.parse(await fs.readFile(path.join(ROOT, "package.json")
 const packageLock = JSON.parse(await fs.readFile(path.join(ROOT, "package-lock.json"), "utf8"));
 const indexSource = await fs.readFile(path.join(ROOT, "index.html"), "utf8");
 const readme = await fs.readFile(path.join(ROOT, "README.md"), "utf8");
+const releaseNotes = await fs.readFile(path.join(ROOT, "RELEASE.md"), "utf8");
 const headers = await fs.readFile(path.join(ROOT, "_headers"), "utf8");
+const robots = await fs.readFile(path.join(ROOT, "robots.txt"), "utf8");
+const sitemap = await fs.readFile(path.join(ROOT, "sitemap.xml"), "utf8");
 const version = meta(indexSource, "classical-grammar-os-version");
 const release = meta(indexSource, "classical-grammar-os-release");
 const build = meta(indexSource, "classical-grammar-os-build");
@@ -33,12 +36,20 @@ const scriptBuild = indexSource.match(/src\/browser\/main\.mjs\?v=([^"']+)/u)?.[
 assert(version === packageJson.version, "index and package versions differ");
 assert(packageLock.version === version && packageLock.packages?.[""]?.version === version, "package-lock version differs");
 assert(readme.includes(`Grammar OS v${version} — ${release}`), "README release differs");
+assert(releaseNotes.includes(`Grammar OS v${version} release`), "RELEASE version differs");
+assert(releaseNotes.includes(`Release name: **${release}**`), "RELEASE name differs");
+assert(releaseNotes.includes(`Browser build: **${build}**`), "RELEASE build differs");
 assert(styleBuild === build && scriptBuild === build, "public cache/build identities differ");
 assert(indexSource.includes('href="favicon.svg"') && indexSource.includes('href="site.webmanifest"'), "public discovery assets are absent");
 assert(indexSource.includes('id="classical-bootstrap-status"'), "visible bootstrap status is absent");
 assert(indexSource.includes("Content-Security-Policy") && headers.includes("frame-ancestors 'none'"), "security policy is incomplete");
 assert(headers.includes("X-Content-Type-Options: nosniff"), "nosniff header is absent");
 assert(!indexSource.includes('href="data:,"') && !indexSource.includes("http://"), "public index retains a placeholder or insecure URL");
+const canonicalOrigin = "https://jnunezf96.github.io/classical-nahuatl-grammar/";
+assert(indexSource.includes(`rel="canonical"\n      href="${canonicalOrigin}"`), "canonical URL is absent");
+assert(indexSource.includes(`content="${canonicalOrigin}"`), "Open Graph URL is absent");
+assert(robots.includes(`Sitemap: ${canonicalOrigin}sitemap.xml`), "robots sitemap differs");
+assert(sitemap.includes(`<loc>${canonicalOrigin}</loc>`), "absolute sitemap differs");
 
 for (const name of await fs.readdir(path.join(ROOT, "data"))) {
   if (name.endsWith(".json")) JSON.parse(await fs.readFile(path.join(ROOT, "data", name), "utf8"));

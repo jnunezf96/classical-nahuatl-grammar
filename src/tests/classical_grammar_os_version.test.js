@@ -5,10 +5,10 @@ const path = require("path");
 const { createSuite } = require("./runner");
 
 const ROOT = path.resolve(__dirname, "../..");
-const VERSION = "1.1.0";
-const RELEASE = "Cross-Lesson Compositional Closure";
-const RELEASE_SLUG = "cross-lesson-compositional-closure";
-const BUILD = "20260826-relational-role-340";
+const VERSION = "1.2.0";
+const RELEASE = "Public Play Release";
+const RELEASE_SLUG = "public-play-release";
+const BUILD = "20260828-public-play-release-363";
 
 function run(ctx = {}) {
     const suite = createSuite("classical_grammar_os_version");

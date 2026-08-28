@@ -91,6 +91,38 @@ let loaderCalls = 0;
 let recordOptions = null;
 let stopCalls = 0;
 let localDownload = null;
+let playStartCalls = 0;
+let playStopCalls = 0;
+let playDiscardCalls = 0;
+const playReport = Object.freeze({
+  kind: "classical-grammar-toy-play-witness",
+  version: 2,
+  status: "stopped",
+  sessionOutcome: "incomplete",
+  summary: Object.freeze({
+    completedJourneyCount: 0,
+    hesitationCount: 1,
+    repeatedClickCount: 1,
+    backtrackingCount: 1,
+    incompleteSessionCount: 1,
+    abandonmentSignalCount: 1,
+  }),
+});
+const playWitness = {
+  start() {
+    playStartCalls += 1;
+    return true;
+  },
+  stop() {
+    playStopCalls += 1;
+    return true;
+  },
+  discard() {
+    playDiscardCalls += 1;
+    return true;
+  },
+  snapshot: () => playReport,
+};
 const loadRecorder = async () => {
   loaderCalls += 1;
   return options => {
@@ -114,6 +146,7 @@ const offRecorder = createClassicalSessionRecorder({
     location: { search: "", href: "http://127.0.0.1/index.html" },
   },
   loadRecorder,
+  playWitness,
 });
 assert.equal(offRecorder.install(offRoot), false);
 assert.equal(offRoot.dataset.classicalSessionRecorder, "unavailable");
@@ -127,6 +160,7 @@ const recorder = createClassicalSessionRecorder({
   now: () => clock,
   loadRecorder,
   downloadText: value => { localDownload = value; },
+  playWitness,
 });
 assert.equal(recorder.kind, CLASSICAL_SESSION_RECORDER_KIND);
 assert.equal(recorder.install(root), true);
@@ -135,12 +169,16 @@ assert.equal(root.dataset.classicalSessionRecorderAuthority, "false");
 assert.equal(section.hidden, false);
 assert.equal(start.disabled, true);
 assert.equal(loaderCalls, 0);
+assert.equal(playStartCalls, 0);
+assert.equal(await recorder.start(), false);
+assert.equal(playStartCalls, 0);
 
 consent.checked = true;
 consent.dispatch("change");
 assert.equal(start.disabled, false);
 assert.equal(await recorder.start(), true);
 assert.equal(loaderCalls, 1);
+assert.equal(playStartCalls, 1);
 assert.equal(root.dataset.classicalSessionRecorder, "recording");
 assert.equal(recordOptions.maskAllInputs, true);
 assert.equal(recordOptions.maskTextSelector, "#classical-workbench");
@@ -162,6 +200,7 @@ root.dispatch("click", sourceButton);
 clock += 250;
 assert.equal(recorder.stop(), true);
 assert.equal(stopCalls, 1);
+assert.equal(playStopCalls, 1);
 assert.equal(root.dataset.classicalSessionRecorder, "stopped");
 assert.equal(download.disabled, false);
 assert.equal(await recorder.download(), true);
@@ -178,16 +217,29 @@ assert.equal(payload.privacy.explicitConsentRequired, true);
 assert.equal(payload.privacy.maskAllInputs, true);
 assert.equal(payload.privacy.maskAllWorkbenchText, true);
 assert.equal(payload.privacy.blockRawPlayWitness, true);
+assert.equal(payload.privacy.capturesClicks, true);
+assert.equal(payload.privacy.capturesScrollPosition, true);
+assert.equal(payload.privacy.capturesActionTiming, true);
+assert.equal(payload.privacy.capturesViewportState, true);
+assert.equal(payload.privacy.rawSourceValues, false);
+assert.equal(payload.privacy.rawResultValues, false);
+assert.equal(payload.privacy.rawControlValues, false);
 assert.equal(payload.eventCount, 2);
 assert.equal(payload.actionCount, 1);
-assert.equal(payload.actions[0].controlId, "verb-entry-apply");
+assert.equal(payload.actions[0].controlId, "source:commit");
+assert.deepEqual(payload.play, playReport);
+assert.equal(payload.play.summary.hesitationCount, 1);
+assert.equal(payload.play.summary.repeatedClickCount, 1);
+assert.equal(payload.play.summary.backtrackingCount, 1);
+assert.equal(payload.play.summary.abandonmentSignalCount, 1);
 
 assert.equal(recorder.discard(), true);
+assert.equal(playDiscardCalls, 1);
 assert.equal(root.dataset.classicalSessionRecorder, "off");
 assert.equal(consent.checked, false);
 assert.equal(recorder.snapshot().eventCount, 0);
 assert.equal(recorder.snapshot().actionCount, 0);
 
 process.stdout.write(
-  "[PASS] classical_session_recorder: consent-only, masked, local, and non-authorizing\n",
+  "[PASS] classical_session_recorder: one consent lifecycle, masked rrweb, and deterministic local play report\n",
 );

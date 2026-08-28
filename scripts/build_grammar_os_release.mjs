@@ -10,7 +10,8 @@ const DEVELOPMENT_ROOT = path.resolve(WEB_ROOT, "../Classical_Nahuatl_Grammar");
 const ROOT_FILES = Object.freeze([
   "index.html", "style.css", "favicon.svg", "site.webmanifest",
   "robots.txt", "_headers", "404.html", "privacy.html",
-  "google0cd5aa7f57651321.html", ".well-known/security.txt",
+  "sitemap.xml", "google0cd5aa7f57651321.html",
+  ".well-known/security.txt",
 ]);
 const RUNTIME_DIRECTORIES = Object.freeze([
   "data", "src/appendices", "src/application", "src/bootstrap",

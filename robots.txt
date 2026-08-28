@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://jnunezf96.github.io/classical-nahuatl-grammar/sitemap.xml

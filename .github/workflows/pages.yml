@@ -1,0 +1,63 @@
+name: Publish Grammar OS
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: grammar-os-production
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the release
+        uses: actions/checkout@v6
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Require an exact version tag
+        shell: bash
+        run: test "$GITHUB_REF_NAME" = "v$(node -p 'require("./package.json").version')"
+
+      - name: Install the locked toolchain
+        run: npm ci
+
+      - name: Verify and build the runtime-only site
+        run: npm run verify:launch
+
+      - name: Locate the versioned site
+        id: release
+        shell: bash
+        run: echo "site=../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v$(node -p 'require("./package.json").version')/site" >> "$GITHUB_OUTPUT"
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload the verified site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ steps.release.outputs.site }}
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Publish the verified site
+        id: deployment
+        uses: actions/deploy-pages@v4

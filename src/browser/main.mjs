@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260827-private-play-recorder-362";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-public-play-release-363";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

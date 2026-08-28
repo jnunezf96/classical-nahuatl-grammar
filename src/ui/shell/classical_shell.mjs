@@ -7,10 +7,10 @@ import {
 } from "../../core/classical/vnc_late_operation_ui_contract.mjs?v=20260818-lesson29-groups10-12-357";
 import {
   installClassicalPlayWitness,
-} from "../diagnostics/classical_play_witness.mjs?v=20260826-relational-role-340";
+} from "../diagnostics/classical_play_witness.mjs?v=20260828-public-play-release-363";
 import {
   installClassicalSessionRecorder,
-} from "../diagnostics/classical_session_recorder.mjs?v=20260827-private-play-recorder-362";
+} from "../diagnostics/classical_session_recorder.mjs?v=20260828-public-play-release-363";
 import {
   LESSON1_READER_GUIDANCE_GROUPS,
   isLesson1ReaderGuidanceExact,
@@ -5254,7 +5254,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       return `      <footer>
             <p><span id="copyright-label">Copyright © 2026 Jaime Núñez</span></p>
             <p>Thanks to Sigfredo Olmedo</p>
-            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.1.0</p>
+            <p><a href="privacy.html">Privacy</a> · <a href=".well-known/security.txt">Security</a> · Grammar OS v1.2.0</p>
           </footer>
     `;
     }
@@ -5394,7 +5394,7 @@ ${steps}
           >
             <h3 id="classical-session-recorder-heading">Private play recording</h3>
             <p>
-              Off by default. Typed and displayed grammar is masked. Nothing is sent or stored by the site; a stopped recording stays in this tab until you download it locally or discard it.
+              Off by default. After consent and Start, it observes clicks, scrolling, action timing, and viewport size. Typed and displayed grammar is masked, and the play report keeps only nontextual states and safe control IDs. Nothing is sent or stored by the site; a stopped recording stays in this tab until you download it locally or discard it.
             </p>
             <label class="classical-session-recorder__consent">
               <input type="checkbox" id="classical-session-recorder-consent" />
@@ -5459,8 +5459,8 @@ ${steps}
         root.dataset.classicalToy = "source-grammar-result-continue";
         root.dataset.classicalToyAuthority = "false";
         installClassicalWorkbenchPresentation();
-        installClassicalPlayWitness(targetObject, root);
-        installClassicalSessionRecorder(targetObject, root);
+        const playWitness = installClassicalPlayWitness(targetObject, root);
+        installClassicalSessionRecorder(targetObject, root, playWitness);
       }
       const footerRoot = targetObject.document.getElementById("classical-footer-root");
       if (footerRoot && footerRoot.dataset.classicalShellInstalled !== "true") {

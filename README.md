@@ -3,8 +3,12 @@
 `Classical_Nahuatl_Grammar_Web` is the live browser-based Classical Nahuatl
 grammar and conjugation application.
 
-Current release: **Grammar OS v1.1.0 — Cross-Lesson Compositional Closure**
-(browser build `20260827-private-play-recorder-362`).
+Current release: **Grammar OS v1.2.0 — Public Play Release**
+(browser build `20260828-public-play-release-363`).
+
+Production: <https://jnunezf96.github.io/classical-nahuatl-grammar/>
+
+Consented study mode: <https://jnunezf96.github.io/classical-nahuatl-grammar/?manufacturer=1>
 
 It lives inside:
 
@@ -74,7 +78,7 @@ Build and verify the publishable site from this project:
 npm run verify:launch
 ```
 
-The generated `reports/generated/grammar_os_release/v1.1.0/site/` directory is
+The generated `reports/generated/grammar_os_release/v1.2.0/site/` directory is
 the deployment root. Publish that directory—not this full repository. Its
 release manifest records every shipped file and digest.
 

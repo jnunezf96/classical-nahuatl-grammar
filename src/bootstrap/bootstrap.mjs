@@ -1,14 +1,14 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260827-private-play-recorder-362";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260828-public-play-release-363";
 import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260726-lessons2-58-one-system-094";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260827-private-play-recorder-362";
+} from "../runtime/create_runtime.mjs?v=20260828-public-play-release-363";
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260826-relational-result-presentation-361";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260826-source-commit-359";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260826-relational-result-presentation-361";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260827-private-play-recorder-362";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260828-public-play-release-363";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260826-source-commit-359";
 import {
     installClassicalNestedControlLedger,

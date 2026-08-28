@@ -1,5 +1,9 @@
 // Consent-only, non-authorizing observation for manufacturer-mode play.
 
+import {
+  getClassicalObservationControlId,
+} from "./classical_play_witness.mjs?v=20260828-public-play-release-363";
+
 export const CLASSICAL_SESSION_RECORDER_KIND =
   "classical-grammar-private-play-recording";
 
@@ -18,6 +22,14 @@ export const CLASSICAL_SESSION_RECORDER_PRIVACY_CONTRACT = Object.freeze({
   maskAllInputs: true,
   maskAllWorkbenchText: true,
   blockRawPlayWitness: true,
+  capturesClicks: true,
+  capturesScrollPosition: true,
+  capturesActionTiming: true,
+  capturesViewportState: true,
+  rawSourceValues: false,
+  rawResultValues: false,
+  rawControlValues: false,
+  deterministicPlayMetrics: true,
 });
 
 const RRWEB_RECORDER_MODULE_URL = new URL(
@@ -96,22 +108,14 @@ function sanitizeRecordedValue(value, windowObject, key = "") {
   return value;
 }
 
-function safeControlIdentity(element) {
-  if (!element) return "control";
-  return String(
-    element.id
-      || element.dataset?.classicalCapabilityChoiceId
-      || element.dataset?.classicalSessionRecorderAction
-      || element.name
-      || element.tagName
-      || "control"
-  ).trim().slice(0, 160);
-}
-
 function playPhase(element) {
   const stage = element?.closest?.("[data-classical-workbench-stage]");
   if (stage?.dataset?.classicalWorkbenchStage) {
-    return String(stage.dataset.classicalWorkbenchStage);
+    const phase = String(stage.dataset.classicalWorkbenchStage)
+      .trim().toLowerCase();
+    return ["source", "grammar", "result", "continue"].includes(phase)
+      ? phase
+      : "workspace";
   }
   if (element?.closest?.("#classical-grammar-workspace-history")) {
     return "history";
@@ -155,6 +159,7 @@ export function createClassicalSessionRecorder({
   now = () => Date.now(),
   loadRecorder = loadPinnedRecorder,
   downloadText = createLocalDownload({ documentObject, windowObject }),
+  playWitness = null,
 } = {}) {
   const available = isManufacturerMode(windowObject);
   const events = [];
@@ -167,6 +172,7 @@ export function createClassicalSessionRecorder({
   let stoppedAt = 0;
   let startGeneration = 0;
   let controlsInstalled = false;
+  let observationWitness = playWitness;
 
   const controls = () => Object.fromEntries(Object.entries(CONTROL_IDS).map(
     ([key, id]) => [key, documentObject?.getElementById?.(id) || null],
@@ -257,7 +263,7 @@ export function createClassicalSessionRecorder({
       sequence: actions.length + 1,
       at: now(),
       eventType: String(event.type || "action"),
-      controlId: safeControlIdentity(target),
+      controlId: getClassicalObservationControlId(target, playPhase(target)),
       phase: playPhase(target),
       disabled: target.disabled === true,
       authority: "observation-only",
@@ -285,6 +291,7 @@ export function createClassicalSessionRecorder({
     } finally {
       recorderStop = null;
       removeCaptureListeners();
+      observationWitness?.stop?.();
       stoppedAt = now();
       recorderStatus = "stopped";
       updateControls();
@@ -300,6 +307,7 @@ export function createClassicalSessionRecorder({
     events.length = 0;
     actions.length = 0;
     sensitiveValues.clear();
+    observationWitness?.discard?.();
     startedAt = 0;
     stoppedAt = 0;
     recorderStatus = available ? "off" : "unavailable";
@@ -347,13 +355,22 @@ export function createClassicalSessionRecorder({
       if (typeof recorderStop !== "function") {
         throw new Error("rrweb-stop-export-missing");
       }
+      if (observationWitness?.start?.() !== true) {
+        throw new Error("classical-play-witness-start-failed");
+      }
       installCaptureListeners();
       recorderStatus = "recording";
       updateControls();
       return true;
     } catch {
+      try {
+        recorderStop?.();
+      } catch {
+        // Recorder startup failure still clears all in-memory evidence.
+      }
       recorderStop = null;
       removeCaptureListeners();
+      observationWitness?.discard?.();
       events.length = 0;
       actions.length = 0;
       sensitiveValues.clear();
@@ -383,6 +400,7 @@ export function createClassicalSessionRecorder({
       eventCount: events.length,
       actionCount: actions.length,
       actions: actions.slice(),
+      play: observationWitness?.snapshot?.() || null,
       events: events.slice(),
     };
     const text = redactSensitiveText(`${JSON.stringify(payload, null, 2)}\n`);
@@ -455,7 +473,8 @@ function exposeClassicalSessionRecorder(targetObject, recorder) {
 
 export function installClassicalSessionRecorder(
   targetObject = globalThis,
-  root = targetObject.document?.getElementById?.("classical-app-root")
+  root = targetObject.document?.getElementById?.("classical-app-root"),
+  playWitness = null,
 ) {
   const existing = targetObject.__CLASSICAL_SESSION_RECORDER__;
   if (existing?.kind === CLASSICAL_SESSION_RECORDER_KIND) {
@@ -469,6 +488,7 @@ export function installClassicalSessionRecorder(
       || targetObject.document?.defaultView
       || targetObject,
     now: () => targetObject.Date?.now?.() || Date.now(),
+    playWitness,
   });
   recorder.install(root);
   if (recorder.available) exposeClassicalSessionRecorder(targetObject, recorder);
