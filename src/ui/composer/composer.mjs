@@ -9197,7 +9197,10 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       } = getClassicalVncSourceGuideElements();
       const sourceParts = getClassicalSourcePartControlState();
       const sourceStem = sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
-        ? ""
+        ? joinClassicalSourceEmbedMatrix(
+            sourceParts.sourceEmbedStem,
+            sourceParts.sourceMatrixStem
+          )
         : sourceParts.sourceWholeStem;
       const sourceValence = targetObject.document?.getElementById?.("classical-rule-logic-valence")?.value || "intransitive";
       const canonicalRecord = getClassicalVncCanonicalInitialIRecord(sourceStem, sourceValence)
@@ -9253,6 +9256,67 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             : "Initial i: choose its Source analysis before generating.";
       return visible;
     }
+    function syncClassicalVncSourceValenceAvailability(options = {}) {
+      const valenceControl = targetObject.document?.getElementById?.(
+        "classical-rule-logic-valence"
+      );
+      if (!valenceControl) {
+        return false;
+      }
+      const sourceParts = getClassicalSourcePartControlState();
+      const sourceStem = sourceParts.mode === CLASSICAL_SOURCE_PARTS_MODE.embedMatrix
+        ? joinClassicalSourceEmbedMatrix(
+            sourceParts.sourceEmbedStem,
+            sourceParts.sourceMatrixStem
+          )
+        : sourceParts.sourceWholeStem;
+      const active = options.active !== false && Boolean(sourceStem);
+      let selectedBlocked = false;
+      Array.from(valenceControl.options || []).forEach(option => {
+        const baseLabel = option.dataset?.classicalSourceValenceBaseLabel
+          || String(option.textContent || "");
+        if (option.dataset) {
+          option.dataset.classicalSourceValenceBaseLabel = baseLabel;
+        }
+        const ownerFrame = active
+          && typeof targetObject.buildClassicalNahuatlObjectRelationshipRuleFrame
+            === "function"
+          ? targetObject.buildClassicalNahuatlObjectRelationshipRuleFrame(
+              sourceStem,
+              { valence: option.value }
+            )
+          : null;
+        const ichtequiIncompatible = Boolean(
+          ownerFrame?.authorizationStatus === "blocked"
+          && ownerFrame?.ichtequiNonspecificObjectBlocked === true
+        );
+        const blocked = ichtequiIncompatible;
+        option.disabled = blocked;
+        option.textContent = ichtequiIncompatible
+          ? `${baseLabel} · not compatible with (ich-tequi)`
+          : baseLabel;
+        option.title = ichtequiIncompatible
+          ? "Andrews 18.8: (ich-tequi) does not permit a nonspecific object."
+          : "";
+        if (option.dataset) {
+          option.dataset.classicalSourceValenceAvailability = blocked
+            ? "incompatible"
+            : "available";
+          option.dataset.classicalSourceValenceOwnerRule =
+            ownerFrame?.lexicalValenceRuleId || "";
+        }
+        if (option.selected && blocked) {
+          selectedBlocked = true;
+        }
+      });
+      valenceControl.setAttribute?.("aria-invalid", String(selectedBlocked));
+      if (valenceControl.dataset) {
+        valenceControl.dataset.classicalSourceValenceSelection = selectedBlocked
+          ? "incompatible"
+          : "available";
+      }
+      return !selectedBlocked;
+    }
     function syncClassicalVncSourceGuide(unit = "") {
       const { root } = getClassicalVncSourceGuideElements();
       const select = populateClassicalVncSourceStemPicker();
@@ -9265,6 +9329,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       root.setAttribute("aria-hidden", String(!active));
       select.disabled = !active;
       if (!active) {
+        syncClassicalVncSourceValenceAvailability({ active: false });
         syncClassicalVncSourceLexemeFact(root, select, {
           active: false
         });
@@ -9292,6 +9357,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       } else if (root.dataset) {
         delete root.dataset.classicalVncBuiltInDefaultSignature;
       }
+      syncClassicalVncSourceValenceAvailability();
       syncClassicalVncSourceInitialIFact(root, select);
       syncClassicalVncSourceLexemeFact(root, select);
       return true;
@@ -9763,6 +9829,14 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             ? String(choice.value || "")
             : "";
         })(),
+        sourceVerbClass:
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-class"
+          )?.value || "",
+        sourceValence:
+          targetObject.document?.getElementById?.(
+            "classical-rule-logic-valence"
+          )?.value || "intransitive",
         sourceLexemeId: getClassicalVncSourceGuideElements().sourceLexemeChoice?.value || ""
       });
     }
@@ -11380,6 +11454,11 @@ export function createUiComposerRuntime(targetObject = globalThis) {
             delete nncSourceGuide.dataset.classicalNncSourceSelectedType;
           }
         }
+        syncClassicalVncSourceInitialIFact(
+          getClassicalVncSourceGuideElements().root,
+          vncSourceStemPicker
+        );
+        syncClassicalVncSourceValenceAvailability();
         setClassicalSourcePartsPendingState(getClassicalSourcePartsEvaluationSignature() !== ClassicalSourcePartsCommittedSignature);
       };
       nncSourceExample?.addEventListener("change", () => {

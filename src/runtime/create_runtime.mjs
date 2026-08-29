@@ -35,7 +35,7 @@ import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
 import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260826-interface-repairs-341";
 import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260823-passive-formation-continuity-238";
-import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260826-interface-repairs-341";
+import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260828-lesson18-note1-ichtequi-365";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260824-lesson58-final-278";
 import { installClassicalNahuatlLaterLayersGlobals } from "../core/classical/derived_vnc_layers.mjs?v=20260826-source-commit-359";
 import { installClauseGlobals } from "../core/clause/clause.mjs?v=20260818-lesson29-groups10-12-357";
@@ -69,7 +69,7 @@ import { installPreteritApiGlobals } from "../core/preterit/api.mjs?v=20260818-l
 import { installSearchRuntimeGlobals } from "../core/search/runtime.mjs?v=20260818-lesson29-groups10-12-357";
 import { installAllomorphyGlobals } from "../core/vnc/allomorphy.mjs?v=20260826-interface-repairs-342";
 import { installVncFacadeGlobals } from "../core/vnc/vnc.mjs?v=20260826-source-commit-359";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260826-relational-result-presentation-361";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260828-lesson18-note1-ichtequi-365";
 import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260826-interface-repairs-341";

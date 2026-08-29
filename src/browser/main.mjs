@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-private-play-study-handoff-364";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-lesson18-note1-ichtequi-365";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

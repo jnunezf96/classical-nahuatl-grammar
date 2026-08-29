@@ -3939,6 +3939,10 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
     }
     function buildClassicalNahuatlObjectRelationshipRuleFrame(stem = "", options = {}, priorVncFrame = null) {
       const valence = normalizeClassicalNahuatlValence(options.valence || options.transitivity || options.objectKind || options.object || "");
+      const normalizedStem = normalizeClassicalNahuatlVerbstem(stem);
+      const stemLookupKey = getClassicalNahuatlStructureLookupKey(
+        normalizedStem,
+      ).replace(/-/gu, "");
       const objectFrame = priorVncFrame?.objectFrame || null;
       const selectedRelationship = getClassicalNahuatlSelectedObjectRelationship({
         valence,
@@ -3951,7 +3955,25 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const selectedGroup = selectedRelationship.selectedObjectRelationshipGroup;
       const requestedRelationshipContradicts = Boolean(requestedRelationshipGroup && selectedGroup && selectedGroup !== "human-or-nonhuman" && requestedRelationshipGroup !== "human-or-nonhuman" && requestedRelationshipGroup !== selectedGroup);
       const requestedIndefiniteContradicts = Boolean(requestedIndefiniteObject && selectedRelationship.possibleIndefiniteObjects.length && !selectedRelationship.possibleIndefiniteObjects.includes(requestedIndefiniteObject));
-      const contradictionBlocked = requestedRelationshipContradicts || requestedIndefiniteContradicts;
+      // Andrews 18.8 note 1 and 24.2 make (ich-tequi) a lexical
+      // valence-neutral exception: its intransitive VNC expresses the
+      // nonspecific-goal action, while an overt projective object must be
+      // specific.  Keep this exact lexical restriction in the canonical
+      // object-relationship owner; examples and the Source picker remain
+      // non-authorizing.
+      const ichtequiValenceRestrictionApplies = stemLookupKey === "ichtequi";
+      const ichtequiNonspecificObjectBlocked = Boolean(
+        ichtequiValenceRestrictionApplies
+        && ["projective-human", "projective-nonhuman"].includes(valence)
+      );
+      const contradictionBlocked = requestedRelationshipContradicts
+        || requestedIndefiniteContradicts
+        || ichtequiNonspecificObjectBlocked;
+      const contradictionReason = ichtequiNonspecificObjectBlocked
+        ? "ich-tequi-nonspecific-object-not-authorized"
+        : contradictionBlocked
+          ? "requested-object-relationship-not-authorized-by-canvas-7.9"
+          : "";
       const objectRelationshipActions = Array.from(new Set([...(selectedRelationship.objectRelationshipApplies ? [CLASSICAL_NAHUATL_LESSON7_OBJECT_RELATIONSHIP_ACTIONS.SELECT_CANVAS_RELATIONSHIP, CLASSICAL_NAHUATL_LESSON7_OBJECT_RELATIONSHIP_ACTIONS.PRESERVE_INDEFINITE_SPECIFIC_DISTINCTION, CLASSICAL_NAHUATL_LESSON7_OBJECT_RELATIONSHIP_ACTIONS.CARRY_RELATIONSHIP_TO_SELECTED_OUTPUT] : []), ...(selectedRelationship.pluralReflexiveReciprocalPossible ? [CLASSICAL_NAHUATL_LESSON7_OBJECT_RELATIONSHIP_ACTIONS.PRESERVE_REFLEXIVE_RECIPROCAL_POSSIBILITY] : []), ...(contradictionBlocked ? [CLASSICAL_NAHUATL_LESSON7_OBJECT_RELATIONSHIP_ACTIONS.BLOCK_CONTRADICTORY_RELATIONSHIP] : [])]));
       return {
         kind: "classical-nahuatl-verbstem-object-relationship-rule-frame",
@@ -3961,8 +3983,20 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceAuthority: "Andrews transcription",
         sourceDocument: CLASSICAL_NAHUATL_LESSON7_SOURCE_DOCUMENT,
         legalWitnessAuthority: CLASSICAL_NAHUATL_LESSON7_LEGAL_WITNESS_AUTHORITY,
-        ruleRefs: getClassicalNahuatlObjectRelationshipRules(),
-        stem: normalizeClassicalNahuatlVerbstem(stem),
+        ruleRefs: [
+          ...getClassicalNahuatlObjectRelationshipRules(),
+          ...(ichtequiValenceRestrictionApplies ? [{
+            id: "cn-l18-188-note1-ichtequi-specific-object-only",
+            tagId: "cn-l18-188-note1-ichtequi-specific-object-only",
+            atomId: "ACI-P162-L002-9428A10C8E",
+            section: "18.8 note 1",
+            lineStart: 6184,
+            lineEnd: 6187,
+            exactWitness: "(ich-tequi) does not permit a nonspecific object.",
+            rule: "If (ich-tequi) has an object, the object must be specific."
+          }] : [])
+        ],
+        stem: normalizedStem,
         valence,
         indefiniteObjects: {
           human: {
@@ -3988,9 +4022,24 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         requestedIndefiniteObject,
         hostileRejectedObjectRelationships: contradictionBlocked ? Array.from(new Set([requestedRelationshipKind, requestedIndefiniteObject].filter(Boolean))) : [],
         objectRelationshipContradictionBlocked: contradictionBlocked,
-        objectRelationshipContradictionReason: contradictionBlocked ? "requested-object-relationship-not-authorized-by-canvas-7.9" : "",
+        objectRelationshipContradictionReason: contradictionReason,
+        ichtequiValenceRestrictionApplies,
+        ichtequiAllowedProjectiveValences: ichtequiValenceRestrictionApplies
+          ? ["intransitive", "specific-projective"]
+          : [],
+        ichtequiBlockedProjectiveValences: ichtequiValenceRestrictionApplies
+          ? ["projective-human", "projective-nonhuman"]
+          : [],
+        ichtequiNonspecificObjectBlocked,
+        lexicalValenceRuleId: ichtequiValenceRestrictionApplies
+          ? "cn-l18-188-note1-ichtequi-specific-object-only"
+          : "",
+        lexicalValenceSourceSection: ichtequiValenceRestrictionApplies
+          ? "18.8 note 1; 24.2"
+          : "",
         collapseIndefiniteIntoSpecificAllowed: false,
         authorizationStatus: contradictionBlocked ? "blocked" : "authorized",
+        blockReason: contradictionReason,
         grammarGenerationAllowed: false,
         surfaceGenerationAllowed: false,
       };
@@ -4145,7 +4194,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const fusionSuppliesTlaSourceValence = Boolean(explicitFusionRequested && requestedSourceValence !== "projective-nonhuman");
       const tlaEligible = fused || valence === "projective-nonhuman";
       const tlaSourceVariantApplies = Boolean(tlaEligible || explicitFusionRequested);
-      const sourceStemVariant = tlaSourceVariantApplies ? buildClassicalNahuatlTlaFusionSourceStem(normalizedStem, {
+      const sourceStemVariant = typedSourceHasEmbedMatrix || tlaSourceVariantApplies ? buildClassicalNahuatlTlaFusionSourceStem(normalizedStem, {
         ...options,
         stemVariant
       }) : stemVariant;
@@ -6482,7 +6531,7 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         }] : [])],
         conclusion: {
           authorized,
-          blockReason: authorized ? "" : lesson11ParadigmPlan?.blockReason || lesson11VncApplicationFrame?.blockReason || zeroRootLowerLessonBridgeFrame?.blockReason || finalBoundaryRealizationFrame?.blockReason || "classical-vnc-proof-not-authorized",
+          blockReason: authorized ? "" : lesson11ParadigmPlan?.blockReason || lesson11VncApplicationFrame?.blockReason || zeroRootLowerLessonBridgeFrame?.blockReason || objectRelationshipRuleFrame?.blockReason || finalBoundaryRealizationFrame?.blockReason || "classical-vnc-proof-not-authorized",
           verbstem: authorized ? structureRuleFrame?.stem || "" : "",
           progressiveAssimilationSourceStem: authorized ? progressiveAssimilationFrame?.sourceStem || "" : "",
           progressiveAssimilationAnalyzedStem: authorized ? progressiveAssimilationFrame?.realizedAnalyzedStem || "" : "",
