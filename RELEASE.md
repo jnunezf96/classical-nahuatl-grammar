@@ -1,19 +1,18 @@
-# Grammar OS v1.2.1 release
+# Grammar OS v1.2.2 release
 
-Release name: **Private Play Study Handoff**
+Release name: **Lesson 18.8 Precision Update**
 
-Browser build: **20260828-private-play-study-handoff-364**
+Browser build: **20260828-lesson18-note1-ichtequi-365**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Added a guided entrance to the optional private play study.
-- Kept study controls hidden during ordinary grammar use.
-- Made setup open the recorder and focus the consent step.
-- Added clear instructions for downloading and privately returning a stopped recording.
-- Expanded the privacy explanation for the local-only, consent-based recorder.
-- Added focused desktop, mobile, privacy, and study-boundary checks.
+- Made Andrews 18.8 note 1 operational for `(ich-tequi)`.
+- Removed nonspecific human and nonhuman object choices that the verbstem does not permit.
+- Preserved both the intransitive reading and specific-object generation.
+- Preserved the typed `(ich-tequi)` analysis in exact Result formulas while keeping written forms solid.
+- Made Class and Valence changes require a fresh Source commitment before generation.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -27,7 +26,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.1/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.2/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

@@ -8,7 +8,7 @@ import {
 import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260828-lesson18-note1-ichtequi-365";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260826-source-commit-359";
 import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260826-relational-result-presentation-361";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260828-private-play-study-handoff-364";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260828-lesson18-note1-ichtequi-365";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260826-source-commit-359";
 import {
     installClassicalNestedControlLedger,
