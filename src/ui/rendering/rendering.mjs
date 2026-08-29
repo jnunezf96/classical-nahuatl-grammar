@@ -19208,6 +19208,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceStem = outputFillers.tlaFusionSourceStemVariant || fusionFrame.sourceStemVariant || outputFillers.stemVariant || machineryFrame.predicateFormationRuleFrame?.stemVariant || surfaceFrame.stem || "STEM";
       const derivedStem = outputFillers.tlaFusionDerivedStem || fusionFrame.derivedStem || `tla-${sourceStem}`;
       const fused = outputFillers.tlaFusionFused === true || fusionFrame.fused === true || selectedAnalysisKind === "fused-derived-intransitive";
+      const constructiveTargetFrame = fusionFrame.constructiveTlaFusionTargetFrame || {};
       return {
         selectedAnalysisKind: selectedAnalysisKind || (fused ? "fused-derived-intransitive" : "unfused-transitive-tla-object"),
         fused,
@@ -19219,8 +19220,55 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceRole: `external object tla + (${sourceStem})`,
         operationRole: fused ? "tla fusion: object slot -> stem-internal morph" : "no fusion selected: tla remains external object slot",
         resultRole: fused ? `derived intransitive verbstem (${derivedStem})` : `transitive VNC +tla(${sourceStem})`,
-        objectSlotRole: fused ? "none after fusion" : "tla remains outside stem"
+        objectSlotRole: fused ? "none after fusion" : "tla remains outside stem",
+        initialSupportiveIDropped:
+          constructiveTargetFrame.matrixInitialSupportiveIDropped === true,
+        derivedStemBeforeInitialSupportiveI:
+          constructiveTargetFrame
+            .constructedDerivedStemBeforeInitialSupportiveI || ""
       };
+    }
+    function createClassicalRuleLogicInitialIFusionTransitionSection(
+      surfaceFrame = null,
+      targetFormula = ""
+    ) {
+      const roleMap = getClassicalRuleLogicSurfaceTlaFusionRoleMap(surfaceFrame);
+      const selectedTargetFormula = String(targetFormula || "").trim();
+      const targetStem = String(roleMap?.derivedStem || "").trim();
+      const sourceStem = String(
+        roleMap?.derivedStemBeforeInitialSupportiveI || ""
+      ).trim();
+      if (
+        roleMap?.fused !== true
+        || roleMap.initialSupportiveIDropped !== true
+        || !selectedTargetFormula
+        || !sourceStem
+        || !targetStem
+        || sourceStem === targetStem
+        || !selectedTargetFormula.includes(`(${targetStem})`)
+      ) {
+        return null;
+      }
+      const sourceFormula = selectedTargetFormula.replace(
+        `(${targetStem})`,
+        `(${sourceStem})`
+      );
+      const section = targetObject.document.createElement("section");
+      section.className = "classical-rule-surface__format-section classical-rule-surface__initial-i-transition";
+      section.dataset.classicalInitialISupportiveFusionTransition = "true";
+      section.dataset.classicalGrammarAuthority = "false";
+      const heading = targetObject.document.createElement("div");
+      heading.className = "classical-rule-surface__format-heading";
+      const title = targetObject.document.createElement("h4");
+      title.className = "classical-rule-surface__format-title";
+      title.textContent = "Initial i realization";
+      heading.appendChild(title);
+      const formula = targetObject.document.createElement("div");
+      formula.className = "classical-rule-surface__formula";
+      formula.dataset.classicalDerivedAnnotation = "owner-derived";
+      formula.textContent = `${sourceFormula} > ${selectedTargetFormula}`;
+      section.append(heading, formula);
+      return section;
     }
     function appendClassicalRuleLogicSurfaceTlaFusionRoleFacts(parent = null, surfaceFrame = null) {
       if (!parent) {
@@ -32912,12 +32960,15 @@ export function createUiRenderingApi(targetObject = globalThis) {
         targetObject.document?.getElementById?.(id)?.value
         || fallback
       ).trim();
+      const checked = id => targetObject.document
+        ?.getElementById?.(id)?.checked === true;
       const operationId = String(binding?.operationId || "");
       if (operationId === "vnc:application") {
         return Object.freeze({
           subject: value("classical-rule-logic-subject", "3sg"),
           mood: value("classical-rule-logic-mood", "indicative"),
           tense: value("classical-rule-logic-tense", "present"),
+          tlaFusion: checked("classical-rule-logic-tla-fusion"),
           requestedDerivation: String(
             targetObject.getActiveDerivationType?.() || "direct"
           ).trim(),
@@ -35470,8 +35521,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
         && surfaceExactTypedSourceSignature
         && (
           !retainedCommittedTypedSourceSignature
-          || retainedCommittedTypedSourceSignature
-            !== surfaceExactTypedSourceSignature
           || ActiveClassicalCapabilityCommittedTypedSourceSignature
             !== retainedCommittedTypedSourceSignature
         )
@@ -35484,9 +35533,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const currentExactTypedSource = continuedExactResult
         || validatedContinuedExactTypedSource
         ? null
-        : surfaceExactTypedSourceSignature
+        : retainedCommittedTypedSourceSignature
           && ActiveClassicalCapabilityCommittedTypedSourceSignature
-            === surfaceExactTypedSourceSignature
+            === retainedCommittedTypedSourceSignature
           ? ActiveClassicalCapabilityCommittedTypedSource
           : surfaceExactTypedSource;
       const visibleResultPreview = continuedExactResult
@@ -36531,6 +36580,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
               subject: visibleSelections.subject,
               mood: visibleSelections.mood,
               tense: visibleSelections.tense,
+              tlaFusion: visibleSelections.tlaFusion,
               requestedVoice: visibleSelections.requestedVoice,
             })
           );
@@ -40129,6 +40179,11 @@ export function createUiRenderingApi(targetObject = globalThis) {
             surfaceFrame.authorizationStatus
           );
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
+      const initialIFusionTransitionSection =
+        createClassicalRuleLogicInitialIFusionTransitionSection(
+          surfaceFrame,
+          specificLinearFormula
+        );
       const specificLinearTypedSlotFrame = surfaceFrame.basalUnit === "nnc"
         ? surfaceFrame.nncGrammarSurfaceContract?.typedSlotFrame || null
         : getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
@@ -40444,6 +40499,9 @@ export function createUiRenderingApi(targetObject = globalThis) {
           [
             createClassicalResultPresentationSwitchRow(resultSpecificitySwitch),
             linearFormat,
+            ...(initialIFusionTransitionSection
+              ? [initialIFusionTransitionSection]
+              : []),
             nuclearClauseDiagram,
             ...(singleVncSentenceFormulaAvailable
               ? [sentenceFormulaSection]

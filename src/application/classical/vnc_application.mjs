@@ -976,7 +976,16 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
           stem,
           sourceValence,
         );
-      const sourceAnalysis = sourceRecord?.initialIAnalysis || null;
+      const sourceRecordStem = normalizeClassicalNahuatlVncApplicationStem(
+        sourceRecord?.stem || "",
+      );
+      // Quantity-neutral inventory lookup is a source-entry convenience, not
+      // authority to overwrite the initial-i analysis of a differently typed
+      // Source. Exact catalogued shapes keep their owner fact; an open typed
+      // quantity variant keeps its explicit Source analysis.
+      const sourceAnalysis = sourceRecordStem === stem
+        ? sourceRecord?.initialIAnalysis || null
+        : null;
       const kind = ["real", "supportive", "contextual"].includes(sourceAnalysis?.kind) ? sourceAnalysis.kind : "unresolved";
       const resolvedKind = kind === "contextual"
         ? sourceAnalysis?.resolvedKindsByValence?.[effectiveValence] || sourceAnalysis?.defaultResolvedKind || ""

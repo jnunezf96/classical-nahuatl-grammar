@@ -1,4 +1,4 @@
-import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260826-source-commit-359";
+import { installClassicalNahuatlVncApplicationGlobals } from "../application/classical/vnc_application.mjs?v=20260828-initial-i-tla-fusion-368";
 import { installClassicalNahuatlNncApplicationGlobals } from "../application/classical/nnc_application.mjs?v=20260823-passive-formation-continuity-238";
 import { installClassicalGrammarApplicationGlobals } from "../application/classical/grammar_application.mjs?v=20260826-source-commit-359";
 import { installClassicalNahuatlFormationResultBindingGlobals } from "../application/classical/formation_result_binding.mjs?v=20260826-interface-repairs-341";
@@ -35,7 +35,7 @@ import { installClassicalNahuatlNuclearSemanticOperationsGlobals } from "../core
 import { installClassicalVncSemanticOperationsGlobals } from "../core/classical/vnc_semantic_operations.mjs?v=20260810-atom-ledger-cleanup-009";
 import { installClassicalNuclearSemanticOwnersGlobals } from "../core/classical/nuclear_semantic_owner_catalog.mjs?v=20260826-interface-repairs-341";
 import { installClassicalNahuatlIrregularVncGlobals } from "../core/classical/irregular_vnc.mjs?v=20260823-passive-formation-continuity-238";
-import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260828-lesson18-note1-ichtequi-365";
+import { installClassicalNahuatlVerbstemClassesGlobals } from "../core/classical/verbstem_classes.mjs?v=20260828-initial-i-tla-fusion-368";
 import { installClassicalNahuatlVncDerivationEvaluatorGlobals } from "../core/classical/vnc_derivation_evaluator.mjs?v=20260824-lesson58-final-278";
 import { installClassicalNahuatlLaterLayersGlobals } from "../core/classical/derived_vnc_layers.mjs?v=20260826-source-commit-359";
 import { installClauseGlobals } from "../core/clause/clause.mjs?v=20260818-lesson29-groups10-12-357";
@@ -74,10 +74,10 @@ import { installUiExportGlobals } from "../ui/export/export.mjs?v=20260818-lesso
 import { installUiI18nGlobals } from "../ui/i18n/i18n.mjs?v=20260818-lesson29-groups10-12-357";
 import { installUiEventsGlobals } from "../ui/events/events.mjs?v=20260826-interface-repairs-341";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260826-interface-repairs-341";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260826-relational-result-presentation-361";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260828-initial-i-tla-fusion-368";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260826-interface-repairs-341";
 import { installCurriculumGlobals } from "../ui/curriculum/curriculum.mjs?v=20260818-lesson29-groups10-12-357";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260828-lesson18-note1-ichtequi-365";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260828-initial-i-tla-fusion-368";
 import { installLessonRegistryGlobals } from "../lessons/registry.mjs?v=20260811-lesson-route-read-only-025";
 import { installAppendixRegistryGlobals } from "../appendices/registry.mjs?v=20260818-lesson29-groups10-12-357";
 import { isRuntimeCrossModuleCapability } from "./runtime_capability_contract.mjs?v=20260826-interface-repairs-341";

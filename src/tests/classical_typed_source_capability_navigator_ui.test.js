@@ -494,6 +494,12 @@ function run(ctx = {}) {
             && sourceModeApply.includes(
                 "tense: visibleSelections.tense"
             )
+            && rendering.includes(
+                'tlaFusion: checked("classical-rule-logic-tla-fusion")'
+            )
+            && sourceModeApply.includes(
+                "tlaFusion: visibleSelections.tlaFusion"
+            )
             && sourceModeApply.includes(
                 "requestedVoice: visibleSelections.requestedVoice"
             )

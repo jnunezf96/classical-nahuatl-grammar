@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-lesson18-note1-ichtequi-365";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-initial-i-tla-fusion-368";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

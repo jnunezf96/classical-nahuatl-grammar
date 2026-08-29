@@ -1,18 +1,18 @@
-# Grammar OS v1.2.2 release
+# Grammar OS v1.2.3 release
 
-Release name: **Lesson 18.8 Precision Update**
+Release name: **Initial-i Fusion Update**
 
-Browser build: **20260828-lesson18-note1-ichtequi-365**
+Browser build: **20260828-initial-i-tla-fusion-368**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Made Andrews 18.8 note 1 operational for `(ich-tequi)`.
-- Removed nonspecific human and nonhuman object choices that the verbstem does not permit.
-- Preserved both the intransitive reading and specific-object generation.
-- Preserved the typed `(ich-tequi)` analysis in exact Result formulas while keeping written forms solid.
-- Made Class and Valence changes require a fresh Source commitment before generation.
+- Made real and supportive initial `i` produce their distinct exact forms.
+- Made the visible `tla fusion` choice reach the canonical VNC application owner.
+- Preserved supportive-`i` deletion inside the fused verbstem.
+- Shows the exact fused initial-`i` transition in Result analysis.
+- Keeps the committed Source stable while Grammar choices preview their Results.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -26,7 +26,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.2/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.3/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

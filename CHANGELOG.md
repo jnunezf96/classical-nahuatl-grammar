@@ -2,6 +2,17 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.3 — Initial-i Fusion Update
+
+Released August 28, 2026.
+
+### What's New
+
+- Makes real and supportive initial `i` produce their distinct exact forms.
+- Makes `tla fusion` apply when selected.
+- Shows supportive-`i` deletion inside the fused verbstem.
+- Keeps the committed Source stable until a Result is deliberately made or continued.
+
 ## Version 1.2.2 — Lesson 18.8 Precision Update
 
 Released August 28, 2026.

@@ -4103,10 +4103,30 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         && sourceSelectionFrame.selectedSourceKind === "embed-matrix"
         ? normalizeClassicalNahuatlVerbstem(sourceSelectionFrame.selectedMatrixStem)
         : stemVariant;
+      const matrixInitialSupportiveIFrame =
+        buildClassicalNahuatlVerbstemInitialSupportiveIFrame(
+          matrixStem || stemVariant,
+          {
+            ...options,
+            valence: "projective-nonhuman"
+          }
+        );
+      const matrixStemRealization = normalizeClassicalNahuatlVerbstem(
+        matrixInitialSupportiveIFrame.stemRealization
+          || matrixStem
+          || stemVariant
+      );
       const fusedTlaSegment = embedStem ? getClassicalNahuatlFusedTlaSegment({
         incorporatedAdverb: embedStem
       }) : "tla";
-      const constructedDerivedStem = embedStem ? [embedStem, fusedTlaSegment, matrixStem].filter(Boolean).join("-") : ["tla", matrixStem || stemVariant].filter(Boolean).join("-");
+      const constructedDerivedStemBeforeInitialSupportiveI = embedStem
+        ? [embedStem, fusedTlaSegment, matrixStem]
+          .filter(Boolean).join("-")
+        : ["tla", matrixStem || stemVariant].filter(Boolean).join("-");
+      const constructedDerivedStem = embedStem
+        ? [embedStem, fusedTlaSegment, matrixStemRealization]
+          .filter(Boolean).join("-")
+        : ["tla", matrixStemRealization].filter(Boolean).join("-");
       return {
         kind: "classical-nahuatl-verbstem-constructive-tla-fusion-target-frame",
         sourceAuthority: "Andrews transcription",
@@ -4116,7 +4136,12 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         sourceStemVariant: embedStem ? [embedStem, matrixStem].filter(Boolean).join("-") : matrixStem || stemVariant,
         embedStem,
         matrixStem,
+        matrixStemRealization,
+        matrixInitialSupportiveIFrame,
+        matrixInitialSupportiveIDropped:
+          matrixInitialSupportiveIFrame.initialSupportiveIDropped === true,
         fusedTlaSegment,
+        constructedDerivedStemBeforeInitialSupportiveI,
         constructedDerivedStem,
         exactDerivedStem: "",
         derivedStem: constructedDerivedStem,
