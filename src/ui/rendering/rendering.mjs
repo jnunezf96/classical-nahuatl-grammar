@@ -19208,7 +19208,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
       const sourceStem = outputFillers.tlaFusionSourceStemVariant || fusionFrame.sourceStemVariant || outputFillers.stemVariant || machineryFrame.predicateFormationRuleFrame?.stemVariant || surfaceFrame.stem || "STEM";
       const derivedStem = outputFillers.tlaFusionDerivedStem || fusionFrame.derivedStem || `tla-${sourceStem}`;
       const fused = outputFillers.tlaFusionFused === true || fusionFrame.fused === true || selectedAnalysisKind === "fused-derived-intransitive";
-      const constructiveTargetFrame = fusionFrame.constructiveTlaFusionTargetFrame || {};
       return {
         selectedAnalysisKind: selectedAnalysisKind || (fused ? "fused-derived-intransitive" : "unfused-transitive-tla-object"),
         fused,
@@ -19220,55 +19219,8 @@ export function createUiRenderingApi(targetObject = globalThis) {
         sourceRole: `external object tla + (${sourceStem})`,
         operationRole: fused ? "tla fusion: object slot -> stem-internal morph" : "no fusion selected: tla remains external object slot",
         resultRole: fused ? `derived intransitive verbstem (${derivedStem})` : `transitive VNC +tla(${sourceStem})`,
-        objectSlotRole: fused ? "none after fusion" : "tla remains outside stem",
-        initialSupportiveIDropped:
-          constructiveTargetFrame.matrixInitialSupportiveIDropped === true,
-        derivedStemBeforeInitialSupportiveI:
-          constructiveTargetFrame
-            .constructedDerivedStemBeforeInitialSupportiveI || ""
+        objectSlotRole: fused ? "none after fusion" : "tla remains outside stem"
       };
-    }
-    function createClassicalRuleLogicInitialIFusionTransitionSection(
-      surfaceFrame = null,
-      targetFormula = ""
-    ) {
-      const roleMap = getClassicalRuleLogicSurfaceTlaFusionRoleMap(surfaceFrame);
-      const selectedTargetFormula = String(targetFormula || "").trim();
-      const targetStem = String(roleMap?.derivedStem || "").trim();
-      const sourceStem = String(
-        roleMap?.derivedStemBeforeInitialSupportiveI || ""
-      ).trim();
-      if (
-        roleMap?.fused !== true
-        || roleMap.initialSupportiveIDropped !== true
-        || !selectedTargetFormula
-        || !sourceStem
-        || !targetStem
-        || sourceStem === targetStem
-        || !selectedTargetFormula.includes(`(${targetStem})`)
-      ) {
-        return null;
-      }
-      const sourceFormula = selectedTargetFormula.replace(
-        `(${targetStem})`,
-        `(${sourceStem})`
-      );
-      const section = targetObject.document.createElement("section");
-      section.className = "classical-rule-surface__format-section classical-rule-surface__initial-i-transition";
-      section.dataset.classicalInitialISupportiveFusionTransition = "true";
-      section.dataset.classicalGrammarAuthority = "false";
-      const heading = targetObject.document.createElement("div");
-      heading.className = "classical-rule-surface__format-heading";
-      const title = targetObject.document.createElement("h4");
-      title.className = "classical-rule-surface__format-title";
-      title.textContent = "Initial i realization";
-      heading.appendChild(title);
-      const formula = targetObject.document.createElement("div");
-      formula.className = "classical-rule-surface__formula";
-      formula.dataset.classicalDerivedAnnotation = "owner-derived";
-      formula.textContent = `${sourceFormula} > ${selectedTargetFormula}`;
-      section.append(heading, formula);
-      return section;
     }
     function appendClassicalRuleLogicSurfaceTlaFusionRoleFacts(parent = null, surfaceFrame = null) {
       if (!parent) {
@@ -40179,11 +40131,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
             surfaceFrame.authorizationStatus
           );
       const generalLinearFormula = surfaceFrame.diagrammaticFrame?.generalLinearFormula || "";
-      const initialIFusionTransitionSection =
-        createClassicalRuleLogicInitialIFusionTransitionSection(
-          surfaceFrame,
-          specificLinearFormula
-        );
       const specificLinearTypedSlotFrame = surfaceFrame.basalUnit === "nnc"
         ? surfaceFrame.nncGrammarSurfaceContract?.typedSlotFrame || null
         : getClassicalVncParadigmTypedSlotFrame(surfaceFrame.machineryFrame);
@@ -40499,9 +40446,6 @@ export function createUiRenderingApi(targetObject = globalThis) {
           [
             createClassicalResultPresentationSwitchRow(resultSpecificitySwitch),
             linearFormat,
-            ...(initialIFusionTransitionSection
-              ? [initialIFusionTransitionSection]
-              : []),
             nuclearClauseDiagram,
             ...(singleVncSentenceFormulaAvailable
               ? [sentenceFormulaSection]

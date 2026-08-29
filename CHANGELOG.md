@@ -2,6 +2,16 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.4 — Exact Result Display Update
+
+Released August 28, 2026.
+
+### What's New
+
+- Shows only `#0-0(tla-hcuil-o-a)0+0-0#` for supportive `i` with `tla fusion`.
+- Removes the extra derivational transition from the public Result display.
+- Preserves the corrected initial-`i` and fusion behavior from v1.2.3.
+
 ## Version 1.2.3 — Initial-i Fusion Update
 
 Released August 28, 2026.

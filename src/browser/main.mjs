@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-initial-i-tla-fusion-368";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-exact-result-display-369";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

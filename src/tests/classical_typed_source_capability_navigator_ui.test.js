@@ -510,6 +510,14 @@ function run(ctx = {}) {
     );
 
     s.ok(
+        "supportive-i fusion displays only the exact target Result",
+        !rendering.includes(
+            "classicalInitialISupportiveFusionTransition"
+        )
+            && !rendering.includes("Initial i realization")
+    );
+
+    s.ok(
         "both text edits and select changes invalidate a continued Result before normal rerendering captures the new Source",
         rendering.includes(
             '"input",\n        invalidateEditedTypedSource'

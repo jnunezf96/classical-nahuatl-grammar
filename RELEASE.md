@@ -1,18 +1,16 @@
-# Grammar OS v1.2.3 release
+# Grammar OS v1.2.4 release
 
-Release name: **Initial-i Fusion Update**
+Release name: **Exact Result Display Update**
 
-Browser build: **20260828-initial-i-tla-fusion-368**
+Browser build: **20260828-exact-result-display-369**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Made real and supportive initial `i` produce their distinct exact forms.
-- Made the visible `tla fusion` choice reach the canonical VNC application owner.
-- Preserved supportive-`i` deletion inside the fused verbstem.
-- Shows the exact fused initial-`i` transition in Result analysis.
-- Keeps the committed Source stable while Grammar choices preview their Results.
+- Shows only the final exact Result for supportive `i` with `tla fusion`.
+- Removes the extra source-to-target transition from the public Result display.
+- Preserves the four-way initial-`i` and `tla fusion` grammar behavior introduced in v1.2.3.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -26,7 +24,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.3/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.4/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.
