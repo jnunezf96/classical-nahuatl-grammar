@@ -389,6 +389,28 @@ export const CLASSICAL_NAHUATL_LESSONS45_47_LCM = freeze({
 export const CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND =
   "classical-nahuatl-nnc-nounstem-request";
 
+const HUAN_YOLQUI_TYPED_SOURCE_KIND =
+  "typed-relational-plus-nounstem-compound-source";
+const HUAN_YOLQUI_TARGET_STEM = "yōlqui";
+const HUAN_YOLQUI_OPERATION_ID =
+  "relational-huan-yolqui-absolutive-lexicalization";
+const HUAN_YOLQUI_TYPED_PREREQUISITE_IDENTITY =
+  "classical-huan-yolqui-absolutive-lexicalization";
+
+export const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND =
+  "classical-nahuatl-relational-source-composition-request";
+export const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND =
+  "classical-nahuatl-relational-source-composition-stem-node";
+export const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND =
+  "classical-nahuatl-relational-source-composition-compound-node";
+
+const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_FRAME_KIND =
+  "classical-nahuatl-relational-source-composition-frame";
+const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND =
+  "classical-nahuatl-relational-source-composition-stem-frame";
+const CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND =
+  "classical-nahuatl-relational-source-composition-compound-frame";
+
 const normalizeToken = (value) => String(value ?? "").trim().toLowerCase().replace(/[_\s]+/gu, "-");
 const normalizeStemText = (value) => String(value ?? "")
   .trim()
@@ -459,6 +481,9 @@ function buildPredicateSegment({
   formulaCarrier = morpheme,
   writtenCarrier = morpheme,
   contextualRuleId = "",
+  compositionPath = "",
+  compositionRole = "",
+  compositionDepth = null,
 } = {}) {
   return {
     morpheme: String(morpheme || ""),
@@ -466,6 +491,15 @@ function buildPredicateSegment({
     formulaCarrier: String(formulaCarrier || ""),
     writtenCarrier: String(writtenCarrier || ""),
     contextualRuleId: String(contextualRuleId || ""),
+    ...(compositionPath
+      ? { compositionPath: String(compositionPath) }
+      : {}),
+    ...(compositionRole
+      ? { compositionRole: String(compositionRole) }
+      : {}),
+    ...(Number.isInteger(compositionDepth)
+      ? { compositionDepth }
+      : {}),
   };
 }
 
@@ -480,6 +514,251 @@ function buildPredicateSegmentsFromTypedCarrier(value, role = "source") {
       writtenCarrier: morpheme === "0" ? "" : morpheme,
       contextualRuleId: morpheme === "0" ? "typed-zero-has-no-written-carrier" : "",
     }));
+}
+
+function buildRelationalSourceCompositionNode(
+  candidate,
+  path,
+  role,
+  diagnostics,
+  depth = 0,
+) {
+  if (!candidate || typeof candidate !== "object" || depth > 6) {
+    diagnostics.push(depth > 6
+      ? "relational-source-composition-depth-exceeded"
+      : "relational-source-composition-node-required");
+    return null;
+  }
+  if (
+    candidate.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND
+  ) {
+    const stem = normalizeStemText(candidate.stem);
+    if (!stem) {
+      diagnostics.push("relational-source-composition-stem-required");
+      return null;
+    }
+    if (stem.includes("-")) {
+      diagnostics.push("relational-source-composition-leaf-must-be-atomic");
+      return null;
+    }
+    return freeze({
+      kind:
+        CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND,
+      contractKind:
+        CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND,
+      version: 1,
+      nodeId: path,
+      role,
+      depth,
+      stem,
+      surface: stem,
+      headStem: stem,
+      typedSourceAuthority: true,
+      callerSuppliedAuthorityAccepted: false,
+    });
+  }
+  if (
+    candidate.kind
+      !== CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND
+  ) {
+    diagnostics.push("relational-source-composition-node-kind-invalid");
+    return null;
+  }
+  const embed = buildRelationalSourceCompositionNode(
+    candidate.embed,
+    `${path}.embed`,
+    "embed",
+    diagnostics,
+    depth + 1,
+  );
+  const matrix = buildRelationalSourceCompositionNode(
+    candidate.matrix,
+    `${path}.matrix`,
+    "matrix",
+    diagnostics,
+    depth + 1,
+  );
+  if (!embed || !matrix) return null;
+  return freeze({
+    kind:
+      CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND,
+    contractKind:
+      CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND,
+    version: 1,
+    nodeId: path,
+    role,
+    depth,
+    embed,
+    matrix,
+    surface: `${embed.surface}-${matrix.surface}`,
+    headStem: matrix.headStem,
+    typedSourceAuthority: true,
+    callerSuppliedAuthorityAccepted: false,
+  });
+}
+
+function relationalSourceCompositionSignature(node = null) {
+  if (!node || typeof node !== "object") return "";
+  if (
+    node.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND
+  ) {
+    return node.stem;
+  }
+  if (
+    node.kind
+      !== CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND
+  ) {
+    return "";
+  }
+  const embed = relationalSourceCompositionSignature(node.embed);
+  const matrix = relationalSourceCompositionSignature(node.matrix);
+  return embed && matrix ? `(${embed}>${matrix})` : "";
+}
+
+function classifyRelationalSourceComposition(
+  root,
+  stem,
+  option,
+  constructionKind,
+  sourceKind,
+) {
+  if (
+    constructionKind !== "relational-nnc"
+    || option !== OPTION.TWO
+  ) {
+    return {
+      diagnostics: [
+        "relational-source-composition-requires-integrated-relational-nnc",
+      ],
+    };
+  }
+  const signature = relationalSourceCompositionSignature(root);
+  if (
+    stem.stemId === "pa-direction"
+    && sourceKind === "relational-compound"
+  ) {
+    if (signature === "(tech>pa)") {
+      return {
+        diagnostics: [],
+        licenseId: "tech-embed-pa-copa-matrices",
+        branchId: "tech-plus-pa",
+      };
+    }
+    if (signature === "(tech>(co>pa))") {
+      return {
+        diagnostics: [],
+        licenseId: "tech-embed-pa-copa-matrices",
+        branchId: "tech-plus-copa",
+      };
+    }
+  }
+  if (
+    stem.stemId === "tlan-bottom"
+    && sourceKind === "compound-nounstem"
+    && root.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND
+    && root.matrix?.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND
+    && root.matrix.stem === "tlan"
+    && root.embed?.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND
+    && root.embed.embed?.surface
+    && root.embed.matrix?.kind
+      === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND
+    && ["īx", "tzīn"].includes(root.embed.matrix.stem)
+  ) {
+    return {
+      diagnostics: [],
+      licenseId: "tlan-nested-bodypart-matrix-choice",
+      branchId: root.embed.matrix.stem === "īx"
+        ? "inner-matrix-ix"
+        : "inner-matrix-tzin",
+    };
+  }
+  return {
+    diagnostics: ["relational-source-composition-not-licensed"],
+  };
+}
+
+function buildRelationalSourceCompositionFrame(
+  candidate,
+  stem,
+  option,
+  constructionKind,
+  sourceKind,
+  issuedFrames,
+) {
+  const diagnostics = [];
+  if (
+    candidate?.kind
+      !== CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND
+  ) {
+    return {
+      diagnostics: ["relational-source-composition-request-kind-invalid"],
+      frame: null,
+    };
+  }
+  const root = buildRelationalSourceCompositionNode(
+    {
+      kind:
+        CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND,
+      embed: candidate.embed,
+      matrix: candidate.matrix,
+    },
+    "root",
+    "predicate",
+    diagnostics,
+  );
+  if (!root || diagnostics.length) return { diagnostics, frame: null };
+  const license = classifyRelationalSourceComposition(
+    root,
+    stem,
+    option,
+    constructionKind,
+    sourceKind,
+  );
+  if (license.diagnostics.length) {
+    return { diagnostics: license.diagnostics, frame: null };
+  }
+  const frame = freeze({
+    kind: CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_FRAME_KIND,
+    contractKind: CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_FRAME_KIND,
+    version: 1,
+    authorizationStatus: "authorized",
+    licenseId: license.licenseId,
+    branchId: license.branchId,
+    root,
+    surface: root.surface,
+    compositionSignature: relationalSourceCompositionSignature(root),
+    typedSourceAuthority: true,
+    callerSuppliedAuthorityAccepted: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    lessonMetadataAuthority: false,
+  });
+  issuedFrames.add(frame);
+  return { diagnostics: [], frame };
+}
+
+function buildPredicateSegmentsFromSourceComposition(frame = null) {
+  const walk = (node) => {
+    if (
+      node.kind
+        === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_FRAME_KIND
+    ) {
+      return [buildPredicateSegment({
+        morpheme: node.stem,
+        role: `source-composition-${node.role}`,
+        compositionPath: node.nodeId,
+        compositionRole: node.role,
+        compositionDepth: node.depth,
+      })];
+    }
+    return [...walk(node.embed), ...walk(node.matrix)];
+  };
+  return frame?.root ? walk(frame.root) : [];
 }
 
 function replaceFinalPredicateSegment(segments, replacement) {
@@ -580,6 +859,15 @@ function buildPredicateRecord({
     formulaCarrier: String(segment?.formulaCarrier || ""),
     writtenCarrier: String(segment?.writtenCarrier || ""),
     contextualRuleId: String(segment?.contextualRuleId || ""),
+    ...(segment?.compositionPath
+      ? { compositionPath: String(segment.compositionPath) }
+      : {}),
+    ...(segment?.compositionRole
+      ? { compositionRole: String(segment.compositionRole) }
+      : {}),
+    ...(Number.isInteger(segment?.compositionDepth)
+      ? { compositionDepth: segment.compositionDepth }
+      : {}),
   })));
   const formulaPredicate = normalizedPredicateSegments
     .map((segment) => segment.formulaCarrier)
@@ -665,6 +953,60 @@ function deriveStateForSource(stemId, formationId, sourceVoice, sourceKind, requ
   return requestedState;
 }
 
+function isHuanYolquiLexicalizationShape(normalized = {}) {
+  return normalized.stemId === "huan-company"
+    && normalized.constructionKind === "compound-embed"
+    && normalized.option === OPTION.FOUR
+    && normalized.sourceStemSupplied
+    && normalized.sourceStem === "huān"
+    && normalized.downstreamTargetStem === HUAN_YOLQUI_TARGET_STEM;
+}
+
+function resolveHuanYolquiAbsolutiveNumberFrame(targetObject, normalized) {
+  if (
+    typeof targetObject?.resolveClassicalNahuatlLesson12AbsolutiveNumberDyad
+      !== "function"
+  ) {
+    return {
+      diagnostics: ["lesson-12-absolutive-number-authority-required"],
+      numberFrame: null,
+    };
+  }
+  const plural = normalized.subjectId.endsWith("pl");
+  const numberFrame =
+    targetObject.resolveClassicalNahuatlLesson12AbsolutiveNumberDyad({
+      subject: normalized.subjectId,
+      nounClass: "tli",
+      stem: "yōl",
+      pluralConnector: plural ? "t-in" : "",
+      animacy: "animate",
+      metaphoricalOverride: false,
+    });
+  const expected = plural
+    ? { subjectNumber: "plural", num1: "t", num2: "in" }
+    : { subjectNumber: "singular", num1: "li", num2: "0" };
+  if (
+    numberFrame?.authorizationStatus !== "authorized"
+    || numberFrame.subject !== normalized.subjectId
+    || numberFrame.subjectNumber !== expected.subjectNumber
+    || numberFrame.nounClass !== "tli"
+    || numberFrame.stem !== "yōl"
+    || numberFrame.num1 !== expected.num1
+    || numberFrame.num2 !== expected.num2
+    || numberFrame.numberBelongsTo !== "subject-personal-pronoun"
+    || numberFrame.numberIsNounInflection !== false
+  ) {
+    return {
+      diagnostics: ["huan-yolqui-lesson-12-number-branch-not-authorized"],
+      numberFrame: null,
+    };
+  }
+  return {
+    diagnostics: [],
+    numberFrame: freeze({ ...numberFrame }),
+  };
+}
+
 function buildRelationalPredicate(targetObject, sourceFrame) {
   const {
     stem,
@@ -681,6 +1023,32 @@ function buildRelationalPredicate(targetObject, sourceFrame) {
   const matrix = stem.classicalMatrix;
 
   if (constructionKind === "compound-embed") {
+    if (sourceFrame.huanYolquiAbsolutiveLexicalization === true) {
+      const innerPossessor = POSSESSOR_PREFIXES[sourceFrame.possessorId] || "";
+      return buildPredicateRecord({
+        predicateSegments: [
+          buildPredicateSegment({
+            morpheme: innerPossessor,
+            role: "embedded-relational-possessor",
+          }),
+          buildPredicateSegment({
+            morpheme: "huān",
+            role: "relational-source",
+          }),
+          buildPredicateSegment({
+            morpheme: "yōl",
+            role: "lexicalized-agentive-matrix",
+            contextualRuleId: "huan-yolqui-agentive-qui-lexicalization",
+          }),
+        ],
+        operationId: HUAN_YOLQUI_OPERATION_ID,
+        operationTrace: [
+          "retain-inner-relational-possessor",
+          "lexicalize-huan-plus-yolqui-as-huan-yol-stem",
+          "delegate-absolutive-number-to-lesson-12-owner",
+        ],
+      });
+    }
     if (!targetStem) {
       return { error: "target-matrix-stem-required" };
     }
@@ -723,6 +1091,35 @@ function buildRelationalPredicate(targetObject, sourceFrame) {
     return buildPredicateRecord({
       predicateSegments,
       operationId: "relational-option-one-simple-possessive",
+      operationTrace,
+    });
+  }
+
+  if (sourceFrame.sourceCompositionFrame) {
+    let predicateSegments = buildPredicateSegmentsFromSourceComposition(
+      sourceFrame.sourceCompositionFrame,
+    );
+    const operationTrace = [
+      "retain-typed-recursive-source-composition",
+      "preserve-embed-matrix-bracketing",
+      `apply-${sourceFrame.sourceCompositionFrame.branchId}`,
+    ];
+    if (affective !== "none") {
+      if (!stem.affective) {
+        return { error: "affective-formation-not-licensed-for-stem" };
+      }
+      predicateSegments = applyAffectiveBoundaryToSegments(
+        predicateSegments,
+        affective,
+      );
+      operationTrace.push(
+        "embed-relational-stem-in-affective",
+        "validate-adverbiality-with-final-co",
+      );
+    }
+    return buildPredicateRecord({
+      predicateSegments,
+      operationId: "relational-option-two-typed-source-composition",
       operationTrace,
     });
   }
@@ -1324,6 +1721,7 @@ function normalizeRequest(request = {}) {
     sourceVoice: normalizeToken(nounstem?.sourceVoice || "active"),
     sourceVoiceSupplied: Boolean(String(nounstem?.sourceVoice ?? "").trim()),
     state: normalizeToken(request.state || ""),
+    stateSupplied: Boolean(String(request.state ?? "").trim()),
     possessorId: normalizeToken(request.possessorId || ""),
     subjectMode: normalizeToken(request.subjectMode || "adverbialized"),
     subjectId: normalizeToken(request.subjectId || "3common"),
@@ -1333,6 +1731,8 @@ function normalizeRequest(request = {}) {
     sourceMode: normalizeToken(nounstem?.sourceMode),
     sourceEmbedStem: normalizeStemText(nounstem?.sourceEmbedStem),
     sourceMatrixStem: normalizeStemText(nounstem?.sourceMatrixStem),
+    sourceComposition: nounstem?.sourceComposition || null,
+    sourceCompositionSupplied: nounstem?.sourceComposition != null,
     downstreamTargetStem: normalizeStemText(nounstem?.downstreamTargetStem),
     affective: normalizeToken(nounstem?.affective || "none"),
     sourceLexemeId: normalizeToken(nounstem?.sourceLexemeId),
@@ -1349,7 +1749,12 @@ function normalizeRequest(request = {}) {
   };
 }
 
-function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
+function buildSourceFrame(
+  targetObject,
+  issuedUpstreamSourceCarriers,
+  issuedSourceCompositionFrames,
+  request,
+) {
   let normalized = normalizeRequest(request);
   if (!normalized.nounstemRequestValid) {
     return { diagnostics: ["nounstem-request-required"], normalized };
@@ -1381,6 +1786,24 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
     if (constructionKind === "compound-embed" && option !== OPTION.FOUR) {
       return { diagnostics: ["compound-embed-requires-option-four"], normalized, stem };
     }
+  }
+  const huanYolquiLexicalization =
+    isHuanYolquiLexicalizationShape(normalized);
+  const huanYolquiTypedSourceClaim =
+    normalized.sourceKind === HUAN_YOLQUI_TYPED_SOURCE_KIND;
+  if (huanYolquiLexicalization && !huanYolquiTypedSourceClaim) {
+    return {
+      diagnostics: ["huan-yolqui-typed-source-kind-required"],
+      normalized,
+      stem,
+    };
+  }
+  if (huanYolquiTypedSourceClaim && !huanYolquiLexicalization) {
+    return {
+      diagnostics: ["huan-yolqui-typed-source-shape-mismatch"],
+      normalized,
+      stem,
+    };
   }
   if (constructionKind === "associated-entity" || constructionKind === "pertinency") {
     if (!normalized.sourceStem) {
@@ -1438,6 +1861,56 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
       return { diagnostics: ["relational-possessor-selection-required"], normalized, stem };
     }
   }
+  let huanYolquiNumberFrame = null;
+  if (huanYolquiLexicalization) {
+    if (!normalized.stateSupplied || state !== STATE.ABSOLUTIVE) {
+      return {
+        diagnostics: ["huan-yolqui-lexicalization-requires-absolutive-state"],
+        normalized,
+        stem,
+      };
+    }
+    if (!possessorId || !Object.hasOwn(POSSESSOR_PREFIXES, possessorId)) {
+      return {
+        diagnostics: ["huan-yolqui-inner-possessor-required"],
+        normalized,
+        stem,
+      };
+    }
+    if (
+      normalized.subjectMode !== "normal"
+      || !Object.hasOwn(SUBJECT_PREFIXES, normalized.subjectId)
+      || !/^(?:[123](?:sg|pl))$/u.test(normalized.subjectId)
+    ) {
+      return {
+        diagnostics: ["huan-yolqui-person-number-subject-required"],
+        normalized,
+        stem,
+      };
+    }
+    if (normalized.affective !== "none") {
+      return {
+        diagnostics: ["huan-yolqui-affective-operation-not-licensed"],
+        normalized,
+        stem,
+      };
+    }
+    if (normalized.nounConnector || normalized.numberConnector) {
+      return {
+        diagnostics: ["huan-yolqui-caller-number-connector-rejected"],
+        normalized,
+        stem,
+      };
+    }
+    const numberAuthority = resolveHuanYolquiAbsolutiveNumberFrame(
+      targetObject,
+      normalized,
+    );
+    if (numberAuthority.diagnostics.length) {
+      return { diagnostics: numberAuthority.diagnostics, normalized, stem };
+    }
+    huanYolquiNumberFrame = numberAuthority.numberFrame;
+  }
   if (stem.stemId === "pa-frequency" && !["quantitive", "numeral"].includes(normalized.sourceKind)) {
     return { diagnostics: ["frequency-pa-requires-quantitive-or-numeral-source"], normalized, stem };
   }
@@ -1456,13 +1929,56 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
   if (stem.functions && normalized.relationalFunction && !stem.functions.includes(normalized.relationalFunction)) {
     return { diagnostics: ["relational-function-not-licensed-for-stem"], normalized, stem };
   }
-  const predicateSourceStem = normalized.sourceStem || normalizeStemText(stem.fixedEmbeddedStem);
+  const sourceComposition = normalized.sourceCompositionSupplied
+    ? buildRelationalSourceCompositionFrame(
+      normalized.sourceComposition,
+      stem,
+      option,
+      constructionKind,
+      normalized.sourceKind,
+      issuedSourceCompositionFrames,
+    )
+    : { diagnostics: [], frame: null };
+  if (sourceComposition.diagnostics.length) {
+    return {
+      diagnostics: sourceComposition.diagnostics,
+      normalized,
+      stem,
+    };
+  }
+  const sourceCompositionFrame = sourceComposition.frame;
+  const compositionEmbedStem = sourceCompositionFrame?.root?.embed?.surface || "";
+  const compositionMatrixStem = sourceCompositionFrame?.root?.matrix?.surface || "";
+  if (
+    sourceCompositionFrame
+    && (
+      (normalized.sourceStemSupplied
+        && normalized.sourceStem !== compositionEmbedStem)
+      || (normalized.sourceEmbedStem
+        && normalized.sourceEmbedStem !== compositionEmbedStem)
+      || (normalized.sourceMatrixStem
+        && normalized.sourceMatrixStem !== compositionMatrixStem)
+    )
+  ) {
+    return {
+      diagnostics: ["relational-source-composition-flat-claim-mismatch"],
+      normalized,
+      stem,
+    };
+  }
+  const predicateSourceStem = sourceCompositionFrame
+    ? compositionEmbedStem
+    : normalized.sourceStem || normalizeStemText(stem.fixedEmbeddedStem);
   const sourceMode = normalized.sourceMode || (option === OPTION.ONE ? "whole-stem" : "embed-matrix");
-  const sourceEmbedStem = normalized.sourceEmbedStem || (option === OPTION.ONE ? "" : predicateSourceStem);
+  const sourceEmbedStem = sourceCompositionFrame
+    ? compositionEmbedStem
+    : normalized.sourceEmbedStem || (option === OPTION.ONE ? "" : predicateSourceStem);
   const expectedMatrixStem = stem.stemId === "co-c-specific-location"
     ? sourceFrameMatrixForCoC(sourceEmbedStem, normalized.sourceLexemeId)
     : normalizeStemText(stem.classicalMatrix);
-  const sourceMatrixStem = normalized.sourceMatrixStem || expectedMatrixStem;
+  const sourceMatrixStem = sourceCompositionFrame
+    ? compositionMatrixStem
+    : normalized.sourceMatrixStem || expectedMatrixStem;
   if (constructionKind === "relational-nnc") {
     if (option === OPTION.ONE && sourceMode !== "whole-stem") {
       return { diagnostics: ["relational-simple-source-requires-stem"], normalized, stem };
@@ -1470,18 +1986,39 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
     if (option !== OPTION.ONE && sourceMode !== "embed-matrix") {
       return { diagnostics: ["relational-compound-source-requires-embed-matrix"], normalized, stem };
     }
-    if (sourceMatrixStem !== expectedMatrixStem) {
+    if (
+      sourceCompositionFrame
+        ? sourceCompositionFrame.root.matrix.headStem !== expectedMatrixStem
+        : sourceMatrixStem !== expectedMatrixStem
+    ) {
       return { diagnostics: ["relational-source-matrix-mismatch"], normalized, stem };
     }
     if (option !== OPTION.ONE && !sourceEmbedStem && normalized.sourceKind !== "interrogative-empty") {
       return { diagnostics: ["relational-source-embed-required"], normalized, stem };
     }
   }
-  const internalAnalysis = constructionKind === "compound-embed"
+  const internalAnalysis = sourceCompositionFrame
+    ? {
+      kind: "typed-relational-source-composition-analysis",
+      embed: compositionEmbedStem,
+      matrix: compositionMatrixStem,
+      connective: "",
+      licenseId: sourceCompositionFrame.licenseId,
+      branchId: sourceCompositionFrame.branchId,
+      compositionSignature: sourceCompositionFrame.compositionSignature,
+      composition: sourceCompositionFrame.root,
+    }
+    : constructionKind === "compound-embed"
     ? {
       embed: stem.classicalMatrix.replace("/", "").replace(/-$/u, ""),
       matrix: normalized.downstreamTargetStem,
       connective: "",
+      ...(huanYolquiLexicalization
+        ? {
+          innerPossessor: possessorId,
+          lexicalizedMatrixStem: "yōl",
+        }
+        : {}),
     }
     : constructionKind === "relational-nnc"
       ? {
@@ -1508,13 +2045,18 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
     sourceFormation: normalized.formationId,
     sourceVoice: normalized.sourceVoice,
     sourceMode,
-    sourceStem: constructionKind === "relational-nnc"
-      ? option === OPTION.ONE
-        ? sourceMatrixStem
-        : [sourceEmbedStem, sourceMatrixStem].filter(Boolean).join("-")
-      : predicateSourceStem,
+    sourceStem: huanYolquiLexicalization
+      ? "huān-yōl"
+      : constructionKind === "relational-nnc"
+        ? sourceCompositionFrame
+          ? sourceCompositionFrame.surface
+          : option === OPTION.ONE
+            ? sourceMatrixStem
+            : [sourceEmbedStem, sourceMatrixStem].filter(Boolean).join("-")
+        : predicateSourceStem,
     sourceEmbedStem: constructionKind === "relational-nnc" ? sourceEmbedStem : "",
     sourceMatrixStem: constructionKind === "relational-nnc" ? sourceMatrixStem : "",
+    sourceCompositionFrame,
     downstreamTargetStem: normalized.downstreamTargetStem,
     affective: normalized.affective,
     internalAnalysis: freeze(internalAnalysis),
@@ -1541,6 +2083,7 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
       subjectMode: normalized.subjectMode,
       subjectId: normalized.subjectId,
       predicateStemFrame,
+      sourceCompositionFrame,
       affective: normalized.affective,
       sourceLexemeId: normalized.sourceLexemeId,
       lexicalExceptionId: normalized.lexicalExceptionId,
@@ -1551,8 +2094,27 @@ function buildSourceFrame(targetObject, issuedUpstreamSourceCarriers, request) {
       negative: normalized.negative,
       sourceEndsInCoOrC: normalized.sourceEndsInCoOrC,
       pertinencySourceKind: normalized.pertinencySourceKind,
-      nounConnector: normalized.nounConnector,
-      numberConnector: normalized.numberConnector,
+      nounConnector: huanYolquiLexicalization
+        ? huanYolquiNumberFrame.num1 === "0"
+          ? ""
+          : huanYolquiNumberFrame.num1
+        : normalized.nounConnector,
+      numberConnector: huanYolquiLexicalization
+        ? huanYolquiNumberFrame.num2 === "0"
+          ? ""
+          : huanYolquiNumberFrame.num2
+        : normalized.numberConnector,
+      huanYolquiAbsolutiveLexicalization: huanYolquiLexicalization,
+      typedPrerequisiteIdentity: huanYolquiLexicalization
+        ? HUAN_YOLQUI_TYPED_PREREQUISITE_IDENTITY
+        : "",
+      innerPossessorId: huanYolquiLexicalization ? possessorId : "",
+      numberBranchId: huanYolquiLexicalization
+        ? huanYolquiNumberFrame.subjectNumber === "plural"
+          ? "absolutive-plural-t-in"
+          : "absolutive-singular"
+        : "",
+      lesson12NumberFrame: huanYolquiNumberFrame,
       upstreamSourceCarrier,
       typedSourceAuthority: true,
       formulaStringAuthority: false,
@@ -1600,7 +2162,9 @@ function buildOperationFrame(targetObject, sourceFrame) {
     locativeContextRole: null,
     interrogativeForce: sourceFrame.sentencePosition === "initial" && !sourceFrame.negative,
     fusedAdjunctorSurfaceAllowed: sourceFrame.adjunctorIn === true && sourceFrame.dependentClausePresent === false,
-    supplementaryPossessorRequired: sourceFrame.option === OPTION.ONE,
+    supplementaryPossessorRequired:
+      sourceFrame.option === OPTION.ONE
+      || sourceFrame.huanYolquiAbsolutiveLexicalization === true,
     associatedEntityIsGentilic: false,
     embeddedPossessorControlsOuterState: false,
   };
@@ -1698,8 +2262,37 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
   const issuedGrammarFrames = new WeakSet();
   const issuedRelationalResults = new WeakSet();
   const issuedUpstreamSourceCarriers = new WeakSet();
+  const issuedSourceCompositionFrames = new WeakSet();
   const issuedPreparedPlans = new WeakSet();
   const issuedSourceAdmissionFrames = new WeakSet();
+
+  function isClassicalNahuatlRelationalSourceCompositionFrame(frame = null) {
+    return Boolean(
+      frame
+      && issuedSourceCompositionFrames.has(frame)
+      && frame.kind
+        === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_FRAME_KIND
+      && frame.contractKind === frame.kind
+      && frame.version === 1
+      && frame.authorizationStatus === "authorized"
+      && [
+        "tech-embed-pa-copa-matrices",
+        "tlan-nested-bodypart-matrix-choice",
+      ].includes(frame.licenseId)
+      && String(frame.branchId || "")
+      && String(frame.surface || "")
+      && String(frame.compositionSignature || "")
+      && frame.root?.kind
+        === CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_FRAME_KIND
+      && frame.typedSourceAuthority === true
+      && frame.callerSuppliedAuthorityAccepted === false
+      && frame.formulaStringAuthority === false
+      && frame.surfaceStringAuthority === false
+      && frame.lessonMetadataAuthority === false
+      && Object.isFrozen(frame)
+      && Object.isFrozen(frame.root)
+    );
+  }
 
   function buildClassicalNahuatlRelationalNncPresentation(
     sourceFrame,
@@ -1996,6 +2589,7 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     const source = buildSourceFrame(
       targetObject,
       issuedUpstreamSourceCarriers,
+      issuedSourceCompositionFrames,
       request,
     );
     if (source.diagnostics.length) {
@@ -2134,6 +2728,12 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
           frame.sourceFrame.upstreamSourceCarrier,
         )
       )
+      && (
+        frame.sourceFrame.sourceCompositionFrame == null
+        || isClassicalNahuatlRelationalSourceCompositionFrame(
+          frame.sourceFrame.sourceCompositionFrame,
+        )
+      )
       && frame.greatestCommonDivisor?.satisfied === true
       && frame.leastCommonMultiple?.licensedAxisSetComplete === true
       && String(frame.formula || "").trim()
@@ -2268,9 +2868,13 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
     CLASSICAL_NAHUATL_LESSONS45_47_LCM,
     CLASSICAL_NAHUATL_LESSONS45_47_RELATIONAL_STEMS,
     CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,
+    CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,
+    CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,
+    CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND,
     evaluateClassicalNahuatlRelationalNnc,
     isClassicalNahuatlRelationalNncGrammarFrame,
     isClassicalNahuatlRelationalResult,
+    isClassicalNahuatlRelationalSourceCompositionFrame,
     buildClassicalNahuatlPreparedPlan,
     isClassicalNahuatlPreparedPlan,
     projectClassicalNahuatlPreparedCoordinate,

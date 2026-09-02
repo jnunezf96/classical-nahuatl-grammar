@@ -11,8 +11,7 @@ const spec = {
     "claim-p1858",
     "claim-p1859",
     "claim-p1860",
-    "claim-p1861",
-    "claim-p1862"
+    "claim-p1861"
   ],
   "coordinates": {
     "claim-p1857::p1857-the-transitive-verb-tla-a-yi-to-dos-th": {
@@ -34,10 +33,6 @@ const spec = {
     "claim-p1861::p1861-vncs-built-on-the-imperfective-stem-are-traditionally-written": {
       "assertionId": "classical-ayi-silent-object-supplementation:p1861-vncs-built-on-the-imperfective-stem-are-traditionally-written",
       "canonicalPath": "ayiEvidence.principalClause.silentSpecificObjectAuthorized"
-    },
-    "claim-p1862::p1862-note-the-verb-ich-tequi-to-steal-literally-to": {
-      "assertionId": "classical-ayi-silent-object-supplementation:p1862-note-the-verb-ich-tequi-to-steal-literally-to",
-      "canonicalPath": "extractedFrames.ayi.perfectiveStem"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlSupplementationValidationFrame",
@@ -47,16 +42,14 @@ const spec = {
     "claim-p1858": [],
     "claim-p1859": [],
     "claim-p1860": [],
-    "claim-p1861": [],
-    "claim-p1862": []
+    "claim-p1861": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p1857": "authorized",
     "claim-p1858": "authorized",
     "claim-p1859": "authorized",
     "claim-p1860": "authorized",
-    "claim-p1861": "authorized",
-    "claim-p1862": "authorized"
+    "claim-p1861": "authorized"
   }
 };
 export default Object.freeze(spec);

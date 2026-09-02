@@ -136,6 +136,107 @@ function compactDerivation(runtime, stem, options = {}) {
   };
 }
 
+function compactPerfective(runtime, stem, classId) {
+  const frame = runtime.getClassicalNahuatlPerfectiveStem(
+    stem,
+    { classId },
+  );
+  return {
+    imperfectiveStem: frame?.imperfectiveStem || "",
+    perfectiveStem: frame?.perfectiveStem || "",
+    changeRule: frame?.changeRule || "",
+  };
+}
+
+export function buildClassicalNahuatlPinahuaSourceClassVariationConstraint({
+  classA = {},
+  classB = {},
+  perfectiveByClass = {},
+} = {}) {
+  const expectedStem = "pīn-ā-hua";
+  const classAExact = classA.authorizationStatus === "authorized"
+    && classA.sourceStem === expectedStem
+    && classA.classId === "A"
+    && perfectiveByClass.A?.imperfectiveStem === expectedStem
+    && perfectiveByClass.A?.perfectiveStem === "pīn-ā-hua";
+  const classBExact = classB.authorizationStatus === "authorized"
+    && classB.sourceStem === expectedStem
+    && classB.classId === "B"
+    && perfectiveByClass.B?.imperfectiveStem === expectedStem
+    && perfectiveByClass.B?.perfectiveStem === "pīn-ā-uh";
+  const authorized = classAExact && classBExact;
+  return deepFreeze({
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? "" : "pinahua-source-class-variation-coordinate-blocked",
+    sourceStem: expectedStem,
+    sourceClasses: ["A", "B"],
+    perfectiveByClass: {
+      A: perfectiveByClass.A?.perfectiveStem || "",
+      B: perfectiveByClass.B?.perfectiveStem || "",
+    },
+    branches: {
+      A: {
+        authorizationStatus: classAExact ? "authorized" : "blocked",
+        changeRule: perfectiveByClass.A?.changeRule || "",
+      },
+      B: {
+        authorizationStatus: classBExact ? "authorized" : "blocked",
+        changeRule: perfectiveByClass.B?.changeRule || "",
+      },
+    },
+  });
+}
+
+export function buildClassicalNahuatlGoComeCausativeSuppletiveOnlyConstraint(
+  derivations = {},
+) {
+  const expected = {
+    yauh: {
+      targetStem: "huīca",
+      derivationRoute: "type-two-suppletive-yauh-huica",
+      ruleId: "cn-l25-251-note-yauh-huica-suppletion",
+    },
+    huallauh: {
+      targetStem: "huīca",
+      derivationRoute: "type-two-suppletive-huallauh-hual-huica",
+      ruleId: "cn-l25-251-note-huallauh-hual-huica-suppletion",
+    },
+  };
+  const branches = Object.fromEntries(Object.entries(expected).map(
+    ([branchId, contract]) => {
+      const inventory = derivations[branchId] || {};
+      const options = inventory.options || [];
+      const option = options[0] || {};
+      const authorized = inventory.authorizationStatus === "authorized"
+        && inventory.optionCount === 1
+        && options.length === 1
+        && inventory.selectorRequired === false
+        && inventory.selectionRequired === false
+        && option.authorizationStatus === "authorized"
+        && option.targetStem === contract.targetStem
+        && option.derivationRoute === contract.derivationRoute
+        && option.ruleId === contract.ruleId
+        && option.formationRuleTier === "typed-lexical-suppletion"
+        && option.callerSuppliedTargetAllowed === false;
+      return [branchId, {
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        expected: contract,
+        observedOptionCount: options.length,
+      }];
+    },
+  ));
+  const authorized = Object.values(branches).every(
+    branch => branch.authorizationStatus === "authorized",
+  );
+  return deepFreeze({
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? "" : "go-come-causative-suppletive-only-coordinate-blocked",
+    branches,
+  });
+}
+
 function derive(runtime, stem, targetStem, {
   verbClass = "B",
   sourceValence = "intransitive",
@@ -447,6 +548,19 @@ function buildProjection(runtime) {
       key,
       compactDerivation(runtime, stem, options),
     ]));
+  const pinahuaSourceClassVariation =
+    buildClassicalNahuatlPinahuaSourceClassVariationConstraint({
+      classA: sources.pinahua,
+      classB: compactSource(runtime, "pīn-ā-hua", { verbClass: "B" }),
+      perfectiveByClass: {
+        A: compactPerfective(runtime, "pīn-ā-hua", "A"),
+        B: compactPerfective(runtime, "pīn-ā-hua", "B"),
+      },
+    });
+  const goComeCausativeSuppletiveOnly =
+    buildClassicalNahuatlGoComeCausativeSuppletiveOnlyConstraint(
+      derivations,
+    );
 
   const typeOneSpecific = derive(runtime, "tomi", "tom-a", {
     targetSubject: "1sg",
@@ -554,6 +668,8 @@ function buildProjection(runtime) {
     passive.authorizationStatus,
     supplementation?.authorizationStatus,
     nonactiveVoiceObject?.authorizationStatus,
+    pinahuaSourceClassVariation.authorizationStatus,
+    goComeCausativeSuppletiveOnly.authorizationStatus,
   ];
 
   return deepFreeze({
@@ -647,6 +763,10 @@ function buildProjection(runtime) {
           supplementation?.extractedFrames?.ayi?.kind || "",
       },
     },
+    constraints: {
+      pinahuaSourceClassVariation,
+      goComeCausativeSuppletiveOnly,
+    },
   });
 }
 
@@ -683,6 +803,8 @@ export function createClassicalVncDerivationValidationSemanticOperationsApi(
   }
 
   return Object.freeze({
+    buildClassicalNahuatlPinahuaSourceClassVariationConstraint,
+    buildClassicalNahuatlGoComeCausativeSuppletiveOnlyConstraint,
     buildClassicalNahuatlVncDerivationValidationFrame,
     isClassicalNahuatlVncDerivationValidationFrame,
   });

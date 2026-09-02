@@ -13,7 +13,7 @@ const spec = {
   "coordinates": {
     "claim-p2362::p2362-in-certain-instances-however-they-may-belong-to-either": {
       "assertionId": "classical-destockal-a-hua-class-variation:p2362-in-certain-instances-however-they-may-belong-to-either",
-      "canonicalPath": "sources.pinahua.classId"
+      "canonicalPath": "constraints.pinahuaSourceClassVariation.authorizationStatus"
     },
     "claim-p2363::p2363-destockal-a-hua-verbstems-normally-belong-to-class-a": {
       "assertionId": "classical-destockal-a-hua-class-variation:p2363-destockal-a-hua-verbstems-normally-belong-to-class-a",

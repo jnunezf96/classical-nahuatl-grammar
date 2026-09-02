@@ -17,6 +17,7 @@
     "proposedBoth": 177,
     "proposedReadingOnly": 579,
     "acceptedAtoms": 756,
+    "provenAtoms": 0,
     "declinedAtoms": 0,
     "awaitingReview": 0,
     "implementationCredit": 756
@@ -819,7 +820,10 @@
       "writingMutationTest": "src/tests/classical_lesson25_groups_1_3_jobs.test.js#mutation:ACI-P210-L009-E029824E95",
       "readerGuidanceIdeaId": "lesson25-type-two-foundation",
       "readerObservationTest": "src/tests/classical_lesson25_reader_guidance.test.js#ACI-P210-L009-E029824E95",
-      "readerMutationTest": "src/tests/classical_lesson25_reader_guidance.test.js#mutation:ACI-P210-L009-E029824E95"
+      "readerMutationTest": "src/tests/classical_lesson25_reader_guidance.test.js#mutation:ACI-P210-L009-E029824E95",
+      "canonicalApplicationOperationIds": [
+        "vnc:application"
+      ]
     },
     {
       "atomId": "ACI-P210-L010-ACC5505A3E",

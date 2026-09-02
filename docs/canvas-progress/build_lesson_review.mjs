@@ -137,6 +137,17 @@ function implementationProven(decision = null) {
   );
 }
 
+function canonicalApplicationOperationIds(atom, group = null) {
+  const value = group?.canonicalApplicationOperationIdsByAtomId?.[atom.atomId]
+    || [];
+  if (!Array.isArray(value) || value.some(operationId => (
+    typeof operationId !== "string" || !operationId.trim()
+  ))) {
+    throw new Error(`Invalid canonical application operation ids: ${atom.atomId}`);
+  }
+  return [...new Set(value.map(operationId => operationId.trim()))].sort();
+}
+
 const records = atoms.map(atom => {
   const group = groupBySection.get(atom.canvasSection);
   if (!group) throw new Error(`No Lesson ${lesson} review group covers ${atom.canvasSection}.`);
@@ -146,6 +157,9 @@ const records = atoms.map(atom => {
     && groupProof?.status === "EXACTLY_OBSERVED"
     && Boolean(groupProof.readerTest)
     && (proposedDirection(atom, group) === "READING_ONLY" || Boolean(groupProof.writingTest));
+  const applicationOperationIds = canonicalApplicationOperationIds(
+    atom, group,
+  );
   return {
     atomId: atom.atomId,
     canvasSection: atom.canvasSection,
@@ -181,6 +195,9 @@ const records = atoms.map(atom => {
     readerMutationTest: proofAccepted
       ? `${groupProof.readerTest}#mutation:${atom.atomId}`
       : "",
+    ...(applicationOperationIds.length ? {
+      canonicalApplicationOperationIds: applicationOperationIds,
+    } : {}),
   };
 });
 

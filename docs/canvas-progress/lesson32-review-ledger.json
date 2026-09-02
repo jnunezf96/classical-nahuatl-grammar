@@ -17,6 +17,7 @@
     "proposedBoth": 167,
     "proposedReadingOnly": 202,
     "acceptedAtoms": 369,
+    "provenAtoms": 0,
     "declinedAtoms": 0,
     "awaitingReview": 0,
     "implementationCredit": 369
@@ -3195,7 +3196,10 @@
       "writingMutationTest": "src/tests/classical_lesson32_groups_4_6_jobs.test.js#mutation:ACI-P306-L016-3182248C30",
       "readerGuidanceIdeaId": "lesson32-ton-matrix-and-class-exceptions",
       "readerObservationTest": "src/tests/classical_lesson32_reader_guidance.test.js#ACI-P306-L016-3182248C30",
-      "readerMutationTest": "src/tests/classical_lesson32_reader_guidance.test.js#mutation:ACI-P306-L016-3182248C30"
+      "readerMutationTest": "src/tests/classical_lesson32_reader_guidance.test.js#mutation:ACI-P306-L016-3182248C30",
+      "canonicalApplicationOperationIds": [
+        "grammar:nominal-construction"
+      ]
     },
     {
       "atomId": "ACI-P306-L018-E40798042B",
@@ -4521,7 +4525,10 @@
       "writingMutationTest": "src/tests/classical_lesson32_groups_4_6_jobs.test.js#mutation:ACI-P307-L015-2F2FCC135F",
       "readerGuidanceIdeaId": "lesson32-zol-matrix-recursion-and-denominal-continuation",
       "readerObservationTest": "src/tests/classical_lesson32_reader_guidance.test.js#ACI-P307-L015-2F2FCC135F",
-      "readerMutationTest": "src/tests/classical_lesson32_reader_guidance.test.js#mutation:ACI-P307-L015-2F2FCC135F"
+      "readerMutationTest": "src/tests/classical_lesson32_reader_guidance.test.js#mutation:ACI-P307-L015-2F2FCC135F",
+      "canonicalApplicationOperationIds": [
+        "grammar:nominal-construction"
+      ]
     },
     {
       "atomId": "ACI-P307-L015-2F2FCC135F-03",

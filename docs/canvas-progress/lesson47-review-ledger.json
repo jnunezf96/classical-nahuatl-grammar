@@ -5642,7 +5642,10 @@
       "writingMutationTest": "src/tests/classical_lesson47_jobs.test.js#mutation:ACI-P495-L039-7FD7E5C93C",
       "readerGuidanceIdeaId": "lesson47-ca-icpac-options-one-three",
       "readerObservationTest": "src/tests/classical_lesson47_reader_guidance.test.js#ACI-P495-L039-7FD7E5C93C",
-      "readerMutationTest": "src/tests/classical_lesson47_reader_guidance.test.js#mutation:ACI-P495-L039-7FD7E5C93C"
+      "readerMutationTest": "src/tests/classical_lesson47_reader_guidance.test.js#mutation:ACI-P495-L039-7FD7E5C93C",
+      "canonicalApplicationOperationIds": [
+        "nnc:relational"
+      ]
     },
     {
       "atomId": "ACI-P495-L040-ADA04589B9",

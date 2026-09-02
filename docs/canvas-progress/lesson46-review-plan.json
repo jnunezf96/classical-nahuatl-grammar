@@ -86,7 +86,10 @@
       "controlPolicy": "Do not generalize tlah from translation or surface resemblance.",
       "userChoiceJob": "CHOOSE_A_LICENSED_TLAH_SOURCE_AND_STATE",
       "applicationJob": "APPLY_THE_TLAH_RELATIONAL_OWNER",
-      "derivedCueJob": "SHOW_SOURCE_VARIETY_STATE_AND_AFFECTIVE_PATH"
+      "derivedCueJob": "SHOW_SOURCE_VARIETY_STATE_AND_AFFECTIVE_PATH",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P478-L035-2675499655": ["nnc:relational"]
+      }
     },
     {
       "groupNumber": 6,

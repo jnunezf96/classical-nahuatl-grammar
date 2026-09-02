@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p4626::p4626-place-name-nounstems-formed-on-pan-see-48-3": {
       "assertionId": "classical-place-gentilic-gentilic-ca-pan-eca:p4626-place-name-nounstems-formed-on-pan-see-48-3",
-      "canonicalPath": "cases.panEcaGentilic.lcmAxisId"
+      "canonicalPath": "constraints.panCanGentilicPair.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalPlaceGentilicValidationFrame",

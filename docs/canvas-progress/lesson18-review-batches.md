@@ -1,6 +1,6 @@
 # Lesson 18 atom-job review batches
 
-All 254 atoms are included exactly once. Unaccepted groups remain proposals; implementation credit appears only after accepted jobs pass their exact checks.
+All 254 atoms are included exactly once. Unproven groups remain proposals; implementation credit appears only after a technically approved job passes its exact checks.
 
 ## Batch 1, Group 1: Integrated supplements and short pronominal NNCs
 

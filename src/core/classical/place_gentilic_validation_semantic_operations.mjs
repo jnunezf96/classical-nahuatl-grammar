@@ -42,6 +42,7 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
       sourceSubjectReference: result?.sourceAnalysis?.subjectReference || "",
       sourceUsage: result?.sourceAnalysis?.usage || "",
       sourceVoice: result?.sourceAnalysis?.sourceVoice || "",
+      sourcePlaceStem: result?.formationFrame?.sourcePlaceStem || "",
       boundaryRule: result?.formationFrame?.boundaryRule || "",
       derivedStem: result?.formationFrame?.derivedStem || result?.formationFrame?.stem || "",
       formula: result?.formulaRealization || "",
@@ -80,6 +81,127 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
       state: "absolutive",
       animacy: "animate",
       ...extra,
+    });
+  }
+
+  function buildExactGentilicPair(candidateCases = {}, expected = {}) {
+    const branches = Object.fromEntries(Object.entries(expected).map(
+      ([branchId, contract]) => {
+        const record = candidateCases[contract.caseId] || {};
+        const authorized = record.authorizationStatus === "authorized"
+          && record.canonicalFrame === true
+          && record.typedFrameAuthority === true
+          && record.callerSuppliedAuthorityAccepted === false
+          && record.formation === contract.formation
+          && record.lcmAxisId === contract.lcmAxisId
+          && record.boundaryRule === contract.boundaryRule
+          && record.derivedStem === contract.derivedStem;
+        return [branchId, {
+          authorizationStatus: authorized ? "authorized" : "blocked",
+          formation: record.formation || "",
+          lcmAxisId: record.lcmAxisId || "",
+          boundaryRule: record.boundaryRule || "",
+          derivedStem: record.derivedStem || "",
+          formula: record.formula || "",
+          surface: record.surface || "",
+        }];
+      },
+    ));
+    const authorizationStatus = Object.values(branches).every(
+      branch => branch.authorizationStatus === "authorized",
+    ) ? "authorized" : "blocked";
+    return deepFreeze({
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? "" : "exact-gentilic-pair-not-proven",
+      branches,
+    });
+  }
+
+  function buildClassicalPanCanGentilicPair(candidateCases = {}) {
+    return buildExactGentilicPair(candidateCases, {
+      pan: {
+        caseId: "panEcaGentilic",
+        formation: "ca-pan-eca",
+        lcmAxisId: "gentilic/ca-pan-eca",
+        boundaryRule: "retain-pan-add-ē-before-ca",
+        derivedStem: "Izta-pan-ē-ca",
+      },
+      can: {
+        caseId: "canMecaGentilic",
+        formation: "ca-can-meca",
+        lcmAxisId: "gentilic/ca-can-meca",
+        boundaryRule: "replace-final-n-with-m-add-ē-ca",
+        derivedStem: "Xāl-to-cā-m-ē-ca",
+      },
+    });
+  }
+
+  function buildClassicalManTlanGentilicPair(candidateCases = {}) {
+    return buildExactGentilicPair(candidateCases, {
+      man: {
+        caseId: "manGentilic",
+        formation: "ca-man-tlan-teca",
+        lcmAxisId: "gentilic/ca-man-tlan-teca",
+        boundaryRule: "silence-n-and-change-mā-to-mē-before-ca",
+        derivedStem: "Ōztō-mē-ca",
+      },
+      tlan: {
+        caseId: "tlanGentilic",
+        formation: "ca-man-tlan-teca",
+        lcmAxisId: "gentilic/ca-man-tlan-teca",
+        boundaryRule:
+          "silence-n-change-long-a-to-e-and-lateral-cluster-to-t-before-ca",
+        derivedStem: "Āz-tē-ca",
+      },
+    });
+  }
+
+  function buildClassicalTlanLanGentilicVariantPair(candidateCases = {}) {
+    const pair = buildExactGentilicPair(candidateCases, {
+      tlan: {
+        caseId: "tlanGentilic",
+        formation: "ca-man-tlan-teca",
+        lcmAxisId: "gentilic/ca-man-tlan-teca",
+        boundaryRule:
+          "silence-n-change-long-a-to-e-and-lateral-cluster-to-t-before-ca",
+        derivedStem: "Āz-tē-ca",
+      },
+      lan: {
+        caseId: "lanGentilic",
+        formation: "ca-man-tlan-teca",
+        lcmAxisId: "gentilic/ca-man-tlan-teca",
+        boundaryRule:
+          "silence-n-change-long-a-to-e-and-lateral-cluster-to-t-before-ca",
+        derivedStem: "Āz-tē-ca",
+      },
+    });
+    const tlan = candidateCases.tlanGentilic || {};
+    const lan = candidateCases.lanGentilic || {};
+    const exactVariantIdentity = pair.authorizationStatus === "authorized"
+      && tlan.sourcePlaceStem === "Āz-tlā-n"
+      && lan.sourcePlaceStem === "Āz-lā-n"
+      && tlan.sourcePlaceStem !== lan.sourcePlaceStem
+      && Boolean(tlan.formula && tlan.surface)
+      && tlan.formula === lan.formula
+      && tlan.surface === lan.surface;
+    return deepFreeze({
+      authorizationStatus: exactVariantIdentity ? "authorized" : "blocked",
+      blockReason: exactVariantIdentity
+        ? "" : "exact-tlan-lan-gentilic-variant-pair-not-proven",
+      branches: {
+        tlan: {
+          ...pair.branches.tlan,
+          sourcePlaceStem: tlan.sourcePlaceStem || "",
+        },
+        lan: {
+          ...pair.branches.lan,
+          sourcePlaceStem: lan.sourcePlaceStem || "",
+        },
+      },
+      exactVariantIdentity,
+      variantSourcesRemainDistinct: exactVariantIdentity,
+      canonicalResultConverges: exactVariantIdentity,
     });
   }
 
@@ -139,6 +261,7 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
       }, { nounClass: "tl" }),
       manGentilic: gentilic("ca-man-tlan-teca", { placeStem: "Ōztō-mā-n" }, { nounClass: "tl" }),
       tlanGentilic: gentilic("ca-man-tlan-teca", { placeStem: "Āz-tlā-n" }, { nounClass: "tl" }),
+      lanGentilic: gentilic("ca-man-tlan-teca", { placeStem: "Āz-lā-n" }, { nounClass: "tl" }),
       collectivity: execute({
         constructionKind: "gentilic-collective",
         source: { gentilicStem: "Mē-xi-h-ca" },
@@ -345,6 +468,12 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
         },
       },
       cases,
+      constraints: {
+        panCanGentilicPair: buildClassicalPanCanGentilicPair(cases),
+        manTlanGentilicPair: buildClassicalManTlanGentilicPair(cases),
+        tlanLanGentilicVariantPair:
+          buildClassicalTlanLanGentilicVariantPair(cases),
+      },
       blockedCases: {
         ambiguousAffective: {
           authorizationStatus: ambiguousAffective.authorizationStatus,
@@ -416,6 +545,9 @@ export function createClassicalPlaceGentilicValidationSemanticOperationsApi(
   }
 
   return Object.freeze({
+    buildClassicalPanCanGentilicPair,
+    buildClassicalManTlanGentilicPair,
+    buildClassicalTlanLanGentilicVariantPair,
     buildClassicalPlaceGentilicValidationFrame,
     isClassicalPlaceGentilicValidationFrame,
   });

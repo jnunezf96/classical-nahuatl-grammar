@@ -29,7 +29,7 @@ const spec = {
     },
     "claim-p2866::p2866-m-o-te-tla-ca-hua-to-leave-oneself": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2866-m-o-te-tla-ca-hua-to-leave-oneself",
-      "canonicalPath": "cases.sharedObjectMatrices.cāhua.facts.matrixReadingOptions"
+      "canonicalPath": "constraints.cahuaSharedObjectMatrix.authorizationStatus"
     },
     "claim-p2867::p2867-m-o-te-tla-quix-tia-to-cause-oneself": {
       "assertionId": "classical-shared-object-compound-matrix-inventory:p2867-m-o-te-tla-quix-tia-to-cause-oneself",

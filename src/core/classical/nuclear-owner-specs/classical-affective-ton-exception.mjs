@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p3149::p3149-the-nounstem-to-n-tli-expresses-smallness-but-without": {
       "assertionId": "classical-affective-ton-exception:p3149-the-nounstem-to-n-tli-expresses-smallness-but-without",
-      "canonicalPath": "cases.tonException.rules.affective/ton-exception"
+      "canonicalPath": "constraints.tonTzinSemanticContrast.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlAffectiveNncValidationFrame",

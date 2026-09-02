@@ -17,6 +17,7 @@
     "proposedBoth": 135,
     "proposedReadingOnly": 119,
     "acceptedAtoms": 254,
+    "provenAtoms": 0,
     "declinedAtoms": 0,
     "awaitingReview": 0,
     "implementationCredit": 254
@@ -4870,13 +4871,16 @@
       "proposedApplicationJob": "DERIVE_AYI_OBJECT_REALIZATION_AND_SILENT_HEAD_BINDING",
       "proposedDerivedCueJob": "SHOW_SILENT_OBJECT_HEAD_TRANSITIVITY_AND_STEM_REALIZATION",
       "reviewStatus": "ACCEPTED",
-      "acceptedJob": "Derive overt nonspecific tla or the silent specific-object head from patient specificity, bind a captured specific patient to that head, preserve the ayi/ax stem relation, and exclude ichtequi.",
+      "acceptedJob": "Require ichtequi objects to be specific: preserve the intransitive nonspecific-goal reading and specific-projective object, and block nonspecific human or nonhuman projective valences.",
       "implementationCredit": "EXACTLY_OBSERVED",
-      "writingObservationTest": "src/tests/classical_lesson18_groups_4_6_jobs.test.js#ACI-P162-L002-9428A10C8E",
-      "writingMutationTest": "src/tests/classical_lesson18_groups_4_6_jobs.test.js#mutation:ACI-P162-L002-9428A10C8E",
+      "writingObservationTest": "src/tests/classical_lesson18_note1_ichtequi.test.mjs#ACI-P162-L002-9428A10C8E",
+      "writingMutationTest": "src/tests/classical_lesson18_note1_ichtequi.test.mjs#mutation:ACI-P162-L002-9428A10C8E",
       "readerGuidanceIdeaId": "lesson18-ayi-silent-object",
       "readerObservationTest": "src/tests/classical_lesson18_reader_guidance.test.js#ACI-P162-L002-9428A10C8E",
-      "readerMutationTest": "src/tests/classical_lesson18_reader_guidance.test.js#mutation:ACI-P162-L002-9428A10C8E"
+      "readerMutationTest": "src/tests/classical_lesson18_reader_guidance.test.js#mutation:ACI-P162-L002-9428A10C8E",
+      "canonicalApplicationOperationIds": [
+        "vnc:application"
+      ]
     },
     {
       "atomId": "ACI-P162-L004-0BCBFDE76D",

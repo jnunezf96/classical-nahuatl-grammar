@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p3154::p3154-the-affective-matrix-nounsterns-tzin-tli-and-po-l": {
       "assertionId": "classical-nnc-to-vnc-attitude-restriction:p3154-the-affective-matrix-nounsterns-tzin-tli-and-po-l",
-      "canonicalPath": "blockedCases.freeTzinDenominal.blockReason"
+      "canonicalPath": "constraints.denominalAttitudeRestrictionPair.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlAffectiveNncValidationFrame",

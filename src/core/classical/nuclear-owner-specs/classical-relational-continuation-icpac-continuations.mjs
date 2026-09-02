@@ -22,7 +22,7 @@ const spec = {
     },
     "claim-p4500::p4500-the-affective-forms-of-icpa-c-tli-are-icpa": {
       "assertionId": "classical-relational-continuation-icpac-continuations:p4500-the-affective-forms-of-icpa-c-tli-are-icpa",
-      "canonicalPath": "cases.icpacAffective.canonicalResult"
+      "canonicalPath": "constraints.icpacAffectiveFinalCoPair.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalRelationalContinuationValidationFrame",

@@ -79,7 +79,10 @@
       "controlPolicy": "Reuse patient reference and supplement capture; do not add a silent-object toggle, a tla toggle, or a manual stem-form choice.",
       "userChoiceJob": "SUPPLY_PATIENT_SPECIFICITY_AND_REFERENCE",
       "applicationJob": "DERIVE_AYI_OBJECT_REALIZATION_AND_SILENT_HEAD_BINDING",
-      "derivedCueJob": "SHOW_SILENT_OBJECT_HEAD_TRANSITIVITY_AND_STEM_REALIZATION"
+      "derivedCueJob": "SHOW_SILENT_OBJECT_HEAD_TRANSITIVITY_AND_STEM_REALIZATION",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P162-L002-9428A10C8E": ["vnc:application"]
+      }
     },
     {
       "groupId": "lesson18-principal-deletion-and-command-subject",

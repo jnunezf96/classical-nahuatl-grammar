@@ -63,7 +63,10 @@
       "controlPolicy": "Do not add animal lists, example templates, class controls, or manual boundary controls.",
       "userChoiceJob": "CHOOSE_TON_MEANING_AND_SUPPLY_ONLY_A_GENUINE_LEXICAL_EXCEPTION",
       "applicationJob": "DERIVE_TON_COMPOUND_CLASS_AND_REALIZATION_FROM_OPEN_TYPED_SOURCE",
-      "derivedCueJob": "SHOW_TON_MEANING_EMBED_CLASS_RESULT_CLASS_RECURSION_AND_EXCEPTION"
+      "derivedCueJob": "SHOW_TON_MEANING_EMBED_CLASS_RESULT_CLASS_RECURSION_AND_EXCEPTION",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P306-L016-3182248C30": ["grammar:nominal-construction"]
+      }
     },
     {
       "groupNumber": 5,
@@ -78,7 +81,10 @@
       "controlPolicy": "Do not add object lists, depth controls, example routes, class controls, or manually assembled denominal stems.",
       "userChoiceJob": "CHOOSE_ZOL_AND_ONLY_A_LICENSED_LATER_CONTINUATION",
       "applicationJob": "DERIVE_NONANIMATE_ZOL_TLI_COMPOUND_RECURSION_AND_CANONICAL_DENOMINAL_CONTINUATION",
-      "derivedCueJob": "SHOW_ZOL_MEANING_ANIMACY_CLASS_RECURSION_BOUNDARIES_AND_CONTINUATION"
+      "derivedCueJob": "SHOW_ZOL_MEANING_ANIMACY_CLASS_RECURSION_BOUNDARIES_AND_CONTINUATION",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P307-L015-2F2FCC135F": ["grammar:nominal-construction"]
+      }
     },
     {
       "groupNumber": 6,

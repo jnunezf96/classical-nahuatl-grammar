@@ -18811,7 +18811,10 @@
       "writingMutationTest": "src/tests/classical_lesson46_jobs.test.js#mutation:ACI-P478-L035-2675499655",
       "readerGuidanceIdeaId": "lesson46-tlah-abundance-place",
       "readerObservationTest": "src/tests/classical_lesson46_reader_guidance.test.js#ACI-P478-L035-2675499655",
-      "readerMutationTest": "src/tests/classical_lesson46_reader_guidance.test.js#mutation:ACI-P478-L035-2675499655"
+      "readerMutationTest": "src/tests/classical_lesson46_reader_guidance.test.js#mutation:ACI-P478-L035-2675499655",
+      "canonicalApplicationOperationIds": [
+        "nnc:relational"
+      ]
     },
     {
       "atomId": "ACI-P478-L036-9895DD56C5",

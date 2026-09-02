@@ -42,6 +42,23 @@ function compact(runtime, frame) {
     compoundStem: operation.compoundStem || "",
     matrixClass: operation.matrixClass || "",
     reduplication: operation.reduplication || "",
+    affectiveSemanticContribution:
+      operation.affectiveMatrixFrame?.semanticContribution || "",
+    tonMatrix: operation.tonMatrixFrame ? {
+      selectedMeaning: operation.tonMatrixFrame.selectedMeaning || "",
+      compatibleEmbedAdmission:
+        operation.tonMatrixFrame.compatibleEmbedAdmission || "",
+      recursiveEmbedAvailable:
+        operation.tonMatrixFrame.recursiveEmbedAvailable === true,
+    } : null,
+    tzinMatrix: operation.tzinMatrixFrame ? {
+      selectedMeaning: operation.tzinMatrixFrame.selectedMeaning || "",
+      availableMeanings: [
+        ...(operation.tzinMatrixFrame.availableMeanings || []),
+      ],
+      meaningChoiceRequired:
+        operation.tzinMatrixFrame.meaningChoiceRequired === true,
+    } : null,
     rules: Object.fromEntries(
       (operation.appliedSemanticRules || []).map(rule => [rule, true]),
     ),
@@ -56,11 +73,91 @@ function compact(runtime, frame) {
   };
 }
 
+export function buildClassicalNahuatlTonTzinSemanticContrastConstraint({
+  tonCase = {},
+  tzinCase = {},
+} = {}) {
+  const ton = tonCase.tonMatrix || {};
+  const tzin = tzinCase.tzinMatrix || {};
+  const tzinAvailableMeanings = [...(tzin.availableMeanings || [])];
+  const tonAffectionAvailable = [
+    ton.selectedMeaning,
+    ...(ton.availableMeanings || []),
+  ].includes("affection");
+  const tzinAffectionAvailable = tzinAvailableMeanings.includes("affection");
+  const authorized = tonCase.authorizationStatus === "authorized"
+    && tonCase.affectiveMatrix === "tōn"
+    && tonCase.affectiveSemanticContribution
+      === "smallness-without-admiration-or-affection"
+    && ton.selectedMeaning === "smallness-without-admiration-or-affection"
+    && ton.compatibleEmbedAdmission === "open-typed-nnc-source"
+    && ton.recursiveEmbedAvailable === true
+    && tonAffectionAvailable === false
+    && tzinCase.authorizationStatus === "authorized"
+    && tzinCase.affectiveMatrix === "tzin"
+    && tzinCase.affectiveSemanticContribution === "special-regard"
+    && tzin.selectedMeaning === "special-regard"
+    && tzin.meaningChoiceRequired === true
+    && tzinAffectionAvailable === true;
+  return deepFreeze({
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? "" : "ton-tzin-semantic-contrast-coordinate-blocked",
+    tōn: {
+      selectedMeaning: ton.selectedMeaning || "",
+      affectionAvailable: tonAffectionAvailable,
+    },
+    tzin: {
+      ordinaryMeaning: tzin.selectedMeaning || "",
+      availableMeanings: tzinAvailableMeanings,
+      affectionAvailable: tzinAffectionAvailable,
+    },
+  });
+}
+
 function evaluate(runtime, request) {
-  return compact(
+  const record = compact(
     runtime,
     runtime.evaluateClassicalNahuatlNominalConstruction(request),
   );
+  return {
+    ...record,
+    requestedAffectiveMatrix: request?.affectiveMatrix || "",
+  };
+}
+
+export function buildClassicalDenominalAttitudeRestrictionPair(
+  blockedCases = {},
+) {
+  const expected = {
+    tzin: "tzin-denominal-vnc-is-restricted-to-honorific-matrix-operation",
+    pol: "pol-denominal-vnc-is-restricted-to-pejorative-matrix-operation",
+  };
+  const branches = {
+    tzin: blockedCases.freeTzinDenominal || {},
+    pol: blockedCases.freePolDenominal || {},
+  };
+  const authorizationStatus = Object.entries(branches).every(
+    ([branchId, record]) => (
+      record.authorizationStatus === "blocked"
+      && record.blockReason === expected[branchId]
+      && record.canonicalResult === true
+      && record.requestedAffectiveMatrix
+        === (branchId === "tzin" ? "tzin" : "pōl")
+    ),
+  ) ? "authorized" : "blocked";
+  return deepFreeze({
+    authorizationStatus,
+    blockReason: authorizationStatus === "authorized"
+      ? "" : "paired-affective-denominal-restriction-not-proven",
+    branches: Object.fromEntries(Object.entries(branches).map(
+      ([branchId, record]) => [branchId, {
+        authorizationStatus: record.authorizationStatus || "blocked",
+        restrictionReason: record.blockReason || "",
+        affectiveMatrix: record.requestedAffectiveMatrix || "",
+      }],
+    )),
+  });
 }
 
 function buildProjection(runtime) {
@@ -198,6 +295,11 @@ function buildProjection(runtime) {
       },
     })),
   };
+  const tonTzinSemanticContrast =
+    buildClassicalNahuatlTonTzinSemanticContrastConstraint({
+      tonCase: cases.tzinTonClass,
+      tzinCase: cases.base,
+    });
   const blockedCases = {
     freeTzinDenominal: evaluate(runtime, baseRequest({
       affectiveOutputKind: "denominal-vnc",
@@ -228,7 +330,10 @@ function buildProjection(runtime) {
       === "pol-denominal-vnc-is-restricted-to-pejorative-matrix-operation"
     && blockedCases.animateZol.authorizationStatus === "blocked"
     && blockedCases.callerPoison.authorizationStatus === "blocked"
+    && tonTzinSemanticContrast.authorizationStatus === "authorized"
   );
+  const denominalAttitudeRestrictionPair =
+    buildClassicalDenominalAttitudeRestrictionPair(blockedCases);
   return deepFreeze({
     kind: "classical-nahuatl-affective-nnc-validation-frame",
     authorizationStatus: positivesValid && blockedValid
@@ -256,6 +361,10 @@ function buildProjection(runtime) {
       formulaStringAuthority: false,
       surfaceStringAuthority: false,
       storedExampleAuthority: false,
+    },
+    constraints: {
+      tonTzinSemanticContrast,
+      denominalAttitudeRestrictionPair,
     },
     cases,
     blockedCases,
@@ -292,6 +401,8 @@ export function createClassicalAffectiveNncValidationSemanticOperationsApi(
     );
   }
   return Object.freeze({
+    buildClassicalNahuatlTonTzinSemanticContrastConstraint,
+    buildClassicalDenominalAttitudeRestrictionPair,
     buildClassicalNahuatlAffectiveNncValidationFrame,
     isClassicalNahuatlAffectiveNncValidationFrame,
   });

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "kind": "current-canonical-owner-reassignments",
+  "authority": {
+    "trackingAuthority": false,
+    "grammarAuthority": false,
+    "rule": "These entries migrate current tracking to an already-installed canonical owner; they never create or authorize grammar behavior."
+  },
+  "entries": [
+    {
+      "atomId": "ACI-P162-L002-9428A10C8E",
+      "supersedesCanonicalOwnerId": "classical-ayi-silent-object-supplementation",
+      "canonicalOwnerId": "classical-ichtequi-specific-object-restriction",
+      "reason": "Andrews 18.8 note 1 assigns the contrasting ich-tequi specific-object restriction to its own canonical owner."
+    },
+    {
+      "atomId": "ACI-P464-L009-902A64EC84",
+      "supersedesCanonicalOwnerId": "classical-relational-huan-yolqui-lexicalization",
+      "canonicalOwnerId": "classical-huan-yolqui-absolutive-lexicalization",
+      "reason": "Andrews 45.4.1 assigns the lexicalized huan-yolqui absolutive-state NNC to its own typed singular/plural owner."
+    },
+    {
+      "atomId": "ACI-P496-L013-1873CCB71D",
+      "supersedesCanonicalOwnerId": "classical-relational-continuation-tech-embed",
+      "canonicalOwnerId": "classical-tech-embed-pa-copa-matrices",
+      "reason": "Andrews 47.3.1.a makes tech the embed and pa or co-pa the independently selected matrix."
+    },
+    {
+      "atomId": "ACI-P498-L017-F1FECF7586",
+      "supersedesCanonicalOwnerId": "classical-relational-continuation-tlan-bodypart-embed",
+      "canonicalOwnerId": "classical-tlan-nested-bodypart-matrix-choice",
+      "reason": "Andrews 47.3.2.b.ii gives tlan a nested compound embed whose internal matrix is ix or tzin."
+    },
+    {
+      "atomId": "ACI-P522-L020-D3415DA148",
+      "supersedesCanonicalOwnerId": "classical-place-gentilic-gentilic-ca-man-tlan-teca",
+      "canonicalOwnerId": "classical-tlan-lan-gentilic-variant-pair",
+      "reason": "Andrews 48.9.4.b.iii identifies tla-n and la-n as distinct source variants converging under the same gentilic boundary rule."
+    }
+  ]
+}

@@ -26,7 +26,10 @@
       "controlPolicy": "Reuse Derivation and the compact Source-history choice; do not add controls for object count, ti plus ā composition, nonactive deletion, honorific notes, or example identity.",
       "userChoiceJob": "CHOOSE_TYPE_TWO_CAUSATIVE_AND_ONLY_AN_UNSETTLED_LICENSED_SOURCE_HISTORY",
       "applicationJob": "DERIVE_THE_TYPE_TWO_CAUSATIVE_FROM_THE_TYPED_NONACTIVE_HISTORY_WITH_REQUIRED_SUPPLETION",
-      "derivedCueJob": "SHOW_SOURCE_HISTORY_DELETED_MATERIAL_CAUSATIVE_CLUSTER_OBJECT_COUNT_AND_SUPPLETION"
+      "derivedCueJob": "SHOW_SOURCE_HISTORY_DELETED_MATERIAL_CAUSATIVE_CLUSTER_OBJECT_COUNT_AND_SUPPLETION",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P210-L009-E029824E95": ["vnc:application"]
+      }
     },
     {
       "groupNumber": 2,

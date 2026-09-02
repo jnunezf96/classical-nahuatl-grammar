@@ -131,7 +131,11 @@
       "controlPolicy": "Do not infer extensions from a matching surface or lesson label.",
       "userChoiceJob": "CHOOSE_A_LICENSED_EXTENSION_FROM_EXACT_RESULT",
       "applicationJob": "HAND_OFF_OWNER_ISSUED_GENTILIC_RESULTS",
-      "derivedCueJob": "SHOW_EXTENSION_SOURCE_STATE_AND_VARIANT"
+      "derivedCueJob": "SHOW_EXTENSION_SOURCE_STATE_AND_VARIANT",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P520-L022-1C0DB88DAE": ["nnc:place-gentilic"],
+        "ACI-P522-L018-F443DF0356": ["nnc:place-gentilic"]
+      }
     },
     {
       "groupNumber": 9,

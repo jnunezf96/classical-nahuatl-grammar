@@ -17,7 +17,7 @@ const spec = {
     },
     "claim-p2421::p2421-note-the-two-irregular-verbs-ya-uh-to-go": {
       "assertionId": "classical-irregular-go-come-causative-block:p2421-note-the-two-irregular-verbs-ya-uh-to-go",
-      "canonicalPath": "derivations.huallauh.options.0.derivationRoute"
+      "canonicalPath": "constraints.goComeCausativeSuppletiveOnly.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",

@@ -353,6 +353,60 @@ function compact(runtime, frame) {
   };
 }
 
+export function buildClassicalNahuatlHuitzCarryConnectivelessConstraint(
+  typedCarryConstruction = {},
+) {
+  const authorized = typedCarryConstruction.huicaShape === "huica-tz"
+    && typedCarryConstruction.itquiShape === "itqui-tz"
+    && typedCarryConstruction.itquiFiniteShape === "tqui-tz"
+    && typedCarryConstruction.matrixPerfective === "itz"
+    && typedCarryConstruction.connectiveProhibited === true;
+  return deepFreeze({
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? "" : "huitz-carry-connectiveless-coordinate-blocked",
+    huicaShape: typedCarryConstruction.huicaShape || "",
+    itquiShape: typedCarryConstruction.itquiShape || "",
+    itquiFiniteShape: typedCarryConstruction.itquiFiniteShape || "",
+    matrixPerfective: typedCarryConstruction.matrixPerfective || "",
+    connectiveProhibited:
+      typedCarryConstruction.connectiveProhibited === true,
+  });
+}
+
+export function buildClassicalNahuatlCahuaSharedObjectMatrixConstraint({
+  matrixCase = {},
+  sharedObjectCoreferenceAuthority = "",
+  sharedObjectCarrierAuthority = "",
+} = {}) {
+  const readings = [...(matrixCase.facts?.matrixReadingOptions || [])];
+  const exactReadings = readings.length === 2
+    && readings.includes("leave-shared-object-in-a-condition")
+    && readings.includes("leave-shared-object-behind");
+  const authorized = matrixCase.authorizationStatus === "authorized"
+    && matrixCase.facts?.matrixStem === "cāhua"
+    && exactReadings
+    && matrixCase.facts?.sharedObjectCompositionSelected === true
+    && matrixCase.facts?.sharedObjectCoreferenceVerified === true
+    && matrixCase.facts?.sharedObjectManifestationCount === 1
+    && matrixCase.facts?.sharedObjectCarrierSite === "embed"
+    && matrixCase.facts?.matrixSharedObjectCarrierSuppressed === true
+    && sharedObjectCoreferenceAuthority === "typed-referent-identity"
+    && sharedObjectCarrierAuthority === "derived-single-embed-carrier";
+  return deepFreeze({
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized
+      ? "" : "cahua-shared-object-matrix-coordinate-blocked",
+    matrix: matrixCase.facts?.matrixStem || "",
+    matrixReadingOptions: readings,
+    sharedObjectCoreferenceAuthority,
+    sharedObjectCarrierAuthority,
+    manifestationCount:
+      Number(matrixCase.facts?.sharedObjectManifestationCount || 0),
+    carrierSite: matrixCase.facts?.sharedObjectCarrierSite || "",
+  });
+}
+
 function evaluate(runtime, overrides = {}) {
   return compact(
     runtime,
@@ -815,6 +869,40 @@ function buildProjection(runtime) {
       compoundMatrixStem: matrixStem,
     })],
   ));
+  const typedCarryConstruction = {
+    userSelectsAnalysis: true,
+    huicaShape: cases.huicaCarry.targetStem,
+    itquiShape: [
+      cases.itquiCarry.facts.carrySourceStem,
+      cases.itquiCarry.facts.carryVisibleMatrixShape,
+    ].filter(Boolean).join("-"),
+    itquiFiniteShape: cases.itquiCarry.targetStem,
+    arbitraryTypedShape: cases.openTypedCarry.targetStem,
+    openTypedSourceAdmission:
+      cases.openTypedCarry.facts.openTypedCarrySourceAdmission,
+    stemWhitelistUsed:
+      cases.openTypedCarry.facts.carrySourceStemWhitelistUsed,
+    shapeDerived:
+      cases.openTypedCarry.facts.specialCarryStemDerivedFromShape,
+    matrixPerfective:
+      cases.openTypedCarry.facts.carryMatrixPerfectiveStem,
+    connectiveProhibited:
+      cases.openTypedCarry.facts.prohibitedConnectiveT,
+    ordinaryAnalysisRemainsTypedAndOpen:
+      cases.ordinaryHuicaAnalysis.facts.selectedMatrixAnalysis,
+  };
+  const sharedObjectCoreferenceAuthority = "typed-referent-identity";
+  const sharedObjectCarrierAuthority = "derived-single-embed-carrier";
+  const huitzCarryConnectiveless =
+    buildClassicalNahuatlHuitzCarryConnectivelessConstraint(
+      typedCarryConstruction,
+    );
+  const cahuaSharedObjectMatrix =
+    buildClassicalNahuatlCahuaSharedObjectMatrixConstraint({
+      matrixCase: cases.sharedObjectMatrices.cāhua,
+      sharedObjectCoreferenceAuthority,
+      sharedObjectCarrierAuthority,
+    });
   const blockedCases = {
     sharedWithoutObject: evaluate(runtime, {
       lateVariant: "shared-object",
@@ -939,7 +1027,10 @@ function buildProjection(runtime) {
     ([id, record]) => record.authorizationStatus === "blocked"
       && record.blockReason === blockedReasons[id],
   );
-  const authorized = positiveAuthorized && blockedAuthorized;
+  const authorized = positiveAuthorized
+    && blockedAuthorized
+    && huitzCarryConnectiveless.authorizationStatus === "authorized"
+    && cahuaSharedObjectMatrix.authorizationStatus === "authorized";
   return deepFreeze({
     kind: "classical-nahuatl-compound-validation-frame",
     authorizationStatus: authorized ? "authorized" : "blocked",
@@ -1121,24 +1212,7 @@ function buildProjection(runtime) {
           readings: cases.pilCaDistantPast.facts.matrixReadingOptions,
         },
       },
-      typedCarryConstruction: {
-        userSelectsAnalysis: true,
-        huicaShape: cases.huicaCarry.targetStem,
-        itquiShape: cases.itquiCarry.targetStem,
-        arbitraryTypedShape: cases.openTypedCarry.targetStem,
-        openTypedSourceAdmission:
-          cases.openTypedCarry.facts.openTypedCarrySourceAdmission,
-        stemWhitelistUsed:
-          cases.openTypedCarry.facts.carrySourceStemWhitelistUsed,
-        shapeDerived:
-          cases.openTypedCarry.facts.specialCarryStemDerivedFromShape,
-        matrixPerfective:
-          cases.openTypedCarry.facts.carryMatrixPerfectiveStem,
-        connectiveProhibited:
-          cases.openTypedCarry.facts.prohibitedConnectiveT,
-        ordinaryAnalysisRemainsTypedAndOpen:
-          cases.ordinaryHuicaAnalysis.facts.selectedMatrixAnalysis,
-      },
+      typedCarryConstruction,
       optionalYaSyncopation: {
         unsyncopated:
           cases.unsyncopatedYaFuture.facts.yaUnsyncopatedSequence,
@@ -1242,10 +1316,10 @@ function buildProjection(runtime) {
       },
       sharedObjectPronounManifestation: "single-on-embed",
       sharedObjectKinds: ["reflexive", "projective"],
-      sharedObjectCoreferenceAuthority: "typed-referent-identity",
+      sharedObjectCoreferenceAuthority,
       sharedObjectReferentChoicePolicy:
         "only-when-more-than-one-typed-referent-can-be-shared",
-      sharedObjectCarrierAuthority: "derived-single-embed-carrier",
+      sharedObjectCarrierAuthority,
       sharedObjectMatrixReadings: Object.fromEntries(sharedObjectMatrices.map(
         matrixStem => [
           matrixStem,
@@ -1300,6 +1374,10 @@ function buildProjection(runtime) {
       surfaceStringAuthority: false,
       storedExampleAuthority: false,
     },
+    constraints: {
+      huitzCarryConnectiveless,
+      cahuaSharedObjectMatrix,
+    },
     cases,
     blockedCases,
   });
@@ -1337,6 +1415,8 @@ export function createClassicalCompoundValidationSemanticOperationsApi(
   }
 
   return Object.freeze({
+    buildClassicalNahuatlHuitzCarryConnectivelessConstraint,
+    buildClassicalNahuatlCahuaSharedObjectMatrixConstraint,
     buildClassicalNahuatlCompoundValidationFrame,
     isClassicalNahuatlCompoundValidationFrame,
   });

@@ -12,7 +12,7 @@ const spec = {
   "coordinates": {
     "claim-p4403::p4403-the-affective-form-of-tlah-tli-is-tlah-tzin": {
       "assertionId": "classical-relational-locative-tlah-affective-final-co:p4403-the-affective-form-of-tlah-tli-is-tlah-tzin",
-      "canonicalPath": "cases.tlahAffective.canonicalResult"
+      "canonicalPath": "constraints.tlahAffectiveFinalCoPair.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalLocativeRelationalNncValidationFrame",

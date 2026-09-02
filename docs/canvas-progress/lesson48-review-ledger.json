@@ -15958,7 +15958,10 @@
       "writingMutationTest": "src/tests/classical_lesson48_jobs.test.js#mutation:ACI-P520-L022-1C0DB88DAE",
       "readerGuidanceIdeaId": "lesson48-gentilic-extensions",
       "readerObservationTest": "src/tests/classical_lesson48_reader_guidance.test.js#ACI-P520-L022-1C0DB88DAE",
-      "readerMutationTest": "src/tests/classical_lesson48_reader_guidance.test.js#mutation:ACI-P520-L022-1C0DB88DAE"
+      "readerMutationTest": "src/tests/classical_lesson48_reader_guidance.test.js#mutation:ACI-P520-L022-1C0DB88DAE",
+      "canonicalApplicationOperationIds": [
+        "nnc:place-gentilic"
+      ]
     },
     {
       "atomId": "ACI-P520-L022-8526492116",
@@ -17700,7 +17703,10 @@
       "writingMutationTest": "src/tests/classical_lesson48_jobs.test.js#mutation:ACI-P522-L018-F443DF0356",
       "readerGuidanceIdeaId": "lesson48-gentilic-extensions",
       "readerObservationTest": "src/tests/classical_lesson48_reader_guidance.test.js#ACI-P522-L018-F443DF0356",
-      "readerMutationTest": "src/tests/classical_lesson48_reader_guidance.test.js#mutation:ACI-P522-L018-F443DF0356"
+      "readerMutationTest": "src/tests/classical_lesson48_reader_guidance.test.js#mutation:ACI-P522-L018-F443DF0356",
+      "canonicalApplicationOperationIds": [
+        "nnc:place-gentilic"
+      ]
     },
     {
       "atomId": "ACI-P522-L018-D4E23D6A82",

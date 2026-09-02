@@ -41,7 +41,10 @@
       "controlPolicy": "Do not expose the unlicensed integrated-matrix option two.",
       "userChoiceJob": "CHOOSE_POSSESSIVE_OR_LINKED_SOURCE",
       "applicationJob": "APPLY_THE_CA_OR_ICPAC_OWNER",
-      "derivedCueJob": "SHOW_FORMATION_CONNECTIVE_AND_FUNCTION"
+      "derivedCueJob": "SHOW_FORMATION_CONNECTIVE_AND_FUNCTION",
+      "canonicalApplicationOperationIdsByAtomId": {
+        "ACI-P495-L039-7FD7E5C93C": ["nnc:relational"]
+      }
     },
     {
       "groupNumber": 3,

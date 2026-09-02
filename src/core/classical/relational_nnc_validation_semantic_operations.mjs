@@ -46,15 +46,21 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
       ? stem.classicalMatrix
       : request.sourceMatrixStem || stem.classicalMatrix;
     return {
-      state: request.state || (option === "option-one" ? "possessive" : "absolutive"),
-      possessorId: request.possessorId
-        || (request.stemId === "c-means-purpose-reason-time" ? "3common" : "1sg"),
+      state: Object.hasOwn(request, "state")
+        ? request.state
+        : option === "option-one" ? "possessive" : "absolutive",
+      possessorId: Object.hasOwn(request, "possessorId")
+        ? request.possessorId
+        : request.stemId === "c-means-purpose-reason-time"
+          ? "3common"
+          : "1sg",
       subjectMode: request.subjectMode || "adverbialized",
       subjectId: request.subjectId || "3common",
       sentencePosition: request.sentencePosition || "noninitial",
       adjunctorIn: request.adjunctorIn === true,
       dependentClausePresent: request.dependentClausePresent === true,
       negative: request.negative === true,
+      numberConnector: request.numberConnector || "",
       nounstem: {
         kind: target.CLASSICAL_NAHUATL_NNC_NOUNSTEM_REQUEST_KIND,
         stemId: request.stemId,
@@ -101,6 +107,13 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
       predicateState: result?.predicateState || "",
       relationalKind: result?.relationalKind || "",
       sourceKind: result?.sourceFrame?.sourceKind || "",
+      subjectMode: result?.sourceFrame?.subjectMode || "",
+      subjectId: result?.sourceFrame?.subjectId || "",
+      possessorId: result?.sourceFrame?.possessorId || "",
+      typedPrerequisiteIdentity:
+        result?.sourceFrame?.typedPrerequisiteIdentity || "",
+      numberBranchId: result?.sourceFrame?.numberBranchId || "",
+      lesson12NumberFrame: result?.sourceFrame?.lesson12NumberFrame || null,
       operationId: result?.operationFrame?.operationId || "",
       operationTrace: result?.operationFrame?.operationTrace || [],
       predicateStem: result?.predicateStem || "",
@@ -121,6 +134,113 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
 
   function execute(request) {
     return summarize(target.evaluateClassicalNahuatlRelationalNnc(typedRequest(request)));
+  }
+
+  function buildClassicalHuanYolquiAbsolutiveLexicalizationConstraint(
+    candidateCases = {},
+  ) {
+    const expected = {
+      singular: {
+        subjectId: "3sg",
+        subjectNumber: "singular",
+        num1: "li",
+        num2: "0",
+        numberBranchId: "absolutive-singular",
+        surface: "nohuānyōlli",
+        formula: "#Ø-Ø(no-huān-yōl)li-Ø#",
+      },
+      plural: {
+        subjectId: "2pl",
+        subjectNumber: "plural",
+        num1: "t",
+        num2: "in",
+        numberBranchId: "absolutive-plural-t-in",
+        surface: "annohuānyōltin",
+        formula: "#an-Ø(no-huān-yōl)t-in#",
+      },
+    };
+    const branches = Object.fromEntries(Object.entries(expected).map(
+      ([branchId, branch]) => {
+        const record = candidateCases[branchId] || {};
+        const result = record.liveResult || null;
+        const sourceFrame = result?.sourceFrame || null;
+        const numberFrame = sourceFrame?.lesson12NumberFrame || null;
+        const authorized =
+          target.isClassicalNahuatlRelationalResult?.(result) === true
+          && record.canonicalResult === true
+          && record.authorizationStatus === "authorized"
+          && result.operationFrame?.operationId
+            === "relational-huan-yolqui-absolutive-lexicalization"
+          && sourceFrame?.typedPrerequisiteIdentity
+            === "classical-huan-yolqui-absolutive-lexicalization"
+          && sourceFrame?.sourceKind
+            === "typed-relational-plus-nounstem-compound-source"
+          && sourceFrame?.state === "absolutive"
+          && sourceFrame?.subjectMode === "normal"
+          && sourceFrame?.subjectId === branch.subjectId
+          && sourceFrame?.possessorId === "1sg"
+          && sourceFrame?.innerPossessorId === "1sg"
+          && sourceFrame?.numberBranchId === branch.numberBranchId
+          && numberFrame?.authorizationStatus === "authorized"
+          && numberFrame?.subject === branch.subjectId
+          && numberFrame?.subjectNumber === branch.subjectNumber
+          && numberFrame?.nounClass === "tli"
+          && numberFrame?.stem === "yōl"
+          && numberFrame?.num1 === branch.num1
+          && numberFrame?.num2 === branch.num2
+          && numberFrame?.numberBelongsTo === "subject-personal-pronoun"
+          && numberFrame?.numberIsNounInflection === false
+          && result.surface === branch.surface
+          && result.formula === branch.formula
+          && result.formulaDerivedFromWritten === false
+          && result.writtenDerivedFromFormula === false;
+        return [branchId, {
+          authorizationStatus: authorized ? "authorized" : "blocked",
+          blockReason: authorized
+            ? ""
+            : `huan-yolqui-${branchId}-branch-not-proven`,
+          subjectId: sourceFrame?.subjectId || "",
+          innerPossessorId: sourceFrame?.innerPossessorId || "",
+          numberBranchId: sourceFrame?.numberBranchId || "",
+          numberDyad: numberFrame
+            ? [numberFrame.num1 || "", numberFrame.num2 || ""]
+            : [],
+          operationId: result?.operationFrame?.operationId || "",
+          surface: result?.surface || "",
+          formula: result?.formula || "",
+          canonicalResult: result,
+        }];
+      },
+    ));
+    const authorizationStatus = Object.values(branches).every(
+      branch => branch.authorizationStatus === "authorized",
+    )
+      && branches.singular.canonicalResult
+        !== branches.plural.canonicalResult
+      && branches.singular.surface !== branches.plural.surface
+      && branches.singular.formula !== branches.plural.formula
+      ? "authorized"
+      : "blocked";
+    return deepFreeze({
+      kind: "classical-huan-yolqui-absolutive-lexicalization-receipt",
+      contractId: "huan-yolqui-absolutive-lexicalization",
+      typedPrerequisiteIdentity:
+        "classical-huan-yolqui-absolutive-lexicalization",
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? ""
+        : "huan-yolqui-singular-plural-branch-pair-not-proven",
+      authority: {
+        typedSourceAuthority: true,
+        typedOperationAuthority: true,
+        canonicalResultAuthority: true,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        lessonMetadataAuthority: false,
+      },
+      requiredBranchIds: ["singular", "plural"],
+      branches,
+    });
   }
 
   function buildClassicalRelationalNncValidationFrame() {
@@ -162,6 +282,30 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
         constructionKind: "compound-embed",
         sourceKind: "possessor",
         targetMatrixStem: "poh",
+      }),
+      huanYolquiAbsolutiveSingular: execute({
+        stemId: "huan-company",
+        option: "option-four",
+        constructionKind: "compound-embed",
+        sourceKind: "typed-relational-plus-nounstem-compound-source",
+        sourceStem: "huān",
+        targetMatrixStem: "yōlqui",
+        state: "absolutive",
+        possessorId: "1sg",
+        subjectMode: "normal",
+        subjectId: "3sg",
+      }),
+      huanYolquiAbsolutivePlural: execute({
+        stemId: "huan-company",
+        option: "option-four",
+        constructionKind: "compound-embed",
+        sourceKind: "typed-relational-plus-nounstem-compound-source",
+        sourceStem: "huān",
+        targetMatrixStem: "yōlqui",
+        state: "absolutive",
+        possessorId: "1sg",
+        subjectMode: "normal",
+        subjectId: "2pl",
       }),
       huan: execute({ stemId: "huan-company", option: "option-one" }),
       huanReciprocal: execute({
@@ -283,6 +427,64 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
       option: "option-one",
       possessorId: "1sg",
     }));
+    const huanYolquiBase = {
+      stemId: "huan-company",
+      option: "option-four",
+      constructionKind: "compound-embed",
+      sourceKind: "typed-relational-plus-nounstem-compound-source",
+      sourceStem: "huān",
+      targetMatrixStem: "yōlqui",
+      state: "absolutive",
+      possessorId: "1sg",
+      subjectMode: "normal",
+      subjectId: "3sg",
+    };
+    const huanYolquiWrongTarget = target.evaluateClassicalNahuatlRelationalNnc(
+      typedRequest({ ...huanYolquiBase, targetMatrixStem: "poh" }),
+    );
+    const huanYolquiWrongEmbed = target.evaluateClassicalNahuatlRelationalNnc(
+      typedRequest({ ...huanYolquiBase, sourceStem: "cal" }),
+    );
+    const huanYolquiWrongSourceKind =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        sourceKind: "possessor",
+      }));
+    const huanYolquiMissingState =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        state: "",
+      }));
+    const huanYolquiMissingPossessor =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        possessorId: "",
+      }));
+    const huanYolquiPossessiveState =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        state: "possessive",
+      }));
+    const huanYolquiAdverbializedSubject =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        subjectMode: "adverbialized",
+      }));
+    const huanYolquiCallerConnector =
+      target.evaluateClassicalNahuatlRelationalNnc(typedRequest({
+        ...huanYolquiBase,
+        numberConnector: "m-eh",
+      }));
+    const huanYolquiAbsolutiveLexicalization =
+      buildClassicalHuanYolquiAbsolutiveLexicalizationConstraint({
+        singular: cases.huanYolquiAbsolutiveSingular,
+        plural: cases.huanYolquiAbsolutivePlural,
+      });
+    const relabeledSimpleHuan =
+      buildClassicalHuanYolquiAbsolutiveLexicalizationConstraint({
+        singular: cases.huan,
+        plural: cases.huan,
+      });
     const canonicalRequest = typedRequest({
       stemId: "tlan-bottom",
       option: "option-two",
@@ -304,6 +506,19 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
     const frame = deepFreeze({
       kind: "classical-nahuatl-relational-nnc-validation-frame",
       authorizationStatus: Object.values(cases).every(item => item.canonicalResult)
+        && huanYolquiAbsolutiveLexicalization.authorizationStatus
+          === "authorized"
+        && [
+          huanYolquiWrongTarget,
+          huanYolquiWrongEmbed,
+          huanYolquiWrongSourceKind,
+          huanYolquiMissingState,
+          huanYolquiMissingPossessor,
+          huanYolquiPossessiveState,
+          huanYolquiAdverbializedSubject,
+          huanYolquiCallerConnector,
+        ].every(result => result.authorizationStatus === "blocked")
+        && relabeledSimpleHuan.authorizationStatus === "blocked"
         ? "authorized"
         : "blocked",
       catalog: {
@@ -317,6 +532,9 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
         derivedLexicalClasses: lcm?.derivedLexicalClasses || [],
       },
       cases,
+      constraints: {
+        huanYolquiAbsolutiveLexicalization,
+      },
       blockedCases: {
         rawUntyped: {
           authorizationStatus: rawUntyped.authorizationStatus,
@@ -329,6 +547,44 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
         wrongFixedPossessor: {
           authorizationStatus: wrongFixedPossessor.authorizationStatus,
           diagnostic: wrongFixedPossessor.diagnostics?.[0] || "",
+        },
+        huanYolquiWrongTarget: {
+          authorizationStatus: huanYolquiWrongTarget.authorizationStatus,
+          diagnostic: huanYolquiWrongTarget.diagnostics?.[0] || "",
+        },
+        huanYolquiWrongEmbed: {
+          authorizationStatus: huanYolquiWrongEmbed.authorizationStatus,
+          diagnostic: huanYolquiWrongEmbed.diagnostics?.[0] || "",
+        },
+        huanYolquiWrongSourceKind: {
+          authorizationStatus: huanYolquiWrongSourceKind.authorizationStatus,
+          diagnostic: huanYolquiWrongSourceKind.diagnostics?.[0] || "",
+        },
+        huanYolquiMissingState: {
+          authorizationStatus: huanYolquiMissingState.authorizationStatus,
+          diagnostic: huanYolquiMissingState.diagnostics?.[0] || "",
+        },
+        huanYolquiMissingPossessor: {
+          authorizationStatus: huanYolquiMissingPossessor.authorizationStatus,
+          diagnostic: huanYolquiMissingPossessor.diagnostics?.[0] || "",
+        },
+        huanYolquiPossessiveState: {
+          authorizationStatus: huanYolquiPossessiveState.authorizationStatus,
+          diagnostic: huanYolquiPossessiveState.diagnostics?.[0] || "",
+        },
+        huanYolquiAdverbializedSubject: {
+          authorizationStatus:
+            huanYolquiAdverbializedSubject.authorizationStatus,
+          diagnostic:
+            huanYolquiAdverbializedSubject.diagnostics?.[0] || "",
+        },
+        huanYolquiCallerConnector: {
+          authorizationStatus: huanYolquiCallerConnector.authorizationStatus,
+          diagnostic: huanYolquiCallerConnector.diagnostics?.[0] || "",
+        },
+        relabeledSimpleHuan: {
+          authorizationStatus: relabeledSimpleHuan.authorizationStatus,
+          diagnostic: relabeledSimpleHuan.blockReason,
         },
         callerStringsIgnored: {
           canonicalMatchesHostile:
@@ -370,6 +626,7 @@ export function createClassicalRelationalNncValidationSemanticOperationsApi(
 
   return Object.freeze({
     buildClassicalRelationalNncValidationFrame,
+    buildClassicalHuanYolquiAbsolutiveLexicalizationConstraint,
     isClassicalRelationalNncValidationFrame,
   });
 }

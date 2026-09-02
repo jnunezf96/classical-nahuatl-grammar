@@ -6347,8 +6347,7 @@ export function createUiRenderingApi(targetObject = globalThis) {
         atomIds: Object.freeze([
           "ACI-P161-L025-CA0779B391",
           "ACI-P161-L030-1ACE1C9F91",
-          "ACI-P161-L030-F6E9CFBA8A",
-          "ACI-P162-L002-9428A10C8E"
+          "ACI-P161-L030-F6E9CFBA8A"
         ])
       }),
       "supplementation-command-subject": Object.freeze({

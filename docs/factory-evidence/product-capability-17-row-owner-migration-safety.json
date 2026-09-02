@@ -1,0 +1,385 @@
+{
+  "schemaVersion": 1,
+  "kind": "product-capability-closure-owner-migration-safety-foundation",
+  "authority": {
+    "grammarAuthority": false,
+    "uiAuthority": false,
+    "canonicalOwnersRemainAuthoritative": true
+  },
+  "evidenceLocation": {
+    "repository": "Classical_Nahuatl_Grammar",
+    "pathBase": "factory-repository-root",
+    "note": "All validation paths in this report are relative to the sibling factory repository, not this product repository."
+  },
+  "fixedDenominator": 17,
+  "counts": {
+    "qualifiedRepairs": 15,
+    "ownerExecutionCertified": 15,
+    "catalogInstalledCertificateMissing": 0,
+    "qualifiedPrerequisitesUninstalled": 0,
+    "deliberateExclusionsPreserved": 2,
+    "staleProofOnlyFactoryOwnersBlocked": 862
+  },
+  "rows": [
+    {
+      "atomId": "ACI-P162-L002-9428A10C8E",
+      "classification": "owner-escape",
+      "repairQualified": true,
+      "ownerId": "classical-ichtequi-specific-object-restriction",
+      "operationId": "classical.ichtequi.specific.object.restriction.execute",
+      "declarationPath": "validation/declarations/lessons4-6/classical-ichtequi-specific-object-restriction.json",
+      "ownerRecordPath": "validation/owners/classical-ichtequi-specific-object-restriction.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-ichtequi-specific-object-restriction.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-ichtequi-specific-object-restriction.json",
+        "methodPath": "validation/method-runs/classical-ichtequi-specific-object-restriction.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P205-L003-5DAFC37350",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-destockal-a-hua-class-variation",
+      "operationId": "classical.destockal.a.hua.class.variation.execute",
+      "declarationPath": "validation/declarations/lessons24-25/classical-destockal-a-hua-class-variation.json",
+      "ownerRecordPath": "validation/owners/classical-destockal-a-hua-class-variation.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-destockal-a-hua-class-variation.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-destockal-a-hua-class-variation.json",
+        "methodPath": "validation/method-runs/classical-destockal-a-hua-class-variation.json",
+        "passedCases": 9,
+        "requiredCases": 9,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P205-L007-A1C28A1FC6",
+      "classification": "unknown",
+      "repairQualified": false,
+      "ownerId": "classical-destockal-e-hua-system",
+      "operationId": "classical.destockal.e.hua.system.execute",
+      "declarationPath": "validation/declarations/lessons24-25/classical-destockal-e-hua-system.json",
+      "ownerRecordPath": "validation/owners/classical-destockal-e-hua-system.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-destockal-e-hua-system.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": false,
+        "runPath": "",
+        "methodPath": "",
+        "passedCases": 0,
+        "requiredCases": 0,
+        "methodComplete": false
+      },
+      "status": "deliberately-preserved-unknown"
+    },
+    {
+      "atomId": "ACI-P210-L009-E029824E95",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-irregular-go-come-causative-block",
+      "operationId": "classical.irregular.go.come.causative.block.execute",
+      "declarationPath": "validation/declarations/lessons24-25/classical-irregular-go-come-causative-block.json",
+      "ownerRecordPath": "validation/owners/classical-irregular-go-come-causative-block.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-irregular-go-come-causative-block.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-irregular-go-come-causative-block.json",
+        "methodPath": "validation/method-runs/classical-irregular-go-come-causative-block.json",
+        "passedCases": 9,
+        "requiredCases": 9,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P226-L010-DF64443D02-05",
+      "classification": "nonqualifying",
+      "repairQualified": false,
+      "ownerId": "classical-itzi-itta-applicative-alternation",
+      "operationId": "classical.itzi.itta.applicative.alternation.execute",
+      "declarationPath": "validation/declarations/lessons26-27/classical-itzi-itta-applicative-alternation.json",
+      "ownerRecordPath": "validation/owners/classical-itzi-itta-applicative-alternation.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-itzi-itta-applicative-alternation.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": false,
+        "runPath": "",
+        "methodPath": "",
+        "passedCases": 0,
+        "requiredCases": 0,
+        "methodComplete": false
+      },
+      "status": "deliberately-preserved-nonqualifying"
+    },
+    {
+      "atomId": "ACI-P256-L004-0D0DF7FE9D",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-huitz-carry-connectiveless-formation",
+      "operationId": "classical.huitz.carry.connectiveless.formation.execute",
+      "declarationPath": "validation/declarations/lessons28-29/classical-huitz-carry-connectiveless-formation.json",
+      "ownerRecordPath": "validation/owners/classical-huitz-carry-connectiveless-formation.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-huitz-carry-connectiveless-formation.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-huitz-carry-connectiveless-formation.json",
+        "methodPath": "validation/method-runs/classical-huitz-carry-connectiveless-formation.json",
+        "passedCases": 18,
+        "requiredCases": 18,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P263-L019-E197EB0CC2",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-shared-object-compound-matrix-inventory",
+      "operationId": "classical.shared.object.compound.matrix.inventory.execute",
+      "declarationPath": "validation/declarations/lessons28-29/classical-shared-object-compound-matrix-inventory.json",
+      "ownerRecordPath": "validation/owners/classical-shared-object-compound-matrix-inventory.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-shared-object-compound-matrix-inventory.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-shared-object-compound-matrix-inventory.json",
+        "methodPath": "validation/method-runs/classical-shared-object-compound-matrix-inventory.json",
+        "passedCases": 21,
+        "requiredCases": 21,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P306-L016-3182248C30",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-affective-ton-exception",
+      "operationId": "classical.affective.ton.exception.execute",
+      "declarationPath": "validation/declarations/lessons32-34/classical-affective-ton-exception.json",
+      "ownerRecordPath": "validation/owners/classical-affective-ton-exception.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-affective-ton-exception.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-affective-ton-exception.json",
+        "methodPath": "validation/method-runs/classical-affective-ton-exception.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P307-L015-2F2FCC135F",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-nnc-to-vnc-attitude-restriction",
+      "operationId": "classical.nnc.to.vnc.attitude.restriction.execute",
+      "declarationPath": "validation/declarations/lessons32-34/classical-nnc-to-vnc-attitude-restriction.json",
+      "ownerRecordPath": "validation/owners/classical-nnc-to-vnc-attitude-restriction.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-nnc-to-vnc-attitude-restriction.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-nnc-to-vnc-attitude-restriction.json",
+        "methodPath": "validation/method-runs/classical-nnc-to-vnc-attitude-restriction.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P464-L009-902A64EC84",
+      "classification": "owner-escape",
+      "repairQualified": true,
+      "ownerId": "classical-huan-yolqui-absolutive-lexicalization",
+      "operationId": "classical.huan.yolqui.absolutive.lexicalization.execute",
+      "declarationPath": "validation/declarations/lessons44-45/classical-huan-yolqui-absolutive-lexicalization.json",
+      "ownerRecordPath": "validation/owners/classical-huan-yolqui-absolutive-lexicalization.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-huan-yolqui-absolutive-lexicalization.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-huan-yolqui-absolutive-lexicalization.json",
+        "methodPath": "validation/method-runs/classical-huan-yolqui-absolutive-lexicalization.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P478-L035-2675499655",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-relational-locative-tlah-affective-final-co",
+      "operationId": "classical.relational.locative.tlah.affective.final.co.execute",
+      "declarationPath": "validation/declarations/lesson46/classical-relational-locative-tlah-affective-final-co.json",
+      "ownerRecordPath": "validation/owners/classical-relational-locative-tlah-affective-final-co.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-relational-locative-tlah-affective-final-co.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-relational-locative-tlah-affective-final-co.json",
+        "methodPath": "validation/method-runs/classical-relational-locative-tlah-affective-final-co.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P495-L039-7FD7E5C93C",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-relational-continuation-icpac-continuations",
+      "operationId": "classical.relational.continuation.icpac.continuations.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-relational-continuation-icpac-continuations.json",
+      "ownerRecordPath": "validation/owners/classical-relational-continuation-icpac-continuations.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-relational-continuation-icpac-continuations.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-relational-continuation-icpac-continuations.json",
+        "methodPath": "validation/method-runs/classical-relational-continuation-icpac-continuations.json",
+        "passedCases": 12,
+        "requiredCases": 12,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P496-L013-1873CCB71D",
+      "classification": "owner-escape",
+      "repairQualified": true,
+      "ownerId": "classical-tech-embed-pa-copa-matrices",
+      "operationId": "classical.tech.embed.pa.copa.matrices.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-tech-embed-pa-copa-matrices.json",
+      "ownerRecordPath": "validation/owners/classical-tech-embed-pa-copa-matrices.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-tech-embed-pa-copa-matrices.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-tech-embed-pa-copa-matrices.json",
+        "methodPath": "validation/method-runs/classical-tech-embed-pa-copa-matrices.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P498-L017-F1FECF7586",
+      "classification": "owner-escape",
+      "repairQualified": true,
+      "ownerId": "classical-tlan-nested-bodypart-matrix-choice",
+      "operationId": "classical.tlan.nested.bodypart.matrix.choice.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-tlan-nested-bodypart-matrix-choice.json",
+      "ownerRecordPath": "validation/owners/classical-tlan-nested-bodypart-matrix-choice.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-tlan-nested-bodypart-matrix-choice.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-tlan-nested-bodypart-matrix-choice.json",
+        "methodPath": "validation/method-runs/classical-tlan-nested-bodypart-matrix-choice.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P520-L022-1C0DB88DAE",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-place-gentilic-gentilic-ca-pan-eca",
+      "operationId": "classical.place.gentilic.gentilic.ca.pan.eca.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-place-gentilic-gentilic-ca-pan-eca.json",
+      "ownerRecordPath": "validation/owners/classical-place-gentilic-gentilic-ca-pan-eca.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-place-gentilic-gentilic-ca-pan-eca.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-place-gentilic-gentilic-ca-pan-eca.json",
+        "methodPath": "validation/method-runs/classical-place-gentilic-gentilic-ca-pan-eca.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P522-L018-F443DF0356",
+      "classification": "same-owner-coordinate-undercoverage",
+      "repairQualified": true,
+      "ownerId": "classical-place-gentilic-gentilic-ca-man-tlan-teca",
+      "operationId": "classical.place.gentilic.gentilic.ca.man.tlan.teca.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-place-gentilic-gentilic-ca-man-tlan-teca.json",
+      "ownerRecordPath": "validation/owners/classical-place-gentilic-gentilic-ca-man-tlan-teca.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-place-gentilic-gentilic-ca-man-tlan-teca.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-place-gentilic-gentilic-ca-man-tlan-teca.json",
+        "methodPath": "validation/method-runs/classical-place-gentilic-gentilic-ca-man-tlan-teca.json",
+        "passedCases": 12,
+        "requiredCases": 12,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    },
+    {
+      "atomId": "ACI-P522-L020-D3415DA148",
+      "classification": "owner-escape",
+      "repairQualified": true,
+      "ownerId": "classical-tlan-lan-gentilic-variant-pair",
+      "operationId": "classical.tlan.lan.gentilic.variant.pair.execute",
+      "declarationPath": "validation/declarations/lessons47-48/classical-tlan-lan-gentilic-variant-pair.json",
+      "ownerRecordPath": "validation/owners/classical-tlan-lan-gentilic-variant-pair.json",
+      "productionSpecPath": "src/core/classical/nuclear-owner-specs/classical-tlan-lan-gentilic-variant-pair.mjs",
+      "catalogRegistered": true,
+      "ownerExecution": {
+        "certified": true,
+        "runPath": "validation/runs/classical-tlan-lan-gentilic-variant-pair.json",
+        "methodPath": "validation/method-runs/classical-tlan-lan-gentilic-variant-pair.json",
+        "passedCases": 6,
+        "requiredCases": 6,
+        "methodComplete": true
+      },
+      "status": "qualified-owner-execution-certified"
+    }
+  ],
+  "staleFactoryBlock": {
+    "status": "explicitly-blocked-proof-only-factory-records",
+    "declarationCount": 862,
+    "ownerPattern": "*-canvas-atom-assertions",
+    "missingProductionSpecCount": 862,
+    "productionGrammarOwnersInBlock": 0,
+    "effectOnGrammar": "none"
+  },
+  "finalOwnerCertificate": {
+    "ownerId": "classical-huitz-carry-connectiveless-formation",
+    "liveValidated": true,
+    "passedCases": 18,
+    "requiredCases": 18,
+    "routeCount": 18,
+    "methodComplete": true,
+    "methodValidityCeiling": 1
+  },
+  "nextDecisionRule": "Stop expanding factory completeness; accept one public capability repair only when canonical Result and Continue safety hold and distinct public reach increases.",
+  "completionBoundary": "This artifact closes classification of the fixed 17-row safety window. Only owner-execution-certified rows count as proven owner behavior; missing certificates and uninstalled prerequisites remain bounded unknowns and never count as public capability.",
+  "contentDigest": "sha256:b724da5f0168ab47155f2a1f06737af2e36e3850bb31fddd351b38f867ce4e02"
+}

@@ -1,6 +1,6 @@
 # Lesson 25 atom-job review batches
 
-All 756 atoms are included exactly once. Unaccepted groups remain proposals; implementation credit appears only after accepted jobs pass their exact checks.
+All 756 atoms are included exactly once. Unproven groups remain proposals; implementation credit appears only after a technically approved job passes its exact checks.
 
 ## Batch 1, Group 1: Type-two causative foundation
 

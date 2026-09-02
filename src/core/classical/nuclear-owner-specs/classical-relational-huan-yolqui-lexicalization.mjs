@@ -10,7 +10,6 @@ const spec = {
     "claim-p4281",
     "claim-p4282",
     "claim-p4283",
-    "claim-p4284",
     "claim-p4285"
   ],
   "coordinates": {
@@ -26,10 +25,6 @@ const spec = {
       "assertionId": "classical-relational-huan-yolqui-lexicalization:p4283-to-create-the-equivalent-of-relative-kinsman",
       "canonicalPath": "contract.groupingTransfersProof"
     },
-    "claim-p4284::p4284-because-of-the-frequent-juxtaposition-of-hua-n-and": {
-      "assertionId": "classical-relational-huan-yolqui-lexicalization:p4284-because-of-the-frequent-juxtaposition-of-hua-n-and",
-      "canonicalPath": "cases.huan.canonicalResult"
-    },
     "claim-p4285::p4285-the-strangeness-of-the-collocation-is-also-seen-in": {
       "assertionId": "classical-relational-huan-yolqui-lexicalization:p4285-the-strangeness-of-the-collocation-is-also-seen-in",
       "canonicalPath": "cases.huan.stemId"
@@ -41,14 +36,12 @@ const spec = {
     "claim-p4281": [],
     "claim-p4282": [],
     "claim-p4283": [],
-    "claim-p4284": [],
     "claim-p4285": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p4281": "authorized",
     "claim-p4282": "authorized",
     "claim-p4283": "authorized",
-    "claim-p4284": "authorized",
     "claim-p4285": "authorized"
   }
 };

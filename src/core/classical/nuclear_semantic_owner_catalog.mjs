@@ -340,6 +340,7 @@ import classical_attitude_pejorative_preterit_embed from "./nuclear-owner-specs/
 import classical_attitude_preterit_embed_contrast_analysis from "./nuclear-owner-specs/classical-attitude-preterit-embed-contrast-analysis.mjs";
 import classical_attitude_reverential_double from "./nuclear-owner-specs/classical-attitude-reverential-double.mjs";
 import classical_ayi_silent_object_supplementation from "./nuclear-owner-specs/classical-ayi-silent-object-supplementation.mjs";
+import classical_ichtequi_specific_object_restriction from "./nuclear-owner-specs/classical-ichtequi-specific-object-restriction.mjs";
 import classical_boundary_deverbal_action_affective_assimilation from "./nuclear-owner-specs/classical-boundary-deverbal-action-affective-assimilation.mjs";
 import classical_ca_compound_matrix_formation from "./nuclear-owner-specs/classical-ca-compound-matrix-formation.mjs?v=20260816-lesson29-groups1-3-012";
 import classical_ca_discourse_role_analysis from "./nuclear-owner-specs/classical-ca-discourse-role-analysis.mjs";
@@ -790,6 +791,7 @@ import classical_gcd_deverbal_core_derivation from "./nuclear-owner-specs/classi
 import classical_gcd_structural_nominalization from "./nuclear-owner-specs/classical-gcd-structural-nominalization.mjs";
 import classical_hua_lexical_formation from "./nuclear-owner-specs/classical-hua-lexical-formation.mjs";
 import classical_hua_nonactive_domain from "./nuclear-owner-specs/classical-hua-nonactive-domain.mjs";
+import classical_huan_yolqui_absolutive_lexicalization from "./nuclear-owner-specs/classical-huan-yolqui-absolutive-lexicalization.mjs";
 import classical_hual_la_suppletive_paradigm from "./nuclear-owner-specs/classical-hual-la-suppletive-paradigm.mjs";
 import classical_hual_la_uh_compound_matrix_formation from "./nuclear-owner-specs/classical-hual-la-uh-compound-matrix-formation.mjs?v=20260816-lesson29-groups1-3-012";
 import classical_hualo_variant_licensing from "./nuclear-owner-specs/classical-hualo-variant-licensing.mjs";
@@ -1344,6 +1346,7 @@ import classical_supplemented_clause_integrity from "./nuclear-owner-specs/class
 import classical_supportive_i_frequentative_exception from "./nuclear-owner-specs/classical-supportive-i-frequentative-exception.mjs";
 import classical_supportive_i_frequentative_formation from "./nuclear-owner-specs/classical-supportive-i-frequentative-formation.mjs";
 import classical_supportive_initial_i_formation from "./nuclear-owner-specs/classical-supportive-initial-i-formation.mjs";
+import classical_tech_embed_pa_copa_matrices from "./nuclear-owner-specs/classical-tech-embed-pa-copa-matrices.mjs";
 import classical_third_person_supplement_contact_ambiguity from "./nuclear-owner-specs/classical-third-person-supplement-contact-ambiguity.mjs";
 import classical_third_possessor_initial_i_boundary from "./nuclear-owner-specs/classical-third-possessor-initial-i-boundary.mjs";
 import classical_ti_perfective_variant_formation from "./nuclear-owner-specs/classical-ti-perfective-variant-formation.mjs";
@@ -1359,6 +1362,8 @@ import classical_tla_impersonal_frequentative_scope from "./nuclear-owner-specs/
 import classical_tla_impersonal_operation from "./nuclear-owner-specs/classical-tla-impersonal-operation.mjs";
 import classical_tla_impersonal_source_inventory from "./nuclear-owner-specs/classical-tla-impersonal-source-inventory.mjs";
 import classical_tla_object_pronoun_reduplication from "./nuclear-owner-specs/classical-tla-object-pronoun-reduplication.mjs";
+import classical_tlan_lan_gentilic_variant_pair from "./nuclear-owner-specs/classical-tlan-lan-gentilic-variant-pair.mjs";
+import classical_tlan_nested_bodypart_matrix_choice from "./nuclear-owner-specs/classical-tlan-nested-bodypart-matrix-choice.mjs";
 import classical_transformed_impersonal_derivation from "./nuclear-owner-specs/classical-transformed-impersonal-derivation.mjs";
 import classical_transitive_vnc_formula_formation from "./nuclear-owner-specs/classical-transitive-vnc-formula-formation.mjs";
 import classical_triple_object_applicative_transform from "./nuclear-owner-specs/classical-triple-object-applicative-transform.mjs";
@@ -1459,6 +1464,7 @@ import { createClassicalNounstemValidationSemanticOperationsApi } from "./nnc_no
 import { createClassicalHigherPronominalNncValidationSemanticOperationsApi } from "./nnc_higher_pronominal_semantic_operations.mjs";
 import { createClassicalSupplementationValidationSemanticOperationsApi } from "../sentence/supplementation_validation_semantic_operations.mjs?v=20260816-lesson29-groups1-3-012";
 import { createClassicalNonactiveVoiceObjectValidationSemanticOperationsApi } from "./nonactive_voice_object_validation_semantic_operations.mjs";
+import { createClassicalObjectRelationshipValidationSemanticOperationsApi } from "./object_relationship_validation_semantic_operations.mjs";
 import { createClassicalVncDerivationValidationSemanticOperationsApi } from "./vnc_derivation_validation_semantic_operations.mjs";
 import { createClassicalApplicativeValidationSemanticOperationsApi } from "./vnc_applicative_validation_semantic_operations.mjs";
 import { createClassicalFrequentativeValidationSemanticOperationsApi } from "./vnc_frequentative_validation_semantic_operations.mjs";
@@ -1825,6 +1831,7 @@ const OWNER_SPECS = Object.freeze([
   classical_attitude_preterit_embed_contrast_analysis,
   classical_attitude_reverential_double,
   classical_ayi_silent_object_supplementation,
+  classical_ichtequi_specific_object_restriction,
   classical_boundary_deverbal_action_affective_assimilation,
   classical_ca_compound_matrix_formation,
   classical_ca_discourse_role_analysis,
@@ -2275,6 +2282,7 @@ const OWNER_SPECS = Object.freeze([
   classical_gcd_structural_nominalization,
   classical_hua_lexical_formation,
   classical_hua_nonactive_domain,
+  classical_huan_yolqui_absolutive_lexicalization,
   classical_hual_la_suppletive_paradigm,
   classical_hual_la_uh_compound_matrix_formation,
   classical_hualo_variant_licensing,
@@ -2829,6 +2837,7 @@ const OWNER_SPECS = Object.freeze([
   classical_supportive_i_frequentative_exception,
   classical_supportive_i_frequentative_formation,
   classical_supportive_initial_i_formation,
+  classical_tech_embed_pa_copa_matrices,
   classical_third_person_supplement_contact_ambiguity,
   classical_third_possessor_initial_i_boundary,
   classical_ti_perfective_variant_formation,
@@ -2844,6 +2853,8 @@ const OWNER_SPECS = Object.freeze([
   classical_tla_impersonal_operation,
   classical_tla_impersonal_source_inventory,
   classical_tla_object_pronoun_reduplication,
+  classical_tlan_lan_gentilic_variant_pair,
+  classical_tlan_nested_bodypart_matrix_choice,
   classical_transformed_impersonal_derivation,
   classical_transitive_vnc_formula_formation,
   classical_triple_object_applicative_transform,
@@ -2949,6 +2960,7 @@ export function createClassicalNuclearSemanticOwnersApi(targetObject = globalThi
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalHigherPronominalNncValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalSupplementationValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalNonactiveVoiceObjectValidationSemanticOperationsApi(semanticTarget)));
+  Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalObjectRelationshipValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalVncDerivationValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalApplicativeValidationSemanticOperationsApi(semanticTarget)));
   Object.defineProperties(semanticTarget, Object.getOwnPropertyDescriptors(createClassicalFrequentativeValidationSemanticOperationsApi(semanticTarget)));

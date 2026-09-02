@@ -256,6 +256,26 @@ async function loadSemanticOwnerSpec(webRoot, reference, cache) {
   return spec;
 }
 
+export function assertSemanticOwnerSpecIdentity({
+  atomId,
+  semanticOwnerId,
+  semanticOwnerReference,
+  ownerSpec,
+}) {
+  if (!text(semanticOwnerReference).includes("-owner-specs/")) return true;
+  const ledgerOwnerId = text(semanticOwnerId);
+  const ownerSpecId = text(ownerSpec?.ownerId);
+  if (!ownerSpec || !ownerSpecId || ownerSpecId !== ledgerOwnerId) {
+    throw new Error([
+      `semantic owner identity mismatch: ${text(atomId)}`,
+      `ledger=${ledgerOwnerId || "(missing)"}`,
+      `spec=${ownerSpecId || "(missing)"}`,
+      `reference=${text(semanticOwnerReference)}`,
+    ].join("; "));
+  }
+  return true;
+}
+
 function applicationOperationsForOwnerSpec(spec, operations) {
   if (!spec || typeof spec !== "object") return [];
   const tokens = sortedUnique([
@@ -531,6 +551,13 @@ async function buildPopulation(webRoot, lessonLedgerOverrides = new Map()) {
         semanticOwnerReference,
         semanticOwnerSpecCache,
       );
+      const semanticOwnerId = text(atom[atomFields.semanticOwnerId]);
+      assertSemanticOwnerSpecIdentity({
+        atomId,
+        semanticOwnerId,
+        semanticOwnerReference,
+        ownerSpec,
+      });
       if (ownerSpec && semanticOwnerReference
         && !semanticOwnerSpecDigests.has(semanticOwnerReference)) {
         const ownerSpecPath = safeProofPath(webRoot, semanticOwnerReference);
@@ -589,14 +616,14 @@ async function buildPopulation(webRoot, lessonLedgerOverrides = new Map()) {
               ? "exact-application-operation"
               : text(atom[atomFields.force]) !== "grammar-bearing"
                 ? "non-grammar-evidence-no-application-route"
-              : text(atom[atomFields.semanticOwnerId])
+              : semanticOwnerId
                 ? "canonical-owner-only-no-application-route"
                 : "accepted-writing-owner-link-pending";
       rawAtoms.push({
         atomId,
         lessonNumber,
         groupKey,
-        semanticOwnerId: text(atom[atomFields.semanticOwnerId]),
+        semanticOwnerId,
         semanticOwnerOperationId,
         force: text(atom[atomFields.force]),
         projectRole: text(atom[atomFields.projectRole]),
@@ -1474,7 +1501,9 @@ async function main() {
   }
 }
 
-main().catch(error => {
-  process.stderr.write(`${error.stack || error.message || error}\n`);
-  process.exitCode = 1;
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === SCRIPT_PATH) {
+  main().catch(error => {
+    process.stderr.write(`${error.stack || error.message || error}\n`);
+    process.exitCode = 1;
+  });
+}

@@ -90,11 +90,14 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
       sourceKind: result?.sourceFrame?.sourceKind || "",
       sourceFormation: result?.sourceFrame?.predicateStemFrame?.sourceFormation || "",
       sourceVoice: result?.sourceFrame?.predicateStemFrame?.sourceVoice || "",
+      affective: result?.sourceFrame?.affective || "none",
       sourceState: result?.sourceState || "",
       subjectMode: result?.formulaSlots?.subjectMode || "",
       possessor: result?.formulaSlots?.possessor || "",
       operationId: result?.operationFrame?.operationId || "",
       operationTrace: result?.operationFrame?.operationTrace || [],
+      predicateSegments:
+        result?.operationFrame?.predicateRecord?.predicateSegments || [],
       predicateStem: result?.predicateStem || "",
       formula: result?.formula || "",
       surface: result?.surface || "",
@@ -112,6 +115,49 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
 
   function execute(request) {
     return summarize(target.evaluateClassicalNahuatlRelationalNnc(typedRequest(request)));
+  }
+
+  function buildClassicalTlahAffectiveFinalCoPair(candidateCases = {}) {
+    const expected = {
+      honorific: { caseId: "tlahAffective", morpheme: "tzin" },
+      pejorative: {
+        caseId: "tlahAffectivePejorative",
+        morpheme: "tōn",
+      },
+    };
+    const branches = Object.fromEntries(Object.entries(expected).map(
+      ([branchId, branch]) => {
+        const record = candidateCases[branch.caseId] || {};
+        const tail = (record.predicateSegments || []).slice(-2);
+        const authorized = record.authorizationStatus === "authorized"
+          && record.canonicalResult === true
+          && record.typedSourceAuthority === true
+          && record.typedOperationAuthority === true
+          && record.affective === branchId
+          && tail.length === 2
+          && tail[0]?.morpheme === branch.morpheme
+          && tail[0]?.role === "affective"
+          && tail[1]?.morpheme === "co"
+          && tail[1]?.role === "adverbializer";
+        return [branchId, {
+          authorizationStatus: authorized ? "authorized" : "blocked",
+          predicateStem: record.predicateStem || "",
+          formula: record.formula || "",
+          surface: record.surface || "",
+          finalMorphemes: tail.map(segment => segment?.morpheme || ""),
+        }];
+      },
+    ));
+    const authorizationStatus = Object.values(branches).every(
+      branch => branch.authorizationStatus === "authorized",
+    ) && branches.honorific.predicateStem !== branches.pejorative.predicateStem
+      ? "authorized" : "blocked";
+    return deepFreeze({
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? "" : "tlah-affective-tzin-ton-final-co-pair-not-proven",
+      branches,
+    });
   }
 
   function deverbalSource(formationId, sourceStem = "mich-namaca") {
@@ -360,6 +406,7 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
       tlahPossessive: execute({ stemId: "tlah-abundance-place", sourceKind: "nounstem", embeddedStem: "cuauh", state: "possessive", possessorId: "1sg" }),
       tlahVarietal: execute({ stemId: "tlah-abundance-place", sourceKind: "varietal-nounstem", embeddedStem: "xoch" }),
       tlahAffective: execute({ stemId: "tlah-abundance-place", sourceKind: "nounstem", embeddedStem: "cuauh", affective: "honorific" }),
+      tlahAffectivePejorative: execute({ stemId: "tlah-abundance-place", sourceKind: "nounstem", embeddedStem: "cuauh", affective: "pejorative" }),
       coConsonant: execute({ stemId: "co-c-specific-location", sourceKind: "nounstem", embeddedStem: "cal" }),
       cVowel: execute({ stemId: "co-c-specific-location", sourceKind: "nounstem", embeddedStem: "tecoma" }),
       coFire: execute({ stemId: "co-c-specific-location", sourceKind: "nounstem", embeddedStem: "tle", sourceLexemeId: "tle-fire" }),
@@ -459,6 +506,10 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
         perfectiveCanonical: target.isClassicalNahuatlVncApplicationFrame?.(perfective) === true,
       },
       cases,
+      constraints: {
+        tlahAffectiveFinalCoPair:
+          buildClassicalTlahAffectiveFinalCoPair(cases),
+      },
       blockedCases: {
         rawUntyped: {
           authorizationStatus: rawUntyped.authorizationStatus,
@@ -520,6 +571,7 @@ export function createClassicalLocativeRelationalNncValidationSemanticOperations
   }
 
   return Object.freeze({
+    buildClassicalTlahAffectiveFinalCoPair,
     buildClassicalLocativeRelationalNncValidationFrame,
     isClassicalLocativeRelationalNncValidationFrame,
   });

@@ -8,8 +8,7 @@ const spec = {
   "canonicalActorId": "classical-nahuatl-place-gentilic-runtime",
   "selections": [
     "claim-p4634",
-    "claim-p4635",
-    "claim-p4636"
+    "claim-p4635"
   ],
   "coordinates": {
     "claim-p4634::p4634-tla-n-see-48-2-4-as-matrix-form": {
@@ -18,24 +17,18 @@ const spec = {
     },
     "claim-p4635::p4635-place-name-nounstems-that-have-ma-n-see-48": {
       "assertionId": "classical-place-gentilic-gentilic-ca-man-tlan-teca:p4635-place-name-nounstems-that-have-ma-n-see-48",
-      "canonicalPath": "cases.manGentilic.lcmAxisId"
-    },
-    "claim-p4636::p4636-in-tla-n-and-its-variant-la-n-the": {
-      "assertionId": "classical-place-gentilic-gentilic-ca-man-tlan-teca:p4636-in-tla-n-and-its-variant-la-n-the",
-      "canonicalPath": "cases.tlanGentilic.boundaryRule"
+      "canonicalPath": "constraints.manTlanGentilicPair.authorizationStatus"
     }
   },
   "executionFunctionName": "buildClassicalPlaceGentilicValidationFrame",
   "executionValidatorName": "isClassicalPlaceGentilicValidationFrame",
   "executionArgsBySelection": {
     "claim-p4634": [],
-    "claim-p4635": [],
-    "claim-p4636": []
+    "claim-p4635": []
   },
   "expectedCanonicalStatusBySelection": {
     "claim-p4634": "authorized",
-    "claim-p4635": "authorized",
-    "claim-p4636": "authorized"
+    "claim-p4635": "authorized"
   }
 };
 export default Object.freeze(spec);

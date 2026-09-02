@@ -43,12 +43,17 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
     const sourceKind = request.sourceKind || (
       option === "option-one" ? "possessor" : stem.allowedSourceKinds[0] || "nounstem"
     );
-    const sourceEmbedStem = request.embeddedStem || "";
+    const sourceComposition = request.sourceComposition || null;
+    const sourceEmbedStem = sourceComposition ? "" : request.embeddedStem || "";
     const sourceMatrixStem = relationalNnc
-      ? request.sourceMatrixStem || stem.classicalMatrix
+      ? sourceComposition ? "" : request.sourceMatrixStem || stem.classicalMatrix
       : "";
     const sourceStem = relationalNnc
-      ? option === "option-one" ? sourceMatrixStem : request.sourceStem || sourceEmbedStem
+      ? sourceComposition
+        ? ""
+        : option === "option-one"
+          ? sourceMatrixStem
+          : request.sourceStem || sourceEmbedStem
       : request.sourceStem || "";
     return {
       state: request.state || (option === "option-one" ? "possessive" : "absolutive"),
@@ -69,6 +74,7 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
         sourceStem,
         sourceEmbedStem: relationalNnc && option !== "option-one" ? sourceEmbedStem : "",
         sourceMatrixStem,
+        sourceComposition,
         downstreamTargetStem: request.targetMatrixStem || "",
         affective: request.affective || "none",
         sourceEndsInCoOrC: request.sourceEndsInCoOrC === true,
@@ -91,10 +97,15 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
       optionGroup: result?.optionGroup || "",
       constructionKind: result?.constructionKind || "",
       sourceKind: result?.sourceFrame?.sourceKind || "",
+      sourceCompositionFrame:
+        result?.sourceFrame?.sourceCompositionFrame || null,
+      affective: result?.sourceFrame?.affective || "none",
       sourceState: result?.sourceState || "",
       subjectMode: result?.formulaSlots?.subjectMode || "",
       operationId: result?.operationFrame?.operationId || "",
       operationTrace: result?.operationFrame?.operationTrace || [],
+      predicateSegments:
+        result?.operationFrame?.predicateRecord?.predicateSegments || [],
       predicateStem: result?.predicateStem || "",
       formula: result?.formula || "",
       surface: result?.surface || "",
@@ -112,6 +123,218 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
 
   function execute(request) {
     return summarize(target.evaluateClassicalNahuatlRelationalNnc(typedRequest(request)));
+  }
+
+  function sourceStemNode(stem) {
+    return {
+      kind:
+        target.CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_STEM_NODE_KIND,
+      stem,
+    };
+  }
+
+  function sourceCompoundNode(embed, matrix) {
+    return {
+      kind:
+        target.CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_COMPOUND_NODE_KIND,
+      embed,
+      matrix,
+    };
+  }
+
+  function sourceComposition(embed, matrix) {
+    return {
+      kind: target.CLASSICAL_NAHUATL_RELATIONAL_SOURCE_COMPOSITION_REQUEST_KIND,
+      embed,
+      matrix,
+    };
+  }
+
+  function buildExactSourceCompositionBranch(record = {}, expected = {}) {
+    const frame = record.sourceCompositionFrame;
+    const exactSurface = String(frame?.surface || "").replace(/-/gu, "");
+    const expectedFormula = frame?.surface
+      ? `#Ø-Ø(${frame.surface})Ø-Ø#`
+      : "";
+    const authorized = record.authorizationStatus === "authorized"
+      && record.canonicalResult === true
+      && target.isClassicalNahuatlRelationalResult?.(record.liveResult) === true
+      && target.isClassicalNahuatlRelationalSourceCompositionFrame?.(frame)
+        === true
+      && record.typedSourceAuthority === true
+      && record.typedOperationAuthority === true
+      && record.operationId
+        === "relational-option-two-typed-source-composition"
+      && record.sourceKind === expected.sourceKind
+      && frame.licenseId === expected.licenseId
+      && frame.branchId === expected.branchId
+      && frame.compositionSignature === expected.compositionSignature
+      && record.predicateSegments.length === expected.segmentCount
+      && record.predicateSegments.every(segment => (
+        String(segment.compositionPath || "").startsWith("root.")
+        && ["embed", "matrix"].includes(segment.compositionRole)
+      ))
+      && record.predicateStem === exactSurface
+      && record.surface === exactSurface
+      && record.formula === expectedFormula;
+    return deepFreeze({
+      branchId: expected.branchId,
+      authorizationStatus: authorized ? "authorized" : "blocked",
+      blockReason: authorized
+        ? ""
+        : "exact-typed-recursive-source-composition-not-proven",
+      compositionSignature: frame?.compositionSignature || "",
+      sourceSurface: frame?.surface || "",
+      resultSurface: record.surface || "",
+      formula: record.formula || "",
+      canonicalParentResult: authorized ? record.liveResult : null,
+      canonicalParentResultKind: authorized
+        ? record.liveResult?.kind || ""
+        : "",
+      typedSourceAuthority: authorized,
+      typedOperationAuthority: authorized,
+      canonicalResultAuthority: authorized,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
+
+  function buildClassicalTechEmbedPaCopaMatrixPair(candidateCases = {}) {
+    const expectedBranches = [
+      {
+        branchId: "tech-plus-pa",
+        caseId: "techPaMatrix",
+        sourceKind: "relational-compound",
+        licenseId: "tech-embed-pa-copa-matrices",
+        compositionSignature: "(tech>pa)",
+        segmentCount: 2,
+      },
+      {
+        branchId: "tech-plus-copa",
+        caseId: "techCopaMatrix",
+        sourceKind: "relational-compound",
+        licenseId: "tech-embed-pa-copa-matrices",
+        compositionSignature: "(tech>(co>pa))",
+        segmentCount: 3,
+      },
+    ];
+    const branches = expectedBranches.map(expected => (
+      buildExactSourceCompositionBranch(
+        candidateCases[expected.caseId] || {},
+        expected,
+      )
+    ));
+    const authorizationStatus = branches.every(
+      branch => branch.authorizationStatus === "authorized",
+    ) && branches[0].compositionSignature !== branches[1].compositionSignature
+      ? "authorized"
+      : "blocked";
+    return deepFreeze({
+      kind: "classical-tech-embed-pa-copa-matrices-receipt",
+      contractId: "tech-embed-pa-copa-matrices",
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? ""
+        : "tech-embed-pa-copa-matrix-pair-not-proven",
+      typedPrerequisiteIdentity: "classical-tech-embed-pa-copa-matrices",
+      branches,
+      typedSourceAuthority: authorizationStatus === "authorized",
+      typedOperationAuthority: authorizationStatus === "authorized",
+      canonicalResultAuthority: authorizationStatus === "authorized",
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
+
+  function buildClassicalTlanNestedBodypartMatrixChoice(candidateCases = {}) {
+    const expectedBranches = [
+      {
+        branchId: "inner-matrix-ix",
+        caseId: "tlanNestedIxMatrix",
+        sourceKind: "compound-nounstem",
+        licenseId: "tlan-nested-bodypart-matrix-choice",
+        compositionSignature: "((cal>īx)>tlan)",
+        segmentCount: 3,
+      },
+      {
+        branchId: "inner-matrix-tzin",
+        caseId: "tlanNestedTzinMatrix",
+        sourceKind: "compound-nounstem",
+        licenseId: "tlan-nested-bodypart-matrix-choice",
+        compositionSignature: "((cuauh>tzīn)>tlan)",
+        segmentCount: 3,
+      },
+    ];
+    const branches = expectedBranches.map(expected => (
+      buildExactSourceCompositionBranch(
+        candidateCases[expected.caseId] || {},
+        expected,
+      )
+    ));
+    const authorizationStatus = branches.every(
+      branch => branch.authorizationStatus === "authorized",
+    ) && branches[0].compositionSignature !== branches[1].compositionSignature
+      ? "authorized"
+      : "blocked";
+    return deepFreeze({
+      kind: "classical-tlan-nested-bodypart-matrix-choice-receipt",
+      contractId: "tlan-nested-bodypart-matrix-choice",
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? ""
+        : "tlan-nested-bodypart-matrix-choice-not-proven",
+      typedPrerequisiteIdentity:
+        "classical-tlan-nested-bodypart-matrix-choice",
+      branches,
+      typedSourceAuthority: authorizationStatus === "authorized",
+      typedOperationAuthority: authorizationStatus === "authorized",
+      canonicalResultAuthority: authorizationStatus === "authorized",
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }
+
+  function buildClassicalIcpacAffectiveFinalCoPair(candidateCases = {}) {
+    const expected = {
+      honorific: { caseId: "icpacAffective", morpheme: "tzin" },
+      pejorative: {
+        caseId: "icpacAffectivePejorative",
+        morpheme: "tōn",
+      },
+    };
+    const branches = Object.fromEntries(Object.entries(expected).map(
+      ([branchId, branch]) => {
+        const record = candidateCases[branch.caseId] || {};
+        const tail = (record.predicateSegments || []).slice(-2);
+        const authorized = record.authorizationStatus === "authorized"
+          && record.canonicalResult === true
+          && record.typedSourceAuthority === true
+          && record.typedOperationAuthority === true
+          && record.affective === branchId
+          && tail.length === 2
+          && tail[0]?.morpheme === branch.morpheme
+          && tail[0]?.role === "affective"
+          && tail[1]?.morpheme === "co"
+          && tail[1]?.role === "adverbializer";
+        return [branchId, {
+          authorizationStatus: authorized ? "authorized" : "blocked",
+          predicateStem: record.predicateStem || "",
+          formula: record.formula || "",
+          surface: record.surface || "",
+          finalMorphemes: tail.map(segment => segment?.morpheme || ""),
+        }];
+      },
+    ));
+    const authorizationStatus = Object.values(branches).every(
+      branch => branch.authorizationStatus === "authorized",
+    ) && branches.honorific.predicateStem !== branches.pejorative.predicateStem
+      ? "authorized" : "blocked";
+    return deepFreeze({
+      authorizationStatus,
+      blockReason: authorizationStatus === "authorized"
+        ? "" : "icpac-affective-tzin-ton-final-co-pair-not-proven",
+      branches,
+    });
   }
 
   function buildClassicalRelationalContinuationValidationFrame() {
@@ -158,6 +381,10 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
         stemId: "icpac-top", option: "option-three", sourceKind: "nounstem", embeddedStem: "tlāl",
         affective: "honorific",
       }),
+      icpacAffectivePejorative: execute({
+        stemId: "icpac-top", option: "option-three", sourceKind: "nounstem", embeddedStem: "tlāl",
+        affective: "pejorative",
+      }),
       techPossessive: execute({ stemId: "tech-contact", option: "option-one" }),
       techIntegrated: execute({
         stemId: "tech-contact", option: "option-two", sourceKind: "nounstem", embeddedStem: "cal",
@@ -169,12 +396,51 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
         stemId: "tech-contact", option: "option-two", sourceKind: "nounstem", embeddedStem: "cal",
         affective: "honorific",
       }),
+      techPaMatrix: execute({
+        stemId: "pa-direction",
+        option: "option-two",
+        sourceKind: "relational-compound",
+        sourceComposition: sourceComposition(
+          sourceStemNode("tech"),
+          sourceStemNode("pa"),
+        ),
+      }),
+      techCopaMatrix: execute({
+        stemId: "pa-direction",
+        option: "option-two",
+        sourceKind: "relational-compound",
+        sourceComposition: sourceComposition(
+          sourceStemNode("tech"),
+          sourceCompoundNode(sourceStemNode("co"), sourceStemNode("pa")),
+        ),
+      }),
       tlanPossessive: execute({ stemId: "tlan-bottom", option: "option-one" }),
       tlanIntegrated: execute({
         stemId: "tlan-bottom", option: "option-two", sourceKind: "body-part-stem", embeddedStem: "īx",
       }),
       tlanNested: execute({
         stemId: "tlan-bottom", option: "option-two", sourceKind: "compound-nounstem", embeddedStem: "īxtzin",
+      }),
+      tlanNestedIxMatrix: execute({
+        stemId: "tlan-bottom",
+        option: "option-two",
+        sourceKind: "compound-nounstem",
+        sourceComposition: sourceComposition(
+          sourceCompoundNode(sourceStemNode("cal"), sourceStemNode("īx")),
+          sourceStemNode("tlan"),
+        ),
+      }),
+      tlanNestedTzinMatrix: execute({
+        stemId: "tlan-bottom",
+        option: "option-two",
+        sourceKind: "compound-nounstem",
+        sourceComposition: sourceComposition(
+          sourceCompoundNode(
+            sourceStemNode("cuauh"),
+            sourceStemNode("tzīn"),
+          ),
+          sourceStemNode("tlan"),
+        ),
       }),
       tlanLinked: execute({
         stemId: "tlan-bottom", option: "option-three", sourceKind: "nounstem", embeddedStem: "cal",
@@ -301,6 +567,14 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
         },
       },
       cases,
+      constraints: {
+        icpacAffectiveFinalCoPair:
+          buildClassicalIcpacAffectiveFinalCoPair(cases),
+        techEmbedPaCopaMatrixPair:
+          buildClassicalTechEmbedPaCopaMatrixPair(cases),
+        tlanNestedBodypartMatrixChoice:
+          buildClassicalTlanNestedBodypartMatrixChoice(cases),
+      },
       blockedCases: {
         rawUntyped: {
           authorizationStatus: rawUntyped.authorizationStatus,
@@ -354,6 +628,9 @@ export function createClassicalRelationalContinuationValidationSemanticOperation
   }
 
   return Object.freeze({
+    buildClassicalIcpacAffectiveFinalCoPair,
+    buildClassicalTechEmbedPaCopaMatrixPair,
+    buildClassicalTlanNestedBodypartMatrixChoice,
     buildClassicalRelationalContinuationValidationFrame,
     isClassicalRelationalContinuationValidationFrame,
   });
