@@ -56,7 +56,6 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
     var STATIC_CONSTANTS_PATH = RUNTIME_PATHS.STATIC_CONSTANTS_PATH || "data/static_constants.json";
     var STATIC_DIRECTIONAL_RULES_PATH = RUNTIME_PATHS.STATIC_DIRECTIONAL_RULES_PATH || "data/static_directional_rules.json";
     var STATIC_ALLOMORPHY_RULES_PATH = RUNTIME_PATHS.STATIC_ALLOMORPHY_RULES_PATH || "data/static_allomorphy_rules.json";
-    var STATIC_PARSE_TESTS_PATH = RUNTIME_PATHS.STATIC_PARSE_TESTS_PATH || "data/static_parse_tests.json";
     var STATIC_DERIVATIONAL_RULES_PATH = RUNTIME_PATHS.STATIC_DERIVATIONAL_RULES_PATH || "data/static_derivational_rules.json";
     var STATIC_VALENCE_NEUTRAL_PATH = RUNTIME_PATHS.STATIC_VALENCE_NEUTRAL_PATH || "data/static_valence_neutral.json";
     var SUPPORTIVE_I_KEEP_SLASH_PREFIXES = new Set();
@@ -1718,12 +1717,6 @@ export function createScriptRuntimeApi(targetObject = globalThis) {
         enumerable: true,
         get() { return STATIC_ALLOMORPHY_RULES_PATH; },
         set(value) { STATIC_ALLOMORPHY_RULES_PATH = value; },
-    });
-    Object.defineProperty(api, "STATIC_PARSE_TESTS_PATH", {
-        configurable: true,
-        enumerable: true,
-        get() { return STATIC_PARSE_TESTS_PATH; },
-        set(value) { STATIC_PARSE_TESTS_PATH = value; },
     });
     Object.defineProperty(api, "STATIC_DERIVATIONAL_RULES_PATH", {
         configurable: true,

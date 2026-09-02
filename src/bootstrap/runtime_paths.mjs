@@ -11,7 +11,6 @@ export const STATIC_RUNTIME_PATHS = Object.freeze({
     STATIC_CONSTANTS_PATH: "data/static_constants.json",
     STATIC_DIRECTIONAL_RULES_PATH: "data/static_directional_rules.json",
     STATIC_ALLOMORPHY_RULES_PATH: "data/static_allomorphy_rules.json",
-    STATIC_PARSE_TESTS_PATH: "data/static_parse_tests.json",
     STATIC_DERIVATIONAL_RULES_PATH: "data/static_derivational_rules.json",
     STATIC_VALENCE_NEUTRAL_PATH: "data/static_valence_neutral.json",
 });
