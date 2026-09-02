@@ -954,7 +954,7 @@ export async function loadAndInstallClassicalGrammaticalAtlas({
     adapterUrl.searchParams.set("v", version);
     adapterUrl.searchParams.set(
       "cache",
-      "20260826-relational-role-340",
+      "20260902-construction-precision-370",
     );
     if (adapterLoadState.attempt > 1) {
       adapterUrl.searchParams.set(

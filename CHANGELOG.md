@@ -2,6 +2,17 @@
 
 User-facing release notes for Classical Nahuatl Grammar.
 
+## Version 1.2.5 — Construction Precision Update
+
+Released September 2, 2026.
+
+### What's New
+
+- Gives `(ich-tequi)` its own canonical specific-object restriction.
+- Adds exact singular and plural `huān+yōl` construction Results.
+- Preserves typed `tech + pa/co-pa` and nested `-tlan + ix/tzin` source branches.
+- Keeps `tlā-n` and `lā-n` gentilic constructions distinct through canonical Results and continuation.
+
 ## Version 1.2.4 — Exact Result Display Update
 
 Released August 28, 2026.

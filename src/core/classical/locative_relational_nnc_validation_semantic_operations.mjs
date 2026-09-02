@@ -4,7 +4,7 @@
 
 import {
   createClassicalNahuatlNncClosureApi,
-} from "./nnc_lessons45_47_closure.mjs";
+} from "./nnc_lessons45_47_closure.mjs?v=20260902-construction-precision-370";
 
 const ISSUED_VALIDATION_FRAMES = new WeakSet();
 

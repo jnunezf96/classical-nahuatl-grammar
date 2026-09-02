@@ -1,4 +1,4 @@
-import { cloneStaticRuntimePaths } from "./runtime_paths.mjs";
+import { cloneStaticRuntimePaths } from "./runtime_paths.mjs?v=20260902-construction-precision-370";
 
 export const STATIC_BOOTSTRAP_LOADER_GROUPS = Object.freeze({
     essential: Object.freeze([

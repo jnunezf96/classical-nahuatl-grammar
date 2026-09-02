@@ -1,16 +1,16 @@
-# Grammar OS v1.2.4 release
+# Grammar OS v1.2.5 release
 
-Release name: **Exact Result Display Update**
+Release name: **Construction Precision Update**
 
-Browser build: **20260828-exact-result-display-369**
+Browser build: **20260902-construction-precision-370**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 
 ## What's New
 
-- Shows only the final exact Result for supportive `i` with `tla fusion`.
-- Removes the extra source-to-target transition from the public Result display.
-- Preserves the four-way initial-`i` and `tla fusion` grammar behavior introduced in v1.2.3.
+- Gives `(ich-tequi)` its own canonical specific-object restriction.
+- Adds exact singular and plural `huān+yōl` construction Results.
+- Preserves typed `tech + pa/co-pa`, nested `-tlan + ix/tzin`, and distinct `tlā-n`/`lā-n` source branches through Result continuation.
 
 See [Version History](CHANGELOG.md) for notes from earlier releases.
 
@@ -24,7 +24,7 @@ The command requires a clean committed worktree and writes the publishable
 site to:
 
 ```text
-../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.4/site/
+../Classical_Nahuatl_Grammar/reports/generated/grammar_os_release/v1.2.5/site/
 ```
 
 Publish only that `site/` directory. Do not publish the repository root.

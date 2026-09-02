@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260828-exact-result-display-369";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260902-construction-precision-370";
 
 const bootstrapPromise = bootstrapBrowserApp();
 
