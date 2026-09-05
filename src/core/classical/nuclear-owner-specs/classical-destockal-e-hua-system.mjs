@@ -22,7 +22,11 @@ const spec = {
     },
     "claim-p2365::p2365-as-in-24-5-9-there-are-a-few": {
       "assertionId": "classical-destockal-e-hua-system:p2365-as-in-24-5-9-there-are-a-few",
-      "canonicalPath": "derivations.ehua.options.0.targetStem"
+      "canonicalPath": "constraints.destockalEHuaSystem.reconstructedSourceCoalescence"
+    },
+    "claim-p2365::aci-p205-l006-d3da91bcbb-hua-reconstructed-source-coalescence": {
+      "assertionId": "classical-destockal-e-hua-system:aci-p205-l006-d3da91bcbb-hua-reconstructed-source-coalescence",
+      "canonicalPath": "constraints.destockalEHuaSystem.reconstructedSourceCoalescence"
     },
     "claim-p2366::p2366-the-translation-to-be-come-changes-to-to-be": {
       "assertionId": "classical-destockal-e-hua-system:p2366-the-translation-to-be-come-changes-to-to-be",
@@ -45,11 +49,11 @@ const spec = {
       "canonicalPath": "sources.caxahua.formulaArtifactAuthority"
     }
   },
-  "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",
-  "executionValidatorName": "isClassicalNahuatlVncDerivationValidationFrame",
+  "executionFunctionName": "buildClassicalNahuatlDestockalEHuaSystemValidationFrame",
+  "executionValidatorName": "isClassicalNahuatlDestockalEHuaSystemValidationFrame",
   "executionArgsBySelection": {
     "claim-p2364": [],
-    "claim-p2365": [],
+    "claim-p2365": [{ "requestedRelation": "reconstructed-source-coalescence" }],
     "claim-p2366": [],
     "claim-p2367": [],
     "claim-p2368": [],

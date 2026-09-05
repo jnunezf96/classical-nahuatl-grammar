@@ -1915,9 +1915,11 @@ export function createClassicalNahuatlNncApplicationModule(
     );
     const selectedDoubledFirstPlural = doubledFirstPluralAvailable
       && ownDataValue(selections, "doubledFirstPlural", false) === true;
-    const specialHumanUseAvailable = subjectCoordinates.some(
-      (coordinate) => coordinate.specialHumanUseSelected === true,
-    );
+    const specialHumanUseAvailable =
+      subjectParticipantFrame.humanness !== "nonhuman"
+      && subjectCoordinates.some(
+        (coordinate) => coordinate.specialHumanUseSelected === true,
+      );
     const selectedSpecialHumanUse = specialHumanUseAvailable
       && ownDataValue(selections, "specialHumanUse", false) === true;
     const selectedCoordinateCandidates = subjectCoordinates.filter(
@@ -3571,7 +3573,8 @@ export function createClassicalNahuatlNncApplicationModule(
       && normalizeChoice(coordinate.adjunctorInMode) === adjunctorInMode
       && coordinate.doubledFirstPluralSelected === doubledFirstPlural
       && (
-        typeof requestedSpecialHumanUse === "undefined"
+        pronominalSubjectParticipantFrame.humanness === "nonhuman"
+        || typeof requestedSpecialHumanUse === "undefined"
         || coordinate.specialHumanUseSelected
           === (requestedSpecialHumanUse === true)
       )
@@ -3652,7 +3655,14 @@ export function createClassicalNahuatlNncApplicationModule(
       blockReason = "selected-number-form-not-licensed-for-pronominal-nnc-context";
     } else if (
       sourceFrame.familyId === "indefinite-something"
-      && subject !== "3common"
+      && requestedSpecialHumanUse === true
+      && pronominalSubjectParticipantFrame.humanness === "nonhuman"
+    ) {
+      blockReason =
+        "special-human-itlah-selection-is-limited-to-itlah-with-a-human-subject";
+    } else if (
+      sourceFrame.familyId === "indefinite-something"
+      && pronominalSubjectParticipantFrame.humanness !== "nonhuman"
       && requestedSpecialHumanUse !== true
     ) {
       blockReason =
@@ -3688,7 +3698,8 @@ export function createClassicalNahuatlNncApplicationModule(
       adjunctorInMode,
       doubledFirstPlural,
       specialHumanUse:
-        selectedCoordinate?.specialHumanUseSelected === true,
+        pronominalSubjectParticipantFrame.humanness !== "nonhuman"
+        && selectedCoordinate?.specialHumanUseSelected === true,
       sentenceType,
       polarity,
       semanticPrerequisites: Object.freeze([
@@ -3866,6 +3877,7 @@ export function createClassicalNahuatlNncApplicationModule(
       ...coreTypeOptions,
       subject: operationFrame.subject,
       humanness: operationFrame.referentialHumanness,
+      subjectReferentCategory: operationFrame.referentialHumanness,
       enteredStem: sourceFrame.stem,
       requireEnteredStem: true,
       pluralConnector: operationFrame.numberForm,

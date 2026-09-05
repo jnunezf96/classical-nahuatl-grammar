@@ -4,7 +4,7 @@
 grammar and conjugation application.
 
 Current release: **Grammar OS v1.2.5 — Construction Precision Update**
-(browser build `20260902-construction-precision-370`).
+(browser build `20260904-ehua-causative-alias-433`).
 
 See [Version History](CHANGELOG.md) for user-facing “What’s New” notes.
 

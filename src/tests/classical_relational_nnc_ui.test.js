@@ -10,7 +10,34 @@ function run(ctx = {}) {
     const shell = fs.readFileSync(path.join(root, "src", "ui", "shell", "classical_shell.mjs"), "utf8");
     const composer = fs.readFileSync(path.join(root, "src", "ui", "composer", "composer.mjs"), "utf8");
     const rendering = fs.readFileSync(path.join(root, "src", "ui", "rendering", "rendering.mjs"), "utf8");
+    const runtime = fs.readFileSync(path.join(root, "src", "runtime", "create_runtime.mjs"), "utf8");
+    const runtimeCapabilityContract = fs.readFileSync(
+        path.join(root, "src", "runtime", "runtime_capability_contract.mjs"),
+        "utf8"
+    );
     const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
+    const composerDependenciesStart = runtime.indexOf(
+        '"src/ui/composer/composer.mjs": Object.freeze({'
+    );
+    const composerDependenciesEnd = runtime.indexOf(
+        '"src/ui/rendering/rendering.mjs": Object.freeze({',
+        composerDependenciesStart
+    );
+    const composerDependencies = composerDependenciesStart >= 0
+        && composerDependenciesEnd > composerDependenciesStart
+        ? runtime.slice(composerDependenciesStart, composerDependenciesEnd)
+        : "";
+    const relationalResultContainerBranch =
+        rendering.includes("answer.className = fullParadigm")
+        && rendering.includes(
+            '? "classical-rule-surface__format-section classical-rule-surface__relational-nnc-paradigm"'
+        )
+        && rendering.includes(
+            ': "classical-rule-surface__single-nnc";'
+        )
+        && rendering.includes(
+            "answer.dataset.classicalNncSingleForm = String(!fullParadigm);"
+        );
     const basalControlsStart = shell.indexOf('id="classical-basal-unit-controls"');
     const basalControlsEnd = shell.indexOf("</div>", basalControlsStart);
     const basalControlsMarkup = basalControlsStart >= 0 && basalControlsEnd > basalControlsStart
@@ -43,7 +70,7 @@ function run(ctx = {}) {
             authority: Boolean(authorityMarkup)
                 && shell.includes('class="classical-whole-canvas-choice-grid classical-relational-nnc-authority"')
                 && authorityMarkup.includes('data-classical-relational-nnc-authority="typed-decisions"'),
-            result: rendering.includes('answer.className = "classical-rule-surface__single-nnc"')
+            result: relationalResultContainerBranch
                 && rendering.includes('answer.dataset.classicalRelationalNncResult = authorized ? "authorized" : "blocked"'),
             auditInventoryVisible: shell.includes("55 LCM axes")
                 || shell.includes("44 source claims")
@@ -259,6 +286,69 @@ function run(ctx = {}) {
             && !shell.includes('<option value="relational:tlan-bottom"')
     );
 
+    s.eq(
+        "The composer receives the exact relational Source-admission owner pair privately",
+        {
+            provider: composerDependencies.includes(
+                '"src/core/classical/nnc_lessons45_47_closure.mjs": Object.freeze(['
+            ),
+            issuer: composerDependencies.includes(
+                '"issueClassicalNahuatlRelationalSourceAdmissionFrame"'
+            ),
+            validator: composerDependencies.includes(
+                '"isClassicalNahuatlRelationalSourceAdmissionFrame"'
+            ),
+            notPublic:
+                !runtimeCapabilityContract.includes(
+                    "issueClassicalNahuatlRelationalSourceAdmissionFrame"
+                )
+                && !runtimeCapabilityContract.includes(
+                    "isClassicalNahuatlRelationalSourceAdmissionFrame"
+                ),
+        },
+        {
+            provider: true,
+            issuer: true,
+            validator: true,
+            notPublic: true,
+        }
+    );
+
+    s.ok(
+        "The active relational Source owner hides the unrelated ordinary Nounstem-class choice before every Result path",
+        rendering.includes(
+            "function syncClassicalRelationalNncSourceOwnerPrecedence()"
+        )
+            && rendering.includes(
+                "targetObject.isClassicalRelationalNncUiModeEnabled() !== true"
+            )
+            && rendering.includes(
+                '"relational-source-analysis-owned-by-relational-source-owner"'
+            )
+            && rendering.includes(
+                '"classical-rule-logic-nnc-tl2a-realization"'
+            )
+            && rendering.includes(
+                'decisionOwner: "classical-relational-nnc-owner"'
+            )
+            && rendering.includes("renderInAuthority: false")
+            && rendering.includes(
+                "syncClassicalRelationalNncSourceOwnerPrecedence();\n      let request"
+            )
+            && rendering.includes(
+                'wrapper.classList.remove("is-conflicting");'
+            )
+            && rendering.includes(
+                'control.removeAttribute("aria-invalid");'
+            )
+            && rendering.includes(
+                "if (authorized) {\n        delete block.dataset.classicalBlockReason;"
+            )
+            && css.includes(
+                '.classical-nnc-source-guide__field[data-classical-nnc-authority-control="ordinary"][hidden]'
+            )
+    );
+
     s.ok(
         "Relational embed editing uses the shared Source pending and atomic Enter contract",
         composer.includes("event?.target === embedInput")
@@ -391,7 +481,7 @@ function run(ctx = {}) {
             && rendering.includes("const displaySurface = authorized")
             && rendering.includes("surface.textContent = displaySurface;")
             && rendering.includes("formula.textContent = canonical.formula;")
-            && rendering.includes('answer.className = "classical-rule-surface__single-nnc";')
+            && relationalResultContainerBranch
             && rendering.includes('linear.className = "classical-rule-surface__format-section classical-rule-surface__linear";')
             && rendering.includes('diagram.className = "classical-rule-surface__format-section classical-rule-surface__diagram";')
             && rendering.includes("canonical.diagrammaticProjection || null")

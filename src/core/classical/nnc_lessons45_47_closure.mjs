@@ -1316,7 +1316,57 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
   const formula = state === STATE.POSSESSIVE
     ? `#${normalSubject ? subjectClassical || "Ø" : "Ø"}-Ø+${possessorClassical || "Ø"}-Ø(${formulaPredicate})${nounConnector || "Ø"}-${pluralConnector || "Ø"}#`
     : `#${normalSubject ? subjectClassical || "Ø" : "Ø"}-Ø(${formulaPredicate})${nounConnector || "Ø"}-${pluralConnector || "Ø"}#`;
-  const surface = `${subjectSurface}${possessorSurface}${predicateSurface}${nounConnectorSurface}${pluralConnectorSurface}`;
+  const fallbackSurface = `${subjectSurface}${possessorSurface}${predicateSurface}${nounConnectorSurface}${pluralConnectorSurface}`;
+  const lesson2Parts = [
+    normalSubject && subjectClassical
+      ? { role: "subject-person", value: subjectClassical }
+      : null,
+    state === STATE.POSSESSIVE && possessorClassical
+      ? { role: "possessor-person", value: possessorClassical }
+      : null,
+    ...predicateRecord.predicateSegments
+      .map((segment, index) => segment.writtenCarrier
+        ? {
+          role: index
+            ? `relational-predicate-${index + 1}`
+            : "relational-predicate",
+          value: segment.writtenCarrier,
+        }
+        : null)
+      .filter(Boolean),
+    nounConnector
+      ? { role: "noun-connector", value: nounConnector }
+      : null,
+    pluralConnector
+      ? { role: "number-connector", value: pluralConnector }
+      : null,
+  ].filter(Boolean);
+  const lesson2WritingSource =
+    typeof targetObject?.issueClassicalNahuatlLesson2WritingSource
+      === "function"
+      ? targetObject.issueClassicalNahuatlLesson2WritingSource({
+        parts: lesson2Parts,
+        boundaryKind: "typed-relational-nnc-slots",
+      })
+      : null;
+  const lesson2WrittenResult = lesson2WritingSource
+    && typeof targetObject?.writeClassicalNahuatlLesson2Result === "function"
+    ? targetObject.writeClassicalNahuatlLesson2Result(
+      lesson2WritingSource,
+    )
+    : null;
+  const lesson2WritingAuthorized = Boolean(
+    lesson2WrittenResult?.authorizationStatus === "authorized"
+    && lesson2WrittenResult.writtenByLesson2 === true
+    && typeof targetObject?.isClassicalNahuatlLesson2WrittenResult
+      === "function"
+    && targetObject.isClassicalNahuatlLesson2WrittenResult(
+      lesson2WrittenResult,
+    )
+  );
+  const surface = lesson2WritingAuthorized
+    ? lesson2WrittenResult.surface
+    : fallbackSurface;
   const formulaSlots = freeze({
     subject: subjectClassical,
     possessor: possessorClassical,
@@ -1348,6 +1398,9 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
     numberConnector: pluralConnector,
     formula,
     surface,
+    lesson2WrittenResult: lesson2WritingAuthorized
+      ? lesson2WrittenResult
+      : null,
     formulaSlots,
     writtenSlots,
     formulaProjection: freeze({
@@ -1356,6 +1409,7 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
       predicateProjection: predicateRecord.formulaProjection,
       slots: formulaSlots,
       result: formula,
+      formulaRealization: formula,
       derivedFromWrittenProjection: false,
     }),
     writtenProjection: freeze({
@@ -1364,6 +1418,7 @@ function buildFormulaAndSurface(targetObject, sourceFrame, predicateRecord) {
       predicateProjection: predicateRecord.writtenProjection,
       slots: writtenSlots,
       result: surface,
+      surfaceRealization: surface,
       derivedFromFormulaProjection: false,
     }),
     formulaDerivedFromWritten: false,
@@ -2379,6 +2434,8 @@ export function createClassicalNahuatlNncClosureApi(targetObject = globalThis) {
           sentenceType: "assertion",
           polarity: "positive",
           predicateKind: "relational",
+          canonicalNuclearWrittenResult:
+            formulaAndSurface.lesson2WrittenResult,
         },
       );
     if (!targetObject.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(

@@ -238,7 +238,7 @@ export const CLASSICAL_NAHUATL_LESSON22_TLA_IMPERSONAL_SOURCES =
     "huē-i-ya": Object.freeze({ targetStem: "tla-huē-i-ya", semanticClass: "inchoative", lineStart: 7406, lineEnd: 7406 }),
     "it-hui": Object.freeze({ targetStem: "tla-t-hui", semanticClass: "reconstructed-inchoative", lineStart: 7407, lineEnd: 7410 }),
     "petl-ā-ni": Object.freeze({ targetStem: "tla-petl-ā-ni", semanticClass: "meteorological", lineStart: 7413, lineEnd: 7414 }),
-    "tlatz-i-ni": Object.freeze({ targetStem: "tla-tlatz-ī-ni", semanticClass: "meteorological", lineStart: 7415, lineEnd: 7416 }),
+    "tlatz-ī-ni": Object.freeze({ targetStem: "tla-tlatz-ī-ni", semanticClass: "meteorological", lineStart: 7415, lineEnd: 7416 }),
     "poy-ā-hua": Object.freeze({ targetStem: "tla-poy-ā-hua", semanticClass: "meteorological", lineStart: 7417, lineEnd: 7418 }),
     "nēci": Object.freeze({ targetStem: "tla-nēci", semanticClass: "meteorological", lineStart: 7419, lineEnd: 7420 }),
     "ce-ce-ya": Object.freeze({ targetStem: "tla-ce-ce-ya", semanticClass: "meteorological", lineStart: 7421, lineEnd: 7421 }),

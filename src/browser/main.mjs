@@ -1,4 +1,4 @@
-import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260902-construction-precision-370";
+import { bootstrapBrowserApp } from "../bootstrap/bootstrap.mjs?v=20260904-ehua-causative-alias-433";
 
 const bootstrapPromise = bootstrapBrowserApp();
 

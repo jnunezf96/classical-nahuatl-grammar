@@ -2030,6 +2030,19 @@ body.is-language-classical .calc-operator--source-authority-mirror {
   overflow-wrap: anywhere;
 }
 
+.classical-rule-surface__single-vnc-meaning {
+  display: block;
+  min-width: 0;
+  color: #31564d;
+  font-size: calc(0.86rem + var(--font-size-adjust));
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.classical-rule-surface__single-vnc-meaning--additional {
+  color: #486860;
+}
+
 .classical-rule-surface__single-nnc > .classical-rule-surface__format-section,
 .classical-rule-surface__single-vnc > .classical-rule-surface__format-section,
 .classical-rule-surface__single-result > .classical-rule-surface__format-section {
@@ -12931,6 +12944,10 @@ body.is-language-classical .classical-nnc-source-guide__field {
   min-width: 0;
 }
 
+body.is-language-classical #classical-source-panel .classical-nnc-source-guide__field[data-classical-nnc-authority-control="ordinary"][hidden] {
+  display: none !important;
+}
+
 body.is-language-classical .classical-nnc-source-guide__checkbox {
   grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
@@ -14168,6 +14185,14 @@ body.is-language-classical #classical-source-panel .classical-source-readout[dat
 body.is-language-classical #classical-source-panel .classical-source-readout[data-classical-source-unit="vnc"] [data-classical-source-readout-item="rank"],
 body.is-language-classical #classical-source-panel .classical-source-readout[data-classical-source-unit="vnc"] [data-classical-source-readout-item="morphs"] {
   display: none;
+}
+
+body.is-language-classical #classical-source-panel .classical-source-reconstruction-note {
+  margin: 0;
+  color: var(--text-secondary, inherit);
+  font-size: var(--sgr-type-support, 0.78rem);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 body.is-language-classical #classical-source-panel .classical-source-constitution {

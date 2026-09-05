@@ -4,6 +4,10 @@
 // dispositions, inventories, counts, and audit receipts live exclusively in
 // the test/documentation layer.
 
+import {
+  buildClassicalNahuatlTypedRootStockVowelCoalescenceRelation,
+} from "./root_stock_vowel_coalescence.mjs";
+
 export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   const VERSION = 1;
   const issuedOperationFrames = new WeakSet();
@@ -36,6 +40,104 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
   };
   const text = value => String(value ?? "").trim();
   const key = value => text(value).toLowerCase();
+  const PO_NONEXTANT_DESTOCKAL_SOURCE = freeze({
+    lexemeId: "cn-l24-po-o-ni-nonextant-source",
+    root: "po",
+    stockFormative: "ō",
+    stemFormative: "ni",
+    independentUseStatus: "nonextant",
+    historicalStatus: "reconstructed-source",
+  });
+  const TO_NONEXTANT_DESTOCKAL_SOURCE = freeze({
+    lexemeId: "cn-l24-to-o-ni-nonextant-source",
+    root: "to",
+    stockFormative: "ō",
+    stemFormative: "ni",
+    independentUseStatus: "nonextant",
+    historicalStatus: "reconstructed-source",
+  });
+  const NONEXTANT_DESTOCKAL_SOURCE_LIFECYCLE_SYSTEM = freeze({
+    kind: "classical-nahuatl-nonextant-destockal-source-system",
+    sourceType: {
+      rank: "intransitive-destockal-verbstem",
+      stemFormative: "ni",
+    },
+    sources: [
+      PO_NONEXTANT_DESTOCKAL_SOURCE,
+      TO_NONEXTANT_DESTOCKAL_SOURCE,
+    ],
+  });
+  const NONEXTANT_DESTOCKAL_FREQUENTATIVE_LEXICAL_LICENSES = freeze({
+    "po-pō-ca": {
+      lexicalIdentityId: "cn-l27-po-po-ca-surviving-frequentative",
+      historicalSource: PO_NONEXTANT_DESTOCKAL_SOURCE,
+    },
+    "to-tō-ca": {
+      lexicalIdentityId: "cn-l27-to-to-ca-surviving-frequentative",
+      historicalSource: TO_NONEXTANT_DESTOCKAL_SOURCE,
+    },
+  });
+  const FUSED_STOCK_FREQUENTATIVE_RULE_CONTRACT = freeze({
+    kind: "classical-nahuatl-fused-stock-frequentative-rule-contract",
+    version: VERSION,
+    authorizationStatus: "authorized",
+    formationScope: {
+      formationKind: "irregular-fused-source-frequentative",
+      sourceAnalysisKind: "destockal-root-stock-vowel-coalescence",
+      outputFamilies: [
+        { kind: "intransitive-frequentative", formative: "ca" },
+        { kind: "causative-frequentative", formative: "tz-a" },
+      ],
+    },
+    longVowelRetention: {
+      inputUnit: "fused-root-stock-vowel",
+      inputQuantity: "long",
+      normalOutputQuantity: "long",
+      outputFamilies: ["intransitive-ca", "causative-tz-a"],
+      exceptionAuthority: "exact-signed-lexical-analysis",
+    },
+    sourceAdmissionAuthority: false,
+    callerSuppliedGrammarAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    canvasExampleAuthority: false,
+    contextualFactIsUserChoice: false,
+  });
+  const LEXICAL_FREQUENTATIVE_CAUSATIVE_MEANING_LICENSES = freeze({
+    "popōtza": {
+      lexicalIdentityId:
+        "cn-l27-po-po-tza-fused-frequentative-causative",
+      availableReadings: [{
+        readingId: "cn-l27-po-po-tza-cause-emit-smoke",
+        meaningId: "cause-something-to-emit-smoke",
+        meaning: "cause-something-to-emit-smoke",
+        relation: "lexical-frequentative-causative-reading",
+        documentedCitationRoles: ["tla"],
+      }],
+    },
+    "totōtza": {
+      lexicalIdentityId:
+        "cn-l27-to-to-tza-fused-frequentative-causative",
+      availableReadings: [{
+        readingId: "cn-l27-to-to-tza-spur-on",
+        meaningId: "spur-someone-or-something-on",
+        meaning: "spur-someone-or-something-on",
+        relation: "lexical-frequentative-causative-reading",
+        documentedCitationRoles: ["tē", "tla"],
+      }],
+    },
+    "pipītza": {
+      lexicalIdentityId:
+        "cn-l27-pi-pi-tza-fused-frequentative-causative",
+      availableReadings: [{
+        readingId: "cn-l27-pi-pi-tza-cause-dribble",
+        meaningId: "cause-something-to-dribble",
+        meaning: "cause-something-to-dribble",
+        relation: "lexical-frequentative-causative-reading",
+        documentedCitationRoles: ["tla"],
+      }],
+    },
+  });
   const HONORIFIC_PRODUCTIVE_FORMATIONS = Object.freeze([
     "causative",
     "applicative",
@@ -701,8 +803,14 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     if (!match) return null;
     const [, beforeStockVowel, stockVowel, boundary, sourceSuffix] = match;
     const reducedStockVowel = shortVowel(stockVowel);
+    const root = beforeStockVowel.replace(/-+$/gu, "");
+    const underlyingStemFormative = /^(?:hu-a|hua)$/u.test(sourceSuffix)
+      ? "hui"
+      : "ni";
     return freeze({
+      root,
       sourceSuffix,
+      underlyingStemFormative,
       stockVowel,
       reducedStockVowel,
       retainedCausativeVowel: "a",
@@ -721,6 +829,546 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
       structuralForce: causativeMatch ? "causative-or-applicative" : "intransitive",
       tzAUnit: causativeMatch?.[0] || "",
       fusedLongVowel: stem.match(/[āēīō]/u)?.[0] || "",
+    });
+  }
+  function getTypedPredicateMorpheme(morphIdentity = "") {
+    return {
+      slotRole: "predicate",
+      morphIdentity,
+    };
+  }
+  function buildTypedRootStockCoalescence(
+    root = "",
+    stockFormative = "",
+    stemFormative = "",
+  ) {
+    return buildClassicalNahuatlTypedRootStockVowelCoalescenceRelation(
+      getTypedPredicateMorpheme(root),
+      getTypedPredicateMorpheme(stockFormative),
+      getTypedPredicateMorpheme(stemFormative),
+    );
+  }
+  function resolveFusedStockSourceAnalysis(
+    sourceAnalysisFrame = null,
+    parsedSource = null,
+  ) {
+    if (
+      !sourceAnalysisFrame
+      || typeof targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame
+        !== "function"
+      || !targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame(
+        sourceAnalysisFrame,
+      )
+      || !parsedSource
+    ) {
+      return null;
+    }
+    const candidates = (sourceAnalysisFrame.analyses || [])
+      .filter(analysis => (
+        analysis?.destockalStructureFrame?.typeId
+          === "long-vowel-ni-or-hui"
+        && analysis.stockFormative === parsedSource.stockVowel
+        && analysis.stemFormative === parsedSource.sourceSuffix
+      ))
+      .map(analysis => ({
+        analysis,
+        sourceCoalescenceFrame: buildTypedRootStockCoalescence(
+          analysis.root,
+          analysis.stockFormative,
+          analysis.stemFormative,
+        ),
+      }))
+      .filter(candidate => candidate.sourceCoalescenceFrame)
+      .sort((left, right) => (
+        Number(
+          right.analysis.lexicalStatus
+            === "lexically-licensed-source-analysis",
+        )
+        - Number(
+          left.analysis.lexicalStatus
+            === "lexically-licensed-source-analysis",
+        )
+      ));
+    return candidates[0] || null;
+  }
+  function doesCausativeMorphemicProfileMatch(
+    sourceAgreementFrame = null,
+    parsedSource = null,
+  ) {
+    if (
+      !isClassicalNahuatlLateSourceAgreementFrame(sourceAgreementFrame)
+      || sourceAgreementFrame.authorizationStatus !== "authorized"
+      || !parsedSource?.root
+      || !parsedSource.stockVowel
+      || !parsedSource.sourceSuffix
+    ) {
+      return false;
+    }
+    const signedBoundaryFreeSource = text(
+      sourceAgreementFrame.morphemicSourceProfile?.sourceStem,
+    ).normalize("NFC").replace(/-/gu, "");
+    const reconstructedBoundaryFreeSource = [
+      parsedSource.root,
+      parsedSource.stockVowel,
+      parsedSource.sourceSuffix,
+    ].join("").normalize("NFC").replace(/-/gu, "");
+    return Boolean(
+      signedBoundaryFreeSource
+      && signedBoundaryFreeSource === reconstructedBoundaryFreeSource
+    );
+  }
+  function doesRecoveredCausativeConstructionMatch(
+    parsedSource = null,
+    sourceAnalysis = null,
+    option = null,
+  ) {
+    const suffix = text(parsedSource?.sourceSuffix).replace(/-/gu, "");
+    const operation = key(option?.targetConstruction?.operation);
+    if (
+      !parsedSource
+      || !sourceAnalysis
+      || option?.derivationType !== "causative"
+      || option.sourceAnalysisId !== sourceAnalysis.analysisId
+      || sourceAnalysis.stemFormative
+        !== parsedSource.underlyingStemFormative
+    ) {
+      return false;
+    }
+    if (suffix === "na") {
+      return sourceAnalysis.stemFormative === "ni"
+        && ["replace-final", "recover-fused-stock-and-replace"]
+          .includes(operation);
+    }
+    if (suffix === "niā") {
+      return sourceAnalysis.stemFormative === "ni"
+        && ["append", "recover-fused-stock-and-append"]
+          .includes(operation)
+        && option.targetConstruction?.add === "ā";
+    }
+    if (suffix === "hua") {
+      return sourceAnalysis.stemFormative === "hui"
+        && ["replace-final", "replace-morpheme"]
+          .includes(operation);
+    }
+    return false;
+  }
+  function resolveContractedCausativeSourceAncestry(
+    sourceAgreementFrame = null,
+    parsedSource = null,
+  ) {
+    if (
+      !isClassicalNahuatlLateSourceAgreementFrame(sourceAgreementFrame)
+      || sourceAgreementFrame.authorizationStatus !== "authorized"
+      || !parsedSource?.root
+      || !/[āēīō]/u.test(parsedSource.stockVowel)
+      || new RegExp(`[${vowels}]$`, "u").test(parsedSource.root)
+      || !["ni", "hui"].includes(parsedSource.underlyingStemFormative)
+      || typeof targetObject.buildClassicalNahuatlVerbstemClassFrame
+        !== "function"
+      || typeof targetObject.isClassicalNahuatlVerbstemClassFrame
+        !== "function"
+      || typeof targetObject.getClassicalNahuatlVncDerivationOptionInventory
+        !== "function"
+      || typeof targetObject.isClassicalNahuatlVncDerivationOptionInventory
+        !== "function"
+      || typeof targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame
+        !== "function"
+    ) {
+      return null;
+    }
+    const recoveredSourceStem = `${parsedSource.root}${
+      parsedSource.stockVowel
+    }-${parsedSource.underlyingStemFormative}`;
+    const sourceMachineryFrame =
+      targetObject.buildClassicalNahuatlVerbstemClassFrame(
+        recoveredSourceStem,
+        {
+          subject: "3sg",
+          mood: "indicative",
+          tense: "present",
+          verbClass: "B",
+          stemClass: "B",
+          valence: "intransitive",
+          sourceValence: "intransitive",
+          transitivity: "intransitive",
+          objectKind: "none",
+        },
+      );
+    if (!targetObject.isClassicalNahuatlVerbstemClassFrame(
+      sourceMachineryFrame,
+    )) {
+      return null;
+    }
+    const derivationOptionInventory =
+      targetObject.getClassicalNahuatlVncDerivationOptionInventory(
+        sourceMachineryFrame,
+        {
+          derivationType: "causative",
+          verbClass: "B",
+          sourceValence: "intransitive",
+        },
+      );
+    if (
+      !targetObject.isClassicalNahuatlVncDerivationOptionInventory(
+        derivationOptionInventory,
+      )
+      || derivationOptionInventory.authorizationStatus !== "authorized"
+      || derivationOptionInventory.sourceMachineryFrame
+        !== sourceMachineryFrame
+    ) {
+      return null;
+    }
+    const actualCausativeSourceStem =
+      sourceAgreementFrame.morphemicSourceProfile?.sourceStem || "";
+    const actualCausativeSourceClass =
+      sourceAgreementFrame.morphemicSourceProfile?.sourceClass || "";
+    const actualTargetIdentity = normalizeLexicalFrequentativeMeaningIdentity(
+      actualCausativeSourceStem,
+    );
+    const selectedOption = (derivationOptionInventory.options || [])
+      .find(option => (
+        option?.derivationType === "causative"
+        && option.targetClass === actualCausativeSourceClass
+        && normalizeLexicalFrequentativeMeaningIdentity(option.targetStem)
+          === actualTargetIdentity
+      )) || null;
+    const sourceAnalysisFrame =
+      derivationOptionInventory.sourceAnalysisFrame || null;
+    const optionSourceAnalysisFrame =
+      selectedOption?.sourceAnalysisFrame || null;
+    if (
+      !selectedOption
+      || !(derivationOptionInventory.options || []).includes(selectedOption)
+      || !targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame(
+        sourceAnalysisFrame,
+      )
+      || !targetObject.isClassicalNahuatlVncDerivationSourceAnalysisFrame(
+        optionSourceAnalysisFrame,
+      )
+      || sourceAnalysisFrame.sourceMachineryFrame !== sourceMachineryFrame
+      || optionSourceAnalysisFrame.sourceMachineryFrame
+        !== sourceMachineryFrame
+      || optionSourceAnalysisFrame.canonicalSignature
+        !== sourceAnalysisFrame.canonicalSignature
+      || sourceAnalysisFrame.sourceClass !== "B"
+      || sourceAnalysisFrame.sourceValence !== "intransitive"
+    ) {
+      return null;
+    }
+    const sourceAnalysis = (sourceAnalysisFrame.analyses || [])
+      .find(analysis => (
+        analysis.analysisId === selectedOption.sourceAnalysisId
+        && analysis.lexicalStatus === "lexically-licensed-source-analysis"
+        && analysis.destockalStructureFrame?.typeId
+          === "long-vowel-ni-or-hui"
+        && analysis.stockFormative === parsedSource.stockVowel
+        && analysis.stemFormative
+          === parsedSource.underlyingStemFormative
+      )) || null;
+    if (!doesRecoveredCausativeConstructionMatch(
+      parsedSource,
+      sourceAnalysis,
+      selectedOption,
+    )) {
+      return null;
+    }
+    const sourceCoalescenceFrame = buildTypedRootStockCoalescence(
+      sourceAnalysis.root,
+      sourceAnalysis.stockFormative,
+      sourceAnalysis.stemFormative,
+    );
+    if (
+      sourceCoalescenceFrame?.authorizationStatus !== "authorized"
+      || normalizeLexicalFrequentativeMeaningIdentity(recoveredSourceStem)
+        !== normalizeLexicalFrequentativeMeaningIdentity([
+          sourceCoalescenceFrame.resultStock,
+          sourceAnalysis.stemFormative,
+        ].join("-"))
+    ) {
+      return null;
+    }
+    return freeze({
+      kind:
+        "classical-nahuatl-contracted-causative-source-ancestry-frame",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      sourceAgreementFrame,
+      recoveredSourceStem,
+      sourceMachineryFrame,
+      sourceAnalysisFrame,
+      sourceAnalysisId: sourceAnalysis.analysisId,
+      sourceAnalysis,
+      derivationOptionInventory,
+      selectedOption,
+      sourceCoalescenceFrame,
+      actualCausativeSourceStem,
+      actualCausativeSourceClass,
+      forwardTargetIdentityMatches: true,
+      interpretation: "available-source-analysis",
+      sourceAdmissionAuthority: false,
+      callerSuppliedGrammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+      canvasExampleAuthority: false,
+      contextualFactIsUserChoice: false,
+    });
+  }
+  function buildFusedStockFrequentativeFrame({
+    sourceAgreementFrame = null,
+    sourceAnalysisFrame = null,
+    sourceAnalysis = null,
+    sourceCoalescenceFrame = null,
+    causativeSourceAncestryFrame = null,
+    formationFamily = "",
+    replacedSuffix = "",
+    targetSuffix = "",
+    reduplicativePrefix = "",
+    targetClass = "",
+  } = {}) {
+    if (
+      !isClassicalNahuatlLateSourceAgreementFrame(sourceAgreementFrame)
+      || sourceAgreementFrame.authorizationStatus !== "authorized"
+      || sourceCoalescenceFrame?.authorizationStatus !== "authorized"
+      || sourceCoalescenceFrame.ruleContract?.ruleId
+        !== "cn-l24-identical-root-stock-vowel-coalescence"
+      || !["intransitive-ca", "causative-tz-a"].includes(formationFamily)
+      || !replacedSuffix
+      || !targetSuffix
+      || !reduplicativePrefix
+      || !targetClass
+    ) {
+      return null;
+    }
+    const targetStem = [
+      reduplicativePrefix,
+      sourceCoalescenceFrame.resultStock,
+      targetSuffix,
+    ].join("-");
+    return freeze({
+      kind: "classical-nahuatl-fused-stock-frequentative-frame",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      ruleContract: FUSED_STOCK_FREQUENTATIVE_RULE_CONTRACT,
+      sourceAgreementFrame,
+      sourceAnalysisFrame,
+      sourceAnalysisId: sourceAnalysis?.analysisId || "",
+      sourceCoalescenceFrame,
+      causativeSourceAncestryFrame,
+      formation: {
+        family: formationFamily,
+        replacedSuffix,
+        targetSuffix,
+        retainedStock: sourceCoalescenceFrame.resultStock,
+        stockQuantity: "long",
+        reduplicativePrefix,
+        targetStem,
+        targetClass,
+      },
+      sourceAdmissionAuthority: false,
+      callerSuppliedGrammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+      canvasExampleAuthority: false,
+      contextualFactIsUserChoice: false,
+    });
+  }
+  function normalizeLexicalFrequentativeMeaningIdentity(stem = "") {
+    return text(stem)
+      .normalize("NFC")
+      .toLowerCase()
+      .replace(/[\p{Dash_Punctuation}\s]+/gu, "");
+  }
+  function buildLexicalFrequentativeMeaningFrame({
+    variant = "",
+    sourceStem = "",
+    sourceApplicationFrame = null,
+    targetApplicationFrame = null,
+    targetStem = "",
+    targetTypedVncSlotFrame = null,
+    operationFacts = null,
+  } = {}) {
+    const targetIdentity = normalizeLexicalFrequentativeMeaningIdentity(
+      targetStem,
+    );
+    const lexicalLicense = Object.hasOwn(
+      LEXICAL_FREQUENTATIVE_CAUSATIVE_MEANING_LICENSES,
+      targetIdentity,
+    )
+      ? LEXICAL_FREQUENTATIVE_CAUSATIVE_MEANING_LICENSES[targetIdentity]
+      : null;
+    const fusedStockFrequentativeFrame =
+      operationFacts?.fusedStockFrequentativeFrame || null;
+    const completedLexicalized = variant === "destockal-lexicalized"
+      && operationFacts?.lexicalizedDestockal === true;
+    const generatedFromFusedStock = variant === "destockal-causative"
+      && fusedStockFrequentativeFrame?.authorizationStatus === "authorized"
+      && fusedStockFrequentativeFrame.formation?.targetStem === targetStem;
+    const sourceApplicationCanonical = Boolean(
+      typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
+      && targetObject.isClassicalNahuatlVncApplicationFrame(
+        sourceApplicationFrame,
+      )
+      && sourceApplicationFrame.authorizationStatus === "authorized"
+      && sourceApplicationFrame.normalizedRequest?.sourceStem === sourceStem
+    );
+    const targetApplicationCanonical = Boolean(
+      typeof targetObject.isClassicalNahuatlVncApplicationFrame === "function"
+      && targetObject.isClassicalNahuatlVncApplicationFrame(
+        targetApplicationFrame,
+      )
+      && targetApplicationFrame.authorizationStatus === "authorized"
+      && normalizeLexicalFrequentativeMeaningIdentity(
+        targetApplicationFrame.normalizedRequest?.sourceStem,
+      ) === targetIdentity
+    );
+    const conditionedTargetTypedVncSlotFrame = targetApplicationCanonical
+      ? getBaseTypedFrame(targetApplicationFrame)
+      : null;
+    const conditionedPredicateSlot =
+      conditionedTargetTypedVncSlotFrame?.slots?.predicate || null;
+    const targetSourceAnalysisFrame = targetApplicationCanonical
+      ? targetApplicationFrame.resultFrame?.sourceAnalysisFrame || null
+      : null;
+    const predicateSlot = targetTypedVncSlotFrame?.slots?.predicate || null;
+    const subjectSlot = targetTypedVncSlotFrame?.slots?.subject || null;
+    const objectSlots = (Array.isArray(
+      targetTypedVncSlotFrame?.slots?.prePredicate,
+    )
+      ? targetTypedVncSlotFrame.slots.prePredicate
+      : []).filter(slot => (
+        slot?.kind === "monadic-valence"
+        || slot?.kind === "dyadic-valence"
+      ));
+    const objectRequests = sourceApplicationCanonical
+      && Array.isArray(
+        sourceApplicationFrame.normalizedRequest?.sourceObjectRequests,
+      )
+      ? sourceApplicationFrame.normalizedRequest.sourceObjectRequests
+      : [];
+    const objectBindings = objectSlots.map((slot, index) => ({
+      slot,
+      objectRequest: objectRequests[index] || null,
+    }));
+    if (
+      !lexicalLicense
+      || (!completedLexicalized && !generatedFromFusedStock)
+      || !sourceApplicationCanonical
+      || !targetApplicationCanonical
+      || !targetSourceAnalysisFrame
+      || !predicateSlot?.stem
+      || predicateSlot.stem !== conditionedPredicateSlot?.stem
+      || !subjectSlot
+      || !objectSlots.length
+      || objectRequests.length !== objectSlots.length
+      || objectBindings.some(binding => !binding.objectRequest)
+    ) {
+      return null;
+    }
+    return freeze({
+      kind: "classical-nahuatl-lexical-frequentative-meaning-frame",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      lexicalIdentityFrame: {
+        lexicalIdentityId: lexicalLicense.lexicalIdentityId,
+        targetIdentity,
+        targetStem,
+        boundarySensitivity: "editorial-hyphens-ignored",
+        vowelQuantitySensitivity: "phonemic-and-preserved",
+      },
+      availableReadings: lexicalLicense.availableReadings,
+      meaningAssertionStatus: "available-not-asserted",
+      lexicalIdentityMatchDoesNotForceReading: true,
+      typedTargetBinding: {
+        sourceApplicationFrame,
+        targetApplicationFrame,
+        targetSourceAnalysisFrame,
+        conditionedTargetTypedVncSlotFrame,
+        conditionedPredicateSlot,
+        targetTypedVncSlotFrame,
+        predicateSlot,
+        lexicalTargetStem: targetStem,
+        conditionedPredicateStem: predicateSlot.stem,
+        subjectSlot,
+        objectSlots,
+        objectRequests,
+        objectBindings,
+        objectSlotCount: objectSlots.length,
+        objectRequestCount: objectRequests.length,
+        subjectSemanticRole: "causer",
+        objectSemanticRole: "affected-participant",
+        participantKindsRestrictedByLexicalReading: false,
+        sourceApplicationIdentityContinuous: true,
+        targetApplicationIdentityContinuous: true,
+        conditionedPredicateContinuous: true,
+      },
+      routeEvidence: {
+        variant,
+        completedLexicalized,
+        generatedFromFusedStock,
+        fusedStockFrequentativeFrame: generatedFromFusedStock
+          ? fusedStockFrequentativeFrame
+          : null,
+      },
+      citationRolesRestrictActualParticipants: false,
+      sourceAdmissionAuthority: false,
+      shapeAdmissionAuthority: false,
+      callerSuppliedGrammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+      canvasExampleAuthority: false,
+      contextualFactIsUserChoice: false,
+    });
+  }
+  function buildNonextantDestockalSourceLifecycleFrame(sourceStem = "") {
+    const lexicalIdentity = text(sourceStem).normalize("NFC");
+    const lexicalLicense = Object.hasOwn(
+      NONEXTANT_DESTOCKAL_FREQUENTATIVE_LEXICAL_LICENSES,
+      lexicalIdentity,
+    )
+      ? NONEXTANT_DESTOCKAL_FREQUENTATIVE_LEXICAL_LICENSES[lexicalIdentity]
+      : null;
+    if (!lexicalLicense) return null;
+    const historicalSource = lexicalLicense.historicalSource;
+    const typedPredicateMorpheme = morphIdentity => ({
+      slotRole: "predicate",
+      morphIdentity,
+    });
+    const sourceCoalescenceFrame =
+      buildClassicalNahuatlTypedRootStockVowelCoalescenceRelation(
+        typedPredicateMorpheme(historicalSource.root),
+        typedPredicateMorpheme(historicalSource.stockFormative),
+        typedPredicateMorpheme(historicalSource.stemFormative),
+      );
+    if (!sourceCoalescenceFrame) return null;
+    const reduplicationParts = getReduplicationParts(historicalSource.root);
+    const reduplicativePrefix = `${reduplicationParts.consonant}${shortVowel(
+      reduplicationParts.vowel,
+    )}`;
+    const targetStemFormative = "ca";
+    const targetStem = `${reduplicativePrefix}-${
+      sourceCoalescenceFrame.resultStock
+    }-${targetStemFormative}`;
+    return freeze({
+      kind: "classical-nahuatl-nonextant-destockal-source-lifecycle-frame",
+      version: VERSION,
+      authorizationStatus: "authorized",
+      lexicalIdentityId: lexicalLicense.lexicalIdentityId,
+      sourceLifecycleSystem: NONEXTANT_DESTOCKAL_SOURCE_LIFECYCLE_SYSTEM,
+      historicalSource,
+      sourceCoalescenceFrame,
+      derivation: {
+        operation: "destockal-intransitive-frequentative",
+        reduplicativePrefix,
+        replacedStemFormative: historicalSource.stemFormative,
+        targetStemFormative,
+        targetClass: "A",
+        targetStem,
+        stockVowelPreserved: true,
+      },
+      ownerConstructed: true,
+      sourceAdmissionAuthority: false,
+      canvasExampleAuthority: false,
+      callerSuppliedGrammarAuthority: false,
     });
   }
   function deriveUncertainCaStem(sourceRoot = "", role = "intransitive") {
@@ -1582,17 +2230,26 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             "frequentative-destockal"
           );
         }
+        const nonextantSourceLifecycleFrame =
+          buildNonextantDestockalSourceLifecycleFrame(
+            lexicalized.targetStem,
+          );
         targetStem = baseIsNonactive
           ? frequentativeSourceStem
-          : lexicalized.targetStem;
-        targetClass = lexicalized.targetClass;
+          : nonextantSourceLifecycleFrame?.derivation?.targetStem
+            || lexicalized.targetStem;
+        targetClass = nonextantSourceLifecycleFrame?.derivation?.targetClass
+          || lexicalized.targetClass;
         targetValence = lexicalized.structuralForce === "intransitive"
           ? "intransitive"
           : text(request.sourceValence || request.valence || "specific-projective");
         ruleFamily = "frequentative-destockal";
         operationFacts = {
           lexicalizedDestockal: true,
-          sourceHistory: "extinct-or-fused-destockal",
+          sourceHistory: nonextantSourceLifecycleFrame
+            ? "nonextant-reconstructed-destockal-source"
+            : "",
+          nonextantSourceLifecycleFrame,
           openSourceShape: true,
           fusedStockVowelRemainsLong: Boolean(lexicalized.fusedLongVowel),
           fusedLongVowel: lexicalized.fusedLongVowel,
@@ -1616,7 +2273,42 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
         if (variant === "destockal-intransitive") {
           const parsed = parseIntransitiveDestockal(sourceStem);
           if (!parsed) return blockedOperation(request, "ni-or-hui-destockal-source-required", "frequentative-destockal");
-          const activeFrequentativeStem = `${reduplicationPrefix}-${parsed.targetCore}`;
+          const sourceAnalysisFrame = baseResult?.sourceAnalysisFrame || null;
+          const fusedSourceAnalysis = resolveFusedStockSourceAnalysis(
+            sourceAnalysisFrame,
+            parsed,
+          );
+          const fusedReduplicationParts = fusedSourceAnalysis
+            ? getReduplicationParts(fusedSourceAnalysis.analysis.root)
+            : null;
+          const fusedCopiedPrefix = fusedReduplicationParts
+            ? `${fusedReduplicationParts.consonant}${shortVowel(
+                fusedReduplicationParts.vowel,
+              )}`
+            : "";
+          const fusedReduplicationPrefix = fusedCopiedPrefix
+            ? Array.from(
+                { length: repetitions },
+                () => fusedCopiedPrefix,
+              ).join("-")
+            : "";
+          const fusedStockFrequentativeFrame = fusedSourceAnalysis
+            ? buildFusedStockFrequentativeFrame({
+                sourceAgreementFrame,
+                sourceAnalysisFrame,
+                sourceAnalysis: fusedSourceAnalysis.analysis,
+                sourceCoalescenceFrame:
+                  fusedSourceAnalysis.sourceCoalescenceFrame,
+                formationFamily: "intransitive-ca",
+                replacedSuffix: fusedSourceAnalysis.analysis.stemFormative,
+                targetSuffix: parsed.targetSuffix,
+                reduplicativePrefix: fusedReduplicationPrefix,
+                targetClass: "A",
+              })
+            : null;
+          const activeFrequentativeStem =
+            fusedStockFrequentativeFrame?.formation?.targetStem
+            || `${reduplicationPrefix}-${parsed.targetCore}`;
           const selectedVoiceOperation = key(
             baseApplicationFrame?.controlFrame?.selectedVoiceOperation,
           );
@@ -1654,15 +2346,24 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             shape,
             shapeFormula: "(C)+short vowel",
             reduplicationTarget: "lexical-stem",
-            copiedConsonant: parts.consonant,
-            copiedVowel: shortVowel(parts.vowel),
-            copiedPrefix: redup,
+            copiedConsonant: fusedReduplicationParts?.consonant
+              || parts.consonant,
+            copiedVowel: fusedReduplicationParts
+              ? shortVowel(fusedReduplicationParts.vowel)
+              : shortVowel(parts.vowel),
+            copiedPrefix: fusedCopiedPrefix || redup,
             shortVowelReduplication: true,
             sourceDestockalSuffix: parsed.sourceSuffix,
             targetDestockalSuffix: parsed.targetSuffix,
-            stockVowel: parsed.stockVowel,
-            reducedStockVowel: parsed.reducedStockVowel,
-            stockLongVowelReduced: parsed.stockVowel !== parsed.reducedStockVowel,
+            stockVowel: fusedSourceAnalysis?.analysis?.stockFormative
+              || parsed.stockVowel,
+            reducedStockVowel: fusedStockFrequentativeFrame
+              ? fusedSourceAnalysis.analysis.stockFormative
+              : parsed.reducedStockVowel,
+            stockLongVowelReduced: fusedStockFrequentativeFrame
+              ? false
+              : parsed.stockVowel !== parsed.reducedStockVowel,
+            fusedStockFrequentativeFrame,
             activeFrequentativeStem,
             nonactiveFormation,
             impersonalOnlyWhenNonactive: baseIsNonactive,
@@ -1688,9 +2389,69 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
               : "destockal-causative-or-completed-tza-source-required",
             "frequentative-destockal",
           );
+          const fusedSourceCoalescenceFrame = parsed
+            && doesCausativeMorphemicProfileMatch(
+              sourceAgreementFrame,
+              parsed,
+            )
+            ? buildTypedRootStockCoalescence(
+                parsed.root,
+                parsed.stockVowel,
+                parsed.underlyingStemFormative,
+              )
+            : null;
+          const causativeSourceAncestryFrame = parsed
+            && !fusedSourceCoalescenceFrame
+            ? resolveContractedCausativeSourceAncestry(
+                sourceAgreementFrame,
+                parsed,
+              )
+            : null;
+          const effectiveFusedSourceCoalescenceFrame =
+            fusedSourceCoalescenceFrame
+            || causativeSourceAncestryFrame?.sourceCoalescenceFrame
+            || null;
+          const effectiveFusedRoot =
+            causativeSourceAncestryFrame?.sourceAnalysis?.root
+            || parsed?.root
+            || "";
+          const fusedReduplicationParts =
+            effectiveFusedSourceCoalescenceFrame
+            ? getReduplicationParts(effectiveFusedRoot)
+            : null;
+          const fusedCopiedPrefix = fusedReduplicationParts
+            ? `${fusedReduplicationParts.consonant}${shortVowel(
+                fusedReduplicationParts.vowel,
+              )}`
+            : "";
+          const fusedReduplicationPrefix = fusedCopiedPrefix
+            ? Array.from(
+                { length: repetitions },
+                () => fusedCopiedPrefix,
+              ).join("-")
+            : "";
+          const fusedStockFrequentativeFrame =
+            effectiveFusedSourceCoalescenceFrame
+            ? buildFusedStockFrequentativeFrame({
+                sourceAgreementFrame,
+                sourceAnalysisFrame:
+                  causativeSourceAncestryFrame?.sourceAnalysisFrame || null,
+                sourceAnalysis:
+                  causativeSourceAncestryFrame?.sourceAnalysis || null,
+                sourceCoalescenceFrame:
+                  effectiveFusedSourceCoalescenceFrame,
+                causativeSourceAncestryFrame,
+                formationFamily: "causative-tz-a",
+                replacedSuffix: parsed.sourceSuffix,
+                targetSuffix: parsed.targetSuffix,
+                reduplicativePrefix: fusedReduplicationPrefix,
+                targetClass: "B",
+              })
+            : null;
           targetStem = completedTzA
             ? completedTzA.targetStem
-            : `${reduplicationPrefix}-${parsed.targetCore}`;
+            : fusedStockFrequentativeFrame?.formation?.targetStem
+              || `${reduplicationPrefix}-${parsed.targetCore}`;
           targetClass = "B";
           if (variant === "destockal-applicative-force") {
             targetValence = "specific-projective";
@@ -1699,17 +2460,26 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
             shape,
             shapeFormula: "(C)+short vowel",
             reduplicationTarget: "lexical-stem",
-            copiedConsonant: parts.consonant,
-            copiedVowel: shortVowel(parts.vowel),
-            copiedPrefix: redup,
+            copiedConsonant: fusedReduplicationParts?.consonant
+              || parts.consonant,
+            copiedVowel: fusedReduplicationParts
+              ? shortVowel(fusedReduplicationParts.vowel)
+              : shortVowel(parts.vowel),
+            copiedPrefix: fusedCopiedPrefix || redup,
             shortVowelReduplication: true,
             sourceDestockalSuffix: parsed?.sourceSuffix || "completed-tz-a",
             targetDestockalSuffix: parsed?.targetSuffix || completedTzA.tzAUnit,
             stockVowel: parsed?.stockVowel || completedTzA.fusedLongVowel,
-            reducedStockVowel: parsed?.reducedStockVowel || completedTzA.fusedLongVowel,
-            stockLongVowelReduced: parsed
-              ? parsed.stockVowel !== parsed.reducedStockVowel
+            reducedStockVowel: fusedStockFrequentativeFrame
+              ? parsed.stockVowel
+              : parsed?.reducedStockVowel || completedTzA.fusedLongVowel,
+            stockLongVowelReduced: fusedStockFrequentativeFrame
+              ? false
+              : parsed
+                ? parsed.stockVowel !== parsed.reducedStockVowel
               : false,
+            fusedStockFrequentativeFrame,
+            activeFrequentativeStem: targetStem,
             retainedCausativeVowel: parsed?.retainedCausativeVowel || "a",
             semanticForce: variant === "destockal-applicative-force"
               ? "applicative"
@@ -4224,6 +4994,21 @@ export function createClassicalNahuatlVncClosureApi(targetObject = globalThis) {
     }
     if (!targetTypedFrame || typeof targetObject.isClassicalNahuatlVncSlotFrame !== "function" || !targetObject.isClassicalNahuatlVncSlotFrame(targetTypedFrame)) {
       return blockedOperation(request, "canonical-typed-slot-construction-failed", ruleFamily);
+    }
+    if (operation === "frequentative") {
+      operationFacts = {
+        ...operationFacts,
+        lexicalFrequentativeMeaningFrame:
+          buildLexicalFrequentativeMeaningFrame({
+            variant,
+            sourceStem,
+            sourceApplicationFrame: baseApplicationFrame,
+            targetApplicationFrame,
+            targetStem,
+            targetTypedVncSlotFrame: targetTypedFrame,
+            operationFacts,
+          }),
+      };
     }
     const operationFrame = freeze({
       kind: "classical-nahuatl-late-vnc-derivation-operation-frame",

@@ -1094,6 +1094,37 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       });
     }
     const CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS = Object.freeze({
+      tomi: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
+        sourceStem: "tomi",
+        citedForm: "(tomi)",
+        section: "24.3.1.a",
+        lineStart: 7731,
+        lineEnd: 7731,
+        exactWitness: "Both the intransitive stem and the derived causative stem of this kind of verb belong to Class B: (tomi) > perf, (ton); tla-(tom-a) > perf, tla-(ton).",
+        relationRuleId: "cn-l24-243-class-b-source-causative-distinction",
+        defaultClassId: "B",
+        allowedClassIds: ["B"],
+        classOptions: ["B"],
+        perfectiveStemsByClass: {
+          B: "ton"
+        },
+        conditionKind: "canvas-enumerated-type-one-source-class-b",
+        notes: "Exact Canvas lexical Source; unidentified final-i stems remain open to typed class analysis."
+      }),
+      temi: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
+        sourceStem: "tēmi",
+        citedForm: "(tēmi)",
+        section: "24.3.1.a",
+        lineStart: 7731,
+        lineEnd: 7731,
+        exactWitness: "Both the intransitive stem and the derived causative stem of this kind of verb belong to Class B.",
+        relationRuleId: "cn-l24-243-class-b-source-causative-distinction",
+        defaultClassId: "B",
+        allowedClassIds: ["B"],
+        classOptions: ["B"],
+        conditionKind: "canvas-enumerated-type-one-source-class-b",
+        notes: "Exact Canvas lexical Source; unidentified final-i stems remain open to typed class analysis."
+      }),
       pi: makeClassicalNahuatlLesson76GuidelineAuthorityRecord({
         sourceStem: "pī",
         citedForm: "tla-(pī)",
@@ -1402,10 +1433,6 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       "D|zōmā": Object.freeze({
         perfectiveStem: "zōmah",
         changeRule: "class-d-transcription-exact-perfective-stem"
-      }),
-      "B|chay-ā-hui": Object.freeze({
-        perfectiveStem: "chay-a-uh",
-        changeRule: "class-b-canvas-destockal-stock-vowel-shortening"
       })
     });
     const CLASSICAL_NAHUATL_LESSON7_CLASS_B_SILENT_CAUSATIVE_CARRIER_STEMS = Object.freeze({
@@ -2175,6 +2202,13 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
       const valence = normalizeClassicalNahuatlValence(options.valence || options.transitivity || "");
 
       // These are the lexical exceptions or enumerated memberships stated by Canvas.
+      if (valence === "intransitive" && (normalized === "tomi" || normalized === "tēmi")) {
+        return cloneClassicalNahuatlLesson7Record(
+          CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS[
+            normalized === "tomi" ? "tomi" : "temi"
+          ]
+        );
+      }
       if (compactKey === "paca") {
         return cloneClassicalNahuatlLesson7Record(CLASSICAL_NAHUATL_LESSON7_GUIDELINE_AUTHORITY_STEMS.paca);
       }
@@ -2754,8 +2788,8 @@ export function createClassicalNahuatlVerbstemClassesRuntime(targetObject = glob
         classGuidelineContradictionReason: guidelineContradictionBlocked ? "explicit-class-not-authorized-by-canvas-guideline-witness" : "",
         higherLayerClassOverride,
         higherLayerClassOverrideApplies,
-        classDeterminedByGeneralFormRule: Boolean(guidelineAuthorityRecord && guidelineAuthorityRecord.conditionKind !== "canvas-enumerated-class-d-membership" && !guidelineAuthorityRecord.exceptionKind),
-        classDeterminedByLexicalException: Boolean(guidelineAuthorityRecord && (guidelineAuthorityRecord.conditionKind === "canvas-enumerated-class-d-membership" || guidelineAuthorityRecord.exceptionKind)),
+        classDeterminedByGeneralFormRule: Boolean(guidelineAuthorityRecord && !String(guidelineAuthorityRecord.conditionKind || "").startsWith("canvas-enumerated-") && !guidelineAuthorityRecord.exceptionKind),
+        classDeterminedByLexicalException: Boolean(guidelineAuthorityRecord && (String(guidelineAuthorityRecord.conditionKind || "").startsWith("canvas-enumerated-") || guidelineAuthorityRecord.exceptionKind)),
         canvasExamplesAreWitnessesNotWhitelist: true,
         sourceAuthority: "Andrews transcription"
       };

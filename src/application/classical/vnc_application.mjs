@@ -4,7 +4,7 @@ import {
   CLASSICAL_NAHUATL_VNC_DERIVATION_TYPES,
   normalizeClassicalNahuatlVncDerivationType,
   validateClassicalNahuatlVncDerivationTypeSelection,
-} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260823-rhyme-coordinate-preservation-240";
+} from "../../core/classical/vnc_derivation_evaluator.mjs?v=20260904-cehui-nominal-root-430";
 import {
   CLASSICAL_NAHUATL_VNC_CAUSATIVE_SOURCE_VOICES,
   CLASSICAL_NAHUATL_VNC_TARGET_VOICES,
@@ -45,6 +45,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
     const classicalNahuatlContextualTimeBatchFrames = new WeakSet();
     const classicalNahuatlActiveReflexiveContextualPassiveReadingFrames = new WeakSet();
     const classicalNahuatlImpersonalResultReadingFrames = new WeakSet();
+    const classicalNahuatlExtantDestockalMeaningFrames = new WeakSet();
+    const classicalNahuatlExtantDestockalReadingFrames = new WeakSet();
+    const classicalNahuatlExtantDestockalNounRelationFrames = new WeakSet();
     const classicalNahuatlVncContinuationSourceByApplicationFrame =
       new WeakMap();
     const classicalNahuatlVncContinuationSourceByResultFrame =
@@ -137,6 +140,61 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       Object.values(value).forEach(entry => deepFreezeClassicalNahuatlVncApplicationValue(entry, seen));
       return Object.freeze(value);
     }
+    const CLASSICAL_NAHUATL_EXTANT_DESTOCKAL_MEANING_LICENSES =
+      deepFreezeClassicalNahuatlVncApplicationValue({
+        "cn-l24-2459-mini-fused-destockal:fused-destockal-ni-exact": {
+          lexemeId: "cn-l24-2459-mini",
+          sourceStem: "mī-ni",
+          sourceSegments: ["mi", "ī", "ni"],
+          targetStem: "mī-n-a",
+          targetClass: "B",
+          sourceReadings: [{ meaningId: "arrow-pierced" }],
+          causativeReadings: [{ meaningId: "pierce-with-arrow" }],
+        },
+        "cn-l24-2459-xini-fused-destockal:fused-destockal-ni-exact": {
+          lexemeId: "cn-l24-2459-xini",
+          sourceStem: "xī-ni",
+          sourceSegments: ["xi", "ī", "ni"],
+          targetStem: "xī-ni-ā",
+          targetClass: "C",
+          sourceReadings: [
+            { meaningId: "collapse-wall", requiredReferentKind: "wall" },
+            {
+              meaningId: "slide-or-collapse-mountainside",
+              requiredReferentKind: "mountainside",
+            },
+          ],
+          causativeReadings: [
+            { meaningId: "ravel" },
+            {
+              meaningId: "rip-out-stitches",
+              requiredReferentKind: "stitches",
+            },
+          ],
+        },
+        "cn-l24-2459-cehui-fused-destockal:fused-destockal-hui-exact": {
+          lexemeId: "cn-l24-2459-cehui",
+          sourceStem: "cē-hui",
+          sourceSegments: ["ce", "ē", "hui"],
+          nounRelation: {
+            stem: "ce", nounClass: "tl", readings: ["ice", "icicle"],
+          },
+          targetStem: "cē-hui-ā",
+          targetClass: "C",
+          sourceReadings: [
+            { meaningId: "become-cold" },
+            { meaningId: "go-out-fire", requiredReferentKind: "fire" },
+          ],
+          causativeReadings: [
+            { meaningId: "cause-to-become-cold" },
+            { meaningId: "chill" },
+            {
+              meaningId: "extinguish-flame",
+              requiredReferentKind: "fire-or-flame",
+            },
+          ],
+        },
+      });
     function cloneClassicalNahuatlVncApplicationCompactValue(value) {
       if (Array.isArray(value)) {
         return value.map(cloneClassicalNahuatlVncApplicationCompactValue);
@@ -2938,6 +2996,741 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         && Object.isFrozen(frame)
       );
     }
+    function normalizeClassicalNahuatlExtantDestockalMeaningIdentity(
+      value = "",
+    ) {
+      return normalizeClassicalNahuatlVncApplicationStem(value)
+        .toLowerCase()
+        .replace(/[\p{Dash_Punctuation}\s]+/gu, "");
+    }
+    function buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+      blockReason = "owner-issued-extant-destockal-application-required",
+    ) {
+      return deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-extant-destockal-meaning-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: "blocked",
+        blockReason,
+        relationKind: "",
+        applicationFrame: null,
+        resultFrame: null,
+        sourceAnalysisFrame: null,
+        sourceAnalysis: null,
+        derivationOperationFrame: null,
+        participantTransformFrame: null,
+        lexicalIdentityFrame: null,
+        participantBinding: null,
+        sourceReadings: Object.freeze([]),
+        availableReadings: Object.freeze([]),
+        meaningAssertionStatus: "unavailable",
+        selectedReading: "",
+        readingSelectionRequired: false,
+        changesFiniteMorphology: false,
+        sourceAdmissionAuthority: false,
+        grammarGenerationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        canvasExampleAuthority: false,
+        lessonMetadataAuthority: false,
+        contextualFactIsUserChoice: false,
+      });
+    }
+    function getClassicalNahuatlExtantDestockalMeaningLicense(
+      sourceAnalysisFrame = null,
+    ) {
+      const analyses = Array.isArray(sourceAnalysisFrame?.analyses)
+        ? sourceAnalysisFrame.analyses
+        : [];
+      for (const sourceAnalysis of analyses) {
+        const license = CLASSICAL_NAHUATL_EXTANT_DESTOCKAL_MEANING_LICENSES[
+          sourceAnalysis?.analysisId
+        ] || null;
+        if (!license) continue;
+        const sourceSegments = Array.isArray(sourceAnalysis.segments)
+          ? sourceAnalysis.segments
+          : [];
+        if (
+          sourceAnalysis.analysisAuthority === "typed-lexical-source-analysis"
+          && sourceAnalysis.lexicalStatus
+            === "lexically-licensed-source-analysis"
+          && [
+            "fused-destockal-ni-exact",
+            "fused-destockal-hui-exact",
+          ].includes(sourceAnalysis.category)
+          && sourceAnalysis.destockalStructureFrame?.typeId
+            === "long-vowel-ni-or-hui"
+          && JSON.stringify(sourceSegments)
+            === JSON.stringify(license.sourceSegments)
+        ) {
+          return { license, sourceAnalysis };
+        }
+      }
+      return null;
+    }
+    function buildClassicalNahuatlExtantDestockalReading(
+      license = null,
+      readingSpec = null,
+      relation = "source-lexical-reading",
+      participantBinding = null,
+    ) {
+      const meaningId = normalizeClassicalNahuatlVncApplicationToken(
+        readingSpec?.meaningId,
+      );
+      const requiredReferentKind =
+        normalizeClassicalNahuatlVncApplicationToken(
+          readingSpec?.requiredReferentKind,
+        );
+      return {
+        kind: "classical-nahuatl-extant-destockal-reading",
+        readingId: `${license.lexemeId}-${meaningId}`,
+        meaningId,
+        meaning: meaningId,
+        relation,
+        availabilityStatus: "available-not-asserted",
+        participantBinding,
+        contextCondition: {
+          kind: "classical-nahuatl-lexical-reading-context-condition",
+          required: Boolean(requiredReferentKind),
+          requiredReferentKind,
+          resolutionStatus: requiredReferentKind
+            ? "unmet-or-unknown"
+            : "not-required",
+          participantRole: participantBinding.bindingRole,
+        },
+      };
+    }
+    // A lexical relationship between two already issued sources, not an NNC
+    // admission rule, a productive denominal operation, or a clause translation.
+    function buildClassicalNahuatlExtantDestockalNounRelationFrame(input = {}) {
+      const blocked = blockReason => deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-extant-destockal-noun-relation-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: "blocked", blockReason,
+      });
+      if (!input || typeof input !== "object" || Array.isArray(input)
+        || Reflect.ownKeys(input).some(key => (
+          !["meaningFrame", "nounResult"].includes(key)
+          || !Object.hasOwn(Object.getOwnPropertyDescriptor(input, key), "value")
+        ))) return blocked("extant-destockal-noun-relation-accepts-issued-inputs-only");
+      const meaningFrame = Object.getOwnPropertyDescriptor(input, "meaningFrame")?.value;
+      const nounResult = Object.getOwnPropertyDescriptor(input, "nounResult")?.value;
+      if (!isClassicalNahuatlExtantDestockalMeaningFrame(meaningFrame)
+        || meaningFrame.relationKind !== "source") {
+        return blocked("canonical-extant-destockal-source-meaning-required");
+      }
+      const license = CLASSICAL_NAHUATL_EXTANT_DESTOCKAL_MEANING_LICENSES[
+        meaningFrame.sourceAnalysis.analysisId
+      ]?.nounRelation;
+      const runtime = getClassicalNahuatlVncApplicationRuntimeTarget();
+      if (!license) return blocked("exact-destockal-noun-relation-not-licensed");
+      if (typeof runtime.isClassicalNahuatlOrdinaryNncResult !== "function"
+        || !runtime.isClassicalNahuatlOrdinaryNncResult(nounResult)) {
+        return blocked("canonical-ordinary-nnc-result-required");
+      }
+      const nounSourceFrame = nounResult.sourceFrame;
+      const sourceAnalysis = meaningFrame.sourceAnalysis;
+      if (nounSourceFrame.stem !== license.stem
+        || nounSourceFrame.nounClass !== license.nounClass
+        || nounSourceFrame.compoundSource
+        || sourceAnalysis.root !== nounSourceFrame.stem) {
+        return blocked("exact-shared-root-and-noun-class-required");
+      }
+      const frame = deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-extant-destockal-noun-relation-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: "authorized", blockReason: "",
+        relationKind: "shared-lexical-root",
+        meaningFrame,
+        sourceAnalysisFrame: meaningFrame.sourceAnalysisFrame,
+        sourceAnalysis,
+        nounResult, nounSourceFrame, nounOperationFrame: nounResult.operationFrame,
+        root: sourceAnalysis.root,
+        availableReadings: license.readings.map(meaningId => ({
+          meaningId, meaning: meaningId,
+          availabilityStatus: "available-not-asserted",
+          nounSourceFrame, nounResult,
+        })),
+        selectedReading: "",
+        productiveDerivation: false,
+        changesMorphology: false,
+        infersGrammaticalAnimacy: false,
+        infersNumber: false,
+        sourceAdmissionAuthority: false,
+        grammarGenerationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        canvasExampleAuthority: false,
+      });
+      classicalNahuatlExtantDestockalNounRelationFrames.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlExtantDestockalNounRelationFrame(frame = null) {
+      if (!frame || !classicalNahuatlExtantDestockalNounRelationFrames.has(frame)
+        || frame.kind !== "classical-nahuatl-extant-destockal-noun-relation-frame"
+        || frame.version !== CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION
+        || frame.authorizationStatus !== "authorized" || frame.blockReason !== ""
+        || frame.relationKind !== "shared-lexical-root"
+        || !isClassicalNahuatlExtantDestockalMeaningFrame(frame.meaningFrame)
+        || frame.meaningFrame.relationKind !== "source"
+        || frame.sourceAnalysisFrame !== frame.meaningFrame.sourceAnalysisFrame
+        || frame.sourceAnalysis !== frame.meaningFrame.sourceAnalysis) return false;
+      const runtime = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const license = CLASSICAL_NAHUATL_EXTANT_DESTOCKAL_MEANING_LICENSES[
+        frame.sourceAnalysis.analysisId
+      ]?.nounRelation;
+      return Boolean(license
+        && typeof runtime.isClassicalNahuatlOrdinaryNncResult === "function"
+        && runtime.isClassicalNahuatlOrdinaryNncResult(frame.nounResult)
+        && frame.nounSourceFrame === frame.nounResult.sourceFrame
+        && frame.nounOperationFrame === frame.nounResult.operationFrame
+        && frame.nounSourceFrame.stem === license.stem
+        && frame.nounSourceFrame.nounClass === license.nounClass
+        && frame.nounSourceFrame.compoundSource === false
+        && frame.root === frame.sourceAnalysis.root
+        && frame.root === frame.nounSourceFrame.stem
+        && frame.availableReadings.length === license.readings.length
+        && frame.availableReadings.every((reading, index) => (
+          reading.meaningId === license.readings[index]
+          && reading.meaning === reading.meaningId
+          && reading.availabilityStatus === "available-not-asserted"
+          && reading.nounSourceFrame === frame.nounSourceFrame
+          && reading.nounResult === frame.nounResult
+        ))
+        && frame.selectedReading === ""
+        && ["productiveDerivation", "changesMorphology", "infersGrammaticalAnimacy",
+          "infersNumber", "sourceAdmissionAuthority", "grammarGenerationAuthority",
+          "callerSuppliedAuthorityAccepted", "formulaStringAuthority",
+          "surfaceStringAuthority", "canvasExampleAuthority"].every(key => frame[key] === false)
+        && Object.isFrozen(frame));
+    }
+    function buildClassicalNahuatlExtantDestockalMeaningFrame(input = {}) {
+      const request = input && typeof input === "object"
+        && !Array.isArray(input)
+        ? input
+        : {};
+      const unexpectedKey = Reflect.ownKeys(request).find(key => (
+        typeof key !== "string" || key !== "applicationFrame"
+      ));
+      if (unexpectedKey) {
+        return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+          "extant-destockal-meaning-accepts-issued-application-only",
+        );
+      }
+      const applicationFrame = request.applicationFrame || null;
+      if (
+        !isClassicalNahuatlVncApplicationFrame(applicationFrame)
+        || applicationFrame.authorizationStatus !== "authorized"
+      ) {
+        return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame();
+      }
+      const resultFrame = applicationFrame.resultFrame;
+      const sourceAnalysisFrame = resultFrame?.sourceAnalysisFrame || null;
+      const licensedAnalysis =
+        getClassicalNahuatlExtantDestockalMeaningLicense(
+          sourceAnalysisFrame,
+        );
+      if (!licensedAnalysis) {
+        return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+          "exact-extant-destockal-source-analysis-required",
+        );
+      }
+      const { license, sourceAnalysis } = licensedAnalysis;
+      const derivationType = applicationFrame.normalizedRequest
+        ?.derivationType || "";
+      const relationKind = derivationType === "direct"
+        ? "source"
+        : derivationType === "causative"
+          ? "causative"
+          : "";
+      if (!relationKind) {
+        return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+          "extant-destockal-source-or-causative-relation-required",
+        );
+      }
+      const derivationOperationFrame = relationKind === "causative"
+        ? resultFrame.derivationOperationFrame || null
+        : null;
+      const participantTransformFrame =
+        derivationOperationFrame?.participantTransformFrame || null;
+      const participantProjection = resultFrame.participantProjection || null;
+      const sourceSubjectFrame =
+        applicationFrame.normalizedRequest?.sourceSubjectFrame || null;
+      let participantBinding = null;
+      if (relationKind === "source") {
+        const sourceBindingExact = Boolean(
+          applicationFrame.normalizedRequest?.sourceVoice === "active"
+          && resultFrame.selectedVoice === "active"
+          && resultFrame.derivationOperationFrame == null
+          && sourceSubjectFrame
+          && participantProjection?.sourceSubject === sourceSubjectFrame
+        );
+        if (!sourceBindingExact) {
+          return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+            "actual-extant-destockal-source-subject-binding-required",
+          );
+        }
+        participantBinding = {
+          kind:
+            "classical-nahuatl-extant-destockal-meaning-participant-binding",
+          authorizationStatus: "authorized",
+          bindingRole: "source-subject",
+          transitionKind: "source-subject",
+          participantProjection,
+          sourceSubjectFrame,
+          participantFrame: sourceSubjectFrame,
+          targetObjectRequest: null,
+          targetParticipantFrame: null,
+          sourceSubjectBecomesCausativeObject: false,
+          implicitAgentBecomesCausativeObject: false,
+          referentiallyEmptySourceSubjectDiscarded: false,
+          referentKind: "",
+          referentResolutionStatus: "unresolved",
+          agreementDoesNotResolveReferent: true,
+          objectKindDoesNotResolveReferent: true,
+        };
+      } else {
+        const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+        const targetObjectRequest =
+          participantTransformFrame?.addedObjectRequest || null;
+        const targetParticipantFrame = (
+          participantProjection?.targetObjects || []
+        ).find(participant => (
+          participant?.referenceId === targetObjectRequest?.objectId
+        )) || null;
+        const targetIdentity =
+          normalizeClassicalNahuatlExtantDestockalMeaningIdentity(
+            derivationOperationFrame?.targetStem,
+          );
+        const licensedTargetIdentity =
+          normalizeClassicalNahuatlExtantDestockalMeaningIdentity(
+            license.targetStem,
+          );
+        const causativeBindingExact = Boolean(
+          typeof runtimeTarget?.isClassicalNahuatlVncDerivationOperationFrame
+            === "function"
+          && runtimeTarget.isClassicalNahuatlVncDerivationOperationFrame(
+            derivationOperationFrame,
+          )
+          && derivationOperationFrame.authorizationStatus === "authorized"
+          && derivationOperationFrame.sourceMachineryFrame
+            === resultFrame.sourceMachineryFrame
+          && derivationOperationFrame.selectedOption?.derivationSubtype
+            === "type-one"
+          && derivationOperationFrame.selectedOption?.sourceAnalysisId
+            === sourceAnalysis.analysisId
+          && derivationOperationFrame.targetClass === license.targetClass
+          && targetIdentity === licensedTargetIdentity
+          && participantTransformFrame?.authorizationStatus === "authorized"
+          && targetObjectRequest
+          && targetObjectRequest.governor === "causative"
+          && participantTransformFrame.targetObjectRequests?.includes(
+            targetObjectRequest,
+          )
+          && derivationOperationFrame.targetObjectRequests
+            === participantTransformFrame.targetObjectRequests
+          && (
+            participantTransformFrame.sourceSubjectBecomesCausativeObject
+              === true
+            || participantTransformFrame.implicitAgentBecomesCausativeObject
+              === true
+          )
+          && targetParticipantFrame
+        );
+        if (!causativeBindingExact) {
+          return buildBlockedClassicalNahuatlExtantDestockalMeaningFrame(
+            "actual-extant-destockal-transformed-causee-binding-required",
+          );
+        }
+        participantBinding = {
+          kind:
+            "classical-nahuatl-extant-destockal-meaning-participant-binding",
+          authorizationStatus: "authorized",
+          bindingRole: "transformed-causee",
+          transitionKind:
+            participantTransformFrame.implicitAgentBecomesCausativeObject
+              === true
+              ? "implicit-agent-to-causee"
+              : "source-subject-to-causee",
+          participantProjection,
+          sourceSubjectFrame,
+          participantFrame: targetParticipantFrame,
+          targetObjectRequest,
+          targetParticipantFrame,
+          sourceSubjectBecomesCausativeObject:
+            participantTransformFrame.sourceSubjectBecomesCausativeObject
+              === true,
+          implicitAgentBecomesCausativeObject:
+            participantTransformFrame.implicitAgentBecomesCausativeObject
+              === true,
+          referentiallyEmptySourceSubjectDiscarded:
+            participantTransformFrame.referentiallyEmptySourceSubjectDiscarded
+              === true,
+          referentKind: "",
+          referentResolutionStatus: "unresolved",
+          agreementDoesNotResolveReferent: true,
+          objectKindDoesNotResolveReferent: true,
+        };
+      }
+      const sourceReadings = relationKind === "source"
+        ? license.sourceReadings.map(readingSpec => (
+          buildClassicalNahuatlExtantDestockalReading(
+            license,
+            readingSpec,
+            "source-lexical-reading",
+            participantBinding,
+          )
+        ))
+        : [];
+      const availableReadings = relationKind === "source"
+        ? sourceReadings
+        : license.causativeReadings.map(readingSpec => (
+          buildClassicalNahuatlExtantDestockalReading(
+            license,
+            readingSpec,
+            "causative-lexical-reading",
+            participantBinding,
+          )
+        ));
+      const frame = deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-extant-destockal-meaning-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: "authorized",
+        blockReason: "",
+        relationKind,
+        applicationFrame,
+        resultFrame,
+        sourceAnalysisFrame,
+        sourceAnalysis,
+        derivationOperationFrame,
+        participantTransformFrame,
+        lexicalIdentityFrame: {
+          lexemeId: license.lexemeId,
+          sourceAnalysisId: sourceAnalysis.analysisId,
+          sourceStem: license.sourceStem,
+          enteredSourceStem: applicationFrame.normalizedRequest.sourceStem,
+          sourceSegments: sourceAnalysis.segments,
+          targetStem: relationKind === "causative"
+            ? derivationOperationFrame.targetStem
+            : "",
+          targetClass: relationKind === "causative"
+            ? derivationOperationFrame.targetClass
+            : "",
+          boundarySensitivity: "editorial-hyphens-ignored",
+          vowelQuantitySensitivity: "phonemic-and-preserved",
+          lexicalIdentityAuthority: "typed-lexical-source-analysis",
+        },
+        participantBinding,
+        sourceReadings,
+        availableReadings,
+        meaningAssertionStatus: "available-not-asserted",
+        lexicalIdentityMatchDoesNotForceReading: true,
+        selectedReading: "",
+        readingSelectionRequired: false,
+        contextualFactsSupplied: false,
+        unresolvedContextConditionCount: availableReadings.filter(
+          reading => reading.contextCondition.required,
+        ).length,
+        changesFiniteMorphology: false,
+        formulaRealization: resultFrame.formulaRealization,
+        surfaceRealization: resultFrame.surfaceRealization,
+        formulaProjectionSource: "owner-issued-vnc-typed-slot-result",
+        writtenProjectionSource:
+          "owner-issued-vnc-boundary-realization-result",
+        sourceAdmissionAuthority: false,
+        grammarGenerationAuthority: false,
+        callerSuppliedAuthorityAccepted: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        canvasExampleAuthority: false,
+        lessonMetadataAuthority: false,
+        contextualFactIsUserChoice: false,
+      });
+      classicalNahuatlExtantDestockalMeaningFrames.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlExtantDestockalMeaningFrame(frame = null) {
+      if (
+        !frame
+        || !classicalNahuatlExtantDestockalMeaningFrames.has(frame)
+        || frame.kind
+          !== "classical-nahuatl-extant-destockal-meaning-frame"
+        || frame.version !== CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION
+        || frame.authorizationStatus !== "authorized"
+        || frame.blockReason !== ""
+        || !["source", "causative"].includes(frame.relationKind)
+        || !isClassicalNahuatlVncApplicationFrame(frame.applicationFrame)
+        || frame.applicationFrame.resultFrame !== frame.resultFrame
+        || frame.resultFrame.sourceAnalysisFrame !== frame.sourceAnalysisFrame
+        || !frame.sourceAnalysisFrame.analyses.includes(frame.sourceAnalysis)
+      ) {
+        return false;
+      }
+      const license = CLASSICAL_NAHUATL_EXTANT_DESTOCKAL_MEANING_LICENSES[
+        frame.sourceAnalysis.analysisId
+      ] || null;
+      const participantBinding = frame.participantBinding;
+      if (
+        !license
+        || frame.lexicalIdentityFrame?.lexemeId !== license.lexemeId
+        || frame.lexicalIdentityFrame?.sourceAnalysisId
+          !== frame.sourceAnalysis.analysisId
+        || frame.lexicalIdentityFrame?.sourceStem !== license.sourceStem
+        || frame.lexicalIdentityFrame?.sourceSegments
+          !== frame.sourceAnalysis.segments
+        || frame.lexicalIdentityFrame?.boundarySensitivity
+          !== "editorial-hyphens-ignored"
+        || frame.lexicalIdentityFrame?.vowelQuantitySensitivity
+          !== "phonemic-and-preserved"
+        || frame.lexicalIdentityFrame?.lexicalIdentityAuthority
+          !== "typed-lexical-source-analysis"
+        || participantBinding?.authorizationStatus !== "authorized"
+        || participantBinding.participantProjection
+          !== frame.resultFrame.participantProjection
+        || participantBinding.sourceSubjectFrame
+          !== frame.applicationFrame.normalizedRequest.sourceSubjectFrame
+        || participantBinding.referentKind !== ""
+        || participantBinding.referentResolutionStatus !== "unresolved"
+        || participantBinding.agreementDoesNotResolveReferent !== true
+        || participantBinding.objectKindDoesNotResolveReferent !== true
+      ) {
+        return false;
+      }
+      const validateReadings = (readings, specs, relation) => (
+        Array.isArray(readings)
+        && readings.length === specs.length
+        && readings.every((reading, index) => {
+          const spec = specs[index];
+          const requiredReferentKind = spec.requiredReferentKind || "";
+          return reading.kind
+              === "classical-nahuatl-extant-destockal-reading"
+            && reading.readingId
+              === `${license.lexemeId}-${spec.meaningId}`
+            && reading.meaningId === spec.meaningId
+            && reading.meaning === spec.meaningId
+            && reading.relation === relation
+            && reading.availabilityStatus === "available-not-asserted"
+            && reading.participantBinding === participantBinding
+            && reading.contextCondition?.kind
+              === "classical-nahuatl-lexical-reading-context-condition"
+            && reading.contextCondition.required
+              === Boolean(requiredReferentKind)
+            && reading.contextCondition.requiredReferentKind
+              === requiredReferentKind
+            && reading.contextCondition.resolutionStatus
+              === (requiredReferentKind
+                ? "unmet-or-unknown"
+                : "not-required")
+            && reading.contextCondition.participantRole
+              === participantBinding.bindingRole;
+        })
+      );
+      const sourceReadingsValid = frame.relationKind === "source"
+        ? validateReadings(
+          frame.sourceReadings,
+          license.sourceReadings,
+          "source-lexical-reading",
+        )
+        : Array.isArray(frame.sourceReadings)
+          && frame.sourceReadings.length === 0;
+      const availableReadingsValid = frame.relationKind === "source"
+        ? frame.availableReadings === frame.sourceReadings
+          && sourceReadingsValid
+        : validateReadings(
+          frame.availableReadings,
+          license.causativeReadings,
+          "causative-lexical-reading",
+        );
+      const commonValid = Boolean(
+        sourceReadingsValid
+        && availableReadingsValid
+        && frame.meaningAssertionStatus === "available-not-asserted"
+        && frame.lexicalIdentityMatchDoesNotForceReading === true
+        && frame.selectedReading === ""
+        && frame.readingSelectionRequired === false
+        && frame.contextualFactsSupplied === false
+        && frame.unresolvedContextConditionCount
+          === frame.availableReadings.filter(
+            reading => reading.contextCondition.required,
+          ).length
+        && frame.changesFiniteMorphology === false
+        && frame.formulaRealization === frame.resultFrame.formulaRealization
+        && frame.surfaceRealization === frame.resultFrame.surfaceRealization
+        && frame.sourceAdmissionAuthority === false
+        && frame.grammarGenerationAuthority === false
+        && frame.callerSuppliedAuthorityAccepted === false
+        && frame.formulaStringAuthority === false
+        && frame.surfaceStringAuthority === false
+        && frame.canvasExampleAuthority === false
+        && frame.lessonMetadataAuthority === false
+        && frame.contextualFactIsUserChoice === false
+        && Object.isFrozen(frame)
+      );
+      if (!commonValid) return false;
+      if (frame.relationKind === "source") {
+        return Boolean(
+          frame.applicationFrame.normalizedRequest.derivationType === "direct"
+          && frame.derivationOperationFrame == null
+          && frame.participantTransformFrame == null
+          && participantBinding.bindingRole === "source-subject"
+          && participantBinding.transitionKind === "source-subject"
+          && participantBinding.participantFrame
+            === participantBinding.sourceSubjectFrame
+          && participantBinding.participantFrame
+            === participantBinding.participantProjection.sourceSubject
+          && participantBinding.targetObjectRequest == null
+          && participantBinding.targetParticipantFrame == null
+          && frame.lexicalIdentityFrame.targetStem === ""
+          && frame.lexicalIdentityFrame.targetClass === ""
+        );
+      }
+      const runtimeTarget = getClassicalNahuatlVncApplicationRuntimeTarget();
+      const operation = frame.derivationOperationFrame;
+      const transform = frame.participantTransformFrame;
+      return Boolean(
+        frame.applicationFrame.normalizedRequest.derivationType === "causative"
+        && runtimeTarget?.isClassicalNahuatlVncDerivationOperationFrame?.(
+          operation,
+        ) === true
+        && operation === frame.resultFrame.derivationOperationFrame
+        && transform === operation.participantTransformFrame
+        && operation.selectedOption?.derivationSubtype === "type-one"
+        && operation.selectedOption?.sourceAnalysisId
+          === frame.sourceAnalysis.analysisId
+        && normalizeClassicalNahuatlExtantDestockalMeaningIdentity(
+          operation.targetStem,
+        ) === normalizeClassicalNahuatlExtantDestockalMeaningIdentity(
+          license.targetStem,
+        )
+        && operation.targetClass === license.targetClass
+        && participantBinding.bindingRole === "transformed-causee"
+        && participantBinding.participantFrame
+          === participantBinding.targetParticipantFrame
+        && participantBinding.targetObjectRequest
+          === transform.addedObjectRequest
+        && transform.targetObjectRequests.includes(
+          participantBinding.targetObjectRequest,
+        )
+        && participantBinding.targetParticipantFrame.referenceId
+          === participantBinding.targetObjectRequest.objectId
+        && participantBinding.sourceSubjectBecomesCausativeObject
+          === (transform.sourceSubjectBecomesCausativeObject === true)
+        && participantBinding.implicitAgentBecomesCausativeObject
+          === (transform.implicitAgentBecomesCausativeObject === true)
+        && participantBinding.referentiallyEmptySourceSubjectDiscarded
+          === (transform.referentiallyEmptySourceSubjectDiscarded === true)
+        && frame.lexicalIdentityFrame.targetStem === operation.targetStem
+        && frame.lexicalIdentityFrame.targetClass === operation.targetClass
+      );
+    }
+    // Interpretation consumes an issued lexical relation and separately supplied
+    // context. It never edits that relation, participants, or finite morphology.
+    function interpretClassicalNahuatlExtantDestockalReading(input = {}) {
+      const request = input && typeof input === "object" && !Array.isArray(input)
+        ? input : {};
+      const allowedKeys = new Set(["meaningFrame", "context", "requestedReading"]);
+      const forbiddenKey = Reflect.ownKeys(request).some(key => !allowedKeys.has(key));
+      const meaningFrame = request.meaningFrame || null;
+      const meaningCanonical = isClassicalNahuatlExtantDestockalMeaningFrame(meaningFrame);
+      const binding = meaningCanonical ? meaningFrame.participantBinding : null;
+      const contextSupplied = Object.hasOwn(request, "context");
+      const context = request.context;
+      const contextShapeValid = !contextSupplied || Boolean(context
+        && typeof context === "object" && !Array.isArray(context)
+        && Reflect.ownKeys(context).every(key => ["participantFrame", "referentKind"].includes(key))
+        && typeof context.referentKind === "string" && context.referentKind.trim());
+      const referentKind = contextShapeValid && contextSupplied
+        ? context.referentKind.trim().toLowerCase().normalize("NFC") : "";
+      const participantMatches = !contextSupplied || Boolean(binding
+        && context?.participantFrame === binding.participantFrame);
+      // The cited referents are nonhuman. Do not infer an additional grammatical
+      // animacy category from physical referents, or grammatical plural from the
+      // English word "stitches". Existing participant facts remain unchanged.
+      const literalNonhuman = ["wall", "mountainside", "fire", "stitches",
+        "flame", "candle-flame", "fire-or-flame"].includes(referentKind);
+      const participantConflict = Boolean(literalNonhuman && binding
+        && (binding.participantFrame.humanness === "human"
+          || binding.participantFrame.hasReferent === false));
+      const selectionShapeValid = !Object.hasOwn(request, "requestedReading")
+        || typeof request.requestedReading === "string";
+      const requestedReading = selectionShapeValid
+        ? (request.requestedReading || "").trim() : "";
+      const contextAccepted = Boolean(meaningCanonical && contextSupplied
+        && contextShapeValid && participantMatches && !participantConflict);
+      const resolvedReadings = meaningCanonical ? meaningFrame.availableReadings.map(reading => {
+        const requirement = reading.contextCondition.requiredReferentKind;
+        const contextStatus = !reading.contextCondition.required ? "not-required"
+          : !contextAccepted ? "unresolved"
+            : requirement === referentKind || (requirement === "fire-or-flame"
+              && ["fire", "flame", "candle-flame", "fire-or-flame"].includes(referentKind))
+              ? "matched" : "not-matched";
+        return {
+          reading,
+          participantBinding: binding,
+          contextStatus,
+          supported: ["matched", "not-required"].includes(contextStatus),
+        };
+      }) : [];
+      const selectedResolution = requestedReading
+        ? resolvedReadings.find(item => item.reading.meaningId === requestedReading) || null : null;
+      const blockReason = forbiddenKey ? "extant-destockal-reading-accepts-typed-context-and-selection-only"
+        : !meaningCanonical ? "owner-issued-extant-destockal-meaning-required"
+          : !contextShapeValid ? "extant-destockal-reading-context-shape-invalid"
+            : !participantMatches ? "extant-destockal-reading-exact-participant-required"
+              : participantConflict ? "extant-destockal-reading-context-conflicts-with-participant"
+                : !selectionShapeValid ? "extant-destockal-reading-selection-must-be-text"
+                  : requestedReading && !selectedResolution ? "extant-destockal-reading-not-licensed"
+                    : selectedResolution && !selectedResolution.supported
+                      ? "extant-destockal-reading-required-context-not-supported" : "";
+      const authorized = !blockReason;
+      const frame = deepFreezeClassicalNahuatlVncApplicationValue({
+        kind: "classical-nahuatl-extant-destockal-contextual-reading-frame",
+        version: CLASSICAL_NAHUATL_VNC_APPLICATION_VERSION,
+        authorizationStatus: authorized ? "authorized" : "blocked",
+        blockReason,
+        meaningFrame: meaningCanonical ? meaningFrame : null,
+        participantBinding: binding,
+        context: contextAccepted ? {
+          participantFrame: binding.participantFrame,
+          referentKind,
+          evidenceSource: "caller-supplied-context-not-independent-world-evidence",
+        } : null,
+        resolvedReadings,
+        supportedReadings: resolvedReadings.filter(item => item.supported).map(item => item.reading),
+        selectedReading: authorized ? requestedReading : "",
+        selectedResolution: authorized ? selectedResolution : null,
+        meaningAssertionStatus: authorized && requestedReading
+          ? "selected-not-truth-asserted" : "available-not-asserted",
+        contextAloneSelectsReading: false,
+        contextChangesParticipantFacts: false,
+        changesFiniteMorphology: false,
+        sourceAdmissionAuthority: false,
+        grammarGenerationAuthority: false,
+        formulaStringAuthority: false,
+        surfaceStringAuthority: false,
+        formulaRealization: meaningCanonical ? meaningFrame.formulaRealization : "",
+        surfaceRealization: meaningCanonical ? meaningFrame.surfaceRealization : "",
+      });
+      if (authorized) classicalNahuatlExtantDestockalReadingFrames.add(frame);
+      return frame;
+    }
+    function isClassicalNahuatlExtantDestockalReadingFrame(frame = null) {
+      return Boolean(frame && classicalNahuatlExtantDestockalReadingFrames.has(frame)
+        && frame.kind === "classical-nahuatl-extant-destockal-contextual-reading-frame"
+        && frame.authorizationStatus === "authorized"
+        && isClassicalNahuatlExtantDestockalMeaningFrame(frame.meaningFrame)
+        && frame.participantBinding === frame.meaningFrame.participantBinding
+        && (!frame.context || frame.context.participantFrame === frame.participantBinding.participantFrame)
+        && frame.resolvedReadings.every(item => item.participantBinding === frame.participantBinding
+          && frame.meaningFrame.availableReadings.includes(item.reading))
+        && (!frame.selectedReading || (frame.selectedResolution?.supported === true
+          && frame.selectedResolution.reading.meaningId === frame.selectedReading))
+        && frame.formulaRealization === frame.meaningFrame.formulaRealization
+        && frame.surfaceRealization === frame.meaningFrame.surfaceRealization
+        && frame.contextAloneSelectsReading === false
+        && frame.changesFiniteMorphology === false && Object.isFrozen(frame));
+    }
     function isClassicalNahuatlVncApplicationFrameInternal(frame = null) {
       if (frame && typeof frame === "object" && (classicalNahuatlVncApplicationPersistentCanonicalFrames.has(frame) || classicalNahuatlVncApplicationValidationTransaction?.applicationFrames.has(frame))) {
         return true;
@@ -4256,6 +5049,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         "destockal-hui-candidate": "Destockal hui analysis",
         "fused-destockal-ni-exact": "Fused destockal ni analysis",
         "fused-destockal-hui-exact": "Fused destockal hui analysis",
+        "fused-destockal-hua-exact": "Fused destockal hua analysis",
         "fused-destockal-final-i": "Fused final-i analysis",
         "root-plus-ya": "Root + ya analysis",
         "root-plus-ya-retentive-exception": "Root + ya documented exception",
@@ -4274,6 +5068,7 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         "destockal-hui-candidate": "Makes the Andrews destockal replacement or addition procedures available.",
         "fused-destockal-ni-exact": "Recovers the witnessed root, stock formative, and ni theme before replacement or addition.",
         "fused-destockal-hui-exact": "Recovers the witnessed root, stock formative, and hui theme before addition.",
+        "fused-destockal-hua-exact": "Recovers the reconstructed root, stock formative, and hua theme of the extant fused source.",
         "fused-destockal-final-i": "Identifies the final-i base used by the available Type 1 formation.",
         "root-plus-ya": "Allows Andrews to replace ya, or remove it before adding liā.",
         "root-plus-ya-retentive-exception": "Selects the documented exception that retains y and replaces the source-final a.",
@@ -4286,7 +5081,19 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         "directional-suppletive-causative-source": "Preserves the licensed directional element in the suppletive causative formation."
       };
       const segments = Array.isArray(analysis.segments) ? analysis.segments : [];
-      const parts = segments.map((segment, index) => {
+      const typedYaTheme = rootPlusYa
+        && analysis.themeFrame?.formative === "ya"
+        ? analysis.themeFrame : null;
+      const parts = typedYaTheme
+        ? [{
+          segment: typedYaTheme.host || analysis.root || segments.slice(0, -1).join("-"),
+          role: typedYaTheme.hostRank === "verbstem"
+            ? "verbstem base" : "root",
+        }, {
+          segment: typedYaTheme.formative,
+          role: "ya stem formative",
+        }]
+        : segments.map((segment, index) => {
         let role = index === 0 ? "source base" : "source segment";
         if (destockal) {
           role = index === 0 ? "root" : index === segments.length - 1 ? "stem formative" : "stock formative";
@@ -4304,7 +5111,9 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         return { segment, role };
       });
       return {
-        label: labels[category] || "Andrews source analysis",
+        label: typedYaTheme?.hostRank === "verbstem"
+          ? "Verbstem + ya analysis"
+          : labels[category] || "Andrews source analysis",
         parts,
         formationEffect: formationEffects[category] || "Identifies the source structure required by the selected Andrews formation."
       };
@@ -4375,6 +5184,10 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         groupClassicalNahuatlVncSourceAnalysisDisplayRows(rows)
       );
       if (!compactDisplay) return null;
+      const reconstructionAnalysis = sourceAnalysisFrame.analyses.find(analysis => (
+        analysis.reconstructionNotationFrame
+      ));
+      const reconstructionNotationFrame = reconstructionAnalysis?.reconstructionNotationFrame;
       return deepFreezeClassicalNahuatlVncApplicationValue({
         frameRole: "classical-nahuatl-vnc-source-constitution-projection",
         authorizationStatus: "authorized",
@@ -4384,8 +5197,15 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         sourceValence: sourceAnalysisFrame.sourceValence,
         label: compactDisplay.label,
         parts: compactDisplay.parts,
-        process: compactDisplay.process,
+        process: reconstructionNotationFrame
+          ? `${compactDisplay.process} Here * marks the reconstructed underlying source (${reconstructionNotationFrame.underlyingStem}); the fused stem (${reconstructionNotationFrame.extantSourceStem}) is extant. It does not mark the form as ungrammatical.`
+          : compactDisplay.process,
         source: compactDisplay.source,
+        ...(reconstructionNotationFrame ? {
+          sourceAnalysisFrame,
+          sourceAnalysis: reconstructionAnalysis,
+          reconstructionNotationFrame,
+        } : {}),
         grammarAuthority: false
       });
     }
@@ -8703,6 +9523,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame,
         interpretClassicalNahuatlImpersonalResultReading,
         isClassicalNahuatlImpersonalResultReadingFrame,
+        buildClassicalNahuatlExtantDestockalMeaningFrame,
+        isClassicalNahuatlExtantDestockalMeaningFrame,
+        buildClassicalNahuatlExtantDestockalNounRelationFrame,
+        isClassicalNahuatlExtantDestockalNounRelationFrame,
+        interpretClassicalNahuatlExtantDestockalReading,
+        isClassicalNahuatlExtantDestockalReadingFrame,
         buildClassicalNahuatlOrderedVoiceVncApplicationFrame,
         isClassicalNahuatlOrderedVoiceVncApplicationFrame,
         buildClassicalNahuatlVncSentenceFormulaRealization,
@@ -8766,6 +9592,12 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
         isClassicalNahuatlActiveReflexiveContextualPassiveReadingFrame,
         interpretClassicalNahuatlImpersonalResultReading,
         isClassicalNahuatlImpersonalResultReadingFrame,
+        buildClassicalNahuatlExtantDestockalMeaningFrame,
+        isClassicalNahuatlExtantDestockalMeaningFrame,
+        buildClassicalNahuatlExtantDestockalNounRelationFrame,
+        isClassicalNahuatlExtantDestockalNounRelationFrame,
+        interpretClassicalNahuatlExtantDestockalReading,
+        isClassicalNahuatlExtantDestockalReadingFrame,
         buildClassicalNahuatlOrderedVoiceVncApplicationFrame,
         isClassicalNahuatlOrderedVoiceVncApplicationFrame,
         buildClassicalNahuatlVncSentenceResultFrame,
@@ -8905,6 +9737,18 @@ export function createClassicalNahuatlVncApplicationModule(targetObject = global
       interpretClassicalNahuatlImpersonalResultReading;
     api.isClassicalNahuatlImpersonalResultReadingFrame =
       isClassicalNahuatlImpersonalResultReadingFrame;
+    api.buildClassicalNahuatlExtantDestockalMeaningFrame =
+      buildClassicalNahuatlExtantDestockalMeaningFrame;
+    api.isClassicalNahuatlExtantDestockalMeaningFrame =
+      isClassicalNahuatlExtantDestockalMeaningFrame;
+    api.buildClassicalNahuatlExtantDestockalNounRelationFrame =
+      buildClassicalNahuatlExtantDestockalNounRelationFrame;
+    api.isClassicalNahuatlExtantDestockalNounRelationFrame =
+      isClassicalNahuatlExtantDestockalNounRelationFrame;
+    api.interpretClassicalNahuatlExtantDestockalReading =
+      interpretClassicalNahuatlExtantDestockalReading;
+    api.isClassicalNahuatlExtantDestockalReadingFrame =
+      isClassicalNahuatlExtantDestockalReadingFrame;
     api.buildClassicalNahuatlOrderedVoiceVncApplicationFrame =
       buildClassicalNahuatlOrderedVoiceVncApplicationFrame;
     api.isClassicalNahuatlOrderedVoiceVncApplicationFrame =

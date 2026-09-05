@@ -864,7 +864,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                             id="classical-source-whole"
                             class="classical-source-parts__input"
                             data-classical-source-part-input="whole"
-                            aria-describedby="classical-source-commit-status"
+                            aria-describedby="classical-source-commit-status classical-source-reconstruction-note"
                             autocomplete="off"
                             autocorrect="off"
                             autocapitalize="none"
@@ -902,6 +902,14 @@ export function createClassicalShellModule(targetObject = globalThis) {
                           />
                         </label>
                       </div>
+                      <p
+                        id="classical-source-reconstruction-note"
+                        class="classical-source-reconstruction-note"
+                        role="note"
+                        aria-label="Source reconstruction"
+                        data-classical-source-authorizes="none"
+                        hidden
+                      ></p>
                       <details
                         id="classical-transcription-keyboard"
                         class="classical-transcription-keyboard classical-source-parts__keyboard"
@@ -1051,7 +1059,7 @@ export function createClassicalShellModule(targetObject = globalThis) {
                     >
                       <div class="classical-nnc-source-analysis__grid">
                         <label class="classical-rule-control" id="classical-construction-operation-field">
-                          <span class="classical-rule-control__label">Next operation layer from this Source</span>
+                          <span class="classical-rule-control__label">Operation for this Source</span>
                           <select id="classical-construction-operation" data-classical-rule-logic-control="nominal-construction-operation">
                             <option value="none" data-classical-source-unit="any" data-classical-application-operation="direct" data-classical-grammar-operation="direct generation" data-classical-result-unit="same" selected>No added operation layer · Source → same-rank Result</option>
                             <option
@@ -1097,7 +1105,7 @@ ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                             <span
                               class="classical-rule-control__label"
                               id="classical-capability-navigator-heading"
-                            >What can I do next?</span>
+                            >Available operations</span>
                             <select
                               id="classical-capability-navigator-operation"
                               data-classical-capability-navigator-select="true"
@@ -1106,7 +1114,7 @@ ${renderPlaceGentilicNncOptions("classical-construction-operation")}
                               aria-describedby="classical-capability-navigator-status"
                               disabled
                             >
-                              <option value="" selected>Apply a Source to see possible next pathways</option>
+                              <option value="" selected>Apply a Source to see available operations</option>
                             </select>
                           </label>
                           <p
@@ -2019,7 +2027,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" data-attitude-source-analysis="true" hidden>
-                          <span class="classical-rule-control__label">Source honorific formation</span>
+                          <span class="classical-rule-control__label">Honorific routes licensed by this Source</span>
                           <select id="classical-attitude-source-analysis" data-classical-rule-logic-control="attitude-source-analysis">
                             <option value="" selected>choose what this Source licenses</option>
                             <option value="causative-only">causative only</option>
@@ -2030,7 +2038,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" hidden>
-                          <span class="classical-rule-control__label">Formation</span>
+                          <span class="classical-rule-control__label">Honorific route</span>
                           <select id="classical-attitude-formation" data-classical-rule-logic-control="attitude-formation">
                             <option value="causative">causative reflexive</option>
                             <option value="applicative" selected>applicative reflexive</option>
@@ -2044,7 +2052,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                           </select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" data-attitude-derivation-option="true" hidden>
-                          <span class="classical-rule-control__label">Formation shape</span>
+                          <span class="classical-rule-control__label">Derived stem shape</span>
                           <select id="classical-attitude-derivation-option" data-classical-rule-logic-control="attitude-derivation-option"></select>
                         </label>
                         <label class="classical-rule-control" data-construction-for="attitude-vnc" hidden>
@@ -2962,7 +2970,7 @@ ${renderPlaceGentilicNncOptions("classical-place-gentilic-lexical-record")}
                         data-classical-grammar-authority="false"
                         aria-live="polite"
                         aria-atomic="true"
-                      >Choose a possible next pathway under Source.</p>
+                      >Choose an available operation for this Source.</p>
                       <div
                         class="classical-capability-operation-plan__choices"
                         id="classical-capability-operation-choices"
@@ -4649,11 +4657,11 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
         "classical-construction-operation"
       );
       if (operationLabel) {
-        operationLabel.textContent = "Next operation";
+        operationLabel.textContent = "Operation for this Source";
       }
       operationSelect?.setAttribute?.(
         "aria-label",
-        `Next operation from this ${activeUnitLabel} Source`
+        `Operation for this ${activeUnitLabel} Source`
       );
       const mountInStableOrder = (parent, nodes = []) => {
         const orderedNodes = nodes.filter(Boolean);
@@ -4675,6 +4683,7 @@ ${renderClassicalResultOutputScopeOptions("vnc")}
       mountInStableOrder(form, [
         root.querySelector?.(".classical-source-parts__mode"),
         root.querySelector?.(".classical-source-parts__grid"),
+        documentObject.getElementById("classical-source-reconstruction-note"),
         documentObject.getElementById("classical-transcription-keyboard"),
         documentObject.getElementById("classical-vnc-source-guide"),
         documentObject.getElementById("classical-nnc-source-guide"),

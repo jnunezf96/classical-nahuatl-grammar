@@ -65,7 +65,7 @@ export function createClassicalNahuatlSourceStemInventoryApi() {
       ["ē-hua", "intransitive", "24.3.2.a"],
       ["huā-qui", "intransitive", "24.3.1.a"], ["huāl-la-uh", "intransitive", "25.1"], ["hue-tz-ca", "intransitive", "25.2.4"], ["hue-tz-ca", "transitive", "25.2.4"],
       ["cel-i-ya", "intransitive", "22.6"], ["ihyā-ya", "intransitive", "22.6"], ["cah-ca-h", "intransitive", "22.6"], ["chic-ā-hua", "intransitive", "22.6"],
-      ["huē-i-ya", "intransitive", "22.6"], ["it-hui", "intransitive", "22.6"], ["petl-ā-ni", "intransitive", "22.6"], ["tlatz-i-ni", "intransitive", "22.6"],
+      ["huē-i-ya", "intransitive", "22.6"], ["it-hui", "intransitive", "22.6"], ["petl-ā-ni", "intransitive", "22.6"], ["tlatz-ī-ni", "intransitive", "22.6"],
       ["poy-ā-hua", "intransitive", "22.6"], ["yohua", "intransitive", "22.6"], ["ih-cahu-a-ca", "intransitive", "22.6"], ["cue-cuech-ca", "intransitive", "22.6"], ["izta-ya", "intransitive", "22.6"],
       ["huetzi", "intransitive", "26.4"], ["huī-tequi", "intransitive", "24.2"], ["huī-tequi", "transitive", "24.2"], ["ī", "transitive", "25.2"],
       ["ih-tlani", "transitive", "26.2"], ["ihc-i-hui", "intransitive", "25.2.4"], ["ihcuil-o-ā", "transitive", "26.9"], ["ih-ca", "intransitive", "11.4.1"], ["iht-o-ā", "transitive", "26.9"],

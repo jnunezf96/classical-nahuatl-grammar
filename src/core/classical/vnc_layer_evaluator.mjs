@@ -15,7 +15,7 @@ import {
   evaluateClassicalNahuatlGrammarSelection,
   getClassicalNahuatlInherentImpersonalSourceAnalysis,
   getClassicalNahuatlTlaImpersonalSourceAnalysis,
-} from "./vnc_lessons20_22_grammar.mjs?v=20260815-lesson23-complete-302";
+} from "./vnc_lessons20_22_grammar.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import {
   buildClassicalNahuatlParticipantRoleTransitionFrame,
 } from "./participant_frame.mjs?v=20260823-passive-formation-continuity-238";

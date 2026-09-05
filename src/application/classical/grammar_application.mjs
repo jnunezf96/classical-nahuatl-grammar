@@ -506,16 +506,12 @@ function buildClassicalLesson2OwnedWriting(
     writingCandidate?.kind
       === "classical-nahuatl-relational-nnc-relational-result"
     && writingCandidate?.authorizationStatus === "authorized"
-    && writingCandidate?.formulaSlots?.predicate
+    && writingCandidate?.typedSlotFrame?.slots
   ) {
-    parts = String(writingCandidate.formulaSlots.predicate)
-      .split("-")
-      .map((value, index) => getClassicalLesson2NonzeroPart(
-        index ? `relational-part-${index + 1}` : "relational-embed",
-        value,
-      ))
-      .filter(Boolean);
-    boundaryKind = "typed-relational-nnc";
+    parts = getClassicalLesson2NncParts(
+      writingCandidate.typedSlotFrame.slots,
+    );
+    boundaryKind = "typed-relational-nnc-slots";
   } else {
     const orderedFrames = findClassicalLesson2Frames(
       writingCandidate,
@@ -1376,6 +1372,21 @@ const CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS = Object.freeze({
     preflightKind: "classical-nahuatl-vnc-derivation-option-inventory",
     preflightSourceProperty: "sourceMachineryFrame",
   }),
+  "grammar:nominal-construction": Object.freeze({
+    sourceUnitKind: "compound-ordinary-nnc-source",
+    sourceValidatorNames: Object.freeze([
+      "isClassicalNahuatlNominalConstructionTypedSourceFrame",
+    ]),
+    preflightCapabilityName:
+      "issueClassicalNahuatlNominalConstructionTypedSourceBindingFrame",
+    preflightValidatorNames: Object.freeze([
+      "isClassicalNahuatlNominalConstructionTypedSourceBindingFrame",
+    ]),
+    preflightRequests: Object.freeze([Object.freeze({})]),
+    preflightKind:
+      "classical-nahuatl-nominal-construction-typed-source-binding-frame",
+    preflightSourceProperty: "exactSourceFrame",
+  }),
 });
 
 // A typed-Source navigator record is descriptive until its canonical owner
@@ -1412,6 +1423,16 @@ const CLASSICAL_GRAMMAR_TYPED_SOURCE_OPERATION_BINDING_CONTRACTS =
         "isClassicalNahuatlVncTypedSourceApplicationBindingFrame",
       exactSourceProperty: "exactSourceMachineryFrame",
       executionOperationId: "vnc:application",
+    }),
+    "grammar:nominal-construction": Object.freeze({
+      family: "nominal-compound",
+      bindingMode: "canonical-owner-binding",
+      issuerCapabilityName:
+        "issueClassicalNahuatlNominalConstructionTypedSourceBindingFrame",
+      validatorCapabilityName:
+        "isClassicalNahuatlNominalConstructionTypedSourceBindingFrame",
+      exactSourceProperty: "exactSourceFrame",
+      executionOperationId: "grammar:nominal-construction",
     }),
     "particle:result": Object.freeze({
       family: "source-independent-root-constructor",
@@ -1582,7 +1603,7 @@ function defineAxisSemanticFactRoles(roles = {}) {
   return Object.freeze({ ...roles });
 }
 
-// Owner-declared semantic taxonomy for the Lesson 2-19 application routes.
+// Owner-declared semantic taxonomy for the live application routes.
 // These declarations describe what each existing axis is; they do not create
 // another source model or allow the aggregate inventory to infer authority.
 const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
@@ -1904,6 +1925,20 @@ const FOUNDATION_AXIS_SEMANTIC_FACT_ROLES = Object.freeze({
     polarity: "genuine-user-choice",
     "formula-projection": "derived-fact",
     "written-boundary-realization": "boundary-conditioned-fact",
+  }),
+  "vnc:derivational-operation": defineAxisSemanticFactRoles({
+    "derivation-family": "genuine-user-choice",
+    "operation-order": "derived-fact",
+    "source-participants": "contextual-fact",
+    "target-participants": "derived-fact",
+  }),
+  "grammar:nominal-construction": defineAxisSemanticFactRoles({
+    "nominal-embed": "genuine-user-choice",
+    "compound-nnc": "genuine-user-choice",
+    "affective-nnc": "genuine-user-choice",
+    "cardinal-number": "genuine-user-choice",
+    "measure-modification": "genuine-user-choice",
+    "vacant-state": "derived-fact",
   }),
   "sentence:supplementation": defineAxisSemanticFactRoles({
     "principal-clause": "contextual-fact",
@@ -2717,6 +2752,8 @@ const CANONICAL_ARGUMENT_VALIDATOR_NAMES = Object.freeze([
   "isClassicalNahuatlSupplementationOperationRequest",
   "isClassicalNahuatlSupplementationFrame",
   "isClassicalNahuatlNominalConstructionSourceAuthorization",
+  "isClassicalNahuatlNominalConstructionTypedSourceFrame",
+  "isClassicalNahuatlNominalConstructionTypedSourceBindingFrame",
   "isClassicalNahuatlNominalConstructionResult",
   "isClassicalNahuatlNominalConstructionParadigmPlan",
   "isClassicalNahuatlNominalConstructionParadigmCoordinate",
@@ -3020,6 +3057,7 @@ function canonicalCapabilityNames() {
     ...Object.values(
       CLASSICAL_GRAMMAR_APPLICATION_TYPED_SOURCE_CONTRACTS,
     ).flatMap((contract) => [
+      ...contract.sourceValidatorNames,
       contract.preflightCapabilityName,
       ...contract.preflightValidatorNames,
     ]),
@@ -6983,6 +7021,15 @@ export function createClassicalGrammarApplicationApi(targetObject = globalThis) 
           && applicationResult?.canonicalResult?.operationFrame
             === canonicalNncContext.exactOperationFrame
         )
+        : frame.executionOperationId === "grammar:nominal-construction"
+          ? Boolean(
+            applicationResult?.canonicalResult?.navigatorSourceFrame
+              === frame.exactSource
+            && applicationResult?.canonicalResult
+              ?.navigatorSourceIdentityPreserved === true
+            && applicationResult?.canonicalResult?.constructionKind
+              === "compound-nnc"
+          )
         : applicationResult?.canonicalResult?.resultFrame
           ?.sourceMachineryFrame === frame.exactSource;
     if (

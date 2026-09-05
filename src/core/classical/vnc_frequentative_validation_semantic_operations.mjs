@@ -343,13 +343,207 @@ function buildProjection(runtime) {
   });
 }
 
+function buildFusedStockFrequentativeProjection(runtime) {
+  const probes = [
+    ["xa-ā-ni", "destockal-intransitive", "B"],
+    ["xe-ē-hui", "destockal-intransitive", "B"],
+    ["xi-ī-ni", "destockal-intransitive", "B"],
+    ["xo-ō-hui", "destockal-intransitive", "B"],
+    ["xo-ō-n-a", "destockal-causative", "B"],
+    ["xi-ī-ni-ā", "destockal-causative", "C"],
+    ["xe-ē-hu-a", "destockal-causative", "B"],
+  ];
+  let ruleContract = null;
+  const observations = probes.map(([sourceStem, lateVariant, verbClass]) => {
+    const causative = lateVariant === "destockal-causative";
+    const frame = runtime.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+      sourceStem, lateVariant, verbClass,
+      sourceValence: causative ? "specific-projective" : "intransitive",
+      objectKind: causative ? "specific-projective" : "none",
+      objectPerson: causative ? "3sg" : "",
+    }));
+    const operation = frame?.operationFrame;
+    const relation = operation?.operationFacts?.fusedStockFrequentativeFrame;
+    const coalescence = relation?.sourceCoalescenceFrame;
+    const formation = relation?.formation;
+    if (!ruleContract && relation) ruleContract = relation.ruleContract;
+    const exact = Boolean(relation && coalescence && formation
+      && runtime.isClassicalNahuatlClosureFrame(frame)
+      && runtime.isClassicalNahuatlOperationFrame(operation)
+      && frame.authorizationStatus === "authorized"
+      && relation.authorizationStatus === "authorized"
+      && relation.ruleContract === ruleContract
+      && relation.sourceAgreementFrame?.authorizationStatus === "authorized"
+      && relation.sourceAgreementFrame.sourceStem === operation.sourceStem
+      && coalescence.authorizationStatus === "authorized"
+      && coalescence.condition.rootFinalVowelMatchesStockFormative === true
+      && formation.retainedStock === coalescence.resultStock
+      && formation.stockQuantity === "long"
+      && formation.targetSuffix === (causative ? "tz-a" : "ca")
+      && formation.targetClass === operation.targetClass
+      && formation.targetStem === operation.operationFacts.activeFrequentativeStem
+      && operation.targetStem === formation.targetStem
+      && operation.operationFacts.stockLongVowelReduced === false
+      && operation.targetTypedVncSlotFrame === frame.finalTypedVncSlotFrame
+      && relation.canvasExampleAuthority === false
+      && relation.callerSuppliedGrammarAuthority === false
+      && relation.formulaStringAuthority === false
+      && relation.surfaceStringAuthority === false
+      && frame.finiteSurfaceFrame?.formulaDerivedFromWrittenProjection === false
+      && frame.finiteSurfaceFrame?.writtenDerivedFromFormulaProjection === false);
+    return {
+      exact,
+      sourceStem: operation?.sourceStem || "",
+      sourceCoalescence: coalescence || null,
+      formation: formation || null,
+      formula: frame?.formulaRealization || "",
+      surface: frame?.surfaceRealization || "",
+    };
+  });
+  const authorized = Boolean(ruleContract
+    && ruleContract.formationScope.outputFamilies.map(item => item.formative).join("|") === "ca|tz-a"
+    && ruleContract.longVowelRetention.inputQuantity === "long"
+    && ruleContract.longVowelRetention.normalOutputQuantity === "long"
+    && new Set(observations.map(item => item.formation?.targetSuffix)).size === 2
+    && new Set(observations.map(item => item.sourceCoalescence?.stockFormative)).size === 4
+    && observations.every(item => item.exact));
+  return deepFreeze({
+    kind: "classical-nahuatl-frequentative-validation-frame",
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized ? "" : "fused-stock-frequentative-observation-incomplete",
+    observationKind: "fused-stock-system",
+    constraints: { fusedStockVowelFrequentativeSystem: {
+      formationScope: {
+        rule: ruleContract?.formationScope || null,
+        sourceRelations: observations.map(item => ({
+          exact: item.exact, sourceStem: item.sourceStem,
+          sourceCoalescence: item.sourceCoalescence, formation: item.formation,
+        })),
+      },
+      longVowelRetention: {
+        rule: ruleContract?.longVowelRetention || null,
+        observations,
+      },
+    } },
+    typedFrameAuthority: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    storedExampleAuthority: false,
+    curriculumMetadataAuthority: false,
+  });
+}
+
+// Each lexical atom observes its own canonical target and real participant
+// slots. Citation requests choose witnesses; they never license input or fill
+// an expected meaning into the projection.
+function buildFusedStockLexicalProjection(runtime, lexicalSelection) {
+  const requests = {
+    popotza: [["po-pō-tz-a", "projective-nonhuman", "nonspecific-nonhuman"]],
+    tototza: [
+      ["to-tō-tz-a", "projective-human", "nonspecific-human"],
+      ["to-tō-tz-a", "projective-nonhuman", "nonspecific-nonhuman"],
+    ],
+    pipitza: [["pi-pī-tza", "projective-nonhuman", "nonspecific-nonhuman"]],
+  }[lexicalSelection] || [];
+  const observations = requests.map(([sourceStem, sourceValence, objectKind]) => {
+    const frame = runtime.evaluateClassicalNahuatlLateVncDerivation(baseRequest({
+      sourceStem, sourceValence, objectKind, objectPerson: "", verbClass: "B",
+      lateVariant: "destockal-lexicalized",
+    }));
+    const operation = frame?.operationFrame;
+    const relation = operation?.operationFacts?.lexicalFrequentativeMeaningFrame;
+    const binding = relation?.typedTargetBinding;
+    const typed = operation?.targetTypedVncSlotFrame;
+    const objectSlots = binding?.objectSlots || [];
+    const objectBindings = binding?.objectBindings || [];
+    const exact = Boolean(relation && binding && typed
+      && runtime.isClassicalNahuatlClosureFrame(frame)
+      && runtime.isClassicalNahuatlOperationFrame(operation)
+      && frame.authorizationStatus === "authorized"
+      && relation.authorizationStatus === "authorized"
+      && relation.lexicalIdentityFrame?.targetStem === operation.targetStem
+      && binding.targetTypedVncSlotFrame === typed
+      && frame.finalTypedVncSlotFrame === typed
+      && binding.predicateSlot === typed.slots.predicate
+      && binding.subjectSlot === typed.slots.subject
+      && objectSlots.length === 1
+      && objectSlots.every(slot => typed.slots.prePredicate.includes(slot))
+      && objectBindings.length === objectSlots.length
+      && objectBindings.every((item, index) => item.slot === objectSlots[index]
+        && item.objectRequest === binding.objectRequests[index])
+      && objectBindings[0].objectRequest?.objectKind === objectKind
+      && relation.availableReadings?.length > 0
+      && relation.meaningAssertionStatus === "available-not-asserted"
+      && relation.lexicalIdentityMatchDoesNotForceReading === true
+      && relation.sourceAdmissionAuthority === false
+      && relation.callerSuppliedGrammarAuthority === false
+      && relation.canvasExampleAuthority === false
+      && relation.formulaStringAuthority === false
+      && relation.surfaceStringAuthority === false
+      && frame.finiteSurfaceFrame?.formulaDerivedFromWrittenProjection === false
+      && frame.finiteSurfaceFrame?.writtenDerivedFromFormulaProjection === false);
+    return {
+      exact, lexicalMeaningRelation: relation || null,
+      participantSlots: objectBindings.map(({ slot, objectRequest }) => ({
+        ...compactSlot(slot), objectKind: objectRequest.objectKind,
+      })),
+      formula: frame?.formulaRealization || "",
+      surface: frame?.surfaceRealization || "",
+    };
+  });
+  const firstRelation = observations[0]?.lexicalMeaningRelation;
+  const authorized = observations.length > 0 && observations.every(item => item.exact
+    && item.lexicalMeaningRelation.lexicalIdentityFrame.targetIdentity
+      === firstRelation.lexicalIdentityFrame.targetIdentity
+    && item.lexicalMeaningRelation.availableReadings === firstRelation.availableReadings);
+  return deepFreeze({
+    kind: "classical-nahuatl-frequentative-validation-frame",
+    authorizationStatus: authorized ? "authorized" : "blocked",
+    blockReason: authorized ? "" : "fused-stock-lexical-observation-incomplete",
+    observationKind: "fused-stock-lexical", lexicalSelection,
+    constraints: { fusedStockVowelFrequentativeSystem: { lexicalCausatives: {
+      [lexicalSelection]: {
+        lexicalIdentity: observations[0]?.lexicalMeaningRelation?.lexicalIdentityFrame || null,
+        availableReadings: observations[0]?.lexicalMeaningRelation?.availableReadings || [],
+        observations,
+        citationParticipantFramesAreExhaustive: false,
+        sourceAdmissionAuthority: false,
+      },
+    } } },
+    typedFrameAuthority: true,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    storedExampleAuthority: false,
+    curriculumMetadataAuthority: false,
+  });
+}
+
 export function createClassicalFrequentativeValidationSemanticOperationsApi(
   targetObject = globalThis,
 ) {
   const issuedFrames = new WeakSet();
   let cachedProjection = null;
+  let cachedFusedStockProjection = null;
+  const cachedLexicalProjections = new Map();
 
-  function buildClassicalNahuatlFrequentativeValidationFrame() {
+  function buildClassicalNahuatlFrequentativeValidationFrame({ observation = "all", lexicalSelection = "" } = {}) {
+    if (observation === "fused-stock-lexical") {
+      if (!cachedLexicalProjections.has(lexicalSelection)) {
+        const projection = buildFusedStockLexicalProjection(targetObject, lexicalSelection);
+        if (projection.authorizationStatus === "authorized") issuedFrames.add(projection);
+        cachedLexicalProjections.set(lexicalSelection, projection);
+      }
+      return cachedLexicalProjections.get(lexicalSelection);
+    }
+    if (observation === "fused-stock-system") {
+      if (!cachedFusedStockProjection) {
+        cachedFusedStockProjection = buildFusedStockFrequentativeProjection(targetObject);
+        if (cachedFusedStockProjection.authorizationStatus === "authorized") {
+          issuedFrames.add(cachedFusedStockProjection);
+        }
+      }
+      return cachedFusedStockProjection;
+    }
     if (!cachedProjection) {
       cachedProjection = buildProjection(targetObject);
       if (cachedProjection.authorizationStatus === "authorized") {

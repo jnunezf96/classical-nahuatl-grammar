@@ -15,8 +15,16 @@ const spec = {
       "assertionId": "classical-type-one-final-i-addition:p2294-when-derivation-takes-place-by-addition-the-causative-a",
       "canonicalPath": "derivations.ilpi.options.0.targetStem"
     },
+    "claim-p2294::aci-p199-l018-5551fb6cd1-type-one-final-i-addition-procedure": {
+      "assertionId": "classical-type-one-final-i-addition:aci-p199-l018-5551fb6cd1-type-one-final-i-addition-procedure",
+      "canonicalPath": "derivations.ilpi.options.0.procedure"
+    },
     "claim-p2295::p2295-the-derived-causative-stem-of-this-kind-of-verb": {
       "assertionId": "classical-type-one-final-i-addition:p2295-the-derived-causative-stem-of-this-kind-of-verb",
+      "canonicalPath": "derivations.ilpi.options.0.targetClass"
+    },
+    "claim-p2295::aci-p199-l022-15b91eac39-type-one-final-i-addition-target-class-c": {
+      "assertionId": "classical-type-one-final-i-addition:aci-p199-l022-15b91eac39-type-one-final-i-addition-target-class-c",
       "canonicalPath": "derivations.ilpi.options.0.targetClass"
     }
   },

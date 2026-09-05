@@ -212,6 +212,9 @@ function run(ctx = {}) {
     const navigatorRoot = ctx.document.getElementById(
         "classical-capability-navigator"
     );
+    const navigatorHeading = ctx.document.getElementById(
+        "classical-capability-navigator-heading"
+    );
     const construction = ctx.document.getElementById(
         "classical-construction-operation"
     );
@@ -221,6 +224,7 @@ function run(ctx = {}) {
         role: navigatorRoot.dataset.classicalCapabilitySourceRole,
         units: navigatorRoot.dataset.classicalCapabilitySourceUnitKinds,
         status: navigatorRoot.dataset.classicalCapabilityNavigatorStatus,
+        heading: navigatorHeading.textContent,
         continuationMutationEnabled:
             construction.dataset.classicalCapabilityContinuationActive
                 || "",
@@ -251,6 +255,7 @@ function run(ctx = {}) {
                     navigatorRoot.dataset.classicalCapabilitySourceUnitKinds,
                 status:
                     navigatorRoot.dataset.classicalCapabilityNavigatorStatus,
+                heading: navigatorHeading.textContent,
                 continuationMutationEnabled:
                     construction.dataset
                         .classicalCapabilityContinuationActive || "",
@@ -262,6 +267,7 @@ function run(ctx = {}) {
                 role: "exact-owner-issued-source",
                 units: "ordinary-nnc-source",
                 status: "owner-checked",
+                heading: "Continue from this exact Source",
                 continuationMutationEnabled: "",
             },
             vnc: {
@@ -272,8 +278,62 @@ function run(ctx = {}) {
                 role: "exact-owner-issued-source",
                 units: "vnc-derivational-machinery-source",
                 status: "owner-checked",
+                heading: "Continue from this exact Source",
                 continuationMutationEnabled: "",
             },
+        }
+    );
+
+    const applicationOption = navigatorControl.querySelector(
+        'option[value="vnc:application"]'
+    );
+    const lateDerivationalOption = navigatorControl.querySelector(
+        'option[value="vnc:derivational-operation"]'
+    );
+    s.eq(
+        "a typed VNC Source keeps causative and applicative in normal Grammar while a late operation honestly waits for a Result",
+        {
+            application: {
+                status:
+                    applicationOption?.dataset
+                        .classicalCapabilityStatus || "",
+                group:
+                    applicationOption?.dataset
+                        .classicalCapabilityPathwayGroup || "",
+                groupLabel: applicationOption?.parentElement?.label || "",
+                disabled: applicationOption?.disabled,
+            },
+            lateOperation: {
+                status:
+                    lateDerivationalOption?.dataset
+                        .classicalCapabilityStatus || "",
+                group:
+                    lateDerivationalOption?.dataset
+                        .classicalCapabilityPathwayGroup || "",
+                groupLabel:
+                    lateDerivationalOption?.parentElement?.label || "",
+                disabled: lateDerivationalOption?.disabled,
+            },
+            hasNeedsResult:
+                Number(
+                    navigatorRoot.dataset
+                        .classicalCapabilityNeedsAResultCount
+                ) > 0,
+        },
+        {
+            application: {
+                status: "available",
+                group: "choose-details",
+                groupLabel: "Choose details",
+                disabled: false,
+            },
+            lateOperation: {
+                status: "missing-prerequisite",
+                group: "needs-a-result",
+                groupLabel: "Needs a Result",
+                disabled: true,
+            },
+            hasNeedsResult: true,
         }
     );
 
@@ -289,11 +349,12 @@ function run(ctx = {}) {
         pathwayGroupContractEnd
     );
     s.ok(
-        "the navigator separates readiness into four honest user-facing groups",
+        "the navigator separates readiness into five honest user-facing groups",
         [
             'label: "Ready now"',
             'label: "Choose details"',
             'label: "Needs another Source"',
+            'label: "Needs a Result"',
             'label: "Not compatible"',
         ].every(label => pathwayGroupContract.includes(label))
             && pathwayGroupContract.indexOf('id: "ready-now"')
@@ -304,7 +365,18 @@ function run(ctx = {}) {
                 )
             && pathwayGroupContract.indexOf(
                 'id: "needs-another-source"'
-            ) < pathwayGroupContract.indexOf('id: "not-compatible"')
+            ) < pathwayGroupContract.indexOf('id: "needs-a-result"')
+            && pathwayGroupContract.indexOf('id: "needs-a-result"')
+                < pathwayGroupContract.indexOf('id: "not-compatible"')
+            && pathwayGroupContract.includes(
+                '"canonical-result-required"'
+            )
+            && pathwayGroupContract.includes(
+                '"continuation-unit-mismatch-owner-rejection-not-proven"'
+            )
+            && pathwayGroupContract.includes(
+                "CLASSICAL_CAPABILITY_NEEDS_RESULT_REASONS.has("
+            )
             && rendering.includes(
                 'targetObject.document.createElement("optgroup")'
             )
@@ -355,20 +427,28 @@ function run(ctx = {}) {
     ctx.syncClassicalCapabilityNavigator(unresolvedNnc);
     ctx.syncClassicalCapabilityNavigator(vnc);
     const retainedVncSelection = navigatorSelect.value;
-    ctx.syncClassicalCapabilityNavigator(refreshedVncGrammar);
+    const refreshedVncNavigator =
+        ctx.syncClassicalCapabilityNavigator(refreshedVncGrammar);
     const retainedAfterGrammarChoice = navigatorSelect.value;
-    ctx.syncClassicalCapabilityNavigator(ordinaryNnc);
+    const changedSourceNavigator =
+        ctx.syncClassicalCapabilityNavigator(ordinaryNnc);
     s.eq(
         "a typed Source pathway survives waiting and equivalent Grammar rerenders but not a genuine Source-kind change",
         {
             afterWaitingRerender: retainedVncSelection,
             afterGrammarChoice: retainedAfterGrammarChoice,
+            afterGrammarChoiceExactSource:
+                refreshedVncNavigator?.exactSource === vncSource,
             afterSourceKindChange: navigatorSelect.value,
+            afterSourceKindChangeExactSource:
+                changedSourceNavigator?.exactSource === ordinarySource,
         },
         {
             afterWaitingRerender: "vnc:application",
             afterGrammarChoice: "vnc:application",
+            afterGrammarChoiceExactSource: true,
             afterSourceKindChange: "",
+            afterSourceKindChangeExactSource: true,
         }
     );
 
@@ -379,6 +459,12 @@ function run(ctx = {}) {
             nncTypedSourceFrame: { ...ordinarySource },
         },
     };
+    const copiedNavigator = ctx.getClassicalCapabilityNavigatorFrame(
+        copiedSurface
+    );
+    const copiedSync = ctx.syncClassicalCapabilityNavigator(copiedSurface);
+    const copiedPresentationRefresh =
+        ctx.getClassicalCapabilityNavigatorFrame(null);
     s.eq(
         "copied Source data cannot enter the interface navigator",
         {
@@ -386,11 +472,16 @@ function run(ctx = {}) {
                 ctx.getClassicalGrammarExactTypedSourceFromSurfaceFrame(
                     copiedSurface
                 ),
-            navigator: ctx.getClassicalCapabilityNavigatorFrame(
-                copiedSurface
-            ),
+            navigator: copiedNavigator,
+            synchronizedNavigator: copiedSync,
+            presentationRefreshNavigator: copiedPresentationRefresh,
         },
-        { source: null, navigator: null }
+        {
+            source: null,
+            navigator: null,
+            synchronizedNavigator: null,
+            presentationRefreshNavigator: null,
+        }
     );
 
     const precedenceStart = rendering.indexOf(

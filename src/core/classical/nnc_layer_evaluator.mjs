@@ -2854,6 +2854,19 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
       };
       const requestedSentenceType = sentenceTypeAliases[sentenceTypeKey] || "";
       const polarity = normalizeClassicalNahuatlNncToken(options.polarity || "positive").toLowerCase();
+      const canonicalNuclearWrittenResultSupplied =
+        Object.prototype.hasOwnProperty.call(
+          options,
+          "canonicalNuclearWrittenResult"
+        );
+      const canonicalNuclearWrittenResult =
+        canonicalNuclearWrittenResultSupplied
+        && typeof targetObject.isClassicalNahuatlLesson2WrittenResult === "function"
+        && targetObject.isClassicalNahuatlLesson2WrittenResult(
+          options.canonicalNuclearWrittenResult
+        )
+          ? options.canonicalNuclearWrittenResult
+          : null;
       const discourseFrame = options.discourseFrame?.kind === "classical-nahuatl-pronominal-nnc-pronominal-discourse-frame" ? options.discourseFrame : null;
       const lesson16InformationQuestion = Boolean(discourseFrame?.inherentInterrogative && discourseFrame?.interrogativeReadingActive && polarity === "positive");
       const dependentClauseIntroducedByIn = discourseFrame?.dependentClauseIntroducedByIn === true;
@@ -2875,18 +2888,38 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         resultOperationId: "nnc-sentence-composition",
         requestedOutputKind: "selected-nnc-sentence-surface"
       });
-      const authorized = typedNnc && sentenceTypeKnown && polarityKnown && grammarOperationEvaluationFrame.authorizationStatus === "authorized";
-      const blockReason = authorized ? "" : !typedNnc ? "authorized-typed-nnc-slot-frame-required" : !sentenceTypeKnown ? "unknown-nnc-sentence-type" : !polarityKnown ? "unknown-nnc-sentence-polarity" : grammarOperationEvaluationFrame.blockReason;
+      const authorized = typedNnc
+        && sentenceTypeKnown
+        && polarityKnown
+        && (!canonicalNuclearWrittenResultSupplied
+          || canonicalNuclearWrittenResult)
+        && grammarOperationEvaluationFrame.authorizationStatus === "authorized";
+      const blockReason = authorized
+        ? ""
+        : !typedNnc
+          ? "authorized-typed-nnc-slot-frame-required"
+          : !sentenceTypeKnown
+            ? "unknown-nnc-sentence-type"
+            : !polarityKnown
+              ? "unknown-nnc-sentence-polarity"
+              : canonicalNuclearWrittenResultSupplied
+                && !canonicalNuclearWrittenResult
+                ? "owner-issued-lesson2-written-result-required"
+                : grammarOperationEvaluationFrame.blockReason;
       const baseNncFormula = authorized ? renderClassicalNahuatlNncSlotFrameFormula(nncSlotFrame) : "";
       const slots = nncSlotFrame?.slots || {};
       const participantCarriers = Array.isArray(slots.participant?.slots) ? slots.participant.slots.map(slot => slot?.carrier || "") : [];
       const stateCarriers = Array.isArray(slots.state?.slots) ? slots.state.slots.map(slot => slot?.carrier || "") : [];
       const canonicalNuclearSurfaceBeforeBoundary = authorized ? [slots.subject?.pers1, slots.subject?.pers2, ...participantCarriers, ...stateCarriers, slots.predicate?.stem, slots.number?.num1, slots.number?.num2].map(realizeClassicalNahuatlNncSurfaceCarrier).join("") : "";
       const canonicalNuclearSurface = authorized
-        ? realizeClassicalNahuatlNncContextualBoundarySurface(
-            nncSlotFrame,
-            canonicalNuclearSurfaceBeforeBoundary
-          )
+        ? canonicalNuclearWrittenResult
+          ? normalizeClassicalNahuatlNncToken(
+              canonicalNuclearWrittenResult.surface
+            )
+          : realizeClassicalNahuatlNncContextualBoundarySurface(
+              nncSlotFrame,
+              canonicalNuclearSurfaceBeforeBoundary
+            )
         : "";
       const nuclearSurface = fusedAdjunctorInSurface || canonicalNuclearSurface;
       const lesson16WhatPersonNegative =
@@ -2932,6 +2965,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         sentenceFormulaDisplay,
         sentenceSurface,
         nuclearSurface,
+        canonicalNuclearWrittenResult,
+        canonicalNuclearSurfaceAuthority: canonicalNuclearWrittenResult
+          ? "owner-issued-lesson2-written-result"
+          : "typed-nnc-slot-boundary-realization",
         canonicalNuclearSurfaceBeforeBoundary,
         canonicalNuclearSurface,
         sentenceParticles,
@@ -2955,6 +2992,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         issuedNncSentenceSurfaceFrames.set(frame, Object.freeze({
           sourceNncSlotFrame: frame.sourceNncSlotFrame,
           baseNncFormula: frame.baseNncFormula,
+          canonicalNuclearWrittenResult:
+            frame.canonicalNuclearWrittenResult,
+          canonicalNuclearSurfaceAuthority:
+            frame.canonicalNuclearSurfaceAuthority,
           canonicalNuclearSurface: frame.canonicalNuclearSurface,
           sentenceFormulaDisplay: frame.sentenceFormulaDisplay,
           sentenceSurface: frame.sentenceSurface,
@@ -2977,6 +3018,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         && frame.sourceNncSlotFrame === receipt.sourceNncSlotFrame
         && isClassicalNahuatlNncSlotFrame(frame.sourceNncSlotFrame)
         && frame.baseNncFormula === receipt.baseNncFormula
+        && frame.canonicalNuclearWrittenResult
+          === receipt.canonicalNuclearWrittenResult
+        && frame.canonicalNuclearSurfaceAuthority
+          === receipt.canonicalNuclearSurfaceAuthority
         && frame.canonicalNuclearSurface === receipt.canonicalNuclearSurface
         && frame.sentenceFormulaDisplay === receipt.sentenceFormulaDisplay
         && frame.sentenceSurface === receipt.sentenceSurface
@@ -6929,8 +6974,10 @@ export function createClassicalNahuatlNncLayerEvaluatorApi(targetObject = global
         const quantitiveAuthorityRecord = options.quantitiveAuthorityRecord;
         subtypeDetail = isClassicalNahuatlQuantitiveAuthorityRecord(quantitiveAuthorityRecord) ? quantitiveAuthorityRecord.matrixFamily : "";
       } else if (subtype === "quantitive-personal-compound") subtypeDetail = "quantitive-personal-compound";
-      const referentKey = normalizeClassicalNahuatlNncToken(options.subjectReferentCategory || options.subjectReferentAnimacy || "").toLowerCase();
-      const humanSubject = ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(subject) || referentKey === "human";
+      const referentKey = normalizeClassicalNahuatlNncToken(options.subjectReferentCategory || options.subjectReferentAnimacy || options.humanness || "").toLowerCase();
+      const humanSubject = referentKey === "nonhuman"
+        ? false
+        : ["1sg", "2sg", "3sg", "1pl", "2pl", "3pl"].includes(subject) || referentKey === "human";
       return {
         subtype,
         subtypeDetail,

@@ -34,7 +34,7 @@ import {
   getClassicalCanvasGrammarFactRecord,
   isClassicalCanvasGrammarFactRecord,
   listClassicalCanvasGrammarFactRecords,
-} from "./canvas_grammar_fact_registry.mjs?v=20260811-canvas-fact-browser-012";
+} from "./canvas_grammar_fact_registry.mjs?v=20260904-ni-stock-ocr-corrections-414";
 import {
   getClassicalCanvasGrammarFactPresentationRoute,
   listClassicalCanvasGrammarFactPresentationRoutes,

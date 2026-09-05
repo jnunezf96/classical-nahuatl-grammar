@@ -7412,7 +7412,7 @@ At times the tla-impersonal stem expresses that which in English would be consid
 meteorological verb (see § 22.1).
 (petl-ā-ni) = nonan, to glisten/shine/sparkle > (tla-petl-ā-ni) = impers, to lightning, for
 lightning to flash
-(tlatz-i-ni) = nonan, to make an explosive sound> (tla-tlatz-ī-ni) = impers, to thunder, for
+(tlatz-ī-ni) = nonan, to make an explosive sound> (tla-tlatz-ī-ni) = impers, to thunder, for
 there to be a thunderclap
 (poy-ā-hua) = nonan, to tum dark> (tla-poy-ā-hua) = impers, to become dark, for night
 to fall
@@ -7798,7 +7798,7 @@ on hitting a surface
 (chay-ā-ni) = (for maize, etc.) to spill out over the ground  
 (chay-ā-hui) = (for maize, etc.) to spill out over the ground  
 Exception:  
-(tlatz-i-ni) = to make a bursting/explosive noise  
+(tlatz-ī-ni) = to make a bursting/explosive noise  
 2. Stock formative ī (with short /i/ as the vowel in the root):  
 (chip-ī-ni) = to drip
 (pitz-ī-ni) = (for an egg) to become broken open; (for a fruit) to become bruised; (for a swelling) to burst
@@ -7829,7 +7829,7 @@ Causative Verbstems (First Type)
 (cot-ō-ni) = (for rope/cord/thread) to become broken  
 (pot-ō-ni) = to stink  
 Exceptions:  
-(ōl-i-ni) = to move; to move along a path; to tremble/quake [Notice the long vowel of the root.]  
+(ōl-ī-ni) = to move; to move along a path; to tremble/quake [Notice the long vowel of the root.]  
 (tzop-i-ni) = to become punctured [same as (tzop-ō-ni)]  
 (poch-i-ni) = (for strands of cotton fiber,etc.) to become disentangled/separated  
 (tzotl-ā-ni) = to become shiny with a glaze or varnish
@@ -7870,7 +7870,7 @@ a. The majority of the ni destockal stems prefer to add the causative a suffix t
 
 of the intrasitive stem; for example:
 (chacu-ā-ni) = to become wet > tē-(chacu-ā-ni-ā) = to cause s.o. to get wet
-(ōl-i-ni) = to move > m-ō-(ōl-i-ni-ā) = to cause o.s. to move; i.e., to get a move on
+(ōl-ī-ni) = to move > m-ō-(ōl-ī-ni-ā) = to cause o.s. to move; i.e., to get a move on
 (tzoy-ō-ni) = to become fried > tla-(tzoy-ō-ni-ā) = to fry s.th.
 Of the ni stems listed in subsections 1 through 4, only the three that follow prefer to replace the stem-final i with the causative a:
 (tlap-ā-ni) = to break/become broken > tla-(tlap-ā-n-a) = to cause s.th. to break; to break s.th
@@ -7895,7 +7895,7 @@ Only a few hui stems prefer to add the causative a to the end of the intransitiv
 Causative Verbstems (First Type) 189
 *(mi-ī-ni) > (mī-ni) = to become arrow pierced > causative, tla-(mī-n-a) = to pierce s.th. with an arrow [Cf., (mī)-tl-, “arrow.”]
 *(xi-ī-ni) > (xī-ni) = (for a wall) to collapse; (for a mountainside) to slide, collapse > causative, tla-(xī-ni-ā) = to ravel s.th.; to rip out s.th. (i.e., stitches)
-*(ce-e-hui) > (cē-hui) = to become cold; (for a fire) to go out ) > causative, tla-(cē-hui-ā) = to cause s.th. to become cold, to chill s.th.; to extinguish s.th. (i.e., a fire/candle flame/etc.) [ < (ce)-tl-, “ice/icicle.” See also the remark about (cē-hua) in § 24.6.2.]
+*(ce-ē-hui) > (cē-hui) = to become cold; (for a fire) to go out ) > causative, tla-(cē-hui-ā) = to cause s.th. to become cold, to chill s.th.; to extinguish s.th. (i.e., a fire/candle flame/etc.) [ < (ce)-tl-, “ice/icicle.” See also the remark about (cē-hua) in § 24.6.2.]
 
 Among the destockal verbstems with ni as the stem formative are two that are no longer extant but serve as the source for derived stems (see § 27.4.3):
 * (po-ō-ni) > * (pō-ni) = to emit smoke
@@ -9209,7 +9209,7 @@ tē- ~ tla-(to-tō-tz-a) = to spur s.o. ors.th. on
 
 Frequentative Verbstems
 (pi-pī-ca)= to dribble[< *(pi-ni) < *(pi-i-ni)]
-tla-(pi-pi-tz-a) = to cause s.th. to dribble
+tla-(pi-pī-tza) = to cause s.th. to dribble
 233
 4. At times the tz-a suffixal unit (which obviously contains the causative suffix a) can have
 an applicative meaning (an example has already been given in subsection 3 above). In these
@@ -14498,7 +14498,7 @@ b. The source impersonal verbstem may be created by the impersonal tla:
 (tla-yohui-liz)-tli- = process of becoming night; shade, shadow [ < (tla-yohua), "to
 become night"]
 (tla-cua-cual-a-ca-liz)-tli- = act of thundering [ < (tla-cua-cual-a-ca), "to thunder"]
-(tla-tlatz-i-ni-liz)-tli- = act of thundering, thunderclap [ < (tla-tlatz-i-ni), "to thunder,
+(tla-tlatz-ī-ni-liz)-tli- = act of thundering, thunderclap [ < (tla-tlatz-ī-ni), "to thunder,
 for a thunderclap to occur"]
 4. An active-action nounstem can be used as the embed in a compound stem.
 a. With a verbstem filling the matrix subposition:

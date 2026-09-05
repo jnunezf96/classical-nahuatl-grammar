@@ -11888,7 +11888,7 @@ const records = [
     "semanticOwnerId": "classical-destockal-ni-hui-lexical-inventory",
     "canvasSection": "§24.5.1",
     "canvasSpan": "7801",
-    "statement": "(tlatz-i-ni) = to make a bursting/explosive noise",
+    "statement": "(tlatz-ī-ni) = to make a bursting/explosive noise",
     "projectRole": "read-only-grammar-fact",
     "contentFingerprint": "fnv1a32:b0cc30c2"
   },
@@ -11951,7 +11951,7 @@ const records = [
     "semanticOwnerId": "classical-destockal-ni-hui-lexical-inventory",
     "canvasSection": "§24.5.3",
     "canvasSpan": "7832",
-    "statement": "ōl-i-ni can mean ‘to move.’",
+    "statement": "ōl-ī-ni can mean ‘to move.’",
     "projectRole": "read-only-grammar-fact",
     "contentFingerprint": "fnv1a32:fa25b712"
   },
@@ -11960,7 +11960,7 @@ const records = [
     "semanticOwnerId": "classical-destockal-ni-hui-lexical-inventory",
     "canvasSection": "§24.5.3",
     "canvasSpan": "7832",
-    "statement": "ōl-i-ni can mean ‘to move along a path.’",
+    "statement": "ōl-ī-ni can mean ‘to move along a path.’",
     "projectRole": "read-only-grammar-fact",
     "contentFingerprint": "fnv1a32:b9936b6c"
   },
@@ -11969,7 +11969,7 @@ const records = [
     "semanticOwnerId": "classical-destockal-ni-hui-lexical-inventory",
     "canvasSection": "§24.5.3",
     "canvasSpan": "7832",
-    "statement": "ōl-i-ni can mean ‘to tremble’ or ‘to quake.’",
+    "statement": "ōl-ī-ni can mean ‘to tremble’ or ‘to quake.’",
     "projectRole": "read-only-grammar-fact",
     "contentFingerprint": "fnv1a32:930b0e6e"
   },

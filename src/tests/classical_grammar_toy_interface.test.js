@@ -83,7 +83,7 @@ function run() {
         "the toy exposes one plain action in Source, Grammar, Result, and Continue order",
         shell.includes("Type a stem, then use this Source.")
         && shell.includes("Use this Source</span>")
-        && shell.includes("What can I do next?</span>")
+        && shell.includes("Available operations</span>")
         && shell.includes("Choose only the change you want to make.")
         && shell.includes(">Make Result</button>")
         && shell.includes("See the exact Result, then continue from it.")
@@ -264,7 +264,10 @@ function run() {
             "const ownerProjection = frame?.diagrammaticProjection || null;"
         )
         && rendering.includes(
-            '=== "typed-personal-name-slots"'
+            `[
+          "typed-personal-name-slots",
+          "typed-relational-nnc-slots",
+        ].includes(ownerProjection.projectionAuthority)`
         )
         && rendering.includes(
             'copyAction.textContent = "Copy form";'

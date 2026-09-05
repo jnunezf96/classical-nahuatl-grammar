@@ -85,6 +85,66 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
     const CLASSICAL_NAHUATL_VNC_DERIVATION_MAX_VALIDATION_DEPTH = 12;
     const CLASSICAL_NAHUATL_TYPE_TWO_CAUSATIVE_INTERNAL_BRIDGE_KIND =
       "classical-nahuatl-type-two-causative-internal-nonactive-bridge-frame";
+    const CLASSICAL_NAHUATL_DESTOCKAL_TYPE_INVENTORY = Object.freeze([
+      Object.freeze({
+        typeId: "long-vowel-ni-or-hui",
+        stockFormativeQuantity: "long",
+        stemFormatives: Object.freeze(["ni", "hui"]),
+      }),
+      Object.freeze({
+        typeId: "long-vowel-hua",
+        stockFormativeQuantity: "long",
+        stemFormatives: Object.freeze(["hua"]),
+      }),
+      Object.freeze({
+        typeId: "short-vowel-hui",
+        stockFormativeQuantity: "short",
+        stemFormatives: Object.freeze(["hui"]),
+      }),
+    ]);
+    const CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME = Object.freeze({
+      kind: "classical-nahuatl-destockal-ni-hui-class-system-frame",
+      version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
+      authorizationStatus: "authorized",
+      typeId: "long-vowel-ni-or-hui",
+      sourceAssignment: Object.freeze({
+        rank: "intransitive-verbstem",
+        stemFormatives: Object.freeze(["ni", "hui"]),
+        classId: "B",
+        andrewsSection: "24.5.6",
+        contextualFactIsUserChoice: false,
+      }),
+      targetAssignments: Object.freeze({
+        replacement: Object.freeze({
+          procedure: "replacement",
+          outputSequences: Object.freeze(["n-a", "hu-a"]),
+          classId: "B",
+          andrewsSection: "24.5.8",
+          contextualFactIsUserChoice: false,
+        }),
+        addition: Object.freeze({
+          procedure: "addition",
+          outputSequences: Object.freeze(["ni-ā", "hui-ā"]),
+          classId: "C",
+          andrewsSection: "24.5.8",
+          contextualFactIsUserChoice: false,
+        }),
+      }),
+      contextualFactIsUserChoice: false,
+      canvasExampleAuthority: false,
+      callerSuppliedGrammarAuthority: false,
+    });
+    const CLASSICAL_NAHUATL_DESTOCKAL_LONG_STOCK_HARMONY = Object.freeze({
+      stockFormativeQuantity: "long",
+      controller: Object.freeze({ rank: "root", vowelQuantity: "short" }),
+      realizationsByRootVowel: Object.freeze({
+        a: Object.freeze({ default: "ā" }),
+        i: Object.freeze({ default: "ī" }),
+        o: Object.freeze({ default: "ō" }),
+        e: Object.freeze({ default: "ō", withHuiAlternative: "ē" }),
+      }),
+      normalRelation: "root-vowel-harmony",
+    });
     const classicalNahuatlIssuedTypeTwoCausativeInternalBridgeFrames =
       new WeakSet();
     // One typed Source plus one lexical license has one internal prerequisite.
@@ -133,6 +193,15 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceObjectCount: 0,
       targetStem: "tēm-a",
       targetClass: "B",
+      sourceMeaning: "become-brimming-full",
+      targetMeaning: "cause-something-to-fill-a-container",
+      additionalTargetReadings: Object.freeze([Object.freeze({
+        meaning: "put-something-somewhere",
+        relation: "also"
+      }), Object.freeze({
+        meaning: "bake-something-in-a-small-oven",
+        relation: "lexical-extension"
+      })]),
       ruleId: "cn-l24-2431a-temi-tem-a",
       ruleTagId: "cn-l24-type-one-causative-a",
       andrewsSection: "24.3.1.a",
@@ -236,6 +305,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["ahhuiā", "ya"]),
         canonicalRoot: "ahhuiā",
+        themeHostRank: "root",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -253,6 +323,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["ce", "ce", "ya"]),
         canonicalRoot: "ce-ce",
+        themeHostRank: "root",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -270,6 +341,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["xoco", "ya"]),
         canonicalRoot: "xoco",
+        themeHostRank: "root",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -287,6 +359,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["chichi", "ya"]),
         canonicalRoot: "chichi",
+        themeHostRank: "root",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -304,6 +377,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["te", "ti", "ya"]),
         canonicalRoot: "te-ti",
+        themeHostRank: "verbstem",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -321,6 +395,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["xo", "xō", "hui", "ya"]),
         canonicalRoot: "xo-xō-hui",
+        themeHostRank: "verbstem",
         disposition: "licensed-lia",
         ruleId: "cn-l25-2552-root-plus-ya-lia",
         derivationRoute: "type-two-lia-from-typed-root-plus-ya",
@@ -337,6 +412,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["tlaōco", "ya"]),
         canonicalRoot: "tlaōco",
+        themeHostRank: "root",
         disposition: "blocked-lia-use-l-tia",
         blockedRuleId: "cn-l25-2552-root-plus-ya-lia",
         andrewsSection: "25.4.8",
@@ -352,6 +428,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         sourceAnalysisCategory: "root-plus-ya",
         canonicalSegments: Object.freeze(["āhui", "ya"]),
         canonicalRoot: "āhui",
+        themeHostRank: "root",
         disposition: "blocked-lia-use-l-tia",
         blockedRuleId: "cn-l25-2552-root-plus-ya-lia",
         andrewsSection: "25.4.8",
@@ -372,10 +449,46 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       canonicalSegments: Object.freeze(["cual", "ā", "ni"]),
       andrewsSections: Object.freeze(["24.5", "25.3"])
     }), Object.freeze({
+      analysisId: "cn-l24-2451-tlatzini-stock-harmony-exception",
+      sourceAliases: Object.freeze(["tlatz-ī-ni", "tlatzīni"]),
+      categories: Object.freeze(["destockal-ni-candidate"]),
+      canonicalSegments: Object.freeze(["tlatz", "ī", "ni"]),
+      lexicalReadings: Object.freeze(["make-a-bursting-or-explosive-noise"]),
+      andrewsSections: Object.freeze(["22.6", "24.5.1"])
+    }), Object.freeze({
+      analysisId: "cn-l24-2453-olini-long-root-source",
+      sourceAliases: Object.freeze(["ōl-ī-ni", "ōlīni"]),
+      categories: Object.freeze(["destockal-ni-candidate"]),
+      canonicalSegments: Object.freeze(["ōl", "ī", "ni"]),
+      lexicalReadings: Object.freeze(["move", "move-along-a-path", "tremble-or-quake"]),
+      andrewsSections: Object.freeze(["24.5.3", "24.5.7"])
+    }), Object.freeze({
+      analysisId: "cn-l24-2432b-cocoya-root-plus-ya",
+      sourceAliases: Object.freeze(["coco-ya", "cocoya"]),
+      categories: Object.freeze(["root-plus-ya"]),
+      canonicalSegments: Object.freeze(["coco", "ya"]),
+      canonicalRoot: "coco",
+      themeHostRank: "root",
+      andrewsSections: Object.freeze(["24.3.2.b"])
+    }), Object.freeze({
+      analysisId: "cn-l24-2432b-tlapihuiya-root-plus-ya",
+      sourceAliases: Object.freeze([
+        "tlap-ī-hui-ya",
+        "tlapīhuiya",
+        "tlap-i-hui-ya",
+        "tlapihuiya"
+      ]),
+      categories: Object.freeze(["root-plus-ya"]),
+      canonicalSegments: Object.freeze(["tlap-ī-hui", "ya"]),
+      canonicalRoot: "tlap-ī-hui",
+      themeHostRank: "verbstem",
+      andrewsSections: Object.freeze(["24.3.2.b"])
+    }), Object.freeze({
       analysisId: "cn-l24-2432b-yocoya-retentive-exception",
       sourceAliases: Object.freeze(["yōco-ya", "yōcoya", "yoco-ya", "yocoya"]),
       categories: Object.freeze(["root-plus-ya", "root-plus-ya-retentive-exception"]),
       canonicalSegments: Object.freeze(["yōco", "ya"]),
+      themeHostRank: "root",
       andrewsSections: Object.freeze(["24.3.2.b note"])
     }), Object.freeze({
       analysisId: "cn-l25-253-mahui-hidden-o-hua",
@@ -406,19 +519,36 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceAliases: Object.freeze(["mī-ni", "mīni"]),
       categories: Object.freeze(["destockal-ni-candidate", "fused-destockal-ni-exact"]),
       canonicalSegments: Object.freeze(["mi", "ī", "ni"]),
+      reconstructionDisposition: Object.freeze({ extantSourceStem: "mī-ni" }),
       andrewsSections: Object.freeze(["24.5.9"])
     }), Object.freeze({
       analysisId: "cn-l24-2459-xini-fused-destockal",
-      sourceAliases: Object.freeze(["xī-ni", "xīni", "xi-ni", "xini"]),
+      sourceAliases: Object.freeze(["xī-ni", "xīni"]),
       categories: Object.freeze(["destockal-ni-candidate", "fused-destockal-ni-exact"]),
       canonicalSegments: Object.freeze(["xi", "ī", "ni"]),
+      reconstructionDisposition: Object.freeze({ extantSourceStem: "xī-ni" }),
       andrewsSections: Object.freeze(["24.5.9"])
     }), Object.freeze({
       analysisId: "cn-l24-2459-cehui-fused-destockal",
-      sourceAliases: Object.freeze(["cē-hui", "cēhui"]),
+      sourceAliases: Object.freeze(["cē-hui", "cēhui", "ce-ē-hui"]),
       categories: Object.freeze(["destockal-hui-candidate", "fused-destockal-hui-exact"]),
       canonicalSegments: Object.freeze(["ce", "ē", "hui"]),
+      reconstructionDisposition: Object.freeze({ extantSourceStem: "cē-hui" }),
       andrewsSections: Object.freeze(["24.5.9"])
+    }), Object.freeze({
+      analysisId: "cn-l24-2462-cehua-fused-destockal",
+      sourceAliases: Object.freeze(["cē-hua", "cēhua", "ce-ē-hua"]),
+      categories: Object.freeze(["destockal-long-vowel-hua", "fused-destockal-hua-exact"]),
+      canonicalSegments: Object.freeze(["ce", "ē", "hua"]),
+      reconstructionDisposition: Object.freeze({ extantSourceStem: "cē-hua" }),
+      andrewsSections: Object.freeze(["24.6.2"])
+    }), Object.freeze({
+      analysisId: "cn-l24-2462-ehua-fused-destockal",
+      sourceAliases: Object.freeze(["ē-hua", "ēhua", "e-ē-hua"]),
+      categories: Object.freeze(["destockal-long-vowel-hua", "fused-destockal-hua-exact"]),
+      canonicalSegments: Object.freeze(["e", "ē", "hua"]),
+      reconstructionDisposition: Object.freeze({ extantSourceStem: "ē-hua" }),
+      andrewsSections: Object.freeze(["24.6.2"])
     }), Object.freeze({
       analysisId: "cn-l24-2457b-tlapihui-addition-preference",
       sourceAliases: Object.freeze(["tlap-ī-hui", "tlapīhui", "tlap-i-hui", "tlapihui"]),
@@ -431,16 +561,59 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       categories: Object.freeze([disposition.sourceAnalysisCategory]),
       canonicalSegments: disposition.canonicalSegments,
       canonicalRoot: disposition.canonicalRoot,
+      themeHostRank: disposition.themeHostRank || "root",
       andrewsSections: disposition.evidenceSections,
     }))]);
+    const CLASSICAL_NAHUATL_TYPE_ONE_ROOT_PLUS_YA_EXACT_PROFILES = Object.freeze([
+      Object.freeze({
+        sourceAliases: Object.freeze(["coco-ya", "cocoya"]),
+        causativeCitationRole: "tē",
+        implicitAgentObjectKind: "nonspecific-human"
+      }),
+      Object.freeze({
+        sourceAliases: Object.freeze([
+          "tlap-ī-hui-ya",
+          "tlapīhuiya",
+          "tlap-i-hui-ya",
+          "tlapihuiya"
+        ]),
+        causativeCitationRole: "tla",
+        implicitAgentObjectKind: "nonspecific-nonhuman"
+      }),
+      Object.freeze({
+        sourceAliases: Object.freeze(["yōco-ya", "yōcoya", "yoco-ya", "yocoya"]),
+        causativeCitationRole: "tla",
+        implicitAgentObjectKind: "nonspecific-nonhuman",
+        sourceMeaning: "become-comely-or-well-formed",
+        targetMeaning: "cause-something-to-become-well-formed",
+        additionalTargetReadings: Object.freeze([Object.freeze({
+          meaning: "form-invent-or-create-something",
+          relation: "lexical-extension"
+        })])
+      })
+    ]);
     const CLASSICAL_NAHUATL_TYPE_ONE_CAUSATIVE_EXACT_ALTERNATIONS = Object.freeze([Object.freeze({
-      sourceAliases: Object.freeze(["ē-hua", "ēhua"]),
+      sourceAliases: Object.freeze(["ē-hua", "ēhua", "e-ē-hua"]),
       sourceClasses: Object.freeze(["A"]),
       sourceValences: Object.freeze(["intransitive"]),
       sourceObjectCount: 0,
+      sourceAnalysisCategory: "fused-destockal-hua-exact",
       markedTargetStem: "ē-hu-a",
       unmarkedTargetStem: "e-hu-a",
       targetClass: "B",
+      sourceMeaning: "arise-or-depart",
+      additionalSourceReadings: Object.freeze([Object.freeze({
+        meaning: "lift-off-in-flight",
+        relation: "bird-animate-nonhuman-subject"
+      })]),
+      targetMeaning: "lift-something",
+      additionalTargetReadings: Object.freeze([Object.freeze({
+        meaning: "carry-something-heavy",
+        relation: "heavy-nonhuman-object"
+      }), Object.freeze({
+        meaning: "sing-something",
+        relation: "song-nonhuman-object"
+      })]),
       ruleId: "cn-l24-2432a-ehua-e-hu-a",
       andrewsSection: "24.3.2.a",
       derivationRoute: "type-one-final-a-morphological-replacement-exact",
@@ -533,11 +706,19 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       markedTargetStem: "tlap-ī-hui-ā",
       unmarkedTargetStem: "tlap-ī-hui-ā",
       targetClass: "C",
+      sourceAnalysisCategory: "root-plus-ya",
       ruleId: "cn-l24-2432b-tlapihuiya-tlapihuia",
       andrewsSection: "24.3.2.b",
       derivationRoute: "type-one-root-plus-ya-replacement-exact-quantity",
       procedure: "delete-derivational-ya-preserve-internal-long-i-and-append-long-causative-a",
-      targetConstruction: Object.freeze({ operation: "replace-morpheme", remove: "ya", preserveInternalQuantity: true, add: "ā" })
+      targetConstruction: Object.freeze({
+        operation: "replace-morpheme",
+        remove: "ya",
+        preserveInternalQuantity: true,
+        add: "ā",
+        underlyingAdd: "a",
+        lengtheningEnvironment: "preceding-vowel"
+      })
     }), Object.freeze({
       sourceAliases: Object.freeze(["ōl-ī-ni"]),
       sourceClasses: Object.freeze(["B"]),
@@ -546,6 +727,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       markedTargetStem: "ōl-ī-ni-ā",
       unmarkedTargetStem: "ol-i-ni-a",
       targetClass: "C",
+      sourceAnalysisCategory: "destockal-ni-candidate",
       ruleId: "cn-l24-2457a-olini-olinia",
       andrewsSection: "24.5.7",
       derivationRoute: "type-one-destockal-ni-addition-exact-quantity",
@@ -559,6 +741,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       markedTargetStem: "chay-ā-hu-a",
       unmarkedTargetStem: "chay-a-hu-a",
       targetClass: "B",
+      sourceAnalysisCategory: "destockal-hui-candidate",
       ruleId: "cn-l24-2457b-chayahui-chayahua",
       andrewsSection: "24.5.7",
       derivationRoute: "type-one-destockal-hui-replacement-exact-quantity",
@@ -572,6 +755,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       markedTargetStem: "tlap-ī-hui-ā",
       unmarkedTargetStem: "tlap-ī-hui-ā",
       targetClass: "C",
+      sourceAnalysisCategory: "destockal-hui-candidate",
       ruleId: "cn-l24-2457b-tlapihui-tlapihuia",
       andrewsSection: "24.5.7",
       derivationRoute: "type-one-destockal-hui-addition-exact-long-a",
@@ -663,6 +847,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       markedTargetStem: "yōco-y-a",
       unmarkedTargetStem: "yōco-y-a",
       targetClass: "B",
+      sourceAnalysisCategory: "root-plus-ya-retentive-exception",
       ruleId: "cn-l24-2432b-yocoya-retains-y-a",
       andrewsSection: "24.3.2.b note",
       derivationRoute: "type-one-root-plus-ya-retentive-exception-exact",
@@ -696,7 +881,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceAnalysisCategory: "fused-destockal-ni-exact",
       targetConstruction: Object.freeze({ operation: "recover-fused-stock-and-replace", underlyingSource: "mi-ī-ni", preserveCoalescedQuantity: true, remove: "i-ni", add: "i-n-a" })
     }), Object.freeze({
-      sourceAliases: Object.freeze(["xī-ni", "xīni", "xi-ni", "xini"]),
+      sourceAliases: Object.freeze(["xī-ni", "xīni"]),
       sourceClasses: Object.freeze(["B"]),
       targetStem: "xī-ni-ā",
       causativeCitationRole: "tla",
@@ -708,7 +893,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       sourceAnalysisCategory: "fused-destockal-ni-exact",
       targetConstruction: Object.freeze({ operation: "recover-fused-stock-and-append", underlyingSource: "xi-ī-ni", preserve: "ni", add: "ā", rootVowelChange: "i-to-ī" })
     }), Object.freeze({
-      sourceAliases: Object.freeze(["cē-hui", "cēhui"]),
+      sourceAliases: Object.freeze(["cē-hui", "cēhui", "ce-ē-hui"]),
       sourceClasses: Object.freeze(["B"]),
       targetStem: "cē-hui-ā",
       causativeCitationRole: "tla",
@@ -716,7 +901,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       ruleId: "cn-l24-2459-cehui-ce-hui-a",
       andrewsSection: "24.5.9",
       derivationRoute: "type-one-fused-destockal-cehui-addition-exact",
-      procedure: "preserve-fused-ce-e-hui-source-and-add-causative-a",
+      procedure: "preserve-fused-ce-ē-hui-source-and-add-causative-a",
       sourceAnalysisCategory: "fused-destockal-hui-exact",
       targetConstruction: Object.freeze({ operation: "recover-fused-stock-and-append", underlyingSource: "ce-ē-hui", preserve: "cē-hui", add: "ā" })
     })]);
@@ -2991,40 +3176,58 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       const lexicalStem = getClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem);
       const analyses = [];
       const analysisIds = new Set();
-      const buildStockVowelHarmonyFrame = (root = "", stockFormative = "", stemFormative = "") => {
+      const buildStockVowelHarmonyFrame = (root = "", stockFormative = "", stemFormative = "", lexicalStatus = "") => {
         const normalizedRoot = normalizeClassicalNahuatlVncDerivationStem(root).replace(/^-+|-+$/gu, "");
         const normalizedStock = normalizeClassicalNahuatlVncDerivationStem(stockFormative).replace(/^-+|-+$/gu, "");
         const normalizedTheme = normalizeClassicalNahuatlVncDerivationStem(stemFormative).replace(/^-+|-+$/gu, "");
-        if (!normalizedRoot || !/[āēīō]/u.test(normalizedStock) || !["ni", "hui"].includes(normalizedTheme)) {
+        if (!normalizedRoot || !/^[āēīō]$/u.test(normalizedStock) || !["ni", "hui"].includes(normalizedTheme)) {
           return null;
         }
         const rootVowels = normalizedRoot.match(/[aeioāēīō]/gu) || [];
         const rootVowel = rootVowels.at(-1) || "";
-        const expectedByRootVowel = Object.freeze({
-          a: "ā", ā: "ā",
-          e: "ē", ē: "ē",
-          i: "ī", ī: "ī",
-          o: "ō", ō: "ō"
-        });
-        const expectedStockFormative = expectedByRootVowel[rootVowel] || "";
-        const regularHarmony = Boolean(expectedStockFormative && expectedStockFormative === normalizedStock);
+        const rootVowelQuantity = /^[aeio]$/u.test(rootVowel)
+          ? "short" : /^[āēīō]$/u.test(rootVowel) ? "long" : "unresolved";
+        const normalRuleApplicable = rootVowelQuantity === "short";
+        const regularLongStockHarmony = CLASSICAL_NAHUATL_DESTOCKAL_LONG_STOCK_HARMONY;
+        const realization = regularLongStockHarmony.realizationsByRootVowel[rootVowel];
+        const expectedStockFormative = realization?.default || "";
+        const allowedStockFormatives = Object.freeze([
+          ...(expectedStockFormative ? [expectedStockFormative] : []),
+          ...(normalizedTheme === "hui" && realization?.withHuiAlternative
+            ? [realization.withHuiAlternative] : []),
+        ]);
+        const regularHarmony = allowedStockFormatives.includes(normalizedStock);
+        const exceptionalAnalysis = normalRuleApplicable && !regularHarmony;
+        const lexicalExceptionLicensed = exceptionalAnalysis
+          && lexicalStatus === "lexically-licensed-source-analysis";
         return Object.freeze({
           kind: "classical-nahuatl-destockal-stock-vowel-harmony-frame",
           version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
           authorizationStatus: "authorized",
           root: normalizedRoot,
           rootVowel,
+          rootVowelQuantity,
+          normalRuleApplicable,
           stockFormative: normalizedStock,
           stemFormative: normalizedTheme,
           expectedStockFormative,
-          relation: !expectedStockFormative
-            ? "root-vowel-cue-unresolved"
+          allowedStockFormatives,
+          regularLongStockHarmony,
+          relation: !normalRuleApplicable
+            ? rootVowelQuantity === "long"
+              ? "outside-normal-short-root-domain"
+              : "root-vowel-cue-unresolved"
             : regularHarmony
               ? "regular-root-vowel-harmony"
               : "exceptional-stock-vowel-analysis",
           regularHarmony,
-          exceptionalAnalysis: Boolean(expectedStockFormative && !regularHarmony),
-          userChoiceRequired: Boolean(expectedStockFormative && !regularHarmony),
+          exceptionalAnalysis,
+          lexicalExceptionLicensed,
+          exceptionAuthority: !exceptionalAnalysis ? ""
+            : lexicalExceptionLicensed ? "typed-lexical-source-analysis"
+              : "source-analysis-selection-required",
+          userChoiceRequired: exceptionalAnalysis && !lexicalExceptionLicensed,
+          surfaceShapeExceptionAuthority: false,
           canvasExampleAuthority: false,
           callerSuppliedGrammarAuthority: false
         });
@@ -3075,7 +3278,143 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           callerSuppliedGrammarAuthority: false
         });
       };
-      const addAnalysis = ({ analysisId = "", category = "", segments = [], root = "", stockFormative = "", stemFormative = "", analysisAuthority = "andrews-final-shape-category", lexicalStatus = "shape-licensed-candidate", andrewsSections = [], sourceAnalysisSelectionRequired = false, shortHuiCausativeRelationFrame = null } = {}) => {
+      const getDestockalTypeId = (
+        category = "",
+        stockFormative = "",
+        stemFormative = "",
+      ) => {
+        if (!String(category).includes("destockal")) return "";
+        const longStock = /^[āēīō]$/u.test(stockFormative);
+        const shortStock = /^[aeio]$/u.test(stockFormative);
+        if (longStock && ["ni", "hui"].includes(stemFormative)) {
+          return "long-vowel-ni-or-hui";
+        }
+        if (longStock && stemFormative === "hua") {
+          return "long-vowel-hua";
+        }
+        if (shortStock && stemFormative === "hui") {
+          return "short-vowel-hui";
+        }
+        return "";
+      };
+      const buildDestockalStructureFrame = ({
+        category = "",
+        root = "",
+        stockFormative = "",
+        stemFormative = "",
+      } = {}) => {
+        const typeId = getDestockalTypeId(
+          category,
+          stockFormative,
+          stemFormative,
+        );
+        if (!root || !stockFormative || !stemFormative || !typeId) {
+          return null;
+        }
+        const stock = joinClassicalNahuatlVncDerivationMorphemes(
+          root,
+          stockFormative,
+        );
+        const verbstem = joinClassicalNahuatlVncDerivationMorphemes(
+          stock,
+          stemFormative,
+        );
+        return Object.freeze({
+          kind: "classical-nahuatl-destockal-structure-frame",
+          version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
+          authorizationStatus: "authorized",
+          definition: Object.freeze({
+            term: "destockal-verbstem",
+            processKind: "stock-mediated-two-step-derivation",
+            processStepCount: 2,
+            intermediateRank: "stock",
+          }),
+          rankTopology: Object.freeze({
+            order: Object.freeze(["root", "stock", "stem"]),
+            finalRankSubtype: "intransitive-verbstem",
+          }),
+          rankPrivileges: Object.freeze({
+            rootToVerbstem: "lexically-licensed",
+            stockToVerbstem: "forbidden",
+            stockRequiresStemFormative: true,
+          }),
+          steps: Object.freeze({
+            stockFormation: Object.freeze({
+              ordinal: 1,
+              input: root,
+              inputRank: "root",
+              operation: "suffix-derivation",
+              formative: stockFormative,
+              formativeRole: "stock-formative",
+              output: stock,
+              outputRank: "stock",
+            }),
+            stemFormation: Object.freeze({
+              ordinal: 2,
+              input: stock,
+              inputRank: "stock",
+              operation: "suffix-derivation",
+              formative: stemFormative,
+              formativeRoles: Object.freeze(["stem-formative", "theme"]),
+              output: verbstem,
+              outputRank: "intransitive-verbstem",
+            }),
+          }),
+          typeId,
+          typeInventory: CLASSICAL_NAHUATL_DESTOCKAL_TYPE_INVENTORY,
+          classSystemFrame: typeId === "long-vowel-ni-or-hui"
+            ? CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME
+            : null,
+          typedRankRestrictionOnly: true,
+          surfaceShapeIsNotAnAdmissionGate: true,
+          canvasExampleAuthority: false,
+          callerSuppliedGrammarAuthority: false,
+        });
+      };
+      const buildThemeFrame = ({
+        category = "",
+        root = "",
+        stockFormative = "",
+        stemFormative = "",
+        themeHostRank = "",
+      } = {}) => {
+        const isDestockal = String(category).includes("destockal");
+        const isYa = String(category).includes("root-plus-ya")
+          && stemFormative === "ya";
+        if ((!isDestockal && !isYa) || !root || !stemFormative) {
+          return null;
+        }
+        const hostRank = isDestockal
+          ? "stock"
+          : themeHostRank === "verbstem" ? "verbstem" : "root";
+        const host = isDestockal
+          ? joinClassicalNahuatlVncDerivationMorphemes(root, stockFormative)
+          : root;
+        return Object.freeze({
+          kind: "classical-nahuatl-theme-formation-frame",
+          version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
+          authorizationStatus: "authorized",
+          formative: stemFormative,
+          role: "stem-formative",
+          terminology: Object.freeze({
+            preferredTerm: "theme",
+            exactTerm: "thematic-morpheme",
+          }),
+          function: "attach-to-a-morphological-unit-to-create-a-stem",
+          inputRank: "morphological-unit",
+          possibleOutputRanks: Object.freeze(["verbstem", "nounstem"]),
+          host,
+          hostRank,
+          outputRank: isDestockal
+            ? "intransitive-verbstem" : "verbstem",
+          normalHostRanks: Object.freeze(
+            isYa ? ["root", "verbstem"] : [hostRank],
+          ),
+          canvasExampleAuthority: false,
+          callerSuppliedGrammarAuthority: false,
+        });
+      };
+      const addAnalysis = ({ analysisId = "", category = "", segments = [], root = "", stockFormative = "", stemFormative = "", themeHostRank = "", analysisAuthority = "andrews-final-shape-category", lexicalStatus = "shape-licensed-candidate", andrewsSections = [], sourceAnalysisSelectionRequired = false, shortHuiCausativeRelationFrame = null, lexicalReadings = [], reconstructionDisposition = null } = {}) => {
         const normalizedSegments = segments.map(segment => normalizeClassicalNahuatlVncDerivationStem(segment).replace(/^-+|-+$/gu, "")).filter(Boolean);
         if (!analysisId || !category || analysisIds.has(analysisId)) {
           return;
@@ -3089,6 +3428,38 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           normalizedStockFormative,
           normalizedStemFormative,
         );
+        const destockalStructureFrame = buildDestockalStructureFrame({
+          category,
+          root: normalizedRoot,
+          stockFormative: normalizedStockFormative,
+          stemFormative: normalizedStemFormative,
+        });
+        const themeFrame = buildThemeFrame({
+          category,
+          root: normalizedRoot,
+          stockFormative: normalizedStockFormative,
+          stemFormative: normalizedStemFormative,
+          themeHostRank,
+        });
+        // §§24.5.9 and 24.6.2 mark the underlying source as reconstructed. This lexical
+        // annotation neither generates a stem nor makes a starred input nonextant.
+        const reconstructionNotationFrame = reconstructionDisposition
+          && ["long-vowel-ni-or-hui", "long-vowel-hua"].includes(destockalStructureFrame?.typeId)
+          ? Object.freeze({
+            kind: "classical-nahuatl-destockal-reconstruction-notation-frame",
+            notation: "*",
+            notationScope: "underlying-destockal-source",
+            status: "reconstructed-underlying-source-of-extant-fused-stem",
+            underlyingStem: destockalStructureFrame.steps.stemFormation.output,
+            extantSourceStem: reconstructionDisposition.extantSourceStem,
+            destockalStructureFrame,
+            grammarAuthority: false,
+            sourceAdmissionAuthority: false,
+            formulaStringAuthority: false,
+            surfaceStringAuthority: false,
+            canvasExampleAuthority: false,
+            callerSuppliedGrammarAuthority: false,
+          }) : null;
         analyses.push(Object.freeze({
           analysisId,
           category,
@@ -3096,10 +3467,15 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           root: normalizedRoot,
           stockFormative: normalizedStockFormative,
           stemFormative: normalizedStemFormative,
+          destockalStructureFrame,
+          themeFrame,
+          ...(reconstructionNotationFrame ? { reconstructionNotationFrame } : {}),
+          lexicalReadings: Object.freeze([...lexicalReadings]),
           stockVowelHarmonyFrame: buildStockVowelHarmonyFrame(
             normalizedRoot,
             normalizedStockFormative,
             normalizedStemFormative,
+            lexicalStatus,
           ),
           shortStockVowelSelectionFrame,
           shortHuiCausativeRelationFrame,
@@ -3122,11 +3498,17 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
               ? exactWitness.canonicalSegments.slice(0, -1).join("-")
               : exactWitness.canonicalSegments[0])
             || "",
-          stockFormative: exactWitness.canonicalSegments.length > 2 ? exactWitness.canonicalSegments.at(-2) : "",
+          stockFormative: category.includes("destockal")
+            && exactWitness.canonicalSegments.length > 2
+            ? exactWitness.canonicalSegments.at(-2) : "",
           stemFormative: exactWitness.canonicalSegments.at(-1) || "",
+          themeHostRank: exactWitness.themeHostRank || "",
           analysisAuthority: "typed-lexical-source-analysis",
           lexicalStatus: "lexically-licensed-source-analysis",
-          andrewsSections: exactWitness.andrewsSections
+          andrewsSections: exactWitness.andrewsSections,
+          lexicalReadings: exactWitness.lexicalReadings || [],
+          reconstructionDisposition: ["fused-destockal-ni-exact", "fused-destockal-hui-exact", "fused-destockal-hua-exact"].includes(category)
+            ? exactWitness.reconstructionDisposition : null,
         }));
       }
       const destockalOaMatch = lexicalStem.match(/^(.*?)([iao])hui$/u);
@@ -3172,7 +3554,7 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         });
       }
       const destockalHuaMatch = lexicalStem.match(/^(.*?)([āē])hua$/u);
-      if (destockalHuaMatch?.[1]) {
+      if (destockalHuaMatch?.[1] && !exactWitness?.categories.includes("destockal-long-vowel-hua")) {
         addAnalysis({
           analysisId: `cn-l24-boundary-free-destockal-${destockalHuaMatch[2]}-hua:${lexicalStem}`,
           category: "destockal-long-vowel-hua",
@@ -3536,6 +3918,20 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         scopeSection: option.scopeSection || "",
         scopeRule: option.scopeRule || "",
         participantRule: option.participantRule || "",
+        sourceMeaning: option.sourceMeaning || "",
+        additionalSourceReadings: Array.isArray(option.additionalSourceReadings)
+          ? option.additionalSourceReadings.map(reading => ({
+            meaning: reading?.meaning || "",
+            relation: reading?.relation || ""
+          }))
+          : [],
+        targetMeaning: option.targetMeaning || "",
+        additionalTargetReadings: Array.isArray(option.additionalTargetReadings)
+          ? option.additionalTargetReadings.map(reading => ({
+            meaning: reading?.meaning || "",
+            relation: reading?.relation || ""
+          }))
+          : [],
         authorityStatus: option.authorityStatus,
         derivationLicenseId: option.derivationLicenseId || "",
         licensedSourceClass: option.licensedSourceClass || "",
@@ -3556,6 +3952,8 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           option.typeTwoInternalBridgeFrame?.canonicalSignature || "",
         sourceAnalysisSignature: option.sourceAnalysisFrame?.canonicalSignature || "",
         sourceAnalysisId: option.sourceAnalysisId || "",
+        destockalClassAssignmentFrame:
+          option.destockalClassAssignmentFrame || null,
         sourceAnalysisSelectionRequired: option.sourceAnalysisSelectionRequired === true,
         sourceFinalShapeFrame: getClassicalNahuatlVncDerivationFinalShapeFingerprint(option.sourceFinalShapeFrame),
         sourceInternalMorphology: getClassicalNahuatlVncDerivationInternalMorphologyFingerprint(option.sourceInternalMorphology),
@@ -4318,6 +4716,118 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
             .includes(option.ruleId)
         )) || null;
     }
+    function buildClassicalNahuatlDestockalClassAssignmentFrame(option = {}) {
+      const sourceAnalysisFrame = option.sourceAnalysisFrame;
+      const sourceAnalysisId = String(option.sourceAnalysisId || "");
+      const sourceAnalysisIsSigned = Boolean(
+        sourceAnalysisId
+        && sourceAnalysisFrame
+        && classicalNahuatlIssuedVncDerivationSourceAnalysisFrames.has(
+          sourceAnalysisFrame,
+        )
+        && sourceAnalysisFrame.authorizationStatus === "authorized"
+        && sourceAnalysisFrame.canonicalSignature
+          === signClassicalNahuatlVncDerivationValue(
+            getClassicalNahuatlVncDerivationSourceAnalysisSignaturePayload(
+              sourceAnalysisFrame,
+            ),
+          )
+      );
+      if (
+        !sourceAnalysisIsSigned
+        || option.derivationType !== "causative"
+        || option.derivationSubtype !== "type-one"
+        || sourceAnalysisFrame.sourceClass
+          !== CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME
+            .sourceAssignment.classId
+        || sourceAnalysisFrame.sourceValence !== "intransitive"
+        || option.licensedSourceClass !== sourceAnalysisFrame.sourceClass
+        || option.licensedSourceValence !== sourceAnalysisFrame.sourceValence
+      ) {
+        return null;
+      }
+      const sourceAnalysis = sourceAnalysisFrame.analyses.find(candidate => (
+        candidate.analysisId === sourceAnalysisId
+      )) || null;
+      if (
+        !sourceAnalysis
+        || !["destockal-ni-candidate", "destockal-hui-candidate"]
+          .includes(sourceAnalysis.category)
+        || sourceAnalysis.destockalStructureFrame?.typeId
+          !== CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME.typeId
+        || sourceAnalysis.destockalStructureFrame?.classSystemFrame
+          !== CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME
+        || !CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME
+          .sourceAssignment.stemFormatives
+          .includes(sourceAnalysis.stemFormative)
+      ) {
+        return null;
+      }
+      const targetConstruction = option.targetConstruction || {};
+      const sourceStemFormative = sourceAnalysis.stemFormative;
+      let procedure = "";
+      let outputSequence = "";
+      if (
+        targetConstruction.operation === "append"
+        && targetConstruction.preserveSource === true
+        && targetConstruction.add === "ā"
+      ) {
+        procedure = "addition";
+        outputSequence = `${sourceStemFormative}-ā`;
+      } else if (
+        sourceStemFormative === "ni"
+        && targetConstruction.operation === "replace-final"
+        && targetConstruction.remove === "i"
+        && targetConstruction.add === "a"
+      ) {
+        procedure = "replacement";
+        outputSequence = "n-a";
+      } else if (
+        sourceStemFormative === "hui"
+        && (
+          (
+            targetConstruction.operation === "replace-final"
+            && targetConstruction.remove === "i"
+            && targetConstruction.add === "a"
+          )
+          || (
+            targetConstruction.operation === "replace-morpheme"
+            && targetConstruction.remove === "hui"
+            && targetConstruction.add === "hu-a"
+          )
+        )
+      ) {
+        procedure = "replacement";
+        outputSequence = "hu-a";
+      }
+      const targetAssignment =
+        CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME
+          .targetAssignments[procedure] || null;
+      if (!targetAssignment?.outputSequences.includes(outputSequence)) {
+        return null;
+      }
+      return Object.freeze({
+        kind: "classical-nahuatl-destockal-class-assignment-frame",
+        version: CLASSICAL_NAHUATL_VNC_DERIVATION_VERSION,
+        authorizationStatus: "authorized",
+        sourceAnalysisId,
+        sourceTypeId: sourceAnalysis.destockalStructureFrame.typeId,
+        sourceStemFormative,
+        sourceClass: sourceAnalysisFrame.sourceClass,
+        sourceValence: sourceAnalysisFrame.sourceValence,
+        procedure,
+        outputSequence,
+        targetClass: targetAssignment.classId,
+        classAssignmentAuthority:
+          "signed-source-analysis-and-typed-target-construction",
+        suffixOnlyInference: false,
+        classSystemFrame:
+          CLASSICAL_NAHUATL_DESTOCKAL_NI_HUI_CLASS_SYSTEM_FRAME,
+        contextualFactIsUserChoice: false,
+        canvasExampleAuthority: false,
+        callerSuppliedGrammarAuthority: false,
+      });
+    }
     function finalizeClassicalNahuatlVncDerivationOption(sourceDescriptor = {}, option = {}) {
       const finalized = {
         ...option,
@@ -4345,6 +4855,13 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
         || finalized.derivationSubtype
         || "type-two";
       finalized.formationType = finalized.subtype;
+      const destockalClassAssignmentFrame =
+        buildClassicalNahuatlDestockalClassAssignmentFrame(finalized);
+      if (destockalClassAssignmentFrame) {
+        finalized.destockalClassAssignmentFrame =
+          destockalClassAssignmentFrame;
+        finalized.targetClass = destockalClassAssignmentFrame.targetClass;
+      }
       finalized.lesson20RecordSignature = getClassicalNahuatlRecordSignature(finalized.lesson20NonactiveStemRecord);
       finalized.lexicalEvidenceMatches = getClassicalNahuatlKarttunen1992DerivationEvidenceMatches({
         derivationType: finalized.derivationType,
@@ -4453,6 +4970,14 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       const candidates = [];
       const exactWitness = CLASSICAL_NAHUATL_TYPE_ONE_CAUSATIVE_EXACT_WITNESSES.find(witness => hasClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem, witness.sourceStem) && witness.sourceClass === sourceDescriptor.sourceClass && witness.sourceValence === sourceDescriptor.sourceValence && witness.sourceObjectCount === sourceDescriptor.sourceObjectCount) || null;
       const exactAlternation = CLASSICAL_NAHUATL_TYPE_ONE_CAUSATIVE_EXACT_ALTERNATIONS.find(formation => formation.sourceAliases.some(alias => hasClassicalNahuatlVncDerivationLexicalKey(sourceDescriptor.sourceStem, alias)) && formation.sourceClasses.includes(sourceDescriptor.sourceClass) && formation.sourceValences.includes(sourceDescriptor.sourceValence) && formation.sourceObjectCount === sourceDescriptor.sourceObjectCount) || null;
+      const exactRootPlusYaProfile = CLASSICAL_NAHUATL_TYPE_ONE_ROOT_PLUS_YA_EXACT_PROFILES.find(profile => (
+        profile.sourceAliases.some(alias => (
+          hasClassicalNahuatlVncDerivationLexicalKey(
+            sourceDescriptor.sourceStem,
+            alias,
+          )
+        ))
+      )) || null;
       const exactDestockalAlternation = CLASSICAL_NAHUATL_TYPE_ONE_CAUSATIVE_EXACT_DESTOCKAL_ALTERNATIONS.find(formation => (
         formation.sourceAliases.some(alias =>
           hasClassicalNahuatlVncDerivationLexicalKey(
@@ -4511,11 +5036,16 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
       }
       if (exactAlternation) {
         const targetStem = exactAlternation.markedTargetStem;
-        const sourceAnalysis = analysis.analyses.find(candidate => exactAlternation.ruleId.includes("huaqui")
-          ? candidate.category === "type-one-consonant-alternation"
-          : exactAlternation.ruleId.includes("yocoya")
-            ? candidate.category === "root-plus-ya-retentive-exception"
-            : candidate.category === "destockal-hui-candidate") || null;
+        const sourceAnalysisCategory = exactAlternation.sourceAnalysisCategory
+          || (exactAlternation.ruleId.includes("huaqui")
+            ? "type-one-consonant-alternation"
+            : exactAlternation.ruleId.includes("yocoya")
+              ? "root-plus-ya-retentive-exception"
+              : "destockal-hui-candidate");
+        const sourceAnalysis = getClassicalNahuatlVncDerivationSourceAnalysisByCategory(
+          analysis,
+          sourceAnalysisCategory,
+        );
         const exactDestockalPreference = exactAlternation.ruleId === "cn-l24-2457b-chayahui-chayahua"
           ? Object.freeze({ preferredProcedure: "replacement", ruleId: "cn-l24-2457b-destockal-hui-prefers-replacement" })
           : exactAlternation.ruleId === "cn-l24-2457b-tlapihui-tlapihuia"
@@ -4536,6 +5066,32 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           suffix: "a",
           targetStem,
           targetClass: exactAlternation.targetClass,
+          sourceMeaning: exactAlternation.sourceMeaning
+            || exactRootPlusYaProfile?.sourceMeaning
+            || "",
+          additionalSourceReadings: Object.freeze(
+            (exactAlternation.additionalSourceReadings
+              || exactRootPlusYaProfile?.additionalSourceReadings
+              || []).map(reading => (
+              Object.freeze({
+                meaning: reading?.meaning || "",
+                relation: reading?.relation || ""
+              })
+            ))
+          ),
+          targetMeaning: exactAlternation.targetMeaning
+            || exactRootPlusYaProfile?.targetMeaning
+            || "",
+          additionalTargetReadings: Object.freeze(
+            (exactAlternation.additionalTargetReadings
+              || exactRootPlusYaProfile?.additionalTargetReadings
+              || []).map(reading => (
+              Object.freeze({
+                meaning: reading?.meaning || "",
+                relation: reading?.relation || ""
+              })
+            ))
+          ),
           ruleId: exactAlternation.ruleId,
           andrewsSection: exactAlternation.andrewsSection,
           evidenceSections: Object.freeze([exactAlternation.andrewsSection, "24.8.1", "24.9"]),
@@ -4547,7 +5103,11 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           optionAliases: [exactAlternation.ruleId],
           sourceAnalysisId: sourceAnalysis?.analysisId || "",
           causativeOaHistory: exactCausativeOaHistory,
-          causativeCitationRole: exactAlternation.causativeCitationRole || "",
+          causativeCitationRole: exactAlternation.causativeCitationRole
+            || exactRootPlusYaProfile?.causativeCitationRole
+            || "",
+          implicitAgentObjectKind:
+            exactRootPlusYaProfile?.implicitAgentObjectKind || "",
           ...(exactDestockalPreference ? {
             derivationalPreference: "preferred",
             preferenceRuleId: exactDestockalPreference.ruleId,
@@ -4700,7 +5260,17 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           formationRuleTier: "typed-internal-morphology",
           sourceAnalysisId: rootPlusYaAnalysis.analysisId,
           sourceAnalysisSelectionRequired: rootPlusYaAnalysis.sourceAnalysisSelectionRequired === true,
-          targetConstruction: Object.freeze({ operation: "replace-morpheme", remove: "ya", add: longA }),
+          causativeCitationRole:
+            exactRootPlusYaProfile?.causativeCitationRole || "",
+          implicitAgentObjectKind:
+            exactRootPlusYaProfile?.implicitAgentObjectKind || "",
+          targetConstruction: Object.freeze({
+            operation: "replace-morpheme",
+            remove: "ya",
+            add: longA,
+            underlyingAdd: "a",
+            lengtheningEnvironment: "preceding-vowel"
+          }),
           causativeOaHistory: Object.freeze({ sourceRoute: "root-plus-ya-to-a", root, underlyingDestockalVowel: "root-plus-ya" })
         }));
         return candidates;
@@ -4718,6 +5288,16 @@ export function createClassicalNahuatlVncDerivationEvaluatorApi(targetObject = g
           suffix: "a",
           targetStem: replacementTarget,
           targetClass: "B",
+          sourceMeaning: exactWitness?.sourceMeaning || "",
+          targetMeaning: exactWitness?.targetMeaning || "",
+          additionalTargetReadings: Object.freeze(
+            (exactWitness?.additionalTargetReadings || []).map(reading => (
+              Object.freeze({
+                meaning: reading?.meaning || "",
+                relation: reading?.relation || ""
+              })
+            ))
+          ),
           ruleId: exactWitness?.ruleId || "cn-l24-2431a-final-i-replacement",
           andrewsSection: "24.3.1.a",
           evidenceSections: exactWitness?.evidenceSections || Object.freeze(["24.3.1.a", "24.8.1", "24.9"]),

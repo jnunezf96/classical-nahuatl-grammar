@@ -66,9 +66,9 @@
       "complete": true
     },
     "genuineChoiceLiveDeclarations": {
-      "numerator": 26,
+      "numerator": 32,
       "denominator": 66,
-      "percent": 39.39,
+      "percent": 48.48,
       "complete": false
     },
     "genuineChoiceBrowserDeliveryProof": {
@@ -1035,13 +1035,13 @@
         "unresolved": 0
       },
       "roleEvidenceKind": {
-        "live-application-declaration": 361,
-        "canonical-owner-contract-audit": 80
+        "live-application-declaration": 371,
+        "canonical-owner-contract-audit": 70
       }
     },
     "genuineChoiceCount": 66,
-    "liveDeclarationCount": 26,
-    "contractOnlyCount": 40,
+    "liveDeclarationCount": 32,
+    "contractOnlyCount": 34,
     "contractOnlyBacklog": [
       {
         "atomId": "CAA-vnc-ordered-voice-chain--voice-operation-order",
@@ -1052,36 +1052,6 @@
         "atomId": "CAA-vnc-ordered-voice-application--voice-operation-order",
         "operationId": "vnc:ordered-voice-application",
         "axisId": "voice-operation-order"
-      },
-      {
-        "atomId": "CAA-vnc-derivational-operation--derivation-family",
-        "operationId": "vnc:derivational-operation",
-        "axisId": "derivation-family"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--nominal-embed",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "nominal-embed"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--compound-nnc",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "compound-nnc"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--affective-nnc",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "affective-nnc"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--cardinal-number",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "cardinal-number"
-      },
-      {
-        "atomId": "CAA-grammar-nominal-construction--measure-modification",
-        "operationId": "grammar:nominal-construction",
-        "axisId": "measure-modification"
       },
       {
         "atomId": "CAA-nnc-deverbal-construction--nominalization-family",
@@ -1297,42 +1267,6 @@
       "id": "CAA-vnc-ordered-voice-application--voice-operation-order",
       "operationId": "vnc:ordered-voice-application",
       "axisId": "voice-operation-order"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-vnc-derivational-operation--derivation-family",
-      "operationId": "vnc:derivational-operation",
-      "axisId": "derivation-family"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--nominal-embed",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "nominal-embed"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--compound-nnc",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "compound-nnc"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--affective-nnc",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "affective-nnc"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--cardinal-number",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "cardinal-number"
-    },
-    {
-      "kind": "genuine-choice-not-live-declared",
-      "id": "CAA-grammar-nominal-construction--measure-modification",
-      "operationId": "grammar:nominal-construction",
-      "axisId": "measure-modification"
     },
     {
       "kind": "genuine-choice-not-live-declared",
@@ -88218,7 +88152,7 @@
     "semanticLedger": "sha256:354a20630d4c47010b65ae179025a8457c1a072a8c1700095d9c3fbe61fa28db",
     "atomUiReconciliation": "sha256:b5eda912f8332d56a93cefad2c3199c7a4afe4dbc5261a562e76256b9f756d28",
     "proofMigration": "sha256:42ac2eecced5d220ea6e360096cf81f118466acce8fa3c8a3e7edf01196e18f5",
-    "applicationDispositions": "sha256:e726238b573d8d3149864fd47420f949bb6b3474683b6254978a7e83ace14cbd",
+    "applicationDispositions": "sha256:a74b91866852bc92e388a7278756026e65c8cef7a0f7359ae1086651c51f54c3",
     "proofRelease": "sha256:eb0e056266df12c077dd0cf7006c94ad4fa6c86aa4ee4f69fec8990f1064cfcc",
     "activeExactObservationPointer": "sha256:d5f7690e71782b5585b4c3c76d76cc0cf5a5e9ebd0620dd186abbd34c4e731e9"
   }

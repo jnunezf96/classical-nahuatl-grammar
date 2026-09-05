@@ -954,7 +954,7 @@ export async function loadAndInstallClassicalGrammaticalAtlas({
     adapterUrl.searchParams.set("v", version);
     adapterUrl.searchParams.set(
       "cache",
-      "20260902-construction-precision-370",
+      "20260902-result-partition-375",
     );
     if (adapterLoadState.attempt > 1) {
       adapterUrl.searchParams.set(

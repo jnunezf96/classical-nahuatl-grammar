@@ -2,7 +2,7 @@
 
 Release name: **Construction Precision Update**
 
-Browser build: **20260902-construction-precision-370**
+Browser build: **20260904-ehua-causative-alias-433**
 
 Canonical origin: **https://jnunezf96.github.io/classical-nahuatl-grammar/**
 

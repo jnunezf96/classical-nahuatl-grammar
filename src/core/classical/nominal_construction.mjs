@@ -12,6 +12,9 @@ const VERSION = 1;
 const GCD_IDENTITY = "typed-ordered-source-constituents+licensed-relation+matrix-governance+canonical-target-evaluator";
 const ISSUED_CONSTRUCTION_FRAMES = new WeakSet();
 const ISSUED_SOURCE_AUTHORIZATION_FRAMES = new WeakSet();
+const ISSUED_TYPED_SOURCE_BINDING_FRAMES = new WeakSet();
+const TYPED_SOURCE_BINDING_CONTEXTS = new WeakMap();
+const EXECUTED_TYPED_SOURCE_BINDING_FRAMES = new WeakSet();
 const ISSUED_PARADIGM_PLANS = new WeakSet();
 const ISSUED_PARADIGM_COORDINATES = new WeakSet();
 const ISSUED_UI_PROJECTIONS = new WeakSet();
@@ -149,6 +152,23 @@ const NOMINAL_COMPOUND_EMBED_SOURCE_CLASS_ANALYSES = Object.freeze({
     ephemeralFinalVowel: "a", truncationRepair: "supportive-i",
   }),
 });
+const NOMINAL_COMPOUND_TYPED_SOURCE_BINDING_KIND =
+  "classical-nahuatl-nominal-construction-typed-source-binding-frame";
+const NOMINAL_COMPOUND_TYPED_SOURCE_SELECTION_FIELDS = Object.freeze([
+  "embedSourceClass",
+  "structure",
+  "embedRole",
+  "possessorOrientation",
+  "reduplication",
+  "reduplicationTarget",
+  "bracketing",
+  "subject",
+  "state",
+  "possessor",
+  "animacy",
+  "pluralConnector",
+  "singularPossessiveConnector",
+]);
 const CANONICAL_SEMANTIC_RESTRICTION_IDS = Object.freeze([
   "nominal-embed-toca-as-if-precise-nuance-genuinely-blocked",
   "ordinary-2b-final-ca-is-not-unique-ca-matrix",
@@ -4571,6 +4591,7 @@ function buildNncTarget({
   singularPossessiveConnector = "0",
   numberFrameOverride = null,
   operationIds = [],
+  nncLayerOperationIds = [],
   sentenceModifier = "",
 }) {
   if (typeof target.buildClassicalNahuatlNncSubjectPersonFrame !== "function"
@@ -4611,6 +4632,9 @@ function buildNncTarget({
         metaphoricalOverride: false,
       });
   }
+  const appliedNncOperationIds = nncLayerOperationIds.length
+    ? nncLayerOperationIds
+    : operationIds;
   const nncSlotFrame = target.buildClassicalNahuatlNncSlotFrame({
     sourceFrameKind: sourceFrame.kind,
     sourceAuthorizationStatus: sourceFrame.authorizationStatus,
@@ -4618,8 +4642,8 @@ function buildNncTarget({
     stateFrame,
     personFrame,
     numberFrame,
-    appliedOperationIds: operationIds,
-    resultOperationId: operationIds.at(-1)
+    appliedOperationIds: appliedNncOperationIds,
+    resultOperationId: appliedNncOperationIds.at(-1)
       || `${constructionFamily}-construction`,
     requestedOutputKind: "selected-nnc-sentence-surface",
     nncFamily: `${constructionFamily}-construction`,
@@ -4652,6 +4676,7 @@ function buildNncTarget({
     stateFrame,
     numberFrame,
     nncSlotFrame,
+    sourceOperationIds: Object.freeze([...operationIds]),
     formulaRealization,
     wordSurface,
     sentenceSurface,
@@ -5194,6 +5219,11 @@ function evaluateNominalCompoundConstruction(request, target, sourceAuthorizatio
   if (specialMatrix === "poh") appliedSemanticRules.add("compound-nnc/fellowship");
   if (reduplication === "affinity") appliedSemanticRules.add("compound-nnc/affinity");
   if (reduplication === "distributive-varietal") appliedSemanticRules.add("compound-nnc/distributive");
+  const compoundSourceOperationIds = [
+    "nominal-compound-compound-nnc",
+    `nominal-compound-${structure}`,
+    `nominal-compound-${embedRole}`,
+  ];
   const targetResult = buildNncTarget({
     target,
     constructionFamily: "nominal-compound",
@@ -5206,8 +5236,37 @@ function evaluateNominalCompoundConstruction(request, target, sourceAuthorizatio
     animacy,
     pluralConnector: normalizeKey(request.pluralConnector || "t-in"),
     singularPossessiveConnector: normalizeKey(request.singularPossessiveConnector || "0"),
-    operationIds: ["nominal-compound-compound-nnc", `nominal-compound-${structure}`, `nominal-compound-${embedRole}`],
+    operationIds: compoundSourceOperationIds,
+    nncLayerOperationIds: [
+      "nnc-clause-shell",
+      state === "possessive"
+        ? "nnc-possessive-state"
+        : "nnc-absolutive-state",
+    ],
   });
+  const typedSlotFrame = targetResult.authorizationStatus === "authorized"
+    ? targetResult.nncSlotFrame
+    : null;
+  const sentenceFrame = typedSlotFrame
+    && typeof target.buildClassicalNahuatlNncSentenceSurfaceFrame
+      === "function"
+    ? target.buildClassicalNahuatlNncSentenceSurfaceFrame(
+      typedSlotFrame,
+      {
+        sentenceType: "assertion",
+        polarity: "positive",
+        predicateKind: "equative",
+      },
+    )
+    : null;
+  const sentenceFrameAuthorized = Boolean(
+    sentenceFrame
+    && typeof target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame
+      === "function"
+    && target.isClassicalNahuatlIssuedNncSentenceSurfaceFrame(
+      sentenceFrame,
+    )
+  );
   return deepFreeze({
     kind: "classical-nahuatl-nominal-construction-result-frame",
     version: VERSION,
@@ -5325,9 +5384,26 @@ function evaluateNominalCompoundConstruction(request, target, sourceAuthorizatio
     },
     canonicalTargetEvaluator: "buildClassicalNahuatlNncSlotFrame",
     canonicalResult: targetResult,
+    typedSlotFrame,
+    nncSlotFrame: typedSlotFrame,
+    sentenceFrame: sentenceFrameAuthorized ? sentenceFrame : null,
+    formulaProjection: {
+      kind: "classical-nahuatl-compound-nnc-formula-projection",
+      formulaRealization: targetResult.formulaRealization,
+      projectionSource: "typed-nnc-slot-frame",
+      writtenSurfaceAuthority: false,
+    },
+    writtenProjection: {
+      kind: "classical-nahuatl-compound-nnc-written-projection",
+      surfaceRealization: targetResult.wordSurface,
+      projectionSource: "typed-nnc-boundary-realization",
+      formulaStringAuthority: false,
+    },
     formulaRealization: targetResult.formulaRealization,
+    surfaceRealization: targetResult.wordSurface,
     wordSurface: targetResult.wordSurface,
     sentenceSurface: targetResult.sentenceSurface,
+    formulaAndWrittenDerivedIndependently: true,
     typedFrameAuthority: true,
     callerSuppliedAuthorityAccepted: false,
     formulaStringAuthority: false,
@@ -8079,6 +8155,442 @@ function evaluateCardinalNominalConstruction(request, target) {
   });
 }
 
+function isClassicalNahuatlNominalConstructionTypedSourceFrame(
+  frame = null,
+  target = globalThis
+) {
+  let ownerIssuedOrdinarySource = false;
+  try {
+    ownerIssuedOrdinarySource = Boolean(
+      frame
+      && typeof target.isClassicalNahuatlOrdinaryNncSourceFrame === "function"
+      && target.isClassicalNahuatlOrdinaryNncSourceFrame(frame) === true
+    );
+  } catch {
+    ownerIssuedOrdinarySource = false;
+  }
+  return Boolean(
+    ownerIssuedOrdinarySource
+    && frame.authorizationStatus === "authorized"
+    && frame.compoundSource === true
+    && normalizeStem(frame.embedStem)
+    && normalizeStem(frame.matrixStem)
+    && Array.isArray(frame.sourceConstituents)
+    && frame.sourceConstituents.length === 2
+    && normalizeStem(frame.sourceConstituents[0])
+      === normalizeStem(frame.embedStem)
+    && normalizeStem(frame.sourceConstituents[1])
+      === normalizeStem(frame.matrixStem)
+    && Array.isArray(frame.sourceConstituentKinds)
+    && frame.sourceConstituentKinds.length === 2
+    && frame.sourceConstituentKinds[0] === "nounstem-embed"
+    && frame.sourceConstituentKinds[1] === "nounstem-matrix"
+    && Object.isFrozen(frame)
+  );
+}
+
+function freezeNominalCompoundTypedSourceSelections(selections = {}) {
+  if (
+    !selections
+    || typeof selections !== "object"
+    || Array.isArray(selections)
+  ) return null;
+  const allowed = new Set(NOMINAL_COMPOUND_TYPED_SOURCE_SELECTION_FIELDS);
+  const entries = [];
+  for (const key of Reflect.ownKeys(selections)) {
+    if (typeof key !== "string" || !allowed.has(key)) return null;
+    let descriptor = null;
+    try {
+      descriptor = Object.getOwnPropertyDescriptor(selections, key);
+    } catch {
+      return null;
+    }
+    if (
+      !descriptor
+      || !Object.prototype.hasOwnProperty.call(descriptor, "value")
+      || typeof descriptor.value !== "string"
+    ) return null;
+    entries.push([key, normalizeToken(descriptor.value)]);
+  }
+  return Object.freeze(Object.fromEntries(entries));
+}
+
+function buildNominalCompoundTypedSourceOwnerRequest(
+  exactSourceFrame = null,
+  selections = {}
+) {
+  const embedSourceClass = normalizeKey(selections.embedSourceClass);
+  const embedClassAnalysis = getCompoundEmbedSourceClassAnalysis(
+    embedSourceClass
+  );
+  const matrixSourceClass = normalizeKey(
+    exactSourceFrame?.sourceClass || exactSourceFrame?.nounClass
+  );
+  const matrixClassAnalysis = getCompoundEmbedSourceClassAnalysis(
+    matrixSourceClass
+  );
+  if (!embedClassAnalysis || !matrixClassAnalysis) return null;
+  const sourceStateOptions = Array.isArray(exactSourceFrame.allowedStateValues)
+    ? exactSourceFrame.allowedStateValues
+    : [];
+  const state = normalizeKey(
+    selections.state
+    || (sourceStateOptions.includes("absolutive")
+      ? "absolutive"
+      : sourceStateOptions[0])
+    || "absolutive"
+  );
+  const subject = normalizeSubject(
+    selections.subject
+    || (exactSourceFrame.referentialAnimacy === "nonanimate"
+      ? "3common"
+      : "3sg")
+  );
+  const animacy = normalizeKey(
+    selections.animacy
+    || (exactSourceFrame.referentialAnimacy === "nonanimate"
+      ? "nonanimate"
+      : "animate")
+  );
+  const structure = normalizeKey(selections.structure || "integrated");
+  const request = {
+    constructionKind: "compound-nnc",
+    structure,
+    embedRole: normalizeKey(selections.embedRole || "association"),
+    possessorOrientation: normalizeKey(
+      selections.possessorOrientation
+      || (structure.startsWith("linked") ? "embed" : "matrix")
+    ),
+    reduplication: normalizeKey(selections.reduplication || "none"),
+    reduplicationTarget: normalizeKey(
+      selections.reduplicationTarget || "embed"
+    ),
+    bracketing: normalizeKey(selections.bracketing || "unambiguous"),
+    subject,
+    state,
+    possessor: normalizeKey(selections.possessor || "3sg"),
+    animacy,
+    pluralConnector: normalizeKey(
+      selections.pluralConnector
+      || exactSourceFrame.pluralConnectorOptions?.[0]
+      || "t-in"
+    ),
+    singularPossessiveConnector: normalizeKey(
+      selections.singularPossessiveConnector || "0"
+    ),
+    source: {
+      embedStem: normalizeStem(exactSourceFrame.embedStem),
+      embedClass: embedClassAnalysis.nounClass,
+      embedSourceClass,
+      matrixStem: normalizeStem(exactSourceFrame.matrixStem),
+      matrixClass: matrixClassAnalysis.nounClass,
+      matrixSourceClass,
+      structure,
+      embedRole: normalizeKey(selections.embedRole || "association"),
+      bracketing: normalizeKey(selections.bracketing || "unambiguous"),
+    },
+  };
+  return deepFreeze(request);
+}
+
+function projectNominalCompoundTypedSourceClassOptions(
+  exactSourceFrame = null,
+  selections = {},
+  target = globalThis
+) {
+  return Object.freeze(Object.keys(
+    NOMINAL_COMPOUND_EMBED_SOURCE_CLASS_ANALYSES
+  ).map(optionId => {
+    const request = buildNominalCompoundTypedSourceOwnerRequest(
+      exactSourceFrame,
+      { ...selections, embedSourceClass: optionId }
+    );
+    let probe = null;
+    try {
+      probe = request ? evaluateNominalConstruction(request, target) : null;
+    } catch {
+      probe = null;
+    }
+    const available = Boolean(
+      probe
+      && isClassicalNahuatlNominalConstructionResult(probe)
+      && probe.authorizationStatus === "authorized"
+      && probe.constructionKind === "compound-nnc"
+    );
+    return Object.freeze({
+      choiceId: "embedSourceClass",
+      optionId,
+      label: optionId,
+      availabilityStatus: available ? "available" : "incompatible",
+      blockReason: available
+        ? ""
+        : String(probe?.blockReason || "compound-embed-source-class-blocked"),
+      ownerOptionProjected: true,
+      ownerOptionAuthority: false,
+      grammarAuthority: false,
+      formulaStringAuthority: false,
+      surfaceStringAuthority: false,
+    });
+  }));
+}
+
+function issueClassicalNahuatlNominalConstructionTypedSourceBindingFrame(
+  exactSourceFrame = null,
+  callerSelections = {},
+  target = globalThis
+) {
+  if (!isClassicalNahuatlNominalConstructionTypedSourceFrame(
+    exactSourceFrame,
+    target
+  )) return null;
+  const selections = freezeNominalCompoundTypedSourceSelections(
+    callerSelections
+  );
+  if (!selections) return null;
+  const embedSourceClass = normalizeKey(selections.embedSourceClass);
+  const classOptions = projectNominalCompoundTypedSourceClassOptions(
+    exactSourceFrame,
+    selections,
+    target
+  );
+  const selectedClassOption = embedSourceClass
+    ? classOptions.find(option => option.optionId === embedSourceClass) || null
+    : null;
+  const requiredChoiceIds = Object.freeze(
+    embedSourceClass ? [] : ["embedSourceClass"]
+  );
+  const ownerRequest = embedSourceClass
+    && selectedClassOption?.availabilityStatus === "available"
+    ? buildNominalCompoundTypedSourceOwnerRequest(
+      exactSourceFrame,
+      selections
+    )
+    : null;
+  let preflightResult = null;
+  if (ownerRequest) {
+    try {
+      preflightResult = evaluateNominalConstruction(ownerRequest, target);
+    } catch {
+      preflightResult = null;
+    }
+  }
+  const ownerRequestAccepted = Boolean(
+    preflightResult
+    && isClassicalNahuatlNominalConstructionResult(preflightResult)
+    && preflightResult.authorizationStatus === "authorized"
+    && preflightResult.constructionKind === "compound-nnc"
+  );
+  const bindingStatus = !embedSourceClass
+    ? "choices-required"
+    : ownerRequestAccepted
+      ? "ready"
+      : "rejected";
+  const blockReason = bindingStatus === "ready"
+    ? ""
+    : bindingStatus === "choices-required"
+      ? "nominal-compound-embed-source-class-selection-required"
+      : String(
+        preflightResult?.blockReason
+        || selectedClassOption?.blockReason
+        || "nominal-compound-typed-source-selections-not-authorized"
+      );
+  const effectiveSelections = ownerRequest
+    ? deepFreeze({
+      embedSourceClass,
+      structure: ownerRequest.structure,
+      embedRole: ownerRequest.embedRole,
+      possessorOrientation: ownerRequest.possessorOrientation,
+      reduplication: ownerRequest.reduplication,
+      reduplicationTarget: ownerRequest.reduplicationTarget,
+      bracketing: ownerRequest.bracketing,
+      subject: ownerRequest.subject,
+      state: ownerRequest.state,
+      possessor: ownerRequest.possessor,
+      animacy: ownerRequest.animacy,
+      pluralConnector: ownerRequest.pluralConnector,
+      singularPossessiveConnector:
+        ownerRequest.singularPossessiveConnector,
+    })
+    : Object.freeze({ ...selections });
+  const choiceOptionProjection = Object.freeze({
+    embedSourceClass: classOptions,
+    grammarAuthority: false,
+  });
+  const frame = Object.freeze({
+    kind: NOMINAL_COMPOUND_TYPED_SOURCE_BINDING_KIND,
+    version: VERSION,
+    authorizationStatus: bindingStatus === "rejected"
+      ? "blocked"
+      : "authorized",
+    bindingStatus,
+    blockReason,
+    operationId: "grammar:nominal-construction",
+    exactSourceFrame,
+    callerSelections: selections,
+    effectiveSelections,
+    requiredChoiceIds,
+    choiceOptionProjection,
+    executionArgs: Object.freeze(
+      bindingStatus === "ready"
+        ? [exactSourceFrame, selections]
+        : []
+    ),
+    ownerChoicesRequired: requiredChoiceIds.length > 0,
+    operationSelectionRequired: requiredChoiceIds.length > 0,
+    ownerInputAcceptanceProven: true,
+    ownerRejectionProven: false,
+    exactSourceIdentityPreserved: true,
+    ownerExecutionStillRequired: bindingStatus === "ready",
+    ownerRequestRetainedPrivately: bindingStatus === "ready",
+    sourceStringAuthority: false,
+    formulaStringAuthority: false,
+    surfaceStringAuthority: false,
+    lessonMetadataAuthority: false,
+    storedStateAuthority: false,
+    grammarAuthority: false,
+  });
+  ISSUED_TYPED_SOURCE_BINDING_FRAMES.add(frame);
+  TYPED_SOURCE_BINDING_CONTEXTS.set(frame, Object.freeze({
+    exactSourceFrame,
+    ownerRequest,
+    preflightResult,
+  }));
+  return frame;
+}
+
+function isClassicalNahuatlNominalConstructionTypedSourceBindingFrame(
+  frame = null,
+  target = globalThis
+) {
+  const context = frame
+    ? TYPED_SOURCE_BINDING_CONTEXTS.get(frame) || null
+    : null;
+  if (
+    !frame
+    || !context
+    || !ISSUED_TYPED_SOURCE_BINDING_FRAMES.has(frame)
+    || frame.kind !== NOMINAL_COMPOUND_TYPED_SOURCE_BINDING_KIND
+    || frame.version !== VERSION
+    || !["choices-required", "ready", "rejected"].includes(
+      frame.bindingStatus
+    )
+    || frame.authorizationStatus !== (frame.bindingStatus === "rejected"
+      ? "blocked"
+      : "authorized")
+    || frame.operationId !== "grammar:nominal-construction"
+    || frame.exactSourceFrame !== context.exactSourceFrame
+    || !isClassicalNahuatlNominalConstructionTypedSourceFrame(
+      frame.exactSourceFrame,
+      target
+    )
+    || !Array.isArray(frame.requiredChoiceIds)
+    || !Array.isArray(frame.executionArgs)
+    || frame.callerSelections == null
+    || frame.effectiveSelections == null
+    || frame.choiceOptionProjection == null
+    || !Object.isFrozen(frame)
+    || !Object.isFrozen(frame.callerSelections)
+    || !Object.isFrozen(frame.effectiveSelections)
+    || !Object.isFrozen(frame.requiredChoiceIds)
+    || !Object.isFrozen(frame.choiceOptionProjection)
+    || !Object.isFrozen(frame.choiceOptionProjection.embedSourceClass)
+    || !Object.isFrozen(frame.executionArgs)
+    || frame.ownerChoicesRequired !== Boolean(
+      frame.requiredChoiceIds.length
+    )
+    || frame.operationSelectionRequired !== Boolean(
+      frame.requiredChoiceIds.length
+    )
+    || frame.ownerInputAcceptanceProven !== true
+    || frame.ownerRejectionProven !== false
+    || frame.exactSourceIdentityPreserved !== true
+    || frame.ownerExecutionStillRequired !== (frame.bindingStatus === "ready")
+    || frame.ownerRequestRetainedPrivately !== (frame.bindingStatus === "ready")
+    || frame.sourceStringAuthority !== false
+    || frame.formulaStringAuthority !== false
+    || frame.surfaceStringAuthority !== false
+    || frame.lessonMetadataAuthority !== false
+    || frame.storedStateAuthority !== false
+    || frame.grammarAuthority !== false
+    || !Array.isArray(frame.choiceOptionProjection.embedSourceClass)
+    || frame.choiceOptionProjection.embedSourceClass.length === 0
+    || frame.choiceOptionProjection.grammarAuthority !== false
+    || !frame.choiceOptionProjection.embedSourceClass.every(option => (
+      option
+      && Object.isFrozen(option)
+      && option.choiceId === "embedSourceClass"
+      && option.optionId
+      && ["available", "incompatible"].includes(option.availabilityStatus)
+      && option.ownerOptionProjected === true
+      && option.ownerOptionAuthority === false
+      && option.grammarAuthority === false
+    ))
+  ) return false;
+  if (frame.bindingStatus === "choices-required") {
+    return Boolean(
+      context.ownerRequest === null
+      && frame.blockReason
+      && frame.requiredChoiceIds.length === 1
+      && frame.requiredChoiceIds[0] === "embedSourceClass"
+      && frame.choiceOptionProjection.embedSourceClass.some(option => (
+        option.availabilityStatus === "available"
+      ))
+      && frame.executionArgs.length === 0
+    );
+  }
+  if (frame.bindingStatus === "rejected") {
+    return Boolean(
+      context.ownerRequest === null
+      && frame.blockReason
+      && frame.requiredChoiceIds.length === 0
+      && frame.executionArgs.length === 0
+    );
+  }
+  return Boolean(
+    context.ownerRequest
+    && context.preflightResult
+    && isClassicalNahuatlNominalConstructionResult(
+      context.preflightResult
+    )
+    && context.preflightResult.authorizationStatus === "authorized"
+    && context.preflightResult.constructionKind === "compound-nnc"
+    && frame.blockReason === ""
+    && frame.requiredChoiceIds.length === 0
+    && frame.executionArgs.length === 2
+    && frame.executionArgs[0] === frame.exactSourceFrame
+    && frame.executionArgs[1] === frame.callerSelections
+  );
+}
+
+function evaluateNominalConstructionRequest(request = {}, target = globalThis) {
+  if (!TYPED_SOURCE_BINDING_CONTEXTS.has(request)) {
+    return evaluateNominalConstruction(request, target);
+  }
+  if (
+    !isClassicalNahuatlNominalConstructionTypedSourceBindingFrame(
+      request,
+      target
+    )
+    || request.bindingStatus !== "ready"
+    || EXECUTED_TYPED_SOURCE_BINDING_FRAMES.has(request)
+  ) return null;
+  const context = TYPED_SOURCE_BINDING_CONTEXTS.get(request);
+  EXECUTED_TYPED_SOURCE_BINDING_FRAMES.add(request);
+  const result = evaluateNominalConstruction(context.ownerRequest, target);
+  if (
+    !isClassicalNahuatlNominalConstructionResult(result)
+    || result.authorizationStatus !== "authorized"
+    || result.constructionKind !== "compound-nnc"
+  ) return null;
+  const enrichedResult = deepFreeze({
+    ...result,
+    navigatorSourceFrame: context.exactSourceFrame,
+    navigatorSourceIdentityPreserved: true,
+  });
+  ISSUED_CONSTRUCTION_FRAMES.add(enrichedResult);
+  return enrichedResult;
+}
+
 function evaluateNominalConstruction(request = {}, target = globalThis) {
   const trustedResultFrames =
     getNominalConstructionTrustedResultFrames(request);
@@ -8627,7 +9139,28 @@ export function installClassicalNahuatlNominalConstructionGlobals(targetObject =
     validateClassicalNahuatlClosedConstructionException,
     isClassicalNahuatlClosedConstructionExceptionValidation,
     isClassicalNahuatlNominalConstructionSourceAuthorization,
-    evaluateClassicalNahuatlNominalConstruction: request => evaluateNominalConstruction(request, target),
+    isClassicalNahuatlNominalConstructionTypedSourceFrame:
+      frame => isClassicalNahuatlNominalConstructionTypedSourceFrame(
+        frame,
+        target
+      ),
+    issueClassicalNahuatlNominalConstructionTypedSourceBindingFrame:
+      (frame, selections) => (
+        issueClassicalNahuatlNominalConstructionTypedSourceBindingFrame(
+          frame,
+          selections,
+          target
+        )
+      ),
+    isClassicalNahuatlNominalConstructionTypedSourceBindingFrame:
+      frame => (
+        isClassicalNahuatlNominalConstructionTypedSourceBindingFrame(
+          frame,
+          target
+        )
+      ),
+    evaluateClassicalNahuatlNominalConstruction:
+      request => evaluateNominalConstructionRequest(request, target),
     issueClassicalNahuatlPatientiveEmbedConstituentFrame,
     isClassicalNahuatlPatientiveEmbedConstituentFrame,
     issueClassicalNahuatlPatientiveMatrixConstituentFrame,

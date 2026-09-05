@@ -13,15 +13,23 @@ const spec = {
   "coordinates": {
     "claim-p2334::p2334-intransitive-destockal-ni-and-hui-verbstems-belong-to-class": {
       "assertionId": "classical-destockal-ni-hui-class-system:p2334-intransitive-destockal-ni-and-hui-verbstems-belong-to-class",
-      "canonicalPath": "sources.peyoni.classId"
+      "canonicalPath": "constraints.destockalNiHuiClassSystem.intransitiveClassAssignment"
+    },
+    "claim-p2334::aci-p203-l004-321dd44966-intransitive-destockal-ni-hui-class-b": {
+      "assertionId": "classical-destockal-ni-hui-class-system:aci-p203-l004-321dd44966-intransitive-destockal-ni-hui-class-b",
+      "canonicalPath": "constraints.destockalNiHuiClassSystem.intransitiveClassAssignment"
     },
     "claim-p2335::p2335-in-order-to-form-the-first-type-causative-stem": {
       "assertionId": "classical-destockal-ni-hui-class-system:p2335-in-order-to-form-the-first-type-causative-stem",
-      "canonicalPath": "sources.cozahui.classId"
+      "canonicalPath": "constraints.destockalNiHuiClassSystem.causativeFormationAlternation"
+    },
+    "claim-p2335::aci-p203-l005-ac982449b7-two-causative-procedures-with-lexical-preference": {
+      "assertionId": "classical-destockal-ni-hui-class-system:aci-p203-l005-ac982449b7-two-causative-procedures-with-lexical-preference",
+      "canonicalPath": "constraints.destockalNiHuiClassSystem.causativeFormationAlternation"
     }
   },
-  "executionFunctionName": "buildClassicalNahuatlVncDerivationValidationFrame",
-  "executionValidatorName": "isClassicalNahuatlVncDerivationValidationFrame",
+  "executionFunctionName": "buildClassicalNahuatlDestockalNiHuiClassSystemValidationFrame",
+  "executionValidatorName": "isClassicalNahuatlDestockalNiHuiClassSystemValidationFrame",
   "executionArgsBySelection": {
     "claim-p2334": [],
     "claim-p2335": []

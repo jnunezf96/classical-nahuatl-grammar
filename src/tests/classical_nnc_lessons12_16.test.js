@@ -5332,6 +5332,84 @@ function run(ctx = {}) {
     );
 
     s.eq(
+        "Lesson 16 nonhuman third person itlah remains ordinary and rejects the human-only selection",
+        (() => {
+            const source = ctx.issueCanonicalNncSourceFrame({
+                stem: "itl-ah",
+                embedStem: "itl",
+                matrixStem: "ah",
+            });
+            const choices = ctx.getCanonicalNncOperationSelectionFrame(source, {
+                subject: "3sg",
+                animacy: "animate",
+                humanness: "nonhuman",
+            });
+            const owner = ctx.buildClassicalNahuatlContextSelectionRecord({
+                subtype: "indefinite",
+                indefiniteKind: "something",
+                subject: "3sg",
+                humanness: "nonhuman",
+                specialHumanUseSelected: false,
+            });
+            const ordinary = ctx.issueCanonicalNncOperationFrame(source, {
+                subject: "3sg",
+                humanness: "nonhuman",
+                specialHumanUse: false,
+            });
+            const result = ctx.requestClassicalPronominalNncResult(
+                source,
+                ordinary,
+            );
+            const hostile = ctx.issueCanonicalNncOperationFrame(source, {
+                subject: "3sg",
+                humanness: "nonhuman",
+                specialHumanUse: true,
+            });
+            const human = ctx.issueCanonicalNncOperationFrame(source, {
+                subject: "3sg",
+                humanness: "human",
+                specialHumanUse: false,
+            });
+            return {
+                selectedHumanness: choices.selectedHumanness,
+                choiceAvailable: choices.specialHumanUseAvailable,
+                choiceSelected: choices.selectedSpecialHumanUse,
+                ownerStatus: owner.authorizationStatus,
+                ownerReferent: owner.subjectReferentCategory,
+                ownerAvailable: owner.specialHumanUse.available,
+                ownerRequired: owner.specialHumanUse.required,
+                ownerSelected: owner.specialHumanUse.selected,
+                operationStatus: ordinary.authorizationStatus,
+                operationSpecialHumanUse: ordinary.specialHumanUse,
+                resultFormula: result.formulaRealization,
+                resultSurface: result.sentenceSurface,
+                hostileStatus: hostile.authorizationStatus,
+                hostileReason: hostile.blockReason,
+                humanStatus: human.authorizationStatus,
+                humanReason: human.blockReason,
+            };
+        })(),
+        {
+            selectedHumanness: "nonhuman",
+            choiceAvailable: false,
+            choiceSelected: false,
+            ownerStatus: "authorized",
+            ownerReferent: "nonhuman",
+            ownerAvailable: false,
+            ownerRequired: false,
+            ownerSelected: false,
+            operationStatus: "authorized",
+            operationSpecialHumanUse: false,
+            resultFormula: "#0-0(itl-ah)0-0#",
+            resultSurface: "Itlah.",
+            hostileStatus: "blocked",
+            hostileReason: "special-human-itlah-selection-is-limited-to-itlah-with-a-human-subject",
+            humanStatus: "blocked",
+            humanReason: "itlah-with-human-subject-requires-special-situation-selection",
+        }
+    );
+
+    s.eq(
         "Lesson 16 contextual choices require typed records and ignore fused or printed claims",
         (() => {
             const looseDoubled = ctx.buildClassicalNahuatlPronominalNncFrame({

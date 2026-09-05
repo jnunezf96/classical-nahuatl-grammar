@@ -164,11 +164,12 @@ function run(ctx) {
     );
 
     s.eq(
-        "one owner-issued Result distinguishes all four public pathway states",
+        "one owner-issued Result distinguishes all five public pathway states",
         [
             ["vnc:sentence-result", "ready-now"],
             ["vnc:application", "choose-details"],
             ["nnc:ordinary", "needs-another-source"],
+            ["nnc:sentence-surface", "needs-a-result"],
             ["nnc:relational", "not-compatible"],
         ].map(([operationId, publicState]) => {
             const candidate = operation(frame, operationId);
@@ -176,6 +177,9 @@ function run(ctx) {
                 operationId,
                 publicState,
                 availabilityStatus: candidate?.availabilityStatus,
+                availabilityReason: candidate?.availabilityReason,
+                typeCompatibilityStatus:
+                    candidate?.typeCompatibilityStatus,
                 ownerChoicesRequired:
                     candidate?.ownerChoicesRequired === true,
                 ownerAcceptance:
@@ -189,6 +193,9 @@ function run(ctx) {
                 operationId: "vnc:sentence-result",
                 publicState: "ready-now",
                 availabilityStatus: "available",
+                availabilityReason:
+                    "canonical-owner-direct-result-validated",
+                typeCompatibilityStatus: "type-compatible",
                 ownerChoicesRequired: false,
                 ownerAcceptance: true,
                 ownerRejection: false,
@@ -197,6 +204,9 @@ function run(ctx) {
                 operationId: "vnc:application",
                 publicState: "choose-details",
                 availabilityStatus: "available",
+                availabilityReason:
+                    "canonical-owner-result-binding-accepted",
+                typeCompatibilityStatus: "type-compatible",
                 ownerChoicesRequired: true,
                 ownerAcceptance: true,
                 ownerRejection: false,
@@ -205,6 +215,19 @@ function run(ctx) {
                 operationId: "nnc:ordinary",
                 publicState: "needs-another-source",
                 availabilityStatus: "missing-prerequisite",
+                availabilityReason: "separate-typed-input-required",
+                typeCompatibilityStatus: "separate-input-required",
+                ownerChoicesRequired: false,
+                ownerAcceptance: false,
+                ownerRejection: false,
+            },
+            {
+                operationId: "nnc:sentence-surface",
+                publicState: "needs-a-result",
+                availabilityStatus: "missing-prerequisite",
+                availabilityReason:
+                    "continuation-unit-mismatch-owner-rejection-not-proven",
+                typeCompatibilityStatus: "type-incompatible",
                 ownerChoicesRequired: false,
                 ownerAcceptance: false,
                 ownerRejection: false,
@@ -213,6 +236,9 @@ function run(ctx) {
                 operationId: "nnc:relational",
                 publicState: "not-compatible",
                 availabilityStatus: "incompatible",
+                availabilityReason:
+                    "classical-formation-binding-exact-result-incompatible",
+                typeCompatibilityStatus: "type-compatible",
                 ownerChoicesRequired: false,
                 ownerAcceptance: false,
                 ownerRejection: true,
@@ -637,6 +663,231 @@ function run(ctx) {
         }
     );
 
+    const exactCompoundSource = ctx.issueCanonicalNncSourceFrame({
+        stem: "xōchimox",
+        embedStem: "xōchi",
+        matrixStem: "mox",
+        sourceClass: "zero",
+    });
+    const compoundSourceNavigator =
+        ctx.getClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+            exactCompoundSource
+        );
+    const compoundSourceOperation = operation(
+        compoundSourceNavigator,
+        "grammar:nominal-construction"
+    );
+    const compoundInitialBinding =
+        ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+            compoundSourceNavigator,
+            "grammar:nominal-construction",
+            {}
+        );
+    const selectedEmbedSourceClass = compoundInitialBinding
+        ?.choiceOptionProjection?.embedSourceClass?.find(
+            option => option.optionId === "zero"
+                && option.availabilityStatus === "available"
+        )?.optionId || "";
+    const compoundReadyBinding =
+        ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+            compoundSourceNavigator,
+            "grammar:nominal-construction",
+            { embedSourceClass: selectedEmbedSourceClass }
+        );
+    const compoundApplication =
+        ctx.executeClassicalGrammarTypedSourceOperationBindingFrame(
+            compoundReadyBinding
+        );
+    const exactOnePartSource = ctx.issueCanonicalNncSourceFrame({
+        stem: "mox",
+        sourceClass: "zero",
+    });
+    const onePartSourceNavigator =
+        ctx.getClassicalGrammarApplicationTypedSourceCapabilityNavigator(
+            exactOnePartSource
+        );
+    const onePartSourceOperation = operation(
+        onePartSourceNavigator,
+        "grammar:nominal-construction"
+    );
+    const exactResultContinuationOperation = operation(
+        nncFrame,
+        "grammar:nominal-construction"
+    );
+    s.eq(
+        "paired NNC Source enters nominal compounding while one-part Source and exact-Result continuation keep distinct contracts",
+        {
+            pairedSource: [
+                ctx.isIssuedCanonicalNncSourceFrame(exactCompoundSource),
+                exactCompoundSource.compoundSource,
+                exactCompoundSource.sourceConstituentKinds,
+                compoundSourceNavigator?.inputRole,
+                compoundSourceNavigator?.exactSource
+                    === exactCompoundSource,
+                compoundSourceNavigator?.sourceContractOperationIds,
+            ],
+            pairedAvailability: [
+                compoundSourceOperation?.availabilityStatus,
+                compoundSourceOperation?.availabilityReason,
+                compoundSourceOperation?.sourceIdentityMatched,
+                compoundSourceOperation?.ownerPreflightFrameValidated,
+                compoundSourceOperation?.ownerChoicesRequired,
+                compoundSourceOperation?.availabilityAuthority,
+            ],
+            pairedBinding: [
+                ctx.isClassicalGrammarTypedSourceOperationBindingFrame(
+                    compoundInitialBinding
+                ),
+                compoundInitialBinding?.family,
+                compoundInitialBinding?.bindingStatus,
+                compoundInitialBinding?.requiredChoiceIds,
+                compoundInitialBinding?.exactSource
+                    === exactCompoundSource,
+                compoundInitialBinding?.navigator
+                    === compoundSourceNavigator,
+                selectedEmbedSourceClass,
+                ctx.isClassicalGrammarTypedSourceOperationBindingFrame(
+                    compoundReadyBinding
+                ),
+                compoundReadyBinding?.bindingStatus,
+                compoundReadyBinding?.requiredChoiceIds,
+            ],
+            pairedExecution: [
+                ctx.isClassicalGrammarApplicationResult(
+                    compoundApplication
+                ),
+                compoundApplication?.authorizationStatus,
+                compoundApplication?.operationId,
+                ctx.isClassicalNahuatlNominalConstructionResult(
+                    compoundApplication?.canonicalResult
+                ),
+                compoundApplication?.canonicalResult?.constructionKind,
+                compoundApplication?.canonicalResult?.navigatorSourceFrame
+                    === exactCompoundSource,
+                compoundApplication?.canonicalResult
+                    ?.navigatorSourceIdentityPreserved,
+                compoundApplication?.canonicalResult?.formulaRealization,
+                compoundApplication?.canonicalResult?.sentenceSurface,
+                ctx.executeClassicalGrammarTypedSourceOperationBindingFrame(
+                    compoundReadyBinding
+                ),
+            ],
+            onePartSource: [
+                ctx.isIssuedCanonicalNncSourceFrame(exactOnePartSource),
+                exactOnePartSource.compoundSource,
+                exactOnePartSource.sourceConstituentKinds,
+                onePartSourceOperation?.availabilityStatus,
+                onePartSourceOperation?.availabilityReason,
+                onePartSourceOperation?.sourceIdentityMatched,
+                onePartSourceOperation?.ownerPreflightFrameValidated,
+                onePartSourceOperation?.ownerChoicesRequired,
+                ctx.issueClassicalGrammarTypedSourceOperationBindingFrame(
+                    onePartSourceNavigator,
+                    "grammar:nominal-construction",
+                    {}
+                ),
+            ],
+            exactResultContinuation: [
+                exactResultContinuationOperation?.availabilityStatus,
+                exactResultContinuationOperation?.availabilityReason,
+                exactResultContinuationOperation?.availabilityAuthority,
+                exactResultContinuationOperation?.ownerBindingFrameValidated,
+                exactResultContinuationOperation?.ownerBindingInputResult
+                    === nncReceipt.canonicalResult,
+                exactResultContinuationOperation
+                    ?.ownerBindingInputResultRole,
+                [...(
+                    exactResultContinuationOperation?.ownerBindingIds || []
+                )].sort(),
+                [...(
+                    exactResultContinuationOperation?.requiredChoiceIds || []
+                )].sort(),
+                [...(
+                    exactResultContinuationOperation?.requiredResultRoles
+                    || []
+                )].sort(),
+            ],
+        },
+        {
+            pairedSource: [
+                true,
+                true,
+                ["nounstem-embed", "nounstem-matrix"],
+                "exact-owner-issued-source",
+                true,
+                [
+                    "nnc:ordinary",
+                    "grammar:nominal-construction",
+                ],
+            ],
+            pairedAvailability: [
+                "available",
+                "canonical-owner-choices-required",
+                true,
+                true,
+                true,
+                "canonical-owner-source-preflight",
+            ],
+            pairedBinding: [
+                true,
+                "nominal-compound",
+                "choices-required",
+                ["embedSourceClass"],
+                true,
+                true,
+                "zero",
+                true,
+                "ready",
+                [],
+            ],
+            pairedExecution: [
+                true,
+                "authorized",
+                "grammar:nominal-construction",
+                true,
+                "compound-nnc",
+                true,
+                true,
+                "#0-0(xōchi-mox)0-0#",
+                "Xōchimox.",
+                null,
+            ],
+            onePartSource: [
+                true,
+                false,
+                ["nounstem"],
+                "missing-prerequisite",
+                "different-owner-issued-source-required",
+                false,
+                false,
+                false,
+                null,
+            ],
+            exactResultContinuation: [
+                "available",
+                "canonical-owner-result-binding-accepted",
+                "canonical-owner-result-binding",
+                true,
+                true,
+                "canonical-result",
+                [
+                    "compound-nnc:embed-result",
+                    "compound-nnc:matrix-result",
+                ],
+                [
+                    "compound-bracketing",
+                    "compound-structure",
+                    "state",
+                    "subject",
+                ],
+                [
+                    "compound-embed-constituent",
+                    "compound-matrix-constituent",
+                ],
+            ],
+        }
+    );
+
     const exactPronominalSource =
         ctx.buildClassicalNahuatlPronominalNncSourceFrame({
             stem: "yeh",
@@ -824,7 +1075,7 @@ function run(ctx) {
         });
     });
     s.eq(
-        "all 25 visible pathways have a truthful entry mode, with one intentional VNC overlap and one independent particle root",
+        "all 25 visible pathways have a truthful entry mode, with two intentional owner overlaps and one independent particle root",
         {
             sameUniverse: ordinarySourceNavigator.operationIds.every(
                 operationId => frame.operationIds.includes(operationId)
@@ -861,6 +1112,7 @@ function run(ctx) {
         {
             sameUniverse: true,
             typedSourceIds: [
+                "grammar:nominal-construction",
                 "nnc:ordinary",
                 "nnc:pronominal",
                 "vnc:application",
@@ -875,12 +1127,18 @@ function run(ctx) {
                 .sort(),
             rootConstructorIds: ["particle:result"],
             uniqueCovered: 25,
-            qualifiedMemberships: 26,
+            qualifiedMemberships: 27,
             uncovered: [],
-            overlaps: [[
-                "vnc:application",
-                ["result-binding", "typed-source"],
-            ]],
+            overlaps: [
+                [
+                    "vnc:application",
+                    ["result-binding", "typed-source"],
+                ],
+                [
+                    "grammar:nominal-construction",
+                    ["result-binding", "typed-source"],
+                ],
+            ],
             particle: [
                 true,
                 "source-independent-root-constructor",

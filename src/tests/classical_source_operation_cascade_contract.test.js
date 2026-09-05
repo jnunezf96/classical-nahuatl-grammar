@@ -732,6 +732,42 @@ function run(ctx = {}) {
     );
 
     suite.eq(
+        "Source licensing, Grammar choice, and exact continuation use distinct operation labels",
+        {
+            sourceOperationLabel:
+                shell.includes(">Operation for this Source</span>"),
+            sourceLicenseLabel:
+                shell.includes(">Honorific routes licensed by this Source</span>"),
+            grammarChoiceLabel:
+                shell.includes(">Honorific route</span>"),
+            derivedShapeLabel:
+                shell.includes(">Derived stem shape</span>"),
+            exactSourceContinuationLabel:
+                rendering.includes('"Continue from this exact Source"'),
+            exactResultContinuationLabel:
+                rendering.includes('"Continue from this exact Result"'),
+            ownerCheckedSourcePlaceholder:
+                rendering.includes(
+                    '"Choose an owner-checked operation for this Source"'
+                ),
+            ownerCheckedResultPlaceholder:
+                rendering.includes(
+                    '"Choose an owner-checked operation for this Result"'
+                ),
+        },
+        {
+            sourceOperationLabel: true,
+            sourceLicenseLabel: true,
+            grammarChoiceLabel: true,
+            derivedShapeLabel: true,
+            exactSourceContinuationLabel: true,
+            exactResultContinuationLabel: true,
+            ownerCheckedSourcePlaceholder: true,
+            ownerCheckedResultPlaceholder: true,
+        }
+    );
+
+    suite.eq(
         "forced personal-name reranking is a derived readout rather than a second clickable choice",
         typeof ctx.syncClassicalPersonalNameSentenceControls === "function"
             && typeof ctx.getClassicalPersonalNameSentenceSelection === "function"

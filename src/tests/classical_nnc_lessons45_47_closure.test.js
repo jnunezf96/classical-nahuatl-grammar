@@ -1001,6 +1001,22 @@ function run(ctx) {
                 projections: results.map((result) => ({
                     formula: result.formula,
                     written: result.surface,
+                    sentenceFormula: result.sentenceFormula,
+                    sentenceSurface: result.sentenceSurface,
+                    sentenceNuclearSurface:
+                        result.sentenceFrame?.canonicalNuclearSurface || "",
+                    sentenceOwnsExactWrittenResult:
+                        Boolean(
+                            result.sentenceFrame
+                                ?.canonicalNuclearWrittenResult
+                        )
+                        && result.sentenceFrame
+                            .canonicalNuclearWrittenResult
+                            === result.operationFrame?.formulaAndSurface
+                                ?.lesson2WrittenResult,
+                    sentenceOwnsExactTypedSlot:
+                        result.sentenceFrame?.sourceNncSlotFrame
+                        === result.nncSlotFrame,
                     formulaCarriers: result.formulaProjection.predicateProjection.segmentCarriers,
                     writtenCarriers: result.writtenProjection.predicateProjection.segmentCarriers,
                     formulaDerivedFromWritten: result.formulaDerivedFromWritten,
@@ -1018,6 +1034,31 @@ function run(ctx) {
                     writtenCarriers: hostile.writtenProjection.predicateProjection.segmentCarriers,
                     callerSuppliedAuthorityAccepted: hostile.callerSuppliedAuthorityAccepted,
                 },
+                copiedWriterResult: (() => {
+                    const exactWriterResult = results[1].operationFrame
+                        ?.formulaAndSurface?.lesson2WrittenResult;
+                    const copiedWriterResult = exactWriterResult
+                        ? { ...exactWriterResult }
+                        : null;
+                    const sentence =
+                        ctx.buildClassicalNahuatlNncSentenceSurfaceFrame(
+                            results[1].nncSlotFrame,
+                            {
+                                sentenceType: "assertion",
+                                polarity: "positive",
+                                predicateKind: "relational",
+                                canonicalNuclearWrittenResult:
+                                    copiedWriterResult,
+                            },
+                        );
+                    return {
+                        authorizationStatus: sentence.authorizationStatus,
+                        blockReason: sentence.blockReason,
+                        canonicalNuclearSurface:
+                            sentence.canonicalNuclearSurface,
+                        sentenceSurface: sentence.sentenceSurface,
+                    };
+                })(),
             };
         })(),
         {
@@ -1025,6 +1066,11 @@ function run(ctx) {
                 {
                     formula: "#Ø-Ø(huān-poh)Ø-Ø#",
                     written: "huāmpoh",
+                    sentenceFormula: "#Ø-Ø(huān-poh)Ø-Ø#.",
+                    sentenceSurface: "Huāmpoh.",
+                    sentenceNuclearSurface: "huāmpoh",
+                    sentenceOwnsExactWrittenResult: true,
+                    sentenceOwnsExactTypedSlot: true,
                     formulaCarriers: ["huān", "poh"],
                     writtenCarriers: ["huām", "poh"],
                     formulaDerivedFromWritten: false,
@@ -1033,6 +1079,11 @@ function run(ctx) {
                 {
                     formula: "#Ø-Ø(tloc-eh)Ø-Ø#",
                     written: "tloqueh",
+                    sentenceFormula: "#Ø-Ø(tloc-eh)Ø-Ø#.",
+                    sentenceSurface: "Tloqueh.",
+                    sentenceNuclearSurface: "tloqueh",
+                    sentenceOwnsExactWrittenResult: true,
+                    sentenceOwnsExactTypedSlot: true,
                     formulaCarriers: ["tloc", "eh"],
                     writtenCarriers: ["tloqu", "eh"],
                     formulaDerivedFromWritten: false,
@@ -1041,6 +1092,11 @@ function run(ctx) {
                 {
                     formula: "#Ø-Ø(ōm-pa)Ø-Ø#",
                     written: "ōppa",
+                    sentenceFormula: "#Ø-Ø(ōm-pa)Ø-Ø#.",
+                    sentenceSurface: "Ōppa.",
+                    sentenceNuclearSurface: "ōppa",
+                    sentenceOwnsExactWrittenResult: true,
+                    sentenceOwnsExactTypedSlot: true,
                     formulaCarriers: ["ōm", "pa"],
                     writtenCarriers: ["ō", "ppa"],
                     formulaDerivedFromWritten: false,
@@ -1054,6 +1110,13 @@ function run(ctx) {
                 formulaCarriers: ["huān", "poh"],
                 writtenCarriers: ["huām", "poh"],
                 callerSuppliedAuthorityAccepted: false,
+            },
+            copiedWriterResult: {
+                authorizationStatus: "blocked",
+                blockReason:
+                    "owner-issued-lesson2-written-result-required",
+                canonicalNuclearSurface: "",
+                sentenceSurface: "",
             },
         }
     );
@@ -1347,7 +1410,7 @@ function run(ctx) {
                 ["3sg", "#Ø-Ø+ī-Ø(pan)Ø-Ø#", "īpan"],
                 ["1pl", "#Ø-Ø+to-Ø(pan)Ø-Ø#", "topan"],
                 ["2pl", "#Ø-Ø+amo-Ø(pan)Ø-Ø#", "amopan"],
-                ["3pl", "#Ø-Ø+īn-Ø(pan)Ø-Ø#", "īnpan"],
+                ["3pl", "#Ø-Ø+īn-Ø(pan)Ø-Ø#", "īmpan"],
                 ["te", "#Ø-Ø+tē-Ø(pan)Ø-Ø#", "tēpan"],
                 ["tla", "#Ø-Ø+tla-Ø(pan)Ø-Ø#", "tlapan"],
                 ["ne", "#Ø-Ø+ne-Ø(pan)Ø-Ø#", "nepan"],

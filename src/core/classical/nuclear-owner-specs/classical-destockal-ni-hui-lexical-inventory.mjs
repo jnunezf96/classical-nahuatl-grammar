@@ -51,7 +51,11 @@ const spec = {
     },
     "claim-p2319::p2319-tlatz-i-ni-to-make-a-bursting-explosive-noise": {
       "assertionId": "classical-destockal-ni-hui-lexical-inventory:p2319-tlatz-i-ni-to-make-a-bursting-explosive-noise",
-      "canonicalPath": "sources.tlatzini.sourceStem"
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.tlatzini"
+    },
+    "claim-p2319::aci-p201-l023-af06ca7748-tlatzini-bursting-explosive-noise-reading": {
+      "assertionId": "classical-destockal-ni-hui-lexical-inventory:aci-p201-l023-af06ca7748-tlatzini-bursting-explosive-noise-reading",
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.tlatzini.readings.0"
     },
     "claim-p2320::p2320-chip-i-ni-to-drip": {
       "assertionId": "classical-destockal-ni-hui-lexical-inventory:p2320-chip-i-ni-to-drip",
@@ -79,7 +83,23 @@ const spec = {
     },
     "claim-p2326::p2326-o-l-i-ni-to-move-to-move-along": {
       "assertionId": "classical-destockal-ni-hui-lexical-inventory:p2326-o-l-i-ni-to-move-to-move-along",
-      "canonicalPath": "sources.olini.sourceStem"
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.olini"
+    },
+    "claim-p2326::aci-p202-l018-e2b0e76f50-olini-move-reading": {
+      "assertionId": "classical-destockal-ni-hui-lexical-inventory:aci-p202-l018-e2b0e76f50-olini-move-reading",
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.olini.readings.0"
+    },
+    "claim-p2326::aci-p202-l018-e2b0e76f50-02-olini-move-along-a-path-reading": {
+      "assertionId": "classical-destockal-ni-hui-lexical-inventory:aci-p202-l018-e2b0e76f50-02-olini-move-along-a-path-reading",
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.olini.readings.1"
+    },
+    "claim-p2326::aci-p202-l018-e2b0e76f50-03-olini-tremble-or-quake-reading": {
+      "assertionId": "classical-destockal-ni-hui-lexical-inventory:aci-p202-l018-e2b0e76f50-03-olini-tremble-or-quake-reading",
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.olini.readings.2"
+    },
+    "claim-p2326::aci-p202-l018-e2b0e76f50-04-olini-long-root-vowel-quantity": {
+      "assertionId": "classical-destockal-ni-hui-lexical-inventory:aci-p202-l018-e2b0e76f50-04-olini-long-root-vowel-quantity",
+      "canonicalPath": "constraints.destockalNiHuiLexicalInventory.entries.olini.sourceFrame.rootVowelQuantity"
     },
     "claim-p2327::p2327-tzotl-a-ni-to-become-shiny-with-a-glaze": {
       "assertionId": "classical-destockal-ni-hui-lexical-inventory:p2327-tzotl-a-ni-to-become-shiny-with-a-glaze",

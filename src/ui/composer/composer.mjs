@@ -9859,6 +9859,13 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       if (applyButton) {
         applyButton.setAttribute("aria-label", pending ? "Generate output from the pending entered stem" : "Generate output from the entered stem");
       }
+      if (pending) {
+        const note = targetObject.document?.getElementById?.("classical-source-reconstruction-note");
+        if (note) {
+          note.hidden = true;
+          note.textContent = "";
+        }
+      }
       return pending;
     }
     function commitClassicalSourcePartsEvaluation(options = {}) {
@@ -9897,6 +9904,7 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const previousSignature = ClassicalSourcePartsCommittedSignature;
       if (options.force !== true && signature === ClassicalSourcePartsCommittedSignature) {
         setClassicalSourcePartsPendingState(false);
+        syncClassicalSourceReadout();
         return false;
       }
       if (previousSignature && signature !== previousSignature) {
@@ -10383,6 +10391,20 @@ export function createUiComposerRuntime(targetObject = globalThis) {
       const constitutionEl = targetObject.document.getElementById("classical-source-constitution");
       const sourceIdentityEl = targetObject.document.getElementById("classical-source-identity-controls");
       const internalMorphsEl = targetObject.document.getElementById("classical-source-internal-morphs");
+      const reconstructionNoteEl = targetObject.document.getElementById("classical-source-reconstruction-note");
+      if (reconstructionNoteEl) {
+        const sourcePending = targetObject.document.getElementById("classical-source-parts")
+          ?.dataset.classicalSourceCommitState === "pending";
+        const notation = frame.constitution?.reconstructionNotationFrame;
+        const showReconstruction = frame.unit === CLASSICAL_BASAL_UNIT.vnc
+          && !sourcePending && frame.userSelectionContradictsTypedSource !== true
+          && frame.constitution?.authorizationStatus === "authorized"
+          && frame.constitution.grammarAuthority === false && Boolean(notation);
+        reconstructionNoteEl.textContent = showReconstruction
+          ? `Underlying source: *(${notation.underlyingStem}) → (${notation.extantSourceStem}). Here * marks a reconstruction, not an ungrammatical form.`
+          : "";
+        reconstructionNoteEl.hidden = !showReconstruction;
+      }
       const relationalSourceFormation = String(
         targetObject.document
           .getElementById("classical-relational-nnc-source-formation")

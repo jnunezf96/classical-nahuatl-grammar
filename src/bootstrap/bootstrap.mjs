@@ -1,14 +1,14 @@
-import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260902-construction-precision-370";
-import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260902-construction-precision-370";
+import { installRuntimeBridge } from "./runtime_bridge.mjs?v=20260904-ehua-causative-alias-433";
+import { createRuntimeConfigSnapshot } from "./runtime_config.mjs?v=20260904-cehui-nominal-root-430";
 import {
     RUNTIME_INSTALLERS,
     attachRuntimeBindings,
     createRuntimeInstance,
-} from "../runtime/create_runtime.mjs?v=20260902-construction-precision-370";
-import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260902-construction-precision-370";
+} from "../runtime/create_runtime.mjs?v=20260904-ehua-causative-alias-433";
+import { installUiComposerGlobals } from "../ui/composer/composer.mjs?v=20260904-source-reconstruction-note-431";
 import { installUiPanelsGlobals } from "../ui/panels/panels.mjs?v=20260826-source-commit-359";
-import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260902-construction-precision-370";
-import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260902-construction-precision-370";
+import { installUiRenderingGlobals } from "../ui/rendering/rendering.mjs?v=20260904-cehui-nominal-root-430";
+import { installClassicalShellGlobals } from "../ui/shell/classical_shell.mjs?v=20260904-source-reconstruction-note-431";
 import { installUiStateGlobals } from "../ui/state.mjs?v=20260826-source-commit-359";
 import {
     installClassicalNestedControlLedger,
@@ -23,7 +23,7 @@ const GRAMMATICAL_ATLAS_MODULE_URL = new URL(
     import.meta.url
 );
 const GRAMMATICAL_ATLAS_VERSION_MODULE_URL = new URL(
-    "../../data/classical_grammatical_atlas_population_version.mjs?v=20260902-construction-precision-370",
+    "../../data/classical_grammatical_atlas_population_version.mjs?v=20260904-cehui-nominal-root-430",
     import.meta.url
 );
 
@@ -163,7 +163,7 @@ export function installDeferredClassicalGrammaticalAtlas({
         url.searchParams.set("v", populationVersion.version);
         url.searchParams.set(
             "cache",
-            "20260902-construction-precision-370"
+            "20260904-ehua-causative-alias-433"
         );
         if (attempt > 1) url.searchParams.set("retry", String(attempt));
         return import(url.href);

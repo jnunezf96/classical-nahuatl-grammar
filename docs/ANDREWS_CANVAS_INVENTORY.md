@@ -10629,7 +10629,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P189-L028-765838738A-02 | §22.6 | REF | documentary | 189 | 28 | 7408–7410 | For the relation of the source stem to *(itzi) and tla-(itt-a), see §26.1.2. |
 | ACI-P189-L031-9C4AC23E64 | §22.6 | REF | documentary | 189 | 31 | 7411–7412 | At times the tla-impersonal stem expresses that which in English would be considered a meteorological verb (see § 22.1). |
 | ACI-P189-L033-CEFC018062 | §22.6 | EXA | evidence | 189 | 33 | 7413–7414 | (petl-ā-ni) = nonan, to glisten/shine/sparkle > (tla-petl-ā-ni) = impers, to lightning, for lightning to flash |
-| ACI-P189-L035-06DADF7D0A | §22.6 | EXA | evidence | 189 | 35 | 7415–7416 | (tlatz-i-ni) = nonan, to make an explosive sound> (tla-tlatz-ī-ni) = impers, to thunder, for there to be a thunderclap |
+| ACI-P189-L035-06DADF7D0A | §22.6 | EXA | evidence | 189 | 35 | 7415–7416 | (tlatz-ī-ni) = nonan, to make an explosive sound> (tla-tlatz-ī-ni) = impers, to thunder, for there to be a thunderclap |
 | ACI-P189-L037-DDD44CEEBC | §22.6 | EXA | evidence | 189 | 37 | 7417–7418 | (poy-ā-hua) = nonan, to tum dark> (tla-poy-ā-hua) = impers, to become dark, for night to fall |
 | ACI-P189-L039-C5A455F6B3 | §22.6 | EXA | evidence | 189 | 39 | 7419–7420 | (nēci) = nonan, to appear> (tla-nēci) = impers, for things in general to appear; i.e., for dawn to break |
 | ACI-P189-L041-BD68D5D521 | §22.6 | EXA | evidence | 189 | 41 | 7421 | (ce-ce-ya) = nonan, to become cold> (tla-ce-ce-ya) = impers, for the weather to tum cold |
@@ -11031,7 +11031,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P201-L019-A7D87FAB38 | §24.5.1 | LEX | grammar-bearing | 201 | 19 | 7797 | (tzay-ā-ni) = to become ripped/torn |
 | ACI-P201-L020-672F80C362 | §24.5.1 | EXA | evidence | 201 | 20 | 7798 | (chay-ā-ni) = (for maize, etc.) to spill out over the ground |
 | ACI-P201-L021-B737C840B9 | §24.5.1 | EXA | evidence | 201 | 21 | 7799 | (chay-ā-hui) = (for maize, etc.) to spill out over the ground |
-| ACI-P201-L023-AF06CA7748 | §24.5.1 | LEX | grammar-bearing | 201 | 23 | 7801 | (tlatz-i-ni) = to make a bursting/explosive noise |
+| ACI-P201-L023-AF06CA7748 | §24.5.1 | LEX | grammar-bearing | 201 | 23 | 7801 | (tlatz-ī-ni) = to make a bursting/explosive noise |
 | ACI-P201-L025-81ED0872CC | §24.5.2 | LEX | grammar-bearing | 201 | 25 | 7803 | (chip-ī-ni) = to drip |
 | ACI-P201-L026-28F9F1A421 | §24.5.2 | EXA | evidence | 201 | 26 | 7804 | (pitz-ī-ni) = (for an egg) to become broken open; (for a fruit) to become bruised; (for a swelling) to burst |
 | ACI-P201-L027-4066F58737 | §24.5.2 | EXA | evidence | 201 | 27 | 7805 | (tzil-ī-ni) = (for metal) to jingle/ring |
@@ -11058,10 +11058,10 @@ The structural units above are containers. The records below count the individua
 | ACI-P202-L014-3FDA7E5360 | §24.5.3 | EXA | evidence | 202 | 14 | 7828 | (poz-ō-ni) = (for the sea or water in a pot) to boil/seethe |
 | ACI-P202-L015-7BFFF99A8B | §24.5.3 | EXA | evidence | 202 | 15 | 7829 | (cot-ō-ni) = (for rope/cord/thread) to become broken |
 | ACI-P202-L016-A0992861F4 | §24.5.3 | LEX | grammar-bearing | 202 | 16 | 7830 | (pot-ō-ni) = to stink |
-| ACI-P202-L018-E2B0E76F50 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-i-ni can mean ‘to move.’ |
-| ACI-P202-L018-E2B0E76F50-02 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-i-ni can mean ‘to move along a path.’ |
-| ACI-P202-L018-E2B0E76F50-03 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-i-ni can mean ‘to tremble’ or ‘to quake.’ |
-| ACI-P202-L018-E2B0E76F50-04 | §24.5.3 | CST | grammar-bearing | 202 | 18 | 7832 | The root vowel of ōl-i-ni is long. |
+| ACI-P202-L018-E2B0E76F50 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-ī-ni can mean ‘to move.’ |
+| ACI-P202-L018-E2B0E76F50-02 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-ī-ni can mean ‘to move along a path.’ |
+| ACI-P202-L018-E2B0E76F50-03 | §24.5.3 | LEX | grammar-bearing | 202 | 18 | 7832 | ōl-ī-ni can mean ‘to tremble’ or ‘to quake.’ |
+| ACI-P202-L018-E2B0E76F50-04 | §24.5.3 | CST | grammar-bearing | 202 | 18 | 7832 | The root vowel of ōl-ī-ni is long. |
 | ACI-P202-L019-CCB84CFA86 | §24.5.3 | EXA | evidence | 202 | 19 | 7833 | (tzop-i-ni) = to become punctured [same as (tzop-ō-ni)] |
 | ACI-P202-L020-58629A70DB | §24.5.3 | EXA | evidence | 202 | 20 | 7834 | (poch-i-ni) = (for strands of cotton fiber,etc.) to become disentangled/separated |
 | ACI-P202-L021-1F64D154AA | §24.5.3 | LEX | grammar-bearing | 202 | 21 | 7835 | (tzotl-ā-ni) = to become shiny with a glaze or varnish |
@@ -11092,7 +11092,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P203-L005-AC982449B7-02 | §24.5.7 | REF | documentary | 203 | 5 | 7868 | Section 24.3 is cited for both procedures used to form first-type causative stems from intransitive destockal verbstems. |
 | ACI-P203-L006-B383D8E203 | §24.5.7.a | RUL | grammar-bearing | 203 | 6 | 7869–7871 | The majority of the ni destockal stems prefer to add the causative a suffix to the end of the intrasitive stem; for example: |
 | ACI-P203-L008-DDD313B9D0 | §24.5.7.a | EXA | evidence | 203 | 8 | 7872 | (chacu-ā-ni) = to become wet > tē-(chacu-ā-ni-ā) = to cause s.o. to get wet |
-| ACI-P203-L009-D14D821E22 | §24.5.7.a | EXA | evidence | 203 | 9 | 7873 | (ōl-i-ni) = to move > m-ō-(ōl-i-ni-ā) = to cause o.s. to move; i.e., to get a move on |
+| ACI-P203-L009-D14D821E22 | §24.5.7.a | EXA | evidence | 203 | 9 | 7873 | (ōl-ī-ni) = to move > m-ō-(ōl-ī-ni-ā) = to cause o.s. to move; i.e., to get a move on |
 | ACI-P203-L010-C45F3861B1 | §24.5.7.a | EXA | evidence | 203 | 10 | 7874 | (tzoy-ō-ni) = to become fried > tla-(tzoy-ō-ni-ā) = to fry s.th. |
 | ACI-P203-L011-CCA52F5AF9 | §24.5.7.a | EXC | grammar-bearing | 203 | 11 | 7875 | Of the ni stems listed in subsections 1 through 4, only the three that follow prefer to replace the stem-final i with the causative a. |
 | ACI-P203-L012-DB94B895BB | §24.5.7.a | EXA | evidence | 203 | 12 | 7876 | (tlap-ā-ni) = to break/become broken > tla-(tlap-ā-n-a) = to cause s.th. to break; to break s.th |
@@ -11142,8 +11142,8 @@ The structural units above are containers. The records below count the individua
 | ACI-P204-L003-429A0E8ACE-07 | §24.5.9 | SCH | grammar-bearing | 204 | 3 | 7897 | Tla- in tla-(xī-ni-ā) specifies a nonspecific nonhuman object. |
 | ACI-P204-L003-429A0E8ACE-08 | §24.5.9 | USE | grammar-bearing | 204 | 3 | 7897 | Tla-(xī-ni-ā) means ‘to ravel something.’ |
 | ACI-P204-L003-429A0E8ACE-09 | §24.5.9 | ALT | grammar-bearing | 204 | 3 | 7897 | With stitches as plural nonhuman objects, tla-(xī-ni-ā) means ‘to rip out stitches.’ |
-| ACI-P204-L004-AE01B03F8B | §24.5.9 | REA | grammar-bearing | 204 | 4 | 7898 | Reconstructed destockal stem *(ce-e-hui) is grammatically formed from root ce, stock formative e, and stem formative hui. |
-| ACI-P204-L004-AE01B03F8B-02 | §24.5.9 | REA | grammar-bearing | 204 | 4 | 7898 | Reconstructed *(ce-e-hui) is realized as (cē-hui) by coalescence of its adjacent e vowels. |
+| ACI-P204-L004-AE01B03F8B | §24.5.9 | REA | grammar-bearing | 204 | 4 | 7898 | Reconstructed destockal stem *(ce-ē-hui) is grammatically formed from root ce, stock formative ē, and stem formative hui. |
+| ACI-P204-L004-AE01B03F8B-02 | §24.5.9 | REA | grammar-bearing | 204 | 4 | 7898 | Reconstructed *(ce-ē-hui) is realized as (cē-hui) by coalescence of its adjacent e and ē vowels. |
 | ACI-P204-L004-AE01B03F8B-03 | §24.5.9 | LEX | grammar-bearing | 204 | 4 | 7898 | Intransitive stem (cē-hui) can take a nonhuman entity as subject and mean ‘to become cold.’ |
 | ACI-P204-L004-AE01B03F8B-04 | §24.5.9 | LEX | grammar-bearing | 204 | 4 | 7898 | With a fire as its nonhuman subject, intransitive stem (cē-hui) can mean ‘to go out.’ |
 | ACI-P204-L004-AE01B03F8B-05 | §24.5.9 | REA | grammar-bearing | 204 | 4 | 7898 | Directive causative stem tla-(cē-hui-ā) is derived from intransitive (cē-hui) with type-one causative ā. |
@@ -12991,7 +12991,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P247-L038-B74E587066 | §27.4.3 | EXA | evidence | 247 | 38 | 9205 | (to-tō-ca)= to run [ < *(tō-ni) < *(to-o-ni)] |
 | ACI-P247-L039-6DD10064FA | §27.4.3 | REA | grammar-bearing | 247 | 39 | 9206 | tē- ~ tla-(to-tō-tz-a) = to spur s.o. ors.th. on |
 | ACI-P248-L002-236CE3C797 | §27.4.3 | EXA | evidence | 248 | 2 | 9211 | (pi-pī-ca)= to dribble[< *(pi-ni) < *(pi-i-ni)] |
-| ACI-P248-L003-3C6186D887 | §27.4.3 | LEX | grammar-bearing | 248 | 3 | 9212 | tla-(pi-pi-tz-a) = to cause s.th. to dribble |
+| ACI-P248-L003-3C6186D887 | §27.4.3 | LEX | grammar-bearing | 248 | 3 | 9212 | tla-(pi-pī-tza) = to cause s.th. to dribble |
 | ACI-P248-L005-8BAD08AD9F | §27.4.4 | SCH | grammar-bearing | 248 | 5 | 9214–9215 | The suffixal unit tz-a contains the causative suffix a. |
 | ACI-P248-L005-8BAD08AD9F-02 | §27.4.4 | USE | grammar-bearing | 248 | 5 | 9214–9215 | Despite containing causative a, tz-a can sometimes carry an applicative meaning. |
 | ACI-P248-L005-8BAD08AD9F-03 | §27.4.4 | REF | documentary | 248 | 5 | 9214–9215 | Section 27.4.3 contains an earlier example of applicative meaning with tz-a. |
@@ -18970,7 +18970,7 @@ The structural units above are containers. The records below count the individua
 | ACI-P376-L016-8A641ADF49 | §37.5.3.b | DEP | grammar-bearing | 376 | 16 | 14497 | The source impersonal verbstem may be created by the impersonal tla: |
 | ACI-P376-L017-5F0235B907 | §37.5.3.b | EXA | evidence | 376 | 17 | 14498–14499 | (tla-yohui-liz)-tli- = process of becoming night; shade, shadow [ < (tla-yohua), "to become night"] |
 | ACI-P376-L019-4789160830 | §37.5.3.b | EXA | evidence | 376 | 19 | 14500 | (tla-cua-cual-a-ca-liz)-tli- = act of thundering [ < (tla-cua-cual-a-ca), "to thunder"] |
-| ACI-P376-L020-98CDF0DD3B | §37.5.3.b | EXA | evidence | 376 | 20 | 14501–14502 | (tla-tlatz-i-ni-liz)-tli- = act of thundering, thunderclap [ < (tla-tlatz-i-ni), "to thunder, for a thunderclap to occur"] |
+| ACI-P376-L020-98CDF0DD3B | §37.5.3.b | EXA | evidence | 376 | 20 | 14501–14502 | (tla-tlatz-ī-ni-liz)-tli- = act of thundering, thunderclap [ < (tla-tlatz-ī-ni), "to thunder, for a thunderclap to occur"] |
 | ACI-P376-L022-E11C3CDC6D | §37.5.4 | USE | grammar-bearing | 376 | 22 | 14503 | An active-action nounstem can be used as the embed in a compound stem. |
 | ACI-P376-L024-499EAF04B8 | §37.5.4.a | EXA | evidence | 376 | 24 | 14505 | ōnicocolizcuic = ō#ni-Ø(coco-liz-cui)Ø+c-Ø# = I took sick, I became sick |
 | ACI-P376-L025-45C8B2F879 | §37.5.4.a | EXA | evidence | 376 | 25 | 14506–14508 | Chōquiliztzahtzi is a witnessed compound VNC with an active-action nounstem embed. |

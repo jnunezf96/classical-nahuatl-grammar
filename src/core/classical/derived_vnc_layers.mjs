@@ -1,5 +1,9 @@
 // Canonical modern ESM module.
 
+import {
+  buildClassicalNahuatlTypedRootStockVowelCoalescenceRelation,
+} from "./root_stock_vowel_coalescence.mjs";
+
 export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalThis) {
     const CLASSICAL_NAHUATL_LESSON25_LATER_LAYERS_VERSION = 1;
     const CLASSICAL_NAHUATL_LESSON25_SOURCE_DOCUMENT = "ANDREWS_TRANSCRIPTION_CANVAS.md";
@@ -412,6 +416,26 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       if (typedPositions.length) {
         return Object.freeze(typedPositions.map(position => Object.freeze({ ...position })));
       }
+      // Compact Lesson-7 Valence slots carry the realized pronoun, not the
+      // derivation's participant identity. Preserve that identity from the
+      // actual operation instead of relabeling its one object as directive.
+      // Both callers validate the issued machinery before projecting it.
+      const requests = machineryFrame?.targetObjectRequests;
+      const valenceSlots = (typedFrame?.slots?.prePredicate || [])
+        .filter(slot => ["monadic-valence", "dyadic-valence"].includes(slot?.kind));
+      if (machineryFrame?.kind === "classical-nahuatl-vnc-derived-machinery-frame"
+        && Array.isArray(requests) && requests.length === 1
+        && requests === machineryFrame.derivationOperationFrame?.targetObjectRequests
+        && valenceSlots.length === 1) {
+        const carrier = normalizeClassicalNahuatlDerivedVncToken(valenceSlots[0].carrier || "");
+        return Object.freeze([Object.freeze({
+          ...requests[0],
+          objectKind: normalizeClassicalNahuatlCanvasObjectKind(requests[0].objectKind),
+          prominence: "mainline",
+          carrier,
+          sounded: Boolean(getClassicalNahuatlTypedCarrierSurface(carrier))
+        })]);
+      }
       const synthetic = getClassicalNahuatlCanvasSyntheticObjectPosition(machineryFrame);
       return Object.freeze(synthetic ? [synthetic] : []);
     }
@@ -543,46 +567,26 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
         slotId: morpheme.slotId,
         carrier: morpheme.formulaCarrier
       })));
-      const identicalVowelCoalescenceProfiles = Object.freeze([
-        Object.freeze({ stockFormative: "ō", stemFormative: "ni", section: "24.5.9" }),
-        Object.freeze({ stockFormative: "ē", stemFormative: "hua", section: "24.6.2" })
-      ]);
-      const longToShortVowel = Object.freeze({ ā: "a", ē: "e", ī: "i", ō: "o" });
       const coalescenceBoundaries = [];
       for (let order = 0; order < orderedMorphemes.length - 2; order += 1) {
         const root = orderedMorphemes[order];
         const stockFormative = orderedMorphemes[order + 1];
         const stemFormative = orderedMorphemes[order + 2];
-        const profile = identicalVowelCoalescenceProfiles.find(candidate => (
-          candidate.stockFormative === stockFormative.surface
-          && candidate.stemFormative === stemFormative.surface
-        )) || null;
-        const shortStockVowel = longToShortVowel[stockFormative.surface] || "";
-        if (!profile
-          || root.slotRole !== "predicate"
-          || stockFormative.slotRole !== "predicate"
-          || stemFormative.slotRole !== "predicate"
-          || !shortStockVowel
-          || !root.surface.endsWith(shortStockVowel)) {
+        const coalescenceFrame =
+          buildClassicalNahuatlTypedRootStockVowelCoalescenceRelation(
+            root,
+            stockFormative,
+            stemFormative,
+          );
+        if (!coalescenceFrame) {
           continue;
         }
         const leftSurfaceBefore = root.surface;
         const rightSurfaceBefore = stockFormative.surface;
-        root.surface = `${root.surface.slice(0, -1)}${stockFormative.surface}`;
+        root.surface = coalescenceFrame.resultStock;
         stockFormative.surface = "";
         stockFormative.sounded = false;
-        const applicableRuleFrames = Object.freeze([Object.freeze({
-          ruleId: "cn-l24-identical-root-stock-vowel-coalescence",
-          section: profile.section,
-          operation: "coalesce-identical-root-final-and-stock-formative-vowels-in-written-projection",
-          sourceMorphologyFrame: Object.freeze({
-            kind: "classical-nahuatl-identical-vowel-boundary-source-frame",
-            root: leftSurfaceBefore,
-            stockFormative: rightSurfaceBefore,
-            stemFormative: stemFormative.surface,
-            outputVowel: rightSurfaceBefore
-          })
-        })]);
+        const applicableRuleFrames = Object.freeze([coalescenceFrame]);
         coalescenceBoundaries.push(Object.freeze({
           boundaryOrder: coalescenceBoundaries.length,
           leftMorphemeOrder: root.order,
@@ -596,6 +600,7 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
           leftFormulaCarrierBefore: typedFormulaMorphemes[root.order]?.carrier || "",
           leftFormulaCarrierAfter: typedFormulaMorphemes[root.order]?.carrier || "",
           formulaCarrierChangedByWrittenBoundary: false,
+          coalescenceFrame,
           applicableRuleFrames,
           appliedRuleIds: Object.freeze(applicableRuleFrames.map(frame => frame.ruleId))
         }));
@@ -1019,6 +1024,9 @@ export function createClassicalNahuatlLaterLayersRuntime(targetObject = globalTh
       ]);
       const orderingRuleFrames = machineryFrame?.derivationOperationFrame?.sourceVoice === "impersonal"
         && participantEntries[0]?.position?.governor === "causative"
+        && participantEntries[0]?.position?.objectKind === "nonspecific-human"
+        && participantEntries.slice(1).some(entry => entry.position?.governor === "directive"
+          && entry.position?.objectKind === "reflexive")
         ? [Object.freeze({
           ruleId: "cn-l25-25113-impersonal-causative-object-before-retained-reciprocative",
           section: "25.11.3.b",

@@ -582,7 +582,7 @@ function buildProjection(runtime) {
       tlaInventory: [
         "huā-qui", "pol-i-hui", "cel-i-ya", "ihyā-ya", "cah-ca-h",
         "on-o", "chic-ā-hua", "huē-i-ya", "it-hui", "petl-ā-ni",
-        "tlatz-i-ni", "poy-ā-hua", "nēci", "ce-ce-ya", "yohua",
+        "tlatz-ī-ni", "poy-ā-hua", "nēci", "ce-ce-ya", "yohua",
         "ih-cahu-a-ca", "cue-cuech-ca", "izta-ya",
       ].map(sourceStem => runtime.getClassicalNahuatlTlaImpersonalSourceAnalysis(sourceStem))
         .map(analysis => ({

@@ -91,7 +91,7 @@ function run(ctx = {}) {
         ["huē-i-ya", "tla-huē-i-ya", "inchoative", "general-nonhuman", "attested-source", []],
         ["it-hui", "tla-t-hui", "reconstructed-inchoative", "general-nonhuman", "reconstructed-source", ["general-perceptibility", "daybreak"]],
         ["petl-ā-ni", "tla-petl-ā-ni", "meteorological", "general-nonhuman", "attested-source", []],
-        ["tlatz-i-ni", "tla-tlatz-ī-ni", "meteorological", "general-nonhuman", "attested-source", []],
+        ["tlatz-ī-ni", "tla-tlatz-ī-ni", "meteorological", "general-nonhuman", "attested-source", []],
         ["poy-ā-hua", "tla-poy-ā-hua", "meteorological", "general-nonhuman", "attested-source", []],
         ["nēci", "tla-nēci", "meteorological", "general-nonhuman", "attested-source", ["nonspecific-entity-brightness", "general-brightness", "dawn"]],
         ["ce-ce-ya", "tla-ce-ce-ya", "meteorological", "general-nonhuman", "attested-source", []],
@@ -123,7 +123,7 @@ function run(ctx = {}) {
         nonactiveOptionId: "tla-impersonal",
     });
     const tlatzini = apply({
-        sourceStem: "tlatz-i-ni",
+        sourceStem: "tlatz-ī-ni",
         verbClass: "B",
         tense: "preterit",
         nonactiveOptionId: "tla-impersonal",

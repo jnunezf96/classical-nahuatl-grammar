@@ -247,7 +247,7 @@ export const CLASSICAL_NAHUATL_LESSON22_TLA_IMPERSONAL_SOURCES =
     "huē-i-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "inchoative", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
     "it-hui": Object.freeze({ realizationRuleId: "prefix-tla-drop-supportive-initial-i", semanticClass: "reconstructed-inchoative", subjectDomain: "general-nonhuman", sourceAttestation: "reconstructed-source", availableReadings: Object.freeze(["general-perceptibility", "daybreak"]) }),
     "petl-ā-ni": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
-    "tlatz-i-ni": Object.freeze({ realizationRuleId: "prefix-tla-lengthen-i-before-ni", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
+    "tlatz-ī-ni": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
     "poy-ā-hua": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
     "nēci": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze(["nonspecific-entity-brightness", "general-brightness", "dawn"]) }),
     "ce-ce-ya": Object.freeze({ realizationRuleId: "prefix-tla", semanticClass: "meteorological", subjectDomain: "general-nonhuman", availableReadings: Object.freeze([]) }),
@@ -290,12 +290,6 @@ export function deriveClassicalNahuatlTlaImpersonalTargetStem(
     && /^i/u.test(normalized)
   ) {
     return `tla-${normalized.slice(1)}`;
-  }
-  if (
-    ruleId === "prefix-tla-lengthen-i-before-ni"
-    && /-i-ni$/u.test(normalized)
-  ) {
-    return `tla-${normalized.replace(/-i(?=-ni$)/u, "-ī")}`;
   }
   return "";
 }
